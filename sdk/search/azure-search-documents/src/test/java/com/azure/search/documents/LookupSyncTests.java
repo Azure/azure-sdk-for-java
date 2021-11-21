@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.search.documents;
 
-import com.azure.core.experimental.geojson.GeoPoint;
 import com.azure.core.http.rest.Response;
+import com.azure.core.models.GeoPoint;
 import com.azure.core.util.Context;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
@@ -476,7 +476,7 @@ public class LookupSyncTests extends SearchTestBase {
     }
 
     String setupIndexWithDataTypes() {
-        SearchIndex index = new SearchIndex("data-types-tests-index")
+        SearchIndex index = new SearchIndex(testResourceNamer.randomName("data-types-tests-index", 64))
             .setFields(Arrays.asList(
                  new SearchField("Key", SearchFieldDataType.STRING)
                     .setKey(true)

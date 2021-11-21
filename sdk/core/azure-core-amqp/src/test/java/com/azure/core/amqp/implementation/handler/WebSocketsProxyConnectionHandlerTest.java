@@ -7,8 +7,8 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
+import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Header;
@@ -19,6 +19,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junit.jupiter.api.parallel.Isolated;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -38,6 +41,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
+@Execution(ExecutionMode.SAME_THREAD)
+@Isolated("Mutates the global ProxySelector")
 public class WebSocketsProxyConnectionHandlerTest {
     private static final String CONNECTION_ID = "some-connection-id";
     private static final String HOSTNAME = "event-hubs.windows.core.net";
@@ -58,8 +63,9 @@ public class WebSocketsProxyConnectionHandlerTest {
     private final SslPeerDetails peerDetails = Proton.sslPeerDetails(HOSTNAME, 2192);
 
     private ProxySelector originalProxySelector;
-    private ProxySelector proxySelector;
 
+    @Mock
+    private ProxySelector proxySelector;
     @Mock
     private TokenCredential tokenCredential;
     @Mock
@@ -77,8 +83,9 @@ public class WebSocketsProxyConnectionHandlerTest {
         mocksCloseable = MockitoAnnotations.openMocks(this);
 
         this.connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
-            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, new AmqpRetryOptions(),
-            ProxyOptions.SYSTEM_DEFAULTS, scheduler, CLIENT_OPTIONS, VERIFY_MODE, PRODUCT, CLIENT_VERSION);
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "scope", AmqpTransportType.AMQP,
+            new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, scheduler, CLIENT_OPTIONS, VERIFY_MODE, PRODUCT,
+            CLIENT_VERSION);
 
         this.originalProxySelector = ProxySelector.getDefault();
         this.proxySelector = mock(ProxySelector.class, Mockito.CALLS_REAL_METHODS);
@@ -92,7 +99,7 @@ public class WebSocketsProxyConnectionHandlerTest {
         }
 
         ProxySelector.setDefault(originalProxySelector);
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
 
         if (mocksCloseable != null) {
             mocksCloseable.close();

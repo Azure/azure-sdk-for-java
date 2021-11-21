@@ -11,41 +11,41 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Confluent Offer detail. */
 @Fluent
-public class OfferDetail {
+public final class OfferDetail {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OfferDetail.class);
 
     /*
      * Publisher Id
      */
-    @JsonProperty(value = "publisherId")
+    @JsonProperty(value = "publisherId", required = true)
     private String publisherId;
 
     /*
      * Offer Id
      */
-    @JsonProperty(value = "id")
+    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * Offer Plan Id
      */
-    @JsonProperty(value = "planId")
+    @JsonProperty(value = "planId", required = true)
     private String planId;
 
     /*
      * Offer Plan Name
      */
-    @JsonProperty(value = "planName")
+    @JsonProperty(value = "planName", required = true)
     private String planName;
 
     /*
      * Offer Plan Term unit
      */
-    @JsonProperty(value = "termUnit")
+    @JsonProperty(value = "termUnit", required = true)
     private String termUnit;
 
     /*
-     * SaaS Offer Status
+     * SaaSOfferStatus SaaS Offer Status
      */
     @JsonProperty(value = "status")
     private SaaSOfferStatus status;
@@ -151,7 +151,7 @@ public class OfferDetail {
     }
 
     /**
-     * Get the status property: SaaS Offer Status.
+     * Get the status property: SaaSOfferStatus SaaS Offer Status.
      *
      * @return the status value.
      */
@@ -160,7 +160,7 @@ public class OfferDetail {
     }
 
     /**
-     * Set the status property: SaaS Offer Status.
+     * Set the status property: SaaSOfferStatus SaaS Offer Status.
      *
      * @param status the status value to set.
      * @return the OfferDetail object itself.
@@ -176,5 +176,29 @@ public class OfferDetail {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (publisherId() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property publisherId in model OfferDetail"));
+        }
+        if (id() == null) {
+            throw logger
+                .logExceptionAsError(new IllegalArgumentException("Missing required property id in model OfferDetail"));
+        }
+        if (planId() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property planId in model OfferDetail"));
+        }
+        if (planName() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property planName in model OfferDetail"));
+        }
+        if (termUnit() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property termUnit in model OfferDetail"));
+        }
     }
 }

@@ -13,6 +13,7 @@ import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
 import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
+import com.azure.storage.blob.options.BlockBlobStageBlockFromUrlOptions;
 import reactor.core.publisher.Flux;
 
 import java.nio.ByteBuffer;
@@ -222,6 +223,21 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
             leaseId, sourceRequestConditions).subscribe(response ->
             System.out.printf("Staging block from URL completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromUrlWithResponse#String-String-BlobRange-byte-String-BlobRequestConditions
+    }
+
+    /**
+     * Code snippet for {@link BlockBlobAsyncClient#stageBlockFromUrlWithResponse(String, String, BlobRange, byte[], String, BlobRequestConditions)}
+     */
+    public void stageBlockFromUrlOptionsBag() {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromUrlWithResponse#BlockBlobStageBlockFromUrlOptions
+        BlobRequestConditions sourceRequestConditions = new BlobRequestConditions()
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+
+        client.stageBlockFromUrlWithResponse(new BlockBlobStageBlockFromUrlOptions(base64BlockID, sourceUrl)
+            .setSourceRange(new BlobRange(offset, count)).setLeaseId(leaseId)
+            .setSourceRequestConditions(sourceRequestConditions)).subscribe(response ->
+            System.out.printf("Staging block from URL completed with status %d%n", response.getStatusCode()));
+        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromUrlWithResponse#BlockBlobStageBlockFromUrlOptions
     }
 
     /**

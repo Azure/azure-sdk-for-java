@@ -4,123 +4,30 @@
 
 package com.azure.resourcemanager.appservice.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A setting difference between two deployment slots of an app. */
-@JsonFlatten
-@Immutable
-public class SlotDifferenceInner extends ProxyOnlyResource {
+@Fluent
+public final class SlotDifferenceInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SlotDifferenceInner.class);
 
     /*
-     * Level of the difference: Information, Warning or Error.
+     * SlotDifference resource specific properties
      */
-    @JsonProperty(value = "properties.level", access = JsonProperty.Access.WRITE_ONLY)
-    private String level;
-
-    /*
-     * The type of the setting: General, AppSetting or ConnectionString.
-     */
-    @JsonProperty(value = "properties.settingType", access = JsonProperty.Access.WRITE_ONLY)
-    private String settingType;
-
-    /*
-     * Rule that describes how to process the setting difference during a slot
-     * swap.
-     */
-    @JsonProperty(value = "properties.diffRule", access = JsonProperty.Access.WRITE_ONLY)
-    private String diffRule;
-
-    /*
-     * Name of the setting.
-     */
-    @JsonProperty(value = "properties.settingName", access = JsonProperty.Access.WRITE_ONLY)
-    private String settingName;
-
-    /*
-     * Value of the setting in the current slot.
-     */
-    @JsonProperty(value = "properties.valueInCurrentSlot", access = JsonProperty.Access.WRITE_ONLY)
-    private String valueInCurrentSlot;
-
-    /*
-     * Value of the setting in the target slot.
-     */
-    @JsonProperty(value = "properties.valueInTargetSlot", access = JsonProperty.Access.WRITE_ONLY)
-    private String valueInTargetSlot;
-
-    /*
-     * Description of the setting difference.
-     */
-    @JsonProperty(value = "properties.description", access = JsonProperty.Access.WRITE_ONLY)
-    private String description;
+    @JsonProperty(value = "properties")
+    private SlotDifferenceProperties innerProperties;
 
     /**
-     * Get the level property: Level of the difference: Information, Warning or Error.
+     * Get the innerProperties property: SlotDifference resource specific properties.
      *
-     * @return the level value.
+     * @return the innerProperties value.
      */
-    public String level() {
-        return this.level;
-    }
-
-    /**
-     * Get the settingType property: The type of the setting: General, AppSetting or ConnectionString.
-     *
-     * @return the settingType value.
-     */
-    public String settingType() {
-        return this.settingType;
-    }
-
-    /**
-     * Get the diffRule property: Rule that describes how to process the setting difference during a slot swap.
-     *
-     * @return the diffRule value.
-     */
-    public String diffRule() {
-        return this.diffRule;
-    }
-
-    /**
-     * Get the settingName property: Name of the setting.
-     *
-     * @return the settingName value.
-     */
-    public String settingName() {
-        return this.settingName;
-    }
-
-    /**
-     * Get the valueInCurrentSlot property: Value of the setting in the current slot.
-     *
-     * @return the valueInCurrentSlot value.
-     */
-    public String valueInCurrentSlot() {
-        return this.valueInCurrentSlot;
-    }
-
-    /**
-     * Get the valueInTargetSlot property: Value of the setting in the target slot.
-     *
-     * @return the valueInTargetSlot value.
-     */
-    public String valueInTargetSlot() {
-        return this.valueInTargetSlot;
-    }
-
-    /**
-     * Get the description property: Description of the setting difference.
-     *
-     * @return the description value.
-     */
-    public String description() {
-        return this.description;
+    private SlotDifferenceProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -131,6 +38,69 @@ public class SlotDifferenceInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the level property: Level of the difference: Information, Warning or Error.
+     *
+     * @return the level value.
+     */
+    public String level() {
+        return this.innerProperties() == null ? null : this.innerProperties().level();
+    }
+
+    /**
+     * Get the settingType property: The type of the setting: General, AppSetting or ConnectionString.
+     *
+     * @return the settingType value.
+     */
+    public String settingType() {
+        return this.innerProperties() == null ? null : this.innerProperties().settingType();
+    }
+
+    /**
+     * Get the diffRule property: Rule that describes how to process the setting difference during a slot swap.
+     *
+     * @return the diffRule value.
+     */
+    public String diffRule() {
+        return this.innerProperties() == null ? null : this.innerProperties().diffRule();
+    }
+
+    /**
+     * Get the settingName property: Name of the setting.
+     *
+     * @return the settingName value.
+     */
+    public String settingName() {
+        return this.innerProperties() == null ? null : this.innerProperties().settingName();
+    }
+
+    /**
+     * Get the valueInCurrentSlot property: Value of the setting in the current slot.
+     *
+     * @return the valueInCurrentSlot value.
+     */
+    public String valueInCurrentSlot() {
+        return this.innerProperties() == null ? null : this.innerProperties().valueInCurrentSlot();
+    }
+
+    /**
+     * Get the valueInTargetSlot property: Value of the setting in the target slot.
+     *
+     * @return the valueInTargetSlot value.
+     */
+    public String valueInTargetSlot() {
+        return this.innerProperties() == null ? null : this.innerProperties().valueInTargetSlot();
+    }
+
+    /**
+     * Get the description property: Description of the setting difference.
+     *
+     * @return the description value.
+     */
+    public String description() {
+        return this.innerProperties() == null ? null : this.innerProperties().description();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -138,5 +108,8 @@ public class SlotDifferenceInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

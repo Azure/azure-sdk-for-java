@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.cognitiveservices.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.cognitiveservices.models.PrivateEndpointConnection;
@@ -28,12 +29,16 @@ public final class PrivateEndpointConnectionImpl
         return this.innerModel().type();
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
     public PrivateEndpointConnectionProperties properties() {
         return this.innerModel().properties();
     }
 
-    public String etag() {
-        return this.innerModel().etag();
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String location() {
@@ -73,9 +78,8 @@ public final class PrivateEndpointConnectionImpl
             serviceManager
                 .serviceClient()
                 .getPrivateEndpointConnections()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, accountName, privateEndpointConnectionName, this.innerModel(), Context.NONE)
-                .getValue();
+                .createOrUpdate(
+                    resourceGroupName, accountName, privateEndpointConnectionName, this.innerModel(), Context.NONE);
         return this;
     }
 
@@ -84,9 +88,8 @@ public final class PrivateEndpointConnectionImpl
             serviceManager
                 .serviceClient()
                 .getPrivateEndpointConnections()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, accountName, privateEndpointConnectionName, this.innerModel(), context)
-                .getValue();
+                .createOrUpdate(
+                    resourceGroupName, accountName, privateEndpointConnectionName, this.innerModel(), context);
         return this;
     }
 
@@ -106,9 +109,8 @@ public final class PrivateEndpointConnectionImpl
             serviceManager
                 .serviceClient()
                 .getPrivateEndpointConnections()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, accountName, privateEndpointConnectionName, this.innerModel(), Context.NONE)
-                .getValue();
+                .createOrUpdate(
+                    resourceGroupName, accountName, privateEndpointConnectionName, this.innerModel(), Context.NONE);
         return this;
     }
 
@@ -117,9 +119,8 @@ public final class PrivateEndpointConnectionImpl
             serviceManager
                 .serviceClient()
                 .getPrivateEndpointConnections()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, accountName, privateEndpointConnectionName, this.innerModel(), context)
-                .getValue();
+                .createOrUpdate(
+                    resourceGroupName, accountName, privateEndpointConnectionName, this.innerModel(), context);
         return this;
     }
 

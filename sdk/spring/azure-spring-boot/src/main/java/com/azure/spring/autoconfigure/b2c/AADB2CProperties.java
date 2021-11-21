@@ -249,6 +249,9 @@ public class AADB2CProperties implements InitializingBean {
         this.authenticateAdditionalParameters = authenticateAdditionalParameters;
     }
 
+    @Deprecated
+    @DeprecatedConfigurationProperty(
+        reason = "Deprecate the telemetry endpoint and use HTTP header User Agent instead.")
     public boolean isAllowTelemetry() {
         return allowTelemetry;
     }

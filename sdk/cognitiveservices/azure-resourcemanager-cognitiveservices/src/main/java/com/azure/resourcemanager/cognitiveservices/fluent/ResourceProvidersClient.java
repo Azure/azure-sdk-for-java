@@ -8,8 +8,8 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.cognitiveservices.fluent.models.CheckDomainAvailabilityResultInner;
-import com.azure.resourcemanager.cognitiveservices.fluent.models.CheckSkuAvailabilityResultListInner;
+import com.azure.resourcemanager.cognitiveservices.fluent.models.DomainAvailabilityInner;
+import com.azure.resourcemanager.cognitiveservices.fluent.models.SkuAvailabilityListResultInner;
 import com.azure.resourcemanager.cognitiveservices.models.CheckDomainAvailabilityParameter;
 import com.azure.resourcemanager.cognitiveservices.models.CheckSkuAvailabilityParameter;
 
@@ -26,7 +26,7 @@ public interface ResourceProvidersClient {
      * @return check SKU availability result list.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckSkuAvailabilityResultListInner checkSkuAvailability(String location, CheckSkuAvailabilityParameter parameters);
+    SkuAvailabilityListResultInner checkSkuAvailability(String location, CheckSkuAvailabilityParameter parameters);
 
     /**
      * Check available SKUs.
@@ -40,7 +40,7 @@ public interface ResourceProvidersClient {
      * @return check SKU availability result list.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckSkuAvailabilityResultListInner> checkSkuAvailabilityWithResponse(
+    Response<SkuAvailabilityListResultInner> checkSkuAvailabilityWithResponse(
         String location, CheckSkuAvailabilityParameter parameters, Context context);
 
     /**
@@ -50,10 +50,10 @@ public interface ResourceProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return check Domain availability result.
+     * @return domain availability.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckDomainAvailabilityResultInner checkDomainAvailability(CheckDomainAvailabilityParameter parameters);
+    DomainAvailabilityInner checkDomainAvailability(CheckDomainAvailabilityParameter parameters);
 
     /**
      * Check whether a domain is available.
@@ -63,9 +63,9 @@ public interface ResourceProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return check Domain availability result.
+     * @return domain availability.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckDomainAvailabilityResultInner> checkDomainAvailabilityWithResponse(
+    Response<DomainAvailabilityInner> checkDomainAvailabilityWithResponse(
         CheckDomainAvailabilityParameter parameters, Context context);
 }

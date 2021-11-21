@@ -29,7 +29,6 @@ import com.azure.resourcemanager.iothub.fluent.CertificatesClient;
 import com.azure.resourcemanager.iothub.fluent.models.CertificateDescriptionInner;
 import com.azure.resourcemanager.iothub.fluent.models.CertificateListDescriptionInner;
 import com.azure.resourcemanager.iothub.fluent.models.CertificateWithNonceDescriptionInner;
-import com.azure.resourcemanager.iothub.models.CertificateBodyDescription;
 import com.azure.resourcemanager.iothub.models.CertificateVerificationDescription;
 import com.azure.resourcemanager.iothub.models.ErrorDetailsException;
 import reactor.core.publisher.Mono;
@@ -107,7 +106,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
             @PathParam("resourceName") String resourceName,
             @PathParam("certificateName") String certificateName,
             @HeaderParam("If-Match") String ifMatch,
-            @BodyParam("application/json") CertificateBodyDescription certificateDescription,
+            @BodyParam("application/json") CertificateDescriptionInner certificateDescription,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -209,7 +208,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
                             resourceName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -364,7 +363,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
                             certificateName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -497,7 +496,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
         String resourceGroupName,
         String resourceName,
         String certificateName,
-        CertificateBodyDescription certificateDescription,
+        CertificateDescriptionInner certificateDescription,
         String ifMatch) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -545,7 +544,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
                             certificateDescription,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -568,7 +567,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
         String resourceGroupName,
         String resourceName,
         String certificateName,
-        CertificateBodyDescription certificateDescription,
+        CertificateDescriptionInner certificateDescription,
         String ifMatch,
         Context context) {
         if (this.client.getEndpoint() == null) {
@@ -636,7 +635,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
         String resourceGroupName,
         String resourceName,
         String certificateName,
-        CertificateBodyDescription certificateDescription,
+        CertificateDescriptionInner certificateDescription,
         String ifMatch) {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, resourceName, certificateName, certificateDescription, ifMatch)
@@ -667,7 +666,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
         String resourceGroupName,
         String resourceName,
         String certificateName,
-        CertificateBodyDescription certificateDescription) {
+        CertificateDescriptionInner certificateDescription) {
         final String ifMatch = null;
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, resourceName, certificateName, certificateDescription, ifMatch)
@@ -698,7 +697,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
         String resourceGroupName,
         String resourceName,
         String certificateName,
-        CertificateBodyDescription certificateDescription) {
+        CertificateDescriptionInner certificateDescription) {
         final String ifMatch = null;
         return createOrUpdateAsync(resourceGroupName, resourceName, certificateName, certificateDescription, ifMatch)
             .block();
@@ -724,7 +723,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
         String resourceGroupName,
         String resourceName,
         String certificateName,
-        CertificateBodyDescription certificateDescription,
+        CertificateDescriptionInner certificateDescription,
         String ifMatch,
         Context context) {
         return createOrUpdateWithResponseAsync(
@@ -788,7 +787,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
                             ifMatch,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -959,7 +958,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
                             ifMatch,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1159,7 +1158,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
                             certificateVerificationBody,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

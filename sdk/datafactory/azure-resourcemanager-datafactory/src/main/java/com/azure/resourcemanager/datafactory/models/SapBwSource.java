@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.List;
 
 /** A copy activity source for SapBW server via MDX. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -54,7 +53,7 @@ public final class SapBwSource extends TabularSource {
 
     /** {@inheritDoc} */
     @Override
-    public SapBwSource withAdditionalColumns(List<AdditionalColumns> additionalColumns) {
+    public SapBwSource withAdditionalColumns(Object additionalColumns) {
         super.withAdditionalColumns(additionalColumns);
         return this;
     }
@@ -77,6 +76,13 @@ public final class SapBwSource extends TabularSource {
     @Override
     public SapBwSource withMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.withMaxConcurrentConnections(maxConcurrentConnections);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SapBwSource withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
         return this;
     }
 

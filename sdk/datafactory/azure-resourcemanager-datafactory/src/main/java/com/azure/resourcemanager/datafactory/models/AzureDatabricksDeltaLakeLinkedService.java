@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.AzureDatabricksDetltaLakeLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,129 +17,24 @@ import java.util.Map;
 /** Azure Databricks Delta Lake linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureDatabricksDeltaLake")
-@JsonFlatten
 @Fluent
-public class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
+public final class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureDatabricksDeltaLakeLinkedService.class);
 
     /*
-     * <REGION>.azuredatabricks.net, domain name of your Databricks deployment.
-     * Type: string (or Expression with resultType string).
+     * Azure Databricks Delta Lake linked service properties.
      */
-    @JsonProperty(value = "typeProperties.domain", required = true)
-    private Object domain;
-
-    /*
-     * Access token for databricks REST API. Refer to
-     * https://docs.azuredatabricks.net/api/latest/authentication.html. Type:
-     * string, SecureString or AzureKeyVaultSecretReference.
-     */
-    @JsonProperty(value = "typeProperties.accessToken")
-    private SecretBase accessToken;
-
-    /*
-     * The id of an existing interactive cluster that will be used for all runs
-     * of this job. Type: string (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.clusterId")
-    private Object clusterId;
-
-    /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
-    private Object encryptedCredential;
+    @JsonProperty(value = "typeProperties", required = true)
+    private AzureDatabricksDetltaLakeLinkedServiceTypeProperties innerTypeProperties =
+        new AzureDatabricksDetltaLakeLinkedServiceTypeProperties();
 
     /**
-     * Get the domain property: &lt;REGION&gt;.azuredatabricks.net, domain name of your Databricks deployment. Type:
-     * string (or Expression with resultType string).
+     * Get the innerTypeProperties property: Azure Databricks Delta Lake linked service properties.
      *
-     * @return the domain value.
+     * @return the innerTypeProperties value.
      */
-    public Object domain() {
-        return this.domain;
-    }
-
-    /**
-     * Set the domain property: &lt;REGION&gt;.azuredatabricks.net, domain name of your Databricks deployment. Type:
-     * string (or Expression with resultType string).
-     *
-     * @param domain the domain value to set.
-     * @return the AzureDatabricksDeltaLakeLinkedService object itself.
-     */
-    public AzureDatabricksDeltaLakeLinkedService withDomain(Object domain) {
-        this.domain = domain;
-        return this;
-    }
-
-    /**
-     * Get the accessToken property: Access token for databricks REST API. Refer to
-     * https://docs.azuredatabricks.net/api/latest/authentication.html. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
-     *
-     * @return the accessToken value.
-     */
-    public SecretBase accessToken() {
-        return this.accessToken;
-    }
-
-    /**
-     * Set the accessToken property: Access token for databricks REST API. Refer to
-     * https://docs.azuredatabricks.net/api/latest/authentication.html. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
-     *
-     * @param accessToken the accessToken value to set.
-     * @return the AzureDatabricksDeltaLakeLinkedService object itself.
-     */
-    public AzureDatabricksDeltaLakeLinkedService withAccessToken(SecretBase accessToken) {
-        this.accessToken = accessToken;
-        return this;
-    }
-
-    /**
-     * Get the clusterId property: The id of an existing interactive cluster that will be used for all runs of this job.
-     * Type: string (or Expression with resultType string).
-     *
-     * @return the clusterId value.
-     */
-    public Object clusterId() {
-        return this.clusterId;
-    }
-
-    /**
-     * Set the clusterId property: The id of an existing interactive cluster that will be used for all runs of this job.
-     * Type: string (or Expression with resultType string).
-     *
-     * @param clusterId the clusterId value to set.
-     * @return the AzureDatabricksDeltaLakeLinkedService object itself.
-     */
-    public AzureDatabricksDeltaLakeLinkedService withClusterId(Object clusterId) {
-        this.clusterId = clusterId;
-        return this;
-    }
-
-    /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @return the encryptedCredential value.
-     */
-    public Object encryptedCredential() {
-        return this.encryptedCredential;
-    }
-
-    /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @param encryptedCredential the encryptedCredential value to set.
-     * @return the AzureDatabricksDeltaLakeLinkedService object itself.
-     */
-    public AzureDatabricksDeltaLakeLinkedService withEncryptedCredential(Object encryptedCredential) {
-        this.encryptedCredential = encryptedCredential;
-        return this;
+    private AzureDatabricksDetltaLakeLinkedServiceTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -171,6 +66,108 @@ public class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
     }
 
     /**
+     * Get the domain property: &lt;REGION&gt;.azuredatabricks.net, domain name of your Databricks deployment. Type:
+     * string (or Expression with resultType string).
+     *
+     * @return the domain value.
+     */
+    public Object domain() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().domain();
+    }
+
+    /**
+     * Set the domain property: &lt;REGION&gt;.azuredatabricks.net, domain name of your Databricks deployment. Type:
+     * string (or Expression with resultType string).
+     *
+     * @param domain the domain value to set.
+     * @return the AzureDatabricksDeltaLakeLinkedService object itself.
+     */
+    public AzureDatabricksDeltaLakeLinkedService withDomain(Object domain) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureDatabricksDetltaLakeLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withDomain(domain);
+        return this;
+    }
+
+    /**
+     * Get the accessToken property: Access token for databricks REST API. Refer to
+     * https://docs.azuredatabricks.net/api/latest/authentication.html. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
+     *
+     * @return the accessToken value.
+     */
+    public SecretBase accessToken() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().accessToken();
+    }
+
+    /**
+     * Set the accessToken property: Access token for databricks REST API. Refer to
+     * https://docs.azuredatabricks.net/api/latest/authentication.html. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
+     *
+     * @param accessToken the accessToken value to set.
+     * @return the AzureDatabricksDeltaLakeLinkedService object itself.
+     */
+    public AzureDatabricksDeltaLakeLinkedService withAccessToken(SecretBase accessToken) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureDatabricksDetltaLakeLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withAccessToken(accessToken);
+        return this;
+    }
+
+    /**
+     * Get the clusterId property: The id of an existing interactive cluster that will be used for all runs of this job.
+     * Type: string (or Expression with resultType string).
+     *
+     * @return the clusterId value.
+     */
+    public Object clusterId() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().clusterId();
+    }
+
+    /**
+     * Set the clusterId property: The id of an existing interactive cluster that will be used for all runs of this job.
+     * Type: string (or Expression with resultType string).
+     *
+     * @param clusterId the clusterId value to set.
+     * @return the AzureDatabricksDeltaLakeLinkedService object itself.
+     */
+    public AzureDatabricksDeltaLakeLinkedService withClusterId(Object clusterId) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureDatabricksDetltaLakeLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withClusterId(clusterId);
+        return this;
+    }
+
+    /**
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @return the encryptedCredential value.
+     */
+    public Object encryptedCredential() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
+    }
+
+    /**
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @param encryptedCredential the encryptedCredential value to set.
+     * @return the AzureDatabricksDeltaLakeLinkedService object itself.
+     */
+    public AzureDatabricksDeltaLakeLinkedService withEncryptedCredential(Object encryptedCredential) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureDatabricksDetltaLakeLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEncryptedCredential(encryptedCredential);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -178,14 +175,14 @@ public class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
     @Override
     public void validate() {
         super.validate();
-        if (domain() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property domain in model AzureDatabricksDeltaLakeLinkedService"));
-        }
-        if (accessToken() != null) {
-            accessToken().validate();
+                        "Missing required property innerTypeProperties in model"
+                            + " AzureDatabricksDeltaLakeLinkedService"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

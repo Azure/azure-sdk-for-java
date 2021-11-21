@@ -3,15 +3,17 @@
 package com.azure.spring.autoconfigure.b2c;
 
 import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
+import org.springframework.boot.autoconfigure.condition.ConditionMessage;
 import org.springframework.boot.autoconfigure.condition.ConditionOutcome;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.condition.SpringBootCondition;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.annotation.ConditionContext;
 import org.springframework.core.type.AnnotatedTypeMetadata;
 import org.springframework.util.CollectionUtils;
+
+import java.util.Map;
 
 /**
  * Conditions for activating AAD B2C beans.
@@ -30,7 +32,6 @@ public final class AADB2CConditions {
          * Web application scenario condition.
          */
         @ConditionalOnWebApplication
-        @ConditionalOnResource(resources = "classpath:aadb2c.enable.config")
         @ConditionalOnProperty(
             prefix = AADB2CProperties.PREFIX,
             value = {
@@ -46,7 +47,6 @@ public final class AADB2CConditions {
          * Web resource server scenario condition.
          */
         @ConditionalOnWebApplication
-        @ConditionalOnResource(resources = "classpath:aadb2c.enable.config")
         @ConditionalOnProperty(prefix = AADB2CProperties.PREFIX, value = { "tenant-id" })
         static class WebApiMode {
 
@@ -61,12 +61,28 @@ public final class AADB2CConditions {
         @Override
         public ConditionOutcome getMatchOutcome(final ConditionContext context,
                                                 final AnnotatedTypeMetadata metadata) {
-            AADB2CProperties aadb2CProperties = Binder.get(context.getEnvironment())
-                                                      .bind("azure.activedirectory.b2c", AADB2CProperties.class)
-                                                      .orElseGet(AADB2CProperties::new);
-            return new ConditionOutcome(!CollectionUtils.isEmpty(aadb2CProperties.getUserFlows())
-                || !CollectionUtils.isEmpty(aadb2CProperties.getAuthorizationClients()),
-                "Configure at least one attribute 'user-flow' or 'authorization-clients'.");
+            ConditionMessage.Builder message = ConditionMessage.forCondition(
+                "AAD B2C OAuth 2.0 Clients Configured Condition");
+            AADB2CProperties aadb2CProperties = getAADB2CProperties(context);
+            if (aadb2CProperties == null) {
+                return ConditionOutcome.noMatch(message.notAvailable("aad b2c properties"));
+            }
+
+            if (CollectionUtils.isEmpty(aadb2CProperties.getUserFlows())
+                && CollectionUtils.isEmpty(aadb2CProperties.getAuthorizationClients())) {
+                return ConditionOutcome.noMatch(message.didNotFind("registered clients")
+                                                       .items("user-flows", "authorization-clients"));
+            }
+
+            StringBuilder details = new StringBuilder();
+            if (!CollectionUtils.isEmpty(aadb2CProperties.getUserFlows())) {
+                details.append(getConditionResult("user-flows", aadb2CProperties.getUserFlows()));
+            }
+            if (!CollectionUtils.isEmpty(aadb2CProperties.getAuthorizationClients())) {
+                details.append(getConditionResult("authorization-clients",
+                    aadb2CProperties.getAuthorizationClients()));
+            }
+            return ConditionOutcome.match(message.foundExactly(details.toString()));
         }
     }
 
@@ -78,11 +94,40 @@ public final class AADB2CConditions {
         @Override
         public ConditionOutcome getMatchOutcome(final ConditionContext context,
                                                 final AnnotatedTypeMetadata metadata) {
-            AADB2CProperties aadb2CProperties = Binder.get(context.getEnvironment())
-                                                      .bind("azure.activedirectory.b2c", AADB2CProperties.class)
-                                                      .orElseGet(AADB2CProperties::new);
-            return new ConditionOutcome(!CollectionUtils.isEmpty(aadb2CProperties.getUserFlows()),
-                "Configure at least one attribute 'user-flow'.");
+            ConditionMessage.Builder message = ConditionMessage.forCondition(
+                "AAD B2C User Flow Clients Configured Condition");
+            AADB2CProperties aadb2CProperties = getAADB2CProperties(context);
+            if (aadb2CProperties == null) {
+                return ConditionOutcome.noMatch(message.notAvailable("aad b2c properties"));
+            }
+
+            if (CollectionUtils.isEmpty(aadb2CProperties.getUserFlows())) {
+                return ConditionOutcome.noMatch(message.didNotFind("user flows").atAll());
+            }
+
+            return ConditionOutcome.match(message.foundExactly(
+                getConditionResult("user-flows", aadb2CProperties.getUserFlows())));
         }
+    }
+
+    /**
+     * Return the bound AADB2CProperties instance.
+     * @param context Condition context
+     * @return AADB2CProperties instance
+     */
+    private static AADB2CProperties getAADB2CProperties(ConditionContext context) {
+        return Binder.get(context.getEnvironment())
+                     .bind("azure.activedirectory.b2c", AADB2CProperties.class)
+                     .orElse(null);
+    }
+
+    /**
+     * Return combined name and the string of the keys of the map which concatenated with ','.
+     * @param name name to concatenate
+     * @param map Map to concatenate
+     * @return the concatenated string.
+     */
+    private static String getConditionResult(String name, Map<String, ?> map) {
+        return name + ": " + String.join(", ", map.keySet()) + " ";
     }
 }

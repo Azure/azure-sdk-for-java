@@ -2,19 +2,17 @@
 // Licensed under the MIT License.
 package com.azure.data.tables.models;
 
+import com.azure.core.annotation.Immutable;
+
 /**
  * A class that represents an error occurred in a Tables operation.
  */
+@Immutable
 public final class TableServiceError {
     /*
      * The service error code.
      */
     private final String errorCode;
-
-    /*
-     * Language code of the error message.
-     */
-    private final String languageCode;
 
     /*
      * The error message.
@@ -25,12 +23,10 @@ public final class TableServiceError {
      * Create an instance of {@link TableServiceError}.
      *
      * @param errorCode The service error code.
-     * @param languageCode Language code of the error message.
      * @param errorMessage The error message.
      */
-    public TableServiceError(String errorCode, String languageCode, String errorMessage) {
+    public TableServiceError(String errorCode, String errorMessage) {
         this.errorCode = errorCode;
-        this.languageCode = languageCode;
         this.errorMessage = errorMessage;
     }
 
@@ -39,17 +35,8 @@ public final class TableServiceError {
      *
      * @return The service error code.
      */
-    public String getErrorCode() {
-        return this.errorCode;
-    }
-
-    /**
-     * Get the language code of the error message.
-     *
-     * @return The language code of the error message.
-     */
-    public String getLanguageCode() {
-        return this.languageCode;
+    public TableErrorCode getErrorCode() {
+        return TableErrorCode.fromString(errorCode);
     }
 
     /**

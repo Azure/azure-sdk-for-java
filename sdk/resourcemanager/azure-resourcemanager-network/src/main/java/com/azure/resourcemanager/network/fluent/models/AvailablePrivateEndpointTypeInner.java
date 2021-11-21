@@ -38,6 +38,12 @@ public final class AvailablePrivateEndpointTypeInner {
     @JsonProperty(value = "resourceName")
     private String resourceName;
 
+    /*
+     * Display name of the resource.
+     */
+    @JsonProperty(value = "displayName")
+    private String displayName;
+
     /**
      * Get the name property: The name of the service and resource.
      *
@@ -115,6 +121,26 @@ public final class AvailablePrivateEndpointTypeInner {
      */
     public AvailablePrivateEndpointTypeInner withResourceName(String resourceName) {
         this.resourceName = resourceName;
+        return this;
+    }
+
+    /**
+     * Get the displayName property: Display name of the resource.
+     *
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.displayName;
+    }
+
+    /**
+     * Set the displayName property: Display name of the resource.
+     *
+     * @param displayName the displayName value to set.
+     * @return the AvailablePrivateEndpointTypeInner object itself.
+     */
+    public AvailablePrivateEndpointTypeInner withDisplayName(String displayName) {
+        this.displayName = displayName;
         return this;
     }
 

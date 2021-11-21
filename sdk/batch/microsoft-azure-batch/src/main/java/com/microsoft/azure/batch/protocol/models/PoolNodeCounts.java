@@ -27,7 +27,7 @@ public class PoolNodeCounts {
     private NodeCounts dedicated;
 
     /**
-     * The number of low priority Compute Nodes in each state.
+     * The number of low-priority Compute Nodes in each state.
      */
     @JsonProperty(value = "lowPriority")
     private NodeCounts lowPriority;

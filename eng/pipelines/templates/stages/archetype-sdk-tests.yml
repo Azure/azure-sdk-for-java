@@ -58,12 +58,12 @@ parameters:
   default: []
 - name: TestMode
   type: string
-  default: 'RECORD'
+  default: 'LIVE'
 - name: TestStepMavenInputs
   type: object
   default:
-    options: '$(DefaultOptions) -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -DtrimStackTrace=false -pl $(ProjectList)'
-    mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+    options: '$(DefaultTestOptions)'
+    mavenOptions: '$(DefaultTestMavenOptions)'
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '$(JavaTestVersion)'
     jdkArchitectureOption: 'x64'

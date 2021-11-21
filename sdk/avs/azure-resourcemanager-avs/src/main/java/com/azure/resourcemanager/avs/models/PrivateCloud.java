@@ -56,25 +56,11 @@ public interface PrivateCloud {
     Sku sku();
 
     /**
-     * Gets the managementCluster property: The default cluster used for management.
+     * Gets the identity property: The identity of the private cloud, if configured.
      *
-     * @return the managementCluster value.
+     * @return the identity value.
      */
-    ManagementCluster managementCluster();
-
-    /**
-     * Gets the internet property: Connectivity to internet is enabled or disabled.
-     *
-     * @return the internet value.
-     */
-    InternetEnum internet();
-
-    /**
-     * Gets the identitySources property: vCenter Single Sign On Identity Sources.
-     *
-     * @return the identitySources value.
-     */
-    List<IdentitySource> identitySources();
+    PrivateCloudIdentity identity();
 
     /**
      * Gets the provisioningState property: The provisioning state.
@@ -156,6 +142,56 @@ public interface PrivateCloud {
     String nsxtCertificateThumbprint();
 
     /**
+     * Gets the externalCloudLinks property: Array of cloud link IDs from other clouds that connect to this one.
+     *
+     * @return the externalCloudLinks value.
+     */
+    List<String> externalCloudLinks();
+
+    /**
+     * Gets the secondaryCircuit property: A secondary expressRoute circuit from a separate AZ. Only present in a
+     * stretched private cloud.
+     *
+     * @return the secondaryCircuit value.
+     */
+    Circuit secondaryCircuit();
+
+    /**
+     * Gets the managementCluster property: The default cluster used for management.
+     *
+     * @return the managementCluster value.
+     */
+    ManagementCluster managementCluster();
+
+    /**
+     * Gets the internet property: Connectivity to internet is enabled or disabled.
+     *
+     * @return the internet value.
+     */
+    InternetEnum internet();
+
+    /**
+     * Gets the identitySources property: vCenter Single Sign On Identity Sources.
+     *
+     * @return the identitySources value.
+     */
+    List<IdentitySource> identitySources();
+
+    /**
+     * Gets the availability property: Properties describing how the cloud is distributed across availability zones.
+     *
+     * @return the availability value.
+     */
+    AvailabilityProperties availability();
+
+    /**
+     * Gets the encryption property: Customer managed key encryption, can be enabled or disabled.
+     *
+     * @return the encryption value.
+     */
+    Encryption encryption();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -182,7 +218,6 @@ public interface PrivateCloud {
             DefinitionStages.WithLocation,
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithSku,
-            DefinitionStages.WithNetworkBlock,
             DefinitionStages.WithCreate {
     }
     /** The PrivateCloud definition stages. */
@@ -226,21 +261,7 @@ public interface PrivateCloud {
              * @param sku The private cloud SKU.
              * @return the next definition stage.
              */
-            WithNetworkBlock withSku(Sku sku);
-        }
-        /** The stage of the PrivateCloud definition allowing to specify networkBlock. */
-        interface WithNetworkBlock {
-            /**
-             * Specifies the networkBlock property: The block of addresses should be unique across VNet in your
-             * subscription as well as on-premise. Make sure the CIDR format is conformed to (A.B.C.D/X) where A,B,C,D
-             * are between 0 and 255, and X is between 0 and 22.
-             *
-             * @param networkBlock The block of addresses should be unique across VNet in your subscription as well as
-             *     on-premise. Make sure the CIDR format is conformed to (A.B.C.D/X) where A,B,C,D are between 0 and
-             *     255, and X is between 0 and 22.
-             * @return the next definition stage.
-             */
-            WithCreate withNetworkBlock(String networkBlock);
+            WithCreate withSku(Sku sku);
         }
         /**
          * The stage of the PrivateCloud definition which contains all the minimum required properties for the resource
@@ -248,12 +269,17 @@ public interface PrivateCloud {
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
+                DefinitionStages.WithIdentity,
+                DefinitionStages.WithCircuit,
+                DefinitionStages.WithNetworkBlock,
+                DefinitionStages.WithVcenterPassword,
+                DefinitionStages.WithNsxtPassword,
+                DefinitionStages.WithSecondaryCircuit,
                 DefinitionStages.WithManagementCluster,
                 DefinitionStages.WithInternet,
                 DefinitionStages.WithIdentitySources,
-                DefinitionStages.WithCircuit,
-                DefinitionStages.WithVcenterPassword,
-                DefinitionStages.WithNsxtPassword {
+                DefinitionStages.WithAvailability,
+                DefinitionStages.WithEncryption {
             /**
              * Executes the create request.
              *
@@ -278,6 +304,74 @@ public interface PrivateCloud {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
+        }
+        /** The stage of the PrivateCloud definition allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: The identity of the private cloud, if configured..
+             *
+             * @param identity The identity of the private cloud, if configured.
+             * @return the next definition stage.
+             */
+            WithCreate withIdentity(PrivateCloudIdentity identity);
+        }
+        /** The stage of the PrivateCloud definition allowing to specify circuit. */
+        interface WithCircuit {
+            /**
+             * Specifies the circuit property: An ExpressRoute Circuit.
+             *
+             * @param circuit An ExpressRoute Circuit.
+             * @return the next definition stage.
+             */
+            WithCreate withCircuit(Circuit circuit);
+        }
+        /** The stage of the PrivateCloud definition allowing to specify networkBlock. */
+        interface WithNetworkBlock {
+            /**
+             * Specifies the networkBlock property: The block of addresses should be unique across VNet in your
+             * subscription as well as on-premise. Make sure the CIDR format is conformed to (A.B.C.D/X) where A,B,C,D
+             * are between 0 and 255, and X is between 0 and 22.
+             *
+             * @param networkBlock The block of addresses should be unique across VNet in your subscription as well as
+             *     on-premise. Make sure the CIDR format is conformed to (A.B.C.D/X) where A,B,C,D are between 0 and
+             *     255, and X is between 0 and 22.
+             * @return the next definition stage.
+             */
+            WithCreate withNetworkBlock(String networkBlock);
+        }
+        /** The stage of the PrivateCloud definition allowing to specify vcenterPassword. */
+        interface WithVcenterPassword {
+            /**
+             * Specifies the vcenterPassword property: Optionally, set the vCenter admin password when the private cloud
+             * is created.
+             *
+             * @param vcenterPassword Optionally, set the vCenter admin password when the private cloud is created.
+             * @return the next definition stage.
+             */
+            WithCreate withVcenterPassword(String vcenterPassword);
+        }
+        /** The stage of the PrivateCloud definition allowing to specify nsxtPassword. */
+        interface WithNsxtPassword {
+            /**
+             * Specifies the nsxtPassword property: Optionally, set the NSX-T Manager password when the private cloud is
+             * created.
+             *
+             * @param nsxtPassword Optionally, set the NSX-T Manager password when the private cloud is created.
+             * @return the next definition stage.
+             */
+            WithCreate withNsxtPassword(String nsxtPassword);
+        }
+        /** The stage of the PrivateCloud definition allowing to specify secondaryCircuit. */
+        interface WithSecondaryCircuit {
+            /**
+             * Specifies the secondaryCircuit property: A secondary expressRoute circuit from a separate AZ. Only
+             * present in a stretched private cloud.
+             *
+             * @param secondaryCircuit A secondary expressRoute circuit from a separate AZ. Only present in a stretched
+             *     private cloud.
+             * @return the next definition stage.
+             */
+            WithCreate withSecondaryCircuit(Circuit secondaryCircuit);
         }
         /** The stage of the PrivateCloud definition allowing to specify managementCluster. */
         interface WithManagementCluster {
@@ -309,37 +403,26 @@ public interface PrivateCloud {
              */
             WithCreate withIdentitySources(List<IdentitySource> identitySources);
         }
-        /** The stage of the PrivateCloud definition allowing to specify circuit. */
-        interface WithCircuit {
+        /** The stage of the PrivateCloud definition allowing to specify availability. */
+        interface WithAvailability {
             /**
-             * Specifies the circuit property: An ExpressRoute Circuit.
+             * Specifies the availability property: Properties describing how the cloud is distributed across
+             * availability zones.
              *
-             * @param circuit An ExpressRoute Circuit.
+             * @param availability Properties describing how the cloud is distributed across availability zones.
              * @return the next definition stage.
              */
-            WithCreate withCircuit(Circuit circuit);
+            WithCreate withAvailability(AvailabilityProperties availability);
         }
-        /** The stage of the PrivateCloud definition allowing to specify vcenterPassword. */
-        interface WithVcenterPassword {
+        /** The stage of the PrivateCloud definition allowing to specify encryption. */
+        interface WithEncryption {
             /**
-             * Specifies the vcenterPassword property: Optionally, set the vCenter admin password when the private cloud
-             * is created.
+             * Specifies the encryption property: Customer managed key encryption, can be enabled or disabled.
              *
-             * @param vcenterPassword Optionally, set the vCenter admin password when the private cloud is created.
+             * @param encryption Customer managed key encryption, can be enabled or disabled.
              * @return the next definition stage.
              */
-            WithCreate withVcenterPassword(String vcenterPassword);
-        }
-        /** The stage of the PrivateCloud definition allowing to specify nsxtPassword. */
-        interface WithNsxtPassword {
-            /**
-             * Specifies the nsxtPassword property: Optionally, set the NSX-T Manager password when the private cloud is
-             * created.
-             *
-             * @param nsxtPassword Optionally, set the NSX-T Manager password when the private cloud is created.
-             * @return the next definition stage.
-             */
-            WithCreate withNsxtPassword(String nsxtPassword);
+            WithCreate withEncryption(Encryption encryption);
         }
     }
     /**
@@ -352,9 +435,12 @@ public interface PrivateCloud {
     /** The template for PrivateCloud update. */
     interface Update
         extends UpdateStages.WithTags,
+            UpdateStages.WithIdentity,
             UpdateStages.WithManagementCluster,
             UpdateStages.WithInternet,
-            UpdateStages.WithIdentitySources {
+            UpdateStages.WithIdentitySources,
+            UpdateStages.WithAvailability,
+            UpdateStages.WithEncryption {
         /**
          * Executes the update request.
          *
@@ -375,12 +461,22 @@ public interface PrivateCloud {
         /** The stage of the PrivateCloud update allowing to specify tags. */
         interface WithTags {
             /**
-             * Specifies the tags property: Resource tags..
+             * Specifies the tags property: Resource tags.
              *
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
+        }
+        /** The stage of the PrivateCloud update allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: The identity of the private cloud, if configured..
+             *
+             * @param identity The identity of the private cloud, if configured.
+             * @return the next definition stage.
+             */
+            Update withIdentity(PrivateCloudIdentity identity);
         }
         /** The stage of the PrivateCloud update allowing to specify managementCluster. */
         interface WithManagementCluster {
@@ -412,6 +508,27 @@ public interface PrivateCloud {
              */
             Update withIdentitySources(List<IdentitySource> identitySources);
         }
+        /** The stage of the PrivateCloud update allowing to specify availability. */
+        interface WithAvailability {
+            /**
+             * Specifies the availability property: Properties describing how the cloud is distributed across
+             * availability zones.
+             *
+             * @param availability Properties describing how the cloud is distributed across availability zones.
+             * @return the next definition stage.
+             */
+            Update withAvailability(AvailabilityProperties availability);
+        }
+        /** The stage of the PrivateCloud update allowing to specify encryption. */
+        interface WithEncryption {
+            /**
+             * Specifies the encryption property: Customer managed key encryption, can be enabled or disabled.
+             *
+             * @param encryption Customer managed key encryption, can be enabled or disabled.
+             * @return the next definition stage.
+             */
+            Update withEncryption(Encryption encryption);
+        }
     }
     /**
      * Refreshes the resource to sync with Azure.
@@ -427,6 +544,42 @@ public interface PrivateCloud {
      * @return the refreshed resource.
      */
     PrivateCloud refresh(Context context);
+
+    /**
+     * Rotate the vCenter password.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void rotateVcenterPassword();
+
+    /**
+     * Rotate the vCenter password.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void rotateVcenterPassword(Context context);
+
+    /**
+     * Rotate the NSX-T Manager password.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void rotateNsxtPassword();
+
+    /**
+     * Rotate the NSX-T Manager password.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void rotateNsxtPassword(Context context);
 
     /**
      * List the admin credentials for the private cloud.

@@ -5,13 +5,14 @@ package com.azure.cosmos.spark
 import java.util.UUID
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
 import org.apache.spark.sql.types.{BooleanType, IntegerType, StringType, StructField, StructType}
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 
 class SparkE2EChangeFeedITest
   extends IntegrationSpec
     with Spark
     with CosmosClient
     with CosmosContainerWithRetention
-    with CosmosLoggingTrait {
+    with BasicLoggingTrait {
 
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number
@@ -39,10 +40,11 @@ class SparkE2EChangeFeedITest
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
+      "spark.cosmos.read.maxItemCount" -> "2",
       "spark.cosmos.read.inferSchema.enabled" -> "false"
     )
 
-    val df = spark.read.format("cosmos.changeFeed").options(cfg).load()
+    val df = spark.read.format("cosmos.oltp.changeFeed").options(cfg).load()
     val rowsArray = df.collect()
     rowsArray should have size 2
     df.schema.equals(
@@ -54,10 +56,11 @@ class SparkE2EChangeFeedITest
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
       "spark.cosmos.read.inferSchema.enabled" -> "false",
+      "spark.cosmos.read.maxItemCount" -> "1",
       "spark.cosmos.changeFeed.mode" -> "Incremental"
     )
 
-    val dfExplicit = spark.read.format("cosmos.changeFeed").options(cfgExplicit).load()
+    val dfExplicit = spark.read.format("cosmos.oltp.changeFeed").options(cfgExplicit).load()
     val rowsArrayExplicit = dfExplicit.collect()
     rowsArrayExplicit should have size 2
     dfExplicit.schema.equals(
@@ -83,6 +86,7 @@ class SparkE2EChangeFeedITest
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
+      "spark.cosmos.read.maxItemCount" -> "1",
       "spark.cosmos.read.inferSchema.enabled" -> "false"
     )
 
@@ -94,7 +98,7 @@ class SparkE2EChangeFeedITest
       StructField("isAlive", BooleanType)
     ))
 
-    val df = spark.read.schema(customSchema).format("cosmos.changeFeed").options(cfg).load()
+    val df = spark.read.schema(customSchema).format("cosmos.oltp.changeFeed").options(cfg).load()
     val rowsArray = df.collect()
     rowsArray should have size 2
     df.schema.equals(customSchema) shouldEqual true
@@ -121,10 +125,11 @@ class SparkE2EChangeFeedITest
       "spark.cosmos.container" -> cosmosContainer,
       "spark.cosmos.read.inferSchema.enabled" -> "false",
       "spark.cosmos.changeFeed.mode" -> "FullFidelity",
+      "spark.cosmos.read.maxItemCount" -> "1",
       "spark.cosmos.changeFeed.startFrom" -> "NOW"
     )
 
-    val df = spark.read.format("cosmos.changeFeed").options(cfg).load()
+    val df = spark.read.format("cosmos.oltp.changeFeed").options(cfg).load()
     val rowsArray = df.collect()
     rowsArray should have size 0
     df.schema.equals(
@@ -149,6 +154,7 @@ class SparkE2EChangeFeedITest
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
       "spark.cosmos.read.inferSchema.enabled" -> "false",
+      "spark.cosmos.read.maxItemCount" -> "200000",
       "spark.cosmos.changeFeed.startFrom" -> "Beginning",
       "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
     )
@@ -177,7 +183,7 @@ class SparkE2EChangeFeedITest
 
       val changeFeedDF = spark
         .readStream
-        .format("cosmos.changeFeed")
+        .format("cosmos.oltp.changeFeed")
         .options(readCfg)
         .load()
       val microBatchQuery = changeFeedDF

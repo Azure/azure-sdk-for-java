@@ -4,6 +4,7 @@
 package com.azure.core.amqp;
 
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.util.AsyncCloseable;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -13,7 +14,7 @@ import java.util.Map;
 /**
  * Represents a TCP connection between the client and a service that uses the AMQP protocol.
  */
-public interface AmqpConnection extends Disposable {
+public interface AmqpConnection extends Disposable, AsyncCloseable {
     /**
      * Gets the connection identifier.
      *
@@ -53,6 +54,7 @@ public interface AmqpConnection extends Disposable {
      * Creates a new session with the given session name.
      *
      * @param sessionName Name of the session.
+     *
      * @return The AMQP session that was created.
      */
     Mono<AmqpSession> createSession(String sessionName);
@@ -61,6 +63,7 @@ public interface AmqpConnection extends Disposable {
      * Removes a session with the {@code sessionName} from the AMQP connection.
      *
      * @param sessionName Name of the session to remove.
+     *
      * @return {@code true} if a session with the name was removed; {@code false} otherwise.
      */
     boolean removeSession(String sessionName);
@@ -79,4 +82,26 @@ public interface AmqpConnection extends Disposable {
      * @return A stream of shutdown signals that occur in the AMQP endpoint.
      */
     Flux<AmqpShutdownSignal> getShutdownSignals();
+
+    /**
+     * Gets or creates the management node.
+     *
+     * @param entityPath Entity for which to get the management node of.
+     *
+     * @return A Mono that completes with the management node.
+     *
+     * @throws UnsupportedOperationException if there is no implementation of fetching a management node.
+     */
+    default Mono<AmqpManagementNode> getManagementNode(String entityPath) {
+        return Mono.error(new UnsupportedOperationException("This has not been implemented."));
+    }
+
+    /**
+     * Disposes of the AMQP connection.
+     *
+     * @return Mono that completes when the close operation is complete.
+     */
+    default Mono<Void> closeAsync() {
+        return Mono.fromRunnable(this::dispose);
+    }
 }

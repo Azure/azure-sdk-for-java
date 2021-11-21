@@ -30,6 +30,14 @@ public final class VirtualMachineScaleSetNetworkProfile {
     @JsonProperty(value = "networkInterfaceConfigurations")
     private List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations;
 
+    /*
+     * specifies the Microsoft.Network API version used when creating
+     * networking resources in the Network Interface Configurations for Virtual
+     * Machine Scale Set with orchestration mode 'Flexible'
+     */
+    @JsonProperty(value = "networkApiVersion")
+    private NetworkApiVersion networkApiVersion;
+
     /**
      * Get the healthProbe property: A reference to a load balancer probe used to determine the health of an instance in
      * the virtual machine scale set. The reference will be in the form:
@@ -72,6 +80,30 @@ public final class VirtualMachineScaleSetNetworkProfile {
     public VirtualMachineScaleSetNetworkProfile withNetworkInterfaceConfigurations(
         List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations) {
         this.networkInterfaceConfigurations = networkInterfaceConfigurations;
+        return this;
+    }
+
+    /**
+     * Get the networkApiVersion property: specifies the Microsoft.Network API version used when creating networking
+     * resources in the Network Interface Configurations for Virtual Machine Scale Set with orchestration mode
+     * 'Flexible'.
+     *
+     * @return the networkApiVersion value.
+     */
+    public NetworkApiVersion networkApiVersion() {
+        return this.networkApiVersion;
+    }
+
+    /**
+     * Set the networkApiVersion property: specifies the Microsoft.Network API version used when creating networking
+     * resources in the Network Interface Configurations for Virtual Machine Scale Set with orchestration mode
+     * 'Flexible'.
+     *
+     * @param networkApiVersion the networkApiVersion value to set.
+     * @return the VirtualMachineScaleSetNetworkProfile object itself.
+     */
+    public VirtualMachineScaleSetNetworkProfile withNetworkApiVersion(NetworkApiVersion networkApiVersion) {
+        this.networkApiVersion = networkApiVersion;
         return this;
     }
 

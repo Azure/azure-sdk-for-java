@@ -8,7 +8,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.iothub.IotHubManager;
 import com.azure.resourcemanager.iothub.fluent.ResourceProviderCommonsClient;
 import com.azure.resourcemanager.iothub.fluent.models.UserSubscriptionQuotaListResultInner;
 import com.azure.resourcemanager.iothub.models.ResourceProviderCommons;
@@ -20,9 +19,10 @@ public final class ResourceProviderCommonsImpl implements ResourceProviderCommon
 
     private final ResourceProviderCommonsClient innerClient;
 
-    private final IotHubManager serviceManager;
+    private final com.azure.resourcemanager.iothub.IotHubManager serviceManager;
 
-    public ResourceProviderCommonsImpl(ResourceProviderCommonsClient innerClient, IotHubManager serviceManager) {
+    public ResourceProviderCommonsImpl(
+        ResourceProviderCommonsClient innerClient, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -54,7 +54,7 @@ public final class ResourceProviderCommonsImpl implements ResourceProviderCommon
         return this.innerClient;
     }
 
-    private IotHubManager manager() {
+    private com.azure.resourcemanager.iothub.IotHubManager manager() {
         return this.serviceManager;
     }
 }

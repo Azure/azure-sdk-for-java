@@ -50,7 +50,7 @@ public class StorageBlobContainersTests extends StorageManagementTest {
         BlobContainer blobContainer =
             blobContainers
                 .defineContainer("blob-test")
-                .withExistingBlobService(rgName, saName)
+                .withExistingStorageAccount(rgName, saName)
                 .withPublicAccess(PublicAccess.CONTAINER)
                 .withMetadata("a", "b")
                 .withMetadata("c", "d")
@@ -84,7 +84,7 @@ public class StorageBlobContainersTests extends StorageManagementTest {
         BlobContainer blobContainer =
             blobContainers
                 .defineContainer("blob-test")
-                .withExistingBlobService(rgName, saName)
+                .withExistingStorageAccount(rgName, saName)
                 .withPublicAccess(PublicAccess.CONTAINER)
                 .withMetadata(metadataInitial)
                 .create();

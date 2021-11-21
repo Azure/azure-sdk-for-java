@@ -8,10 +8,8 @@ import com.azure.spring.cloud.autoconfigure.context.AzureEnvironmentAutoConfigur
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusProperties;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusQueueAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.servicebus.ServiceBusUtils;
 import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
 import com.azure.spring.cloud.context.core.impl.ServiceBusQueueManager;
-import com.azure.spring.cloud.telemetry.TelemetryCollector;
 import com.azure.spring.integration.servicebus.queue.ServiceBusQueueOperation;
 import com.azure.spring.servicebus.stream.binder.ServiceBusQueueMessageChannelBinder;
 import com.azure.spring.servicebus.stream.binder.properties.ServiceBusQueueExtendedBindingProperties;
@@ -25,8 +23,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import javax.annotation.PostConstruct;
-
 /**
  * @author Warren Zhu
  */
@@ -36,17 +32,11 @@ import javax.annotation.PostConstruct;
     AzureEnvironmentAutoConfiguration.class,
     AzureContextAutoConfiguration.class,
     AzureServiceBusAutoConfiguration.class,
-    AzureServiceBusQueueAutoConfiguration.class })
+    AzureServiceBusQueueAutoConfiguration.class,
+    ServiceBusQueueBinderHealthIndicatorConfiguration.class
+})
 @EnableConfigurationProperties({ AzureServiceBusProperties.class, ServiceBusQueueExtendedBindingProperties.class })
 public class ServiceBusQueueBinderConfiguration {
-
-    private static final String SERVICE_BUS_QUEUE_BINDER = "ServiceBusQueueBinder";
-    private static final String NAMESPACE = "Namespace";
-
-    @PostConstruct
-    public void collectTelemetry() {
-        TelemetryCollector.getInstance().addService(SERVICE_BUS_QUEUE_BINDER);
-    }
 
     @Bean
     @ConditionalOnMissingBean
@@ -58,9 +48,6 @@ public class ServiceBusQueueBinderConfiguration {
         if (serviceBusNamespaceManager != null && serviceBusQueueManager != null) {
             return new ServiceBusQueueChannelResourceManagerProvisioner(serviceBusNamespaceManager,
                 serviceBusQueueManager, serviceBusProperties.getNamespace());
-        } else {
-            final String namespace = ServiceBusUtils.getNamespace(serviceBusProperties.getConnectionString());
-            TelemetryCollector.getInstance().addProperty(SERVICE_BUS_QUEUE_BINDER, NAMESPACE, namespace);
         }
         return new ServiceBusChannelProvisioner();
     }

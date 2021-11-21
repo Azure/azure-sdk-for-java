@@ -19,6 +19,7 @@ import com.azure.resourcemanager.containerservice.fluent.OperationsClient;
 import com.azure.resourcemanager.containerservice.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.containerservice.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.containerservice.fluent.ResolvePrivateLinkServiceIdsClient;
+import com.azure.resourcemanager.containerservice.fluent.SnapshotsClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 
@@ -90,6 +91,30 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
+    }
+
+    /** The OpenShiftManagedClustersClient object to access its operations. */
+    private final OpenShiftManagedClustersClient openShiftManagedClusters;
+
+    /**
+     * Gets the OpenShiftManagedClustersClient object to access its operations.
+     *
+     * @return the OpenShiftManagedClustersClient object.
+     */
+    public OpenShiftManagedClustersClient getOpenShiftManagedClusters() {
+        return this.openShiftManagedClusters;
+    }
+
+    /** The ContainerServicesClient object to access its operations. */
+    private final ContainerServicesClient containerServices;
+
+    /**
+     * Gets the ContainerServicesClient object to access its operations.
+     *
+     * @return the ContainerServicesClient object.
+     */
+    public ContainerServicesClient getContainerServices() {
+        return this.containerServices;
     }
 
     /** The OperationsClient object to access its operations. */
@@ -176,28 +201,16 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         return this.resolvePrivateLinkServiceIds;
     }
 
-    /** The OpenShiftManagedClustersClient object to access its operations. */
-    private final OpenShiftManagedClustersClient openShiftManagedClusters;
+    /** The SnapshotsClient object to access its operations. */
+    private final SnapshotsClient snapshots;
 
     /**
-     * Gets the OpenShiftManagedClustersClient object to access its operations.
+     * Gets the SnapshotsClient object to access its operations.
      *
-     * @return the OpenShiftManagedClustersClient object.
+     * @return the SnapshotsClient object.
      */
-    public OpenShiftManagedClustersClient getOpenShiftManagedClusters() {
-        return this.openShiftManagedClusters;
-    }
-
-    /** The ContainerServicesClient object to access its operations. */
-    private final ContainerServicesClient containerServices;
-
-    /**
-     * Gets the ContainerServicesClient object to access its operations.
-     *
-     * @return the ContainerServicesClient object.
-     */
-    public ContainerServicesClient getContainerServices() {
-        return this.containerServices;
+    public SnapshotsClient getSnapshots() {
+        return this.snapshots;
     }
 
     /**
@@ -224,6 +237,8 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
+        this.openShiftManagedClusters = new OpenShiftManagedClustersClientImpl(this);
+        this.containerServices = new ContainerServicesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.managedClusters = new ManagedClustersClientImpl(this);
         this.maintenanceConfigurations = new MaintenanceConfigurationsClientImpl(this);
@@ -231,7 +246,6 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.resolvePrivateLinkServiceIds = new ResolvePrivateLinkServiceIdsClientImpl(this);
-        this.openShiftManagedClusters = new OpenShiftManagedClustersClientImpl(this);
-        this.containerServices = new ContainerServicesClientImpl(this);
+        this.snapshots = new SnapshotsClientImpl(this);
     }
 }

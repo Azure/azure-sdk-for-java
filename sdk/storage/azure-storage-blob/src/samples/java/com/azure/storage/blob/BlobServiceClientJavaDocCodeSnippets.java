@@ -332,9 +332,8 @@ public class BlobServiceClientJavaDocCodeSnippets {
         client.listBlobContainers(listBlobContainersOptions, null).forEach(
             deletedContainer -> {
                 BlobContainerClient blobContainerClient = client.undeleteBlobContainerWithResponse(
-                    new UndeleteBlobContainerOptions(deletedContainer.getName(), deletedContainer.getVersion())
-                        .setDestinationContainerName(deletedContainer.getName() + "V2"), timeout,
-                    context).getValue();
+                    new UndeleteBlobContainerOptions(deletedContainer.getName(), deletedContainer.getVersion()),
+                    timeout, context).getValue();
             }
         );
         // END: com.azure.storage.blob.BlobServiceClient.undeleteBlobContainerWithResponse#UndeleteBlobContainerOptions-Duration-Context

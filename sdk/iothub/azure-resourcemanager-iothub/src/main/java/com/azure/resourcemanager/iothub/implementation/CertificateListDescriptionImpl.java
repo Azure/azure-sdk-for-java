@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.iothub.implementation;
 
-import com.azure.resourcemanager.iothub.IotHubManager;
 import com.azure.resourcemanager.iothub.fluent.models.CertificateDescriptionInner;
 import com.azure.resourcemanager.iothub.fluent.models.CertificateListDescriptionInner;
 import com.azure.resourcemanager.iothub.models.CertificateDescription;
@@ -16,9 +15,10 @@ import java.util.stream.Collectors;
 public final class CertificateListDescriptionImpl implements CertificateListDescription {
     private CertificateListDescriptionInner innerObject;
 
-    private final IotHubManager serviceManager;
+    private final com.azure.resourcemanager.iothub.IotHubManager serviceManager;
 
-    CertificateListDescriptionImpl(CertificateListDescriptionInner innerObject, IotHubManager serviceManager) {
+    CertificateListDescriptionImpl(
+        CertificateListDescriptionInner innerObject, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -41,7 +41,7 @@ public final class CertificateListDescriptionImpl implements CertificateListDesc
         return this.innerObject;
     }
 
-    private IotHubManager manager() {
+    private com.azure.resourcemanager.iothub.IotHubManager manager() {
         return this.serviceManager;
     }
 }

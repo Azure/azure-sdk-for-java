@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Job canceled event data. */
+/**
+ * Job canceled event data. Schema of the data property of an EventGridEvent for a Microsoft.Media.JobCanceled event.
+ */
 @Fluent
 public final class MediaJobCanceledEventData extends MediaJobStateChangeEventData {
     /*

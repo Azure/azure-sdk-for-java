@@ -54,7 +54,7 @@ public final class OperationsClientImpl implements OperationsClient {
     @ServiceInterface(name = "PostgreSqlManagement")
     private interface OperationsService {
         @Headers({"Content-Type: application/json"})
-        @Get("/providers/Microsoft.DBForPostgreSQL/operations")
+        @Get("/providers/Microsoft.DBforPostgreSQL/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OperationListResultInner>> list(

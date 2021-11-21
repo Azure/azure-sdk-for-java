@@ -50,7 +50,7 @@ public interface DedicatedHostsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the Dedicated host.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<DedicatedHostInner>, DedicatedHostInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String hostGroupName, String hostname, DedicatedHostInner parameters);
 
@@ -66,7 +66,7 @@ public interface DedicatedHostsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the Dedicated host.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DedicatedHostInner>, DedicatedHostInner> beginCreateOrUpdate(
         String resourceGroupName, String hostGroupName, String hostname, DedicatedHostInner parameters);
 
@@ -83,7 +83,7 @@ public interface DedicatedHostsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the Dedicated host.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DedicatedHostInner>, DedicatedHostInner> beginCreateOrUpdate(
         String resourceGroupName,
         String hostGroupName,
@@ -172,7 +172,7 @@ public interface DedicatedHostsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the Dedicated host.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<DedicatedHostInner>, DedicatedHostInner> beginUpdateAsync(
         String resourceGroupName, String hostGroupName, String hostname, DedicatedHostUpdate parameters);
 
@@ -188,7 +188,7 @@ public interface DedicatedHostsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the Dedicated host.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DedicatedHostInner>, DedicatedHostInner> beginUpdate(
         String resourceGroupName, String hostGroupName, String hostname, DedicatedHostUpdate parameters);
 
@@ -205,7 +205,7 @@ public interface DedicatedHostsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the Dedicated host.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DedicatedHostInner>, DedicatedHostInner> beginUpdate(
         String resourceGroupName,
         String hostGroupName,
@@ -292,7 +292,7 @@ public interface DedicatedHostsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String hostGroupName, String hostname);
 
@@ -307,7 +307,7 @@ public interface DedicatedHostsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hostGroupName, String hostname);
 
     /**
@@ -322,7 +322,7 @@ public interface DedicatedHostsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String hostGroupName, String hostname, Context context);
 
@@ -373,7 +373,8 @@ public interface DedicatedHostsClient {
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
-     * @param expand The expand expression to apply on the operation.
+     * @param expand The expand expression to apply on the operation. 'InstanceView' will retrieve the list of instance
+     *     views of the dedicated host. 'UserData' is not supported for dedicated host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -389,7 +390,8 @@ public interface DedicatedHostsClient {
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
-     * @param expand The expand expression to apply on the operation.
+     * @param expand The expand expression to apply on the operation. 'InstanceView' will retrieve the list of instance
+     *     views of the dedicated host. 'UserData' is not supported for dedicated host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -433,7 +435,8 @@ public interface DedicatedHostsClient {
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
-     * @param expand The expand expression to apply on the operation.
+     * @param expand The expand expression to apply on the operation. 'InstanceView' will retrieve the list of instance
+     *     views of the dedicated host. 'UserData' is not supported for dedicated host.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

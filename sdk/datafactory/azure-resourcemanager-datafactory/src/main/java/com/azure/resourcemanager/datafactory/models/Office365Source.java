@@ -211,6 +211,13 @@ public final class Office365Source extends CopySource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public Office365Source withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

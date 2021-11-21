@@ -11,8 +11,8 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.compute.ComputeManager;
-// import com.azure.management.eventhub.implementation.EventHubManager;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.eventhubs.EventHubsManager;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
@@ -30,7 +30,7 @@ public class MonitorManagementTest extends ResourceManagerTestBase {
     protected MonitorManager monitorManager;
     protected ComputeManager computeManager;
     protected StorageManager storageManager;
-    //    protected EventHubManager eventHubManager;
+    protected EventHubsManager eventHubManager;
     protected AppServiceManager appServiceManager;
 
     @Override
@@ -60,11 +60,9 @@ public class MonitorManagementTest extends ResourceManagerTestBase {
         monitorManager = buildManager(MonitorManager.class, httpPipeline, profile);
         computeManager = buildManager(ComputeManager.class, httpPipeline, profile);
         storageManager = buildManager(StorageManager.class, httpPipeline, profile);
+        eventHubManager = buildManager(EventHubsManager.class, httpPipeline, profile);
         resourceManager = monitorManager.resourceManager();
         setInternalContext(internalContext, computeManager);
-
-        //        eventHubManager = EventHubManager
-        //                .authenticate(restClient, defaultSubscription, internalContext);
     }
 
     @Override

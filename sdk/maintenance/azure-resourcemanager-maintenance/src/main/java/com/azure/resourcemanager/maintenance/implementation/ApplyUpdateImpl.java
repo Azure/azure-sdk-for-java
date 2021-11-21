@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.maintenance.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.maintenance.fluent.models.ApplyUpdateInner;
 import com.azure.resourcemanager.maintenance.models.ApplyUpdate;
 import com.azure.resourcemanager.maintenance.models.UpdateStatus;
@@ -42,6 +43,10 @@ public final class ApplyUpdateImpl implements ApplyUpdate {
 
     public OffsetDateTime lastUpdateTime() {
         return this.innerModel().lastUpdateTime();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public ApplyUpdateInner innerModel() {

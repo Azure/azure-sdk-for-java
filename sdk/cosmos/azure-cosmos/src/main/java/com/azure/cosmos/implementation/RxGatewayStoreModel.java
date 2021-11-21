@@ -109,6 +109,10 @@ class RxGatewayStoreModel implements RxStoreModel {
         return this.performRequest(request, HttpMethod.DELETE);
     }
 
+    private Mono<RxDocumentServiceResponse> deleteByPartitionKey(RxDocumentServiceRequest request) {
+        return this.performRequest(request, HttpMethod.POST);
+    }
+
     private Mono<RxDocumentServiceResponse> execute(RxDocumentServiceRequest request) {
         return this.performRequest(request, HttpMethod.POST);
     }
@@ -186,8 +190,7 @@ class RxGatewayStoreModel implements RxStoreModel {
             }
 
             Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest, responseTimeout);
-
-            return toDocumentServiceResponse(httpResponseMono, request);
+            return toDocumentServiceResponse(httpResponseMono, request, httpRequest);
 
         } catch (Exception e) {
             return Mono.error(e);
@@ -267,7 +270,8 @@ class RxGatewayStoreModel implements RxStoreModel {
      * @return {@link Mono}
      */
     private Mono<RxDocumentServiceResponse> toDocumentServiceResponse(Mono<HttpResponse> httpResponseMono,
-                                                                      RxDocumentServiceRequest request) {
+                                                                      RxDocumentServiceRequest request,
+                                                                      HttpRequest httpRequest) {
 
         return httpResponseMono.flatMap(httpResponse ->  {
 
@@ -285,7 +289,7 @@ class RxGatewayStoreModel implements RxStoreModel {
                                ReactorNettyRequestRecord reactorNettyRequestRecord = httpResponse.request().reactorNettyRequestRecord();
                                if (reactorNettyRequestRecord != null) {
                                    reactorNettyRequestRecord.setTimeCompleted(Instant.now());
-                                   BridgeInternal.setTransportClientRequestTimelineOnDiagnostics(request.requestContext.cosmosDiagnostics,
+                                   BridgeInternal.setGatewayRequestTimelineOnDiagnostics(request.requestContext.cosmosDiagnostics,
                                        reactorNettyRequestRecord.takeTimelineSnapshot());
                                }
 
@@ -306,8 +310,15 @@ class RxGatewayStoreModel implements RxStoreModel {
                        })
                        .single();
 
-        }).map(rsp -> new RxDocumentServiceResponse(this.clientContext, rsp))
-                   .onErrorResume(throwable -> {
+        }).map(rsp -> {
+            if (httpRequest.reactorNettyRequestRecord() != null) {
+                return new RxDocumentServiceResponse(this.clientContext, rsp,
+                    httpRequest.reactorNettyRequestRecord().takeTimelineSnapshot());
+
+            } else {
+                return new RxDocumentServiceResponse(this.clientContext, rsp);
+            }
+        }).onErrorResume(throwable -> {
                        Throwable unwrappedException = reactor.core.Exceptions.unwrap(throwable);
                        if (!(unwrappedException instanceof Exception)) {
                            // fatal error
@@ -335,6 +346,11 @@ class RxGatewayStoreModel implements RxStoreModel {
                        }
 
                        if (request.requestContext.cosmosDiagnostics != null) {
+                           if (BridgeInternal.getClientSideRequestStatics(request.requestContext.cosmosDiagnostics).getGatewayRequestTimeline() == null && httpRequest.reactorNettyRequestRecord() != null) {
+                               BridgeInternal.setGatewayRequestTimelineOnDiagnostics(request.requestContext.cosmosDiagnostics,
+                                   httpRequest.reactorNettyRequestRecord().takeTimelineSnapshot());
+                           }
+
                            BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, null, dce);
                            BridgeInternal.setCosmosDiagnostics(dce, request.requestContext.cosmosDiagnostics);
                        }
@@ -378,6 +394,9 @@ class RxGatewayStoreModel implements RxStoreModel {
             case Upsert:
                 return this.upsert(request);
             case Delete:
+                if (request.getResourceType() == ResourceType.PartitionKey) {
+                    return this.deleteByPartitionKey(request);
+                }
                 return this.delete(request);
             case ExecuteJavaScript:
                 return this.execute(request);

@@ -12,6 +12,7 @@ import com.azure.resourcemanager.monitor.models.AutoscaleNotification;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** The autoscale setting resource. */
 @JsonFlatten
@@ -52,6 +53,13 @@ public class AutoscaleSettingResourceInner extends Resource {
      */
     @JsonProperty(value = "properties.targetResourceUri")
     private String targetResourceUri;
+
+    /*
+     * the location of the resource that the autoscale setting should be added
+     * to.
+     */
+    @JsonProperty(value = "properties.targetResourceLocation")
+    private String targetResourceLocation;
 
     /**
      * Get the profiles property: the collection of automatic scaling profiles that specify different scaling parameters
@@ -156,6 +164,42 @@ public class AutoscaleSettingResourceInner extends Resource {
      */
     public AutoscaleSettingResourceInner withTargetResourceUri(String targetResourceUri) {
         this.targetResourceUri = targetResourceUri;
+        return this;
+    }
+
+    /**
+     * Get the targetResourceLocation property: the location of the resource that the autoscale setting should be added
+     * to.
+     *
+     * @return the targetResourceLocation value.
+     */
+    public String targetResourceLocation() {
+        return this.targetResourceLocation;
+    }
+
+    /**
+     * Set the targetResourceLocation property: the location of the resource that the autoscale setting should be added
+     * to.
+     *
+     * @param targetResourceLocation the targetResourceLocation value to set.
+     * @return the AutoscaleSettingResourceInner object itself.
+     */
+    public AutoscaleSettingResourceInner withTargetResourceLocation(String targetResourceLocation) {
+        this.targetResourceLocation = targetResourceLocation;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AutoscaleSettingResourceInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AutoscaleSettingResourceInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

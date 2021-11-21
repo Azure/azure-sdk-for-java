@@ -5,16 +5,21 @@ package com.azure.storage.file.share
 
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
+
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.NtfsFileAttributes
+import com.azure.storage.file.share.models.ShareFileItem
 import com.azure.storage.file.share.models.ShareSnapshotInfo
 import com.azure.storage.file.share.models.ShareStorageException
+import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions
 import spock.lang.Unroll
 
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
+import java.util.stream.Collectors
 
 class DirectoryAPITests extends APISpec {
     ShareDirectoryClient primaryDirectoryClient
@@ -22,7 +27,7 @@ class DirectoryAPITests extends APISpec {
     String directoryPath
     String shareName
     static Map<String, String> testMetadata
-    static FileSmbProperties smbProperties
+    FileSmbProperties smbProperties
     static def filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL"
 
     def setup() {
@@ -37,7 +42,7 @@ class DirectoryAPITests extends APISpec {
 
     def "Get directory URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, directoryPath)
 
         when:
@@ -49,7 +54,7 @@ class DirectoryAPITests extends APISpec {
 
     def "Get share snapshot URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, directoryPath)
 
         when:
@@ -64,7 +69,7 @@ class DirectoryAPITests extends APISpec {
 
         when:
         def snapshotEndpoint = String.format("https://%s.file.core.windows.net/%s/%s?sharesnapshot=%s", accountName, shareName, directoryPath, shareSnapshotInfo.getSnapshot())
-        ShareDirectoryClient client = getDirectoryClient(StorageSharedKeyCredential.fromConnectionString(connectionString), snapshotEndpoint)
+        ShareDirectoryClient client = getDirectoryClient(StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString), snapshotEndpoint)
 
         then:
         client.getDirectoryUrl() == snapshotEndpoint
@@ -375,6 +380,7 @@ class DirectoryAPITests extends APISpec {
      *                               -> listOp6 (file)
      *              -> listOp2 (file)
      */
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_10_02")
     @Unroll
     def "List files and directories args"() {
         given:
@@ -408,6 +414,101 @@ class DirectoryAPITests extends APISpec {
         ""            | null       | 3
         ""            | 1          | 3
         "noOp"        | 3          | 0
+    }
+
+    @Unroll
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_10_02")
+    def "List files and directories extended info args"() {
+        given:
+        primaryDirectoryClient.create()
+        def nameList = [] as List<String>
+        def dirPrefix = namer.getRandomName(60)
+        for (int i = 0; i < 2; i++) {
+            def subDirClient = primaryDirectoryClient.getSubdirectoryClient(dirPrefix + i)
+            subDirClient.create()
+            for (int j = 0; j < 2; j++) {
+                def num = i * 2 + j + 3
+                subDirClient.createFile(dirPrefix + num, 1024)
+            }
+        }
+        primaryDirectoryClient.createFile(dirPrefix + 2, 1024)
+        for (int i = 0; i < 3; i++) {
+            nameList << (dirPrefix + i)
+        }
+
+        when:
+        def options = new ShareListFilesAndDirectoriesOptions()
+            .setPrefix(namer.getResourcePrefix())
+            .setIncludeExtendedInfo(true)
+            .setIncludeTimestamps(timestamps)
+            .setIncludeETag(etag)
+            .setIncludeAttributes(attributes)
+            .setIncludePermissionKey(permissionKey)
+        def returnedFileList = primaryDirectoryClient.listFilesAndDirectories(options, null, null).collect()
+
+        then:
+        nameList == returnedFileList*.getName()
+
+        where:
+        timestamps | etag  | attributes | permissionKey
+        false      | false | false      | false
+        true       | false | false      | false
+        false      | true  | false      | false
+        false      | false | true       | false
+        false      | false | false      | true
+        true       | true  | true       | true
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_10_02")
+    def "List files and directories extended info results"() {
+        given:
+        def parentDir = primaryDirectoryClient
+        parentDir.create()
+        def file = parentDir.createFile(namer.getRandomName(60), 1024)
+        def dir = parentDir.createSubdirectory(namer.getRandomName(60))
+
+        when:
+        def listResults = parentDir.listFilesAndDirectories(
+            new ShareListFilesAndDirectoriesOptions()
+                .setIncludeExtendedInfo(true).setIncludeTimestamps(true).setIncludePermissionKey(true).setIncludeETag(true)
+                .setIncludeAttributes(true),
+            null, null)
+            .stream().collect(Collectors.toList())
+
+        then:
+        ShareFileItem dirListItem
+        ShareFileItem fileListItem
+        if (listResults[0].isDirectory()) {
+            dirListItem = listResults[0]
+            fileListItem = listResults[1]
+        } else {
+            dirListItem = listResults[1]
+            fileListItem = listResults[0]
+        }
+
+        new File(dir.getDirectoryPath()).getName() == dirListItem.getName()
+        dirListItem.isDirectory()
+        dirListItem.getId() && !dirListItem.getId().allWhitespace
+        EnumSet.of(NtfsFileAttributes.DIRECTORY) == dirListItem.fileAttributes
+        dirListItem.getPermissionKey() && !dirListItem.getPermissionKey().allWhitespace
+        dirListItem.getProperties().getCreatedOn()
+        dirListItem.getProperties().getLastAccessedOn()
+        dirListItem.getProperties().getLastWrittenOn()
+        dirListItem.getProperties().getChangedOn()
+        dirListItem.getProperties().getLastModified()
+        dirListItem.getProperties().getETag() && !dirListItem.getProperties().getETag().allWhitespace
+
+        new File(file.getFilePath()).getName() == fileListItem.getName()
+        !fileListItem.isDirectory()
+        fileListItem.getId() && !fileListItem.getId().allWhitespace
+        EnumSet.of(NtfsFileAttributes.ARCHIVE) == fileListItem.fileAttributes
+        fileListItem.getPermissionKey() && !fileListItem.getPermissionKey().allWhitespace
+        fileListItem.getProperties().getCreatedOn()
+        fileListItem.getProperties().getLastAccessedOn()
+        fileListItem.getProperties().getLastWrittenOn()
+        fileListItem.getProperties().getChangedOn()
+        fileListItem.getProperties().getLastModified()
+        fileListItem.getProperties().getETag() && !fileListItem.getProperties().getETag().allWhitespace
     }
 
     def "List max results by page"() {
@@ -462,6 +563,7 @@ class DirectoryAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_07_07")
     def "Force close handle min"() {
         given:
         primaryDirectoryClient.create()
@@ -486,6 +588,7 @@ class DirectoryAPITests extends APISpec {
         thrown(ShareStorageException)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_07_07")
     def "Force close all handles min"() {
         given:
         primaryDirectoryClient.create()

@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.mediaservices.models;
 
-import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
 /** Resource collection API of Operations. */
@@ -16,7 +16,7 @@ public interface Operations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of Operation items.
      */
-    PagedIterable<Operation> list();
+    OperationCollection list();
 
     /**
      * Lists all the Media Services operations.
@@ -27,5 +27,5 @@ public interface Operations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of Operation items.
      */
-    PagedIterable<Operation> list(Context context);
+    Response<OperationCollection> listWithResponse(Context context);
 }

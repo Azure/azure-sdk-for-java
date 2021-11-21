@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Schema of the Data property of an EventGridEvent for an Microsoft.EventHub.CaptureFileCreated event. */
+/** Schema of the Data property of an EventGridEvent for a Microsoft.EventHub.CaptureFileCreated event. */
 @Fluent
 public final class EventHubCaptureFileCreatedEventData {
     /*

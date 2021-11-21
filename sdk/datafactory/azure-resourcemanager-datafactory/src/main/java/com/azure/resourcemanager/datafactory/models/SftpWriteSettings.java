@@ -87,6 +87,13 @@ public final class SftpWriteSettings extends StoreWriteSettings {
 
     /** {@inheritDoc} */
     @Override
+    public SftpWriteSettings withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public SftpWriteSettings withCopyBehavior(Object copyBehavior) {
         super.withCopyBehavior(copyBehavior);
         return this;

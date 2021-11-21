@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.DocumentDbCollectionDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,38 +17,24 @@ import java.util.Map;
 /** Microsoft Azure Document Database Collection dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("DocumentDbCollection")
-@JsonFlatten
 @Fluent
-public class DocumentDbCollectionDataset extends Dataset {
+public final class DocumentDbCollectionDataset extends Dataset {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DocumentDbCollectionDataset.class);
 
     /*
-     * Document Database collection name. Type: string (or Expression with
-     * resultType string).
+     * DocumentDB Collection dataset properties.
      */
-    @JsonProperty(value = "typeProperties.collectionName", required = true)
-    private Object collectionName;
+    @JsonProperty(value = "typeProperties", required = true)
+    private DocumentDbCollectionDatasetTypeProperties innerTypeProperties =
+        new DocumentDbCollectionDatasetTypeProperties();
 
     /**
-     * Get the collectionName property: Document Database collection name. Type: string (or Expression with resultType
-     * string).
+     * Get the innerTypeProperties property: DocumentDB Collection dataset properties.
      *
-     * @return the collectionName value.
+     * @return the innerTypeProperties value.
      */
-    public Object collectionName() {
-        return this.collectionName;
-    }
-
-    /**
-     * Set the collectionName property: Document Database collection name. Type: string (or Expression with resultType
-     * string).
-     *
-     * @param collectionName the collectionName value to set.
-     * @return the DocumentDbCollectionDataset object itself.
-     */
-    public DocumentDbCollectionDataset withCollectionName(Object collectionName) {
-        this.collectionName = collectionName;
-        return this;
+    private DocumentDbCollectionDatasetTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -101,6 +87,31 @@ public class DocumentDbCollectionDataset extends Dataset {
     }
 
     /**
+     * Get the collectionName property: Document Database collection name. Type: string (or Expression with resultType
+     * string).
+     *
+     * @return the collectionName value.
+     */
+    public Object collectionName() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().collectionName();
+    }
+
+    /**
+     * Set the collectionName property: Document Database collection name. Type: string (or Expression with resultType
+     * string).
+     *
+     * @param collectionName the collectionName value to set.
+     * @return the DocumentDbCollectionDataset object itself.
+     */
+    public DocumentDbCollectionDataset withCollectionName(Object collectionName) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new DocumentDbCollectionDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withCollectionName(collectionName);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -108,11 +119,13 @@ public class DocumentDbCollectionDataset extends Dataset {
     @Override
     public void validate() {
         super.validate();
-        if (collectionName() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property collectionName in model DocumentDbCollectionDataset"));
+                        "Missing required property innerTypeProperties in model DocumentDbCollectionDataset"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

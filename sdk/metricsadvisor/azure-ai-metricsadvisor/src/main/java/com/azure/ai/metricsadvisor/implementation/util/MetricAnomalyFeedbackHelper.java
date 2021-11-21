@@ -3,7 +3,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.util;
 
-import com.azure.ai.metricsadvisor.models.AnomalyDetectionConfiguration;
+import com.azure.ai.metricsadvisor.administration.models.AnomalyDetectionConfiguration;
 import com.azure.ai.metricsadvisor.models.MetricAnomalyFeedback;
 
 /**

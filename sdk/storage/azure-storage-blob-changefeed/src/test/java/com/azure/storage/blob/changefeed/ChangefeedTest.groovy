@@ -37,10 +37,6 @@ class ChangefeedTest extends Specification {
     String urlHost = 'testaccount.blob.core.windows.net'
 
     def setup() {
-        String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
-        String className = specificationContext.getCurrentSpec().getName()
-        // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
-        System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
         mockContainer = mock(BlobContainerAsyncClient.class)
         mockSegmentFactory = mock(SegmentFactory.class)
 

@@ -3,6 +3,8 @@
 
 package com.azure.core.util.paging;
 
+import java.util.function.Predicate;
+
 /**
  * Maintains the continuation state for a {@link ContinuablePagedFlux} or {@link ContinuablePagedIterable}.
  *
@@ -17,7 +19,7 @@ class ContinuationState<C> {
     /**
      * Creates ContinuationState.
      *
-     * @param token the token to start with
+     * @param token An optional continuation token for the beginning state.
      */
     ContinuationState(C token) {
         this.lastContinuationToken = token;
@@ -25,8 +27,10 @@ class ContinuationState<C> {
 
     /**
      * Store the last seen continuation token.
+     * <p>
+     * Determination for continuation being done is checking if the continuation token is null.
      *
-     * @param token the token
+     * @param token The continuation token.
      */
     void setLastContinuationToken(C token) {
         this.isDone = (token == null);
@@ -34,15 +38,29 @@ class ContinuationState<C> {
     }
 
     /**
-     * @return the last seen token
+     * Store the last seen continuation token and apply the predicate to determine if continuation is done.
+     *
+     * @param token The continuation token.
+     * @param isDonePredicate The predicate that tests if continuation is done.
+     */
+    void setLastContinuationToken(C token, Predicate<C> isDonePredicate) {
+        this.isDone = isDonePredicate.test(token);
+        this.lastContinuationToken = token;
+    }
+
+    /**
+     * Gets the last continuation token that has been seen.
+     *
+     * @return The last continuation token.
      */
     C getLastContinuationToken() {
         return this.lastContinuationToken;
     }
 
     /**
-     * @return true if the PageRetrieval Function needs to be invoked
-     * for next set of pages.
+     * Gets whether continuation is done.
+     *
+     * @return A flag determining if continuation is done.
      */
     boolean isDone() {
         return this.isDone;

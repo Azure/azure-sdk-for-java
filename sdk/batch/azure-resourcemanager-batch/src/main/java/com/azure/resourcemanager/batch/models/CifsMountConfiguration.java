@@ -27,14 +27,17 @@ public final class CifsMountConfiguration {
     private String source;
 
     /*
-     * All file systems are mounted relative to the Batch mounts directory,
-     * accessible via the AZ_BATCH_NODE_MOUNTS_DIR environment variable.
+     * The relative path on the compute node where the file system will be
+     * mounted All file systems are mounted relative to the Batch mounts
+     * directory, accessible via the AZ_BATCH_NODE_MOUNTS_DIR environment
+     * variable.
      */
     @JsonProperty(value = "relativeMountPath", required = true)
     private String relativeMountPath;
 
     /*
-     * These are 'net use' options in Windows and 'mount' options in Linux.
+     * Additional command line options to pass to the mount command. These are
+     * 'net use' options in Windows and 'mount' options in Linux.
      */
     @JsonProperty(value = "mountOptions")
     private String mountOptions;
@@ -86,8 +89,9 @@ public final class CifsMountConfiguration {
     }
 
     /**
-     * Get the relativeMountPath property: All file systems are mounted relative to the Batch mounts directory,
-     * accessible via the AZ_BATCH_NODE_MOUNTS_DIR environment variable.
+     * Get the relativeMountPath property: The relative path on the compute node where the file system will be mounted
+     * All file systems are mounted relative to the Batch mounts directory, accessible via the AZ_BATCH_NODE_MOUNTS_DIR
+     * environment variable.
      *
      * @return the relativeMountPath value.
      */
@@ -96,8 +100,9 @@ public final class CifsMountConfiguration {
     }
 
     /**
-     * Set the relativeMountPath property: All file systems are mounted relative to the Batch mounts directory,
-     * accessible via the AZ_BATCH_NODE_MOUNTS_DIR environment variable.
+     * Set the relativeMountPath property: The relative path on the compute node where the file system will be mounted
+     * All file systems are mounted relative to the Batch mounts directory, accessible via the AZ_BATCH_NODE_MOUNTS_DIR
+     * environment variable.
      *
      * @param relativeMountPath the relativeMountPath value to set.
      * @return the CifsMountConfiguration object itself.
@@ -108,7 +113,8 @@ public final class CifsMountConfiguration {
     }
 
     /**
-     * Get the mountOptions property: These are 'net use' options in Windows and 'mount' options in Linux.
+     * Get the mountOptions property: Additional command line options to pass to the mount command. These are 'net use'
+     * options in Windows and 'mount' options in Linux.
      *
      * @return the mountOptions value.
      */
@@ -117,7 +123,8 @@ public final class CifsMountConfiguration {
     }
 
     /**
-     * Set the mountOptions property: These are 'net use' options in Windows and 'mount' options in Linux.
+     * Set the mountOptions property: Additional command line options to pass to the mount command. These are 'net use'
+     * options in Windows and 'mount' options in Linux.
      *
      * @param mountOptions the mountOptions value to set.
      * @return the CifsMountConfiguration object itself.

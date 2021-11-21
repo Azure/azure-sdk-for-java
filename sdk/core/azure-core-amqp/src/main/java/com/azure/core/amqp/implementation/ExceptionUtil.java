@@ -8,7 +8,6 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -78,8 +77,9 @@ public final class ExceptionUtil {
             case NOT_FOUND:
                 return distinguishNotFound(description, errorContext);
             default:
-                throw new IllegalArgumentException(String.format(Locale.ROOT, "This condition '%s' is not known.",
-                    condition));
+                return new AmqpException(false, condition, String.format("errorCondition[%s]. description[%s] "
+                        + "Condition could not be mapped to a transient condition.",
+                    errorCondition, description), errorContext);
         }
 
         return new AmqpException(isTransient, condition, description, errorContext);

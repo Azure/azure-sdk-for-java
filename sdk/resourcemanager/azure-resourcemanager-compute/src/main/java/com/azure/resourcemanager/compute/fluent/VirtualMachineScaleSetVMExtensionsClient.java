@@ -56,7 +56,7 @@ public interface VirtualMachineScaleSetVMExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a VMSS VM Extension.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -78,7 +78,7 @@ public interface VirtualMachineScaleSetVMExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a VMSS VM Extension.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -101,7 +101,7 @@ public interface VirtualMachineScaleSetVMExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a VMSS VM Extension.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -210,7 +210,7 @@ public interface VirtualMachineScaleSetVMExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a VMSS VM Extension.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner>
         beginUpdateAsync(
             String resourceGroupName,
@@ -232,7 +232,7 @@ public interface VirtualMachineScaleSetVMExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a VMSS VM Extension.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner> beginUpdate(
         String resourceGroupName,
         String vmScaleSetName,
@@ -254,7 +254,7 @@ public interface VirtualMachineScaleSetVMExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a VMSS VM Extension.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner> beginUpdate(
         String resourceGroupName,
         String vmScaleSetName,
@@ -356,7 +356,7 @@ public interface VirtualMachineScaleSetVMExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName);
 
@@ -372,7 +372,7 @@ public interface VirtualMachineScaleSetVMExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName);
 
@@ -389,7 +389,7 @@ public interface VirtualMachineScaleSetVMExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, Context context);
 

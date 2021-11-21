@@ -37,11 +37,9 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.appconfiguration.fluent.ConfigurationStoresClient;
 import com.azure.resourcemanager.appconfiguration.fluent.models.ApiKeyInner;
 import com.azure.resourcemanager.appconfiguration.fluent.models.ConfigurationStoreInner;
-import com.azure.resourcemanager.appconfiguration.fluent.models.KeyValueInner;
 import com.azure.resourcemanager.appconfiguration.models.ApiKeyListResult;
 import com.azure.resourcemanager.appconfiguration.models.ConfigurationStoreListResult;
 import com.azure.resourcemanager.appconfiguration.models.ConfigurationStoreUpdateParameters;
-import com.azure.resourcemanager.appconfiguration.models.ListKeyValueParameters;
 import com.azure.resourcemanager.appconfiguration.models.RegenerateKeyParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -167,7 +165,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration"
-                + "/configurationStores/{configStoreName}/ListKeys")
+                + "/configurationStores/{configStoreName}/listKeys")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApiKeyListResult>> listKeys(
@@ -183,7 +181,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration"
-                + "/configurationStores/{configStoreName}/RegenerateKey")
+                + "/configurationStores/{configStoreName}/regenerateKey")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApiKeyInner>> regenerateKey(
@@ -193,22 +191,6 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
             @PathParam("configStoreName") String configStoreName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") RegenerateKeyParameters regenerateKeyParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration"
-                + "/configurationStores/{configStoreName}/listKeyValue")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<KeyValueInner>> listKeyValue(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("configStoreName") String configStoreName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ListKeyValueParameters listKeyValueParameters,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -1994,187 +1976,6 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
         RegenerateKeyParameters regenerateKeyParameters,
         Context context) {
         return regenerateKeyWithResponseAsync(resourceGroupName, configStoreName, regenerateKeyParameters, context)
-            .block();
-    }
-
-    /**
-     * Lists a configuration store key-value.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param configStoreName The name of the configuration store.
-     * @param listKeyValueParameters The parameters for retrieving a key-value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to retrieve a key-value from the specified configuration store.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<KeyValueInner>> listKeyValueWithResponseAsync(
-        String resourceGroupName, String configStoreName, ListKeyValueParameters listKeyValueParameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (configStoreName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter configStoreName is required and cannot be null."));
-        }
-        if (listKeyValueParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter listKeyValueParameters is required and cannot be null."));
-        } else {
-            listKeyValueParameters.validate();
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listKeyValue(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            configStoreName,
-                            this.client.getApiVersion(),
-                            listKeyValueParameters,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Lists a configuration store key-value.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param configStoreName The name of the configuration store.
-     * @param listKeyValueParameters The parameters for retrieving a key-value.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to retrieve a key-value from the specified configuration store.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<KeyValueInner>> listKeyValueWithResponseAsync(
-        String resourceGroupName,
-        String configStoreName,
-        ListKeyValueParameters listKeyValueParameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (configStoreName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter configStoreName is required and cannot be null."));
-        }
-        if (listKeyValueParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter listKeyValueParameters is required and cannot be null."));
-        } else {
-            listKeyValueParameters.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listKeyValue(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                configStoreName,
-                this.client.getApiVersion(),
-                listKeyValueParameters,
-                accept,
-                context);
-    }
-
-    /**
-     * Lists a configuration store key-value.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param configStoreName The name of the configuration store.
-     * @param listKeyValueParameters The parameters for retrieving a key-value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to retrieve a key-value from the specified configuration store.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<KeyValueInner> listKeyValueAsync(
-        String resourceGroupName, String configStoreName, ListKeyValueParameters listKeyValueParameters) {
-        return listKeyValueWithResponseAsync(resourceGroupName, configStoreName, listKeyValueParameters)
-            .flatMap(
-                (Response<KeyValueInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Lists a configuration store key-value.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param configStoreName The name of the configuration store.
-     * @param listKeyValueParameters The parameters for retrieving a key-value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to retrieve a key-value from the specified configuration store.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyValueInner listKeyValue(
-        String resourceGroupName, String configStoreName, ListKeyValueParameters listKeyValueParameters) {
-        return listKeyValueAsync(resourceGroupName, configStoreName, listKeyValueParameters).block();
-    }
-
-    /**
-     * Lists a configuration store key-value.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param configStoreName The name of the configuration store.
-     * @param listKeyValueParameters The parameters for retrieving a key-value.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to retrieve a key-value from the specified configuration store.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyValueInner> listKeyValueWithResponse(
-        String resourceGroupName,
-        String configStoreName,
-        ListKeyValueParameters listKeyValueParameters,
-        Context context) {
-        return listKeyValueWithResponseAsync(resourceGroupName, configStoreName, listKeyValueParameters, context)
             .block();
     }
 

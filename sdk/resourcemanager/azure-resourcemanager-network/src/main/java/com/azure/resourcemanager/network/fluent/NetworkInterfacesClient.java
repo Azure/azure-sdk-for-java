@@ -17,11 +17,11 @@ import com.azure.resourcemanager.network.fluent.models.EffectiveNetworkSecurityG
 import com.azure.resourcemanager.network.fluent.models.EffectiveRouteListResultInner;
 import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceInner;
 import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceIpConfigurationInner;
+import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -30,6 +30,192 @@ public interface NetworkInterfacesClient
     extends InnerSupportsGet<NetworkInterfaceInner>,
         InnerSupportsListing<NetworkInterfaceInner>,
         InnerSupportsDelete<Void> {
+    /**
+     * Gets information about all network interfaces in a role instance in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @param roleInstanceName The name of role instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all network interfaces in a role instance in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<NetworkInterfaceInner> listCloudServiceRoleInstanceNetworkInterfacesAsync(
+        String resourceGroupName, String cloudServiceName, String roleInstanceName);
+
+    /**
+     * Gets information about all network interfaces in a role instance in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @param roleInstanceName The name of role instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all network interfaces in a role instance in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<NetworkInterfaceInner> listCloudServiceRoleInstanceNetworkInterfaces(
+        String resourceGroupName, String cloudServiceName, String roleInstanceName);
+
+    /**
+     * Gets information about all network interfaces in a role instance in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @param roleInstanceName The name of role instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all network interfaces in a role instance in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<NetworkInterfaceInner> listCloudServiceRoleInstanceNetworkInterfaces(
+        String resourceGroupName, String cloudServiceName, String roleInstanceName, Context context);
+
+    /**
+     * Gets all network interfaces in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all network interfaces in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<NetworkInterfaceInner> listCloudServiceNetworkInterfacesAsync(
+        String resourceGroupName, String cloudServiceName);
+
+    /**
+     * Gets all network interfaces in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all network interfaces in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<NetworkInterfaceInner> listCloudServiceNetworkInterfaces(
+        String resourceGroupName, String cloudServiceName);
+
+    /**
+     * Gets all network interfaces in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all network interfaces in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<NetworkInterfaceInner> listCloudServiceNetworkInterfaces(
+        String resourceGroupName, String cloudServiceName, Context context);
+
+    /**
+     * Get the specified network interface in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @param roleInstanceName The name of role instance.
+     * @param networkInterfaceName The name of the network interface.
+     * @param expand Expands referenced resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified network interface in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<NetworkInterfaceInner>> getCloudServiceNetworkInterfaceWithResponseAsync(
+        String resourceGroupName,
+        String cloudServiceName,
+        String roleInstanceName,
+        String networkInterfaceName,
+        String expand);
+
+    /**
+     * Get the specified network interface in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @param roleInstanceName The name of role instance.
+     * @param networkInterfaceName The name of the network interface.
+     * @param expand Expands referenced resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified network interface in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<NetworkInterfaceInner> getCloudServiceNetworkInterfaceAsync(
+        String resourceGroupName,
+        String cloudServiceName,
+        String roleInstanceName,
+        String networkInterfaceName,
+        String expand);
+
+    /**
+     * Get the specified network interface in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @param roleInstanceName The name of role instance.
+     * @param networkInterfaceName The name of the network interface.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified network interface in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<NetworkInterfaceInner> getCloudServiceNetworkInterfaceAsync(
+        String resourceGroupName, String cloudServiceName, String roleInstanceName, String networkInterfaceName);
+
+    /**
+     * Get the specified network interface in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @param roleInstanceName The name of role instance.
+     * @param networkInterfaceName The name of the network interface.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified network interface in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NetworkInterfaceInner getCloudServiceNetworkInterface(
+        String resourceGroupName, String cloudServiceName, String roleInstanceName, String networkInterfaceName);
+
+    /**
+     * Get the specified network interface in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @param roleInstanceName The name of role instance.
+     * @param networkInterfaceName The name of the network interface.
+     * @param expand Expands referenced resources.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified network interface in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<NetworkInterfaceInner> getCloudServiceNetworkInterfaceWithResponse(
+        String resourceGroupName,
+        String cloudServiceName,
+        String roleInstanceName,
+        String networkInterfaceName,
+        String expand,
+        Context context);
+
     /**
      * Deletes the specified network interface.
      *
@@ -53,7 +239,7 @@ public interface NetworkInterfacesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkInterfaceName);
 
     /**
@@ -66,7 +252,7 @@ public interface NetworkInterfacesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkInterfaceName);
 
     /**
@@ -80,7 +266,7 @@ public interface NetworkInterfacesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String networkInterfaceName, Context context);
 
@@ -220,7 +406,7 @@ public interface NetworkInterfacesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a network interface in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters);
 
@@ -235,7 +421,7 @@ public interface NetworkInterfacesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a network interface in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginCreateOrUpdate(
         String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters);
 
@@ -251,7 +437,7 @@ public interface NetworkInterfacesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a network interface in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginCreateOrUpdate(
         String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters, Context context);
 
@@ -306,7 +492,7 @@ public interface NetworkInterfacesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update network interface tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -314,14 +500,14 @@ public interface NetworkInterfacesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<NetworkInterfaceInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String networkInterfaceName, Map<String, String> tags);
+        String resourceGroupName, String networkInterfaceName, TagsObject parameters);
 
     /**
      * Updates a network interface tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update network interface tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -329,40 +515,28 @@ public interface NetworkInterfacesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<NetworkInterfaceInner> updateTagsAsync(
-        String resourceGroupName, String networkInterfaceName, Map<String, String> tags);
+        String resourceGroupName, String networkInterfaceName, TagsObject parameters);
 
     /**
      * Updates a network interface tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
+     * @param parameters Parameters supplied to update network interface tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a network interface in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<NetworkInterfaceInner> updateTagsAsync(String resourceGroupName, String networkInterfaceName);
+    NetworkInterfaceInner updateTags(String resourceGroupName, String networkInterfaceName, TagsObject parameters);
 
     /**
      * Updates a network interface tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network interface in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkInterfaceInner updateTags(String resourceGroupName, String networkInterfaceName);
-
-    /**
-     * Updates a network interface tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update network interface tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -371,7 +545,7 @@ public interface NetworkInterfacesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<NetworkInterfaceInner> updateTagsWithResponse(
-        String resourceGroupName, String networkInterfaceName, Map<String, String> tags, Context context);
+        String resourceGroupName, String networkInterfaceName, TagsObject parameters, Context context);
 
     /**
      * Gets all network interfaces in a subscription.
@@ -466,7 +640,7 @@ public interface NetworkInterfacesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all route tables applied to a network interface.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<EffectiveRouteListResultInner>, EffectiveRouteListResultInner>
         beginGetEffectiveRouteTableAsync(String resourceGroupName, String networkInterfaceName);
 
@@ -480,7 +654,7 @@ public interface NetworkInterfacesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all route tables applied to a network interface.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EffectiveRouteListResultInner>, EffectiveRouteListResultInner> beginGetEffectiveRouteTable(
         String resourceGroupName, String networkInterfaceName);
 
@@ -495,7 +669,7 @@ public interface NetworkInterfacesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all route tables applied to a network interface.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EffectiveRouteListResultInner>, EffectiveRouteListResultInner> beginGetEffectiveRouteTable(
         String resourceGroupName, String networkInterfaceName, Context context);
 
@@ -565,7 +739,7 @@ public interface NetworkInterfacesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all network security groups applied to a network interface.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<EffectiveNetworkSecurityGroupListResultInner>, EffectiveNetworkSecurityGroupListResultInner>
         beginListEffectiveNetworkSecurityGroupsAsync(String resourceGroupName, String networkInterfaceName);
 
@@ -579,7 +753,7 @@ public interface NetworkInterfacesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all network security groups applied to a network interface.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EffectiveNetworkSecurityGroupListResultInner>, EffectiveNetworkSecurityGroupListResultInner>
         beginListEffectiveNetworkSecurityGroups(String resourceGroupName, String networkInterfaceName);
 
@@ -594,7 +768,7 @@ public interface NetworkInterfacesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all network security groups applied to a network interface.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EffectiveNetworkSecurityGroupListResultInner>, EffectiveNetworkSecurityGroupListResultInner>
         beginListEffectiveNetworkSecurityGroups(String resourceGroupName, String networkInterfaceName, Context context);
 
@@ -1025,192 +1199,6 @@ public interface NetworkInterfacesClient
         String virtualmachineIndex,
         String networkInterfaceName,
         String ipConfigurationName,
-        String expand,
-        Context context);
-
-    /**
-     * Gets information about all network interfaces in a role instance in a cloud service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudServiceName The name of the cloud service.
-     * @param roleInstanceName The name of role instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all network interfaces in a role instance in a cloud service.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<NetworkInterfaceInner> listCloudServiceRoleInstanceNetworkInterfacesAsync(
-        String resourceGroupName, String cloudServiceName, String roleInstanceName);
-
-    /**
-     * Gets information about all network interfaces in a role instance in a cloud service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudServiceName The name of the cloud service.
-     * @param roleInstanceName The name of role instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all network interfaces in a role instance in a cloud service.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NetworkInterfaceInner> listCloudServiceRoleInstanceNetworkInterfaces(
-        String resourceGroupName, String cloudServiceName, String roleInstanceName);
-
-    /**
-     * Gets information about all network interfaces in a role instance in a cloud service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudServiceName The name of the cloud service.
-     * @param roleInstanceName The name of role instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all network interfaces in a role instance in a cloud service.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NetworkInterfaceInner> listCloudServiceRoleInstanceNetworkInterfaces(
-        String resourceGroupName, String cloudServiceName, String roleInstanceName, Context context);
-
-    /**
-     * Gets all network interfaces in a cloud service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudServiceName The name of the cloud service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network interfaces in a cloud service.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<NetworkInterfaceInner> listCloudServiceNetworkInterfacesAsync(
-        String resourceGroupName, String cloudServiceName);
-
-    /**
-     * Gets all network interfaces in a cloud service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudServiceName The name of the cloud service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network interfaces in a cloud service.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NetworkInterfaceInner> listCloudServiceNetworkInterfaces(
-        String resourceGroupName, String cloudServiceName);
-
-    /**
-     * Gets all network interfaces in a cloud service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudServiceName The name of the cloud service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network interfaces in a cloud service.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NetworkInterfaceInner> listCloudServiceNetworkInterfaces(
-        String resourceGroupName, String cloudServiceName, Context context);
-
-    /**
-     * Get the specified network interface in a cloud service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudServiceName The name of the cloud service.
-     * @param roleInstanceName The name of role instance.
-     * @param networkInterfaceName The name of the network interface.
-     * @param expand Expands referenced resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface in a cloud service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<NetworkInterfaceInner>> getCloudServiceNetworkInterfaceWithResponseAsync(
-        String resourceGroupName,
-        String cloudServiceName,
-        String roleInstanceName,
-        String networkInterfaceName,
-        String expand);
-
-    /**
-     * Get the specified network interface in a cloud service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudServiceName The name of the cloud service.
-     * @param roleInstanceName The name of role instance.
-     * @param networkInterfaceName The name of the network interface.
-     * @param expand Expands referenced resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface in a cloud service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<NetworkInterfaceInner> getCloudServiceNetworkInterfaceAsync(
-        String resourceGroupName,
-        String cloudServiceName,
-        String roleInstanceName,
-        String networkInterfaceName,
-        String expand);
-
-    /**
-     * Get the specified network interface in a cloud service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudServiceName The name of the cloud service.
-     * @param roleInstanceName The name of role instance.
-     * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface in a cloud service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<NetworkInterfaceInner> getCloudServiceNetworkInterfaceAsync(
-        String resourceGroupName, String cloudServiceName, String roleInstanceName, String networkInterfaceName);
-
-    /**
-     * Get the specified network interface in a cloud service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudServiceName The name of the cloud service.
-     * @param roleInstanceName The name of role instance.
-     * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface in a cloud service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkInterfaceInner getCloudServiceNetworkInterface(
-        String resourceGroupName, String cloudServiceName, String roleInstanceName, String networkInterfaceName);
-
-    /**
-     * Get the specified network interface in a cloud service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudServiceName The name of the cloud service.
-     * @param roleInstanceName The name of role instance.
-     * @param networkInterfaceName The name of the network interface.
-     * @param expand Expands referenced resources.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface in a cloud service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NetworkInterfaceInner> getCloudServiceNetworkInterfaceWithResponse(
-        String resourceGroupName,
-        String cloudServiceName,
-        String roleInstanceName,
-        String networkInterfaceName,
         String expand,
         Context context);
 }

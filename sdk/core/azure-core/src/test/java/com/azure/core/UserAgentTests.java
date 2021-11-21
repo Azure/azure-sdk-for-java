@@ -124,6 +124,7 @@ public class UserAgentTests {
             .verifyComplete();
     }
 
+    @SuppressWarnings("deprecation")
     private static Stream<Arguments> userAgentAndExpectedSupplier() {
         String defaultUserAgent = "azsdk-java";
         String sdkName = "sdkName";

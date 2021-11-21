@@ -4,13 +4,13 @@
 package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.models.MetricEnrichedSeriesData;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.test.TestBase;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -37,13 +37,14 @@ public final class MetricEnrichedSeriesDataTest extends MetricEnrichedSeriesData
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    @Override
+    @Disabled
     public void getEnrichedSeriesData(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         MetricsAdvisorClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
 
         PagedIterable<MetricEnrichedSeriesData> enrichedDataIterable
-            = client.listMetricEnrichedSeriesData(GetEnrichedSeriesDataInput.INSTANCE.getSeriesKeys(),
+            = client.listMetricEnrichedSeriesData(
             GetEnrichedSeriesDataInput.INSTANCE.detectionConfigurationId,
+            GetEnrichedSeriesDataInput.INSTANCE.getSeriesKeys(),
             GetEnrichedSeriesDataInput.INSTANCE.startTime,
             GetEnrichedSeriesDataInput.INSTANCE.endTime);
 

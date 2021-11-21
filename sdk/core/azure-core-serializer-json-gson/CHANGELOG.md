@@ -2,6 +2,63 @@
 
 ## 1.2.0-beta.1 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.1.8 (2021-11-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.21.0` to `1.22.0`.
+
+## 1.1.7 (2021-10-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.20.0` to `1.21.0`.
+- Upgraded `gson` from `2.8.7` to `2.8.8`.
+
+## 1.1.6 (2021-09-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.19.0` to `1.20.0`.
+
+## 1.1.5 (2021-08-06)
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.18.0` to `1.19.0`.
+- Upgraded `gson` from `2.8.6` to `2.8.7`.
+
+## 1.1.4 (2021-07-01)
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.17.0` to `1.18.0`.
+
+## 1.1.3 (2021-06-07)
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.16.0` to `1.17.0`.
+
+## 1.1.2 (2021-05-07)
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.15.0` to `1.16.0`.
 
 ## 1.1.1 (2021-04-02)
 

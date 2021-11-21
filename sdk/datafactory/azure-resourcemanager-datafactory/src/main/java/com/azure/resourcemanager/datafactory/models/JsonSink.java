@@ -105,6 +105,13 @@ public final class JsonSink extends CopySink {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public JsonSink withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

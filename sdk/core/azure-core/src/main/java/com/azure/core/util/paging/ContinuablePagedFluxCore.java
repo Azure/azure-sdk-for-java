@@ -4,11 +4,13 @@
 package com.azure.core.util.paging;
 
 import com.azure.core.util.IterableStream;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /**
@@ -27,7 +29,102 @@ import java.util.function.Supplier;
  * the Flux returned by the Page Retriever has {@code null} continuation token.
  *
  * <p><strong>Extending PagedFluxCore for Custom Continuation Token support</strong></p>
- * {@codesnippet com.azure.core.util.paging.pagedfluxcore.continuationtoken}
+ * <!-- src_embed com.azure.core.util.paging.pagedfluxcore.continuationtoken -->
+ * <pre>
+ * class ContinuationState&lt;C&gt; &#123;
+ *     private C lastContinuationToken;
+ *     private boolean isDone;
+ *
+ *     ContinuationState&#40;C token&#41; &#123;
+ *         this.lastContinuationToken = token;
+ *     &#125;
+ *
+ *     void setLastContinuationToken&#40;C token&#41; &#123;
+ *         this.isDone = token == null;
+ *         this.lastContinuationToken = token;
+ *     &#125;
+ *
+ *     C getLastContinuationToken&#40;&#41; &#123;
+ *         return this.lastContinuationToken;
+ *     &#125;
+ *
+ *     boolean isDone&#40;&#41; &#123;
+ *         return this.isDone;
+ *     &#125;
+ * &#125;
+ *
+ * class FileContinuationToken &#123;
+ *     private final int nextLinkId;
+ *
+ *     FileContinuationToken&#40;int nextLinkId&#41; &#123;
+ *         this.nextLinkId = nextLinkId;
+ *     &#125;
+ *
+ *     public int getNextLinkId&#40;&#41; &#123;
+ *         return nextLinkId;
+ *     &#125;
+ * &#125;
+ *
+ * class File &#123;
+ *     private final String guid;
+ *
+ *     File&#40;String guid&#41; &#123;
+ *         this.guid = guid;
+ *     &#125;
+ *
+ *     public String getGuid&#40;&#41; &#123;
+ *         return guid;
+ *     &#125;
+ * &#125;
+ *
+ * class FilePage implements ContinuablePage&lt;FileContinuationToken, File&gt; &#123;
+ *     private final IterableStream&lt;File&gt; elements;
+ *     private final FileContinuationToken fileContinuationToken;
+ *
+ *     FilePage&#40;List&lt;File&gt; elements, FileContinuationToken fileContinuationToken&#41; &#123;
+ *         this.elements = IterableStream.of&#40;elements&#41;;
+ *         this.fileContinuationToken = fileContinuationToken;
+ *     &#125;
+ *
+ *     &#64;Override
+ *     public IterableStream&lt;File&gt; getElements&#40;&#41; &#123;
+ *         return elements;
+ *     &#125;
+ *
+ *     &#64;Override
+ *     public FileContinuationToken getContinuationToken&#40;&#41; &#123;
+ *         return fileContinuationToken;
+ *     &#125;
+ * &#125;
+ *
+ * class FileShareServiceClient &#123;
+ *     Flux&lt;FilePage&gt; getFilePages&#40;FileContinuationToken token&#41; &#123;
+ *         List&lt;File&gt; files = Collections.singletonList&#40;new File&#40;UUID.randomUUID&#40;&#41;.toString&#40;&#41;&#41;&#41;;
+ *         if &#40;token.getNextLinkId&#40;&#41; &lt; 10&#41; &#123;
+ *             return Flux.just&#40;new FilePage&#40;files, null&#41;&#41;;
+ *         &#125; else &#123;
+ *             return Flux.just&#40;new FilePage&#40;files,
+ *                 new FileContinuationToken&#40;&#40;int&#41; Math.floor&#40;Math.random&#40;&#41; * 20&#41;&#41;&#41;&#41;;
+ *         &#125;
+ *     &#125;
+ * &#125;
+ *
+ * FileShareServiceClient client = new FileShareServiceClient&#40;&#41;;
+ *
+ * Supplier&lt;PageRetriever&lt;FileContinuationToken, FilePage&gt;&gt; pageRetrieverProvider = &#40;&#41; -&gt;
+ *     &#40;continuationToken, pageSize&#41; -&gt; client.getFilePages&#40;continuationToken&#41;;
+ *
+ * class FilePagedFlux extends ContinuablePagedFluxCore&lt;FileContinuationToken, File, FilePage&gt; &#123;
+ *     FilePagedFlux&#40;Supplier&lt;PageRetriever&lt;FileContinuationToken, FilePage&gt;&gt;
+ *         pageRetrieverProvider&#41; &#123;
+ *         super&#40;pageRetrieverProvider&#41;;
+ *     &#125;
+ * &#125;
+ *
+ * FilePagedFlux filePagedFlux = new FilePagedFlux&#40;pageRetrieverProvider&#41;;
+ *
+ * </pre>
+ * <!-- end com.azure.core.util.paging.pagedfluxcore.continuationtoken -->
  *
  * @param <C> the type of the continuation token
  * @param <T> The type of elements in a {@link ContinuablePage}
@@ -37,6 +134,8 @@ import java.util.function.Supplier;
  */
 public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C, T>>
     extends ContinuablePagedFlux<C, T, P> {
+    private final ClientLogger logger = new ClientLogger(ContinuablePagedFluxCore.class);
+
     final Supplier<PageRetriever<C, P>> pageRetrieverProvider;
     final Integer defaultPageSize;
 
@@ -44,11 +143,10 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
      * Creates an instance of {@link ContinuablePagedFluxCore}.
      *
      * @param pageRetrieverProvider a provider that returns {@link PageRetriever}.
+     * @throws NullPointerException If {@code pageRetrieverProvider} is null.
      */
     protected ContinuablePagedFluxCore(Supplier<PageRetriever<C, P>> pageRetrieverProvider) {
-        this.pageRetrieverProvider = Objects.requireNonNull(pageRetrieverProvider,
-            "'pageRetrieverProvider' function cannot be null.");
-        this.defaultPageSize = null;
+        this(pageRetrieverProvider, null, null);
     }
 
     /**
@@ -56,13 +154,30 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
      *
      * @param pageRetrieverProvider a provider that returns {@link PageRetriever}.
      * @param pageSize the preferred page size
-     * @throws IllegalArgumentException if defaultPageSize is not greater than zero
+     * @throws NullPointerException If {@code pageRetrieverProvider} is null.
+     * @throws IllegalArgumentException If {@code pageSize} is less than or equal to zero.
      */
     protected ContinuablePagedFluxCore(Supplier<PageRetriever<C, P>> pageRetrieverProvider, int pageSize) {
+        this(pageRetrieverProvider, pageSize, null);
+    }
+
+    /**
+     * Creates an instance of {@link ContinuablePagedFluxCore}.
+     *
+     * @param pageRetrieverProvider A provider that returns {@link PageRetriever}.
+     * @param pageSize The preferred page size.
+     * @param continuationPredicate A predicate which determines if paging should continue.
+     * @throws NullPointerException If {@code pageRetrieverProvider} is null.
+     * @throws IllegalArgumentException If {@code pageSize} is not null and is less than or equal to zero.
+     */
+    protected ContinuablePagedFluxCore(Supplier<PageRetriever<C, P>> pageRetrieverProvider, Integer pageSize,
+        Predicate<C> continuationPredicate) {
+        super(continuationPredicate);
         this.pageRetrieverProvider = Objects.requireNonNull(pageRetrieverProvider,
             "'pageRetrieverProvider' function cannot be null.");
-        if (pageSize <= 0) {
-            throw new IllegalArgumentException("pageSize > 0 required but provided: " + pageSize);
+        if (pageSize != null && pageSize <= 0) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'pageSize' must be greater than 0 required but provided: " + pageSize));
         }
         this.defaultPageSize = pageSize;
     }
@@ -163,7 +278,7 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
          */
         return retrievePage(state, pageRetriever, pageSize)
             .expand(page -> {
-                state.setLastContinuationToken(page.getContinuationToken());
+                state.setLastContinuationToken(page.getContinuationToken(), t -> !getContinuationPredicate().test(t));
                 return Flux.defer(() -> retrievePage(state, pageRetriever, pageSize));
             }, 4);
     }

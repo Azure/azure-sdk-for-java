@@ -1,5 +1,6 @@
 package com.azure.storage.blob
 
+import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobType
 import com.azure.storage.blob.models.ConsistentReadControl
@@ -7,8 +8,12 @@ import com.azure.storage.blob.options.BlobInputStreamOptions
 import com.azure.storage.blob.specialized.BlobOutputStream
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.test.shared.extensions.LiveOnly
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import spock.lang.Requires
 import spock.lang.Unroll
+
+import java.nio.ByteBuffer
 
 class BlockBlobInputOutputStreamTest extends APISpec {
     BlockBlobClient bc
@@ -29,10 +34,10 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         def count = is.read(outArr)
 
         then:
-        for (int i=0; i < dataSize; i++) {
+        for (int i = 0; i < dataSize; i++) {
             assert data[i] == outArr[i]
         }
-        for (int i=dataSize; i < (outArr.length); i++) {
+        for (int i = dataSize; i < (outArr.length); i++) {
             assert outArr[i] == (byte) 0
         }
 
@@ -45,13 +50,13 @@ class BlockBlobInputOutputStreamTest extends APISpec {
     }
 
     // Only run this test in live mode as BlobOutputStream dynamically assigns blocks
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Upload download"() {
         when:
         int length = 6 * Constants.MB
         byte[] randomBytes = getRandomByteArray(length)
 
-        BlobOutputStream outStream = bc.getBlobOutputStream()
+        BlobOutputStream outStream = bc.getBlobOutputStream(true)
         outStream.write(randomBytes, 1 * Constants.MB, 5 * Constants.MB)
         outStream.close()
 
@@ -74,14 +79,14 @@ class BlockBlobInputOutputStreamTest extends APISpec {
     }
 
     // Only run this test in live mode as BlobOutputStream dynamically assigns blocks
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Upload download block size"() {
         when:
         int length = 6 * Constants.MB
         byte[] randomBytes = getRandomByteArray(length)
 
-        BlobOutputStream outStream = bc.getBlobOutputStream()
+        BlobOutputStream outStream = bc.getBlobOutputStream(true)
         outStream.write(randomBytes, 0, 6 * Constants.MB)
         outStream.close()
 
@@ -120,13 +125,52 @@ class BlockBlobInputOutputStreamTest extends APISpec {
     }
 
     // Only run this test in live mode as BlobOutputStream dynamically assigns blocks
-    @Requires({ liveMode() })
+    @LiveOnly
+    def "BlobRange"() {
+        setup:
+        int length = 6 * Constants.MB
+        byte[] randomBytes = getRandomByteArray(length)
+
+        BlobOutputStream outStream = bc.getBlobOutputStream(true)
+        outStream.write(randomBytes, 0, 6 * Constants.MB)
+        outStream.close()
+
+        def resultBytes = new byte[count == null ? length - start : count]
+        when:
+        def inputStream = bc.openInputStream(new BlobInputStreamOptions().setRange(new BlobRange(start, count))
+            .setBlockSize(4 * Constants.MB))
+        inputStream.read(resultBytes) // read the whole range
+
+        then:
+        inputStream.read() == -1
+        ByteBuffer.wrap(randomBytes, start, count == null ? length - start : count)  == ByteBuffer.wrap(resultBytes)
+
+        where:
+        start            | count
+        0                | null // full blob
+        0                | 100 // Small range
+        0                | 4 * Constants.MB // block size
+        0                | 5 * Constants.MB // Requires multiple chunks
+        0                | (1 * Constants.KB) + 1 // Range not a multiple of 1024
+        0                | (1 * Constants.KB) - 1 // ""
+        5                | 100 // small offset
+        5                | null // full blob after an offset
+        1 * Constants.MB | 2 * Constants.MB // larger offset inside first chunk
+        1 * Constants.KB | 4 * Constants.MB // offset with range spanning chunks
+        5 * Constants.MB | 1 * Constants.KB // Range entirely in second chunk
+        5 * Constants.MB | (1 * Constants.KB) + 1 // Range not multiple of 1024
+        5 * Constants.MB | (1 * Constants.KB) - 1 // ""
+        5 * Constants.MB | null // rest of blob after first chunk
+    }
+
+    // Only run this test in live mode as BlobOutputStream dynamically assigns blocks
+    @LiveOnly
     def "Get properties before"() {
         when:
         int length = 6 * Constants.MB
         byte[] randomBytes = getRandomByteArray(length)
 
-        BlobOutputStream outStream = bc.getBlobOutputStream()
+        BlobOutputStream outStream = bc.getBlobOutputStream(true)
         outStream.write(randomBytes, 1 * Constants.MB, 5 * Constants.MB)
         outStream.close()
 
@@ -264,6 +308,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         assert randomBytes1 == randomBytes
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "IS consistent read control etag user provides version client chooses etag"() {
         setup:
         int length = Constants.KB
@@ -301,18 +346,21 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         def properties = blobClient.getProperties()
 
         when:
-        def inputStream = blobClient.openInputStream(new BlobInputStreamOptions().setBlockSize(1).setConsistentReadControl(ConsistentReadControl.ETAG)
+        def inputStream = blobClient.openInputStream(new BlobInputStreamOptions().setBlockSize(1)
+            .setConsistentReadControl(ConsistentReadControl.ETAG)
+            .setBlockSize(500) // Set the block size to be small enough to not retrieve the whole blob on initial download
             .setRequestConditions(new BlobRequestConditions().setIfMatch(properties.getETag())))
 
         // Since eTag is the only form of consistentReadControl and the blob is modified, we will throw.
         blobClient.upload(new ByteArrayInputStream(randomBytes), length, true)
 
-        inputStream.read()
+        inputStream.read(new byte[600]) // Read enough to exceed the initial download
 
         then: "Failed read"
         thrown(IOException) // BlobStorageException = ConditionNotMet
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "IS consistent read control version client chooses version"() {
         setup:
         int length = Constants.KB
@@ -338,6 +386,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         assert randomBytes2 == randomBytes
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "IS consistent read control version user provides version"() {
         setup:
         int length = Constants.KB
@@ -366,6 +415,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         assert randomBytes2 == randomBytes
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "IS consistent read control version user provides version and etag"() {
         setup:
         int length = Constants.KB
@@ -394,6 +444,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         assert randomBytes2 == randomBytes
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "IS consistent read control version user provides etag client chooses version"() {
         setup:
         int length = Constants.KB
@@ -422,6 +473,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         assert randomBytes1 == randomBytes
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "IS consistent read control valid states"() {
         setup:

@@ -7,6 +7,7 @@ package com.azure.resourcemanager.appconfiguration.implementation;
 import com.azure.resourcemanager.appconfiguration.fluent.models.OperationDefinitionInner;
 import com.azure.resourcemanager.appconfiguration.models.OperationDefinition;
 import com.azure.resourcemanager.appconfiguration.models.OperationDefinitionDisplay;
+import com.azure.resourcemanager.appconfiguration.models.OperationProperties;
 
 public final class OperationDefinitionImpl implements OperationDefinition {
     private OperationDefinitionInner innerObject;
@@ -24,8 +25,20 @@ public final class OperationDefinitionImpl implements OperationDefinition {
         return this.innerModel().name();
     }
 
+    public Boolean isDataAction() {
+        return this.innerModel().isDataAction();
+    }
+
     public OperationDefinitionDisplay display() {
         return this.innerModel().display();
+    }
+
+    public String origin() {
+        return this.innerModel().origin();
+    }
+
+    public OperationProperties properties() {
+        return this.innerModel().properties();
     }
 
     public OperationDefinitionInner innerModel() {

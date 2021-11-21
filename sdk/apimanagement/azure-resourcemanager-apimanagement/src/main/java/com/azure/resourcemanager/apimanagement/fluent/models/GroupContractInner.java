@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.GroupType;
@@ -13,44 +12,24 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Contract details. */
-@JsonFlatten
 @Fluent
-public class GroupContractInner extends ProxyResource {
+public final class GroupContractInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GroupContractInner.class);
 
     /*
-     * Group name.
+     * Group entity contract properties.
      */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
+    @JsonProperty(value = "properties")
+    private GroupContractProperties innerProperties;
 
-    /*
-     * Group description. Can contain HTML formatting tags.
+    /**
+     * Get the innerProperties property: Group entity contract properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * true if the group is one of the three system groups (Administrators,
-     * Developers, or Guests); otherwise false.
-     */
-    @JsonProperty(value = "properties.builtIn", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean builtIn;
-
-    /*
-     * Group type.
-     */
-    @JsonProperty(value = "properties.type")
-    private GroupType typePropertiesType;
-
-    /*
-     * For external groups, this property contains the id of the group from the
-     * external identity provider, e.g. for Azure Active Directory
-     * `aad://<tenant>.onmicrosoft.com/groups/<group object id>`; otherwise the
-     * value is null.
-     */
-    @JsonProperty(value = "properties.externalId")
-    private String externalId;
+    private GroupContractProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the displayName property: Group name.
@@ -58,7 +37,7 @@ public class GroupContractInner extends ProxyResource {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -68,7 +47,10 @@ public class GroupContractInner extends ProxyResource {
      * @return the GroupContractInner object itself.
      */
     public GroupContractInner withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GroupContractProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -78,7 +60,7 @@ public class GroupContractInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -88,7 +70,10 @@ public class GroupContractInner extends ProxyResource {
      * @return the GroupContractInner object itself.
      */
     public GroupContractInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GroupContractProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -99,26 +84,29 @@ public class GroupContractInner extends ProxyResource {
      * @return the builtIn value.
      */
     public Boolean builtIn() {
-        return this.builtIn;
+        return this.innerProperties() == null ? null : this.innerProperties().builtIn();
     }
 
     /**
-     * Get the typePropertiesType property: Group type.
+     * Get the type property: Group type.
      *
-     * @return the typePropertiesType value.
+     * @return the type value.
      */
     public GroupType typePropertiesType() {
-        return this.typePropertiesType;
+        return this.innerProperties() == null ? null : this.innerProperties().type();
     }
 
     /**
-     * Set the typePropertiesType property: Group type.
+     * Set the type property: Group type.
      *
-     * @param typePropertiesType the typePropertiesType value to set.
+     * @param type the type value to set.
      * @return the GroupContractInner object itself.
      */
-    public GroupContractInner withTypePropertiesType(GroupType typePropertiesType) {
-        this.typePropertiesType = typePropertiesType;
+    public GroupContractInner withTypePropertiesType(GroupType type) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GroupContractProperties();
+        }
+        this.innerProperties().withType(type);
         return this;
     }
 
@@ -130,7 +118,7 @@ public class GroupContractInner extends ProxyResource {
      * @return the externalId value.
      */
     public String externalId() {
-        return this.externalId;
+        return this.innerProperties() == null ? null : this.innerProperties().externalId();
     }
 
     /**
@@ -142,7 +130,10 @@ public class GroupContractInner extends ProxyResource {
      * @return the GroupContractInner object itself.
      */
     public GroupContractInner withExternalId(String externalId) {
-        this.externalId = externalId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GroupContractProperties();
+        }
+        this.innerProperties().withExternalId(externalId);
         return this;
     }
 
@@ -152,5 +143,8 @@ public class GroupContractInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

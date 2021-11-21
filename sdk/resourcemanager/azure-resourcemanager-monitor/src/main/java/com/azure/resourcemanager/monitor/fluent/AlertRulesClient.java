@@ -27,7 +27,7 @@ public interface AlertRulesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
-     * @param parameters The alert rule resource.
+     * @param parameters The parameters of the rule to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -42,7 +42,7 @@ public interface AlertRulesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
-     * @param parameters The alert rule resource.
+     * @param parameters The parameters of the rule to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -57,7 +57,7 @@ public interface AlertRulesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
-     * @param parameters The alert rule resource.
+     * @param parameters The parameters of the rule to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -71,7 +71,7 @@ public interface AlertRulesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
-     * @param parameters The alert rule resource.
+     * @param parameters The parameters of the rule to create or update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -194,7 +194,7 @@ public interface AlertRulesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
-     * @param alertRulesResource The alert rule object for patch operations.
+     * @param alertRulesResource Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -209,7 +209,7 @@ public interface AlertRulesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
-     * @param alertRulesResource The alert rule object for patch operations.
+     * @param alertRulesResource Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -224,7 +224,7 @@ public interface AlertRulesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
-     * @param alertRulesResource The alert rule object for patch operations.
+     * @param alertRulesResource Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -238,7 +238,7 @@ public interface AlertRulesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
-     * @param alertRulesResource The alert rule object for patch operations.
+     * @param alertRulesResource Parameters supplied to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

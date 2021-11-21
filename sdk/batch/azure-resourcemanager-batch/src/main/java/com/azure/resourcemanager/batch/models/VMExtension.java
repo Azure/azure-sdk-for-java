@@ -62,8 +62,8 @@ public final class VMExtension {
     private Object protectedSettings;
 
     /*
-     * Collection of extension names after which this extension needs to be
-     * provisioned.
+     * The collection of extension names. Collection of extension names after
+     * which this extension needs to be provisioned.
      */
     @JsonProperty(value = "provisionAfterExtensions")
     private List<String> provisionAfterExtensions;
@@ -215,8 +215,8 @@ public final class VMExtension {
     }
 
     /**
-     * Get the provisionAfterExtensions property: Collection of extension names after which this extension needs to be
-     * provisioned.
+     * Get the provisionAfterExtensions property: The collection of extension names. Collection of extension names after
+     * which this extension needs to be provisioned.
      *
      * @return the provisionAfterExtensions value.
      */
@@ -225,8 +225,8 @@ public final class VMExtension {
     }
 
     /**
-     * Set the provisionAfterExtensions property: Collection of extension names after which this extension needs to be
-     * provisioned.
+     * Set the provisionAfterExtensions property: The collection of extension names. Collection of extension names after
+     * which this extension needs to be provisioned.
      *
      * @param provisionAfterExtensions the provisionAfterExtensions value to set.
      * @return the VMExtension object itself.

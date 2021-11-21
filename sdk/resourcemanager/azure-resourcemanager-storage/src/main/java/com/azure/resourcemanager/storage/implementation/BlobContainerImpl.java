@@ -18,6 +18,8 @@ import com.azure.resourcemanager.storage.fluent.models.BlobContainerInner;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.azure.resourcemanager.storage.models.StorageAccount;
 import reactor.core.publisher.Mono;
 
 class BlobContainerImpl extends CreatableUpdatableImpl<BlobContainer, BlobContainerInner, BlobContainerImpl>
@@ -156,8 +158,20 @@ class BlobContainerImpl extends CreatableUpdatableImpl<BlobContainer, BlobContai
 
     @Override
     public BlobContainerImpl withExistingBlobService(String resourceGroupName, String accountName) {
+        this.withExistingStorageAccount(resourceGroupName, accountName);
+        return this;
+    }
+
+    @Override
+    public DefinitionStages.WithPublicAccess withExistingStorageAccount(String resourceGroupName, String accountName) {
         this.resourceGroupName = resourceGroupName;
         this.accountName = accountName;
+        return this;
+    }
+
+    @Override
+    public DefinitionStages.WithPublicAccess withExistingStorageAccount(StorageAccount storageAccount) {
+        this.withExistingStorageAccount(storageAccount.resourceGroupName(), storageAccount.name());
         return this;
     }
 

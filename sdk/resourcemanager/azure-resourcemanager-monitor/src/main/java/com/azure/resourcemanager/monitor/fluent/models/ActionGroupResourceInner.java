@@ -6,12 +6,12 @@ package com.azure.resourcemanager.monitor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.models.ArmRoleReceiver;
 import com.azure.resourcemanager.monitor.models.AutomationRunbookReceiver;
 import com.azure.resourcemanager.monitor.models.AzureAppPushReceiver;
 import com.azure.resourcemanager.monitor.models.AzureFunctionReceiver;
+import com.azure.resourcemanager.monitor.models.AzureResource;
 import com.azure.resourcemanager.monitor.models.EmailReceiver;
 import com.azure.resourcemanager.monitor.models.ItsmReceiver;
 import com.azure.resourcemanager.monitor.models.LogicAppReceiver;
@@ -21,11 +21,12 @@ import com.azure.resourcemanager.monitor.models.WebhookReceiver;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** An action group resource. */
 @JsonFlatten
 @Fluent
-public class ActionGroupResourceInner extends Resource {
+public class ActionGroupResourceInner extends AzureResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ActionGroupResourceInner.class);
 
     /*
@@ -350,12 +351,28 @@ public class ActionGroupResourceInner extends Resource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ActionGroupResourceInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ActionGroupResourceInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
         if (emailReceivers() != null) {
             emailReceivers().forEach(e -> e.validate());
         }

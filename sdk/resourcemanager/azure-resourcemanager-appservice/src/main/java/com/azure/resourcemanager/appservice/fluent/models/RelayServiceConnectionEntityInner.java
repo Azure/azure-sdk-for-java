@@ -5,59 +5,37 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Hybrid Connection for an App Service app. */
-@JsonFlatten
 @Fluent
-public class RelayServiceConnectionEntityInner extends ProxyOnlyResource {
+public final class RelayServiceConnectionEntityInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RelayServiceConnectionEntityInner.class);
 
     /*
-     * The entityName property.
+     * RelayServiceConnectionEntity resource specific properties
      */
-    @JsonProperty(value = "properties.entityName")
-    private String entityName;
+    @JsonProperty(value = "properties")
+    private RelayServiceConnectionEntityProperties innerProperties;
 
-    /*
-     * The entityConnectionString property.
+    /**
+     * Get the innerProperties property: RelayServiceConnectionEntity resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.entityConnectionString")
-    private String entityConnectionString;
+    private RelayServiceConnectionEntityProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * The resourceType property.
-     */
-    @JsonProperty(value = "properties.resourceType")
-    private String resourceType;
-
-    /*
-     * The resourceConnectionString property.
-     */
-    @JsonProperty(value = "properties.resourceConnectionString")
-    private String resourceConnectionString;
-
-    /*
-     * The hostname property.
-     */
-    @JsonProperty(value = "properties.hostname")
-    private String hostname;
-
-    /*
-     * The port property.
-     */
-    @JsonProperty(value = "properties.port")
-    private Integer port;
-
-    /*
-     * The biztalkUri property.
-     */
-    @JsonProperty(value = "properties.biztalkUri")
-    private String biztalkUri;
+    /** {@inheritDoc} */
+    @Override
+    public RelayServiceConnectionEntityInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the entityName property: The entityName property.
@@ -65,7 +43,7 @@ public class RelayServiceConnectionEntityInner extends ProxyOnlyResource {
      * @return the entityName value.
      */
     public String entityName() {
-        return this.entityName;
+        return this.innerProperties() == null ? null : this.innerProperties().entityName();
     }
 
     /**
@@ -75,7 +53,10 @@ public class RelayServiceConnectionEntityInner extends ProxyOnlyResource {
      * @return the RelayServiceConnectionEntityInner object itself.
      */
     public RelayServiceConnectionEntityInner withEntityName(String entityName) {
-        this.entityName = entityName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RelayServiceConnectionEntityProperties();
+        }
+        this.innerProperties().withEntityName(entityName);
         return this;
     }
 
@@ -85,7 +66,7 @@ public class RelayServiceConnectionEntityInner extends ProxyOnlyResource {
      * @return the entityConnectionString value.
      */
     public String entityConnectionString() {
-        return this.entityConnectionString;
+        return this.innerProperties() == null ? null : this.innerProperties().entityConnectionString();
     }
 
     /**
@@ -95,7 +76,10 @@ public class RelayServiceConnectionEntityInner extends ProxyOnlyResource {
      * @return the RelayServiceConnectionEntityInner object itself.
      */
     public RelayServiceConnectionEntityInner withEntityConnectionString(String entityConnectionString) {
-        this.entityConnectionString = entityConnectionString;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RelayServiceConnectionEntityProperties();
+        }
+        this.innerProperties().withEntityConnectionString(entityConnectionString);
         return this;
     }
 
@@ -105,7 +89,7 @@ public class RelayServiceConnectionEntityInner extends ProxyOnlyResource {
      * @return the resourceType value.
      */
     public String resourceType() {
-        return this.resourceType;
+        return this.innerProperties() == null ? null : this.innerProperties().resourceType();
     }
 
     /**
@@ -115,7 +99,10 @@ public class RelayServiceConnectionEntityInner extends ProxyOnlyResource {
      * @return the RelayServiceConnectionEntityInner object itself.
      */
     public RelayServiceConnectionEntityInner withResourceType(String resourceType) {
-        this.resourceType = resourceType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RelayServiceConnectionEntityProperties();
+        }
+        this.innerProperties().withResourceType(resourceType);
         return this;
     }
 
@@ -125,7 +112,7 @@ public class RelayServiceConnectionEntityInner extends ProxyOnlyResource {
      * @return the resourceConnectionString value.
      */
     public String resourceConnectionString() {
-        return this.resourceConnectionString;
+        return this.innerProperties() == null ? null : this.innerProperties().resourceConnectionString();
     }
 
     /**
@@ -135,7 +122,10 @@ public class RelayServiceConnectionEntityInner extends ProxyOnlyResource {
      * @return the RelayServiceConnectionEntityInner object itself.
      */
     public RelayServiceConnectionEntityInner withResourceConnectionString(String resourceConnectionString) {
-        this.resourceConnectionString = resourceConnectionString;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RelayServiceConnectionEntityProperties();
+        }
+        this.innerProperties().withResourceConnectionString(resourceConnectionString);
         return this;
     }
 
@@ -145,7 +135,7 @@ public class RelayServiceConnectionEntityInner extends ProxyOnlyResource {
      * @return the hostname value.
      */
     public String hostname() {
-        return this.hostname;
+        return this.innerProperties() == null ? null : this.innerProperties().hostname();
     }
 
     /**
@@ -155,7 +145,10 @@ public class RelayServiceConnectionEntityInner extends ProxyOnlyResource {
      * @return the RelayServiceConnectionEntityInner object itself.
      */
     public RelayServiceConnectionEntityInner withHostname(String hostname) {
-        this.hostname = hostname;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RelayServiceConnectionEntityProperties();
+        }
+        this.innerProperties().withHostname(hostname);
         return this;
     }
 
@@ -165,7 +158,7 @@ public class RelayServiceConnectionEntityInner extends ProxyOnlyResource {
      * @return the port value.
      */
     public Integer port() {
-        return this.port;
+        return this.innerProperties() == null ? null : this.innerProperties().port();
     }
 
     /**
@@ -175,7 +168,10 @@ public class RelayServiceConnectionEntityInner extends ProxyOnlyResource {
      * @return the RelayServiceConnectionEntityInner object itself.
      */
     public RelayServiceConnectionEntityInner withPort(Integer port) {
-        this.port = port;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RelayServiceConnectionEntityProperties();
+        }
+        this.innerProperties().withPort(port);
         return this;
     }
 
@@ -185,7 +181,7 @@ public class RelayServiceConnectionEntityInner extends ProxyOnlyResource {
      * @return the biztalkUri value.
      */
     public String biztalkUri() {
-        return this.biztalkUri;
+        return this.innerProperties() == null ? null : this.innerProperties().biztalkUri();
     }
 
     /**
@@ -195,14 +191,10 @@ public class RelayServiceConnectionEntityInner extends ProxyOnlyResource {
      * @return the RelayServiceConnectionEntityInner object itself.
      */
     public RelayServiceConnectionEntityInner withBiztalkUri(String biztalkUri) {
-        this.biztalkUri = biztalkUri;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public RelayServiceConnectionEntityInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RelayServiceConnectionEntityProperties();
+        }
+        this.innerProperties().withBiztalkUri(biztalkUri);
         return this;
     }
 
@@ -214,5 +206,8 @@ public class RelayServiceConnectionEntityInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

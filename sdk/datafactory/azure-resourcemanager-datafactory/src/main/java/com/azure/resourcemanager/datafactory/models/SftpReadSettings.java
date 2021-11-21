@@ -283,6 +283,13 @@ public final class SftpReadSettings extends StoreReadSettings {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public SftpReadSettings withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

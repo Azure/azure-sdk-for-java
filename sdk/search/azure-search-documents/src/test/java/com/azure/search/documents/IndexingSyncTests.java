@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.search.documents;
 
-import com.azure.core.experimental.geojson.GeoPoint;
 import com.azure.core.http.rest.Response;
+import com.azure.core.models.GeoPoint;
 import com.azure.core.util.Context;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
@@ -323,11 +323,7 @@ public class IndexingSyncTests extends SearchTestBase {
         List<SearchDocument> docs = new ArrayList<>();
         docs.add(new SearchDocument());
 
-        assertHttpResponseException(
-            () -> client.uploadDocuments(docs),
-            HttpURLConnection.HTTP_BAD_REQUEST,
-            "The request is invalid. Details: actions : 0: Document key cannot be missing or empty."
-        );
+        assertHttpResponseException(() -> client.uploadDocuments(docs), HttpURLConnection.HTTP_BAD_REQUEST, null);
     }
 
     @Test

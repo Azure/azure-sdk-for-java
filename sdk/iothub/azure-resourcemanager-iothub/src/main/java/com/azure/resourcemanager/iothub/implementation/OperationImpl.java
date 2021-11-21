@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.iothub.implementation;
 
-import com.azure.resourcemanager.iothub.IotHubManager;
 import com.azure.resourcemanager.iothub.fluent.models.OperationInner;
 import com.azure.resourcemanager.iothub.models.Operation;
 import com.azure.resourcemanager.iothub.models.OperationDisplay;
@@ -12,9 +11,9 @@ import com.azure.resourcemanager.iothub.models.OperationDisplay;
 public final class OperationImpl implements Operation {
     private OperationInner innerObject;
 
-    private final IotHubManager serviceManager;
+    private final com.azure.resourcemanager.iothub.IotHubManager serviceManager;
 
-    OperationImpl(OperationInner innerObject, IotHubManager serviceManager) {
+    OperationImpl(OperationInner innerObject, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -31,7 +30,7 @@ public final class OperationImpl implements Operation {
         return this.innerObject;
     }
 
-    private IotHubManager manager() {
+    private com.azure.resourcemanager.iothub.IotHubManager manager() {
         return this.serviceManager;
     }
 }

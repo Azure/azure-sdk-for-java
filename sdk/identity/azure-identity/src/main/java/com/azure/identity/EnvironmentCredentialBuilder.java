@@ -3,6 +3,7 @@
 
 package com.azure.identity;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.identity.implementation.util.ValidationUtil;
 
 import java.util.concurrent.ExecutorService;
@@ -14,6 +15,8 @@ import java.util.concurrent.ForkJoinPool;
  * @see EnvironmentCredential
  */
 public class EnvironmentCredentialBuilder extends CredentialBuilderBase<EnvironmentCredentialBuilder> {
+    private String authorityHost;
+
     /**
      * Specifies the Azure Active Directory endpoint to acquire tokens.
      * @param authorityHost the Azure Active Directory endpoint
@@ -21,7 +24,7 @@ public class EnvironmentCredentialBuilder extends CredentialBuilderBase<Environm
      */
     public EnvironmentCredentialBuilder authorityHost(String authorityHost) {
         ValidationUtil.validateAuthHost(getClass().getSimpleName(), authorityHost);
-        this.identityClientOptions.setAuthorityHost(authorityHost);
+        this.authorityHost = authorityHost;
         return this;
     }
 
@@ -52,6 +55,9 @@ public class EnvironmentCredentialBuilder extends CredentialBuilderBase<Environm
      * @return a {@link EnvironmentCredential} with the current configurations.
      */
     public EnvironmentCredential build() {
+        if (!CoreUtils.isNullOrEmpty(authorityHost)) {
+            identityClientOptions.setAuthorityHost(authorityHost);
+        }
         return new EnvironmentCredential(identityClientOptions);
     }
 }

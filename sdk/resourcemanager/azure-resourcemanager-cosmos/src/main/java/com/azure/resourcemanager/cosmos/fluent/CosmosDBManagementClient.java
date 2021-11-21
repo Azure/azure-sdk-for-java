@@ -171,11 +171,25 @@ public interface CosmosDBManagementClient {
     GremlinResourcesClient getGremlinResources();
 
     /**
+     * Gets the LocationsClient object to access its operations.
+     *
+     * @return the LocationsClient object.
+     */
+    LocationsClient getLocations();
+
+    /**
      * Gets the NotebookWorkspacesClient object to access its operations.
      *
      * @return the NotebookWorkspacesClient object.
      */
     NotebookWorkspacesClient getNotebookWorkspaces();
+
+    /**
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
+     *
+     * @return the PrivateEndpointConnectionsClient object.
+     */
+    PrivateEndpointConnectionsClient getPrivateEndpointConnections();
 
     /**
      * Gets the PrivateLinkResourcesClient object to access its operations.
@@ -185,9 +199,65 @@ public interface CosmosDBManagementClient {
     PrivateLinkResourcesClient getPrivateLinkResources();
 
     /**
-     * Gets the PrivateEndpointConnectionsClient object to access its operations.
+     * Gets the RestorableDatabaseAccountsClient object to access its operations.
      *
-     * @return the PrivateEndpointConnectionsClient object.
+     * @return the RestorableDatabaseAccountsClient object.
      */
-    PrivateEndpointConnectionsClient getPrivateEndpointConnections();
+    RestorableDatabaseAccountsClient getRestorableDatabaseAccounts();
+
+    /**
+     * Gets the RestorableSqlDatabasesClient object to access its operations.
+     *
+     * @return the RestorableSqlDatabasesClient object.
+     */
+    RestorableSqlDatabasesClient getRestorableSqlDatabases();
+
+    /**
+     * Gets the RestorableSqlContainersClient object to access its operations.
+     *
+     * @return the RestorableSqlContainersClient object.
+     */
+    RestorableSqlContainersClient getRestorableSqlContainers();
+
+    /**
+     * Gets the RestorableSqlResourcesClient object to access its operations.
+     *
+     * @return the RestorableSqlResourcesClient object.
+     */
+    RestorableSqlResourcesClient getRestorableSqlResources();
+
+    /**
+     * Gets the RestorableMongodbDatabasesClient object to access its operations.
+     *
+     * @return the RestorableMongodbDatabasesClient object.
+     */
+    RestorableMongodbDatabasesClient getRestorableMongodbDatabases();
+
+    /**
+     * Gets the RestorableMongodbCollectionsClient object to access its operations.
+     *
+     * @return the RestorableMongodbCollectionsClient object.
+     */
+    RestorableMongodbCollectionsClient getRestorableMongodbCollections();
+
+    /**
+     * Gets the RestorableMongodbResourcesClient object to access its operations.
+     *
+     * @return the RestorableMongodbResourcesClient object.
+     */
+    RestorableMongodbResourcesClient getRestorableMongodbResources();
+
+    /**
+     * Gets the CassandraClustersClient object to access its operations.
+     *
+     * @return the CassandraClustersClient object.
+     */
+    CassandraClustersClient getCassandraClusters();
+
+    /**
+     * Gets the CassandraDataCentersClient object to access its operations.
+     *
+     * @return the CassandraDataCentersClient object.
+     */
+    CassandraDataCentersClient getCassandraDataCenters();
 }

@@ -39,6 +39,20 @@ public interface ContainerServiceManagementClient {
     Duration getDefaultPollInterval();
 
     /**
+     * Gets the OpenShiftManagedClustersClient object to access its operations.
+     *
+     * @return the OpenShiftManagedClustersClient object.
+     */
+    OpenShiftManagedClustersClient getOpenShiftManagedClusters();
+
+    /**
+     * Gets the ContainerServicesClient object to access its operations.
+     *
+     * @return the ContainerServicesClient object.
+     */
+    ContainerServicesClient getContainerServices();
+
+    /**
      * Gets the OperationsClient object to access its operations.
      *
      * @return the OperationsClient object.
@@ -88,16 +102,9 @@ public interface ContainerServiceManagementClient {
     ResolvePrivateLinkServiceIdsClient getResolvePrivateLinkServiceIds();
 
     /**
-     * Gets the OpenShiftManagedClustersClient object to access its operations.
+     * Gets the SnapshotsClient object to access its operations.
      *
-     * @return the OpenShiftManagedClustersClient object.
+     * @return the SnapshotsClient object.
      */
-    OpenShiftManagedClustersClient getOpenShiftManagedClusters();
-
-    /**
-     * Gets the ContainerServicesClient object to access its operations.
-     *
-     * @return the ContainerServicesClient object.
-     */
-    ContainerServicesClient getContainerServices();
+    SnapshotsClient getSnapshots();
 }

@@ -246,7 +246,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         // Ensure its a cross partition query
         assertThat(partitionKeyRanges.size()).isGreaterThan(1);
         // We are inserting documents with int, float, string, array, object and missing propMixed.
-        String query = String.format("SELECT * FROM r ORDER BY r.propMixed ", sortOrder);
+        String query = "SELECT * FROM r ORDER BY r.propMixed ";
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         List<String> sourceIds = createdDocuments.stream()
                                      .map(Resource::getId)

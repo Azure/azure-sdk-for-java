@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A response saying whether the workspace name is available. */
+/** Check name availability response A response saying whether the workspace name is available. */
 @Fluent
 public final class CheckNameAvailabilityResponseInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckNameAvailabilityResponseInner.class);

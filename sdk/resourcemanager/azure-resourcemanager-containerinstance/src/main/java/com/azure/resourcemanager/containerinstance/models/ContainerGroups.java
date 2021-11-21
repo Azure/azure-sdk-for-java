@@ -142,4 +142,25 @@ public interface ContainerGroups
      * @return a representation of the future computation of this call
      */
     Mono<Void> startAsync(String resourceGroupName, String containerGroupName);
+
+    /**
+     * Attaches to the output stream of a specific container instance in a specified container group.
+     *
+     * @param resourceGroupName the name of the resource group
+     * @param containerGroupName the name of the container group
+     * @param containerName the name of the container instance
+     * @return the information for the output stream
+     */
+    ContainerAttachResult attachOutputStream(String resourceGroupName, String containerGroupName, String containerName);
+
+    /**
+     * Attaches to the output stream of a specific container instance in a specified container group.
+     *
+     * @param resourceGroupName the name of the resource group
+     * @param containerGroupName the name of the container group
+     * @param containerName the name of the container instance
+     * @return the information for the output stream
+     */
+    Mono<ContainerAttachResult> attachOutputStreamAsync(
+        String resourceGroupName, String containerGroupName, String containerName);
 }

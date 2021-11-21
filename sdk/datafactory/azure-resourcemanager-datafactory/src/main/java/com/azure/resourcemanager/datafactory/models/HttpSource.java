@@ -73,6 +73,13 @@ public final class HttpSource extends CopySource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public HttpSource withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

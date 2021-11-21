@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -58,8 +59,8 @@ public final class DiagnosticSettingsClientImpl implements InnerSupportsDelete<V
     @Host("{$host}")
     @ServiceInterface(name = "MonitorClientDiagnos")
     private interface DiagnosticSettingsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("/{resourceUri}/providers/microsoft.insights/diagnosticSettings/{name}")
+        @Headers({"Content-Type: application/json"})
+        @Get("/{resourceUri}/providers/Microsoft.Insights/diagnosticSettings/{name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DiagnosticSettingsResourceInner>> get(
@@ -67,10 +68,11 @@ public final class DiagnosticSettingsClientImpl implements InnerSupportsDelete<V
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
             @QueryParam("api-version") String apiVersion,
             @PathParam("name") String name,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put("/{resourceUri}/providers/microsoft.insights/diagnosticSettings/{name}")
+        @Headers({"Content-Type: application/json"})
+        @Put("/{resourceUri}/providers/Microsoft.Insights/diagnosticSettings/{name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DiagnosticSettingsResourceInner>> createOrUpdate(
@@ -79,10 +81,11 @@ public final class DiagnosticSettingsClientImpl implements InnerSupportsDelete<V
             @QueryParam("api-version") String apiVersion,
             @PathParam("name") String name,
             @BodyParam("application/json") DiagnosticSettingsResourceInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete("/{resourceUri}/providers/microsoft.insights/diagnosticSettings/{name}")
+        @Headers({"Content-Type: application/json"})
+        @Delete("/{resourceUri}/providers/Microsoft.Insights/diagnosticSettings/{name}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -90,16 +93,18 @@ public final class DiagnosticSettingsClientImpl implements InnerSupportsDelete<V
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
             @QueryParam("api-version") String apiVersion,
             @PathParam("name") String name,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("/{resourceUri}/providers/microsoft.insights/diagnosticSettings")
+        @Headers({"Content-Type: application/json"})
+        @Get("/{resourceUri}/providers/Microsoft.Insights/diagnosticSettings")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DiagnosticSettingsResourceCollectionInner>> list(
             @HostParam("$host") String endpoint,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -128,9 +133,11 @@ public final class DiagnosticSettingsClientImpl implements InnerSupportsDelete<V
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         final String apiVersion = "2017-05-01-preview";
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), resourceUri, apiVersion, name, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .withContext(
+                context -> service.get(this.client.getEndpoint(), resourceUri, apiVersion, name, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -160,8 +167,9 @@ public final class DiagnosticSettingsClientImpl implements InnerSupportsDelete<V
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         final String apiVersion = "2017-05-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), resourceUri, apiVersion, name, context);
+        return service.get(this.client.getEndpoint(), resourceUri, apiVersion, name, accept, context);
     }
 
     /**
@@ -223,7 +231,7 @@ public final class DiagnosticSettingsClientImpl implements InnerSupportsDelete<V
      *
      * @param resourceUri The identifier of the resource.
      * @param name The name of the diagnostic setting.
-     * @param parameters The diagnostic setting resource.
+     * @param parameters Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -250,12 +258,14 @@ public final class DiagnosticSettingsClientImpl implements InnerSupportsDelete<V
             parameters.validate();
         }
         final String apiVersion = "2017-05-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
-                        .createOrUpdate(this.client.getEndpoint(), resourceUri, apiVersion, name, parameters, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+                        .createOrUpdate(
+                            this.client.getEndpoint(), resourceUri, apiVersion, name, parameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -263,7 +273,7 @@ public final class DiagnosticSettingsClientImpl implements InnerSupportsDelete<V
      *
      * @param resourceUri The identifier of the resource.
      * @param name The name of the diagnostic setting.
-     * @param parameters The diagnostic setting resource.
+     * @param parameters Parameters supplied to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -291,8 +301,10 @@ public final class DiagnosticSettingsClientImpl implements InnerSupportsDelete<V
             parameters.validate();
         }
         final String apiVersion = "2017-05-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), resourceUri, apiVersion, name, parameters, context);
+        return service
+            .createOrUpdate(this.client.getEndpoint(), resourceUri, apiVersion, name, parameters, accept, context);
     }
 
     /**
@@ -300,7 +312,7 @@ public final class DiagnosticSettingsClientImpl implements InnerSupportsDelete<V
      *
      * @param resourceUri The identifier of the resource.
      * @param name The name of the diagnostic setting.
-     * @param parameters The diagnostic setting resource.
+     * @param parameters Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -325,7 +337,7 @@ public final class DiagnosticSettingsClientImpl implements InnerSupportsDelete<V
      *
      * @param resourceUri The identifier of the resource.
      * @param name The name of the diagnostic setting.
-     * @param parameters The diagnostic setting resource.
+     * @param parameters Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -342,7 +354,7 @@ public final class DiagnosticSettingsClientImpl implements InnerSupportsDelete<V
      *
      * @param resourceUri The identifier of the resource.
      * @param name The name of the diagnostic setting.
-     * @param parameters The diagnostic setting resource.
+     * @param parameters Parameters supplied to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -380,9 +392,11 @@ public final class DiagnosticSettingsClientImpl implements InnerSupportsDelete<V
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         final String apiVersion = "2017-05-01-preview";
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), resourceUri, apiVersion, name, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .withContext(
+                context -> service.delete(this.client.getEndpoint(), resourceUri, apiVersion, name, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -411,8 +425,9 @@ public final class DiagnosticSettingsClientImpl implements InnerSupportsDelete<V
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         final String apiVersion = "2017-05-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), resourceUri, apiVersion, name, context);
+        return service.delete(this.client.getEndpoint(), resourceUri, apiVersion, name, accept, context);
     }
 
     /**
@@ -481,9 +496,10 @@ public final class DiagnosticSettingsClientImpl implements InnerSupportsDelete<V
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         final String apiVersion = "2017-05-01-preview";
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), resourceUri, apiVersion, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .withContext(context -> service.list(this.client.getEndpoint(), resourceUri, apiVersion, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -509,8 +525,9 @@ public final class DiagnosticSettingsClientImpl implements InnerSupportsDelete<V
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         final String apiVersion = "2017-05-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.list(this.client.getEndpoint(), resourceUri, apiVersion, context);
+        return service.list(this.client.getEndpoint(), resourceUri, apiVersion, accept, context);
     }
 
     /**

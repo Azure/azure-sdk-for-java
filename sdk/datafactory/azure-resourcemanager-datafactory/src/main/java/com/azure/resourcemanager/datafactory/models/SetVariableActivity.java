@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.SetVariableActivityTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -16,61 +16,23 @@ import java.util.List;
 /** Set value for a Variable. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SetVariable")
-@JsonFlatten
 @Fluent
-public class SetVariableActivity extends ControlActivity {
+public final class SetVariableActivity extends ControlActivity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SetVariableActivity.class);
 
     /*
-     * Name of the variable whose value needs to be set.
+     * Set Variable activity properties.
      */
-    @JsonProperty(value = "typeProperties.variableName")
-    private String variableName;
-
-    /*
-     * Value to be set. Could be a static value or Expression
-     */
-    @JsonProperty(value = "typeProperties.value")
-    private Object value;
+    @JsonProperty(value = "typeProperties", required = true)
+    private SetVariableActivityTypeProperties innerTypeProperties = new SetVariableActivityTypeProperties();
 
     /**
-     * Get the variableName property: Name of the variable whose value needs to be set.
+     * Get the innerTypeProperties property: Set Variable activity properties.
      *
-     * @return the variableName value.
+     * @return the innerTypeProperties value.
      */
-    public String variableName() {
-        return this.variableName;
-    }
-
-    /**
-     * Set the variableName property: Name of the variable whose value needs to be set.
-     *
-     * @param variableName the variableName value to set.
-     * @return the SetVariableActivity object itself.
-     */
-    public SetVariableActivity withVariableName(String variableName) {
-        this.variableName = variableName;
-        return this;
-    }
-
-    /**
-     * Get the value property: Value to be set. Could be a static value or Expression.
-     *
-     * @return the value value.
-     */
-    public Object value() {
-        return this.value;
-    }
-
-    /**
-     * Set the value property: Value to be set. Could be a static value or Expression.
-     *
-     * @param value the value value to set.
-     * @return the SetVariableActivity object itself.
-     */
-    public SetVariableActivity withValue(Object value) {
-        this.value = value;
-        return this;
+    private SetVariableActivityTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -102,6 +64,52 @@ public class SetVariableActivity extends ControlActivity {
     }
 
     /**
+     * Get the variableName property: Name of the variable whose value needs to be set.
+     *
+     * @return the variableName value.
+     */
+    public String variableName() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().variableName();
+    }
+
+    /**
+     * Set the variableName property: Name of the variable whose value needs to be set.
+     *
+     * @param variableName the variableName value to set.
+     * @return the SetVariableActivity object itself.
+     */
+    public SetVariableActivity withVariableName(String variableName) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SetVariableActivityTypeProperties();
+        }
+        this.innerTypeProperties().withVariableName(variableName);
+        return this;
+    }
+
+    /**
+     * Get the value property: Value to be set. Could be a static value or Expression.
+     *
+     * @return the value value.
+     */
+    public Object value() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().value();
+    }
+
+    /**
+     * Set the value property: Value to be set. Could be a static value or Expression.
+     *
+     * @param value the value value to set.
+     * @return the SetVariableActivity object itself.
+     */
+    public SetVariableActivity withValue(Object value) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SetVariableActivityTypeProperties();
+        }
+        this.innerTypeProperties().withValue(value);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -109,5 +117,13 @@ public class SetVariableActivity extends ControlActivity {
     @Override
     public void validate() {
         super.validate();
+        if (innerTypeProperties() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerTypeProperties in model SetVariableActivity"));
+        } else {
+            innerTypeProperties().validate();
+        }
     }
 }

@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.List;
 
 /** A copy activity Spark Server source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -57,7 +56,7 @@ public final class SparkSource extends TabularSource {
 
     /** {@inheritDoc} */
     @Override
-    public SparkSource withAdditionalColumns(List<AdditionalColumns> additionalColumns) {
+    public SparkSource withAdditionalColumns(Object additionalColumns) {
         super.withAdditionalColumns(additionalColumns);
         return this;
     }
@@ -80,6 +79,13 @@ public final class SparkSource extends TabularSource {
     @Override
     public SparkSource withMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.withMaxConcurrentConnections(maxConcurrentConnections);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SparkSource withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
         return this;
     }
 

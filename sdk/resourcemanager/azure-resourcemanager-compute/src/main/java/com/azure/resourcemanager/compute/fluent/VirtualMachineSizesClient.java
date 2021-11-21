@@ -14,8 +14,7 @@ import com.azure.resourcemanager.compute.fluent.models.VirtualMachineSizeInner;
 /** An instance of this class provides access to all the operations defined in VirtualMachineSizesClient. */
 public interface VirtualMachineSizesClient {
     /**
-     * This API is deprecated. Use [Resources
-     * Skus](https://docs.microsoft.com/en-us/rest/api/compute/resourceskus/list).
+     * This API is deprecated. Use [Resources Skus](https://docs.microsoft.com/rest/api/compute/resourceskus/list).
      *
      * @param location The location upon which virtual-machine-sizes is queried.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -27,8 +26,7 @@ public interface VirtualMachineSizesClient {
     PagedFlux<VirtualMachineSizeInner> listAsync(String location);
 
     /**
-     * This API is deprecated. Use [Resources
-     * Skus](https://docs.microsoft.com/en-us/rest/api/compute/resourceskus/list).
+     * This API is deprecated. Use [Resources Skus](https://docs.microsoft.com/rest/api/compute/resourceskus/list).
      *
      * @param location The location upon which virtual-machine-sizes is queried.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -40,8 +38,7 @@ public interface VirtualMachineSizesClient {
     PagedIterable<VirtualMachineSizeInner> list(String location);
 
     /**
-     * This API is deprecated. Use [Resources
-     * Skus](https://docs.microsoft.com/en-us/rest/api/compute/resourceskus/list).
+     * This API is deprecated. Use [Resources Skus](https://docs.microsoft.com/rest/api/compute/resourceskus/list).
      *
      * @param location The location upon which virtual-machine-sizes is queried.
      * @param context The context to associate with this operation.

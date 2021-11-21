@@ -11,9 +11,10 @@ import com.azure.resourcemanager.databricks.models.OperationDisplay;
 public final class OperationImpl implements Operation {
     private OperationInner innerObject;
 
-    private final com.azure.resourcemanager.databricks.DatabricksManager serviceManager;
+    private final com.azure.resourcemanager.databricks.AzureDatabricksManager serviceManager;
 
-    OperationImpl(OperationInner innerObject, com.azure.resourcemanager.databricks.DatabricksManager serviceManager) {
+    OperationImpl(
+        OperationInner innerObject, com.azure.resourcemanager.databricks.AzureDatabricksManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -30,7 +31,7 @@ public final class OperationImpl implements Operation {
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.databricks.DatabricksManager manager() {
+    private com.azure.resourcemanager.databricks.AzureDatabricksManager manager() {
         return this.serviceManager;
     }
 }

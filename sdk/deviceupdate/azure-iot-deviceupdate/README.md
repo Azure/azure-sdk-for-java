@@ -2,7 +2,7 @@
 
 The library provides access to the Device Update for IoT Hub service that enables customers to publish updates for their IoT devices to the cloud, and then deploy these updates to their devices (approve updates to groups of devices managed and provisioned in IoT Hub). 
 
-  [Source code](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk) | [Product documentation](https://docs.microsoft.com/azure/iot-hub-device-update/understand-device-update)
+  [Source code](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk) | [Product documentation](https://docs.microsoft.com/azure/iot-hub-device-update/understand-device-update)
 
 ## Getting started
 
@@ -45,7 +45,7 @@ You can learn more about Device Update for IoT Hub by visiting [Device Update fo
 
 ## Examples
 
-You can familiarize yourself with different APIs using [Samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/deviceupdate/azure-iot-deviceupdate/src/samples).
+You can familiarize yourself with different APIs using [Samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/deviceupdate/azure-iot-deviceupdate/src/samples).
 
 ## Troubleshooting
 
@@ -69,7 +69,7 @@ catch (HttpResponseException ex) {
 
 ## Next steps
 
-Get started with our [Device Update for IoT Hub samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/deviceupdate/azure-iot-deviceupdate/src/samples)
+Get started with our [Device Update for IoT Hub samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/deviceupdate/azure-iot-deviceupdate/src/samples)
 
 ## Contributing
 

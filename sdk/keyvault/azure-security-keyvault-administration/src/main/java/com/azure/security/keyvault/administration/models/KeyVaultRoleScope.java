@@ -12,7 +12,14 @@ import java.net.URL;
  * A class that defines the scope of a role.
  */
 public final class KeyVaultRoleScope extends ExpandableStringEnum<KeyVaultRoleScope> {
+    /**
+     * Global role scope.
+     */
     public static final KeyVaultRoleScope GLOBAL = fromString("/");
+
+    /**
+     * Keys role scope.
+     */
     public static final KeyVaultRoleScope KEYS = fromString("/keys");
 
     /**
@@ -30,10 +37,14 @@ public final class KeyVaultRoleScope extends ExpandableStringEnum<KeyVaultRoleSc
      *
      * @param url A string representing a URL containing the name of the scope to look for.
      * @return The corresponding {@link KeyVaultRoleScope}.
-     * @throws MalformedURLException If the given {@link String URL String} is malformed.
+     * @throws IllegalArgumentException If the given {@link String URL String} is malformed.
      */
-    public static KeyVaultRoleScope fromUrl(String url) throws MalformedURLException {
-        return fromString(new URL(url).getPath(), KeyVaultRoleScope.class);
+    public static KeyVaultRoleScope fromUrl(String url) {
+        try {
+            return fromString(new URL(url).getPath(), KeyVaultRoleScope.class);
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 
     /**

@@ -12,10 +12,11 @@ import com.azure.core.util.IterableStream;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -27,7 +28,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
 public class KeyVaultOperationUnitTest {
 
     private static final List<String> SECRET_KEYS_CONFIG = Arrays.asList("key1", "key2", "key3");
@@ -55,7 +55,20 @@ public class KeyVaultOperationUnitTest {
 
     @Mock
     private SecretClient keyVaultClient;
+
     private KeyVaultOperation keyVaultOperation;
+
+    private AutoCloseable closeable;
+
+    @BeforeEach
+    public void setup() {
+        closeable = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    public void close() throws Exception {
+        closeable.close();
+    }
 
     public void setupSecretBundle(List<String> secretKeysConfig) {
         keyVaultOperation = new KeyVaultOperation(

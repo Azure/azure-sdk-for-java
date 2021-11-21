@@ -11,6 +11,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.eventgrid.fluent.models.DeliveryAttributeListResultInner;
 import com.azure.resourcemanager.eventgrid.fluent.models.EventSubscriptionFullUrlInner;
 import com.azure.resourcemanager.eventgrid.fluent.models.EventSubscriptionInner;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionUpdateParameters;
@@ -78,7 +79,7 @@ public interface EventSubscriptionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return event Subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdate(
         String scope, String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo);
 
@@ -103,7 +104,7 @@ public interface EventSubscriptionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return event Subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdate(
         String scope, String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo, Context context);
 
@@ -173,7 +174,7 @@ public interface EventSubscriptionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String scope, String eventSubscriptionName);
 
     /**
@@ -194,7 +195,7 @@ public interface EventSubscriptionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String scope, String eventSubscriptionName, Context context);
 
     /**
@@ -254,7 +255,7 @@ public interface EventSubscriptionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return event Subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdate(
         String scope,
         String eventSubscriptionName,
@@ -279,7 +280,7 @@ public interface EventSubscriptionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return event Subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdate(
         String scope,
         String eventSubscriptionName,
@@ -745,4 +746,46 @@ public interface EventSubscriptionsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<EventSubscriptionInner> listByDomainTopic(
         String resourceGroupName, String domainName, String topicName, String filter, Integer top, Context context);
+
+    /**
+     * Get all delivery attributes for an event subscription.
+     *
+     * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
+     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     *     '/subscriptions/{subscriptionId}/' for a subscription,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     *     for a resource, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     *     for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DeliveryAttributeListResultInner getDeliveryAttributes(String scope, String eventSubscriptionName);
+
+    /**
+     * Get all delivery attributes for an event subscription.
+     *
+     * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
+     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     *     '/subscriptions/{subscriptionId}/' for a subscription,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     *     for a resource, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     *     for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DeliveryAttributeListResultInner> getDeliveryAttributesWithResponse(
+        String scope, String eventSubscriptionName, Context context);
 }

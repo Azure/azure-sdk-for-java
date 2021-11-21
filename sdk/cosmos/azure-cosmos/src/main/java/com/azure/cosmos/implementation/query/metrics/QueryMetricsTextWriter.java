@@ -71,6 +71,23 @@ public class QueryMetricsTextWriter extends QueryMetricsWriter {
     private static final String TURNAROUND_TIME_HEADER = "Turnaround Time (ms)";
     private static final String NUMBER_OF_PREEMPTION_HEADER = "NUMBER of Preemptions";
 
+    // IndexUtilizationInfo
+    private static final String INDEX_UTILIZATION_INFO_METRICS = "Index Utilization Info Metrics";
+    private static final String UTILIZED_SINGLE_INDEXES_METRICS = " Utilized Single Indexes Metrics";
+    private static final String POTENTIAL_SINGLE_INDEXES_METRICS = "Potential Single Indexes Metrics";
+    private static final String UTILIZED_COMPOSITE_INDEXES_METRICS = "Utilized Composite Indexes Metrics";
+    private static final String POTENTIAL_COMPOSITE_INDEXES_METRICS = "Potential Composite Indexes Metrics";
+
+    // Constants for Utilized and Potential Single Indexes Table
+    private static final String FILTER_EXPRESSION_HEADER = "Filter Expression";
+    private static final String INDEX_DOCUMENT_EXPRESSION_HEADER = "Index Document Expression";
+    private static final String FILTER_EXPRESSION_PRECISION_HEADER = "Filter Expression Precision";
+    private static final String INDEX_PLAN_FULL_FIDELITY_HEADER = "Index Plan Full Fidelity";
+    private static final String INDEX_IMPACT_SCORE_HEADER = "Index Impact Score";
+
+    // Constants for Utilized and Potential Composite Indexes Table
+    private static final String INDEX_DOCUMENT_EXPRESSIONS_HEADER = "Index Document Expressions";
+
     // Static  for Partition Execution Timeline Table
     // private static  int MaxDateTimeStringLength = LocalDateTime.MAX.toString().length();
     private static final int MAX_DATE_TIME_STRING_LENGTH = 16;
@@ -119,6 +136,36 @@ public class QueryMetricsTextWriter extends QueryMetricsWriter {
 
     private static final TextTable SCHEDULING_METRICS_TABLE = new TextTable(Arrays.asList(SCHEDULING_METRICS_COLUMNS));
 
+    // Static for Utilized and Potential Single Indexes Table
+    private static final int FILTER_EXPRESSION_HEADER_LENGTH = FILTER_EXPRESSION_HEADER.length();
+    private static final int INDEX_DOCUMENT_EXPRESSION_HEADER_LENGTH = INDEX_DOCUMENT_EXPRESSION_HEADER.length();
+    private static final int FILTER_EXPRESSION_PRECISION_HEADER_LENGTH = FILTER_EXPRESSION_PRECISION_HEADER.length();
+    private static final int INDEX_PLAN_FULL_FIDELITY_HEADER_LENGTH = INDEX_PLAN_FULL_FIDELITY_HEADER.length();
+    private static final int INDEX_IMPACT_SCORE_HEADER_LENGTH = INDEX_IMPACT_SCORE_HEADER.length();
+
+    private static final TextTable.Column[] UTILIZED_OR_POTENTIAL_SINGLE_INDEXES_COLUMNS = new TextTable.Column[]
+        {
+            new TextTable.Column(FILTER_EXPRESSION_HEADER, FILTER_EXPRESSION_HEADER_LENGTH),
+            new TextTable.Column(INDEX_DOCUMENT_EXPRESSION_HEADER, INDEX_DOCUMENT_EXPRESSION_HEADER_LENGTH),
+            new TextTable.Column(FILTER_EXPRESSION_PRECISION_HEADER, FILTER_EXPRESSION_PRECISION_HEADER_LENGTH),
+            new TextTable.Column(INDEX_PLAN_FULL_FIDELITY_HEADER, INDEX_PLAN_FULL_FIDELITY_HEADER_LENGTH),
+            new TextTable.Column(INDEX_IMPACT_SCORE_HEADER, INDEX_IMPACT_SCORE_HEADER_LENGTH),
+        };
+
+    private static final TextTable UTILIZED_OR_POTENTIAL_SINGLE_INDEXES_TABLE = new TextTable(Arrays.asList(UTILIZED_OR_POTENTIAL_SINGLE_INDEXES_COLUMNS));
+
+    // Static for Utilized and Potential Composite Indexes Table
+    private static final int INDEX_DOCUMENT_EXPRESSIONS_HEADER_LENGTH = INDEX_DOCUMENT_EXPRESSIONS_HEADER.length();
+
+    private static final TextTable.Column[] UTILIZED_OR_POTENTIAL_COMPOSITE_INDEXES_COLUMNS = new TextTable.Column[]
+        {
+            new TextTable.Column(INDEX_DOCUMENT_EXPRESSIONS_HEADER, INDEX_DOCUMENT_EXPRESSIONS_HEADER_LENGTH),
+            new TextTable.Column(INDEX_PLAN_FULL_FIDELITY_HEADER, INDEX_PLAN_FULL_FIDELITY_HEADER_LENGTH),
+            new TextTable.Column(INDEX_IMPACT_SCORE_HEADER, INDEX_IMPACT_SCORE_HEADER_LENGTH),
+        };
+
+    private static final TextTable UTILIZED_OR_POTENTIAL_COMPOSITE_INDEXES_TABLE = new TextTable(Arrays.asList(UTILIZED_OR_POTENTIAL_COMPOSITE_INDEXES_COLUMNS));
+
     // FetchExecutionRange state
     private String lastFetchPartitionId;
     private String lastActivityId;
@@ -134,6 +181,30 @@ public class QueryMetricsTextWriter extends QueryMetricsWriter {
     private long lastWaitTime;
     private long lastTurnaroundTime;
     private long lastNumberOfPreemptions;
+
+    // UtilizedSingleIndexes state
+    private String lastUtilizedSingleFilterExpression;
+    private String lastUtilizedSingleIndexDocumentExpression;
+    private boolean lastUtilizedSingleFilterExpressionPrecision;
+    private boolean lastUtilizedSingleIndexPlanFullFidelity;
+    private String lastUtilizedSingleIndexImpactScore;
+
+    // PotentialSingleIndexes state
+    private String lastPotentialSingleFilterExpression;
+    private String lastPotentialSingleIndexDocumentExpression;
+    private boolean lastPotentialSingleFilterExpressionPrecision;
+    private boolean lastPotentialSingleIndexPlanFullFidelity;
+    private String lastPotentialSingleIndexImpactScore;
+
+    // UtilizedCompositeIndexes state
+    private List<String> lastUtilizedCompositeIndexDocumentExpressions;
+    private boolean lastUtilizedCompositeIndexPlanFullFidelity;
+    private String lastUtilizedCompositeIndexImpactScore;
+
+    // PotentialCompositeIndexes state
+    private List<String> lastPotentialCompositeIndexDocumentExpressions;
+    private boolean lastPotentialCompositeIndexPlanFullFidelity;
+    private String lastPotentialCompositeIndexImpactScore;
 
     public static final DateTimeFormatter DATE_TIME_FORMATTER =
             DateTimeFormatter.ofPattern("HH:mm:ss:SSSS").withZone(ZoneOffset.UTC);
@@ -425,6 +496,236 @@ public class QueryMetricsTextWriter extends QueryMetricsWriter {
 
     @Override
     protected void writeAfterClientSideMetrics() {
+        // Do Nothing
+    }
+
+    // Index Utilisation Info Metrics
+    @Override
+    protected void writeBeforeIndexUtilizationInfoMetrics() {
+        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder,
+            QueryMetricsTextWriter.INDEX_UTILIZATION_INFO_METRICS, 0);
+    }
+
+    @Override
+    protected void writeBeforeUtilizedSingleIndexesMetrics() {
+        QueryMetricsTextWriter.appendNewlineToStringBuilder(stringBuilder);
+
+        // Building the table for Utilized Single Indexes Metrics
+        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, QueryMetricsTextWriter.UTILIZED_SINGLE_INDEXES_METRICS, 1);
+        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, UTILIZED_OR_POTENTIAL_SINGLE_INDEXES_TABLE.getTopLine(), 1);
+        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, UTILIZED_OR_POTENTIAL_SINGLE_INDEXES_TABLE.getHeader(), 1);
+        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, UTILIZED_OR_POTENTIAL_SINGLE_INDEXES_TABLE.getMiddleLine(), 1);
+    }
+
+    @Override
+    protected void writeBeforeUtilizedSingleIndex() {
+        //Do Nothing
+    }
+
+    @Override
+    protected void writeUtilizedSingleFilterExpression(String filterExpression) {
+        this.lastUtilizedSingleFilterExpression = filterExpression;
+    }
+
+    @Override
+    protected void writeUtilizedSingleIndexDocumentExpression(String indexDocumentExpression) {
+        this.lastUtilizedSingleIndexDocumentExpression = indexDocumentExpression;
+    }
+
+    @Override
+    protected void writeUtilizedSingleFilterExpressionPrecision(boolean filterExpressionPrecision) {
+        this.lastUtilizedSingleFilterExpressionPrecision = filterExpressionPrecision;
+    }
+
+    @Override
+    protected void writeUtilizedSingleIndexPlanFullFidelity(boolean indexPlanFullFidelity) {
+        this.lastUtilizedSingleIndexPlanFullFidelity = indexPlanFullFidelity;
+    }
+
+    @Override
+    protected void writeUtilizedSingleIndexImpactScore(String indexImpactScore) {
+        this.lastUtilizedSingleIndexImpactScore = indexImpactScore;
+    }
+
+    @Override
+    protected void writeAfterUtilizedSingleIndex() {
+        QueryMetricsTextWriter.appendHeaderToStringBuilder(
+            stringBuilder,
+            UTILIZED_OR_POTENTIAL_SINGLE_INDEXES_TABLE.getRow(Arrays.asList(
+                this.lastUtilizedSingleFilterExpression,
+                this.lastUtilizedSingleIndexDocumentExpression,
+                this.lastUtilizedSingleFilterExpressionPrecision,
+                this.lastUtilizedSingleIndexPlanFullFidelity,
+                this.lastUtilizedSingleIndexImpactScore)),
+            1);
+    }
+
+    @Override
+    protected void writeAfterUtilizedSingleIndexesMetrics() {
+        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, UTILIZED_OR_POTENTIAL_SINGLE_INDEXES_TABLE.getBottomLine(),
+            1);
+    }
+
+    @Override
+    protected void writeBeforePotentialSingleIndexesMetrics() {
+        QueryMetricsTextWriter.appendNewlineToStringBuilder(stringBuilder);
+
+        // Building the table for Potential Single Indexes Metrics
+        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, QueryMetricsTextWriter.POTENTIAL_SINGLE_INDEXES_METRICS, 1);
+        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, UTILIZED_OR_POTENTIAL_SINGLE_INDEXES_TABLE.getTopLine(), 1);
+        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, UTILIZED_OR_POTENTIAL_SINGLE_INDEXES_TABLE.getHeader(), 1);
+        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, UTILIZED_OR_POTENTIAL_SINGLE_INDEXES_TABLE.getMiddleLine(), 1);
+    }
+
+    @Override
+    protected void writeBeforePotentialSingleIndex() {
+        // Do Nothing
+    }
+
+    @Override
+    protected void writePotentialSingleFilterExpression(String filterExpression) {
+        this.lastPotentialSingleFilterExpression = filterExpression;
+    }
+
+    @Override
+    protected void writePotentialSingleIndexDocumentExpression(String indexDocumentExpression) {
+        this.lastPotentialSingleIndexDocumentExpression = indexDocumentExpression;
+    }
+
+    @Override
+    protected void writePotentialSingleFilterExpressionPrecision(boolean filterExpressionPrecision) {
+        this.lastPotentialSingleFilterExpressionPrecision = filterExpressionPrecision;
+    }
+
+    @Override
+    protected void writePotentialSingleIndexPlanFullFidelity(boolean indexPlanFullFidelity) {
+        this.lastPotentialSingleIndexPlanFullFidelity = indexPlanFullFidelity;
+    }
+
+    @Override
+    protected void writePotentialSingleIndexImpactScore(String indexImpactScore) {
+        this.lastPotentialSingleIndexImpactScore = indexImpactScore;
+    }
+
+    @Override
+    protected void writeAfterPotentialSingleIndex() {
+        QueryMetricsTextWriter.appendHeaderToStringBuilder(
+            stringBuilder,
+            UTILIZED_OR_POTENTIAL_SINGLE_INDEXES_TABLE.getRow(Arrays.asList(
+                this.lastPotentialSingleFilterExpression,
+                this.lastPotentialSingleIndexDocumentExpression,
+                this.lastPotentialSingleFilterExpressionPrecision,
+                this.lastPotentialSingleIndexPlanFullFidelity,
+                this.lastPotentialSingleIndexImpactScore)),
+            1);
+    }
+
+    @Override
+    protected void writeAfterPotentialSingleIndexesMetrics() {
+        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, UTILIZED_OR_POTENTIAL_SINGLE_INDEXES_TABLE.getBottomLine(),
+            1);
+    }
+
+    @Override
+    protected void writeBeforeUtilizedCompositeIndexesMetrics() {
+        QueryMetricsTextWriter.appendNewlineToStringBuilder(stringBuilder);
+
+        // Building the table for Utilized Composite Indexes Metrics
+        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, QueryMetricsTextWriter.UTILIZED_COMPOSITE_INDEXES_METRICS, 1);
+        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, UTILIZED_OR_POTENTIAL_COMPOSITE_INDEXES_TABLE.getTopLine(), 1);
+        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, UTILIZED_OR_POTENTIAL_COMPOSITE_INDEXES_TABLE.getHeader(), 1);
+        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, UTILIZED_OR_POTENTIAL_COMPOSITE_INDEXES_TABLE.getMiddleLine(), 1);
+    }
+
+    @Override
+    protected void writeBeforeUtilizedCompositeIndex() {
+        // Do Nothing
+    }
+
+    @Override
+    protected void writeUtilizedCompositeIndexDocumentExpressions(List<String> indexDocumentExpressions) {
+        this.lastUtilizedCompositeIndexDocumentExpressions = indexDocumentExpressions;
+    }
+
+    @Override
+    protected void writeUtilizedCompositeIndexPlanFullFidelity(boolean indexPlanFullFidelity) {
+        this.lastUtilizedCompositeIndexPlanFullFidelity = indexPlanFullFidelity;
+    }
+
+    @Override
+    protected void writeUtilizedCompositeIndexImpactScore(String indexImpactScore) {
+        this.lastUtilizedCompositeIndexImpactScore = indexImpactScore;
+    }
+
+    @Override
+    protected void writeAfterUtilizedCompositeIndex() {
+        QueryMetricsTextWriter.appendHeaderToStringBuilder(
+            stringBuilder,
+            UTILIZED_OR_POTENTIAL_COMPOSITE_INDEXES_TABLE.getRow(Arrays.asList(
+                this.lastUtilizedCompositeIndexDocumentExpressions,
+                this.lastUtilizedCompositeIndexPlanFullFidelity,
+                this.lastUtilizedCompositeIndexImpactScore
+            )),
+            1);
+    }
+
+    @Override
+    protected void writeAfterUtilizedCompositeIndexesMetrics() {
+        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, UTILIZED_OR_POTENTIAL_COMPOSITE_INDEXES_TABLE.getBottomLine(),
+            1);
+    }
+
+    @Override
+    protected void writeBeforePotentialCompositeIndexesMetrics() {
+        QueryMetricsTextWriter.appendNewlineToStringBuilder(stringBuilder);
+
+        // Building the table for Potential Composite Indexes Metrics
+        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, QueryMetricsTextWriter.POTENTIAL_COMPOSITE_INDEXES_METRICS, 1);
+        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, UTILIZED_OR_POTENTIAL_COMPOSITE_INDEXES_TABLE.getTopLine(), 1);
+        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, UTILIZED_OR_POTENTIAL_COMPOSITE_INDEXES_TABLE.getHeader(), 1);
+        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, UTILIZED_OR_POTENTIAL_COMPOSITE_INDEXES_TABLE.getMiddleLine(), 1);
+    }
+
+    @Override
+    protected void writeBeforePotentialCompositeIndex() {
+        // Do Nothing
+    }
+
+    @Override
+    protected void writePotentialCompositeIndexDocumentExpressions(List<String> indexDocumentExpressions) {
+        this.lastPotentialCompositeIndexDocumentExpressions = indexDocumentExpressions;
+    }
+
+    @Override
+    protected void writePotentialCompositeIndexPlanFullFidelity(boolean indexPlanFullFidelity) {
+        this.lastPotentialCompositeIndexPlanFullFidelity = indexPlanFullFidelity;
+    }
+
+    @Override
+    protected void writePotentialCompositeIndexImpactScore(String indexImpactScore) {
+        this.lastPotentialCompositeIndexImpactScore = indexImpactScore;
+    }
+
+    @Override
+    protected void writeAfterPotentialCompositeIndex() {
+        QueryMetricsTextWriter.appendHeaderToStringBuilder(
+            stringBuilder,
+            UTILIZED_OR_POTENTIAL_COMPOSITE_INDEXES_TABLE.getRow(Arrays.asList(
+                this.lastPotentialCompositeIndexDocumentExpressions,
+                this.lastPotentialCompositeIndexPlanFullFidelity,
+                this.lastPotentialCompositeIndexImpactScore
+            )),
+            1);
+    }
+
+    @Override
+    protected void writeAfterPotentialCompositeIndexesMetrics() {
+        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, UTILIZED_OR_POTENTIAL_COMPOSITE_INDEXES_TABLE.getBottomLine(),
+            1);
+    }
+
+    @Override
+    protected void writeAfterIndexUtilizationInfoMetrics() {
         // Do Nothing
     }
 

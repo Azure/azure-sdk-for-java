@@ -1,5 +1,44 @@
 # Release History
+
 ## 1.1.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.6 (2021-11-18)
+
+### Other Changes
+
+#### Dependency updates
+- Upgraded `azure-communication-common` to 1.0.6
+- Upgraded `azure-core` to 1.22.0
+- Upgraded `azure-identity` to 1.4.1
+
+## 1.0.5 (2021-10-06)
+
+### Other Changes
+
+#### Dependency updates
+- Upgraded `azure-core` to 1.21.0
+
+## 1.0.4 (2021-09-22)
+
+### Other Changes
+
+#### Dependency updates
+- Upgraded `azure-communication-common` to 1.0.4
+- Upgraded `azure-core` to 1.20.0
+
+## 1.0.3 (2021-06-09)
+Updated `azure-communication-phonenumbers` version
+
+## 1.0.2 (2021-05-27)
+- Dependency versions updated.
 
 ## 1.0.1 (2021-04-30)
 ### Bug fixes
@@ -41,7 +80,7 @@ PhoneNumbersAsyncClient.getPurchasedPhoneNumberWithResponse and PhoneNumbersClie
 - Added support for Azure Active Directory Authentication.
 
 ### Breaking Changes
-- PhoneNumberAsyncClient has been replaced with PhoneNumbersAsyncClient, which has the same functionality but different APIs. To learn more about how PhoneNumbersAsyncClient works, refer to the [README.md][https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-phonenumbers/README.md].
-- PhoneNumberClient has been replaced with PhoneNumbersClient, which has the same functionality but different APIs. To learn more about how PhoneNumbersClient works, refer to the [README.md][https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-phonenumbers/README.md].
+- PhoneNumberAsyncClient has been replaced with PhoneNumbersAsyncClient, which has the same functionality but different APIs. To learn more about how PhoneNumbersAsyncClient works, refer to the [README.md][https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/communication/azure-communication-phonenumbers/README.md].
+- PhoneNumberClient has been replaced with PhoneNumbersClient, which has the same functionality but different APIs. To learn more about how PhoneNumbersClient works, refer to the [README.md][https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/communication/azure-communication-phonenumbers/README.md].
 
 

@@ -29,9 +29,11 @@ public final class TemplateLink {
     private String id;
 
     /*
-     * Applicable only if this template link references a Template Spec. This
-     * relativePath property can optionally be used to reference a Template
-     * Spec artifact by path.
+     * The relativePath property can be used to deploy a linked template at a
+     * location relative to the parent. If the parent template was linked with
+     * a TemplateSpec, this will reference an artifact in the TemplateSpec.  If
+     * the parent was linked with a URI, the child deployment will be a
+     * combination of the parent and relativePath URIs
      */
     @JsonProperty(value = "relativePath")
     private String relativePath;
@@ -41,6 +43,13 @@ public final class TemplateLink {
      */
     @JsonProperty(value = "contentVersion")
     private String contentVersion;
+
+    /*
+     * The query string (for example, a SAS token) to be used with the
+     * templateLink URI.
+     */
+    @JsonProperty(value = "queryString")
+    private String queryString;
 
     /**
      * Get the uri property: The URI of the template to deploy. Use either the uri or id property, but not both.
@@ -83,8 +92,10 @@ public final class TemplateLink {
     }
 
     /**
-     * Get the relativePath property: Applicable only if this template link references a Template Spec. This
-     * relativePath property can optionally be used to reference a Template Spec artifact by path.
+     * Get the relativePath property: The relativePath property can be used to deploy a linked template at a location
+     * relative to the parent. If the parent template was linked with a TemplateSpec, this will reference an artifact in
+     * the TemplateSpec. If the parent was linked with a URI, the child deployment will be a combination of the parent
+     * and relativePath URIs.
      *
      * @return the relativePath value.
      */
@@ -93,8 +104,10 @@ public final class TemplateLink {
     }
 
     /**
-     * Set the relativePath property: Applicable only if this template link references a Template Spec. This
-     * relativePath property can optionally be used to reference a Template Spec artifact by path.
+     * Set the relativePath property: The relativePath property can be used to deploy a linked template at a location
+     * relative to the parent. If the parent template was linked with a TemplateSpec, this will reference an artifact in
+     * the TemplateSpec. If the parent was linked with a URI, the child deployment will be a combination of the parent
+     * and relativePath URIs.
      *
      * @param relativePath the relativePath value to set.
      * @return the TemplateLink object itself.
@@ -121,6 +134,26 @@ public final class TemplateLink {
      */
     public TemplateLink withContentVersion(String contentVersion) {
         this.contentVersion = contentVersion;
+        return this;
+    }
+
+    /**
+     * Get the queryString property: The query string (for example, a SAS token) to be used with the templateLink URI.
+     *
+     * @return the queryString value.
+     */
+    public String queryString() {
+        return this.queryString;
+    }
+
+    /**
+     * Set the queryString property: The query string (for example, a SAS token) to be used with the templateLink URI.
+     *
+     * @param queryString the queryString value to set.
+     * @return the TemplateLink object itself.
+     */
+    public TemplateLink withQueryString(String queryString) {
+        this.queryString = queryString;
         return this;
     }
 

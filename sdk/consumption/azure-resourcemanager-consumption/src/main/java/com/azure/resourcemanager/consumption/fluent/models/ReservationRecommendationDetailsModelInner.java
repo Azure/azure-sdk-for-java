@@ -34,6 +34,12 @@ public class ReservationRecommendationDetailsModelInner extends ProxyResource {
     private String sku;
 
     /*
+     * Resource eTag.
+     */
+    @JsonProperty(value = "eTag")
+    private String etag;
+
+    /*
      * An ISO 4217 currency code identifier for the costs and savings
      */
     @JsonProperty(value = "properties.currency", access = JsonProperty.Access.WRITE_ONLY)
@@ -68,12 +74,6 @@ public class ReservationRecommendationDetailsModelInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.usage", access = JsonProperty.Access.WRITE_ONLY)
     private ReservationRecommendationDetailsUsageProperties usage;
-
-    /*
-     * Resource etag.
-     */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
-    private String etag;
 
     /*
      * Resource tags.
@@ -118,6 +118,26 @@ public class ReservationRecommendationDetailsModelInner extends ProxyResource {
      */
     public ReservationRecommendationDetailsModelInner withSku(String sku) {
         this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the etag property: Resource eTag.
+     *
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
+    }
+
+    /**
+     * Set the etag property: Resource eTag.
+     *
+     * @param etag the etag value to set.
+     * @return the ReservationRecommendationDetailsModelInner object itself.
+     */
+    public ReservationRecommendationDetailsModelInner withEtag(String etag) {
+        this.etag = etag;
         return this;
     }
 
@@ -173,15 +193,6 @@ public class ReservationRecommendationDetailsModelInner extends ProxyResource {
      */
     public ReservationRecommendationDetailsUsageProperties usage() {
         return this.usage;
-    }
-
-    /**
-     * Get the etag property: Resource etag.
-     *
-     * @return the etag value.
-     */
-    public String etag() {
-        return this.etag;
     }
 
     /**

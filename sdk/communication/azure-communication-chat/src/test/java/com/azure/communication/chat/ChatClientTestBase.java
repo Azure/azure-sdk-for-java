@@ -7,6 +7,7 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityClientBuilder;
 import com.azure.communication.chat.models.*;
 import com.azure.communication.common.CommunicationTokenCredential;
+import com.azure.communication.identity.CommunicationIdentityServiceVersion;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
@@ -45,9 +46,6 @@ public class ChatClientTestBase extends TestBase {
 
     protected static final String ACCESS_KEY = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_SERVICE_ACCESS_KEY", "pw==");
-
-    private static final String TEST_PACKAGES_ENABLED = Configuration.getGlobalConfiguration()
-        .get("TEST_PACKAGES_ENABLED", "all");
 
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
@@ -108,6 +106,7 @@ public class ChatClientTestBase extends TestBase {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
         builder.endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(ACCESS_KEY))
+            .serviceVersion(CommunicationIdentityServiceVersion.V2021_03_07)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {
@@ -213,10 +212,6 @@ public class ChatClientTestBase extends TestBase {
 
     protected ChatClientBuilder addLoggingPolicyForIdentityClientBuilder(ChatClientBuilder builder, String testName) {
         return builder.addPolicy(new CommunicationLoggerPolicy(testName));
-    }
-
-    protected boolean shouldEnableChatTests() {
-        return TEST_PACKAGES_ENABLED.matches("(all|chat)");
     }
 
     private String redact(String content, Matcher matcher, String replacement) {

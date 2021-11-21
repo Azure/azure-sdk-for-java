@@ -513,7 +513,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginUpdateAsync(
         String resourceGroupName,
         PrivateEndpointConnectionsParentType parentType,
@@ -547,7 +547,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginUpdateAsync(
         String resourceGroupName,
         PrivateEndpointConnectionsParentType parentType,
@@ -587,7 +587,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginUpdate(
         String resourceGroupName,
         PrivateEndpointConnectionsParentType parentType,
@@ -613,7 +613,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginUpdate(
         String resourceGroupName,
         PrivateEndpointConnectionsParentType parentType,
@@ -882,7 +882,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName,
         PrivateEndpointConnectionsParentType parentType,
@@ -908,7 +908,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName,
         PrivateEndpointConnectionsParentType parentType,
@@ -935,7 +935,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName,
         PrivateEndpointConnectionsParentType parentType,
@@ -958,7 +958,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName,
         PrivateEndpointConnectionsParentType parentType,

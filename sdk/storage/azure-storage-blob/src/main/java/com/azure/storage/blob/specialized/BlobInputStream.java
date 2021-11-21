@@ -40,14 +40,15 @@ public final class BlobInputStream extends StorageInputStream {
      * @param blobRangeOffset The offset of blob data to begin stream.
      * @param blobRangeLength How much data the stream should return after blobRangeOffset.
      * @param chunkSize The size of the chunk to download.
+     * @param initialBuffer The result of the initial download.
      * @param accessCondition An {@link BlobRequestConditions} object which represents the access conditions for the
      * blob.
      * @throws BlobStorageException An exception representing any error which occurred during the operation.
      */
     BlobInputStream(final BlobAsyncClientBase blobClient, long blobRangeOffset, Long blobRangeLength, int chunkSize,
-        final BlobRequestConditions accessCondition, final BlobProperties blobProperties)
-        throws BlobStorageException {
-        super(blobRangeOffset, blobRangeLength, chunkSize, blobProperties.getBlobSize());
+        final ByteBuffer initialBuffer, final BlobRequestConditions accessCondition,
+        final BlobProperties blobProperties) throws BlobStorageException {
+        super(blobRangeOffset, blobRangeLength, chunkSize, blobProperties.getBlobSize(), initialBuffer);
 
         this.blobClient = blobClient;
         this.accessCondition = accessCondition;
@@ -64,11 +65,9 @@ public final class BlobInputStream extends StorageInputStream {
     @Override
     protected synchronized ByteBuffer dispatchRead(final int readLength, final long offset) throws IOException {
         try {
-            ByteBuffer currentBuffer = this.blobClient.downloadWithResponse(new BlobRange(offset,
-                (long) readLength), null, this.accessCondition, false)
-                .flatMap(response -> {
-                    return FluxUtil.collectBytesInByteBufferStream(response.getValue()).map(ByteBuffer::wrap);
-                })
+            ByteBuffer currentBuffer = this.blobClient.downloadWithResponse(
+                new BlobRange(offset, (long) readLength), null, this.accessCondition, false)
+                .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue()).map(ByteBuffer::wrap))
                 .block();
 
             this.bufferSize = readLength;
@@ -77,15 +76,13 @@ public final class BlobInputStream extends StorageInputStream {
         } catch (final BlobStorageException e) {
             this.streamFaulted = true;
             this.lastError = new IOException(e);
+
             throw this.lastError;
         }
     }
 
     /**
-     * Gets the blob properties.
-     * <p>
-     * If no data has been read from the stream, a network call is made to get properties. Otherwise, the blob
-     * properties obtained from the download are stored.
+     * Gets the blob properties as fetched upon download.
      *
      * @return {@link BlobProperties}
      */

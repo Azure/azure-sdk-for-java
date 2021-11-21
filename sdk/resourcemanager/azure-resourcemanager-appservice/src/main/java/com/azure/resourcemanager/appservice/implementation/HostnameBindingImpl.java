@@ -3,6 +3,8 @@
 
 package com.azure.resourcemanager.appservice.implementation;
 
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.models.HostnameBindingInner;
 import com.azure.resourcemanager.appservice.models.AppServiceDomain;
@@ -172,6 +174,16 @@ class HostnameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
 
     @Override
     public Mono<HostnameBinding> createAsync() {
+        return createAsync(Context.NONE);
+    }
+
+    @Override
+    public HostnameBinding create(Context context) {
+        return createAsync(context).block();
+    }
+
+    @Override
+    public Mono<HostnameBinding> createAsync(Context context) {
         final HostnameBinding self = this;
         Function<HostnameBindingInner, HostnameBinding> mapper =
             hostnameBindingInner -> {
@@ -193,6 +205,7 @@ class HostnameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
                         name,
                         parent().name(),
                         innerModel())
+                    .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()))
                     .map(mapper);
         } else {
             hostnameBindingObservable =
@@ -203,6 +216,7 @@ class HostnameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
                     .getWebApps()
                     .createOrUpdateHostnameBindingAsync(
                         parent().resourceGroupName(), parent().name(), name, innerModel())
+                    .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()))
                     .map(mapper);
         }
 

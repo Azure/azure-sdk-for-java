@@ -103,7 +103,7 @@ public class ComputerVisionImpl implements ComputerVision {
     interface ComputerVisionService {
         @Headers({ "Content-Type: application/octet-stream", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVision readInStream" })
         @POST("read/analyze")
-        Observable<Response<ResponseBody>> readInStream(@Query("language") OcrDetectionLanguage language, @Body RequestBody image, @Query("pages") String pages, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> readInStream(@Query("language") OcrDetectionLanguage language, @Body RequestBody image, @Query("pages") String pages, @Query("model-version") String modelVersion, @Query("readingOrder") String readingOrder, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/octet-stream", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVision tagImageInStream" })
         @POST("tag")
@@ -144,7 +144,7 @@ public class ComputerVisionImpl implements ComputerVision {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVision read" })
         @POST("read/analyze")
-        Observable<Response<ResponseBody>> read(@Query("language") OcrDetectionLanguage language, @Query("pages") String pages, @Query("model-version") String modelVersion, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> read(@Query("language") OcrDetectionLanguage language, @Query("pages") String pages, @Query("model-version") String modelVersion, @Query("readingOrder") String readingOrder, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVision getAreaOfInterest" })
         @POST("areaOfInterest")
@@ -246,8 +246,10 @@ public class ComputerVisionImpl implements ComputerVision {
         }
         final OcrDetectionLanguage language = readInStreamOptionalParameter != null ? readInStreamOptionalParameter.language() : null;
         final List<String> pages = readInStreamOptionalParameter != null ? readInStreamOptionalParameter.pages() : null;
+        final String modelVersion = readInStreamOptionalParameter != null ? readInStreamOptionalParameter.modelVersion() : null;
+        final String readingOrder = readInStreamOptionalParameter != null ? readInStreamOptionalParameter.readingOrder() : null;
 
-        return readInStreamWithServiceResponseAsync(image, language, pages);
+        return readInStreamWithServiceResponseAsync(image, language, pages, modelVersion, readingOrder);
     }
 
     /**
@@ -256,10 +258,12 @@ public class ComputerVisionImpl implements ComputerVision {
      * @param image An image stream.
      * @param language The BCP-47 language code of the text in the document. Read supports auto language identification and multi-language documents, so only provide a language code if you would like to force the document to be processed in that specific language. See https://aka.ms/ocr-languages for list of supported languages. Possible values include: 'af', 'ast', 'bi', 'br', 'ca', 'ceb', 'ch', 'co', 'crh', 'cs', 'csb', 'da', 'de', 'en', 'es', 'et', 'eu', 'fi', 'fil', 'fj', 'fr', 'fur', 'fy', 'ga', 'gd', 'gil', 'gl', 'gv', 'hni', 'hsb', 'ht', 'hu', 'ia', 'id', 'it', 'iu', 'ja', 'jv', 'kaa', 'kac', 'kea', 'kha', 'kl', 'ko', 'ku', 'kw', 'lb', 'ms', 'mww', 'nap', 'nl', 'no', 'oc', 'pl', 'pt', 'quc', 'rm', 'sco', 'sl', 'sq', 'sv', 'sw', 'tet', 'tr', 'tt', 'uz', 'vo', 'wae', 'yua', 'za', 'zh-Hans', 'zh-Hant', 'zu'
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param modelVersion Optional parameter to specify the version of the OCR model used for text extraction. Accepted values are: "latest", "latest-preview", "2021-04-12". Defaults to "latest".
+     * @param readingOrder Optional parameter to specify which reading order algorithm should be applied when ordering the extract text elements. Can be either 'basic' or 'natural'. Will default to 'basic' if not specified
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public Observable<ServiceResponseWithHeaders<Void, ReadInStreamHeaders>> readInStreamWithServiceResponseAsync(byte[] image, OcrDetectionLanguage language, List<String> pages) {
+    public Observable<ServiceResponseWithHeaders<Void, ReadInStreamHeaders>> readInStreamWithServiceResponseAsync(byte[] image, OcrDetectionLanguage language, List<String> pages, String modelVersion, String readingOrder) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -270,7 +274,7 @@ public class ComputerVisionImpl implements ComputerVision {
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
         String pagesConverted = this.client.serializerAdapter().serializeList(pages, CollectionFormat.CSV);
-        return service.readInStream(language, imageConverted, pagesConverted, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.readInStream(language, imageConverted, pagesConverted, modelVersion, readingOrder, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, ReadInStreamHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, ReadInStreamHeaders>> call(Response<ResponseBody> response) {
@@ -304,6 +308,8 @@ public class ComputerVisionImpl implements ComputerVision {
         private byte[] image;
         private OcrDetectionLanguage language;
         private List<String> pages;
+        private String modelVersion;
+        private String readingOrder;
 
         /**
          * Constructor.
@@ -332,13 +338,25 @@ public class ComputerVisionImpl implements ComputerVision {
         }
 
         @Override
+        public ComputerVisionReadInStreamParameters withModelVersion(String modelVersion) {
+            this.modelVersion = modelVersion;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionReadInStreamParameters withReadingOrder(String readingOrder) {
+            this.readingOrder = readingOrder;
+            return this;
+        }
+
+        @Override
         public void execute() {
-        readInStreamWithServiceResponseAsync(image, language, pages).toBlocking().single().body();
+        readInStreamWithServiceResponseAsync(image, language, pages, modelVersion, readingOrder).toBlocking().single().body();
     }
 
         @Override
         public Observable<Void> executeAsync() {
-            return readInStreamWithServiceResponseAsync(image, language, pages).map(new Func1<ServiceResponseWithHeaders<Void, ReadInStreamHeaders>, Void>() {
+            return readInStreamWithServiceResponseAsync(image, language, pages, modelVersion, readingOrder).map(new Func1<ServiceResponseWithHeaders<Void, ReadInStreamHeaders>, Void>() {
                 @Override
                 public Void call(ServiceResponseWithHeaders<Void, ReadInStreamHeaders> response) {
                     return response.body();
@@ -1948,8 +1966,9 @@ public class ComputerVisionImpl implements ComputerVision {
         final OcrDetectionLanguage language = readOptionalParameter != null ? readOptionalParameter.language() : null;
         final List<String> pages = readOptionalParameter != null ? readOptionalParameter.pages() : null;
         final String modelVersion = readOptionalParameter != null ? readOptionalParameter.modelVersion() : null;
+        final String readingOrder = readOptionalParameter != null ? readOptionalParameter.readingOrder() : null;
 
-        return readWithServiceResponseAsync(url, language, pages, modelVersion);
+        return readWithServiceResponseAsync(url, language, pages, modelVersion, readingOrder);
     }
 
     /**
@@ -1959,10 +1978,11 @@ public class ComputerVisionImpl implements ComputerVision {
      * @param language The BCP-47 language code of the text in the document. Read supports auto language identification and multi-language documents, so only provide a language code if you would like to force the document to be processed in that specific language. See https://aka.ms/ocr-languages for list of supported languages. Possible values include: 'af', 'ast', 'bi', 'br', 'ca', 'ceb', 'ch', 'co', 'crh', 'cs', 'csb', 'da', 'de', 'en', 'es', 'et', 'eu', 'fi', 'fil', 'fj', 'fr', 'fur', 'fy', 'ga', 'gd', 'gil', 'gl', 'gv', 'hni', 'hsb', 'ht', 'hu', 'ia', 'id', 'it', 'iu', 'ja', 'jv', 'kaa', 'kac', 'kea', 'kha', 'kl', 'ko', 'ku', 'kw', 'lb', 'ms', 'mww', 'nap', 'nl', 'no', 'oc', 'pl', 'pt', 'quc', 'rm', 'sco', 'sl', 'sq', 'sv', 'sw', 'tet', 'tr', 'tt', 'uz', 'vo', 'wae', 'yua', 'za', 'zh-Hans', 'zh-Hant', 'zu'
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param modelVersion Optional parameter to specify the version of the OCR model used for text extraction. Accepted values are: "latest", "latest-preview", "2021-04-12". Defaults to "latest".
+     * @param readingOrder Optional parameter to specify which reading order algorithm should be applied when ordering the extract text elements. Can be either 'basic' or 'natural'. Will default to 'basic' if not specified
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public Observable<ServiceResponseWithHeaders<Void, ReadHeaders>> readWithServiceResponseAsync(String url, OcrDetectionLanguage language, List<String> pages, String modelVersion) {
+    public Observable<ServiceResponseWithHeaders<Void, ReadHeaders>> readWithServiceResponseAsync(String url, OcrDetectionLanguage language, List<String> pages, String modelVersion, String readingOrder) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -1974,7 +1994,7 @@ public class ComputerVisionImpl implements ComputerVision {
         imageUrl.withUrl(url);
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         String pagesConverted = this.client.serializerAdapter().serializeList(pages, CollectionFormat.CSV);
-        return service.read(language, pagesConverted, modelVersion, this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
+        return service.read(language, pagesConverted, modelVersion, readingOrder, this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, ReadHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, ReadHeaders>> call(Response<ResponseBody> response) {
@@ -2009,6 +2029,7 @@ public class ComputerVisionImpl implements ComputerVision {
         private OcrDetectionLanguage language;
         private List<String> pages;
         private String modelVersion;
+        private String readingOrder;
 
         /**
          * Constructor.
@@ -2043,13 +2064,19 @@ public class ComputerVisionImpl implements ComputerVision {
         }
 
         @Override
+        public ComputerVisionReadParameters withReadingOrder(String readingOrder) {
+            this.readingOrder = readingOrder;
+            return this;
+        }
+
+        @Override
         public void execute() {
-        readWithServiceResponseAsync(url, language, pages, modelVersion).toBlocking().single().body();
+        readWithServiceResponseAsync(url, language, pages, modelVersion, readingOrder).toBlocking().single().body();
     }
 
         @Override
         public Observable<Void> executeAsync() {
-            return readWithServiceResponseAsync(url, language, pages, modelVersion).map(new Func1<ServiceResponseWithHeaders<Void, ReadHeaders>, Void>() {
+            return readWithServiceResponseAsync(url, language, pages, modelVersion, readingOrder).map(new Func1<ServiceResponseWithHeaders<Void, ReadHeaders>, Void>() {
                 @Override
                 public Void call(ServiceResponseWithHeaders<Void, ReadHeaders> response) {
                     return response.body();

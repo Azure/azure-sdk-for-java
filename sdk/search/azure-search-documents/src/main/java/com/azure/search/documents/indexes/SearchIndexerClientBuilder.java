@@ -5,6 +5,7 @@ package com.azure.search.documents.indexes;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelinePosition;
@@ -38,11 +39,25 @@ import java.util.Objects;
  *
  * <p><strong>Instantiating an asynchronous Search Indexer Client</strong></p>
  *
- * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.instantiation}
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.instantiation -->
+ * <pre>
+ * SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuilder&#40;&#41;
+ *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.instantiation -->
  *
  * <p><strong>Instantiating a synchronous Search Indexer Client</strong></p>
  *
- * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.instantiation}
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.instantiation -->
+ * <pre>
+ * SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder&#40;&#41;
+ *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.instantiation -->
  *
  * @see SearchIndexerClient
  * @see SearchIndexerAsyncClient
@@ -54,7 +69,9 @@ public class SearchIndexerClientBuilder {
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
 
-    private AzureKeyCredential credential;
+    private AzureKeyCredential azureKeyCredential;
+    private TokenCredential tokenCredential;
+
     private SearchServiceVersion serviceVersion;
     private String endpoint;
     private HttpClient httpClient;
@@ -98,7 +115,6 @@ public class SearchIndexerClientBuilder {
      */
     public SearchIndexerAsyncClient buildAsyncClient() {
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
-        Objects.requireNonNull(credential, "'credential' cannot be null.");
 
         SearchServiceVersion buildVersion = (serviceVersion == null)
             ? SearchServiceVersion.getLatest()
@@ -108,10 +124,8 @@ public class SearchIndexerClientBuilder {
             return new SearchIndexerAsyncClient(endpoint, buildVersion, httpPipeline);
         }
 
-        Objects.requireNonNull(credential, "'credential' cannot be null.");
-
         HttpPipeline pipeline = Utility.buildHttpPipeline(clientOptions, httpLogOptions, configuration, retryPolicy,
-            credential, perCallPolicies, perRetryPolicies, httpClient);
+            azureKeyCredential, tokenCredential, perCallPolicies, perRetryPolicies, httpClient, logger);
 
         return new SearchIndexerAsyncClient(endpoint, buildVersion, pipeline);
     }
@@ -138,12 +152,20 @@ public class SearchIndexerClientBuilder {
      *
      * @param credential The {@link AzureKeyCredential} used to authenticate HTTP requests.
      * @return The updated SearchIndexerClientBuilder object.
-     * @throws NullPointerException If {@code credential} is {@code null}.
-     * @throws IllegalArgumentException If {@link AzureKeyCredential#getKey()} is {@code null} or empty.
      */
     public SearchIndexerClientBuilder credential(AzureKeyCredential credential) {
-        Objects.requireNonNull(credential, "'credential' cannot be null.");
-        this.credential = credential;
+        this.azureKeyCredential = credential;
+        return this;
+    }
+
+    /**
+     * Sets the {@link TokenCredential} used to authenticate HTTP requests.
+     *
+     * @param credential The {@link TokenCredential} used to authenticate HTTP requests.
+     * @return The updated SearchIndexerClientBuilder object.
+     */
+    public SearchIndexerClientBuilder credential(TokenCredential credential) {
+        this.tokenCredential = credential;
         return this;
     }
 

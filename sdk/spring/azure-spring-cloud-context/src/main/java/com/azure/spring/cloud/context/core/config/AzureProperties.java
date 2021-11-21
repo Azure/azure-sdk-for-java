@@ -4,9 +4,9 @@
 package com.azure.spring.cloud.context.core.config;
 
 
+import com.azure.core.util.CoreUtils;
 import com.azure.spring.cloud.context.core.api.CredentialSupplier;
 import com.azure.spring.cloud.context.core.enums.AzureEnvironments;
-import com.google.common.base.Strings;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
@@ -47,7 +47,7 @@ public class AzureProperties implements CredentialSupplier {
                 "When auto create resources is enabled, spring.cloud.azure.region must be provided");
         }
 
-        if (msiEnabled && Strings.isNullOrEmpty(subscriptionId)) {
+        if (msiEnabled && CoreUtils.isNullOrEmpty(subscriptionId)) {
             Assert.hasText(this.subscriptionId, "When msi is enabled, "
                 + "spring.cloud.azure.subscription-id must be provided");
         }

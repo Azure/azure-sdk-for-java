@@ -27,6 +27,9 @@
         <module>sdk/communication/azure-communication-phonenumbers</module>
         <module>sdk/communication/azure-communication-sms</module>
 
+        <!-- Azure Confidential Ledger -->
+        <module>sdk/confidentialledger/azure-security-confidentialledger</module>
+
         <!-- Azure Container Registry -->
         <module>sdk/containerregistry/azure-containers-containerregistry</module>
 
@@ -81,6 +84,14 @@
         <!-- Models Repository -->
         <module>sdk/modelsrepository/azure-iot-modelsrepository</module>
 
+        <!-- Azure Monitor -->
+        <module>sdk/monitor/azure-monitor-opentelemetry-exporter</module>
+        <module>sdk/monitor/azure-monitor-query</module>
+
+        <!-- Purview -->
+        <module>sdk/purview/azure-analytics-purview-catalog</module>
+        <module>sdk/purview/azure-analytics-purview-scanning</module>
+
         <!-- Quantum Jobs -->
         <module>sdk/quantum/azure-quantum-jobs</module>
 
@@ -89,7 +100,7 @@
 
         <!-- Schema Registry -->
         <module>sdk/schemaregistry/azure-data-schemaregistry</module>
-        <module>sdk/schemaregistry/azure-data-schemaregistry-avro</module>
+        <module>sdk/schemaregistry/azure-data-schemaregistry-apacheavro</module>
 
         <!-- Cognitive Search -->
         <module>sdk/search/azure-search-documents</module>
@@ -149,7 +160,7 @@
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-javadoc-plugin</artifactId>
-              <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+              <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
               <configuration>
                 <source>1.8</source>
                 <doctitle>Azure SDK for Java Reference Documentation</doctitle>
@@ -259,6 +270,10 @@
                     <packages>com.azure.iot.modelsrepository*</packages>
                   </group>
                   <group>
+                    <title>Azure Agrifood</title>
+                    <packages>com.azure.verticals.agrifood.farming*</packages>
+                  </group>
+                  <group>
                     <title>Azure Form Recognizer</title>
                     <packages>com.azure.ai.formrecognizer*</packages>
                   </group>
@@ -277,6 +292,18 @@
                   <group>
                     <title>Azure Container Registry</title>
                     <packages>com.azure.containers.containerregistry*</packages>
+                  </group>
+                  <group>
+                    <title>Azure Security Attestation</title>
+                    <packages>com.azure.security.attestation*</packages>
+                  </group>
+                  <group>
+                    <title>Azure Purview Catalog</title>
+                    <packages>com.azure.analytics.purview.catalog*</packages>
+                  </group>
+                  <group>
+                    <title>Azure Purview Scanning</title>
+                    <packages>com.azure.analytics.purview.scanning*</packages>
                   </group>
                   <group>
                     <title>Azure Quantum Jobs</title>
@@ -332,7 +359,7 @@
                   </group>
                   <group>
                     <title>Azure Web Pub Sub</title>
-                    <package>com.azure.messaging.webpubsub*</package>
+                    <packages>com.azure.messaging.webpubsub*</packages>
                   </group>
                   <group>
                     <title>Azure Mixed Reality Authentication</title>
@@ -345,6 +372,18 @@
                   <group>
                     <title>Azure Communication</title>
                     <packages>com.azure.communication.*</packages>
+                  </group>
+                  <group>
+                    <title>Azure Confidential Ledger</title>
+                    <packages>com.azure.security.confidentialledger.*</packages>
+                  </group>
+                  <group>
+                    <title>Azure Monitor - OpenTelemetry Exporter</title>
+                    <packages>com.azure.monitor.opentelemetry.exporter.*</packages>
+                  </group>
+                  <group>
+                    <title>Azure Monitor - Logs and Metrics query</title>
+                    <packages>com.azure.monitor.query.*</packages>
                   </group>
                 </groups>
                 <links combine.children="append">
@@ -449,7 +488,7 @@
         <!--          <plugin>-->
         <!--            <groupId>net.jonathangiles.tools</groupId>-->
         <!--            <artifactId>dependencyChecker-maven-plugin</artifactId>-->
-        <!--            <version>1.0.5</version> &lt;!&ndash; {x-version-update;net.jonathangiles.tools:dependencyChecker-maven-plugin;external_dependency} &ndash;&gt;-->
+        <!--            <version>1.0.6</version> &lt;!&ndash; {x-version-update;net.jonathangiles.tools:dependencyChecker-maven-plugin;external_dependency} &ndash;&gt;-->
         <!--            <inherited>false</inherited>-->
         <!--            <executions>-->
         <!--              <execution>-->
@@ -531,7 +570,7 @@
           <plugin>
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs-maven-plugin</artifactId>
-            <version>4.2.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+            <version>4.2.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
             <configuration>
               <effort>max</effort>
               <threshold>Low</threshold>
@@ -547,7 +586,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <reportSets>
               <reportSet>
                 <id>non-aggregate</id>
@@ -565,8 +604,11 @@
                   <!-- codesnippets4javadoc does not support scanning sub-directories and doesn't support wildcards for filepaths.
                       So, path for aggregate reports have to be defined relative to parent pom -->
                   <additionalOptions>-maxLineLength 120
+                    -snippetpath ${project.basedir}/sdk/agrifood/azure-verticals-agrifood-farming/src/samples/java
                     -snippetpath ${project.basedir}/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/confidentialledger/azure-security-confidentialledger/src/samples/java
                     -snippetpath ${project.basedir}/sdk/containerregistry/azure-containers-containerregistry/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/attestation/azure-security-attestation/src/samples/java
                     -snippetpath ${project.basedir}/sdk/core/azure-core/src/samples/java
                     -snippetpath ${project.basedir}/sdk/core/azure-core-amqp/src/samples/java
                     -snippetpath ${project.basedir}/sdk/core/azure-core-http-netty/src/samples/java
@@ -582,6 +624,9 @@
                     -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-certificates/src/samples/java
                     -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-keys/src/samples/java
                     -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/monitor/azure-monitor-query/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/purview/azure-analytics-purview-catalog/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/purview/azure-analytics-purview-scanning/src/samples/java
                     -snippetpath ${project.basedir}/sdk/servicebus/azure-messaging-servicebus/src/samples/java
                     -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob/src/samples/java
                     -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob-batch/src/samples/java
@@ -601,7 +646,7 @@
               </reportSet>
             </reportSets>
             <configuration>
-              <!-- Reporting is run for JDK 11 - https://github.com/Azure/azure-sdk-for-java/blob/master/.azure-pipelines/client.yml#L90
+              <!-- Reporting is run for JDK 11 - https://github.com/Azure/azure-sdk-for-java/blob/main/.azure-pipelines/client.yml#L90
                    Disabling failOnWarnings for reporting for now due to CodeSnippets4Java issue reported for JDK 9+
                    https://github.com/Azure/azure-sdk-for-java/issues/3851 -->
               <failOnWarnings>false</failOnWarnings>
@@ -668,6 +713,7 @@
         <module>eng/code-quality-reports</module>
         <module>eng/jacoco-test-coverage</module>
         <module>sdk/advisor</module>
+        <module>sdk/agrifood</module>
         <module>sdk/anomalydetector</module>
         <module>sdk/apimanagement</module>
         <module>sdk/appconfiguration</module>
@@ -676,16 +722,20 @@
         <module>sdk/authorization</module>
         <module>sdk/automation</module>
         <module>sdk/avs</module>
+        <module>sdk/azurearcdata</module>
         <module>sdk/azurestack</module>
         <module>sdk/azurestackhci</module>
+        <module>sdk/baremetalinfrastructure</module>
         <module>sdk/batch</module>
         <module>sdk/batchai</module>
         <module>sdk/billing</module>
         <module>sdk/boms</module>
+        <module>sdk/botservice</module>
         <module>sdk/changeanalysis</module>
         <module>sdk/cognitiveservices</module>
         <module>sdk/commerce</module>
         <module>sdk/communication</module>
+        <module>sdk/confidentialledger</module>
         <module>sdk/confluent</module>
         <module>sdk/consumption</module>
         <module>sdk/containerregistry</module>
@@ -701,14 +751,19 @@
         <module>sdk/datalakeanalytics</module>
         <module>sdk/datalakestore</module>
         <module>sdk/datamigration</module>
+        <module>sdk/dataprotection</module>
         <module>sdk/delegatednetwork</module>
         <module>sdk/deploymentmanager</module>
+        <module>sdk/desktopvirtualization</module>
+        <module>sdk/deviceprovisioningservices</module>
         <module>sdk/deviceupdate</module>
         <module>sdk/devspaces</module>
         <module>sdk/devtestlabs</module>
         <module>sdk/digitaltwins</module>
+        <module>sdk/elastic</module>
         <module>sdk/eventgrid</module>
         <module>sdk/eventhubs</module>
+        <module>sdk/extendedlocation</module>
         <module>sdk/formrecognizer</module>
         <module>sdk/frontdoor</module>
         <module>sdk/hanaonazure</module>
@@ -717,7 +772,9 @@
         <module>sdk/healthcareapis</module>
         <module>sdk/hybridcompute</module>
         <module>sdk/hybridkubernetes</module>
+        <module>sdk/hybridnetwork</module>
         <module>sdk/identity</module>
+        <module>sdk/imagebuilder</module>
         <module>sdk/iotcentral</module>
         <module>sdk/iothub</module>
         <module>sdk/keyvault</module>
@@ -726,9 +783,11 @@
         <module>sdk/labservices</module>
         <module>sdk/loganalytics</module>
         <module>sdk/logic</module>
+        <module>sdk/logz</module>
         <module>sdk/machinelearningservices</module>
         <module>sdk/maintenance</module>
         <module>sdk/managedapplications</module>
+        <module>sdk/maps</module>
         <module>sdk/mariadb</module>
         <module>sdk/marketplaceordering</module>
         <module>sdk/mediaservices</module>
@@ -737,15 +796,20 @@
         <module>sdk/modelsrepository</module>
         <module>sdk/monitor</module>
         <module>sdk/mysql</module>
+        <module>sdk/mysqlflexibleserver</module>
         <module>sdk/netapp</module>
         <module>sdk/notificationhubs</module>
         <module>sdk/operationsmanagement</module>
         <module>sdk/peering</module>
         <module>sdk/policyinsights</module>
         <module>sdk/postgresql</module>
+        <module>sdk/postgresqlflexibleserver</module>
         <module>sdk/powerbidedicated</module>
+        <module>sdk/purview</module>
         <module>sdk/quantum</module>
+        <module>sdk/quota</module>
         <module>sdk/recoveryservices</module>
+        <module>sdk/recoveryservicesbackup</module>
         <module>sdk/redisenterprise</module>
         <module>sdk/relay</module>
         <module>sdk/remoterendering</module>
@@ -755,6 +819,7 @@
         <module>sdk/resourcemover</module>
         <module>sdk/schemaregistry</module>
         <module>sdk/search</module>
+        <module>sdk/security</module>
         <module>sdk/servicebus</module>
         <module>sdk/servicefabric</module>
         <module>sdk/signalr</module>
@@ -763,6 +828,7 @@
         <module>sdk/storage</module>
         <module>sdk/storagecache</module>
         <module>sdk/storageimportexport</module>
+        <module>sdk/storagepool</module>
         <module>sdk/streamanalytics</module>
         <module>sdk/subscription</module>
         <module>sdk/support</module>

@@ -3,18 +3,19 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - hotfix/*
       - release/*
   paths:
     include:
       - sdk/hybridkubernetes/
+    exclude:
+      - sdk/hybridkubernetes/pom.xml
+      - sdk/hybridkubernetes/azure-resourcemanager-hybridkubernetes/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
@@ -22,6 +23,9 @@ pr:
   paths:
     include:
       - sdk/hybridkubernetes/
+    exclude:
+      - sdk/hybridkubernetes/pom.xml
+      - sdk/hybridkubernetes/azure-resourcemanager-hybridkubernetes/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

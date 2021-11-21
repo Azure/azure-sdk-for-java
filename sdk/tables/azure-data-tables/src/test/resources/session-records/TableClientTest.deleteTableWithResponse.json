@@ -1,0 +1,50 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.8 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9cc61f46-56b8-4ca5-8b3a-f062a2d395b6",
+      "Content-Type" : "application/json;odata=nometadata"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Thu, 10 Jun 2021 05:07:37 GMT",
+      "Cache-Control" : "no-cache",
+      "DataServiceId" : "https://tablesstoragetests.table.core.windows.net/Tables('tablename790731f6')",
+      "x-ms-request-id" : "aec64a05-7002-003c-39b6-5d6aba000000",
+      "x-ms-client-request-id" : "9cc61f46-56b8-4ca5-8b3a-f062a2d395b6",
+      "Preference-Applied" : "return-no-content",
+      "Location" : "https://tablesstoragetests.table.core.windows.net/Tables('tablename790731f6')"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables('tablename790731f6')",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.8 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "443a628e-511b-4a2d-8579-153ea645d1aa"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2019-02-02",
+      "Cache-Control" : "no-cache",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "f42b344b-a002-0017-08b6-5d1e02000000",
+      "x-ms-client-request-id" : "443a628e-511b-4a2d-8579-153ea645d1aa",
+      "Date" : "Thu, 10 Jun 2021 05:07:37 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "tablename790731f6" ]
+}

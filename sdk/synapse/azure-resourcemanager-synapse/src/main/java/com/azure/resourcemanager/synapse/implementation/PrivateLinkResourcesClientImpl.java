@@ -134,6 +134,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -141,7 +142,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
                     service
                         .list(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -192,12 +193,13 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -319,6 +321,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
                 .error(
                     new IllegalArgumentException("Parameter privateLinkResourceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -326,7 +329,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
                     service
                         .get(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -375,12 +378,13 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
                 .error(
                     new IllegalArgumentException("Parameter privateLinkResourceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,

@@ -1,14 +1,79 @@
 # Release History
 
-## 12.12.0-beta.1 (Unreleased)
+## 12.15.0-beta.2 (Unreleased)
 
+### Features Added
+- Added support for 2021-02-12 service version.
+- Added support for listing system containers.
+- Added support for listing blobs which contain invalid xml characters.
+
+- When opening a BlobInputStream, removed the initial getProperties call in favor of a download for better performance.
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+- Deprecated BlobClient.uploadWithResponse that does not return a response.
+
+## 12.14.2 (2021-11-10)
+
+### Other Changes
+#### Dependency Updates
+- Updated to version `1.22.0` of `azure-core`
+- Updated to version `12.14.1` of `azure-storage-common`
+
+## 12.15.0-beta.1 (2021-11-05)
+
+### Features Added
+- Added support for permanent delete permissions in blob and account level SAS.
+
+- Added support for the 2020-12-06 service version.
+- Added support for setting an encryption scope on a BlobServiceSas and an AccountSas.
+- Added support for setting encryption scopes on the destination of a sync copy.
+
+## 12.14.1 (2021-10-12)
+
+### Bugs Fixed
+
+- Fixed a bug when Blob Endpoint is provided as an IP address (e.g., `https://x.x.x.x:10000`) with 
+  empty component path, the parsing fails with StringIndexOutOfBoundsException
+
+### Other Changes
+#### Dependency Updates
+- Updated to version `1.21.0` of `azure-core`
+- Updated to version `12.14.0` of `azure-storage-common`
+
+## 12.14.0 (2021-09-15)
+- GA release
+
+## 12.14.0-beta.1 (2021-07-28)
+- Fixed a bug where BlobClient.exists would not function correctly on blobs encrypted with CPK.
+- Added support for the 2020-10-02 service version.
+- Added support to list blobs deleted with versioning enabled.
+- Added support to specify Parquet Input Serialization when querying a blob.
+- Updated DownloadRetryOptions.maxRetryRequests to default downloads to retry 5 times.
+
+## 12.13.0 (2021-07-22)
+- Added support to get a blob client that uses an encryption scope and customer provided key.  
+
+## 12.12.0 (2021-06-09)
+- GA release
+
+## 12.12.0-beta.1 (2021-05-13)
+- Added support for the 2020-08-04 service version.
+- Deprecated support to undelete a blob container to a new name. 
+
+## 12.11.1 (2021-05-13)
+### Dependency Updates
+- Updated `azure-core` to version `1.16.0`
 
 ## 12.11.0 (2021-04-29)
-- Fixed a bug where large files would hang when the upload method was called. 
+- Fixed a bug where large files would not respond when the upload method was called. 
 
 ## 12.11.0-beta.3 (2021-04-16)
 - Fixed a bug where BlobOutputStream would lock up if the inner uploadWithResponse call is cancelled for any reason.
-- Fixed a bug where BlobOutputStream could hang when writing in a tight loop because the inner FluxSink would buffer in an unbounded manner. This would cause memory issues especially if the heap size was set to less than the size of the data being uploaded.
+- Fixed a bug where BlobOutputStream could not respond when writing in a tight loop because the inner FluxSink would buffer in an unbounded manner. This would cause memory issues especially if the heap size was set to less than the size of the data being uploaded.
 - Fixed a bug where a null check was placed on the wrong parameter of the InputStream constructor for BlobParallelUploadOptions
 
 ## 12.11.0-beta.2 (2021-03-29)

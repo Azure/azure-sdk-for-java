@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.cognitiveservices.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cognitiveservices.models.ResourceSkuRestrictions;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -12,45 +12,45 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes an available Cognitive Services SKU. */
-@Immutable
+@Fluent
 public final class ResourceSkuInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkuInner.class);
 
     /*
      * The type of resource the SKU applies to.
      */
-    @JsonProperty(value = "resourceType", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "resourceType")
     private String resourceType;
 
     /*
      * The name of SKU.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Specifies the tier of Cognitive Services account.
      */
-    @JsonProperty(value = "tier", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "tier")
     private String tier;
 
     /*
      * The Kind of resources that are supported in this SKU.
      */
-    @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "kind")
     private String kind;
 
     /*
      * The set of locations that the SKU is available.
      */
-    @JsonProperty(value = "locations", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "locations")
     private List<String> locations;
 
     /*
      * The restrictions because of which SKU cannot be used. This is empty if
      * there are no restrictions.
      */
-    @JsonProperty(value = "restrictions", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "restrictions")
     private List<ResourceSkuRestrictions> restrictions;
 
     /**
@@ -63,12 +63,34 @@ public final class ResourceSkuInner {
     }
 
     /**
+     * Set the resourceType property: The type of resource the SKU applies to.
+     *
+     * @param resourceType the resourceType value to set.
+     * @return the ResourceSkuInner object itself.
+     */
+    public ResourceSkuInner withResourceType(String resourceType) {
+        this.resourceType = resourceType;
+        return this;
+    }
+
+    /**
      * Get the name property: The name of SKU.
      *
      * @return the name value.
      */
     public String name() {
         return this.name;
+    }
+
+    /**
+     * Set the name property: The name of SKU.
+     *
+     * @param name the name value to set.
+     * @return the ResourceSkuInner object itself.
+     */
+    public ResourceSkuInner withName(String name) {
+        this.name = name;
+        return this;
     }
 
     /**
@@ -81,12 +103,34 @@ public final class ResourceSkuInner {
     }
 
     /**
+     * Set the tier property: Specifies the tier of Cognitive Services account.
+     *
+     * @param tier the tier value to set.
+     * @return the ResourceSkuInner object itself.
+     */
+    public ResourceSkuInner withTier(String tier) {
+        this.tier = tier;
+        return this;
+    }
+
+    /**
      * Get the kind property: The Kind of resources that are supported in this SKU.
      *
      * @return the kind value.
      */
     public String kind() {
         return this.kind;
+    }
+
+    /**
+     * Set the kind property: The Kind of resources that are supported in this SKU.
+     *
+     * @param kind the kind value to set.
+     * @return the ResourceSkuInner object itself.
+     */
+    public ResourceSkuInner withKind(String kind) {
+        this.kind = kind;
+        return this;
     }
 
     /**
@@ -99,6 +143,17 @@ public final class ResourceSkuInner {
     }
 
     /**
+     * Set the locations property: The set of locations that the SKU is available.
+     *
+     * @param locations the locations value to set.
+     * @return the ResourceSkuInner object itself.
+     */
+    public ResourceSkuInner withLocations(List<String> locations) {
+        this.locations = locations;
+        return this;
+    }
+
+    /**
      * Get the restrictions property: The restrictions because of which SKU cannot be used. This is empty if there are
      * no restrictions.
      *
@@ -106,6 +161,18 @@ public final class ResourceSkuInner {
      */
     public List<ResourceSkuRestrictions> restrictions() {
         return this.restrictions;
+    }
+
+    /**
+     * Set the restrictions property: The restrictions because of which SKU cannot be used. This is empty if there are
+     * no restrictions.
+     *
+     * @param restrictions the restrictions value to set.
+     * @return the ResourceSkuInner object itself.
+     */
+    public ResourceSkuInner withRestrictions(List<ResourceSkuRestrictions> restrictions) {
+        this.restrictions = restrictions;
+        return this;
     }
 
     /**

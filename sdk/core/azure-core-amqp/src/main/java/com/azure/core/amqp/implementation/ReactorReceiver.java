@@ -8,6 +8,7 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
+import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -37,7 +38,7 @@ import static com.azure.core.util.FluxUtil.monoError;
 /**
  * Handles receiving events from Event Hubs service and translating them to proton-j messages.
  */
-public class ReactorReceiver implements AmqpReceiveLink, AsyncAutoCloseable {
+public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoCloseable {
     private final String entityPath;
     private final Receiver receiver;
     private final ReceiveLinkHandler handler;
@@ -82,17 +83,17 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncAutoCloseable {
                             final Integer credits = supplier.get();
 
                             if (credits != null && credits > 0) {
-                                logger.info("connectionId[{}] linkName[{}] adding credits[{}]",
-                                    handler.getConnectionId(), getLinkName(), creditsLeft, credits);
+                                logger.info("connectionId[{}] linkName[{}] credits[{}] Adding credits.",
+                                    handler.getConnectionId(), getLinkName(), credits);
                                 receiver.flow(credits);
                             } else {
-                                logger.verbose("connectionId[{}] linkName[{}] There are no credits to add.",
-                                    handler.getConnectionId(), getLinkName(), creditsLeft, credits);
+                                logger.verbose("connectionId[{}] linkName[{}] credits[{}] There are no credits to add.",
+                                    handler.getConnectionId(), getLinkName(), credits);
                             }
 
                             sink.success(message);
                         });
-                    } catch (IOException e) {
+                    } catch (IOException | RejectedExecutionException e) {
                         sink.error(e);
                     }
                 });
@@ -185,6 +186,8 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncAutoCloseable {
                 sink.error(new UncheckedIOException(String.format(
                     "connectionId[%s] linkName[%s] Unable to schedule work to add more credits.",
                     handler.getConnectionId(), getLinkName()), e));
+            } catch (RejectedExecutionException e) {
+                sink.error(e);
             }
         });
     }
@@ -277,10 +280,20 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncAutoCloseable {
         return Mono.fromRunnable(() -> {
             try {
                 dispatcher.invoke(closeReceiver);
-            } catch (IOException | RejectedExecutionException e) {
-                logger.info("connectionId[{}] linkName[{}] Could not schedule disposing of receiver on "
-                        + "ReactorDispatcher. Manually invoking.", handler.getConnectionId(), getLinkName(), e);
+            } catch (IOException e) {
+                logger.warning("connectionId[{}] linkName[{}] IO sink was closed when scheduling work. Manually "
+                        + "invoking and completing close.", handler.getConnectionId(), getLinkName(), e);
+
                 closeReceiver.run();
+                completeClose();
+            } catch (RejectedExecutionException e) {
+                // Not logging error here again because we have to log the exception when we throw it.
+                logger.info("connectionId[{}] linkName[{}] RejectedExecutionException when scheduling on "
+                        + "ReactorDispatcher. Manually invoking and completing close.", handler.getConnectionId(),
+                    getLinkName());
+
+                closeReceiver.run();
+                completeClose();
             }
         }).then(isClosedMono.asMono()).publishOn(Schedulers.boundedElastic());
     }

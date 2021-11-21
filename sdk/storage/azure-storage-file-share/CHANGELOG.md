@@ -1,7 +1,61 @@
 # Release History
 
-## 12.10.0-beta.1 (Unreleased)
+## 12.12.0-beta.2 (Unreleased)
 
+### Features Added
+- Added support for the 2021-02-12 service version.
+- Added support for new bandwidth limits.
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 12.11.2 (2021-11-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.21.0` to version `1.22.0`.
+- Upgraded `azure-core-http-netty` from `1.11.1` to version `1.11.2`.
+- Upgraded `azure-storage-common` from `12.14.0` to version `12.14.1`.
+
+## 12.12.0-beta.1 (2021-11-05)
+
+### Features Added
+- Added support for the 2020-12-06 service version.
+
+## 12.11.1 (2021-10-12)
+
+### Other Changes
+#### Dependency Updates
+- Updated to version `12.14.0` of `azure-storage-common`
+- Updated to version `1.21.0` of `azure-core`
+
+## 12.11.0 (2021-09-15)
+- GA release
+
+## 12.11.0-beta.1 (2021-07-28)
+- Added support to reliably download a file. 
+- Added support for the 2020-10-02 service version.
+- Fixed a bug that was cause an Exception when downloading a zero length file.
+
+## 12.10.0 (2021-06-09)
+- GA release
+
+## 12.10.0-beta.1 (2021-05-13)
+- Added support for the 2020-08-04 service version.
+- Added back ability to create a ShareLeaseClient for a Share or Share Snapshot.
+- Added upload() overloads to ShareFileClient supporting large ranges and parallel upload.
+- Deprecated old upload() overloads on ShareFileClient that only supported single Put Range operations, replacing them
+with uploadRange() methods.
+
+## 12.9.1 (2021-05-13)
+### Dependency Updates
+- Updated `azure-core` to version `1.16.0`
+- Updated `azure-storage-common` to version `12.11.1`
 
 ## 12.9.0 (2021-04-29)
 - ShareLeaseClient now updates it's leaseID through a lease change.

@@ -50,10 +50,10 @@ public final class ManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup {
         final String linuxVMName = Utils.randomResourceName(azureResourceManager, "VM1", 15);
         final String pipName = Utils.randomResourceName(azureResourceManager, "pip1", 15);
         final String userName = "tirekicker";
-        final String password = Utils.password();
+        final String sshPublicKey = Utils.sshPublicKey();
         final Region region = Region.US_SOUTH_CENTRAL;
 
-        final String installScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/create_resources_with_msi.sh";
+        final String installScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/create_resources_with_msi.sh";
         String installCommand = "bash create_resources_with_msi.sh {stgName} {rgName} {location}";
         List<String> fileUris = new ArrayList<>();
         fileUris.add(installScript);
@@ -107,7 +107,7 @@ public final class ManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup {
                         .withNewPrimaryPublicIPAddress(pipName)
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                         .withRootUsername(userName)
-                        .withRootPassword(password)
+                        .withSsh(sshPublicKey)
                         .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                         .withOSDiskCaching(CachingTypes.READ_WRITE)
                         .withSystemAssignedManagedServiceIdentity()

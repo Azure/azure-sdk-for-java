@@ -3,10 +3,14 @@
 
 package com.azure.cosmos.implementation.query;
 
+import com.azure.cosmos.implementation.RequestTimeline;
+import com.azure.cosmos.implementation.DiagnosticsInstantSerializer;
 import com.azure.cosmos.implementation.query.aggregation.AggregateOperator;
 import com.azure.cosmos.implementation.JsonSerializable;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.Strings;
 
 import java.time.Instant;
 import java.util.Collection;
@@ -29,6 +33,7 @@ public final class QueryInfo extends JsonSerializable {
     private Integer limit;
     private DistinctQueryType distinctQueryType;
     private QueryPlanDiagnosticsContext queryPlanDiagnosticsContext;
+    private DCountInfo dCountInfo;
 
     public QueryInfo() {
     }
@@ -163,6 +168,23 @@ public final class QueryInfo extends JsonSerializable {
         return super.getList("groupByAliases", String.class);
     }
 
+    public boolean hasDCount() {
+        return this.getDCountInfo() != null;
+    }
+
+    public DCountInfo getDCountInfo() {
+        return this.dCountInfo != null ?
+                   this.dCountInfo : (this.dCountInfo = super.getObject("dCountInfo", DCountInfo.class));
+    }
+
+    public String getDCountAlias() {
+        return this.dCountInfo.getDCountAlias();
+    }
+
+    public boolean isValueAggregate() {
+        return Strings.isNullOrEmpty(this.getDCountAlias());
+    }
+
     public QueryPlanDiagnosticsContext getQueryPlanDiagnosticsContext() {
         return queryPlanDiagnosticsContext;
     }
@@ -172,11 +194,20 @@ public final class QueryInfo extends JsonSerializable {
     }
 
     public static final class QueryPlanDiagnosticsContext {
+        @JsonSerialize(using = DiagnosticsInstantSerializer.class)
         private volatile Instant startTimeUTC;
+        @JsonSerialize(using = DiagnosticsInstantSerializer.class)
         private volatile Instant endTimeUTC;
+        private volatile RequestTimeline requestTimeline;
         public QueryPlanDiagnosticsContext(Instant startTimeUTC, Instant endTimeUTC) {
             this.startTimeUTC = startTimeUTC;
             this.endTimeUTC = endTimeUTC;
+        }
+
+        public QueryPlanDiagnosticsContext(Instant startTimeUTC, Instant endTimeUTC, RequestTimeline requestTimeline) {
+            this.startTimeUTC = startTimeUTC;
+            this.endTimeUTC = endTimeUTC;
+            this.requestTimeline = requestTimeline;
         }
 
         public Instant getStartTimeUTC() {
@@ -185,6 +216,10 @@ public final class QueryInfo extends JsonSerializable {
 
         public Instant getEndTimeUTC() {
             return endTimeUTC;
+        }
+
+        public RequestTimeline getRequestTimeline() {
+            return requestTimeline;
         }
     }
 

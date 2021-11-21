@@ -65,6 +65,8 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
     private volatile Instant timeSent;
     private volatile Instant timeReceived;
     private volatile boolean sendingRequestHasStarted;
+    private volatile RntbdChannelAcquisitionTimeline channelAcquisitionTimeline;
+    private volatile boolean channelAcquisitionContextEnabled;
 
     protected RntbdRequestRecord(final RntbdRequestArgs args) {
 
@@ -109,6 +111,10 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
         return this;
     }
 
+    public void channelAcquisitionContextEnabled(boolean channelAcquisitionContextEnabled) {
+        this.channelAcquisitionContextEnabled = channelAcquisitionContextEnabled;
+    }
+
     public Stage stage() {
         return this.stage;
     }
@@ -126,6 +132,9 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
                         break;
                     }
                     this.timeChannelAcquisitionStarted = time;
+                    if (this.channelAcquisitionContextEnabled) {
+                        this.channelAcquisitionTimeline = new RntbdChannelAcquisitionTimeline();
+                    }
                     break;
                 case PIPELINED:
                     if (current != Stage.CHANNEL_ACQUISITION_STARTED) {
@@ -221,6 +230,10 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
 
     public long transportRequestId() {
         return this.args.transportRequestId();
+    }
+
+    public RntbdChannelAcquisitionTimeline getChannelAcquisitionTimeline() {
+        return this.channelAcquisitionTimeline;
     }
 
     // endregion

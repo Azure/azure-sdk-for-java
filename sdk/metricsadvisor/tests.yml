@@ -30,5 +30,6 @@ stages:
         AZURE_METRICS_ADVISOR_AZURE_MONGODB_CONNECTION_STRING: $(metricsadvisor-test-azure-mongodb-connection-string)
         AZURE_METRICS_ADVISOR_MYSQL_CONNECTION_STRING: $(metricsadvisor-test-mysql-connection-string)
         AZURE_METRICS_ADVISOR_POSTGRESQL_CONNECTION_STRING: $(metricsadvisor-test-postgresql-connection-string)
-        AZURE_METRICS_ADVISOR_ELASTICSEARCH_AUTH_HEADER: $(metricsadvisor-test-elasticsearch-auth-header)
-        AZURE_METRICS_ADVISOR_ELASTICSEARCH_HOST: $(metricsadvisor-test-elasticsearch-host)
+        AZURE_METRICS_ADVISOR_LOG_ANALYTICS_WORKSPACE_ID: $(metricsadvisor-test-loganalytics-workspace-id)
+        AZURE_METRICS_ADVISOR_LOG_ANALYTICS_CLIENT_ID: $(metricsadvisor-test-loganalytics-client-id)
+        AZURE_METRICS_ADVISOR_LOG_ANALYTICS_CLIENT_SECRET: $(metricsadvisor-test-loganalytics-client-secret)

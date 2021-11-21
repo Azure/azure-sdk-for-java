@@ -8,63 +8,67 @@ import com.azure.core.annotation.Immutable;
 import java.util.List;
 
 /**
- * A class describing allowed and denied actions and data actions of a {@link KeyVaultRoleDefinition}.
+ * A class describing allowed and forbidden actions and data actions of a {@link KeyVaultRoleDefinition}.
  */
 @Immutable
 public final class KeyVaultPermission {
-    private final List<String> allowedActions;
-    private final List<String> deniedActions;
-    private final List<String> allowedDataActions;
-    private final List<String> deniedDataActions;
+    private final List<String> actions;
+    private final List<String> notActions;
+    private final List<KeyVaultDataAction> dataActions;
+    private final List<KeyVaultDataAction> notDataActions;
 
     /**
-     * Creates a new {@link KeyVaultPermission} with the specified allowed and denied actions and data actions.
+     * Creates a new {@link KeyVaultPermission} with the specified allowed and forbidden actions and data actions.
      *
-     * @param allowedActions The actions this {@link KeyVaultPermission permission} allows.
-     * @param deniedActions The actions this {@link KeyVaultPermission permission} denies.
-     * @param allowedDataActions The data actions this {@link KeyVaultPermission permission} allows.
-     * @param deniedDataActions The data actions this {@link KeyVaultPermission permission} denies.
+     * @param actions Action permissions that are granted.
+     * @param notActions Action permissions that are excluded but not denied. They may be granted by other role
+     * definitions assigned to a principal.
+     * @param dataActions Data action permissions that are granted.
+     * @param notDataActions Data action permissions that are excluded but not denied. They may be granted by other role
+     * definitions assigned to a principal.
      */
-    public KeyVaultPermission(List<String> allowedActions, List<String> deniedActions, List<String> allowedDataActions, List<String> deniedDataActions) {
-        this.allowedActions = allowedActions;
-        this.deniedActions = deniedActions;
-        this.allowedDataActions = allowedDataActions;
-        this.deniedDataActions = deniedDataActions;
+    public KeyVaultPermission(List<String> actions, List<String> notActions, List<KeyVaultDataAction> dataActions,
+                              List<KeyVaultDataAction> notDataActions) {
+        this.actions = actions;
+        this.notActions = notActions;
+        this.dataActions = dataActions;
+        this.notDataActions = notDataActions;
     }
 
     /**
-     * Get the actions this {@link KeyVaultPermission permission} allows.
+     * Get the action permissions that are granted.
      *
-     * @return The allowed actions.
+     * @return The action permissions that are granted.
      */
-    public List<String> getAllowedActions() {
-        return allowedActions;
+    public List<String> getActions() {
+        return actions;
     }
 
     /**
-     * Get the actions this {@link KeyVaultPermission permission} denies.
+     * Get the action permissions that are excluded but not denied. They may be granted by other role definitions
+     * assigned to a principal
      *
-     * @return The denied actions.
+     * @return The action permissions that are excluded but not denied.
      */
-    public List<String> getDeniedActions() {
-        return deniedActions;
+    public List<String> getNotActions() {
+        return notActions;
     }
 
     /**
-     * Get the data actions this {@link KeyVaultPermission permission} allows.
+     * Get the data action permissions that are granted.
      *
-     * @return The allowed data actions.
+     * @return The data action permissions that are granted.
      */
-    public List<String> getAllowedDataActions() {
-        return allowedDataActions;
+    public List<KeyVaultDataAction> getDataActions() {
+        return dataActions;
     }
 
     /**
-     * Get the data actions this {@link KeyVaultPermission permission} denies.
+     * Get the data action permissions that are excluded but not denied.
      *
-     * @return The denied data actions.
+     * @return The data action permissions that are excluded but not denied.
      */
-    public List<String> getDeniedDataActions() {
-        return deniedDataActions;
+    public List<KeyVaultDataAction> getNotDataActions() {
+        return notDataActions;
     }
 }

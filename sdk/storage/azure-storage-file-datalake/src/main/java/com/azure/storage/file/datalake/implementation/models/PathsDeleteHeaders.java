@@ -15,6 +15,12 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class PathsDeleteHeaders {
     /*
+     * The x-ms-deletion-id property.
+     */
+    @JsonProperty(value = "x-ms-deletion-id")
+    private String xMsDeletionId;
+
+    /*
      * The x-ms-version property.
      */
     @JsonProperty(value = "x-ms-version")
@@ -37,6 +43,26 @@ public final class PathsDeleteHeaders {
      */
     @JsonProperty(value = "Date")
     private DateTimeRfc1123 dateProperty;
+
+    /**
+     * Get the xMsDeletionId property: The x-ms-deletion-id property.
+     *
+     * @return the xMsDeletionId value.
+     */
+    public String getXMsDeletionId() {
+        return this.xMsDeletionId;
+    }
+
+    /**
+     * Set the xMsDeletionId property: The x-ms-deletion-id property.
+     *
+     * @param xMsDeletionId the xMsDeletionId value to set.
+     * @return the PathsDeleteHeaders object itself.
+     */
+    public PathsDeleteHeaders setXMsDeletionId(String xMsDeletionId) {
+        this.xMsDeletionId = xMsDeletionId;
+        return this;
+    }
 
     /**
      * Get the xMsVersion property: The x-ms-version property.

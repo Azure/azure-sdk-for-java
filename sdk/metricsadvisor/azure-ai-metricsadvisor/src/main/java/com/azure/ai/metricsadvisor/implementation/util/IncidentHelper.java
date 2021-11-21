@@ -4,7 +4,7 @@
 package com.azure.ai.metricsadvisor.implementation.util;
 
 import com.azure.ai.metricsadvisor.models.AnomalyIncidentStatus;
-import com.azure.ai.metricsadvisor.models.AnomalySeverity;
+import com.azure.ai.metricsadvisor.administration.models.AnomalySeverity;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.models.AnomalyIncident;
 
@@ -23,9 +23,12 @@ public final class IncidentHelper {
      */
     public interface IncidentAccessor {
         void setId(AnomalyIncident incident, String id);
+        void setDataFeedId(AnomalyIncident incident, String dataFeedId);
         void setMetricId(AnomalyIncident incident, String metricId);
         void setDetectionConfigurationId(AnomalyIncident incident, String detectionConfigurationId);
         void setRootDimensionKey(AnomalyIncident incident, DimensionKey rootDimensionKey);
+        void setValue(AnomalyIncident incident, Double value);
+        void setExpectedValue(AnomalyIncident incident, Double value);
         void setSeverity(AnomalyIncident incident, AnomalySeverity severity);
         void setStatus(AnomalyIncident incident, AnomalyIncidentStatus status);
         void setStartTime(AnomalyIncident incident, OffsetDateTime startTime);
@@ -45,6 +48,10 @@ public final class IncidentHelper {
         accessor.setId(incident, id);
     }
 
+    static void setDataFeedId(AnomalyIncident incident, String dataFeedId) {
+        accessor.setDataFeedId(incident, dataFeedId);
+    }
+
     static void setMetricId(AnomalyIncident incident, String metricId) {
         accessor.setMetricId(incident, metricId);
     }
@@ -55,6 +62,14 @@ public final class IncidentHelper {
 
     static void setRootDimensionKey(AnomalyIncident incident, DimensionKey rootDimensionKey) {
         accessor.setRootDimensionKey(incident, rootDimensionKey);
+    }
+
+    static void setValue(AnomalyIncident incident, Double value) {
+        accessor.setValue(incident, value);
+    }
+
+    static void setExpectedValue(AnomalyIncident incident, Double value) {
+        accessor.setExpectedValue(incident, value);
     }
 
     static void setSeverity(AnomalyIncident incident, AnomalySeverity severity) {

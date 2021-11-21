@@ -7,7 +7,10 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Immutable;
 import java.util.Map;
 
-/** Job output canceling event data. */
+/**
+ * Job output canceling event data. Schema of the data property of an EventGridEvent for a
+ * Microsoft.Media.JobOutputCanceling event.
+ */
 @Immutable
 public final class MediaJobOutputCancelingEventData extends MediaJobOutputStateChangeEventData {
     /** {@inheritDoc} */

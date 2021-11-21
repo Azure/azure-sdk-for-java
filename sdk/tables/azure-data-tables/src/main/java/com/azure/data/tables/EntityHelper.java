@@ -78,7 +78,7 @@ final class EntityHelper {
         }
 
         // Copy all of the properties from the provided `TableEntity` into the new instance
-        result.addProperties(entity.getProperties());
+        result.setProperties(entity.getProperties());
 
         for (Method m : clazz.getMethods()) {
             // Skip any non-setter methods

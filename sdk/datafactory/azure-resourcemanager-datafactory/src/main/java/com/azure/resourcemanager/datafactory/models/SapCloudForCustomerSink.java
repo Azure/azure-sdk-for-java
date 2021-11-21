@@ -112,6 +112,13 @@ public final class SapCloudForCustomerSink extends CopySink {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public SapCloudForCustomerSink withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

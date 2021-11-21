@@ -39,7 +39,7 @@ public class UsersTests extends GraphRbacManagementTest {
                 .users()
                 .define("Automatic " + name)
                 .withEmailAlias(name)
-                .withPassword("StrongPass!123")
+                .withPassword(password())
                 .withPromptToChangePasswordOnLogin(true)
                 .create();
 
@@ -60,7 +60,7 @@ public class UsersTests extends GraphRbacManagementTest {
                 .users()
                 .define("Test " + name)
                 .withEmailAlias(name)
-                .withPassword("StrongPass!123")
+                .withPassword(password())
                 .create();
 
         try {

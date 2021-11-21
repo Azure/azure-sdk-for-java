@@ -32,6 +32,11 @@ public class KeyProperties {
      */
     Boolean enabled;
 
+    /*
+     * Indicates if the private key can be exported.
+     */
+    Boolean exportable;
+
     /**
      * Not before date in UTC.
      */
@@ -95,6 +100,12 @@ public class KeyProperties {
     @JsonProperty(value = "recoverableDays", access = JsonProperty.Access.WRITE_ONLY)
     private Integer recoverableDays;
 
+    /*
+     * The policy rules under which the key can be exported.
+     */
+    @JsonProperty(value = "release_policy")
+    private KeyReleasePolicy releasePolicy;
+
     /**
      * Gets the number of days a key is retained before being deleted for a soft delete-enabled Key Vault.
      *
@@ -102,6 +113,28 @@ public class KeyProperties {
      */
     public Integer getRecoverableDays() {
         return recoverableDays;
+    }
+
+    /**
+     * Get the policy rules under which the key can be exported.
+     *
+     * @return The policy rules under which the key can be exported.
+     */
+    public KeyReleasePolicy getReleasePolicy() {
+        return this.releasePolicy;
+    }
+
+    /**
+     * Set the policy rules under which the key can be exported.
+     *
+     * @param releasePolicy The policy rules to set.
+     *
+     * @return The updated {@link KeyProperties} object.
+     */
+    public KeyProperties setReleasePolicy(KeyReleasePolicy releasePolicy) {
+        this.releasePolicy = releasePolicy;
+
+        return this;
     }
 
     /**
@@ -141,6 +174,28 @@ public class KeyProperties {
      */
     public KeyProperties setEnabled(Boolean enabled) {
         this.enabled = enabled;
+
+        return this;
+    }
+
+    /**
+     * Get a flag that indicates if the private key can be exported.
+     *
+     * @return A flag that indicates if the private key can be exported.
+     */
+    public Boolean isExportable() {
+        return this.exportable;
+    }
+
+    /**
+     * Set a flag that indicates if the private key can be exported.
+     *
+     * @param exportable A flag that indicates if the private key can be exported.
+     *
+     * @return The updated {@link KeyProperties} object.
+     */
+    public KeyProperties setExportable(Boolean exportable) {
+        this.exportable = exportable;
 
         return this;
     }
@@ -268,6 +323,7 @@ public class KeyProperties {
     @SuppressWarnings("unchecked")
     void unpackAttributes(Map<String, Object> attributes) {
         this.enabled = (Boolean) attributes.get("enabled");
+        this.exportable = (Boolean) attributes.get("exportable");
         this.notBefore = epochToOffsetDateTime(attributes.get("nbf"));
         this.expiresOn = epochToOffsetDateTime(attributes.get("exp"));
         this.createdOn = epochToOffsetDateTime(attributes.get("created"));

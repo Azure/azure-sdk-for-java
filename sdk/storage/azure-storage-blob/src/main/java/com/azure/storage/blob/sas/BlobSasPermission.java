@@ -27,6 +27,8 @@ public final class BlobSasPermission {
 
     private boolean deleteVersionPermission;
 
+    private boolean permanentDeletePermission;
+
     private boolean tagsPermission;
 
     private boolean listPermission;
@@ -34,6 +36,8 @@ public final class BlobSasPermission {
     private boolean movePermission;
 
     private boolean executePermission;
+
+    private boolean immutabilityPolicyPermission;
 
     /**
      * Initializes a {@code BlobSasPermission} object with all fields set to false.
@@ -45,16 +49,16 @@ public final class BlobSasPermission {
      * Creates a {@code BlobSasPermission} from the specified permissions string. This method will throw an
      * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
      *
-     * @param permString A {@code String} which represents the {@code BlobSasPermission}.
+     * @param permissionString A {@code String} which represents the {@code BlobSasPermission}.
      * @return A {@code BlobSasPermission} generated from the given {@code String}.
      * @throws IllegalArgumentException If {@code permString} contains a character other than r, a, c, w, d, x, l, t,
-     * m, or e.
+     * m, e or i.
      */
-    public static BlobSasPermission parse(String permString) {
+    public static BlobSasPermission parse(String permissionString) {
         BlobSasPermission permissions = new BlobSasPermission();
 
-        for (int i = 0; i < permString.length(); i++) {
-            char c = permString.charAt(i);
+        for (int i = 0; i < permissionString.length(); i++) {
+            char c = permissionString.charAt(i);
             switch (c) {
                 case 'r':
                     permissions.readPermission = true;
@@ -74,6 +78,9 @@ public final class BlobSasPermission {
                 case 'x':
                     permissions.deleteVersionPermission = true;
                     break;
+                case 'y':
+                    permissions.permanentDeletePermission = true;
+                    break;
                 case 't':
                     permissions.tagsPermission = true;
                     break;
@@ -86,10 +93,13 @@ public final class BlobSasPermission {
                 case 'e':
                     permissions.executePermission = true;
                     break;
+                case 'i':
+                    permissions.immutabilityPolicyPermission = true;
+                    break;
                 default:
                     throw new IllegalArgumentException(
                         String.format(Locale.ROOT, Constants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE,
-                            "Permissions", permString, c));
+                            "Permissions", permissionString, c));
             }
         }
         return permissions;
@@ -204,6 +214,24 @@ public final class BlobSasPermission {
     }
 
     /**
+     * @return the permanent delete permission status.
+     */
+    public boolean hasPermanentDeletePermission() {
+        return permanentDeletePermission;
+    }
+
+    /**
+     * Sets the permanent delete permission status.
+     *
+     * @param permanentDeletePermission Permission status to set
+     * @return the updated BlobSasPermission object.
+     */
+    public BlobSasPermission setPermanentDeletePermission(boolean permanentDeletePermission) {
+        this.permanentDeletePermission = permanentDeletePermission;
+        return this;
+    }
+
+    /**
      * @return the tags permission status.
      */
     public boolean hasTagsPermission() {
@@ -275,6 +303,23 @@ public final class BlobSasPermission {
         return this;
     }
 
+    /**
+     * @return the set immutability policy permission status.
+     */
+    public boolean hasImmutabilityPolicyPermission() {
+        return immutabilityPolicyPermission;
+    }
+
+    /**
+     * Sets the set immutability policy permission status.
+     *
+     * @param immutabilityPolicyPermission Permission status to set
+     * @return the updated BlobSasPermission object.
+     */
+    public BlobSasPermission setImmutabilityPolicyPermission(boolean immutabilityPolicyPermission) {
+        this.immutabilityPolicyPermission = immutabilityPolicyPermission;
+        return this;
+    }
 
     /**
      * Converts the given permissions to a {@code String}. Using this method will guarantee the permissions are in an
@@ -313,6 +358,10 @@ public final class BlobSasPermission {
             builder.append('x');
         }
 
+        if (this.permanentDeletePermission) {
+            builder.append('y');
+        }
+
         if (this.listPermission) {
             builder.append('l');
         }
@@ -327,6 +376,10 @@ public final class BlobSasPermission {
 
         if (this.executePermission) {
             builder.append('e');
+        }
+
+        if (this.immutabilityPolicyPermission) {
+            builder.append('i');
         }
 
         return builder.toString();

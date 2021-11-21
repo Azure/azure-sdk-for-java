@@ -4,81 +4,22 @@
 
 package com.azure.resourcemanager.mediaservices.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mediaservices.fluent.models.OperationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.mediaservices.fluent.models.OperationCollectionInner;
 import java.util.List;
 
-/** A collection of Operation items. */
-@Fluent
-public final class OperationCollection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationCollection.class);
-
-    /*
-     * A collection of Operation items.
-     */
-    @JsonProperty(value = "value")
-    private List<OperationInner> value;
-
-    /*
-     * A link to the next page of the collection (when the collection contains
-     * too many results to return in one response).
-     */
-    @JsonProperty(value = "@odata.nextLink")
-    private String odataNextLink;
-
+/** An immutable client-side representation of OperationCollection. */
+public interface OperationCollection {
     /**
-     * Get the value property: A collection of Operation items.
+     * Gets the value property: A collection of Operation items.
      *
      * @return the value value.
      */
-    public List<OperationInner> value() {
-        return this.value;
-    }
+    List<Operation> value();
 
     /**
-     * Set the value property: A collection of Operation items.
+     * Gets the inner com.azure.resourcemanager.mediaservices.fluent.models.OperationCollectionInner object.
      *
-     * @param value the value value to set.
-     * @return the OperationCollection object itself.
+     * @return the inner object.
      */
-    public OperationCollection withValue(List<OperationInner> value) {
-        this.value = value;
-        return this;
-    }
-
-    /**
-     * Get the odataNextLink property: A link to the next page of the collection (when the collection contains too many
-     * results to return in one response).
-     *
-     * @return the odataNextLink value.
-     */
-    public String odataNextLink() {
-        return this.odataNextLink;
-    }
-
-    /**
-     * Set the odataNextLink property: A link to the next page of the collection (when the collection contains too many
-     * results to return in one response).
-     *
-     * @param odataNextLink the odataNextLink value to set.
-     * @return the OperationCollection object itself.
-     */
-    public OperationCollection withOdataNextLink(String odataNextLink) {
-        this.odataNextLink = odataNextLink;
-        return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (value() != null) {
-            value().forEach(e -> e.validate());
-        }
-    }
+    OperationCollectionInner innerModel();
 }

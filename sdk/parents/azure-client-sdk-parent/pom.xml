@@ -95,8 +95,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
-    <legal>
-      <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
+    <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <testMode>playback</testMode>
     <playbackServerPort>11080</playbackServerPort>
     <alternativePlaybackServerPort>11081</alternativePlaybackServerPort>
@@ -106,7 +105,46 @@
     <build.context>azure-client-sdk-parent</build.context>
     <jacoco.min.linecoverage>0.40</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.30</jacoco.min.branchcoverage>
-    <jacoco.skip.coverage.check>false</jacoco.skip.coverage.check>
+    <jacoco.skip>false</jacoco.skip>
+
+    <!-- This property determines the relative path from a pom.xml to the eng/ folder. -->
+    <relative.path.to.eng.folder>../../..</relative.path.to.eng.folder>
+
+    <!-- This property determines the max heap size of the Surefire JVM. By default 3GB, or 3096MB, is used. -->
+    <surefireXmx>3096m</surefireXmx>
+
+    <!-- This property configures the max heap size of the Surefire JVM. -->
+    <surefireJvmXmx>-Xmx${surefireXmx}</surefireJvmXmx>
+
+    <!-- This property configures creating a heap dump if the Surefire JVM fails with an OutOfMemoryError. -->
+    <heapDumpOnOom>
+      -XX:+HeapDumpOnOutOfMemoryError
+      -XX:HeapDumpPath=${packageOutputDirectory}${file.separator}${project.artifactId}-oom.hprof
+    </heapDumpOnOom>
+
+    <!-- Reserved for general Surefire JVM arguments that affect all SDKs. -->
+    <defaultSurefireArgLine>
+      ${surefireJvmXmx}
+      ${heapDumpOnOom}
+    </defaultSurefireArgLine>
+
+    <!-- Reserved for SDK specific JVM arguments to export, open, or read modules in testing. -->
+    <javaModulesSurefireArgLine>
+    </javaModulesSurefireArgLine>
+
+    <!-- Reserved for either general or SDK specific JVM arguments that are optional. -->
+    <additionalSurefireArgLine>
+    </additionalSurefireArgLine>
+
+    <!-- This property configures whether tests are ran in parallel. Defaults to true when running in PLAYBACK mode. -->
+    <parallelizeTests>true</parallelizeTests>
+
+    <!-- This property configures whether the codesnippet-maven-plugin should be used. -->
+    <codesnippet.skip>true</codesnippet.skip>
+
+    <!-- These properties exist for libraries using the new codesnippet-maven-plugin can easily disable the old doclet. -->
+    <javadocDoclet>org.apidesign.javadoc.codesnippet.Doclet</javadocDoclet>
+    <javadocDocletOptions>-maxLineLength 120 -snippetpath ${project.basedir}/src/samples/java -suppressMissingLinkWarnings</javadocDocletOptions>
   </properties>
 
   <build>
@@ -144,7 +182,7 @@
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>4.2.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+        <version>4.2.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
         <executions>
           <execution>
             <phase>verify</phase>
@@ -162,14 +200,43 @@
         <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <configuration>
           <outputDirectory>${packageOutputDirectory}</outputDirectory>
+          <archive combine.children="append">
+            <manifest>
+              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+            </manifest>
+          </archive>
         </configuration>
+      </plugin>
+
+      <!-- Configures the codesnippet replacement plugin -->
+      <plugin>
+        <groupId>com.azure.tools</groupId>
+        <artifactId>codesnippet-maven-plugin</artifactId>
+        <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>${codesnippet.skip}</skip>
+        </configuration>
+        <executions>
+          <execution>
+            <id>update-codesnippets</id>
+            <goals>
+              <goal>update-codesnippet</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>verify-codesnippets</id>
+            <goals>
+              <goal>verify-codesnippet</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
 
       <!-- Configure the javadoc plugin -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+        <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>attach-javadocs</id>
@@ -222,7 +289,15 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <configuration>
+          <dataFileIncludes>
+            <dataFileInclude>${project.build.directory}/jacoco.exec</dataFileInclude>
+          </dataFileIncludes>
+          <excludes combine.children="append">
+            <exclude>META-INF/**</exclude>
+          </excludes>
+        </configuration>
         <executions>
           <execution>
             <id>prepare-agent</id>
@@ -244,12 +319,13 @@
           </execution>
           <execution>
             <id>post-unit-test</id>
+            <phase>package</phase>
             <goals>
               <goal>report</goal>
             </goals>
             <configuration>
               <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
-              <excludes>
+              <excludes combine.children="append">
                 <exclude>**/com/azure/cosmos/implementation/apachecommons/**/*</exclude>
                 <exclude>**/com/azure/cosmos/implementation/guava25/**/*</exclude>
                 <exclude>**/com/azure/cosmos/implementation/guava27/**/*</exclude>
@@ -262,7 +338,7 @@
               <goal>check</goal>
             </goals>
             <configuration>
-              <skip>${jacoco.skip.coverage.check}</skip>
+              <skip>${jacoco.skip}</skip>
               <rules>
                 <rule>
                   <element>BUNDLE</element>
@@ -441,9 +517,9 @@
             </dependency>
           </dependencies>
           <configuration>
-            <configLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
-            <suppressionsLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
-            <headerLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
+            <configLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
+            <suppressionsLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+            <headerLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
             <propertyExpansion>samedir=</propertyExpansion>
             <encoding>UTF-8</encoding>
             <consoleOutput>true</consoleOutput>
@@ -458,7 +534,7 @@
         <plugin>
           <groupId>com.github.spotbugs</groupId>
           <artifactId>spotbugs-maven-plugin</artifactId>
-          <version>4.2.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+          <version>4.2.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
           <dependencies>
             <dependency>
               <groupId>com.azure</groupId>
@@ -468,7 +544,7 @@
             <dependency>
               <groupId>com.github.spotbugs</groupId>
               <artifactId>spotbugs</artifactId>
-              <version>4.2.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs;external_dependency} -->
+              <version>4.2.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs;external_dependency} -->
             </dependency>
           </dependencies>
           <configuration>
@@ -497,14 +573,14 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+          <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
           <configuration>
             <source>1.8</source>
             <doctitle>Azure SDK for Java Reference Documentation</doctitle>
             <windowtitle>Azure SDK for Java Reference Documentation</windowtitle>
-            <footer>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt;site
+            <bottom>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt; site
               for more Java documentation, including quick starts, tutorials, and code samples.
-            </footer>
+            </bottom>
             <linksource>false</linksource>
             <excludePackageNames>
               *.impl*:
@@ -513,7 +589,7 @@
               com.azure.tools.checkstyle*:
               com.azure.core.test*:
               com.azure.endtoend*:
-              com.azure.perf*
+              com.azure.perf*:
               com.azure.storage.internal.avro*
             </excludePackageNames>
             <!-- CosmosSkip - This is temporary, BridgeInternal gets converted to implementation -->
@@ -521,6 +597,8 @@
               <sourceFileExclude>com/azure/cosmos/*BridgeInternal.java</sourceFileExclude>
               <sourceFileExclude>com/azure/cosmos/models/*BridgeInternal.java</sourceFileExclude>
               <sourceFileExclude>com/azure/cosmos/util/*BridgeInternal.java</sourceFileExclude>
+              <sourceFileExclude>com/azure/cosmos/encryption/*BridgeInternal.java</sourceFileExclude>
+              <sourceFileExclude>com/azure/cosmos/encryption/models/*BridgeInternal.java</sourceFileExclude>
               <sourceFileExclude>module-info.java</sourceFileExclude>
             </sourceFileExcludes>
             <links combine.children="append">
@@ -548,61 +626,62 @@
               <!-- JDK APIs -->
               <offlineLink>
                 <url>https://docs.oracle.com/javase/8/docs/api/</url>
-                <location>${project.basedir}/../../../eng/javadoc-package-lists/java8/</location>
+                <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/java8/</location>
               </offlineLink>
 
               <!-- Reactor APIs -->
               <offlineLink>
                 <url>https://projectreactor.io/docs/core/release/api/</url>
-                <location>${project.basedir}/../../../eng/javadoc-package-lists/reactor-core/</location>
+                <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/reactor-core/</location>
               </offlineLink>
               <offlineLink>
                 <url>https://projectreactor.io/docs/netty/release/api/</url>
-                <location>${project.basedir}/../../../eng/javadoc-package-lists/reactor-netty/</location>
+                <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/reactor-netty/</location>
               </offlineLink>
 
               <!-- Jackson APIs -->
               <offlineLink>
                 <url>https://fasterxml.github.io/jackson-annotations/javadoc/2.12/</url>
-                <location>${project.basedir}/../../../eng/javadoc-package-lists/jackson-annotations/</location>
+                <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/jackson-annotations/</location>
               </offlineLink>
               <offlineLink>
                 <url>https://fasterxml.github.io/jackson-core/javadoc/2.12/</url>
-                <location>${project.basedir}/../../../eng/javadoc-package-lists/jackson-core/</location>
+                <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/jackson-core/</location>
               </offlineLink>
               <offlineLink>
                 <url>https://fasterxml.github.io/jackson-databind/javadoc/2.12/</url>
-                <location>${project.basedir}/../../../eng/javadoc-package-lists/jackson-databind/</location>
+                <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/jackson-databind/</location>
               </offlineLink>
 
               <!-- Netty APIs -->
               <offlineLink>
                 <url>https://netty.io/4.1/api/</url>
-                <location>${project.basedir}/../../../eng/javadoc-package-lists/netty/</location>
+                <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/netty/</location>
               </offlineLink>
 
               <!-- Avro APIs -->
               <offlineLink>
                 <url>https://avro.apache.org/docs/current/api/java/</url>
-                <location>${project.basedir}/../../../eng/javadoc-package-lists/apache-avro/</location>
+                <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/apache-avro/</location>
               </offlineLink>
             </offlineLinks>
-            <doclet>org.apidesign.javadoc.codesnippet.Doclet</doclet>
+            <failOnError>true</failOnError>
+            <failOnWarnings>true</failOnWarnings>
+            <doclint>all</doclint>
+            <quiet>true</quiet>
+            <jarOutputDirectory>${packageOutputDirectory}</jarOutputDirectory>
+            <doclet>${javadocDoclet}</doclet>
             <docletArtifact>
               <groupId>org.apidesign.javadoc</groupId>
               <artifactId>codesnippet-doclet</artifactId>
               <version>0.53</version> <!-- {x-version-update;org.apidesign.javadoc:codesnippet-doclet;external_dependency} -->
             </docletArtifact>
             <additionalOptions>
-              <additionalOption>-maxLineLength 120</additionalOption>
-              <additionalOption>-snippetpath ${project.basedir}/src/samples/java</additionalOption>
-              <additionalOption>-suppressMissingLinkWarnings</additionalOption>
+              <!-- '-version' is a dummy option, it's needed to prevent the Javadoc plugin from throwing a NullPointerException when '${javadocDocletOptions}' is empty. -->
+              <!-- '${javadocDocletOptions}' will be empty when the new codesnippet tooling is being used. -->
+              <!-- '-version' will indicate to Javadoc to include '@version' tags in generation, but none of the SDKs use this, so it is a good dummy option. -->
+              <additionalOption>-version ${javadocDocletOptions}</additionalOption>
             </additionalOptions>
-            <failOnError>true</failOnError>
-            <failOnWarnings>true</failOnWarnings>
-            <doclint>all</doclint>
-            <quiet>true</quiet>
-            <jarOutputDirectory>${packageOutputDirectory}</jarOutputDirectory>
           </configuration>
         </plugin>
 
@@ -617,10 +696,24 @@
             <systemPropertyVariables combine.children="append">
               <junit.jupiter.extensions.autodetection.enabled>true</junit.jupiter.extensions.autodetection.enabled>
               <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
+              <junit.jupiter.execution.parallel.enabled>${parallelizeTests}</junit.jupiter.execution.parallel.enabled>
             </systemPropertyVariables>
             <forkCount>1</forkCount>
             <testFailureIgnore>false</testFailureIgnore>
+            <argLine>
+              ${defaultSurefireArgLine}
+              ${additionalSurefireArgLine}
+            </argLine>
           </configuration>
+          <dependencies>
+            <!-- This dependency is required until maven-surefire-plugin updates the version they use. -->
+            <!-- The current dependency version doesn't support Java 17. -->
+            <dependency>
+              <groupId>org.ow2.asm</groupId>
+              <artifactId>asm</artifactId>
+              <version>9.1</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
+            </dependency>
+          </dependencies>
         </plugin>
 
         <!-- Checks public surface area for breaking changes. -->
@@ -661,7 +754,7 @@
       <groupId>org.jacoco</groupId>
       <artifactId>org.jacoco.agent</artifactId>
       <classifier>runtime</classifier>
-      <version>0.8.5</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
+      <version>0.8.7</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -684,12 +777,12 @@
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>4.2.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+        <version>4.2.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+        <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
         <reportSets>
           <reportSet>
             <id>non-aggregate</id>
@@ -767,7 +860,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration>
               <sourceFileExcludes>
                 <sourceFileExclude>module-info.java</sourceFileExclude>
@@ -782,7 +875,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration>
               <sourceFileExcludes>
                 <sourceFileExclude>module-info.java</sourceFileExclude>
@@ -793,11 +886,11 @@
       </reporting>
     </profile>
 
-    <!-- Setup for Java 11+ -->
+    <!-- Setup for Java 9+ -->
     <profile>
-      <id>java-lts</id>
+      <id>java9plus</id>
       <activation>
-        <jdk>[11,)</jdk>
+        <jdk>[9,)</jdk>
       </activation>
       <build>
         <plugins>
@@ -806,7 +899,7 @@
             <artifactId>maven-compiler-plugin</artifactId>
             <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
-              <testRelease>11</testRelease>
+              <testRelease>${java.vm.specification.version}</testRelease>
               <compilerArgs combine.children="append">
                 <arg>-Xlint:-module</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
                 <arg>-Xlint:-requires-transitive-automatic</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
@@ -817,7 +910,7 @@
               <execution>
                 <id>default-compile</id>
                 <configuration>
-                  <release>11</release>
+                  <release>${java.vm.specification.version}</release>
                 </configuration>
               </execution>
               <!-- then compile without module-info for Java 8 -->
@@ -844,6 +937,11 @@
               <systemPropertyVariables>
                 <jacoco-agent.destfile>${project.build.directory}/jacoco.exec</jacoco-agent.destfile>
               </systemPropertyVariables>
+              <argLine>
+                ${defaultSurefireArgLine}
+                ${javaModulesSurefireArgLine}
+                ${additionalSurefireArgLine}
+              </argLine>
             </configuration>
           </plugin>
         </plugins>
@@ -860,7 +958,7 @@
           <name>generate-overview</name>
         </property>
         <file>
-          <exists>../../../eng/pipelines/scripts/generate_overview_from_readme.py</exists>
+          <exists>${basedir}/${relative.path.to.eng.folder}/eng/pipelines/scripts/generate_overview_from_readme.py</exists>
         </file>
       </activation>
       <build>
@@ -880,9 +978,11 @@
                   <executable>python</executable>
                   <workingDirectory>${project.basedir}</workingDirectory>
                   <arguments>
-                    <argument>../../../eng/pipelines/scripts/generate_overview_from_readme.py</argument>
+                    <argument>${project.basedir}/${relative.path.to.eng.folder}/eng/pipelines/scripts/generate_overview_from_readme.py</argument>
                     <argument>--rf</argument>
                     <argument>${project.basedir}/README.md</argument>
+                    <argument>--ofp</argument>
+                    <argument>${project.build.directory}${file.separator}</argument>
                     <argument>--v</argument>
                     <argument>${project.version}</argument>
                   </arguments>
@@ -894,9 +994,9 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration combine.children="append">
-              <overview>${project.basedir}/readme_overview.html</overview>
+              <overview>${project.build.directory}/readme_overview.html</overview>
             </configuration>
           </plugin>
         </plugins>
@@ -915,7 +1015,7 @@
           <name>inject-codesnippets</name>
         </property>
         <file>
-          <exists>../../../eng/pipelines/scripts/inject_codesnippets.py</exists>
+          <exists>${basedir}/${relative.path.to.eng.folder}/eng/pipelines/scripts/inject_codesnippets.py</exists>
         </file>
       </activation>
       <build>
@@ -935,44 +1035,9 @@
                   <executable>python</executable>
                   <workingDirectory>${project.basedir}</workingDirectory>
                   <arguments>
-                    <argument>../../../eng/pipelines/scripts/inject_codesnippets.py</argument>
+                    <argument>${project.basedir}/${relative.path.to.eng.folder}/eng/pipelines/scripts/inject_codesnippets.py</argument>
                     <argument>--project-dir</argument>
                     <argument>${project.basedir}</argument>
-                  </arguments>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <!-- separate profile for windows as the executable on windows is named npx.cmd and npx on other os families -->
-      <id>readme-codesnippet-windows</id>
-      <activation>
-        <property>
-          <name>readme-codesnippet-windows</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>1.2.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
-            <executions>
-              <execution>
-                <id>code-snippet-for-readme-windows</id>
-                <phase>prepare-package</phase>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-                <configuration>
-                  <executable>npx.cmd</executable>
-                  <arguments>
-                    <argument>embedme</argument>
-                    <argument>${project.basedir}/README.md</argument>
                   </arguments>
                 </configuration>
               </execution>
@@ -1005,9 +1070,10 @@
                   <goal>exec</goal>
                 </goals>
                 <configuration>
-                  <executable>npx</executable>
+                  <executable>python</executable>
                   <arguments>
-                    <argument>embedme</argument>
+                    <argument>${project.basedir}/${relative.path.to.eng.folder}/eng/scripts/invoke_embedme.py</argument>
+                    <argument>--readme</argument>
                     <argument>${project.basedir}/README.md</argument>
                   </arguments>
                 </configuration>
@@ -1018,44 +1084,7 @@
       </build>
     </profile>
 
-    <profile>
-      <!-- separate profile for windows as the executable on windows is named npx.cmd and npx on other os families -->
-      <id>verify-readme-windows</id>
-      <activation>
-        <property>
-          <name>verify-readme-windows</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>1.2.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
-            <executions>
-              <execution>
-                <id>verify-readme-codesnippet-windows</id>
-                <phase>prepare-package</phase>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-                <configuration>
-                  <executable>npx.cmd</executable>
-                  <arguments>
-                    <argument>embedme</argument>
-                    <argument>--verify</argument>
-                    <argument>${project.basedir}/README.md</argument>
-                  </arguments>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <!-- Verify that there are no changes to readme file. Build fails if the there's a difference in README
-     after running the embedme tool. -->
+    <!-- Verify that there are no changes to README file. Build fails if the there's a difference in README after running the embedme tool. -->
     <profile>
       <id>verify-readme</id>
       <activation>
@@ -1077,11 +1106,50 @@
                   <goal>exec</goal>
                 </goals>
                 <configuration>
-                  <executable>npx</executable>
+                  <executable>python</executable>
                   <arguments>
-                    <argument>embedme</argument>
-                    <argument>--verify</argument>
+                    <argument>${project.basedir}/${relative.path.to.eng.folder}/eng/scripts/invoke_embedme.py</argument>
+                    <argument>--readme</argument>
                     <argument>${project.basedir}/README.md</argument>
+                    <argument>--verify</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <!-- Verify that the CHANGELOG is formatted correctly. -->
+    <profile>
+      <id>verify-changelog</id>
+      <activation>
+        <property>
+          <name>verify-changelog</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.2.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>verify-readme-codesnippet</id>
+                <phase>prepare-package</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>pwsh</executable>
+                  <arguments>
+                    <argument>${project.basedir}/${relative.path.to.eng.folder}/eng/common/scripts/Verify-Changelog.ps1</argument>
+                    <argument>-ChangeLogLocation</argument>
+                    <argument>${project.basedir}/CHANGELOG.md</argument>
+                    <argument>-VersionString</argument>
+                    <argument>${project.version}</argument>
                   </arguments>
                 </configuration>
               </execution>
@@ -1104,7 +1172,7 @@
           <plugin>
             <groupId>net.jonathangiles.tools</groupId>
             <artifactId>dependencyChecker-maven-plugin</artifactId>
-            <version>1.0.5</version> <!-- {x-version-update;net.jonathangiles.tools:dependencyChecker-maven-plugin;external_dependency} -->
+            <version>1.0.6</version> <!-- {x-version-update;net.jonathangiles.tools:dependencyChecker-maven-plugin;external_dependency} -->
             <inherited>false</inherited>
             <executions>
               <execution>
@@ -1151,29 +1219,6 @@
     </profile>
 
     <profile>
-      <id>parallel-test-playback</id>
-      <activation>
-        <property>
-          <name>parallel-test-playback</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <systemPropertyVariables>
-                <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
-              </systemPropertyVariables>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
       <id>parallel-test-playback-no-azure-test-mode-env</id>
       <activation>
         <property>
@@ -1187,9 +1232,7 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
-              <systemPropertyVariables>
-                <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
-              </systemPropertyVariables>
+              <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
             </configuration>
           </plugin>
         </plugins>
@@ -1211,9 +1254,7 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
-              <systemPropertyVariables>
-                <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
-              </systemPropertyVariables>
+              <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
             </configuration>
           </plugin>
         </plugins>
@@ -1234,9 +1275,7 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
-              <systemPropertyVariables>
-                <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
-              </systemPropertyVariables>
+              <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
             </configuration>
           </plugin>
         </plugins>
@@ -1258,9 +1297,7 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
-              <systemPropertyVariables>
-                <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
-              </systemPropertyVariables>
+              <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
             </configuration>
           </plugin>
         </plugins>
@@ -1275,20 +1312,9 @@
           <value>LIVE</value>
         </property>
       </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <systemPropertyVariables>
-                <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
-              </systemPropertyVariables>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
+      <properties>
+        <parallelizeTests>false</parallelizeTests>
+      </properties>
     </profile>
 
     <profile>
@@ -1299,20 +1325,9 @@
           <value>RECORD</value>
         </property>
       </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <systemPropertyVariables>
-                <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
-              </systemPropertyVariables>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
+      <properties>
+        <parallelizeTests>false</parallelizeTests>
+      </properties>
     </profile>
 
     <profile>
@@ -1323,20 +1338,9 @@
           <value>LIVE</value>
         </property>
       </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <systemPropertyVariables>
-                <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
-              </systemPropertyVariables>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
+      <properties>
+        <parallelizeTests>false</parallelizeTests>
+      </properties>
     </profile>
 
     <profile>
@@ -1347,20 +1351,9 @@
           <value>RECORD</value>
         </property>
       </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <systemPropertyVariables>
-                <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
-              </systemPropertyVariables>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
+      <properties>
+        <parallelizeTests>false</parallelizeTests>
+      </properties>
     </profile>
 
     <profile>
@@ -1406,7 +1399,7 @@
               <dependency>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs</artifactId>
-                <version>4.2.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs;external_dependency} -->
+                <version>4.2.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs;external_dependency} -->
               </dependency>
             </dependencies>
           </plugin>

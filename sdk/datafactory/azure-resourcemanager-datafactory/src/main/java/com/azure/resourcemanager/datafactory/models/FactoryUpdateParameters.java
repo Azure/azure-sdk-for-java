@@ -7,6 +7,7 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -19,6 +20,7 @@ public final class FactoryUpdateParameters {
      * The resource tags.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
@@ -26,6 +28,12 @@ public final class FactoryUpdateParameters {
      */
     @JsonProperty(value = "identity")
     private FactoryIdentity identity;
+
+    /*
+     * Whether or not public network access is allowed for the data factory.
+     */
+    @JsonProperty(value = "publicNetworkAccess")
+    private PublicNetworkAccess publicNetworkAccess;
 
     /**
      * Get the tags property: The resource tags.
@@ -64,6 +72,26 @@ public final class FactoryUpdateParameters {
      */
     public FactoryUpdateParameters withIdentity(FactoryIdentity identity) {
         this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Whether or not public network access is allowed for the data factory.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Whether or not public network access is allowed for the data factory.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the FactoryUpdateParameters object itself.
+     */
+    public FactoryUpdateParameters withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
         return this;
     }
 

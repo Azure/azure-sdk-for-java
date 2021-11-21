@@ -1,10 +1,12 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.digitaltwins.core;
 
 import com.azure.core.models.JsonPatchDocument;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 import java.util.Scanner;
 
 public class TestAssetsHelper {

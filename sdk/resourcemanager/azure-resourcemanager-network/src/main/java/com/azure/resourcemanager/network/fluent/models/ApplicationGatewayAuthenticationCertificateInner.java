@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -13,11 +12,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Authentication certificates of an application gateway. */
-@JsonFlatten
 @Fluent
-public class ApplicationGatewayAuthenticationCertificateInner extends SubResource {
+public final class ApplicationGatewayAuthenticationCertificateInner extends SubResource {
     @JsonIgnore
     private final ClientLogger logger = new ClientLogger(ApplicationGatewayAuthenticationCertificateInner.class);
+
+    /*
+     * Properties of the application gateway authentication certificate.
+     */
+    @JsonProperty(value = "properties")
+    private ApplicationGatewayAuthenticationCertificatePropertiesFormat innerProperties;
 
     /*
      * Name of the authentication certificate that is unique within an
@@ -38,17 +42,14 @@ public class ApplicationGatewayAuthenticationCertificateInner extends SubResourc
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * Certificate public data.
+    /**
+     * Get the innerProperties property: Properties of the application gateway authentication certificate.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.data")
-    private String data;
-
-    /*
-     * The provisioning state of the authentication certificate resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private ApplicationGatewayAuthenticationCertificatePropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Name of the authentication certificate that is unique within an Application Gateway.
@@ -88,13 +89,20 @@ public class ApplicationGatewayAuthenticationCertificateInner extends SubResourc
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayAuthenticationCertificateInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the data property: Certificate public data.
      *
      * @return the data value.
      */
     public String data() {
-        return this.data;
+        return this.innerProperties() == null ? null : this.innerProperties().data();
     }
 
     /**
@@ -104,7 +112,10 @@ public class ApplicationGatewayAuthenticationCertificateInner extends SubResourc
      * @return the ApplicationGatewayAuthenticationCertificateInner object itself.
      */
     public ApplicationGatewayAuthenticationCertificateInner withData(String data) {
-        this.data = data;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayAuthenticationCertificatePropertiesFormat();
+        }
+        this.innerProperties().withData(data);
         return this;
     }
 
@@ -114,14 +125,7 @@ public class ApplicationGatewayAuthenticationCertificateInner extends SubResourc
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ApplicationGatewayAuthenticationCertificateInner withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -130,5 +134,8 @@ public class ApplicationGatewayAuthenticationCertificateInner extends SubResourc
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

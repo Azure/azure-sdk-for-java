@@ -5,15 +5,14 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.servicefabric.fluent.models.ClusterVersionDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The result of the Service Fabric runtime versions. */
-@JsonFlatten
 @Fluent
-public class ClusterCodeVersionsResult {
+public final class ClusterCodeVersionsResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterCodeVersionsResult.class);
 
     /*
@@ -35,22 +34,10 @@ public class ClusterCodeVersionsResult {
     private String type;
 
     /*
-     * The Service Fabric runtime version of the cluster.
+     * The detail of the Service Fabric runtime version result
      */
-    @JsonProperty(value = "properties.codeVersion")
-    private String codeVersion;
-
-    /*
-     * The date of expiry of support of the version.
-     */
-    @JsonProperty(value = "properties.supportExpiryUtc")
-    private String supportExpiryUtc;
-
-    /*
-     * Indicates if this version is for Windows or Linux operating system.
-     */
-    @JsonProperty(value = "properties.environment")
-    private ClusterEnvironment environment;
+    @JsonProperty(value = "properties")
+    private ClusterVersionDetails innerProperties;
 
     /**
      * Get the id property: The identification of the result.
@@ -113,12 +100,21 @@ public class ClusterCodeVersionsResult {
     }
 
     /**
+     * Get the innerProperties property: The detail of the Service Fabric runtime version result.
+     *
+     * @return the innerProperties value.
+     */
+    private ClusterVersionDetails innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the codeVersion property: The Service Fabric runtime version of the cluster.
      *
      * @return the codeVersion value.
      */
     public String codeVersion() {
-        return this.codeVersion;
+        return this.innerProperties() == null ? null : this.innerProperties().codeVersion();
     }
 
     /**
@@ -128,7 +124,10 @@ public class ClusterCodeVersionsResult {
      * @return the ClusterCodeVersionsResult object itself.
      */
     public ClusterCodeVersionsResult withCodeVersion(String codeVersion) {
-        this.codeVersion = codeVersion;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterVersionDetails();
+        }
+        this.innerProperties().withCodeVersion(codeVersion);
         return this;
     }
 
@@ -138,7 +137,7 @@ public class ClusterCodeVersionsResult {
      * @return the supportExpiryUtc value.
      */
     public String supportExpiryUtc() {
-        return this.supportExpiryUtc;
+        return this.innerProperties() == null ? null : this.innerProperties().supportExpiryUtc();
     }
 
     /**
@@ -148,7 +147,10 @@ public class ClusterCodeVersionsResult {
      * @return the ClusterCodeVersionsResult object itself.
      */
     public ClusterCodeVersionsResult withSupportExpiryUtc(String supportExpiryUtc) {
-        this.supportExpiryUtc = supportExpiryUtc;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterVersionDetails();
+        }
+        this.innerProperties().withSupportExpiryUtc(supportExpiryUtc);
         return this;
     }
 
@@ -158,7 +160,7 @@ public class ClusterCodeVersionsResult {
      * @return the environment value.
      */
     public ClusterEnvironment environment() {
-        return this.environment;
+        return this.innerProperties() == null ? null : this.innerProperties().environment();
     }
 
     /**
@@ -168,7 +170,10 @@ public class ClusterCodeVersionsResult {
      * @return the ClusterCodeVersionsResult object itself.
      */
     public ClusterCodeVersionsResult withEnvironment(ClusterEnvironment environment) {
-        this.environment = environment;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterVersionDetails();
+        }
+        this.innerProperties().withEnvironment(environment);
         return this;
     }
 
@@ -178,5 +183,8 @@ public class ClusterCodeVersionsResult {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

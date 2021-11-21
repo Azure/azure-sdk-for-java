@@ -11,9 +11,7 @@ import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
 import com.azure.core.test.TestMode
-import com.azure.core.util.Configuration
 import com.azure.core.util.FluxUtil
-import com.azure.core.util.logging.ClientLogger
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobClient
@@ -25,16 +23,16 @@ import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.StorageSpec
+import com.azure.storage.common.test.shared.TestAccount
+import org.mockito.Mockito
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import spock.lang.Requires
-import spock.lang.Shared
 
+import javax.crypto.SecretKey
 import java.nio.ByteBuffer
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 import java.time.OffsetDateTime
-import java.util.function.Supplier
 
 class APISpec extends StorageSpec {
 
@@ -63,84 +61,7 @@ class APISpec extends StorageSpec {
 
     static final String garbageLeaseID = UUID.randomUUID().toString()
 
-    @Shared
-    ClientLogger logger = new ClientLogger(APISpec.class)
-
-    static StorageSharedKeyCredential primaryCredential
-    static StorageSharedKeyCredential alternateCredential
-    static StorageSharedKeyCredential blobCredential
-    static StorageSharedKeyCredential premiumCredential
-    static String connectionString
-    private boolean recordLiveMode
-
-    static def PRIMARY_STORAGE = "PRIMARY_STORAGE_"
-    static def SECONDARY_STORAGE = "SECONDARY_STORAGE_"
-    static def BLOB_STORAGE = "BLOB_STORAGE_"
-    static def PREMIUM_STORAGE = "PREMIUM_STORAGE_"
-
-    // Fields used for conveniently creating blobs with data.
-    static final String defaultText = "default"
-
-    static final Supplier<InputStream> defaultInputStream = new Supplier<InputStream>() {
-        @Override
-        InputStream get() {
-            return new ByteArrayInputStream(defaultText.getBytes(StandardCharsets.UTF_8))
-        }
-    }
-
-    public static final ByteBuffer defaultData = ByteBuffer.wrap(defaultText.getBytes(StandardCharsets.UTF_8))
-
-    static int defaultDataSize = defaultData.remaining()
-
-    public static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData).map{buffer -> buffer.duplicate()}
-
-    public static final String defaultEndpointTemplate = "https://%s.blob.core.windows.net/"
-
-    @Shared
-    protected KB = 1024
-
-    def setupSpec() {
-        primaryCredential = getCredential(PRIMARY_STORAGE)
-        alternateCredential = getCredential(SECONDARY_STORAGE)
-        blobCredential = getCredential(BLOB_STORAGE)
-        premiumCredential = getCredential(PREMIUM_STORAGE)
-    }
-
-    def setup() {
-        // If the test doesn't have the Requires tag record it in live mode.
-        recordLiveMode = specificationContext.getCurrentFeature().getFeatureMethod().getAnnotation(Requires.class) == null
-        connectionString = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_BLOB_CONNECTION_STRING")
-    }
-
-    // TODO (kasobol-msft) remove this after migration
-    @Override
-    protected shouldUseThisToRecord() {
-        return true
-    }
-
-    static boolean liveMode() {
-        return ENVIRONMENT.testMode == TestMode.LIVE
-    }
-
-    private StorageSharedKeyCredential getCredential(String accountType) {
-        String accountName
-        String accountKey
-
-        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
-            accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
-            accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
-        } else {
-            accountName = "azstoragesdkaccount"
-            accountKey = "astorageaccountkey"
-        }
-
-        if (accountName == null || accountKey == null) {
-            logger.warning("Account name or key for the {} account was null. Test's requiring these credentials will fail.", accountType)
-            return null
-        }
-
-        return new StorageSharedKeyCredential(accountName, accountKey)
-    }
+    static def mockRandomData = String.join("", Collections.nCopies(32, "password")).getBytes(StandardCharsets.UTF_8)
 
     /*
     Size must be an int because ByteBuffer sizes can only be an int. Long is not supported.
@@ -183,14 +104,13 @@ class APISpec extends StorageSpec {
             .key(key, algorithm.toString())
             .keyResolver(keyResolver)
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         if (credential != null) {
             builder.credential(credential)
@@ -203,14 +123,12 @@ class APISpec extends StorageSpec {
 
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         if (credential != null) {
             builder.credential(credential)
@@ -219,18 +137,21 @@ class APISpec extends StorageSpec {
         return builder
     }
 
+    BlobServiceClientBuilder getServiceClientBuilder(TestAccount account,
+                                                     HttpPipelinePolicy... policies) {
+        return getServiceClientBuilder(account.credential, account.blobEndpoint, policies)
+    }
+
     BlobServiceClientBuilder getServiceClientBuilder(StorageSharedKeyCredential credential, String endpoint,
                                                      HttpPipelinePolicy... policies) {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         if (credential != null) {
             builder.credential(credential)
@@ -475,13 +396,49 @@ class APISpec extends StorageSpec {
         }
     }
 
+    private static def mockKey = String.join("", Collections.nCopies(4, "password")).getBytes(StandardCharsets.UTF_8)
+
     /**
      * Insecurely and quickly generates a random AES256 key for the purpose of unit tests. No one should ever make a
      * real key this way.
      */
-    def getRandomKey(long seed = new Random().nextLong()) {
-        def key = new byte[32] // 256 bit key
-        new Random(seed).nextBytes(key)
-        return key
+    static def getRandomKey(long seed = new Random().nextLong()) {
+        if (getEnvironment().getTestMode() == TestMode.LIVE) {
+            def key = new byte[32] // 256 bit key
+            new Random(seed).nextBytes(key)
+            return key
+        } else {
+            return mockKey
+        }
+    }
+
+    /**
+     * Stubs the generateAesKey method in EncryptedBlobAsyncClient to return a consistent SecretKey used in PLAYBACK
+     * and RECORD testing modes only.
+     */
+    static def mockAesKey(EncryptedBlobAsyncClient encryptedClient) {
+        if (getEnvironment().getTestMode() != TestMode.LIVE) {
+            def mockAesKey = new SecretKey() {
+                @Override
+                String getAlgorithm() {
+                    return CryptographyConstants.AES
+                }
+
+                @Override
+                String getFormat() {
+                    return "RAW"
+                }
+
+                @Override
+                byte[] getEncoded() {
+                    return mockKey
+                }
+            }
+
+            encryptedClient = Mockito.spy(encryptedClient)
+            Mockito.when(encryptedClient.generateSecretKey()).thenReturn(mockAesKey)
+        }
+
+        return encryptedClient
     }
 }

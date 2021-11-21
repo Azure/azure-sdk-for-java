@@ -33,7 +33,7 @@ public class GroupsTests extends GraphRbacManagementTest {
                     .users()
                     .define(userName)
                     .withEmailAlias(userName)
-                    .withPassword("StrongPass!123")
+                    .withPassword(password())
                     .create();
             servicePrincipal =
                 authorizationManager.servicePrincipals().define(spName).withNewApplication().create();

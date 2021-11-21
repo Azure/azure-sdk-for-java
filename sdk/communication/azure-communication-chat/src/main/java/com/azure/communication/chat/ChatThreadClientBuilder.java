@@ -16,6 +16,7 @@ import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
@@ -235,8 +236,13 @@ public final class ChatThreadClientBuilder {
                                             List<HttpPipelinePolicy> additionalPolicies) {
 
         List<HttpPipelinePolicy> policies = new ArrayList<HttpPipelinePolicy>();
+        policies.add(getUserAgentPolicy());
+        policies.add(new RequestIdPolicy());
+        policies.add(this.retryPolicy);
+        policies.add(new CookiePolicy());
+        // auth policy is per request, should be after retry
         policies.add(authorizationPolicy);
-        applyRequiredPolicies(policies);
+        policies.add(new HttpLoggingPolicy(logOptions));
 
         if (additionalPolicies != null && additionalPolicies.size() > 0) {
             policies.addAll(additionalPolicies);
@@ -248,12 +254,6 @@ public final class ChatThreadClientBuilder {
             .build();
     }
 
-    private void applyRequiredPolicies(List<HttpPipelinePolicy> policies) {
-        policies.add(getUserAgentPolicy());
-        policies.add(this.retryPolicy);
-        policies.add(new CookiePolicy());
-        policies.add(new HttpLoggingPolicy(logOptions));
-    }
 
     /*
      * Creates a {@link UserAgentPolicy} using the default chat service module name and version.

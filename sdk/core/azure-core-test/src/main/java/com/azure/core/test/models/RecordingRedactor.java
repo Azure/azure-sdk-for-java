@@ -28,6 +28,8 @@ public class RecordingRedactor {
     private static final Pattern DELEGATIONKEY_TENANTID_PATTERN = Pattern.compile("(?:<SignedTid>)(.*)(?:</SignedTid>)");
     private static final Pattern PASSWORD_KEY_PATTERN = Pattern.compile("(?:Password=)(.*?)(?:;)");
     private static final Pattern USER_ID_KEY_PATTERN = Pattern.compile("(?:User ID=)(.*?)(?:;)");
+    private static final Pattern PRIMARY_KEY_PATTERN = Pattern.compile("(?:<PrimaryKey>)(.*)(?:</PrimaryKey>)");
+    private static final Pattern SECONDARY_KEY_PATTERN = Pattern.compile("(?:<SecondaryKey>)(.*)(?:</SecondaryKey>)");
 
     private static final List<Function<String, String>> DEFAULT_RECORDING_REDACTORS = loadRedactor();
 
@@ -89,6 +91,8 @@ public class RecordingRedactor {
         redactors.add(RecordingRedactor::redactUserDelegationKey);
         redactors.add(RecordingRedactor::redactUsernameKeyPatterns);
         redactors.add(RecordingRedactor::redactPasswordKeyPatterns);
+        redactors.add(RecordingRedactor::redactPrimaryKeyPatterns);
+        redactors.add(RecordingRedactor::redactSecondaryKeyPatterns);
         return redactors;
     }
 
@@ -104,6 +108,16 @@ public class RecordingRedactor {
 
     private static String redactJsonKeyPatterns(String content) {
         content = redactionReplacement(content, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(content), REDACTED);
+        return content;
+    }
+
+    private static String redactPrimaryKeyPatterns(String content) {
+        content = redactionReplacement(content, PRIMARY_KEY_PATTERN.matcher(content), REDACTED);
+        return content;
+    }
+
+    private static String redactSecondaryKeyPatterns(String content) {
+        content = redactionReplacement(content, SECONDARY_KEY_PATTERN.matcher(content), REDACTED);
         return content;
     }
 

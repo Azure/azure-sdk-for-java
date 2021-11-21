@@ -139,7 +139,7 @@ public final class ManageNetworkWatcher {
                     .withNewPrimaryPublicIPAddress(dnsLabel)
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
                     .withRootUsername(userName)
-                    .withRootPassword("Abcdef.123456")
+                    .withRootPassword(Utils.password())
                     .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     // This extension is needed to enable packet capture
                     .defineNewExtension("packetCapture")

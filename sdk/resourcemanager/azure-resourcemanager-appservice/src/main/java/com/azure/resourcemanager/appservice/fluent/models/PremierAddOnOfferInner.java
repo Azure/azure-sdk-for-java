@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.AppServicePlanRestrictions;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
@@ -13,71 +12,31 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Premier add-on offer. */
-@JsonFlatten
 @Fluent
-public class PremierAddOnOfferInner extends ProxyOnlyResource {
+public final class PremierAddOnOfferInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PremierAddOnOfferInner.class);
 
     /*
-     * Premier add on SKU.
+     * PremierAddOnOffer resource specific properties
      */
-    @JsonProperty(value = "properties.sku")
-    private String sku;
+    @JsonProperty(value = "properties")
+    private PremierAddOnOfferProperties innerProperties;
 
-    /*
-     * Premier add on offer Product.
+    /**
+     * Get the innerProperties property: PremierAddOnOffer resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.product")
-    private String product;
+    private PremierAddOnOfferProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Premier add on offer Vendor.
-     */
-    @JsonProperty(value = "properties.vendor")
-    private String vendor;
-
-    /*
-     * <code>true</code> if promotion code is required; otherwise,
-     * <code>false</code>.
-     */
-    @JsonProperty(value = "properties.promoCodeRequired")
-    private Boolean promoCodeRequired;
-
-    /*
-     * Premier add on offer Quota.
-     */
-    @JsonProperty(value = "properties.quota")
-    private Integer quota;
-
-    /*
-     * App Service plans this offer is restricted to.
-     */
-    @JsonProperty(value = "properties.webHostingPlanRestrictions")
-    private AppServicePlanRestrictions webHostingPlanRestrictions;
-
-    /*
-     * Privacy policy URL.
-     */
-    @JsonProperty(value = "properties.privacyPolicyUrl")
-    private String privacyPolicyUrl;
-
-    /*
-     * Legal terms URL.
-     */
-    @JsonProperty(value = "properties.legalTermsUrl")
-    private String legalTermsUrl;
-
-    /*
-     * Marketplace publisher.
-     */
-    @JsonProperty(value = "properties.marketplacePublisher")
-    private String marketplacePublisher;
-
-    /*
-     * Marketplace offer.
-     */
-    @JsonProperty(value = "properties.marketplaceOffer")
-    private String marketplaceOffer;
+    /** {@inheritDoc} */
+    @Override
+    public PremierAddOnOfferInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the sku property: Premier add on SKU.
@@ -85,7 +44,7 @@ public class PremierAddOnOfferInner extends ProxyOnlyResource {
      * @return the sku value.
      */
     public String sku() {
-        return this.sku;
+        return this.innerProperties() == null ? null : this.innerProperties().sku();
     }
 
     /**
@@ -95,7 +54,10 @@ public class PremierAddOnOfferInner extends ProxyOnlyResource {
      * @return the PremierAddOnOfferInner object itself.
      */
     public PremierAddOnOfferInner withSku(String sku) {
-        this.sku = sku;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PremierAddOnOfferProperties();
+        }
+        this.innerProperties().withSku(sku);
         return this;
     }
 
@@ -105,7 +67,7 @@ public class PremierAddOnOfferInner extends ProxyOnlyResource {
      * @return the product value.
      */
     public String product() {
-        return this.product;
+        return this.innerProperties() == null ? null : this.innerProperties().product();
     }
 
     /**
@@ -115,7 +77,10 @@ public class PremierAddOnOfferInner extends ProxyOnlyResource {
      * @return the PremierAddOnOfferInner object itself.
      */
     public PremierAddOnOfferInner withProduct(String product) {
-        this.product = product;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PremierAddOnOfferProperties();
+        }
+        this.innerProperties().withProduct(product);
         return this;
     }
 
@@ -125,7 +90,7 @@ public class PremierAddOnOfferInner extends ProxyOnlyResource {
      * @return the vendor value.
      */
     public String vendor() {
-        return this.vendor;
+        return this.innerProperties() == null ? null : this.innerProperties().vendor();
     }
 
     /**
@@ -135,7 +100,10 @@ public class PremierAddOnOfferInner extends ProxyOnlyResource {
      * @return the PremierAddOnOfferInner object itself.
      */
     public PremierAddOnOfferInner withVendor(String vendor) {
-        this.vendor = vendor;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PremierAddOnOfferProperties();
+        }
+        this.innerProperties().withVendor(vendor);
         return this;
     }
 
@@ -146,7 +114,7 @@ public class PremierAddOnOfferInner extends ProxyOnlyResource {
      * @return the promoCodeRequired value.
      */
     public Boolean promoCodeRequired() {
-        return this.promoCodeRequired;
+        return this.innerProperties() == null ? null : this.innerProperties().promoCodeRequired();
     }
 
     /**
@@ -157,7 +125,10 @@ public class PremierAddOnOfferInner extends ProxyOnlyResource {
      * @return the PremierAddOnOfferInner object itself.
      */
     public PremierAddOnOfferInner withPromoCodeRequired(Boolean promoCodeRequired) {
-        this.promoCodeRequired = promoCodeRequired;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PremierAddOnOfferProperties();
+        }
+        this.innerProperties().withPromoCodeRequired(promoCodeRequired);
         return this;
     }
 
@@ -167,7 +138,7 @@ public class PremierAddOnOfferInner extends ProxyOnlyResource {
      * @return the quota value.
      */
     public Integer quota() {
-        return this.quota;
+        return this.innerProperties() == null ? null : this.innerProperties().quota();
     }
 
     /**
@@ -177,7 +148,10 @@ public class PremierAddOnOfferInner extends ProxyOnlyResource {
      * @return the PremierAddOnOfferInner object itself.
      */
     public PremierAddOnOfferInner withQuota(Integer quota) {
-        this.quota = quota;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PremierAddOnOfferProperties();
+        }
+        this.innerProperties().withQuota(quota);
         return this;
     }
 
@@ -187,7 +161,7 @@ public class PremierAddOnOfferInner extends ProxyOnlyResource {
      * @return the webHostingPlanRestrictions value.
      */
     public AppServicePlanRestrictions webHostingPlanRestrictions() {
-        return this.webHostingPlanRestrictions;
+        return this.innerProperties() == null ? null : this.innerProperties().webHostingPlanRestrictions();
     }
 
     /**
@@ -198,7 +172,10 @@ public class PremierAddOnOfferInner extends ProxyOnlyResource {
      */
     public PremierAddOnOfferInner withWebHostingPlanRestrictions(
         AppServicePlanRestrictions webHostingPlanRestrictions) {
-        this.webHostingPlanRestrictions = webHostingPlanRestrictions;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PremierAddOnOfferProperties();
+        }
+        this.innerProperties().withWebHostingPlanRestrictions(webHostingPlanRestrictions);
         return this;
     }
 
@@ -208,7 +185,7 @@ public class PremierAddOnOfferInner extends ProxyOnlyResource {
      * @return the privacyPolicyUrl value.
      */
     public String privacyPolicyUrl() {
-        return this.privacyPolicyUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().privacyPolicyUrl();
     }
 
     /**
@@ -218,7 +195,10 @@ public class PremierAddOnOfferInner extends ProxyOnlyResource {
      * @return the PremierAddOnOfferInner object itself.
      */
     public PremierAddOnOfferInner withPrivacyPolicyUrl(String privacyPolicyUrl) {
-        this.privacyPolicyUrl = privacyPolicyUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PremierAddOnOfferProperties();
+        }
+        this.innerProperties().withPrivacyPolicyUrl(privacyPolicyUrl);
         return this;
     }
 
@@ -228,7 +208,7 @@ public class PremierAddOnOfferInner extends ProxyOnlyResource {
      * @return the legalTermsUrl value.
      */
     public String legalTermsUrl() {
-        return this.legalTermsUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().legalTermsUrl();
     }
 
     /**
@@ -238,7 +218,10 @@ public class PremierAddOnOfferInner extends ProxyOnlyResource {
      * @return the PremierAddOnOfferInner object itself.
      */
     public PremierAddOnOfferInner withLegalTermsUrl(String legalTermsUrl) {
-        this.legalTermsUrl = legalTermsUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PremierAddOnOfferProperties();
+        }
+        this.innerProperties().withLegalTermsUrl(legalTermsUrl);
         return this;
     }
 
@@ -248,7 +231,7 @@ public class PremierAddOnOfferInner extends ProxyOnlyResource {
      * @return the marketplacePublisher value.
      */
     public String marketplacePublisher() {
-        return this.marketplacePublisher;
+        return this.innerProperties() == null ? null : this.innerProperties().marketplacePublisher();
     }
 
     /**
@@ -258,7 +241,10 @@ public class PremierAddOnOfferInner extends ProxyOnlyResource {
      * @return the PremierAddOnOfferInner object itself.
      */
     public PremierAddOnOfferInner withMarketplacePublisher(String marketplacePublisher) {
-        this.marketplacePublisher = marketplacePublisher;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PremierAddOnOfferProperties();
+        }
+        this.innerProperties().withMarketplacePublisher(marketplacePublisher);
         return this;
     }
 
@@ -268,7 +254,7 @@ public class PremierAddOnOfferInner extends ProxyOnlyResource {
      * @return the marketplaceOffer value.
      */
     public String marketplaceOffer() {
-        return this.marketplaceOffer;
+        return this.innerProperties() == null ? null : this.innerProperties().marketplaceOffer();
     }
 
     /**
@@ -278,14 +264,10 @@ public class PremierAddOnOfferInner extends ProxyOnlyResource {
      * @return the PremierAddOnOfferInner object itself.
      */
     public PremierAddOnOfferInner withMarketplaceOffer(String marketplaceOffer) {
-        this.marketplaceOffer = marketplaceOffer;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public PremierAddOnOfferInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PremierAddOnOfferProperties();
+        }
+        this.innerProperties().withMarketplaceOffer(marketplaceOffer);
         return this;
     }
 
@@ -297,5 +279,8 @@ public class PremierAddOnOfferInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

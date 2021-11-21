@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.compute.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * &lt;br&gt;&lt;br&gt; NOTE: The disk encryption set resource id can only be specified for managed disk. Please refer
  * https://aka.ms/mdssewithcmkoverview for more details.
  */
-@Immutable
+@Fluent
 public final class DiskEncryptionSetParameters extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskEncryptionSetParameters.class);
 

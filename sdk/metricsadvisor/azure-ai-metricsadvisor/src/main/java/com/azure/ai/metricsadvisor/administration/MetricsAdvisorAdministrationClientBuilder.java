@@ -6,7 +6,7 @@ package com.azure.ai.metricsadvisor.administration;
 import com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl;
 import com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2ImplBuilder;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
+import com.azure.ai.metricsadvisor.MetricsAdvisorServiceVersion;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.ContentType;
@@ -19,11 +19,13 @@ import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -50,11 +52,27 @@ import java.util.Objects;
  *
  * <p><strong>Instantiating an asynchronous Metrics Advisor Client</strong></p>
  *
- * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.instantiation}
+ * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.instantiation -->
+ * <pre>
+ * MetricsAdvisorAdministrationAsyncClient metricsAdvisorAdminAsyncClient =
+ *     new MetricsAdvisorAdministrationClientBuilder&#40;&#41;
+ *         .credential&#40;new MetricsAdvisorKeyCredential&#40;&quot;&#123;subscription_key&#125;&quot;, &quot;&#123;api_key&#125;&quot;&#41;&#41;
+ *         .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *         .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.instantiation -->
  *
  * <p><strong>Instantiating a synchronous Metrics Advisor Client</strong></p>
  *
- * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.instantiation}
+ * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.instantiation -->
+ * <pre>
+ * MetricsAdvisorAdministrationClient metricsAdvisorAdminClient =
+ *     new MetricsAdvisorAdministrationClientBuilder&#40;&#41;
+ *         .credential&#40;new MetricsAdvisorKeyCredential&#40;&quot;&#123;subscription_key&#125;&quot;, &quot;&#123;api_key&#125;&quot;&#41;&#41;
+ *         .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *         .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.instantiation -->
  *
  * <p>
  * Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an
@@ -64,7 +82,20 @@ import java.util.Objects;
  * and {@link MetricsAdvisorAdministrationAsyncClient} is built.
  * </p>
  *
- * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.pipeline.instantiation}
+ * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.pipeline.instantiation -->
+ * <pre>
+ * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
+ *     .policies&#40;&#47;* add policies *&#47;&#41;
+ *     .build&#40;&#41;;
+ *
+ * MetricsAdvisorAdministrationClient metricsAdvisorAdministrationClient =
+ *     new MetricsAdvisorAdministrationClientBuilder&#40;&#41;
+ *         .credential&#40;new MetricsAdvisorKeyCredential&#40;&quot;&#123;subscription_key&#125;&quot;, &quot;&#123;api_key&#125;&quot;&#41;&#41;
+ *         .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *         .pipeline&#40;pipeline&#41;
+ *         .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.pipeline.instantiation -->
  *
  * @see MetricsAdvisorAdministrationAsyncClient
  * @see MetricsAdvisorAdministrationClient
@@ -82,6 +113,8 @@ public final class MetricsAdvisorAdministrationClientBuilder {
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms",
         ChronoUnit.MILLIS);
     private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
+    private static final HttpLogOptions DEFAULT_LOG_OPTIONS = new HttpLogOptions();
+    private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
 
     private final ClientLogger logger = new ClientLogger(MetricsAdvisorAdministrationClientBuilder.class);
     private final List<HttpPipelinePolicy> policies;
@@ -94,6 +127,7 @@ public final class MetricsAdvisorAdministrationClientBuilder {
     private MetricsAdvisorKeyCredential metricsAdvisorKeyCredential;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
+    private ClientOptions clientOptions;
     private HttpPipeline httpPipeline;
     private Configuration configuration;
     private RetryPolicy retryPolicy;
@@ -114,8 +148,8 @@ public final class MetricsAdvisorAdministrationClientBuilder {
         clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
 
         headers = new HttpHeaders()
-            .put(ECHO_REQUEST_ID_HEADER, "true")
-            .put(ACCEPT_HEADER, CONTENT_TYPE_HEADER_VALUE);
+            .set(ECHO_REQUEST_ID_HEADER, "true")
+            .set(ACCEPT_HEADER, CONTENT_TYPE_HEADER_VALUE);
     }
 
     /**
@@ -183,7 +217,24 @@ public final class MetricsAdvisorAdministrationClientBuilder {
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
+        // Authentications
+        if (tokenCredential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPE));
+        } else if (!CoreUtils.isNullOrEmpty(metricsAdvisorKeyCredential.getKeys().getSubscriptionKey())
+            || !CoreUtils.isNullOrEmpty(metricsAdvisorKeyCredential.getKeys().getApiKey())) {
+            headers.set(OCP_APIM_SUBSCRIPTION_KEY, metricsAdvisorKeyCredential.getKeys().getSubscriptionKey());
+            headers.set(API_KEY, metricsAdvisorKeyCredential.getKeys().getApiKey());
+        } else {
+            // Throw exception that credential cannot be null
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing credential information while building a client."));
+        }
+
+        ClientOptions buildClientOptions = this.clientOptions == null ? DEFAULT_CLIENT_OPTIONS : this.clientOptions;
+        HttpLogOptions buildLogOptions = this.httpLogOptions == null ? DEFAULT_LOG_OPTIONS : this.httpLogOptions;
+        final String applicationId = CoreUtils.getApplicationId(buildClientOptions, buildLogOptions);
+
+        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion,
             buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersPolicy(headers));
@@ -191,19 +242,7 @@ public final class MetricsAdvisorAdministrationClientBuilder {
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy == null ? DEFAULT_RETRY_POLICY : retryPolicy);
         policies.add(new AddDatePolicy());
-
-        // Authentications
-        if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPE));
-        } else if (!CoreUtils.isNullOrEmpty(metricsAdvisorKeyCredential.getSubscriptionKey())
-            || !CoreUtils.isNullOrEmpty(metricsAdvisorKeyCredential.getApiKey())) {
-            headers.put(OCP_APIM_SUBSCRIPTION_KEY, metricsAdvisorKeyCredential.getSubscriptionKey());
-            headers.put(API_KEY, metricsAdvisorKeyCredential.getApiKey());
-        } else {
-            // Throw exception that credential and tokenCredential cannot be null
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("Missing credential information while building a client."));
-        }
+        policies.add(new HttpLoggingPolicy(httpLogOptions));
 
         policies.addAll(this.policies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
@@ -283,6 +322,18 @@ public final class MetricsAdvisorAdministrationClientBuilder {
         this.httpLogOptions = logOptions;
         return this;
     }
+
+    /**
+     * Sets the client options such as application ID and custom headers to set on a request.
+     *
+     * @param clientOptions The client options.
+     * @return The updated MetricsAdvisorAdministrationClientBuilder object.
+     */
+    public MetricsAdvisorAdministrationClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
+        return this;
+    }
+
 
     /**
      * Adds a policy to the set of existing policies that are executed after required policies.

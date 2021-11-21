@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.AzureBlobDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,202 +17,23 @@ import java.util.Map;
 /** The Azure Blob storage. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureBlob")
-@JsonFlatten
 @Fluent
-public class AzureBlobDataset extends Dataset {
+public final class AzureBlobDataset extends Dataset {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureBlobDataset.class);
 
     /*
-     * The path of the Azure Blob storage. Type: string (or Expression with
-     * resultType string).
+     * Azure Blob dataset properties.
      */
-    @JsonProperty(value = "typeProperties.folderPath")
-    private Object folderPath;
-
-    /*
-     * The root of blob path. Type: string (or Expression with resultType
-     * string).
-     */
-    @JsonProperty(value = "typeProperties.tableRootLocation")
-    private Object tableRootLocation;
-
-    /*
-     * The name of the Azure Blob. Type: string (or Expression with resultType
-     * string).
-     */
-    @JsonProperty(value = "typeProperties.fileName")
-    private Object fileName;
-
-    /*
-     * The start of Azure Blob's modified datetime. Type: string (or Expression
-     * with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.modifiedDatetimeStart")
-    private Object modifiedDatetimeStart;
-
-    /*
-     * The end of Azure Blob's modified datetime. Type: string (or Expression
-     * with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.modifiedDatetimeEnd")
-    private Object modifiedDatetimeEnd;
-
-    /*
-     * The format of the Azure Blob storage.
-     */
-    @JsonProperty(value = "typeProperties.format")
-    private DatasetStorageFormat format;
-
-    /*
-     * The data compression method used for the blob storage.
-     */
-    @JsonProperty(value = "typeProperties.compression")
-    private DatasetCompression compression;
+    @JsonProperty(value = "typeProperties")
+    private AzureBlobDatasetTypeProperties innerTypeProperties;
 
     /**
-     * Get the folderPath property: The path of the Azure Blob storage. Type: string (or Expression with resultType
-     * string).
+     * Get the innerTypeProperties property: Azure Blob dataset properties.
      *
-     * @return the folderPath value.
+     * @return the innerTypeProperties value.
      */
-    public Object folderPath() {
-        return this.folderPath;
-    }
-
-    /**
-     * Set the folderPath property: The path of the Azure Blob storage. Type: string (or Expression with resultType
-     * string).
-     *
-     * @param folderPath the folderPath value to set.
-     * @return the AzureBlobDataset object itself.
-     */
-    public AzureBlobDataset withFolderPath(Object folderPath) {
-        this.folderPath = folderPath;
-        return this;
-    }
-
-    /**
-     * Get the tableRootLocation property: The root of blob path. Type: string (or Expression with resultType string).
-     *
-     * @return the tableRootLocation value.
-     */
-    public Object tableRootLocation() {
-        return this.tableRootLocation;
-    }
-
-    /**
-     * Set the tableRootLocation property: The root of blob path. Type: string (or Expression with resultType string).
-     *
-     * @param tableRootLocation the tableRootLocation value to set.
-     * @return the AzureBlobDataset object itself.
-     */
-    public AzureBlobDataset withTableRootLocation(Object tableRootLocation) {
-        this.tableRootLocation = tableRootLocation;
-        return this;
-    }
-
-    /**
-     * Get the fileName property: The name of the Azure Blob. Type: string (or Expression with resultType string).
-     *
-     * @return the fileName value.
-     */
-    public Object fileName() {
-        return this.fileName;
-    }
-
-    /**
-     * Set the fileName property: The name of the Azure Blob. Type: string (or Expression with resultType string).
-     *
-     * @param fileName the fileName value to set.
-     * @return the AzureBlobDataset object itself.
-     */
-    public AzureBlobDataset withFileName(Object fileName) {
-        this.fileName = fileName;
-        return this;
-    }
-
-    /**
-     * Get the modifiedDatetimeStart property: The start of Azure Blob's modified datetime. Type: string (or Expression
-     * with resultType string).
-     *
-     * @return the modifiedDatetimeStart value.
-     */
-    public Object modifiedDatetimeStart() {
-        return this.modifiedDatetimeStart;
-    }
-
-    /**
-     * Set the modifiedDatetimeStart property: The start of Azure Blob's modified datetime. Type: string (or Expression
-     * with resultType string).
-     *
-     * @param modifiedDatetimeStart the modifiedDatetimeStart value to set.
-     * @return the AzureBlobDataset object itself.
-     */
-    public AzureBlobDataset withModifiedDatetimeStart(Object modifiedDatetimeStart) {
-        this.modifiedDatetimeStart = modifiedDatetimeStart;
-        return this;
-    }
-
-    /**
-     * Get the modifiedDatetimeEnd property: The end of Azure Blob's modified datetime. Type: string (or Expression with
-     * resultType string).
-     *
-     * @return the modifiedDatetimeEnd value.
-     */
-    public Object modifiedDatetimeEnd() {
-        return this.modifiedDatetimeEnd;
-    }
-
-    /**
-     * Set the modifiedDatetimeEnd property: The end of Azure Blob's modified datetime. Type: string (or Expression with
-     * resultType string).
-     *
-     * @param modifiedDatetimeEnd the modifiedDatetimeEnd value to set.
-     * @return the AzureBlobDataset object itself.
-     */
-    public AzureBlobDataset withModifiedDatetimeEnd(Object modifiedDatetimeEnd) {
-        this.modifiedDatetimeEnd = modifiedDatetimeEnd;
-        return this;
-    }
-
-    /**
-     * Get the format property: The format of the Azure Blob storage.
-     *
-     * @return the format value.
-     */
-    public DatasetStorageFormat format() {
-        return this.format;
-    }
-
-    /**
-     * Set the format property: The format of the Azure Blob storage.
-     *
-     * @param format the format value to set.
-     * @return the AzureBlobDataset object itself.
-     */
-    public AzureBlobDataset withFormat(DatasetStorageFormat format) {
-        this.format = format;
-        return this;
-    }
-
-    /**
-     * Get the compression property: The data compression method used for the blob storage.
-     *
-     * @return the compression value.
-     */
-    public DatasetCompression compression() {
-        return this.compression;
-    }
-
-    /**
-     * Set the compression property: The data compression method used for the blob storage.
-     *
-     * @param compression the compression value to set.
-     * @return the AzureBlobDataset object itself.
-     */
-    public AzureBlobDataset withCompression(DatasetCompression compression) {
-        this.compression = compression;
-        return this;
+    private AzureBlobDatasetTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -265,6 +86,173 @@ public class AzureBlobDataset extends Dataset {
     }
 
     /**
+     * Get the folderPath property: The path of the Azure Blob storage. Type: string (or Expression with resultType
+     * string).
+     *
+     * @return the folderPath value.
+     */
+    public Object folderPath() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().folderPath();
+    }
+
+    /**
+     * Set the folderPath property: The path of the Azure Blob storage. Type: string (or Expression with resultType
+     * string).
+     *
+     * @param folderPath the folderPath value to set.
+     * @return the AzureBlobDataset object itself.
+     */
+    public AzureBlobDataset withFolderPath(Object folderPath) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureBlobDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withFolderPath(folderPath);
+        return this;
+    }
+
+    /**
+     * Get the tableRootLocation property: The root of blob path. Type: string (or Expression with resultType string).
+     *
+     * @return the tableRootLocation value.
+     */
+    public Object tableRootLocation() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().tableRootLocation();
+    }
+
+    /**
+     * Set the tableRootLocation property: The root of blob path. Type: string (or Expression with resultType string).
+     *
+     * @param tableRootLocation the tableRootLocation value to set.
+     * @return the AzureBlobDataset object itself.
+     */
+    public AzureBlobDataset withTableRootLocation(Object tableRootLocation) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureBlobDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withTableRootLocation(tableRootLocation);
+        return this;
+    }
+
+    /**
+     * Get the fileName property: The name of the Azure Blob. Type: string (or Expression with resultType string).
+     *
+     * @return the fileName value.
+     */
+    public Object fileName() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().fileName();
+    }
+
+    /**
+     * Set the fileName property: The name of the Azure Blob. Type: string (or Expression with resultType string).
+     *
+     * @param fileName the fileName value to set.
+     * @return the AzureBlobDataset object itself.
+     */
+    public AzureBlobDataset withFileName(Object fileName) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureBlobDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withFileName(fileName);
+        return this;
+    }
+
+    /**
+     * Get the modifiedDatetimeStart property: The start of Azure Blob's modified datetime. Type: string (or Expression
+     * with resultType string).
+     *
+     * @return the modifiedDatetimeStart value.
+     */
+    public Object modifiedDatetimeStart() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().modifiedDatetimeStart();
+    }
+
+    /**
+     * Set the modifiedDatetimeStart property: The start of Azure Blob's modified datetime. Type: string (or Expression
+     * with resultType string).
+     *
+     * @param modifiedDatetimeStart the modifiedDatetimeStart value to set.
+     * @return the AzureBlobDataset object itself.
+     */
+    public AzureBlobDataset withModifiedDatetimeStart(Object modifiedDatetimeStart) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureBlobDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withModifiedDatetimeStart(modifiedDatetimeStart);
+        return this;
+    }
+
+    /**
+     * Get the modifiedDatetimeEnd property: The end of Azure Blob's modified datetime. Type: string (or Expression with
+     * resultType string).
+     *
+     * @return the modifiedDatetimeEnd value.
+     */
+    public Object modifiedDatetimeEnd() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().modifiedDatetimeEnd();
+    }
+
+    /**
+     * Set the modifiedDatetimeEnd property: The end of Azure Blob's modified datetime. Type: string (or Expression with
+     * resultType string).
+     *
+     * @param modifiedDatetimeEnd the modifiedDatetimeEnd value to set.
+     * @return the AzureBlobDataset object itself.
+     */
+    public AzureBlobDataset withModifiedDatetimeEnd(Object modifiedDatetimeEnd) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureBlobDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withModifiedDatetimeEnd(modifiedDatetimeEnd);
+        return this;
+    }
+
+    /**
+     * Get the format property: The format of the Azure Blob storage.
+     *
+     * @return the format value.
+     */
+    public DatasetStorageFormat format() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().format();
+    }
+
+    /**
+     * Set the format property: The format of the Azure Blob storage.
+     *
+     * @param format the format value to set.
+     * @return the AzureBlobDataset object itself.
+     */
+    public AzureBlobDataset withFormat(DatasetStorageFormat format) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureBlobDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withFormat(format);
+        return this;
+    }
+
+    /**
+     * Get the compression property: The data compression method used for the blob storage.
+     *
+     * @return the compression value.
+     */
+    public DatasetCompression compression() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().compression();
+    }
+
+    /**
+     * Set the compression property: The data compression method used for the blob storage.
+     *
+     * @param compression the compression value to set.
+     * @return the AzureBlobDataset object itself.
+     */
+    public AzureBlobDataset withCompression(DatasetCompression compression) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureBlobDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withCompression(compression);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -272,11 +260,8 @@ public class AzureBlobDataset extends Dataset {
     @Override
     public void validate() {
         super.validate();
-        if (format() != null) {
-            format().validate();
-        }
-        if (compression() != null) {
-            compression().validate();
+        if (innerTypeProperties() != null) {
+            innerTypeProperties().validate();
         }
     }
 }

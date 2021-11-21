@@ -19,12 +19,12 @@ import java.time.Duration;
 @ServiceClientBuilder(serviceClients = {MonitorClientImpl.class})
 public final class MonitorClientBuilder {
     /*
-     * The Azure subscription Id.
+     * The ID of the target subscription.
      */
     private String subscriptionId;
 
     /**
-     * Sets The Azure subscription Id.
+     * Sets The ID of the target subscription.
      *
      * @param subscriptionId the subscriptionId value.
      * @return the MonitorClientBuilder.

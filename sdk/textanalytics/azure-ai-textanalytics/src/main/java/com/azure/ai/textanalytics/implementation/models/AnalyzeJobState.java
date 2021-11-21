@@ -12,6 +12,12 @@ import java.util.List;
 @Fluent
 public final class AnalyzeJobState extends AnalyzeJobMetadata {
     /*
+     * The tasks property.
+     */
+    @JsonProperty(value = "tasks", required = true)
+    private TasksStateTasks tasks;
+
+    /*
      * The errors property.
      */
     @JsonProperty(value = "errors")
@@ -25,16 +31,30 @@ public final class AnalyzeJobState extends AnalyzeJobMetadata {
     private RequestStatistics statistics;
 
     /*
-     * The tasks property.
-     */
-    @JsonProperty(value = "tasks", required = true)
-    private TasksStateTasks tasks;
-
-    /*
      * The @nextLink property.
      */
     @JsonProperty(value = "@nextLink")
     private String nextLink;
+
+    /**
+     * Get the tasks property: The tasks property.
+     *
+     * @return the tasks value.
+     */
+    public TasksStateTasks getTasks() {
+        return this.tasks;
+    }
+
+    /**
+     * Set the tasks property: The tasks property.
+     *
+     * @param tasks the tasks value to set.
+     * @return the AnalyzeJobState object itself.
+     */
+    public AnalyzeJobState setTasks(TasksStateTasks tasks) {
+        this.tasks = tasks;
+        return this;
+    }
 
     /**
      * Get the errors property: The errors property.
@@ -75,26 +95,6 @@ public final class AnalyzeJobState extends AnalyzeJobMetadata {
      */
     public AnalyzeJobState setStatistics(RequestStatistics statistics) {
         this.statistics = statistics;
-        return this;
-    }
-
-    /**
-     * Get the tasks property: The tasks property.
-     *
-     * @return the tasks value.
-     */
-    public TasksStateTasks getTasks() {
-        return this.tasks;
-    }
-
-    /**
-     * Set the tasks property: The tasks property.
-     *
-     * @param tasks the tasks value to set.
-     * @return the AnalyzeJobState object itself.
-     */
-    public AnalyzeJobState setTasks(TasksStateTasks tasks) {
-        this.tasks = tasks;
         return this;
     }
 

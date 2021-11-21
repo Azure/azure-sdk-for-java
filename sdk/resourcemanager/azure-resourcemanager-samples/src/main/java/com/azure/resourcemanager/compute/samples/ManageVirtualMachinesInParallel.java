@@ -42,7 +42,7 @@ public final class ManageVirtualMachinesInParallel {
         final String networkName = Utils.randomResourceName(azureResourceManager, "vnetCOMV", 24);
         final String storageAccountName = Utils.randomResourceName(azureResourceManager, "stgCOMV", 20);
         final String userName = "tirekicker";
-        final String password = Utils.password();
+        final String sshPublicKey = Utils.sshPublicKey();
         try {
             // Create a resource group [Where all resources gets created]
             ResourceGroup resourceGroup = azureResourceManager.resourceGroups()
@@ -73,7 +73,7 @@ public final class ManageVirtualMachinesInParallel {
                         .withoutPrimaryPublicIPAddress()
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                         .withRootUsername(userName)
-                        .withRootPassword(password)
+                        .withSsh(sshPublicKey)
                         .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                         .withNewStorageAccount(creatableStorageAccount);
                 creatableVirtualMachines.add(creatableVirtualMachine);

@@ -2,6 +2,45 @@
 
 ## 1.1.0-beta.1 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.6 (2021-11-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded azure-core to 1.22.0.
+
+## 1.0.5 (2021-10-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded azure-core to 1.21.0.
+
+## 1.0.4 (2021-09-09)
+### Dependency updates
+- Added `azure-communication-networktraversal` package
+
+## 1.0.3 (2021-06-28)
+Updated `azure-communication-common` version
+
+## 1.0.2 (2021-06-09)
+Updated `azure-communication-common` version
+
+## 1.0.1 (2021-05-27)
+- Dependency versions updated.
+
+### Bug Fixes
+- Fixed bug with AzureKeyCredential authentication
 
 ## 1.0.0 (2021-03-29)
 ### Breaking Changes
@@ -42,4 +81,4 @@ This package contains common code for Azure Communication Service libraries. For
 This is a Public Preview version, so breaking changes are possible in subsequent releases as we improve the product. To provide feedback, please submit an issue in our [Azure SDK for Java GitHub repo](https://github.com/Azure/azure-sdk-for-java/issues).
 
 <!-- LINKS -->
-[read_me]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-common/README.md
+[read_me]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/communication/azure-communication-common/README.md

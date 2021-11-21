@@ -18,13 +18,6 @@ import java.time.ZoneOffset
 
 class SasModelsTest extends Specification {
 
-    def setup() {
-        String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
-        String className = specificationContext.getCurrentSpec().getName()
-        // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
-        System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
-    }
-
     @Unroll
     def "AccountSasSignatureValues min"() {
         setup:
@@ -92,24 +85,28 @@ class SasModelsTest extends Specification {
             .setDeleteVersionPermission(deleteVersion)
             .setTagsPermission(tags)
             .setFilterTagsPermission(filterTags)
+            .setImmutabilityPolicyPermission(setImmutabilityPolicy)
+            .setPermanentDeletePermission(permanentDelete)
 
         expect:
         perms.toString() == expectedString
 
         where:
-        read  | write | delete | list  | add   | create | update | process | deleteVersion | tags  | filterTags || expectedString
-        true  | false | false  | false | false | false  | false  | false   | false         | false | false      || "r"
-        false | true  | false  | false | false | false  | false  | false   | false         | false | false      || "w"
-        false | false | true   | false | false | false  | false  | false   | false         | false | false      || "d"
-        false | false | false  | true  | false | false  | false  | false   | false         | false | false      || "l"
-        false | false | false  | false | true  | false  | false  | false   | false         | false | false      || "a"
-        false | false | false  | false | false | true   | false  | false   | false         | false | false      || "c"
-        false | false | false  | false | false | false  | true   | false   | false         | false | false      || "u"
-        false | false | false  | false | false | false  | false  | true    | false         | false | false      || "p"
-        false | false | false  | false | false | false  | false  | false   | true          | false | false      || "x"
-        false | false | false  | false | false | false  | false  | false   | false         | true  | false      || "t"
-        false | false | false  | false | false | false  | false  | false   | false         | false | true       || "f"
-        true  | true  | true   | true  | true  | true   | true   | true    | true          | true  | true       || "rwdxlacuptf"
+        read  | write | delete | list  | add   | create | update | process | deleteVersion | tags  | filterTags | setImmutabilityPolicy | permanentDelete || expectedString
+        true  | false | false  | false | false | false  | false  | false   | false         | false | false      | false                 | false           || "r"
+        false | true  | false  | false | false | false  | false  | false   | false         | false | false      | false                 | false           || "w"
+        false | false | true   | false | false | false  | false  | false   | false         | false | false      | false                 | false           || "d"
+        false | false | false  | true  | false | false  | false  | false   | false         | false | false      | false                 | false           || "l"
+        false | false | false  | false | true  | false  | false  | false   | false         | false | false      | false                 | false           || "a"
+        false | false | false  | false | false | true   | false  | false   | false         | false | false      | false                 | false           || "c"
+        false | false | false  | false | false | false  | true   | false   | false         | false | false      | false                 | false           || "u"
+        false | false | false  | false | false | false  | false  | true    | false         | false | false      | false                 | false           || "p"
+        false | false | false  | false | false | false  | false  | false   | true          | false | false      | false                 | false           || "x"
+        false | false | false  | false | false | false  | false  | false   | false         | true  | false      | false                 | false           || "t"
+        false | false | false  | false | false | false  | false  | false   | false         | false | true       | false                 | false           || "f"
+        false | false | false  | false | false | false  | false  | false   | false         | false | false      | true                  | false           || "i"
+        false | false | false  | false | false | false  | false  | false   | false         | false | false      | false                 | true            || "y"
+        true  | true  | true   | true  | true  | true   | true   | true    | true          | true  | true       | true                  | true            || "rwdxylacuptfi"
     }
 
     @Unroll
@@ -129,22 +126,24 @@ class SasModelsTest extends Specification {
         perms.hasDeleteVersionPermission() == deleteVersion
         perms.hasTagsPermission() == tags
         perms.hasFilterTagsPermission() == filterTags
+        perms.hasImmutabilityPolicyPermission() == immutabilityPolicy
 
         where:
-        permString    || read  | write | delete | list  | add   | create | update | process | deleteVersion | tags  | filterTags
-        "r"           || true  | false | false  | false | false | false  | false  | false   | false         | false | false
-        "w"           || false | true  | false  | false | false | false  | false  | false   | false         | false | false
-        "d"           || false | false | true   | false | false | false  | false  | false   | false         | false | false
-        "l"           || false | false | false  | true  | false | false  | false  | false   | false         | false | false
-        "a"           || false | false | false  | false | true  | false  | false  | false   | false         | false | false
-        "c"           || false | false | false  | false | false | true   | false  | false   | false         | false | false
-        "u"           || false | false | false  | false | false | false  | true   | false   | false         | false | false
-        "p"           || false | false | false  | false | false | false  | false  | true    | false         | false | false
-        "x"           || false | false | false  | false | false | false  | false  | false   | true          | false | false
-        "t"           || false | false | false  | false | false | false  | false  | false   | false         | true  | false
-        "f"           || false | false | false  | false | false | false  | false  | false   | false         | false | true
-        "rwdxlacuptf" || true  | true  | true   | true  | true  | true   | true   | true    | true          | true  | true
-        "lwfrutpcaxd" || true  | true  | true   | true  | true  | true   | true   | true    | true          | true  | true
+        permString     || read  | write | delete | list  | add   | create | update | process | deleteVersion | tags  | filterTags | immutabilityPolicy
+        "r"            || true  | false | false  | false | false | false  | false  | false   | false         | false | false      | false
+        "w"            || false | true  | false  | false | false | false  | false  | false   | false         | false | false      | false
+        "d"            || false | false | true   | false | false | false  | false  | false   | false         | false | false      | false
+        "l"            || false | false | false  | true  | false | false  | false  | false   | false         | false | false      | false
+        "a"            || false | false | false  | false | true  | false  | false  | false   | false         | false | false      | false
+        "c"            || false | false | false  | false | false | true   | false  | false   | false         | false | false      | false
+        "u"            || false | false | false  | false | false | false  | true   | false   | false         | false | false      | false
+        "p"            || false | false | false  | false | false | false  | false  | true    | false         | false | false      | false
+        "x"            || false | false | false  | false | false | false  | false  | false   | true          | false | false      | false
+        "t"            || false | false | false  | false | false | false  | false  | false   | false         | true  | false      | false
+        "f"            || false | false | false  | false | false | false  | false  | false   | false         | false | true       | false
+        "i"            || false | false | false  | false | false | false  | false  | false   | false         | false | false      | true
+        "rwdxlacuptfi" || true  | true  | true   | true  | true  | true   | true   | true    | true          | true  | true       | true
+        "lwfriutpcaxd" || true  | true  | true   | true  | true  | true   | true   | true    | true          | true  | true       | true
     }
 
     def "AccountSASPermissions parse IA"() {
@@ -251,7 +250,7 @@ class SasModelsTest extends Specification {
         def s = AccountSasService.parse("b")
         def rt = AccountSasResourceType.parse("o")
         def v = new AccountSasSignatureValues(e, p, s, rt)
-        def implUtil = new AccountSasImplUtil(v)
+        def implUtil = new AccountSasImplUtil(v, null)
 
         when:
         implUtil.generateSas(null, Context.NONE)

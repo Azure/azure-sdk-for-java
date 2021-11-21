@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/** field of an arrow schema. */
+/** Groups settings regarding specific field of an arrow schema. */
 @JacksonXmlRootElement(localName = "Field")
 @Fluent
 public final class ArrowField {

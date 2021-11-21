@@ -4,6 +4,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
+import com.azure.cosmos.spark.diagnostics.LoggerHelper
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.connector.read.{Scan, ScanBuilder, SupportsPushDownFilters, SupportsPushDownRequiredColumns}
@@ -18,13 +19,17 @@ import scala.collection.JavaConverters._
 private case class ItemsScanBuilder(session: SparkSession,
                                     config: CaseInsensitiveStringMap,
                                     inputSchema: StructType,
-                                    cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot])
+                                    cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot],
+                                    diagnosticsConfig: DiagnosticsConfig)
   extends ScanBuilder
     with SupportsPushDownFilters
-    with SupportsPushDownRequiredColumns
-    with CosmosLoggingTrait {
-  logInfo(s"Instantiated ${this.getClass.getSimpleName}")
+    with SupportsPushDownRequiredColumns {
 
+  @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
+  log.logInfo(s"Instantiated ${this.getClass.getSimpleName}")
+
+  val configMap = config.asScala.toMap
+  val readConfig = CosmosReadConfig.parseCosmosReadConfig(configMap)
   var processedPredicates : Option[AnalyzedFilters] = Option.empty
 
   /**
@@ -33,7 +38,7 @@ private case class ItemsScanBuilder(session: SparkSession,
     * @return the filters that spark need to evaluate
     */
   override def pushFilters(filters: Array[Filter]): Array[Filter] = {
-    processedPredicates = Option.apply(FilterAnalyzer().analyze(filters))
+    this.processedPredicates = Option.apply(FilterAnalyzer().analyze(filters, this.readConfig))
 
     // return the filters that spark need to evaluate
     this.processedPredicates.get.filtersNotSupportedByCosmos
@@ -58,9 +63,11 @@ private case class ItemsScanBuilder(session: SparkSession,
     ItemsScan(
       session,
       inputSchema,
-      config.asScala.toMap,
+      this.configMap,
+      this.readConfig,
       this.processedPredicates.get.cosmosParametrizedQuery,
-      cosmosClientStateHandle)
+      cosmosClientStateHandle,
+      diagnosticsConfig)
   }
 
   /**

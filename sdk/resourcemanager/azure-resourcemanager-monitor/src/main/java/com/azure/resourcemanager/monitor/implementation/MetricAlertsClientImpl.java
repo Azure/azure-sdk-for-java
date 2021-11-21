@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -70,7 +71,7 @@ public final class MetricAlertsClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "MonitorClientMetricA")
     private interface MetricAlertsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Insights/metricAlerts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -78,9 +79,10 @@ public final class MetricAlertsClientImpl
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights"
                 + "/metricAlerts")
@@ -91,9 +93,10 @@ public final class MetricAlertsClientImpl
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights"
                 + "/metricAlerts/{ruleName}")
@@ -105,9 +108,10 @@ public final class MetricAlertsClientImpl
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("ruleName") String ruleName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights"
                 + "/metricAlerts/{ruleName}")
@@ -120,9 +124,10 @@ public final class MetricAlertsClientImpl
             @PathParam("ruleName") String ruleName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") MetricAlertResourceInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights"
                 + "/metricAlerts/{ruleName}")
@@ -135,9 +140,10 @@ public final class MetricAlertsClientImpl
             @PathParam("ruleName") String ruleName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") MetricAlertResourcePatch parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights"
                 + "/metricAlerts/{ruleName}")
@@ -149,6 +155,7 @@ public final class MetricAlertsClientImpl
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("ruleName") String ruleName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -174,15 +181,17 @@ public final class MetricAlertsClientImpl
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-03-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
-                    service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, context))
+                    service
+                        .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<MetricAlertResourceInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -209,9 +218,10 @@ public final class MetricAlertsClientImpl
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-03-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, context)
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -298,6 +308,7 @@ public final class MetricAlertsClientImpl
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         final String apiVersion = "2018-03-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -307,12 +318,13 @@ public final class MetricAlertsClientImpl
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             apiVersion,
+                            accept,
                             context))
             .<PagedResponse<MetricAlertResourceInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -345,10 +357,16 @@ public final class MetricAlertsClientImpl
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         final String apiVersion = "2018-03-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
-                this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, apiVersion, context)
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                apiVersion,
+                accept,
+                context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -446,6 +464,7 @@ public final class MetricAlertsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
         final String apiVersion = "2018-03-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -456,8 +475,9 @@ public final class MetricAlertsClientImpl
                             resourceGroupName,
                             ruleName,
                             apiVersion,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -494,6 +514,7 @@ public final class MetricAlertsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
         final String apiVersion = "2018-03-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
@@ -502,6 +523,7 @@ public final class MetricAlertsClientImpl
                 resourceGroupName,
                 ruleName,
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -565,7 +587,7 @@ public final class MetricAlertsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
-     * @param parameters The metric alert resource.
+     * @param parameters The parameters of the rule to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -599,6 +621,7 @@ public final class MetricAlertsClientImpl
             parameters.validate();
         }
         final String apiVersion = "2018-03-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -610,8 +633,9 @@ public final class MetricAlertsClientImpl
                             ruleName,
                             apiVersion,
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -619,7 +643,7 @@ public final class MetricAlertsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
-     * @param parameters The metric alert resource.
+     * @param parameters The parameters of the rule to create or update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -654,6 +678,7 @@ public final class MetricAlertsClientImpl
             parameters.validate();
         }
         final String apiVersion = "2018-03-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -663,6 +688,7 @@ public final class MetricAlertsClientImpl
                 ruleName,
                 apiVersion,
                 parameters,
+                accept,
                 context);
     }
 
@@ -671,7 +697,7 @@ public final class MetricAlertsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
-     * @param parameters The metric alert resource.
+     * @param parameters The parameters of the rule to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -696,7 +722,7 @@ public final class MetricAlertsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
-     * @param parameters The metric alert resource.
+     * @param parameters The parameters of the rule to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -713,7 +739,7 @@ public final class MetricAlertsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
-     * @param parameters The metric alert resource.
+     * @param parameters The parameters of the rule to create or update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -731,7 +757,7 @@ public final class MetricAlertsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
-     * @param parameters The metric alert resource for patch operations.
+     * @param parameters The parameters of the rule to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -765,6 +791,7 @@ public final class MetricAlertsClientImpl
             parameters.validate();
         }
         final String apiVersion = "2018-03-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -776,8 +803,9 @@ public final class MetricAlertsClientImpl
                             ruleName,
                             apiVersion,
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -785,7 +813,7 @@ public final class MetricAlertsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
-     * @param parameters The metric alert resource for patch operations.
+     * @param parameters The parameters of the rule to update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -820,6 +848,7 @@ public final class MetricAlertsClientImpl
             parameters.validate();
         }
         final String apiVersion = "2018-03-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -829,6 +858,7 @@ public final class MetricAlertsClientImpl
                 ruleName,
                 apiVersion,
                 parameters,
+                accept,
                 context);
     }
 
@@ -837,7 +867,7 @@ public final class MetricAlertsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
-     * @param parameters The metric alert resource for patch operations.
+     * @param parameters The parameters of the rule to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -862,7 +892,7 @@ public final class MetricAlertsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
-     * @param parameters The metric alert resource for patch operations.
+     * @param parameters The parameters of the rule to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -879,7 +909,7 @@ public final class MetricAlertsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
-     * @param parameters The metric alert resource for patch operations.
+     * @param parameters The parameters of the rule to update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -924,6 +954,7 @@ public final class MetricAlertsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
         final String apiVersion = "2018-03-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -934,8 +965,9 @@ public final class MetricAlertsClientImpl
                             resourceGroupName,
                             ruleName,
                             apiVersion,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -971,6 +1003,7 @@ public final class MetricAlertsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
         final String apiVersion = "2018-03-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -979,6 +1012,7 @@ public final class MetricAlertsClientImpl
                 resourceGroupName,
                 ruleName,
                 apiVersion,
+                accept,
                 context);
     }
 

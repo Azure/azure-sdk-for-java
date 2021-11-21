@@ -1,6 +1,88 @@
 # Release History
 
-## 7.3.0-beta.2 (Unreleased)
+## 7.6.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 7.5.0 (2021-11-16)
+### Features Added
+- Moved to service API version `2021-05`
+- Added support for specifying the `MaxMessageSizeInKilobytes` for entities in Premium namespaces.
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.21.0` to `1.22.0`.
+- Upgraded `azure-core-amqp` from `2.3.3` to `2.3.4`.
+
+## 7.4.2 (2021-10-15)
+#### Dependency Updates
+- Upgraded `azure-core` from `1.20.0` to `1.21.0`.
+- Upgraded `azure-core-amqp` from `2.3.2` to `2.3.3`.
+
+## 7.4.1 (2021-09-13)
+### Bugs Fixed
+- Fixed a bug that was causing leaking of boundedElastic-evictor threads associated with the `ServiceBusSessionManager` objects. Issue [23539](https://github.com/Azure/azure-sdk-for-java/issues/23539).
+
+#### Dependency Updates
+ - Update `azure-core` dependency to `1.20.0`.
+ - Update `azure-core-amqp` dependency to `2.3.2`.
+
+## 7.4.0 (2021-08-20)
+### Features Added
+ - Updated ServiceBusAdministrationClientBuilder to Support HttpPipelinePosition.
+
+#### Dependency Updates
+ - Update `azure-core` dependency to `1.19.0`.
+ - Update `azure-core-amqp` dependency to `2.3.1`.
+
+## 7.3.0 (2021-07-08)
+### Features Added
+- Added support for receiving dead-letter queue (DLQ) for `ServiceBusProcessorClient` and session receiver using `subQueue`
+- Added support for configuring `maxAutoLockRenewDuration` for `ServiceBusProcessorClient` in `ServiceBusClientBuilder`.
+- Added support for using `AzureSasCredential` and `AzureNamedKeyCredential` to access a service bus in `ServiceBusClientBuilder`.
+- Exposing `ServiceBusClientBuilder.crossEntityTransaction()` for cross entity transactions support.
+- Exposing `AmqpMessageBody#value` and `AmqpMessageBody#sequence` to support value and sequence amqp types.
+
+### Bugs Fixed
+- Fixed a bug that does not create respect properties when creating Subscription Rule with CorrelationFilter. Issue [21299](https://github.com/Azure/azure-sdk-for-java/issues/21299).
+- Fixed a but that causes the settlement API not to return or throw error if retry timeout is long enough. Issue [22299](https://github.com/Azure/azure-sdk-for-java/issues/22299).
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.18.0`.
+- Upgraded `azure-core-amqp` dependency to `2.3.0`.
+- Upgraded `azure-core-http-netty` to `1.10.1`.
+
+## 7.2.3 (2021-06-14)
+### Fixed
+Fixed the issue that the second call of `ServiceBusReceiverClient.complete` is stuck when connection is broken.
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.17.0`.
+- Upgraded `azure-core-amqp` dependency to `2.2.0`.
+- Upgraded `azure-core-http-netty` to `1.10.0`.
+
+## 7.2.2 (2021-05-26)
+### Fixed
+- Fixed some connection retry issues when network errors happen.
+- Fixed an issue that caused `ServiceBusSenderClient` to keep running after it's already closed.
+
+### Dependency Updates
+- Upgraded `azure-core-amqp` dependency to `2.0.6`.
+
+## 7.2.1 (2021-05-12)
+### Fixed
+- Fixed an issue: When 'ServiceBusProcessorClient:maxConcurrentCalls' is set, this will result in SDK cache more 
+  messages that are not delivered to the client in time and sometime the client is not able to settle these messages as
+  the message lock might expire.
+  
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.16.0`.
+- Upgraded `azure-core-amqp` dependency to `2.0.5`.
 
 ## 7.3.0-beta.1 (2021-04-14)
 ### New Features
@@ -191,6 +273,6 @@ our efforts can be found in the [Azure SDK Design Guidelines for
 
 ### Known issues
 
-[known-issue-binarydata-notfound]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/known-issues.md#can-not-resolve-binarydata-or-noclassdeffounderror-version-700
+[known-issue-binarydata-notfound]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/known-issues.md#can-not-resolve-binarydata-or-noclassdeffounderror-version-700
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fservicebus%2Fazure-messaging-servicebus%2FCHANGELOG.png)

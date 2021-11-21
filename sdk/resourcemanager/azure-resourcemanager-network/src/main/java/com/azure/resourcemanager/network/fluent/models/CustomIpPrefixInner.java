@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
@@ -18,9 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 /** Custom IP prefix resource. */
-@JsonFlatten
 @Fluent
-public class CustomIpPrefixInner extends Resource {
+public final class CustomIpPrefixInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomIpPrefixInner.class);
 
     /*
@@ -28,6 +26,12 @@ public class CustomIpPrefixInner extends Resource {
      */
     @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;
+
+    /*
+     * Custom IP prefix properties.
+     */
+    @JsonProperty(value = "properties")
+    private CustomIpPrefixPropertiesFormat innerProperties;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
@@ -41,37 +45,6 @@ public class CustomIpPrefixInner extends Resource {
      */
     @JsonProperty(value = "zones")
     private List<String> zones;
-
-    /*
-     * The prefix range in CIDR notation. Should include the start address and
-     * the prefix length.
-     */
-    @JsonProperty(value = "properties.cidr")
-    private String cidr;
-
-    /*
-     * The commissioned state of the Custom IP Prefix.
-     */
-    @JsonProperty(value = "properties.commissionedState")
-    private CommissionedState commissionedState;
-
-    /*
-     * The list of all referenced PublicIpPrefixes.
-     */
-    @JsonProperty(value = "properties.publicIpPrefixes", access = JsonProperty.Access.WRITE_ONLY)
-    private List<SubResource> publicIpPrefixes;
-
-    /*
-     * The resource GUID property of the custom IP prefix resource.
-     */
-    @JsonProperty(value = "properties.resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
-    private String resourceGuid;
-
-    /*
-     * The provisioning state of the custom IP prefix resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
 
     /*
      * Resource ID.
@@ -97,6 +70,15 @@ public class CustomIpPrefixInner extends Resource {
     public CustomIpPrefixInner withExtendedLocation(ExtendedLocation extendedLocation) {
         this.extendedLocation = extendedLocation;
         return this;
+    }
+
+    /**
+     * Get the innerProperties property: Custom IP prefix properties.
+     *
+     * @return the innerProperties value.
+     */
+    private CustomIpPrefixPropertiesFormat innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -128,73 +110,6 @@ public class CustomIpPrefixInner extends Resource {
     public CustomIpPrefixInner withZones(List<String> zones) {
         this.zones = zones;
         return this;
-    }
-
-    /**
-     * Get the cidr property: The prefix range in CIDR notation. Should include the start address and the prefix length.
-     *
-     * @return the cidr value.
-     */
-    public String cidr() {
-        return this.cidr;
-    }
-
-    /**
-     * Set the cidr property: The prefix range in CIDR notation. Should include the start address and the prefix length.
-     *
-     * @param cidr the cidr value to set.
-     * @return the CustomIpPrefixInner object itself.
-     */
-    public CustomIpPrefixInner withCidr(String cidr) {
-        this.cidr = cidr;
-        return this;
-    }
-
-    /**
-     * Get the commissionedState property: The commissioned state of the Custom IP Prefix.
-     *
-     * @return the commissionedState value.
-     */
-    public CommissionedState commissionedState() {
-        return this.commissionedState;
-    }
-
-    /**
-     * Set the commissionedState property: The commissioned state of the Custom IP Prefix.
-     *
-     * @param commissionedState the commissionedState value to set.
-     * @return the CustomIpPrefixInner object itself.
-     */
-    public CustomIpPrefixInner withCommissionedState(CommissionedState commissionedState) {
-        this.commissionedState = commissionedState;
-        return this;
-    }
-
-    /**
-     * Get the publicIpPrefixes property: The list of all referenced PublicIpPrefixes.
-     *
-     * @return the publicIpPrefixes value.
-     */
-    public List<SubResource> publicIpPrefixes() {
-        return this.publicIpPrefixes;
-    }
-
-    /**
-     * Get the resourceGuid property: The resource GUID property of the custom IP prefix resource.
-     *
-     * @return the resourceGuid value.
-     */
-    public String resourceGuid() {
-        return this.resourceGuid;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the custom IP prefix resource.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
     }
 
     /**
@@ -232,6 +147,166 @@ public class CustomIpPrefixInner extends Resource {
     }
 
     /**
+     * Get the cidr property: The prefix range in CIDR notation. Should include the start address and the prefix length.
+     *
+     * @return the cidr value.
+     */
+    public String cidr() {
+        return this.innerProperties() == null ? null : this.innerProperties().cidr();
+    }
+
+    /**
+     * Set the cidr property: The prefix range in CIDR notation. Should include the start address and the prefix length.
+     *
+     * @param cidr the cidr value to set.
+     * @return the CustomIpPrefixInner object itself.
+     */
+    public CustomIpPrefixInner withCidr(String cidr) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CustomIpPrefixPropertiesFormat();
+        }
+        this.innerProperties().withCidr(cidr);
+        return this;
+    }
+
+    /**
+     * Get the signedMessage property: Signed message for WAN validation.
+     *
+     * @return the signedMessage value.
+     */
+    public String signedMessage() {
+        return this.innerProperties() == null ? null : this.innerProperties().signedMessage();
+    }
+
+    /**
+     * Set the signedMessage property: Signed message for WAN validation.
+     *
+     * @param signedMessage the signedMessage value to set.
+     * @return the CustomIpPrefixInner object itself.
+     */
+    public CustomIpPrefixInner withSignedMessage(String signedMessage) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CustomIpPrefixPropertiesFormat();
+        }
+        this.innerProperties().withSignedMessage(signedMessage);
+        return this;
+    }
+
+    /**
+     * Get the authorizationMessage property: Authorization message for WAN validation.
+     *
+     * @return the authorizationMessage value.
+     */
+    public String authorizationMessage() {
+        return this.innerProperties() == null ? null : this.innerProperties().authorizationMessage();
+    }
+
+    /**
+     * Set the authorizationMessage property: Authorization message for WAN validation.
+     *
+     * @param authorizationMessage the authorizationMessage value to set.
+     * @return the CustomIpPrefixInner object itself.
+     */
+    public CustomIpPrefixInner withAuthorizationMessage(String authorizationMessage) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CustomIpPrefixPropertiesFormat();
+        }
+        this.innerProperties().withAuthorizationMessage(authorizationMessage);
+        return this;
+    }
+
+    /**
+     * Get the customIpPrefixParent property: The Parent CustomIpPrefix for IPv6 /64 CustomIpPrefix.
+     *
+     * @return the customIpPrefixParent value.
+     */
+    public SubResource customIpPrefixParent() {
+        return this.innerProperties() == null ? null : this.innerProperties().customIpPrefixParent();
+    }
+
+    /**
+     * Set the customIpPrefixParent property: The Parent CustomIpPrefix for IPv6 /64 CustomIpPrefix.
+     *
+     * @param customIpPrefixParent the customIpPrefixParent value to set.
+     * @return the CustomIpPrefixInner object itself.
+     */
+    public CustomIpPrefixInner withCustomIpPrefixParent(SubResource customIpPrefixParent) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CustomIpPrefixPropertiesFormat();
+        }
+        this.innerProperties().withCustomIpPrefixParent(customIpPrefixParent);
+        return this;
+    }
+
+    /**
+     * Get the childCustomIpPrefixes property: The list of all Children for IPv6 /48 CustomIpPrefix.
+     *
+     * @return the childCustomIpPrefixes value.
+     */
+    public List<SubResource> childCustomIpPrefixes() {
+        return this.innerProperties() == null ? null : this.innerProperties().childCustomIpPrefixes();
+    }
+
+    /**
+     * Get the commissionedState property: The commissioned state of the Custom IP Prefix.
+     *
+     * @return the commissionedState value.
+     */
+    public CommissionedState commissionedState() {
+        return this.innerProperties() == null ? null : this.innerProperties().commissionedState();
+    }
+
+    /**
+     * Set the commissionedState property: The commissioned state of the Custom IP Prefix.
+     *
+     * @param commissionedState the commissionedState value to set.
+     * @return the CustomIpPrefixInner object itself.
+     */
+    public CustomIpPrefixInner withCommissionedState(CommissionedState commissionedState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CustomIpPrefixPropertiesFormat();
+        }
+        this.innerProperties().withCommissionedState(commissionedState);
+        return this;
+    }
+
+    /**
+     * Get the publicIpPrefixes property: The list of all referenced PublicIpPrefixes.
+     *
+     * @return the publicIpPrefixes value.
+     */
+    public List<SubResource> publicIpPrefixes() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicIpPrefixes();
+    }
+
+    /**
+     * Get the resourceGuid property: The resource GUID property of the custom IP prefix resource.
+     *
+     * @return the resourceGuid value.
+     */
+    public String resourceGuid() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceGuid();
+    }
+
+    /**
+     * Get the failedReason property: The reason why resource is in failed state.
+     *
+     * @return the failedReason value.
+     */
+    public String failedReason() {
+        return this.innerProperties() == null ? null : this.innerProperties().failedReason();
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the custom IP prefix resource.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -239,6 +314,9 @@ public class CustomIpPrefixInner extends Resource {
     public void validate() {
         if (extendedLocation() != null) {
             extendedLocation().validate();
+        }
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

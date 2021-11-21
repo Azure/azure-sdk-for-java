@@ -15,6 +15,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.SubnetInner;
 import com.azure.resourcemanager.network.models.PrepareNetworkPoliciesRequest;
+import com.azure.resourcemanager.network.models.UnprepareNetworkPoliciesRequest;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -47,7 +48,7 @@ public interface SubnetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String virtualNetworkName, String subnetName);
 
@@ -62,7 +63,7 @@ public interface SubnetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualNetworkName, String subnetName);
 
@@ -78,7 +79,7 @@ public interface SubnetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualNetworkName, String subnetName, Context context);
 
@@ -227,7 +228,7 @@ public interface SubnetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return subnet in a virtual network resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<SubnetInner>, SubnetInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters);
 
@@ -243,7 +244,7 @@ public interface SubnetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return subnet in a virtual network resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SubnetInner>, SubnetInner> beginCreateOrUpdate(
         String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters);
 
@@ -260,7 +261,7 @@ public interface SubnetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return subnet in a virtual network resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SubnetInner>, SubnetInner> beginCreateOrUpdate(
         String resourceGroupName,
         String virtualNetworkName,
@@ -354,7 +355,7 @@ public interface SubnetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginPrepareNetworkPoliciesAsync(
         String resourceGroupName,
         String virtualNetworkName,
@@ -374,7 +375,7 @@ public interface SubnetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginPrepareNetworkPolicies(
         String resourceGroupName,
         String virtualNetworkName,
@@ -395,7 +396,7 @@ public interface SubnetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginPrepareNetworkPolicies(
         String resourceGroupName,
         String virtualNetworkName,
@@ -469,7 +470,8 @@ public interface SubnetsClient {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
-     * @param serviceName The name of the service for which subnet is being unprepared for.
+     * @param unprepareNetworkPoliciesRequestParameters Parameters supplied to unprepare subnet to remove network intent
+     *     policies.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -477,7 +479,10 @@ public interface SubnetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> unprepareNetworkPoliciesWithResponseAsync(
-        String resourceGroupName, String virtualNetworkName, String subnetName, String serviceName);
+        String resourceGroupName,
+        String virtualNetworkName,
+        String subnetName,
+        UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters);
 
     /**
      * Unprepares a subnet by removing network intent policies.
@@ -485,15 +490,19 @@ public interface SubnetsClient {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
-     * @param serviceName The name of the service for which subnet is being unprepared for.
+     * @param unprepareNetworkPoliciesRequestParameters Parameters supplied to unprepare subnet to remove network intent
+     *     policies.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginUnprepareNetworkPoliciesAsync(
-        String resourceGroupName, String virtualNetworkName, String subnetName, String serviceName);
+        String resourceGroupName,
+        String virtualNetworkName,
+        String subnetName,
+        UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters);
 
     /**
      * Unprepares a subnet by removing network intent policies.
@@ -501,15 +510,19 @@ public interface SubnetsClient {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
-     * @param serviceName The name of the service for which subnet is being unprepared for.
+     * @param unprepareNetworkPoliciesRequestParameters Parameters supplied to unprepare subnet to remove network intent
+     *     policies.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginUnprepareNetworkPolicies(
-        String resourceGroupName, String virtualNetworkName, String subnetName, String serviceName);
+        String resourceGroupName,
+        String virtualNetworkName,
+        String subnetName,
+        UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters);
 
     /**
      * Unprepares a subnet by removing network intent policies.
@@ -517,16 +530,21 @@ public interface SubnetsClient {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
-     * @param serviceName The name of the service for which subnet is being unprepared for.
+     * @param unprepareNetworkPoliciesRequestParameters Parameters supplied to unprepare subnet to remove network intent
+     *     policies.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginUnprepareNetworkPolicies(
-        String resourceGroupName, String virtualNetworkName, String subnetName, String serviceName, Context context);
+        String resourceGroupName,
+        String virtualNetworkName,
+        String subnetName,
+        UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters,
+        Context context);
 
     /**
      * Unprepares a subnet by removing network intent policies.
@@ -534,7 +552,8 @@ public interface SubnetsClient {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
-     * @param serviceName The name of the service for which subnet is being unprepared for.
+     * @param unprepareNetworkPoliciesRequestParameters Parameters supplied to unprepare subnet to remove network intent
+     *     policies.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -542,7 +561,10 @@ public interface SubnetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> unprepareNetworkPoliciesAsync(
-        String resourceGroupName, String virtualNetworkName, String subnetName, String serviceName);
+        String resourceGroupName,
+        String virtualNetworkName,
+        String subnetName,
+        UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters);
 
     /**
      * Unprepares a subnet by removing network intent policies.
@@ -550,28 +572,18 @@ public interface SubnetsClient {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> unprepareNetworkPoliciesAsync(String resourceGroupName, String virtualNetworkName, String subnetName);
-
-    /**
-     * Unprepares a subnet by removing network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param serviceName The name of the service for which subnet is being unprepared for.
+     * @param unprepareNetworkPoliciesRequestParameters Parameters supplied to unprepare subnet to remove network intent
+     *     policies.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void unprepareNetworkPolicies(
-        String resourceGroupName, String virtualNetworkName, String subnetName, String serviceName);
+        String resourceGroupName,
+        String virtualNetworkName,
+        String subnetName,
+        UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters);
 
     /**
      * Unprepares a subnet by removing network intent policies.
@@ -579,20 +591,8 @@ public interface SubnetsClient {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void unprepareNetworkPolicies(String resourceGroupName, String virtualNetworkName, String subnetName);
-
-    /**
-     * Unprepares a subnet by removing network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param serviceName The name of the service for which subnet is being unprepared for.
+     * @param unprepareNetworkPoliciesRequestParameters Parameters supplied to unprepare subnet to remove network intent
+     *     policies.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -600,7 +600,11 @@ public interface SubnetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void unprepareNetworkPolicies(
-        String resourceGroupName, String virtualNetworkName, String subnetName, String serviceName, Context context);
+        String resourceGroupName,
+        String virtualNetworkName,
+        String subnetName,
+        UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters,
+        Context context);
 
     /**
      * Gets all subnets in a virtual network.

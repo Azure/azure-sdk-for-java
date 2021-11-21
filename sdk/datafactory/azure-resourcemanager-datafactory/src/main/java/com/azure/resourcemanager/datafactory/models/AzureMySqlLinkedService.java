@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.AzureMySqlLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,94 +17,23 @@ import java.util.Map;
 /** Azure MySQL database linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureMySql")
-@JsonFlatten
 @Fluent
-public class AzureMySqlLinkedService extends LinkedService {
+public final class AzureMySqlLinkedService extends LinkedService {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureMySqlLinkedService.class);
 
     /*
-     * The connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * Azure MySQL database linked service properties.
      */
-    @JsonProperty(value = "typeProperties.connectionString", required = true)
-    private Object connectionString;
-
-    /*
-     * The Azure key vault secret reference of password in connection string.
-     */
-    @JsonProperty(value = "typeProperties.password")
-    private AzureKeyVaultSecretReference password;
-
-    /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
-    private Object encryptedCredential;
+    @JsonProperty(value = "typeProperties", required = true)
+    private AzureMySqlLinkedServiceTypeProperties innerTypeProperties = new AzureMySqlLinkedServiceTypeProperties();
 
     /**
-     * Get the connectionString property: The connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * Get the innerTypeProperties property: Azure MySQL database linked service properties.
      *
-     * @return the connectionString value.
+     * @return the innerTypeProperties value.
      */
-    public Object connectionString() {
-        return this.connectionString;
-    }
-
-    /**
-     * Set the connectionString property: The connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
-     *
-     * @param connectionString the connectionString value to set.
-     * @return the AzureMySqlLinkedService object itself.
-     */
-    public AzureMySqlLinkedService withConnectionString(Object connectionString) {
-        this.connectionString = connectionString;
-        return this;
-    }
-
-    /**
-     * Get the password property: The Azure key vault secret reference of password in connection string.
-     *
-     * @return the password value.
-     */
-    public AzureKeyVaultSecretReference password() {
-        return this.password;
-    }
-
-    /**
-     * Set the password property: The Azure key vault secret reference of password in connection string.
-     *
-     * @param password the password value to set.
-     * @return the AzureMySqlLinkedService object itself.
-     */
-    public AzureMySqlLinkedService withPassword(AzureKeyVaultSecretReference password) {
-        this.password = password;
-        return this;
-    }
-
-    /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @return the encryptedCredential value.
-     */
-    public Object encryptedCredential() {
-        return this.encryptedCredential;
-    }
-
-    /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @param encryptedCredential the encryptedCredential value to set.
-     * @return the AzureMySqlLinkedService object itself.
-     */
-    public AzureMySqlLinkedService withEncryptedCredential(Object encryptedCredential) {
-        this.encryptedCredential = encryptedCredential;
-        return this;
+    private AzureMySqlLinkedServiceTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -136,6 +65,79 @@ public class AzureMySqlLinkedService extends LinkedService {
     }
 
     /**
+     * Get the connectionString property: The connection string. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
+     *
+     * @return the connectionString value.
+     */
+    public Object connectionString() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().connectionString();
+    }
+
+    /**
+     * Set the connectionString property: The connection string. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
+     *
+     * @param connectionString the connectionString value to set.
+     * @return the AzureMySqlLinkedService object itself.
+     */
+    public AzureMySqlLinkedService withConnectionString(Object connectionString) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureMySqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withConnectionString(connectionString);
+        return this;
+    }
+
+    /**
+     * Get the password property: The Azure key vault secret reference of password in connection string.
+     *
+     * @return the password value.
+     */
+    public AzureKeyVaultSecretReference password() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().password();
+    }
+
+    /**
+     * Set the password property: The Azure key vault secret reference of password in connection string.
+     *
+     * @param password the password value to set.
+     * @return the AzureMySqlLinkedService object itself.
+     */
+    public AzureMySqlLinkedService withPassword(AzureKeyVaultSecretReference password) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureMySqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withPassword(password);
+        return this;
+    }
+
+    /**
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @return the encryptedCredential value.
+     */
+    public Object encryptedCredential() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
+    }
+
+    /**
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @param encryptedCredential the encryptedCredential value to set.
+     * @return the AzureMySqlLinkedService object itself.
+     */
+    public AzureMySqlLinkedService withEncryptedCredential(Object encryptedCredential) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureMySqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEncryptedCredential(encryptedCredential);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -143,14 +145,13 @@ public class AzureMySqlLinkedService extends LinkedService {
     @Override
     public void validate() {
         super.validate();
-        if (connectionString() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property connectionString in model AzureMySqlLinkedService"));
-        }
-        if (password() != null) {
-            password().validate();
+                        "Missing required property innerTypeProperties in model AzureMySqlLinkedService"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

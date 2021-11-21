@@ -23,6 +23,10 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.cognitiveservices.fluent.AccountsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.CognitiveServicesManagementClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.CommitmentPlansClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.CommitmentTiersClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.DeletedAccountsClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.DeploymentsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.OperationsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.PrivateLinkResourcesClient;
@@ -127,6 +131,18 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
         return this.accounts;
     }
 
+    /** The DeletedAccountsClient object to access its operations. */
+    private final DeletedAccountsClient deletedAccounts;
+
+    /**
+     * Gets the DeletedAccountsClient object to access its operations.
+     *
+     * @return the DeletedAccountsClient object.
+     */
+    public DeletedAccountsClient getDeletedAccounts() {
+        return this.deletedAccounts;
+    }
+
     /** The ResourceSkusClient object to access its operations. */
     private final ResourceSkusClient resourceSkus;
 
@@ -163,6 +179,18 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
         return this.resourceProviders;
     }
 
+    /** The CommitmentTiersClient object to access its operations. */
+    private final CommitmentTiersClient commitmentTiers;
+
+    /**
+     * Gets the CommitmentTiersClient object to access its operations.
+     *
+     * @return the CommitmentTiersClient object.
+     */
+    public CommitmentTiersClient getCommitmentTiers() {
+        return this.commitmentTiers;
+    }
+
     /** The PrivateEndpointConnectionsClient object to access its operations. */
     private final PrivateEndpointConnectionsClient privateEndpointConnections;
 
@@ -187,6 +215,30 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
         return this.privateLinkResources;
     }
 
+    /** The DeploymentsClient object to access its operations. */
+    private final DeploymentsClient deployments;
+
+    /**
+     * Gets the DeploymentsClient object to access its operations.
+     *
+     * @return the DeploymentsClient object.
+     */
+    public DeploymentsClient getDeployments() {
+        return this.deployments;
+    }
+
+    /** The CommitmentPlansClient object to access its operations. */
+    private final CommitmentPlansClient commitmentPlans;
+
+    /**
+     * Gets the CommitmentPlansClient object to access its operations.
+     *
+     * @return the CommitmentPlansClient object.
+     */
+    public CommitmentPlansClient getCommitmentPlans() {
+        return this.commitmentPlans;
+    }
+
     /**
      * Initializes an instance of CognitiveServicesManagementClient client.
      *
@@ -209,13 +261,17 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2017-04-18";
+        this.apiVersion = "2021-10-01";
         this.accounts = new AccountsClientImpl(this);
+        this.deletedAccounts = new DeletedAccountsClientImpl(this);
         this.resourceSkus = new ResourceSkusClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.resourceProviders = new ResourceProvidersClientImpl(this);
+        this.commitmentTiers = new CommitmentTiersClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
+        this.deployments = new DeploymentsClientImpl(this);
+        this.commitmentPlans = new CommitmentPlansClientImpl(this);
     }
 
     /**

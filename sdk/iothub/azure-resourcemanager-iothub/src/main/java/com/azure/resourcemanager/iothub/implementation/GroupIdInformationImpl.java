@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.iothub.implementation;
 
-import com.azure.resourcemanager.iothub.IotHubManager;
 import com.azure.resourcemanager.iothub.fluent.models.GroupIdInformationInner;
 import com.azure.resourcemanager.iothub.models.GroupIdInformation;
 import com.azure.resourcemanager.iothub.models.GroupIdInformationProperties;
@@ -12,9 +11,10 @@ import com.azure.resourcemanager.iothub.models.GroupIdInformationProperties;
 public final class GroupIdInformationImpl implements GroupIdInformation {
     private GroupIdInformationInner innerObject;
 
-    private final IotHubManager serviceManager;
+    private final com.azure.resourcemanager.iothub.IotHubManager serviceManager;
 
-    GroupIdInformationImpl(GroupIdInformationInner innerObject, IotHubManager serviceManager) {
+    GroupIdInformationImpl(
+        GroupIdInformationInner innerObject, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -39,7 +39,7 @@ public final class GroupIdInformationImpl implements GroupIdInformation {
         return this.innerObject;
     }
 
-    private IotHubManager manager() {
+    private com.azure.resourcemanager.iothub.IotHubManager manager() {
         return this.serviceManager;
     }
 }

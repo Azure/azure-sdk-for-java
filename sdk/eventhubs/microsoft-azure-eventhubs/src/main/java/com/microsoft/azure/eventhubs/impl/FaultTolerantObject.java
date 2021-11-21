@@ -71,7 +71,7 @@ public class FaultTolerantObject<T extends IOObject> {
                                             "FaultTolerantObject[%s] client[%s] session[%s] decided to create cNIO[%s] innerObject[%s] iOstate[%s]",
                                             FaultTolerantObject.this.instanceName, FaultTolerantObject.this.clientId, FaultTolerantObject.this.sessionName,
                                             FaultTolerantObject.this.creatingNewInnerObject ? "T" : "F",
-                                            FaultTolerantObject.this.innerObject != null ? "not null" : "null",
+                                            FaultTolerantObject.this.innerObject != null ? FaultTolerantObject.this.innerObject.getId() : "null",
                                             FaultTolerantObject.this.innerObject != null ? FaultTolerantObject.this.innerObject.getState().toString() : "--"));
                                     }
                                     shouldCreateNewInnerObject = true;
@@ -95,8 +95,9 @@ public class FaultTolerantObject<T extends IOObject> {
                                     }
 
                                     if (TRACE_LOGGER.isInfoEnabled()) {
-                                        TRACE_LOGGER.info(String.format(Locale.US, "FaultTolerantObject[%s] client[%s] session[%s] inner object creation complete",
-                                            FaultTolerantObject.this.instanceName, FaultTolerantObject.this.clientId, FaultTolerantObject.this.sessionName));
+                                        TRACE_LOGGER.info(String.format(Locale.US, "FaultTolerantObject[%s] client[%s] session[%s] inner object rrc[%s] creation complete",
+                                            FaultTolerantObject.this.instanceName, FaultTolerantObject.this.clientId, FaultTolerantObject.this.sessionName,
+                                            result.getId()));
                                     }
                                 }
 

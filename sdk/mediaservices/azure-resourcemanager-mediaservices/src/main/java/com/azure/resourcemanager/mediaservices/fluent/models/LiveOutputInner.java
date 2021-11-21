@@ -7,6 +7,7 @@ package com.azure.resourcemanager.mediaservices.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mediaservices.models.Hls;
 import com.azure.resourcemanager.mediaservices.models.LiveOutputResourceState;
@@ -20,6 +21,12 @@ import java.time.OffsetDateTime;
 @Fluent
 public class LiveOutputInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(LiveOutputInner.class);
+
+    /*
+     * The system metadata relating to this resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /*
      * The description of the live output.
@@ -86,6 +93,15 @@ public class LiveOutputInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.resourceState", access = JsonProperty.Access.WRITE_ONLY)
     private LiveOutputResourceState resourceState;
+
+    /**
+     * Get the systemData property: The system metadata relating to this resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
 
     /**
      * Get the description property: The description of the live output.

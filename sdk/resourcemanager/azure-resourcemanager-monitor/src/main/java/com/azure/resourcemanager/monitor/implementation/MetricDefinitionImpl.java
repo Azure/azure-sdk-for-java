@@ -10,9 +10,9 @@ import com.azure.resourcemanager.monitor.models.MetricAvailability;
 import com.azure.resourcemanager.monitor.models.MetricCollection;
 import com.azure.resourcemanager.monitor.models.MetricDefinition;
 import com.azure.resourcemanager.monitor.models.ResultType;
-import com.azure.resourcemanager.monitor.models.Unit;
 import com.azure.resourcemanager.monitor.fluent.models.LocalizableStringInner;
 import com.azure.resourcemanager.monitor.fluent.models.MetricDefinitionInner;
+import com.azure.resourcemanager.monitor.models.Unit;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -88,7 +88,7 @@ class MetricDefinitionImpl extends WrapperImpl<MetricDefinitionInner>
     }
 
     public Unit unit() {
-        return this.inner.unit();
+        return this.innerModel().unit();
     }
 
     public AggregationType primaryAggregationType() {

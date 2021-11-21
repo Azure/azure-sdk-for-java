@@ -562,6 +562,41 @@ public class StoreReaderTest {
         validateException(readResult, validator);
     }
 
+    @Test(groups = "unit")
+    public void canParseLongLsn() {
+        TransportClient transportClient = Mockito.mock(TransportClient.class);
+        AddressSelector addressSelector = Mockito.mock(AddressSelector.class);
+        ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
+
+        Uri primaryURI = Uri.create("primaryLoc");
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
+                OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
+
+        request.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+        request.requestContext.timeoutHelper = Mockito.mock(TimeoutHelper.class);
+        Mockito.doReturn(true).when(request.requestContext.timeoutHelper).isElapsed();
+        request.requestContext.resolvedPartitionKeyRange = partitionKeyRangeWithId("12");
+        request.requestContext.requestChargeTracker = new RequestChargeTracker();
+
+        Mockito.doReturn(Mono.just(primaryURI)).when(addressSelector).resolvePrimaryUriAsync(
+                Mockito.eq(request) , Mockito.eq(false));
+
+
+        StoreReader storeReader = new StoreReader(transportClient, addressSelector, sessionContainer);
+
+        long bigLsn = 3629783308L;
+        StoreResponse storeResponse = StoreResponseBuilder.create()
+                .withLSN(bigLsn)
+                .withLocalLSN(bigLsn)
+                .withGlobalCommittedLsn(bigLsn)
+                .build();
+
+        StoreResult result = storeReader.createStoreResult(storeResponse, null, false, false, null);
+        assertThat(result.globalCommittedLSN).isEqualTo(bigLsn);
+        assertThat(result.lsn).isEqualTo(bigLsn);
+    }
+
     @DataProvider(name = "readPrimaryAsync_RetryOnGoneArgProvider")
     public Object[][] readPrimaryAsync_RetryOnGoneArgProvider() {
         return new Object[][]{

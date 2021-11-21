@@ -3,6 +3,7 @@
 
 package com.azure.containers.containerregistry.implementation.authentication;
 
+import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
@@ -16,16 +17,17 @@ public class ContainerRegistryRefreshTokenCredential {
 
     private final TokenCredential aadTokenCredential;
     private final TokenServiceImpl tokenService;
-    public static final String AAD_DEFAULT_SCOPE = "https://management.core.windows.net/.default";
+    private final String authenticationScope;
 
     /**
      * Creates an instance of RefreshTokenCredential with default scheme "Bearer".
      * @param tokenService the container registry token service that calls the token rest APIs.
      * @param aadTokenCredential the ARM access token.
      */
-    ContainerRegistryRefreshTokenCredential(TokenServiceImpl tokenService, TokenCredential aadTokenCredential) {
+    ContainerRegistryRefreshTokenCredential(TokenServiceImpl tokenService, TokenCredential aadTokenCredential, ContainerRegistryAudience audience) {
         this.tokenService = tokenService;
         this.aadTokenCredential = aadTokenCredential;
+        this.authenticationScope = audience + "/.default";
     }
 
     /**
@@ -36,7 +38,7 @@ public class ContainerRegistryRefreshTokenCredential {
     public Mono<AccessToken> getToken(ContainerRegistryTokenRequestContext context) {
         String serviceName = context.getServiceName();
 
-        return Mono.defer(() -> aadTokenCredential.getToken(new TokenRequestContext().addScopes(AAD_DEFAULT_SCOPE))
+        return Mono.defer(() -> aadTokenCredential.getToken(new TokenRequestContext().addScopes(authenticationScope))
             .flatMap(token -> this.tokenService.getAcrRefreshTokenAsync(token.getToken(), serviceName)));
     }
 }

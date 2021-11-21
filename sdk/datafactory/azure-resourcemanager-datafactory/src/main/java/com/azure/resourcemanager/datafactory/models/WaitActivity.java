@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.WaitActivityTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -16,35 +16,23 @@ import java.util.List;
 /** This activity suspends pipeline execution for the specified interval. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Wait")
-@JsonFlatten
 @Fluent
-public class WaitActivity extends ControlActivity {
+public final class WaitActivity extends ControlActivity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WaitActivity.class);
 
     /*
-     * Duration in seconds.
+     * Wait activity properties.
      */
-    @JsonProperty(value = "typeProperties.waitTimeInSeconds", required = true)
-    private Object waitTimeInSeconds;
+    @JsonProperty(value = "typeProperties", required = true)
+    private WaitActivityTypeProperties innerTypeProperties = new WaitActivityTypeProperties();
 
     /**
-     * Get the waitTimeInSeconds property: Duration in seconds.
+     * Get the innerTypeProperties property: Wait activity properties.
      *
-     * @return the waitTimeInSeconds value.
+     * @return the innerTypeProperties value.
      */
-    public Object waitTimeInSeconds() {
-        return this.waitTimeInSeconds;
-    }
-
-    /**
-     * Set the waitTimeInSeconds property: Duration in seconds.
-     *
-     * @param waitTimeInSeconds the waitTimeInSeconds value to set.
-     * @return the WaitActivity object itself.
-     */
-    public WaitActivity withWaitTimeInSeconds(Object waitTimeInSeconds) {
-        this.waitTimeInSeconds = waitTimeInSeconds;
-        return this;
+    private WaitActivityTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -76,6 +64,29 @@ public class WaitActivity extends ControlActivity {
     }
 
     /**
+     * Get the waitTimeInSeconds property: Duration in seconds.
+     *
+     * @return the waitTimeInSeconds value.
+     */
+    public Object waitTimeInSeconds() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().waitTimeInSeconds();
+    }
+
+    /**
+     * Set the waitTimeInSeconds property: Duration in seconds.
+     *
+     * @param waitTimeInSeconds the waitTimeInSeconds value to set.
+     * @return the WaitActivity object itself.
+     */
+    public WaitActivity withWaitTimeInSeconds(Object waitTimeInSeconds) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new WaitActivityTypeProperties();
+        }
+        this.innerTypeProperties().withWaitTimeInSeconds(waitTimeInSeconds);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -83,10 +94,13 @@ public class WaitActivity extends ControlActivity {
     @Override
     public void validate() {
         super.validate();
-        if (waitTimeInSeconds() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property waitTimeInSeconds in model WaitActivity"));
+                    new IllegalArgumentException(
+                        "Missing required property innerTypeProperties in model WaitActivity"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

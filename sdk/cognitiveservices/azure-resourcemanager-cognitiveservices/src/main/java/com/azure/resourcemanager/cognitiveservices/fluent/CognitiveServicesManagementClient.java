@@ -52,6 +52,13 @@ public interface CognitiveServicesManagementClient {
     AccountsClient getAccounts();
 
     /**
+     * Gets the DeletedAccountsClient object to access its operations.
+     *
+     * @return the DeletedAccountsClient object.
+     */
+    DeletedAccountsClient getDeletedAccounts();
+
+    /**
      * Gets the ResourceSkusClient object to access its operations.
      *
      * @return the ResourceSkusClient object.
@@ -73,6 +80,13 @@ public interface CognitiveServicesManagementClient {
     ResourceProvidersClient getResourceProviders();
 
     /**
+     * Gets the CommitmentTiersClient object to access its operations.
+     *
+     * @return the CommitmentTiersClient object.
+     */
+    CommitmentTiersClient getCommitmentTiers();
+
+    /**
      * Gets the PrivateEndpointConnectionsClient object to access its operations.
      *
      * @return the PrivateEndpointConnectionsClient object.
@@ -85,4 +99,18 @@ public interface CognitiveServicesManagementClient {
      * @return the PrivateLinkResourcesClient object.
      */
     PrivateLinkResourcesClient getPrivateLinkResources();
+
+    /**
+     * Gets the DeploymentsClient object to access its operations.
+     *
+     * @return the DeploymentsClient object.
+     */
+    DeploymentsClient getDeployments();
+
+    /**
+     * Gets the CommitmentPlansClient object to access its operations.
+     *
+     * @return the CommitmentPlansClient object.
+     */
+    CommitmentPlansClient getCommitmentPlans();
 }

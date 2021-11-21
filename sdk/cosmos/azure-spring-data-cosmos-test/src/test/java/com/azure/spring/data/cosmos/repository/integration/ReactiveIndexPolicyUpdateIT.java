@@ -9,6 +9,7 @@ import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.spring.data.cosmos.ReactiveIntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
+import com.azure.spring.data.cosmos.domain.Address;
 import com.azure.spring.data.cosmos.domain.ComplexIndexPolicyEntity;
 import com.azure.spring.data.cosmos.domain.IndexPolicyEntity;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
@@ -44,6 +45,8 @@ public class ReactiveIndexPolicyUpdateIT {
     CosmosEntityInformation<IndexPolicyEntity, String> defaultIndexPolicyEntityInformation = new CosmosEntityInformation<>(IndexPolicyEntity.class);
 
     CosmosEntityInformation<ComplexIndexPolicyEntity, String> complexIndexPolicyEntityInformation = new CosmosEntityInformation<>(ComplexIndexPolicyEntity.class);
+
+    CosmosEntityInformation<Address, String> addressEntityInformation = new CosmosEntityInformation<>(Address.class);
 
     @Before
     public void setup() {
@@ -102,6 +105,14 @@ public class ReactiveIndexPolicyUpdateIT {
         new SimpleReactiveCosmosRepository<>(complexIndexPolicyEntityInformation, template);
         ReactiveCosmosTemplate spyTemplate = Mockito.spy(template);
         new SimpleReactiveCosmosRepository<>(complexIndexPolicyEntityInformation, spyTemplate);
+        Mockito.verify(spyTemplate, Mockito.never()).replaceContainerProperties(Mockito.any(), Mockito.any());
+    }
+
+    @Test
+    public void testContainerReplaceShouldNotOccurIfIndexingPolicyIsNotSpecified() {
+        new SimpleReactiveCosmosRepository<>(addressEntityInformation, template);
+        ReactiveCosmosTemplate spyTemplate = Mockito.spy(template);
+        new SimpleReactiveCosmosRepository<>(addressEntityInformation, spyTemplate);
         Mockito.verify(spyTemplate, Mockito.never()).replaceContainerProperties(Mockito.any(), Mockito.any());
     }
 

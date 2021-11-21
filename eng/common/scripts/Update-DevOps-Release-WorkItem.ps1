@@ -19,11 +19,17 @@ param(
 Set-StrictMode -Version 3
 
 if (!(Get-Command az -ErrorAction SilentlyContinue)) {
-  Write-Host 'You must have the Azure CLI installed: https://aka.ms/azure-cli'
+  Write-Error 'You must have the Azure CLI installed: https://aka.ms/azure-cli'
   exit 1
 }
 
-az extension show -n azure-devops > $null
+az account show *> $null
+if (!$?) {
+  Write-Host 'Running az login...'
+  az login *> $null
+}
+
+az extension show -n azure-devops *> $null
 if (!$?){
   Write-Host 'Installing azure-devops extension'
   az extension add --name azure-devops
@@ -31,6 +37,8 @@ if (!$?){
 
 . (Join-Path $PSScriptRoot SemVer.ps1)
 . (Join-Path $PSScriptRoot Helpers DevOps-WorkItem-Helpers.ps1)
+
+CheckDevOpsAccess
 
 $parsedNewVersion = [AzureEngSemanticVersion]::new($version)
 $state = "In Release"

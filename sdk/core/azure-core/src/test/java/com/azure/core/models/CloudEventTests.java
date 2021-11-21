@@ -374,7 +374,7 @@ public class CloudEventTests {
     @Test
     public void serializeBinaryDataFromNull() throws IOException {
         final CloudEvent cloudEvent = new CloudEvent("/testSource", "CloudEvent.Test",
-            BinaryData.fromObject(null, SERIALIZER),
+            null,
             CloudEventDataFormat.JSON, "application/json")
             .setDataSchema("/testSchema")
             .setSubject("testSubject")
@@ -385,7 +385,7 @@ public class CloudEventTests {
             SERIALIZER.serialize(bos, cloudEvent);
             final String serializedString = bos.toString();
             final CloudEvent deserializedCloudEvent = CloudEvent.fromString(serializedString).get(0);
-            assertNull(deserializedCloudEvent.getData().toObject(Object.class, SERIALIZER));  // any class works here.
+            assertNull(deserializedCloudEvent.getData());
             assertEquals("value", deserializedCloudEvent.getExtensionAttributes().get("foo"));
             compareCloudEventContent(cloudEvent, deserializedCloudEvent);
         }

@@ -6,6 +6,7 @@ package com.azure.storage;
 import com.azure.perf.test.core.PerfStressProgram;
 import com.azure.storage.blob.perf.DownloadBlobTest;
 import com.azure.storage.blob.perf.ListBlobsTest;
+import com.azure.storage.blob.perf.UploadBlobNoLengthTest;
 import com.azure.storage.blob.perf.UploadBlobTest;
 import com.azure.storage.blob.perf.UploadBlockBlobTest;
 import com.azure.storage.blob.perf.UploadFromFileTest;
@@ -35,6 +36,7 @@ public class App {
             DownloadBlobTest.class,
             ListBlobsTest.class,
             UploadBlobTest.class,
+            UploadBlobNoLengthTest.class,
             UploadBlockBlobTest.class,
             UploadFromFileTest.class,
             UploadOutputStreamTest.class,

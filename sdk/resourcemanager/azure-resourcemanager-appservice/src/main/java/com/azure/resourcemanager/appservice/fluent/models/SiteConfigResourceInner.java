@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ApiDefinitionInfo;
 import com.azure.resourcemanager.appservice.models.ApiManagementConfig;
@@ -33,421 +32,31 @@ import java.util.List;
 import java.util.Map;
 
 /** Web app configuration ARM resource. */
-@JsonFlatten
 @Fluent
-public class SiteConfigResourceInner extends ProxyOnlyResource {
+public final class SiteConfigResourceInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SiteConfigResourceInner.class);
 
     /*
-     * Number of workers.
+     * Core resource properties
      */
-    @JsonProperty(value = "properties.numberOfWorkers")
-    private Integer numberOfWorkers;
+    @JsonProperty(value = "properties")
+    private SiteConfigInner innerProperties;
 
-    /*
-     * Default documents.
+    /**
+     * Get the innerProperties property: Core resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.defaultDocuments")
-    private List<String> defaultDocuments;
+    private SiteConfigInner innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * .NET Framework version.
-     */
-    @JsonProperty(value = "properties.netFrameworkVersion")
-    private String netFrameworkVersion;
-
-    /*
-     * Version of PHP.
-     */
-    @JsonProperty(value = "properties.phpVersion")
-    private String phpVersion;
-
-    /*
-     * Version of Python.
-     */
-    @JsonProperty(value = "properties.pythonVersion")
-    private String pythonVersion;
-
-    /*
-     * Version of Node.js.
-     */
-    @JsonProperty(value = "properties.nodeVersion")
-    private String nodeVersion;
-
-    /*
-     * Version of PowerShell.
-     */
-    @JsonProperty(value = "properties.powerShellVersion")
-    private String powerShellVersion;
-
-    /*
-     * Linux App Framework and version
-     */
-    @JsonProperty(value = "properties.linuxFxVersion")
-    private String linuxFxVersion;
-
-    /*
-     * Xenon App Framework and version
-     */
-    @JsonProperty(value = "properties.windowsFxVersion")
-    private String windowsFxVersion;
-
-    /*
-     * <code>true</code> if request tracing is enabled; otherwise,
-     * <code>false</code>.
-     */
-    @JsonProperty(value = "properties.requestTracingEnabled")
-    private Boolean requestTracingEnabled;
-
-    /*
-     * Request tracing expiration time.
-     */
-    @JsonProperty(value = "properties.requestTracingExpirationTime")
-    private OffsetDateTime requestTracingExpirationTime;
-
-    /*
-     * <code>true</code> if remote debugging is enabled; otherwise,
-     * <code>false</code>.
-     */
-    @JsonProperty(value = "properties.remoteDebuggingEnabled")
-    private Boolean remoteDebuggingEnabled;
-
-    /*
-     * Remote debugging version.
-     */
-    @JsonProperty(value = "properties.remoteDebuggingVersion")
-    private String remoteDebuggingVersion;
-
-    /*
-     * <code>true</code> if HTTP logging is enabled; otherwise,
-     * <code>false</code>.
-     */
-    @JsonProperty(value = "properties.httpLoggingEnabled")
-    private Boolean httpLoggingEnabled;
-
-    /*
-     * HTTP logs directory size limit.
-     */
-    @JsonProperty(value = "properties.logsDirectorySizeLimit")
-    private Integer logsDirectorySizeLimit;
-
-    /*
-     * <code>true</code> if detailed error logging is enabled; otherwise,
-     * <code>false</code>.
-     */
-    @JsonProperty(value = "properties.detailedErrorLoggingEnabled")
-    private Boolean detailedErrorLoggingEnabled;
-
-    /*
-     * Publishing user name.
-     */
-    @JsonProperty(value = "properties.publishingUsername")
-    private String publishingUsername;
-
-    /*
-     * Application settings.
-     */
-    @JsonProperty(value = "properties.appSettings")
-    private List<NameValuePair> appSettings;
-
-    /*
-     * List of Azure Storage Accounts.
-     */
-    @JsonProperty(value = "properties.azureStorageAccounts")
-    private Map<String, AzureStorageInfoValue> azureStorageAccounts;
-
-    /*
-     * Connection strings.
-     */
-    @JsonProperty(value = "properties.connectionStrings")
-    private List<ConnStringInfo> connectionStrings;
-
-    /*
-     * Site MachineKey.
-     */
-    @JsonProperty(value = "properties.machineKey", access = JsonProperty.Access.WRITE_ONLY)
-    private SiteMachineKey machineKey;
-
-    /*
-     * Handler mappings.
-     */
-    @JsonProperty(value = "properties.handlerMappings")
-    private List<HandlerMapping> handlerMappings;
-
-    /*
-     * Document root.
-     */
-    @JsonProperty(value = "properties.documentRoot")
-    private String documentRoot;
-
-    /*
-     * SCM type.
-     */
-    @JsonProperty(value = "properties.scmType")
-    private ScmType scmType;
-
-    /*
-     * <code>true</code> to use 32-bit worker process; otherwise,
-     * <code>false</code>.
-     */
-    @JsonProperty(value = "properties.use32BitWorkerProcess")
-    private Boolean use32BitWorkerProcess;
-
-    /*
-     * <code>true</code> if WebSocket is enabled; otherwise,
-     * <code>false</code>.
-     */
-    @JsonProperty(value = "properties.webSocketsEnabled")
-    private Boolean webSocketsEnabled;
-
-    /*
-     * <code>true</code> if Always On is enabled; otherwise,
-     * <code>false</code>.
-     */
-    @JsonProperty(value = "properties.alwaysOn")
-    private Boolean alwaysOn;
-
-    /*
-     * Java version.
-     */
-    @JsonProperty(value = "properties.javaVersion")
-    private String javaVersion;
-
-    /*
-     * Java container.
-     */
-    @JsonProperty(value = "properties.javaContainer")
-    private String javaContainer;
-
-    /*
-     * Java container version.
-     */
-    @JsonProperty(value = "properties.javaContainerVersion")
-    private String javaContainerVersion;
-
-    /*
-     * App command line to launch.
-     */
-    @JsonProperty(value = "properties.appCommandLine")
-    private String appCommandLine;
-
-    /*
-     * Managed pipeline mode.
-     */
-    @JsonProperty(value = "properties.managedPipelineMode")
-    private ManagedPipelineMode managedPipelineMode;
-
-    /*
-     * Virtual applications.
-     */
-    @JsonProperty(value = "properties.virtualApplications")
-    private List<VirtualApplication> virtualApplications;
-
-    /*
-     * Site load balancing.
-     */
-    @JsonProperty(value = "properties.loadBalancing")
-    private SiteLoadBalancing loadBalancing;
-
-    /*
-     * This is work around for polymorphic types.
-     */
-    @JsonProperty(value = "properties.experiments")
-    private Experiments experiments;
-
-    /*
-     * Site limits.
-     */
-    @JsonProperty(value = "properties.limits")
-    private SiteLimits limits;
-
-    /*
-     * <code>true</code> if Auto Heal is enabled; otherwise,
-     * <code>false</code>.
-     */
-    @JsonProperty(value = "properties.autoHealEnabled")
-    private Boolean autoHealEnabled;
-
-    /*
-     * Auto Heal rules.
-     */
-    @JsonProperty(value = "properties.autoHealRules")
-    private AutoHealRules autoHealRules;
-
-    /*
-     * Tracing options.
-     */
-    @JsonProperty(value = "properties.tracingOptions")
-    private String tracingOptions;
-
-    /*
-     * Virtual Network name.
-     */
-    @JsonProperty(value = "properties.vnetName")
-    private String vnetName;
-
-    /*
-     * Virtual Network Route All enabled. This causes all outbound traffic to
-     * have Virtual Network Security Groups and User Defined Routes applied.
-     */
-    @JsonProperty(value = "properties.vnetRouteAllEnabled")
-    private Boolean vnetRouteAllEnabled;
-
-    /*
-     * The number of private ports assigned to this app. These will be assigned
-     * dynamically on runtime.
-     */
-    @JsonProperty(value = "properties.vnetPrivatePortsCount")
-    private Integer vnetPrivatePortsCount;
-
-    /*
-     * Cross-Origin Resource Sharing (CORS) settings.
-     */
-    @JsonProperty(value = "properties.cors")
-    private CorsSettings cors;
-
-    /*
-     * Push endpoint settings.
-     */
-    @JsonProperty(value = "properties.push")
-    private PushSettingsInner push;
-
-    /*
-     * Information about the formal API definition for the app.
-     */
-    @JsonProperty(value = "properties.apiDefinition")
-    private ApiDefinitionInfo apiDefinition;
-
-    /*
-     * Azure API management settings linked to the app.
-     */
-    @JsonProperty(value = "properties.apiManagementConfig")
-    private ApiManagementConfig apiManagementConfig;
-
-    /*
-     * Auto-swap slot name.
-     */
-    @JsonProperty(value = "properties.autoSwapSlotName")
-    private String autoSwapSlotName;
-
-    /*
-     * <code>true</code> to enable local MySQL; otherwise, <code>false</code>.
-     */
-    @JsonProperty(value = "properties.localMySqlEnabled")
-    private Boolean localMySqlEnabled;
-
-    /*
-     * Managed Service Identity Id
-     */
-    @JsonProperty(value = "properties.managedServiceIdentityId")
-    private Integer managedServiceIdentityId;
-
-    /*
-     * Explicit Managed Service Identity Id
-     */
-    @JsonProperty(value = "properties.xManagedServiceIdentityId")
-    private Integer xManagedServiceIdentityId;
-
-    /*
-     * Identity to use for Key Vault Reference authentication.
-     */
-    @JsonProperty(value = "properties.keyVaultReferenceIdentity")
-    private String keyVaultReferenceIdentity;
-
-    /*
-     * IP security restrictions for main.
-     */
-    @JsonProperty(value = "properties.ipSecurityRestrictions")
-    private List<IpSecurityRestriction> ipSecurityRestrictions;
-
-    /*
-     * IP security restrictions for scm.
-     */
-    @JsonProperty(value = "properties.scmIpSecurityRestrictions")
-    private List<IpSecurityRestriction> scmIpSecurityRestrictions;
-
-    /*
-     * IP security restrictions for scm to use main.
-     */
-    @JsonProperty(value = "properties.scmIpSecurityRestrictionsUseMain")
-    private Boolean scmIpSecurityRestrictionsUseMain;
-
-    /*
-     * Http20Enabled: configures a web site to allow clients to connect over
-     * http2.0
-     */
-    @JsonProperty(value = "properties.http20Enabled")
-    private Boolean http20Enabled;
-
-    /*
-     * MinTlsVersion: configures the minimum version of TLS required for SSL
-     * requests
-     */
-    @JsonProperty(value = "properties.minTlsVersion")
-    private SupportedTlsVersions minTlsVersion;
-
-    /*
-     * ScmMinTlsVersion: configures the minimum version of TLS required for SSL
-     * requests for SCM site
-     */
-    @JsonProperty(value = "properties.scmMinTlsVersion")
-    private SupportedTlsVersions scmMinTlsVersion;
-
-    /*
-     * State of FTP / FTPS service
-     */
-    @JsonProperty(value = "properties.ftpsState")
-    private FtpsState ftpsState;
-
-    /*
-     * Number of preWarmed instances.
-     * This setting only applies to the Consumption and Elastic Plans
-     */
-    @JsonProperty(value = "properties.preWarmedInstanceCount")
-    private Integer preWarmedInstanceCount;
-
-    /*
-     * Maximum number of workers that a site can scale out to.
-     * This setting only applies to the Consumption and Elastic Premium Plans
-     */
-    @JsonProperty(value = "properties.functionAppScaleLimit")
-    private Integer functionAppScaleLimit;
-
-    /*
-     * Health check path
-     */
-    @JsonProperty(value = "properties.healthCheckPath")
-    private String healthCheckPath;
-
-    /*
-     * Gets or sets a value indicating whether functions runtime scale
-     * monitoring is enabled. When enabled,
-     * the ScaleController will not monitor event sources directly, but will
-     * instead call to the
-     * runtime to get scale status.
-     */
-    @JsonProperty(value = "properties.functionsRuntimeScaleMonitoringEnabled")
-    private Boolean functionsRuntimeScaleMonitoringEnabled;
-
-    /*
-     * Sets the time zone a site uses for generating timestamps. Compatible
-     * with Linux and Windows App Service. Setting the WEBSITE_TIME_ZONE app
-     * setting takes precedence over this config. For Linux, expects tz
-     * database values https://www.iana.org/time-zones (for a quick reference
-     * see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones). For
-     * Windows, expects one of the time zones listed under
-     * HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time
-     * Zones
-     */
-    @JsonProperty(value = "properties.websiteTimeZone")
-    private String websiteTimeZone;
-
-    /*
-     * Number of minimum instance count for a site
-     * This setting only applies to the Elastic Plans
-     */
-    @JsonProperty(value = "properties.minimumElasticInstanceCount")
-    private Integer minimumElasticInstanceCount;
+    /** {@inheritDoc} */
+    @Override
+    public SiteConfigResourceInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the numberOfWorkers property: Number of workers.
@@ -455,7 +64,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the numberOfWorkers value.
      */
     public Integer numberOfWorkers() {
-        return this.numberOfWorkers;
+        return this.innerProperties() == null ? null : this.innerProperties().numberOfWorkers();
     }
 
     /**
@@ -465,7 +74,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withNumberOfWorkers(Integer numberOfWorkers) {
-        this.numberOfWorkers = numberOfWorkers;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withNumberOfWorkers(numberOfWorkers);
         return this;
     }
 
@@ -475,7 +87,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the defaultDocuments value.
      */
     public List<String> defaultDocuments() {
-        return this.defaultDocuments;
+        return this.innerProperties() == null ? null : this.innerProperties().defaultDocuments();
     }
 
     /**
@@ -485,7 +97,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withDefaultDocuments(List<String> defaultDocuments) {
-        this.defaultDocuments = defaultDocuments;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withDefaultDocuments(defaultDocuments);
         return this;
     }
 
@@ -495,7 +110,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the netFrameworkVersion value.
      */
     public String netFrameworkVersion() {
-        return this.netFrameworkVersion;
+        return this.innerProperties() == null ? null : this.innerProperties().netFrameworkVersion();
     }
 
     /**
@@ -505,7 +120,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withNetFrameworkVersion(String netFrameworkVersion) {
-        this.netFrameworkVersion = netFrameworkVersion;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withNetFrameworkVersion(netFrameworkVersion);
         return this;
     }
 
@@ -515,7 +133,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the phpVersion value.
      */
     public String phpVersion() {
-        return this.phpVersion;
+        return this.innerProperties() == null ? null : this.innerProperties().phpVersion();
     }
 
     /**
@@ -525,7 +143,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withPhpVersion(String phpVersion) {
-        this.phpVersion = phpVersion;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withPhpVersion(phpVersion);
         return this;
     }
 
@@ -535,7 +156,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the pythonVersion value.
      */
     public String pythonVersion() {
-        return this.pythonVersion;
+        return this.innerProperties() == null ? null : this.innerProperties().pythonVersion();
     }
 
     /**
@@ -545,7 +166,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withPythonVersion(String pythonVersion) {
-        this.pythonVersion = pythonVersion;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withPythonVersion(pythonVersion);
         return this;
     }
 
@@ -555,7 +179,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the nodeVersion value.
      */
     public String nodeVersion() {
-        return this.nodeVersion;
+        return this.innerProperties() == null ? null : this.innerProperties().nodeVersion();
     }
 
     /**
@@ -565,7 +189,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withNodeVersion(String nodeVersion) {
-        this.nodeVersion = nodeVersion;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withNodeVersion(nodeVersion);
         return this;
     }
 
@@ -575,7 +202,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the powerShellVersion value.
      */
     public String powerShellVersion() {
-        return this.powerShellVersion;
+        return this.innerProperties() == null ? null : this.innerProperties().powerShellVersion();
     }
 
     /**
@@ -585,7 +212,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withPowerShellVersion(String powerShellVersion) {
-        this.powerShellVersion = powerShellVersion;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withPowerShellVersion(powerShellVersion);
         return this;
     }
 
@@ -595,7 +225,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the linuxFxVersion value.
      */
     public String linuxFxVersion() {
-        return this.linuxFxVersion;
+        return this.innerProperties() == null ? null : this.innerProperties().linuxFxVersion();
     }
 
     /**
@@ -605,7 +235,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withLinuxFxVersion(String linuxFxVersion) {
-        this.linuxFxVersion = linuxFxVersion;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withLinuxFxVersion(linuxFxVersion);
         return this;
     }
 
@@ -615,7 +248,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the windowsFxVersion value.
      */
     public String windowsFxVersion() {
-        return this.windowsFxVersion;
+        return this.innerProperties() == null ? null : this.innerProperties().windowsFxVersion();
     }
 
     /**
@@ -625,7 +258,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withWindowsFxVersion(String windowsFxVersion) {
-        this.windowsFxVersion = windowsFxVersion;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withWindowsFxVersion(windowsFxVersion);
         return this;
     }
 
@@ -636,7 +272,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the requestTracingEnabled value.
      */
     public Boolean requestTracingEnabled() {
-        return this.requestTracingEnabled;
+        return this.innerProperties() == null ? null : this.innerProperties().requestTracingEnabled();
     }
 
     /**
@@ -647,7 +283,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withRequestTracingEnabled(Boolean requestTracingEnabled) {
-        this.requestTracingEnabled = requestTracingEnabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withRequestTracingEnabled(requestTracingEnabled);
         return this;
     }
 
@@ -657,7 +296,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the requestTracingExpirationTime value.
      */
     public OffsetDateTime requestTracingExpirationTime() {
-        return this.requestTracingExpirationTime;
+        return this.innerProperties() == null ? null : this.innerProperties().requestTracingExpirationTime();
     }
 
     /**
@@ -667,7 +306,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withRequestTracingExpirationTime(OffsetDateTime requestTracingExpirationTime) {
-        this.requestTracingExpirationTime = requestTracingExpirationTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withRequestTracingExpirationTime(requestTracingExpirationTime);
         return this;
     }
 
@@ -678,7 +320,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the remoteDebuggingEnabled value.
      */
     public Boolean remoteDebuggingEnabled() {
-        return this.remoteDebuggingEnabled;
+        return this.innerProperties() == null ? null : this.innerProperties().remoteDebuggingEnabled();
     }
 
     /**
@@ -689,7 +331,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withRemoteDebuggingEnabled(Boolean remoteDebuggingEnabled) {
-        this.remoteDebuggingEnabled = remoteDebuggingEnabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withRemoteDebuggingEnabled(remoteDebuggingEnabled);
         return this;
     }
 
@@ -699,7 +344,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the remoteDebuggingVersion value.
      */
     public String remoteDebuggingVersion() {
-        return this.remoteDebuggingVersion;
+        return this.innerProperties() == null ? null : this.innerProperties().remoteDebuggingVersion();
     }
 
     /**
@@ -709,7 +354,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withRemoteDebuggingVersion(String remoteDebuggingVersion) {
-        this.remoteDebuggingVersion = remoteDebuggingVersion;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withRemoteDebuggingVersion(remoteDebuggingVersion);
         return this;
     }
 
@@ -720,7 +368,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the httpLoggingEnabled value.
      */
     public Boolean httpLoggingEnabled() {
-        return this.httpLoggingEnabled;
+        return this.innerProperties() == null ? null : this.innerProperties().httpLoggingEnabled();
     }
 
     /**
@@ -731,7 +379,56 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withHttpLoggingEnabled(Boolean httpLoggingEnabled) {
-        this.httpLoggingEnabled = httpLoggingEnabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withHttpLoggingEnabled(httpLoggingEnabled);
+        return this;
+    }
+
+    /**
+     * Get the acrUseManagedIdentityCreds property: Flag to use Managed Identity Creds for ACR pull.
+     *
+     * @return the acrUseManagedIdentityCreds value.
+     */
+    public Boolean acrUseManagedIdentityCreds() {
+        return this.innerProperties() == null ? null : this.innerProperties().acrUseManagedIdentityCreds();
+    }
+
+    /**
+     * Set the acrUseManagedIdentityCreds property: Flag to use Managed Identity Creds for ACR pull.
+     *
+     * @param acrUseManagedIdentityCreds the acrUseManagedIdentityCreds value to set.
+     * @return the SiteConfigResourceInner object itself.
+     */
+    public SiteConfigResourceInner withAcrUseManagedIdentityCreds(Boolean acrUseManagedIdentityCreds) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withAcrUseManagedIdentityCreds(acrUseManagedIdentityCreds);
+        return this;
+    }
+
+    /**
+     * Get the acrUserManagedIdentityId property: If using user managed identity, the user managed identity ClientId.
+     *
+     * @return the acrUserManagedIdentityId value.
+     */
+    public String acrUserManagedIdentityId() {
+        return this.innerProperties() == null ? null : this.innerProperties().acrUserManagedIdentityId();
+    }
+
+    /**
+     * Set the acrUserManagedIdentityId property: If using user managed identity, the user managed identity ClientId.
+     *
+     * @param acrUserManagedIdentityId the acrUserManagedIdentityId value to set.
+     * @return the SiteConfigResourceInner object itself.
+     */
+    public SiteConfigResourceInner withAcrUserManagedIdentityId(String acrUserManagedIdentityId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withAcrUserManagedIdentityId(acrUserManagedIdentityId);
         return this;
     }
 
@@ -741,7 +438,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the logsDirectorySizeLimit value.
      */
     public Integer logsDirectorySizeLimit() {
-        return this.logsDirectorySizeLimit;
+        return this.innerProperties() == null ? null : this.innerProperties().logsDirectorySizeLimit();
     }
 
     /**
@@ -751,7 +448,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withLogsDirectorySizeLimit(Integer logsDirectorySizeLimit) {
-        this.logsDirectorySizeLimit = logsDirectorySizeLimit;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withLogsDirectorySizeLimit(logsDirectorySizeLimit);
         return this;
     }
 
@@ -762,7 +462,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the detailedErrorLoggingEnabled value.
      */
     public Boolean detailedErrorLoggingEnabled() {
-        return this.detailedErrorLoggingEnabled;
+        return this.innerProperties() == null ? null : this.innerProperties().detailedErrorLoggingEnabled();
     }
 
     /**
@@ -773,7 +473,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withDetailedErrorLoggingEnabled(Boolean detailedErrorLoggingEnabled) {
-        this.detailedErrorLoggingEnabled = detailedErrorLoggingEnabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withDetailedErrorLoggingEnabled(detailedErrorLoggingEnabled);
         return this;
     }
 
@@ -783,7 +486,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the publishingUsername value.
      */
     public String publishingUsername() {
-        return this.publishingUsername;
+        return this.innerProperties() == null ? null : this.innerProperties().publishingUsername();
     }
 
     /**
@@ -793,7 +496,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withPublishingUsername(String publishingUsername) {
-        this.publishingUsername = publishingUsername;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withPublishingUsername(publishingUsername);
         return this;
     }
 
@@ -803,7 +509,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the appSettings value.
      */
     public List<NameValuePair> appSettings() {
-        return this.appSettings;
+        return this.innerProperties() == null ? null : this.innerProperties().appSettings();
     }
 
     /**
@@ -813,27 +519,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withAppSettings(List<NameValuePair> appSettings) {
-        this.appSettings = appSettings;
-        return this;
-    }
-
-    /**
-     * Get the azureStorageAccounts property: List of Azure Storage Accounts.
-     *
-     * @return the azureStorageAccounts value.
-     */
-    public Map<String, AzureStorageInfoValue> azureStorageAccounts() {
-        return this.azureStorageAccounts;
-    }
-
-    /**
-     * Set the azureStorageAccounts property: List of Azure Storage Accounts.
-     *
-     * @param azureStorageAccounts the azureStorageAccounts value to set.
-     * @return the SiteConfigResourceInner object itself.
-     */
-    public SiteConfigResourceInner withAzureStorageAccounts(Map<String, AzureStorageInfoValue> azureStorageAccounts) {
-        this.azureStorageAccounts = azureStorageAccounts;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withAppSettings(appSettings);
         return this;
     }
 
@@ -843,7 +532,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the connectionStrings value.
      */
     public List<ConnStringInfo> connectionStrings() {
-        return this.connectionStrings;
+        return this.innerProperties() == null ? null : this.innerProperties().connectionStrings();
     }
 
     /**
@@ -853,7 +542,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withConnectionStrings(List<ConnStringInfo> connectionStrings) {
-        this.connectionStrings = connectionStrings;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withConnectionStrings(connectionStrings);
         return this;
     }
 
@@ -863,7 +555,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the machineKey value.
      */
     public SiteMachineKey machineKey() {
-        return this.machineKey;
+        return this.innerProperties() == null ? null : this.innerProperties().machineKey();
     }
 
     /**
@@ -872,7 +564,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the handlerMappings value.
      */
     public List<HandlerMapping> handlerMappings() {
-        return this.handlerMappings;
+        return this.innerProperties() == null ? null : this.innerProperties().handlerMappings();
     }
 
     /**
@@ -882,7 +574,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withHandlerMappings(List<HandlerMapping> handlerMappings) {
-        this.handlerMappings = handlerMappings;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withHandlerMappings(handlerMappings);
         return this;
     }
 
@@ -892,7 +587,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the documentRoot value.
      */
     public String documentRoot() {
-        return this.documentRoot;
+        return this.innerProperties() == null ? null : this.innerProperties().documentRoot();
     }
 
     /**
@@ -902,7 +597,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withDocumentRoot(String documentRoot) {
-        this.documentRoot = documentRoot;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withDocumentRoot(documentRoot);
         return this;
     }
 
@@ -912,7 +610,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the scmType value.
      */
     public ScmType scmType() {
-        return this.scmType;
+        return this.innerProperties() == null ? null : this.innerProperties().scmType();
     }
 
     /**
@@ -922,7 +620,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withScmType(ScmType scmType) {
-        this.scmType = scmType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withScmType(scmType);
         return this;
     }
 
@@ -933,7 +634,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the use32BitWorkerProcess value.
      */
     public Boolean use32BitWorkerProcess() {
-        return this.use32BitWorkerProcess;
+        return this.innerProperties() == null ? null : this.innerProperties().use32BitWorkerProcess();
     }
 
     /**
@@ -944,7 +645,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withUse32BitWorkerProcess(Boolean use32BitWorkerProcess) {
-        this.use32BitWorkerProcess = use32BitWorkerProcess;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withUse32BitWorkerProcess(use32BitWorkerProcess);
         return this;
     }
 
@@ -955,7 +659,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the webSocketsEnabled value.
      */
     public Boolean webSocketsEnabled() {
-        return this.webSocketsEnabled;
+        return this.innerProperties() == null ? null : this.innerProperties().webSocketsEnabled();
     }
 
     /**
@@ -966,7 +670,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withWebSocketsEnabled(Boolean webSocketsEnabled) {
-        this.webSocketsEnabled = webSocketsEnabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withWebSocketsEnabled(webSocketsEnabled);
         return this;
     }
 
@@ -977,7 +684,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the alwaysOn value.
      */
     public Boolean alwaysOn() {
-        return this.alwaysOn;
+        return this.innerProperties() == null ? null : this.innerProperties().alwaysOn();
     }
 
     /**
@@ -988,7 +695,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withAlwaysOn(Boolean alwaysOn) {
-        this.alwaysOn = alwaysOn;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withAlwaysOn(alwaysOn);
         return this;
     }
 
@@ -998,7 +708,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the javaVersion value.
      */
     public String javaVersion() {
-        return this.javaVersion;
+        return this.innerProperties() == null ? null : this.innerProperties().javaVersion();
     }
 
     /**
@@ -1008,7 +718,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withJavaVersion(String javaVersion) {
-        this.javaVersion = javaVersion;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withJavaVersion(javaVersion);
         return this;
     }
 
@@ -1018,7 +731,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the javaContainer value.
      */
     public String javaContainer() {
-        return this.javaContainer;
+        return this.innerProperties() == null ? null : this.innerProperties().javaContainer();
     }
 
     /**
@@ -1028,7 +741,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withJavaContainer(String javaContainer) {
-        this.javaContainer = javaContainer;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withJavaContainer(javaContainer);
         return this;
     }
 
@@ -1038,7 +754,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the javaContainerVersion value.
      */
     public String javaContainerVersion() {
-        return this.javaContainerVersion;
+        return this.innerProperties() == null ? null : this.innerProperties().javaContainerVersion();
     }
 
     /**
@@ -1048,7 +764,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withJavaContainerVersion(String javaContainerVersion) {
-        this.javaContainerVersion = javaContainerVersion;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withJavaContainerVersion(javaContainerVersion);
         return this;
     }
 
@@ -1058,7 +777,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the appCommandLine value.
      */
     public String appCommandLine() {
-        return this.appCommandLine;
+        return this.innerProperties() == null ? null : this.innerProperties().appCommandLine();
     }
 
     /**
@@ -1068,7 +787,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withAppCommandLine(String appCommandLine) {
-        this.appCommandLine = appCommandLine;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withAppCommandLine(appCommandLine);
         return this;
     }
 
@@ -1078,7 +800,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the managedPipelineMode value.
      */
     public ManagedPipelineMode managedPipelineMode() {
-        return this.managedPipelineMode;
+        return this.innerProperties() == null ? null : this.innerProperties().managedPipelineMode();
     }
 
     /**
@@ -1088,7 +810,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withManagedPipelineMode(ManagedPipelineMode managedPipelineMode) {
-        this.managedPipelineMode = managedPipelineMode;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withManagedPipelineMode(managedPipelineMode);
         return this;
     }
 
@@ -1098,7 +823,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the virtualApplications value.
      */
     public List<VirtualApplication> virtualApplications() {
-        return this.virtualApplications;
+        return this.innerProperties() == null ? null : this.innerProperties().virtualApplications();
     }
 
     /**
@@ -1108,7 +833,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withVirtualApplications(List<VirtualApplication> virtualApplications) {
-        this.virtualApplications = virtualApplications;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withVirtualApplications(virtualApplications);
         return this;
     }
 
@@ -1118,7 +846,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the loadBalancing value.
      */
     public SiteLoadBalancing loadBalancing() {
-        return this.loadBalancing;
+        return this.innerProperties() == null ? null : this.innerProperties().loadBalancing();
     }
 
     /**
@@ -1128,7 +856,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withLoadBalancing(SiteLoadBalancing loadBalancing) {
-        this.loadBalancing = loadBalancing;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withLoadBalancing(loadBalancing);
         return this;
     }
 
@@ -1138,7 +869,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the experiments value.
      */
     public Experiments experiments() {
-        return this.experiments;
+        return this.innerProperties() == null ? null : this.innerProperties().experiments();
     }
 
     /**
@@ -1148,7 +879,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withExperiments(Experiments experiments) {
-        this.experiments = experiments;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withExperiments(experiments);
         return this;
     }
 
@@ -1158,7 +892,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the limits value.
      */
     public SiteLimits limits() {
-        return this.limits;
+        return this.innerProperties() == null ? null : this.innerProperties().limits();
     }
 
     /**
@@ -1168,7 +902,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withLimits(SiteLimits limits) {
-        this.limits = limits;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withLimits(limits);
         return this;
     }
 
@@ -1179,7 +916,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the autoHealEnabled value.
      */
     public Boolean autoHealEnabled() {
-        return this.autoHealEnabled;
+        return this.innerProperties() == null ? null : this.innerProperties().autoHealEnabled();
     }
 
     /**
@@ -1190,7 +927,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withAutoHealEnabled(Boolean autoHealEnabled) {
-        this.autoHealEnabled = autoHealEnabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withAutoHealEnabled(autoHealEnabled);
         return this;
     }
 
@@ -1200,7 +940,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the autoHealRules value.
      */
     public AutoHealRules autoHealRules() {
-        return this.autoHealRules;
+        return this.innerProperties() == null ? null : this.innerProperties().autoHealRules();
     }
 
     /**
@@ -1210,7 +950,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withAutoHealRules(AutoHealRules autoHealRules) {
-        this.autoHealRules = autoHealRules;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withAutoHealRules(autoHealRules);
         return this;
     }
 
@@ -1220,7 +963,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the tracingOptions value.
      */
     public String tracingOptions() {
-        return this.tracingOptions;
+        return this.innerProperties() == null ? null : this.innerProperties().tracingOptions();
     }
 
     /**
@@ -1230,7 +973,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withTracingOptions(String tracingOptions) {
-        this.tracingOptions = tracingOptions;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withTracingOptions(tracingOptions);
         return this;
     }
 
@@ -1240,7 +986,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the vnetName value.
      */
     public String vnetName() {
-        return this.vnetName;
+        return this.innerProperties() == null ? null : this.innerProperties().vnetName();
     }
 
     /**
@@ -1250,7 +996,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withVnetName(String vnetName) {
-        this.vnetName = vnetName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withVnetName(vnetName);
         return this;
     }
 
@@ -1261,7 +1010,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the vnetRouteAllEnabled value.
      */
     public Boolean vnetRouteAllEnabled() {
-        return this.vnetRouteAllEnabled;
+        return this.innerProperties() == null ? null : this.innerProperties().vnetRouteAllEnabled();
     }
 
     /**
@@ -1272,7 +1021,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withVnetRouteAllEnabled(Boolean vnetRouteAllEnabled) {
-        this.vnetRouteAllEnabled = vnetRouteAllEnabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withVnetRouteAllEnabled(vnetRouteAllEnabled);
         return this;
     }
 
@@ -1283,7 +1035,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the vnetPrivatePortsCount value.
      */
     public Integer vnetPrivatePortsCount() {
-        return this.vnetPrivatePortsCount;
+        return this.innerProperties() == null ? null : this.innerProperties().vnetPrivatePortsCount();
     }
 
     /**
@@ -1294,7 +1046,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withVnetPrivatePortsCount(Integer vnetPrivatePortsCount) {
-        this.vnetPrivatePortsCount = vnetPrivatePortsCount;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withVnetPrivatePortsCount(vnetPrivatePortsCount);
         return this;
     }
 
@@ -1304,7 +1059,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the cors value.
      */
     public CorsSettings cors() {
-        return this.cors;
+        return this.innerProperties() == null ? null : this.innerProperties().cors();
     }
 
     /**
@@ -1314,7 +1069,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withCors(CorsSettings cors) {
-        this.cors = cors;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withCors(cors);
         return this;
     }
 
@@ -1324,7 +1082,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the push value.
      */
     public PushSettingsInner push() {
-        return this.push;
+        return this.innerProperties() == null ? null : this.innerProperties().push();
     }
 
     /**
@@ -1334,7 +1092,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withPush(PushSettingsInner push) {
-        this.push = push;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withPush(push);
         return this;
     }
 
@@ -1344,7 +1105,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the apiDefinition value.
      */
     public ApiDefinitionInfo apiDefinition() {
-        return this.apiDefinition;
+        return this.innerProperties() == null ? null : this.innerProperties().apiDefinition();
     }
 
     /**
@@ -1354,7 +1115,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withApiDefinition(ApiDefinitionInfo apiDefinition) {
-        this.apiDefinition = apiDefinition;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withApiDefinition(apiDefinition);
         return this;
     }
 
@@ -1364,7 +1128,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the apiManagementConfig value.
      */
     public ApiManagementConfig apiManagementConfig() {
-        return this.apiManagementConfig;
+        return this.innerProperties() == null ? null : this.innerProperties().apiManagementConfig();
     }
 
     /**
@@ -1374,7 +1138,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withApiManagementConfig(ApiManagementConfig apiManagementConfig) {
-        this.apiManagementConfig = apiManagementConfig;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withApiManagementConfig(apiManagementConfig);
         return this;
     }
 
@@ -1384,7 +1151,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the autoSwapSlotName value.
      */
     public String autoSwapSlotName() {
-        return this.autoSwapSlotName;
+        return this.innerProperties() == null ? null : this.innerProperties().autoSwapSlotName();
     }
 
     /**
@@ -1394,7 +1161,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withAutoSwapSlotName(String autoSwapSlotName) {
-        this.autoSwapSlotName = autoSwapSlotName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withAutoSwapSlotName(autoSwapSlotName);
         return this;
     }
 
@@ -1405,7 +1175,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the localMySqlEnabled value.
      */
     public Boolean localMySqlEnabled() {
-        return this.localMySqlEnabled;
+        return this.innerProperties() == null ? null : this.innerProperties().localMySqlEnabled();
     }
 
     /**
@@ -1416,7 +1186,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withLocalMySqlEnabled(Boolean localMySqlEnabled) {
-        this.localMySqlEnabled = localMySqlEnabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withLocalMySqlEnabled(localMySqlEnabled);
         return this;
     }
 
@@ -1426,7 +1199,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the managedServiceIdentityId value.
      */
     public Integer managedServiceIdentityId() {
-        return this.managedServiceIdentityId;
+        return this.innerProperties() == null ? null : this.innerProperties().managedServiceIdentityId();
     }
 
     /**
@@ -1436,7 +1209,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withManagedServiceIdentityId(Integer managedServiceIdentityId) {
-        this.managedServiceIdentityId = managedServiceIdentityId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withManagedServiceIdentityId(managedServiceIdentityId);
         return this;
     }
 
@@ -1446,7 +1222,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the xManagedServiceIdentityId value.
      */
     public Integer xManagedServiceIdentityId() {
-        return this.xManagedServiceIdentityId;
+        return this.innerProperties() == null ? null : this.innerProperties().xManagedServiceIdentityId();
     }
 
     /**
@@ -1456,7 +1232,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withXManagedServiceIdentityId(Integer xManagedServiceIdentityId) {
-        this.xManagedServiceIdentityId = xManagedServiceIdentityId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withXManagedServiceIdentityId(xManagedServiceIdentityId);
         return this;
     }
 
@@ -1466,7 +1245,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the keyVaultReferenceIdentity value.
      */
     public String keyVaultReferenceIdentity() {
-        return this.keyVaultReferenceIdentity;
+        return this.innerProperties() == null ? null : this.innerProperties().keyVaultReferenceIdentity();
     }
 
     /**
@@ -1476,7 +1255,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withKeyVaultReferenceIdentity(String keyVaultReferenceIdentity) {
-        this.keyVaultReferenceIdentity = keyVaultReferenceIdentity;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withKeyVaultReferenceIdentity(keyVaultReferenceIdentity);
         return this;
     }
 
@@ -1486,7 +1268,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the ipSecurityRestrictions value.
      */
     public List<IpSecurityRestriction> ipSecurityRestrictions() {
-        return this.ipSecurityRestrictions;
+        return this.innerProperties() == null ? null : this.innerProperties().ipSecurityRestrictions();
     }
 
     /**
@@ -1496,7 +1278,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withIpSecurityRestrictions(List<IpSecurityRestriction> ipSecurityRestrictions) {
-        this.ipSecurityRestrictions = ipSecurityRestrictions;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withIpSecurityRestrictions(ipSecurityRestrictions);
         return this;
     }
 
@@ -1506,7 +1291,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the scmIpSecurityRestrictions value.
      */
     public List<IpSecurityRestriction> scmIpSecurityRestrictions() {
-        return this.scmIpSecurityRestrictions;
+        return this.innerProperties() == null ? null : this.innerProperties().scmIpSecurityRestrictions();
     }
 
     /**
@@ -1517,7 +1302,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      */
     public SiteConfigResourceInner withScmIpSecurityRestrictions(
         List<IpSecurityRestriction> scmIpSecurityRestrictions) {
-        this.scmIpSecurityRestrictions = scmIpSecurityRestrictions;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withScmIpSecurityRestrictions(scmIpSecurityRestrictions);
         return this;
     }
 
@@ -1527,7 +1315,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the scmIpSecurityRestrictionsUseMain value.
      */
     public Boolean scmIpSecurityRestrictionsUseMain() {
-        return this.scmIpSecurityRestrictionsUseMain;
+        return this.innerProperties() == null ? null : this.innerProperties().scmIpSecurityRestrictionsUseMain();
     }
 
     /**
@@ -1537,7 +1325,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withScmIpSecurityRestrictionsUseMain(Boolean scmIpSecurityRestrictionsUseMain) {
-        this.scmIpSecurityRestrictionsUseMain = scmIpSecurityRestrictionsUseMain;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withScmIpSecurityRestrictionsUseMain(scmIpSecurityRestrictionsUseMain);
         return this;
     }
 
@@ -1547,7 +1338,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the http20Enabled value.
      */
     public Boolean http20Enabled() {
-        return this.http20Enabled;
+        return this.innerProperties() == null ? null : this.innerProperties().http20Enabled();
     }
 
     /**
@@ -1557,7 +1348,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withHttp20Enabled(Boolean http20Enabled) {
-        this.http20Enabled = http20Enabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withHttp20Enabled(http20Enabled);
         return this;
     }
 
@@ -1567,7 +1361,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the minTlsVersion value.
      */
     public SupportedTlsVersions minTlsVersion() {
-        return this.minTlsVersion;
+        return this.innerProperties() == null ? null : this.innerProperties().minTlsVersion();
     }
 
     /**
@@ -1577,7 +1371,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withMinTlsVersion(SupportedTlsVersions minTlsVersion) {
-        this.minTlsVersion = minTlsVersion;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withMinTlsVersion(minTlsVersion);
         return this;
     }
 
@@ -1588,7 +1385,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the scmMinTlsVersion value.
      */
     public SupportedTlsVersions scmMinTlsVersion() {
-        return this.scmMinTlsVersion;
+        return this.innerProperties() == null ? null : this.innerProperties().scmMinTlsVersion();
     }
 
     /**
@@ -1599,7 +1396,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withScmMinTlsVersion(SupportedTlsVersions scmMinTlsVersion) {
-        this.scmMinTlsVersion = scmMinTlsVersion;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withScmMinTlsVersion(scmMinTlsVersion);
         return this;
     }
 
@@ -1609,7 +1409,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the ftpsState value.
      */
     public FtpsState ftpsState() {
-        return this.ftpsState;
+        return this.innerProperties() == null ? null : this.innerProperties().ftpsState();
     }
 
     /**
@@ -1619,7 +1419,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withFtpsState(FtpsState ftpsState) {
-        this.ftpsState = ftpsState;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withFtpsState(ftpsState);
         return this;
     }
 
@@ -1630,7 +1433,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the preWarmedInstanceCount value.
      */
     public Integer preWarmedInstanceCount() {
-        return this.preWarmedInstanceCount;
+        return this.innerProperties() == null ? null : this.innerProperties().preWarmedInstanceCount();
     }
 
     /**
@@ -1641,7 +1444,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withPreWarmedInstanceCount(Integer preWarmedInstanceCount) {
-        this.preWarmedInstanceCount = preWarmedInstanceCount;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withPreWarmedInstanceCount(preWarmedInstanceCount);
         return this;
     }
 
@@ -1652,7 +1458,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the functionAppScaleLimit value.
      */
     public Integer functionAppScaleLimit() {
-        return this.functionAppScaleLimit;
+        return this.innerProperties() == null ? null : this.innerProperties().functionAppScaleLimit();
     }
 
     /**
@@ -1663,7 +1469,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withFunctionAppScaleLimit(Integer functionAppScaleLimit) {
-        this.functionAppScaleLimit = functionAppScaleLimit;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withFunctionAppScaleLimit(functionAppScaleLimit);
         return this;
     }
 
@@ -1673,7 +1482,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the healthCheckPath value.
      */
     public String healthCheckPath() {
-        return this.healthCheckPath;
+        return this.innerProperties() == null ? null : this.innerProperties().healthCheckPath();
     }
 
     /**
@@ -1683,7 +1492,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withHealthCheckPath(String healthCheckPath) {
-        this.healthCheckPath = healthCheckPath;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withHealthCheckPath(healthCheckPath);
         return this;
     }
 
@@ -1695,7 +1507,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the functionsRuntimeScaleMonitoringEnabled value.
      */
     public Boolean functionsRuntimeScaleMonitoringEnabled() {
-        return this.functionsRuntimeScaleMonitoringEnabled;
+        return this.innerProperties() == null ? null : this.innerProperties().functionsRuntimeScaleMonitoringEnabled();
     }
 
     /**
@@ -1708,7 +1520,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      */
     public SiteConfigResourceInner withFunctionsRuntimeScaleMonitoringEnabled(
         Boolean functionsRuntimeScaleMonitoringEnabled) {
-        this.functionsRuntimeScaleMonitoringEnabled = functionsRuntimeScaleMonitoringEnabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withFunctionsRuntimeScaleMonitoringEnabled(functionsRuntimeScaleMonitoringEnabled);
         return this;
     }
 
@@ -1722,7 +1537,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the websiteTimeZone value.
      */
     public String websiteTimeZone() {
-        return this.websiteTimeZone;
+        return this.innerProperties() == null ? null : this.innerProperties().websiteTimeZone();
     }
 
     /**
@@ -1736,7 +1551,10 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withWebsiteTimeZone(String websiteTimeZone) {
-        this.websiteTimeZone = websiteTimeZone;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withWebsiteTimeZone(websiteTimeZone);
         return this;
     }
 
@@ -1747,7 +1565,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the minimumElasticInstanceCount value.
      */
     public Integer minimumElasticInstanceCount() {
-        return this.minimumElasticInstanceCount;
+        return this.innerProperties() == null ? null : this.innerProperties().minimumElasticInstanceCount();
     }
 
     /**
@@ -1758,14 +1576,56 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      * @return the SiteConfigResourceInner object itself.
      */
     public SiteConfigResourceInner withMinimumElasticInstanceCount(Integer minimumElasticInstanceCount) {
-        this.minimumElasticInstanceCount = minimumElasticInstanceCount;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withMinimumElasticInstanceCount(minimumElasticInstanceCount);
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public SiteConfigResourceInner withKind(String kind) {
-        super.withKind(kind);
+    /**
+     * Get the azureStorageAccounts property: List of Azure Storage Accounts.
+     *
+     * @return the azureStorageAccounts value.
+     */
+    public Map<String, AzureStorageInfoValue> azureStorageAccounts() {
+        return this.innerProperties() == null ? null : this.innerProperties().azureStorageAccounts();
+    }
+
+    /**
+     * Set the azureStorageAccounts property: List of Azure Storage Accounts.
+     *
+     * @param azureStorageAccounts the azureStorageAccounts value to set.
+     * @return the SiteConfigResourceInner object itself.
+     */
+    public SiteConfigResourceInner withAzureStorageAccounts(Map<String, AzureStorageInfoValue> azureStorageAccounts) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withAzureStorageAccounts(azureStorageAccounts);
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Property to allow or block all public traffic.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public String publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Property to allow or block all public traffic.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the SiteConfigResourceInner object itself.
+     */
+    public SiteConfigResourceInner withPublicNetworkAccess(String publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 
@@ -1777,57 +1637,8 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
-        if (appSettings() != null) {
-            appSettings().forEach(e -> e.validate());
-        }
-        if (azureStorageAccounts() != null) {
-            azureStorageAccounts()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
-        }
-        if (connectionStrings() != null) {
-            connectionStrings().forEach(e -> e.validate());
-        }
-        if (machineKey() != null) {
-            machineKey().validate();
-        }
-        if (handlerMappings() != null) {
-            handlerMappings().forEach(e -> e.validate());
-        }
-        if (virtualApplications() != null) {
-            virtualApplications().forEach(e -> e.validate());
-        }
-        if (experiments() != null) {
-            experiments().validate();
-        }
-        if (limits() != null) {
-            limits().validate();
-        }
-        if (autoHealRules() != null) {
-            autoHealRules().validate();
-        }
-        if (cors() != null) {
-            cors().validate();
-        }
-        if (push() != null) {
-            push().validate();
-        }
-        if (apiDefinition() != null) {
-            apiDefinition().validate();
-        }
-        if (apiManagementConfig() != null) {
-            apiManagementConfig().validate();
-        }
-        if (ipSecurityRestrictions() != null) {
-            ipSecurityRestrictions().forEach(e -> e.validate());
-        }
-        if (scmIpSecurityRestrictions() != null) {
-            scmIpSecurityRestrictions().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

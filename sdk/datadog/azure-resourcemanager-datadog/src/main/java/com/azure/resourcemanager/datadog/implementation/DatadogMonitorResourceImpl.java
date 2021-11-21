@@ -133,18 +133,13 @@ public final class DatadogMonitorResourceImpl
             serviceManager
                 .serviceClient()
                 .getMonitors()
-                .updateWithResponse(resourceGroupName, monitorName, updateBody, Context.NONE)
-                .getValue();
+                .update(resourceGroupName, monitorName, updateBody, Context.NONE);
         return this;
     }
 
     public DatadogMonitorResource apply(Context context) {
         this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMonitors()
-                .updateWithResponse(resourceGroupName, monitorName, updateBody, context)
-                .getValue();
+            serviceManager.serviceClient().getMonitors().update(resourceGroupName, monitorName, updateBody, context);
         return this;
     }
 
@@ -254,8 +249,13 @@ public final class DatadogMonitorResourceImpl
     }
 
     public DatadogMonitorResourceImpl withSku(ResourceSku sku) {
-        this.innerModel().withSku(sku);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withSku(sku);
+            return this;
+        } else {
+            this.updateBody.withSku(sku);
+            return this;
+        }
     }
 
     public DatadogMonitorResourceImpl withProperties(MonitorProperties properties) {

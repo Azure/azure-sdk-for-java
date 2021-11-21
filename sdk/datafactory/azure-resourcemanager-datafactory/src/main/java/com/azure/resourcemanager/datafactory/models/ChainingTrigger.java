@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.ChainingTriggerTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -21,9 +21,8 @@ import java.util.List;
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("ChainingTrigger")
-@JsonFlatten
 @Fluent
-public class ChainingTrigger extends Trigger {
+public final class ChainingTrigger extends Trigger {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ChainingTrigger.class);
 
     /*
@@ -34,16 +33,10 @@ public class ChainingTrigger extends Trigger {
     private TriggerPipelineReference pipeline;
 
     /*
-     * Upstream Pipelines.
+     * Chaining Trigger properties.
      */
-    @JsonProperty(value = "typeProperties.dependsOn", required = true)
-    private List<PipelineReference> dependsOn;
-
-    /*
-     * Run Dimension property that needs to be emitted by upstream pipelines.
-     */
-    @JsonProperty(value = "typeProperties.runDimension", required = true)
-    private String runDimension;
+    @JsonProperty(value = "typeProperties", required = true)
+    private ChainingTriggerTypeProperties innerTypeProperties = new ChainingTriggerTypeProperties();
 
     /**
      * Get the pipeline property: Pipeline for which runs are created when all upstream pipelines complete successfully.
@@ -66,43 +59,12 @@ public class ChainingTrigger extends Trigger {
     }
 
     /**
-     * Get the dependsOn property: Upstream Pipelines.
+     * Get the innerTypeProperties property: Chaining Trigger properties.
      *
-     * @return the dependsOn value.
+     * @return the innerTypeProperties value.
      */
-    public List<PipelineReference> dependsOn() {
-        return this.dependsOn;
-    }
-
-    /**
-     * Set the dependsOn property: Upstream Pipelines.
-     *
-     * @param dependsOn the dependsOn value to set.
-     * @return the ChainingTrigger object itself.
-     */
-    public ChainingTrigger withDependsOn(List<PipelineReference> dependsOn) {
-        this.dependsOn = dependsOn;
-        return this;
-    }
-
-    /**
-     * Get the runDimension property: Run Dimension property that needs to be emitted by upstream pipelines.
-     *
-     * @return the runDimension value.
-     */
-    public String runDimension() {
-        return this.runDimension;
-    }
-
-    /**
-     * Set the runDimension property: Run Dimension property that needs to be emitted by upstream pipelines.
-     *
-     * @param runDimension the runDimension value to set.
-     * @return the ChainingTrigger object itself.
-     */
-    public ChainingTrigger withRunDimension(String runDimension) {
-        this.runDimension = runDimension;
-        return this;
+    private ChainingTriggerTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -116,6 +78,52 @@ public class ChainingTrigger extends Trigger {
     @Override
     public ChainingTrigger withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
+        return this;
+    }
+
+    /**
+     * Get the dependsOn property: Upstream Pipelines.
+     *
+     * @return the dependsOn value.
+     */
+    public List<PipelineReference> dependsOn() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().dependsOn();
+    }
+
+    /**
+     * Set the dependsOn property: Upstream Pipelines.
+     *
+     * @param dependsOn the dependsOn value to set.
+     * @return the ChainingTrigger object itself.
+     */
+    public ChainingTrigger withDependsOn(List<PipelineReference> dependsOn) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new ChainingTriggerTypeProperties();
+        }
+        this.innerTypeProperties().withDependsOn(dependsOn);
+        return this;
+    }
+
+    /**
+     * Get the runDimension property: Run Dimension property that needs to be emitted by upstream pipelines.
+     *
+     * @return the runDimension value.
+     */
+    public String runDimension() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().runDimension();
+    }
+
+    /**
+     * Set the runDimension property: Run Dimension property that needs to be emitted by upstream pipelines.
+     *
+     * @param runDimension the runDimension value to set.
+     * @return the ChainingTrigger object itself.
+     */
+    public ChainingTrigger withRunDimension(String runDimension) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new ChainingTriggerTypeProperties();
+        }
+        this.innerTypeProperties().withRunDimension(runDimension);
         return this;
     }
 
@@ -134,17 +142,13 @@ public class ChainingTrigger extends Trigger {
         } else {
             pipeline().validate();
         }
-        if (dependsOn() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property dependsOn in model ChainingTrigger"));
+                    new IllegalArgumentException(
+                        "Missing required property innerTypeProperties in model ChainingTrigger"));
         } else {
-            dependsOn().forEach(e -> e.validate());
-        }
-        if (runDimension() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property runDimension in model ChainingTrigger"));
+            innerTypeProperties().validate();
         }
     }
 }

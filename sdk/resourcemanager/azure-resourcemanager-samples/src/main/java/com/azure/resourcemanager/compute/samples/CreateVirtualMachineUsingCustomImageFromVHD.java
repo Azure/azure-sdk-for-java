@@ -53,10 +53,10 @@ public final class CreateVirtualMachineUsingCustomImageFromVHD {
         final String rgName = Utils.randomResourceName(azureResourceManager, "rgCOMV", 15);
         final String publicIPDnsLabel = Utils.randomResourceName(azureResourceManager, "pip", 10);
         final String userName = "tirekicker";
-        final String password = Utils.password();
+        final String sshPublicKey = Utils.sshPublicKey();
         final Region region = Region.US_WEST;
 
-        final String apacheInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/install_apache.sh";
+        final String apacheInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/install_apache.sh";
         final String apacheInstallCommand = "bash install_apache.sh";
         List<String> apacheInstallScriptUris = new ArrayList<>();
         apacheInstallScriptUris.add(apacheInstallScript);
@@ -76,7 +76,7 @@ public final class CreateVirtualMachineUsingCustomImageFromVHD {
                     .withNewPrimaryPublicIPAddress(publicIPDnsLabel)
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername(userName)
-                    .withRootPassword(password)
+                    .withSsh(sshPublicKey)
                     .withUnmanagedDisks()
                     .defineUnmanagedDataDisk("disk-1")
                         .withNewVhd(100)
@@ -165,7 +165,7 @@ public final class CreateVirtualMachineUsingCustomImageFromVHD {
                     .withoutPrimaryPublicIPAddress()
                     .withGeneralizedLinuxCustomImage(virtualMachineCustomImage.id())
                     .withRootUsername(userName)
-                    .withRootPassword(password)
+                    .withSsh(sshPublicKey)
                     .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     .create();
 
@@ -184,7 +184,7 @@ public final class CreateVirtualMachineUsingCustomImageFromVHD {
                     .withoutPrimaryPublicIPAddress()
                     .withGeneralizedLinuxCustomImage(virtualMachineCustomImage.id())
                     .withRootUsername(userName)
-                    .withRootPassword(password)
+                    .withSsh(sshPublicKey)
                     .withNewDataDiskFromImage(1, 200, CachingTypes.READ_WRITE)
                     .withNewDataDiskFromImage(2, 100, CachingTypes.READ_ONLY)
                     .withNewDataDiskFromImage(3, 100, CachingTypes.READ_WRITE)

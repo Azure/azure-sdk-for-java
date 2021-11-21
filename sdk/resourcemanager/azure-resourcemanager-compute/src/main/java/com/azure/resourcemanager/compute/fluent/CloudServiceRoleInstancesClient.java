@@ -50,7 +50,7 @@ public interface CloudServiceRoleInstancesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String roleInstanceName, String resourceGroupName, String cloudServiceName);
 
@@ -65,7 +65,7 @@ public interface CloudServiceRoleInstancesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String roleInstanceName, String resourceGroupName, String cloudServiceName);
 
@@ -81,7 +81,7 @@ public interface CloudServiceRoleInstancesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String roleInstanceName, String resourceGroupName, String cloudServiceName, Context context);
 
@@ -132,7 +132,7 @@ public interface CloudServiceRoleInstancesClient {
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName The resourceGroupName parameter.
      * @param cloudServiceName The cloudServiceName parameter.
-     * @param expand The expand expression to apply to the operation.
+     * @param expand The expand expression to apply to the operation. 'UserData' is not supported for cloud services.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -148,7 +148,7 @@ public interface CloudServiceRoleInstancesClient {
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName The resourceGroupName parameter.
      * @param cloudServiceName The cloudServiceName parameter.
-     * @param expand The expand expression to apply to the operation.
+     * @param expand The expand expression to apply to the operation. 'UserData' is not supported for cloud services.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -192,7 +192,7 @@ public interface CloudServiceRoleInstancesClient {
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName The resourceGroupName parameter.
      * @param cloudServiceName The cloudServiceName parameter.
-     * @param expand The expand expression to apply to the operation.
+     * @param expand The expand expression to apply to the operation. 'UserData' is not supported for cloud services.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -273,7 +273,7 @@ public interface CloudServiceRoleInstancesClient {
      *
      * @param resourceGroupName The resourceGroupName parameter.
      * @param cloudServiceName The cloudServiceName parameter.
-     * @param expand The expand expression to apply to the operation.
+     * @param expand The expand expression to apply to the operation. 'UserData' is not supported for cloud services.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -316,7 +316,7 @@ public interface CloudServiceRoleInstancesClient {
      *
      * @param resourceGroupName The resourceGroupName parameter.
      * @param cloudServiceName The cloudServiceName parameter.
-     * @param expand The expand expression to apply to the operation.
+     * @param expand The expand expression to apply to the operation. 'UserData' is not supported for cloud services.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -353,7 +353,7 @@ public interface CloudServiceRoleInstancesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginRestartAsync(
         String roleInstanceName, String resourceGroupName, String cloudServiceName);
 
@@ -368,7 +368,7 @@ public interface CloudServiceRoleInstancesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestart(
         String roleInstanceName, String resourceGroupName, String cloudServiceName);
 
@@ -384,7 +384,7 @@ public interface CloudServiceRoleInstancesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestart(
         String roleInstanceName, String resourceGroupName, String cloudServiceName, Context context);
 
@@ -457,7 +457,7 @@ public interface CloudServiceRoleInstancesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginReimageAsync(
         String roleInstanceName, String resourceGroupName, String cloudServiceName);
 
@@ -473,7 +473,7 @@ public interface CloudServiceRoleInstancesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginReimage(
         String roleInstanceName, String resourceGroupName, String cloudServiceName);
 
@@ -490,7 +490,7 @@ public interface CloudServiceRoleInstancesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginReimage(
         String roleInstanceName, String resourceGroupName, String cloudServiceName, Context context);
 
@@ -568,7 +568,7 @@ public interface CloudServiceRoleInstancesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginRebuildAsync(
         String roleInstanceName, String resourceGroupName, String cloudServiceName);
 
@@ -585,7 +585,7 @@ public interface CloudServiceRoleInstancesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRebuild(
         String roleInstanceName, String resourceGroupName, String cloudServiceName);
 
@@ -603,7 +603,7 @@ public interface CloudServiceRoleInstancesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRebuild(
         String roleInstanceName, String resourceGroupName, String cloudServiceName, Context context);
 

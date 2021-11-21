@@ -3,17 +3,16 @@
 
 package com.azure.messaging.servicebus;
 
-import static com.azure.core.amqp.AmqpMessageConstant.SCHEDULED_ENQUEUE_UTC_TIME_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseUtils;
 import com.azure.core.amqp.models.AmqpAddress;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
+import com.azure.core.amqp.models.AmqpMessageBody;
+import com.azure.core.amqp.models.AmqpMessageBodyType;
 import com.azure.core.amqp.models.AmqpMessageHeader;
 import com.azure.core.amqp.models.AmqpMessageId;
 import com.azure.core.amqp.models.AmqpMessageProperties;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.ManagementConstants;
 import com.azure.messaging.servicebus.implementation.MessageWithLockToken;
@@ -56,6 +55,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.SCHEDULED_ENQUEUE_UTC_TIME_NAME;
 
 /**
  * Deserializes and serializes messages to and from Azure Service Bus.
@@ -123,11 +125,20 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         }
 
         final ServiceBusMessage brokeredMessage = (ServiceBusMessage) object;
+        AmqpMessageBodyType brokeredBodyType = brokeredMessage.getRawAmqpMessage().getBody().getBodyType();
         final Message amqpMessage = Proton.message();
-        final byte[] body = brokeredMessage.getBody().toBytes();
 
-        //TODO (conniey): support AMQP sequence and AMQP value.
-        amqpMessage.setBody(new Data(new Binary(body)));
+        byte[] body;
+
+        if (brokeredBodyType == AmqpMessageBodyType.DATA || brokeredBodyType == null) {
+            body = brokeredMessage.getBody().toBytes();
+            amqpMessage.setBody(new Data(new Binary(body)));
+        } else if (brokeredBodyType == AmqpMessageBodyType.SEQUENCE) {
+            List<Object> sequenceList = brokeredMessage.getRawAmqpMessage().getBody().getSequence();
+            amqpMessage.setBody(new AmqpSequence(sequenceList));
+        } else if (brokeredBodyType == AmqpMessageBodyType.VALUE) {
+            amqpMessage.setBody(new AmqpValue(brokeredMessage.getRawAmqpMessage().getBody().getValue()));
+        }
 
         if (brokeredMessage.getApplicationProperties() != null) {
             amqpMessage.setApplicationProperties(new ApplicationProperties(brokeredMessage.getApplicationProperties()));
@@ -339,22 +350,29 @@ class ServiceBusMessageSerializer implements MessageSerializer {
     }
 
     private ServiceBusReceivedMessage deserializeMessage(Message amqpMessage) {
-        final byte[] bytes;
         final Section body = amqpMessage.getBody();
+        AmqpMessageBody amqpMessageBody;
         if (body != null) {
-            //TODO (conniey): Support other AMQP types like AmqpValue and AmqpSequence.
             if (body instanceof Data) {
                 final Binary messageData = ((Data) body).getValue();
-                bytes = messageData.getArray();
+                amqpMessageBody = AmqpMessageBody.fromData(messageData.getArray());
+            } else if (body instanceof AmqpValue) {
+                amqpMessageBody = AmqpMessageBody.fromValue(((AmqpValue) body).getValue());
+            } else if (body instanceof AmqpSequence) {
+                @SuppressWarnings("unchecked")
+                List<Object> messageData = ((AmqpSequence) body).getValue();
+                amqpMessageBody = AmqpMessageBody.fromSequence(messageData);
+
             } else {
                 logger.warning(String.format(Messages.MESSAGE_NOT_OF_TYPE, body.getType()));
-                bytes = EMPTY_BYTE_ARRAY;
+                amqpMessageBody = AmqpMessageBody.fromData(EMPTY_BYTE_ARRAY);
             }
         } else {
             logger.warning(String.format(Messages.MESSAGE_NOT_OF_TYPE, "null"));
-            bytes = EMPTY_BYTE_ARRAY;
+            amqpMessageBody = AmqpMessageBody.fromData(EMPTY_BYTE_ARRAY);
         }
-        final ServiceBusReceivedMessage brokeredMessage = new ServiceBusReceivedMessage(BinaryData.fromBytes(bytes));
+
+        final ServiceBusReceivedMessage brokeredMessage = new ServiceBusReceivedMessage(amqpMessageBody);
         AmqpAnnotatedMessage brokeredAmqpAnnotatedMessage = brokeredMessage.getRawAmqpMessage();
 
         // Application properties

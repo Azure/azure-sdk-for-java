@@ -5,171 +5,40 @@
 package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
 /** The Dimension model. */
-@JsonFlatten
 @Fluent
-public class DimensionInner extends ProxyResource {
+public final class DimensionInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DimensionInner.class);
 
     /*
-     * Dimension description.
+     * The properties property.
      */
-    @JsonProperty(value = "properties.description", access = JsonProperty.Access.WRITE_ONLY)
-    private String description;
-
-    /*
-     * Filter enabled.
-     */
-    @JsonProperty(value = "properties.filterEnabled", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean filterEnabled;
-
-    /*
-     * Grouping enabled.
-     */
-    @JsonProperty(value = "properties.groupingEnabled", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean groupingEnabled;
-
-    /*
-     * The data property.
-     */
-    @JsonProperty(value = "properties.data")
-    private List<String> data;
-
-    /*
-     * Total number of data for the dimension.
-     */
-    @JsonProperty(value = "properties.total", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer total;
-
-    /*
-     * Dimension category.
-     */
-    @JsonProperty(value = "properties.category", access = JsonProperty.Access.WRITE_ONLY)
-    private String category;
-
-    /*
-     * Usage start.
-     */
-    @JsonProperty(value = "properties.usageStart", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime usageStart;
-
-    /*
-     * Usage end.
-     */
-    @JsonProperty(value = "properties.usageEnd", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime usageEnd;
-
-    /*
-     * The link (url) to the next page of results.
-     */
-    @JsonProperty(value = "properties.nextLink", access = JsonProperty.Access.WRITE_ONLY)
-    private String nextLink;
+    @JsonProperty(value = "properties")
+    private DimensionProperties innerProperties;
 
     /*
      * Resource tags.
      */
     @JsonProperty(value = "tags", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /**
-     * Get the description property: Dimension description.
+     * Get the innerProperties property: The properties property.
      *
-     * @return the description value.
+     * @return the innerProperties value.
      */
-    public String description() {
-        return this.description;
-    }
-
-    /**
-     * Get the filterEnabled property: Filter enabled.
-     *
-     * @return the filterEnabled value.
-     */
-    public Boolean filterEnabled() {
-        return this.filterEnabled;
-    }
-
-    /**
-     * Get the groupingEnabled property: Grouping enabled.
-     *
-     * @return the groupingEnabled value.
-     */
-    public Boolean groupingEnabled() {
-        return this.groupingEnabled;
-    }
-
-    /**
-     * Get the data property: The data property.
-     *
-     * @return the data value.
-     */
-    public List<String> data() {
-        return this.data;
-    }
-
-    /**
-     * Set the data property: The data property.
-     *
-     * @param data the data value to set.
-     * @return the DimensionInner object itself.
-     */
-    public DimensionInner withData(List<String> data) {
-        this.data = data;
-        return this;
-    }
-
-    /**
-     * Get the total property: Total number of data for the dimension.
-     *
-     * @return the total value.
-     */
-    public Integer total() {
-        return this.total;
-    }
-
-    /**
-     * Get the category property: Dimension category.
-     *
-     * @return the category value.
-     */
-    public String category() {
-        return this.category;
-    }
-
-    /**
-     * Get the usageStart property: Usage start.
-     *
-     * @return the usageStart value.
-     */
-    public OffsetDateTime usageStart() {
-        return this.usageStart;
-    }
-
-    /**
-     * Get the usageEnd property: Usage end.
-     *
-     * @return the usageEnd value.
-     */
-    public OffsetDateTime usageEnd() {
-        return this.usageEnd;
-    }
-
-    /**
-     * Get the nextLink property: The link (url) to the next page of results.
-     *
-     * @return the nextLink value.
-     */
-    public String nextLink() {
-        return this.nextLink;
+    private DimensionProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -182,10 +51,108 @@ public class DimensionInner extends ProxyResource {
     }
 
     /**
+     * Get the description property: Dimension description.
+     *
+     * @return the description value.
+     */
+    public String description() {
+        return this.innerProperties() == null ? null : this.innerProperties().description();
+    }
+
+    /**
+     * Get the filterEnabled property: Filter enabled.
+     *
+     * @return the filterEnabled value.
+     */
+    public Boolean filterEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().filterEnabled();
+    }
+
+    /**
+     * Get the groupingEnabled property: Grouping enabled.
+     *
+     * @return the groupingEnabled value.
+     */
+    public Boolean groupingEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().groupingEnabled();
+    }
+
+    /**
+     * Get the data property: The data property.
+     *
+     * @return the data value.
+     */
+    public List<String> data() {
+        return this.innerProperties() == null ? null : this.innerProperties().data();
+    }
+
+    /**
+     * Set the data property: The data property.
+     *
+     * @param data the data value to set.
+     * @return the DimensionInner object itself.
+     */
+    public DimensionInner withData(List<String> data) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DimensionProperties();
+        }
+        this.innerProperties().withData(data);
+        return this;
+    }
+
+    /**
+     * Get the total property: Total number of data for the dimension.
+     *
+     * @return the total value.
+     */
+    public Integer total() {
+        return this.innerProperties() == null ? null : this.innerProperties().total();
+    }
+
+    /**
+     * Get the category property: Dimension category.
+     *
+     * @return the category value.
+     */
+    public String category() {
+        return this.innerProperties() == null ? null : this.innerProperties().category();
+    }
+
+    /**
+     * Get the usageStart property: Usage start.
+     *
+     * @return the usageStart value.
+     */
+    public OffsetDateTime usageStart() {
+        return this.innerProperties() == null ? null : this.innerProperties().usageStart();
+    }
+
+    /**
+     * Get the usageEnd property: Usage end.
+     *
+     * @return the usageEnd value.
+     */
+    public OffsetDateTime usageEnd() {
+        return this.innerProperties() == null ? null : this.innerProperties().usageEnd();
+    }
+
+    /**
+     * Get the nextLink property: The link (url) to the next page of results.
+     *
+     * @return the nextLink value.
+     */
+    public String nextLink() {
+        return this.innerProperties() == null ? null : this.innerProperties().nextLink();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

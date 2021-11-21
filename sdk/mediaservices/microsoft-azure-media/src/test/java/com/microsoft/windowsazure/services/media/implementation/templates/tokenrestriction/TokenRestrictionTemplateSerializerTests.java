@@ -51,10 +51,10 @@ public class TokenRestrictionTemplateSerializerTests {
 
         assertArrayEquals(fromTemplate.getKeyValue(), fromTemplate2.getKeyValue());
     }
-    
+
     @Test
     public void KnownGoodInputForSwtOnlyScheme() throws JAXBException {
-        String tokenTemplate = "<TokenRestrictionTemplate xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://schemas.microsoft.com/Azure/MediaServices/KeyDelivery/TokenRestrictionTemplate/v1\"><AlternateVerificationKeys><TokenVerificationKey i:type=\"SymmetricVerificationKey\"><KeyValue>GG07fDPZ+HMD2vcoknMqYjEJMb7LSq8zUmdCYMvRCevnQK//ilbhODO/FydMrHiwZGmI6XywvOOU7SSzRPlI3Q==</KeyValue></TokenVerificationKey></AlternateVerificationKeys><Audience>http://sampleaudience/</Audience><Issuer>http://sampleissuerurl/</Issuer><PrimaryVerificationKey i:type=\"SymmetricVerificationKey\"><KeyValue>2OvxltHKwILn5PCRD8H+63sK98LBs1yF+ZdZbwzmToWYm29pLyqIMuCvMRGpLOv5DYh3NmpzWMAciu4ncW8VTg==</KeyValue></PrimaryVerificationKey><RequiredClaims><TokenClaim><ClaimType>urn:microsoft:azure:mediaservices:contentkeyidentifier</ClaimType><ClaimValue i:nil=\"true\" /></TokenClaim><TokenClaim><ClaimType>urn:myservice:claims:rental</ClaimType><ClaimValue>true</ClaimValue></TokenClaim></RequiredClaims></TokenRestrictionTemplate>";
+        String tokenTemplate = "<TokenRestrictionTemplate xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://schemas.microsoft.com/Azure/MediaServices/KeyDelivery/TokenRestrictionTemplate/v1\"><AlternateVerificationKeys><TokenVerificationKey i:type=\"SymmetricVerificationKey\"><KeyValue>FakeTestKey</KeyValue></TokenVerificationKey></AlternateVerificationKeys><Audience>http://sampleaudience/</Audience><Issuer>http://sampleissuerurl/</Issuer><PrimaryVerificationKey i:type=\"SymmetricVerificationKey\"><KeyValue>FakeTestKey</KeyValue></PrimaryVerificationKey><RequiredClaims><TokenClaim><ClaimType>urn:microsoft:azure:mediaservices:contentkeyidentifier</ClaimType><ClaimValue i:nil=\"true\" /></TokenClaim><TokenClaim><ClaimType>urn:myservice:claims:rental</ClaimType><ClaimValue>true</ClaimValue></TokenClaim></RequiredClaims></TokenRestrictionTemplate>";
 
         TokenRestrictionTemplate template = TokenRestrictionTemplateSerializer.deserialize(tokenTemplate);
         assertNotNull(template);
@@ -71,7 +71,7 @@ public class TokenRestrictionTemplateSerializerTests {
 
     @Test
     public void KnownGoodInputForSWT() throws JAXBException {
-        String tokenTemplate = "<TokenRestrictionTemplate xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://schemas.microsoft.com/Azure/MediaServices/KeyDelivery/TokenRestrictionTemplate/v1\"><AlternateVerificationKeys /><Audience>http://sampleissuerurl/</Audience><Issuer>http://sampleaudience/</Issuer><PrimaryVerificationKey i:type=\"SymmetricVerificationKey\"><KeyValue>2OvxltHKwILn5PCRD8H+63sK98LBs1yF+ZdZbwzmToWYm29pLyqIMuCvMRGpLOv5DYh3NmpzWMAciu4ncW8VTg==</KeyValue></PrimaryVerificationKey><RequiredClaims><TokenClaim><ClaimType>urn:microsoft:azure:mediaservices:contentkeyidentifier</ClaimType><ClaimValue i:nil=\"true\" /></TokenClaim><TokenClaim><ClaimType>urn:myservice:claims:rental</ClaimType><ClaimValue>true</ClaimValue></TokenClaim></RequiredClaims><TokenType>SWT</TokenType></TokenRestrictionTemplate>";
+        String tokenTemplate = "<TokenRestrictionTemplate xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://schemas.microsoft.com/Azure/MediaServices/KeyDelivery/TokenRestrictionTemplate/v1\"><AlternateVerificationKeys /><Audience>http://sampleissuerurl/</Audience><Issuer>http://sampleaudience/</Issuer><PrimaryVerificationKey i:type=\"SymmetricVerificationKey\"><KeyValue>FakeTestKey</KeyValue></PrimaryVerificationKey><RequiredClaims><TokenClaim><ClaimType>urn:microsoft:azure:mediaservices:contentkeyidentifier</ClaimType><ClaimValue i:nil=\"true\" /></TokenClaim><TokenClaim><ClaimType>urn:myservice:claims:rental</ClaimType><ClaimValue>true</ClaimValue></TokenClaim></RequiredClaims><TokenType>SWT</TokenType></TokenRestrictionTemplate>";
         TokenRestrictionTemplate template = TokenRestrictionTemplateSerializer.deserialize(tokenTemplate);
         assertNotNull(template);
         assertEquals(TokenType.SWT, template.getTokenType());
@@ -79,7 +79,7 @@ public class TokenRestrictionTemplateSerializerTests {
 
     @Test
     public void InputMissingIssuerShouldThrow() {
-        String tokenTemplate = "<TokenRestrictionTemplate xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://schemas.microsoft.com/Azure/MediaServices/KeyDelivery/TokenRestrictionTemplate/v1\"><AlternateVerificationKeys><TokenVerificationKey i:type=\"SymmetricVerificationKey\"><KeyValue>GG07fDPZ+HMD2vcoknMqYjEJMb7LSq8zUmdCYMvRCevnQK//ilbhODO/FydMrHiwZGmI6XywvOOU7SSzRPlI3Q==</KeyValue></TokenVerificationKey></AlternateVerificationKeys><Audience>http://sampleaudience/</Audience><PrimaryVerificationKey i:type=\"SymmetricVerificationKey\"><KeyValue>2OvxltHKwILn5PCRD8H+63sK98LBs1yF+ZdZbwzmToWYm29pLyqIMuCvMRGpLOv5DYh3NmpzWMAciu4ncW8VTg==</KeyValue></PrimaryVerificationKey><RequiredClaims><TokenClaim><ClaimType>urn:microsoft:azure:mediaservices:contentkeyidentifier</ClaimType><ClaimValue i:nil=\"true\" /></TokenClaim><TokenClaim><ClaimType>urn:myservice:claims:rental</ClaimType><ClaimValue>true</ClaimValue></TokenClaim></RequiredClaims></TokenRestrictionTemplate>";
+        String tokenTemplate = "<TokenRestrictionTemplate xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://schemas.microsoft.com/Azure/MediaServices/KeyDelivery/TokenRestrictionTemplate/v1\"><AlternateVerificationKeys><TokenVerificationKey i:type=\"SymmetricVerificationKey\"><KeyValue>RmFrZVRlc3RLZXk=</KeyValue></TokenVerificationKey></AlternateVerificationKeys><Audience>http://sampleaudience/</Audience><PrimaryVerificationKey i:type=\"SymmetricVerificationKey\"><KeyValue>RmFrZVRlc3RLZXk=</KeyValue></PrimaryVerificationKey><RequiredClaims><TokenClaim><ClaimType>urn:microsoft:azure:mediaservices:contentkeyidentifier</ClaimType><ClaimValue i:nil=\"true\" /></TokenClaim><TokenClaim><ClaimType>urn:myservice:claims:rental</ClaimType><ClaimValue>true</ClaimValue></TokenClaim></RequiredClaims></TokenRestrictionTemplate>";
 
         try {
             @SuppressWarnings("unused")
@@ -95,7 +95,7 @@ public class TokenRestrictionTemplateSerializerTests {
 
     @Test
     public void InputMissingAudienceShouldThrow() {
-        String tokenTemplate = "<TokenRestrictionTemplate xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://schemas.microsoft.com/Azure/MediaServices/KeyDelivery/TokenRestrictionTemplate/v1\"><AlternateVerificationKeys><TokenVerificationKey i:type=\"SymmetricVerificationKey\"><KeyValue>GG07fDPZ+HMD2vcoknMqYjEJMb7LSq8zUmdCYMvRCevnQK//ilbhODO/FydMrHiwZGmI6XywvOOU7SSzRPlI3Q==</KeyValue></TokenVerificationKey></AlternateVerificationKeys><Issuer>http://sampleissuerurl/</Issuer><PrimaryVerificationKey i:type=\"SymmetricVerificationKey\"><KeyValue>2OvxltHKwILn5PCRD8H+63sK98LBs1yF+ZdZbwzmToWYm29pLyqIMuCvMRGpLOv5DYh3NmpzWMAciu4ncW8VTg==</KeyValue></PrimaryVerificationKey><RequiredClaims><TokenClaim><ClaimType>urn:microsoft:azure:mediaservices:contentkeyidentifier</ClaimType><ClaimValue i:nil=\"true\" /></TokenClaim><TokenClaim><ClaimType>urn:myservice:claims:rental</ClaimType><ClaimValue>true</ClaimValue></TokenClaim></RequiredClaims></TokenRestrictionTemplate>";
+        String tokenTemplate = "<TokenRestrictionTemplate xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://schemas.microsoft.com/Azure/MediaServices/KeyDelivery/TokenRestrictionTemplate/v1\"><AlternateVerificationKeys><TokenVerificationKey i:type=\"SymmetricVerificationKey\"><KeyValue>RmFrZVRlc3RLZXk=</KeyValue></TokenVerificationKey></AlternateVerificationKeys><Issuer>http://sampleissuerurl/</Issuer><PrimaryVerificationKey i:type=\"SymmetricVerificationKey\"><KeyValue>RmFrZVRlc3RLZXk=</KeyValue></PrimaryVerificationKey><RequiredClaims><TokenClaim><ClaimType>urn:microsoft:azure:mediaservices:contentkeyidentifier</ClaimType><ClaimValue i:nil=\"true\" /></TokenClaim><TokenClaim><ClaimType>urn:myservice:claims:rental</ClaimType><ClaimValue>true</ClaimValue></TokenClaim></RequiredClaims></TokenRestrictionTemplate>";
 
         try {
             @SuppressWarnings("unused")
@@ -111,7 +111,7 @@ public class TokenRestrictionTemplateSerializerTests {
 
     @Test
     public void InputMissingPrimaryKeyShouldThrow() {
-        String tokenTemplate = "<TokenRestrictionTemplate xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://schemas.microsoft.com/Azure/MediaServices/KeyDelivery/TokenRestrictionTemplate/v1\"><AlternateVerificationKeys><TokenVerificationKey i:type=\"SymmetricVerificationKey\"><KeyValue>GG07fDPZ+HMD2vcoknMqYjEJMb7LSq8zUmdCYMvRCevnQK//ilbhODO/FydMrHiwZGmI6XywvOOU7SSzRPlI3Q==</KeyValue></TokenVerificationKey></AlternateVerificationKeys><Audience>http://sampleaudience/</Audience><Issuer>http://sampleissuerurl/</Issuer><RequiredClaims><TokenClaim><ClaimType>urn:microsoft:azure:mediaservices:contentkeyidentifier</ClaimType><ClaimValue i:nil=\"true\" /></TokenClaim><TokenClaim><ClaimType>urn:myservice:claims:rental</ClaimType><ClaimValue>true</ClaimValue></TokenClaim></RequiredClaims></TokenRestrictionTemplate>";
+        String tokenTemplate = "<TokenRestrictionTemplate xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://schemas.microsoft.com/Azure/MediaServices/KeyDelivery/TokenRestrictionTemplate/v1\"><AlternateVerificationKeys><TokenVerificationKey i:type=\"SymmetricVerificationKey\"><KeyValue>RmFrZVRlc3RLZXk=</KeyValue></TokenVerificationKey></AlternateVerificationKeys><Audience>http://sampleaudience/</Audience><Issuer>http://sampleissuerurl/</Issuer><RequiredClaims><TokenClaim><ClaimType>urn:microsoft:azure:mediaservices:contentkeyidentifier</ClaimType><ClaimValue i:nil=\"true\" /></TokenClaim><TokenClaim><ClaimType>urn:myservice:claims:rental</ClaimType><ClaimValue>true</ClaimValue></TokenClaim></RequiredClaims></TokenRestrictionTemplate>";
 
         try {
             @SuppressWarnings("unused")
@@ -127,7 +127,7 @@ public class TokenRestrictionTemplateSerializerTests {
 
     @Test
     public void InputMissingRequiredClaimsOkay() throws JAXBException {
-        String tokenTemplate = "<TokenRestrictionTemplate xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://schemas.microsoft.com/Azure/MediaServices/KeyDelivery/TokenRestrictionTemplate/v1\"><AlternateVerificationKeys><TokenVerificationKey i:type=\"SymmetricVerificationKey\"><KeyValue>GG07fDPZ+HMD2vcoknMqYjEJMb7LSq8zUmdCYMvRCevnQK//ilbhODO/FydMrHiwZGmI6XywvOOU7SSzRPlI3Q==</KeyValue></TokenVerificationKey></AlternateVerificationKeys><Audience>http://sampleaudience/</Audience><Issuer>http://sampleissuerurl/</Issuer><PrimaryVerificationKey i:type=\"SymmetricVerificationKey\"><KeyValue>2OvxltHKwILn5PCRD8H+63sK98LBs1yF+ZdZbwzmToWYm29pLyqIMuCvMRGpLOv5DYh3NmpzWMAciu4ncW8VTg==</KeyValue></PrimaryVerificationKey></TokenRestrictionTemplate>";
+        String tokenTemplate = "<TokenRestrictionTemplate xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://schemas.microsoft.com/Azure/MediaServices/KeyDelivery/TokenRestrictionTemplate/v1\"><AlternateVerificationKeys><TokenVerificationKey i:type=\"SymmetricVerificationKey\"><KeyValue>FakeTestKey</KeyValue></TokenVerificationKey></AlternateVerificationKeys><Audience>http://sampleaudience/</Audience><Issuer>http://sampleissuerurl/</Issuer><PrimaryVerificationKey i:type=\"SymmetricVerificationKey\"><KeyValue>FakeTestKey</KeyValue></PrimaryVerificationKey></TokenRestrictionTemplate>";
 
         TokenRestrictionTemplate template = TokenRestrictionTemplateSerializer.deserialize(tokenTemplate);
         assertNotNull(template);
@@ -158,7 +158,7 @@ public class TokenRestrictionTemplateSerializerTests {
         // Assert
         assertEquals(expectedToken, resultsToken);
     }
-    
+
     @Test
     public void knownGoodGenerateTestTokenJWT() throws Exception {
         // Arrange
@@ -183,7 +183,7 @@ public class TokenRestrictionTemplateSerializerTests {
         // Assert
         assertEquals(expectedToken, resultsToken);
     }
-    
+
     @Test
     public void NullContentKeyIdentifierClaimShouldThrownSWT() throws Exception {
         byte[] knownSymetricKey = "64bytes6RNhi8EsxcYsdYQ9zpFuNR1Ks9milykbxYWGILaK0LKzd5dCtYonsr456".getBytes();
@@ -208,7 +208,7 @@ public class TokenRestrictionTemplateSerializerTests {
             assertTrue(e.getMessage().contains("keyIdForContentKeyIdentifierClaim"));
         }
     }
-    
+
     @Test
     public void NullContentKeyIdentifierClaimShouldThrownJWT() throws Exception {
         byte[] knownSymetricKey = "64bytes6RNhi8EsxcYsdYQ9zpFuNR1Ks9milykbxYWGILaK0LKzd5dCtYonsr456".getBytes();
@@ -233,7 +233,7 @@ public class TokenRestrictionTemplateSerializerTests {
             assertTrue(e.getMessage().contains("keyIdForContentKeyIdentifierClaim"));
         }
     }
-    
+
     @Test
     public void OpenIdDocumentAsVerificationKeyRoundTrip() throws JAXBException, URISyntaxException
     {
@@ -258,7 +258,7 @@ public class TokenRestrictionTemplateSerializerTests {
         assertEquals(output.getOpenIdConnectDiscoveryDocument().getOpenIdDiscoveryUri(), openConnectId);
 
     }
-    
+
     @Test
     public void TokenRestrictionTemplateSerializeNotPrimaryKeyAndNoOpenConnectIdDocument() throws URISyntaxException
     {
@@ -273,11 +273,11 @@ public class TokenRestrictionTemplateSerializerTests {
             assertEquals("Both PrimaryVerificationKey and OpenIdConnectDiscoveryDocument are null.", ex.getMessage());
         }
     }
-    
+
     @Test
     public void InputMissingPrimaryKeyShouldNotThrow()
     {
-        String tokenTemplate = "<TokenRestrictionTemplate xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://schemas.microsoft.com/Azure/MediaServices/KeyDelivery/TokenRestrictionTemplate/v1\"><AlternateVerificationKeys><TokenVerificationKey i:type=\"SymmetricVerificationKey\"><KeyValue>GG07fDPZ+HMD2vcoknMqYjEJMb7LSq8zUmdCYMvRCevnQK//ilbhODO/FydMrHiwZGmI6XywvOOU7SSzRPlI3Q==</KeyValue></TokenVerificationKey></AlternateVerificationKeys><Audience>http://sampleaudience/</Audience><Issuer>http://sampleissuerurl/</Issuer><RequiredClaims><TokenClaim><ClaimType>urn:microsoft:azure:mediaservices:contentkeyidentifier</ClaimType><ClaimValue i:nil=\"true\" /></TokenClaim><TokenClaim><ClaimType>urn:myservice:claims:rental</ClaimType><ClaimValue>true</ClaimValue></TokenClaim></RequiredClaims></TokenRestrictionTemplate>";
+        String tokenTemplate = "<TokenRestrictionTemplate xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://schemas.microsoft.com/Azure/MediaServices/KeyDelivery/TokenRestrictionTemplate/v1\"><AlternateVerificationKeys><TokenVerificationKey i:type=\"SymmetricVerificationKey\"><KeyValue>FakeTestKey</KeyValue></TokenVerificationKey></AlternateVerificationKeys><Audience>http://sampleaudience/</Audience><Issuer>http://sampleissuerurl/</Issuer><RequiredClaims><TokenClaim><ClaimType>urn:microsoft:azure:mediaservices:contentkeyidentifier</ClaimType><ClaimValue i:nil=\"true\" /></TokenClaim><TokenClaim><ClaimType>urn:myservice:claims:rental</ClaimType><ClaimValue>true</ClaimValue></TokenClaim></RequiredClaims></TokenRestrictionTemplate>";
         try {
 			TokenRestrictionTemplateSerializer.deserialize(tokenTemplate);
 			fail();
@@ -285,8 +285,8 @@ public class TokenRestrictionTemplateSerializerTests {
             assertEquals("Both PrimaryVerificationKey and OpenIdConnectDiscoveryDocument are null.", ex.getMessage());
 		}
     }
-    
-    @Test	
+
+    @Test
     public void TokenRestrictionTemplateDeserializeNotAbsoluteDiscoveryUri()
     {
         String body =
@@ -302,7 +302,7 @@ public class TokenRestrictionTemplateSerializerTests {
         	assertEquals("String representation of OpenIdConnectDiscoveryDocument.OpenIdDiscoveryUri is not valid absolute Uri.", ex.getMessage());
         }
     }
-    
+
     @Test
     public void TokenRestrictionTemplateDeserializeNilOpenConnectIdDocumentUriNoPrimaryKey()
     {

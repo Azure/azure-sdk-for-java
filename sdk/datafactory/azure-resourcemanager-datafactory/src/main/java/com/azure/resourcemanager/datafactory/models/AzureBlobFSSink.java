@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /** A copy activity Azure Data Lake Storage Gen2 sink. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -23,6 +24,13 @@ public final class AzureBlobFSSink extends CopySink {
      */
     @JsonProperty(value = "copyBehavior")
     private Object copyBehavior;
+
+    /*
+     * Specify the custom metadata to be added to sink data. Type: array of
+     * objects (or Expression with resultType array of objects).
+     */
+    @JsonProperty(value = "metadata")
+    private List<MetadataItem> metadata;
 
     /**
      * Get the copyBehavior property: The type of copy behavior for copy sink.
@@ -41,6 +49,28 @@ public final class AzureBlobFSSink extends CopySink {
      */
     public AzureBlobFSSink withCopyBehavior(Object copyBehavior) {
         this.copyBehavior = copyBehavior;
+        return this;
+    }
+
+    /**
+     * Get the metadata property: Specify the custom metadata to be added to sink data. Type: array of objects (or
+     * Expression with resultType array of objects).
+     *
+     * @return the metadata value.
+     */
+    public List<MetadataItem> metadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Set the metadata property: Specify the custom metadata to be added to sink data. Type: array of objects (or
+     * Expression with resultType array of objects).
+     *
+     * @param metadata the metadata value to set.
+     * @return the AzureBlobFSSink object itself.
+     */
+    public AzureBlobFSSink withMetadata(List<MetadataItem> metadata) {
+        this.metadata = metadata;
         return this;
     }
 
@@ -79,6 +109,13 @@ public final class AzureBlobFSSink extends CopySink {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobFSSink withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
@@ -87,5 +124,8 @@ public final class AzureBlobFSSink extends CopySink {
     @Override
     public void validate() {
         super.validate();
+        if (metadata() != null) {
+            metadata().forEach(e -> e.validate());
+        }
     }
 }

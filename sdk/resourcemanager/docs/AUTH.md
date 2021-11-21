@@ -28,7 +28,7 @@ If you want to authenticate as simple as possible, you need to prepare `TokenCre
 
 ### Preparing TokenCredential
   * The `TokenCredential` is an interface in the `azure-core` package for credentials that can provide a token. 
-  * Azure Identity offers multiple implementations of the `TokenCredential` class in the `azure-identity` package. To learn more, see [credentials in Azure Identity](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity#credentials).
+  * Azure Identity offers multiple implementations of the `TokenCredential` class in the `azure-identity` package. To learn more, see [credentials in Azure Identity](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#credentials).
 
 Sample code to create a simple `ClientSecretCredential`:
 
@@ -43,7 +43,7 @@ ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilde
     .build();
 ```
 
-The value of `AZURE_AUTHORITY_HOST` can be set via [`AzureAuthorityHosts`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity/src/main/java/com/azure/identity/AzureAuthorityHosts.java) or [`AzureEnvironment::getActiveDirectoryEndpoint`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-management/src/main/java/com/azure/core/management/AzureEnvironment.java#L192).
+The value of `AZURE_AUTHORITY_HOST` can be set via [`AzureAuthorityHosts`](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/src/main/java/com/azure/identity/AzureAuthorityHosts.java) or [`AzureEnvironment::getActiveDirectoryEndpoint`](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-management/src/main/java/com/azure/core/management/AzureEnvironment.java#L192).
 
 ### Preparing AzureProfile
   * The `AzureProfile` is a class holding `AzureEnvironment`, `subscriptionId`, `tenantId` to configure the requests sending to wire. 
@@ -76,14 +76,14 @@ EnvironmentCredential credential = new EnvironmentCredentialBuilder()
 
 ### Authenticating with default HttpPipeline
 
-Once the `TokenCredential` and `AzureProfile` are ready, you can move forward with below authenticating code. It helps build http pipeline internally with [default configuration](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-resources/src/main/java/com/azure/resourcemanager/resources/fluentcore/utils/HttpPipelineProvider.java#L43).
+Once the `TokenCredential` and `AzureProfile` are ready, you can move forward with below authenticating code. It helps build http pipeline internally with [default configuration](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/azure-resourcemanager-resources/src/main/java/com/azure/resourcemanager/resources/fluentcore/utils/HttpPipelineProvider.java#L43).
 
 <!-- embedme ../azure-resourcemanager/src/samples/java/com/azure/resourcemanager/AuthSamples.java#L74-L74 -->
 ```java
 AzureResourceManager azure = AzureResourceManager.authenticate(credential, profile).withDefaultSubscription();
 ```
 
-The `Authenticated` class provides access to a subset of Azure APIs that do not require a specific subscription. If the profile does not contain a subscription, you can select a subscription via [`Authenticated::subscriptions`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager/src/main/java/com/azure/resourcemanager/AzureResourceManager.java#L200). Similarly, you can select a tenant via [`Authenticated::tenants`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager/src/main/java/com/azure/resourcemanager/AzureResourceManager.java#L207).
+The `Authenticated` class provides access to a subset of Azure APIs that do not require a specific subscription. If the profile does not contain a subscription, you can select a subscription via [`Authenticated::subscriptions`](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/azure-resourcemanager/src/main/java/com/azure/resourcemanager/AzureResourceManager.java#L200). Similarly, you can select a tenant via [`Authenticated::tenants`](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/azure-resourcemanager/src/main/java/com/azure/resourcemanager/AzureResourceManager.java#L207).
 
 <!-- embedme ../azure-resourcemanager/src/samples/java/com/azure/resourcemanager/AuthSamples.java#L78-L80 -->
 ```java
@@ -97,12 +97,12 @@ AzureResourceManager azure = authenticated.withSubscription(subscriptionId);
 If you want to take full control of Azure client, you could build your own http pipeline for authentication.
 
 ### Preparing HttpPipelinePolicy
-  * The `HttpPipelinePolicy` is an interface that process provided request context and invokes the next policy. To learn more, see [policies in Azure Core](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/core/azure-core/src/main/java/com/azure/core/http/policy) and [policies in Azure Management Libraries for Java](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/resourcemanager/azure-resourcemanager-resources/src/main/java/com/azure/resourcemanager/resources/fluentcore/policy).
+  * The `HttpPipelinePolicy` is an interface that process provided request context and invokes the next policy. To learn more, see [policies in Azure Core](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core/azure-core/src/main/java/com/azure/core/http/policy) and [policies in Azure Management Libraries for Java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/resourcemanager/azure-resourcemanager-resources/src/main/java/com/azure/resourcemanager/resources/fluentcore/policy).
 
 ### Preparing HttpClient
   * The `HttpClient` is a generic interface for sending HTTP requests and getting responses. 
-  * [azure-core-http-netty](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/core/azure-core-http-netty) provides a Netty derived HTTP client.
-  * [azure-core-http-okhttp](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/core/azure-core-http-okhttp) provides an OkHttp derived HTTP client.
+  * [azure-core-http-netty](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core/azure-core-http-netty) provides a Netty derived HTTP client.
+  * [azure-core-http-okhttp](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core/azure-core-http-okhttp) provides an OkHttp derived HTTP client.
 
 ### Authenticating with custom HttpPipeline
 

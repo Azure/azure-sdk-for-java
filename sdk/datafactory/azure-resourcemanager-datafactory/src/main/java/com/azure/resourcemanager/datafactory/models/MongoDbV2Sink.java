@@ -86,6 +86,13 @@ public final class MongoDbV2Sink extends CopySink {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public MongoDbV2Sink withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

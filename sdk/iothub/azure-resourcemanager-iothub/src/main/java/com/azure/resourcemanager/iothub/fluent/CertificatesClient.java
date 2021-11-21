@@ -11,7 +11,6 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.iothub.fluent.models.CertificateDescriptionInner;
 import com.azure.resourcemanager.iothub.fluent.models.CertificateListDescriptionInner;
 import com.azure.resourcemanager.iothub.fluent.models.CertificateWithNonceDescriptionInner;
-import com.azure.resourcemanager.iothub.models.CertificateBodyDescription;
 import com.azure.resourcemanager.iothub.models.CertificateVerificationDescription;
 
 /** An instance of this class provides access to all the operations defined in CertificatesClient. */
@@ -96,7 +95,7 @@ public interface CertificatesClient {
         String resourceGroupName,
         String resourceName,
         String certificateName,
-        CertificateBodyDescription certificateDescription);
+        CertificateDescriptionInner certificateDescription);
 
     /**
      * Adds new or replaces existing certificate.
@@ -119,7 +118,7 @@ public interface CertificatesClient {
         String resourceGroupName,
         String resourceName,
         String certificateName,
-        CertificateBodyDescription certificateDescription,
+        CertificateDescriptionInner certificateDescription,
         String ifMatch,
         Context context);
 

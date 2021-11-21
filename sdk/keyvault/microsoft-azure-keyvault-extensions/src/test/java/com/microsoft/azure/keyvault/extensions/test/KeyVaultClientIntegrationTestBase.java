@@ -103,13 +103,13 @@ public class KeyVaultClientIntegrationTestBase {
 
     private static AuthenticationResult getAccessToken(String authorization, String resource) throws Exception {
 
-        String clientId = System.getenv("ARM_CLIENTID");
+        String clientId = System.getenv("AZURE_KEYVAULT_CLIENT_ID");
 
         if (clientId == null) {
             throw new Exception("Please inform arm.clientid in the environment settings.");
         }
 
-        String clientKey = System.getenv("ARM_CLIENTKEY");
+        String clientKey = System.getenv("AZURE_KEYVAULT_CLIENT_SECRET");
         String username = System.getenv("arm.username");
         String password = System.getenv("arm.password");
 

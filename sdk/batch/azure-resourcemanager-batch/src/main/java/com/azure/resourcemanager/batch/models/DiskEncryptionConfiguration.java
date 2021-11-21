@@ -19,6 +19,7 @@ public final class DiskEncryptionConfiguration {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskEncryptionConfiguration.class);
 
     /*
+     * The list of disk targets Batch Service will encrypt on the compute node
      * On Linux pool, only "TemporaryDisk" is supported; on Windows pool,
      * "OsDisk" and "TemporaryDisk" must be specified.
      */
@@ -26,8 +27,8 @@ public final class DiskEncryptionConfiguration {
     private List<DiskEncryptionTarget> targets;
 
     /**
-     * Get the targets property: On Linux pool, only "TemporaryDisk" is supported; on Windows pool, "OsDisk" and
-     * "TemporaryDisk" must be specified.
+     * Get the targets property: The list of disk targets Batch Service will encrypt on the compute node On Linux pool,
+     * only "TemporaryDisk" is supported; on Windows pool, "OsDisk" and "TemporaryDisk" must be specified.
      *
      * @return the targets value.
      */
@@ -36,8 +37,8 @@ public final class DiskEncryptionConfiguration {
     }
 
     /**
-     * Set the targets property: On Linux pool, only "TemporaryDisk" is supported; on Windows pool, "OsDisk" and
-     * "TemporaryDisk" must be specified.
+     * Set the targets property: The list of disk targets Batch Service will encrypt on the compute node On Linux pool,
+     * only "TemporaryDisk" is supported; on Windows pool, "OsDisk" and "TemporaryDisk" must be specified.
      *
      * @param targets the targets value to set.
      * @return the DiskEncryptionConfiguration object itself.

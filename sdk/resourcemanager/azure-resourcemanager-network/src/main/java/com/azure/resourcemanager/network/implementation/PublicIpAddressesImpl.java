@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.PublicIpAddressesClient;
@@ -69,6 +70,7 @@ public class PublicIpAddressesImpl
                 () -> this.inner().deleteWithResponseAsync(resourceGroupName, name).block(),
                 Function.identity(),
                 Void.class,
-                null);
+                null,
+                Context.NONE);
     }
 }

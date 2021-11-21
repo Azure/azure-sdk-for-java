@@ -3,18 +3,18 @@
 
 package com.azure.spring.aad.webapi.validator;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
+import com.azure.spring.aad.implementation.constants.AADTokenClaim;
+import org.junit.jupiter.api.Test;
+import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
+import org.springframework.security.oauth2.jwt.Jwt;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
-import com.azure.spring.autoconfigure.aad.AADTokenClaim;
-import org.junit.Test;
-import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
-import org.springframework.security.oauth2.jwt.Jwt;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class AADJwtAudienceValidatorTest {
 

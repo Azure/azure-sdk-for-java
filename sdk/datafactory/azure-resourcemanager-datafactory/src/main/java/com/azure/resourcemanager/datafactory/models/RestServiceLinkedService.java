@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.RestServiceLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,344 +17,23 @@ import java.util.Map;
 /** Rest Service linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("RestService")
-@JsonFlatten
 @Fluent
-public class RestServiceLinkedService extends LinkedService {
+public final class RestServiceLinkedService extends LinkedService {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RestServiceLinkedService.class);
 
     /*
-     * The base URL of the REST service.
+     * Rest Service linked service properties.
      */
-    @JsonProperty(value = "typeProperties.url", required = true)
-    private Object url;
-
-    /*
-     * Whether to validate server side SSL certificate when connecting to the
-     * endpoint.The default value is true. Type: boolean (or Expression with
-     * resultType boolean).
-     */
-    @JsonProperty(value = "typeProperties.enableServerCertificateValidation")
-    private Object enableServerCertificateValidation;
-
-    /*
-     * Type of authentication used to connect to the REST service.
-     */
-    @JsonProperty(value = "typeProperties.authenticationType", required = true)
-    private RestServiceAuthenticationType authenticationType;
-
-    /*
-     * The user name used in Basic authentication type.
-     */
-    @JsonProperty(value = "typeProperties.userName")
-    private Object username;
-
-    /*
-     * The password used in Basic authentication type.
-     */
-    @JsonProperty(value = "typeProperties.password")
-    private SecretBase password;
-
-    /*
-     * The additional HTTP headers in the request to RESTful API used for
-     * authorization. Type: object (or Expression with resultType object).
-     */
-    @JsonProperty(value = "typeProperties.authHeaders")
-    private Object authHeaders;
-
-    /*
-     * The application's client ID used in AadServicePrincipal authentication
-     * type.
-     */
-    @JsonProperty(value = "typeProperties.servicePrincipalId")
-    private Object servicePrincipalId;
-
-    /*
-     * The application's key used in AadServicePrincipal authentication type.
-     */
-    @JsonProperty(value = "typeProperties.servicePrincipalKey")
-    private SecretBase servicePrincipalKey;
-
-    /*
-     * The tenant information (domain name or tenant ID) used in
-     * AadServicePrincipal authentication type under which your application
-     * resides.
-     */
-    @JsonProperty(value = "typeProperties.tenant")
-    private Object tenant;
-
-    /*
-     * Indicates the azure cloud type of the service principle auth. Allowed
-     * values are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany.
-     * Default value is the data factory regions’ cloud type. Type: string (or
-     * Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.azureCloudType")
-    private Object azureCloudType;
-
-    /*
-     * The resource you are requesting authorization to use.
-     */
-    @JsonProperty(value = "typeProperties.aadResourceId")
-    private Object aadResourceId;
-
-    /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
-    private Object encryptedCredential;
+    @JsonProperty(value = "typeProperties", required = true)
+    private RestServiceLinkedServiceTypeProperties innerTypeProperties = new RestServiceLinkedServiceTypeProperties();
 
     /**
-     * Get the url property: The base URL of the REST service.
+     * Get the innerTypeProperties property: Rest Service linked service properties.
      *
-     * @return the url value.
+     * @return the innerTypeProperties value.
      */
-    public Object url() {
-        return this.url;
-    }
-
-    /**
-     * Set the url property: The base URL of the REST service.
-     *
-     * @param url the url value to set.
-     * @return the RestServiceLinkedService object itself.
-     */
-    public RestServiceLinkedService withUrl(Object url) {
-        this.url = url;
-        return this;
-    }
-
-    /**
-     * Get the enableServerCertificateValidation property: Whether to validate server side SSL certificate when
-     * connecting to the endpoint.The default value is true. Type: boolean (or Expression with resultType boolean).
-     *
-     * @return the enableServerCertificateValidation value.
-     */
-    public Object enableServerCertificateValidation() {
-        return this.enableServerCertificateValidation;
-    }
-
-    /**
-     * Set the enableServerCertificateValidation property: Whether to validate server side SSL certificate when
-     * connecting to the endpoint.The default value is true. Type: boolean (or Expression with resultType boolean).
-     *
-     * @param enableServerCertificateValidation the enableServerCertificateValidation value to set.
-     * @return the RestServiceLinkedService object itself.
-     */
-    public RestServiceLinkedService withEnableServerCertificateValidation(Object enableServerCertificateValidation) {
-        this.enableServerCertificateValidation = enableServerCertificateValidation;
-        return this;
-    }
-
-    /**
-     * Get the authenticationType property: Type of authentication used to connect to the REST service.
-     *
-     * @return the authenticationType value.
-     */
-    public RestServiceAuthenticationType authenticationType() {
-        return this.authenticationType;
-    }
-
-    /**
-     * Set the authenticationType property: Type of authentication used to connect to the REST service.
-     *
-     * @param authenticationType the authenticationType value to set.
-     * @return the RestServiceLinkedService object itself.
-     */
-    public RestServiceLinkedService withAuthenticationType(RestServiceAuthenticationType authenticationType) {
-        this.authenticationType = authenticationType;
-        return this;
-    }
-
-    /**
-     * Get the username property: The user name used in Basic authentication type.
-     *
-     * @return the username value.
-     */
-    public Object username() {
-        return this.username;
-    }
-
-    /**
-     * Set the username property: The user name used in Basic authentication type.
-     *
-     * @param username the username value to set.
-     * @return the RestServiceLinkedService object itself.
-     */
-    public RestServiceLinkedService withUsername(Object username) {
-        this.username = username;
-        return this;
-    }
-
-    /**
-     * Get the password property: The password used in Basic authentication type.
-     *
-     * @return the password value.
-     */
-    public SecretBase password() {
-        return this.password;
-    }
-
-    /**
-     * Set the password property: The password used in Basic authentication type.
-     *
-     * @param password the password value to set.
-     * @return the RestServiceLinkedService object itself.
-     */
-    public RestServiceLinkedService withPassword(SecretBase password) {
-        this.password = password;
-        return this;
-    }
-
-    /**
-     * Get the authHeaders property: The additional HTTP headers in the request to RESTful API used for authorization.
-     * Type: object (or Expression with resultType object).
-     *
-     * @return the authHeaders value.
-     */
-    public Object authHeaders() {
-        return this.authHeaders;
-    }
-
-    /**
-     * Set the authHeaders property: The additional HTTP headers in the request to RESTful API used for authorization.
-     * Type: object (or Expression with resultType object).
-     *
-     * @param authHeaders the authHeaders value to set.
-     * @return the RestServiceLinkedService object itself.
-     */
-    public RestServiceLinkedService withAuthHeaders(Object authHeaders) {
-        this.authHeaders = authHeaders;
-        return this;
-    }
-
-    /**
-     * Get the servicePrincipalId property: The application's client ID used in AadServicePrincipal authentication type.
-     *
-     * @return the servicePrincipalId value.
-     */
-    public Object servicePrincipalId() {
-        return this.servicePrincipalId;
-    }
-
-    /**
-     * Set the servicePrincipalId property: The application's client ID used in AadServicePrincipal authentication type.
-     *
-     * @param servicePrincipalId the servicePrincipalId value to set.
-     * @return the RestServiceLinkedService object itself.
-     */
-    public RestServiceLinkedService withServicePrincipalId(Object servicePrincipalId) {
-        this.servicePrincipalId = servicePrincipalId;
-        return this;
-    }
-
-    /**
-     * Get the servicePrincipalKey property: The application's key used in AadServicePrincipal authentication type.
-     *
-     * @return the servicePrincipalKey value.
-     */
-    public SecretBase servicePrincipalKey() {
-        return this.servicePrincipalKey;
-    }
-
-    /**
-     * Set the servicePrincipalKey property: The application's key used in AadServicePrincipal authentication type.
-     *
-     * @param servicePrincipalKey the servicePrincipalKey value to set.
-     * @return the RestServiceLinkedService object itself.
-     */
-    public RestServiceLinkedService withServicePrincipalKey(SecretBase servicePrincipalKey) {
-        this.servicePrincipalKey = servicePrincipalKey;
-        return this;
-    }
-
-    /**
-     * Get the tenant property: The tenant information (domain name or tenant ID) used in AadServicePrincipal
-     * authentication type under which your application resides.
-     *
-     * @return the tenant value.
-     */
-    public Object tenant() {
-        return this.tenant;
-    }
-
-    /**
-     * Set the tenant property: The tenant information (domain name or tenant ID) used in AadServicePrincipal
-     * authentication type under which your application resides.
-     *
-     * @param tenant the tenant value to set.
-     * @return the RestServiceLinkedService object itself.
-     */
-    public RestServiceLinkedService withTenant(Object tenant) {
-        this.tenant = tenant;
-        return this;
-    }
-
-    /**
-     * Get the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values are
-     * AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type.
-     * Type: string (or Expression with resultType string).
-     *
-     * @return the azureCloudType value.
-     */
-    public Object azureCloudType() {
-        return this.azureCloudType;
-    }
-
-    /**
-     * Set the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values are
-     * AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type.
-     * Type: string (or Expression with resultType string).
-     *
-     * @param azureCloudType the azureCloudType value to set.
-     * @return the RestServiceLinkedService object itself.
-     */
-    public RestServiceLinkedService withAzureCloudType(Object azureCloudType) {
-        this.azureCloudType = azureCloudType;
-        return this;
-    }
-
-    /**
-     * Get the aadResourceId property: The resource you are requesting authorization to use.
-     *
-     * @return the aadResourceId value.
-     */
-    public Object aadResourceId() {
-        return this.aadResourceId;
-    }
-
-    /**
-     * Set the aadResourceId property: The resource you are requesting authorization to use.
-     *
-     * @param aadResourceId the aadResourceId value to set.
-     * @return the RestServiceLinkedService object itself.
-     */
-    public RestServiceLinkedService withAadResourceId(Object aadResourceId) {
-        this.aadResourceId = aadResourceId;
-        return this;
-    }
-
-    /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @return the encryptedCredential value.
-     */
-    public Object encryptedCredential() {
-        return this.encryptedCredential;
-    }
-
-    /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @param encryptedCredential the encryptedCredential value to set.
-     * @return the RestServiceLinkedService object itself.
-     */
-    public RestServiceLinkedService withEncryptedCredential(Object encryptedCredential) {
-        this.encryptedCredential = encryptedCredential;
-        return this;
+    private RestServiceLinkedServiceTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -386,6 +65,319 @@ public class RestServiceLinkedService extends LinkedService {
     }
 
     /**
+     * Get the url property: The base URL of the REST service.
+     *
+     * @return the url value.
+     */
+    public Object url() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().url();
+    }
+
+    /**
+     * Set the url property: The base URL of the REST service.
+     *
+     * @param url the url value to set.
+     * @return the RestServiceLinkedService object itself.
+     */
+    public RestServiceLinkedService withUrl(Object url) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new RestServiceLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withUrl(url);
+        return this;
+    }
+
+    /**
+     * Get the enableServerCertificateValidation property: Whether to validate server side SSL certificate when
+     * connecting to the endpoint.The default value is true. Type: boolean (or Expression with resultType boolean).
+     *
+     * @return the enableServerCertificateValidation value.
+     */
+    public Object enableServerCertificateValidation() {
+        return this.innerTypeProperties() == null
+            ? null
+            : this.innerTypeProperties().enableServerCertificateValidation();
+    }
+
+    /**
+     * Set the enableServerCertificateValidation property: Whether to validate server side SSL certificate when
+     * connecting to the endpoint.The default value is true. Type: boolean (or Expression with resultType boolean).
+     *
+     * @param enableServerCertificateValidation the enableServerCertificateValidation value to set.
+     * @return the RestServiceLinkedService object itself.
+     */
+    public RestServiceLinkedService withEnableServerCertificateValidation(Object enableServerCertificateValidation) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new RestServiceLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEnableServerCertificateValidation(enableServerCertificateValidation);
+        return this;
+    }
+
+    /**
+     * Get the authenticationType property: Type of authentication used to connect to the REST service.
+     *
+     * @return the authenticationType value.
+     */
+    public RestServiceAuthenticationType authenticationType() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().authenticationType();
+    }
+
+    /**
+     * Set the authenticationType property: Type of authentication used to connect to the REST service.
+     *
+     * @param authenticationType the authenticationType value to set.
+     * @return the RestServiceLinkedService object itself.
+     */
+    public RestServiceLinkedService withAuthenticationType(RestServiceAuthenticationType authenticationType) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new RestServiceLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withAuthenticationType(authenticationType);
+        return this;
+    }
+
+    /**
+     * Get the username property: The user name used in Basic authentication type.
+     *
+     * @return the username value.
+     */
+    public Object username() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().username();
+    }
+
+    /**
+     * Set the username property: The user name used in Basic authentication type.
+     *
+     * @param username the username value to set.
+     * @return the RestServiceLinkedService object itself.
+     */
+    public RestServiceLinkedService withUsername(Object username) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new RestServiceLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withUsername(username);
+        return this;
+    }
+
+    /**
+     * Get the password property: The password used in Basic authentication type.
+     *
+     * @return the password value.
+     */
+    public SecretBase password() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().password();
+    }
+
+    /**
+     * Set the password property: The password used in Basic authentication type.
+     *
+     * @param password the password value to set.
+     * @return the RestServiceLinkedService object itself.
+     */
+    public RestServiceLinkedService withPassword(SecretBase password) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new RestServiceLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withPassword(password);
+        return this;
+    }
+
+    /**
+     * Get the authHeaders property: The additional HTTP headers in the request to RESTful API used for authorization.
+     * Type: object (or Expression with resultType object).
+     *
+     * @return the authHeaders value.
+     */
+    public Object authHeaders() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().authHeaders();
+    }
+
+    /**
+     * Set the authHeaders property: The additional HTTP headers in the request to RESTful API used for authorization.
+     * Type: object (or Expression with resultType object).
+     *
+     * @param authHeaders the authHeaders value to set.
+     * @return the RestServiceLinkedService object itself.
+     */
+    public RestServiceLinkedService withAuthHeaders(Object authHeaders) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new RestServiceLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withAuthHeaders(authHeaders);
+        return this;
+    }
+
+    /**
+     * Get the servicePrincipalId property: The application's client ID used in AadServicePrincipal authentication type.
+     *
+     * @return the servicePrincipalId value.
+     */
+    public Object servicePrincipalId() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().servicePrincipalId();
+    }
+
+    /**
+     * Set the servicePrincipalId property: The application's client ID used in AadServicePrincipal authentication type.
+     *
+     * @param servicePrincipalId the servicePrincipalId value to set.
+     * @return the RestServiceLinkedService object itself.
+     */
+    public RestServiceLinkedService withServicePrincipalId(Object servicePrincipalId) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new RestServiceLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withServicePrincipalId(servicePrincipalId);
+        return this;
+    }
+
+    /**
+     * Get the servicePrincipalKey property: The application's key used in AadServicePrincipal authentication type.
+     *
+     * @return the servicePrincipalKey value.
+     */
+    public SecretBase servicePrincipalKey() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().servicePrincipalKey();
+    }
+
+    /**
+     * Set the servicePrincipalKey property: The application's key used in AadServicePrincipal authentication type.
+     *
+     * @param servicePrincipalKey the servicePrincipalKey value to set.
+     * @return the RestServiceLinkedService object itself.
+     */
+    public RestServiceLinkedService withServicePrincipalKey(SecretBase servicePrincipalKey) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new RestServiceLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withServicePrincipalKey(servicePrincipalKey);
+        return this;
+    }
+
+    /**
+     * Get the tenant property: The tenant information (domain name or tenant ID) used in AadServicePrincipal
+     * authentication type under which your application resides.
+     *
+     * @return the tenant value.
+     */
+    public Object tenant() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().tenant();
+    }
+
+    /**
+     * Set the tenant property: The tenant information (domain name or tenant ID) used in AadServicePrincipal
+     * authentication type under which your application resides.
+     *
+     * @param tenant the tenant value to set.
+     * @return the RestServiceLinkedService object itself.
+     */
+    public RestServiceLinkedService withTenant(Object tenant) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new RestServiceLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withTenant(tenant);
+        return this;
+    }
+
+    /**
+     * Get the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values are
+     * AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type.
+     * Type: string (or Expression with resultType string).
+     *
+     * @return the azureCloudType value.
+     */
+    public Object azureCloudType() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().azureCloudType();
+    }
+
+    /**
+     * Set the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values are
+     * AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type.
+     * Type: string (or Expression with resultType string).
+     *
+     * @param azureCloudType the azureCloudType value to set.
+     * @return the RestServiceLinkedService object itself.
+     */
+    public RestServiceLinkedService withAzureCloudType(Object azureCloudType) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new RestServiceLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withAzureCloudType(azureCloudType);
+        return this;
+    }
+
+    /**
+     * Get the aadResourceId property: The resource you are requesting authorization to use.
+     *
+     * @return the aadResourceId value.
+     */
+    public Object aadResourceId() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().aadResourceId();
+    }
+
+    /**
+     * Set the aadResourceId property: The resource you are requesting authorization to use.
+     *
+     * @param aadResourceId the aadResourceId value to set.
+     * @return the RestServiceLinkedService object itself.
+     */
+    public RestServiceLinkedService withAadResourceId(Object aadResourceId) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new RestServiceLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withAadResourceId(aadResourceId);
+        return this;
+    }
+
+    /**
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @return the encryptedCredential value.
+     */
+    public Object encryptedCredential() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
+    }
+
+    /**
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @param encryptedCredential the encryptedCredential value to set.
+     * @return the RestServiceLinkedService object itself.
+     */
+    public RestServiceLinkedService withEncryptedCredential(Object encryptedCredential) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new RestServiceLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEncryptedCredential(encryptedCredential);
+        return this;
+    }
+
+    /**
+     * Get the credential property: The credential reference containing authentication information.
+     *
+     * @return the credential value.
+     */
+    public CredentialReference credential() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().credential();
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     *
+     * @param credential the credential value to set.
+     * @return the RestServiceLinkedService object itself.
+     */
+    public RestServiceLinkedService withCredential(CredentialReference credential) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new RestServiceLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withCredential(credential);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -393,22 +385,13 @@ public class RestServiceLinkedService extends LinkedService {
     @Override
     public void validate() {
         super.validate();
-        if (url() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property url in model RestServiceLinkedService"));
-        }
-        if (authenticationType() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property authenticationType in model RestServiceLinkedService"));
-        }
-        if (password() != null) {
-            password().validate();
-        }
-        if (servicePrincipalKey() != null) {
-            servicePrincipalKey().validate();
+                        "Missing required property innerTypeProperties in model RestServiceLinkedService"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

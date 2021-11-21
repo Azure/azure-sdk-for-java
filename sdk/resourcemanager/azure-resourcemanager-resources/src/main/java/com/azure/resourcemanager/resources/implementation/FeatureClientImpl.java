@@ -6,6 +6,7 @@ package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -31,6 +32,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.resources.fluent.FeatureClient;
 import com.azure.resourcemanager.resources.fluent.FeaturesClient;
+import com.azure.resourcemanager.resources.fluent.SubscriptionFeatureRegistrationsClient;
 import com.azure.resourcemanager.resources.fluent.models.OperationInner;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import com.azure.resourcemanager.resources.models.OperationListResult;
@@ -45,11 +47,11 @@ public final class FeatureClientImpl extends AzureServiceClient implements Featu
     /** The proxy service used to perform REST calls. */
     private final FeatureClientService service;
 
-    /** The ID of the target subscription. */
+    /** The Azure subscription ID. */
     private final String subscriptionId;
 
     /**
-     * Gets The ID of the target subscription.
+     * Gets The Azure subscription ID.
      *
      * @return the subscriptionId value.
      */
@@ -129,6 +131,18 @@ public final class FeatureClientImpl extends AzureServiceClient implements Featu
         return this.features;
     }
 
+    /** The SubscriptionFeatureRegistrationsClient object to access its operations. */
+    private final SubscriptionFeatureRegistrationsClient subscriptionFeatureRegistrations;
+
+    /**
+     * Gets the SubscriptionFeatureRegistrationsClient object to access its operations.
+     *
+     * @return the SubscriptionFeatureRegistrationsClient object.
+     */
+    public SubscriptionFeatureRegistrationsClient getSubscriptionFeatureRegistrations() {
+        return this.subscriptionFeatureRegistrations;
+    }
+
     /**
      * Initializes an instance of FeatureClient client.
      *
@@ -136,7 +150,7 @@ public final class FeatureClientImpl extends AzureServiceClient implements Featu
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId The ID of the target subscription.
+     * @param subscriptionId The Azure subscription ID.
      * @param endpoint server parameter.
      */
     FeatureClientImpl(
@@ -152,8 +166,9 @@ public final class FeatureClientImpl extends AzureServiceClient implements Featu
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2015-12-01";
+        this.apiVersion = "2021-07-01";
         this.features = new FeaturesClientImpl(this);
+        this.subscriptionFeatureRegistrations = new SubscriptionFeatureRegistrationsClientImpl(this);
         this.service = RestProxy.create(FeatureClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
 
@@ -163,19 +178,25 @@ public final class FeatureClientImpl extends AzureServiceClient implements Featu
     @Host("{$host}")
     @ServiceInterface(name = "FeatureClient")
     private interface FeatureClientService {
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.Features/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OperationListResult>> listOperations(
-            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OperationListResult>> listOperationsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -183,7 +204,7 @@ public final class FeatureClientImpl extends AzureServiceClient implements Featu
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Microsoft.
+     * @return result of the request to list Microsoft.Features operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationInner>> listOperationsSinglePageAsync() {
@@ -191,8 +212,9 @@ public final class FeatureClientImpl extends AzureServiceClient implements Featu
             return Mono
                 .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
         }
+        final String accept = "application/json, text/json";
         return FluxUtil
-            .withContext(context -> service.listOperations(this.getEndpoint(), this.getApiVersion(), context))
+            .withContext(context -> service.listOperations(this.getEndpoint(), this.getApiVersion(), accept, context))
             .<PagedResponse<OperationInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -202,7 +224,7 @@ public final class FeatureClientImpl extends AzureServiceClient implements Featu
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
@@ -212,7 +234,7 @@ public final class FeatureClientImpl extends AzureServiceClient implements Featu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Microsoft.
+     * @return result of the request to list Microsoft.Features operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationInner>> listOperationsSinglePageAsync(Context context) {
@@ -220,9 +242,10 @@ public final class FeatureClientImpl extends AzureServiceClient implements Featu
             return Mono
                 .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
         }
+        final String accept = "application/json, text/json";
         context = this.mergeContext(context);
         return service
-            .listOperations(this.getEndpoint(), this.getApiVersion(), context)
+            .listOperations(this.getEndpoint(), this.getApiVersion(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -239,7 +262,7 @@ public final class FeatureClientImpl extends AzureServiceClient implements Featu
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Microsoft.
+     * @return result of the request to list Microsoft.Features operations.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<OperationInner> listOperationsAsync() {
@@ -254,7 +277,7 @@ public final class FeatureClientImpl extends AzureServiceClient implements Featu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Microsoft.
+     * @return result of the request to list Microsoft.Features operations.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OperationInner> listOperationsAsync(Context context) {
@@ -268,7 +291,7 @@ public final class FeatureClientImpl extends AzureServiceClient implements Featu
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Microsoft.
+     * @return result of the request to list Microsoft.Features operations.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationInner> listOperations() {
@@ -282,7 +305,7 @@ public final class FeatureClientImpl extends AzureServiceClient implements Featu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Microsoft.
+     * @return result of the request to list Microsoft.Features operations.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationInner> listOperations(Context context) {
@@ -296,15 +319,20 @@ public final class FeatureClientImpl extends AzureServiceClient implements Featu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Microsoft.
+     * @return result of the request to list Microsoft.Features operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationInner>> listOperationsNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json, text/json";
         return FluxUtil
-            .withContext(context -> service.listOperationsNext(nextLink, context))
+            .withContext(context -> service.listOperationsNext(nextLink, this.getEndpoint(), accept, context))
             .<PagedResponse<OperationInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -314,7 +342,7 @@ public final class FeatureClientImpl extends AzureServiceClient implements Featu
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
@@ -325,16 +353,21 @@ public final class FeatureClientImpl extends AzureServiceClient implements Featu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Microsoft.
+     * @return result of the request to list Microsoft.Features operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationInner>> listOperationsNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json, text/json";
         context = this.mergeContext(context);
         return service
-            .listOperationsNext(nextLink, context)
+            .listOperationsNext(nextLink, this.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

@@ -45,6 +45,12 @@ public final class RoutingEventHubProperties {
     private AuthenticationType authenticationType;
 
     /*
+     * Managed identity properties of routing event hub endpoint.
+     */
+    @JsonProperty(value = "identity")
+    private ManagedIdentity identity;
+
+    /*
      * The name that identifies this endpoint. The name can only include
      * alphanumeric characters, periods, underscores, hyphens and has a maximum
      * length of 64 characters. The following names are reserved:  events,
@@ -167,6 +173,26 @@ public final class RoutingEventHubProperties {
     }
 
     /**
+     * Get the identity property: Managed identity properties of routing event hub endpoint.
+     *
+     * @return the identity value.
+     */
+    public ManagedIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Managed identity properties of routing event hub endpoint.
+     *
+     * @param identity the identity value to set.
+     * @return the RoutingEventHubProperties object itself.
+     */
+    public RoutingEventHubProperties withIdentity(ManagedIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
      * Get the name property: The name that identifies this endpoint. The name can only include alphanumeric characters,
      * periods, underscores, hyphens and has a maximum length of 64 characters. The following names are reserved:
      * events, fileNotifications, $default. Endpoint names must be unique across endpoint types.
@@ -236,6 +262,9 @@ public final class RoutingEventHubProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
         if (name() == null) {
             throw logger
                 .logExceptionAsError(

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.monitor.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -56,8 +57,8 @@ public final class DiagnosticSettingsCategoriesClientImpl implements DiagnosticS
     @Host("{$host}")
     @ServiceInterface(name = "MonitorClientDiagnos")
     private interface DiagnosticSettingsCategoriesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("/{resourceUri}/providers/microsoft.insights/diagnosticSettingsCategories/{name}")
+        @Headers({"Content-Type: application/json"})
+        @Get("/{resourceUri}/providers/Microsoft.Insights/diagnosticSettingsCategories/{name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DiagnosticSettingsCategoryResourceInner>> get(
@@ -65,16 +66,18 @@ public final class DiagnosticSettingsCategoriesClientImpl implements DiagnosticS
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
             @QueryParam("api-version") String apiVersion,
             @PathParam("name") String name,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("/{resourceUri}/providers/microsoft.insights/diagnosticSettingsCategories")
+        @Headers({"Content-Type: application/json"})
+        @Get("/{resourceUri}/providers/Microsoft.Insights/diagnosticSettingsCategories")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DiagnosticSettingsCategoryResourceCollectionInner>> list(
             @HostParam("$host") String endpoint,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -104,9 +107,11 @@ public final class DiagnosticSettingsCategoriesClientImpl implements DiagnosticS
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         final String apiVersion = "2017-05-01-preview";
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), resourceUri, apiVersion, name, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .withContext(
+                context -> service.get(this.client.getEndpoint(), resourceUri, apiVersion, name, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -136,8 +141,9 @@ public final class DiagnosticSettingsCategoriesClientImpl implements DiagnosticS
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         final String apiVersion = "2017-05-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), resourceUri, apiVersion, name, context);
+        return service.get(this.client.getEndpoint(), resourceUri, apiVersion, name, accept, context);
     }
 
     /**
@@ -216,9 +222,10 @@ public final class DiagnosticSettingsCategoriesClientImpl implements DiagnosticS
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         final String apiVersion = "2017-05-01-preview";
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), resourceUri, apiVersion, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .withContext(context -> service.list(this.client.getEndpoint(), resourceUri, apiVersion, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -244,8 +251,9 @@ public final class DiagnosticSettingsCategoriesClientImpl implements DiagnosticS
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         final String apiVersion = "2017-05-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.list(this.client.getEndpoint(), resourceUri, apiVersion, context);
+        return service.list(this.client.getEndpoint(), resourceUri, apiVersion, accept, context);
     }
 
     /**

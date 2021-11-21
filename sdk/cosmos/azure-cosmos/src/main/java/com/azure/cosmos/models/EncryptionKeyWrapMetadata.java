@@ -38,17 +38,15 @@ public final class EncryptionKeyWrapMetadata {
     /**
      * Creates a new instance of key wrap metadata based on an existing instance.
      *
+     * @param type Type of the metadata.
      * @param name Name of the metadata.
      * @param value Value of the metadata.
      */
-    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public EncryptionKeyWrapMetadata(String name, String value) {
-        this("custom", name, value);
-    }
-
-    private EncryptionKeyWrapMetadata(String type, String name, String value) {
+    @Beta(value = Beta.SinceVersion.V4_16_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public EncryptionKeyWrapMetadata(String type, String name, String value) {
         Preconditions.checkNotNull(type, "type is null");
         Preconditions.checkNotNull(value, "value is null");
+        Preconditions.checkNotNull(name, "name is null");
         this.type = type;
         this.name = name;
         this.value = value;
@@ -88,6 +86,18 @@ public final class EncryptionKeyWrapMetadata {
     @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getName() {
         return name;
+    }
+
+    /**
+     * Serialized form of metadata.
+     * Note: This value is saved in the Cosmos DB service.
+     * implementors of derived implementations should ensure that this does not have (private) key material or
+     * credential information.
+     * @return type of metadata.
+     */
+    @Beta(value = Beta.SinceVersion.V4_16_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public String getType() {
+        return type;
     }
 
     /**

@@ -12,6 +12,7 @@ import com.azure.core.annotation.Fluent;
 public class TextAnalyticsRequestOptions {
     private String modelVersion;
     private boolean includeStatistics;
+    private boolean disableServiceLogs;
 
     /**
      * Gets the version of the text analytics model used by this operation.
@@ -56,6 +57,33 @@ public class TextAnalyticsRequestOptions {
      */
     public TextAnalyticsRequestOptions setIncludeStatistics(boolean includeStatistics) {
         this.includeStatistics = includeStatistics;
+        return this;
+    }
+
+    /**
+     * Gets the value of service logs disable status. The default value of this property is 'false', except at
+     * {@link AnalyzeHealthcareEntitiesOptions} and {@link RecognizePiiEntitiesOptions}. This means,
+     * Text Analytics service logs your input text for 48 hours, solely to allow for troubleshooting issues. Setting
+     * this property to true, disables input logging and may limit our ability to investigate issues that occur.
+     *
+     * @return true if service logging of input text is disabled.
+     */
+    public boolean isServiceLogsDisabled() {
+        return disableServiceLogs;
+    }
+
+    /**
+     * Sets the value of service logs disable status.
+     *
+     * @param disableServiceLogs The default value of this property is 'false', except for methods like
+     * 'beginAnalyzeHealthcareEntities' and 'recognizePiiEntities'. This means, Text Analytics service logs
+     * your input text for 48 hours, solely to allow for troubleshooting issues. Setting this property to true,
+     * disables input logging and may limit our ability to investigate issues that occur.
+     *
+     * @return the {@link TextAnalyticsRequestOptions} object itself.
+     */
+    public TextAnalyticsRequestOptions setServiceLogsDisabled(boolean disableServiceLogs) {
+        this.disableServiceLogs = disableServiceLogs;
         return this;
     }
 }

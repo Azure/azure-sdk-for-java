@@ -5,39 +5,35 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.eventgrid.fluent.models.AzureFunctionEventSubscriptionDestinationProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /** Information about the azure function destination for an event subscription. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
 @JsonTypeName("AzureFunction")
-@JsonFlatten
 @Fluent
-public class AzureFunctionEventSubscriptionDestination extends EventSubscriptionDestination {
+public final class AzureFunctionEventSubscriptionDestination extends EventSubscriptionDestination {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFunctionEventSubscriptionDestination.class);
 
     /*
-     * The Azure Resource Id that represents the endpoint of the Azure Function
-     * destination of an event subscription.
+     * Azure Function Properties of the event subscription destination.
      */
-    @JsonProperty(value = "properties.resourceId")
-    private String resourceId;
+    @JsonProperty(value = "properties")
+    private AzureFunctionEventSubscriptionDestinationProperties innerProperties;
 
-    /*
-     * Maximum number of events per batch.
+    /**
+     * Get the innerProperties property: Azure Function Properties of the event subscription destination.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.maxEventsPerBatch")
-    private Integer maxEventsPerBatch;
-
-    /*
-     * Preferred batch size in Kilobytes.
-     */
-    @JsonProperty(value = "properties.preferredBatchSizeInKilobytes")
-    private Integer preferredBatchSizeInKilobytes;
+    private AzureFunctionEventSubscriptionDestinationProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the resourceId property: The Azure Resource Id that represents the endpoint of the Azure Function destination
@@ -46,7 +42,7 @@ public class AzureFunctionEventSubscriptionDestination extends EventSubscription
      * @return the resourceId value.
      */
     public String resourceId() {
-        return this.resourceId;
+        return this.innerProperties() == null ? null : this.innerProperties().resourceId();
     }
 
     /**
@@ -57,7 +53,10 @@ public class AzureFunctionEventSubscriptionDestination extends EventSubscription
      * @return the AzureFunctionEventSubscriptionDestination object itself.
      */
     public AzureFunctionEventSubscriptionDestination withResourceId(String resourceId) {
-        this.resourceId = resourceId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureFunctionEventSubscriptionDestinationProperties();
+        }
+        this.innerProperties().withResourceId(resourceId);
         return this;
     }
 
@@ -67,7 +66,7 @@ public class AzureFunctionEventSubscriptionDestination extends EventSubscription
      * @return the maxEventsPerBatch value.
      */
     public Integer maxEventsPerBatch() {
-        return this.maxEventsPerBatch;
+        return this.innerProperties() == null ? null : this.innerProperties().maxEventsPerBatch();
     }
 
     /**
@@ -77,7 +76,10 @@ public class AzureFunctionEventSubscriptionDestination extends EventSubscription
      * @return the AzureFunctionEventSubscriptionDestination object itself.
      */
     public AzureFunctionEventSubscriptionDestination withMaxEventsPerBatch(Integer maxEventsPerBatch) {
-        this.maxEventsPerBatch = maxEventsPerBatch;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureFunctionEventSubscriptionDestinationProperties();
+        }
+        this.innerProperties().withMaxEventsPerBatch(maxEventsPerBatch);
         return this;
     }
 
@@ -87,7 +89,7 @@ public class AzureFunctionEventSubscriptionDestination extends EventSubscription
      * @return the preferredBatchSizeInKilobytes value.
      */
     public Integer preferredBatchSizeInKilobytes() {
-        return this.preferredBatchSizeInKilobytes;
+        return this.innerProperties() == null ? null : this.innerProperties().preferredBatchSizeInKilobytes();
     }
 
     /**
@@ -98,7 +100,34 @@ public class AzureFunctionEventSubscriptionDestination extends EventSubscription
      */
     public AzureFunctionEventSubscriptionDestination withPreferredBatchSizeInKilobytes(
         Integer preferredBatchSizeInKilobytes) {
-        this.preferredBatchSizeInKilobytes = preferredBatchSizeInKilobytes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureFunctionEventSubscriptionDestinationProperties();
+        }
+        this.innerProperties().withPreferredBatchSizeInKilobytes(preferredBatchSizeInKilobytes);
+        return this;
+    }
+
+    /**
+     * Get the deliveryAttributeMappings property: Delivery attribute details.
+     *
+     * @return the deliveryAttributeMappings value.
+     */
+    public List<DeliveryAttributeMapping> deliveryAttributeMappings() {
+        return this.innerProperties() == null ? null : this.innerProperties().deliveryAttributeMappings();
+    }
+
+    /**
+     * Set the deliveryAttributeMappings property: Delivery attribute details.
+     *
+     * @param deliveryAttributeMappings the deliveryAttributeMappings value to set.
+     * @return the AzureFunctionEventSubscriptionDestination object itself.
+     */
+    public AzureFunctionEventSubscriptionDestination withDeliveryAttributeMappings(
+        List<DeliveryAttributeMapping> deliveryAttributeMappings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureFunctionEventSubscriptionDestinationProperties();
+        }
+        this.innerProperties().withDeliveryAttributeMappings(deliveryAttributeMappings);
         return this;
     }
 
@@ -110,5 +139,8 @@ public class AzureFunctionEventSubscriptionDestination extends EventSubscription
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

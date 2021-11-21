@@ -18,7 +18,7 @@ public final class WebActivityAuthentication {
      * Web activity authentication
      * (Basic/ClientCertificate/MSI/ServicePrincipal)
      */
-    @JsonProperty(value = "type", required = true)
+    @JsonProperty(value = "type")
     private String type;
 
     /*
@@ -57,6 +57,12 @@ public final class WebActivityAuthentication {
      */
     @JsonProperty(value = "userTenant")
     private Object userTenant;
+
+    /*
+     * The credential reference containing authentication information.
+     */
+    @JsonProperty(value = "credential")
+    private CredentialReference credential;
 
     /**
      * Get the type property: Web activity authentication (Basic/ClientCertificate/MSI/ServicePrincipal).
@@ -187,21 +193,39 @@ public final class WebActivityAuthentication {
     }
 
     /**
+     * Get the credential property: The credential reference containing authentication information.
+     *
+     * @return the credential value.
+     */
+    public CredentialReference credential() {
+        return this.credential;
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     *
+     * @param credential the credential value to set.
+     * @return the WebActivityAuthentication object itself.
+     */
+    public WebActivityAuthentication withCredential(CredentialReference credential) {
+        this.credential = credential;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (type() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model WebActivityAuthentication"));
-        }
         if (pfx() != null) {
             pfx().validate();
         }
         if (password() != null) {
             password().validate();
+        }
+        if (credential() != null) {
+            credential().validate();
         }
     }
 }

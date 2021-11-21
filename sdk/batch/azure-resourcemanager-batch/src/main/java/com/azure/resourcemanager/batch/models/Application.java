@@ -31,6 +31,13 @@ public interface Application {
     String type();
 
     /**
+     * Gets the etag property: The ETag of the resource, used for concurrency statements.
+     *
+     * @return the etag value.
+     */
+    String etag();
+
+    /**
      * Gets the displayName property: The display name for the application.
      *
      * @return the displayName value.
@@ -52,13 +59,6 @@ public interface Application {
      * @return the defaultVersion value.
      */
     String defaultVersion();
-
-    /**
-     * Gets the etag property: The ETag of the resource, used for concurrency statements.
-     *
-     * @return the etag value.
-     */
-    String etag();
 
     /**
      * Gets the inner com.azure.resourcemanager.batch.fluent.models.ApplicationInner object.

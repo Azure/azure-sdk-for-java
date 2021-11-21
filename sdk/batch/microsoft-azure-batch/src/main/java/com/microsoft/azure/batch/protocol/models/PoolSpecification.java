@@ -105,10 +105,10 @@ public class PoolSpecification {
 
     /**
      * Whether the Pool size should automatically adjust over time.
-     * If false, at least one of targetDedicateNodes and targetLowPriorityNodes
-     * must be specified. If true, the autoScaleFormula element is required.
-     * The Pool automatically resizes according to the formula. The default
-     * value is false.
+     * If false, at least one of targetDedicatedNodes and
+     * targetLowPriorityNodes must be specified. If true, the autoScaleFormula
+     * element is required. The Pool automatically resizes according to the
+     * formula. The default value is false.
      */
     @JsonProperty(value = "enableAutoScale")
     private Boolean enableAutoScale;
@@ -398,7 +398,7 @@ public class PoolSpecification {
     }
 
     /**
-     * Get if false, at least one of targetDedicateNodes and targetLowPriorityNodes must be specified. If true, the autoScaleFormula element is required. The Pool automatically resizes according to the formula. The default value is false.
+     * Get if false, at least one of targetDedicatedNodes and targetLowPriorityNodes must be specified. If true, the autoScaleFormula element is required. The Pool automatically resizes according to the formula. The default value is false.
      *
      * @return the enableAutoScale value
      */
@@ -407,7 +407,7 @@ public class PoolSpecification {
     }
 
     /**
-     * Set if false, at least one of targetDedicateNodes and targetLowPriorityNodes must be specified. If true, the autoScaleFormula element is required. The Pool automatically resizes according to the formula. The default value is false.
+     * Set if false, at least one of targetDedicatedNodes and targetLowPriorityNodes must be specified. If true, the autoScaleFormula element is required. The Pool automatically resizes according to the formula. The default value is false.
      *
      * @param enableAutoScale the enableAutoScale value to set
      * @return the PoolSpecification object itself.

@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.List;
 
 /** A copy activity source for Db2 databases. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -54,7 +53,7 @@ public final class Db2Source extends TabularSource {
 
     /** {@inheritDoc} */
     @Override
-    public Db2Source withAdditionalColumns(List<AdditionalColumns> additionalColumns) {
+    public Db2Source withAdditionalColumns(Object additionalColumns) {
         super.withAdditionalColumns(additionalColumns);
         return this;
     }
@@ -77,6 +76,13 @@ public final class Db2Source extends TabularSource {
     @Override
     public Db2Source withMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.withMaxConcurrentConnections(maxConcurrentConnections);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Db2Source withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
         return this;
     }
 

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.maintenance.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.maintenance.fluent.models.ApplyUpdateInner;
 import java.time.OffsetDateTime;
 
@@ -50,6 +51,13 @@ public interface ApplyUpdate {
      * @return the lastUpdateTime value.
      */
     OffsetDateTime lastUpdateTime();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the inner com.azure.resourcemanager.maintenance.fluent.models.ApplyUpdateInner object.

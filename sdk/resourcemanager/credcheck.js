@@ -12,7 +12,7 @@ function credcheck(dir) {
     redactDict.set(/\\"keyName\\":\\"key2\\",\\"value\\":\\"(.*?)\\"/g, '\\"keyName\\":\\"key2\\",\\"value\\":\\"***REMOVED***\\"');
     redactDict.set(/;AccountKey=(.*?)(;|\\")/g, ';AccountKey=***REMOVED***$2');
     redactDict.set(/\\"primaryMasterKey\\":\\"(.*?)\\"/g, '\\"primaryMasterKey\\":\\"***REMOVED***\\"');
-    redactDict.set(/\\"primaryReadonlyMasterKey\\":\\"(.*?)\\"/g, '\\"primaryReadonlyMasterKey\\":\\"***REMOVED***\\"');	
+    redactDict.set(/\\"primaryReadonlyMasterKey\\":\\"(.*?)\\"/g, '\\"primaryReadonlyMasterKey\\":\\"***REMOVED***\\"');
     redactDict.set(/\\"secondaryMasterKey\\":\\"(.*?)\\"/g, '\\"secondaryMasterKey\\":\\"***REMOVED***\\"');
     redactDict.set(/\\"secondaryReadonlyMasterKey\\":\\"(.*?)\\"/g, '\\"secondaryReadonlyMasterKey\\":\\"***REMOVED***\\"');
     redactDict.set(/;SharedAccessKey=(.*?)(;|\\")/g, ';SharedAccessKey=***REMOVED***$2');
@@ -24,7 +24,14 @@ function credcheck(dir) {
     redactDict.set(/\\"ServiceApiKey\\":\\"(.*?)\\"/g, '\\"ServiceApiKey\\":\\"***REMOVED***\\"');
     redactDict.set(/\\"Givex.Password\\":\\"(.*?)\\"/g, '\\"Givex.Password\\":\\"***REMOVED***\\"');
     redactDict.set(/\\"Sendgrid.Password\\":\\"(.*?)\\"/g, '\\"Sendgrid.Password\\":\\"***REMOVED***\\"');
-  
+    redactDict.set(/\\"primary\\":\\"(.*?)\\"/g, '\\"primary\\":\\"***REMOVED***\\"');
+    redactDict.set(/\\"secondary\\":\\"(.*?)\\"/g, '\\"secondary\\":\\"***REMOVED***\\"');
+    redactDict.set(/\\"accessSAS\\": \\"(.*?)\\"/g, '\\"accessSAS\\": \\"***REMOVED***\\"');
+    redactDict.set(/\\"administratorLoginPassword\\":\\"(.*?)\\"/g, '\\"administratorLoginPassword\\":\\"***REMOVED***\\"');
+    redactDict.set(/\\"permissions\\":\\"Full\\",\\"value\\":\\"(.*?)\\"/g, '\\"keyName\\":\\"key1\\",\\"value\\":\\"***REMOVED***\\"');
+    redactDict.set(/\\"adminPassword\\":{\\"type\\":\\"String\\",\\"value\\":\\"(.*?)\\"}/g, '\\"adminPassword\\":{\\"type\\":\\"String\\",\\"value\\":\\"***REMOVED***\\"}');
+    redactDict.set(/\\"connectionString\\":\\"(.*?)\\"/g, '\\"connectionString\\":\\"***REMOVED***\\"');
+
     credcheckRecursive(dir, redactDict);
 }
 

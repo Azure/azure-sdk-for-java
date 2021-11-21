@@ -5,7 +5,6 @@ package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.models.DataPointAnomaly;
 import com.azure.ai.metricsadvisor.models.ListAnomaliesAlertedOptions;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.Assertions;
 
@@ -18,7 +17,7 @@ public abstract class AnomalyForAlertTestBase extends MetricsAdvisorClientTestBa
     protected static class ListAnomaliesForAlertInput {
         static final ListAnomaliesForAlertInput INSTANCE = new ListAnomaliesForAlertInput();
         final ListAnomaliesAlertedOptions options = new ListAnomaliesAlertedOptions()
-            .setTop(10);
+            .setMaxPageSize(10);
         final String alertConfigurationId = ALERT_CONFIG_ID;
         final String alertId = "175434e3400";
     }

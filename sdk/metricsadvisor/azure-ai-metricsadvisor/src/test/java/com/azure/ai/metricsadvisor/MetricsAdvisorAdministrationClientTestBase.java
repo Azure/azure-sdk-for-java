@@ -5,7 +5,6 @@ package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClientBuilder;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -24,6 +23,12 @@ public abstract class MetricsAdvisorAdministrationClientTestBase extends TestBas
 
     MetricsAdvisorAdministrationClientBuilder getMetricsAdvisorAdministrationBuilder(HttpClient httpClient,
         MetricsAdvisorServiceVersion serviceVersion) {
+        return getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false);
+    }
+
+    MetricsAdvisorAdministrationClientBuilder getMetricsAdvisorAdministrationBuilder(HttpClient httpClient,
+                                                                                     MetricsAdvisorServiceVersion serviceVersion,
+                                                                                     boolean useKeyCredential) {
         MetricsAdvisorAdministrationClientBuilder builder = new MetricsAdvisorAdministrationClientBuilder()
             .endpoint(getEndpoint())
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
@@ -34,7 +39,13 @@ public abstract class MetricsAdvisorAdministrationClientTestBase extends TestBas
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new MetricsAdvisorKeyCredential("subscription_key", "api_key"));
         } else {
-            builder.credential(new DefaultAzureCredentialBuilder().build());
+            if (useKeyCredential) {
+                builder.credential(new MetricsAdvisorKeyCredential(
+                    Configuration.getGlobalConfiguration().get("AZURE_METRICS_ADVISOR_SUBSCRIPTION_KEY"),
+                    Configuration.getGlobalConfiguration().get("AZURE_METRICS_ADVISOR_API_KEY")));
+            } else {
+                builder.credential(new DefaultAzureCredentialBuilder().build());
+            }
         }
         return builder;
     }

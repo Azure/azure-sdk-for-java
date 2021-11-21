@@ -187,7 +187,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -245,7 +245,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -271,7 +271,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String firewallPolicyName, String ruleCollectionGroupName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -293,7 +293,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String firewallPolicyName, String ruleCollectionGroupName, Context context) {
         context = this.client.mergeContext(context);
@@ -315,7 +315,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String firewallPolicyName, String ruleCollectionGroupName) {
         return beginDeleteAsync(resourceGroupName, firewallPolicyName, ruleCollectionGroupName).getSyncPoller();
@@ -333,7 +333,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String firewallPolicyName, String ruleCollectionGroupName, Context context) {
         return beginDeleteAsync(resourceGroupName, firewallPolicyName, ruleCollectionGroupName, context)
@@ -449,7 +449,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -507,7 +507,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -630,7 +630,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -699,7 +699,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -727,7 +727,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return rule Collection Group resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<FirewallPolicyRuleCollectionGroupInner>, FirewallPolicyRuleCollectionGroupInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -759,7 +759,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return rule Collection Group resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<FirewallPolicyRuleCollectionGroupInner>, FirewallPolicyRuleCollectionGroupInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -793,7 +793,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return rule Collection Group resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FirewallPolicyRuleCollectionGroupInner>, FirewallPolicyRuleCollectionGroupInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -817,7 +817,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return rule Collection Group resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FirewallPolicyRuleCollectionGroupInner>, FirewallPolicyRuleCollectionGroupInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -957,7 +957,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1017,7 +1017,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

@@ -10,6 +10,15 @@ import java.util.Collection;
 
 /** Defines values for FunctionType. */
 public final class FunctionType extends ExpandableStringEnum<FunctionType> {
+    /** Static value Avg for FunctionType. */
+    public static final FunctionType AVG = fromString("Avg");
+
+    /** Static value Max for FunctionType. */
+    public static final FunctionType MAX = fromString("Max");
+
+    /** Static value Min for FunctionType. */
+    public static final FunctionType MIN = fromString("Min");
+
     /** Static value Sum for FunctionType. */
     public static final FunctionType SUM = fromString("Sum");
 

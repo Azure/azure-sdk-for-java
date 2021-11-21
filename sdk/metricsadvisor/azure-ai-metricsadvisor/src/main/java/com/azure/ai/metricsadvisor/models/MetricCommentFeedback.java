@@ -3,14 +3,15 @@
 
 package com.azure.ai.metricsadvisor.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 
 import java.time.OffsetDateTime;
 
 /**
- * The MetricCommentFeedback class.
+ * The feedback that allows adding comments in plain text providing more
+ * context about the data.
  */
-@Immutable
+@Fluent
 public final class MetricCommentFeedback extends MetricFeedback {
     private final OffsetDateTime startTime;
     private final OffsetDateTime endTime;
@@ -30,6 +31,19 @@ public final class MetricCommentFeedback extends MetricFeedback {
         this.startTime = startTime;
         this.endTime = endTime;
         this.comment = comment;
+    }
+
+    /**
+     * Set the series keys value for the feedback.
+     *
+     * @param dimensionFilter the dimensionFilter value to set.
+     *
+     * @return the MetricCommentFeedback object itself.
+     */
+    @Override
+    public MetricCommentFeedback setDimensionFilter(final DimensionKey dimensionFilter) {
+        super.setDimensionFilter(dimensionFilter);
+        return this;
     }
 
     /**

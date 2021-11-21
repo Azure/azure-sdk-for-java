@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.storagecache.fluent.models.CacheInner;
 import java.util.List;
@@ -209,9 +210,7 @@ public interface Cache {
                 DefinitionStages.WithIdentity,
                 DefinitionStages.WithSku,
                 DefinitionStages.WithCacheSizeGB,
-                DefinitionStages.WithProvisioningState,
                 DefinitionStages.WithSubnet,
-                DefinitionStages.WithUpgradeStatus,
                 DefinitionStages.WithNetworkSettings,
                 DefinitionStages.WithEncryptionSettings,
                 DefinitionStages.WithSecuritySettings,
@@ -271,18 +270,6 @@ public interface Cache {
              */
             WithCreate withCacheSizeGB(Integer cacheSizeGB);
         }
-        /** The stage of the Cache definition allowing to specify provisioningState. */
-        interface WithProvisioningState {
-            /**
-             * Specifies the provisioningState property: ARM provisioning state, see
-             * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property.
-             *
-             * @param provisioningState ARM provisioning state, see
-             *     https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property.
-             * @return the next definition stage.
-             */
-            WithCreate withProvisioningState(ProvisioningStateType provisioningState);
-        }
         /** The stage of the Cache definition allowing to specify subnet. */
         interface WithSubnet {
             /**
@@ -292,16 +279,6 @@ public interface Cache {
              * @return the next definition stage.
              */
             WithCreate withSubnet(String subnet);
-        }
-        /** The stage of the Cache definition allowing to specify upgradeStatus. */
-        interface WithUpgradeStatus {
-            /**
-             * Specifies the upgradeStatus property: Upgrade status of the Cache..
-             *
-             * @param upgradeStatus Upgrade status of the Cache.
-             * @return the next definition stage.
-             */
-            WithCreate withUpgradeStatus(CacheUpgradeStatus upgradeStatus);
         }
         /** The stage of the Cache definition allowing to specify networkSettings. */
         interface WithNetworkSettings {
@@ -355,11 +332,6 @@ public interface Cache {
     interface Update
         extends UpdateStages.WithTags,
             UpdateStages.WithIdentity,
-            UpdateStages.WithSku,
-            UpdateStages.WithCacheSizeGB,
-            UpdateStages.WithProvisioningState,
-            UpdateStages.WithSubnet,
-            UpdateStages.WithUpgradeStatus,
             UpdateStages.WithNetworkSettings,
             UpdateStages.WithEncryptionSettings,
             UpdateStages.WithSecuritySettings,
@@ -400,58 +372,6 @@ public interface Cache {
              * @return the next definition stage.
              */
             Update withIdentity(CacheIdentity identity);
-        }
-        /** The stage of the Cache update allowing to specify sku. */
-        interface WithSku {
-            /**
-             * Specifies the sku property: SKU for the Cache..
-             *
-             * @param sku SKU for the Cache.
-             * @return the next definition stage.
-             */
-            Update withSku(CacheSku sku);
-        }
-        /** The stage of the Cache update allowing to specify cacheSizeGB. */
-        interface WithCacheSizeGB {
-            /**
-             * Specifies the cacheSizeGB property: The size of this Cache, in GB..
-             *
-             * @param cacheSizeGB The size of this Cache, in GB.
-             * @return the next definition stage.
-             */
-            Update withCacheSizeGB(Integer cacheSizeGB);
-        }
-        /** The stage of the Cache update allowing to specify provisioningState. */
-        interface WithProvisioningState {
-            /**
-             * Specifies the provisioningState property: ARM provisioning state, see
-             * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property.
-             *
-             * @param provisioningState ARM provisioning state, see
-             *     https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property.
-             * @return the next definition stage.
-             */
-            Update withProvisioningState(ProvisioningStateType provisioningState);
-        }
-        /** The stage of the Cache update allowing to specify subnet. */
-        interface WithSubnet {
-            /**
-             * Specifies the subnet property: Subnet used for the Cache..
-             *
-             * @param subnet Subnet used for the Cache.
-             * @return the next definition stage.
-             */
-            Update withSubnet(String subnet);
-        }
-        /** The stage of the Cache update allowing to specify upgradeStatus. */
-        interface WithUpgradeStatus {
-            /**
-             * Specifies the upgradeStatus property: Upgrade status of the Cache..
-             *
-             * @param upgradeStatus Upgrade status of the Cache.
-             * @return the next definition stage.
-             */
-            Update withUpgradeStatus(CacheUpgradeStatus upgradeStatus);
         }
         /** The stage of the Cache update allowing to specify networkSettings. */
         interface WithNetworkSettings {

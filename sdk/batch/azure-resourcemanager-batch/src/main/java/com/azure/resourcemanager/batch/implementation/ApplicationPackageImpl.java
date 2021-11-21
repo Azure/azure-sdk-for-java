@@ -35,6 +35,10 @@ public final class ApplicationPackageImpl implements ApplicationPackage, Applica
         return this.innerModel().type();
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
     public PackageState state() {
         return this.innerModel().state();
     }
@@ -53,10 +57,6 @@ public final class ApplicationPackageImpl implements ApplicationPackage, Applica
 
     public OffsetDateTime lastActivationTime() {
         return this.innerModel().lastActivationTime();
-    }
-
-    public String etag() {
-        return this.innerModel().etag();
     }
 
     public ApplicationPackageInner innerModel() {

@@ -1,32 +1,32 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes?api-version=2020-06-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/indexes?api-version=2021-04-30-Preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "c9ce839d-197a-4919-b7fd-7fdcc20a17e5",
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d29aebc6-b7a9-4b1a-bba2-db8b4d0d2f24",
       "Content-Type" : "application/json"
     },
     "Response" : {
+      "content-length" : "125",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "c9ce839d-197a-4919-b7fd-7fdcc20a17e5",
+      "request-id" : "d29aebc6-b7a9-4b1a-bba2-db8b4d0d2f24",
       "StatusCode" : "400",
-      "Date" : "Fri, 02 Apr 2021 22:35:27 GMT",
+      "Date" : "Tue, 13 Jul 2021 19:22:12 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "c9ce839d-197a-4919-b7fd-7fdcc20a17e5",
-      "elapsed-time" : "6",
+      "client-request-id" : "d29aebc6-b7a9-4b1a-bba2-db8b4d0d2f24",
+      "elapsed-time" : "5",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "125",
       "Body" : "{\"error\":{\"code\":\"\",\"message\":\"The request is invalid. Details: index.tokenizers[0].name : The name field is required.\\r\\n\"}}",
       "Content-Language" : "en",
-      "x-ms-client-request-id" : "c9ce839d-197a-4919-b7fd-7fdcc20a17e5",
+      "x-ms-client-request-id" : "d29aebc6-b7a9-4b1a-bba2-db8b4d0d2f24",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   } ],
-  "variables" : [ "hotelscanuseallregexflagsnullnametokenizer7ea23755a150fb6" ]
+  "variables" : [ "hotelscanuseallregexflagsnullnametokenizeraf1091152512a55" ]
 }

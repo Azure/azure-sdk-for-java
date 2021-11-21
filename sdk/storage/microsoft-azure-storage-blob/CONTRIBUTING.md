@@ -42,11 +42,11 @@ The following are the minimum requirements for any pull request that must be met
 	* You should strive to mimic the style with which we have written the library
 	* Clean, well-commented, well-designed code
 	* Try to limit the number of commits for a feature to 1-2. If you end up having too many we may ask you to squash your changes into fewer commits.
-* [ChangeLog.txt](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/microsoft-azure-storage-blob/ChangeLog.txt) needs to be updated describing the new change
+* [ChangeLog.txt](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/microsoft-azure-storage-blob/ChangeLog.txt) needs to be updated describing the new change
 * Thoroughly test your feature
 
 ### Branching Policy
-Changes should be based on the **dev** branch for non-breaking changes and **dev_breaking** for breaking changes. Do not submit pull requests against master as master is considered publicly released code. Each breaking change should be recorded in [BreakingChanges.txt](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/microsoft-azure-storage-blob/BreakingChanges.txt). 
+Changes should be based on the **dev** branch for non-breaking changes and **dev_breaking** for breaking changes. Do not submit pull requests against master as master is considered publicly released code. Each breaking change should be recorded in [BreakingChanges.txt](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/microsoft-azure-storage-blob/BreakingChanges.txt). 
 
 ### Adding Features for Java 8+
 We strive to release each new feature in a backward compatible manner. Therefore, we ask that all contributions be written to work in Java 8 and 9.

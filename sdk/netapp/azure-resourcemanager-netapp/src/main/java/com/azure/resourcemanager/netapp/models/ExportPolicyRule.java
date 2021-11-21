@@ -105,6 +105,15 @@ public final class ExportPolicyRule {
     @JsonProperty(value = "hasRootAccess")
     private Boolean hasRootAccess;
 
+    /*
+     * This parameter specifies who is authorized to change the ownership of a
+     * file. restricted - Only root user can change the ownership of the file.
+     * unrestricted - Non-root users can change ownership of files that they
+     * own.
+     */
+    @JsonProperty(value = "chownMode")
+    private ChownMode chownMode;
+
     /**
      * Get the ruleIndex property: Order index.
      *
@@ -396,6 +405,30 @@ public final class ExportPolicyRule {
      */
     public ExportPolicyRule withHasRootAccess(Boolean hasRootAccess) {
         this.hasRootAccess = hasRootAccess;
+        return this;
+    }
+
+    /**
+     * Get the chownMode property: This parameter specifies who is authorized to change the ownership of a file.
+     * restricted - Only root user can change the ownership of the file. unrestricted - Non-root users can change
+     * ownership of files that they own.
+     *
+     * @return the chownMode value.
+     */
+    public ChownMode chownMode() {
+        return this.chownMode;
+    }
+
+    /**
+     * Set the chownMode property: This parameter specifies who is authorized to change the ownership of a file.
+     * restricted - Only root user can change the ownership of the file. unrestricted - Non-root users can change
+     * ownership of files that they own.
+     *
+     * @param chownMode the chownMode value to set.
+     * @return the ExportPolicyRule object itself.
+     */
+    public ExportPolicyRule withChownMode(ChownMode chownMode) {
+        this.chownMode = chownMode;
         return this;
     }
 

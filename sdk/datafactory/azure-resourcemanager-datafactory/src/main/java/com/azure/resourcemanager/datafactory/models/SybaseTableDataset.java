@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.SybaseTableDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,36 +17,23 @@ import java.util.Map;
 /** The Sybase table dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SybaseTable")
-@JsonFlatten
 @Fluent
-public class SybaseTableDataset extends Dataset {
+public final class SybaseTableDataset extends Dataset {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SybaseTableDataset.class);
 
     /*
-     * The Sybase table name. Type: string (or Expression with resultType
-     * string).
+     * Sybase table dataset properties.
      */
-    @JsonProperty(value = "typeProperties.tableName")
-    private Object tableName;
+    @JsonProperty(value = "typeProperties")
+    private SybaseTableDatasetTypeProperties innerTypeProperties;
 
     /**
-     * Get the tableName property: The Sybase table name. Type: string (or Expression with resultType string).
+     * Get the innerTypeProperties property: Sybase table dataset properties.
      *
-     * @return the tableName value.
+     * @return the innerTypeProperties value.
      */
-    public Object tableName() {
-        return this.tableName;
-    }
-
-    /**
-     * Set the tableName property: The Sybase table name. Type: string (or Expression with resultType string).
-     *
-     * @param tableName the tableName value to set.
-     * @return the SybaseTableDataset object itself.
-     */
-    public SybaseTableDataset withTableName(Object tableName) {
-        this.tableName = tableName;
-        return this;
+    private SybaseTableDatasetTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -99,6 +86,29 @@ public class SybaseTableDataset extends Dataset {
     }
 
     /**
+     * Get the tableName property: The Sybase table name. Type: string (or Expression with resultType string).
+     *
+     * @return the tableName value.
+     */
+    public Object tableName() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().tableName();
+    }
+
+    /**
+     * Set the tableName property: The Sybase table name. Type: string (or Expression with resultType string).
+     *
+     * @param tableName the tableName value to set.
+     * @return the SybaseTableDataset object itself.
+     */
+    public SybaseTableDataset withTableName(Object tableName) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SybaseTableDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withTableName(tableName);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -106,5 +116,8 @@ public class SybaseTableDataset extends Dataset {
     @Override
     public void validate() {
         super.validate();
+        if (innerTypeProperties() != null) {
+            innerTypeProperties().validate();
+        }
     }
 }

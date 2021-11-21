@@ -175,7 +175,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                             resourceName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -332,7 +332,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                             privateEndpointConnectionName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -515,7 +515,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                             privateEndpointConnection,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -849,7 +849,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                             privateEndpointConnectionName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

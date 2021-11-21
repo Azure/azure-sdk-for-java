@@ -31,11 +31,11 @@ import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.models.StorageErrorException;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.BlockLookupList;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.EncryptionAlgorithmType;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -73,9 +73,9 @@ public final class BlockBlobsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlockBlobsUploadResponse> upload(
                 @HostParam("url") String url,
-                @HeaderParam("x-ms-blob-type") String blobType,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
+                @HeaderParam("x-ms-blob-type") String blobType,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("Content-MD5") String transactionalContentMD5,
                 @HeaderParam("Content-Length") long contentLength,
@@ -100,6 +100,9 @@ public final class BlockBlobsImpl {
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @HeaderParam("x-ms-tags") String blobTagsString,
+                @HeaderParam("x-ms-immutability-policy-until-date") DateTimeRfc1123 immutabilityPolicyExpiry,
+                @HeaderParam("x-ms-immutability-policy-mode") BlobImmutabilityPolicyMode immutabilityPolicyMode,
+                @HeaderParam("x-ms-legal-hold") Boolean legalHold,
                 @BodyParam("application/octet-stream") Flux<ByteBuffer> body,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -109,9 +112,9 @@ public final class BlockBlobsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlockBlobsPutBlobFromUrlResponse> putBlobFromUrl(
                 @HostParam("url") String url,
-                @HeaderParam("x-ms-blob-type") String blobType,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
+                @HeaderParam("x-ms-blob-type") String blobType,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("Content-MD5") String transactionalContentMD5,
                 @HeaderParam("Content-Length") long contentLength,
@@ -142,8 +145,9 @@ public final class BlockBlobsImpl {
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @HeaderParam("x-ms-source-content-md5") String sourceContentMD5,
                 @HeaderParam("x-ms-tags") String blobTagsString,
-                @HeaderParam("x-ms-copy-source") URL copySource,
+                @HeaderParam("x-ms-copy-source") String copySource,
                 @HeaderParam("x-ms-copy-source-blob-properties") Boolean copySourceBlobProperties,
+                @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -152,9 +156,9 @@ public final class BlockBlobsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlockBlobsStageBlockResponse> stageBlock(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
                 @QueryParam("blockid") String blockId,
                 @HeaderParam("Content-Length") long contentLength,
                 @HeaderParam("Content-MD5") String transactionalContentMD5,
@@ -176,12 +180,12 @@ public final class BlockBlobsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlockBlobsStageBlockFromURLResponse> stageBlockFromURL(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
                 @QueryParam("blockid") String blockId,
                 @HeaderParam("Content-Length") long contentLength,
-                @HeaderParam("x-ms-copy-source") URL sourceUrl,
+                @HeaderParam("x-ms-copy-source") String sourceUrl,
                 @HeaderParam("x-ms-source-range") String sourceRange,
                 @HeaderParam("x-ms-source-content-md5") String sourceContentMD5,
                 @HeaderParam("x-ms-source-content-crc64") String sourceContentcrc64,
@@ -197,6 +201,7 @@ public final class BlockBlobsImpl {
                 @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -205,9 +210,9 @@ public final class BlockBlobsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlockBlobsCommitBlockListResponse> commitBlockList(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-blob-cache-control") String cacheControl,
                 @HeaderParam("x-ms-blob-content-type") String contentType,
@@ -232,6 +237,9 @@ public final class BlockBlobsImpl {
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @HeaderParam("x-ms-tags") String blobTagsString,
+                @HeaderParam("x-ms-immutability-policy-until-date") DateTimeRfc1123 immutabilityPolicyExpiry,
+                @HeaderParam("x-ms-immutability-policy-mode") BlobImmutabilityPolicyMode immutabilityPolicyMode,
+                @HeaderParam("x-ms-legal-hold") Boolean legalHold,
                 @BodyParam("application/xml") BlockLookupList blocks,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -241,9 +249,9 @@ public final class BlockBlobsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlockBlobsGetBlockListResponse> getBlockList(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
                 @QueryParam("snapshot") String snapshot,
                 @QueryParam("blocklisttype") BlockListType listType,
                 @QueryParam("timeout") Integer timeout,
@@ -287,9 +295,12 @@ public final class BlockBlobsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      *     analytics logs when storage analytics logging is enabled.
      * @param blobTagsString Optional. Used to set blob tags in various blob operations.
+     * @param immutabilityPolicyExpiry Specifies the date time when the blobs immutability policy is set to expire.
+     * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
+     * @param legalHold Specified if a legal hold should be set on the blob.
      * @param blobHttpHeaders Parameter group.
      * @param cpkInfo Parameter group.
-     * @param encryptionScope Parameter group.
+     * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws StorageErrorException thrown if the request is rejected by server.
@@ -314,9 +325,12 @@ public final class BlockBlobsImpl {
             String ifTags,
             String requestId,
             String blobTagsString,
+            OffsetDateTime immutabilityPolicyExpiry,
+            BlobImmutabilityPolicyMode immutabilityPolicyMode,
+            Boolean legalHold,
             BlobHttpHeaders blobHttpHeaders,
             CpkInfo cpkInfo,
-            EncryptionScope encryptionScope,
+            EncryptionScope encryptionScopeParam,
             Context context) {
         final String blobType = "BlockBlob";
         final String accept = "application/xml";
@@ -366,21 +380,23 @@ public final class BlockBlobsImpl {
         }
         EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
         String encryptionScopeInternal = null;
-        if (encryptionScope != null) {
-            encryptionScopeInternal = encryptionScope.getEncryptionScope();
+        if (encryptionScopeParam != null) {
+            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
         }
-        String encryptionScopeLocal = encryptionScopeInternal;
+        String encryptionScope = encryptionScopeInternal;
         String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
         String contentMd5Converted = Base64Util.encodeToString(contentMd5);
         DateTimeRfc1123 ifModifiedSinceConverted =
                 ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted =
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 immutabilityPolicyExpiryConverted =
+                immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
         return service.upload(
                 this.client.getUrl(),
-                blobType,
                 containerName,
                 blob,
+                blobType,
                 timeout,
                 transactionalContentMD5Converted,
                 contentLength,
@@ -395,7 +411,7 @@ public final class BlockBlobsImpl {
                 encryptionKey,
                 encryptionKeySha256,
                 encryptionAlgorithm,
-                encryptionScopeLocal,
+                encryptionScope,
                 tier,
                 ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted,
@@ -405,6 +421,9 @@ public final class BlockBlobsImpl {
                 this.client.getVersion(),
                 requestId,
                 blobTagsString,
+                immutabilityPolicyExpiryConverted,
+                immutabilityPolicyMode,
+                legalHold,
                 body,
                 accept,
                 context);
@@ -455,9 +474,11 @@ public final class BlockBlobsImpl {
      * @param blobTagsString Optional. Used to set blob tags in various blob operations.
      * @param copySourceBlobProperties Optional, default is true. Indicates if properties from the source blob should be
      *     copied.
+     * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
+     *     copy source.
      * @param blobHttpHeaders Parameter group.
      * @param cpkInfo Parameter group.
-     * @param encryptionScope Parameter group.
+     * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws StorageErrorException thrown if the request is rejected by server.
@@ -469,7 +490,7 @@ public final class BlockBlobsImpl {
             String containerName,
             String blob,
             long contentLength,
-            URL copySource,
+            String copySource,
             Integer timeout,
             byte[] transactionalContentMD5,
             Map<String, String> metadata,
@@ -489,9 +510,10 @@ public final class BlockBlobsImpl {
             byte[] sourceContentMD5,
             String blobTagsString,
             Boolean copySourceBlobProperties,
+            String copySourceAuthorization,
             BlobHttpHeaders blobHttpHeaders,
             CpkInfo cpkInfo,
-            EncryptionScope encryptionScope,
+            EncryptionScope encryptionScopeParam,
             Context context) {
         final String blobType = "BlockBlob";
         final String accept = "application/xml";
@@ -541,10 +563,10 @@ public final class BlockBlobsImpl {
         }
         EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
         String encryptionScopeInternal = null;
-        if (encryptionScope != null) {
-            encryptionScopeInternal = encryptionScope.getEncryptionScope();
+        if (encryptionScopeParam != null) {
+            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
         }
-        String encryptionScopeLocal = encryptionScopeInternal;
+        String encryptionScope = encryptionScopeInternal;
         String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
         String contentMd5Converted = Base64Util.encodeToString(contentMd5);
         DateTimeRfc1123 ifModifiedSinceConverted =
@@ -558,9 +580,9 @@ public final class BlockBlobsImpl {
         String sourceContentMD5Converted = Base64Util.encodeToString(sourceContentMD5);
         return service.putBlobFromUrl(
                 this.client.getUrl(),
-                blobType,
                 containerName,
                 blob,
+                blobType,
                 timeout,
                 transactionalContentMD5Converted,
                 contentLength,
@@ -575,7 +597,7 @@ public final class BlockBlobsImpl {
                 encryptionKey,
                 encryptionKeySha256,
                 encryptionAlgorithm,
-                encryptionScopeLocal,
+                encryptionScope,
                 tier,
                 ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted,
@@ -593,6 +615,7 @@ public final class BlockBlobsImpl {
                 blobTagsString,
                 copySource,
                 copySourceBlobProperties,
+                copySourceAuthorization,
                 accept,
                 context);
     }
@@ -616,7 +639,7 @@ public final class BlockBlobsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      *     analytics logs when storage analytics logging is enabled.
      * @param cpkInfo Parameter group.
-     * @param encryptionScope Parameter group.
+     * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws StorageErrorException thrown if the request is rejected by server.
@@ -636,7 +659,7 @@ public final class BlockBlobsImpl {
             String leaseId,
             String requestId,
             CpkInfo cpkInfo,
-            EncryptionScope encryptionScope,
+            EncryptionScope encryptionScopeParam,
             Context context) {
         final String comp = "block";
         final String accept = "application/xml";
@@ -656,17 +679,17 @@ public final class BlockBlobsImpl {
         }
         EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
         String encryptionScopeInternal = null;
-        if (encryptionScope != null) {
-            encryptionScopeInternal = encryptionScope.getEncryptionScope();
+        if (encryptionScopeParam != null) {
+            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
         }
-        String encryptionScopeLocal = encryptionScopeInternal;
+        String encryptionScope = encryptionScopeInternal;
         String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
         String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
         return service.stageBlock(
                 this.client.getUrl(),
-                comp,
                 containerName,
                 blob,
+                comp,
                 blockId,
                 contentLength,
                 transactionalContentMD5Converted,
@@ -676,7 +699,7 @@ public final class BlockBlobsImpl {
                 encryptionKey,
                 encryptionKeySha256,
                 encryptionAlgorithm,
-                encryptionScopeLocal,
+                encryptionScope,
                 this.client.getVersion(),
                 requestId,
                 body,
@@ -711,8 +734,10 @@ public final class BlockBlobsImpl {
      * @param sourceIfNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      *     analytics logs when storage analytics logging is enabled.
+     * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
+     *     copy source.
      * @param cpkInfo Parameter group.
-     * @param encryptionScope Parameter group.
+     * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws StorageErrorException thrown if the request is rejected by server.
@@ -725,7 +750,7 @@ public final class BlockBlobsImpl {
             String blob,
             String blockId,
             long contentLength,
-            URL sourceUrl,
+            String sourceUrl,
             String sourceRange,
             byte[] sourceContentMD5,
             byte[] sourceContentcrc64,
@@ -736,8 +761,9 @@ public final class BlockBlobsImpl {
             String sourceIfMatch,
             String sourceIfNoneMatch,
             String requestId,
+            String copySourceAuthorization,
             CpkInfo cpkInfo,
-            EncryptionScope encryptionScope,
+            EncryptionScope encryptionScopeParam,
             Context context) {
         final String comp = "block";
         final String accept = "application/xml";
@@ -757,10 +783,10 @@ public final class BlockBlobsImpl {
         }
         EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
         String encryptionScopeInternal = null;
-        if (encryptionScope != null) {
-            encryptionScopeInternal = encryptionScope.getEncryptionScope();
+        if (encryptionScopeParam != null) {
+            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
         }
-        String encryptionScopeLocal = encryptionScopeInternal;
+        String encryptionScope = encryptionScopeInternal;
         String sourceContentMD5Converted = Base64Util.encodeToString(sourceContentMD5);
         String sourceContentcrc64Converted = Base64Util.encodeToString(sourceContentcrc64);
         DateTimeRfc1123 sourceIfModifiedSinceConverted =
@@ -769,9 +795,9 @@ public final class BlockBlobsImpl {
                 sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
         return service.stageBlockFromURL(
                 this.client.getUrl(),
-                comp,
                 containerName,
                 blob,
+                comp,
                 blockId,
                 contentLength,
                 sourceUrl,
@@ -782,7 +808,7 @@ public final class BlockBlobsImpl {
                 encryptionKey,
                 encryptionKeySha256,
                 encryptionAlgorithm,
-                encryptionScopeLocal,
+                encryptionScope,
                 leaseId,
                 sourceIfModifiedSinceConverted,
                 sourceIfUnmodifiedSinceConverted,
@@ -790,6 +816,7 @@ public final class BlockBlobsImpl {
                 sourceIfNoneMatch,
                 this.client.getVersion(),
                 requestId,
+                copySourceAuthorization,
                 accept,
                 context);
     }
@@ -804,7 +831,7 @@ public final class BlockBlobsImpl {
      *
      * @param containerName The container name.
      * @param blob The blob name.
-     * @param blocks The blocks parameter.
+     * @param blocks Blob Blocks.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      *     Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -828,9 +855,12 @@ public final class BlockBlobsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      *     analytics logs when storage analytics logging is enabled.
      * @param blobTagsString Optional. Used to set blob tags in various blob operations.
+     * @param immutabilityPolicyExpiry Specifies the date time when the blobs immutability policy is set to expire.
+     * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
+     * @param legalHold Specified if a legal hold should be set on the blob.
      * @param blobHttpHeaders Parameter group.
      * @param cpkInfo Parameter group.
-     * @param encryptionScope Parameter group.
+     * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws StorageErrorException thrown if the request is rejected by server.
@@ -855,9 +885,12 @@ public final class BlockBlobsImpl {
             String ifTags,
             String requestId,
             String blobTagsString,
+            OffsetDateTime immutabilityPolicyExpiry,
+            BlobImmutabilityPolicyMode immutabilityPolicyMode,
+            Boolean legalHold,
             BlobHttpHeaders blobHttpHeaders,
             CpkInfo cpkInfo,
-            EncryptionScope encryptionScope,
+            EncryptionScope encryptionScopeParam,
             Context context) {
         final String comp = "blocklist";
         final String accept = "application/xml";
@@ -907,10 +940,10 @@ public final class BlockBlobsImpl {
         }
         EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
         String encryptionScopeInternal = null;
-        if (encryptionScope != null) {
-            encryptionScopeInternal = encryptionScope.getEncryptionScope();
+        if (encryptionScopeParam != null) {
+            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
         }
-        String encryptionScopeLocal = encryptionScopeInternal;
+        String encryptionScope = encryptionScopeInternal;
         String contentMd5Converted = Base64Util.encodeToString(contentMd5);
         String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
         String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
@@ -918,11 +951,13 @@ public final class BlockBlobsImpl {
                 ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted =
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 immutabilityPolicyExpiryConverted =
+                immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
         return service.commitBlockList(
                 this.client.getUrl(),
-                comp,
                 containerName,
                 blob,
+                comp,
                 timeout,
                 cacheControl,
                 contentType,
@@ -937,7 +972,7 @@ public final class BlockBlobsImpl {
                 encryptionKey,
                 encryptionKeySha256,
                 encryptionAlgorithm,
-                encryptionScopeLocal,
+                encryptionScope,
                 tier,
                 ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted,
@@ -947,6 +982,9 @@ public final class BlockBlobsImpl {
                 this.client.getVersion(),
                 requestId,
                 blobTagsString,
+                immutabilityPolicyExpiryConverted,
+                immutabilityPolicyMode,
+                legalHold,
                 blocks,
                 accept,
                 context);
@@ -991,9 +1029,9 @@ public final class BlockBlobsImpl {
         final String accept = "application/xml";
         return service.getBlockList(
                 this.client.getUrl(),
-                comp,
                 containerName,
                 blob,
+                comp,
                 snapshot,
                 listType,
                 timeout,

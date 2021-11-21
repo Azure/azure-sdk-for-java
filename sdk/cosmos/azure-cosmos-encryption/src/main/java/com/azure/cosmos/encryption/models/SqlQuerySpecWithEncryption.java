@@ -27,10 +27,21 @@ public final class SqlQuerySpecWithEncryption {
     private SqlQuerySpec sqlQuerySpec;
     private HashMap<String, SqlParameter> encryptionParamMap = new HashMap<>();
 
+    /**
+     * Creates a new instance of SQL query spec with encryption.
+     *
+     * @param sqlQuerySpec the SQL query spec.
+     */
     public SqlQuerySpecWithEncryption(SqlQuerySpec sqlQuerySpec) {
         this.sqlQuerySpec = sqlQuerySpec;
     }
 
+    /**
+     * Adds an encryption parameter.
+     *
+     * @param path Path
+     * @param sqlParameter SQL parameter
+     */
     public void addEncryptionParameter(String path, SqlParameter sqlParameter) {
         encryptionParamMap.put(path, sqlParameter);
     }
@@ -75,7 +86,7 @@ public final class SqlQuerySpecWithEncryption {
                                 System.arraycopy(cipherText, 0, cipherTextWithTypeMarker, 1, cipherText.length);
                                 SqlParameter encryptedParameter = new SqlParameter(sqlParameter.getName(),
                                     cipherTextWithTypeMarker);
-                                this.sqlQuerySpec.getParameters().add(encryptedParameter);
+                                parameters.add(encryptedParameter);
                             } catch (MicrosoftDataEncryptionException ex) {
                                 return Mono.error(ex);
                             }

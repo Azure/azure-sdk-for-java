@@ -218,7 +218,7 @@ public final class AccessControlClientBuilder {
      */
     private AccessControlClientImpl buildInnerClient() {
         if (apiVersion == null) {
-            this.apiVersion = "2020-08-01-preview";
+            this.apiVersion = "2020-12-01";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
@@ -237,9 +237,6 @@ public final class AccessControlClientBuilder {
             httpLogOptions = new HttpLogOptions();
         }
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
-        }
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
         policies.add(
@@ -247,6 +244,9 @@ public final class AccessControlClientBuilder {
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
         policies.add(new CookiePolicy());
+        if (tokenCredential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
+        }
         policies.addAll(this.pipelinePolicies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));

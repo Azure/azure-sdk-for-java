@@ -17,7 +17,7 @@ public final class DatadogSingleSignOnProperties {
     /*
      * The provisioningState property.
      */
-    @JsonProperty(value = "provisioningState")
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
@@ -45,17 +45,6 @@ public final class DatadogSingleSignOnProperties {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState property: The provisioningState property.
-     *
-     * @param provisioningState the provisioningState value to set.
-     * @return the DatadogSingleSignOnProperties object itself.
-     */
-    public DatadogSingleSignOnProperties withProvisioningState(ProvisioningState provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
     }
 
     /**

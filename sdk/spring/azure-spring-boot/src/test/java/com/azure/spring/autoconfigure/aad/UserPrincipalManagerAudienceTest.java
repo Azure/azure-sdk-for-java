@@ -15,8 +15,8 @@ import com.nimbusds.jose.util.Resource;
 import com.nimbusds.jose.util.ResourceRetriever;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -43,7 +43,7 @@ public class UserPrincipalManagerAudienceTest {
     private AADAuthenticationProperties properties;
     private UserPrincipalManager userPrincipalManager;
 
-    @Before
+    @BeforeEach
     public void setupKeys() throws NoSuchAlgorithmException {
         final KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
         kpg.initialize(2048);

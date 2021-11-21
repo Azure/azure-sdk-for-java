@@ -77,6 +77,13 @@ public class LocationThresholdRuleCondition extends RuleCondition {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public LocationThresholdRuleCondition withDataSource(RuleDataSource dataSource) {
+        super.withDataSource(dataSource);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

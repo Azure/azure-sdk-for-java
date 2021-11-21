@@ -6,6 +6,7 @@ package com.azure.resourcemanager.monitor.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -58,8 +59,8 @@ public final class ActivityLogsClientImpl implements ActivityLogsClient {
     @Host("{$host}")
     @ServiceInterface(name = "MonitorClientActivit")
     private interface ActivityLogsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("/subscriptions/{subscriptionId}/providers/microsoft.insights/eventtypes/management/values")
+        @Headers({"Content-Type: application/json"})
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Insights/eventtypes/management/values")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventDataCollection>> list(
@@ -68,14 +69,18 @@ public final class ActivityLogsClientImpl implements ActivityLogsClient {
             @QueryParam("$filter") String filter,
             @QueryParam("$select") String select,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventDataCollection>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -122,6 +127,7 @@ public final class ActivityLogsClientImpl implements ActivityLogsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -132,6 +138,7 @@ public final class ActivityLogsClientImpl implements ActivityLogsClient {
                             filter,
                             select,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .<PagedResponse<EventDataInner>>map(
                 res ->
@@ -142,7 +149,7 @@ public final class ActivityLogsClientImpl implements ActivityLogsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -190,9 +197,11 @@ public final class ActivityLogsClientImpl implements ActivityLogsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), apiVersion, filter, select, this.client.getSubscriptionId(), context)
+            .list(
+                this.client.getEndpoint(), apiVersion, filter, select, this.client.getSubscriptionId(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -313,20 +322,15 @@ public final class ActivityLogsClientImpl implements ActivityLogsClient {
      *     correlation Id*: $filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and eventTimestamp le
      *     '2014-07-20T04:36:37.6407898Z' and correlationId eq 'correlationID'.&lt;br&gt;&lt;br&gt;**NOTE**: No other
      *     syntax is allowed.
-     * @param select Used to fetch events with only the given properties.&lt;br&gt;The **$select** argument is a comma
-     *     separated list of property names to be returned. Possible values are: *authorization*, *claims*,
-     *     *correlationId*, *description*, *eventDataId*, *eventName*, *eventTimestamp*, *httpRequest*, *level*,
-     *     *operationId*, *operationName*, *properties*, *resourceGroupName*, *resourceProviderName*, *resourceId*,
-     *     *status*, *submissionTimestamp*, *subStatus*, *subscriptionId*.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents collection of events.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EventDataInner> list(String filter, String select, Context context) {
-        return new PagedIterable<>(listAsync(filter, select, context));
+    public PagedIterable<EventDataInner> list(String filter) {
+        final String select = null;
+        return new PagedIterable<>(listAsync(filter, select));
     }
 
     /**
@@ -345,15 +349,20 @@ public final class ActivityLogsClientImpl implements ActivityLogsClient {
      *     correlation Id*: $filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and eventTimestamp le
      *     '2014-07-20T04:36:37.6407898Z' and correlationId eq 'correlationID'.&lt;br&gt;&lt;br&gt;**NOTE**: No other
      *     syntax is allowed.
+     * @param select Used to fetch events with only the given properties.&lt;br&gt;The **$select** argument is a comma
+     *     separated list of property names to be returned. Possible values are: *authorization*, *claims*,
+     *     *correlationId*, *description*, *eventDataId*, *eventName*, *eventTimestamp*, *httpRequest*, *level*,
+     *     *operationId*, *operationName*, *properties*, *resourceGroupName*, *resourceProviderName*, *resourceId*,
+     *     *status*, *submissionTimestamp*, *subStatus*, *subscriptionId*.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents collection of events.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EventDataInner> list(String filter) {
-        final String select = null;
-        return new PagedIterable<>(listAsync(filter, select));
+    public PagedIterable<EventDataInner> list(String filter, String select, Context context) {
+        return new PagedIterable<>(listAsync(filter, select, context));
     }
 
     /**
@@ -370,8 +379,15 @@ public final class ActivityLogsClientImpl implements ActivityLogsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<EventDataInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -381,7 +397,7 @@ public final class ActivityLogsClientImpl implements ActivityLogsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -399,9 +415,16 @@ public final class ActivityLogsClientImpl implements ActivityLogsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

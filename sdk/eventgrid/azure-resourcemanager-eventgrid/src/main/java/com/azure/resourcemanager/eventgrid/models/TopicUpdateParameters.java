@@ -5,41 +5,37 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.eventgrid.fluent.models.TopicUpdateParameterProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** Properties of the Topic update. */
-@JsonFlatten
 @Fluent
-public class TopicUpdateParameters {
+public final class TopicUpdateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TopicUpdateParameters.class);
 
     /*
      * Tags of the resource.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
-     * This determines if traffic is allowed over public network. By default it
-     * is enabled.
-     * You can further restrict to specific IPs by configuring <seealso
-     * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.TopicUpdateParameterProperties.InboundIpRules"
-     * />
+     * Topic resource identity information.
      */
-    @JsonProperty(value = "properties.publicNetworkAccess")
-    private PublicNetworkAccess publicNetworkAccess;
+    @JsonProperty(value = "identity")
+    private IdentityInfo identity;
 
     /*
-     * This can be used to restrict traffic from specific IPs instead of all
-     * IPs. Note: These are considered only if PublicNetworkAccess is enabled.
+     * Properties of the resource.
      */
-    @JsonProperty(value = "properties.inboundIpRules")
-    private List<InboundIpRule> inboundIpRules;
+    @JsonProperty(value = "properties")
+    private TopicUpdateParameterProperties innerProperties;
 
     /**
      * Get the tags property: Tags of the resource.
@@ -62,6 +58,35 @@ public class TopicUpdateParameters {
     }
 
     /**
+     * Get the identity property: Topic resource identity information.
+     *
+     * @return the identity value.
+     */
+    public IdentityInfo identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Topic resource identity information.
+     *
+     * @param identity the identity value to set.
+     * @return the TopicUpdateParameters object itself.
+     */
+    public TopicUpdateParameters withIdentity(IdentityInfo identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the innerProperties property: Properties of the resource.
+     *
+     * @return the innerProperties value.
+     */
+    private TopicUpdateParameterProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
      * enabled. You can further restrict to specific IPs by configuring &lt;seealso
      * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.TopicUpdateParameterProperties.InboundIpRules"
@@ -70,7 +95,7 @@ public class TopicUpdateParameters {
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
-        return this.publicNetworkAccess;
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
     }
 
     /**
@@ -83,7 +108,10 @@ public class TopicUpdateParameters {
      * @return the TopicUpdateParameters object itself.
      */
     public TopicUpdateParameters withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
-        this.publicNetworkAccess = publicNetworkAccess;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TopicUpdateParameterProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 
@@ -94,7 +122,7 @@ public class TopicUpdateParameters {
      * @return the inboundIpRules value.
      */
     public List<InboundIpRule> inboundIpRules() {
-        return this.inboundIpRules;
+        return this.innerProperties() == null ? null : this.innerProperties().inboundIpRules();
     }
 
     /**
@@ -105,7 +133,37 @@ public class TopicUpdateParameters {
      * @return the TopicUpdateParameters object itself.
      */
     public TopicUpdateParameters withInboundIpRules(List<InboundIpRule> inboundIpRules) {
-        this.inboundIpRules = inboundIpRules;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TopicUpdateParameterProperties();
+        }
+        this.innerProperties().withInboundIpRules(inboundIpRules);
+        return this;
+    }
+
+    /**
+     * Get the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
+     * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
+     * the topic.
+     *
+     * @return the disableLocalAuth value.
+     */
+    public Boolean disableLocalAuth() {
+        return this.innerProperties() == null ? null : this.innerProperties().disableLocalAuth();
+    }
+
+    /**
+     * Set the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
+     * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
+     * the topic.
+     *
+     * @param disableLocalAuth the disableLocalAuth value to set.
+     * @return the TopicUpdateParameters object itself.
+     */
+    public TopicUpdateParameters withDisableLocalAuth(Boolean disableLocalAuth) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TopicUpdateParameterProperties();
+        }
+        this.innerProperties().withDisableLocalAuth(disableLocalAuth);
         return this;
     }
 
@@ -115,8 +173,11 @@ public class TopicUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (inboundIpRules() != null) {
-            inboundIpRules().forEach(e -> e.validate());
+        if (identity() != null) {
+            identity().validate();
+        }
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

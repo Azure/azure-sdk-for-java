@@ -262,6 +262,34 @@ public class RuleManagementEventDataSource extends RuleDataSource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public RuleManagementEventDataSource withResourceUri(String resourceUri) {
+        super.withResourceUri(resourceUri);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RuleManagementEventDataSource withLegacyResourceId(String legacyResourceId) {
+        super.withLegacyResourceId(legacyResourceId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RuleManagementEventDataSource withResourceLocation(String resourceLocation) {
+        super.withResourceLocation(resourceLocation);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RuleManagementEventDataSource withMetricNamespace(String metricNamespace) {
+        super.withMetricNamespace(metricNamespace);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

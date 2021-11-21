@@ -1,11 +1,185 @@
 # Release History
 
-## 11.4.0-beta.2 (Unreleased)
+## 11.5.0-beta.5 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 11.4.5 (2021-11-15)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.21.0` to version `1.22.0`.
+- Upgraded `azure-core-http-netty` from `1.11.1` to version `1.11.2`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.8` to version `1.2.9`.
+
+## 11.4.4 (2021-10-13)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` and other dependencies for the library.
+- 
+## 11.5.0-beta.4 (2021-10-12)
+
+### Features Added
+
+- Added APIs to [reset documents](https://docs.microsoft.com/azure/search/search-howto-run-reset-indexers#reset-docs-preview) 
+  and [skills](https://docs.microsoft.com/azure/search/search-howto-run-reset-indexers#reset-skills-preview).
+
+### Breaking Changes
+
+- Renamed `QueryAnswer` to `QueryAnswerType`, `QueryCaption` to `QueryCaptionType`, and `QuerySpeller` to `QuerySpellerType`.
+- Renamed `SearchOptions` `queryCaptionHighlight` to `queryCaptionHighlightEnabled`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `azure-core` from `1.20.0` to `1.21.0`.
+- Updated `azure-core-http-netty` from `1.11.0` to `1.11.1`.
+- Updated `azure-core-serializer-json-jackson` from `1.2.7` to `1.2.8`.
+
+## 11.4.3 (2021-09-09)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` and other dependencies for the library.
+
+## 11.5.0-beta.3 (2021-09-08)
+
+### Features Added
+
+- Added `CreateOrUpdateDataSourceConnectionOptions`, `CreateOrUpdateIndexerOptions`, and `CreateOrUpdateSkillsetOptions`
+  to support passing new parameters to REST API calls.
+- Added support for `LexicalNormalizerName` in `AnalyzeTextOptions`.
+- Added `queryCaptionHighlight` to `SearchOptions`.
+
+### Breaking Changes
+
+- Renamed `Captions` to `QueryCaption`.
+- Exceptions are now thrown in `EntityRecognitionSkill` and `SentimentSkill` when properties are being set in unsupported
+  skill versions.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `azure-core` from `1.19.0` to `1.20.0`.
+- Updated `azure-core-http-netty` from `1.10.2` to `1.11.0`.
+- Updated `azure-core-serializer-json-jackson` from `1.2.6` to `1.2.7`.
+
+## 11.5.0-beta.2 (2021-08-11)
+
+### Features Added
+
+- Added support for indexer caching.
+
+### Dependency Updates
+
+- Updated `azure-core` from `1.18.0` to `1.19.0`.
+- Updated `azure-core-http-netty` from `1.10.1` to `1.10.2`.
+- Updated `azure-core-serializer-json-jackson` from `1.2.5` to `1.2.6`.
+
+## 11.4.2 (2021-08-11)
+
+### Dependency Updates
+
+- Updated `azure-core` from `1.18.0` to `1.19.0`.
+- Updated `azure-core-http-netty` from `1.10.1` to `1.10.2`.
+- Updated `azure-core-serializer-json-jackson` from `1.2.5` to `1.2.6`.
+
+## 11.4.1 (2021-08-06)
+
+### Dependency Updates
+
+- Updated `azure-core` from `1.17.0` to `1.18.0`.
+- Updated `azure-core-http-netty` from `1.10.0` to `1.10.1`.
+- Updated `azure-core-serializer-json-jackson` from `1.2.4` to `1.2.5`.
+
+## 11.5.0-beta.1 (2021-07-20)
+
+### Features Added
+
+- Added support for service version `2021-04-30-Preview`. Default version is now `2021-04-30-Preview`.
+- Added Semantic Search capability to `SearchClient` and `SearchAsyncClient`.
+- Added the ability to configure AAD authentication in client builders to enable AAD authentication in clients.
+- Added support for Normalizers in `SearchField` and `SearchIndex` with `CustomNormalizer` and `LexicalNormalizer`.
+- Added new versions of `EntityRecognitionSkill` and `SentimentSkill`. Added `PiiDetectionSkill`.
+- Added support for indexer data identity.
+
+### Dependency Updates
+
+- Updated `azure-core` from `1.17.0` to `1.18.0`.
+- Updated `azure-core-http-netty` from `1.10.0` to `1.10.1`.
+- Updated `azure-core-serializer-json-jackson` from `1.2.4` to `1.2.5`.
+
+## 11.4.0 (2021-06-08)
+
+### Features Added
+
+- Added the ability to configure Knowledge Store in skillsets.
+- Added factory method to `SynonymMap` to enable creation from a file.
+- Added support for `Edm.GeographyPoint` in `FieldBuilder` when property has type `GeoPoint`.
+- Added support for geography based filtering in `SearchFilter` when `GeoPosition`, `GeoPoint`, `GeoLineString`, or
+  `GeoPolygon` are used as formatting arguments.
+- Added new skills `CustomEntityLookupSkill` and `DocumentExtractionSkill` and new skill versions for
+  `KeyPhraseExtractionSkill` and `LanguageDetectionSkill`.
+- Added support for the ADLS Gen 2 Indexer data source type.
+- Added skillset counts to `SearchServiceCounters`.
+- Added additional log messages to `SearchIndexingBufferedSender` and `SearchIndexingBufferedAsyncSender`.
+
+### Breaking Changes
+
+- Removed support for service version `2020-06-30-Preview`. Default version is now `2020-06-30`.
+- Removed Semantic Search capability to `SearchClient` and `SearchAsyncClient`.
+- Removed support for Normalizers in `SearchField` and `SearchIndex` with `CustomNormalizer` and `LexicalNormalizer`.
+
+### Dependency Updates
+
+- Updated `azure-core` from `1.16.0` to `1.17.0`.
+- Updated `azure-core-http-netty` from `1.9.2` to `1.10.0`.
+- Updated `azure-core-serializer-json-jackson` from `1.2.3` to `1.2.4`.
+- Updated Jackson from `2.12.2` to `2.12.3`.
+- Updated Reactor from `3.4.5` to `3.4.6`.
+- Updated Reactor Netty from `1.0.6` to `1.0.7`.
+
+## 11.3.2 (2021-05-11)
+
+### Dependency Updates
+
+- Updated `azure-core` from `1.15.0` to `1.16.0`.
+- Updated `azure-core-http-netty` from `1.9.1` to `1.9.2`.
+- Updated `azure-core-serializer-json-jackson` from `1.2.2` to `1.2.3`.
+
+## 11.4.0-beta.2 (2021-05-10)
+
+### Features Added
+
+- Added Semantic Search capability to `SearchClient` and `SearchAsyncClient`.
+- Added the ability to configure Knowledge Store in skillsets.
+- Added factory method to `SynonymMap` to enable creation from a file.
+
+### Dependency Updates
+
+- Updated `azure-core` from `1.15.0` to `1.16.0`.
+- Updated `azure-core-http-netty` from `1.9.1` to `1.9.2`.
+- Updated `azure-core-serializer-json-jackson` from `1.2.2` to `1.2.3`.
 
 ## 11.3.1 (2021-04-08)
 
 ### Dependency Updates
+
 - Updated `azure-core` from `1.14.0` to `1.15.0`.
 - Updated `azure-core-http-netty` from `1.9.0` to `1.9.1`.
 - Updated `azure-core-serializer-json-jackson` from `1.2.0` to `1.2.2`.

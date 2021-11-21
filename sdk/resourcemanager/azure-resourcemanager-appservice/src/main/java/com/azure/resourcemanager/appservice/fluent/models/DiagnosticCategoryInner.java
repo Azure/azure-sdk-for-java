@@ -4,32 +4,30 @@
 
 package com.azure.resourcemanager.appservice.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class representing detector definition. */
-@JsonFlatten
-@Immutable
-public class DiagnosticCategoryInner extends ProxyOnlyResource {
+@Fluent
+public final class DiagnosticCategoryInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DiagnosticCategoryInner.class);
 
     /*
-     * Description of the diagnostic category
+     * DiagnosticCategory resource specific properties
      */
-    @JsonProperty(value = "properties.description", access = JsonProperty.Access.WRITE_ONLY)
-    private String description;
+    @JsonProperty(value = "properties")
+    private DiagnosticCategoryProperties innerProperties;
 
     /**
-     * Get the description property: Description of the diagnostic category.
+     * Get the innerProperties property: DiagnosticCategory resource specific properties.
      *
-     * @return the description value.
+     * @return the innerProperties value.
      */
-    public String description() {
-        return this.description;
+    private DiagnosticCategoryProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -40,6 +38,15 @@ public class DiagnosticCategoryInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the description property: Description of the diagnostic category.
+     *
+     * @return the description value.
+     */
+    public String description() {
+        return this.innerProperties() == null ? null : this.innerProperties().description();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -47,5 +54,8 @@ public class DiagnosticCategoryInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

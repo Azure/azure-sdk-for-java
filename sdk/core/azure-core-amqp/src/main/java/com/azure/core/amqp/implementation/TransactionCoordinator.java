@@ -4,6 +4,7 @@
 package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpTransaction;
+import com.azure.core.amqp.AmqpTransactionCoordinator;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
@@ -21,7 +22,7 @@ import static com.azure.core.amqp.implementation.ClientConstants.MAX_AMQP_HEADER
 /**
  * Encapsulates transaction functions.
  */
-final class TransactionCoordinator {
+final class TransactionCoordinator implements AmqpTransactionCoordinator {
 
     private final ClientLogger logger = new ClientLogger(TransactionCoordinator.class);
 
@@ -42,7 +43,8 @@ final class TransactionCoordinator {
      *
      * @return a completable {@link Mono} which represent {@link DeliveryState}.
      */
-    Mono<Void> completeTransaction(AmqpTransaction transaction, boolean isCommit) {
+    @Override
+    public Mono<Void> discharge(AmqpTransaction transaction, boolean isCommit) {
         final Message message = Proton.message();
         Discharge discharge = new Discharge();
         discharge.setFail(!isCommit);
@@ -74,7 +76,8 @@ final class TransactionCoordinator {
      *
      * @return a completable {@link Mono} which represent {@link DeliveryState}.
      */
-    Mono<AmqpTransaction> createTransaction() {
+    @Override
+    public Mono<AmqpTransaction> declare() {
         final Message message = Proton.message();
         Declare declare = new Declare();
         message.setBody(new AmqpValue(declare));

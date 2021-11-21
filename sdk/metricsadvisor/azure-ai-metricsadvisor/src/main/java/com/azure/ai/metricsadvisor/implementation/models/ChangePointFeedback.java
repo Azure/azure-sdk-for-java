@@ -18,20 +18,20 @@ public final class ChangePointFeedback extends MetricFeedback {
     /*
      * the start timestamp of feedback time range
      */
-    @JsonProperty(value = "startTime")
+    @JsonProperty(value = "startTime", required = true)
     private OffsetDateTime startTime;
 
     /*
      * the end timestamp of feedback time range, when equals to startTime means
      * only one timestamp
      */
-    @JsonProperty(value = "endTime")
+    @JsonProperty(value = "endTime", required = true)
     private OffsetDateTime endTime;
 
     /*
      * The value property.
      */
-    @JsonProperty(value = "value")
+    @JsonProperty(value = "value", required = true)
     private ChangePointFeedbackValue value;
 
     /**

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.mediaservices.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.fluent.models.LiveOutputInner;
 import com.azure.resourcemanager.mediaservices.models.Hls;
@@ -33,6 +34,10 @@ public final class LiveOutputImpl implements LiveOutput, LiveOutput.Definition {
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String description() {

@@ -4,7 +4,6 @@ package com.azure.spring.data.cosmos.core.query;
 
 import com.azure.cosmos.models.FeedResponse;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.util.Objects;
@@ -19,9 +18,15 @@ import java.util.Objects;
 public class CosmosPageRequest extends PageRequest {
     private static final long serialVersionUID = 6093304300037688375L;
 
+    /**
+     * Offset
+     */
     private long offset;
 
     // Request continuation token used to resume query
+    /**
+     * Request continuation token
+     */
     private final String requestContinuation;
 
     /**
@@ -90,7 +95,7 @@ public class CosmosPageRequest extends PageRequest {
     }
 
     @Override
-    public Pageable next() {
+    public PageRequest next() {
         return new CosmosPageRequest(this.offset + (long) this.getPageSize(),
             this.getPageNumber() + 1, getPageSize(), this.requestContinuation, getSort());
     }

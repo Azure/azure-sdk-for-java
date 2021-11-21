@@ -3,14 +3,15 @@
 
 package com.azure.ai.metricsadvisor.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 
 import java.time.OffsetDateTime;
 
 /**
- * The MetricChangePointFeedback class.
+ * The Feedback that allows the user to mark the exact change point when the time series has
+ * a trend change. This helps the anomaly detector in future analysis.
  */
-@Immutable
+@Fluent
 public final class MetricChangePointFeedback extends MetricFeedback {
     private final OffsetDateTime startTime;
     private final OffsetDateTime endTime;
@@ -30,6 +31,19 @@ public final class MetricChangePointFeedback extends MetricFeedback {
         this.startTime = startTime;
         this.endTime = endTime;
         this.changePointValue = changePointValue;
+    }
+
+    /**
+     * Set the series keys value for the feedback.
+     *
+     * @param dimensionFilter the dimensionFilter value to set.
+     *
+     * @return the MetricChangePointFeedback object itself.
+     */
+    @Override
+    public MetricChangePointFeedback setDimensionFilter(final DimensionKey dimensionFilter) {
+        super.setDimensionFilter(dimensionFilter);
+        return this;
     }
 
     /**

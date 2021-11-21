@@ -9,6 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -60,24 +61,28 @@ public final class TriggerRun {
      * depends on type of trigger.
      */
     @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> properties;
 
     /*
      * List of pipeline name and run Id triggered by the trigger run.
      */
     @JsonProperty(value = "triggeredPipelines", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> triggeredPipelines;
 
     /*
      * Run dimension for which trigger was fired.
      */
     @JsonProperty(value = "runDimension", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> runDimension;
 
     /*
      * Status of the upstream pipelines.
      */
     @JsonProperty(value = "dependencyStatus", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> dependencyStatus;
 
     /*

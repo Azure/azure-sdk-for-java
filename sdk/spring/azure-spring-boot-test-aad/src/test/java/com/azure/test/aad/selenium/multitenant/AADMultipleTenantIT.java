@@ -3,7 +3,7 @@
 
 package com.azure.test.aad.selenium.multitenant;
 
-import com.azure.test.aad.selenium.AADSeleniumITHelper;
+import com.azure.test.aad.common.AADSeleniumITHelper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,7 +23,7 @@ import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_
 import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_SECRET;
 import static com.azure.spring.test.EnvironmentVariable.AAD_USER_NAME_2;
 import static com.azure.spring.test.EnvironmentVariable.AAD_USER_PASSWORD_2;
-import static com.azure.test.aad.selenium.AADSeleniumITHelper.createDefaultProperties;
+import static com.azure.test.aad.selenium.AADITHelper.createDefaultProperties;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -53,7 +52,6 @@ public class AADMultipleTenantIT {
         aadSeleniumITHelper.destroy();
     }
 
-    @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     @SpringBootApplication
     @RestController
     public static class DumbApp {

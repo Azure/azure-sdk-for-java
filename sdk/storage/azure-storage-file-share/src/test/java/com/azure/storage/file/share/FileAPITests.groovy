@@ -5,23 +5,32 @@ package com.azure.storage.file.share
 
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.util.Context
+import com.azure.core.util.CoreUtils
 import com.azure.core.util.polling.SyncPoller
+import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.test.shared.extensions.LiveOnly
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
+import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy
+import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy
+import com.azure.storage.file.share.models.DownloadRetryOptions
 import com.azure.storage.file.share.models.NtfsFileAttributes
 import com.azure.storage.file.share.models.PermissionCopyModeType
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileCopyInfo
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.ShareFileRange
+import com.azure.storage.file.share.models.ShareFileUploadOptions
+import com.azure.storage.file.share.models.ShareFileUploadRangeOptions
 import com.azure.storage.file.share.models.ShareRequestConditions
 import com.azure.storage.file.share.models.ShareSnapshotInfo
 import com.azure.storage.file.share.models.ShareStorageException
+import com.azure.storage.file.share.options.ShareFileDownloadOptions
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions
 import com.azure.storage.file.share.sas.ShareFileSasPermission
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues
 import spock.lang.Ignore
-import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.nio.charset.StandardCharsets
@@ -46,9 +55,6 @@ class FileAPITests extends APISpec {
     ShareClient shareClient
     String shareName
     String filePath
-    def data = "default".getBytes(StandardCharsets.UTF_8)
-    def defaultData = getInputStream(data)
-    def dataLength = defaultData.available()
     static Map<String, String> testMetadata
     static ShareFileHttpHeaders httpHeaders
     FileSmbProperties smbProperties
@@ -68,7 +74,7 @@ class FileAPITests extends APISpec {
 
     def "Get file URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, filePath)
 
         when:
@@ -80,7 +86,7 @@ class FileAPITests extends APISpec {
 
     def "Get share snapshot URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, filePath)
 
         when:
@@ -95,7 +101,7 @@ class FileAPITests extends APISpec {
 
         when:
         def snapshotEndpoint = String.format("https://%s.file.core.windows.net/%s/%s?sharesnapshot=%s", accountName, shareName, filePath, shareSnapshotInfo.getSnapshot())
-        ShareFileClient client = getFileClient(StorageSharedKeyCredential.fromConnectionString(connectionString), snapshotEndpoint)
+        ShareFileClient client = getFileClient(StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString), snapshotEndpoint)
 
         then:
         client.getFileUrl() == snapshotEndpoint
@@ -132,6 +138,7 @@ class FileAPITests extends APISpec {
         assertResponseStatusCode(primaryFileClient.createWithResponse(1024, null, null, null, null, null, null), 201)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     def "Create file 4TB"() {
         expect:
         assertResponseStatusCode(primaryFileClient.createWithResponse(4 * Constants.TB, null, null, null, null, null, null), 201)
@@ -211,18 +218,18 @@ class FileAPITests extends APISpec {
 
     def "Upload and download data"() {
         given:
-        primaryFileClient.create(dataLength)
+        primaryFileClient.create(data.defaultDataSizeLong)
 
         when:
-        def uploadResponse = primaryFileClient.uploadWithResponse(defaultData, dataLength, null, null, null)
+        def uploadResponse = primaryFileClient.uploadWithResponse(data.defaultInputStream, data.defaultDataSizeLong, null, null, null)
         def stream = new ByteArrayOutputStream()
         def downloadResponse = primaryFileClient.downloadWithResponse(stream, null, null, null, null)
         def headers = downloadResponse.getDeserializedHeaders()
 
         then:
         assertResponseStatusCode(uploadResponse, 201)
-        assertResponseStatusCode(downloadResponse, 200)
-        headers.getContentLength() == (long) dataLength
+        assertResponseStatusCode(downloadResponse, 200, 206)
+        headers.getContentLength() == data.defaultDataSizeLong
         headers.getETag()
         headers.getLastModified()
         headers.getFilePermissionKey()
@@ -233,7 +240,7 @@ class FileAPITests extends APISpec {
         headers.getFileParentId()
         headers.getFileId()
 
-        data == stream.toByteArray()
+        data.defaultBytes == stream.toByteArray()
     }
 
     def "Upload and download data with args"() {
@@ -241,37 +248,349 @@ class FileAPITests extends APISpec {
         primaryFileClient.create(1024)
 
         when:
-        def uploadResponse = primaryFileClient.uploadWithResponse(defaultData, dataLength, 1, null, null)
+        def uploadResponse = primaryFileClient.uploadWithResponse(data.defaultInputStream, data.defaultDataSizeLong, 1, null, null)
         def stream = new ByteArrayOutputStream()
-        def downloadResponse = primaryFileClient.downloadWithResponse(stream, new ShareFileRange(1, dataLength), true, null, null)
+        def downloadResponse = primaryFileClient.downloadWithResponse(stream, new ShareFileRange(1, data.defaultDataSizeLong), true, null, null)
 
         then:
         assertResponseStatusCode(uploadResponse, 201)
         assertResponseStatusCode(downloadResponse, 206)
-        downloadResponse.getDeserializedHeaders().getContentLength() == (long) dataLength
+        downloadResponse.getDeserializedHeaders().getContentLength() == data.defaultDataSizeLong
 
-        data == stream.toByteArray()
+        data.defaultBytes == stream.toByteArray()
     }
 
+    def "Parallel upload and download data"() {
+        given:
+        primaryFileClient.create(data.defaultDataSizeLong)
+
+        when:
+        def uploadResponse = primaryFileClient.uploadWithResponse(new ShareFileUploadOptions(data.defaultInputStream, data.defaultDataSizeLong),
+            null, null)
+        def stream = new ByteArrayOutputStream()
+        def downloadResponse = primaryFileClient.downloadWithResponse(stream, null, null, null, null)
+        def headers = downloadResponse.getDeserializedHeaders()
+
+        then:
+        assertResponseStatusCode(uploadResponse, 201)
+        assertResponseStatusCode(downloadResponse, 200, 206)
+        headers.getContentLength() == data.defaultDataSizeLong
+        headers.getETag()
+        headers.getLastModified()
+        headers.getFilePermissionKey()
+        headers.getFileAttributes()
+        headers.getFileLastWriteTime()
+        headers.getFileCreationTime()
+        headers.getFileChangeTime()
+        headers.getFileParentId()
+        headers.getFileId()
+
+        data.defaultBytes == stream.toByteArray()
+    }
+
+    def "Parallel upload and download data with args"() {
+        given:
+        primaryFileClient.create(1024)
+
+        when:
+        def uploadResponse = primaryFileClient.uploadWithResponse(
+            new ShareFileUploadOptions(data.defaultInputStream, data.defaultDataSizeLong).setOffset(1), null, null)
+        def stream = new ByteArrayOutputStream()
+        def downloadResponse = primaryFileClient.downloadWithResponse(stream, new ShareFileRange(1, data.defaultDataSizeLong), true, null, null)
+
+        then:
+        assertResponseStatusCode(uploadResponse, 201)
+        assertResponseStatusCode(downloadResponse, 206)
+        downloadResponse.getDeserializedHeaders().getContentLength() == data.defaultDataSizeLong
+
+        data.defaultBytes == stream.toByteArray()
+    }
+
+    def "Parallel Upload InputStream no length"() {
+        when:
+        primaryFileClient.create(data.defaultDataSize)
+        primaryFileClient.uploadWithResponse(new ShareFileUploadOptions(data.defaultInputStream), null, null)
+
+        then:
+        notThrown(Exception)
+        ByteArrayOutputStream os = new ByteArrayOutputStream()
+        primaryFileClient.download(os)
+        os.toByteArray() == data.defaultBytes
+    }
+
+    def "Parallel Upload InputStream bad length"() {
+        when:
+        primaryFileClient.create(data.defaultDataSize)
+        primaryFileClient.uploadWithResponse(new ShareFileUploadOptions(data.defaultInputStream, length), null, null)
+
+        then:
+        thrown(Exception)
+
+        where:
+        _ | length
+        _ | 0
+        _ | -100
+        _ | data.defaultDataSize - 1
+        _ | data.defaultDataSize + 1
+    }
+
+    def "Upload successful retry"() {
+        given:
+        primaryFileClient.create(data.defaultDataSize)
+        def clientWithFailure = getFileClient(
+            environment.primaryAccount.credential,
+            primaryFileClient.getFileUrl(),
+            new TransientFailureInjectingHttpPipelinePolicy())
+
+        when:
+        clientWithFailure.uploadWithResponse(new ShareFileUploadOptions(data.defaultInputStream), null, null)
+
+        then:
+        notThrown(Exception)
+        ByteArrayOutputStream os = new ByteArrayOutputStream()
+        primaryFileClient.download(os)
+        os.toByteArray() == data.defaultBytes
+    }
+
+    def "Upload range and download data"() {
+        given:
+        primaryFileClient.create(data.defaultDataSizeLong)
+
+        when:
+        def uploadResponse = primaryFileClient.uploadRangeWithResponse(
+            new ShareFileUploadRangeOptions(data.defaultInputStream, data.defaultDataSizeLong), null, null)
+        def stream = new ByteArrayOutputStream()
+        def downloadResponse = primaryFileClient.downloadWithResponse(stream, null, null, null, null)
+        def headers = downloadResponse.getDeserializedHeaders()
+
+        then:
+        assertResponseStatusCode(uploadResponse, 201)
+        assertResponseStatusCode(downloadResponse, 200, 206)
+        headers.getContentLength() == data.defaultDataSizeLong
+        headers.getETag()
+        headers.getLastModified()
+        headers.getFilePermissionKey()
+        headers.getFileAttributes()
+        headers.getFileLastWriteTime()
+        headers.getFileCreationTime()
+        headers.getFileChangeTime()
+        headers.getFileParentId()
+        headers.getFileId()
+
+        data.defaultBytes == stream.toByteArray()
+    }
+
+    def "Upload range and download data with args"() {
+        given:
+        primaryFileClient.create(1024)
+
+        when:
+        def uploadResponse = primaryFileClient.uploadRangeWithResponse(
+            new ShareFileUploadRangeOptions(data.defaultInputStream, data.defaultDataSizeLong).setOffset(1), null, null)
+        def stream = new ByteArrayOutputStream()
+        def downloadResponse = primaryFileClient.downloadWithResponse(stream, new ShareFileRange(1, data.defaultDataSizeLong), true, null, null)
+
+        then:
+        assertResponseStatusCode(uploadResponse, 201)
+        assertResponseStatusCode(downloadResponse, 206)
+        downloadResponse.getDeserializedHeaders().getContentLength() == (long) data.defaultDataSizeLong
+
+        data.defaultBytes == stream.toByteArray()
+    }
+
+    def "Download all null"() {
+        given:
+        primaryFileClient.create(data.defaultDataSizeLong)
+        primaryFileClient.upload(data.defaultInputStream, data.defaultDataSizeLong)
+
+        when:
+        def stream = new ByteArrayOutputStream()
+        def response = primaryFileClient.downloadWithResponse(stream, null, null, null)
+        def body = stream.toByteArray()
+        def headers = response.getDeserializedHeaders()
+
+        then:
+        body == data.defaultBytes
+        CoreUtils.isNullOrEmpty(headers.getMetadata())
+        headers.getContentLength() != null
+        headers.getContentType() != null
+        headers.getContentMd5() == null
+        headers.getContentEncoding() == null
+        headers.getCacheControl() == null
+        headers.getContentDisposition() == null
+        headers.getContentLanguage() == null
+    }
+
+    @Unroll
+    def "Download empty file"() {
+        setup:
+        primaryFileClient.create(fileSize)
+
+        when:
+        def outStream = new ByteArrayOutputStream()
+        primaryFileClient.download(outStream)
+        def result = outStream.toByteArray()
+
+        then:
+        notThrown(ShareStorageException)
+        result.length == fileSize
+        if (fileSize > 0) {
+            assert !result[0]
+        }
+
+        where:
+        fileSize | _
+        0        | _
+        1        | _
+    }
+
+    /*
+    This is to test the appropriate integration of DownloadResponse, including setting the correct range values on
+    HttpGetterInfo.
+     */
+
+    def "Download with retry range"() {
+        /*
+        We are going to make a request for some range on a blob. The Flux returned will throw an exception, forcing
+        a retry per the DownloadRetryOptions. The next request should have the same range header, which was generated
+        from the count and offset values in HttpGetterInfo that was constructed on the initial call to download. We
+        don't need to check the data here, but we want to ensure that the correct range is set each time. This will
+        test the correction of a bug that was found which caused HttpGetterInfo to have an incorrect offset when it was
+        constructed in FileClient.download().
+         */
+        setup:
+        primaryFileClient.create(data.defaultDataSizeLong)
+        primaryFileClient.upload(data.defaultInputStream, data.defaultDataSizeLong)
+        def fc2 = getFileClient(environment.primaryAccount.credential, primaryFileClient.getFileUrl(), new MockRetryRangeResponsePolicy("bytes=2-6"))
+
+        when:
+        def range = new ShareFileRange(2, 6L)
+        def options = new DownloadRetryOptions().setMaxRetryRequests(3)
+        fc2.downloadWithResponse(new ByteArrayOutputStream(), new ShareFileDownloadOptions().setRange(range).setRetryOptions(options), null, null)
+
+        then:
+        /*
+        Because the dummy Flux always throws an error. This will also validate that an IllegalArgumentException is
+        NOT thrown because the types would not match.
+         */
+        def e = thrown(RuntimeException)
+        e.getCause() instanceof IOException
+    }
+
+    def "Download retry default"() {
+        setup:
+        primaryFileClient.create(data.defaultDataSizeLong)
+        primaryFileClient.upload(data.defaultInputStream, data.defaultDataSizeLong)
+        def failureClient = getFileClient(environment.primaryAccount.credential, primaryFileClient.getFileUrl(), new MockFailureResponsePolicy(5))
+
+        when:
+        def outStream = new ByteArrayOutputStream()
+        failureClient.download(outStream)
+        String bodyStr = outStream.toString()
+
+        then:
+        bodyStr == data.defaultText
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     def "Upload Range 4TB"() {
         given:
         def fileSize = 4 * Constants.TB
         primaryFileClient.create(fileSize)
 
         when:
-        def uploadResponse = primaryFileClient.uploadWithResponse(defaultData, dataLength, fileSize - dataLength, null, null) /* Upload to end of file. */
+        def uploadResponse = primaryFileClient.uploadWithResponse(data.defaultInputStream, data.defaultDataSizeLong, fileSize - data.defaultDataSizeLong, null, null) /* Upload to end of file. */
         def stream = new ByteArrayOutputStream()
-        def downloadResponse = primaryFileClient.downloadWithResponse(stream, new ShareFileRange(fileSize - dataLength, fileSize), true, null, null)
+        def downloadResponse = primaryFileClient.downloadWithResponse(stream, new ShareFileRange(fileSize - data.defaultDataSizeLong, fileSize), true, null, null)
 
         then:
         assertResponseStatusCode(uploadResponse, 201)
         assertResponseStatusCode(downloadResponse, 206)
-        downloadResponse.getDeserializedHeaders().getContentLength() == (long) dataLength
+        downloadResponse.getDeserializedHeaders().getContentLength() == data.defaultDataSizeLong
+    }
+
+    @Unroll
+    def "Upload buffered range greater than max put range"() {
+        given:
+        primaryFileClient.create(length)
+        def data = new ByteArrayInputStream(getRandomBuffer(length));
+
+        when:
+        primaryFileClient.upload(data, length, null)
+
+        then:
+        notThrown(Exception)
+
+        where:
+        _ || length
+        _ || 4 * Constants.MB // max put range
+        _ || 5 * Constants.MB
+
+    }
+
+    @Unroll
+    def "Buffered upload various partitions"() {
+        given:
+        primaryFileClient.create(length)
+        def data = new ByteArrayInputStream(getRandomBuffer(length))
+
+        when:
+        primaryFileClient.upload(data, length, new ParallelTransferOptions()
+            .setBlockSizeLong(uploadChunkLength).setMaxSingleUploadSizeLong(uploadChunkLength))
+
+        then:
+        notThrown(Exception)
+
+        where:
+        length            | uploadChunkLength
+        1024              | null
+        1024              | 1024
+        1024              | 256
+        4 * Constants.MB  | null
+        4 * Constants.MB  | 1024
+        20 * Constants.MB | null
+        20 * Constants.MB | 4 * Constants.MB
+    }
+
+    @Unroll
+    def "Buffered upload error partition too big"() {
+        given:
+        primaryFileClient.create(length)
+        def data = new ByteArrayInputStream(getRandomBuffer(length))
+
+        when:
+        primaryFileClient.upload(data, length, new ParallelTransferOptions()
+            .setBlockSizeLong(uploadChunkLength).setMaxSingleUploadSizeLong(uploadChunkLength))
+
+        then:
+        thrown(Exception)
+
+        where:
+        length            | uploadChunkLength
+        20 * Constants.MB | 20 * Constants.MB
     }
 
     def "Upload data error"() {
         when:
-        primaryFileClient.uploadWithResponse(defaultData, dataLength, 1, null, null)
+        primaryFileClient.uploadWithResponse(data.defaultInputStream, data.defaultDataSizeLong, 1, null, null)
+
+        then:
+        def e = thrown(ShareStorageException)
+        assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND)
+    }
+
+    def "Parallel upload data error"() {
+        when:
+        primaryFileClient.upload(data.defaultInputStream, data.defaultDataSizeLong, null)
+
+        then:
+        def e = thrown(ShareStorageException)
+        assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND)
+    }
+
+    def "Upload range data error"() {
+        when:
+        primaryFileClient.uploadRange(data.defaultInputStream, data.defaultDataSizeLong)
 
         then:
         def e = thrown(ShareStorageException)
@@ -281,7 +600,7 @@ class FileAPITests extends APISpec {
     def "Upload data retry on transient failure"() {
         setup:
         def clientWithFailure = getFileClient(
-            primaryCredential,
+            environment.primaryAccount.credential,
             primaryFileClient.getFileUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         )
@@ -289,12 +608,12 @@ class FileAPITests extends APISpec {
         primaryFileClient.create(1024)
 
         when:
-        clientWithFailure.upload(defaultData, defaultDataLength)
+        clientWithFailure.upload(data.defaultInputStream, data.defaultDataSizeLong)
 
         then:
         def os = new ByteArrayOutputStream()
-        primaryFileClient.downloadWithResponse(os, new ShareFileRange(0, defaultDataLength - 1), null, null, null)
-        os.toByteArray() == data
+        primaryFileClient.downloadWithResponse(os, new ShareFileRange(0, data.defaultDataSizeLong - 1), null, null, null)
+        os.toByteArray() == data.defaultBytes
     }
 
     def "Upload and clear range"() {
@@ -369,7 +688,43 @@ class FileAPITests extends APISpec {
         primaryFileClient.create(1024)
 
         when:
-        primaryFileClient.uploadWithResponse(defaultData, size, 0, null, Context.NONE)
+        primaryFileClient.uploadWithResponse(data.defaultInputStream, size, 0, null, Context.NONE)
+
+        then:
+        def e = thrown(UnexpectedLengthException)
+        e.getMessage().contains(errMsg)
+
+        where:
+        size | errMsg
+        6    | "more than"
+        8    | "less than"
+    }
+
+    @Unroll
+    def "Parallel upload data length mismatch"() {
+        given:
+        primaryFileClient.create(1024)
+
+        when:
+        primaryFileClient.upload(data.defaultInputStream, size, null)
+
+        then:
+        def e = thrown(UnexpectedLengthException)
+        e.getMessage().contains(errMsg)
+
+        where:
+        size | errMsg
+        6    | "more than"
+        8    | "less than"
+    }
+
+    @Unroll
+    def "Upload range length mismatch"() {
+        given:
+        primaryFileClient.create(1024)
+
+        when:
+        primaryFileClient.uploadRange(data.defaultInputStream, size)
 
         then:
         def e = thrown(UnexpectedLengthException)
@@ -413,12 +768,12 @@ class FileAPITests extends APISpec {
      * Tests downloading a file using a default client that doesn't have a HttpClient passed to it.
      */
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Download file buffer copy"() {
         setup:
         def shareServiceClient = new ShareServiceClientBuilder()
-            .connectionString(connectionString)
+            .connectionString(environment.primaryAccount.connectionString)
             .buildClient()
 
         def fileClient = shareServiceClient.getShareClient(shareName)
@@ -509,7 +864,7 @@ class FileAPITests extends APISpec {
         def destinationOffset = 0
 
         primaryFileClient.upload(getInputStream(data.getBytes()), data.length())
-        def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString)
         def sasToken = new ShareServiceSasSignatureValues()
             .setExpiryTime(namer.getUtcNow().plusDays(1))
             .setPermissions(new ShareFileSasPermission().setReadPermission(true))
@@ -832,6 +1187,7 @@ class FileAPITests extends APISpec {
         deleteFileIfExists(testFolder.getPath(), fileName)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     @Unroll
     def "List ranges diff"() {
         setup:
@@ -882,16 +1238,17 @@ class FileAPITests extends APISpec {
         createFileRanges(0, 511, 1024, 1535) | createFileRanges(512, 1023, 1536, 2047) | createFileRanges(0, 511, 1024, 1535) | createClearRanges(512, 1023, 1536, 2047)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     def "List ranges diff with range"() {
         given:
         def fileName = namer.getRandomName(60)
-        primaryFileClient.create(1024 + dataLength)
+        primaryFileClient.create(1024 + data.defaultDataSizeLong)
         def uploadFile = createRandomFileWithLength(1024, testFolder, fileName)
         primaryFileClient.uploadFromFile(uploadFile)
 
         def snapInfo = shareClient.createSnapshot()
 
-        primaryFileClient.uploadWithResponse(defaultData, dataLength, 1024, null, null)
+        primaryFileClient.uploadWithResponse(data.defaultInputStream, data.defaultDataSizeLong, 1024, null, null)
 
         when:
         def range = primaryFileClient.listRangesDiffWithResponse(new ShareFileListRangesDiffOptions(snapInfo.getSnapshot()).setRange(new ShareFileRange(1025, 1026)), null, null).getValue().getRanges().get(0)
@@ -904,16 +1261,17 @@ class FileAPITests extends APISpec {
         deleteFileIfExists(testFolder.getPath(), fileName)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     def "List ranges diff lease"() {
         given:
         def fileName = namer.getRandomName(60)
-        primaryFileClient.create(1024 + dataLength)
+        primaryFileClient.create(1024 + data.defaultDataSizeLong)
         def uploadFile = createRandomFileWithLength(1024, testFolder, fileName)
         primaryFileClient.uploadFromFile(uploadFile)
 
         def snapInfo = shareClient.createSnapshot()
 
-        primaryFileClient.uploadWithResponse(defaultData, dataLength, 1024, null, null)
+        primaryFileClient.uploadWithResponse(data.defaultInputStream, data.defaultDataSizeLong, 1024, null, null)
         def leaseId = createLeaseClient(primaryFileClient).acquireLease()
 
         when:
@@ -930,13 +1288,13 @@ class FileAPITests extends APISpec {
     def "List ranges diff lease fail"() {
         given:
         def fileName = namer.getRandomName(60)
-        primaryFileClient.create(1024 + dataLength)
+        primaryFileClient.create(1024 + data.defaultDataSizeLong)
         def uploadFile = createRandomFileWithLength(1024, testFolder, fileName)
         primaryFileClient.uploadFromFile(uploadFile)
 
         def snapInfo = shareClient.createSnapshot()
 
-        primaryFileClient.uploadWithResponse(defaultData, dataLength, 1024, null, null)
+        primaryFileClient.uploadWithResponse(data.defaultInputStream, data.defaultDataSizeLong, 1024, null, null)
 
         when:
         primaryFileClient.listRangesDiffWithResponse(new ShareFileListRangesDiffOptions(snapInfo.getSnapshot()).setRequestConditions(new ShareRequestConditions().setLeaseId(namer.getRandomUuid())), null, null).getValue().getRanges().get(0)
@@ -981,6 +1339,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.listHandles(2, null, null).size() == 0
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_07_07")
     def "Force close handle min"() {
         given:
         primaryFileClient.create(512)
@@ -1005,6 +1364,7 @@ class FileAPITests extends APISpec {
         thrown(ShareStorageException)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_07_07")
     def "Force close all handles min"() {
         given:
         primaryFileClient.create(512)

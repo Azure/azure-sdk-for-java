@@ -23,7 +23,7 @@ public class ListEnrichmentStatusForMetricSample {
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-01-01T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
         final ListMetricEnrichmentStatusOptions options = new ListMetricEnrichmentStatusOptions()
-            .setTop(10);
+            .setMaxPageSize(10);
 
         advisorClient.listMetricEnrichmentStatus(metricId, startTime, endTime, options, Context.NONE)
             .forEach(enrichmentStatus -> {

@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.AmazonMwsLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,287 +17,23 @@ import java.util.Map;
 /** Amazon Marketplace Web Service linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AmazonMWS")
-@JsonFlatten
 @Fluent
-public class AmazonMwsLinkedService extends LinkedService {
+public final class AmazonMwsLinkedService extends LinkedService {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AmazonMwsLinkedService.class);
 
     /*
-     * The endpoint of the Amazon MWS server, (i.e. mws.amazonservices.com)
+     * Amazon Marketplace Web Service linked service properties.
      */
-    @JsonProperty(value = "typeProperties.endpoint", required = true)
-    private Object endpoint;
-
-    /*
-     * The Amazon Marketplace ID you want to retrieve data from. To retrieve
-     * data from multiple Marketplace IDs, separate them with a comma (,).
-     * (i.e. A2EUQ1WTGCTBG2)
-     */
-    @JsonProperty(value = "typeProperties.marketplaceID", required = true)
-    private Object marketplaceId;
-
-    /*
-     * The Amazon seller ID.
-     */
-    @JsonProperty(value = "typeProperties.sellerID", required = true)
-    private Object sellerId;
-
-    /*
-     * The Amazon MWS authentication token.
-     */
-    @JsonProperty(value = "typeProperties.mwsAuthToken")
-    private SecretBase mwsAuthToken;
-
-    /*
-     * The access key id used to access data.
-     */
-    @JsonProperty(value = "typeProperties.accessKeyId", required = true)
-    private Object accessKeyId;
-
-    /*
-     * The secret key used to access data.
-     */
-    @JsonProperty(value = "typeProperties.secretKey")
-    private SecretBase secretKey;
-
-    /*
-     * Specifies whether the data source endpoints are encrypted using HTTPS.
-     * The default value is true.
-     */
-    @JsonProperty(value = "typeProperties.useEncryptedEndpoints")
-    private Object useEncryptedEndpoints;
-
-    /*
-     * Specifies whether to require the host name in the server's certificate
-     * to match the host name of the server when connecting over SSL. The
-     * default value is true.
-     */
-    @JsonProperty(value = "typeProperties.useHostVerification")
-    private Object useHostVerification;
-
-    /*
-     * Specifies whether to verify the identity of the server when connecting
-     * over SSL. The default value is true.
-     */
-    @JsonProperty(value = "typeProperties.usePeerVerification")
-    private Object usePeerVerification;
-
-    /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
-    private Object encryptedCredential;
+    @JsonProperty(value = "typeProperties", required = true)
+    private AmazonMwsLinkedServiceTypeProperties innerTypeProperties = new AmazonMwsLinkedServiceTypeProperties();
 
     /**
-     * Get the endpoint property: The endpoint of the Amazon MWS server, (i.e. mws.amazonservices.com).
+     * Get the innerTypeProperties property: Amazon Marketplace Web Service linked service properties.
      *
-     * @return the endpoint value.
+     * @return the innerTypeProperties value.
      */
-    public Object endpoint() {
-        return this.endpoint;
-    }
-
-    /**
-     * Set the endpoint property: The endpoint of the Amazon MWS server, (i.e. mws.amazonservices.com).
-     *
-     * @param endpoint the endpoint value to set.
-     * @return the AmazonMwsLinkedService object itself.
-     */
-    public AmazonMwsLinkedService withEndpoint(Object endpoint) {
-        this.endpoint = endpoint;
-        return this;
-    }
-
-    /**
-     * Get the marketplaceId property: The Amazon Marketplace ID you want to retrieve data from. To retrieve data from
-     * multiple Marketplace IDs, separate them with a comma (,). (i.e. A2EUQ1WTGCTBG2).
-     *
-     * @return the marketplaceId value.
-     */
-    public Object marketplaceId() {
-        return this.marketplaceId;
-    }
-
-    /**
-     * Set the marketplaceId property: The Amazon Marketplace ID you want to retrieve data from. To retrieve data from
-     * multiple Marketplace IDs, separate them with a comma (,). (i.e. A2EUQ1WTGCTBG2).
-     *
-     * @param marketplaceId the marketplaceId value to set.
-     * @return the AmazonMwsLinkedService object itself.
-     */
-    public AmazonMwsLinkedService withMarketplaceId(Object marketplaceId) {
-        this.marketplaceId = marketplaceId;
-        return this;
-    }
-
-    /**
-     * Get the sellerId property: The Amazon seller ID.
-     *
-     * @return the sellerId value.
-     */
-    public Object sellerId() {
-        return this.sellerId;
-    }
-
-    /**
-     * Set the sellerId property: The Amazon seller ID.
-     *
-     * @param sellerId the sellerId value to set.
-     * @return the AmazonMwsLinkedService object itself.
-     */
-    public AmazonMwsLinkedService withSellerId(Object sellerId) {
-        this.sellerId = sellerId;
-        return this;
-    }
-
-    /**
-     * Get the mwsAuthToken property: The Amazon MWS authentication token.
-     *
-     * @return the mwsAuthToken value.
-     */
-    public SecretBase mwsAuthToken() {
-        return this.mwsAuthToken;
-    }
-
-    /**
-     * Set the mwsAuthToken property: The Amazon MWS authentication token.
-     *
-     * @param mwsAuthToken the mwsAuthToken value to set.
-     * @return the AmazonMwsLinkedService object itself.
-     */
-    public AmazonMwsLinkedService withMwsAuthToken(SecretBase mwsAuthToken) {
-        this.mwsAuthToken = mwsAuthToken;
-        return this;
-    }
-
-    /**
-     * Get the accessKeyId property: The access key id used to access data.
-     *
-     * @return the accessKeyId value.
-     */
-    public Object accessKeyId() {
-        return this.accessKeyId;
-    }
-
-    /**
-     * Set the accessKeyId property: The access key id used to access data.
-     *
-     * @param accessKeyId the accessKeyId value to set.
-     * @return the AmazonMwsLinkedService object itself.
-     */
-    public AmazonMwsLinkedService withAccessKeyId(Object accessKeyId) {
-        this.accessKeyId = accessKeyId;
-        return this;
-    }
-
-    /**
-     * Get the secretKey property: The secret key used to access data.
-     *
-     * @return the secretKey value.
-     */
-    public SecretBase secretKey() {
-        return this.secretKey;
-    }
-
-    /**
-     * Set the secretKey property: The secret key used to access data.
-     *
-     * @param secretKey the secretKey value to set.
-     * @return the AmazonMwsLinkedService object itself.
-     */
-    public AmazonMwsLinkedService withSecretKey(SecretBase secretKey) {
-        this.secretKey = secretKey;
-        return this;
-    }
-
-    /**
-     * Get the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
-     * The default value is true.
-     *
-     * @return the useEncryptedEndpoints value.
-     */
-    public Object useEncryptedEndpoints() {
-        return this.useEncryptedEndpoints;
-    }
-
-    /**
-     * Set the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
-     * The default value is true.
-     *
-     * @param useEncryptedEndpoints the useEncryptedEndpoints value to set.
-     * @return the AmazonMwsLinkedService object itself.
-     */
-    public AmazonMwsLinkedService withUseEncryptedEndpoints(Object useEncryptedEndpoints) {
-        this.useEncryptedEndpoints = useEncryptedEndpoints;
-        return this;
-    }
-
-    /**
-     * Get the useHostVerification property: Specifies whether to require the host name in the server's certificate to
-     * match the host name of the server when connecting over SSL. The default value is true.
-     *
-     * @return the useHostVerification value.
-     */
-    public Object useHostVerification() {
-        return this.useHostVerification;
-    }
-
-    /**
-     * Set the useHostVerification property: Specifies whether to require the host name in the server's certificate to
-     * match the host name of the server when connecting over SSL. The default value is true.
-     *
-     * @param useHostVerification the useHostVerification value to set.
-     * @return the AmazonMwsLinkedService object itself.
-     */
-    public AmazonMwsLinkedService withUseHostVerification(Object useHostVerification) {
-        this.useHostVerification = useHostVerification;
-        return this;
-    }
-
-    /**
-     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
-     * SSL. The default value is true.
-     *
-     * @return the usePeerVerification value.
-     */
-    public Object usePeerVerification() {
-        return this.usePeerVerification;
-    }
-
-    /**
-     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
-     * SSL. The default value is true.
-     *
-     * @param usePeerVerification the usePeerVerification value to set.
-     * @return the AmazonMwsLinkedService object itself.
-     */
-    public AmazonMwsLinkedService withUsePeerVerification(Object usePeerVerification) {
-        this.usePeerVerification = usePeerVerification;
-        return this;
-    }
-
-    /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @return the encryptedCredential value.
-     */
-    public Object encryptedCredential() {
-        return this.encryptedCredential;
-    }
-
-    /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @param encryptedCredential the encryptedCredential value to set.
-     * @return the AmazonMwsLinkedService object itself.
-     */
-    public AmazonMwsLinkedService withEncryptedCredential(Object encryptedCredential) {
-        this.encryptedCredential = encryptedCredential;
-        return this;
+    private AmazonMwsLinkedServiceTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -329,6 +65,246 @@ public class AmazonMwsLinkedService extends LinkedService {
     }
 
     /**
+     * Get the endpoint property: The endpoint of the Amazon MWS server, (i.e. mws.amazonservices.com).
+     *
+     * @return the endpoint value.
+     */
+    public Object endpoint() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().endpoint();
+    }
+
+    /**
+     * Set the endpoint property: The endpoint of the Amazon MWS server, (i.e. mws.amazonservices.com).
+     *
+     * @param endpoint the endpoint value to set.
+     * @return the AmazonMwsLinkedService object itself.
+     */
+    public AmazonMwsLinkedService withEndpoint(Object endpoint) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AmazonMwsLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEndpoint(endpoint);
+        return this;
+    }
+
+    /**
+     * Get the marketplaceId property: The Amazon Marketplace ID you want to retrieve data from. To retrieve data from
+     * multiple Marketplace IDs, separate them with a comma (,). (i.e. A2EUQ1WTGCTBG2).
+     *
+     * @return the marketplaceId value.
+     */
+    public Object marketplaceId() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().marketplaceId();
+    }
+
+    /**
+     * Set the marketplaceId property: The Amazon Marketplace ID you want to retrieve data from. To retrieve data from
+     * multiple Marketplace IDs, separate them with a comma (,). (i.e. A2EUQ1WTGCTBG2).
+     *
+     * @param marketplaceId the marketplaceId value to set.
+     * @return the AmazonMwsLinkedService object itself.
+     */
+    public AmazonMwsLinkedService withMarketplaceId(Object marketplaceId) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AmazonMwsLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withMarketplaceId(marketplaceId);
+        return this;
+    }
+
+    /**
+     * Get the sellerId property: The Amazon seller ID.
+     *
+     * @return the sellerId value.
+     */
+    public Object sellerId() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().sellerId();
+    }
+
+    /**
+     * Set the sellerId property: The Amazon seller ID.
+     *
+     * @param sellerId the sellerId value to set.
+     * @return the AmazonMwsLinkedService object itself.
+     */
+    public AmazonMwsLinkedService withSellerId(Object sellerId) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AmazonMwsLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withSellerId(sellerId);
+        return this;
+    }
+
+    /**
+     * Get the mwsAuthToken property: The Amazon MWS authentication token.
+     *
+     * @return the mwsAuthToken value.
+     */
+    public SecretBase mwsAuthToken() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().mwsAuthToken();
+    }
+
+    /**
+     * Set the mwsAuthToken property: The Amazon MWS authentication token.
+     *
+     * @param mwsAuthToken the mwsAuthToken value to set.
+     * @return the AmazonMwsLinkedService object itself.
+     */
+    public AmazonMwsLinkedService withMwsAuthToken(SecretBase mwsAuthToken) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AmazonMwsLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withMwsAuthToken(mwsAuthToken);
+        return this;
+    }
+
+    /**
+     * Get the accessKeyId property: The access key id used to access data.
+     *
+     * @return the accessKeyId value.
+     */
+    public Object accessKeyId() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().accessKeyId();
+    }
+
+    /**
+     * Set the accessKeyId property: The access key id used to access data.
+     *
+     * @param accessKeyId the accessKeyId value to set.
+     * @return the AmazonMwsLinkedService object itself.
+     */
+    public AmazonMwsLinkedService withAccessKeyId(Object accessKeyId) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AmazonMwsLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withAccessKeyId(accessKeyId);
+        return this;
+    }
+
+    /**
+     * Get the secretKey property: The secret key used to access data.
+     *
+     * @return the secretKey value.
+     */
+    public SecretBase secretKey() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().secretKey();
+    }
+
+    /**
+     * Set the secretKey property: The secret key used to access data.
+     *
+     * @param secretKey the secretKey value to set.
+     * @return the AmazonMwsLinkedService object itself.
+     */
+    public AmazonMwsLinkedService withSecretKey(SecretBase secretKey) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AmazonMwsLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withSecretKey(secretKey);
+        return this;
+    }
+
+    /**
+     * Get the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
+     * The default value is true.
+     *
+     * @return the useEncryptedEndpoints value.
+     */
+    public Object useEncryptedEndpoints() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().useEncryptedEndpoints();
+    }
+
+    /**
+     * Set the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
+     * The default value is true.
+     *
+     * @param useEncryptedEndpoints the useEncryptedEndpoints value to set.
+     * @return the AmazonMwsLinkedService object itself.
+     */
+    public AmazonMwsLinkedService withUseEncryptedEndpoints(Object useEncryptedEndpoints) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AmazonMwsLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withUseEncryptedEndpoints(useEncryptedEndpoints);
+        return this;
+    }
+
+    /**
+     * Get the useHostVerification property: Specifies whether to require the host name in the server's certificate to
+     * match the host name of the server when connecting over SSL. The default value is true.
+     *
+     * @return the useHostVerification value.
+     */
+    public Object useHostVerification() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().useHostVerification();
+    }
+
+    /**
+     * Set the useHostVerification property: Specifies whether to require the host name in the server's certificate to
+     * match the host name of the server when connecting over SSL. The default value is true.
+     *
+     * @param useHostVerification the useHostVerification value to set.
+     * @return the AmazonMwsLinkedService object itself.
+     */
+    public AmazonMwsLinkedService withUseHostVerification(Object useHostVerification) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AmazonMwsLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withUseHostVerification(useHostVerification);
+        return this;
+    }
+
+    /**
+     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
+     * SSL. The default value is true.
+     *
+     * @return the usePeerVerification value.
+     */
+    public Object usePeerVerification() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().usePeerVerification();
+    }
+
+    /**
+     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
+     * SSL. The default value is true.
+     *
+     * @param usePeerVerification the usePeerVerification value to set.
+     * @return the AmazonMwsLinkedService object itself.
+     */
+    public AmazonMwsLinkedService withUsePeerVerification(Object usePeerVerification) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AmazonMwsLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withUsePeerVerification(usePeerVerification);
+        return this;
+    }
+
+    /**
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @return the encryptedCredential value.
+     */
+    public Object encryptedCredential() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
+    }
+
+    /**
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @param encryptedCredential the encryptedCredential value to set.
+     * @return the AmazonMwsLinkedService object itself.
+     */
+    public AmazonMwsLinkedService withEncryptedCredential(Object encryptedCredential) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AmazonMwsLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEncryptedCredential(encryptedCredential);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -336,33 +312,13 @@ public class AmazonMwsLinkedService extends LinkedService {
     @Override
     public void validate() {
         super.validate();
-        if (endpoint() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property endpoint in model AmazonMwsLinkedService"));
-        }
-        if (marketplaceId() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property marketplaceId in model AmazonMwsLinkedService"));
-        }
-        if (sellerId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sellerId in model AmazonMwsLinkedService"));
-        }
-        if (mwsAuthToken() != null) {
-            mwsAuthToken().validate();
-        }
-        if (accessKeyId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property accessKeyId in model AmazonMwsLinkedService"));
-        }
-        if (secretKey() != null) {
-            secretKey().validate();
+                        "Missing required property innerTypeProperties in model AmazonMwsLinkedService"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

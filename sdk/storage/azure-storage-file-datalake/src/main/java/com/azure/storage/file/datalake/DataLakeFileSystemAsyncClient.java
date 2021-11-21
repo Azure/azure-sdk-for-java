@@ -18,12 +18,16 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAPIImpl;
 import com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAPIImplBuilder;
+import com.azure.storage.file.datalake.implementation.models.FileSystemsListBlobHierarchySegmentResponse;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsResponse;
+import com.azure.storage.file.datalake.implementation.models.ListBlobsShowOnly;
+import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.DataLakeSasImplUtil;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
@@ -31,6 +35,7 @@ import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
 import com.azure.storage.file.datalake.models.FileSystemAccessPolicies;
 import com.azure.storage.file.datalake.models.FileSystemProperties;
 import com.azure.storage.file.datalake.models.ListPathsOptions;
+import com.azure.storage.file.datalake.models.PathDeletedItem;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PublicAccessType;
@@ -46,9 +51,13 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
+import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 /**
  * Client to a file system. It may only be instantiated through a {@link DataLakeFileSystemClientBuilder} or via the
@@ -83,6 +92,7 @@ public class DataLakeFileSystemAsyncClient {
 
     private final ClientLogger logger = new ClientLogger(DataLakeFileSystemAsyncClient.class);
     private final AzureDataLakeStorageRestAPIImpl azureDataLakeStorage;
+    private final AzureDataLakeStorageRestAPIImpl blobDataLakeStorageFs; // Just for list deleted paths
     private final BlobContainerAsyncClient blobContainerAsyncClient;
 
     private final String accountName;
@@ -107,6 +117,14 @@ public class DataLakeFileSystemAsyncClient {
             .fileSystem(fileSystemName)
             .version(serviceVersion.getVersion())
             .buildClient();
+        String blobUrl = DataLakeImplUtils.endpointToDesiredEndpoint(url, "blob", "dfs");
+        this.blobDataLakeStorageFs = new AzureDataLakeStorageRestAPIImplBuilder()
+            .pipeline(pipeline)
+            .url(blobUrl)
+            .fileSystem(fileSystemName)
+            .version(serviceVersion.getVersion())
+            .buildClient();
+
         this.serviceVersion = serviceVersion;
 
         this.accountName = accountName;
@@ -121,7 +139,11 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getFileAsyncClient#String}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getFileAsyncClient#String -->
+     * <pre>
+     * DataLakeFileAsyncClient dataLakeFileAsyncClient = client.getFileAsyncClient&#40;fileName&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getFileAsyncClient#String -->
      *
      * @param fileName A {@code String} representing the name of the file. If the path name contains special characters,
      * pass in the url encoded version of the path name.
@@ -145,7 +167,11 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getDirectoryAsyncClient#String}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getDirectoryAsyncClient#String -->
+     * <pre>
+     * DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient = client.getDirectoryAsyncClient&#40;directoryName&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getDirectoryAsyncClient#String -->
      *
      * @param directoryName A {@code String} representing the name of the directory. If the path name contains special
      * characters, pass in the url encoded version of the path name.
@@ -168,7 +194,11 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient -->
+     * <pre>
+     * DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient = client.getRootDirectoryAsyncClient&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient -->
      *
      * @return A new {@link DataLakeDirectoryAsyncClient} object which references the root directory
      * in this file system.
@@ -200,7 +230,12 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getFileSystemName}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getFileSystemName -->
+     * <pre>
+     * String fileSystemName = client.getFileSystemName&#40;&#41;;
+     * System.out.println&#40;&quot;The name of the file system is &quot; + fileSystemName&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getFileSystemName -->
      *
      * @return The name of file system.
      */
@@ -242,7 +277,13 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.create}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.create -->
+     * <pre>
+     * client.create&#40;&#41;.subscribe&#40;
+     *     response -&gt; System.out.printf&#40;&quot;Create completed%n&quot;&#41;,
+     *     error -&gt; System.out.printf&#40;&quot;Error while creating file system %s%n&quot;, error&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.create -->
      *
      * @return A reactive response signalling completion.
      */
@@ -262,7 +303,13 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createWithResponse#Map-PublicAccessType}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createWithResponse#Map-PublicAccessType -->
+     * <pre>
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * client.createWithResponse&#40;metadata, PublicAccessType.CONTAINER&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createWithResponse#Map-PublicAccessType -->
      *
      * @param metadata Metadata to associate with the file system. If there is leading or trailing whitespace in any
      * metadata key or value, it must be removed or encoded.
@@ -287,7 +334,13 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.delete}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.delete -->
+     * <pre>
+     * client.delete&#40;&#41;.subscribe&#40;
+     *     response -&gt; System.out.printf&#40;&quot;Delete completed%n&quot;&#41;,
+     *     error -&gt; System.out.printf&#40;&quot;Delete failed: %s%n&quot;, error&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.delete -->
      *
      * @return A reactive response signalling completion.
      */
@@ -307,7 +360,16 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteWithResponse#DataLakeRequestConditions}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteWithResponse#DataLakeRequestConditions -->
+     * <pre>
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     *
+     * client.deleteWithResponse&#40;requestConditions&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteWithResponse#DataLakeRequestConditions -->
      *
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return A reactive response signalling completion.
@@ -331,7 +393,15 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getProperties}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getProperties -->
+     * <pre>
+     * client.getProperties&#40;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Public Access Type: %s, Legal Hold? %b, Immutable? %b%n&quot;,
+     *         response.getDataLakePublicAccess&#40;&#41;,
+     *         response.hasLegalHold&#40;&#41;,
+     *         response.hasImmutabilityPolicy&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getProperties -->
      *
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} containing the
      * file system properties.
@@ -351,7 +421,16 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getPropertiesWithResponse#String}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getPropertiesWithResponse#String -->
+     * <pre>
+     *
+     * client.getPropertiesWithResponse&#40;leaseId&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Public Access Type: %s, Legal Hold? %b, Immutable? %b%n&quot;,
+     *         response.getValue&#40;&#41;.getDataLakePublicAccess&#40;&#41;,
+     *         response.getValue&#40;&#41;.hasLegalHold&#40;&#41;,
+     *         response.getValue&#40;&#41;.hasImmutabilityPolicy&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getPropertiesWithResponse#String -->
      *
      * @param leaseId The lease ID the active lease on the file system must match.
      * @return A reactive response containing the file system properties.
@@ -374,7 +453,14 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.setMetadata#Map}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.setMetadata#Map -->
+     * <pre>
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * client.setMetadata&#40;metadata&#41;.subscribe&#40;
+     *     response -&gt; System.out.printf&#40;&quot;Set metadata completed%n&quot;&#41;,
+     *     error -&gt; System.out.printf&#40;&quot;Set metadata failed: %s%n&quot;, error&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.setMetadata#Map -->
      *
      * @param metadata Metadata to associate with the file system. If there is leading or trailing whitespace in any
      * metadata key or value, it must be removed or encoded.
@@ -395,7 +481,17 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.setMetadataWithResponse#Map-DataLakeRequestConditions}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.setMetadataWithResponse#Map-DataLakeRequestConditions -->
+     * <pre>
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;
+     *     .setIfModifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     *
+     * client.setMetadataWithResponse&#40;metadata, requestConditions&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Set metadata completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.setMetadataWithResponse#Map-DataLakeRequestConditions -->
      *
      * @param metadata Metadata to associate with the file system. If there is leading or trailing whitespace in any
      * metadata key or value, it must be removed or encoded.
@@ -424,7 +520,11 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listPaths}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listPaths -->
+     * <pre>
+     * client.listPaths&#40;&#41;.subscribe&#40;path -&gt; System.out.printf&#40;&quot;Name: %s%n&quot;, path.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listPaths -->
      *
      * @return A reactive response emitting the list of files/directories.
      */
@@ -443,7 +543,15 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listPaths#ListPathsOptions}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listPaths#ListPathsOptions -->
+     * <pre>
+     * ListPathsOptions options = new ListPathsOptions&#40;&#41;
+     *     .setPath&#40;&quot;PathNamePrefixToMatch&quot;&#41;
+     *     .setMaxResults&#40;10&#41;;
+     *
+     * client.listPaths&#40;options&#41;.subscribe&#40;path -&gt; System.out.printf&#40;&quot;Name: %s%n&quot;, path.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listPaths#ListPathsOptions -->
      *
      * @param options A {@link ListPathsOptions} which specifies what data should be returned by the service.
      * @return A reactive response emitting the list of files/directories.
@@ -456,8 +564,7 @@ public class DataLakeFileSystemAsyncClient {
     PagedFlux<PathItem> listPathsWithOptionalTimeout(ListPathsOptions options,
         Duration timeout) {
         BiFunction<String, Integer, Mono<PagedResponse<PathItem>>> func =
-            (marker, pageSize) ->
-            {
+            (marker, pageSize) -> {
                 ListPathsOptions finalOptions;
                 if (pageSize != null) {
                     if (options == null) {
@@ -503,12 +610,112 @@ public class DataLakeFileSystemAsyncClient {
     }
 
     /**
+     * Returns a reactive Publisher emitting all the files/directories in this filesystem that have been recently soft
+     * deleted lazily as needed. For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-blobs">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listDeletedPaths -->
+     * <pre>
+     * client.listDeletedPaths&#40;&#41;.subscribe&#40;path -&gt; System.out.printf&#40;&quot;Name: %s%n&quot;, path.getPath&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listDeletedPaths -->
+     *
+     * @return A reactive response emitting the list of files/directories.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PathDeletedItem> listDeletedPaths() {
+        try {
+            return this.listDeletedPaths(null);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
+    }
+
+    /**
+     * Returns a reactive Publisher emitting all the files/directories in this account lazily as needed. For more
+     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
+     *
+     * Note: You can specify the page size by using byPaged methods that accept an integer such as
+     * {@link PagedFlux#byPage(int)}. Please refer to the REST docs above for limitations on page size
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listDeletedPaths#String -->
+     * <pre>
+     * int pageSize = 10;
+     * client.listDeletedPaths&#40;&quot;PathNamePrefixToMatch&quot;&#41;
+     *     .byPage&#40;pageSize&#41;
+     *     .subscribe&#40;page -&gt;
+     *         page.getValue&#40;&#41;.forEach&#40;path -&gt;
+     *             System.out.printf&#40;&quot;Name: %s%n&quot;, path.getPath&#40;&#41;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listDeletedPaths#String -->
+     *
+     * @param prefix Specifies the path to filter the results to.
+     * @return A reactive response emitting the list of files/directories.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PathDeletedItem> listDeletedPaths(String prefix) {
+        try {
+            return new PagedFlux<>(pageSize -> withContext(context -> listDeletedPaths(null, pageSize, prefix,
+                null, context)),
+                (marker, pageSize) -> withContext(context -> listDeletedPaths(marker, pageSize, prefix, null,
+                    context)));
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
+    }
+
+    PagedFlux<PathDeletedItem> listDeletedPathsWithOptionalTimeout(String prefix, Duration timeout, Context context) {
+        return new PagedFlux<>(pageSize -> listDeletedPaths(null, pageSize, prefix, timeout, context),
+            (marker, pageSize) -> listDeletedPaths(marker, pageSize, prefix, timeout, context));
+    }
+
+    private Mono<PagedResponse<PathDeletedItem>> listDeletedPaths(String marker, Integer pageSize,
+        String prefix, Duration timeout, Context context) {
+        return listDeletedPathsSegment(marker, prefix, pageSize, timeout, context)
+            .map(response -> {
+                List<PathDeletedItem> value = response.getValue().getSegment() == null
+                    ? Collections.emptyList()
+                    : Stream.concat(
+                    response.getValue().getSegment().getBlobItems().stream().map(Transforms::toPathDeletedItem),
+                    response.getValue().getSegment().getBlobPrefixes().stream()
+                        .map(Transforms::toPathDeletedItem)
+                ).collect(Collectors.toList());
+                return new PagedResponseBase<>(
+                    response.getRequest(),
+                    response.getStatusCode(),
+                    response.getHeaders(),
+                    value,
+                    response.getValue().getNextMarker(),
+                    response.getDeserializedHeaders());
+            });
+    }
+
+    private Mono<FileSystemsListBlobHierarchySegmentResponse> listDeletedPathsSegment(String marker,
+        String prefix, Integer maxResults, Duration timeout, Context context) {
+        context = context == null ? Context.NONE : context;
+
+        return StorageImplUtils.applyOptionalTimeout(
+            this.blobDataLakeStorageFs.getFileSystems().listBlobHierarchySegmentWithResponseAsync(
+                prefix, null, marker, maxResults,
+                null, ListBlobsShowOnly.DELETED, null, null,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE)), timeout);
+    }
+
+    /**
      * Creates a new file within a file system. By default this method will not overwrite an existing file. For more
      * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFile#String}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFile#String -->
+     * <pre>
+     * Mono&lt;DataLakeFileAsyncClient&gt; fileClient = client.createFile&#40;fileName&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFile#String -->
      *
      * @param fileName Name of the file to create. If the path name contains special characters, pass in the url encoded
      * version of the path name.
@@ -525,7 +732,12 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFile#String-boolean}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFile#String-boolean -->
+     * <pre>
+     * boolean overwrite = false; &#47;* Default value. *&#47;
+     * Mono&lt;DataLakeFileAsyncClient&gt; fClient = client.createFile&#40;fileName, overwrite&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFile#String-boolean -->
      *
      * @param fileName Name of the file to create. If the path name contains special characters, pass in the url encoded
      * version of the path name.
@@ -553,7 +765,19 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFileWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFileWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions -->
+     * <pre>
+     * PathHttpHeaders httpHeaders = new PathHttpHeaders&#40;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;;
+     * String permissions = &quot;permissions&quot;;
+     * String umask = &quot;umask&quot;;
+     * Mono&lt;Response&lt;DataLakeFileAsyncClient&gt;&gt; newFileClient = client.createFileWithResponse&#40;fileName, permissions,
+     *     umask, httpHeaders, Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;, requestConditions&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFileWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions -->
      *
      * @param fileName Name of the file to create. If the path name contains special characters, pass in the url encoded
      * version of the path name.
@@ -587,7 +811,12 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteFile#String}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteFile#String -->
+     * <pre>
+     * client.deleteFile&#40;fileName&#41;.subscribe&#40;response -&gt;
+     *     System.out.println&#40;&quot;Delete request completed&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteFile#String -->
      *
      * @param fileName Name of the file to delete. If the path name contains special characters, pass in the url encoded
      * version of the path name.
@@ -609,7 +838,15 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteFileWithResponse#String-DataLakeRequestConditions}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteFileWithResponse#String-DataLakeRequestConditions -->
+     * <pre>
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;;
+     *
+     * client.deleteFileWithResponse&#40;fileName, requestConditions&#41;
+     *     .subscribe&#40;response -&gt; System.out.println&#40;&quot;Delete request completed&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteFileWithResponse#String-DataLakeRequestConditions -->
      *
      * @param fileName Name of the file to delete. If the path name contains special characters, pass in the url encoded
      * version of the path name.
@@ -631,7 +868,11 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectory#String}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectory#String -->
+     * <pre>
+     * Mono&lt;DataLakeDirectoryAsyncClient&gt; directoryClient = client.createDirectory&#40;directoryName&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectory#String -->
      *
      * @param directoryName Name of the directory to create. If the path name contains special characters, pass in the
      * url encoded version of the path name.
@@ -649,7 +890,12 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectory#String-boolean}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectory#String-boolean -->
+     * <pre>
+     * boolean overwrite = false; &#47;* Default value. *&#47;
+     * Mono&lt;DataLakeDirectoryAsyncClient&gt; dClient = client.createDirectory&#40;directoryName, overwrite&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectory#String-boolean -->
      *
      * @param directoryName Name of the directory to create. If the path name contains special characters, pass in the
      * url encoded version of the path name.
@@ -678,7 +924,20 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions -->
+     * <pre>
+     * PathHttpHeaders httpHeaders = new PathHttpHeaders&#40;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;;
+     * String permissions = &quot;permissions&quot;;
+     * String umask = &quot;umask&quot;;
+     * Mono&lt;Response&lt;DataLakeDirectoryAsyncClient&gt;&gt; newDirectoryClient = client.createDirectoryWithResponse&#40;
+     *     directoryName, permissions, umask, httpHeaders, Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;,
+     *     requestConditions&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions -->
      *
      * @param directoryName Name of the directory to create. If the path name contains special characters, pass in the
      * url encoded version of the path name.
@@ -712,7 +971,12 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteDirectory#String}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteDirectory#String -->
+     * <pre>
+     * client.deleteDirectory&#40;directoryName&#41;.subscribe&#40;response -&gt;
+     *     System.out.println&#40;&quot;Delete request completed&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteDirectory#String -->
      *
      * @param directoryName Name of the directory to delete. If the path name contains special characters, pass in the
      * url encoded version of the path name.
@@ -730,7 +994,16 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteDirectoryWithResponse#String-boolean-DataLakeRequestConditions}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteDirectoryWithResponse#String-boolean-DataLakeRequestConditions -->
+     * <pre>
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;;
+     * boolean recursive = false; &#47;&#47; Default value
+     *
+     * client.deleteDirectoryWithResponse&#40;directoryName, recursive, requestConditions&#41;
+     *     .subscribe&#40;response -&gt; System.out.println&#40;&quot;Delete request completed&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteDirectoryWithResponse#String-boolean-DataLakeRequestConditions -->
      *
      * @param directoryName Name of the directory to delete. If the path name contains special characters, pass in the
      * url encoded version of the path name.
@@ -745,6 +1018,101 @@ public class DataLakeFileSystemAsyncClient {
     }
 
     /**
+     * Restores a soft deleted path in the file system. For more information see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.undeletePath#String-String -->
+     * <pre>
+     * client.undeletePath&#40;deletedPath, deletionId&#41;.doOnSuccess&#40;response -&gt; System.out.println&#40;&quot;Completed undelete&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.undeletePath#String-String -->
+     *
+     * @param deletedPath The deleted path
+     * @param deletionId deletion ID associated with the soft deleted path that uniquely identifies a resource if
+     * multiple have been soft deleted at this location.
+     * You can get soft deleted paths and their associated deletion IDs with {@link #listDeletedPaths()}.
+     * @return A reactive response signalling completion.
+     * @throws NullPointerException if deletedPath or deletionId is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DataLakePathAsyncClient> undeletePath(String deletedPath, String deletionId) {
+        return undeletePathWithResponse(deletedPath, deletionId).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Restores a soft deleted path in the file system. For more information see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.undeletePathWithResponse#String-String -->
+     * <pre>
+     * client.undeletePathWithResponse&#40;deletedPath, deletionId&#41;
+     *     .doOnSuccess&#40;response -&gt; System.out.println&#40;&quot;Completed undelete&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.undeletePathWithResponse#String-String -->
+     *
+     * @param deletedPath The deleted path
+     * @param deletionId deletion ID associated with the soft deleted path that uniquely identifies a resource if
+     * multiple have been soft deleted at this location.
+     * You can get soft deleted paths and their associated deletion IDs with {@link #listDeletedPaths()}.
+     * @return A reactive response signalling completion.
+     * @throws NullPointerException if deletedPath or deletionId is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<DataLakePathAsyncClient>> undeletePathWithResponse(String deletedPath, String deletionId) {
+        try {
+            return withContext(context -> undeletePathWithResponse(deletedPath, deletionId, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<DataLakePathAsyncClient>> undeletePathWithResponse(String deletedPath, String deletionId,
+        Context context) {
+        Objects.requireNonNull(deletedPath);
+        Objects.requireNonNull(deletionId);
+
+        context = context == null ? Context.NONE : context;
+        String blobUrl = DataLakeImplUtils.endpointToDesiredEndpoint(blobDataLakeStorageFs.getUrl(), "blob", "dfs");
+
+        // This instance is to have a datalake impl that points to the blob endpoint
+        AzureDataLakeStorageRestAPIImpl blobDataLakeStoragePath = new AzureDataLakeStorageRestAPIImplBuilder()
+            .pipeline(blobDataLakeStorageFs.getHttpPipeline())
+            .url(blobUrl)
+            .fileSystem(blobDataLakeStorageFs.getFileSystem())
+            .path(Utility.urlDecode(deletedPath))
+            .version(serviceVersion.getVersion())
+            .buildClient();
+
+        // Initial rest call
+        return blobDataLakeStoragePath.getPaths().undeleteWithResponseAsync(null,
+            String.format("?%s=%s", Constants.UrlConstants.DELETIONID_QUERY_PARAMETER, deletionId), null,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
+                // Construct the new client and final response from the undelete + getProperties responses
+                .map(response -> {
+                    DataLakePathAsyncClient client = new DataLakePathAsyncClient(getHttpPipeline(), getAccountUrl(),
+                        serviceVersion, accountName, fileSystemName, deletedPath,
+                        PathResourceType.fromString(response.getDeserializedHeaders().getXMsResourceType()),
+                        blobContainerAsyncClient.getBlobAsyncClient(deletedPath, null)
+                            .getBlockBlobAsyncClient());
+                    if (PathResourceType.DIRECTORY.equals(client.pathResourceType)) {
+                        return new SimpleResponse<>(response, new DataLakeDirectoryAsyncClient(client));
+                    } else if (PathResourceType.FILE.equals(client.pathResourceType)) {
+                        return new SimpleResponse<>(response, new DataLakeFileAsyncClient(client));
+                    } else {
+                        throw logger.logExceptionAsError(new IllegalStateException("'pathClient' expected to be either "
+                            + "a file or directory client."));
+                    }
+                });
+    }
+
+    /**
      * Sets the file system's permissions. The permissions indicate whether paths in a file system may be accessed
      * publicly. Note that, for each signed identifier, we will truncate the start and expiry times to the nearest
      * second to ensure the time formatting is compatible with the service. For more information, see the
@@ -752,7 +1120,20 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.setAccessPolicy#PublicAccessType-List}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.setAccessPolicy#PublicAccessType-List -->
+     * <pre>
+     * DataLakeSignedIdentifier identifier = new DataLakeSignedIdentifier&#40;&#41;
+     *     .setId&#40;&quot;name&quot;&#41;
+     *     .setAccessPolicy&#40;new DataLakeAccessPolicy&#40;&#41;
+     *         .setStartsOn&#40;OffsetDateTime.now&#40;&#41;&#41;
+     *         .setExpiresOn&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;7&#41;&#41;
+     *         .setPermissions&#40;&quot;permissionString&quot;&#41;&#41;;
+     *
+     * client.setAccessPolicy&#40;PublicAccessType.CONTAINER, Collections.singletonList&#40;identifier&#41;&#41;.subscribe&#40;
+     *     response -&gt; System.out.printf&#40;&quot;Set access policy completed%n&quot;&#41;,
+     *     error -&gt; System.out.printf&#40;&quot;Set access policy failed: %s%n&quot;, error&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.setAccessPolicy#PublicAccessType-List -->
      *
      * @param accessType Specifies how the data in this file system is available to the public. See the
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
@@ -780,7 +1161,24 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.setAccessPolicyWithResponse#PublicAccessType-List-DataLakeRequestConditions}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.setAccessPolicyWithResponse#PublicAccessType-List-DataLakeRequestConditions -->
+     * <pre>
+     * DataLakeSignedIdentifier identifier = new DataLakeSignedIdentifier&#40;&#41;
+     *     .setId&#40;&quot;name&quot;&#41;
+     *     .setAccessPolicy&#40;new DataLakeAccessPolicy&#40;&#41;
+     *         .setStartsOn&#40;OffsetDateTime.now&#40;&#41;&#41;
+     *         .setExpiresOn&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;7&#41;&#41;
+     *         .setPermissions&#40;&quot;permissionString&quot;&#41;&#41;;
+     *
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     *
+     * client.setAccessPolicyWithResponse&#40;PublicAccessType.CONTAINER, Collections.singletonList&#40;identifier&#41;, requestConditions&#41;
+     *     .subscribe&#40;response -&gt;
+     *         System.out.printf&#40;&quot;Set access policy completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.setAccessPolicyWithResponse#PublicAccessType-List-DataLakeRequestConditions -->
      *
      * @param accessType Specifies how the data in this file system is available to the public. See the
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
@@ -813,7 +1211,19 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getAccessPolicy}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getAccessPolicy -->
+     * <pre>
+     * client.getAccessPolicy&#40;&#41;.subscribe&#40;response -&gt; &#123;
+     *     System.out.printf&#40;&quot;Data Lake Access Type: %s%n&quot;, response.getDataLakeAccessType&#40;&#41;&#41;;
+     *
+     *     for &#40;DataLakeSignedIdentifier identifier : response.getIdentifiers&#40;&#41;&#41; &#123;
+     *         System.out.printf&#40;&quot;Identifier Name: %s, Permissions %s%n&quot;,
+     *             identifier.getId&#40;&#41;,
+     *             identifier.getAccessPolicy&#40;&#41;.getPermissions&#40;&#41;&#41;;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getAccessPolicy -->
      *
      * @return A reactive response containing the file system access policy.
      */
@@ -833,7 +1243,19 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getAccessPolicyWithResponse#String}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getAccessPolicyWithResponse#String -->
+     * <pre>
+     * client.getAccessPolicyWithResponse&#40;leaseId&#41;.subscribe&#40;response -&gt; &#123;
+     *     System.out.printf&#40;&quot;Data Lake Access Type: %s%n&quot;, response.getValue&#40;&#41;.getDataLakeAccessType&#40;&#41;&#41;;
+     *
+     *     for &#40;DataLakeSignedIdentifier identifier : response.getValue&#40;&#41;.getIdentifiers&#40;&#41;&#41; &#123;
+     *         System.out.printf&#40;&quot;Identifier Name: %s, Permissions %s%n&quot;,
+     *             identifier.getId&#40;&#41;,
+     *             identifier.getAccessPolicy&#40;&#41;.getPermissions&#40;&#41;&#41;;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getAccessPolicyWithResponse#String -->
      *
      * @param leaseId The lease ID the active lease on the file system must match.
      * @return A reactive response containing the file system access policy.
@@ -855,7 +1277,8 @@ public class DataLakeFileSystemAsyncClient {
 //     *
 //     * <p><strong>Code Samples</strong></p>
 //     *
-//     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.rename#String}
+//     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.rename#String -->
+//     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.rename#String -->
 //     *
 //     * @param destinationContainerName The new name of the file system.
 //     * @return A {@link Mono} containing a {@link DataLakeFileSystemAsyncClient} used to interact with the renamed file system.
@@ -870,7 +1293,8 @@ public class DataLakeFileSystemAsyncClient {
 //     *
 //     * <p><strong>Code Samples</strong></p>
 //     *
-//     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.renameWithResponse#FileSystemRenameOptions}
+//     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.renameWithResponse#FileSystemRenameOptions -->
+//     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.renameWithResponse#FileSystemRenameOptions -->
 //     *
 //     * @param options {@link FileSystemRenameOptions}
 //     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a
@@ -936,7 +1360,17 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey -->
+     * <pre>
+     * OffsetDateTime myExpiryTime = OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;;
+     * FileSystemSasPermission myPermission = new FileSystemSasPermission&#40;&#41;.setReadPermission&#40;true&#41;;
+     *
+     * DataLakeServiceSasSignatureValues myValues = new DataLakeServiceSasSignatureValues&#40;expiryTime, permission&#41;
+     *     .setStartTime&#40;OffsetDateTime.now&#40;&#41;&#41;;
+     *
+     * client.generateUserDelegationSas&#40;values, userDelegationKey&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey -->
      *
      * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
      * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
@@ -959,7 +1393,17 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey-String-Context}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey-String-Context -->
+     * <pre>
+     * OffsetDateTime myExpiryTime = OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;;
+     * FileSystemSasPermission myPermission = new FileSystemSasPermission&#40;&#41;.setReadPermission&#40;true&#41;;
+     *
+     * DataLakeServiceSasSignatureValues myValues = new DataLakeServiceSasSignatureValues&#40;expiryTime, permission&#41;
+     *     .setStartTime&#40;OffsetDateTime.now&#40;&#41;&#41;;
+     *
+     * client.generateUserDelegationSas&#40;values, userDelegationKey, accountName, new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey-String-Context -->
      *
      * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
      * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
@@ -983,7 +1427,17 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.generateSas#DataLakeServiceSasSignatureValues}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.generateSas#DataLakeServiceSasSignatureValues -->
+     * <pre>
+     * OffsetDateTime expiryTime = OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;;
+     * FileSystemSasPermission permission = new FileSystemSasPermission&#40;&#41;.setReadPermission&#40;true&#41;;
+     *
+     * DataLakeServiceSasSignatureValues values = new DataLakeServiceSasSignatureValues&#40;expiryTime, permission&#41;
+     *     .setStartTime&#40;OffsetDateTime.now&#40;&#41;&#41;;
+     *
+     * client.generateSas&#40;values&#41;; &#47;&#47; Client must be authenticated via StorageSharedKeyCredential
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.generateSas#DataLakeServiceSasSignatureValues -->
      *
      * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
      *
@@ -1000,7 +1454,18 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.generateSas#DataLakeServiceSasSignatureValues-Context}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.generateSas#DataLakeServiceSasSignatureValues-Context -->
+     * <pre>
+     * OffsetDateTime expiryTime = OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;;
+     * FileSystemSasPermission permission = new FileSystemSasPermission&#40;&#41;.setReadPermission&#40;true&#41;;
+     *
+     * DataLakeServiceSasSignatureValues values = new DataLakeServiceSasSignatureValues&#40;expiryTime, permission&#41;
+     *     .setStartTime&#40;OffsetDateTime.now&#40;&#41;&#41;;
+     *
+     * &#47;&#47; Client must be authenticated via StorageSharedKeyCredential
+     * client.generateSas&#40;values, new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.generateSas#DataLakeServiceSasSignatureValues-Context -->
      *
      * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
      * @param context Additional context that is passed through the code when generating a SAS.

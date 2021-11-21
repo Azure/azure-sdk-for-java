@@ -37,8 +37,14 @@ public class MappingCosmosConverter
     JsonNode>,
     ApplicationContextAware {
 
-    protected final MappingContext<? extends CosmosPersistentEntity<?>,
-        CosmosPersistentProperty> mappingContext;
+    /**
+     * Mapping context
+     */
+    protected final MappingContext<? extends CosmosPersistentEntity<?>, CosmosPersistentProperty> mappingContext;
+
+    /**
+     * Generic conversion service
+     */
     protected GenericConversionService conversionService;
     private ApplicationContext applicationContext;
     private final ObjectMapper objectMapper;
@@ -60,10 +66,7 @@ public class MappingCosmosConverter
 
     @Override
     public <R> R read(Class<R> type, JsonNode jsonNode) {
-
         final CosmosPersistentEntity<?> entity = mappingContext.getPersistentEntity(type);
-        Assert.notNull(entity, "Entity is null.");
-
         return readInternal(entity, type, jsonNode);
     }
 
@@ -74,8 +77,13 @@ public class MappingCosmosConverter
 
     private <R> R readInternal(final CosmosPersistentEntity<?> entity, Class<R> type,
                                final JsonNode jsonNode) {
-        final ObjectNode objectNode = jsonNode.deepCopy();
         try {
+            if (jsonNode.isValueNode()) {
+                return objectMapper.treeToValue(jsonNode, type);
+            }
+
+            Assert.notNull(entity, "Entity is null.");
+            final ObjectNode objectNode = jsonNode.deepCopy();
             final CosmosPersistentProperty idProperty = entity.getIdProperty();
             final JsonNode idValue = jsonNode.get("id");
             if (idProperty != null) {
@@ -90,7 +98,7 @@ public class MappingCosmosConverter
             return objectMapper.treeToValue(objectNode, type);
         } catch (JsonProcessingException e) {
             throw new IllegalStateException("Failed to read the source document "
-                + objectNode.toPrettyString()
+                + jsonNode.toPrettyString()
                 + "  to target type "
                 + type, e);
         }
@@ -227,4 +235,5 @@ public class MappingCosmosConverter
 
         return fromPropertyValue;
     }
+
 }

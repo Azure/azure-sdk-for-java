@@ -5,6 +5,8 @@ package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.RequestConditions;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -12,22 +14,29 @@ import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.ProgressReceiver;
 import com.azure.storage.blob.implementation.models.BlobItemInternal;
 import com.azure.storage.blob.implementation.models.BlobItemPropertiesInternal;
+import com.azure.storage.blob.implementation.models.BlobName;
 import com.azure.storage.blob.implementation.models.BlobTag;
 import com.azure.storage.blob.implementation.models.BlobTags;
 import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
 import com.azure.storage.blob.implementation.models.FilterBlobItem;
 import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
+import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
+import com.azure.storage.blob.models.BlobImmutabilityPolicy;
+import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobItemProperties;
 import com.azure.storage.blob.models.BlobLeaseRequestConditions;
+import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryHeaders;
+import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ObjectReplicationPolicy;
 import com.azure.storage.blob.models.ObjectReplicationRule;
 import com.azure.storage.blob.models.ObjectReplicationStatus;
 import com.azure.storage.blob.models.PageBlobCopyIncrementalRequestConditions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.TaggedBlobItem;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 
 import java.io.IOException;
@@ -35,6 +44,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +56,7 @@ import java.util.Map;
  */
 public class ModelHelper {
 
-    private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
+    private static final SerializerAdapter SERIALIZER = JacksonAdapter.createDefaultSerializerAdapter();
     private static final ClientLogger LOGGER = new ClientLogger(ModelHelper.class);
 
 
@@ -239,6 +249,13 @@ public class ModelHelper {
         headers.setObjectReplicationSourcePolicies(objectReplicationSourcePolicies);
         headers.setSealed(internalHeaders.isXMsBlobSealed());
         headers.setLastAccessedTime(internalHeaders.getXMsLastAccessTime());
+        headers.setCurrentVersion(internalHeaders.isXMsIsCurrentVersion());
+
+        headers.setImmutabilityPolicy(new BlobImmutabilityPolicy()
+            .setPolicyMode(internalHeaders.getXMsImmutabilityPolicyMode() == null ? null
+            : BlobImmutabilityPolicyMode.fromString(internalHeaders.getXMsImmutabilityPolicyMode()))
+            .setExpiryTime(internalHeaders.getXMsImmutabilityPolicyUntilDate()));
+        headers.setHasLegalHold(internalHeaders.isXMsLegalHold());
 
         return headers;
     }
@@ -251,7 +268,7 @@ public class ModelHelper {
      */
     public static BlobItem populateBlobItem(BlobItemInternal blobItemInternal) {
         BlobItem blobItem = new BlobItem();
-        blobItem.setName(blobItemInternal.getName());
+        blobItem.setName(toBlobNameString(blobItemInternal.getName()));
         blobItem.setDeleted(blobItemInternal.isDeleted());
         blobItem.setSnapshot(blobItemInternal.getSnapshot());
         blobItem.setProperties(populateBlobItemProperties(blobItemInternal.getProperties()));
@@ -265,7 +282,15 @@ public class ModelHelper {
         blobItem.setObjectReplicationSourcePolicies(
             transformObjectReplicationMetadata(blobItemInternal.getObjectReplicationMetadata()));
 
+        blobItem.setHasVersionsOnly(blobItemInternal.isHasVersionsOnly());
+
         return blobItem;
+    }
+
+    public static String toBlobNameString(BlobName blobName) {
+        return blobName.isEncoded() != null && blobName.isEncoded()
+            ? Utility.urlDecode(blobName.getContent())
+            : blobName.getContent();
     }
 
     public static TaggedBlobItem populateTaggedBlobItem(FilterBlobItem filterBlobItem) {
@@ -329,6 +354,11 @@ public class ModelHelper {
         blobItemProperties.setRehydratePriority(blobItemPropertiesInternal.getRehydratePriority());
         blobItemProperties.setSealed(blobItemPropertiesInternal.isSealed());
         blobItemProperties.setLastAccessedTime(blobItemPropertiesInternal.getLastAccessedOn());
+        blobItemProperties.setExpiryTime(blobItemPropertiesInternal.getExpiresOn());
+        blobItemProperties.setImmutabilityPolicy(new BlobImmutabilityPolicy()
+            .setExpiryTime(blobItemPropertiesInternal.getImmutabilityPolicyExpiresOn())
+            .setPolicyMode(blobItemPropertiesInternal.getImmutabilityPolicyMode()));
+        blobItemProperties.setHasLegalHold(blobItemPropertiesInternal.isLegalHold());
 
         return blobItemProperties;
     }
@@ -483,5 +513,90 @@ public class ModelHelper {
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
+    }
+
+    public static void validateConditionsNotPresent(BlobRequestConditions requestConditions,
+        EnumSet<BlobRequestConditionProperty> invalidConditions, String operationName, String parameterName) {
+        if (requestConditions == null) {
+            return;
+        }
+        List<String> invalidConditionsFound = null;
+
+        for (BlobRequestConditionProperty condition : invalidConditions) {
+            switch (condition) {
+                case LEASE_ID:
+                    if (requestConditions.getLeaseId() != null) {
+                        invalidConditionsFound = invalidConditionsFound == null ? new ArrayList<>()
+                            : invalidConditionsFound;
+                        invalidConditionsFound.add(BlobRequestConditionProperty.LEASE_ID.toString());
+                    }
+                    break;
+                case TAGS_CONDITIONS:
+                    if (requestConditions.getTagsConditions() != null) {
+                        invalidConditionsFound = invalidConditionsFound == null ? new ArrayList<>()
+                            : invalidConditionsFound;
+                        invalidConditionsFound.add(BlobRequestConditionProperty.TAGS_CONDITIONS.toString());
+                    }
+                    break;
+                case IF_MODIFIED_SINCE:
+                    if (requestConditions.getIfModifiedSince() != null) {
+                        invalidConditionsFound = invalidConditionsFound == null ? new ArrayList<>()
+                            : invalidConditionsFound;
+                        invalidConditionsFound.add(BlobRequestConditionProperty.IF_MODIFIED_SINCE.toString());
+                    }
+                    break;
+                case IF_UNMODIFIED_SINCE:
+                    if (requestConditions.getIfUnmodifiedSince() != null) {
+                        invalidConditionsFound = invalidConditionsFound == null ? new ArrayList<>()
+                            : invalidConditionsFound;
+                        invalidConditionsFound.add(BlobRequestConditionProperty.IF_UNMODIFIED_SINCE.toString());
+                    }
+                    break;
+                case IF_MATCH:
+                    if (requestConditions.getIfMatch() != null) {
+                        invalidConditionsFound = invalidConditionsFound == null ? new ArrayList<>()
+                            : invalidConditionsFound;
+                        invalidConditionsFound.add(BlobRequestConditionProperty.IF_MATCH.toString());
+                    }
+                    break;
+                case IF_NONE_MATCH:
+                    if (requestConditions.getIfNoneMatch() != null) {
+                        invalidConditionsFound = invalidConditionsFound == null ? new ArrayList<>()
+                            : invalidConditionsFound;
+                        invalidConditionsFound.add(BlobRequestConditionProperty.IF_NONE_MATCH.toString());
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+        if (invalidConditionsFound != null && !invalidConditionsFound.isEmpty()) {
+            String unsupported = String.join(", ", invalidConditionsFound);
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("%s does not support the %s request condition(s) for parameter '%s'.",
+                    operationName, unsupported, parameterName)));
+        }
+    }
+
+    public static Response<BlobProperties> buildBlobPropertiesResponse(BlobDownloadAsyncResponse response) {
+        // blobSize determination - contentLength only returns blobSize if the download is not chunked.
+        BlobDownloadHeaders hd = response.getDeserializedHeaders();
+        long blobSize = getBlobLength(hd);
+        BlobProperties properties = new BlobProperties(null, hd.getLastModified(), hd.getETag(), blobSize,
+            hd.getContentType(), hd.getContentMd5(), hd.getContentEncoding(), hd.getContentDisposition(),
+            hd.getContentLanguage(), hd.getCacheControl(), hd.getBlobSequenceNumber(), hd.getBlobType(),
+            hd.getLeaseStatus(), hd.getLeaseState(), hd.getLeaseDuration(), hd.getCopyId(), hd.getCopyStatus(),
+            hd.getCopySource(), hd.getCopyProgress(), hd.getCopyCompletionTime(), hd.getCopyStatusDescription(),
+            hd.isServerEncrypted(), null, null, null, null, null,
+            hd.getEncryptionKeySha256(), hd.getEncryptionScope(), null, hd.getMetadata(),
+            hd.getBlobCommittedBlockCount(), hd.getTagCount(), hd.getVersionId(), null,
+            hd.getObjectReplicationSourcePolicies(), hd.getObjectReplicationDestinationPolicyId(), null,
+            hd.isSealed(), hd.getLastAccessedTime(), null, hd.getImmutabilityPolicy(), hd.hasLegalHold());
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), properties);
+    }
+
+    public static long getBlobLength(BlobDownloadHeaders headers) {
+        return headers.getContentRange() == null ? headers.getContentLength()
+            : ChunkedDownloadUtils.extractTotalBlobLength(headers.getContentRange());
     }
 }

@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.datafactory.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -15,7 +15,7 @@ import java.util.Map;
 /** The SAP BW cube dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SapBwCube")
-@Immutable
+@Fluent
 public final class SapBwCubeDataset extends Dataset {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SapBwCubeDataset.class);
 

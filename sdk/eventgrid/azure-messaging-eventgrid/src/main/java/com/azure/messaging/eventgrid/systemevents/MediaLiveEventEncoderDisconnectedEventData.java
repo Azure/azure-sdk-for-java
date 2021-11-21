@@ -7,7 +7,10 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Encoder disconnected event data. */
+/**
+ * Encoder disconnected event data. Schema of the Data property of an EventGridEvent for a
+ * Microsoft.Media.LiveEventEncoderDisconnected event.
+ */
 @Immutable
 public final class MediaLiveEventEncoderDisconnectedEventData {
     /*

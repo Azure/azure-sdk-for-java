@@ -124,6 +124,13 @@ public final class AzureBlobFSSource extends CopySource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobFSSource withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

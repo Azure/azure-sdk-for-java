@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.List;
 
 /** A copy activity source for a Cassandra database. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -95,7 +94,7 @@ public final class CassandraSource extends TabularSource {
 
     /** {@inheritDoc} */
     @Override
-    public CassandraSource withAdditionalColumns(List<AdditionalColumns> additionalColumns) {
+    public CassandraSource withAdditionalColumns(Object additionalColumns) {
         super.withAdditionalColumns(additionalColumns);
         return this;
     }
@@ -118,6 +117,13 @@ public final class CassandraSource extends TabularSource {
     @Override
     public CassandraSource withMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.withMaxConcurrentConnections(maxConcurrentConnections);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CassandraSource withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
         return this;
     }
 

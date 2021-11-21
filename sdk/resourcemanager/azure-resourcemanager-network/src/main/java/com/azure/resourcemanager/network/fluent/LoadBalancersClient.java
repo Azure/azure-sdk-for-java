@@ -13,12 +13,15 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.network.fluent.models.BackendAddressInboundNatRulePortMappingsInner;
 import com.azure.resourcemanager.network.fluent.models.LoadBalancerInner;
+import com.azure.resourcemanager.network.models.LoadBalancerVipSwapRequest;
+import com.azure.resourcemanager.network.models.QueryInboundNatRulePortMappingRequest;
+import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -48,7 +51,7 @@ public interface LoadBalancersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String loadBalancerName);
 
     /**
@@ -61,7 +64,7 @@ public interface LoadBalancersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String loadBalancerName);
 
     /**
@@ -75,7 +78,7 @@ public interface LoadBalancersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String loadBalancerName, Context context);
 
     /**
@@ -213,7 +216,7 @@ public interface LoadBalancersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return loadBalancer resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<LoadBalancerInner>, LoadBalancerInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters);
 
@@ -228,7 +231,7 @@ public interface LoadBalancersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return loadBalancer resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<LoadBalancerInner>, LoadBalancerInner> beginCreateOrUpdate(
         String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters);
 
@@ -244,7 +247,7 @@ public interface LoadBalancersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return loadBalancer resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<LoadBalancerInner>, LoadBalancerInner> beginCreateOrUpdate(
         String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters, Context context);
 
@@ -298,7 +301,7 @@ public interface LoadBalancersClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update load balancer tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -306,55 +309,42 @@ public interface LoadBalancersClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<LoadBalancerInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String loadBalancerName, Map<String, String> tags);
+        String resourceGroupName, String loadBalancerName, TagsObject parameters);
 
     /**
      * Updates a load balancer tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update load balancer tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return loadBalancer resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<LoadBalancerInner> updateTagsAsync(
-        String resourceGroupName, String loadBalancerName, Map<String, String> tags);
+    Mono<LoadBalancerInner> updateTagsAsync(String resourceGroupName, String loadBalancerName, TagsObject parameters);
 
     /**
      * Updates a load balancer tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
+     * @param parameters Parameters supplied to update load balancer tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return loadBalancer resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<LoadBalancerInner> updateTagsAsync(String resourceGroupName, String loadBalancerName);
+    LoadBalancerInner updateTags(String resourceGroupName, String loadBalancerName, TagsObject parameters);
 
     /**
      * Updates a load balancer tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return loadBalancer resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    LoadBalancerInner updateTags(String resourceGroupName, String loadBalancerName);
-
-    /**
-     * Updates a load balancer tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update load balancer tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -363,7 +353,7 @@ public interface LoadBalancersClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<LoadBalancerInner> updateTagsWithResponse(
-        String resourceGroupName, String loadBalancerName, Map<String, String> tags, Context context);
+        String resourceGroupName, String loadBalancerName, TagsObject parameters, Context context);
 
     /**
      * Gets all the load balancers in a subscription.
@@ -433,4 +423,239 @@ public interface LoadBalancersClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LoadBalancerInner> listByResourceGroup(String resourceGroupName, Context context);
+
+    /**
+     * Swaps VIPs between two load balancers.
+     *
+     * @param location The region where load balancers are located at.
+     * @param parameters Parameters that define which VIPs should be swapped.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> swapPublicIpAddressesWithResponseAsync(
+        String location, LoadBalancerVipSwapRequest parameters);
+
+    /**
+     * Swaps VIPs between two load balancers.
+     *
+     * @param location The region where load balancers are located at.
+     * @param parameters Parameters that define which VIPs should be swapped.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginSwapPublicIpAddressesAsync(
+        String location, LoadBalancerVipSwapRequest parameters);
+
+    /**
+     * Swaps VIPs between two load balancers.
+     *
+     * @param location The region where load balancers are located at.
+     * @param parameters Parameters that define which VIPs should be swapped.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginSwapPublicIpAddresses(
+        String location, LoadBalancerVipSwapRequest parameters);
+
+    /**
+     * Swaps VIPs between two load balancers.
+     *
+     * @param location The region where load balancers are located at.
+     * @param parameters Parameters that define which VIPs should be swapped.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginSwapPublicIpAddresses(
+        String location, LoadBalancerVipSwapRequest parameters, Context context);
+
+    /**
+     * Swaps VIPs between two load balancers.
+     *
+     * @param location The region where load balancers are located at.
+     * @param parameters Parameters that define which VIPs should be swapped.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> swapPublicIpAddressesAsync(String location, LoadBalancerVipSwapRequest parameters);
+
+    /**
+     * Swaps VIPs between two load balancers.
+     *
+     * @param location The region where load balancers are located at.
+     * @param parameters Parameters that define which VIPs should be swapped.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void swapPublicIpAddresses(String location, LoadBalancerVipSwapRequest parameters);
+
+    /**
+     * Swaps VIPs between two load balancers.
+     *
+     * @param location The region where load balancers are located at.
+     * @param parameters Parameters that define which VIPs should be swapped.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void swapPublicIpAddresses(String location, LoadBalancerVipSwapRequest parameters, Context context);
+
+    /**
+     * List of inbound NAT rule port mappings.
+     *
+     * @param groupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param backendPoolName The name of the load balancer backend address pool.
+     * @param parameters Query inbound NAT rule port mapping request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response for a QueryInboundNatRulePortMapping API.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> listInboundNatRulePortMappingsWithResponseAsync(
+        String groupName,
+        String loadBalancerName,
+        String backendPoolName,
+        QueryInboundNatRulePortMappingRequest parameters);
+
+    /**
+     * List of inbound NAT rule port mappings.
+     *
+     * @param groupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param backendPoolName The name of the load balancer backend address pool.
+     * @param parameters Query inbound NAT rule port mapping request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response for a QueryInboundNatRulePortMapping API.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<BackendAddressInboundNatRulePortMappingsInner>, BackendAddressInboundNatRulePortMappingsInner>
+        beginListInboundNatRulePortMappingsAsync(
+            String groupName,
+            String loadBalancerName,
+            String backendPoolName,
+            QueryInboundNatRulePortMappingRequest parameters);
+
+    /**
+     * List of inbound NAT rule port mappings.
+     *
+     * @param groupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param backendPoolName The name of the load balancer backend address pool.
+     * @param parameters Query inbound NAT rule port mapping request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response for a QueryInboundNatRulePortMapping API.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<BackendAddressInboundNatRulePortMappingsInner>, BackendAddressInboundNatRulePortMappingsInner>
+        beginListInboundNatRulePortMappings(
+            String groupName,
+            String loadBalancerName,
+            String backendPoolName,
+            QueryInboundNatRulePortMappingRequest parameters);
+
+    /**
+     * List of inbound NAT rule port mappings.
+     *
+     * @param groupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param backendPoolName The name of the load balancer backend address pool.
+     * @param parameters Query inbound NAT rule port mapping request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response for a QueryInboundNatRulePortMapping API.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<BackendAddressInboundNatRulePortMappingsInner>, BackendAddressInboundNatRulePortMappingsInner>
+        beginListInboundNatRulePortMappings(
+            String groupName,
+            String loadBalancerName,
+            String backendPoolName,
+            QueryInboundNatRulePortMappingRequest parameters,
+            Context context);
+
+    /**
+     * List of inbound NAT rule port mappings.
+     *
+     * @param groupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param backendPoolName The name of the load balancer backend address pool.
+     * @param parameters Query inbound NAT rule port mapping request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response for a QueryInboundNatRulePortMapping API.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<BackendAddressInboundNatRulePortMappingsInner> listInboundNatRulePortMappingsAsync(
+        String groupName,
+        String loadBalancerName,
+        String backendPoolName,
+        QueryInboundNatRulePortMappingRequest parameters);
+
+    /**
+     * List of inbound NAT rule port mappings.
+     *
+     * @param groupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param backendPoolName The name of the load balancer backend address pool.
+     * @param parameters Query inbound NAT rule port mapping request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response for a QueryInboundNatRulePortMapping API.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BackendAddressInboundNatRulePortMappingsInner listInboundNatRulePortMappings(
+        String groupName,
+        String loadBalancerName,
+        String backendPoolName,
+        QueryInboundNatRulePortMappingRequest parameters);
+
+    /**
+     * List of inbound NAT rule port mappings.
+     *
+     * @param groupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param backendPoolName The name of the load balancer backend address pool.
+     * @param parameters Query inbound NAT rule port mapping request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response for a QueryInboundNatRulePortMapping API.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BackendAddressInboundNatRulePortMappingsInner listInboundNatRulePortMappings(
+        String groupName,
+        String loadBalancerName,
+        String backendPoolName,
+        QueryInboundNatRulePortMappingRequest parameters,
+        Context context);
 }

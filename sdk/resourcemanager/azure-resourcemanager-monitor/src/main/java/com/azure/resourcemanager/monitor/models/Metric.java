@@ -31,8 +31,7 @@ public interface Metric extends HasInnerModel<MetricInner> {
     LocalizableString name();
 
     /**
-     * Get the unit of the metric. Possible values include: 'Count', 'Bytes', 'Seconds', 'CountPerSecond',
-     * 'BytesPerSecond', 'Percent', 'MilliSeconds', 'ByteSeconds', 'Unspecified'.
+     * Get the unit of the metric.
      *
      * @return the unit value
      */

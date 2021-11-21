@@ -1,7 +1,46 @@
 # Release History
 
-## 2.5.0-beta.1 (Unreleased)
+## 2.10.0-beta.1 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.9.0 (2021-10-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources
+
+## 2.8.0 (2021-09-15)
+
+### Dependency Updates
+
+- Updated core dependency from resources
+
+## 2.7.0 (2021-08-12)
+
+### Dependency Updates
+
+- Updated `api-version` to `2021-04-01`.
+
+### Breaking Changes
+
+- Class `AggregationType` is renamed to `AggregationTypeEnum`.
+- Enum `Unit` changed to subclass of `ExpandableStringEnum`.
+
+## 2.6.0 (2021-06-18)
+
+- Updated core dependency from resources
+
+## 2.5.0 (2021-05-28)
+- Updated core dependency from resources
 
 ## 2.4.0 (2021-04-28)
 

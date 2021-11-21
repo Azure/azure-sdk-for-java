@@ -1649,7 +1649,7 @@
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "6ca31e2c-e3e1-4efd-951a-fdb3b58304e7",
-      "Body" : "{\r\n  \"startTime\": \"2018-08-07T23:57:06.954567+00:00\",\r\n  \"endTime\": \"2018-08-07T23:57:07.1733107+00:00\",\r\n  \"status\": \"Succeeded\",\r\n  \"properties\": {\r\n    \"output\": {\r\n  \"accessSAS\": \"https://md-hppxghwckdc0.blob.core.windows.net/jw2p3qdjhn0x/abcd?sv=2017-04-17&sr=b&si=1842b66c-7221-4e34-8a02-92eb4fd77420&sig=***REMOVED***\"\r\n}\r\n  },\r\n  \"name\": \"c8866164-1096-4027-b8d9-7e71248d3901\"\r\n}"
+      "Body" : "{\r\n  \"startTime\": \"2018-08-07T23:57:06.954567+00:00\",\r\n  \"endTime\": \"2018-08-07T23:57:07.1733107+00:00\",\r\n  \"status\": \"Succeeded\",\r\n  \"properties\": {\r\n    \"output\": {\r\n  \"accessSAS\": \"***REMOVED***\"\r\n}\r\n  },\r\n  \"name\": \"c8866164-1096-4027-b8d9-7e71248d3901\"\r\n}"
     }
   }, {
     "Method" : "GET",
@@ -1762,7 +1762,7 @@
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "54baac2f-7781-476e-a623-19d1c09af8f5",
-      "Body" : "{\r\n  \"startTime\": \"2018-08-07T23:57:37.2045624+00:00\",\r\n  \"endTime\": \"2018-08-07T23:57:37.407689+00:00\",\r\n  \"status\": \"Succeeded\",\r\n  \"properties\": {\r\n    \"output\": {\r\n  \"accessSAS\": \"https://md-hppxghwckdc0.blob.core.windows.net/hvxm2wkvqp52/abcd?sv=2017-04-17&sr=b&si=f30ba03b-54b0-4154-acb2-80b02f451db3&sig=***REMOVED***\"\r\n}\r\n  },\r\n  \"name\": \"0382fdf5-4fa9-42ea-aba5-7ce7a46d1efd\"\r\n}"
+      "Body" : "{\r\n  \"startTime\": \"2018-08-07T23:57:37.2045624+00:00\",\r\n  \"endTime\": \"2018-08-07T23:57:37.407689+00:00\",\r\n  \"status\": \"Succeeded\",\r\n  \"properties\": {\r\n    \"output\": {\r\n  \"accessSAS\": \"***REMOVED***\"\r\n}\r\n  },\r\n  \"name\": \"0382fdf5-4fa9-42ea-aba5-7ce7a46d1efd\"\r\n}"
     }
   }, {
     "Method" : "DELETE",

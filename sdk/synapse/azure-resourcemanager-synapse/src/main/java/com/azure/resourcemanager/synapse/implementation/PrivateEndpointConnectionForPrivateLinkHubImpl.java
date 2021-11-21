@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.synapse.implementation;
 
 import com.azure.resourcemanager.synapse.fluent.models.PrivateEndpointConnectionForPrivateLinkHubInner;
+import com.azure.resourcemanager.synapse.fluent.models.PrivateEndpointConnectionProperties;
 import com.azure.resourcemanager.synapse.models.PrivateEndpointConnectionForPrivateLinkHub;
-import com.azure.resourcemanager.synapse.models.PrivateEndpointConnectionProperties;
 
 public final class PrivateEndpointConnectionForPrivateLinkHubImpl
     implements PrivateEndpointConnectionForPrivateLinkHub {

@@ -4,26 +4,26 @@
 
 package com.azure.resourcemanager.cognitiveservices.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A metric name. */
-@Immutable
+@Fluent
 public final class MetricName {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricName.class);
 
     /*
      * The name of the metric.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "value")
     private String value;
 
     /*
      * The friendly name of the metric.
      */
-    @JsonProperty(value = "localizedValue", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "localizedValue")
     private String localizedValue;
 
     /**
@@ -36,12 +36,34 @@ public final class MetricName {
     }
 
     /**
+     * Set the value property: The name of the metric.
+     *
+     * @param value the value value to set.
+     * @return the MetricName object itself.
+     */
+    public MetricName withValue(String value) {
+        this.value = value;
+        return this;
+    }
+
+    /**
      * Get the localizedValue property: The friendly name of the metric.
      *
      * @return the localizedValue value.
      */
     public String localizedValue() {
         return this.localizedValue;
+    }
+
+    /**
+     * Set the localizedValue property: The friendly name of the metric.
+     *
+     * @param localizedValue the localizedValue value to set.
+     * @return the MetricName object itself.
+     */
+    public MetricName withLocalizedValue(String localizedValue) {
+        this.localizedValue = localizedValue;
+        return this;
     }
 
     /**

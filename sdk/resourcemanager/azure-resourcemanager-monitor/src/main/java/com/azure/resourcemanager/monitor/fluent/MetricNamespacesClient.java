@@ -42,6 +42,18 @@ public interface MetricNamespacesClient {
      * Lists the metric namespaces for the resource.
      *
      * @param resourceUri The identifier of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents collection of metric namespaces.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MetricNamespaceInner> list(String resourceUri);
+
+    /**
+     * Lists the metric namespaces for the resource.
+     *
+     * @param resourceUri The identifier of the resource.
      * @param startTime The ISO 8601 conform Date start time from which to query for metric namespaces.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -51,16 +63,4 @@ public interface MetricNamespacesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MetricNamespaceInner> list(String resourceUri, String startTime, Context context);
-
-    /**
-     * Lists the metric namespaces for the resource.
-     *
-     * @param resourceUri The identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of metric namespaces.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MetricNamespaceInner> list(String resourceUri);
 }

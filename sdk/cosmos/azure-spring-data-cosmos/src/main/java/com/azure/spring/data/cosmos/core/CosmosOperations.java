@@ -282,6 +282,18 @@ public interface CosmosOperations {
     <T> Slice<T> sliceQuery(CosmosQuery query, Class<T> domainType, String containerName);
 
     /**
+     * Run custom SQL query
+     *
+     * @param querySpec the query spec
+     * @param pageable the pageable
+     * @param domainType the domain type
+     * @param returnType the return type
+     * @param <T> the type parameter
+     * @return the Page
+     */
+    <T> Slice<T> runSliceQuery(SqlQuerySpec querySpec, Pageable pageable, Class<?> domainType, Class<T> returnType);
+
+    /**
      * Count
      *
      * @param containerName the container name
@@ -298,6 +310,16 @@ public interface CosmosOperations {
      * @return count result
      */
     <T> long count(CosmosQuery query, String containerName);
+
+    /**
+     * Count
+     *
+     * @param querySpec the document query spec
+     * @param containerName the container name
+     * @param <T> type class of domainType
+     * @return count result
+     */
+    <T> long count(SqlQuerySpec querySpec, String containerName);
 
     /**
      * To get converter

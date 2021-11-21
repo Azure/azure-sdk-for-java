@@ -5,6 +5,7 @@ package com.azure.search.documents;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelinePosition;
@@ -51,11 +52,27 @@ import static com.azure.search.documents.implementation.util.Utility.getDefaultS
  *
  * <p><strong>Instantiating an asynchronous Search Client</strong></p>
  *
- * {@codesnippet com.azure.search.documents.SearchAsyncClient.instantiation}
+ * <!-- src_embed com.azure.search.documents.SearchAsyncClient.instantiation -->
+ * <pre>
+ * SearchAsyncClient searchAsyncClient = new SearchClientBuilder&#40;&#41;
+ *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .indexName&#40;&quot;&#123;indexName&#125;&quot;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchAsyncClient.instantiation -->
  *
  * <p><strong>Instantiating a synchronous Search Client</strong></p>
  *
- * {@codesnippet com.azure.search.documents.SearchClient.instantiation}
+ * <!-- src_embed com.azure.search.documents.SearchClient.instantiation -->
+ * <pre>
+ * SearchClient searchClient = new SearchClientBuilder&#40;&#41;
+ *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .indexName&#40;&quot;&#123;indexName&#125;&quot;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchClient.instantiation -->
  *
  * @see SearchClient
  * @see SearchAsyncClient
@@ -82,7 +99,9 @@ public final class SearchClientBuilder {
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
 
-    private AzureKeyCredential credential;
+    private AzureKeyCredential azureKeyCredential;
+    private TokenCredential tokenCredential;
+
     private SearchServiceVersion serviceVersion;
     private String endpoint;
     private HttpClient httpClient;
@@ -135,7 +154,7 @@ public final class SearchClientBuilder {
 
         HttpPipeline pipeline = getHttpPipeline();
         return new SearchAsyncClient(endpoint, indexName, buildVersion, pipeline, jsonSerializer,
-            Utility.buildRestClient(endpoint, indexName, pipeline, getDefaultSerializerAdapter()));
+            Utility.buildRestClient(buildVersion, endpoint, indexName, pipeline, getDefaultSerializerAdapter()));
     }
 
     /**
@@ -161,9 +180,8 @@ public final class SearchClientBuilder {
             return httpPipeline;
         }
 
-        Objects.requireNonNull(credential, "'credential' cannot be null.");
         return Utility.buildHttpPipeline(clientOptions, httpLogOptions, configuration, retryPolicy,
-            credential, perCallPolicies, perRetryPolicies, httpClient);
+            azureKeyCredential, tokenCredential, perCallPolicies, perRetryPolicies, httpClient, logger);
     }
 
     /**
@@ -188,12 +206,20 @@ public final class SearchClientBuilder {
      *
      * @param credential The {@link AzureKeyCredential} used to authenticate HTTP requests.
      * @return The updated SearchClientBuilder object.
-     * @throws NullPointerException If {@code credential} is null.
-     * @throws IllegalArgumentException If {@link AzureKeyCredential#getKey()} is null or empty.
      */
     public SearchClientBuilder credential(AzureKeyCredential credential) {
-        Objects.requireNonNull(credential, "'credential' cannot be null.");
-        this.credential = credential;
+        this.azureKeyCredential = credential;
+        return this;
+    }
+
+    /**
+     * Sets the {@link TokenCredential} used to authenticate HTTP requests.
+     *
+     * @param credential The {@link TokenCredential} used to authenticate HTTP requests.
+     * @return The updated SearchClientBuilder object.
+     */
+    public SearchClientBuilder credential(TokenCredential credential) {
+        this.tokenCredential = credential;
         return this;
     }
 
@@ -410,9 +436,14 @@ public final class SearchClientBuilder {
         public SearchIndexingBufferedAsyncSender<T> buildAsyncSender() {
             validateIndexNameAndEndpoint();
             Objects.requireNonNull(documentKeyRetriever, "'documentKeyRetriever' cannot be null");
-            return new SearchIndexingBufferedAsyncSender<>(buildRestClient(endpoint, indexName, getHttpPipeline(),
-                getDefaultSerializerAdapter()), jsonSerializer, documentKeyRetriever, autoFlush, autoFlushInterval,
-                initialBatchActionCount, maxRetriesPerAction, throttlingDelay, maxThrottlingDelay,
+
+            SearchServiceVersion buildVersion = (serviceVersion == null)
+                ? SearchServiceVersion.getLatest()
+                : serviceVersion;
+
+            return new SearchIndexingBufferedAsyncSender<>(buildRestClient(buildVersion, endpoint, indexName,
+                getHttpPipeline(), getDefaultSerializerAdapter()), jsonSerializer, documentKeyRetriever, autoFlush,
+                autoFlushInterval, initialBatchActionCount, maxRetriesPerAction, throttlingDelay, maxThrottlingDelay,
                 onActionAddedConsumer, onActionSucceededConsumer, onActionErrorConsumer, onActionSentConsumer);
         }
 

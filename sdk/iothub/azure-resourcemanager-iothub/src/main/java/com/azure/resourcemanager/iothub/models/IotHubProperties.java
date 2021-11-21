@@ -26,6 +26,40 @@ public final class IotHubProperties {
     private List<SharedAccessSignatureAuthorizationRuleInner> authorizationPolicies;
 
     /*
+     * If true, SAS tokens with Iot hub scoped SAS keys cannot be used for
+     * authentication.
+     */
+    @JsonProperty(value = "disableLocalAuth")
+    private Boolean disableLocalAuth;
+
+    /*
+     * If true, all device(including Edge devices but excluding modules) scoped
+     * SAS keys cannot be used for authentication.
+     */
+    @JsonProperty(value = "disableDeviceSAS")
+    private Boolean disableDeviceSas;
+
+    /*
+     * If true, all module scoped SAS keys cannot be used for authentication.
+     */
+    @JsonProperty(value = "disableModuleSAS")
+    private Boolean disableModuleSas;
+
+    /*
+     * If true, egress from IotHub will be restricted to only the allowed FQDNs
+     * that are configured via allowedFqdnList.
+     */
+    @JsonProperty(value = "restrictOutboundNetworkAccess")
+    private Boolean restrictOutboundNetworkAccess;
+
+    /*
+     * List of allowed FQDNs(Fully Qualified Domain Name) for egress from Iot
+     * Hub.
+     */
+    @JsonProperty(value = "allowedFqdnList")
+    private List<String> allowedFqdnList;
+
+    /*
      * Whether requests from Public Network are allowed
      */
     @JsonProperty(value = "publicNetworkAccess")
@@ -36,6 +70,12 @@ public final class IotHubProperties {
      */
     @JsonProperty(value = "ipFilterRules")
     private List<IpFilterRule> ipFilterRules;
+
+    /*
+     * Network Rule Set Properties of IotHub
+     */
+    @JsonProperty(value = "networkRuleSets")
+    private NetworkRuleSetProperties networkRuleSets;
 
     /*
      * Specifies the minimum TLS version to support for this hub. Can be set to
@@ -155,6 +195,112 @@ public final class IotHubProperties {
     }
 
     /**
+     * Get the disableLocalAuth property: If true, SAS tokens with Iot hub scoped SAS keys cannot be used for
+     * authentication.
+     *
+     * @return the disableLocalAuth value.
+     */
+    public Boolean disableLocalAuth() {
+        return this.disableLocalAuth;
+    }
+
+    /**
+     * Set the disableLocalAuth property: If true, SAS tokens with Iot hub scoped SAS keys cannot be used for
+     * authentication.
+     *
+     * @param disableLocalAuth the disableLocalAuth value to set.
+     * @return the IotHubProperties object itself.
+     */
+    public IotHubProperties withDisableLocalAuth(Boolean disableLocalAuth) {
+        this.disableLocalAuth = disableLocalAuth;
+        return this;
+    }
+
+    /**
+     * Get the disableDeviceSas property: If true, all device(including Edge devices but excluding modules) scoped SAS
+     * keys cannot be used for authentication.
+     *
+     * @return the disableDeviceSas value.
+     */
+    public Boolean disableDeviceSas() {
+        return this.disableDeviceSas;
+    }
+
+    /**
+     * Set the disableDeviceSas property: If true, all device(including Edge devices but excluding modules) scoped SAS
+     * keys cannot be used for authentication.
+     *
+     * @param disableDeviceSas the disableDeviceSas value to set.
+     * @return the IotHubProperties object itself.
+     */
+    public IotHubProperties withDisableDeviceSas(Boolean disableDeviceSas) {
+        this.disableDeviceSas = disableDeviceSas;
+        return this;
+    }
+
+    /**
+     * Get the disableModuleSas property: If true, all module scoped SAS keys cannot be used for authentication.
+     *
+     * @return the disableModuleSas value.
+     */
+    public Boolean disableModuleSas() {
+        return this.disableModuleSas;
+    }
+
+    /**
+     * Set the disableModuleSas property: If true, all module scoped SAS keys cannot be used for authentication.
+     *
+     * @param disableModuleSas the disableModuleSas value to set.
+     * @return the IotHubProperties object itself.
+     */
+    public IotHubProperties withDisableModuleSas(Boolean disableModuleSas) {
+        this.disableModuleSas = disableModuleSas;
+        return this;
+    }
+
+    /**
+     * Get the restrictOutboundNetworkAccess property: If true, egress from IotHub will be restricted to only the
+     * allowed FQDNs that are configured via allowedFqdnList.
+     *
+     * @return the restrictOutboundNetworkAccess value.
+     */
+    public Boolean restrictOutboundNetworkAccess() {
+        return this.restrictOutboundNetworkAccess;
+    }
+
+    /**
+     * Set the restrictOutboundNetworkAccess property: If true, egress from IotHub will be restricted to only the
+     * allowed FQDNs that are configured via allowedFqdnList.
+     *
+     * @param restrictOutboundNetworkAccess the restrictOutboundNetworkAccess value to set.
+     * @return the IotHubProperties object itself.
+     */
+    public IotHubProperties withRestrictOutboundNetworkAccess(Boolean restrictOutboundNetworkAccess) {
+        this.restrictOutboundNetworkAccess = restrictOutboundNetworkAccess;
+        return this;
+    }
+
+    /**
+     * Get the allowedFqdnList property: List of allowed FQDNs(Fully Qualified Domain Name) for egress from Iot Hub.
+     *
+     * @return the allowedFqdnList value.
+     */
+    public List<String> allowedFqdnList() {
+        return this.allowedFqdnList;
+    }
+
+    /**
+     * Set the allowedFqdnList property: List of allowed FQDNs(Fully Qualified Domain Name) for egress from Iot Hub.
+     *
+     * @param allowedFqdnList the allowedFqdnList value to set.
+     * @return the IotHubProperties object itself.
+     */
+    public IotHubProperties withAllowedFqdnList(List<String> allowedFqdnList) {
+        this.allowedFqdnList = allowedFqdnList;
+        return this;
+    }
+
+    /**
      * Get the publicNetworkAccess property: Whether requests from Public Network are allowed.
      *
      * @return the publicNetworkAccess value.
@@ -191,6 +337,26 @@ public final class IotHubProperties {
      */
     public IotHubProperties withIpFilterRules(List<IpFilterRule> ipFilterRules) {
         this.ipFilterRules = ipFilterRules;
+        return this;
+    }
+
+    /**
+     * Get the networkRuleSets property: Network Rule Set Properties of IotHub.
+     *
+     * @return the networkRuleSets value.
+     */
+    public NetworkRuleSetProperties networkRuleSets() {
+        return this.networkRuleSets;
+    }
+
+    /**
+     * Set the networkRuleSets property: Network Rule Set Properties of IotHub.
+     *
+     * @param networkRuleSets the networkRuleSets value to set.
+     * @return the IotHubProperties object itself.
+     */
+    public IotHubProperties withNetworkRuleSets(NetworkRuleSetProperties networkRuleSets) {
+        this.networkRuleSets = networkRuleSets;
         return this;
     }
 
@@ -456,6 +622,9 @@ public final class IotHubProperties {
         }
         if (ipFilterRules() != null) {
             ipFilterRules().forEach(e -> e.validate());
+        }
+        if (networkRuleSets() != null) {
+            networkRuleSets().validate();
         }
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());

@@ -89,10 +89,8 @@ public interface PrivateEndpointConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String privateEndpointConnectionName, Context context);
+    void delete(String resourceGroupName, String accountName, String privateEndpointConnectionName, Context context);
 
     /**
      * Gets the specified private endpoint connection associated with the Cognitive Services account.
@@ -135,9 +133,8 @@ public interface PrivateEndpointConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    Response<Void> deleteByIdWithResponse(String id, Context context);
+    void deleteByIdWithResponse(String id, Context context);
 
     /**
      * Begins definition for a new PrivateEndpointConnection resource.

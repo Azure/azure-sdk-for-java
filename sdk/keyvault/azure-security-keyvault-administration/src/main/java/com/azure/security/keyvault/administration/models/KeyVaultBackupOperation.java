@@ -22,11 +22,13 @@ public final class KeyVaultBackupOperation extends KeyVaultLongRunningOperation 
      * @param error Error encountered, if any, during the {@link KeyVaultBackupOperation}.
      * @param startTime The start time of the {@link KeyVaultBackupOperation}.
      * @param endTime The end time of the {@link KeyVaultBackupOperation}.
-     * @param jobId Identifier for the full {@link KeyVaultBackupOperation}.
+     * @param operationId Identifier for the full {@link KeyVaultBackupOperation}.
      * @param azureStorageBlobContainerUrl The Azure blob storage container URI which contains the backup.
      */
-    public KeyVaultBackupOperation(String status, String statusDetails, KeyVaultError error, String jobId, OffsetDateTime startTime, OffsetDateTime endTime, String azureStorageBlobContainerUrl) {
-        super(status, statusDetails, error, jobId, startTime, endTime);
+    public KeyVaultBackupOperation(String status, String statusDetails, KeyVaultAdministrationError error,
+                                   String operationId, OffsetDateTime startTime, OffsetDateTime endTime,
+                                   String azureStorageBlobContainerUrl) {
+        super(status, statusDetails, error, operationId, startTime, endTime);
         this.azureStorageBlobContainerUrl = azureStorageBlobContainerUrl;
     }
 

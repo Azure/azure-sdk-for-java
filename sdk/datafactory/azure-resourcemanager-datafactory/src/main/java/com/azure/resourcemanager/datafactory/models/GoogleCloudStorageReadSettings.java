@@ -314,6 +314,13 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public GoogleCloudStorageReadSettings withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

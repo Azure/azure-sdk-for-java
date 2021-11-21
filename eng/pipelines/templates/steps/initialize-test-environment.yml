@@ -1,0 +1,68 @@
+parameters:
+  - name: ServiceDirectory
+    type: string
+  - name: Artifacts
+    type: object
+    default: []
+  - name: AdditionalModules
+    type: object
+    default: []
+  - name: CheckoutRecordings
+    type: boolean
+    default: false
+  - name: SDKType
+    type: string
+    default: client
+
+steps:
+  - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+    parameters:
+      Paths:
+        - '**/*.xml'
+        - 'sdk/${{ parameters.ServiceDirectory }}'
+        - ${{ if not(parameters.CheckoutRecordings) }}:
+          - '!sdk/**/test-recordings'
+          - '!sdk/**/session-records'
+
+  - task: UsePythonVersion@0
+    displayName: 'Use Python 3.6'
+    inputs:
+      versionSpec: '3.6'
+
+  - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
+    parameters:
+      AgentImage: $(OSVmImage)
+
+  - task: PythonScript@0
+    displayName: 'Set versions for source build'
+    inputs:
+      scriptPath: 'eng/versioning/set_versions.py'
+      arguments: '--build-type client --pst'
+    condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
+
+  - task: PythonScript@0
+    displayName: 'Update versions for source build'
+    inputs:
+      scriptPath: 'eng/versioning/update_versions.py'
+      arguments: '--update-type library --build-type client --sr'
+    condition: and(succeeded(), eq(variables['ShouldRunSourceTests'],'true'))
+
+  - template: generate-project-list.yml
+    parameters:
+      Artifacts: ${{ parameters.Artifacts }}
+      AdditionalModules: ${{ parameters.AdditionalModules }}
+      JobType: 'test'
+      SDKType: ${{ parameters.SDKType }}
+      ServiceDirectory: ${{ parameters.ServiceDirectory }}
+ 
+  - task: PythonScript@0
+    displayName: 'Generate directories variable for sparse checkout'
+    inputs:
+      scriptPath: 'eng/scripts/generate_from_source_pom.py'
+      arguments: '--set-pipeline-variable CheckoutDirectories --project-list $(ProjectList)'
+      workingDirectory: '$(System.DefaultWorkingDirectory)'
+
+  - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+    parameters:
+      SkipDefaultCheckout: true
+      Paths: $(CheckoutDirectories)

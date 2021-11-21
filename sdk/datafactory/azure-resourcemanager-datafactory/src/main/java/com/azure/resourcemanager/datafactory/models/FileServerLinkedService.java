@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.FileServerLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,119 +17,23 @@ import java.util.Map;
 /** File system linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("FileServer")
-@JsonFlatten
 @Fluent
-public class FileServerLinkedService extends LinkedService {
+public final class FileServerLinkedService extends LinkedService {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(FileServerLinkedService.class);
 
     /*
-     * Host name of the server. Type: string (or Expression with resultType
-     * string).
+     * File system linked service properties.
      */
-    @JsonProperty(value = "typeProperties.host", required = true)
-    private Object host;
-
-    /*
-     * User ID to logon the server. Type: string (or Expression with resultType
-     * string).
-     */
-    @JsonProperty(value = "typeProperties.userId")
-    private Object userId;
-
-    /*
-     * Password to logon the server.
-     */
-    @JsonProperty(value = "typeProperties.password")
-    private SecretBase password;
-
-    /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
-    private Object encryptedCredential;
+    @JsonProperty(value = "typeProperties", required = true)
+    private FileServerLinkedServiceTypeProperties innerTypeProperties = new FileServerLinkedServiceTypeProperties();
 
     /**
-     * Get the host property: Host name of the server. Type: string (or Expression with resultType string).
+     * Get the innerTypeProperties property: File system linked service properties.
      *
-     * @return the host value.
+     * @return the innerTypeProperties value.
      */
-    public Object host() {
-        return this.host;
-    }
-
-    /**
-     * Set the host property: Host name of the server. Type: string (or Expression with resultType string).
-     *
-     * @param host the host value to set.
-     * @return the FileServerLinkedService object itself.
-     */
-    public FileServerLinkedService withHost(Object host) {
-        this.host = host;
-        return this;
-    }
-
-    /**
-     * Get the userId property: User ID to logon the server. Type: string (or Expression with resultType string).
-     *
-     * @return the userId value.
-     */
-    public Object userId() {
-        return this.userId;
-    }
-
-    /**
-     * Set the userId property: User ID to logon the server. Type: string (or Expression with resultType string).
-     *
-     * @param userId the userId value to set.
-     * @return the FileServerLinkedService object itself.
-     */
-    public FileServerLinkedService withUserId(Object userId) {
-        this.userId = userId;
-        return this;
-    }
-
-    /**
-     * Get the password property: Password to logon the server.
-     *
-     * @return the password value.
-     */
-    public SecretBase password() {
-        return this.password;
-    }
-
-    /**
-     * Set the password property: Password to logon the server.
-     *
-     * @param password the password value to set.
-     * @return the FileServerLinkedService object itself.
-     */
-    public FileServerLinkedService withPassword(SecretBase password) {
-        this.password = password;
-        return this;
-    }
-
-    /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @return the encryptedCredential value.
-     */
-    public Object encryptedCredential() {
-        return this.encryptedCredential;
-    }
-
-    /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @param encryptedCredential the encryptedCredential value to set.
-     * @return the FileServerLinkedService object itself.
-     */
-    public FileServerLinkedService withEncryptedCredential(Object encryptedCredential) {
-        this.encryptedCredential = encryptedCredential;
-        return this;
+    private FileServerLinkedServiceTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -161,6 +65,100 @@ public class FileServerLinkedService extends LinkedService {
     }
 
     /**
+     * Get the host property: Host name of the server. Type: string (or Expression with resultType string).
+     *
+     * @return the host value.
+     */
+    public Object host() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().host();
+    }
+
+    /**
+     * Set the host property: Host name of the server. Type: string (or Expression with resultType string).
+     *
+     * @param host the host value to set.
+     * @return the FileServerLinkedService object itself.
+     */
+    public FileServerLinkedService withHost(Object host) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new FileServerLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withHost(host);
+        return this;
+    }
+
+    /**
+     * Get the userId property: User ID to logon the server. Type: string (or Expression with resultType string).
+     *
+     * @return the userId value.
+     */
+    public Object userId() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().userId();
+    }
+
+    /**
+     * Set the userId property: User ID to logon the server. Type: string (or Expression with resultType string).
+     *
+     * @param userId the userId value to set.
+     * @return the FileServerLinkedService object itself.
+     */
+    public FileServerLinkedService withUserId(Object userId) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new FileServerLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withUserId(userId);
+        return this;
+    }
+
+    /**
+     * Get the password property: Password to logon the server.
+     *
+     * @return the password value.
+     */
+    public SecretBase password() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().password();
+    }
+
+    /**
+     * Set the password property: Password to logon the server.
+     *
+     * @param password the password value to set.
+     * @return the FileServerLinkedService object itself.
+     */
+    public FileServerLinkedService withPassword(SecretBase password) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new FileServerLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withPassword(password);
+        return this;
+    }
+
+    /**
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @return the encryptedCredential value.
+     */
+    public Object encryptedCredential() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
+    }
+
+    /**
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @param encryptedCredential the encryptedCredential value to set.
+     * @return the FileServerLinkedService object itself.
+     */
+    public FileServerLinkedService withEncryptedCredential(Object encryptedCredential) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new FileServerLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEncryptedCredential(encryptedCredential);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -168,13 +166,13 @@ public class FileServerLinkedService extends LinkedService {
     @Override
     public void validate() {
         super.validate();
-        if (host() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property host in model FileServerLinkedService"));
-        }
-        if (password() != null) {
-            password().validate();
+                    new IllegalArgumentException(
+                        "Missing required property innerTypeProperties in model FileServerLinkedService"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

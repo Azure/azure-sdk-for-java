@@ -4,13 +4,12 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.spark.OperationContext;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.util.Beta;
 
+import java.time.Duration;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -36,6 +35,9 @@ public class CosmosQueryRequestOptions {
     private OperationContextAndListenerTuple operationContextAndListenerTuple;
     private String throughputControlGroupName;
     private DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions;
+    private Duration thresholdForDiagnosticsOnTracer;
+    private Map<String, String> customOptions;
+    private boolean indexMetricsEnabled;
 
     /**
      * Instantiates a new query request options.
@@ -66,6 +68,8 @@ public class CosmosQueryRequestOptions {
         this.throughputControlGroupName = options.throughputControlGroupName;
         this.operationContextAndListenerTuple = options.operationContextAndListenerTuple;
         this.dedicatedGatewayRequestOptions = options.dedicatedGatewayRequestOptions;
+        this.customOptions = options.customOptions;
+        this.indexMetricsEnabled = options.indexMetricsEnabled;
     }
 
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
@@ -455,6 +459,85 @@ public class CosmosQueryRequestOptions {
         return this;
     }
 
+    /**
+     * Gets the thresholdForDiagnosticsOnTracer, if latency on query operation is greater than this
+     * diagnostics will be send to open telemetry exporter as events in tracer span of end to end CRUD api.
+     *
+     * Default is 500 ms.
+     *
+     * @return  thresholdForDiagnosticsOnTracer the latency threshold for diagnostics on tracer.
+     */
+    public Duration getThresholdForDiagnosticsOnTracer() {
+        return thresholdForDiagnosticsOnTracer;
+    }
+
+    /**
+     * Sets the thresholdForDiagnosticsOnTracer, if latency on query operation is greater than this
+     * diagnostics will be send to open telemetry exporter as events in tracer span of end to end CRUD api.
+     *
+     * Default is 500 ms
+     *
+     * @param thresholdForDiagnosticsOnTracer the latency threshold for diagnostics on tracer.
+     * @return the CosmosQueryRequestOptions
+     */
+    public CosmosQueryRequestOptions setThresholdForDiagnosticsOnTracer(Duration thresholdForDiagnosticsOnTracer) {
+        this.thresholdForDiagnosticsOnTracer = thresholdForDiagnosticsOnTracer;
+        return this;
+    }
+
+    /**
+     * Gets indexMetricsEnabled, which is used to obtain the index metrics to understand how the query engine used existing
+     * indexes and could use potential new indexes.
+     * The results will be displayed in QueryMetrics. Please note that this options will incurs overhead, so it should be
+     * enabled when debuging slow queries.
+     *
+     * @return indexMetricsEnabled (default: false)
+     */
+    public boolean isIndexMetricsEnabled() {
+        return indexMetricsEnabled;
+    }
+
+    /**
+     * Sets indexMetricsEnabled, which is used to obtain the index metrics to understand how the query engine used existing
+     * indexes and could use potential new indexes.
+     * The results will be displayed in QueryMetrics. Please note that this options will incurs overhead, so it should be
+     * enabled when debuging slow queries.
+     *
+     * By default the indexMetrics are disabled.
+     *
+     * @param indexMetricsEnabled a boolean used to obtain the index metrics
+     * @return indexMetricsEnabled
+     */
+    public CosmosQueryRequestOptions setIndexMetricsEnabled(boolean indexMetricsEnabled) {
+        this.indexMetricsEnabled = indexMetricsEnabled;
+        return this;
+    }
+
+    /**
+     * Sets the custom query request option value by key
+     *
+     * @param name  a string representing the custom option's name
+     * @param value a string representing the custom option's value
+     *
+     * @return the CosmosQueryRequestOptions.
+     */
+    CosmosQueryRequestOptions setHeader(String name, String value) {
+        if (this.customOptions == null) {
+            this.customOptions = new HashMap<>();
+        }
+        this.customOptions.put(name, value);
+        return this;
+    }
+
+    /**
+     * Gets the custom query request options
+     *
+     * @return Map of custom request options
+     */
+    Map<String, String> getHeaders() {
+        return this.customOptions;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -472,6 +555,17 @@ public class CosmosQueryRequestOptions {
                 @Override
                 public OperationContextAndListenerTuple getOperationContext(CosmosQueryRequestOptions queryRequestOptions) {
                     return queryRequestOptions.getOperationContextAndListenerTuple();
+                }
+
+                @Override
+                public CosmosQueryRequestOptions setHeader(CosmosQueryRequestOptions queryRequestOptions, String name
+                    , String value) {
+                    return queryRequestOptions.setHeader(name, value);
+                }
+
+                @Override
+                public Map<String, String> getHeader(CosmosQueryRequestOptions queryRequestOptions) {
+                    return queryRequestOptions.getHeaders();
                 }
             });
     }

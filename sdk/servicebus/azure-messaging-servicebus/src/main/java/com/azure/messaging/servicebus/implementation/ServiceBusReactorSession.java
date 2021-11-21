@@ -55,6 +55,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
     private final Mono<ClaimsBasedSecurityNode> cbsNodeSupplier;
     private final AmqpConnection amqpConnection;
     private final AmqpRetryOptions retryOptions;
+    private final boolean distributedTransactionsSupport;
 
     /**
      * Creates a new AMQP session using proton-j.
@@ -68,11 +69,13 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
      * @param tokenManagerProvider Provides {@link TokenManager} that authorizes the client when performing
      *     operations on the message broker.
      * @param retryOptions Retry options.
+     * @param createOptions  the options to create {@link ServiceBusReactorSession}.
      */
     ServiceBusReactorSession(AmqpConnection amqpConnection, Session session, SessionHandler sessionHandler,
         String sessionName, ReactorProvider provider, ReactorHandlerProvider handlerProvider,
         Mono<ClaimsBasedSecurityNode> cbsNodeSupplier, TokenManagerProvider tokenManagerProvider,
-        MessageSerializer messageSerializer, AmqpRetryOptions retryOptions) {
+        MessageSerializer messageSerializer, AmqpRetryOptions retryOptions,
+        ServiceBusCreateSessionOptions createOptions) {
         super(amqpConnection, session, sessionHandler, sessionName, provider, handlerProvider, cbsNodeSupplier,
             tokenManagerProvider, messageSerializer, retryOptions);
         this.amqpConnection = amqpConnection;
@@ -80,6 +83,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
         this.retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
         this.tokenManagerProvider = tokenManagerProvider;
         this.cbsNodeSupplier = cbsNodeSupplier;
+        this.distributedTransactionsSupport = createOptions.isDistributedTransactionsSupported();
     }
 
     @Override
@@ -130,6 +134,22 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
     }
 
     @Override
+    public Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry) {
+        return this.createProducer(linkName, entityPath, timeout, retry, (Map<Symbol, Object>) null);
+    }
+
+    @Override
+    protected Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout,
+        AmqpRetryPolicy retry, Map<Symbol, Object> linkProperties) {
+        if (distributedTransactionsSupport) {
+            return getOrCreateTransactionCoordinator().flatMap(coordinator -> super.createProducer(linkName, entityPath,
+                timeout, retry, linkProperties));
+        } else {
+            return super.createProducer(linkName, entityPath, timeout, retry, linkProperties);
+        }
+    }
+
+    @Override
     protected ReactorReceiver createConsumer(String entityPath, Receiver receiver,
         ReceiveLinkHandler receiveLinkHandler, TokenManager tokenManager, ReactorProvider reactorProvider) {
         return new ServiceBusReactorReceiver(amqpConnection, entityPath, receiver, receiveLinkHandler, tokenManager,
@@ -168,7 +188,14 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
                 return Mono.error(new RuntimeException("ReceiveMode is not supported: " + receiveMode));
         }
 
-        return createConsumer(linkName, entityPath, timeout, retry, filter, linkProperties, null,
-            senderSettleMode, receiverSettleMode).cast(ServiceBusReceiveLink.class);
+        if (distributedTransactionsSupport) {
+            return getOrCreateTransactionCoordinator().flatMap(transactionCoordinator -> createConsumer(linkName,
+                entityPath, timeout, retry, filter, linkProperties, null, senderSettleMode,
+                receiverSettleMode)
+                .cast(ServiceBusReceiveLink.class));
+        } else {
+            return createConsumer(linkName, entityPath, timeout, retry, filter, linkProperties,
+                null, senderSettleMode, receiverSettleMode).cast(ServiceBusReceiveLink.class);
+        }
     }
 }

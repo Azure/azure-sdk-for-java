@@ -35,8 +35,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME;
 import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_PREFETCH_COUNT;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Integration tests with Azure Event Hubs service. There are other tests that also test {@link
@@ -83,7 +87,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
                 final String partitionId = partitionIds.get(i);
                 final IntegrationTestEventData matchingTestData = testData.get(partitionId);
 
-                Assertions.assertNotNull(matchingTestData,
+                assertNotNull(matchingTestData,
                     "Did not find matching integration test data for partition: " + partitionId);
 
                 final Instant lastEnqueuedTime = matchingTestData.getPartitionProperties().getLastEnqueuedTime();
@@ -128,7 +132,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
         final String firstPartition = "4";
         final EventHubConsumerAsyncClient consumer = builder.prefetchCount(1).buildAsyncConsumerClient();
         final PartitionProperties properties = consumer.getPartitionProperties(firstPartition).block(TIMEOUT);
-        Assertions.assertNotNull(properties);
+        assertNotNull(properties);
 
         final EventPosition position = EventPosition.fromSequenceNumber(properties.getLastEnqueuedSequenceNumber());
         final ReceiveOptions options = new ReceiveOptions().setTrackLastEnqueuedEventProperties(false);
@@ -197,7 +201,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
 
     private static void verifyLastRetrieved(AtomicReference<LastEnqueuedEventProperties> atomicReference,
         LastEnqueuedEventProperties current, boolean isFirst) {
-        Assertions.assertNotNull(current);
+        assertNotNull(current);
         final LastEnqueuedEventProperties previous = atomicReference.get();
 
         // Update the atomic reference to the new one now.
@@ -208,7 +212,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
             return;
         }
 
-        Assertions.assertNotNull(previous.getRetrievalTime(), "This is not the first event, should have a retrieval "
+        assertNotNull(previous.getRetrievalTime(), "This is not the first event, should have a retrieval "
             + "time.");
 
         final int compared = previous.getRetrievalTime().compareTo(current.getRetrievalTime());
@@ -303,7 +307,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
         try {
             StepVerifier.create(consumer.getEventHubProperties())
                 .assertNext(properties -> {
-                    Assertions.assertNotNull(properties);
+                    assertNotNull(properties);
                     Assertions.assertEquals(consumer.getEventHubName(), properties.getName());
                     Assertions.assertEquals(NUMBER_OF_PARTITIONS, properties.getPartitionIds().stream().count());
                 }).verifyComplete();
@@ -382,7 +386,18 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
         // Act & Assert
         try {
             StepVerifier.create(consumer.receiveFromPartition(secondPartitionId, EventPosition.latest(), options).take(10))
-                .assertNext(event -> verifyLastRetrieved(lastViewed, event.getLastEnqueuedEventProperties(), true))
+                .assertNext(event -> {
+                    final EventData eventData = event.getData();
+                    assertNotNull(eventData.getOffset(), "'getOffset' cannot be null.");
+                    assertNotNull(eventData.getSequenceNumber(), "'getSequenceNumber' cannot be null.");
+                    assertNotNull(eventData.getEnqueuedTime(), "'getEnqueuedTime' cannot be null.");
+
+                    assertNotNull(eventData.getSystemProperties().get(OFFSET_ANNOTATION_NAME.getValue()));
+                    assertNotNull(eventData.getSystemProperties().get(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()));
+                    assertNotNull(eventData.getSystemProperties().get(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()));
+
+                    verifyLastRetrieved(lastViewed, event.getLastEnqueuedEventProperties(), true);
+                })
                 .expectNextCount(5)
                 .assertNext(event -> verifyLastRetrieved(lastViewed, event.getLastEnqueuedEventProperties(), false))
                 .assertNext(event -> verifyLastRetrieved(lastViewed, event.getLastEnqueuedEventProperties(), false))
@@ -461,7 +476,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
         final EventHubConsumerAsyncClient consumer2 = builder.buildAsyncConsumerClient();
         final String partitionId = "1";
         final PartitionProperties properties = consumer.getPartitionProperties(partitionId).block(TIMEOUT);
-        Assertions.assertNotNull(properties, "Should have been able to get partition properties.");
+        assertNotNull(properties, "Should have been able to get partition properties.");
 
         final int numberToTake = 10;
         final CountDownLatch countdown1 = new CountDownLatch(numberToTake);
@@ -526,7 +541,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
         final EventHubProducerAsyncClient producer = builder.buildAsyncProducerClient();
         final PartitionProperties properties = producer.getPartitionProperties(partitionId).block(TIMEOUT);
 
-        Assertions.assertNotNull(properties);
+        assertNotNull(properties);
 
         final AtomicReference<EventPosition> startingPosition = new AtomicReference<>(
             EventPosition.fromSequenceNumber(properties.getLastEnqueuedSequenceNumber()));
@@ -547,7 +562,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
                     .block(Duration.ofSeconds(15));
 
                 Thread.sleep(700);
-                Assertions.assertNotNull(events);
+                assertNotNull(events);
                 Assertions.assertEquals(numberOfEvents, events.size());
             }
         } finally {

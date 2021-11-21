@@ -1,7 +1,53 @@
 # Release History
 
-## 2.5.0-beta.1 (Unreleased)
+## 2.10.0-beta.1 (Unreleased)
 
+### Features Added
+
+- Supported `getByVirtualMachineScaleSetInstanceIdAsync()` in `NetworkInterfaces`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2021-05-01`.
+
+## 2.9.0 (2021-10-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources
+
+## 2.8.0 (2021-09-15)
+
+### Dependency Updates
+
+- Updated `api-version` to `2021-03-01`.
+
+### Features Added
+
+- Supported `LoadBalancerOutboundRule` for `LoadBalancer`.
+
+### Breaking Changes
+
+- Removed unused class `NetworkOperationStatus`, `VirtualHubEffectiveRoute`.
+
+## 2.7.0 (2021-08-12)
+
+### Dependency Updates
+
+- Updated core dependency from resources
+
+## 2.6.0 (2021-06-18)
+
+- Updated `api-version` to `2021-02-01`
+- Supported multiple `ApplicationSecurityGroup` in rules of `NetworkSecurityGroup`.
+
+## 2.5.0 (2021-05-28)
+- Updated `api-version` to `2020-11-01`
+- Supported `NetworkProfile`
 
 ## 2.4.0 (2021-04-28)
 

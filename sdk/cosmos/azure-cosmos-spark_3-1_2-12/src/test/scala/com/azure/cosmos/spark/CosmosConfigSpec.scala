@@ -4,6 +4,7 @@ package com.azure.cosmos.spark
 
 import java.text.SimpleDateFormat
 import java.time.Instant
+import java.util.UUID
 
 class CosmosConfigSpec extends UnitSpec {
   //scalastyle:off multiple.string.literals
@@ -27,6 +28,44 @@ class CosmosConfigSpec extends UnitSpec {
     endpointConfig.useGatewayMode shouldEqual true
     endpointConfig.preferredRegionsList.isDefined shouldEqual true
     endpointConfig.preferredRegionsList.get should contain theSameElementsAs Array("westus", "eastus1")
+  }
+
+  "Config Parser" should "parse account credentials with spark.cosmos.preferredRegions" in {
+    val userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> "https://boson-test.documents.azure.com:443/",
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.applicationName" -> "myapp",
+      "spark.cosmos.useGatewayMode" -> "true",
+      "spark.cosmos.preferredRegions" -> "[west us, eastus1]"
+    )
+
+    val endpointConfig = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+
+    endpointConfig.endpoint shouldEqual sampleProdEndpoint
+    endpointConfig.key shouldEqual "xyz"
+    endpointConfig.applicationName.get shouldEqual "myapp"
+    endpointConfig.useGatewayMode shouldEqual true
+    endpointConfig.preferredRegionsList.isDefined shouldEqual true
+    endpointConfig.preferredRegionsList.get should contain theSameElementsAs Array("westus", "eastus1")
+  }
+
+  "Config Parser" should "parse account credentials with spark.cosmos.preferredRegions and spark.cosmos.preferredRegionsList" in {
+    val userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> "https://boson-test.documents.azure.com:443/",
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.applicationName" -> "myapp",
+      "spark.cosmos.useGatewayMode" -> "true",
+      "spark.cosmos.preferredRegions" -> "[west us, eastus1]",
+      "spark.cosmos.preferredRegionsList" -> "[west us, eastus1]"
+    )
+
+    try {
+      CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+      fail("multiple conflicting options")
+    } catch {
+      case e: Exception => e.getMessage shouldEqual(
+        "specified multiple conflicting options [spark.cosmos.preferredRegionsList] and [spark.cosmos.preferredRegions]. Only one should be specified")
+    }
   }
 
   it should "validate account endpoint" in {
@@ -171,6 +210,23 @@ class CosmosConfigSpec extends UnitSpec {
 
     config.forceEventualConsistency shouldBe false
     config.schemaConversionMode shouldBe SchemaConversionModes.Strict
+    config.customQuery shouldBe empty
+  }
+
+  it should "parse custom query option of read configuration" in {
+    val queryText = s"SELECT * FROM c where c.id ='${UUID.randomUUID().toString}'"
+    val userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+      "spark.cosmos.read.schemaConversionMode" -> "Strict",
+      "spark.cosmos.read.customQuery" -> queryText
+    )
+
+    val config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+
+    config.forceEventualConsistency shouldBe false
+    config.schemaConversionMode shouldBe SchemaConversionModes.Strict
+    config.customQuery.isDefined shouldBe true
+    config.customQuery.get.queryText shouldBe queryText
   }
 
   it should "throw on invalid read configuration" in {
@@ -204,7 +260,7 @@ class CosmosConfigSpec extends UnitSpec {
       "spark.cosmos.read.inferSchema.query" -> customQuery
     )
 
-    val config = CosmosSchemaInferenceConfig.parseCosmosReadConfig(userConfig)
+    val config = CosmosSchemaInferenceConfig.parseCosmosInferenceConfig(userConfig)
     config.inferSchemaSamplingSize shouldEqual 50
     config.inferSchemaEnabled shouldBe false
     config.includeSystemProperties shouldBe true
@@ -215,7 +271,7 @@ class CosmosConfigSpec extends UnitSpec {
   it should "provide default schema inference config" in {
     val userConfig = Map[String, String]()
 
-    val config = CosmosSchemaInferenceConfig.parseCosmosReadConfig(userConfig)
+    val config = CosmosSchemaInferenceConfig.parseCosmosInferenceConfig(userConfig)
 
     config.inferSchemaSamplingSize shouldEqual 1000
     config.inferSchemaEnabled shouldBe true

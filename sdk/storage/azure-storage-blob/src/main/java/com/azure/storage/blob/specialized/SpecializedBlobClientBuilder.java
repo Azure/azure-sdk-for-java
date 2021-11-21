@@ -393,7 +393,8 @@ public final class SpecializedBlobClientBuilder {
     /**
      * Sets the SAS token used to authorize requests sent to the service.
      *
-     * @param sasToken The SAS token to use for authenticating requests.
+     * @param sasToken The SAS token to use for authenticating requests. This string should only be the query parameters
+     * (with or without a leading '?') and not a full url.
      * @return the updated SpecializedBlobClientBuilder
      * @throws NullPointerException If {@code sasToken} is {@code null}.
      */
@@ -468,7 +469,14 @@ public final class SpecializedBlobClientBuilder {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.Builder.containerName#String}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobClientBase.Builder.containerName#String -->
+     * <pre>
+     * BlobClient client = new BlobClientBuilder&#40;&#41;
+     *     .endpoint&#40;endpoint&#41;
+     *     .containerName&#40;containerName&#41;
+     *     .buildClient&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobClientBase.Builder.containerName#String -->
      *
      * @param containerName Name of the container. If the value {@code null} or empty the root container, {@code $root},
      * will be used.
@@ -560,7 +568,7 @@ public final class SpecializedBlobClientBuilder {
     }
 
     /**
-     * Gets the default Storage whitelist log headers and query parameters.
+     * Gets the default Storage allowlist log headers and query parameters.
      *
      * @return the default http log options.
      */

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicefabric.fluent.models.ApplicationTypeResourceInner;
 import java.util.Map;
@@ -33,14 +34,6 @@ public interface ApplicationTypeResource {
     String type();
 
     /**
-     * Gets the provisioningState property: The current deployment or provisioning state, which only appears in the
-     * response.
-     *
-     * @return the provisioningState value.
-     */
-    String provisioningState();
-
-    /**
      * Gets the location property: It will be deprecated in New API, resource location depends on the parent resource.
      *
      * @return the location value.
@@ -60,6 +53,21 @@ public interface ApplicationTypeResource {
      * @return the etag value.
      */
     String etag();
+
+    /**
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
+     * Gets the provisioningState property: The current deployment or provisioning state, which only appears in the
+     * response.
+     *
+     * @return the provisioningState value.
+     */
+    String provisioningState();
 
     /**
      * Gets the region of the resource.
@@ -159,7 +167,7 @@ public interface ApplicationTypeResource {
     ApplicationTypeResource.Update update();
 
     /** The template for ApplicationTypeResource update. */
-    interface Update extends UpdateStages.WithTags {
+    interface Update {
         /**
          * Executes the update request.
          *
@@ -177,16 +185,6 @@ public interface ApplicationTypeResource {
     }
     /** The ApplicationTypeResource update stages. */
     interface UpdateStages {
-        /** The stage of the ApplicationTypeResource update allowing to specify tags. */
-        interface WithTags {
-            /**
-             * Specifies the tags property: Azure resource tags..
-             *
-             * @param tags Azure resource tags.
-             * @return the next definition stage.
-             */
-            Update withTags(Map<String, String> tags);
-        }
     }
     /**
      * Refreshes the resource to sync with Azure.

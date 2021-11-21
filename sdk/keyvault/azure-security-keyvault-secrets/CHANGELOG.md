@@ -1,7 +1,121 @@
 # Release History
 
-## 4.3.0-beta.6 (Unreleased)
+## 4.4.0-beta.4 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 4.4.0-beta.3 (2021-11-12)
+
+### Features Added
+
+- Added support for multi-tenant authentication in clients.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.22.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.2`
+
+## 4.3.5 (2021-11-12)
+
+### Features Added
+
+- Added support for multi-tenant authentication in clients.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.22.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.2`
+
+## 4.4.0-beta.2 (2021-10-07)
+
+### Bugs Fixed
+- Fixed an issue that made clients send unnecessary unauthorized requests to obtain a bearer challenge from the service even when already possessing a valid bearer token.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.21.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.1`
+
+## 4.3.4 (2021-10-06)
+
+### Bugs Fixed
+- Fixed an issue that made clients send unnecessary unauthorized requests to obtain a bearer challenge from the service even when already possessing a valid bearer token.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.21.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.1`
+
+## 4.4.0-beta.1 (2021-09-10)
+
+### Features Added
+- Added support for service version `7.3-preview`.
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.20.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.0`
+
+## 4.3.3 (2021-09-10)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.20.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.0`
+
+## 4.3.2 (2021-08-12)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.19.0`
+- Upgraded `azure-core-http-netty` dependency to `1.10.2`
+
+
+## 4.3.1 (2021-07-08)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.18.0`
+- Upgraded `azure-core-http-netty` dependency to `1.10.1`
+
+## 4.3.0 (2021-06-17)
+
+### Features Added
+- Changed default service version to `7.2`.
+- Added `KeyVaultSecretIdentifier` to parse secret URLs.
+
+### Changes since 4.3.0-beta.6
+
+#### Bug Fixes
+- Ensured that `RetryPolicy` and `HttpLogOptions` use a default implementation when creating Key Vault clients if not set or set to `null`.
+
+#### Breaking Changes
+- Removed service method overloads that take a `pollingInterval`, since `PollerFlux` and `SyncPoller` objects allow for setting this value directly on them.
+
+#### Non-Breaking Changes
+- Renamed `secretId` to `sourceId` in `KeyVaultSecretIdentifier`.
+- `KeyVaultSecretIdentifier` can now be used to parse any Key Vault identifier.
+- Added the `@ServiceMethod` annotation to all public methods that call the Key Vault service in `SecretClient` and `SecretAsyncClient`.
+
+## 4.3.0-beta.6 (2021-05-15)
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.16.0`
+- Upgraded `azure-core-http-netty` dependency to `1.9.2`
+- Upgraded `azure-core-http-okhttp` dependency to `1.6.2`
+- Upgraded `azure-identity` dependency to `1.3.0`
 
 ## 4.3.0-beta.5 (2021-04-09)
 
@@ -176,7 +290,7 @@ Version 4.0.0-preview.1 is a preview of our efforts in creating a client library
 
 For details on the Azure SDK for Java (July 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview1-java).
 
-This library is not a direct replacement for secrets management operations from [microsoft-azure-keyvault](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/microsoft-azure-keyvault). Applications using that library would require code changes to use `azure-keyvault-secrets`.
+This library is not a direct replacement for secrets management operations from [microsoft-azure-keyvault](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/microsoft-azure-keyvault). Applications using that library would require code changes to use `azure-keyvault-secrets`.
 This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-keyvault-secrets_4.0.0-preview.1/keyvault/client/secrets/README.md)
 and
@@ -195,7 +309,7 @@ only)
   - see this package's
   [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-keyvault-secrets_4.0.0-preview.1/keyvault/client/secrets/README.md)
   , and the
-  [Azure Identity documentation](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity/README.md)
+  [Azure Identity documentation](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity/README.md)
   for more information
   
 ### `azure-keyvault` features not implemented in this library

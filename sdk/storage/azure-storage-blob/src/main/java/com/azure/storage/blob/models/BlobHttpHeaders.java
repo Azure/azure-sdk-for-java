@@ -101,7 +101,8 @@ public final class BlobHttpHeaders {
 
     /**
      * Get the contentMd5 property: Optional. An MD5 hash of the blob content. Note that this hash is not validated, as
-     * the hashes for the individual blocks were validated when each was uploaded.
+     * the hashes for the individual blocks were validated when each was uploaded. The value does not need to be base64
+     * encoded as the SDK will perform the encoding.
      *
      * @return the contentMd5 value.
      */
@@ -111,7 +112,8 @@ public final class BlobHttpHeaders {
 
     /**
      * Set the contentMd5 property: Optional. An MD5 hash of the blob content. Note that this hash is not validated, as
-     * the hashes for the individual blocks were validated when each was uploaded.
+     * the hashes for the individual blocks were validated when each was uploaded. The value does not need to be base64
+     * encoded as the SDK will perform the encoding.
      *
      * @param contentMd5 the contentMd5 value to set.
      * @return the BlobHttpHeaders object itself.

@@ -74,22 +74,28 @@ public final class KeyVaultAccessControlClientImpl {
         return this.roleAssignments;
     }
 
-    /** Initializes an instance of KeyVaultAccessControlClient client. */
-    KeyVaultAccessControlClientImpl() {
+    /**
+     * Initializes an instance of KeyVaultAccessControlClient client.
+     *
+     * @param apiVersion Api Version.
+     */
+    KeyVaultAccessControlClientImpl(String apiVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
-                JacksonAdapter.createDefaultSerializerAdapter());
+                JacksonAdapter.createDefaultSerializerAdapter(),
+                apiVersion);
     }
 
     /**
      * Initializes an instance of KeyVaultAccessControlClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param apiVersion Api Version.
      */
-    KeyVaultAccessControlClientImpl(HttpPipeline httpPipeline) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter());
+    KeyVaultAccessControlClientImpl(HttpPipeline httpPipeline, String apiVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), apiVersion);
     }
 
     /**
@@ -97,11 +103,12 @@ public final class KeyVaultAccessControlClientImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param apiVersion Api Version.
      */
-    KeyVaultAccessControlClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter) {
+    KeyVaultAccessControlClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
-        this.apiVersion = "7.2-preview";
+        this.apiVersion = apiVersion;
         this.roleDefinitions = new RoleDefinitionsImpl(this);
         this.roleAssignments = new RoleAssignmentsImpl(this);
     }

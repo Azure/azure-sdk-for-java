@@ -4,62 +4,30 @@
 
 package com.azure.resourcemanager.appservice.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Geographical region. */
-@JsonFlatten
-@Immutable
-public class GeoRegionInner extends ProxyOnlyResource {
+@Fluent
+public final class GeoRegionInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GeoRegionInner.class);
 
     /*
-     * Region description.
+     * GeoRegion resource specific properties
      */
-    @JsonProperty(value = "properties.description", access = JsonProperty.Access.WRITE_ONLY)
-    private String description;
-
-    /*
-     * Display name for region.
-     */
-    @JsonProperty(value = "properties.displayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String displayName;
-
-    /*
-     * Display name for region.
-     */
-    @JsonProperty(value = "properties.orgDomain", access = JsonProperty.Access.WRITE_ONLY)
-    private String orgDomain;
+    @JsonProperty(value = "properties")
+    private GeoRegionProperties innerProperties;
 
     /**
-     * Get the description property: Region description.
+     * Get the innerProperties property: GeoRegion resource specific properties.
      *
-     * @return the description value.
+     * @return the innerProperties value.
      */
-    public String description() {
-        return this.description;
-    }
-
-    /**
-     * Get the displayName property: Display name for region.
-     *
-     * @return the displayName value.
-     */
-    public String displayName() {
-        return this.displayName;
-    }
-
-    /**
-     * Get the orgDomain property: Display name for region.
-     *
-     * @return the orgDomain value.
-     */
-    public String orgDomain() {
-        return this.orgDomain;
+    private GeoRegionProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -70,6 +38,33 @@ public class GeoRegionInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the description property: Region description.
+     *
+     * @return the description value.
+     */
+    public String description() {
+        return this.innerProperties() == null ? null : this.innerProperties().description();
+    }
+
+    /**
+     * Get the displayName property: Display name for region.
+     *
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
+    }
+
+    /**
+     * Get the orgDomain property: Display name for region.
+     *
+     * @return the orgDomain value.
+     */
+    public String orgDomain() {
+        return this.innerProperties() == null ? null : this.innerProperties().orgDomain();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -77,5 +72,8 @@ public class GeoRegionInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

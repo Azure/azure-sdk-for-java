@@ -8,6 +8,8 @@ import com.azure.core.util.FluxUtil
 import com.azure.core.util.polling.PollerFlux
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.test.shared.extensions.LiveOnly
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.share.models.NtfsFileAttributes
 import com.azure.storage.file.share.models.PermissionCopyModeType
 import com.azure.storage.file.share.models.ShareErrorCode
@@ -21,7 +23,6 @@ import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues
 import reactor.core.publisher.Flux
 import reactor.test.StepVerifier
 import spock.lang.Ignore
-import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -59,7 +60,7 @@ class FileAsyncAPITests extends APISpec {
 
     def "Get file URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, filePath)
 
         when:
@@ -143,11 +144,11 @@ class FileAsyncAPITests extends APISpec {
 
     def "Create lease"() {
         setup:
-        primaryFileAsyncClient.create(defaultDataLength).block()
+        primaryFileAsyncClient.create(data.defaultDataSizeLong).block()
         def leaseId = createLeaseClient(primaryFileAsyncClient).acquireLease().block()
 
         when:
-        def verifier = StepVerifier.create(primaryFileAsyncClient.createWithResponse(defaultDataLength + 1, null, null, null,
+        def verifier = StepVerifier.create(primaryFileAsyncClient.createWithResponse(data.defaultDataSizeLong + 1, null, null, null,
             null, new ShareRequestConditions().setLeaseId(leaseId)))
 
         then:
@@ -156,11 +157,11 @@ class FileAsyncAPITests extends APISpec {
 
     def "Create lease fail"() {
         setup:
-        primaryFileAsyncClient.create(defaultDataLength).block()
+        primaryFileAsyncClient.create(data.defaultDataSizeLong).block()
         createLeaseClient(primaryFileAsyncClient).acquireLease().block()
 
         when:
-        def verifier = StepVerifier.create(primaryFileAsyncClient.createWithResponse(defaultDataLength + 1, null, null, null,
+        def verifier = StepVerifier.create(primaryFileAsyncClient.createWithResponse(data.defaultDataSizeLong + 1, null, null, null,
             null, new ShareRequestConditions().setLeaseId(namer.getRandomUuid())))
 
         then:
@@ -171,12 +172,12 @@ class FileAsyncAPITests extends APISpec {
      * Tests downloading a file using a default client that doesn't have a HttpClient passed to it.
      */
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Download file buffer copy"() {
         setup:
         def shareServiceAsyncClient = new ShareServiceClientBuilder()
-            .connectionString(connectionString)
+            .connectionString(environment.primaryAccount.connectionString)
             .buildAsyncClient()
 
         def fileClient = shareServiceAsyncClient.getShareAsyncClient(shareName)
@@ -211,11 +212,11 @@ class FileAsyncAPITests extends APISpec {
 
     def "Upload and download data"() {
         given:
-        primaryFileAsyncClient.create(defaultDataLength).block()
+        primaryFileAsyncClient.create(data.defaultDataSizeLong).block()
 
         when:
-        def uploadVerifier = StepVerifier.create(primaryFileAsyncClient.uploadWithResponse(Flux.just(defaultData), defaultDataLength, 0L))
-        def downloadVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithResponse(null, null))
+        def uploadVerifier = StepVerifier.create(primaryFileAsyncClient.uploadWithResponse(data.defaultFlux, data.defaultDataSizeLong, 0L))
+        def downloadVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithResponse(null))
 
         then:
         uploadVerifier.assertNext {
@@ -223,9 +224,9 @@ class FileAsyncAPITests extends APISpec {
         }.verifyComplete()
 
         downloadVerifier.assertNext({ response ->
-            assert assertResponseStatusCode(response, 200)
+            assert assertResponseStatusCode(response, 200, 206)
             def headers = response.getDeserializedHeaders()
-            assert headers.getContentLength() == defaultDataLength
+            assert headers.getContentLength() == data.defaultDataSizeLong
             assert headers.getETag()
             assert headers.getLastModified()
             assert headers.getFilePermissionKey()
@@ -237,12 +238,9 @@ class FileAsyncAPITests extends APISpec {
             assert headers.getFileId()
 
             FluxUtil.collectBytesInByteBufferStream(response.getValue())
-                .flatMap({ data -> assert defaultData.array() == data })
+                .flatMap({ actualData -> assert data.defaultBytes == actualData })
                 .then()
         }).verifyComplete()
-
-        cleanup:
-        defaultData.clear()
     }
 
     def "Upload and download data with args"() {
@@ -250,8 +248,8 @@ class FileAsyncAPITests extends APISpec {
         primaryFileAsyncClient.create(1024).block()
 
         when:
-        def uploadVerifier = StepVerifier.create(primaryFileAsyncClient.uploadWithResponse(Flux.just(defaultData), defaultDataLength, 1L))
-        def downloadVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithResponse(new ShareFileRange(1, defaultDataLength), true))
+        def uploadVerifier = StepVerifier.create(primaryFileAsyncClient.uploadWithResponse(data.defaultFlux, data.defaultDataSizeLong, 1L))
+        def downloadVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithResponse(new ShareFileRange(1, data.defaultDataSizeLong), true))
 
         then:
         uploadVerifier.assertNext {
@@ -260,35 +258,29 @@ class FileAsyncAPITests extends APISpec {
 
         downloadVerifier.assertNext {
             assert assertResponseStatusCode(it, 206)
-            assert it.getDeserializedHeaders().getContentLength() == defaultDataLength
+            assert it.getDeserializedHeaders().getContentLength() == data.defaultDataSizeLong
             FluxUtil.collectBytesInByteBufferStream(it.getValue())
-                .flatMap({ data -> assert data == defaultData.array() })
+                .flatMap({ actualData -> assert actualData == data.defaultBytes })
         }.verifyComplete()
-
-        cleanup:
-        defaultData.clear()
     }
 
     def "Upload data error"() {
         when:
-        def updateDataErrorVerifier = StepVerifier.create(primaryFileAsyncClient.upload(Flux.just(defaultData), defaultDataLength))
+        def updateDataErrorVerifier = StepVerifier.create(primaryFileAsyncClient.upload(data.defaultFlux, data.defaultDataSizeLong))
 
         then:
         updateDataErrorVerifier.verifyErrorSatisfies {
             assert assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.RESOURCE_NOT_FOUND)
         }
-
-        cleanup:
-        defaultData.clear()
     }
 
     def "Upload lease"() {
         setup:
-        primaryFileAsyncClient.create(defaultDataLength).block()
+        primaryFileAsyncClient.create(data.defaultDataSizeLong).block()
         def leaseId = createLeaseClient(primaryFileAsyncClient).acquireLease().block()
 
         when:
-        def verifier = StepVerifier.create(primaryFileAsyncClient.uploadWithResponse(defaultFlux, defaultDataLength, 0,
+        def verifier = StepVerifier.create(primaryFileAsyncClient.uploadWithResponse(data.defaultFlux, data.defaultDataSizeLong, 0,
             new ShareRequestConditions().setLeaseId(leaseId)))
 
         then:
@@ -297,11 +289,11 @@ class FileAsyncAPITests extends APISpec {
 
     def "Upload lease fail"() {
         setup:
-        primaryFileAsyncClient.create(defaultDataLength).block()
+        primaryFileAsyncClient.create(data.defaultDataSizeLong).block()
         createLeaseClient(primaryFileAsyncClient).acquireLease().block()
 
         when:
-        def verifier = StepVerifier.create(primaryFileAsyncClient.uploadWithResponse(defaultFlux, defaultDataLength, 0,
+        def verifier = StepVerifier.create(primaryFileAsyncClient.uploadWithResponse(data.defaultFlux, data.defaultDataSizeLong, 0,
             new ShareRequestConditions().setLeaseId(namer.getRandomUuid())))
 
         then:
@@ -314,7 +306,7 @@ class FileAsyncAPITests extends APISpec {
         primaryFileAsyncClient.create(1024).block()
 
         when:
-        def uploadErrorVerifier = StepVerifier.create(primaryFileAsyncClient.uploadWithResponse(Flux.just(defaultData),
+        def uploadErrorVerifier = StepVerifier.create(primaryFileAsyncClient.uploadWithResponse(data.defaultFlux,
             size, 0))
 
         then:
@@ -322,9 +314,6 @@ class FileAsyncAPITests extends APISpec {
             assert it instanceof UnexpectedLengthException
             assert it.getMessage().contains(errMsg)
         }
-
-        cleanup:
-        defaultData.clear()
 
         where:
         size | errMsg
@@ -344,7 +333,7 @@ class FileAsyncAPITests extends APISpec {
 
     def "Download lease"() {
         setup:
-        primaryFileAsyncClient.create(defaultDataLength).block()
+        primaryFileAsyncClient.create(data.defaultDataSizeLong).block()
         def leaseId = createLeaseClient(primaryFileAsyncClient).acquireLease().block()
 
         when:
@@ -356,7 +345,7 @@ class FileAsyncAPITests extends APISpec {
 
     def "Download lease fail"() {
         setup:
-        primaryFileAsyncClient.create(defaultDataLength).block()
+        primaryFileAsyncClient.create(data.defaultDataSizeLong).block()
         createLeaseClient(primaryFileAsyncClient).acquireLease().block()
 
         when:
@@ -458,7 +447,7 @@ class FileAsyncAPITests extends APISpec {
 
     def "Clear range lease"() {
         setup:
-        primaryFileAsyncClient.create(defaultDataLength).block()
+        primaryFileAsyncClient.create(data.defaultDataSizeLong).block()
         def leaseId = createLeaseClient(primaryFileAsyncClient).acquireLease().block()
 
         when:
@@ -470,7 +459,7 @@ class FileAsyncAPITests extends APISpec {
 
     def "Clear range lease fail"() {
         setup:
-        primaryFileAsyncClient.create(defaultDataLength).block()
+        primaryFileAsyncClient.create(data.defaultDataSizeLong).block()
         createLeaseClient(primaryFileAsyncClient).acquireLease().block()
 
         when:
@@ -568,7 +557,7 @@ class FileAsyncAPITests extends APISpec {
 
     def "Upload from file lease fail"() {
         setup:
-        primaryFileAsyncClient.create(defaultDataLength).block()
+        primaryFileAsyncClient.create(data.defaultDataSizeLong).block()
         createLeaseClient(primaryFileAsyncClient).acquireLease().block()
         def fileName = namer.getRandomName(60)
         def uploadFile = createRandomFileWithLength(1024, testFolder, fileName)
@@ -587,8 +576,8 @@ class FileAsyncAPITests extends APISpec {
 
     def "Download to file lease"() {
         setup:
-        primaryFileAsyncClient.create(defaultDataLength).block()
-        primaryFileAsyncClient.uploadWithResponse(defaultFlux, defaultDataLength, 0).block()
+        primaryFileAsyncClient.create(data.defaultDataSizeLong).block()
+        primaryFileAsyncClient.uploadWithResponse(data.defaultFlux, data.defaultDataSizeLong, 0).block()
         def leaseId = createLeaseClient(primaryFileAsyncClient).acquireLease().block()
         def downloadFile = new File(String.format("%s/%s.txt", testFolder.getPath(), namer.getResourcePrefix()))
 
@@ -606,8 +595,8 @@ class FileAsyncAPITests extends APISpec {
 
     def "Download to file lease fail"() {
         setup:
-        primaryFileAsyncClient.create(defaultDataLength).block()
-        primaryFileAsyncClient.uploadWithResponse(defaultFlux, defaultDataLength, 0).block()
+        primaryFileAsyncClient.create(data.defaultDataSizeLong).block()
+        primaryFileAsyncClient.uploadWithResponse(data.defaultFlux, data.defaultDataSizeLong, 0).block()
         createLeaseClient(primaryFileAsyncClient).acquireLease().block()
         def downloadFile = new File(String.format("%s/%s.txt", testFolder.getPath(), namer.getResourcePrefix()))
 
@@ -631,7 +620,7 @@ class FileAsyncAPITests extends APISpec {
         def destinationOffset = 0
 
         primaryFileAsyncClient.upload(Flux.just(ByteBuffer.wrap(data.getBytes())), data.length()).block()
-        def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString)
         def sasToken = new ShareServiceSasSignatureValues()
             .setExpiryTime(namer.getUtcNow().plusDays(1))
             .setPermissions(new ShareFileSasPermission().setReadPermission(true))
@@ -667,7 +656,7 @@ class FileAsyncAPITests extends APISpec {
         def destinationOffset = 0
 
         primaryFileAsyncClient.upload(Flux.just(ByteBuffer.wrap(data.getBytes())), data.length()).block()
-        def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString)
         def sasToken = new ShareServiceSasSignatureValues()
             .setExpiryTime(namer.getUtcNow().plusDays(1))
             .setPermissions(new ShareFileSasPermission().setReadPermission(true))
@@ -699,7 +688,7 @@ class FileAsyncAPITests extends APISpec {
         def destinationOffset = 0
 
         primaryFileAsyncClient.upload(Flux.just(ByteBuffer.wrap(data.getBytes())), data.length()).block()
-        def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString)
         def sasToken = new ShareServiceSasSignatureValues()
             .setExpiryTime(namer.getUtcNow().plusDays(1))
             .setPermissions(new ShareFileSasPermission().setReadPermission(true))
@@ -1148,6 +1137,7 @@ class FileAsyncAPITests extends APISpec {
         deleteFileIfExists(testFolder.getPath(), fileName)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     @Unroll
     def "List ranges diff"() {
         setup:
@@ -1219,6 +1209,7 @@ class FileAsyncAPITests extends APISpec {
             .verifyComplete()
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_07_07")
     def "Force close handle min"() {
         given:
         primaryFileAsyncClient.create(512).block()
@@ -1240,6 +1231,7 @@ class FileAsyncAPITests extends APISpec {
             .verifyErrorSatisfies({ it instanceof ShareStorageException })
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_07_07")
     def "Force close all handles min"() {
         given:
         primaryFileAsyncClient.create(512).block()

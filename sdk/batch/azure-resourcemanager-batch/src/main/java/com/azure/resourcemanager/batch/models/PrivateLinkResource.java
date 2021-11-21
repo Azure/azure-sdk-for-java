@@ -31,7 +31,15 @@ public interface PrivateLinkResource {
     String type();
 
     /**
-     * Gets the groupId property: The group id is used to establish the private link connection.
+     * Gets the etag property: The ETag of the resource, used for concurrency statements.
+     *
+     * @return the etag value.
+     */
+    String etag();
+
+    /**
+     * Gets the groupId property: The group id of the private link resource. The group id is used to establish the
+     * private link connection.
      *
      * @return the groupId value.
      */
@@ -51,13 +59,6 @@ public interface PrivateLinkResource {
      * @return the requiredZoneNames value.
      */
     List<String> requiredZoneNames();
-
-    /**
-     * Gets the etag property: The ETag of the resource, used for concurrency statements.
-     *
-     * @return the etag value.
-     */
-    String etag();
 
     /**
      * Gets the inner com.azure.resourcemanager.batch.fluent.models.PrivateLinkResourceInner object.

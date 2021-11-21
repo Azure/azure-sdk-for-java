@@ -87,8 +87,8 @@ public final class QueuesImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)
         Mono<QueuesGetPropertiesResponse> getProperties(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
                 @PathParam("queueName") String queueName,
+                @QueryParam("comp") String comp,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
@@ -100,8 +100,8 @@ public final class QueuesImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)
         Mono<QueuesSetMetadataResponse> setMetadata(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
                 @PathParam("queueName") String queueName,
+                @QueryParam("comp") String comp,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-meta-") Map<String, String> metadata,
                 @HeaderParam("x-ms-version") String version,
@@ -114,8 +114,8 @@ public final class QueuesImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)
         Mono<QueuesGetAccessPolicyResponse> getAccessPolicy(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
                 @PathParam("queueName") String queueName,
+                @QueryParam("comp") String comp,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
@@ -127,8 +127,8 @@ public final class QueuesImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)
         Mono<QueuesSetAccessPolicyResponse> setAccessPolicy(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
                 @PathParam("queueName") String queueName,
+                @QueryParam("comp") String comp,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
@@ -216,7 +216,7 @@ public final class QueuesImpl {
         final String comp = "metadata";
         final String accept = "application/xml";
         return service.getProperties(
-                this.client.getUrl(), comp, queueName, timeout, this.client.getVersion(), requestId, accept, context);
+                this.client.getUrl(), queueName, comp, timeout, this.client.getVersion(), requestId, accept, context);
     }
 
     /**
@@ -245,8 +245,8 @@ public final class QueuesImpl {
         final String accept = "application/xml";
         return service.setMetadata(
                 this.client.getUrl(),
-                comp,
                 queueName,
+                comp,
                 timeout,
                 metadata,
                 this.client.getVersion(),
@@ -277,7 +277,7 @@ public final class QueuesImpl {
         final String comp = "acl";
         final String accept = "application/xml";
         return service.getAccessPolicy(
-                this.client.getUrl(), comp, queueName, timeout, this.client.getVersion(), requestId, accept, context);
+                this.client.getUrl(), queueName, comp, timeout, this.client.getVersion(), requestId, accept, context);
     }
 
     /**
@@ -308,8 +308,8 @@ public final class QueuesImpl {
         SignedIdentifiersWrapper queueAclConverted = new SignedIdentifiersWrapper(queueAcl);
         return service.setAccessPolicy(
                 this.client.getUrl(),
-                comp,
                 queueName,
+                comp,
                 timeout,
                 this.client.getVersion(),
                 requestId,

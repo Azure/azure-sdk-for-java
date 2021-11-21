@@ -13,8 +13,8 @@ public class HttpLogOptionsTest {
     @SuppressWarnings("deprecation")
     @Test
     public void testMaxApplicationId() {
-        assertThrows(IllegalArgumentException.class, () -> new HttpLogOptions()
-            .setApplicationId("AppId-0123456789012345678912345"));
+        assertThrows(IllegalArgumentException.class,
+            () -> new HttpLogOptions().setApplicationId("AppId-0123456789012345678912345"));
     }
 
     @SuppressWarnings("deprecation")

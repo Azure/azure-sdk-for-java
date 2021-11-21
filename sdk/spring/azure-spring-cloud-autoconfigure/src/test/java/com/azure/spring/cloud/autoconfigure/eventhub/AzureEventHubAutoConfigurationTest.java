@@ -16,7 +16,7 @@ import com.azure.spring.cloud.context.core.impl.StorageAccountManager;
 import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
 import com.azure.spring.integration.eventhub.factory.EventHubConnectionStringProvider;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.FilteredClassLoader;
@@ -28,6 +28,7 @@ import java.util.List;
 
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -52,10 +53,11 @@ public class AzureEventHubAutoConfigurationTest {
                           .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubProperties.class));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testAzureEventHubPropertiesStorageAccountIllegal() {
         this.contextRunner.withPropertyValues(EVENT_HUB_PROPERTY_PREFIX + "checkpoint-storage-account=1")
-                          .run(context -> context.getBean(AzureEventHubProperties.class));
+                          .run(context -> assertThrows(IllegalStateException.class,
+                                  () -> context.getBean(AzureEventHubProperties.class)));
     }
 
     @Test
@@ -100,6 +102,40 @@ public class AzureEventHubAutoConfigurationTest {
                               assertThat(context).hasSingleBean(EventHubOperation.class);
                               assertThat(context).hasSingleBean(EventHubNamespaceManager.class);
                               assertThat(context).hasSingleBean(StorageAccountManager.class);
+                          });
+    }
+
+    @Test
+    public void testEventHubOperationProvidedNotStorageUnderSP() {
+        this.contextRunner.withUserConfiguration(
+                TestConfigWithAzureResourceManagerAndConnectionProvider.class,
+                AzureEventHubAutoConfiguration.class)
+                          .withPropertyValues(
+                              AZURE_PROPERTY_PREFIX + "resource-group=rg1",
+                              EVENT_HUB_PROPERTY_PREFIX + "namespace=ns1"
+                          )
+                          .run(context -> {
+                              assertThat(context).hasSingleBean(EventHubNamespaceManager.class);
+                              assertThat(context).hasSingleBean(EventHubOperation.class);
+                              assertThat(context).doesNotHaveBean(StorageAccountManager.class);
+                          });
+    }
+
+    @Test
+    public void testEventHubOperationProvidedNotStorageUnderMSI() {
+        this.contextRunner.withUserConfiguration(
+                TestConfigWithAzureResourceManagerAndConnectionProvider.class,
+                AzureEventHubAutoConfiguration.class)
+                          .withPropertyValues(
+                              AZURE_PROPERTY_PREFIX + "resource-group=rg1",
+                              AZURE_PROPERTY_PREFIX + "msi-enabled=true",
+                              EVENT_HUB_PROPERTY_PREFIX + "namespace=ns1",
+                              AZURE_PROPERTY_PREFIX + "subscription-id=sub"
+                          )
+                          .run(context -> {
+                              assertThat(context).hasSingleBean(EventHubNamespaceManager.class);
+                              assertThat(context).hasSingleBean(EventHubOperation.class);
+                              assertThat(context).doesNotHaveBean(StorageAccountManager.class);
                           });
     }
 

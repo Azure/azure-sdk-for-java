@@ -4,7 +4,6 @@
 package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.models.AnomalyIncident;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.test.TestBase;
@@ -19,7 +18,6 @@ import java.time.Duration;
 
 import static com.azure.ai.metricsadvisor.TestUtils.DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS;
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AnomalyIncidentDetectedAsyncTest extends IncidentDetectedTestBase {
 
@@ -47,12 +45,9 @@ public class AnomalyIncidentDetectedAsyncTest extends IncidentDetectedTestBase {
             ListIncidentsDetectedInput.INSTANCE.options);
 
         Assertions.assertNotNull(incidentsFlux);
-        final int[] i = {0};
 
         incidentsFlux.toIterable().forEach(incident -> {
-            i[0]++;
             assertListIncidentsDetectedOutput(incident);
         });
-        assertEquals(ListIncidentsDetectedOutput.INSTANCE.expectedIncidents, i[0]);
     }
 }

@@ -14,7 +14,6 @@ import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -40,6 +39,7 @@ import java.util.concurrent.CountDownLatch;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -66,6 +66,7 @@ public class OkHttpAsyncHttpClientTests {
         server.stubFor(post("/shortPost").willReturn(aResponse().withBody(SHORT_BODY)));
         server.stubFor(get(RETURN_HEADERS_AS_IS_PATH).willReturn(aResponse()
             .withTransformers(OkHttpAsyncHttpClientResponseTransformer.NAME)));
+
         server.start();
     }
 
@@ -87,25 +88,33 @@ public class OkHttpAsyncHttpClientTests {
     }
 
     @Test
-    @Disabled("This tests behaviour of reactor netty's ByteBufFlux, not applicable for OkHttp")
     public void testMultipleSubscriptionsEmitsError() {
         HttpResponse response = getResponse("/short");
+
         // Subscription:1
-        response.getBodyAsByteArray().block();
-        // Subscription:2
         StepVerifier.create(response.getBodyAsByteArray())
-            .expectNextCount(0) // TODO: Check with smaldini, what is the verifier operator equivalent to .awaitDone(20, TimeUnit.SECONDS)
-            .verifyError(IllegalStateException.class);
+            .assertNext(Assertions::assertNotNull)
+            .expectComplete()
+            .verify(Duration.ofSeconds(20));
+
+        // Subscription:2
+        // Getting the bytes of an OkHttp response closes the stream on first read.
+        // Subsequent reads will return an IllegalStateException due to the stream being closed.
+        StepVerifier.create(response.getBodyAsByteArray())
+            .expectNextCount(0)
+            .expectError(IllegalStateException.class)
+            .verify(Duration.ofSeconds(20));
 
     }
 
     @Test
     public void testFlowableWhenServerReturnsBodyAndNoErrorsWhenHttp500Returned() {
         HttpResponse response = getResponse("/error");
-        StepVerifier.create(response.getBodyAsString())
-            .expectNext("error") // TODO: .awaitDone(20, TimeUnit.SECONDS) [See previous todo]
-            .verifyComplete();
         assertEquals(500, response.getStatusCode());
+        StepVerifier.create(response.getBodyAsString())
+            .expectNext("error")
+            .expectComplete()
+            .verify(Duration.ofSeconds(20));
     }
 
     @Test
@@ -128,7 +137,7 @@ public class OkHttpAsyncHttpClientTests {
 
     @Test
     public void testRequestBodyIsErrorShouldPropagateToResponse() {
-        HttpClient client = HttpClient.createDefault();
+        HttpClient client = new OkHttpAsyncClientProvider().createInstance();
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
             .setHeader("Content-Length", "123")
             .setBody(Flux.error(new RuntimeException("boo")));
@@ -140,7 +149,7 @@ public class OkHttpAsyncHttpClientTests {
 
     @Test
     public void testRequestBodyEndsInErrorShouldPropagateToResponse() {
-        HttpClient client = HttpClient.createDefault();
+        HttpClient client = new OkHttpAsyncClientProvider().createInstance();
         String contentChunk = "abcdefgh";
         int repetitions = 1000;
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
@@ -149,10 +158,14 @@ public class OkHttpAsyncHttpClientTests {
                 .repeat(repetitions)
                 .map(s -> ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)))
                 .concatWith(Flux.error(new RuntimeException("boo"))));
-        StepVerifier.create(client.send(request))
-            // .awaitDone(10, TimeUnit.SECONDS)
-            .expectErrorMessage("boo")
-            .verify();
+
+        try {
+            StepVerifier.create(client.send(request))
+                .expectErrorMessage("boo")
+                .verify(Duration.ofSeconds(10));
+        } catch (Exception ex) {
+            assertEquals("boo", ex.getMessage());
+        }
     }
 
     @Test
@@ -200,12 +213,12 @@ public class OkHttpAsyncHttpClientTests {
         });
     }
 
-    @Disabled("This flakey test fails often on MacOS. https://github.com/Azure/azure-sdk-for-java/issues/4357.")
     @Test
     public void testConcurrentRequests() throws NoSuchAlgorithmException {
         int numRequests = 100; // 100 = 1GB of data read
-        HttpClient client = HttpClient.createDefault();
+        HttpClient client = new OkHttpAsyncClientProvider().createInstance();
         byte[] expectedDigest = digest(LONG_BODY);
+        long expectedByteCount = (long) numRequests * LONG_BODY.getBytes(StandardCharsets.UTF_8).length;
 
         Mono<Long> numBytesMono = Flux.range(1, numRequests)
             .parallel(10)
@@ -213,29 +226,17 @@ public class OkHttpAsyncHttpClientTests {
             .flatMap(n -> Mono.fromCallable(() -> getResponse(client, "/long")).flatMapMany(response -> {
                 MessageDigest md = md5Digest();
                 return response.getBody()
-                    .doOnNext(md::update)
-                    .map(bb -> new NumberedByteBuffer(n, bb))
-//                          .doOnComplete(() -> System.out.println("completed " + n))
-                    .doOnComplete(() -> Assertions.assertArrayEquals(expectedDigest,
-                        md.digest(), "wrong digest!"));
+                    .doOnNext(buffer -> md.update(buffer.duplicate()))
+                    .doOnComplete(() -> assertArrayEquals(expectedDigest, md.digest(), "wrong digest!"));
             }))
             .sequential()
-            // enable the doOnNext call to see request numbers and thread names
-            // .doOnNext(g -> System.out.println(g.n + " " +
-            // Thread.currentThread().getName()))
-            .map(nbb -> (long) nbb.bb.limit())
-            .reduce(Long::sum)
-            .subscribeOn(Schedulers.boundedElastic());
+            .map(buffer -> (long) buffer.remaining())
+            .reduce(Long::sum);
 
         StepVerifier.create(numBytesMono)
-//              .awaitDone(timeoutSeconds, TimeUnit.SECONDS)
-            .expectNext((long) (numRequests * LONG_BODY.getBytes(StandardCharsets.UTF_8).length))
-            .verifyComplete();
-//
-//        long numBytes = numBytesMono.block();
-//        t = System.currentTimeMillis() - t;
-//        System.out.println("totalBytesRead=" + numBytes / 1024 / 1024 + "MB in " + t / 1000.0 + "s");
-//        assertEquals(numRequests * LONG_BODY.getBytes(StandardCharsets.UTF_8).length, numBytes);
+            .expectNext(expectedByteCount)
+            .expectComplete()
+            .verify(Duration.ofSeconds(60));
     }
 
     @Test
@@ -282,16 +283,6 @@ public class OkHttpAsyncHttpClientTests {
         MessageDigest md = MessageDigest.getInstance("MD5");
         md.update(s.getBytes(StandardCharsets.UTF_8));
         return md.digest();
-    }
-
-    private static final class NumberedByteBuffer {
-        final long n;
-        final ByteBuffer bb;
-
-        NumberedByteBuffer(long n, ByteBuffer bb) {
-            this.n = n;
-            this.bb = bb;
-        }
     }
 
     private static HttpResponse getResponse(String path) {

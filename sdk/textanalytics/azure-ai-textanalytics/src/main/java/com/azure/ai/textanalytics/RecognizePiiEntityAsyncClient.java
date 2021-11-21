@@ -9,7 +9,7 @@ import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.PiiResult;
-import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
+import com.azure.ai.textanalytics.implementation.models.StringIndexType;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
@@ -17,7 +17,6 @@ import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.models.WarningCode;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -33,7 +32,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
-import static com.azure.ai.textanalytics.implementation.Utility.getNonNullStringIndexType;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExists;
@@ -42,6 +40,7 @@ import static com.azure.ai.textanalytics.implementation.Utility.toCategoriesFilt
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsError;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsException;
+import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsWarning;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextDocumentStatistics;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -169,12 +168,7 @@ class RecognizePiiEntityAsyncClient {
                     .collect(Collectors.toList());
             // Warnings
             final List<TextAnalyticsWarning> warnings = documentEntities.getWarnings().stream().map(
-                warning -> {
-                    final WarningCodeValue warningCodeValue = warning.getCode();
-                    return new TextAnalyticsWarning(
-                        WarningCode.fromString(warningCodeValue == null ? null : warningCodeValue.toString()),
-                        warning.getMessage());
-                }).collect(Collectors.toList());
+                warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
 
             recognizeEntitiesResults.add(new RecognizePiiEntitiesResult(
                 documentEntities.getId(),
@@ -213,9 +207,11 @@ class RecognizePiiEntityAsyncClient {
         options = options == null ? new RecognizePiiEntitiesOptions() : options;
         return service.entitiesRecognitionPiiWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-            options.getModelVersion(), options.isIncludeStatistics(),
+            options.getModelVersion(),
+            options.isIncludeStatistics(),
+            options.isServiceLogsDisabled(),
             options.getDomainFilter() != null ? options.getDomainFilter().toString() : null,
-            getNonNullStringIndexType(options.getStringIndexType()),
+            StringIndexType.UTF16CODE_UNIT,
             toCategoriesFilter(options.getCategoriesFilter()),
             getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
                    .doOnSubscribe(ignoredValue -> logger.info(

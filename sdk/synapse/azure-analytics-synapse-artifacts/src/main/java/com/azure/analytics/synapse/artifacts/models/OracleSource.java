@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.List;
 
 /** A copy activity Oracle source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -43,10 +42,11 @@ public final class OracleSource extends CopySource {
 
     /*
      * Specifies the additional columns to be added to source data. Type: array
-     * of objects (or Expression with resultType array of objects).
+     * of objects(AdditionalColumns) (or Expression with resultType array of
+     * objects).
      */
     @JsonProperty(value = "additionalColumns")
-    private List<AdditionalColumns> additionalColumns;
+    private Object additionalColumns;
 
     /**
      * Get the oracleReaderQuery property: Oracle reader query. Type: string (or Expression with resultType string).
@@ -132,22 +132,22 @@ public final class OracleSource extends CopySource {
 
     /**
      * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
-     * objects (or Expression with resultType array of objects).
+     * objects(AdditionalColumns) (or Expression with resultType array of objects).
      *
      * @return the additionalColumns value.
      */
-    public List<AdditionalColumns> getAdditionalColumns() {
+    public Object getAdditionalColumns() {
         return this.additionalColumns;
     }
 
     /**
      * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
-     * objects (or Expression with resultType array of objects).
+     * objects(AdditionalColumns) (or Expression with resultType array of objects).
      *
      * @param additionalColumns the additionalColumns value to set.
      * @return the OracleSource object itself.
      */
-    public OracleSource setAdditionalColumns(List<AdditionalColumns> additionalColumns) {
+    public OracleSource setAdditionalColumns(Object additionalColumns) {
         this.additionalColumns = additionalColumns;
         return this;
     }

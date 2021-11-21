@@ -18,24 +18,26 @@ import java.util.Arrays;
 
 public class AADB2CAuthorizationRequestResolverTest {
 
-    private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
-        .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-        .withConfiguration(AutoConfigurations.of(AbstractAADB2COAuth2ClientTestConfiguration.WebOAuth2ClientApp.class,
-            AADB2CAutoConfiguration.class))
-        .withPropertyValues(
-            String.format("%s=%s", AADB2CConstants.TENANT_ID, AADB2CConstants.TEST_TENANT_ID),
-            String.format("%s=%s", AADB2CConstants.BASE_URI, AADB2CConstants.TEST_BASE_URI),
-            String.format("%s=%s", AADB2CConstants.CLIENT_ID, AADB2CConstants.TEST_CLIENT_ID),
-            String.format("%s=%s", AADB2CConstants.CLIENT_SECRET, AADB2CConstants.TEST_CLIENT_SECRET),
-            String.format("%s=%s", AADB2CConstants.LOGOUT_SUCCESS_URL, AADB2CConstants.TEST_LOGOUT_SUCCESS_URL),
-            String.format("%s=%s", AADB2CConstants.LOGIN_FLOW, AADB2CConstants.TEST_KEY_SIGN_UP_OR_IN),
-            String.format("%s.%s=%s", AADB2CConstants.USER_FLOWS,
-                AADB2CConstants.TEST_KEY_SIGN_UP_OR_IN, AADB2CConstants.TEST_SIGN_UP_OR_IN_NAME),
-            String.format("%s.%s=%s", AADB2CConstants.USER_FLOWS,
-                AADB2CConstants.TEST_KEY_PROFILE_EDIT, AADB2CConstants.TEST_PROFILE_EDIT_NAME),
-            String.format("%s=%s", AADB2CConstants.CONFIG_PROMPT, AADB2CConstants.TEST_PROMPT),
-            String.format("%s=%s", AADB2CConstants.CONFIG_LOGIN_HINT, AADB2CConstants.TEST_LOGIN_HINT)
-        );
+    private WebApplicationContextRunner getContextRunner() {
+        return new WebApplicationContextRunner()
+            .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
+            .withConfiguration(AutoConfigurations.of(AbstractAADB2COAuth2ClientTestConfiguration.WebOAuth2ClientApp.class,
+                AADB2CAutoConfiguration.class))
+            .withPropertyValues(
+                String.format("%s=%s", AADB2CConstants.TENANT_ID, AADB2CConstants.TEST_TENANT_ID),
+                String.format("%s=%s", AADB2CConstants.BASE_URI, AADB2CConstants.TEST_BASE_URI),
+                String.format("%s=%s", AADB2CConstants.CLIENT_ID, AADB2CConstants.TEST_CLIENT_ID),
+                String.format("%s=%s", AADB2CConstants.CLIENT_SECRET, AADB2CConstants.TEST_CLIENT_SECRET),
+                String.format("%s=%s", AADB2CConstants.LOGOUT_SUCCESS_URL, AADB2CConstants.TEST_LOGOUT_SUCCESS_URL),
+                String.format("%s=%s", AADB2CConstants.LOGIN_FLOW, AADB2CConstants.TEST_KEY_SIGN_UP_OR_IN),
+                String.format("%s.%s=%s", AADB2CConstants.USER_FLOWS,
+                    AADB2CConstants.TEST_KEY_SIGN_UP_OR_IN, AADB2CConstants.TEST_SIGN_UP_OR_IN_NAME),
+                String.format("%s.%s=%s", AADB2CConstants.USER_FLOWS,
+                    AADB2CConstants.TEST_KEY_PROFILE_EDIT, AADB2CConstants.TEST_PROFILE_EDIT_NAME),
+                String.format("%s=%s", AADB2CConstants.CONFIG_PROMPT, AADB2CConstants.TEST_PROMPT),
+                String.format("%s=%s", AADB2CConstants.CONFIG_LOGIN_HINT, AADB2CConstants.TEST_LOGIN_HINT)
+            );
+    }
 
     private HttpServletRequest getHttpServletRequest(String uri) {
         Assert.hasText(uri, "uri must contain text.");
@@ -49,7 +51,7 @@ public class AADB2CAuthorizationRequestResolverTest {
 
     @Test
     public void testAutoConfigurationBean() {
-        this.contextRunner.run(c -> {
+        getContextRunner().run(c -> {
             String requestUri = "/fake-url";
             HttpServletRequest request = getHttpServletRequest(requestUri);
             final String registrationId = AADB2CConstants.TEST_SIGN_UP_OR_IN_NAME;

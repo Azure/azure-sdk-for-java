@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.List;
 
 /** A copy activity source for SAP HANA source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -139,7 +138,7 @@ public final class SapHanaSource extends TabularSource {
 
     /** {@inheritDoc} */
     @Override
-    public SapHanaSource withAdditionalColumns(List<AdditionalColumns> additionalColumns) {
+    public SapHanaSource withAdditionalColumns(Object additionalColumns) {
         super.withAdditionalColumns(additionalColumns);
         return this;
     }
@@ -162,6 +161,13 @@ public final class SapHanaSource extends TabularSource {
     @Override
     public SapHanaSource withMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.withMaxConcurrentConnections(maxConcurrentConnections);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SapHanaSource withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
         return this;
     }
 

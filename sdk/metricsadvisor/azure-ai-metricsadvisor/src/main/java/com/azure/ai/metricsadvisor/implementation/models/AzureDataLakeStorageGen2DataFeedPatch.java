@@ -18,14 +18,14 @@ public final class AzureDataLakeStorageGen2DataFeedPatch extends DataFeedDetailP
      * The dataSourceParameter property.
      */
     @JsonProperty(value = "dataSourceParameter")
-    private AzureDataLakeStorageGen2Parameter dataSourceParameter;
+    private AzureDataLakeStorageGen2ParameterPatch dataSourceParameter;
 
     /**
      * Get the dataSourceParameter property: The dataSourceParameter property.
      *
      * @return the dataSourceParameter value.
      */
-    public AzureDataLakeStorageGen2Parameter getDataSourceParameter() {
+    public AzureDataLakeStorageGen2ParameterPatch getDataSourceParameter() {
         return this.dataSourceParameter;
     }
 
@@ -36,7 +36,7 @@ public final class AzureDataLakeStorageGen2DataFeedPatch extends DataFeedDetailP
      * @return the AzureDataLakeStorageGen2DataFeedPatch object itself.
      */
     public AzureDataLakeStorageGen2DataFeedPatch setDataSourceParameter(
-            AzureDataLakeStorageGen2Parameter dataSourceParameter) {
+            AzureDataLakeStorageGen2ParameterPatch dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
         return this;
     }

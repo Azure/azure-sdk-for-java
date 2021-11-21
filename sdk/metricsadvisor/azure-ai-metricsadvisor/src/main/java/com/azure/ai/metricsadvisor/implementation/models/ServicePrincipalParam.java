@@ -19,7 +19,7 @@ public final class ServicePrincipalParam {
     /*
      * The client secret of the service principal.
      */
-    @JsonProperty(value = "clientSecret", required = true)
+    @JsonProperty(value = "clientSecret")
     private String clientSecret;
 
     /*

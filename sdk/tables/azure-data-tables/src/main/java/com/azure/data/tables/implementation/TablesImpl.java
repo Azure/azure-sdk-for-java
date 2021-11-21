@@ -26,6 +26,7 @@ import com.azure.data.tables.implementation.models.OdataMetadataFormat;
 import com.azure.data.tables.implementation.models.QueryOptions;
 import com.azure.data.tables.implementation.models.ResponseFormat;
 import com.azure.data.tables.implementation.models.SignedIdentifier;
+import com.azure.data.tables.implementation.models.SignedIdentifiersWrapper;
 import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.implementation.models.TableServiceErrorException;
 import com.azure.data.tables.implementation.models.TablesCreateResponse;
@@ -238,7 +239,7 @@ public final class TablesImpl {
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @PathParam("table") String table,
                 @QueryParam("comp") String comp,
-                @BodyParam("application/xml") List<SignedIdentifier> tableAcl,
+                @BodyParam("application/xml") SignedIdentifiersWrapper tableAcl,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
@@ -725,6 +726,9 @@ public final class TablesImpl {
             String table, Integer timeout, String requestId, List<SignedIdentifier> tableAcl, Context context) {
         final String comp = "acl";
         final String accept = "application/xml";
+
+        SignedIdentifiersWrapper tableAclConverted = new SignedIdentifiersWrapper(tableAcl);
+
         return service.setAccessPolicy(
                 this.client.getUrl(),
                 timeout,
@@ -732,7 +736,7 @@ public final class TablesImpl {
                 requestId,
                 table,
                 comp,
-                tableAcl,
+                tableAclConverted,
                 accept,
                 context);
     }

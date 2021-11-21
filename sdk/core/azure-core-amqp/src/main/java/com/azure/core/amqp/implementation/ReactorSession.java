@@ -11,6 +11,7 @@ import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.AmqpTransaction;
+import com.azure.core.amqp.AmqpTransactionCoordinator;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
@@ -33,7 +34,10 @@ import reactor.core.Disposable;
 import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.MonoSink;
 import reactor.core.publisher.Sinks;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -44,6 +48,7 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 import static com.azure.core.amqp.implementation.ClientConstants.NOT_APPLICABLE;
 
@@ -55,6 +60,7 @@ public class ReactorSession implements AmqpSession {
     private final ConcurrentMap<String, LinkSubscription<AmqpSendLink>> openSendLinks = new ConcurrentHashMap<>();
     private final ConcurrentMap<String, LinkSubscription<AmqpReceiveLink>> openReceiveLinks = new ConcurrentHashMap<>();
 
+    private final Scheduler timeoutScheduler = Schedulers.parallel();
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final Object closeLock = new Object();
 
@@ -128,7 +134,7 @@ public class ReactorSession implements AmqpSession {
         connectionSubscriptions = Disposables.composite(
             this.endpointStates.subscribe(),
 
-            shutdownSignals.flatMap(signal ->  dispose("Shutdown signal received", null, false)).subscribe());
+            shutdownSignals.flatMap(signal ->  closeAsync("Shutdown signal received", null, false)).subscribe());
 
         session.open();
     }
@@ -152,8 +158,7 @@ public class ReactorSession implements AmqpSession {
      */
     @Override
     public void dispose() {
-        dispose("Dispose called.", null, true)
-            .block(retryOptions.getTryTimeout());
+        closeAsync().block(retryOptions.getTryTimeout());
     }
 
     /**
@@ -177,8 +182,8 @@ public class ReactorSession implements AmqpSession {
      */
     @Override
     public Mono<AmqpTransaction> createTransaction() {
-        return createTransactionCoordinator()
-            .flatMap(coordinator -> coordinator.createTransaction());
+        return getOrCreateTransactionCoordinator()
+            .flatMap(coordinator -> coordinator.declare());
     }
 
     /**
@@ -186,8 +191,8 @@ public class ReactorSession implements AmqpSession {
      */
     @Override
     public Mono<Void> commitTransaction(AmqpTransaction transaction) {
-        return createTransactionCoordinator()
-            .flatMap(coordinator -> coordinator.completeTransaction(transaction, true));
+        return getOrCreateTransactionCoordinator()
+            .flatMap(coordinator -> coordinator.discharge(transaction, true));
     }
 
     /**
@@ -195,8 +200,8 @@ public class ReactorSession implements AmqpSession {
      */
     @Override
     public Mono<Void> rollbackTransaction(AmqpTransaction transaction) {
-        return createTransactionCoordinator()
-            .flatMap(coordinator -> coordinator.completeTransaction(transaction, false));
+        return getOrCreateTransactionCoordinator()
+            .flatMap(coordinator -> coordinator.discharge(transaction, false));
     }
 
     /**
@@ -240,7 +245,12 @@ public class ReactorSession implements AmqpSession {
         return isClosedMono.asMono();
     }
 
-    Mono<Void> dispose(String message, ErrorCondition errorCondition, boolean disposeLinks) {
+    @Override
+    public Mono<Void> closeAsync() {
+        return closeAsync(null, null, true);
+    }
+
+    Mono<Void> closeAsync(String message, ErrorCondition errorCondition, boolean disposeLinks) {
         if (isDisposed.getAndSet(true)) {
             return isClosedMono.asMono();
         }
@@ -248,14 +258,20 @@ public class ReactorSession implements AmqpSession {
         final String condition = errorCondition != null ? errorCondition.toString() : NOT_APPLICABLE;
         logger.verbose("connectionId[{}], sessionName[{}], errorCondition[{}]. Setting error condition and "
                 + "disposing session. {}",
-            sessionHandler.getConnectionId(), sessionName, condition, message);
+            sessionHandler.getConnectionId(), sessionName, condition, message != null ? message : "");
 
         return Mono.fromRunnable(() -> {
             try {
                 provider.getReactorDispatcher().invoke(() -> disposeWork(errorCondition, disposeLinks));
-            } catch (IOException | RejectedExecutionException e) {
+            } catch (IOException e) {
                 logger.info("connectionId[{}] sessionName[{}] Error while scheduling work. Manually disposing.",
                     sessionHandler.getConnectionId(), sessionName, e);
+
+                disposeWork(errorCondition, disposeLinks);
+            } catch (RejectedExecutionException e) {
+                logger.info("connectionId[{}] sessionName[{}] RejectedExecutionException when scheduling work.",
+                    sessionHandler.getConnectionId(), sessionName);
+
                 disposeWork(errorCondition, disposeLinks);
             }
         }).then(isClosedMono.asMono());
@@ -264,11 +280,13 @@ public class ReactorSession implements AmqpSession {
     /**
      * @return {@link Mono} of {@link TransactionCoordinator}
      */
-    private Mono<TransactionCoordinator> createTransactionCoordinator() {
+    @Override
+    public Mono<? extends AmqpTransactionCoordinator> getOrCreateTransactionCoordinator() {
         if (isDisposed()) {
-            return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
+            return Mono.error(logger.logExceptionAsError(new AmqpException(true, String.format(
                 "connectionId[%s] sessionName[%s] Cannot create coordinator send link '%s' from a closed session.",
-                sessionHandler.getConnectionId(), sessionName, TRANSACTION_LINK_NAME))));
+                sessionHandler.getConnectionId(), sessionName, TRANSACTION_LINK_NAME),
+                sessionHandler.getErrorContext())));
         }
 
         final TransactionCoordinator existing = transactionCoordinator.get();
@@ -320,9 +338,10 @@ public class ReactorSession implements AmqpSession {
         ReceiverSettleMode receiverSettleMode) {
 
         if (isDisposed()) {
-            return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
+            return Mono.error(logger.logExceptionAsError(new AmqpException(true, String.format(
                 "connectionId[%s] sessionName[%s] entityPath[%s] linkName[%s] Cannot create receive link from a closed"
-                + " session.", sessionHandler.getConnectionId(), sessionName, entityPath, linkName))));
+                + " session.", sessionHandler.getConnectionId(), sessionName, entityPath, linkName),
+                sessionHandler.getErrorContext())));
         }
 
         final LinkSubscription<AmqpReceiveLink> existingLink = openReceiveLinks.get(linkName);
@@ -332,33 +351,38 @@ public class ReactorSession implements AmqpSession {
         }
 
         final TokenManager tokenManager = tokenManagerProvider.getTokenManager(cbsNodeSupplier, entityPath);
-        return Mono.when(onActiveEndpoint(), tokenManager.authorize()).then(Mono.create(sink -> {
-            try {
-                // This has to be executed using reactor dispatcher because it's possible to run into race
-                // conditions with proton-j.
-                provider.getReactorDispatcher().invoke(() -> {
-                    final LinkSubscription<AmqpReceiveLink> computed = openReceiveLinks.compute(linkName,
-                        (linkNameKey, existing) -> {
-                            if (existing != null) {
-                                logger.info("linkName[{}]: Another receive link exists. Disposing of new one.",
-                                    linkName);
-                                tokenManager.close();
+        return Mono.when(onActiveEndpoint(), tokenManager.authorize())
+            .then(Mono.create((Consumer<MonoSink<AmqpReceiveLink>>) sink -> {
+                try {
+                    // This has to be executed using reactor dispatcher because it's possible to run into race
+                    // conditions with proton-j.
+                    provider.getReactorDispatcher().invoke(() -> {
+                        final LinkSubscription<AmqpReceiveLink> computed = openReceiveLinks.compute(linkName,
+                            (linkNameKey, existing) -> {
+                                if (existing != null) {
+                                    logger.info("linkName[{}]: Another receive link exists. Disposing of new one.",
+                                        linkName);
+                                    tokenManager.close();
 
-                                return existing;
-                            }
+                                    return existing;
+                                }
 
-                            logger.info("connectionId[{}] sessionId[{}] linkName[{}] Creating a new receiver link.",
-                                sessionHandler.getConnectionId(), sessionName, linkName);
-                            return getSubscription(linkNameKey, entityPath, sourceFilters, receiverProperties,
-                                receiverDesiredCapabilities, senderSettleMode, receiverSettleMode, tokenManager);
-                        });
+                                logger.info("connectionId[{}] sessionId[{}] linkName[{}] Creating a new receiver link.",
+                                    sessionHandler.getConnectionId(), sessionName, linkName);
+                                return getSubscription(linkNameKey, entityPath, sourceFilters, receiverProperties,
+                                    receiverDesiredCapabilities, senderSettleMode, receiverSettleMode, tokenManager);
+                            });
 
-                    sink.success(computed.getLink());
-                });
-            } catch (IOException e) {
-                sink.error(e);
-            }
-        }));
+                        sink.success(computed.getLink());
+                    });
+                } catch (IOException | RejectedExecutionException e) {
+                    sink.error(e);
+                }
+            }))
+            .onErrorResume(t -> Mono.defer(() -> {
+                tokenManager.close();
+                return Mono.error(t);
+            }));
     }
 
     /**
@@ -404,9 +428,11 @@ public class ReactorSession implements AmqpSession {
         Map<Symbol, Object> linkProperties, boolean requiresAuthorization) {
 
         if (isDisposed()) {
-            return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
+            return Mono.error(logger.logExceptionAsError(new AmqpException(true,
+                String.format(
                 "connectionId[%s] sessionName[%s] entityPath[%s] linkName[%s] Cannot create send link from a closed"
-                    + " session.", sessionHandler.getConnectionId(), sessionName, entityPath, linkName))));
+                    + " session.", sessionHandler.getConnectionId(), sessionName, entityPath, linkName),
+                sessionHandler.getErrorContext())));
         }
 
         final LinkSubscription<AmqpSendLink> existing = openSendLinks.get(linkName);
@@ -450,7 +476,7 @@ public class ReactorSession implements AmqpSession {
 
                     sink.success(computed.getLink());
                 });
-            } catch (IOException e) {
+            } catch (IOException | RejectedExecutionException e) {
                 sink.error(e);
             }
         }));
@@ -481,7 +507,7 @@ public class ReactorSession implements AmqpSession {
         sender.open();
 
         final ReactorSender reactorSender = new ReactorSender(amqpConnection, entityPath, sender, sendLinkHandler,
-            provider, tokenManager, messageSerializer, options);
+            provider, tokenManager, messageSerializer, options, timeoutScheduler);
 
         //@formatter:off
         final Disposable subscription = reactorSender.getEndpointStates().subscribe(state -> {
@@ -592,7 +618,7 @@ public class ReactorSession implements AmqpSession {
             "connectionId[{}] sessionName[{}] Disposing of active send and receive links due to session close.",
             sessionHandler.getConnectionId(), sessionName);
 
-        dispose("", null, true);
+        closeAsync().subscribe();
     }
 
     private void handleError(Throwable error) {
@@ -606,12 +632,12 @@ public class ReactorSession implements AmqpSession {
 
             condition = new ErrorCondition(Symbol.getSymbol(errorCondition), exception.getMessage());
 
-            dispose(exception.getMessage(), condition, true);
+            closeAsync(exception.getMessage(), condition, true).subscribe();
         } else {
             condition = null;
         }
 
-        dispose(error.getMessage(), condition, true);
+        closeAsync(error.getMessage(), condition, true).subscribe();
     }
 
     /**

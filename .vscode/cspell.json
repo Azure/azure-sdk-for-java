@@ -1,0 +1,63 @@
+{
+  "version": "0.1",
+  "language": "en",
+  "languageId": "java",
+  "dictionaries": ["powershell"],
+  "ignorePaths": [
+    "**/session-records/**",
+    "*.jar",
+    "*.zip",
+    "*.avro",
+    "*.war",
+    "*.gz",
+    "*.exe",
+    "*.png",
+    "*.jpg",
+    "*.pdf",
+    "*.tif",
+    "*.mdb",
+    "*.mp4",
+    "*.webp",
+    "*.vsdx",
+    "*.doc",
+    "*.svg",
+    "*.pfx",
+    "*.dawio",
+    "*.pem",
+    "*.jks",
+    "*._pfx",
+    "*.cer",
+    "*.exec",
+    "*.der",
+    "*.bmp",
+    "*.bin",
+    "*.pub",
+    "*.x509",
+    "*.certificate",
+    "*.crt",
+    ".vscode/cspell.json"
+  ],
+  "words": ["azsdk", "pwsh"],
+  "overrides": [
+    {
+      "filename": "**/eng/pipelines/templates/jobs/ci.yml",
+      "words": [
+        "dskip",
+        "dinject",
+        "codesnippets",
+        "dgenerate",
+        "dspotbugs",
+        "dcheckstyle",
+        "drevapi",
+        "dalt",
+        "apireview",
+        "setuptools",
+        "dgpg",
+        "dmaven",
+        "checkstyle",
+        "dverify"
+      ]
+    }
+  ],
+  "allowCompoundWords": false
+}

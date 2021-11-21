@@ -6,32 +6,34 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.ExtractKeyPhrasesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
+import com.azure.core.annotation.Immutable;
 
 /**
  * The {@link ExtractKeyPhrasesActionResult} model.
  */
+@Immutable
 public final class ExtractKeyPhrasesActionResult extends TextAnalyticsActionResult {
-    private ExtractKeyPhrasesResultCollection result;
+    private ExtractKeyPhrasesResultCollection documentsResults;
 
     static {
         ExtractKeyPhrasesActionResultPropertiesHelper.setAccessor(
-            (actionsResult, result) -> actionsResult.setResult(result));
+            (actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
     }
 
     /**
      * Gets the key phrases extraction action result.
      *
-     * @return the key phrases extraction action result.
+     * @return The key phrases extraction action result.
      *
      * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
      * was accessed.
      */
-    public ExtractKeyPhrasesResultCollection getResult() {
+    public ExtractKeyPhrasesResultCollection getDocumentsResults() {
         throwExceptionIfError();
-        return result;
+        return documentsResults;
     }
 
-    private void setResult(ExtractKeyPhrasesResultCollection result) {
-        this.result = result;
+    private void setDocumentsResults(ExtractKeyPhrasesResultCollection documentsResults) {
+        this.documentsResults = documentsResults;
     }
 }

@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.test.environment.models;
 
-import com.azure.core.experimental.geojson.GeoPoint;
+import com.azure.core.models.GeoPoint;
 import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

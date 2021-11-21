@@ -26,6 +26,7 @@ import com.azure.resourcemanager.compute.models.InstanceViewTypes;
 import com.azure.resourcemanager.compute.models.RunCommandInput;
 import com.azure.resourcemanager.compute.models.VirtualMachineCaptureParameters;
 import com.azure.resourcemanager.compute.models.VirtualMachineInstallPatchesParameters;
+import com.azure.resourcemanager.compute.models.VirtualMachineReimageParameters;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -103,7 +104,7 @@ public interface VirtualMachinesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return output of virtual machine capture operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VirtualMachineCaptureResultInner>, VirtualMachineCaptureResultInner> beginCaptureAsync(
         String resourceGroupName, String vmName, VirtualMachineCaptureParameters parameters);
 
@@ -119,7 +120,7 @@ public interface VirtualMachinesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return output of virtual machine capture operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualMachineCaptureResultInner>, VirtualMachineCaptureResultInner> beginCapture(
         String resourceGroupName, String vmName, VirtualMachineCaptureParameters parameters);
 
@@ -136,7 +137,7 @@ public interface VirtualMachinesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return output of virtual machine capture operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualMachineCaptureResultInner>, VirtualMachineCaptureResultInner> beginCapture(
         String resourceGroupName, String vmName, VirtualMachineCaptureParameters parameters, Context context);
 
@@ -217,7 +218,7 @@ public interface VirtualMachinesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Virtual Machine.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VirtualMachineInner>, VirtualMachineInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String vmName, VirtualMachineInner parameters);
 
@@ -233,7 +234,7 @@ public interface VirtualMachinesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Virtual Machine.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginCreateOrUpdate(
         String resourceGroupName, String vmName, VirtualMachineInner parameters);
 
@@ -250,7 +251,7 @@ public interface VirtualMachinesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Virtual Machine.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginCreateOrUpdate(
         String resourceGroupName, String vmName, VirtualMachineInner parameters, Context context);
 
@@ -328,7 +329,7 @@ public interface VirtualMachinesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Virtual Machine.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdateAsync(
         String resourceGroupName, String vmName, VirtualMachineUpdateInner parameters);
 
@@ -343,7 +344,7 @@ public interface VirtualMachinesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Virtual Machine.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdate(
         String resourceGroupName, String vmName, VirtualMachineUpdateInner parameters);
 
@@ -359,7 +360,7 @@ public interface VirtualMachinesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Virtual Machine.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdate(
         String resourceGroupName, String vmName, VirtualMachineUpdateInner parameters, Context context);
 
@@ -413,7 +414,7 @@ public interface VirtualMachinesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param forceDeletion Optional parameter to force delete virtual machines.(Feature in Preview).
+     * @param forceDeletion Optional parameter to force delete virtual machines.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -428,13 +429,13 @@ public interface VirtualMachinesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param forceDeletion Optional parameter to force delete virtual machines.(Feature in Preview).
+     * @param forceDeletion Optional parameter to force delete virtual machines.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String vmName, Boolean forceDeletion);
 
     /**
@@ -442,13 +443,13 @@ public interface VirtualMachinesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param forceDeletion Optional parameter to force delete virtual machines.(Feature in Preview).
+     * @param forceDeletion Optional parameter to force delete virtual machines.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vmName, Boolean forceDeletion);
 
     /**
@@ -456,14 +457,14 @@ public interface VirtualMachinesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param forceDeletion Optional parameter to force delete virtual machines.(Feature in Preview).
+     * @param forceDeletion Optional parameter to force delete virtual machines.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String vmName, Boolean forceDeletion, Context context);
 
@@ -472,7 +473,7 @@ public interface VirtualMachinesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param forceDeletion Optional parameter to force delete virtual machines.(Feature in Preview).
+     * @param forceDeletion Optional parameter to force delete virtual machines.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -499,7 +500,7 @@ public interface VirtualMachinesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param forceDeletion Optional parameter to force delete virtual machines.(Feature in Preview).
+     * @param forceDeletion Optional parameter to force delete virtual machines.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -524,7 +525,7 @@ public interface VirtualMachinesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param forceDeletion Optional parameter to force delete virtual machines.(Feature in Preview).
+     * @param forceDeletion Optional parameter to force delete virtual machines.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -538,7 +539,10 @@ public interface VirtualMachinesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param expand The expand expression to apply on the operation.
+     * @param expand The expand expression to apply on the operation. 'InstanceView' retrieves a snapshot of the runtime
+     *     properties of the virtual machine that is managed by the platform and can change outside of control plane
+     *     operations. 'UserData' retrieves the UserData property as part of the VM model view that was provided by the
+     *     user during the VM Create/Update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -553,7 +557,10 @@ public interface VirtualMachinesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param expand The expand expression to apply on the operation.
+     * @param expand The expand expression to apply on the operation. 'InstanceView' retrieves a snapshot of the runtime
+     *     properties of the virtual machine that is managed by the platform and can change outside of control plane
+     *     operations. 'UserData' retrieves the UserData property as part of the VM model view that was provided by the
+     *     user during the VM Create/Update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -594,7 +601,10 @@ public interface VirtualMachinesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param expand The expand expression to apply on the operation.
+     * @param expand The expand expression to apply on the operation. 'InstanceView' retrieves a snapshot of the runtime
+     *     properties of the virtual machine that is managed by the platform and can change outside of control plane
+     *     operations. 'UserData' retrieves the UserData property as part of the VM model view that was provided by the
+     *     user during the VM Create/Update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -685,7 +695,7 @@ public interface VirtualMachinesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginConvertToManagedDisksAsync(String resourceGroupName, String vmName);
 
     /**
@@ -699,7 +709,7 @@ public interface VirtualMachinesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginConvertToManagedDisks(String resourceGroupName, String vmName);
 
     /**
@@ -714,7 +724,7 @@ public interface VirtualMachinesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginConvertToManagedDisks(
         String resourceGroupName, String vmName, Context context);
 
@@ -765,13 +775,15 @@ public interface VirtualMachinesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
+     * @param hibernate Optional parameter to hibernate a virtual machine. (Feature in Preview).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deallocateWithResponseAsync(String resourceGroupName, String vmName);
+    Mono<Response<Flux<ByteBuffer>>> deallocateWithResponseAsync(
+        String resourceGroupName, String vmName, Boolean hibernate);
 
     /**
      * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
@@ -779,13 +791,14 @@ public interface VirtualMachinesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
+     * @param hibernate Optional parameter to hibernate a virtual machine. (Feature in Preview).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<Void>, Void> beginDeallocateAsync(String resourceGroupName, String vmName);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginDeallocateAsync(String resourceGroupName, String vmName, Boolean hibernate);
 
     /**
      * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
@@ -793,13 +806,14 @@ public interface VirtualMachinesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
+     * @param hibernate Optional parameter to hibernate a virtual machine. (Feature in Preview).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDeallocate(String resourceGroupName, String vmName);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeallocate(String resourceGroupName, String vmName, Boolean hibernate);
 
     /**
      * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
@@ -807,14 +821,31 @@ public interface VirtualMachinesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
+     * @param hibernate Optional parameter to hibernate a virtual machine. (Feature in Preview).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeallocate(
+        String resourceGroupName, String vmName, Boolean hibernate, Context context);
+
+    /**
+     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
+     * that this virtual machine uses.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @param hibernate Optional parameter to hibernate a virtual machine. (Feature in Preview).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDeallocate(String resourceGroupName, String vmName, Context context);
+    Mono<Void> deallocateAsync(String resourceGroupName, String vmName, Boolean hibernate);
 
     /**
      * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
@@ -836,6 +867,20 @@ public interface VirtualMachinesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
+     * @param hibernate Optional parameter to hibernate a virtual machine. (Feature in Preview).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deallocate(String resourceGroupName, String vmName, Boolean hibernate);
+
+    /**
+     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
+     * that this virtual machine uses.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -849,20 +894,21 @@ public interface VirtualMachinesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
+     * @param hibernate Optional parameter to hibernate a virtual machine. (Feature in Preview).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void deallocate(String resourceGroupName, String vmName, Context context);
+    void deallocate(String resourceGroupName, String vmName, Boolean hibernate, Context context);
 
     /**
      * Sets the OS state of the virtual machine to generalized. It is recommended to sysprep the virtual machine before
      * performing this operation. &lt;br&gt;For Windows, please refer to [Create a managed image of a generalized VM in
-     * Azure](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/capture-image-resource).&lt;br&gt;For
-     * Linux, please refer to [How to create an image of a virtual machine or
-     * VHD](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/capture-image).
+     * Azure](https://docs.microsoft.com/azure/virtual-machines/windows/capture-image-resource).&lt;br&gt;For Linux,
+     * please refer to [How to create an image of a virtual machine or
+     * VHD](https://docs.microsoft.com/azure/virtual-machines/linux/capture-image).
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
@@ -877,9 +923,9 @@ public interface VirtualMachinesClient
     /**
      * Sets the OS state of the virtual machine to generalized. It is recommended to sysprep the virtual machine before
      * performing this operation. &lt;br&gt;For Windows, please refer to [Create a managed image of a generalized VM in
-     * Azure](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/capture-image-resource).&lt;br&gt;For
-     * Linux, please refer to [How to create an image of a virtual machine or
-     * VHD](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/capture-image).
+     * Azure](https://docs.microsoft.com/azure/virtual-machines/windows/capture-image-resource).&lt;br&gt;For Linux,
+     * please refer to [How to create an image of a virtual machine or
+     * VHD](https://docs.microsoft.com/azure/virtual-machines/linux/capture-image).
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
@@ -894,9 +940,9 @@ public interface VirtualMachinesClient
     /**
      * Sets the OS state of the virtual machine to generalized. It is recommended to sysprep the virtual machine before
      * performing this operation. &lt;br&gt;For Windows, please refer to [Create a managed image of a generalized VM in
-     * Azure](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/capture-image-resource).&lt;br&gt;For
-     * Linux, please refer to [How to create an image of a virtual machine or
-     * VHD](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/capture-image).
+     * Azure](https://docs.microsoft.com/azure/virtual-machines/windows/capture-image-resource).&lt;br&gt;For Linux,
+     * please refer to [How to create an image of a virtual machine or
+     * VHD](https://docs.microsoft.com/azure/virtual-machines/linux/capture-image).
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
@@ -910,9 +956,9 @@ public interface VirtualMachinesClient
     /**
      * Sets the OS state of the virtual machine to generalized. It is recommended to sysprep the virtual machine before
      * performing this operation. &lt;br&gt;For Windows, please refer to [Create a managed image of a generalized VM in
-     * Azure](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/capture-image-resource).&lt;br&gt;For
-     * Linux, please refer to [How to create an image of a virtual machine or
-     * VHD](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/capture-image).
+     * Azure](https://docs.microsoft.com/azure/virtual-machines/windows/capture-image-resource).&lt;br&gt;For Linux,
+     * please refer to [How to create an image of a virtual machine or
+     * VHD](https://docs.microsoft.com/azure/virtual-machines/linux/capture-image).
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
@@ -1086,7 +1132,7 @@ public interface VirtualMachinesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginPowerOffAsync(
         String resourceGroupName, String vmName, Boolean skipShutdown);
 
@@ -1104,7 +1150,7 @@ public interface VirtualMachinesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginPowerOff(String resourceGroupName, String vmName, Boolean skipShutdown);
 
     /**
@@ -1122,7 +1168,7 @@ public interface VirtualMachinesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginPowerOff(
         String resourceGroupName, String vmName, Boolean skipShutdown, Context context);
 
@@ -1226,7 +1272,7 @@ public interface VirtualMachinesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginReapplyAsync(String resourceGroupName, String vmName);
 
     /**
@@ -1239,7 +1285,7 @@ public interface VirtualMachinesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginReapply(String resourceGroupName, String vmName);
 
     /**
@@ -1253,7 +1299,7 @@ public interface VirtualMachinesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginReapply(String resourceGroupName, String vmName, Context context);
 
     /**
@@ -1317,7 +1363,7 @@ public interface VirtualMachinesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginRestartAsync(String resourceGroupName, String vmName);
 
     /**
@@ -1330,7 +1376,7 @@ public interface VirtualMachinesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String vmName);
 
     /**
@@ -1344,7 +1390,7 @@ public interface VirtualMachinesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String vmName, Context context);
 
     /**
@@ -1408,7 +1454,7 @@ public interface VirtualMachinesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String vmName);
 
     /**
@@ -1421,7 +1467,7 @@ public interface VirtualMachinesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String vmName);
 
     /**
@@ -1435,7 +1481,7 @@ public interface VirtualMachinesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String vmName, Context context);
 
     /**
@@ -1499,7 +1545,7 @@ public interface VirtualMachinesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginRedeployAsync(String resourceGroupName, String vmName);
 
     /**
@@ -1512,7 +1558,7 @@ public interface VirtualMachinesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRedeploy(String resourceGroupName, String vmName);
 
     /**
@@ -1526,7 +1572,7 @@ public interface VirtualMachinesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRedeploy(String resourceGroupName, String vmName, Context context);
 
     /**
@@ -1572,8 +1618,7 @@ public interface VirtualMachinesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1581,69 +1626,67 @@ public interface VirtualMachinesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> reimageWithResponseAsync(
-        String resourceGroupName, String vmName, Boolean tempDisk);
+        String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters);
 
     /**
      * Reimages the virtual machine which has an ephemeral OS disk back to its initial state.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<Void>, Void> beginReimageAsync(String resourceGroupName, String vmName, Boolean tempDisk);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginReimageAsync(
+        String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters);
 
     /**
      * Reimages the virtual machine which has an ephemeral OS disk back to its initial state.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginReimage(String resourceGroupName, String vmName, Boolean tempDisk);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginReimage(
+        String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters);
 
     /**
      * Reimages the virtual machine which has an ephemeral OS disk back to its initial state.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginReimage(
-        String resourceGroupName, String vmName, Boolean tempDisk, Context context);
+        String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters, Context context);
 
     /**
      * Reimages the virtual machine which has an ephemeral OS disk back to its initial state.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> reimageAsync(String resourceGroupName, String vmName, Boolean tempDisk);
+    Mono<Void> reimageAsync(String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters);
 
     /**
      * Reimages the virtual machine which has an ephemeral OS disk back to its initial state.
@@ -1663,14 +1706,13 @@ public interface VirtualMachinesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void reimage(String resourceGroupName, String vmName, Boolean tempDisk);
+    void reimage(String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters);
 
     /**
      * Reimages the virtual machine which has an ephemeral OS disk back to its initial state.
@@ -1689,15 +1731,14 @@ public interface VirtualMachinesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void reimage(String resourceGroupName, String vmName, Boolean tempDisk, Context context);
+    void reimage(String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters, Context context);
 
     /**
      * The operation to retrieve SAS URIs for a virtual machine's boot diagnostic logs.
@@ -1801,7 +1842,7 @@ public interface VirtualMachinesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginPerformMaintenanceAsync(String resourceGroupName, String vmName);
 
     /**
@@ -1814,7 +1855,7 @@ public interface VirtualMachinesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginPerformMaintenance(String resourceGroupName, String vmName);
 
     /**
@@ -1828,7 +1869,7 @@ public interface VirtualMachinesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginPerformMaintenance(
         String resourceGroupName, String vmName, Context context);
 
@@ -1945,7 +1986,7 @@ public interface VirtualMachinesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the properties of an AssessPatches result.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VirtualMachineAssessPatchesResultInner>, VirtualMachineAssessPatchesResultInner>
         beginAssessPatchesAsync(String resourceGroupName, String vmName);
 
@@ -1959,7 +2000,7 @@ public interface VirtualMachinesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the properties of an AssessPatches result.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualMachineAssessPatchesResultInner>, VirtualMachineAssessPatchesResultInner>
         beginAssessPatches(String resourceGroupName, String vmName);
 
@@ -1974,7 +2015,7 @@ public interface VirtualMachinesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the properties of an AssessPatches result.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualMachineAssessPatchesResultInner>, VirtualMachineAssessPatchesResultInner>
         beginAssessPatches(String resourceGroupName, String vmName, Context context);
 
@@ -2044,7 +2085,7 @@ public interface VirtualMachinesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result summary of an installation operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VirtualMachineInstallPatchesResultInner>, VirtualMachineInstallPatchesResultInner>
         beginInstallPatchesAsync(
             String resourceGroupName, String vmName, VirtualMachineInstallPatchesParameters installPatchesInput);
@@ -2060,7 +2101,7 @@ public interface VirtualMachinesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result summary of an installation operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualMachineInstallPatchesResultInner>, VirtualMachineInstallPatchesResultInner>
         beginInstallPatches(
             String resourceGroupName, String vmName, VirtualMachineInstallPatchesParameters installPatchesInput);
@@ -2077,7 +2118,7 @@ public interface VirtualMachinesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result summary of an installation operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualMachineInstallPatchesResultInner>, VirtualMachineInstallPatchesResultInner>
         beginInstallPatches(
             String resourceGroupName,
@@ -2160,7 +2201,7 @@ public interface VirtualMachinesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommandAsync(
         String resourceGroupName, String vmName, RunCommandInput parameters);
 
@@ -2175,7 +2216,7 @@ public interface VirtualMachinesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommand(
         String resourceGroupName, String vmName, RunCommandInput parameters);
 
@@ -2191,7 +2232,7 @@ public interface VirtualMachinesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommand(
         String resourceGroupName, String vmName, RunCommandInput parameters, Context context);
 

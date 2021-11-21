@@ -41,18 +41,27 @@ import java.util.Map;
  * <p> The minimal configuration options required by {@link KeyVaultBackupClientBuilder} to build an
  * an {@link KeyVaultBackupAsyncClient} are {@link String vaultUrl} and {@link TokenCredential credential}.</p>
  *
- * <p>The {@link HttpLogDetailLevel}, multiple custom {@link HttpLoggingPolicy policies} and custom
- * {@link HttpClient} can be optionally configured in the {@link KeyVaultBackupClientBuilder}.</p>
+ * <p><strong>Samples to construct a sync client</strong></p>
+ * <!-- src_embed com.azure.security.keyvault.administration.keyVaultBackupClient.instantiation -->
+ * <pre>
+ * KeyVaultBackupClient keyVaultBackupClient = new KeyVaultBackupClientBuilder&#40;&#41;
+ *     .vaultUrl&#40;&quot;https:&#47;&#47;myaccount.managedhsm.azure.net&#47;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.administration.keyVaultBackupClient.instantiation -->
+ * <p><strong>Samples to construct an async client</strong></p>
+ * <!-- src_embed com.azure.security.keyvault.administration.keyVaultBackupAsyncClient.instantiation -->
+ * <pre>
+ * KeyVaultBackupAsyncClient keyVaultBackupAsyncClient = new KeyVaultBackupClientBuilder&#40;&#41;
+ *     .vaultUrl&#40;&quot;https:&#47;&#47;myaccount.managedhsm.azure.net&#47;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.administration.keyVaultBackupAsyncClient.instantiation -->
  *
- * <p>Alternatively, a custom {@link HttpPipeline} with custom {@link HttpPipelinePolicy} policies and {@link String
- * vaultUrl} can be specified. It provides finer control over the construction of {@link KeyVaultBackupAsyncClient}
- * and {@link KeyVaultBackupClient} instances.</p>
- *
- * <p> The minimal configuration options required by {@link KeyVaultBackupClientBuilder} to build an
- * {@link KeyVaultBackupClient} are {@link String vaultUrl} and {@link TokenCredential credential}. </p>
- *
- * @see KeyVaultBackupAsyncClient
  * @see KeyVaultBackupClient
+ * @see KeyVaultBackupAsyncClient
  */
 @ServiceClientBuilder(serviceClients = {KeyVaultBackupClient.class, KeyVaultBackupAsyncClient.class})
 public final class KeyVaultBackupClientBuilder {
@@ -140,6 +149,8 @@ public final class KeyVaultBackupClientBuilder {
 
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
+
+        httpLogOptions = (httpLogOptions == null) ? new HttpLogOptions() : httpLogOptions;
 
         policies.add(new UserAgentPolicy(CoreUtils.getApplicationId(clientOptions, httpLogOptions), clientName,
             clientVersion, buildConfiguration));

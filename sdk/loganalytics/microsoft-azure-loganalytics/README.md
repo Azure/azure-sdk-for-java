@@ -6,7 +6,7 @@ Azure Log Analytics provides agents for telemtry collection and enables deep ana
 
 ## Examples
 
-Please see [here](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/loganalytics/microsoft-azure-loganalytics/samples) for code examples using this SDK. 
+Please see [here](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/loganalytics/microsoft-azure-loganalytics/samples) for code examples using this SDK. 
 
 
 ## Download
@@ -36,7 +36,7 @@ If you encounter any bugs with these SDKs, please file issues via [Issues](https
 
 ## Contribute Code
 
-For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md).
+For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)

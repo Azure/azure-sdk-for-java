@@ -190,7 +190,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -250,7 +250,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -278,7 +278,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String circuitName, String peeringName, String connectionName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -301,7 +301,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String circuitName, String peeringName, String connectionName, Context context) {
         context = this.client.mergeContext(context);
@@ -324,7 +324,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String circuitName, String peeringName, String connectionName) {
         return beginDeleteAsync(resourceGroupName, circuitName, peeringName, connectionName).getSyncPoller();
@@ -343,7 +343,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String circuitName, String peeringName, String connectionName, Context context) {
         return beginDeleteAsync(resourceGroupName, circuitName, peeringName, connectionName, context).getSyncPoller();
@@ -464,7 +464,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -524,7 +524,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -657,7 +657,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
         } else {
             expressRouteCircuitConnectionParameters.validate();
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -733,7 +733,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
         } else {
             expressRouteCircuitConnectionParameters.validate();
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -764,7 +764,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return express Route Circuit Connection in an ExpressRouteCircuitPeering resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ExpressRouteCircuitConnectionInner>, ExpressRouteCircuitConnectionInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -800,7 +800,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return express Route Circuit Connection in an ExpressRouteCircuitPeering resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ExpressRouteCircuitConnectionInner>, ExpressRouteCircuitConnectionInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -842,7 +842,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return express Route Circuit Connection in an ExpressRouteCircuitPeering resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpressRouteCircuitConnectionInner>, ExpressRouteCircuitConnectionInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -870,7 +870,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return express Route Circuit Connection in an ExpressRouteCircuitPeering resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpressRouteCircuitConnectionInner>, ExpressRouteCircuitConnectionInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -1045,7 +1045,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1109,7 +1109,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

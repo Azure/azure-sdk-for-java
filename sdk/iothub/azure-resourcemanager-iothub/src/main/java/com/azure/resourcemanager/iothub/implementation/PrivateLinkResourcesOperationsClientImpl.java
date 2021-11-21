@@ -136,7 +136,7 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
                             resourceName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -290,7 +290,7 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
                             groupId,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

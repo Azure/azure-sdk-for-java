@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.iothub.implementation;
 
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.iothub.IotHubManager;
 import com.azure.resourcemanager.iothub.fluent.models.CertificateDescriptionInner;
-import com.azure.resourcemanager.iothub.models.CertificateBodyDescription;
 import com.azure.resourcemanager.iothub.models.CertificateDescription;
 import com.azure.resourcemanager.iothub.models.CertificateProperties;
 
@@ -15,7 +13,7 @@ public final class CertificateDescriptionImpl
     implements CertificateDescription, CertificateDescription.Definition, CertificateDescription.Update {
     private CertificateDescriptionInner innerObject;
 
-    private final IotHubManager serviceManager;
+    private final com.azure.resourcemanager.iothub.IotHubManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -41,7 +39,7 @@ public final class CertificateDescriptionImpl
         return this.innerObject;
     }
 
-    private IotHubManager manager() {
+    private com.azure.resourcemanager.iothub.IotHubManager manager() {
         return this.serviceManager;
     }
 
@@ -53,11 +51,7 @@ public final class CertificateDescriptionImpl
 
     private String createIfMatch;
 
-    private CertificateBodyDescription createCertificateDescription;
-
     private String updateIfMatch;
-
-    private CertificateBodyDescription updateCertificateDescription;
 
     public CertificateDescriptionImpl withExistingIotHub(String resourceGroupName, String resourceName) {
         this.resourceGroupName = resourceGroupName;
@@ -71,12 +65,7 @@ public final class CertificateDescriptionImpl
                 .serviceClient()
                 .getCertificates()
                 .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    resourceName,
-                    certificateName,
-                    createCertificateDescription,
-                    createIfMatch,
-                    Context.NONE)
+                    resourceGroupName, resourceName, certificateName, this.innerModel(), createIfMatch, Context.NONE)
                 .getValue();
         return this;
     }
@@ -87,27 +76,20 @@ public final class CertificateDescriptionImpl
                 .serviceClient()
                 .getCertificates()
                 .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    resourceName,
-                    certificateName,
-                    createCertificateDescription,
-                    createIfMatch,
-                    context)
+                    resourceGroupName, resourceName, certificateName, this.innerModel(), createIfMatch, context)
                 .getValue();
         return this;
     }
 
-    CertificateDescriptionImpl(String name, IotHubManager serviceManager) {
+    CertificateDescriptionImpl(String name, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerObject = new CertificateDescriptionInner();
         this.serviceManager = serviceManager;
         this.certificateName = name;
         this.createIfMatch = null;
-        this.createCertificateDescription = new CertificateBodyDescription();
     }
 
     public CertificateDescriptionImpl update() {
         this.updateIfMatch = null;
-        this.updateCertificateDescription = new CertificateBodyDescription();
         return this;
     }
 
@@ -117,12 +99,7 @@ public final class CertificateDescriptionImpl
                 .serviceClient()
                 .getCertificates()
                 .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    resourceName,
-                    certificateName,
-                    updateCertificateDescription,
-                    updateIfMatch,
-                    Context.NONE)
+                    resourceGroupName, resourceName, certificateName, this.innerModel(), updateIfMatch, Context.NONE)
                 .getValue();
         return this;
     }
@@ -133,17 +110,13 @@ public final class CertificateDescriptionImpl
                 .serviceClient()
                 .getCertificates()
                 .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    resourceName,
-                    certificateName,
-                    updateCertificateDescription,
-                    updateIfMatch,
-                    context)
+                    resourceGroupName, resourceName, certificateName, this.innerModel(), updateIfMatch, context)
                 .getValue();
         return this;
     }
 
-    CertificateDescriptionImpl(CertificateDescriptionInner innerObject, IotHubManager serviceManager) {
+    CertificateDescriptionImpl(
+        CertificateDescriptionInner innerObject, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -171,14 +144,9 @@ public final class CertificateDescriptionImpl
         return this;
     }
 
-    public CertificateDescriptionImpl withCertificate(String certificate) {
-        if (isInCreateMode()) {
-            this.createCertificateDescription.withCertificate(certificate);
-            return this;
-        } else {
-            this.updateCertificateDescription.withCertificate(certificate);
-            return this;
-        }
+    public CertificateDescriptionImpl withProperties(CertificateProperties properties) {
+        this.innerModel().withProperties(properties);
+        return this;
     }
 
     public CertificateDescriptionImpl withIfMatch(String ifMatch) {

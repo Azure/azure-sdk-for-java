@@ -4,7 +4,6 @@
 package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.models.AnomalyAlert;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.test.TestBase;
@@ -48,6 +47,6 @@ public final class AlertTest extends AlertTestBase {
             cnt[0]++;
             assertAlertOutput(alert);
         }
-        Assertions.assertEquals(4, cnt[0]);
+        Assertions.assertEquals(ListAlertsOutput.INSTANCE.expectedAlerts, cnt[0]);
     }
 }

@@ -48,7 +48,7 @@ public final class ManageUserAssignedMSIEnabledVirtualMachine {
         final String linuxVMName = Utils.randomResourceName(azureResourceManager, "VM1", 15);
         final String pipName = Utils.randomResourceName(azureResourceManager, "pip1", 15);
         final String userName = "tirekicker";
-        final String password = Utils.password();
+        final String sshPublicKey = Utils.sshPublicKey();
         final Region region = Region.US_WEST;
 
         try {
@@ -81,7 +81,7 @@ public final class ManageUserAssignedMSIEnabledVirtualMachine {
 
             // The script to install Java8, Maven3 and Git on a virtual machine using Azure Custom Script Extension
             //
-            final String javaMvnGitInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/install_jva_mvn_git.sh";
+            final String javaMvnGitInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/install_jva_mvn_git.sh";
             final String invokeScriptCommand = "bash install_jva_mvn_git.sh";
             List<String> fileUris = new ArrayList<>();
             fileUris.add(javaMvnGitInstallScript);
@@ -97,7 +97,7 @@ public final class ManageUserAssignedMSIEnabledVirtualMachine {
                     .withNewPrimaryPublicIPAddress(pipName)
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername(userName)
-                    .withRootPassword(password)
+                    .withSsh(sshPublicKey)
                     .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     .withExistingUserAssignedManagedServiceIdentity(identity)
                     .defineNewExtension("CustomScriptForLinux")

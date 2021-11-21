@@ -156,4 +156,10 @@ public interface BatchServiceClient {
      */
     ComputeNodes computeNodes();
 
+    /**
+     * Gets the ComputeNodeExtensions object to access its operations.
+     * @return the ComputeNodeExtensions object.
+     */
+    ComputeNodeExtensions computeNodeExtensions();
+
 }

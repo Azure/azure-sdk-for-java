@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.datafactory.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /** A copy activity Azure Queue sink. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureQueueSink")
-@Immutable
+@Fluent
 public final class AzureQueueSink extends CopySink {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureQueueSink.class);
 
@@ -49,6 +49,13 @@ public final class AzureQueueSink extends CopySink {
     @Override
     public AzureQueueSink withMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.withMaxConcurrentConnections(maxConcurrentConnections);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureQueueSink withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
         return this;
     }
 

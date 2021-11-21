@@ -300,6 +300,24 @@ public class FileSystemClientJavaDocCodeSamples {
     }
 
     /**
+     * Code snippet for {@link DataLakeFileSystemClient#undeletePath(String, String)}
+     */
+    public void restorePathCodeSnippet() {
+        String deletedPath = null;
+        String deletionId = null;
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.undeletePath#String-String
+        client.undeletePath(deletedPath, deletionId);
+        System.out.println("Delete request completed");
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.undeletePath#String-String
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.undeletePathWithResponse#String-String-Duration-Context
+        client.undeletePathWithResponse(deletedPath, deletionId, timeout, new Context(key1, value1));
+        System.out.println("Delete request completed");
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.undeletePathWithResponse#String-String-Duration-Context
+    }
+
+    /**
      * Code snippets for {@link DataLakeFileSystemClient#listPaths()} and
      * {@link DataLakeFileSystemClient#listPaths(ListPathsOptions, Duration)}
      */
@@ -315,6 +333,27 @@ public class FileSystemClientJavaDocCodeSamples {
 
         client.listPaths(options, timeout).forEach(path -> System.out.printf("Name: %s%n", path.getName()));
         // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.listPaths#ListPathsOptions-Duration
+    }
+
+    /**
+     * Code snippets for {@link DataLakeFileSystemClient#listDeletedPaths()} and
+     * {@link DataLakeFileSystemClient#listDeletedPaths(String, Duration, Context)}
+     */
+    public void listDeletedPaths() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.listDeletedPaths
+        client.listDeletedPaths().forEach(path -> System.out.printf("Name: %s%n", path.getPath()));
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.listDeletedPaths
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.listDeletedPaths#String-Duration-Context
+        Context context = new Context("Key", "Value");
+        int pageSize = 10;
+
+        client.listDeletedPaths("PathPrefixToMatch", timeout, context)
+            .iterableByPage(pageSize)
+            .forEach(page ->
+                page.getValue().forEach(path ->
+                    System.out.printf("Name: %s%n", path.getPath())));
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.listDeletedPaths#String-Duration-Context
     }
 
     /**

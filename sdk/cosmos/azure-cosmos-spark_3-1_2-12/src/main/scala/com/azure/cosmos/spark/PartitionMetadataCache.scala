@@ -5,6 +5,7 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal, Strings}
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty, assertOnSparkDriver, requireNotNull}
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
 import reactor.core.scala.publisher.SMono
@@ -21,7 +22,7 @@ import scala.collection.concurrent.TrieMap
 // physical partition - it is not guaranteeing functional correctness
 // because the cached metadata could be old or even be for a different
 // container after deletion and recreation of a container
-private object PartitionMetadataCache extends CosmosLoggingTrait {
+private object PartitionMetadataCache extends BasicLoggingTrait {
   private[this] val Nothing = 0
   private[this] val cache = new TrieMap[String, PartitionMetadata]
   // purpose of the time is to update partition metadata
@@ -146,50 +147,57 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
     feedRange: NormalizedRange,
     tolerateNotFound: Boolean
   ): SMono[Option[PartitionMetadata]] = {
-    val client = CosmosClientCache.apply(cosmosClientConfiguration, cosmosClientStateHandle)
-    val container = ThroughputControlHelper.getContainer(userConfig, cosmosContainerConfig, client)
+    Loan(CosmosClientCache(
+      cosmosClientConfiguration,
+      cosmosClientStateHandle,
+      "PartitionMetadataCache.readPartitionMetadata(" +
+        s"${cosmosContainerConfig.database}.${cosmosContainerConfig.container}, $feedRange)"
+    ))
+      .to(clientCacheItem => {
+        val container = ThroughputControlHelper.getContainer(userConfig, cosmosContainerConfig, clientCacheItem.client)
 
-    val options = CosmosChangeFeedRequestOptions.createForProcessingFromNow(
-      SparkBridgeImplementationInternal.toFeedRange(feedRange))
-    options.setMaxItemCount(1)
-    options.setMaxPrefetchPageCount(1)
-    options.setQuotaInfoEnabled(true)
+        val options = CosmosChangeFeedRequestOptions.createForProcessingFromNow(
+          SparkBridgeImplementationInternal.toFeedRange(feedRange))
+        options.setMaxItemCount(1)
+        options.setMaxPrefetchPageCount(1)
+        options.setQuotaInfoEnabled(true)
 
-    val lastDocumentCount = new AtomicLong()
-    val lastTotalDocumentSize = new AtomicLong()
-    val lastContinuationToken = new AtomicReference[String]()
+        val lastDocumentCount = new AtomicLong()
+        val lastTotalDocumentSize = new AtomicLong()
+        val lastContinuationToken = new AtomicReference[String]()
 
-    container
-      .queryChangeFeed(options, classOf[ObjectNode])
-      .handle(r => {
-        lastDocumentCount.set(r.getDocumentCountUsage)
-        lastTotalDocumentSize.set(r.getDocumentUsage)
-        val continuation = r.getContinuationToken
-        if (!Strings.isNullOrWhiteSpace(continuation)) {
-          lastContinuationToken.set(continuation)
-        }
-      })
-      .collectList()
-      .asScala
-      .map(_ => {
-        Some(PartitionMetadata(
-          userConfig,
-          cosmosClientConfiguration,
-          cosmosClientStateHandle,
-          cosmosContainerConfig,
-          feedRange,
-          assertNotNull(lastDocumentCount.get, "lastDocumentCount"),
-          assertNotNull(lastTotalDocumentSize.get, "lastTotalDocumentSize"),
-          assertNotNullOrEmpty(lastContinuationToken.get, "continuationToken")
-        ))
-      })
-      .onErrorResume((throwable: Throwable) => {
-        if (tolerateNotFound && Exceptions.isNotFoundException(throwable)) {
-          SMono.just(None)
-        } else {
-          SMono.error(throwable)
-        }
-      })
+        container
+          .queryChangeFeed(options, classOf[ObjectNode])
+          .handle(r => {
+            lastDocumentCount.set(r.getDocumentCountUsage)
+            lastTotalDocumentSize.set(r.getDocumentUsage)
+            val continuation = r.getContinuationToken
+            if (!Strings.isNullOrWhiteSpace(continuation)) {
+              lastContinuationToken.set(continuation)
+            }
+          })
+          .collectList()
+          .asScala
+          .map(_ => {
+            Some(PartitionMetadata(
+              userConfig,
+              cosmosClientConfiguration,
+              cosmosClientStateHandle,
+              cosmosContainerConfig,
+              feedRange,
+              assertNotNull(lastDocumentCount.get, "lastDocumentCount"),
+              assertNotNull(lastTotalDocumentSize.get, "lastTotalDocumentSize"),
+              assertNotNullOrEmpty(lastContinuationToken.get, "continuationToken")
+            ))
+          })
+          .onErrorResume((throwable: Throwable) => {
+            if (tolerateNotFound && Exceptions.isNotFoundException(throwable)) {
+              SMono.just(None)
+            } else {
+              SMono.error(throwable)
+            }
+          })
+    })
   }
   //scalastyle:on method.length
 

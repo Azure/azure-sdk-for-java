@@ -138,6 +138,13 @@ public final class DynamicsSink extends CopySink {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public DynamicsSink withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

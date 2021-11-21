@@ -42,6 +42,12 @@ public class ConfigurationStoreUpdateParameters {
     private EncryptionProperties encryption;
 
     /*
+     * Disables all authentication methods other than AAD authentication.
+     */
+    @JsonProperty(value = "properties.disableLocalAuth")
+    private Boolean disableLocalAuth;
+
+    /*
      * Control permission for data plane traffic coming from public networks
      * while private endpoint is enabled.
      */
@@ -125,6 +131,26 @@ public class ConfigurationStoreUpdateParameters {
      */
     public ConfigurationStoreUpdateParameters withEncryption(EncryptionProperties encryption) {
         this.encryption = encryption;
+        return this;
+    }
+
+    /**
+     * Get the disableLocalAuth property: Disables all authentication methods other than AAD authentication.
+     *
+     * @return the disableLocalAuth value.
+     */
+    public Boolean disableLocalAuth() {
+        return this.disableLocalAuth;
+    }
+
+    /**
+     * Set the disableLocalAuth property: Disables all authentication methods other than AAD authentication.
+     *
+     * @param disableLocalAuth the disableLocalAuth value to set.
+     * @return the ConfigurationStoreUpdateParameters object itself.
+     */
+    public ConfigurationStoreUpdateParameters withDisableLocalAuth(Boolean disableLocalAuth) {
+        this.disableLocalAuth = disableLocalAuth;
         return this;
     }
 

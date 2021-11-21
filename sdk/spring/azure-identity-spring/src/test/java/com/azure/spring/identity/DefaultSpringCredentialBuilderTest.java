@@ -5,10 +5,10 @@ package com.azure.spring.identity;
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.ChainedTokenCredential;
 import com.azure.identity.ManagedIdentityCredential;
-import com.google.common.collect.Lists;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
@@ -35,7 +35,7 @@ public class DefaultSpringCredentialBuilderTest extends SpringCredentialTestBase
         assertTrue(tokenCredential instanceof ChainedTokenCredential);
 
         assertEquals(1, builder.prefixes.size());
-        assertEquals(Lists.newArrayList(AZURE_CREDENTIAL_PREFIX), builder.prefixes);
+        assertEquals(Arrays.asList(AZURE_CREDENTIAL_PREFIX), builder.prefixes);
 
         assertEquals(2, builder.tokenCredentials.size());
         assertNull(builder.tokenCredentials.get(0));
@@ -52,7 +52,7 @@ public class DefaultSpringCredentialBuilderTest extends SpringCredentialTestBase
         assertTrue(tokenCredential instanceof ChainedTokenCredential);
 
         assertEquals(2, builder.prefixes.size());
-        assertEquals(Lists.newArrayList("abc.", AZURE_CREDENTIAL_PREFIX), builder.prefixes);
+        assertEquals(Arrays.asList("abc.", AZURE_CREDENTIAL_PREFIX), builder.prefixes);
 
         assertEquals(3, builder.tokenCredentials.size());
         assertNull(builder.tokenCredentials.get(0));

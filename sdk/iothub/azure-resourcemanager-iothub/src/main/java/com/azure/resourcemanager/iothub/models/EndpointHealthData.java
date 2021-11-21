@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.resourcemanager.iothub.fluent.models.EndpointHealthDataInner;
+import java.time.OffsetDateTime;
 
 /** An immutable client-side representation of EndpointHealthData. */
 public interface EndpointHealthData {
@@ -28,6 +29,34 @@ public interface EndpointHealthData {
      * @return the healthStatus value.
      */
     EndpointHealthStatus healthStatus();
+
+    /**
+     * Gets the lastKnownError property: Last error obtained when a message failed to be delivered to iot hub.
+     *
+     * @return the lastKnownError value.
+     */
+    String lastKnownError();
+
+    /**
+     * Gets the lastKnownErrorTime property: Time at which the last known error occurred.
+     *
+     * @return the lastKnownErrorTime value.
+     */
+    OffsetDateTime lastKnownErrorTime();
+
+    /**
+     * Gets the lastSuccessfulSendAttemptTime property: Last time iot hub successfully sent a message to the endpoint.
+     *
+     * @return the lastSuccessfulSendAttemptTime value.
+     */
+    OffsetDateTime lastSuccessfulSendAttemptTime();
+
+    /**
+     * Gets the lastSendAttemptTime property: Last time iot hub tried to send a message to the endpoint.
+     *
+     * @return the lastSendAttemptTime value.
+     */
+    OffsetDateTime lastSendAttemptTime();
 
     /**
      * Gets the inner com.azure.resourcemanager.iothub.fluent.models.EndpointHealthDataInner object.

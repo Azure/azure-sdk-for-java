@@ -94,6 +94,13 @@ public final class AzureDatabricksDeltaLakeSource extends CopySource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureDatabricksDeltaLakeSource withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

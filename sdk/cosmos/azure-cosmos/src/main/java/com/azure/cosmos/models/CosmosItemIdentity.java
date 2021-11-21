@@ -3,12 +3,9 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.util.Beta;
-
 /**
  * Encapsulates the PartitionKey/id tuple that uniquely identifies a CosmosItem
  */
-@Beta(value = Beta.SinceVersion.V4_4_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class CosmosItemIdentity {
     private final PartitionKey partitionKey;
     private final String id;

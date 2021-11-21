@@ -4,12 +4,13 @@
 
 package com.azure.resourcemanager.mediaservices.implementation;
 
-import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mediaservices.fluent.OperationsClient;
-import com.azure.resourcemanager.mediaservices.fluent.models.OperationInner;
-import com.azure.resourcemanager.mediaservices.models.Operation;
+import com.azure.resourcemanager.mediaservices.fluent.models.OperationCollectionInner;
+import com.azure.resourcemanager.mediaservices.models.OperationCollection;
 import com.azure.resourcemanager.mediaservices.models.Operations;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -26,14 +27,26 @@ public final class OperationsImpl implements Operations {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<Operation> list() {
-        PagedIterable<OperationInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new OperationImpl(inner1, this.manager()));
+    public OperationCollection list() {
+        OperationCollectionInner inner = this.serviceClient().list();
+        if (inner != null) {
+            return new OperationCollectionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public PagedIterable<Operation> list(Context context) {
-        PagedIterable<OperationInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new OperationImpl(inner1, this.manager()));
+    public Response<OperationCollection> listWithResponse(Context context) {
+        Response<OperationCollectionInner> inner = this.serviceClient().listWithResponse(context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new OperationCollectionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     private OperationsClient serviceClient() {

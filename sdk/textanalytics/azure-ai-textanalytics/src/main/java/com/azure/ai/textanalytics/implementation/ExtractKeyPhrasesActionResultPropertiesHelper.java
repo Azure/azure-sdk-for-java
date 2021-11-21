@@ -19,7 +19,8 @@ public final class ExtractKeyPhrasesActionResultPropertiesHelper {
      * instance.
      */
     public interface ExtractKeyPhrasesActionResultAccessor {
-        void setResult(ExtractKeyPhrasesActionResult actionsResult, ExtractKeyPhrasesResultCollection result);
+        void setDocumentsResults(ExtractKeyPhrasesActionResult actionResult,
+            ExtractKeyPhrasesResultCollection documentsResults);
     }
 
     /**
@@ -31,7 +32,8 @@ public final class ExtractKeyPhrasesActionResultPropertiesHelper {
         accessor = extractKeyPhrasesActionResultAccessor;
     }
 
-    public static void setResult(ExtractKeyPhrasesActionResult actionResult, ExtractKeyPhrasesResultCollection result) {
-        accessor.setResult(actionResult, result);
+    public static void setDocumentsResults(ExtractKeyPhrasesActionResult actionResult,
+        ExtractKeyPhrasesResultCollection documentsResults) {
+        accessor.setDocumentsResults(actionResult, documentsResults);
     }
 }

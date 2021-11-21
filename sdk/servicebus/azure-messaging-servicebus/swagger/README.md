@@ -9,7 +9,7 @@ To build the SDK for ServiceBusManagementClient and ServiceBusManagementClient, 
 ### Setup
 ```ps
 Fork and clone https://github.com/Azure/autorest.java
-git checkout v4
+git checkout main
 git submodule update --init --recursive
 mvn package -Dlocal
 npm install
@@ -27,7 +27,7 @@ autorest --java --use=C:/work/autorest.java
 
 ### Code generation settings
 ``` yaml
-input-file: E:\git\conniey\azure-rest-api-specs-pr\specification\servicebus\data-plane\servicebus-swagger.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/sb_dataplane_namespace/specification/servicebus/data-plane/servicebus-swagger.json
 java: true
 output-folder: ..\
 generate-client-as-impl: true

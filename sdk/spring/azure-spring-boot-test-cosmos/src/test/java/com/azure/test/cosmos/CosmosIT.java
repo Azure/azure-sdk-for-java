@@ -5,9 +5,9 @@ package com.azure.test.cosmos;
 
 import com.azure.spring.autoconfigure.aad.AADAuthenticationFilterAutoConfiguration;
 import com.azure.spring.test.AppRunner;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Disabled;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -16,6 +16,8 @@ import reactor.core.publisher.Mono;
 
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 public class CosmosIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosIT.class);
@@ -23,8 +25,8 @@ public class CosmosIT {
     private static final String AZURE_COSMOS_ACCOUNT_KEY = System.getenv("AZURE_COSMOS_ACCOUNT_KEY");
     private static final String AZURE_COSMOS_DATABASE_NAME = System.getenv("AZURE_COSMOS_DATABASE_NAME");
 
-    @Test(expected = NoSuchBeanDefinitionException.class)
-    @Ignore
+    @Disabled
+    @Test
     public void testCosmosStarterIsolating() {
         try (AppRunner app = new AppRunner(DummyApp.class)) {
             //set properties
@@ -35,7 +37,8 @@ public class CosmosIT {
 
             //start app
             app.start();
-            app.getBean(AADAuthenticationFilterAutoConfiguration.class);
+            assertThrows(NoSuchBeanDefinitionException.class,
+                () -> app.getBean(AADAuthenticationFilterAutoConfiguration.class));
         }
     }
 
@@ -73,21 +76,22 @@ public class CosmosIT {
             //  findById will not return the user as user is not present.
             final Mono<User> findByIdMono = repository.findById(testUser.getId());
             final User findByIdUser = findByIdMono.block();
-            Assert.assertNull("User must be null", findByIdUser);
+            Assertions.assertNull(findByIdUser, "User must be null");
 
             final User savedUser = saveUserMono.block();
-            Assert.assertNotNull("Saved user must not be null", savedUser);
-            Assert.assertEquals("Saved user first name doesn't match",
-                testUser.getFirstName(), savedUser.getFirstName());
+            Assertions.assertNotNull(savedUser, "Saved user must not be null");
+            Assertions.assertEquals(testUser.getFirstName(), savedUser.getFirstName(),
+                "Saved user first name doesn't match");
 
             firstNameUserFlux.collectList().block();
             final Optional<User> optionalUserResult = repository.findById(testUser.getId()).blockOptional();
-            Assert.assertTrue("Cannot find user.", optionalUserResult.isPresent());
+            Assertions.assertTrue(optionalUserResult.isPresent(), "Cannot find user.");
 
             final User result = optionalUserResult.get();
-            Assert.assertEquals("query result firstName doesn't match!",
-                testUser.getFirstName(), result.getFirstName());
-            Assert.assertEquals("query result lastName doesn't match!", testUser.getLastName(), result.getLastName());
+            Assertions.assertEquals(testUser.getFirstName(), result.getFirstName(),
+                "query result firstName doesn't match!");
+            Assertions.assertEquals(testUser.getLastName(), result.getLastName(),
+                "query result lastName doesn't match!");
 
             LOGGER.info("findOne in User collection get result: {}", result.toString());
         }

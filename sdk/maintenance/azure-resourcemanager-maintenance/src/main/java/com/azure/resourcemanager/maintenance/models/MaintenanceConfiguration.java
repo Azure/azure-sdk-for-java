@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.maintenance.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.maintenance.fluent.models.MaintenanceConfigurationInner;
 import java.util.Map;
@@ -47,28 +48,91 @@ public interface MaintenanceConfiguration {
     Map<String, String> tags();
 
     /**
-     * Gets the namespace property: Gets or sets namespace of the resource e.g. Microsoft.Maintenance or Microsoft.Sql.
+     * Gets the namespace property: Gets or sets namespace of the resource.
      *
      * @return the namespace value.
      */
     String namespace();
 
     /**
-     * Gets the extensionProperties property: Gets or sets extensionProperties of the maintenanceConfiguration. This is
-     * for future use only and would be a set of key value pairs for additional information e.g. whether to follow SDP
-     * etc.
+     * Gets the extensionProperties property: Gets or sets extensionProperties of the maintenanceConfiguration.
      *
      * @return the extensionProperties value.
      */
     Map<String, String> extensionProperties();
 
     /**
-     * Gets the maintenanceScope property: Gets or sets maintenanceScope of the configuration. It represent the impact
-     * area of the maintenance.
+     * Gets the maintenanceScope property: Gets or sets maintenanceScope of the configuration.
      *
      * @return the maintenanceScope value.
      */
     MaintenanceScope maintenanceScope();
+
+    /**
+     * Gets the visibility property: Gets or sets the visibility of the configuration. The default value is 'Custom'.
+     *
+     * @return the visibility value.
+     */
+    Visibility visibility();
+
+    /**
+     * Gets the startDateTime property: Effective start date of the maintenance window in YYYY-MM-DD hh:mm format. The
+     * start date can be set to either the current date or future date. The window will be created in the time zone
+     * provided and adjusted to daylight savings according to that time zone.
+     *
+     * @return the startDateTime value.
+     */
+    String startDateTime();
+
+    /**
+     * Gets the expirationDateTime property: Effective expiration date of the maintenance window in YYYY-MM-DD hh:mm
+     * format. The window will be created in the time zone provided and adjusted to daylight savings according to that
+     * time zone. Expiration date must be set to a future date. If not provided, it will be set to the maximum datetime
+     * 9999-12-31 23:59:59.
+     *
+     * @return the expirationDateTime value.
+     */
+    String expirationDateTime();
+
+    /**
+     * Gets the duration property: Duration of the maintenance window in HH:mm format. If not provided, default value
+     * will be used based on maintenance scope provided. Example: 05:00.
+     *
+     * @return the duration value.
+     */
+    String duration();
+
+    /**
+     * Gets the timeZone property: Name of the timezone. List of timezones can be obtained by executing
+     * [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell. Example: Pacific Standard Time, UTC, W. Europe
+     * Standard Time, Korea Standard Time, Cen. Australia Standard Time.
+     *
+     * @return the timeZone value.
+     */
+    String timeZone();
+
+    /**
+     * Gets the recurEvery property: Rate at which a Maintenance window is expected to recur. The rate can be expressed
+     * as daily, weekly, or monthly schedules. Daily schedule are formatted as recurEvery: [Frequency as
+     * integer]['Day(s)']. If no frequency is provided, the default frequency is 1. Daily schedule examples are
+     * recurEvery: Day, recurEvery: 3Days. Weekly schedule are formatted as recurEvery: [Frequency as
+     * integer]['Week(s)'] [Optional comma separated list of weekdays Monday-Sunday]. Weekly schedule examples are
+     * recurEvery: 3Weeks, recurEvery: Week Saturday,Sunday. Monthly schedules are formatted as [Frequency as
+     * integer]['Month(s)'] [Comma separated list of month days] or [Frequency as integer]['Month(s)'] [Week of Month
+     * (First, Second, Third, Fourth, Last)] [Weekday Monday-Sunday]. Monthly schedule examples are recurEvery: Month,
+     * recurEvery: 2Months, recurEvery: Month day23,day24, recurEvery: Month Last Sunday, recurEvery: Month Fourth
+     * Monday.
+     *
+     * @return the recurEvery value.
+     */
+    String recurEvery();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the region of the resource.
@@ -119,7 +183,13 @@ public interface MaintenanceConfiguration {
                 DefinitionStages.WithTags,
                 DefinitionStages.WithNamespace,
                 DefinitionStages.WithExtensionProperties,
-                DefinitionStages.WithMaintenanceScope {
+                DefinitionStages.WithMaintenanceScope,
+                DefinitionStages.WithVisibility,
+                DefinitionStages.WithStartDateTime,
+                DefinitionStages.WithExpirationDateTime,
+                DefinitionStages.WithDuration,
+                DefinitionStages.WithTimeZone,
+                DefinitionStages.WithRecurEvery {
             /**
              * Executes the create request.
              *
@@ -166,10 +236,9 @@ public interface MaintenanceConfiguration {
         /** The stage of the MaintenanceConfiguration definition allowing to specify namespace. */
         interface WithNamespace {
             /**
-             * Specifies the namespace property: Gets or sets namespace of the resource e.g. Microsoft.Maintenance or
-             * Microsoft.Sql.
+             * Specifies the namespace property: Gets or sets namespace of the resource.
              *
-             * @param namespace Gets or sets namespace of the resource e.g. Microsoft.Maintenance or Microsoft.Sql.
+             * @param namespace Gets or sets namespace of the resource.
              * @return the next definition stage.
              */
             WithCreate withNamespace(String namespace);
@@ -178,12 +247,9 @@ public interface MaintenanceConfiguration {
         interface WithExtensionProperties {
             /**
              * Specifies the extensionProperties property: Gets or sets extensionProperties of the
-             * maintenanceConfiguration. This is for future use only and would be a set of key value pairs for
-             * additional information e.g. whether to follow SDP etc..
+             * maintenanceConfiguration.
              *
-             * @param extensionProperties Gets or sets extensionProperties of the maintenanceConfiguration. This is for
-             *     future use only and would be a set of key value pairs for additional information e.g. whether to
-             *     follow SDP etc.
+             * @param extensionProperties Gets or sets extensionProperties of the maintenanceConfiguration.
              * @return the next definition stage.
              */
             WithCreate withExtensionProperties(Map<String, String> extensionProperties);
@@ -191,14 +257,107 @@ public interface MaintenanceConfiguration {
         /** The stage of the MaintenanceConfiguration definition allowing to specify maintenanceScope. */
         interface WithMaintenanceScope {
             /**
-             * Specifies the maintenanceScope property: Gets or sets maintenanceScope of the configuration. It represent
-             * the impact area of the maintenance.
+             * Specifies the maintenanceScope property: Gets or sets maintenanceScope of the configuration.
              *
-             * @param maintenanceScope Gets or sets maintenanceScope of the configuration. It represent the impact area
-             *     of the maintenance.
+             * @param maintenanceScope Gets or sets maintenanceScope of the configuration.
              * @return the next definition stage.
              */
             WithCreate withMaintenanceScope(MaintenanceScope maintenanceScope);
+        }
+        /** The stage of the MaintenanceConfiguration definition allowing to specify visibility. */
+        interface WithVisibility {
+            /**
+             * Specifies the visibility property: Gets or sets the visibility of the configuration. The default value is
+             * 'Custom'.
+             *
+             * @param visibility Gets or sets the visibility of the configuration. The default value is 'Custom'.
+             * @return the next definition stage.
+             */
+            WithCreate withVisibility(Visibility visibility);
+        }
+        /** The stage of the MaintenanceConfiguration definition allowing to specify startDateTime. */
+        interface WithStartDateTime {
+            /**
+             * Specifies the startDateTime property: Effective start date of the maintenance window in YYYY-MM-DD hh:mm
+             * format. The start date can be set to either the current date or future date. The window will be created
+             * in the time zone provided and adjusted to daylight savings according to that time zone..
+             *
+             * @param startDateTime Effective start date of the maintenance window in YYYY-MM-DD hh:mm format. The start
+             *     date can be set to either the current date or future date. The window will be created in the time
+             *     zone provided and adjusted to daylight savings according to that time zone.
+             * @return the next definition stage.
+             */
+            WithCreate withStartDateTime(String startDateTime);
+        }
+        /** The stage of the MaintenanceConfiguration definition allowing to specify expirationDateTime. */
+        interface WithExpirationDateTime {
+            /**
+             * Specifies the expirationDateTime property: Effective expiration date of the maintenance window in
+             * YYYY-MM-DD hh:mm format. The window will be created in the time zone provided and adjusted to daylight
+             * savings according to that time zone. Expiration date must be set to a future date. If not provided, it
+             * will be set to the maximum datetime 9999-12-31 23:59:59..
+             *
+             * @param expirationDateTime Effective expiration date of the maintenance window in YYYY-MM-DD hh:mm format.
+             *     The window will be created in the time zone provided and adjusted to daylight savings according to
+             *     that time zone. Expiration date must be set to a future date. If not provided, it will be set to the
+             *     maximum datetime 9999-12-31 23:59:59.
+             * @return the next definition stage.
+             */
+            WithCreate withExpirationDateTime(String expirationDateTime);
+        }
+        /** The stage of the MaintenanceConfiguration definition allowing to specify duration. */
+        interface WithDuration {
+            /**
+             * Specifies the duration property: Duration of the maintenance window in HH:mm format. If not provided,
+             * default value will be used based on maintenance scope provided. Example: 05:00..
+             *
+             * @param duration Duration of the maintenance window in HH:mm format. If not provided, default value will
+             *     be used based on maintenance scope provided. Example: 05:00.
+             * @return the next definition stage.
+             */
+            WithCreate withDuration(String duration);
+        }
+        /** The stage of the MaintenanceConfiguration definition allowing to specify timeZone. */
+        interface WithTimeZone {
+            /**
+             * Specifies the timeZone property: Name of the timezone. List of timezones can be obtained by executing
+             * [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell. Example: Pacific Standard Time, UTC, W. Europe
+             * Standard Time, Korea Standard Time, Cen. Australia Standard Time..
+             *
+             * @param timeZone Name of the timezone. List of timezones can be obtained by executing
+             *     [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell. Example: Pacific Standard Time, UTC, W.
+             *     Europe Standard Time, Korea Standard Time, Cen. Australia Standard Time.
+             * @return the next definition stage.
+             */
+            WithCreate withTimeZone(String timeZone);
+        }
+        /** The stage of the MaintenanceConfiguration definition allowing to specify recurEvery. */
+        interface WithRecurEvery {
+            /**
+             * Specifies the recurEvery property: Rate at which a Maintenance window is expected to recur. The rate can
+             * be expressed as daily, weekly, or monthly schedules. Daily schedule are formatted as recurEvery:
+             * [Frequency as integer]['Day(s)']. If no frequency is provided, the default frequency is 1. Daily schedule
+             * examples are recurEvery: Day, recurEvery: 3Days. Weekly schedule are formatted as recurEvery: [Frequency
+             * as integer]['Week(s)'] [Optional comma separated list of weekdays Monday-Sunday]. Weekly schedule
+             * examples are recurEvery: 3Weeks, recurEvery: Week Saturday,Sunday. Monthly schedules are formatted as
+             * [Frequency as integer]['Month(s)'] [Comma separated list of month days] or [Frequency as
+             * integer]['Month(s)'] [Week of Month (First, Second, Third, Fourth, Last)] [Weekday Monday-Sunday].
+             * Monthly schedule examples are recurEvery: Month, recurEvery: 2Months, recurEvery: Month day23,day24,
+             * recurEvery: Month Last Sunday, recurEvery: Month Fourth Monday..
+             *
+             * @param recurEvery Rate at which a Maintenance window is expected to recur. The rate can be expressed as
+             *     daily, weekly, or monthly schedules. Daily schedule are formatted as recurEvery: [Frequency as
+             *     integer]['Day(s)']. If no frequency is provided, the default frequency is 1. Daily schedule examples
+             *     are recurEvery: Day, recurEvery: 3Days. Weekly schedule are formatted as recurEvery: [Frequency as
+             *     integer]['Week(s)'] [Optional comma separated list of weekdays Monday-Sunday]. Weekly schedule
+             *     examples are recurEvery: 3Weeks, recurEvery: Week Saturday,Sunday. Monthly schedules are formatted as
+             *     [Frequency as integer]['Month(s)'] [Comma separated list of month days] or [Frequency as
+             *     integer]['Month(s)'] [Week of Month (First, Second, Third, Fourth, Last)] [Weekday Monday-Sunday].
+             *     Monthly schedule examples are recurEvery: Month, recurEvery: 2Months, recurEvery: Month day23,day24,
+             *     recurEvery: Month Last Sunday, recurEvery: Month Fourth Monday.
+             * @return the next definition stage.
+             */
+            WithCreate withRecurEvery(String recurEvery);
         }
     }
     /**
@@ -213,7 +372,13 @@ public interface MaintenanceConfiguration {
         extends UpdateStages.WithTags,
             UpdateStages.WithNamespace,
             UpdateStages.WithExtensionProperties,
-            UpdateStages.WithMaintenanceScope {
+            UpdateStages.WithMaintenanceScope,
+            UpdateStages.WithVisibility,
+            UpdateStages.WithStartDateTime,
+            UpdateStages.WithExpirationDateTime,
+            UpdateStages.WithDuration,
+            UpdateStages.WithTimeZone,
+            UpdateStages.WithRecurEvery {
         /**
          * Executes the update request.
          *
@@ -244,10 +409,9 @@ public interface MaintenanceConfiguration {
         /** The stage of the MaintenanceConfiguration update allowing to specify namespace. */
         interface WithNamespace {
             /**
-             * Specifies the namespace property: Gets or sets namespace of the resource e.g. Microsoft.Maintenance or
-             * Microsoft.Sql.
+             * Specifies the namespace property: Gets or sets namespace of the resource.
              *
-             * @param namespace Gets or sets namespace of the resource e.g. Microsoft.Maintenance or Microsoft.Sql.
+             * @param namespace Gets or sets namespace of the resource.
              * @return the next definition stage.
              */
             Update withNamespace(String namespace);
@@ -256,12 +420,9 @@ public interface MaintenanceConfiguration {
         interface WithExtensionProperties {
             /**
              * Specifies the extensionProperties property: Gets or sets extensionProperties of the
-             * maintenanceConfiguration. This is for future use only and would be a set of key value pairs for
-             * additional information e.g. whether to follow SDP etc..
+             * maintenanceConfiguration.
              *
-             * @param extensionProperties Gets or sets extensionProperties of the maintenanceConfiguration. This is for
-             *     future use only and would be a set of key value pairs for additional information e.g. whether to
-             *     follow SDP etc.
+             * @param extensionProperties Gets or sets extensionProperties of the maintenanceConfiguration.
              * @return the next definition stage.
              */
             Update withExtensionProperties(Map<String, String> extensionProperties);
@@ -269,14 +430,107 @@ public interface MaintenanceConfiguration {
         /** The stage of the MaintenanceConfiguration update allowing to specify maintenanceScope. */
         interface WithMaintenanceScope {
             /**
-             * Specifies the maintenanceScope property: Gets or sets maintenanceScope of the configuration. It represent
-             * the impact area of the maintenance.
+             * Specifies the maintenanceScope property: Gets or sets maintenanceScope of the configuration.
              *
-             * @param maintenanceScope Gets or sets maintenanceScope of the configuration. It represent the impact area
-             *     of the maintenance.
+             * @param maintenanceScope Gets or sets maintenanceScope of the configuration.
              * @return the next definition stage.
              */
             Update withMaintenanceScope(MaintenanceScope maintenanceScope);
+        }
+        /** The stage of the MaintenanceConfiguration update allowing to specify visibility. */
+        interface WithVisibility {
+            /**
+             * Specifies the visibility property: Gets or sets the visibility of the configuration. The default value is
+             * 'Custom'.
+             *
+             * @param visibility Gets or sets the visibility of the configuration. The default value is 'Custom'.
+             * @return the next definition stage.
+             */
+            Update withVisibility(Visibility visibility);
+        }
+        /** The stage of the MaintenanceConfiguration update allowing to specify startDateTime. */
+        interface WithStartDateTime {
+            /**
+             * Specifies the startDateTime property: Effective start date of the maintenance window in YYYY-MM-DD hh:mm
+             * format. The start date can be set to either the current date or future date. The window will be created
+             * in the time zone provided and adjusted to daylight savings according to that time zone..
+             *
+             * @param startDateTime Effective start date of the maintenance window in YYYY-MM-DD hh:mm format. The start
+             *     date can be set to either the current date or future date. The window will be created in the time
+             *     zone provided and adjusted to daylight savings according to that time zone.
+             * @return the next definition stage.
+             */
+            Update withStartDateTime(String startDateTime);
+        }
+        /** The stage of the MaintenanceConfiguration update allowing to specify expirationDateTime. */
+        interface WithExpirationDateTime {
+            /**
+             * Specifies the expirationDateTime property: Effective expiration date of the maintenance window in
+             * YYYY-MM-DD hh:mm format. The window will be created in the time zone provided and adjusted to daylight
+             * savings according to that time zone. Expiration date must be set to a future date. If not provided, it
+             * will be set to the maximum datetime 9999-12-31 23:59:59..
+             *
+             * @param expirationDateTime Effective expiration date of the maintenance window in YYYY-MM-DD hh:mm format.
+             *     The window will be created in the time zone provided and adjusted to daylight savings according to
+             *     that time zone. Expiration date must be set to a future date. If not provided, it will be set to the
+             *     maximum datetime 9999-12-31 23:59:59.
+             * @return the next definition stage.
+             */
+            Update withExpirationDateTime(String expirationDateTime);
+        }
+        /** The stage of the MaintenanceConfiguration update allowing to specify duration. */
+        interface WithDuration {
+            /**
+             * Specifies the duration property: Duration of the maintenance window in HH:mm format. If not provided,
+             * default value will be used based on maintenance scope provided. Example: 05:00..
+             *
+             * @param duration Duration of the maintenance window in HH:mm format. If not provided, default value will
+             *     be used based on maintenance scope provided. Example: 05:00.
+             * @return the next definition stage.
+             */
+            Update withDuration(String duration);
+        }
+        /** The stage of the MaintenanceConfiguration update allowing to specify timeZone. */
+        interface WithTimeZone {
+            /**
+             * Specifies the timeZone property: Name of the timezone. List of timezones can be obtained by executing
+             * [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell. Example: Pacific Standard Time, UTC, W. Europe
+             * Standard Time, Korea Standard Time, Cen. Australia Standard Time..
+             *
+             * @param timeZone Name of the timezone. List of timezones can be obtained by executing
+             *     [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell. Example: Pacific Standard Time, UTC, W.
+             *     Europe Standard Time, Korea Standard Time, Cen. Australia Standard Time.
+             * @return the next definition stage.
+             */
+            Update withTimeZone(String timeZone);
+        }
+        /** The stage of the MaintenanceConfiguration update allowing to specify recurEvery. */
+        interface WithRecurEvery {
+            /**
+             * Specifies the recurEvery property: Rate at which a Maintenance window is expected to recur. The rate can
+             * be expressed as daily, weekly, or monthly schedules. Daily schedule are formatted as recurEvery:
+             * [Frequency as integer]['Day(s)']. If no frequency is provided, the default frequency is 1. Daily schedule
+             * examples are recurEvery: Day, recurEvery: 3Days. Weekly schedule are formatted as recurEvery: [Frequency
+             * as integer]['Week(s)'] [Optional comma separated list of weekdays Monday-Sunday]. Weekly schedule
+             * examples are recurEvery: 3Weeks, recurEvery: Week Saturday,Sunday. Monthly schedules are formatted as
+             * [Frequency as integer]['Month(s)'] [Comma separated list of month days] or [Frequency as
+             * integer]['Month(s)'] [Week of Month (First, Second, Third, Fourth, Last)] [Weekday Monday-Sunday].
+             * Monthly schedule examples are recurEvery: Month, recurEvery: 2Months, recurEvery: Month day23,day24,
+             * recurEvery: Month Last Sunday, recurEvery: Month Fourth Monday..
+             *
+             * @param recurEvery Rate at which a Maintenance window is expected to recur. The rate can be expressed as
+             *     daily, weekly, or monthly schedules. Daily schedule are formatted as recurEvery: [Frequency as
+             *     integer]['Day(s)']. If no frequency is provided, the default frequency is 1. Daily schedule examples
+             *     are recurEvery: Day, recurEvery: 3Days. Weekly schedule are formatted as recurEvery: [Frequency as
+             *     integer]['Week(s)'] [Optional comma separated list of weekdays Monday-Sunday]. Weekly schedule
+             *     examples are recurEvery: 3Weeks, recurEvery: Week Saturday,Sunday. Monthly schedules are formatted as
+             *     [Frequency as integer]['Month(s)'] [Comma separated list of month days] or [Frequency as
+             *     integer]['Month(s)'] [Week of Month (First, Second, Third, Fourth, Last)] [Weekday Monday-Sunday].
+             *     Monthly schedule examples are recurEvery: Month, recurEvery: 2Months, recurEvery: Month day23,day24,
+             *     recurEvery: Month Last Sunday, recurEvery: Month Fourth Monday.
+             * @return the next definition stage.
+             */
+            Update withRecurEvery(String recurEvery);
         }
     }
     /**

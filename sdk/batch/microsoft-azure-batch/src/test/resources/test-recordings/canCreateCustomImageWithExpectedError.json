@@ -1,40 +1,39 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://batchsdktest.eastus.batch.azure.com/pools?api-version=2020-09-01.12.0",
+    "Uri" : "https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/pools?api-version=2021-06-01.14.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.15.7 MacAddressHash:e52147eea5b10208b8f9de54947ef0d8db9e76e0caec6a11c98b8f9f12de05e2 Java:1.8.0_144 (BatchServiceClient, 2020-09-01.12.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/11.4 MacAddressHash:5eb222f5b86716eb4f26fb185aca6487b26bf45726d96aa8f5640737d9096be9 Java:16.0.1 (BatchServiceClient, 2021-06-01.14.0)",
       "Content-Type" : "application/json; odata=minimalmetadata; charset=utf-8"
     },
     "Response" : {
-      "date" : "Mon, 12 Oct 2020 20:32:41 GMT",
-      "content-length" : "1059",
+      "date" : "Tue, 27 Jul 2021 14:39:56 GMT",
+      "content-length" : "1072",
       "server" : "Microsoft-HTTPAPI/2.0",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "90c22abf-70fa-41ef-b741-de5e07356e54",
+      "client-request-id" : "e080d95a-b057-4174-b78c-f760d354328f",
       "content-type" : "application/json;odata=minimalmetadata",
       "retry-after" : "0",
-      "request-id" : "90f8c6b3-151d-43be-abc8-f8d1f009c7c9",
+      "request-id" : "b8a5efa7-32a0-4e3a-bf46-663e68ca6a62",
       "StatusCode" : "400",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://batchsdktest.eastus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element\",\"code\":\"InvalidPropertyValue\",\"message\":{\r\n    \"lang\":\"en-US\",\"value\":\"The value provided for one of the properties in the request body is invalid.\\nRequestId:90f8c6b3-151d-43be-abc8-f8d1f009c7c9\\nTime:2020-10-12T20:32:41.8700380Z\"\r\n  },\"values\":[\r\n    {\r\n      \"key\":\"PropertyName\",\"value\":\"virtualMachineImageId\"\r\n    },{\r\n      \"key\":\"PropertyValue\",\"value\":\"/subscriptions/7aabd8d2-3be2-4bb1-a0c2-f1b4bb46a16f/resourceGroups/batchexp/providers/Microsoft.Compute/images/FakeImage\"\r\n    },{\r\n      \"key\":\"Reason\",\"value\":\"The specified resource id must be of the format /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{galleryImageName}/versions/{galleryImageVersionName} or /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{galleryImageName}\"\r\n    }\r\n  ]\r\n}",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element\",\"code\":\"InvalidPropertyValue\",\"message\":{\r\n    \"lang\":\"en-US\",\"value\":\"The value provided for one of the properties in the request body is invalid.\\nRequestId:b8a5efa7-32a0-4e3a-bf46-663e68ca6a62\\nTime:2021-07-27T14:39:56.7503207Z\"\r\n  },\"values\":[\r\n    {\r\n      \"key\":\"PropertyName\",\"value\":\"virtualMachineImageId\"\r\n    },{\r\n      \"key\":\"PropertyValue\",\"value\":\"/subscriptions/21abd678-18c5-4660-9fdd-8c5ba6b6fe1f/resourceGroups/batchexp/providers/Microsoft.Compute/images/FakeImage\"\r\n    },{\r\n      \"key\":\"Reason\",\"value\":\"The specified resource id must be of the format /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{galleryImageName}/versions/{galleryImageVersionName} or /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{galleryImageName}\"\r\n    }\r\n  ]\r\n}",
       "strict-transport-security" : "max-age=31536000; includeSubDomains"
     }
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://batchsdktest.eastus.batch.azure.com/pools/BatchUser-customImageExpErr?api-version=2020-09-01.12.0",
+    "Uri" : "https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/pools/BatchUser-customImageExpErr?api-version=2021-06-01.14.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.15.7 MacAddressHash:e52147eea5b10208b8f9de54947ef0d8db9e76e0caec6a11c98b8f9f12de05e2 Java:1.8.0_144 (BatchServiceClient, 2020-09-01.12.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/11.4 MacAddressHash:5eb222f5b86716eb4f26fb185aca6487b26bf45726d96aa8f5640737d9096be9 Java:16.0.1 (BatchServiceClient, 2021-06-01.14.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Mon, 12 Oct 2020 20:32:42 GMT",
+      "date" : "Tue, 27 Jul 2021 14:39:56 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "26435170-e4e6-4ed1-b8b1-4fe393af12dd",
+      "client-request-id" : "878e203e-224d-4539-966f-37d984078ee9",
       "retry-after" : "0",
-      "request-id" : "61439446-ac67-4376-9557-28aa3d711fcb",
+      "request-id" : "3fb870db-2721-42fc-92f7-0b0039f8be28",
       "StatusCode" : "404",
       "dataserviceversion" : "3.0",
       "Body" : "",

@@ -22,10 +22,10 @@ public final class AnalyzeActionsOperationDetailPropertiesHelper {
     public interface AnalyzeActionsOperationDetailAccessor {
         void setOperationId(AnalyzeActionsOperationDetail operationDetail, String operationId);
         void setDisplayName(AnalyzeActionsOperationDetail operationDetail, String name);
-        void setActionsFailed(AnalyzeActionsOperationDetail operationDetail, int actionsFailed);
-        void setActionsInProgress(AnalyzeActionsOperationDetail operationDetail, int actionsInProgress);
-        void setActionsSucceeded(AnalyzeActionsOperationDetail operationDetail, int actionsSucceeded);
-        void setActionsInTotal(AnalyzeActionsOperationDetail operationDetail, int actionsInTotal);
+        void setFailedCount(AnalyzeActionsOperationDetail operationDetail, int failedCount);
+        void setInProgressCount(AnalyzeActionsOperationDetail operationDetail, int inProgressCount);
+        void setSucceededCount(AnalyzeActionsOperationDetail operationDetail, int succeededCount);
+        void setTotalCount(AnalyzeActionsOperationDetail operationDetail, int totalCount);
         void setExpiresAt(AnalyzeActionsOperationDetail operationDetail, OffsetDateTime expiresAt);
         void setCreatedAt(AnalyzeActionsOperationDetail operationDetail, OffsetDateTime createdAt);
         void setLastModifiedAt(AnalyzeActionsOperationDetail operationDetail, OffsetDateTime lastModifiedAt);
@@ -50,19 +50,19 @@ public final class AnalyzeActionsOperationDetailPropertiesHelper {
     }
 
     public static void setActionsFailed(AnalyzeActionsOperationDetail operationDetail, int actionsFailed) {
-        accessor.setActionsFailed(operationDetail, actionsFailed);
+        accessor.setFailedCount(operationDetail, actionsFailed);
     }
 
     public static void setActionsInProgress(AnalyzeActionsOperationDetail operationDetail, int actionsInProgress) {
-        accessor.setActionsInProgress(operationDetail, actionsInProgress);
+        accessor.setInProgressCount(operationDetail, actionsInProgress);
     }
 
     public static void setActionsSucceeded(AnalyzeActionsOperationDetail operationDetail, int actionsSucceeded) {
-        accessor.setActionsSucceeded(operationDetail, actionsSucceeded);
+        accessor.setSucceededCount(operationDetail, actionsSucceeded);
     }
 
     public static void setActionsInTotal(AnalyzeActionsOperationDetail operationDetail, int actionsInTotal) {
-        accessor.setActionsInTotal(operationDetail, actionsInTotal);
+        accessor.setTotalCount(operationDetail, actionsInTotal);
     }
 
     public static void setCreatedAt(AnalyzeActionsOperationDetail operationDetail, OffsetDateTime createdAt) {

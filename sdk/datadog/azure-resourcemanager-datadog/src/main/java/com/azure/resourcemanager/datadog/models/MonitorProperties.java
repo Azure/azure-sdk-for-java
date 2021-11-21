@@ -17,7 +17,7 @@ public final class MonitorProperties {
     /*
      * The provisioningState property.
      */
-    @JsonProperty(value = "provisioningState")
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
@@ -64,17 +64,6 @@ public final class MonitorProperties {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState property: The provisioningState property.
-     *
-     * @param provisioningState the provisioningState value to set.
-     * @return the MonitorProperties object itself.
-     */
-    public MonitorProperties withProvisioningState(ProvisioningState provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
     }
 
     /**

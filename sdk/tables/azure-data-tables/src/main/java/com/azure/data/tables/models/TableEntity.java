@@ -19,20 +19,15 @@ import java.util.Objects;
  * A {@code TableEntity} can be used directly when interacting with the Tables service, with methods on the
  * {@link com.azure.data.tables.TableClient} and {@link com.azure.data.tables.TableAsyncClient} classes that accept and
  * return {@code TableEntity} instances. After creating an instance, call the {@link #addProperty(String, Object)} or
- * {@link #addProperties(Map)} methods to add properties to the entity. When retrieving an entity from the service, call
+ * {@link #setProperties(Map)} methods to add properties to the entity. When retrieving an entity from the service, call
  * the {@link #getProperty(String)} or {@link #getProperties()} methods to access the entity's properties.
- *
- * As an alternative, developers can also create a subclass of {@code TableEntity} and add property getters and setters
- * to it. If the properties' types are compatible with the Table service, they will automatically be included in any
- * write operations, and will automatically be populated in any read operations. Any properties that expose enum types
- * will be converted to string values for write operations, and will be converted back into enum values for read
- * operations. See <a href="https://msdn.microsoft.com/library/azure/dd179338.aspx#property-types">Property Types</a>
- * for more information about data types supported by the Tables service.
  */
 @Fluent
-public class TableEntity {
+public final class TableEntity {
     private final ClientLogger logger = new ClientLogger(TableEntity.class);
     private final Map<String, Object> properties;
+    private final String partitionKey;
+    private final String rowKey;
 
     static {
         // This is used by classes in different packages to get access to private and package-private methods.
@@ -57,26 +52,31 @@ public class TableEntity {
         }
 
         this.properties = new HashMap<>();
+
         properties.put(TablesConstants.PARTITION_KEY, partitionKey);
         properties.put(TablesConstants.ROW_KEY, rowKey);
+
+        this.partitionKey = partitionKey;
+        this.rowKey = rowKey;
     }
 
     private TableEntity() {
         this.properties = new HashMap<>();
+        this.partitionKey = null;
+        this.rowKey = null;
     }
 
     /**
      * Gets a single property from the entity's properties map.
      *
      * Only properties that have been added by calling {@link #addProperty(String, Object)} or
-     * {@link #addProperties(Map)} will be returned from this method. Calling this method on a subclass of
-     * {@code TableEntity} will not retrieve a property which is being supplied via a getter method on the subclass.
+     * {@link #setProperties(Map)} will be returned from this method.
      *
      * @param key Key for the property.
      * @return Value of the property.
      * @throws NullPointerException if {@code key} is null.
      */
-    public final Object getProperty(String key) {
+    public Object getProperty(String key) {
         return properties.get(key);
     }
 
@@ -84,12 +84,11 @@ public class TableEntity {
      * Gets the map of the entity's properties.
      *
      * Only properties that have been added by calling {@link #addProperty(String, Object)} or
-     * {@link #addProperties(Map)} will be returned from this method. Calling this method on a subclass of
-     * {@code TableEntity} will not retrieve properties which are being supplied via a getter methods on the subclass.
+     * {@link #setProperties(Map)} will be returned from this method.
      *
      * @return A map of all properties representing this entity, including system properties.
      */
-    public final Map<String, Object> getProperties() {
+    public Map<String, Object> getProperties() {
         return properties;
     }
 
@@ -102,25 +101,38 @@ public class TableEntity {
      * @return The updated {@link TableEntity}.
      * @throws NullPointerException if {@code key} is null.
      */
-    public final TableEntity addProperty(String key, Object value) {
+    public TableEntity addProperty(String key, Object value) {
         validateProperty(key, value);
         properties.put(key, value);
+
         return this;
     }
 
     /**
-     * Adds the contents of the provided map to the entity's properties map.
+     * Sets the contents of the provided map to the entity's properties map.
      *
-     * @param properties The map of properties to add.
+     * @param properties The map of properties to set.
      *
      * @return The updated {@link TableEntity}.
      * @throws NullPointerException if {@code properties} is null.
      */
-    public final TableEntity addProperties(Map<String, Object> properties) {
+    public TableEntity setProperties(Map<String, Object> properties) {
         for (Map.Entry<String, Object> entry : properties.entrySet()) {
             validateProperty(entry.getKey(), entry.getValue());
         }
+
+        this.properties.clear();
+
+        if (this.partitionKey != null) {
+            this.properties.put(TablesConstants.PARTITION_KEY, this.partitionKey);
+        }
+
+        if (this.rowKey != null) {
+            this.properties.put(TablesConstants.ROW_KEY, this.rowKey);
+        }
+
         this.properties.putAll(properties);
+
         return this;
     }
 
@@ -141,6 +153,7 @@ public class TableEntity {
         if ((TablesConstants.ODATA_ETAG_KEY.equals(key) || TablesConstants.ODATA_EDIT_LINK_KEY.equals(key)
             || TablesConstants.ODATA_ID_KEY.equals(key) || TablesConstants.ODATA_TYPE_KEY.equals(key)) && value != null
             && !(value instanceof String)) {
+
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
                 "'%s' must be a String.", key)));
         }
@@ -151,7 +164,7 @@ public class TableEntity {
      *
      * @return The entity's row key.
      */
-    public final String getRowKey() {
+    public String getRowKey() {
         return (String) properties.get(TablesConstants.ROW_KEY);
     }
 
@@ -160,7 +173,7 @@ public class TableEntity {
      *
      * @return The entity's partition key.
      */
-    public final String getPartitionKey() {
+    public String getPartitionKey() {
         return (String) properties.get(TablesConstants.PARTITION_KEY);
     }
 
@@ -172,7 +185,7 @@ public class TableEntity {
      *
      * @return The entity's timestamp.
      */
-    public final OffsetDateTime getTimestamp() {
+    public OffsetDateTime getTimestamp() {
         return (OffsetDateTime) properties.get(TablesConstants.TIMESTAMP_KEY);
     }
 
@@ -184,7 +197,7 @@ public class TableEntity {
      *
      * @return The entity's eTag.
      */
-    public final String getETag() {
+    public String getETag() {
         return (String) properties.get(TablesConstants.ODATA_ETAG_KEY);
     }
 
@@ -193,7 +206,7 @@ public class TableEntity {
      *
      * @return type
      */
-    final String getOdataType() {
+    String getOdataType() {
         return (String) properties.get(TablesConstants.ODATA_TYPE_KEY);
     }
 
@@ -202,7 +215,7 @@ public class TableEntity {
      *
      * @return ID
      */
-    final String getOdataId() {
+    String getOdataId() {
         return (String) properties.get(TablesConstants.ODATA_ID_KEY);
     }
 
@@ -211,7 +224,7 @@ public class TableEntity {
      *
      * @return edit link
      */
-    final String getOdataEditLink() {
+    String getOdataEditLink() {
         return (String) properties.get(TablesConstants.ODATA_EDIT_LINK_KEY);
     }
 }

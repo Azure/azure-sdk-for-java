@@ -200,6 +200,13 @@ public final class RestSink extends CopySink {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public RestSink withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

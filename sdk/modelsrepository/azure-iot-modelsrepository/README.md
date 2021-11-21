@@ -69,8 +69,8 @@ For more information see the Code of Conduct FAQ or contact opencode@microsoft.c
 [microsoft_sdk_download]: https://azure.microsoft.com/downloads/?sdk=net
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [modelsrepository_iot_endpoint]: https://devicemodels.azure.com/
-[source]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/modelsrepository/azure-iot-modelsrepository/src
+[source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/modelsrepository/azure-iot-modelsrepository/src
 [modelsrepository_conventions]: https://github.com/Azure/iot-plugandplay-models-tools/wiki
 [json_ld_reference]: https://json-ld.org
 [dtdlv2_reference]: https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md
-[modelsrepository_samples]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/modelsrepository/azure-iot-modelsrepository/src/samples
+[modelsrepository_samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/modelsrepository/azure-iot-modelsrepository/src/samples

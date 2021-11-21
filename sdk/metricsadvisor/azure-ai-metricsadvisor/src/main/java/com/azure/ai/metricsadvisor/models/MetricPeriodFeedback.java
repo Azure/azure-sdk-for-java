@@ -3,12 +3,13 @@
 
 package com.azure.ai.metricsadvisor.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 
 /**
- * The MetricPeriodFeedback model.
+ * The Feedback that helps the service in estimating period(seasonality)
+ * of the time series.
  */
-@Immutable
+@Fluent
 public final class MetricPeriodFeedback extends MetricFeedback {
     private final PeriodType periodType;
     private final int periodValue;
@@ -23,6 +24,19 @@ public final class MetricPeriodFeedback extends MetricFeedback {
         int periodValue) {
         this.periodType = periodType;
         this.periodValue = periodValue;
+    }
+
+    /**
+     * Set the series keys value for the feedback.
+     *
+     * @param dimensionFilter the dimensionFilter value to set.
+     *
+     * @return the MetricPeriodFeedback object itself.
+     */
+    @Override
+    public MetricPeriodFeedback setDimensionFilter(final DimensionKey dimensionFilter) {
+        super.setDimensionFilter(dimensionFilter);
+        return this;
     }
 
     /**

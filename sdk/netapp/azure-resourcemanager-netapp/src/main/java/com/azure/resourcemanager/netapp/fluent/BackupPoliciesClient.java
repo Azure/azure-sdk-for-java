@@ -152,6 +152,39 @@ public interface BackupPoliciesClient {
      * @return backup policy information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<BackupPolicyInner>, BackupPolicyInner> beginUpdate(
+        String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyPatch body);
+
+    /**
+     * Patch a backup policy for Netapp Account.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
+     * @param body Backup policy object supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup policy information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<BackupPolicyInner>, BackupPolicyInner> beginUpdate(
+        String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyPatch body, Context context);
+
+    /**
+     * Patch a backup policy for Netapp Account.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
+     * @param body Backup policy object supplied in the body of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup policy information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     BackupPolicyInner update(
         String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyPatch body);
 
@@ -169,7 +202,7 @@ public interface BackupPoliciesClient {
      * @return backup policy information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BackupPolicyInner> updateWithResponse(
+    BackupPolicyInner update(
         String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyPatch body, Context context);
 
     /**

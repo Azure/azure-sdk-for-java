@@ -6,7 +6,7 @@ package com.azure.spring.autoconfigure.aad;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import com.nimbusds.jose.util.DefaultResourceRetriever;
 import com.nimbusds.jose.util.ResourceRetriever;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
@@ -20,8 +20,7 @@ public class ResourceRetrieverTest {
         .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
         .withPropertyValues(
             "azure.activedirectory.client-id=fake-client-id",
-            "azure.activedirectory.client-secret=fake-client-secret",
-            "azure.service.endpoints.global.aadKeyDiscoveryUri=http://fake.aad.discovery.uri");
+            "azure.activedirectory.client-secret=fake-client-secret");
 
     @Test
     public void resourceRetrieverDefaultConfig() {
@@ -43,8 +42,7 @@ public class ResourceRetrieverTest {
             .withPropertyValues(
                 "azure.activedirectory.jwt-connect-timeout=1234",
                 "azure.activedirectory.jwt-read-timeout=1234",
-                "azure.activedirectory.jwt-size-limit=123400",
-                "azure.service.endpoints.global.aadKeyDiscoveryUri=http://fake.aad.discovery.uri")
+                "azure.activedirectory.jwt-size-limit=123400")
             .run(context -> {
                 assertThat(context).hasSingleBean(ResourceRetriever.class);
                 final ResourceRetriever retriever = context.getBean(ResourceRetriever.class);

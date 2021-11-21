@@ -3,7 +3,7 @@
 
 package com.azure.test.aad.selenium.user.name.attribute;
 
-import com.azure.test.aad.selenium.AADSeleniumITHelper;
+import com.azure.test.aad.common.AADSeleniumITHelper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,7 +22,7 @@ import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT
 import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE;
 import static com.azure.spring.test.EnvironmentVariable.AAD_USER_NAME_1;
 import static com.azure.spring.test.EnvironmentVariable.AAD_USER_PASSWORD_1;
-import static com.azure.test.aad.selenium.AADSeleniumITHelper.createDefaultProperties;
+import static com.azure.test.aad.selenium.AADITHelper.createDefaultProperties;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UserNameAttributeIT {
@@ -49,7 +48,6 @@ public class UserNameAttributeIT {
         aadSeleniumITHelper.destroy();
     }
 
-    @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     @SpringBootApplication
     @RestController
     public static class DumbApp {

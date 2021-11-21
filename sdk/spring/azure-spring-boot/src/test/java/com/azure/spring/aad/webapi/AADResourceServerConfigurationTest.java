@@ -2,15 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.spring.aad.webapi;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-
-import java.util.List;
-
-import com.azure.spring.aad.AADTrustedIssuerRepository;
-import org.junit.Test;
+import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.boot.test.context.FilteredClassLoader;
-import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -18,27 +13,25 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 
+import java.util.List;
+
+import static com.azure.spring.aad.WebApplicationContextRunnerUtils.resourceServerContextRunner;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 public class AADResourceServerConfigurationTest {
-
-    private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
-        .withPropertyValues("azure.activedirectory.tenant-id=fake-tenant-id");
-
-    private AADTrustedIssuerRepository aadTrustedIssuerRepository = mock(AADTrustedIssuerRepository.class);
 
     @Test
     public void testNotExistBearerTokenAuthenticationToken() {
-        this.contextRunner
-            .withUserConfiguration(AADResourceServerConfiguration.class)
+        resourceServerContextRunner()
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-            .run(context -> {
-                assertThat(context).doesNotHaveBean("jwtDecoderByJwkKeySetUri");
-            });
+            .run(context -> assertThrows(NoSuchBeanDefinitionException.class,
+                () -> context.getBean(JWTClaimsSetAwareJWSKeySelector.class)));
     }
 
     @Test
     public void testCreateJwtDecoderByJwkKeySetUri() {
-        this.contextRunner
-            .withUserConfiguration(AADResourceServerConfiguration.class)
+        resourceServerContextRunner()
             .run(context -> {
                 final JwtDecoder jwtDecoder = context.getBean(JwtDecoder.class);
                 assertThat(jwtDecoder).isNotNull();
@@ -48,22 +41,19 @@ public class AADResourceServerConfigurationTest {
 
     @Test
     public void testNotAudienceDefaultValidator() {
-        this.contextRunner
-            .withUserConfiguration(AADResourceServerConfiguration.class)
+        resourceServerContextRunner()
             .run(context -> {
                 AADResourceServerConfiguration bean = context
                     .getBean(AADResourceServerConfiguration.class);
                 List<OAuth2TokenValidator<Jwt>> defaultValidator = bean.createDefaultValidator();
                 assertThat(defaultValidator).isNotNull();
-                assertThat(defaultValidator).hasSize(2);
+                assertThat(defaultValidator).hasSize(3);
             });
     }
 
     @Test
     public void testExistAudienceDefaultValidator() {
-        this.contextRunner
-            .withUserConfiguration(AADResourceServerConfiguration.class)
-            .withPropertyValues("azure.activedirectory.app-id-uri=fake-app-id-uri")
+        resourceServerContextRunner()
             .run(context -> {
                 AADResourceServerConfiguration bean = context
                     .getBean(AADResourceServerConfiguration.class);
@@ -75,13 +65,11 @@ public class AADResourceServerConfigurationTest {
 
     @Test
     public void testCreateWebSecurityConfigurerAdapter() {
-        this.contextRunner
-            .withUserConfiguration(AADResourceServerConfiguration.class)
+        resourceServerContextRunner()
             .run(context -> {
                 WebSecurityConfigurerAdapter webSecurityConfigurerAdapter = context
                     .getBean(AADResourceServerConfiguration.DefaultAADResourceServerWebSecurityConfigurerAdapter.class);
                 assertThat(webSecurityConfigurerAdapter).isNotNull();
             });
     }
-
 }

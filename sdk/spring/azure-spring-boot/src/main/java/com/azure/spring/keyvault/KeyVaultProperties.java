@@ -9,6 +9,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 
 /**
  * KeyVaultProperties
@@ -107,6 +108,9 @@ public class KeyVaultProperties {
         this.caseSensitiveKeys = caseSensitiveKeys;
     }
 
+    @Deprecated
+    @DeprecatedConfigurationProperty(
+        reason = "Deprecate the telemetry endpoint and use HTTP header User Agent instead.")
     public String getAllowTelemetry() {
         return allowTelemetry;
     }
@@ -139,7 +143,6 @@ public class KeyVaultProperties {
      * enum Property
      */
     public enum Property {
-        ALLOW_TELEMETRY("allow-telemetry"),
         CASE_SENSITIVE_KEYS("case-sensitive-keys"),
         CERTIFICATE_PASSWORD("certificate-password"),
         AUTHORITY_HOST("authority-host"),

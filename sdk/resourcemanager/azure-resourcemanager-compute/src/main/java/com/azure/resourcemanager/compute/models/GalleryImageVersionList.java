@@ -17,20 +17,20 @@ public final class GalleryImageVersionList {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryImageVersionList.class);
 
     /*
-     * A list of gallery Image Versions.
+     * A list of gallery image versions.
      */
     @JsonProperty(value = "value", required = true)
     private List<GalleryImageVersionInner> value;
 
     /*
-     * The uri to fetch the next page of gallery Image Versions. Call
-     * ListNext() with this to fetch the next page of gallery Image Versions.
+     * The uri to fetch the next page of gallery image versions. Call
+     * ListNext() with this to fetch the next page of gallery image versions.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
-     * Get the value property: A list of gallery Image Versions.
+     * Get the value property: A list of gallery image versions.
      *
      * @return the value value.
      */
@@ -39,7 +39,7 @@ public final class GalleryImageVersionList {
     }
 
     /**
-     * Set the value property: A list of gallery Image Versions.
+     * Set the value property: A list of gallery image versions.
      *
      * @param value the value value to set.
      * @return the GalleryImageVersionList object itself.
@@ -50,8 +50,8 @@ public final class GalleryImageVersionList {
     }
 
     /**
-     * Get the nextLink property: The uri to fetch the next page of gallery Image Versions. Call ListNext() with this to
-     * fetch the next page of gallery Image Versions.
+     * Get the nextLink property: The uri to fetch the next page of gallery image versions. Call ListNext() with this to
+     * fetch the next page of gallery image versions.
      *
      * @return the nextLink value.
      */
@@ -60,8 +60,8 @@ public final class GalleryImageVersionList {
     }
 
     /**
-     * Set the nextLink property: The uri to fetch the next page of gallery Image Versions. Call ListNext() with this to
-     * fetch the next page of gallery Image Versions.
+     * Set the nextLink property: The uri to fetch the next page of gallery image versions. Call ListNext() with this to
+     * fetch the next page of gallery image versions.
      *
      * @param nextLink the nextLink value to set.
      * @return the GalleryImageVersionList object itself.

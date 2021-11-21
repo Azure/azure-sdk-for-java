@@ -10,17 +10,23 @@ import java.util.Collection;
 
 /** Defines values for MaintenanceScope. */
 public final class MaintenanceScope extends ExpandableStringEnum<MaintenanceScope> {
-    /** Static value All for MaintenanceScope. */
-    public static final MaintenanceScope ALL = fromString("All");
-
     /** Static value Host for MaintenanceScope. */
     public static final MaintenanceScope HOST = fromString("Host");
 
-    /** Static value Resource for MaintenanceScope. */
-    public static final MaintenanceScope RESOURCE = fromString("Resource");
+    /** Static value OSImage for MaintenanceScope. */
+    public static final MaintenanceScope OSIMAGE = fromString("OSImage");
 
-    /** Static value InResource for MaintenanceScope. */
-    public static final MaintenanceScope IN_RESOURCE = fromString("InResource");
+    /** Static value Extension for MaintenanceScope. */
+    public static final MaintenanceScope EXTENSION = fromString("Extension");
+
+    /** Static value InGuestPatch for MaintenanceScope. */
+    public static final MaintenanceScope IN_GUEST_PATCH = fromString("InGuestPatch");
+
+    /** Static value SQLDB for MaintenanceScope. */
+    public static final MaintenanceScope SQLDB = fromString("SQLDB");
+
+    /** Static value SQLManagedInstance for MaintenanceScope. */
+    public static final MaintenanceScope SQLMANAGED_INSTANCE = fromString("SQLManagedInstance");
 
     /**
      * Creates or finds a MaintenanceScope from its string representation.

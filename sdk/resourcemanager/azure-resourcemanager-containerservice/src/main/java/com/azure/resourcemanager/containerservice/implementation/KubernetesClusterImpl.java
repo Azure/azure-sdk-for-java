@@ -21,7 +21,12 @@ import com.azure.resourcemanager.containerservice.models.KubernetesClusterAgentP
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAddonProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterApiServerAccessProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterIdentity;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePrincipalProfile;
+import com.azure.resourcemanager.containerservice.models.PowerState;
+import com.azure.resourcemanager.containerservice.models.ResourceIdentityType;
+import com.azure.resourcemanager.containerservice.models.UserAssignedIdentity;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpoint;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnectionProvisioningState;
@@ -183,6 +188,44 @@ public class KubernetesClusterImpl
         return this.innerModel().enableRbac();
     }
 
+    @Override
+    public PowerState powerState() {
+        return this.innerModel().powerState();
+    }
+
+    @Override
+    public String systemAssignedManagedServiceIdentityPrincipalId() {
+        String objectId = null;
+        if (this.innerModel().identityProfile() != null) {
+            UserAssignedIdentity identity =
+                this.innerModel().identityProfile().get("kubeletidentity");
+            if (identity != null) {
+                objectId = identity.objectId();
+            }
+        }
+        return objectId;
+    }
+
+    @Override
+    public void start() {
+        this.startAsync().block();
+    }
+
+    @Override
+    public Mono<Void> startAsync() {
+        return manager().kubernetesClusters().startAsync(this.resourceGroupName(), this.name());
+    }
+
+    @Override
+    public void stop() {
+        this.stopAsync().block();
+    }
+
+    @Override
+    public Mono<Void> stopAsync() {
+        return manager().kubernetesClusters().stopAsync(this.resourceGroupName(), this.name());
+    }
+
     private Mono<List<CredentialResult>> listAdminConfig(final KubernetesClusterImpl self) {
         return this
             .manager()
@@ -290,6 +333,18 @@ public class KubernetesClusterImpl
     }
 
     @Override
+    public KubernetesClusterImpl withSystemAssignedManagedServiceIdentity() {
+        this.innerModel().withIdentity(new ManagedClusterIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED));
+        return this;
+    }
+
+//    @Override
+//    public KubernetesClusterImpl enableRoleBasedAccessControl() {
+//        this.innerModel().withEnableRbac(true);
+//        return this;
+//    }
+
+    @Override
     public KubernetesClusterImpl withServicePrincipalSecret(String secret) {
         this.innerModel().servicePrincipalProfile().withSecret(secret);
         return this;
@@ -317,6 +372,21 @@ public class KubernetesClusterImpl
         }
         throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
             "Cannot get agent pool named %s", name)));
+    }
+
+    @Override
+    public Update withoutAgentPool(String name) {
+        if (innerModel().agentPoolProfiles() != null) {
+            innerModel().withAgentPoolProfiles(
+                innerModel().agentPoolProfiles().stream()
+                    .filter(p -> !name.equals(p.name()))
+                    .collect(Collectors.toList()));
+
+            this.addDependency(context ->
+                manager().serviceClient().getAgentPools().deleteAsync(resourceGroupName(), name(), name)
+                    .then(context.voidMono()));
+        }
+        return this;
     }
 
     @Override
@@ -358,6 +428,12 @@ public class KubernetesClusterImpl
                     .then(context.voidMono()));
         }
         innerModel().agentPoolProfiles().add(agentPool.innerModel());
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterImpl withAutoScalerProfile(ManagedClusterPropertiesAutoScalerProfile autoScalerProfile) {
+        this.innerModel().withAutoScalerProfile(autoScalerProfile);
         return this;
     }
 

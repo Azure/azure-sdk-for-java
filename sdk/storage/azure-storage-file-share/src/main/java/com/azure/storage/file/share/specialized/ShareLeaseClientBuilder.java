@@ -27,15 +27,43 @@ import java.util.UUID;
  *
  * <p><strong>Instantiating LeaseClients</strong></p>
  *
- * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseClientBuilder.syncInstantiationWithFileAndLeaseId}
+ * <!-- src_embed com.azure.storage.file.share.specialized.ShareLeaseClientBuilder.syncInstantiationWithFileAndLeaseId -->
+ * <pre>
+ * ShareLeaseClient fileLeaseClient = new ShareLeaseClientBuilder&#40;&#41;
+ *     .fileClient&#40;shareFileClient&#41;
+ *     .leaseId&#40;leaseId&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.storage.file.share.specialized.ShareLeaseClientBuilder.syncInstantiationWithFileAndLeaseId -->
  *
- * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseClientBuilder.syncInstantiationWithShareAndLeaseId}
+ * <!-- src_embed com.azure.storage.file.share.specialized.ShareLeaseClientBuilder.syncInstantiationWithShareAndLeaseId -->
+ * <pre>
+ * ShareLeaseClient fileLeaseClient = new ShareLeaseClientBuilder&#40;&#41;
+ *     .shareClient&#40;shareClient&#41;
+ *     .leaseId&#40;leaseId&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.storage.file.share.specialized.ShareLeaseClientBuilder.syncInstantiationWithShareAndLeaseId -->
  *
  * <p><strong>Instantiating LeaseAsyncClients</strong></p>
  *
- * {@codesnippet com.azure.storage.file.specialized.ShareLeaseClientBuilder.asyncInstantiationWithFileAndLeaseId}
+ * <!-- src_embed com.azure.storage.file.specialized.ShareLeaseClientBuilder.asyncInstantiationWithFileAndLeaseId -->
+ * <pre>
+ * ShareLeaseAsyncClient fileLeaseAsyncClient = new ShareLeaseClientBuilder&#40;&#41;
+ *     .fileAsyncClient&#40;shareFileAsyncClient&#41;
+ *     .leaseId&#40;leaseId&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.storage.file.specialized.ShareLeaseClientBuilder.asyncInstantiationWithFileAndLeaseId -->
  *
- * {@codesnippet com.azure.storage.file.specialized.ShareLeaseClientBuilder.asyncInstantiationWithShareAndLeaseId}
+ * <!-- src_embed com.azure.storage.file.specialized.ShareLeaseClientBuilder.asyncInstantiationWithShareAndLeaseId -->
+ * <pre>
+ * ShareLeaseAsyncClient fileLeaseAsyncClient = new ShareLeaseClientBuilder&#40;&#41;
+ *     .shareAsyncClient&#40;shareAsyncClient&#41;
+ *     .leaseId&#40;leaseId&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.storage.file.specialized.ShareLeaseClientBuilder.asyncInstantiationWithShareAndLeaseId -->
  *
  * @see ShareLeaseClient
  * @see ShareLeaseAsyncClient
@@ -120,7 +148,7 @@ public final class ShareLeaseClientBuilder {
      * @return the updated ShareLeaseClientBuilder object
      * @throws NullPointerException If {@code fileClient} is {@code null}.
      */
-    ShareLeaseClientBuilder shareClient(ShareClient shareClient) {
+    public ShareLeaseClientBuilder shareClient(ShareClient shareClient) {
         Objects.requireNonNull(shareClient);
         this.pipeline = shareClient.getHttpPipeline();
         this.url = shareClient.getAccountUrl();
@@ -140,7 +168,7 @@ public final class ShareLeaseClientBuilder {
      * @return the updated ShareLeaseClientBuilder object
      * @throws NullPointerException If {@code fileAsyncClient} is {@code null}.
      */
-    ShareLeaseClientBuilder shareAsyncClient(ShareAsyncClient shareAsyncClient) {
+    public ShareLeaseClientBuilder shareAsyncClient(ShareAsyncClient shareAsyncClient) {
         Objects.requireNonNull(shareAsyncClient);
         this.pipeline = shareAsyncClient.getHttpPipeline();
         this.url = shareAsyncClient.getAccountUrl();

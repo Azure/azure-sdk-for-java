@@ -17,9 +17,9 @@ import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.common.test.shared.extensions.LiveOnly
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -60,7 +60,7 @@ class AzureFileSystemProviderTest extends APISpec {
 
     def "CreateFileSystem"() {
         setup:
-        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = primaryCredential
+        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = environment.primaryAccount.credential
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName()
         def uri = getFileSystemUri()
 
@@ -91,7 +91,7 @@ class AzureFileSystemProviderTest extends APISpec {
     def "CreateFileSystem duplicate"() {
         setup:
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName()
-        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = primaryCredential
+        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = environment.primaryAccount.credential
         provider.newFileSystem(getFileSystemUri(), config)
 
         when:
@@ -104,10 +104,10 @@ class AzureFileSystemProviderTest extends APISpec {
     def "CreateFileSystem initial check fail"() {
         when:
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName()
-        def badKey = getAccountKey(PRIMARY_STORAGE).getBytes()
+        def badKey = environment.primaryAccount.key.getBytes()
         badKey[0]++
         config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] =
-            new StorageSharedKeyCredential(primaryCredential.getAccountName(), new String(badKey))
+            new StorageSharedKeyCredential(environment.primaryAccount.name, new String(badKey))
         provider.newFileSystem(getFileSystemUri(), config)
 
         then:
@@ -366,7 +366,7 @@ class AzureFileSystemProviderTest extends APISpec {
                     .getAppendBlobClient()
             }
         } else { // source is file
-            sourceClient.upload(defaultInputStream.get(), defaultDataSize)
+            sourceClient.upload(data.defaultInputStream, data.defaultDataSize)
         }
 
         when:
@@ -384,7 +384,7 @@ class AzureFileSystemProviderTest extends APISpec {
         if (!sourceIsDir) {
             def outStream = new ByteArrayOutputStream()
             destinationClient.download(outStream)
-            assert ByteBuffer.wrap(outStream.toByteArray()) == defaultData
+            assert ByteBuffer.wrap(outStream.toByteArray()) == data.defaultData
         } else {
             // Check that the destination directory is concrete.
             assert destinationClient.exists()
@@ -412,7 +412,7 @@ class AzureFileSystemProviderTest extends APISpec {
         basicSetupForCopyTest(fs)
 
         // Create resources as necessary
-        sourceClient.upload(defaultInputStream.get(), defaultDataSize)
+        sourceClient.upload(data.defaultInputStream, data.defaultDataSize)
         if (destinationExists) {
             if (destinationIsDir) {
                 fs.provider().createDirectory(destPath)
@@ -429,7 +429,7 @@ class AzureFileSystemProviderTest extends APISpec {
         sourceClient.exists()
         def outStream = new ByteArrayOutputStream()
         destinationClient.download(outStream)
-        assert ByteBuffer.wrap(outStream.toByteArray()) == defaultData
+        assert ByteBuffer.wrap(outStream.toByteArray()) == data.defaultData
 
         where:
         destinationExists | destinationIsDir
@@ -453,7 +453,7 @@ class AzureFileSystemProviderTest extends APISpec {
             fs.provider().createDirectory(destPath)
         }
         destChildClient = ((AzurePath) destPath.resolve(generateBlobName())).toBlobClient()
-        destChildClient.upload(defaultInputStream.get(), defaultDataSize)
+        destChildClient.upload(data.defaultInputStream, data.defaultDataSize)
 
         when:
         fs.provider().copy(sourcePath, destPath, StandardCopyOption.COPY_ATTRIBUTES,
@@ -482,7 +482,7 @@ class AzureFileSystemProviderTest extends APISpec {
         if (destinationIsDir) {
             fs.provider().createDirectory(destPath)
         } else {
-            destinationClient.upload(defaultInputStream.get(), defaultDataSize)
+            destinationClient.upload(data.defaultInputStream, data.defaultDataSize)
         }
 
         when:
@@ -495,7 +495,7 @@ class AzureFileSystemProviderTest extends APISpec {
         } else {
             def outStream = new ByteArrayOutputStream()
             destinationClient.download(outStream)
-            assert ByteBuffer.wrap(outStream.toByteArray()) == defaultData
+            assert ByteBuffer.wrap(outStream.toByteArray()) == data.defaultData
         }
 
         where:
@@ -543,7 +543,7 @@ class AzureFileSystemProviderTest extends APISpec {
         def destParentClient = ((AzurePath) destPath.getParent()).toBlobClient()
 
         // Create resources as necessary
-        sourceClient.upload(defaultInputStream.get(), defaultDataSize)
+        sourceClient.upload(data.defaultInputStream, data.defaultDataSize)
         putDirectoryBlob(destParentClient.getBlockBlobClient())
 
         when:
@@ -552,7 +552,7 @@ class AzureFileSystemProviderTest extends APISpec {
         then:
         def outStream = new ByteArrayOutputStream()
         destinationClient.download(outStream)
-        ByteBuffer.wrap(outStream.toByteArray()) == defaultData
+        ByteBuffer.wrap(outStream.toByteArray()) == data.defaultData
 
         where:
         sourceDepth | destDepth
@@ -649,7 +649,7 @@ class AzureFileSystemProviderTest extends APISpec {
         def destinationClient = destPath.toBlobClient()
 
         // Create resources as necessary
-        sourceClient.upload(defaultInputStream.get(), defaultDataSize)
+        sourceClient.upload(data.defaultInputStream, data.defaultDataSize)
 
         when:
         fs.provider().copy(sourcePath, destPath, StandardCopyOption.COPY_ATTRIBUTES)
@@ -666,7 +666,7 @@ class AzureFileSystemProviderTest extends APISpec {
         basicSetupForCopyTest(fs)
         def fsDest = createFS(config)
         def destPath = fsDest.getPath(getDefaultDir(fsDest), generateBlobName())
-        sourceClient.upload(defaultInputStream.get(), defaultDataSize)
+        sourceClient.upload(data.defaultInputStream, data.defaultDataSize)
 
         when:
         if (sourceClosed) {
@@ -696,7 +696,7 @@ class AzureFileSystemProviderTest extends APISpec {
         if (isDir) {
             putDirectoryBlob(blobClient)
         } else {
-            blobClient.upload(defaultInputStream.get(), defaultDataSize)
+            blobClient.upload(data.defaultInputStream, data.defaultDataSize)
         }
 
         when:
@@ -720,7 +720,7 @@ class AzureFileSystemProviderTest extends APISpec {
         def blobClient = path.toBlobClient().getBlockBlobClient()
         def childClient = ((AzurePath) path.resolve(generateBlobName())).toBlobClient()
 
-        childClient.upload(defaultInputStream.get(), defaultDataSize)
+        childClient.upload(data.defaultInputStream, data.defaultDataSize)
         if (!virtual) {
             putDirectoryBlob(blobClient)
         }
@@ -756,7 +756,7 @@ class AzureFileSystemProviderTest extends APISpec {
         def path = ((AzurePath) fs.getPath(generateBlobName()))
         def client = path.toBlobClient()
 
-        client.upload(defaultInputStream.get(), defaultDataSize)
+        client.upload(data.defaultInputStream, data.defaultDataSize)
 
         when:
         fs.provider().delete(path)
@@ -829,10 +829,10 @@ class AzureFileSystemProviderTest extends APISpec {
         def fs = createFS(config)
         sourcePath = (AzurePath) fs.getPath(generateBlobName())
         sourceClient = sourcePath.toBlobClient()
-        sourceClient.upload(defaultInputStream.get(), defaultDataSize)
+        sourceClient.upload(data.defaultInputStream, data.defaultDataSize)
 
         expect:
-        compareInputStreams(fs.provider().newInputStream(sourcePath), defaultInputStream.get(), defaultDataSize)
+        compareInputStreams(fs.provider().newInputStream(sourcePath), data.defaultInputStream, data.defaultDataSize)
     }
 
     @Unroll
@@ -904,7 +904,7 @@ class AzureFileSystemProviderTest extends APISpec {
         def path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), generateBlobName()))
         def blobClient = path.toBlobClient().getBlockBlobClient()
 
-        blobClient.upload(defaultInputStream.get(), defaultDataSize)
+        blobClient.upload(data.defaultInputStream, data.defaultDataSize)
 
         when:
         fs.close()
@@ -923,25 +923,23 @@ class AzureFileSystemProviderTest extends APISpec {
 
         def nioStream = fs.provider().newOutputStream(fs.getPath(bc.getBlobName()))
 
-        def data = defaultData.array()
-
         when:
         // Defaults should allow us to create a new file.
-        nioStream.write(data)
+        nioStream.write(data.defaultBytes)
         nioStream.close()
 
         then:
-        compareInputStreams(bc.openInputStream(), defaultInputStream.get(), defaultDataSize)
+        compareInputStreams(bc.openInputStream(), data.defaultInputStream, data.defaultDataSize)
 
         when:
         // Defaults should allow us to open to an existing file and overwrite the destination.
-        data = getRandomByteArray(100)
+        def randomData = getRandomByteArray(100)
         nioStream = fs.provider().newOutputStream(fs.getPath(bc.getBlobName()))
-        nioStream.write(data)
+        nioStream.write(randomData)
         nioStream.close()
 
         then:
-        compareInputStreams(bc.openInputStream(), new ByteArrayInputStream(data), 100)
+        compareInputStreams(bc.openInputStream(), new ByteArrayInputStream(randomData), 100)
     }
 
     def "OutputStream options create"() {
@@ -966,17 +964,15 @@ class AzureFileSystemProviderTest extends APISpec {
         def cc = rootNameToContainerClient(getDefaultDir(fs))
         def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
-        def data = defaultData.array()
-
         when:
         // Succeed in creating a new file
         def nioStream = fs.provider().newOutputStream(fs.getPath(bc.getBlobName()), StandardOpenOption.CREATE_NEW,
             StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING)
-        nioStream.write(data)
+        nioStream.write(data.defaultBytes)
         nioStream.close()
 
         then:
-        compareInputStreams(bc.openInputStream(), defaultInputStream.get(), defaultDataSize)
+        compareInputStreams(bc.openInputStream(), data.defaultInputStream, data.defaultDataSize)
 
         when:
         // Fail in overwriting an existing
@@ -1041,7 +1037,7 @@ class AzureFileSystemProviderTest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     // Because we upload in blocks
     def "OutputStream file system config"() {
         setup:
@@ -1179,7 +1175,7 @@ class AzureFileSystemProviderTest extends APISpec {
         def path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), generateBlobName()))
         def blobClient = path.toBlobClient().getBlockBlobClient()
 
-        blobClient.upload(defaultInputStream.get(), defaultDataSize)
+        blobClient.upload(data.defaultInputStream, data.defaultDataSize)
 
         when:
         fs.close()
@@ -1203,11 +1199,11 @@ class AzureFileSystemProviderTest extends APISpec {
 
         when:
         // Create should allow us to create a new file.
-        nioChannel.write(defaultData.duplicate())
+        nioChannel.write(data.defaultData.duplicate())
         nioChannel.close()
 
         then:
-        compareInputStreams(bc.openInputStream(), defaultInputStream.get(), defaultDataSize)
+        compareInputStreams(bc.openInputStream(), data.defaultInputStream, data.defaultDataSize)
 
         when:
         // Explicitly exclude a create option.
@@ -1225,18 +1221,16 @@ class AzureFileSystemProviderTest extends APISpec {
         def cc = rootNameToContainerClient(getDefaultDir(fs))
         def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
-        def data = defaultData.duplicate()
-
         when:
         // Succeed in creating a new file
         def nioChannel = fs.provider().newByteChannel(fs.getPath(bc.getBlobName()),
             new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW,
                 StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING)))
-        nioChannel.write(data)
+        nioChannel.write(data.defaultData.duplicate())
         nioChannel.close()
 
         then:
-        compareInputStreams(bc.openInputStream(), defaultInputStream.get(), defaultDataSize)
+        compareInputStreams(bc.openInputStream(), data.defaultInputStream, data.defaultDataSize)
 
         when:
         // Fail in overwriting an existing file
@@ -1255,9 +1249,7 @@ class AzureFileSystemProviderTest extends APISpec {
         def cc = rootNameToContainerClient(getDefaultDir(fs))
         def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
-        def data = defaultData.duplicate()
-
-        def contentMd5 = MessageDigest.getInstance("MD5").digest(defaultData.array())
+        def contentMd5 = MessageDigest.getInstance("MD5").digest(data.defaultBytes)
         FileAttribute<?>[] attributes = [new TestFileAttribute<String>("fizz", "buzz"),
                                          new TestFileAttribute<String>("foo", "bar"),
                                          new TestFileAttribute<String>("Content-Type", "myType"),
@@ -1271,12 +1263,12 @@ class AzureFileSystemProviderTest extends APISpec {
         def nioChannel = fs.provider().newByteChannel(fs.getPath(bc.getBlobName()),
             new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW,
                 StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING)), attributes)
-        nioChannel.write(data)
+        nioChannel.write(data.defaultData)
         nioChannel.close()
         def props = bc.getProperties()
 
         then:
-        compareInputStreams(bc.openInputStream(), defaultInputStream.get(), defaultDataSize)
+        compareInputStreams(bc.openInputStream(), data.defaultInputStream, data.defaultDataSize)
         props.getMetadata()["fizz"] == "buzz"
         props.getMetadata()["foo"] == "bar"
         !props.getMetadata().containsKey("Content-Type")
@@ -1301,7 +1293,7 @@ class AzureFileSystemProviderTest extends APISpec {
         def cc = rootNameToContainerClient(getDefaultDir(fs))
         def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
-        def data = defaultData.duplicate()
+        def data = data.defaultData.duplicate()
 
         when:
         def nioChannel = fs.provider().newByteChannel(fs.getPath(bc.getBlobName()),
@@ -1379,7 +1371,7 @@ class AzureFileSystemProviderTest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     // Because we upload in blocks
     def "ByteChannel file system config"() {
         setup:
@@ -1671,7 +1663,7 @@ class AzureFileSystemProviderTest extends APISpec {
         def path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), generateBlobName()))
         def blobClient = path.toBlobClient().getBlockBlobClient()
 
-        blobClient.upload(defaultInputStream.get(), defaultDataSize)
+        blobClient.upload(data.defaultInputStream, data.defaultDataSize)
 
         when:
         fs.close()
@@ -1780,7 +1772,7 @@ class AzureFileSystemProviderTest extends APISpec {
         def path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), generateBlobName()))
         def blobClient = path.toBlobClient().getBlockBlobClient()
 
-        blobClient.upload(defaultInputStream.get(), defaultDataSize)
+        blobClient.upload(data.defaultInputStream, data.defaultDataSize)
 
         when:
         fs.close()
@@ -1818,9 +1810,9 @@ class AzureFileSystemProviderTest extends APISpec {
         headers.getContentType() == contentType
 
         where:
-        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                               | contentType
-        null         | null               | null            | null            | null                                                                                     | null
-        "control"    | "disposition"      | "encoding"      | "language"      | Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultData.array())) | "type"
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                                    | contentType
+        null         | null               | null            | null            | null                                                                                          | null
+        "control"    | "disposition"      | "encoding"      | "language"      | Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(data.defaultBytes)) | "type"
     }
 
     @Unroll
@@ -1940,7 +1932,7 @@ class AzureFileSystemProviderTest extends APISpec {
         def path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), generateBlobName()))
         def blobClient = path.toBlobClient().getBlockBlobClient()
 
-        blobClient.upload(defaultInputStream.get(), defaultDataSize)
+        blobClient.upload(data.defaultInputStream, data.defaultDataSize)
 
         when:
         fs.close()

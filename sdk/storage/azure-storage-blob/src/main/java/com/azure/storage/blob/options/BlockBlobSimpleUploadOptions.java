@@ -6,6 +6,7 @@ package com.azure.storage.blob.options;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
@@ -27,6 +28,8 @@ public class BlockBlobSimpleUploadOptions {
     private AccessTier tier;
     private byte[] contentMd5;
     private BlobRequestConditions requestConditions;
+    private BlobImmutabilityPolicy immutabilityPolicy;
+    private Boolean legalHold;
 
     /**
      * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
@@ -177,6 +180,42 @@ public class BlockBlobSimpleUploadOptions {
      */
     public BlockBlobSimpleUploadOptions setRequestConditions(BlobRequestConditions requestConditions) {
         this.requestConditions = requestConditions;
+        return this;
+    }
+
+    /**
+     * @return {@link BlobImmutabilityPolicy}
+     */
+    public BlobImmutabilityPolicy getImmutabilityPolicy() {
+        return immutabilityPolicy;
+    }
+
+    /**
+     * Note that this parameter is only applicable to a blob within a container that has immutable storage with
+     * versioning enabled.
+     * @param immutabilityPolicy {@link BlobImmutabilityPolicy}
+     * @return The updated options.
+     */
+    public BlockBlobSimpleUploadOptions setImmutabilityPolicy(BlobImmutabilityPolicy immutabilityPolicy) {
+        this.immutabilityPolicy = immutabilityPolicy;
+        return this;
+    }
+
+    /**
+     * @return If a legal hold should be placed on the blob.
+     */
+    public Boolean isLegalHold() {
+        return legalHold;
+    }
+
+    /**
+     * Note that this parameter is only applicable to a blob within a container that has immutable storage with
+     * versioning enabled.
+     * @param legalHold Indicates if a legal hold should be placed on the blob.
+     * @return The updated options.
+     */
+    public BlockBlobSimpleUploadOptions setLegalHold(Boolean legalHold) {
+        this.legalHold = legalHold;
         return this;
     }
 }

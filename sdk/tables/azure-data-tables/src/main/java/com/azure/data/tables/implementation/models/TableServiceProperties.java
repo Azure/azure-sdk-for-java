@@ -5,10 +5,16 @@
 package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /** Table Service Properties. */
+@JacksonXmlRootElement(localName = "StorageServiceProperties")
 @Fluent
 public final class TableServiceProperties {
     /*
@@ -31,11 +37,20 @@ public final class TableServiceProperties {
     @JsonProperty(value = "MinuteMetrics")
     private Metrics minuteMetrics;
 
+    private static final class CorsWrapper {
+        @JacksonXmlProperty(localName = "CorsRule")
+        private final List<CorsRule> items;
+
+        @JsonCreator
+        private CorsWrapper(@JacksonXmlProperty(localName = "CorsRule") List<CorsRule> items) {
+            this.items = items;
+        }
+    }
     /*
      * The set of CORS rules.
      */
     @JsonProperty(value = "Cors")
-    private List<CorsRule> cors;
+    private CorsWrapper cors;
 
     /**
      * Get the logging property: Azure Analytics Logging settings.
@@ -103,7 +118,11 @@ public final class TableServiceProperties {
      * @return the cors value.
      */
     public List<CorsRule> getCors() {
-        return this.cors;
+        if (this.cors == null) {
+            this.cors = new CorsWrapper(new ArrayList<CorsRule>());
+        }
+
+        return this.cors.items;
     }
 
     /**
@@ -113,7 +132,8 @@ public final class TableServiceProperties {
      * @return the TableServiceProperties object itself.
      */
     public TableServiceProperties setCors(List<CorsRule> cors) {
-        this.cors = cors;
+        this.cors = new CorsWrapper(cors);
+
         return this;
     }
 }

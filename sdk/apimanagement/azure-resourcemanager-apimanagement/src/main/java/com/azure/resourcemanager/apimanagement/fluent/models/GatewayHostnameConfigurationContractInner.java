@@ -5,54 +5,30 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Gateway hostname configuration details. */
-@JsonFlatten
 @Fluent
-public class GatewayHostnameConfigurationContractInner extends ProxyResource {
+public final class GatewayHostnameConfigurationContractInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GatewayHostnameConfigurationContractInner.class);
 
     /*
-     * Hostname value. Supports valid domain name, partial or full wildcard
+     * Gateway hostname configuration details.
      */
-    @JsonProperty(value = "properties.hostname")
-    private String hostname;
+    @JsonProperty(value = "properties")
+    private GatewayHostnameConfigurationContractProperties innerProperties;
 
-    /*
-     * Identifier of Certificate entity that will be used for TLS connection
-     * establishment
+    /**
+     * Get the innerProperties property: Gateway hostname configuration details.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.certificateId")
-    private String certificateId;
-
-    /*
-     * Determines whether gateway requests client certificate
-     */
-    @JsonProperty(value = "properties.negotiateClientCertificate")
-    private Boolean negotiateClientCertificate;
-
-    /*
-     * Specifies if TLS 1.0 is supported
-     */
-    @JsonProperty(value = "properties.tls10Enabled")
-    private Boolean tls10Enabled;
-
-    /*
-     * Specifies if TLS 1.1 is supported
-     */
-    @JsonProperty(value = "properties.tls11Enabled")
-    private Boolean tls11Enabled;
-
-    /*
-     * Specifies if HTTP/2.0 is supported
-     */
-    @JsonProperty(value = "properties.http2Enabled")
-    private Boolean http2Enabled;
+    private GatewayHostnameConfigurationContractProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the hostname property: Hostname value. Supports valid domain name, partial or full wildcard.
@@ -60,7 +36,7 @@ public class GatewayHostnameConfigurationContractInner extends ProxyResource {
      * @return the hostname value.
      */
     public String hostname() {
-        return this.hostname;
+        return this.innerProperties() == null ? null : this.innerProperties().hostname();
     }
 
     /**
@@ -70,7 +46,10 @@ public class GatewayHostnameConfigurationContractInner extends ProxyResource {
      * @return the GatewayHostnameConfigurationContractInner object itself.
      */
     public GatewayHostnameConfigurationContractInner withHostname(String hostname) {
-        this.hostname = hostname;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GatewayHostnameConfigurationContractProperties();
+        }
+        this.innerProperties().withHostname(hostname);
         return this;
     }
 
@@ -81,7 +60,7 @@ public class GatewayHostnameConfigurationContractInner extends ProxyResource {
      * @return the certificateId value.
      */
     public String certificateId() {
-        return this.certificateId;
+        return this.innerProperties() == null ? null : this.innerProperties().certificateId();
     }
 
     /**
@@ -92,7 +71,10 @@ public class GatewayHostnameConfigurationContractInner extends ProxyResource {
      * @return the GatewayHostnameConfigurationContractInner object itself.
      */
     public GatewayHostnameConfigurationContractInner withCertificateId(String certificateId) {
-        this.certificateId = certificateId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GatewayHostnameConfigurationContractProperties();
+        }
+        this.innerProperties().withCertificateId(certificateId);
         return this;
     }
 
@@ -102,7 +84,7 @@ public class GatewayHostnameConfigurationContractInner extends ProxyResource {
      * @return the negotiateClientCertificate value.
      */
     public Boolean negotiateClientCertificate() {
-        return this.negotiateClientCertificate;
+        return this.innerProperties() == null ? null : this.innerProperties().negotiateClientCertificate();
     }
 
     /**
@@ -113,7 +95,10 @@ public class GatewayHostnameConfigurationContractInner extends ProxyResource {
      */
     public GatewayHostnameConfigurationContractInner withNegotiateClientCertificate(
         Boolean negotiateClientCertificate) {
-        this.negotiateClientCertificate = negotiateClientCertificate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GatewayHostnameConfigurationContractProperties();
+        }
+        this.innerProperties().withNegotiateClientCertificate(negotiateClientCertificate);
         return this;
     }
 
@@ -123,7 +108,7 @@ public class GatewayHostnameConfigurationContractInner extends ProxyResource {
      * @return the tls10Enabled value.
      */
     public Boolean tls10Enabled() {
-        return this.tls10Enabled;
+        return this.innerProperties() == null ? null : this.innerProperties().tls10Enabled();
     }
 
     /**
@@ -133,7 +118,10 @@ public class GatewayHostnameConfigurationContractInner extends ProxyResource {
      * @return the GatewayHostnameConfigurationContractInner object itself.
      */
     public GatewayHostnameConfigurationContractInner withTls10Enabled(Boolean tls10Enabled) {
-        this.tls10Enabled = tls10Enabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GatewayHostnameConfigurationContractProperties();
+        }
+        this.innerProperties().withTls10Enabled(tls10Enabled);
         return this;
     }
 
@@ -143,7 +131,7 @@ public class GatewayHostnameConfigurationContractInner extends ProxyResource {
      * @return the tls11Enabled value.
      */
     public Boolean tls11Enabled() {
-        return this.tls11Enabled;
+        return this.innerProperties() == null ? null : this.innerProperties().tls11Enabled();
     }
 
     /**
@@ -153,7 +141,10 @@ public class GatewayHostnameConfigurationContractInner extends ProxyResource {
      * @return the GatewayHostnameConfigurationContractInner object itself.
      */
     public GatewayHostnameConfigurationContractInner withTls11Enabled(Boolean tls11Enabled) {
-        this.tls11Enabled = tls11Enabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GatewayHostnameConfigurationContractProperties();
+        }
+        this.innerProperties().withTls11Enabled(tls11Enabled);
         return this;
     }
 
@@ -163,7 +154,7 @@ public class GatewayHostnameConfigurationContractInner extends ProxyResource {
      * @return the http2Enabled value.
      */
     public Boolean http2Enabled() {
-        return this.http2Enabled;
+        return this.innerProperties() == null ? null : this.innerProperties().http2Enabled();
     }
 
     /**
@@ -173,7 +164,10 @@ public class GatewayHostnameConfigurationContractInner extends ProxyResource {
      * @return the GatewayHostnameConfigurationContractInner object itself.
      */
     public GatewayHostnameConfigurationContractInner withHttp2Enabled(Boolean http2Enabled) {
-        this.http2Enabled = http2Enabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GatewayHostnameConfigurationContractProperties();
+        }
+        this.innerProperties().withHttp2Enabled(http2Enabled);
         return this;
     }
 
@@ -183,5 +177,8 @@ public class GatewayHostnameConfigurationContractInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

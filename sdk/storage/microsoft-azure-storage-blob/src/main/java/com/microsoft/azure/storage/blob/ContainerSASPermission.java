@@ -36,16 +36,16 @@ public final class ContainerSASPermission {
      * Creates an {@code ContainerSASPermission} from the specified permissions string. This method will throw an
      * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
      *
-     * @param permString
+     * @param permissionString
      *         A {@code String} which represents the {@code ContainerSASPermission}.
      *
      * @return A {@code ContainerSASPermission} generated from the given {@code String}.
      */
-    public static ContainerSASPermission parse(String permString) {
+    public static ContainerSASPermission parse(String permissionString) {
         ContainerSASPermission permissions = new ContainerSASPermission();
 
-        for (int i = 0; i < permString.length(); i++) {
-            char c = permString.charAt(i);
+        for (int i = 0; i < permissionString.length(); i++) {
+            char c = permissionString.charAt(i);
             switch (c) {
                 case 'r':
                     permissions.read = true;
@@ -67,7 +67,7 @@ public final class ContainerSASPermission {
                     break;
                 default:
                     throw new IllegalArgumentException(
-                            String.format(Locale.ROOT, SR.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE, "Permissions", permString, c));
+                            String.format(Locale.ROOT, SR.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE, "Permissions", permissionString, c));
             }
         }
         return permissions;

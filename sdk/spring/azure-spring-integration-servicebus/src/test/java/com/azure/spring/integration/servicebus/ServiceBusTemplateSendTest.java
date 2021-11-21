@@ -3,30 +3,45 @@
 
 package com.azure.spring.integration.servicebus;
 
-import com.azure.spring.integration.servicebus.factory.ServiceBusSenderFactory;
-import com.microsoft.azure.servicebus.IMessage;
-import com.microsoft.azure.servicebus.IMessageSender;
+import com.azure.messaging.servicebus.ServiceBusMessage;
+import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.spring.integration.core.api.SendOperation;
+import com.azure.spring.integration.servicebus.factory.ServiceBusSenderFactory;
 import com.azure.spring.integration.test.support.SendOperationTest;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
+import reactor.core.publisher.Mono;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-public abstract class ServiceBusTemplateSendTest<T extends ServiceBusSenderFactory, C extends IMessageSender>
+/**
+ * Test cases to test service bus send operations.
+ *
+ * @param <T>
+ * @param <C>
+ */
+public abstract class ServiceBusTemplateSendTest<T extends ServiceBusSenderFactory,
+                                                    C extends ServiceBusSenderAsyncClient>
     extends SendOperationTest<SendOperation> {
 
+    protected C mockClient;
     protected T mockClientFactory;
 
-    protected C mockClient;
-
-    @Before
+    @BeforeEach
     public abstract void setUp();
 
     @Override
+    protected void setupError(String errorMessage) {
+        when(this.mockClient.sendMessage(isA(ServiceBusMessage.class))).thenReturn(Mono.error(new IllegalArgumentException(
+            errorMessage)));
+    }
+
+    @Override
     protected void verifySendCalled(int times) {
-        verify(this.mockClient, times(times)).sendAsync(isA(IMessage.class));
+        verify(this.mockClient, times(times)).sendMessage(isA(ServiceBusMessage.class));
     }
 
     @Override

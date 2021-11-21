@@ -174,7 +174,7 @@ public final class MicrosoftDatadogManager {
                 .append("-")
                 .append("com.azure.resourcemanager.datadog")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -201,6 +201,7 @@ public final class MicrosoftDatadogManager {
                 .add(
                     new BearerTokenAuthenticationPolicy(
                         credential, profile.getEnvironment().getManagementEndpoint() + "/.default"));
+            policies.addAll(this.policies);
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline =

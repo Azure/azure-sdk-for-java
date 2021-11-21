@@ -159,6 +159,36 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
+                + "/{privateCloudName}/rotateVcenterPassword")
+        @ExpectedResponses({202, 204})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> rotateVcenterPassword(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("privateCloudName") String privateCloudName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
+                + "/{privateCloudName}/rotateNsxtPassword")
+        @ExpectedResponses({202, 204})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> rotateNsxtPassword(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("privateCloudName") String privateCloudName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
                 + "/{privateCloudName}/listAdminCredentials")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -767,7 +797,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private cloud resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateCloudInner>, PrivateCloudInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String privateCloudName, PrivateCloudInner privateCloud) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -790,7 +820,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private cloud resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateCloudInner>, PrivateCloudInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String privateCloudName, PrivateCloudInner privateCloud, Context context) {
         context = this.client.mergeContext(context);
@@ -813,7 +843,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private cloud resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateCloudInner>, PrivateCloudInner> beginCreateOrUpdate(
         String resourceGroupName, String privateCloudName, PrivateCloudInner privateCloud) {
         return beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, privateCloud).getSyncPoller();
@@ -831,7 +861,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private cloud resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateCloudInner>, PrivateCloudInner> beginCreateOrUpdate(
         String resourceGroupName, String privateCloudName, PrivateCloudInner privateCloud, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, privateCloud, context).getSyncPoller();
@@ -1034,7 +1064,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private cloud resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateCloudInner>, PrivateCloudInner> beginUpdateAsync(
         String resourceGroupName, String privateCloudName, PrivateCloudUpdate privateCloudUpdate) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1057,7 +1087,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private cloud resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateCloudInner>, PrivateCloudInner> beginUpdateAsync(
         String resourceGroupName, String privateCloudName, PrivateCloudUpdate privateCloudUpdate, Context context) {
         context = this.client.mergeContext(context);
@@ -1080,7 +1110,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private cloud resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateCloudInner>, PrivateCloudInner> beginUpdate(
         String resourceGroupName, String privateCloudName, PrivateCloudUpdate privateCloudUpdate) {
         return beginUpdateAsync(resourceGroupName, privateCloudName, privateCloudUpdate).getSyncPoller();
@@ -1098,7 +1128,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private cloud resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateCloudInner>, PrivateCloudInner> beginUpdate(
         String resourceGroupName, String privateCloudName, PrivateCloudUpdate privateCloudUpdate, Context context) {
         return beginUpdateAsync(resourceGroupName, privateCloudName, privateCloudUpdate, context).getSyncPoller();
@@ -1284,7 +1314,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String privateCloudName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, privateCloudName);
         return this
@@ -1303,7 +1333,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String privateCloudName, Context context) {
         context = this.client.mergeContext(context);
@@ -1323,7 +1353,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateCloudName) {
         return beginDeleteAsync(resourceGroupName, privateCloudName).getSyncPoller();
     }
@@ -1339,7 +1369,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateCloudName, Context context) {
         return beginDeleteAsync(resourceGroupName, privateCloudName, context).getSyncPoller();
@@ -1407,6 +1437,476 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String privateCloudName, Context context) {
         deleteAsync(resourceGroupName, privateCloudName, context).block();
+    }
+
+    /**
+     * Rotate the vCenter password.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> rotateVcenterPasswordWithResponseAsync(
+        String resourceGroupName, String privateCloudName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (privateCloudName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .rotateVcenterPassword(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            privateCloudName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Rotate the vCenter password.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> rotateVcenterPasswordWithResponseAsync(
+        String resourceGroupName, String privateCloudName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (privateCloudName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .rotateVcenterPassword(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                privateCloudName,
+                this.client.getApiVersion(),
+                accept,
+                context);
+    }
+
+    /**
+     * Rotate the vCenter password.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginRotateVcenterPasswordAsync(
+        String resourceGroupName, String privateCloudName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            rotateVcenterPasswordWithResponseAsync(resourceGroupName, privateCloudName);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+    }
+
+    /**
+     * Rotate the vCenter password.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginRotateVcenterPasswordAsync(
+        String resourceGroupName, String privateCloudName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            rotateVcenterPasswordWithResponseAsync(resourceGroupName, privateCloudName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Rotate the vCenter password.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginRotateVcenterPassword(
+        String resourceGroupName, String privateCloudName) {
+        return beginRotateVcenterPasswordAsync(resourceGroupName, privateCloudName).getSyncPoller();
+    }
+
+    /**
+     * Rotate the vCenter password.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginRotateVcenterPassword(
+        String resourceGroupName, String privateCloudName, Context context) {
+        return beginRotateVcenterPasswordAsync(resourceGroupName, privateCloudName, context).getSyncPoller();
+    }
+
+    /**
+     * Rotate the vCenter password.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> rotateVcenterPasswordAsync(String resourceGroupName, String privateCloudName) {
+        return beginRotateVcenterPasswordAsync(resourceGroupName, privateCloudName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Rotate the vCenter password.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> rotateVcenterPasswordAsync(String resourceGroupName, String privateCloudName, Context context) {
+        return beginRotateVcenterPasswordAsync(resourceGroupName, privateCloudName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Rotate the vCenter password.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void rotateVcenterPassword(String resourceGroupName, String privateCloudName) {
+        rotateVcenterPasswordAsync(resourceGroupName, privateCloudName).block();
+    }
+
+    /**
+     * Rotate the vCenter password.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void rotateVcenterPassword(String resourceGroupName, String privateCloudName, Context context) {
+        rotateVcenterPasswordAsync(resourceGroupName, privateCloudName, context).block();
+    }
+
+    /**
+     * Rotate the NSX-T Manager password.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> rotateNsxtPasswordWithResponseAsync(
+        String resourceGroupName, String privateCloudName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (privateCloudName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .rotateNsxtPassword(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            privateCloudName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Rotate the NSX-T Manager password.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> rotateNsxtPasswordWithResponseAsync(
+        String resourceGroupName, String privateCloudName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (privateCloudName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .rotateNsxtPassword(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                privateCloudName,
+                this.client.getApiVersion(),
+                accept,
+                context);
+    }
+
+    /**
+     * Rotate the NSX-T Manager password.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginRotateNsxtPasswordAsync(
+        String resourceGroupName, String privateCloudName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            rotateNsxtPasswordWithResponseAsync(resourceGroupName, privateCloudName);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+    }
+
+    /**
+     * Rotate the NSX-T Manager password.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginRotateNsxtPasswordAsync(
+        String resourceGroupName, String privateCloudName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            rotateNsxtPasswordWithResponseAsync(resourceGroupName, privateCloudName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Rotate the NSX-T Manager password.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginRotateNsxtPassword(
+        String resourceGroupName, String privateCloudName) {
+        return beginRotateNsxtPasswordAsync(resourceGroupName, privateCloudName).getSyncPoller();
+    }
+
+    /**
+     * Rotate the NSX-T Manager password.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginRotateNsxtPassword(
+        String resourceGroupName, String privateCloudName, Context context) {
+        return beginRotateNsxtPasswordAsync(resourceGroupName, privateCloudName, context).getSyncPoller();
+    }
+
+    /**
+     * Rotate the NSX-T Manager password.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> rotateNsxtPasswordAsync(String resourceGroupName, String privateCloudName) {
+        return beginRotateNsxtPasswordAsync(resourceGroupName, privateCloudName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Rotate the NSX-T Manager password.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> rotateNsxtPasswordAsync(String resourceGroupName, String privateCloudName, Context context) {
+        return beginRotateNsxtPasswordAsync(resourceGroupName, privateCloudName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Rotate the NSX-T Manager password.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void rotateNsxtPassword(String resourceGroupName, String privateCloudName) {
+        rotateNsxtPasswordAsync(resourceGroupName, privateCloudName).block();
+    }
+
+    /**
+     * Rotate the NSX-T Manager password.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void rotateNsxtPassword(String resourceGroupName, String privateCloudName, Context context) {
+        rotateNsxtPasswordAsync(resourceGroupName, privateCloudName, context).block();
     }
 
     /**

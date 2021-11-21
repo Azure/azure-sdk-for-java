@@ -3,20 +3,17 @@
 
 package com.azure.spring.eventhub.stream.binder;
 
-import com.azure.spring.eventhub.stream.binder.properties.EventHubProducerProperties;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.spring.eventhub.stream.binder.properties.EventHubConsumerProperties;
-import com.azure.spring.servicebus.stream.binder.test.AzurePartitionBinderTests;
+import com.azure.spring.eventhub.stream.binder.properties.EventHubProducerProperties;
 import com.azure.spring.integration.core.api.StartPosition;
 import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
 import com.azure.spring.integration.eventhub.support.EventHubTestOperation;
+import com.azure.spring.servicebus.stream.binder.test.AzurePartitionBinderTests;
 import org.junit.Before;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.MockitoAnnotations;
 import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
 import org.springframework.cloud.stream.binder.ExtendedProducerProperties;
 import org.springframework.cloud.stream.binder.HeaderMode;
@@ -29,12 +26,10 @@ import static org.mockito.Mockito.when;
  *
  * @author Warren Zhu
  */
-@RunWith(PowerMockRunner.class)
-@PowerMockIgnore({"com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*"})
-@PrepareForTest(EventContext.class)
 public class EventHubPartitionBinderTests extends
-        AzurePartitionBinderTests<EventHubTestBinder, ExtendedConsumerProperties<EventHubConsumerProperties>,
-                ExtendedProducerProperties<EventHubProducerProperties>> {
+    AzurePartitionBinderTests<EventHubTestBinder, ExtendedConsumerProperties<EventHubConsumerProperties>,
+        ExtendedProducerProperties<EventHubProducerProperties>> {
+    //TODO (Xiaobing Zhu): It is currently impossible to upgrade JUnit 4 to JUnit 5 due to the inheritance of Spring unit tests.
 
     @Mock
     EventHubClientFactory clientFactory;
@@ -45,11 +40,11 @@ public class EventHubPartitionBinderTests extends
     @Mock
     PartitionContext partitionContext;
 
-
     private EventHubTestBinder binder;
 
     @Before
     public void setUp() {
+        MockitoAnnotations.openMocks(this);
         when(this.eventContext.updateCheckpointAsync()).thenReturn(Mono.empty());
         when(this.eventContext.getPartitionContext()).thenReturn(this.partitionContext);
         when(this.partitionContext.getPartitionId()).thenReturn("1");
@@ -70,7 +65,7 @@ public class EventHubPartitionBinderTests extends
     @Override
     protected ExtendedConsumerProperties<EventHubConsumerProperties> createConsumerProperties() {
         ExtendedConsumerProperties<EventHubConsumerProperties> properties =
-                new ExtendedConsumerProperties<>(new EventHubConsumerProperties());
+            new ExtendedConsumerProperties<>(new EventHubConsumerProperties());
         properties.setHeaderMode(HeaderMode.embeddedHeaders);
         properties.getExtension().setStartPosition(StartPosition.EARLIEST);
         return properties;
@@ -79,7 +74,7 @@ public class EventHubPartitionBinderTests extends
     @Override
     protected ExtendedProducerProperties<EventHubProducerProperties> createProducerProperties() {
         ExtendedProducerProperties<EventHubProducerProperties> properties =
-                new ExtendedProducerProperties<>(new EventHubProducerProperties());
+            new ExtendedProducerProperties<>(new EventHubProducerProperties());
         properties.setHeaderMode(HeaderMode.embeddedHeaders);
         return properties;
     }

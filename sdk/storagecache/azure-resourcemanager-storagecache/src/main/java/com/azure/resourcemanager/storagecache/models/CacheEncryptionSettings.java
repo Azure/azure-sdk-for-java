@@ -20,6 +20,13 @@ public final class CacheEncryptionSettings {
     @JsonProperty(value = "keyEncryptionKey")
     private KeyVaultKeyReference keyEncryptionKey;
 
+    /*
+     * Specifies whether the service will automatically rotate to the newest
+     * version of the key in the Key Vault.
+     */
+    @JsonProperty(value = "rotationToLatestKeyVersionEnabled")
+    private Boolean rotationToLatestKeyVersionEnabled;
+
     /**
      * Get the keyEncryptionKey property: Specifies the location of the key encryption key in Key Vault.
      *
@@ -37,6 +44,28 @@ public final class CacheEncryptionSettings {
      */
     public CacheEncryptionSettings withKeyEncryptionKey(KeyVaultKeyReference keyEncryptionKey) {
         this.keyEncryptionKey = keyEncryptionKey;
+        return this;
+    }
+
+    /**
+     * Get the rotationToLatestKeyVersionEnabled property: Specifies whether the service will automatically rotate to
+     * the newest version of the key in the Key Vault.
+     *
+     * @return the rotationToLatestKeyVersionEnabled value.
+     */
+    public Boolean rotationToLatestKeyVersionEnabled() {
+        return this.rotationToLatestKeyVersionEnabled;
+    }
+
+    /**
+     * Set the rotationToLatestKeyVersionEnabled property: Specifies whether the service will automatically rotate to
+     * the newest version of the key in the Key Vault.
+     *
+     * @param rotationToLatestKeyVersionEnabled the rotationToLatestKeyVersionEnabled value to set.
+     * @return the CacheEncryptionSettings object itself.
+     */
+    public CacheEncryptionSettings withRotationToLatestKeyVersionEnabled(Boolean rotationToLatestKeyVersionEnabled) {
+        this.rotationToLatestKeyVersionEnabled = rotationToLatestKeyVersionEnabled;
         return this;
     }
 

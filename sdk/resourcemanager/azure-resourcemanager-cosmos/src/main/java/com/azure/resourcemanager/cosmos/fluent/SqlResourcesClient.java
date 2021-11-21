@@ -13,14 +13,20 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.cosmos.fluent.models.BackupInformationInner;
 import com.azure.resourcemanager.cosmos.fluent.models.SqlContainerGetResultsInner;
 import com.azure.resourcemanager.cosmos.fluent.models.SqlDatabaseGetResultsInner;
+import com.azure.resourcemanager.cosmos.fluent.models.SqlRoleAssignmentGetResultsInner;
+import com.azure.resourcemanager.cosmos.fluent.models.SqlRoleDefinitionGetResultsInner;
 import com.azure.resourcemanager.cosmos.fluent.models.SqlStoredProcedureGetResultsInner;
 import com.azure.resourcemanager.cosmos.fluent.models.SqlTriggerGetResultsInner;
 import com.azure.resourcemanager.cosmos.fluent.models.SqlUserDefinedFunctionGetResultsInner;
 import com.azure.resourcemanager.cosmos.fluent.models.ThroughputSettingsGetResultsInner;
+import com.azure.resourcemanager.cosmos.models.ContinuousBackupRestoreLocation;
 import com.azure.resourcemanager.cosmos.models.SqlContainerCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.SqlDatabaseCreateUpdateParameters;
+import com.azure.resourcemanager.cosmos.models.SqlRoleAssignmentCreateUpdateParameters;
+import com.azure.resourcemanager.cosmos.models.SqlRoleDefinitionCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.SqlStoredProcedureCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.SqlTriggerCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.SqlUserDefinedFunctionCreateUpdateParameters;
@@ -163,7 +169,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB SQL database.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<SqlDatabaseGetResultsInner>, SqlDatabaseGetResultsInner> beginCreateUpdateSqlDatabaseAsync(
         String resourceGroupName,
         String accountName,
@@ -182,7 +188,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB SQL database.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SqlDatabaseGetResultsInner>, SqlDatabaseGetResultsInner> beginCreateUpdateSqlDatabase(
         String resourceGroupName,
         String accountName,
@@ -202,7 +208,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB SQL database.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SqlDatabaseGetResultsInner>, SqlDatabaseGetResultsInner> beginCreateUpdateSqlDatabase(
         String resourceGroupName,
         String accountName,
@@ -295,7 +301,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteSqlDatabaseAsync(
         String resourceGroupName, String accountName, String databaseName);
 
@@ -310,7 +316,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteSqlDatabase(
         String resourceGroupName, String accountName, String databaseName);
 
@@ -326,7 +332,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteSqlDatabase(
         String resourceGroupName, String accountName, String databaseName, Context context);
 
@@ -471,7 +477,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateSqlDatabaseThroughputAsync(
             String resourceGroupName,
@@ -491,7 +497,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateSqlDatabaseThroughput(
             String resourceGroupName,
@@ -512,7 +518,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateSqlDatabaseThroughput(
             String resourceGroupName,
@@ -606,7 +612,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateSqlDatabaseToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName);
 
@@ -621,7 +627,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateSqlDatabaseToAutoscale(String resourceGroupName, String accountName, String databaseName);
 
@@ -637,7 +643,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateSqlDatabaseToAutoscale(
             String resourceGroupName, String accountName, String databaseName, Context context);
@@ -714,7 +720,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateSqlDatabaseToManualThroughputAsync(
             String resourceGroupName, String accountName, String databaseName);
@@ -730,7 +736,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateSqlDatabaseToManualThroughput(String resourceGroupName, String accountName, String databaseName);
 
@@ -746,7 +752,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateSqlDatabaseToManualThroughput(
             String resourceGroupName, String accountName, String databaseName, Context context);
@@ -942,7 +948,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB container.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<SqlContainerGetResultsInner>, SqlContainerGetResultsInner> beginCreateUpdateSqlContainerAsync(
         String resourceGroupName,
         String accountName,
@@ -963,7 +969,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB container.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SqlContainerGetResultsInner>, SqlContainerGetResultsInner> beginCreateUpdateSqlContainer(
         String resourceGroupName,
         String accountName,
@@ -985,7 +991,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB container.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SqlContainerGetResultsInner>, SqlContainerGetResultsInner> beginCreateUpdateSqlContainer(
         String resourceGroupName,
         String accountName,
@@ -1087,7 +1093,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteSqlContainerAsync(
         String resourceGroupName, String accountName, String databaseName, String containerName);
 
@@ -1103,7 +1109,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteSqlContainer(
         String resourceGroupName, String accountName, String databaseName, String containerName);
 
@@ -1120,7 +1126,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteSqlContainer(
         String resourceGroupName, String accountName, String databaseName, String containerName, Context context);
 
@@ -1269,7 +1275,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateSqlContainerThroughputAsync(
             String resourceGroupName,
@@ -1291,7 +1297,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateSqlContainerThroughput(
             String resourceGroupName,
@@ -1314,7 +1320,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateSqlContainerThroughput(
             String resourceGroupName,
@@ -1417,7 +1423,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateSqlContainerToAutoscaleAsync(
             String resourceGroupName, String accountName, String databaseName, String containerName);
@@ -1434,7 +1440,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateSqlContainerToAutoscale(
             String resourceGroupName, String accountName, String databaseName, String containerName);
@@ -1452,7 +1458,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateSqlContainerToAutoscale(
             String resourceGroupName, String accountName, String databaseName, String containerName, Context context);
@@ -1534,7 +1540,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateSqlContainerToManualThroughputAsync(
             String resourceGroupName, String accountName, String databaseName, String containerName);
@@ -1551,7 +1557,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateSqlContainerToManualThroughput(
             String resourceGroupName, String accountName, String databaseName, String containerName);
@@ -1569,7 +1575,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateSqlContainerToManualThroughput(
             String resourceGroupName, String accountName, String databaseName, String containerName, Context context);
@@ -1795,7 +1801,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB storedProcedure.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<SqlStoredProcedureGetResultsInner>, SqlStoredProcedureGetResultsInner>
         beginCreateUpdateSqlStoredProcedureAsync(
             String resourceGroupName,
@@ -1819,7 +1825,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB storedProcedure.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SqlStoredProcedureGetResultsInner>, SqlStoredProcedureGetResultsInner>
         beginCreateUpdateSqlStoredProcedure(
             String resourceGroupName,
@@ -1844,7 +1850,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB storedProcedure.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SqlStoredProcedureGetResultsInner>, SqlStoredProcedureGetResultsInner>
         beginCreateUpdateSqlStoredProcedure(
             String resourceGroupName,
@@ -1960,7 +1966,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteSqlStoredProcedureAsync(
         String resourceGroupName,
         String accountName,
@@ -1981,7 +1987,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteSqlStoredProcedure(
         String resourceGroupName,
         String accountName,
@@ -2003,7 +2009,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteSqlStoredProcedure(
         String resourceGroupName,
         String accountName,
@@ -2249,7 +2255,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB userDefinedFunction.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<SqlUserDefinedFunctionGetResultsInner>, SqlUserDefinedFunctionGetResultsInner>
         beginCreateUpdateSqlUserDefinedFunctionAsync(
             String resourceGroupName,
@@ -2274,7 +2280,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB userDefinedFunction.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SqlUserDefinedFunctionGetResultsInner>, SqlUserDefinedFunctionGetResultsInner>
         beginCreateUpdateSqlUserDefinedFunction(
             String resourceGroupName,
@@ -2300,7 +2306,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB userDefinedFunction.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SqlUserDefinedFunctionGetResultsInner>, SqlUserDefinedFunctionGetResultsInner>
         beginCreateUpdateSqlUserDefinedFunction(
             String resourceGroupName,
@@ -2419,7 +2425,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteSqlUserDefinedFunctionAsync(
         String resourceGroupName,
         String accountName,
@@ -2440,7 +2446,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteSqlUserDefinedFunction(
         String resourceGroupName,
         String accountName,
@@ -2462,7 +2468,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteSqlUserDefinedFunction(
         String resourceGroupName,
         String accountName,
@@ -2694,7 +2700,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB trigger.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<SqlTriggerGetResultsInner>, SqlTriggerGetResultsInner> beginCreateUpdateSqlTriggerAsync(
         String resourceGroupName,
         String accountName,
@@ -2717,7 +2723,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB trigger.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SqlTriggerGetResultsInner>, SqlTriggerGetResultsInner> beginCreateUpdateSqlTrigger(
         String resourceGroupName,
         String accountName,
@@ -2741,7 +2747,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB trigger.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SqlTriggerGetResultsInner>, SqlTriggerGetResultsInner> beginCreateUpdateSqlTrigger(
         String resourceGroupName,
         String accountName,
@@ -2852,7 +2858,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteSqlTriggerAsync(
         String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName);
 
@@ -2869,7 +2875,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteSqlTrigger(
         String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName);
 
@@ -2887,7 +2893,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteSqlTrigger(
         String resourceGroupName,
         String accountName,
@@ -2949,5 +2955,851 @@ public interface SqlResourcesClient {
         String databaseName,
         String containerName,
         String triggerName,
+        Context context);
+
+    /**
+     * Retrieves the properties of an existing Azure Cosmos DB SQL Role Definition with the given Id.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB SQL Role Definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<SqlRoleDefinitionGetResultsInner>> getSqlRoleDefinitionWithResponseAsync(
+        String roleDefinitionId, String resourceGroupName, String accountName);
+
+    /**
+     * Retrieves the properties of an existing Azure Cosmos DB SQL Role Definition with the given Id.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB SQL Role Definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<SqlRoleDefinitionGetResultsInner> getSqlRoleDefinitionAsync(
+        String roleDefinitionId, String resourceGroupName, String accountName);
+
+    /**
+     * Retrieves the properties of an existing Azure Cosmos DB SQL Role Definition with the given Id.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB SQL Role Definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SqlRoleDefinitionGetResultsInner getSqlRoleDefinition(
+        String roleDefinitionId, String resourceGroupName, String accountName);
+
+    /**
+     * Retrieves the properties of an existing Azure Cosmos DB SQL Role Definition with the given Id.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB SQL Role Definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SqlRoleDefinitionGetResultsInner> getSqlRoleDefinitionWithResponse(
+        String roleDefinitionId, String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Creates or updates an Azure Cosmos DB SQL Role Definition.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param createUpdateSqlRoleDefinitionParameters The properties required to create or update a Role Definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB SQL Role Definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> createUpdateSqlRoleDefinitionWithResponseAsync(
+        String roleDefinitionId,
+        String resourceGroupName,
+        String accountName,
+        SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters);
+
+    /**
+     * Creates or updates an Azure Cosmos DB SQL Role Definition.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param createUpdateSqlRoleDefinitionParameters The properties required to create or update a Role Definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB SQL Role Definition.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<SqlRoleDefinitionGetResultsInner>, SqlRoleDefinitionGetResultsInner>
+        beginCreateUpdateSqlRoleDefinitionAsync(
+            String roleDefinitionId,
+            String resourceGroupName,
+            String accountName,
+            SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters);
+
+    /**
+     * Creates or updates an Azure Cosmos DB SQL Role Definition.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param createUpdateSqlRoleDefinitionParameters The properties required to create or update a Role Definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB SQL Role Definition.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<SqlRoleDefinitionGetResultsInner>, SqlRoleDefinitionGetResultsInner>
+        beginCreateUpdateSqlRoleDefinition(
+            String roleDefinitionId,
+            String resourceGroupName,
+            String accountName,
+            SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters);
+
+    /**
+     * Creates or updates an Azure Cosmos DB SQL Role Definition.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param createUpdateSqlRoleDefinitionParameters The properties required to create or update a Role Definition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB SQL Role Definition.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<SqlRoleDefinitionGetResultsInner>, SqlRoleDefinitionGetResultsInner>
+        beginCreateUpdateSqlRoleDefinition(
+            String roleDefinitionId,
+            String resourceGroupName,
+            String accountName,
+            SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters,
+            Context context);
+
+    /**
+     * Creates or updates an Azure Cosmos DB SQL Role Definition.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param createUpdateSqlRoleDefinitionParameters The properties required to create or update a Role Definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB SQL Role Definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<SqlRoleDefinitionGetResultsInner> createUpdateSqlRoleDefinitionAsync(
+        String roleDefinitionId,
+        String resourceGroupName,
+        String accountName,
+        SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters);
+
+    /**
+     * Creates or updates an Azure Cosmos DB SQL Role Definition.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param createUpdateSqlRoleDefinitionParameters The properties required to create or update a Role Definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB SQL Role Definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SqlRoleDefinitionGetResultsInner createUpdateSqlRoleDefinition(
+        String roleDefinitionId,
+        String resourceGroupName,
+        String accountName,
+        SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters);
+
+    /**
+     * Creates or updates an Azure Cosmos DB SQL Role Definition.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param createUpdateSqlRoleDefinitionParameters The properties required to create or update a Role Definition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB SQL Role Definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SqlRoleDefinitionGetResultsInner createUpdateSqlRoleDefinition(
+        String roleDefinitionId,
+        String resourceGroupName,
+        String accountName,
+        SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters,
+        Context context);
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL Role Definition.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> deleteSqlRoleDefinitionWithResponseAsync(
+        String roleDefinitionId, String resourceGroupName, String accountName);
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL Role Definition.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginDeleteSqlRoleDefinitionAsync(
+        String roleDefinitionId, String resourceGroupName, String accountName);
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL Role Definition.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeleteSqlRoleDefinition(
+        String roleDefinitionId, String resourceGroupName, String accountName);
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL Role Definition.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeleteSqlRoleDefinition(
+        String roleDefinitionId, String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL Role Definition.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteSqlRoleDefinitionAsync(String roleDefinitionId, String resourceGroupName, String accountName);
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL Role Definition.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteSqlRoleDefinition(String roleDefinitionId, String resourceGroupName, String accountName);
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL Role Definition.
+     *
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteSqlRoleDefinition(
+        String roleDefinitionId, String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Retrieves the list of all Azure Cosmos DB SQL Role Definitions.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the relevant Role Definitions.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<SqlRoleDefinitionGetResultsInner> listSqlRoleDefinitionsAsync(
+        String resourceGroupName, String accountName);
+
+    /**
+     * Retrieves the list of all Azure Cosmos DB SQL Role Definitions.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the relevant Role Definitions.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SqlRoleDefinitionGetResultsInner> listSqlRoleDefinitions(
+        String resourceGroupName, String accountName);
+
+    /**
+     * Retrieves the list of all Azure Cosmos DB SQL Role Definitions.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the relevant Role Definitions.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SqlRoleDefinitionGetResultsInner> listSqlRoleDefinitions(
+        String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Retrieves the properties of an existing Azure Cosmos DB SQL Role Assignment with the given Id.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Role Assignment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<SqlRoleAssignmentGetResultsInner>> getSqlRoleAssignmentWithResponseAsync(
+        String roleAssignmentId, String resourceGroupName, String accountName);
+
+    /**
+     * Retrieves the properties of an existing Azure Cosmos DB SQL Role Assignment with the given Id.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Role Assignment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<SqlRoleAssignmentGetResultsInner> getSqlRoleAssignmentAsync(
+        String roleAssignmentId, String resourceGroupName, String accountName);
+
+    /**
+     * Retrieves the properties of an existing Azure Cosmos DB SQL Role Assignment with the given Id.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Role Assignment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SqlRoleAssignmentGetResultsInner getSqlRoleAssignment(
+        String roleAssignmentId, String resourceGroupName, String accountName);
+
+    /**
+     * Retrieves the properties of an existing Azure Cosmos DB SQL Role Assignment with the given Id.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Role Assignment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SqlRoleAssignmentGetResultsInner> getSqlRoleAssignmentWithResponse(
+        String roleAssignmentId, String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Creates or updates an Azure Cosmos DB SQL Role Assignment.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param createUpdateSqlRoleAssignmentParameters The properties required to create or update a Role Assignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Role Assignment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> createUpdateSqlRoleAssignmentWithResponseAsync(
+        String roleAssignmentId,
+        String resourceGroupName,
+        String accountName,
+        SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters);
+
+    /**
+     * Creates or updates an Azure Cosmos DB SQL Role Assignment.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param createUpdateSqlRoleAssignmentParameters The properties required to create or update a Role Assignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Role Assignment.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<SqlRoleAssignmentGetResultsInner>, SqlRoleAssignmentGetResultsInner>
+        beginCreateUpdateSqlRoleAssignmentAsync(
+            String roleAssignmentId,
+            String resourceGroupName,
+            String accountName,
+            SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters);
+
+    /**
+     * Creates or updates an Azure Cosmos DB SQL Role Assignment.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param createUpdateSqlRoleAssignmentParameters The properties required to create or update a Role Assignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Role Assignment.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<SqlRoleAssignmentGetResultsInner>, SqlRoleAssignmentGetResultsInner>
+        beginCreateUpdateSqlRoleAssignment(
+            String roleAssignmentId,
+            String resourceGroupName,
+            String accountName,
+            SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters);
+
+    /**
+     * Creates or updates an Azure Cosmos DB SQL Role Assignment.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param createUpdateSqlRoleAssignmentParameters The properties required to create or update a Role Assignment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Role Assignment.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<SqlRoleAssignmentGetResultsInner>, SqlRoleAssignmentGetResultsInner>
+        beginCreateUpdateSqlRoleAssignment(
+            String roleAssignmentId,
+            String resourceGroupName,
+            String accountName,
+            SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters,
+            Context context);
+
+    /**
+     * Creates or updates an Azure Cosmos DB SQL Role Assignment.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param createUpdateSqlRoleAssignmentParameters The properties required to create or update a Role Assignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Role Assignment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<SqlRoleAssignmentGetResultsInner> createUpdateSqlRoleAssignmentAsync(
+        String roleAssignmentId,
+        String resourceGroupName,
+        String accountName,
+        SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters);
+
+    /**
+     * Creates or updates an Azure Cosmos DB SQL Role Assignment.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param createUpdateSqlRoleAssignmentParameters The properties required to create or update a Role Assignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Role Assignment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SqlRoleAssignmentGetResultsInner createUpdateSqlRoleAssignment(
+        String roleAssignmentId,
+        String resourceGroupName,
+        String accountName,
+        SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters);
+
+    /**
+     * Creates or updates an Azure Cosmos DB SQL Role Assignment.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param createUpdateSqlRoleAssignmentParameters The properties required to create or update a Role Assignment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Role Assignment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SqlRoleAssignmentGetResultsInner createUpdateSqlRoleAssignment(
+        String roleAssignmentId,
+        String resourceGroupName,
+        String accountName,
+        SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters,
+        Context context);
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL Role Assignment.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> deleteSqlRoleAssignmentWithResponseAsync(
+        String roleAssignmentId, String resourceGroupName, String accountName);
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL Role Assignment.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginDeleteSqlRoleAssignmentAsync(
+        String roleAssignmentId, String resourceGroupName, String accountName);
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL Role Assignment.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeleteSqlRoleAssignment(
+        String roleAssignmentId, String resourceGroupName, String accountName);
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL Role Assignment.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeleteSqlRoleAssignment(
+        String roleAssignmentId, String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL Role Assignment.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteSqlRoleAssignmentAsync(String roleAssignmentId, String resourceGroupName, String accountName);
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL Role Assignment.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteSqlRoleAssignment(String roleAssignmentId, String resourceGroupName, String accountName);
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL Role Assignment.
+     *
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteSqlRoleAssignment(
+        String roleAssignmentId, String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Retrieves the list of all Azure Cosmos DB SQL Role Assignments.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the relevant Role Assignments.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<SqlRoleAssignmentGetResultsInner> listSqlRoleAssignmentsAsync(
+        String resourceGroupName, String accountName);
+
+    /**
+     * Retrieves the list of all Azure Cosmos DB SQL Role Assignments.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the relevant Role Assignments.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SqlRoleAssignmentGetResultsInner> listSqlRoleAssignments(
+        String resourceGroupName, String accountName);
+
+    /**
+     * Retrieves the list of all Azure Cosmos DB SQL Role Assignments.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the relevant Role Assignments.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SqlRoleAssignmentGetResultsInner> listSqlRoleAssignments(
+        String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Retrieves continuous backup information for a container resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param location The name of the continuous backup restore location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> retrieveContinuousBackupInformationWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        ContinuousBackupRestoreLocation location);
+
+    /**
+     * Retrieves continuous backup information for a container resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param location The name of the continuous backup restore location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<BackupInformationInner>, BackupInformationInner>
+        beginRetrieveContinuousBackupInformationAsync(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String containerName,
+            ContinuousBackupRestoreLocation location);
+
+    /**
+     * Retrieves continuous backup information for a container resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param location The name of the continuous backup restore location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner> beginRetrieveContinuousBackupInformation(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        ContinuousBackupRestoreLocation location);
+
+    /**
+     * Retrieves continuous backup information for a container resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param location The name of the continuous backup restore location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner> beginRetrieveContinuousBackupInformation(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        ContinuousBackupRestoreLocation location,
+        Context context);
+
+    /**
+     * Retrieves continuous backup information for a container resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param location The name of the continuous backup restore location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<BackupInformationInner> retrieveContinuousBackupInformationAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        ContinuousBackupRestoreLocation location);
+
+    /**
+     * Retrieves continuous backup information for a container resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param location The name of the continuous backup restore location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BackupInformationInner retrieveContinuousBackupInformation(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        ContinuousBackupRestoreLocation location);
+
+    /**
+     * Retrieves continuous backup information for a container resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param location The name of the continuous backup restore location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BackupInformationInner retrieveContinuousBackupInformation(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        ContinuousBackupRestoreLocation location,
         Context context);
 }

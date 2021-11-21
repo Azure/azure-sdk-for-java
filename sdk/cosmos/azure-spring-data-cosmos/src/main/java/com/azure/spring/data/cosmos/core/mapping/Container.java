@@ -53,4 +53,10 @@ public @interface Container {
      * @return partition key path
      */
     String partitionKeyPath() default "";
+
+    /**
+     * To enable auto scale for container RU limit
+     * @return default as false
+     */
+    boolean autoScale() default Constants.DEFAULT_AUTO_SCALE;
 }

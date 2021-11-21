@@ -10,6 +10,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasParent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.IndependentChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
+import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure Function App deployment slot. */
 @Fluent
@@ -19,6 +20,12 @@ public interface FunctionDeploymentSlot
         DeploymentSlotBase<FunctionDeploymentSlot>,
         Updatable<DeploymentSlotBase.Update<FunctionDeploymentSlot>>,
         HasParent<FunctionApp> {
+
+    /** @return the master key for the function app */
+    String getMasterKey();
+
+    /** @return the master key for the function app */
+    Mono<String> getMasterKeyAsync();
 
     /**************************************************************
      * Fluent interfaces to provision a function deployment slot

@@ -4,6 +4,8 @@ package com.azure.resourcemanager.compute.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.models.CachingTypes;
@@ -535,6 +537,11 @@ class VirtualMachineScaleSetVMImpl
     }
 
     @Override
+    public Mono<VirtualMachineScaleSetNetworkInterface> getNetworkInterfaceAsync(String name) {
+        return this.parent().getNetworkInterfaceByInstanceIdAsync(this.instanceId(), name);
+    }
+
+    @Override
     public PagedIterable<VirtualMachineScaleSetNetworkInterface> listNetworkInterfaces() {
         return this.parent().listNetworkInterfacesByInstanceId(this.instanceId());
     }
@@ -654,6 +661,16 @@ class VirtualMachineScaleSetVMImpl
 
     @Override
     public Mono<VirtualMachineScaleSetVM> applyAsync() {
+        return applyAsync(Context.NONE);
+    }
+
+    @Override
+    public VirtualMachineScaleSetVM apply(Context context) {
+        return applyAsync(context).block();
+    }
+
+    @Override
+    public Mono<VirtualMachineScaleSetVM> applyAsync(Context context) {
         final VirtualMachineScaleSetVMImpl self = this;
         this.managedDataDisks.syncToVMDataDisks(this.innerModel().storageProfile());
         return this
@@ -662,6 +679,7 @@ class VirtualMachineScaleSetVMImpl
             .serviceClient()
             .getVirtualMachineScaleSetVMs()
             .updateAsync(this.parent().resourceGroupName(), this.parent().name(), this.instanceId(), this.innerModel())
+            .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()))
             .map(
                 vmInner -> {
                     self.setInner(vmInner);

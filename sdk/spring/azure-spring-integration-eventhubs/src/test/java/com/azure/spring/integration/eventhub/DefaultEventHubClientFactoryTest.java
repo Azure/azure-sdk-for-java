@@ -4,6 +4,7 @@
 package com.azure.spring.integration.eventhub;
 
 import com.azure.messaging.eventhubs.*;
+import com.azure.spring.integration.core.api.BatchConsumerConfig;
 import com.azure.spring.integration.eventhub.factory.EventHubConnectionStringProvider;
 import com.azure.spring.integration.eventhub.impl.EventHubProcessor;
 import com.azure.storage.blob.BlobContainerAsyncClient;
@@ -22,15 +23,21 @@ import reactor.core.publisher.Mono;
 
 import java.util.Optional;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.*;
 
 @RunWith(PowerMockRunner.class)
-@PowerMockIgnore({"com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*"})
-@PrepareForTest({DefaultEventHubClientFactory.class})
+@PowerMockIgnore({ "com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*" })
+@PrepareForTest({ DefaultEventHubClientFactory.class })
 public class DefaultEventHubClientFactoryTest {
+    //TODO (Xiaobing Zhu): Due to Powermock, it is currently impossible to upgrade JUnit 4 to JUnit 5.
 
     @Mock
     EventHubConsumerAsyncClient eventHubConsumerClient;
@@ -51,8 +58,11 @@ public class DefaultEventHubClientFactoryTest {
     @Mock
     EventHubConnectionStringProvider connectionStringProvider;
 
+    BatchConsumerConfig batchConsumerConfig = BatchConsumerConfig.builder().batchSize(10).build();
+
     private EventHubClientFactory clientFactory;
     private String eventHubName = "eventHub";
+    private String eventHubNameWithBatch = "eventHubBatch";
     private String consumerGroup = "group";
     private String connectionString = "conStr";
     private String container = "container";
@@ -100,8 +110,14 @@ public class DefaultEventHubClientFactoryTest {
 
     @Test
     public void testGetEventProcessorClient() {
-        clientFactory.createEventProcessorClient(eventHubName, consumerGroup, eventHubProcessor);
-        Optional<EventProcessorClient> optionalEph = clientFactory.getEventProcessorClient(eventHubName, consumerGroup);
+        clientFactory.createEventProcessorClient(eventHubNameWithBatch, consumerGroup, eventHubProcessor,
+            batchConsumerConfig);
+        Optional<EventProcessorClient> optionalEph = clientFactory.getEventProcessorClient(eventHubNameWithBatch, consumerGroup);
+
+        assertTrue(optionalEph.isPresent());
+
+        clientFactory.createEventProcessorClient(eventHubName, consumerGroup, eventHubProcessor, null);
+        optionalEph = clientFactory.getEventProcessorClient(eventHubName, consumerGroup);
 
         assertTrue(optionalEph.isPresent());
     }
@@ -115,8 +131,14 @@ public class DefaultEventHubClientFactoryTest {
     @Test
     public void testRemoveEventProcessorClient() {
         EventProcessorClient client = clientFactory.createEventProcessorClient(eventHubName, consumerGroup,
-            eventHubProcessor);
+            eventHubProcessor, batchConsumerConfig);
         EventProcessorClient another = clientFactory.removeEventProcessorClient(eventHubName, consumerGroup);
+
+        assertSame(client, another);
+
+        client = clientFactory.createEventProcessorClient(eventHubNameWithBatch, consumerGroup,
+            eventHubProcessor, batchConsumerConfig);
+        another = clientFactory.removeEventProcessorClient(eventHubNameWithBatch, consumerGroup);
 
         assertSame(client, another);
     }
@@ -129,24 +151,41 @@ public class DefaultEventHubClientFactoryTest {
 
     @Test
     public void testGetOrCreateEventProcessorClient() throws Exception {
-        EventProcessorClient client = clientFactory.createEventProcessorClient(eventHubName, consumerGroup,
-            eventHubProcessor);
+        EventProcessorClient client = clientFactory.createEventProcessorClient(eventHubNameWithBatch, consumerGroup,
+            eventHubProcessor, batchConsumerConfig);
         assertNotNull(client);
-        clientFactory.createEventProcessorClient(eventHubName, consumerGroup, eventHubProcessor);
+        clientFactory.createEventProcessorClient(eventHubNameWithBatch, consumerGroup, eventHubProcessor, batchConsumerConfig);
 
-        verifyPrivate(clientFactory).invoke("createEventProcessorClientInternal", eventHubName, consumerGroup,
-            eventHubProcessor);
+        verifyPrivate(clientFactory, times(1))
+            .invoke("createEventProcessorClientInternal", eventHubNameWithBatch, consumerGroup, eventHubProcessor,
+                batchConsumerConfig);
+
+        client = clientFactory.createEventProcessorClient(eventHubName, consumerGroup,
+            eventHubProcessor, batchConsumerConfig);
+        assertNotNull(client);
+        clientFactory.createEventProcessorClient(eventHubName, consumerGroup, eventHubProcessor, batchConsumerConfig);
+
+        verifyPrivate(clientFactory, times(1))
+            .invoke("createEventProcessorClientInternal", eventHubName, consumerGroup, eventHubProcessor, batchConsumerConfig);
     }
 
     @Test
     public void testRecreateEventProcessorClient() throws Exception {
-        final EventProcessorClient client = clientFactory.createEventProcessorClient(eventHubName, consumerGroup,
-            eventHubProcessor);
+        EventProcessorClient client = clientFactory.createEventProcessorClient(eventHubNameWithBatch, consumerGroup,
+            eventHubProcessor, batchConsumerConfig);
+        assertNotNull(client);
+        clientFactory.removeEventProcessorClient(eventHubNameWithBatch, consumerGroup);
+        clientFactory.createEventProcessorClient(eventHubNameWithBatch, consumerGroup, eventHubProcessor, batchConsumerConfig);
+        verifyPrivate(clientFactory, times(2))
+            .invoke("createEventProcessorClientInternal", eventHubNameWithBatch, consumerGroup, eventHubProcessor, batchConsumerConfig);
+
+        client = clientFactory.createEventProcessorClient(eventHubName, consumerGroup,
+            eventHubProcessor, batchConsumerConfig);
         assertNotNull(client);
         clientFactory.removeEventProcessorClient(eventHubName, consumerGroup);
-        clientFactory.createEventProcessorClient(eventHubName, consumerGroup, eventHubProcessor);
+        clientFactory.createEventProcessorClient(eventHubName, consumerGroup, eventHubProcessor, batchConsumerConfig);
         verifyPrivate(clientFactory, times(2))
-            .invoke("createEventProcessorClientInternal", eventHubName, consumerGroup, eventHubProcessor);
+            .invoke("createEventProcessorClientInternal", eventHubName, consumerGroup, eventHubProcessor, batchConsumerConfig);
 
     }
 

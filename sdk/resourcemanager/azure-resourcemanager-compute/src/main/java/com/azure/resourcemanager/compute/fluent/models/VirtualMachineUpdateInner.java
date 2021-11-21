@@ -5,16 +5,18 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
+import com.azure.resourcemanager.compute.models.ApplicationProfile;
 import com.azure.resourcemanager.compute.models.BillingProfile;
+import com.azure.resourcemanager.compute.models.CapacityReservationProfile;
 import com.azure.resourcemanager.compute.models.DiagnosticsProfile;
 import com.azure.resourcemanager.compute.models.HardwareProfile;
 import com.azure.resourcemanager.compute.models.NetworkProfile;
 import com.azure.resourcemanager.compute.models.OSProfile;
 import com.azure.resourcemanager.compute.models.Plan;
+import com.azure.resourcemanager.compute.models.ScheduledEventsProfile;
 import com.azure.resourcemanager.compute.models.SecurityProfile;
 import com.azure.resourcemanager.compute.models.StorageProfile;
 import com.azure.resourcemanager.compute.models.UpdateResource;
@@ -27,9 +29,8 @@ import java.util.List;
 import java.util.Map;
 
 /** Describes a Virtual Machine Update. */
-@JsonFlatten
 @Fluent
-public class VirtualMachineUpdateInner extends UpdateResource {
+public final class VirtualMachineUpdateInner extends UpdateResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineUpdateInner.class);
 
     /*
@@ -45,6 +46,12 @@ public class VirtualMachineUpdateInner extends UpdateResource {
     private Plan plan;
 
     /*
+     * Describes the properties of a Virtual Machine.
+     */
+    @JsonProperty(value = "properties")
+    private VirtualMachinePropertiesInner innerProperties;
+
+    /*
      * The identity of the virtual machine, if configured.
      */
     @JsonProperty(value = "identity")
@@ -55,191 +62,6 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      */
     @JsonProperty(value = "zones")
     private List<String> zones;
-
-    /*
-     * Specifies the hardware settings for the virtual machine.
-     */
-    @JsonProperty(value = "properties.hardwareProfile")
-    private HardwareProfile hardwareProfile;
-
-    /*
-     * Specifies the storage settings for the virtual machine disks.
-     */
-    @JsonProperty(value = "properties.storageProfile")
-    private StorageProfile storageProfile;
-
-    /*
-     * Specifies additional capabilities enabled or disabled on the virtual
-     * machine.
-     */
-    @JsonProperty(value = "properties.additionalCapabilities")
-    private AdditionalCapabilities additionalCapabilities;
-
-    /*
-     * Specifies the operating system settings used while creating the virtual
-     * machine. Some of the settings cannot be changed once VM is provisioned.
-     */
-    @JsonProperty(value = "properties.osProfile")
-    private OSProfile osProfile;
-
-    /*
-     * Specifies the network interfaces of the virtual machine.
-     */
-    @JsonProperty(value = "properties.networkProfile")
-    private NetworkProfile networkProfile;
-
-    /*
-     * Specifies the Security related profile settings for the virtual machine.
-     */
-    @JsonProperty(value = "properties.securityProfile")
-    private SecurityProfile securityProfile;
-
-    /*
-     * Specifies the boot diagnostic settings state. <br><br>Minimum
-     * api-version: 2015-06-15.
-     */
-    @JsonProperty(value = "properties.diagnosticsProfile")
-    private DiagnosticsProfile diagnosticsProfile;
-
-    /*
-     * Specifies information about the availability set that the virtual
-     * machine should be assigned to. Virtual machines specified in the same
-     * availability set are allocated to different nodes to maximize
-     * availability. For more information about availability sets, see [Manage
-     * the availability of virtual
-     * machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-manage-availability?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
-     * <br><br> For more information on Azure planned maintenance, see [Planned
-     * maintenance for virtual machines in
-     * Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-planned-maintenance?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json)
-     * <br><br> Currently, a VM can only be added to availability set at
-     * creation time. The availability set to which the VM is being added
-     * should be under the same resource group as the availability set
-     * resource. An existing VM cannot be added to an availability set.
-     * <br><br>This property cannot exist along with a non-null
-     * properties.virtualMachineScaleSet reference.
-     */
-    @JsonProperty(value = "properties.availabilitySet")
-    private SubResource availabilitySet;
-
-    /*
-     * Specifies information about the virtual machine scale set that the
-     * virtual machine should be assigned to. Virtual machines specified in the
-     * same virtual machine scale set are allocated to different nodes to
-     * maximize availability. Currently, a VM can only be added to virtual
-     * machine scale set at creation time. An existing VM cannot be added to a
-     * virtual machine scale set. <br><br>This property cannot exist along with
-     * a non-null properties.availabilitySet reference. <br><br>Minimum
-     * api‐version: 2019‐03‐01
-     */
-    @JsonProperty(value = "properties.virtualMachineScaleSet")
-    private SubResource virtualMachineScaleSet;
-
-    /*
-     * Specifies information about the proximity placement group that the
-     * virtual machine should be assigned to. <br><br>Minimum api-version:
-     * 2018-04-01.
-     */
-    @JsonProperty(value = "properties.proximityPlacementGroup")
-    private SubResource proximityPlacementGroup;
-
-    /*
-     * Specifies the priority for the virtual machine. <br><br>Minimum
-     * api-version: 2019-03-01
-     */
-    @JsonProperty(value = "properties.priority")
-    private VirtualMachinePriorityTypes priority;
-
-    /*
-     * Specifies the eviction policy for the Azure Spot virtual machine and
-     * Azure Spot scale set. <br><br>For Azure Spot virtual machines, both
-     * 'Deallocate' and 'Delete' are supported and the minimum api-version is
-     * 2019-03-01. <br><br>For Azure Spot scale sets, both 'Deallocate' and
-     * 'Delete' are supported and the minimum api-version is
-     * 2017-10-30-preview.
-     */
-    @JsonProperty(value = "properties.evictionPolicy")
-    private VirtualMachineEvictionPolicyTypes evictionPolicy;
-
-    /*
-     * Specifies the billing related details of a Azure Spot virtual machine.
-     * <br><br>Minimum api-version: 2019-03-01.
-     */
-    @JsonProperty(value = "properties.billingProfile")
-    private BillingProfile billingProfile;
-
-    /*
-     * Specifies information about the dedicated host that the virtual machine
-     * resides in. <br><br>Minimum api-version: 2018-10-01.
-     */
-    @JsonProperty(value = "properties.host")
-    private SubResource host;
-
-    /*
-     * Specifies information about the dedicated host group that the virtual
-     * machine resides in. <br><br>Minimum api-version: 2020-06-01.
-     * <br><br>NOTE: User cannot specify both host and hostGroup properties.
-     */
-    @JsonProperty(value = "properties.hostGroup")
-    private SubResource hostGroup;
-
-    /*
-     * The provisioning state, which only appears in the response.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * The virtual machine instance view.
-     */
-    @JsonProperty(value = "properties.instanceView", access = JsonProperty.Access.WRITE_ONLY)
-    private VirtualMachineInstanceViewInner instanceView;
-
-    /*
-     * Specifies that the image or disk that is being used was licensed
-     * on-premises. <br><br> Possible values for Windows Server operating
-     * system are: <br><br> Windows_Client <br><br> Windows_Server <br><br>
-     * Possible values for Linux Server operating system are: <br><br>
-     * RHEL_BYOS (for RHEL) <br><br> SLES_BYOS (for SUSE) <br><br> For more
-     * information, see [Azure Hybrid Use Benefit for Windows
-     * Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing)
-     * <br><br> [Azure Hybrid Use Benefit for Linux
-     * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux)
-     * <br><br> Minimum api-version: 2015-06-15
-     */
-    @JsonProperty(value = "properties.licenseType")
-    private String licenseType;
-
-    /*
-     * Specifies the VM unique ID which is a 128-bits identifier that is
-     * encoded and stored in all Azure IaaS VMs SMBIOS and can be read using
-     * platform BIOS commands.
-     */
-    @JsonProperty(value = "properties.vmId", access = JsonProperty.Access.WRITE_ONLY)
-    private String vmId;
-
-    /*
-     * Specifies the time alloted for all extensions to start. The time
-     * duration should be between 15 minutes and 120 minutes (inclusive) and
-     * should be specified in ISO 8601 format. The default value is 90 minutes
-     * (PT1H30M). <br><br> Minimum api-version: 2020-06-01
-     */
-    @JsonProperty(value = "properties.extensionsTimeBudget")
-    private String extensionsTimeBudget;
-
-    /*
-     * Specifies the scale set logical fault domain into which the Virtual
-     * Machine will be created. By default, the Virtual Machine will by
-     * automatically assigned to a fault domain that best maintains balance
-     * across available fault domains.<br><li>This is applicable only if the
-     * 'virtualMachineScaleSet' property of this Virtual Machine is set.<li>The
-     * Virtual Machine Scale Set that is referenced, must have
-     * 'platformFaultDomainCount' &gt; 1.<li>This property cannot be updated
-     * once the Virtual Machine is created.<li>Fault domain assignment can be
-     * viewed in the Virtual Machine Instance View.<br><br>Minimum api‐version:
-     * 2020‐12‐01
-     */
-    @JsonProperty(value = "properties.platformFaultDomain")
-    private Integer platformFaultDomain;
 
     /**
      * Get the plan property: Specifies information about the marketplace image used to create the virtual machine. This
@@ -267,6 +89,15 @@ public class VirtualMachineUpdateInner extends UpdateResource {
     public VirtualMachineUpdateInner withPlan(Plan plan) {
         this.plan = plan;
         return this;
+    }
+
+    /**
+     * Get the innerProperties property: Describes the properties of a Virtual Machine.
+     *
+     * @return the innerProperties value.
+     */
+    private VirtualMachinePropertiesInner innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -309,13 +140,20 @@ public class VirtualMachineUpdateInner extends UpdateResource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public VirtualMachineUpdateInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
     /**
      * Get the hardwareProfile property: Specifies the hardware settings for the virtual machine.
      *
      * @return the hardwareProfile value.
      */
     public HardwareProfile hardwareProfile() {
-        return this.hardwareProfile;
+        return this.innerProperties() == null ? null : this.innerProperties().hardwareProfile();
     }
 
     /**
@@ -325,7 +163,10 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      * @return the VirtualMachineUpdateInner object itself.
      */
     public VirtualMachineUpdateInner withHardwareProfile(HardwareProfile hardwareProfile) {
-        this.hardwareProfile = hardwareProfile;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withHardwareProfile(hardwareProfile);
         return this;
     }
 
@@ -335,7 +176,7 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      * @return the storageProfile value.
      */
     public StorageProfile storageProfile() {
-        return this.storageProfile;
+        return this.innerProperties() == null ? null : this.innerProperties().storageProfile();
     }
 
     /**
@@ -345,7 +186,10 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      * @return the VirtualMachineUpdateInner object itself.
      */
     public VirtualMachineUpdateInner withStorageProfile(StorageProfile storageProfile) {
-        this.storageProfile = storageProfile;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withStorageProfile(storageProfile);
         return this;
     }
 
@@ -356,7 +200,7 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      * @return the additionalCapabilities value.
      */
     public AdditionalCapabilities additionalCapabilities() {
-        return this.additionalCapabilities;
+        return this.innerProperties() == null ? null : this.innerProperties().additionalCapabilities();
     }
 
     /**
@@ -367,7 +211,10 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      * @return the VirtualMachineUpdateInner object itself.
      */
     public VirtualMachineUpdateInner withAdditionalCapabilities(AdditionalCapabilities additionalCapabilities) {
-        this.additionalCapabilities = additionalCapabilities;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withAdditionalCapabilities(additionalCapabilities);
         return this;
     }
 
@@ -378,7 +225,7 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      * @return the osProfile value.
      */
     public OSProfile osProfile() {
-        return this.osProfile;
+        return this.innerProperties() == null ? null : this.innerProperties().osProfile();
     }
 
     /**
@@ -389,7 +236,10 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      * @return the VirtualMachineUpdateInner object itself.
      */
     public VirtualMachineUpdateInner withOsProfile(OSProfile osProfile) {
-        this.osProfile = osProfile;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withOsProfile(osProfile);
         return this;
     }
 
@@ -399,7 +249,7 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      * @return the networkProfile value.
      */
     public NetworkProfile networkProfile() {
-        return this.networkProfile;
+        return this.innerProperties() == null ? null : this.innerProperties().networkProfile();
     }
 
     /**
@@ -409,7 +259,10 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      * @return the VirtualMachineUpdateInner object itself.
      */
     public VirtualMachineUpdateInner withNetworkProfile(NetworkProfile networkProfile) {
-        this.networkProfile = networkProfile;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withNetworkProfile(networkProfile);
         return this;
     }
 
@@ -419,7 +272,7 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      * @return the securityProfile value.
      */
     public SecurityProfile securityProfile() {
-        return this.securityProfile;
+        return this.innerProperties() == null ? null : this.innerProperties().securityProfile();
     }
 
     /**
@@ -429,7 +282,10 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      * @return the VirtualMachineUpdateInner object itself.
      */
     public VirtualMachineUpdateInner withSecurityProfile(SecurityProfile securityProfile) {
-        this.securityProfile = securityProfile;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withSecurityProfile(securityProfile);
         return this;
     }
 
@@ -440,7 +296,7 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      * @return the diagnosticsProfile value.
      */
     public DiagnosticsProfile diagnosticsProfile() {
-        return this.diagnosticsProfile;
+        return this.innerProperties() == null ? null : this.innerProperties().diagnosticsProfile();
     }
 
     /**
@@ -451,47 +307,51 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      * @return the VirtualMachineUpdateInner object itself.
      */
     public VirtualMachineUpdateInner withDiagnosticsProfile(DiagnosticsProfile diagnosticsProfile) {
-        this.diagnosticsProfile = diagnosticsProfile;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withDiagnosticsProfile(diagnosticsProfile);
         return this;
     }
 
     /**
      * Get the availabilitySet property: Specifies information about the availability set that the virtual machine
      * should be assigned to. Virtual machines specified in the same availability set are allocated to different nodes
-     * to maximize availability. For more information about availability sets, see [Manage the availability of virtual
-     * machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-manage-availability?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
-     * &lt;br&gt;&lt;br&gt; For more information on Azure planned maintenance, see [Planned maintenance for virtual
-     * machines in
-     * Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-planned-maintenance?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json)
-     * &lt;br&gt;&lt;br&gt; Currently, a VM can only be added to availability set at creation time. The availability set
-     * to which the VM is being added should be under the same resource group as the availability set resource. An
-     * existing VM cannot be added to an availability set. &lt;br&gt;&lt;br&gt;This property cannot exist along with a
-     * non-null properties.virtualMachineScaleSet reference.
+     * to maximize availability. For more information about availability sets, see [Availability sets
+     * overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview). &lt;br&gt;&lt;br&gt; For
+     * more information on Azure planned maintenance, see [Maintenance and updates for Virtual Machines in
+     * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates) &lt;br&gt;&lt;br&gt; Currently,
+     * a VM can only be added to availability set at creation time. The availability set to which the VM is being added
+     * should be under the same resource group as the availability set resource. An existing VM cannot be added to an
+     * availability set. &lt;br&gt;&lt;br&gt;This property cannot exist along with a non-null
+     * properties.virtualMachineScaleSet reference.
      *
      * @return the availabilitySet value.
      */
     public SubResource availabilitySet() {
-        return this.availabilitySet;
+        return this.innerProperties() == null ? null : this.innerProperties().availabilitySet();
     }
 
     /**
      * Set the availabilitySet property: Specifies information about the availability set that the virtual machine
      * should be assigned to. Virtual machines specified in the same availability set are allocated to different nodes
-     * to maximize availability. For more information about availability sets, see [Manage the availability of virtual
-     * machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-manage-availability?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
-     * &lt;br&gt;&lt;br&gt; For more information on Azure planned maintenance, see [Planned maintenance for virtual
-     * machines in
-     * Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-planned-maintenance?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json)
-     * &lt;br&gt;&lt;br&gt; Currently, a VM can only be added to availability set at creation time. The availability set
-     * to which the VM is being added should be under the same resource group as the availability set resource. An
-     * existing VM cannot be added to an availability set. &lt;br&gt;&lt;br&gt;This property cannot exist along with a
-     * non-null properties.virtualMachineScaleSet reference.
+     * to maximize availability. For more information about availability sets, see [Availability sets
+     * overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview). &lt;br&gt;&lt;br&gt; For
+     * more information on Azure planned maintenance, see [Maintenance and updates for Virtual Machines in
+     * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates) &lt;br&gt;&lt;br&gt; Currently,
+     * a VM can only be added to availability set at creation time. The availability set to which the VM is being added
+     * should be under the same resource group as the availability set resource. An existing VM cannot be added to an
+     * availability set. &lt;br&gt;&lt;br&gt;This property cannot exist along with a non-null
+     * properties.virtualMachineScaleSet reference.
      *
      * @param availabilitySet the availabilitySet value to set.
      * @return the VirtualMachineUpdateInner object itself.
      */
     public VirtualMachineUpdateInner withAvailabilitySet(SubResource availabilitySet) {
-        this.availabilitySet = availabilitySet;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withAvailabilitySet(availabilitySet);
         return this;
     }
 
@@ -506,7 +366,7 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      * @return the virtualMachineScaleSet value.
      */
     public SubResource virtualMachineScaleSet() {
-        return this.virtualMachineScaleSet;
+        return this.innerProperties() == null ? null : this.innerProperties().virtualMachineScaleSet();
     }
 
     /**
@@ -521,7 +381,10 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      * @return the VirtualMachineUpdateInner object itself.
      */
     public VirtualMachineUpdateInner withVirtualMachineScaleSet(SubResource virtualMachineScaleSet) {
-        this.virtualMachineScaleSet = virtualMachineScaleSet;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withVirtualMachineScaleSet(virtualMachineScaleSet);
         return this;
     }
 
@@ -532,7 +395,7 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      * @return the proximityPlacementGroup value.
      */
     public SubResource proximityPlacementGroup() {
-        return this.proximityPlacementGroup;
+        return this.innerProperties() == null ? null : this.innerProperties().proximityPlacementGroup();
     }
 
     /**
@@ -543,7 +406,10 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      * @return the VirtualMachineUpdateInner object itself.
      */
     public VirtualMachineUpdateInner withProximityPlacementGroup(SubResource proximityPlacementGroup) {
-        this.proximityPlacementGroup = proximityPlacementGroup;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withProximityPlacementGroup(proximityPlacementGroup);
         return this;
     }
 
@@ -554,7 +420,7 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      * @return the priority value.
      */
     public VirtualMachinePriorityTypes priority() {
-        return this.priority;
+        return this.innerProperties() == null ? null : this.innerProperties().priority();
     }
 
     /**
@@ -565,7 +431,10 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      * @return the VirtualMachineUpdateInner object itself.
      */
     public VirtualMachineUpdateInner withPriority(VirtualMachinePriorityTypes priority) {
-        this.priority = priority;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withPriority(priority);
         return this;
     }
 
@@ -578,7 +447,7 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      * @return the evictionPolicy value.
      */
     public VirtualMachineEvictionPolicyTypes evictionPolicy() {
-        return this.evictionPolicy;
+        return this.innerProperties() == null ? null : this.innerProperties().evictionPolicy();
     }
 
     /**
@@ -591,7 +460,10 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      * @return the VirtualMachineUpdateInner object itself.
      */
     public VirtualMachineUpdateInner withEvictionPolicy(VirtualMachineEvictionPolicyTypes evictionPolicy) {
-        this.evictionPolicy = evictionPolicy;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withEvictionPolicy(evictionPolicy);
         return this;
     }
 
@@ -602,7 +474,7 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      * @return the billingProfile value.
      */
     public BillingProfile billingProfile() {
-        return this.billingProfile;
+        return this.innerProperties() == null ? null : this.innerProperties().billingProfile();
     }
 
     /**
@@ -613,7 +485,10 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      * @return the VirtualMachineUpdateInner object itself.
      */
     public VirtualMachineUpdateInner withBillingProfile(BillingProfile billingProfile) {
-        this.billingProfile = billingProfile;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withBillingProfile(billingProfile);
         return this;
     }
 
@@ -624,7 +499,7 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      * @return the host value.
      */
     public SubResource host() {
-        return this.host;
+        return this.innerProperties() == null ? null : this.innerProperties().host();
     }
 
     /**
@@ -635,7 +510,10 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      * @return the VirtualMachineUpdateInner object itself.
      */
     public VirtualMachineUpdateInner withHost(SubResource host) {
-        this.host = host;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withHost(host);
         return this;
     }
 
@@ -647,7 +525,7 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      * @return the hostGroup value.
      */
     public SubResource hostGroup() {
-        return this.hostGroup;
+        return this.innerProperties() == null ? null : this.innerProperties().hostGroup();
     }
 
     /**
@@ -659,7 +537,10 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      * @return the VirtualMachineUpdateInner object itself.
      */
     public VirtualMachineUpdateInner withHostGroup(SubResource hostGroup) {
-        this.hostGroup = hostGroup;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withHostGroup(hostGroup);
         return this;
     }
 
@@ -669,7 +550,7 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -678,7 +559,7 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      * @return the instanceView value.
      */
     public VirtualMachineInstanceViewInner instanceView() {
-        return this.instanceView;
+        return this.innerProperties() == null ? null : this.innerProperties().instanceView();
     }
 
     /**
@@ -695,7 +576,7 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      * @return the licenseType value.
      */
     public String licenseType() {
-        return this.licenseType;
+        return this.innerProperties() == null ? null : this.innerProperties().licenseType();
     }
 
     /**
@@ -713,7 +594,10 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      * @return the VirtualMachineUpdateInner object itself.
      */
     public VirtualMachineUpdateInner withLicenseType(String licenseType) {
-        this.licenseType = licenseType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withLicenseType(licenseType);
         return this;
     }
 
@@ -724,7 +608,7 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      * @return the vmId value.
      */
     public String vmId() {
-        return this.vmId;
+        return this.innerProperties() == null ? null : this.innerProperties().vmId();
     }
 
     /**
@@ -735,7 +619,7 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      * @return the extensionsTimeBudget value.
      */
     public String extensionsTimeBudget() {
-        return this.extensionsTimeBudget;
+        return this.innerProperties() == null ? null : this.innerProperties().extensionsTimeBudget();
     }
 
     /**
@@ -747,7 +631,10 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      * @return the VirtualMachineUpdateInner object itself.
      */
     public VirtualMachineUpdateInner withExtensionsTimeBudget(String extensionsTimeBudget) {
-        this.extensionsTimeBudget = extensionsTimeBudget;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withExtensionsTimeBudget(extensionsTimeBudget);
         return this;
     }
 
@@ -763,7 +650,7 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      * @return the platformFaultDomain value.
      */
     public Integer platformFaultDomain() {
-        return this.platformFaultDomain;
+        return this.innerProperties() == null ? null : this.innerProperties().platformFaultDomain();
     }
 
     /**
@@ -779,14 +666,108 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      * @return the VirtualMachineUpdateInner object itself.
      */
     public VirtualMachineUpdateInner withPlatformFaultDomain(Integer platformFaultDomain) {
-        this.platformFaultDomain = platformFaultDomain;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withPlatformFaultDomain(platformFaultDomain);
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public VirtualMachineUpdateInner withTags(Map<String, String> tags) {
-        super.withTags(tags);
+    /**
+     * Get the scheduledEventsProfile property: Specifies Scheduled Event related configurations.
+     *
+     * @return the scheduledEventsProfile value.
+     */
+    public ScheduledEventsProfile scheduledEventsProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().scheduledEventsProfile();
+    }
+
+    /**
+     * Set the scheduledEventsProfile property: Specifies Scheduled Event related configurations.
+     *
+     * @param scheduledEventsProfile the scheduledEventsProfile value to set.
+     * @return the VirtualMachineUpdateInner object itself.
+     */
+    public VirtualMachineUpdateInner withScheduledEventsProfile(ScheduledEventsProfile scheduledEventsProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withScheduledEventsProfile(scheduledEventsProfile);
+        return this;
+    }
+
+    /**
+     * Get the userData property: UserData for the VM, which must be base-64 encoded. Customer should not pass any
+     * secrets in here. &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-03-01.
+     *
+     * @return the userData value.
+     */
+    public String userData() {
+        return this.innerProperties() == null ? null : this.innerProperties().userData();
+    }
+
+    /**
+     * Set the userData property: UserData for the VM, which must be base-64 encoded. Customer should not pass any
+     * secrets in here. &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-03-01.
+     *
+     * @param userData the userData value to set.
+     * @return the VirtualMachineUpdateInner object itself.
+     */
+    public VirtualMachineUpdateInner withUserData(String userData) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withUserData(userData);
+        return this;
+    }
+
+    /**
+     * Get the capacityReservation property: Specifies information about the capacity reservation that is used to
+     * allocate virtual machine. &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-04-01.
+     *
+     * @return the capacityReservation value.
+     */
+    public CapacityReservationProfile capacityReservation() {
+        return this.innerProperties() == null ? null : this.innerProperties().capacityReservation();
+    }
+
+    /**
+     * Set the capacityReservation property: Specifies information about the capacity reservation that is used to
+     * allocate virtual machine. &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-04-01.
+     *
+     * @param capacityReservation the capacityReservation value to set.
+     * @return the VirtualMachineUpdateInner object itself.
+     */
+    public VirtualMachineUpdateInner withCapacityReservation(CapacityReservationProfile capacityReservation) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withCapacityReservation(capacityReservation);
+        return this;
+    }
+
+    /**
+     * Get the applicationProfile property: Specifies the gallery applications that should be made available to the
+     * VM/VMSS.
+     *
+     * @return the applicationProfile value.
+     */
+    public ApplicationProfile applicationProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().applicationProfile();
+    }
+
+    /**
+     * Set the applicationProfile property: Specifies the gallery applications that should be made available to the
+     * VM/VMSS.
+     *
+     * @param applicationProfile the applicationProfile value to set.
+     * @return the VirtualMachineUpdateInner object itself.
+     */
+    public VirtualMachineUpdateInner withApplicationProfile(ApplicationProfile applicationProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withApplicationProfile(applicationProfile);
         return this;
     }
 
@@ -801,35 +782,11 @@ public class VirtualMachineUpdateInner extends UpdateResource {
         if (plan() != null) {
             plan().validate();
         }
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (identity() != null) {
             identity().validate();
-        }
-        if (hardwareProfile() != null) {
-            hardwareProfile().validate();
-        }
-        if (storageProfile() != null) {
-            storageProfile().validate();
-        }
-        if (additionalCapabilities() != null) {
-            additionalCapabilities().validate();
-        }
-        if (osProfile() != null) {
-            osProfile().validate();
-        }
-        if (networkProfile() != null) {
-            networkProfile().validate();
-        }
-        if (securityProfile() != null) {
-            securityProfile().validate();
-        }
-        if (diagnosticsProfile() != null) {
-            diagnosticsProfile().validate();
-        }
-        if (billingProfile() != null) {
-            billingProfile().validate();
-        }
-        if (instanceView() != null) {
-            instanceView().validate();
         }
     }
 }

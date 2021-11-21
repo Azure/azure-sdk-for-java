@@ -7,6 +7,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -15,13 +17,16 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class UrlBuilder {
     private static final Map<String, UrlBuilder> PARSED_URLS = new ConcurrentHashMap<>();
 
+    // future improvement - make this configurable
+    private static final int MAX_CACHE_SIZE = 10000;
+
     private String scheme;
     private String host;
     private String port;
     private String path;
 
     // LinkedHashMap preserves insertion order
-    private final Map<String, String> query = new LinkedHashMap<>();
+    private final Map<String, QueryParameter> query = new LinkedHashMap<>();
 
     /**
      * Set the scheme/protocol that will be used to build the final URL.
@@ -135,9 +140,29 @@ public final class UrlBuilder {
      * @param queryParameterName The name of the query parameter.
      * @param queryParameterEncodedValue The encoded value of the query parameter.
      * @return The provided query parameter name and encoded value to query string for the final URL.
+     * @throws NullPointerException if {@code queryParameterName} or {@code queryParameterEncodedValue} are null.
      */
     public UrlBuilder setQueryParameter(String queryParameterName, String queryParameterEncodedValue) {
-        query.put(queryParameterName, queryParameterEncodedValue);
+        query.put(queryParameterName, new QueryParameter(queryParameterName, queryParameterEncodedValue));
+        return this;
+    }
+
+    /**
+     * Append the provided query parameter name and encoded value to query string for the final URL.
+     *
+     * @param queryParameterName The name of the query parameter.
+     * @param queryParameterEncodedValue The encoded value of the query parameter.
+     * @return The provided query parameter name and encoded value to query string for the final URL.
+     * @throws NullPointerException if {@code queryParameterName} or {@code queryParameterEncodedValue} are null.
+     */
+    public UrlBuilder addQueryParameter(String queryParameterName, String queryParameterEncodedValue) {
+        query.compute(queryParameterName, (key, value) -> {
+            if (value == null) {
+                return new QueryParameter(queryParameterName, queryParameterEncodedValue);
+            }
+            value.addValue(queryParameterEncodedValue);
+            return value;
+        });
         return this;
     }
 
@@ -157,12 +182,48 @@ public final class UrlBuilder {
     }
 
     /**
+     * Clear the query that will be used to build the final URL.
+     *
+     * @return This UrlBuilder so that multiple setters can be chained together.
+     */
+    public UrlBuilder clearQuery() {
+        if (query.isEmpty()) {
+            return this;
+        }
+
+        query.clear();
+        return this;
+    }
+
+    /**
      * Get the query that has been assigned to this UrlBuilder.
      *
      * @return the query that has been assigned to this UrlBuilder.
      */
     public Map<String, String> getQuery() {
-        return query;
+        // This contains a map of key=value query parameters, replacing
+        // multiple values for a single key with a list of values under the same name,
+        // joined together with a comma. As discussed in https://github.com/Azure/azure-sdk-for-java/pull/21203.
+        final Map<String, String> singleKeyValueQuery =
+            this.query.entrySet()
+                      .stream()
+                      .collect(Collectors.toMap(
+                            e -> e.getKey(),
+                            e -> {
+                                QueryParameter parameter = e.getValue();
+                                String value = null;
+
+                                if (parameter != null) {
+                                    // get all parameters joined by a comma.
+                                    // name=a&name=b&name=c becomes name=a,b,c
+                                    value = parameter.getValue();
+                                }
+
+                                return value;
+                            }
+                        ));
+
+        return singleKeyValueQuery;
     }
 
     /**
@@ -175,13 +236,15 @@ public final class UrlBuilder {
         }
 
         StringBuilder queryBuilder = new StringBuilder("?");
-        for (Map.Entry<String, String> entry : query.entrySet()) {
-            if (queryBuilder.length() > 1) {
-                queryBuilder.append("&");
+        for (Map.Entry<String, QueryParameter> entry : query.entrySet()) {
+            for (String queryValue : entry.getValue().getValuesList()) {
+                if (queryBuilder.length() > 1) {
+                    queryBuilder.append("&");
+                }
+                queryBuilder.append(entry.getKey());
+                queryBuilder.append("=");
+                queryBuilder.append(queryValue);
             }
-            queryBuilder.append(entry.getKey());
-            queryBuilder.append("=");
-            queryBuilder.append(entry.getValue());
         }
 
         return queryBuilder.toString();
@@ -224,9 +287,9 @@ public final class UrlBuilder {
                         for (String entry : queryString.split("&")) {
                             String[] nameValue = entry.split("=");
                             if (nameValue.length == 2) {
-                                setQueryParameter(nameValue[0], nameValue[1]);
+                                addQueryParameter(nameValue[0], nameValue[1]);
                             } else {
-                                setQueryParameter(nameValue[0], "");
+                                addQueryParameter(nameValue[0], "");
                             }
                         }
                     }
@@ -292,6 +355,14 @@ public final class UrlBuilder {
     }
 
     /**
+     * Returns the map of parsed URLs and their {@link UrlBuilder UrlBuilders}
+     * @return the map of parsed URLs and their {@link UrlBuilder UrlBuilders}
+     */
+    static Map<String, UrlBuilder> getParsedUrls() {
+        return PARSED_URLS;
+    }
+
+    /**
      * Parses the passed {@code url} string into a UrlBuilder.
      *
      * @param url The URL string to parse.
@@ -306,6 +377,12 @@ public final class UrlBuilder {
         // ConcurrentHashMap doesn't allow for null keys, coerce it into an empty string.
         String concurrentSafeUrl = (url == null) ? "" : url;
 
+        // If the number of parsed urls are above threshold, clear the map and start fresh.
+        // This prevents the map from growing without bounds if too many unique URLs are parsed.
+        // TODO (srnagar): consider using an LRU cache to evict selectively
+        if (PARSED_URLS.size() >= MAX_CACHE_SIZE) {
+            PARSED_URLS.clear();
+        }
         return PARSED_URLS.computeIfAbsent(concurrentSafeUrl, u ->
             new UrlBuilder().with(u, UrlTokenizerState.SCHEME_OR_HOST)).copy();
     }

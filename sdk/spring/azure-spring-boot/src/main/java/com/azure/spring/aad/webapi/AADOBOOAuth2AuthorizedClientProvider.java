@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizationContext;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
@@ -69,8 +70,7 @@ public class AADOBOOAuth2AuthorizedClientProvider implements OAuth2AuthorizedCli
 
         OAuth2AuthorizedClient authorizedClient = context.getAuthorizedClient();
         if (authorizedClient != null && !hasTokenExpired(authorizedClient.getAccessToken())) {
-            // If client is already authorized but access token is NOT expired than no
-            // need for re-authorization
+            // If client is already authorized but access token is NOT expired than no need for re-authorization
             return null;
         }
 
@@ -82,6 +82,7 @@ public class AADOBOOAuth2AuthorizedClientProvider implements OAuth2AuthorizedCli
         if (expiresAt == null) {
             return true;
         }
+
         expiresAt = expiresAt.minus(this.clockSkew);
         return this.clock.instant().isAfter(expiresAt);
     }
@@ -90,10 +91,15 @@ public class AADOBOOAuth2AuthorizedClientProvider implements OAuth2AuthorizedCli
     @SuppressWarnings({ "unchecked", "rawtypes" })
     private <T extends OAuth2AuthorizedClient> T getOboAuthorizedClient(ClientRegistration clientRegistration,
                                                                         Authentication principal) {
+        if (principal instanceof AnonymousAuthenticationToken) {
+            LOGGER.debug("Found anonymous authentication.");
+            return null;
+        }
 
         if (!(principal instanceof AbstractOAuth2TokenAuthenticationToken)) {
             throw new IllegalStateException("Unsupported token implementation " + principal.getClass());
         }
+
         try {
             String accessToken = ((AbstractOAuth2TokenAuthenticationToken<?>) principal).getToken()
                 .getTokenValue();
@@ -104,6 +110,7 @@ public class AADOBOOAuth2AuthorizedClientProvider implements OAuth2AuthorizedCli
             if (null == clientApplication) {
                 return null;
             }
+
             String oboAccessToken = clientApplication.acquireToken(parameters).get().accessToken();
             JWT parser = JWTParser.parse(oboAccessToken);
             Date iat = (Date) parser.getJWTClaimsSet().getClaim("iat");

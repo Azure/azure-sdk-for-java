@@ -12,12 +12,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appconfiguration.fluent.ConfigurationStoresClient;
 import com.azure.resourcemanager.appconfiguration.fluent.models.ApiKeyInner;
 import com.azure.resourcemanager.appconfiguration.fluent.models.ConfigurationStoreInner;
-import com.azure.resourcemanager.appconfiguration.fluent.models.KeyValueInner;
 import com.azure.resourcemanager.appconfiguration.models.ApiKey;
 import com.azure.resourcemanager.appconfiguration.models.ConfigurationStore;
 import com.azure.resourcemanager.appconfiguration.models.ConfigurationStores;
-import com.azure.resourcemanager.appconfiguration.models.KeyValue;
-import com.azure.resourcemanager.appconfiguration.models.ListKeyValueParameters;
 import com.azure.resourcemanager.appconfiguration.models.RegenerateKeyParameters;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -127,37 +124,6 @@ public final class ConfigurationStoresImpl implements ConfigurationStores {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ApiKeyImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public KeyValue listKeyValue(
-        String resourceGroupName, String configStoreName, ListKeyValueParameters listKeyValueParameters) {
-        KeyValueInner inner =
-            this.serviceClient().listKeyValue(resourceGroupName, configStoreName, listKeyValueParameters);
-        if (inner != null) {
-            return new KeyValueImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<KeyValue> listKeyValueWithResponse(
-        String resourceGroupName,
-        String configStoreName,
-        ListKeyValueParameters listKeyValueParameters,
-        Context context) {
-        Response<KeyValueInner> inner =
-            this
-                .serviceClient()
-                .listKeyValueWithResponse(resourceGroupName, configStoreName, listKeyValueParameters, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new KeyValueImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

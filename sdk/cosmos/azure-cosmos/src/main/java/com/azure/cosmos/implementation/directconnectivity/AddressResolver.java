@@ -140,7 +140,7 @@ public class AddressResolver implements IAddressResolver {
      *
      * @param request     Request in progress
      * @param targetRange Target partition key range determined by address resolver
-     * @*/
+     * */
     private void throwIfTargetChanged(RxDocumentServiceRequest request, PartitionKeyRange targetRange) {
         // If new range is child of previous range, we don't need to throw any exceptions
         // as LSNs are continued on child ranges.
@@ -148,7 +148,7 @@ public class AddressResolver implements IAddressResolver {
             !isSameCollection(request.requestContext.resolvedPartitionKeyRange, targetRange)) {
             if (!request.getIsNameBased()) {
                 String message = String.format(
-                    "Target should not change for non name based requests. Previous target {}, Current {}",
+                    "Target should not change for non name based requests. Previous target %s, Current %s",
                     request.requestContext.resolvedPartitionKeyRange, targetRange);
                 assert false : message;
                 logger.warn(message);

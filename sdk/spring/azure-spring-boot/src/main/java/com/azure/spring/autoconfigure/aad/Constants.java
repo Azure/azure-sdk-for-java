@@ -3,6 +3,7 @@
 
 package com.azure.spring.autoconfigure.aad;
 
+import com.azure.spring.aad.implementation.constants.AuthorityPrefix;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Collections;
@@ -17,14 +18,10 @@ public class Constants {
     public static final String CONDITIONAL_ACCESS_POLICY_CLAIMS = "CONDITIONAL_ACCESS_POLICY_CLAIMS";
     public static final String CLAIMS = "claims";
     public static final Set<SimpleGrantedAuthority> DEFAULT_AUTHORITY_SET;
-    public static final String ROLE_PREFIX = "ROLE_";
-    public static final String APPROLE_PREFIX = "APPROLE_";
-    public static final String SAVED_REQUEST = "SPRING_SECURITY_SAVED_REQUEST";
-    public static final String DEFAULT_AUTHORITY_ENDPOINT_URI = "/oauth2/authorization/azure";
 
     static {
         Set<SimpleGrantedAuthority> authoritySet = new HashSet<>();
-        authoritySet.add(new SimpleGrantedAuthority(ROLE_PREFIX + "USER"));
+        authoritySet.add(new SimpleGrantedAuthority(AuthorityPrefix.ROLE + "USER"));
         DEFAULT_AUTHORITY_SET = Collections.unmodifiableSet(authoritySet);
     }
 }

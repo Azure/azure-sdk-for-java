@@ -20,7 +20,7 @@ autorest --java --use=C:/work/autorest.java
 
 ### Code generation settings
 ``` yaml
-input-file: ./v2.1-preview.3.json
+input-file: ./FR-v3.yml
 java: true
 output-folder: ..\
 generate-client-as-impl: true
@@ -32,5 +32,5 @@ add-context-parameter: true
 models-subpackage: implementation.models
 context-client-method-parameter: true
 custom-types-subpackage: models
-custom-types: LengthUnit
+service-interface-as-public: true
 ```

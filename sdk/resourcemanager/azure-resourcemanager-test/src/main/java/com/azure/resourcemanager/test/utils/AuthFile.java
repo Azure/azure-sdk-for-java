@@ -1,8 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.resourcemanager.test.utils;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.logging.ClientLogger;
@@ -10,6 +17,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.identity.ClientCertificateCredentialBuilder;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.resourcemanager.test.policy.HttpDebugLoggingPolicy;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.File;
@@ -20,7 +28,9 @@ import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -138,8 +148,17 @@ public final class AuthFile {
      * @return an ApplicationTokenCredentials object from the information in this class
      */
     private TokenCredential generateCredential() {
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+        policies.add(new RetryPolicy());
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
+        policies.add(new HttpDebugLoggingPolicy());
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(HttpClient.createDefault())
+            .policies(policies.toArray(new HttpPipelinePolicy[0])).build();
+
         if (clientSecret != null) {
             return new ClientSecretCredentialBuilder()
+                .httpPipeline(pipeline)
                 .tenantId(tenantId)
                 .clientId(clientId)
                 .clientSecret(clientSecret)
@@ -147,6 +166,7 @@ public final class AuthFile {
                 .build();
         } else if (clientCertificate != null) {
             ClientCertificateCredentialBuilder builder = new ClientCertificateCredentialBuilder()
+                .httpPipeline(pipeline)
                 .tenantId(tenantId)
                 .clientId(clientId)
                 .authorityHost(environment.getActiveDirectoryEndpoint());

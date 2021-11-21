@@ -3,25 +3,31 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/batch/
+      - sdk/batch/ci.data.yml
+      - sdk/batch/microsoft-azure-batch/
+    exclude:
+      - sdk/batch/pom.xml
+      - sdk/batch/microsoft-azure-batch/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/batch/
+      - sdk/batch/ci.data.yml
+      - sdk/batch/microsoft-azure-batch/
+    exclude:
+      - sdk/batch/pom.xml
+      - sdk/batch/microsoft-azure-batch/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

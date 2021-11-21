@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.OrcDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,61 +17,23 @@ import java.util.Map;
 /** ORC dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Orc")
-@JsonFlatten
 @Fluent
-public class OrcDataset extends Dataset {
+public final class OrcDataset extends Dataset {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OrcDataset.class);
 
     /*
-     * The location of the ORC data storage.
+     * ORC dataset properties.
      */
-    @JsonProperty(value = "typeProperties.location")
-    private DatasetLocation location;
-
-    /*
-     * The orcCompressionCodec property.
-     */
-    @JsonProperty(value = "typeProperties.orcCompressionCodec")
-    private OrcCompressionCodec orcCompressionCodec;
+    @JsonProperty(value = "typeProperties")
+    private OrcDatasetTypeProperties innerTypeProperties;
 
     /**
-     * Get the location property: The location of the ORC data storage.
+     * Get the innerTypeProperties property: ORC dataset properties.
      *
-     * @return the location value.
+     * @return the innerTypeProperties value.
      */
-    public DatasetLocation location() {
-        return this.location;
-    }
-
-    /**
-     * Set the location property: The location of the ORC data storage.
-     *
-     * @param location the location value to set.
-     * @return the OrcDataset object itself.
-     */
-    public OrcDataset withLocation(DatasetLocation location) {
-        this.location = location;
-        return this;
-    }
-
-    /**
-     * Get the orcCompressionCodec property: The orcCompressionCodec property.
-     *
-     * @return the orcCompressionCodec value.
-     */
-    public OrcCompressionCodec orcCompressionCodec() {
-        return this.orcCompressionCodec;
-    }
-
-    /**
-     * Set the orcCompressionCodec property: The orcCompressionCodec property.
-     *
-     * @param orcCompressionCodec the orcCompressionCodec value to set.
-     * @return the OrcDataset object itself.
-     */
-    public OrcDataset withOrcCompressionCodec(OrcCompressionCodec orcCompressionCodec) {
-        this.orcCompressionCodec = orcCompressionCodec;
-        return this;
+    private OrcDatasetTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -124,6 +86,54 @@ public class OrcDataset extends Dataset {
     }
 
     /**
+     * Get the location property: The location of the ORC data storage.
+     *
+     * @return the location value.
+     */
+    public DatasetLocation location() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().location();
+    }
+
+    /**
+     * Set the location property: The location of the ORC data storage.
+     *
+     * @param location the location value to set.
+     * @return the OrcDataset object itself.
+     */
+    public OrcDataset withLocation(DatasetLocation location) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new OrcDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withLocation(location);
+        return this;
+    }
+
+    /**
+     * Get the orcCompressionCodec property: The data orcCompressionCodec. Type: string (or Expression with resultType
+     * string).
+     *
+     * @return the orcCompressionCodec value.
+     */
+    public Object orcCompressionCodec() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().orcCompressionCodec();
+    }
+
+    /**
+     * Set the orcCompressionCodec property: The data orcCompressionCodec. Type: string (or Expression with resultType
+     * string).
+     *
+     * @param orcCompressionCodec the orcCompressionCodec value to set.
+     * @return the OrcDataset object itself.
+     */
+    public OrcDataset withOrcCompressionCodec(Object orcCompressionCodec) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new OrcDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withOrcCompressionCodec(orcCompressionCodec);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -131,8 +141,8 @@ public class OrcDataset extends Dataset {
     @Override
     public void validate() {
         super.validate();
-        if (location() != null) {
-            location().validate();
+        if (innerTypeProperties() != null) {
+            innerTypeProperties().validate();
         }
     }
 }

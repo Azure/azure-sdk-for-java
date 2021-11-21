@@ -3,68 +3,36 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/storage/
+      - sdk/storage/ci.data.yml
+      - sdk/storage/microsoft-azure-storage-blob/
+      - sdk/storage/microsoft-azure-storage-perf/
     exclude:
-      - sdk/storage/azure-storage-blob
-      - sdk/storage/azure-storage-blob-batch
-      - sdk/storage/azure-storage-blob-changefeed
-      - sdk/storage/azure-storage-blob-cryptography
-      - sdk/storage/azure-storage-blob-nio
-      - sdk/storage/azure-storage-common
-      - sdk/storage/azure-storage-file-datalake
-      - sdk/storage/azure-storage-file-share
-      - sdk/storage/azure-storage-internal-avro
-      - sdk/storage/azure-storage-perf
-      - sdk/storage/azure-storage-queue
-      - sdk/storage/mgmt
-      - sdk/storage/mgmt-v2016_01_01
-      - sdk/storage/mgmt-v2017_10_01
-      - sdk/storage/mgmt-v2018_02_01
-      - sdk/storage/mgmt-v2018_03_01_preview
-      - sdk/storage/mgmt-v2018_07_01
-      - sdk/storage/mgmt-v2018_11_01
-      - sdk/storage/mgmt-v2019_04_01
-      - sdk/storage/mgmt-v2019_06_01
+      - sdk/storage/pom.xml
+      - sdk/storage/microsoft-azure-storage-blob/pom.xml
+      - sdk/storage/microsoft-azure-storage-perf/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/storage/
+      - sdk/storage/ci.data.yml
+      - sdk/storage/microsoft-azure-storage-blob/
+      - sdk/storage/microsoft-azure-storage-perf/
     exclude:
-      - sdk/storage/azure-storage-blob
-      - sdk/storage/azure-storage-blob-batch
-      - sdk/storage/azure-storage-blob-changefeed
-      - sdk/storage/azure-storage-blob-cryptography
-      - sdk/storage/azure-storage-blob-nio
-      - sdk/storage/azure-storage-common
-      - sdk/storage/azure-storage-file-datalake
-      - sdk/storage/azure-storage-file-share
-      - sdk/storage/azure-storage-internal-avro
-      - sdk/storage/azure-storage-perf
-      - sdk/storage/azure-storage-queue
-      - sdk/storage/mgmt
-      - sdk/storage/mgmt-v2016_01_01
-      - sdk/storage/mgmt-v2017_10_01
-      - sdk/storage/mgmt-v2018_02_01
-      - sdk/storage/mgmt-v2018_03_01_preview
-      - sdk/storage/mgmt-v2018_07_01
-      - sdk/storage/mgmt-v2018_11_01
-      - sdk/storage/mgmt-v2019_04_01
-      - sdk/storage/mgmt-v2019_06_01
+      - sdk/storage/pom.xml
+      - sdk/storage/microsoft-azure-storage-blob/pom.xml
+      - sdk/storage/microsoft-azure-storage-perf/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

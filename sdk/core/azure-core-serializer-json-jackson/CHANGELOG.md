@@ -2,6 +2,64 @@
 
 ## 1.3.0-beta.1 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.2.9 (2021-11-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.21.0` to `1.22.0`.
+
+## 1.2.8 (2021-10-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.20.0` to `1.21.0`.
+- Upgraded Jackson from `2.12.4` to `2.12.5`.
+
+## 1.2.7 (2021-09-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.19.0` to `1.20.0`.
+
+## 1.2.6 (2021-08-06)
+
+### Dependency Updates
+
+- Updated `azure-core` from `1.18.0` to `1.19.0`.
+- Updated Jackson from `2.12.3` to `2.12.4`.
+
+## 1.2.5 (2021-07-01)
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.17.0` to `1.18.0`.
+
+## 1.2.4 (2021-06-07)
+
+### Dependency Updates
+
+- Updated `azure-core` from `1.16.0` to `1.17.0`.
+- Updated Jackson from `2.12.2` to `2.12.3`.
+
+## 1.2.3 (2021-05-07)
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.15.0` to `1.16.0`.
 
 ## 1.2.2 (2021-04-02)
 

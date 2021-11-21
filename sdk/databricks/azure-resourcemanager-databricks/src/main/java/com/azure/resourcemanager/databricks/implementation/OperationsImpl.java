@@ -18,10 +18,10 @@ public final class OperationsImpl implements Operations {
 
     private final OperationsClient innerClient;
 
-    private final com.azure.resourcemanager.databricks.DatabricksManager serviceManager;
+    private final com.azure.resourcemanager.databricks.AzureDatabricksManager serviceManager;
 
     public OperationsImpl(
-        OperationsClient innerClient, com.azure.resourcemanager.databricks.DatabricksManager serviceManager) {
+        OperationsClient innerClient, com.azure.resourcemanager.databricks.AzureDatabricksManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -40,7 +40,7 @@ public final class OperationsImpl implements Operations {
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.databricks.DatabricksManager manager() {
+    private com.azure.resourcemanager.databricks.AzureDatabricksManager manager() {
         return this.serviceManager;
     }
 }

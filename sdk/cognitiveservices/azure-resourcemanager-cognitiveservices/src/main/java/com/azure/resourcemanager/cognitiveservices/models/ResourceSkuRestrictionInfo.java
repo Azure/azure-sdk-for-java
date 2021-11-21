@@ -4,27 +4,27 @@
 
 package com.azure.resourcemanager.cognitiveservices.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ResourceSkuRestrictionInfo model. */
-@Immutable
+@Fluent
 public final class ResourceSkuRestrictionInfo {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkuRestrictionInfo.class);
 
     /*
      * Locations where the SKU is restricted
      */
-    @JsonProperty(value = "locations", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "locations")
     private List<String> locations;
 
     /*
      * List of availability zones where the SKU is restricted.
      */
-    @JsonProperty(value = "zones", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "zones")
     private List<String> zones;
 
     /**
@@ -37,12 +37,34 @@ public final class ResourceSkuRestrictionInfo {
     }
 
     /**
+     * Set the locations property: Locations where the SKU is restricted.
+     *
+     * @param locations the locations value to set.
+     * @return the ResourceSkuRestrictionInfo object itself.
+     */
+    public ResourceSkuRestrictionInfo withLocations(List<String> locations) {
+        this.locations = locations;
+        return this;
+    }
+
+    /**
      * Get the zones property: List of availability zones where the SKU is restricted.
      *
      * @return the zones value.
      */
     public List<String> zones() {
         return this.zones;
+    }
+
+    /**
+     * Set the zones property: List of availability zones where the SKU is restricted.
+     *
+     * @param zones the zones value to set.
+     * @return the ResourceSkuRestrictionInfo object itself.
+     */
+    public ResourceSkuRestrictionInfo withZones(List<String> zones) {
+        this.zones = zones;
+        return this;
     }
 
     /**

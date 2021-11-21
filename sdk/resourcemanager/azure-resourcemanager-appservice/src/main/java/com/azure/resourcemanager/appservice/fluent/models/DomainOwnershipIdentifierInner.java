@@ -5,23 +5,37 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Domain ownership Identifier. */
-@JsonFlatten
 @Fluent
-public class DomainOwnershipIdentifierInner extends ProxyOnlyResource {
+public final class DomainOwnershipIdentifierInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DomainOwnershipIdentifierInner.class);
 
     /*
-     * Ownership Id.
+     * DomainOwnershipIdentifier resource specific properties
      */
-    @JsonProperty(value = "properties.ownershipId")
-    private String ownershipId;
+    @JsonProperty(value = "properties")
+    private DomainOwnershipIdentifierProperties innerProperties;
+
+    /**
+     * Get the innerProperties property: DomainOwnershipIdentifier resource specific properties.
+     *
+     * @return the innerProperties value.
+     */
+    private DomainOwnershipIdentifierProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DomainOwnershipIdentifierInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the ownershipId property: Ownership Id.
@@ -29,7 +43,7 @@ public class DomainOwnershipIdentifierInner extends ProxyOnlyResource {
      * @return the ownershipId value.
      */
     public String ownershipId() {
-        return this.ownershipId;
+        return this.innerProperties() == null ? null : this.innerProperties().ownershipId();
     }
 
     /**
@@ -39,14 +53,10 @@ public class DomainOwnershipIdentifierInner extends ProxyOnlyResource {
      * @return the DomainOwnershipIdentifierInner object itself.
      */
     public DomainOwnershipIdentifierInner withOwnershipId(String ownershipId) {
-        this.ownershipId = ownershipId;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public DomainOwnershipIdentifierInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DomainOwnershipIdentifierProperties();
+        }
+        this.innerProperties().withOwnershipId(ownershipId);
         return this;
     }
 
@@ -58,5 +68,8 @@ public class DomainOwnershipIdentifierInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

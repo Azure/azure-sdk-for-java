@@ -1,0 +1,54 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/e93acbd9e93acbd9ce6822506708873fbe8345838c?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2020-08-04",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.11.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "201ec546-46e7-40cc-93db-65c54451915f"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-08-04",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D92D18F793F3A4",
+      "Last-Modified" : "Fri, 11 Jun 2021 20:39:10 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "f5cff2af-b01a-0019-3901-5f7a16000000",
+      "x-ms-client-request-id" : "201ec546-46e7-40cc-93db-65c54451915f",
+      "Date" : "Fri, 11 Jun 2021 20:39:10 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/e93acbd9e93acbd9ce6822506708873fbe8345838c/e93acbd9e93acbd9ce68869660ed5ef85ba14e6b8b",
+    "Headers" : {
+      "x-ms-version" : "2020-08-04",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.11.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "767132fd-06f4-4556-afe3-d26f73ea210b"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-08-04",
+      "x-ms-file-permission-key" : "16466167399171598336*5486365400479318158",
+      "x-ms-file-id" : "13835128424026341376",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-file-creation-time" : "2021-06-11T20:39:10.8245825Z",
+      "Last-Modified" : "Fri, 11 Jun 2021 20:39:10 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Fri, 11 Jun 2021 20:39:10 GMT",
+      "x-ms-file-attributes" : "Archive",
+      "x-ms-file-change-time" : "2021-06-11T20:39:10.8245825Z",
+      "x-ms-file-parent-id" : "0",
+      "eTag" : "0x8D92D18F7B9BD41",
+      "x-ms-request-id" : "f5cff2b2-b01a-0019-3a01-5f7a16000000",
+      "x-ms-client-request-id" : "767132fd-06f4-4556-afe3-d26f73ea210b",
+      "x-ms-file-last-write-time" : "2021-06-11T20:39:10.8245825Z"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "e93acbd9e93acbd9ce6822506708873fbe8345838c", "e93acbd9e93acbd9ce68869660ed5ef85ba14e6b8b" ]
+}

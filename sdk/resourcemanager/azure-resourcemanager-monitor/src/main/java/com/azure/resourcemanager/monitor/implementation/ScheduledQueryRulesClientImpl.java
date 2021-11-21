@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -70,9 +71,9 @@ public final class ScheduledQueryRulesClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "MonitorClientSchedul")
     private interface ScheduledQueryRulesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights"
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights"
                 + "/scheduledQueryRules/{ruleName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -83,11 +84,12 @@ public final class ScheduledQueryRulesClientImpl
             @PathParam("ruleName") String ruleName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") LogSearchRuleResourceInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights"
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights"
                 + "/scheduledQueryRules/{ruleName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -97,11 +99,12 @@ public final class ScheduledQueryRulesClientImpl
             @PathParam("ruleName") String ruleName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights"
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights"
                 + "/scheduledQueryRules/{ruleName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -112,11 +115,12 @@ public final class ScheduledQueryRulesClientImpl
             @PathParam("ruleName") String ruleName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") LogSearchRuleResourcePatch parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights"
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights"
                 + "/scheduledQueryRules/{ruleName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -126,10 +130,11 @@ public final class ScheduledQueryRulesClientImpl
             @PathParam("ruleName") String ruleName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("/subscriptions/{subscriptionId}/providers/microsoft.insights/scheduledQueryRules")
+        @Headers({"Content-Type: application/json"})
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Insights/scheduledQueryRules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LogSearchRuleResourceCollection>> list(
@@ -137,11 +142,12 @@ public final class ScheduledQueryRulesClientImpl
             @QueryParam("api-version") String apiVersion,
             @QueryParam("$filter") String filter,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights"
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights"
                 + "/scheduledQueryRules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -151,6 +157,7 @@ public final class ScheduledQueryRulesClientImpl
             @QueryParam("api-version") String apiVersion,
             @QueryParam("$filter") String filter,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -159,7 +166,7 @@ public final class ScheduledQueryRulesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
-     * @param parameters The Log Search Rule resource.
+     * @param parameters The parameters of the rule to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -193,6 +200,7 @@ public final class ScheduledQueryRulesClientImpl
             parameters.validate();
         }
         final String apiVersion = "2018-04-16";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -204,8 +212,9 @@ public final class ScheduledQueryRulesClientImpl
                             ruleName,
                             apiVersion,
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -213,7 +222,7 @@ public final class ScheduledQueryRulesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
-     * @param parameters The Log Search Rule resource.
+     * @param parameters The parameters of the rule to create or update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -248,6 +257,7 @@ public final class ScheduledQueryRulesClientImpl
             parameters.validate();
         }
         final String apiVersion = "2018-04-16";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -257,6 +267,7 @@ public final class ScheduledQueryRulesClientImpl
                 ruleName,
                 apiVersion,
                 parameters,
+                accept,
                 context);
     }
 
@@ -265,7 +276,7 @@ public final class ScheduledQueryRulesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
-     * @param parameters The Log Search Rule resource.
+     * @param parameters The parameters of the rule to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -290,7 +301,7 @@ public final class ScheduledQueryRulesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
-     * @param parameters The Log Search Rule resource.
+     * @param parameters The parameters of the rule to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -307,7 +318,7 @@ public final class ScheduledQueryRulesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
-     * @param parameters The Log Search Rule resource.
+     * @param parameters The parameters of the rule to create or update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -353,6 +364,7 @@ public final class ScheduledQueryRulesClientImpl
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-04-16";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -363,8 +375,9 @@ public final class ScheduledQueryRulesClientImpl
                             ruleName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -401,6 +414,7 @@ public final class ScheduledQueryRulesClientImpl
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-04-16";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
@@ -409,6 +423,7 @@ public final class ScheduledQueryRulesClientImpl
                 ruleName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -472,7 +487,7 @@ public final class ScheduledQueryRulesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
-     * @param parameters The log search rule resource for patch operations.
+     * @param parameters The parameters of the rule to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -506,6 +521,7 @@ public final class ScheduledQueryRulesClientImpl
             parameters.validate();
         }
         final String apiVersion = "2018-04-16";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -517,8 +533,9 @@ public final class ScheduledQueryRulesClientImpl
                             ruleName,
                             apiVersion,
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -526,7 +543,7 @@ public final class ScheduledQueryRulesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
-     * @param parameters The log search rule resource for patch operations.
+     * @param parameters The parameters of the rule to update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -561,6 +578,7 @@ public final class ScheduledQueryRulesClientImpl
             parameters.validate();
         }
         final String apiVersion = "2018-04-16";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -570,6 +588,7 @@ public final class ScheduledQueryRulesClientImpl
                 ruleName,
                 apiVersion,
                 parameters,
+                accept,
                 context);
     }
 
@@ -578,7 +597,7 @@ public final class ScheduledQueryRulesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
-     * @param parameters The log search rule resource for patch operations.
+     * @param parameters The parameters of the rule to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -603,7 +622,7 @@ public final class ScheduledQueryRulesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
-     * @param parameters The log search rule resource for patch operations.
+     * @param parameters The parameters of the rule to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -620,7 +639,7 @@ public final class ScheduledQueryRulesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
-     * @param parameters The log search rule resource for patch operations.
+     * @param parameters The parameters of the rule to update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -665,6 +684,7 @@ public final class ScheduledQueryRulesClientImpl
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-04-16";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -675,8 +695,9 @@ public final class ScheduledQueryRulesClientImpl
                             ruleName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -712,6 +733,7 @@ public final class ScheduledQueryRulesClientImpl
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-04-16";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -720,6 +742,7 @@ public final class ScheduledQueryRulesClientImpl
                 ruleName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -793,16 +816,23 @@ public final class ScheduledQueryRulesClientImpl
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-04-16";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
-                        .list(this.client.getEndpoint(), apiVersion, filter, this.client.getSubscriptionId(), context))
+                        .list(
+                            this.client.getEndpoint(),
+                            apiVersion,
+                            filter,
+                            this.client.getSubscriptionId(),
+                            accept,
+                            context))
             .<PagedResponse<LogSearchRuleResourceInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -831,9 +861,10 @@ public final class ScheduledQueryRulesClientImpl
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-04-16";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), apiVersion, filter, this.client.getSubscriptionId(), context)
+            .list(this.client.getEndpoint(), apiVersion, filter, this.client.getSubscriptionId(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -887,6 +918,19 @@ public final class ScheduledQueryRulesClientImpl
     /**
      * List the Log Search rules within a subscription group.
      *
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a collection of Log Search rule resources.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<LogSearchRuleResourceInner> list() {
+        final String filter = null;
+        return new PagedIterable<>(listAsync(filter));
+    }
+
+    /**
+     * List the Log Search rules within a subscription group.
+     *
      * @param filter The filter to apply on the operation. For more information please see
      *     https://msdn.microsoft.com/en-us/library/azure/dn931934.aspx.
      * @param context The context to associate with this operation.
@@ -898,19 +942,6 @@ public final class ScheduledQueryRulesClientImpl
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LogSearchRuleResourceInner> list(String filter, Context context) {
         return new PagedIterable<>(listAsync(filter, context));
-    }
-
-    /**
-     * List the Log Search rules within a subscription group.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of Log Search rule resources.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<LogSearchRuleResourceInner> list() {
-        final String filter = null;
-        return new PagedIterable<>(listAsync(filter));
     }
 
     /**
@@ -944,6 +975,7 @@ public final class ScheduledQueryRulesClientImpl
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-04-16";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -954,12 +986,13 @@ public final class ScheduledQueryRulesClientImpl
                             apiVersion,
                             filter,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .<PagedResponse<LogSearchRuleResourceInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -994,6 +1027,7 @@ public final class ScheduledQueryRulesClientImpl
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-04-16";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
@@ -1002,6 +1036,7 @@ public final class ScheduledQueryRulesClientImpl
                 apiVersion,
                 filter,
                 this.client.getSubscriptionId(),
+                accept,
                 context)
             .map(
                 res ->
@@ -1062,6 +1097,21 @@ public final class ScheduledQueryRulesClientImpl
      * List the Log Search rules within a resource group.
      *
      * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a collection of Log Search rule resources.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<LogSearchRuleResourceInner> listByResourceGroup(String resourceGroupName) {
+        final String filter = null;
+        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter));
+    }
+
+    /**
+     * List the Log Search rules within a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
      * @param filter The filter to apply on the operation. For more information please see
      *     https://msdn.microsoft.com/en-us/library/azure/dn931934.aspx.
      * @param context The context to associate with this operation.
@@ -1074,20 +1124,5 @@ public final class ScheduledQueryRulesClientImpl
     public PagedIterable<LogSearchRuleResourceInner> listByResourceGroup(
         String resourceGroupName, String filter, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter, context));
-    }
-
-    /**
-     * List the Log Search rules within a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of Log Search rule resources.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<LogSearchRuleResourceInner> listByResourceGroup(String resourceGroupName) {
-        final String filter = null;
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter));
     }
 }

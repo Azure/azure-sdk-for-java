@@ -4,24 +4,31 @@
 
 package com.azure.resourcemanager.storage.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of the table, including Id, resource name, resource type. */
-@JsonFlatten
-@Immutable
-public class TableInner extends ProxyResource {
+@Fluent
+public final class TableInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TableInner.class);
 
     /*
-     * Table name under the specified account
+     * Table resource properties.
      */
-    @JsonProperty(value = "properties.tableName", access = JsonProperty.Access.WRITE_ONLY)
-    private String tableName;
+    @JsonProperty(value = "properties")
+    private TableProperties innerTableProperties;
+
+    /**
+     * Get the innerTableProperties property: Table resource properties.
+     *
+     * @return the innerTableProperties value.
+     */
+    private TableProperties innerTableProperties() {
+        return this.innerTableProperties;
+    }
 
     /**
      * Get the tableName property: Table name under the specified account.
@@ -29,7 +36,7 @@ public class TableInner extends ProxyResource {
      * @return the tableName value.
      */
     public String tableName() {
-        return this.tableName;
+        return this.innerTableProperties() == null ? null : this.innerTableProperties().tableName();
     }
 
     /**
@@ -38,5 +45,8 @@ public class TableInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerTableProperties() != null) {
+            innerTableProperties().validate();
+        }
     }
 }

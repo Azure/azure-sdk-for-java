@@ -97,7 +97,7 @@ public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
 
     private String getRegistrationId(HttpServletRequest request) {
         if (REQUEST_MATCHER.matches(request)) {
-            return REQUEST_MATCHER.extractUriTemplateVariables(request).get(REGISTRATION_ID_NAME);
+            return REQUEST_MATCHER.matcher(request).getVariables().get(REGISTRATION_ID_NAME);
         }
 
         return null;

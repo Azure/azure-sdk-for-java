@@ -33,6 +33,10 @@ public final class PrivateEndpointConnectionImpl implements PrivateEndpointConne
         return this.innerModel().type();
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
     public PrivateEndpointConnectionProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
@@ -43,10 +47,6 @@ public final class PrivateEndpointConnectionImpl implements PrivateEndpointConne
 
     public PrivateLinkServiceConnectionState privateLinkServiceConnectionState() {
         return this.innerModel().privateLinkServiceConnectionState();
-    }
-
-    public String etag() {
-        return this.innerModel().etag();
     }
 
     public PrivateEndpointConnectionInner innerModel() {

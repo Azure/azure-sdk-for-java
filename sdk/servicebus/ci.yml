@@ -3,35 +3,41 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/servicebus/
+      - sdk/servicebus/ci.yml
+      - sdk/servicebus/azure-messaging-servicebus/
+      - sdk/servicebus/azure-messaging-servicebus-track1-perf/
+      - sdk/servicebus/azure-messaging-servicebus-track2-perf/
+      - sdk/servicebus/build/
     exclude:
-      - sdk/servicebus/mgmt-v2015_08_01
-      - sdk/servicebus/mgmt-v2017_04_01
-      - sdk/servicebus/mgmt-v2018_01_01_preview
-      - sdk/servicebus/microsoft-azure-servicebus
+      - sdk/servicebus/pom.xml
+      - sdk/servicebus/azure-messaging-servicebus/pom.xml
+      - sdk/servicebus/azure-messaging-servicebus-track1-perf/pom.xml
+      - sdk/servicebus/azure-messaging-servicebus-track2-perf/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/servicebus/
+      - sdk/servicebus/ci.yml
+      - sdk/servicebus/azure-messaging-servicebus/
+      - sdk/servicebus/azure-messaging-servicebus-track1-perf/
+      - sdk/servicebus/azure-messaging-servicebus-track2-perf/
+      - sdk/servicebus/build/
     exclude:
-      - sdk/servicebus/mgmt-v2015_08_01
-      - sdk/servicebus/mgmt-v2017_04_01
-      - sdk/servicebus/mgmt-v2018_01_01_preview
-      - sdk/servicebus/microsoft-azure-servicebus
+      - sdk/servicebus/pom.xml
+      - sdk/servicebus/azure-messaging-servicebus/pom.xml
+      - sdk/servicebus/azure-messaging-servicebus-track1-perf/pom.xml
+      - sdk/servicebus/azure-messaging-servicebus-track2-perf/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

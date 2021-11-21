@@ -1,28 +1,30 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/tenants?api-version=2020-01-01",
+    "Uri" : "http://localhost:1234/tenants?api-version=2021-01-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.5.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e8cead85-2709-4d74-99e0-c89e38ad01bc",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Mon, 27 Jul 2020 09:24:00 GMT",
       "content-length" : "140",
-      "expires" : "-1",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "125ba060-b6f2-4f50-b768-1fae9417e587",
+      "x-ms-correlation-request-id" : "e9409a13-e5d6-431c-8132-54f12746e189",
+      "Date" : "Tue, 11 May 2021 02:12:54 GMT",
       "x-ms-ratelimit-remaining-tenant-reads" : "11999",
-      "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "KOREASOUTH:20200727T092401Z:125ba060-b6f2-4f50-b768-1fae9417e587",
-      "content-type" : "application/json; charset=utf-8",
-      "cache-control" : "no-cache",
-      "x-ms-request-id" : "125ba060-b6f2-4f50-b768-1fae9417e587",
-      "Body" : "{\"value\":[{\"id\":\"/tenants/00000000-0000-0000-0000-000000000000\",\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"tenantCategory\":\"Home\"}]}"
-    }
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210511T021255Z:e9409a13-e5d6-431c-8132-54f12746e189",
+      "Expires" : "-1",
+      "x-ms-request-id" : "e9409a13-e5d6-431c-8132-54f12746e189",
+      "Body" : "{\"value\":[{\"id\":\"/tenants/00000000-0000-0000-0000-000000000000\",\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"tenantCategory\":\"Home\"}]}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
   } ],
   "variables" : [ ]
 }

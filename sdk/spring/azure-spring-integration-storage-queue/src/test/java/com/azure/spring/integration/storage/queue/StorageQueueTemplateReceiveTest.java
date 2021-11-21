@@ -8,34 +8,38 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.IterableStream;
-import com.azure.storage.queue.QueueAsyncClient;
-import com.azure.storage.queue.models.QueueMessageItem;
-import com.azure.storage.queue.models.QueueStorageException;
-import com.google.common.collect.Lists;
 import com.azure.spring.integration.core.AzureHeaders;
 import com.azure.spring.integration.core.api.CheckpointMode;
 import com.azure.spring.integration.core.api.reactor.Checkpointer;
 import com.azure.spring.integration.storage.queue.factory.StorageQueueClientFactory;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import com.azure.storage.queue.QueueAsyncClient;
+import com.azure.storage.queue.models.QueueMessageItem;
+import com.azure.storage.queue.models.QueueStorageException;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 import org.springframework.messaging.Message;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
 public class StorageQueueTemplateReceiveTest {
 
     private final String messageId = "1";
@@ -49,9 +53,11 @@ public class StorageQueueTemplateReceiveTest {
     private QueueMessageItem queueMessage;
     private int visibilityTimeoutInSeconds = 30;
     private String destination = "queue";
+    private AutoCloseable closeable;
 
-    @Before
+    @BeforeEach
     public void setup() {
+        this.closeable = MockitoAnnotations.openMocks(this);
         queueMessage = new QueueMessageItem();
         queueMessage.setMessageText(messageText);
         queueMessage.setMessageId(messageId);
@@ -60,7 +66,7 @@ public class StorageQueueTemplateReceiveTest {
         final PagedResponse<QueueMessageItem> pagedResponse = new PagedResponse<QueueMessageItem>() {
             @Override
             public List<QueueMessageItem> getItems() {
-                return Lists.newArrayList(queueMessage);
+                return new ArrayList<>(Arrays.asList(queueMessage));
             }
 
             @Override
@@ -98,6 +104,11 @@ public class StorageQueueTemplateReceiveTest {
         when(this.mockClient.receiveMessages(eq(1), any()))
             .thenReturn(new PagedFlux<>(() -> Mono.just(pagedResponse)));
         this.operation = new StorageQueueTemplate(this.mockClientFactory);
+    }
+
+    @AfterEach
+    public void close() throws Exception {
+        this.closeable.close();
     }
 
     @Test

@@ -77,12 +77,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
             throw new IllegalArgumentException("lease");
         }
 
-        String leaseToken = lease.getLeaseToken();
-
-        ChangeFeedState lastContinuationState = lease.getContinuationState(
-            this.collectionResourceId,
-            new FeedRangePartitionKeyRangeImpl(leaseToken)
-        );
+        final String leaseToken = lease.getLeaseToken();
 
         // TODO fabianm - this needs more elaborate processing in case the initial
         // FeedRangeContinuation has continuation state for multiple feed Ranges
@@ -93,11 +88,23 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
         // or at least Service - this will be part of the next set of changes
         // For now - no merge just simple V0 of lease contract
         // this simplification will work
-        final String lastContinuationToken = lastContinuationState.getContinuation() != null ?
-            lastContinuationState.getContinuation().getCurrentContinuationToken().getToken() :
-            null;
+        //
+        //ChangeFeedState lastContinuationState = lease.getContinuationState(
+        //    this.collectionResourceId,
+        //    new FeedRangePartitionKeyRangeImpl(leaseToken)
+        //);
+        //
+        //final String lastContinuationToken = lastContinuationState.getContinuation() != null ?
+        //    lastContinuationState.getContinuation().getCurrentContinuationToken().getToken() :
+        //    null;
 
-        logger.info("Partition {} is gone due to split.", leaseToken);
+        // "Push" ChangeFeedProcessor is not merge-proof currently. For such cases we need a specific handler that can
+        // take multiple leases and "converge" them in a thread safe manner while also merging the various continuation
+        // tokens for each merged lease.
+        // We will directly reuse the original/parent continuation token as the seed for the new leases until then.
+        final String lastContinuationToken = lease.getContinuationToken();
+
+        logger.info("Partition {} is gone due to split; will attempt to resume using continuation token {}.", leaseToken, lastContinuationToken);
 
         // After a split, the children are either all or none available
         return this.enumPartitionKeyRanges()
@@ -116,7 +123,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
                 return this.leaseManager.createLeaseIfNotExist(addedRangeId, lastContinuationToken);
             }, this.degreeOfParallelism)
             .map(newLease -> {
-                logger.info("Partition {} split into new partition with lease token {}.", leaseToken, newLease.getLeaseToken());
+                logger.info("Partition {} split into new partition with lease token {} and continuation token {}.", leaseToken, newLease.getLeaseToken(), lastContinuationToken);
                 return newLease;
             });
     }

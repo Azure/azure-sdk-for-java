@@ -8,7 +8,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.iothub.IotHubManager;
 import com.azure.resourcemanager.iothub.fluent.PrivateLinkResourcesOperationsClient;
 import com.azure.resourcemanager.iothub.fluent.models.GroupIdInformationInner;
 import com.azure.resourcemanager.iothub.fluent.models.PrivateLinkResourcesInner;
@@ -22,10 +21,11 @@ public final class PrivateLinkResourcesOperationsImpl implements PrivateLinkReso
 
     private final PrivateLinkResourcesOperationsClient innerClient;
 
-    private final IotHubManager serviceManager;
+    private final com.azure.resourcemanager.iothub.IotHubManager serviceManager;
 
     public PrivateLinkResourcesOperationsImpl(
-        PrivateLinkResourcesOperationsClient innerClient, IotHubManager serviceManager) {
+        PrivateLinkResourcesOperationsClient innerClient,
+        com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -82,7 +82,7 @@ public final class PrivateLinkResourcesOperationsImpl implements PrivateLinkReso
         return this.innerClient;
     }
 
-    private IotHubManager manager() {
+    private com.azure.resourcemanager.iothub.IotHubManager manager() {
         return this.serviceManager;
     }
 }

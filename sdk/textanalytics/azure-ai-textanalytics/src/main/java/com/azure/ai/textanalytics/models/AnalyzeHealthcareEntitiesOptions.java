@@ -10,10 +10,10 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public final class AnalyzeHealthcareEntitiesOptions extends TextAnalyticsRequestOptions {
-    private StringIndexType stringIndexType;
+    private Boolean disableServiceLogs;
 
     /**
-     * Set the model version. This value indicates which model will be used for scoring, e.g. "latest", "2019-10-01".
+     * Sets the model version. This value indicates which model will be used for scoring, e.g. "latest", "2019-10-01".
      * If a model-version is not specified, the API will default to the latest, non-preview version.
      *
      * @param modelVersion The model version.
@@ -27,12 +27,12 @@ public final class AnalyzeHealthcareEntitiesOptions extends TextAnalyticsRequest
     }
 
     /**
-     * Set the value of {@code includeStatistics}.
+     * Sets the value of {@code includeStatistics}.
      *
      * @param includeStatistics If a boolean value was specified in the request this field will contain
      * information about the document payload.
      *
-     * @return the {@link AnalyzeHealthcareEntitiesOptions} object itself.
+     * @return The {@link AnalyzeHealthcareEntitiesOptions} object itself.
      */
     @Override
     public AnalyzeHealthcareEntitiesOptions setIncludeStatistics(boolean includeStatistics) {
@@ -41,24 +41,29 @@ public final class AnalyzeHealthcareEntitiesOptions extends TextAnalyticsRequest
     }
 
     /**
-     * Get the value of {@code stringIndexType}.
+     * Gets the value of service logs disable status. The default value of this property is 'true'. This means,
+     * Text Analytics service won't log your input text. Setting this property to 'false', enables logging your input
+     * text for 48 hours, solely to allow for troubleshooting issues.
      *
-     * @return The value of {@code stringIndexType}.
+     * @return true if service logging of input text is disabled.
      */
-    public StringIndexType getStringIndexType() {
-        return stringIndexType;
+    @Override
+    public boolean isServiceLogsDisabled() {
+        return disableServiceLogs == null ? true : disableServiceLogs;
     }
 
     /**
-     * Set the value of {@code stringIndexType}.
-     * The {@link StringIndexType#UTF16CODE_UNIT} will be used as default type if there is no value assign to it.
+     * Sets the value of service logs disable status.
      *
-     * @param stringIndexType It used to set the value of string indexing type.
+     * @param disableServiceLogs The default value of this property is 'true'. This means, Text Analytics service
+     * does not log your input text. Setting this property to 'false', enables the service to log your text input for
+     * 48 hours, solely to allow for troubleshooting issues.
      *
-     * @return the {@link AnalyzeHealthcareEntitiesOptions} object itself.
+     * @return The {@link AnalyzeHealthcareEntitiesOptions} object itself.
      */
-    public AnalyzeHealthcareEntitiesOptions setStringIndexType(StringIndexType stringIndexType) {
-        this.stringIndexType = stringIndexType;
+    @Override
+    public AnalyzeHealthcareEntitiesOptions setServiceLogsDisabled(boolean disableServiceLogs) {
+        this.disableServiceLogs = disableServiceLogs;
         return this;
     }
 }

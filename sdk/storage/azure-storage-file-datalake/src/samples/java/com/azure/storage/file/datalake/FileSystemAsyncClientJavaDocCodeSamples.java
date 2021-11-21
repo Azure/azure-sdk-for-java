@@ -168,7 +168,7 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
             .setLeaseId(leaseId)
-            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+            .setIfModifiedSince(OffsetDateTime.now().minusDays(3));
 
         client.setMetadataWithResponse(metadata, requestConditions).subscribe(response ->
             System.out.printf("Set metadata completed with status %d%n", response.getStatusCode()));
@@ -272,6 +272,23 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
     }
 
     /**
+     * Code snippet for {@link DataLakeFileSystemAsyncClient#undeletePath(String, String)}
+     */
+    public void restorePathCodeSnippet() {
+        String deletedPath = null;
+        String deletionId = null;
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.undeletePath#String-String
+        client.undeletePath(deletedPath, deletionId).doOnSuccess(response -> System.out.println("Completed undelete"));
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.undeletePath#String-String
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.undeletePathWithResponse#String-String
+        client.undeletePathWithResponse(deletedPath, deletionId)
+            .doOnSuccess(response -> System.out.println("Completed undelete"));
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.undeletePathWithResponse#String-String
+    }
+
+    /**
      * Code snippets for {@link DataLakeFileSystemAsyncClient#listPaths()} and
      * {@link DataLakeFileSystemAsyncClient#listPaths(ListPathsOptions)}
      */
@@ -287,6 +304,25 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
 
         client.listPaths(options).subscribe(path -> System.out.printf("Name: %s%n", path.getName()));
         // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listPaths#ListPathsOptions
+    }
+
+    /**
+     * Code snippets for {@link DataLakeFileSystemAsyncClient#listDeletedPaths()} and
+     * {@link DataLakeFileSystemAsyncClient#listDeletedPaths(String)}
+     */
+    public void listDeletedPaths() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listDeletedPaths
+        client.listDeletedPaths().subscribe(path -> System.out.printf("Name: %s%n", path.getPath()));
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listDeletedPaths
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listDeletedPaths#String
+        int pageSize = 10;
+        client.listDeletedPaths("PathNamePrefixToMatch")
+            .byPage(pageSize)
+            .subscribe(page ->
+                page.getValue().forEach(path ->
+                    System.out.printf("Name: %s%n", path.getPath())));
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listDeletedPaths#String
     }
 
     /**

@@ -12,6 +12,7 @@ import com.azure.resourcemanager.monitor.models.RetentionPolicy;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** The log profile resource. */
 @JsonFlatten
@@ -164,6 +165,20 @@ public class LogProfileResourceInner extends Resource {
      */
     public LogProfileResourceInner withRetentionPolicy(RetentionPolicy retentionPolicy) {
         this.retentionPolicy = retentionPolicy;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LogProfileResourceInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LogProfileResourceInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

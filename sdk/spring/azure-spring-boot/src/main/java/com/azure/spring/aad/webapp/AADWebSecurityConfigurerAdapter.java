@@ -3,6 +3,7 @@
 
 package com.azure.spring.aad.webapp;
 
+import com.azure.spring.aad.AADClientRegistrationRepository;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,6 +13,7 @@ import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResp
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
@@ -26,7 +28,7 @@ import org.springframework.util.StringUtils;
 public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private AADWebAppClientRegistrationRepository repo;
+    private ClientRegistrationRepository repo;
     @Autowired
     private OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService;
     @Autowired
@@ -65,12 +67,15 @@ public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigu
 
     protected OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {
         DefaultAuthorizationCodeTokenResponseClient result = new DefaultAuthorizationCodeTokenResponseClient();
-        result.setRequestEntityConverter(
-            new AADOAuth2AuthorizationCodeGrantRequestEntityConverter(repo.getAzureClient()));
+        if (repo instanceof AADClientRegistrationRepository) {
+            result.setRequestEntityConverter(
+                new AADOAuth2AuthorizationCodeGrantRequestEntityConverter(
+                    ((AADClientRegistrationRepository) repo).getAzureClientAccessTokenScopes()));
+        }
         return result;
     }
 
     protected OAuth2AuthorizationRequestResolver requestResolver() {
-        return new AADOAuth2AuthorizationRequestResolver(this.repo);
+        return new AADOAuth2AuthorizationRequestResolver(this.repo, properties);
     }
 }

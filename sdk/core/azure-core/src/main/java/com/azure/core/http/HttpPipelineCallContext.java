@@ -3,13 +3,14 @@
 
 package com.azure.core.http;
 
+import com.azure.core.implementation.http.HttpPipelineCallContextHelper;
 import com.azure.core.util.Context;
 
 import java.util.Objects;
 import java.util.Optional;
 
 /**
- * Type representing context local to a single http request and it's response.
+ * Represents the information used to make a single HTTP request.
  */
 public final class HttpPipelineCallContext {
     private HttpRequest httpRequest;
@@ -44,6 +45,10 @@ public final class HttpPipelineCallContext {
         //
         this.httpRequest = httpRequest;
         this.data = data;
+    }
+
+    static {
+        HttpPipelineCallContextHelper.setAccessor(HttpPipelineCallContext::getContext);
     }
 
     /**

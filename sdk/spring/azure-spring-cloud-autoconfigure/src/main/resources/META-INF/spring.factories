@@ -4,8 +4,7 @@ com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubKafkaAutoConfiguratio
 com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusQueueAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusTopicAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.telemetry.TelemetryAutoConfiguration
+com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusTopicAutoConfiguration
 
 org.springframework.boot.env.EnvironmentPostProcessor=\
 com.azure.spring.cloud.autoconfigure.cloudfoundry.AzureCloudFoundryEnvironmentPostProcessor

@@ -3,19 +3,21 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.communication.azure.com/sms?api-version=2021-03-07",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-sms/1.0.0-beta.5 (11.0.8; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-azure-communication-sms/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "bddca24c-16a5-4078-b0e2-ad5fbd4166a7",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
       "api-supported-versions" : "2020-07-20-preview1, 2020-08-20-preview, 2021-03-07",
-      "X-Processing-Time" : "451ms",
-      "MS-CV" : "YrhFuMSDX0G4oLFiLo5H5g.0",
+      "X-Processing-Time" : "537ms",
+      "MS-CV" : "ZlUTtF/uPkSZcA9iTkWyuQ.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0Fn5CYAAAAAAv4V8LzryWRLTFjso7E2iHWVZSMzBFREdFMDQwOAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "X-Azure-Ref" : "0hL/DYAAAAADmIKVz3R67Q7IlW36zBGjpWVZSMzBFREdFMDMxMwA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "StatusCode" : "202",
-      "Body" : "{\"value\":[{\"to\":\"REDACTED\",\"messageId\":\"Outgoing_202103051853100b22344b-28de-47fe-b7f3-3d9f75862006_noam\",\"httpStatusCode\":202,\"successful\":true},{\"to\":\"REDACTED\",\"messageId\":\"Outgoing_20210305185310bada1967-50ef-4ad5-98d3-b7fc403f17af_noam\",\"httpStatusCode\":202,\"successful\":true}]}",
-      "Date" : "Fri, 05 Mar 2021 18:53:10 GMT",
+      "Body" : "{\"value\":[{\"to\":\"REDACTED\",\"messageId\":\"Outgoing_20210611195444c23c3b29-f2dc-474d-b16f-5ede4137e323_noam\",\"httpStatusCode\":202,\"repeatabilityResult\":\"accepted\",\"successful\":true},{\"to\":\"REDACTED\",\"messageId\":\"Outgoing_202106111954440d1656c7-c4bc-448c-be11-650491d37564_noam\",\"httpStatusCode\":202,\"repeatabilityResult\":\"accepted\",\"successful\":true}]}",
+      "Date" : "Fri, 11 Jun 2021 19:54:44 GMT",
       "Content-Type" : "application/json; charset=utf-8",
       "Request-Context" : "appId="
     },

@@ -9,6 +9,8 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.resourcemanager.cosmos.fluent.CassandraClustersClient;
+import com.azure.resourcemanager.cosmos.fluent.CassandraDataCentersClient;
 import com.azure.resourcemanager.cosmos.fluent.CassandraResourcesClient;
 import com.azure.resourcemanager.cosmos.fluent.CollectionPartitionRegionsClient;
 import com.azure.resourcemanager.cosmos.fluent.CollectionPartitionsClient;
@@ -19,6 +21,7 @@ import com.azure.resourcemanager.cosmos.fluent.DatabaseAccountRegionsClient;
 import com.azure.resourcemanager.cosmos.fluent.DatabaseAccountsClient;
 import com.azure.resourcemanager.cosmos.fluent.DatabasesClient;
 import com.azure.resourcemanager.cosmos.fluent.GremlinResourcesClient;
+import com.azure.resourcemanager.cosmos.fluent.LocationsClient;
 import com.azure.resourcemanager.cosmos.fluent.MongoDBResourcesClient;
 import com.azure.resourcemanager.cosmos.fluent.NotebookWorkspacesClient;
 import com.azure.resourcemanager.cosmos.fluent.OperationsClient;
@@ -29,6 +32,13 @@ import com.azure.resourcemanager.cosmos.fluent.PercentileTargetsClient;
 import com.azure.resourcemanager.cosmos.fluent.PercentilesClient;
 import com.azure.resourcemanager.cosmos.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.cosmos.fluent.PrivateLinkResourcesClient;
+import com.azure.resourcemanager.cosmos.fluent.RestorableDatabaseAccountsClient;
+import com.azure.resourcemanager.cosmos.fluent.RestorableMongodbCollectionsClient;
+import com.azure.resourcemanager.cosmos.fluent.RestorableMongodbDatabasesClient;
+import com.azure.resourcemanager.cosmos.fluent.RestorableMongodbResourcesClient;
+import com.azure.resourcemanager.cosmos.fluent.RestorableSqlContainersClient;
+import com.azure.resourcemanager.cosmos.fluent.RestorableSqlDatabasesClient;
+import com.azure.resourcemanager.cosmos.fluent.RestorableSqlResourcesClient;
 import com.azure.resourcemanager.cosmos.fluent.SqlResourcesClient;
 import com.azure.resourcemanager.cosmos.fluent.TableResourcesClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
@@ -327,6 +337,18 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
         return this.gremlinResources;
     }
 
+    /** The LocationsClient object to access its operations. */
+    private final LocationsClient locations;
+
+    /**
+     * Gets the LocationsClient object to access its operations.
+     *
+     * @return the LocationsClient object.
+     */
+    public LocationsClient getLocations() {
+        return this.locations;
+    }
+
     /** The NotebookWorkspacesClient object to access its operations. */
     private final NotebookWorkspacesClient notebookWorkspaces;
 
@@ -337,6 +359,18 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
      */
     public NotebookWorkspacesClient getNotebookWorkspaces() {
         return this.notebookWorkspaces;
+    }
+
+    /** The PrivateEndpointConnectionsClient object to access its operations. */
+    private final PrivateEndpointConnectionsClient privateEndpointConnections;
+
+    /**
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
+     *
+     * @return the PrivateEndpointConnectionsClient object.
+     */
+    public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
+        return this.privateEndpointConnections;
     }
 
     /** The PrivateLinkResourcesClient object to access its operations. */
@@ -351,16 +385,112 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
         return this.privateLinkResources;
     }
 
-    /** The PrivateEndpointConnectionsClient object to access its operations. */
-    private final PrivateEndpointConnectionsClient privateEndpointConnections;
+    /** The RestorableDatabaseAccountsClient object to access its operations. */
+    private final RestorableDatabaseAccountsClient restorableDatabaseAccounts;
 
     /**
-     * Gets the PrivateEndpointConnectionsClient object to access its operations.
+     * Gets the RestorableDatabaseAccountsClient object to access its operations.
      *
-     * @return the PrivateEndpointConnectionsClient object.
+     * @return the RestorableDatabaseAccountsClient object.
      */
-    public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
-        return this.privateEndpointConnections;
+    public RestorableDatabaseAccountsClient getRestorableDatabaseAccounts() {
+        return this.restorableDatabaseAccounts;
+    }
+
+    /** The RestorableSqlDatabasesClient object to access its operations. */
+    private final RestorableSqlDatabasesClient restorableSqlDatabases;
+
+    /**
+     * Gets the RestorableSqlDatabasesClient object to access its operations.
+     *
+     * @return the RestorableSqlDatabasesClient object.
+     */
+    public RestorableSqlDatabasesClient getRestorableSqlDatabases() {
+        return this.restorableSqlDatabases;
+    }
+
+    /** The RestorableSqlContainersClient object to access its operations. */
+    private final RestorableSqlContainersClient restorableSqlContainers;
+
+    /**
+     * Gets the RestorableSqlContainersClient object to access its operations.
+     *
+     * @return the RestorableSqlContainersClient object.
+     */
+    public RestorableSqlContainersClient getRestorableSqlContainers() {
+        return this.restorableSqlContainers;
+    }
+
+    /** The RestorableSqlResourcesClient object to access its operations. */
+    private final RestorableSqlResourcesClient restorableSqlResources;
+
+    /**
+     * Gets the RestorableSqlResourcesClient object to access its operations.
+     *
+     * @return the RestorableSqlResourcesClient object.
+     */
+    public RestorableSqlResourcesClient getRestorableSqlResources() {
+        return this.restorableSqlResources;
+    }
+
+    /** The RestorableMongodbDatabasesClient object to access its operations. */
+    private final RestorableMongodbDatabasesClient restorableMongodbDatabases;
+
+    /**
+     * Gets the RestorableMongodbDatabasesClient object to access its operations.
+     *
+     * @return the RestorableMongodbDatabasesClient object.
+     */
+    public RestorableMongodbDatabasesClient getRestorableMongodbDatabases() {
+        return this.restorableMongodbDatabases;
+    }
+
+    /** The RestorableMongodbCollectionsClient object to access its operations. */
+    private final RestorableMongodbCollectionsClient restorableMongodbCollections;
+
+    /**
+     * Gets the RestorableMongodbCollectionsClient object to access its operations.
+     *
+     * @return the RestorableMongodbCollectionsClient object.
+     */
+    public RestorableMongodbCollectionsClient getRestorableMongodbCollections() {
+        return this.restorableMongodbCollections;
+    }
+
+    /** The RestorableMongodbResourcesClient object to access its operations. */
+    private final RestorableMongodbResourcesClient restorableMongodbResources;
+
+    /**
+     * Gets the RestorableMongodbResourcesClient object to access its operations.
+     *
+     * @return the RestorableMongodbResourcesClient object.
+     */
+    public RestorableMongodbResourcesClient getRestorableMongodbResources() {
+        return this.restorableMongodbResources;
+    }
+
+    /** The CassandraClustersClient object to access its operations. */
+    private final CassandraClustersClient cassandraClusters;
+
+    /**
+     * Gets the CassandraClustersClient object to access its operations.
+     *
+     * @return the CassandraClustersClient object.
+     */
+    public CassandraClustersClient getCassandraClusters() {
+        return this.cassandraClusters;
+    }
+
+    /** The CassandraDataCentersClient object to access its operations. */
+    private final CassandraDataCentersClient cassandraDataCenters;
+
+    /**
+     * Gets the CassandraDataCentersClient object to access its operations.
+     *
+     * @return the CassandraDataCentersClient object.
+     */
+    public CassandraDataCentersClient getCassandraDataCenters() {
+        return this.cassandraDataCenters;
     }
 
     /**
@@ -386,7 +516,7 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-03-15";
+        this.apiVersion = "2021-10-15";
         this.databaseAccounts = new DatabaseAccountsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.databases = new DatabasesClientImpl(this);
@@ -405,8 +535,18 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
         this.tableResources = new TableResourcesClientImpl(this);
         this.cassandraResources = new CassandraResourcesClientImpl(this);
         this.gremlinResources = new GremlinResourcesClientImpl(this);
+        this.locations = new LocationsClientImpl(this);
         this.notebookWorkspaces = new NotebookWorkspacesClientImpl(this);
-        this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
+        this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
+        this.restorableDatabaseAccounts = new RestorableDatabaseAccountsClientImpl(this);
+        this.restorableSqlDatabases = new RestorableSqlDatabasesClientImpl(this);
+        this.restorableSqlContainers = new RestorableSqlContainersClientImpl(this);
+        this.restorableSqlResources = new RestorableSqlResourcesClientImpl(this);
+        this.restorableMongodbDatabases = new RestorableMongodbDatabasesClientImpl(this);
+        this.restorableMongodbCollections = new RestorableMongodbCollectionsClientImpl(this);
+        this.restorableMongodbResources = new RestorableMongodbResourcesClientImpl(this);
+        this.cassandraClusters = new CassandraClustersClientImpl(this);
+        this.cassandraDataCenters = new CassandraDataCentersClientImpl(this);
     }
 }

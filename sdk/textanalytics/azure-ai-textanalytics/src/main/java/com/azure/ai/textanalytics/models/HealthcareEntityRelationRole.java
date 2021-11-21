@@ -4,10 +4,12 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.HealthcareEntityRelationRolePropertiesHelper;
+import com.azure.core.annotation.Immutable;
 
 /**
  * The {@link HealthcareEntityRelationRole} model.
  */
+@Immutable
 public final class HealthcareEntityRelationRole {
     /*
      * Role of entity in the relationship. For example: 'CD20-positive diffuse
@@ -35,20 +37,20 @@ public final class HealthcareEntityRelationRole {
     }
 
     /**
-     * Get the role property: Role of entity in the relationship. For example: 'CD20-positive diffuse large B-cell
+     * Gets the role property: Role of entity in the relationship. For example: 'CD20-positive diffuse large B-cell
      * lymphoma' has the following entities with their roles in parenthesis: CD20 (GeneOrProtein), Positive
      * (Expression), diffuse large B-cell lymphoma (Diagnosis).
      *
-     * @return the role name value.
+     * @return The role name value.
      */
     public String getName() {
         return this.name;
     }
 
     /**
-     * Get the healthcare entity object.
+     * Gets the healthcare entity object.
      *
-     * @return the healthcare entity object.
+     * @return The healthcare entity object.
      */
     public HealthcareEntity getEntity() {
         return this.entity;

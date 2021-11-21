@@ -8,7 +8,7 @@ To build the SDK for Communication Identity library, simply Install AutoRest and
 ### Setup
 ```ps
 Fork and clone https://github.com/Azure/autorest.java
-git checkout v4
+git checkout main
 git submodule update --init --recursive
 mvn package -Dlocal
 npm install
@@ -19,15 +19,15 @@ npm install -g autorest
 
 ```ps
 cd <swagger-folder>
-autorest README.md --java --v4 --use=@autorest/java@4.0.2
+autorest README.md --java --v4 --use=@autorest/java@4.0.2X
 ```
 
 ### Code generation settings
 ``` yaml
-tag: package-2021-03-07
-require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/bf081421869ccd31d9fd87084b07a1e246aee310/specification/communication/data-plane/Microsoft.CommunicationServicesIdentity/readme.md
+tag: package-preview-2021-10
+require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/6f40b65610a4fad7a03f3fe8c57e8c0a9c3b77d0/specification/communication/data-plane/Identity/readme.md
 add-context-parameter: true
-custom-types: CommunicationIdentityTokenScope, CommunicationTokenScope
+custom-types: CommunicationTokenScope
 custom-types-subpackage: models
 models-subpackage: implementation.models
 ```

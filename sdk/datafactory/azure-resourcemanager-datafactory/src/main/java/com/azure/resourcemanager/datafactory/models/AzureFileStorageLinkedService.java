@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.AzureFileStorageLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,289 +17,24 @@ import java.util.Map;
 /** Azure File Storage linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureFileStorage")
-@JsonFlatten
 @Fluent
-public class AzureFileStorageLinkedService extends LinkedService {
+public final class AzureFileStorageLinkedService extends LinkedService {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFileStorageLinkedService.class);
 
     /*
-     * Host name of the server. Type: string (or Expression with resultType
-     * string).
+     * Azure File Storage linked service properties.
      */
-    @JsonProperty(value = "typeProperties.host")
-    private Object host;
-
-    /*
-     * User ID to logon the server. Type: string (or Expression with resultType
-     * string).
-     */
-    @JsonProperty(value = "typeProperties.userId")
-    private Object userId;
-
-    /*
-     * Password to logon the server.
-     */
-    @JsonProperty(value = "typeProperties.password")
-    private SecretBase password;
-
-    /*
-     * The connection string. It is mutually exclusive with sasUri property.
-     * Type: string, SecureString or AzureKeyVaultSecretReference.
-     */
-    @JsonProperty(value = "typeProperties.connectionString")
-    private Object connectionString;
-
-    /*
-     * The Azure key vault secret reference of accountKey in connection string.
-     */
-    @JsonProperty(value = "typeProperties.accountKey")
-    private AzureKeyVaultSecretReference accountKey;
-
-    /*
-     * SAS URI of the Azure File resource. It is mutually exclusive with
-     * connectionString property. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
-     */
-    @JsonProperty(value = "typeProperties.sasUri")
-    private Object sasUri;
-
-    /*
-     * The Azure key vault secret reference of sasToken in sas uri.
-     */
-    @JsonProperty(value = "typeProperties.sasToken")
-    private AzureKeyVaultSecretReference sasToken;
-
-    /*
-     * The azure file share name. It is required when auth with
-     * accountKey/sasToken. Type: string (or Expression with resultType
-     * string).
-     */
-    @JsonProperty(value = "typeProperties.fileShare")
-    private Object fileShare;
-
-    /*
-     * The azure file share snapshot version. Type: string (or Expression with
-     * resultType string).
-     */
-    @JsonProperty(value = "typeProperties.snapshot")
-    private Object snapshot;
-
-    /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
-    private Object encryptedCredential;
+    @JsonProperty(value = "typeProperties", required = true)
+    private AzureFileStorageLinkedServiceTypeProperties innerTypeProperties =
+        new AzureFileStorageLinkedServiceTypeProperties();
 
     /**
-     * Get the host property: Host name of the server. Type: string (or Expression with resultType string).
+     * Get the innerTypeProperties property: Azure File Storage linked service properties.
      *
-     * @return the host value.
+     * @return the innerTypeProperties value.
      */
-    public Object host() {
-        return this.host;
-    }
-
-    /**
-     * Set the host property: Host name of the server. Type: string (or Expression with resultType string).
-     *
-     * @param host the host value to set.
-     * @return the AzureFileStorageLinkedService object itself.
-     */
-    public AzureFileStorageLinkedService withHost(Object host) {
-        this.host = host;
-        return this;
-    }
-
-    /**
-     * Get the userId property: User ID to logon the server. Type: string (or Expression with resultType string).
-     *
-     * @return the userId value.
-     */
-    public Object userId() {
-        return this.userId;
-    }
-
-    /**
-     * Set the userId property: User ID to logon the server. Type: string (or Expression with resultType string).
-     *
-     * @param userId the userId value to set.
-     * @return the AzureFileStorageLinkedService object itself.
-     */
-    public AzureFileStorageLinkedService withUserId(Object userId) {
-        this.userId = userId;
-        return this;
-    }
-
-    /**
-     * Get the password property: Password to logon the server.
-     *
-     * @return the password value.
-     */
-    public SecretBase password() {
-        return this.password;
-    }
-
-    /**
-     * Set the password property: Password to logon the server.
-     *
-     * @param password the password value to set.
-     * @return the AzureFileStorageLinkedService object itself.
-     */
-    public AzureFileStorageLinkedService withPassword(SecretBase password) {
-        this.password = password;
-        return this;
-    }
-
-    /**
-     * Get the connectionString property: The connection string. It is mutually exclusive with sasUri property. Type:
-     * string, SecureString or AzureKeyVaultSecretReference.
-     *
-     * @return the connectionString value.
-     */
-    public Object connectionString() {
-        return this.connectionString;
-    }
-
-    /**
-     * Set the connectionString property: The connection string. It is mutually exclusive with sasUri property. Type:
-     * string, SecureString or AzureKeyVaultSecretReference.
-     *
-     * @param connectionString the connectionString value to set.
-     * @return the AzureFileStorageLinkedService object itself.
-     */
-    public AzureFileStorageLinkedService withConnectionString(Object connectionString) {
-        this.connectionString = connectionString;
-        return this;
-    }
-
-    /**
-     * Get the accountKey property: The Azure key vault secret reference of accountKey in connection string.
-     *
-     * @return the accountKey value.
-     */
-    public AzureKeyVaultSecretReference accountKey() {
-        return this.accountKey;
-    }
-
-    /**
-     * Set the accountKey property: The Azure key vault secret reference of accountKey in connection string.
-     *
-     * @param accountKey the accountKey value to set.
-     * @return the AzureFileStorageLinkedService object itself.
-     */
-    public AzureFileStorageLinkedService withAccountKey(AzureKeyVaultSecretReference accountKey) {
-        this.accountKey = accountKey;
-        return this;
-    }
-
-    /**
-     * Get the sasUri property: SAS URI of the Azure File resource. It is mutually exclusive with connectionString
-     * property. Type: string, SecureString or AzureKeyVaultSecretReference.
-     *
-     * @return the sasUri value.
-     */
-    public Object sasUri() {
-        return this.sasUri;
-    }
-
-    /**
-     * Set the sasUri property: SAS URI of the Azure File resource. It is mutually exclusive with connectionString
-     * property. Type: string, SecureString or AzureKeyVaultSecretReference.
-     *
-     * @param sasUri the sasUri value to set.
-     * @return the AzureFileStorageLinkedService object itself.
-     */
-    public AzureFileStorageLinkedService withSasUri(Object sasUri) {
-        this.sasUri = sasUri;
-        return this;
-    }
-
-    /**
-     * Get the sasToken property: The Azure key vault secret reference of sasToken in sas uri.
-     *
-     * @return the sasToken value.
-     */
-    public AzureKeyVaultSecretReference sasToken() {
-        return this.sasToken;
-    }
-
-    /**
-     * Set the sasToken property: The Azure key vault secret reference of sasToken in sas uri.
-     *
-     * @param sasToken the sasToken value to set.
-     * @return the AzureFileStorageLinkedService object itself.
-     */
-    public AzureFileStorageLinkedService withSasToken(AzureKeyVaultSecretReference sasToken) {
-        this.sasToken = sasToken;
-        return this;
-    }
-
-    /**
-     * Get the fileShare property: The azure file share name. It is required when auth with accountKey/sasToken. Type:
-     * string (or Expression with resultType string).
-     *
-     * @return the fileShare value.
-     */
-    public Object fileShare() {
-        return this.fileShare;
-    }
-
-    /**
-     * Set the fileShare property: The azure file share name. It is required when auth with accountKey/sasToken. Type:
-     * string (or Expression with resultType string).
-     *
-     * @param fileShare the fileShare value to set.
-     * @return the AzureFileStorageLinkedService object itself.
-     */
-    public AzureFileStorageLinkedService withFileShare(Object fileShare) {
-        this.fileShare = fileShare;
-        return this;
-    }
-
-    /**
-     * Get the snapshot property: The azure file share snapshot version. Type: string (or Expression with resultType
-     * string).
-     *
-     * @return the snapshot value.
-     */
-    public Object snapshot() {
-        return this.snapshot;
-    }
-
-    /**
-     * Set the snapshot property: The azure file share snapshot version. Type: string (or Expression with resultType
-     * string).
-     *
-     * @param snapshot the snapshot value to set.
-     * @return the AzureFileStorageLinkedService object itself.
-     */
-    public AzureFileStorageLinkedService withSnapshot(Object snapshot) {
-        this.snapshot = snapshot;
-        return this;
-    }
-
-    /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @return the encryptedCredential value.
-     */
-    public Object encryptedCredential() {
-        return this.encryptedCredential;
-    }
-
-    /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @param encryptedCredential the encryptedCredential value to set.
-     * @return the AzureFileStorageLinkedService object itself.
-     */
-    public AzureFileStorageLinkedService withEncryptedCredential(Object encryptedCredential) {
-        this.encryptedCredential = encryptedCredential;
-        return this;
+    private AzureFileStorageLinkedServiceTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -331,6 +66,246 @@ public class AzureFileStorageLinkedService extends LinkedService {
     }
 
     /**
+     * Get the host property: Host name of the server. Type: string (or Expression with resultType string).
+     *
+     * @return the host value.
+     */
+    public Object host() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().host();
+    }
+
+    /**
+     * Set the host property: Host name of the server. Type: string (or Expression with resultType string).
+     *
+     * @param host the host value to set.
+     * @return the AzureFileStorageLinkedService object itself.
+     */
+    public AzureFileStorageLinkedService withHost(Object host) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureFileStorageLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withHost(host);
+        return this;
+    }
+
+    /**
+     * Get the userId property: User ID to logon the server. Type: string (or Expression with resultType string).
+     *
+     * @return the userId value.
+     */
+    public Object userId() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().userId();
+    }
+
+    /**
+     * Set the userId property: User ID to logon the server. Type: string (or Expression with resultType string).
+     *
+     * @param userId the userId value to set.
+     * @return the AzureFileStorageLinkedService object itself.
+     */
+    public AzureFileStorageLinkedService withUserId(Object userId) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureFileStorageLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withUserId(userId);
+        return this;
+    }
+
+    /**
+     * Get the password property: Password to logon the server.
+     *
+     * @return the password value.
+     */
+    public SecretBase password() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().password();
+    }
+
+    /**
+     * Set the password property: Password to logon the server.
+     *
+     * @param password the password value to set.
+     * @return the AzureFileStorageLinkedService object itself.
+     */
+    public AzureFileStorageLinkedService withPassword(SecretBase password) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureFileStorageLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withPassword(password);
+        return this;
+    }
+
+    /**
+     * Get the connectionString property: The connection string. It is mutually exclusive with sasUri property. Type:
+     * string, SecureString or AzureKeyVaultSecretReference.
+     *
+     * @return the connectionString value.
+     */
+    public Object connectionString() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().connectionString();
+    }
+
+    /**
+     * Set the connectionString property: The connection string. It is mutually exclusive with sasUri property. Type:
+     * string, SecureString or AzureKeyVaultSecretReference.
+     *
+     * @param connectionString the connectionString value to set.
+     * @return the AzureFileStorageLinkedService object itself.
+     */
+    public AzureFileStorageLinkedService withConnectionString(Object connectionString) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureFileStorageLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withConnectionString(connectionString);
+        return this;
+    }
+
+    /**
+     * Get the accountKey property: The Azure key vault secret reference of accountKey in connection string.
+     *
+     * @return the accountKey value.
+     */
+    public AzureKeyVaultSecretReference accountKey() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().accountKey();
+    }
+
+    /**
+     * Set the accountKey property: The Azure key vault secret reference of accountKey in connection string.
+     *
+     * @param accountKey the accountKey value to set.
+     * @return the AzureFileStorageLinkedService object itself.
+     */
+    public AzureFileStorageLinkedService withAccountKey(AzureKeyVaultSecretReference accountKey) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureFileStorageLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withAccountKey(accountKey);
+        return this;
+    }
+
+    /**
+     * Get the sasUri property: SAS URI of the Azure File resource. It is mutually exclusive with connectionString
+     * property. Type: string, SecureString or AzureKeyVaultSecretReference.
+     *
+     * @return the sasUri value.
+     */
+    public Object sasUri() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().sasUri();
+    }
+
+    /**
+     * Set the sasUri property: SAS URI of the Azure File resource. It is mutually exclusive with connectionString
+     * property. Type: string, SecureString or AzureKeyVaultSecretReference.
+     *
+     * @param sasUri the sasUri value to set.
+     * @return the AzureFileStorageLinkedService object itself.
+     */
+    public AzureFileStorageLinkedService withSasUri(Object sasUri) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureFileStorageLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withSasUri(sasUri);
+        return this;
+    }
+
+    /**
+     * Get the sasToken property: The Azure key vault secret reference of sasToken in sas uri.
+     *
+     * @return the sasToken value.
+     */
+    public AzureKeyVaultSecretReference sasToken() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().sasToken();
+    }
+
+    /**
+     * Set the sasToken property: The Azure key vault secret reference of sasToken in sas uri.
+     *
+     * @param sasToken the sasToken value to set.
+     * @return the AzureFileStorageLinkedService object itself.
+     */
+    public AzureFileStorageLinkedService withSasToken(AzureKeyVaultSecretReference sasToken) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureFileStorageLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withSasToken(sasToken);
+        return this;
+    }
+
+    /**
+     * Get the fileShare property: The azure file share name. It is required when auth with accountKey/sasToken. Type:
+     * string (or Expression with resultType string).
+     *
+     * @return the fileShare value.
+     */
+    public Object fileShare() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().fileShare();
+    }
+
+    /**
+     * Set the fileShare property: The azure file share name. It is required when auth with accountKey/sasToken. Type:
+     * string (or Expression with resultType string).
+     *
+     * @param fileShare the fileShare value to set.
+     * @return the AzureFileStorageLinkedService object itself.
+     */
+    public AzureFileStorageLinkedService withFileShare(Object fileShare) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureFileStorageLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withFileShare(fileShare);
+        return this;
+    }
+
+    /**
+     * Get the snapshot property: The azure file share snapshot version. Type: string (or Expression with resultType
+     * string).
+     *
+     * @return the snapshot value.
+     */
+    public Object snapshot() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().snapshot();
+    }
+
+    /**
+     * Set the snapshot property: The azure file share snapshot version. Type: string (or Expression with resultType
+     * string).
+     *
+     * @param snapshot the snapshot value to set.
+     * @return the AzureFileStorageLinkedService object itself.
+     */
+    public AzureFileStorageLinkedService withSnapshot(Object snapshot) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureFileStorageLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withSnapshot(snapshot);
+        return this;
+    }
+
+    /**
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @return the encryptedCredential value.
+     */
+    public Object encryptedCredential() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
+    }
+
+    /**
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @param encryptedCredential the encryptedCredential value to set.
+     * @return the AzureFileStorageLinkedService object itself.
+     */
+    public AzureFileStorageLinkedService withEncryptedCredential(Object encryptedCredential) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureFileStorageLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEncryptedCredential(encryptedCredential);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -338,14 +313,13 @@ public class AzureFileStorageLinkedService extends LinkedService {
     @Override
     public void validate() {
         super.validate();
-        if (password() != null) {
-            password().validate();
-        }
-        if (accountKey() != null) {
-            accountKey().validate();
-        }
-        if (sasToken() != null) {
-            sasToken().validate();
+        if (innerTypeProperties() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerTypeProperties in model AzureFileStorageLinkedService"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

@@ -44,6 +44,7 @@ public class EnvironmentVariable {
     public static final String SPRING_CLIENT_ID = System.getenv("SPRING_CLIENT_ID");
     public static final String SPRING_CLIENT_SECRET = System.getenv("SPRING_CLIENT_SECRET");
     public static final String SPRING_RESOURCE_GROUP = System.getenv("SPRING_RESOURCE_GROUP");
+    public static final String KEY_VAULT_SPRING_RESOURCE_GROUP = System.getenv("KEY_VAULT_SPRING_RESOURCE_GROUP");
     public static final String SPRING_SUBSCRIPTION_ID = System.getenv("SPRING_SUBSCRIPTION_ID");
     public static final String SPRING_TENANT_ID = System.getenv("SPRING_TENANT_ID");
     public static final String SPRING_JMS_STANDARD_SERVICEBUS_CONNECTION_STRING = System.getenv("SPRING_JMS_STANDARD_SERVICEBUS_CONNECTION_STRING");

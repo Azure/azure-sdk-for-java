@@ -1,10 +1,55 @@
 # Release History
 
-## 12.12.0-beta.1 (Unreleased)
+## 12.15.0-beta.2 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 12.14.1 (2021-11-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.21.0` to version `1.22.0`.
+- Upgraded `azure-core-http-netty` from `1.11.1` to version `1.11.2`.
+
+## 12.15.0-beta.1 (2021-11-05)
+
+### Features Added
+- Added support for the 2020-12-06 service version.
+
+## 12.14.0 (2021-10-12)
+
+### Other Changes
+#### Dependency Updates
+- Updated to version `1.21.0` of `azure-core`
+
+## 12.13.0 (2021-09-15)
+- GA release
+
+## 12.13.0-beta.1 (2021-07-28)
+- Added support for the 2020-10-02 service version.
+- Added support for the set immutability policy permission for Account SAS.
+- Fixed bug where InputStream to Flux converter could append extra bytes at the end of payload.
+
+## 12.12.0 (2021-06-09)
+- GA release
+
+## 12.12.0-beta.1 (2021-05-13)
+- Fixed bug in Utility.convertStreamToByteBuffer where variable updates would happen incorrectly if we hit the end of stream.
+
+## 12.11.1 (2021-05-13)
+### Dependency Updates
+- Updated `azure-core` to version `1.16.0`
 
 ## 12.11.0 (2021-04-29)
-- Fixed concurrency issue in UploadBufferPool that caused large files to hang.
+- Fixed concurrency issue in UploadBufferPool that caused large files to not respond.
 
 ## 12.11.0-beta.3 (2021-04-16)
 - Fixed a bug where connection strings with unencoded SAS's would result in URL exceptions. 

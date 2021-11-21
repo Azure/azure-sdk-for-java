@@ -20,7 +20,7 @@ public final class EventHubConsumerGroupInfoInner extends ProxyResource {
      * The tags.
      */
     @JsonProperty(value = "properties")
-    private Map<String, String> properties;
+    private Map<String, Object> properties;
 
     /*
      * The etag.
@@ -33,7 +33,7 @@ public final class EventHubConsumerGroupInfoInner extends ProxyResource {
      *
      * @return the properties value.
      */
-    public Map<String, String> properties() {
+    public Map<String, Object> properties() {
         return this.properties;
     }
 
@@ -43,7 +43,7 @@ public final class EventHubConsumerGroupInfoInner extends ProxyResource {
      * @param properties the properties value to set.
      * @return the EventHubConsumerGroupInfoInner object itself.
      */
-    public EventHubConsumerGroupInfoInner withProperties(Map<String, String> properties) {
+    public EventHubConsumerGroupInfoInner withProperties(Map<String, Object> properties) {
         this.properties = properties;
         return this;
     }

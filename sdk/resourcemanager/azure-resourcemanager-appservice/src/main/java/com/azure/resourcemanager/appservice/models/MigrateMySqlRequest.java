@@ -5,28 +5,37 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.fluent.models.MigrateMySqlRequestProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** MySQL migration request. */
-@JsonFlatten
 @Fluent
-public class MigrateMySqlRequest extends ProxyOnlyResource {
+public final class MigrateMySqlRequest extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MigrateMySqlRequest.class);
 
     /*
-     * Connection string to the remote MySQL database.
+     * MigrateMySqlRequest resource specific properties
      */
-    @JsonProperty(value = "properties.connectionString")
-    private String connectionString;
+    @JsonProperty(value = "properties")
+    private MigrateMySqlRequestProperties innerProperties;
 
-    /*
-     * The type of migration operation to be done
+    /**
+     * Get the innerProperties property: MigrateMySqlRequest resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.migrationType")
-    private MySqlMigrationType migrationType;
+    private MigrateMySqlRequestProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MigrateMySqlRequest withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the connectionString property: Connection string to the remote MySQL database.
@@ -34,7 +43,7 @@ public class MigrateMySqlRequest extends ProxyOnlyResource {
      * @return the connectionString value.
      */
     public String connectionString() {
-        return this.connectionString;
+        return this.innerProperties() == null ? null : this.innerProperties().connectionString();
     }
 
     /**
@@ -44,7 +53,10 @@ public class MigrateMySqlRequest extends ProxyOnlyResource {
      * @return the MigrateMySqlRequest object itself.
      */
     public MigrateMySqlRequest withConnectionString(String connectionString) {
-        this.connectionString = connectionString;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MigrateMySqlRequestProperties();
+        }
+        this.innerProperties().withConnectionString(connectionString);
         return this;
     }
 
@@ -54,7 +66,7 @@ public class MigrateMySqlRequest extends ProxyOnlyResource {
      * @return the migrationType value.
      */
     public MySqlMigrationType migrationType() {
-        return this.migrationType;
+        return this.innerProperties() == null ? null : this.innerProperties().migrationType();
     }
 
     /**
@@ -64,14 +76,10 @@ public class MigrateMySqlRequest extends ProxyOnlyResource {
      * @return the MigrateMySqlRequest object itself.
      */
     public MigrateMySqlRequest withMigrationType(MySqlMigrationType migrationType) {
-        this.migrationType = migrationType;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public MigrateMySqlRequest withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MigrateMySqlRequestProperties();
+        }
+        this.innerProperties().withMigrationType(migrationType);
         return this;
     }
 
@@ -83,5 +91,8 @@ public class MigrateMySqlRequest extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

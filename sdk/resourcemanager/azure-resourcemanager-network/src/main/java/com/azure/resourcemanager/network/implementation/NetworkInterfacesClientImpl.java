@@ -46,7 +46,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -82,6 +81,56 @@ public final class NetworkInterfacesClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     private interface NetworkInterfacesService {
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/cloudServices/{cloudServiceName}/roleInstances/{roleInstanceName}/networkInterfaces")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<NetworkInterfaceListResult>> listCloudServiceRoleInstanceNetworkInterfaces(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("cloudServiceName") String cloudServiceName,
+            @PathParam("roleInstanceName") String roleInstanceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/cloudServices/{cloudServiceName}/networkInterfaces")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<NetworkInterfaceListResult>> listCloudServiceNetworkInterfaces(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("cloudServiceName") String cloudServiceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/cloudServices/{cloudServiceName}/roleInstances/{roleInstanceName}/networkInterfaces"
+                + "/{networkInterfaceName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<NetworkInterfaceInner>> getCloudServiceNetworkInterface(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("cloudServiceName") String cloudServiceName,
+            @PathParam("roleInstanceName") String roleInstanceName,
+            @PathParam("networkInterfaceName") String networkInterfaceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("$expand") String expand,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
@@ -291,52 +340,22 @@ public final class NetworkInterfacesClientImpl
             Context context);
 
         @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/cloudServices/{cloudServiceName}/roleInstances/{roleInstanceName}/networkInterfaces")
+        @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkInterfaceListResult>> listCloudServiceRoleInstanceNetworkInterfaces(
+        Mono<Response<NetworkInterfaceListResult>> listCloudServiceRoleInstanceNetworkInterfacesNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("cloudServiceName") String cloudServiceName,
-            @PathParam("roleInstanceName") String roleInstanceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/cloudServices/{cloudServiceName}/networkInterfaces")
+        @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkInterfaceListResult>> listCloudServiceNetworkInterfaces(
+        Mono<Response<NetworkInterfaceListResult>> listCloudServiceNetworkInterfacesNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("cloudServiceName") String cloudServiceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/cloudServices/{cloudServiceName}/roleInstances/{roleInstanceName}/networkInterfaces"
-                + "/{networkInterfaceName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkInterfaceInner>> getCloudServiceNetworkInterface(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("cloudServiceName") String cloudServiceName,
-            @PathParam("roleInstanceName") String roleInstanceName,
-            @PathParam("networkInterfaceName") String networkInterfaceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("$expand") String expand,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -389,26 +408,645 @@ public final class NetworkInterfacesClientImpl
             @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
             Context context);
+    }
 
-        @Headers({"Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkInterfaceListResult>> listCloudServiceRoleInstanceNetworkInterfacesNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+    /**
+     * Gets information about all network interfaces in a role instance in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @param roleInstanceName The name of role instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all network interfaces in a role instance in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<NetworkInterfaceInner>> listCloudServiceRoleInstanceNetworkInterfacesSinglePageAsync(
+        String resourceGroupName, String cloudServiceName, String roleInstanceName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (cloudServiceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
+        }
+        if (roleInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter roleInstanceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2021-05-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listCloudServiceRoleInstanceNetworkInterfaces(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            cloudServiceName,
+                            roleInstanceName,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            accept,
+                            context))
+            .<PagedResponse<NetworkInterfaceInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
 
-        @Headers({"Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkInterfaceListResult>> listCloudServiceNetworkInterfacesNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+    /**
+     * Gets information about all network interfaces in a role instance in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @param roleInstanceName The name of role instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all network interfaces in a role instance in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<NetworkInterfaceInner>> listCloudServiceRoleInstanceNetworkInterfacesSinglePageAsync(
+        String resourceGroupName, String cloudServiceName, String roleInstanceName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (cloudServiceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
+        }
+        if (roleInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter roleInstanceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2021-05-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listCloudServiceRoleInstanceNetworkInterfaces(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                cloudServiceName,
+                roleInstanceName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Gets information about all network interfaces in a role instance in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @param roleInstanceName The name of role instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all network interfaces in a role instance in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<NetworkInterfaceInner> listCloudServiceRoleInstanceNetworkInterfacesAsync(
+        String resourceGroupName, String cloudServiceName, String roleInstanceName) {
+        return new PagedFlux<>(
+            () ->
+                listCloudServiceRoleInstanceNetworkInterfacesSinglePageAsync(
+                    resourceGroupName, cloudServiceName, roleInstanceName),
+            nextLink -> listCloudServiceRoleInstanceNetworkInterfacesNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets information about all network interfaces in a role instance in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @param roleInstanceName The name of role instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all network interfaces in a role instance in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<NetworkInterfaceInner> listCloudServiceRoleInstanceNetworkInterfacesAsync(
+        String resourceGroupName, String cloudServiceName, String roleInstanceName, Context context) {
+        return new PagedFlux<>(
+            () ->
+                listCloudServiceRoleInstanceNetworkInterfacesSinglePageAsync(
+                    resourceGroupName, cloudServiceName, roleInstanceName, context),
+            nextLink -> listCloudServiceRoleInstanceNetworkInterfacesNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Gets information about all network interfaces in a role instance in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @param roleInstanceName The name of role instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all network interfaces in a role instance in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<NetworkInterfaceInner> listCloudServiceRoleInstanceNetworkInterfaces(
+        String resourceGroupName, String cloudServiceName, String roleInstanceName) {
+        return new PagedIterable<>(
+            listCloudServiceRoleInstanceNetworkInterfacesAsync(resourceGroupName, cloudServiceName, roleInstanceName));
+    }
+
+    /**
+     * Gets information about all network interfaces in a role instance in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @param roleInstanceName The name of role instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all network interfaces in a role instance in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<NetworkInterfaceInner> listCloudServiceRoleInstanceNetworkInterfaces(
+        String resourceGroupName, String cloudServiceName, String roleInstanceName, Context context) {
+        return new PagedIterable<>(
+            listCloudServiceRoleInstanceNetworkInterfacesAsync(
+                resourceGroupName, cloudServiceName, roleInstanceName, context));
+    }
+
+    /**
+     * Gets all network interfaces in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all network interfaces in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<NetworkInterfaceInner>> listCloudServiceNetworkInterfacesSinglePageAsync(
+        String resourceGroupName, String cloudServiceName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (cloudServiceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2021-05-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listCloudServiceNetworkInterfaces(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            cloudServiceName,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            accept,
+                            context))
+            .<PagedResponse<NetworkInterfaceInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets all network interfaces in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all network interfaces in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<NetworkInterfaceInner>> listCloudServiceNetworkInterfacesSinglePageAsync(
+        String resourceGroupName, String cloudServiceName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (cloudServiceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2021-05-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listCloudServiceNetworkInterfaces(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                cloudServiceName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Gets all network interfaces in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all network interfaces in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<NetworkInterfaceInner> listCloudServiceNetworkInterfacesAsync(
+        String resourceGroupName, String cloudServiceName) {
+        return new PagedFlux<>(
+            () -> listCloudServiceNetworkInterfacesSinglePageAsync(resourceGroupName, cloudServiceName),
+            nextLink -> listCloudServiceNetworkInterfacesNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets all network interfaces in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all network interfaces in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<NetworkInterfaceInner> listCloudServiceNetworkInterfacesAsync(
+        String resourceGroupName, String cloudServiceName, Context context) {
+        return new PagedFlux<>(
+            () -> listCloudServiceNetworkInterfacesSinglePageAsync(resourceGroupName, cloudServiceName, context),
+            nextLink -> listCloudServiceNetworkInterfacesNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Gets all network interfaces in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all network interfaces in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<NetworkInterfaceInner> listCloudServiceNetworkInterfaces(
+        String resourceGroupName, String cloudServiceName) {
+        return new PagedIterable<>(listCloudServiceNetworkInterfacesAsync(resourceGroupName, cloudServiceName));
+    }
+
+    /**
+     * Gets all network interfaces in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all network interfaces in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<NetworkInterfaceInner> listCloudServiceNetworkInterfaces(
+        String resourceGroupName, String cloudServiceName, Context context) {
+        return new PagedIterable<>(
+            listCloudServiceNetworkInterfacesAsync(resourceGroupName, cloudServiceName, context));
+    }
+
+    /**
+     * Get the specified network interface in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @param roleInstanceName The name of role instance.
+     * @param networkInterfaceName The name of the network interface.
+     * @param expand Expands referenced resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified network interface in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<NetworkInterfaceInner>> getCloudServiceNetworkInterfaceWithResponseAsync(
+        String resourceGroupName,
+        String cloudServiceName,
+        String roleInstanceName,
+        String networkInterfaceName,
+        String expand) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (cloudServiceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
+        }
+        if (roleInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter roleInstanceName is required and cannot be null."));
+        }
+        if (networkInterfaceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2021-05-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getCloudServiceNetworkInterface(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            cloudServiceName,
+                            roleInstanceName,
+                            networkInterfaceName,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            expand,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the specified network interface in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @param roleInstanceName The name of role instance.
+     * @param networkInterfaceName The name of the network interface.
+     * @param expand Expands referenced resources.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified network interface in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<NetworkInterfaceInner>> getCloudServiceNetworkInterfaceWithResponseAsync(
+        String resourceGroupName,
+        String cloudServiceName,
+        String roleInstanceName,
+        String networkInterfaceName,
+        String expand,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (cloudServiceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
+        }
+        if (roleInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter roleInstanceName is required and cannot be null."));
+        }
+        if (networkInterfaceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2021-05-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .getCloudServiceNetworkInterface(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                cloudServiceName,
+                roleInstanceName,
+                networkInterfaceName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                expand,
+                accept,
+                context);
+    }
+
+    /**
+     * Get the specified network interface in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @param roleInstanceName The name of role instance.
+     * @param networkInterfaceName The name of the network interface.
+     * @param expand Expands referenced resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified network interface in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<NetworkInterfaceInner> getCloudServiceNetworkInterfaceAsync(
+        String resourceGroupName,
+        String cloudServiceName,
+        String roleInstanceName,
+        String networkInterfaceName,
+        String expand) {
+        return getCloudServiceNetworkInterfaceWithResponseAsync(
+                resourceGroupName, cloudServiceName, roleInstanceName, networkInterfaceName, expand)
+            .flatMap(
+                (Response<NetworkInterfaceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Get the specified network interface in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @param roleInstanceName The name of role instance.
+     * @param networkInterfaceName The name of the network interface.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified network interface in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<NetworkInterfaceInner> getCloudServiceNetworkInterfaceAsync(
+        String resourceGroupName, String cloudServiceName, String roleInstanceName, String networkInterfaceName) {
+        final String expand = null;
+        return getCloudServiceNetworkInterfaceWithResponseAsync(
+                resourceGroupName, cloudServiceName, roleInstanceName, networkInterfaceName, expand)
+            .flatMap(
+                (Response<NetworkInterfaceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Get the specified network interface in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @param roleInstanceName The name of role instance.
+     * @param networkInterfaceName The name of the network interface.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified network interface in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NetworkInterfaceInner getCloudServiceNetworkInterface(
+        String resourceGroupName, String cloudServiceName, String roleInstanceName, String networkInterfaceName) {
+        final String expand = null;
+        return getCloudServiceNetworkInterfaceAsync(
+                resourceGroupName, cloudServiceName, roleInstanceName, networkInterfaceName, expand)
+            .block();
+    }
+
+    /**
+     * Get the specified network interface in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @param roleInstanceName The name of role instance.
+     * @param networkInterfaceName The name of the network interface.
+     * @param expand Expands referenced resources.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified network interface in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<NetworkInterfaceInner> getCloudServiceNetworkInterfaceWithResponse(
+        String resourceGroupName,
+        String cloudServiceName,
+        String roleInstanceName,
+        String networkInterfaceName,
+        String expand,
+        Context context) {
+        return getCloudServiceNetworkInterfaceWithResponseAsync(
+                resourceGroupName, cloudServiceName, roleInstanceName, networkInterfaceName, expand, context)
+            .block();
     }
 
     /**
@@ -444,7 +1082,7 @@ public final class NetworkInterfacesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -495,7 +1133,7 @@ public final class NetworkInterfacesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -519,7 +1157,7 @@ public final class NetworkInterfacesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkInterfaceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, networkInterfaceName);
         return this
@@ -538,7 +1176,7 @@ public final class NetworkInterfacesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String networkInterfaceName, Context context) {
         context = this.client.mergeContext(context);
@@ -559,7 +1197,7 @@ public final class NetworkInterfacesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkInterfaceName) {
         return beginDeleteAsync(resourceGroupName, networkInterfaceName).getSyncPoller();
     }
@@ -575,7 +1213,7 @@ public final class NetworkInterfacesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String networkInterfaceName, Context context) {
         return beginDeleteAsync(resourceGroupName, networkInterfaceName, context).getSyncPoller();
@@ -679,7 +1317,7 @@ public final class NetworkInterfacesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -732,7 +1370,7 @@ public final class NetworkInterfacesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -869,7 +1507,7 @@ public final class NetworkInterfacesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -927,7 +1565,7 @@ public final class NetworkInterfacesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -953,7 +1591,7 @@ public final class NetworkInterfacesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a network interface in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -980,7 +1618,7 @@ public final class NetworkInterfacesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a network interface in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -1003,7 +1641,7 @@ public final class NetworkInterfacesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a network interface in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginCreateOrUpdate(
         String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, networkInterfaceName, parameters).getSyncPoller();
@@ -1021,7 +1659,7 @@ public final class NetworkInterfacesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a network interface in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginCreateOrUpdate(
         String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, networkInterfaceName, parameters, context).getSyncPoller();
@@ -1106,7 +1744,7 @@ public final class NetworkInterfacesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update network interface tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1114,7 +1752,7 @@ public final class NetworkInterfacesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NetworkInterfaceInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String networkInterfaceName, Map<String, String> tags) {
+        String resourceGroupName, String networkInterfaceName, TagsObject parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1135,10 +1773,13 @@ public final class NetworkInterfacesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
         return FluxUtil
             .withContext(
                 context ->
@@ -1160,7 +1801,7 @@ public final class NetworkInterfacesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update network interface tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1169,7 +1810,7 @@ public final class NetworkInterfacesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NetworkInterfaceInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String networkInterfaceName, Map<String, String> tags, Context context) {
+        String resourceGroupName, String networkInterfaceName, TagsObject parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1190,10 +1831,13 @@ public final class NetworkInterfacesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
         context = this.client.mergeContext(context);
         return service
             .updateTags(
@@ -1212,7 +1856,7 @@ public final class NetworkInterfacesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update network interface tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1220,8 +1864,8 @@ public final class NetworkInterfacesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkInterfaceInner> updateTagsAsync(
-        String resourceGroupName, String networkInterfaceName, Map<String, String> tags) {
-        return updateTagsWithResponseAsync(resourceGroupName, networkInterfaceName, tags)
+        String resourceGroupName, String networkInterfaceName, TagsObject parameters) {
+        return updateTagsWithResponseAsync(resourceGroupName, networkInterfaceName, parameters)
             .flatMap(
                 (Response<NetworkInterfaceInner> res) -> {
                     if (res.getValue() != null) {
@@ -1237,23 +1881,16 @@ public final class NetworkInterfacesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
+     * @param parameters Parameters supplied to update network interface tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a network interface in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NetworkInterfaceInner> updateTagsAsync(String resourceGroupName, String networkInterfaceName) {
-        final Map<String, String> tags = null;
-        return updateTagsWithResponseAsync(resourceGroupName, networkInterfaceName, tags)
-            .flatMap(
-                (Response<NetworkInterfaceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public NetworkInterfaceInner updateTags(
+        String resourceGroupName, String networkInterfaceName, TagsObject parameters) {
+        return updateTagsAsync(resourceGroupName, networkInterfaceName, parameters).block();
     }
 
     /**
@@ -1261,23 +1898,7 @@ public final class NetworkInterfacesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network interface in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkInterfaceInner updateTags(String resourceGroupName, String networkInterfaceName) {
-        final Map<String, String> tags = null;
-        return updateTagsAsync(resourceGroupName, networkInterfaceName, tags).block();
-    }
-
-    /**
-     * Updates a network interface tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update network interface tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1286,8 +1907,8 @@ public final class NetworkInterfacesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkInterfaceInner> updateTagsWithResponse(
-        String resourceGroupName, String networkInterfaceName, Map<String, String> tags, Context context) {
-        return updateTagsWithResponseAsync(resourceGroupName, networkInterfaceName, tags, context).block();
+        String resourceGroupName, String networkInterfaceName, TagsObject parameters, Context context) {
+        return updateTagsWithResponseAsync(resourceGroupName, networkInterfaceName, parameters, context).block();
     }
 
     /**
@@ -1311,7 +1932,7 @@ public final class NetworkInterfacesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1353,7 +1974,7 @@ public final class NetworkInterfacesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1449,7 +2070,7 @@ public final class NetworkInterfacesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1503,7 +2124,7 @@ public final class NetworkInterfacesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1619,7 +2240,7 @@ public final class NetworkInterfacesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1670,7 +2291,7 @@ public final class NetworkInterfacesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1694,7 +2315,7 @@ public final class NetworkInterfacesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all route tables applied to a network interface.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<EffectiveRouteListResultInner>, EffectiveRouteListResultInner>
         beginGetEffectiveRouteTableAsync(String resourceGroupName, String networkInterfaceName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1720,7 +2341,7 @@ public final class NetworkInterfacesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all route tables applied to a network interface.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<EffectiveRouteListResultInner>, EffectiveRouteListResultInner>
         beginGetEffectiveRouteTableAsync(String resourceGroupName, String networkInterfaceName, Context context) {
         context = this.client.mergeContext(context);
@@ -1746,7 +2367,7 @@ public final class NetworkInterfacesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all route tables applied to a network interface.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EffectiveRouteListResultInner>, EffectiveRouteListResultInner>
         beginGetEffectiveRouteTable(String resourceGroupName, String networkInterfaceName) {
         return beginGetEffectiveRouteTableAsync(resourceGroupName, networkInterfaceName).getSyncPoller();
@@ -1763,7 +2384,7 @@ public final class NetworkInterfacesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all route tables applied to a network interface.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EffectiveRouteListResultInner>, EffectiveRouteListResultInner>
         beginGetEffectiveRouteTable(String resourceGroupName, String networkInterfaceName, Context context) {
         return beginGetEffectiveRouteTableAsync(resourceGroupName, networkInterfaceName, context).getSyncPoller();
@@ -1871,7 +2492,7 @@ public final class NetworkInterfacesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1922,7 +2543,7 @@ public final class NetworkInterfacesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1946,7 +2567,7 @@ public final class NetworkInterfacesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all network security groups applied to a network interface.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<
             PollResult<EffectiveNetworkSecurityGroupListResultInner>, EffectiveNetworkSecurityGroupListResultInner>
         beginListEffectiveNetworkSecurityGroupsAsync(String resourceGroupName, String networkInterfaceName) {
@@ -1973,7 +2594,7 @@ public final class NetworkInterfacesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all network security groups applied to a network interface.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<
             PollResult<EffectiveNetworkSecurityGroupListResultInner>, EffectiveNetworkSecurityGroupListResultInner>
         beginListEffectiveNetworkSecurityGroupsAsync(
@@ -2001,7 +2622,7 @@ public final class NetworkInterfacesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all network security groups applied to a network interface.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<
             PollResult<EffectiveNetworkSecurityGroupListResultInner>, EffectiveNetworkSecurityGroupListResultInner>
         beginListEffectiveNetworkSecurityGroups(String resourceGroupName, String networkInterfaceName) {
@@ -2019,7 +2640,7 @@ public final class NetworkInterfacesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all network security groups applied to a network interface.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<
             PollResult<EffectiveNetworkSecurityGroupListResultInner>, EffectiveNetworkSecurityGroupListResultInner>
         beginListEffectiveNetworkSecurityGroups(
@@ -3367,58 +3988,33 @@ public final class NetworkInterfacesClientImpl
     }
 
     /**
-     * Gets information about all network interfaces in a role instance in a cloud service.
+     * Get the next page of items.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudServiceName The name of the cloud service.
-     * @param roleInstanceName The name of role instance.
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all network interfaces in a role instance in a cloud service.
+     * @return response for the ListNetworkInterface API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkInterfaceInner>> listCloudServiceRoleInstanceNetworkInterfacesSinglePageAsync(
-        String resourceGroupName, String cloudServiceName, String roleInstanceName) {
+    private Mono<PagedResponse<NetworkInterfaceInner>> listCloudServiceRoleInstanceNetworkInterfacesNextSinglePageAsync(
+        String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudServiceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
-        }
-        if (roleInstanceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter roleInstanceName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
-                        .listCloudServiceRoleInstanceNetworkInterfaces(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            cloudServiceName,
-                            roleInstanceName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+                        .listCloudServiceRoleInstanceNetworkInterfacesNext(
+                            nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<NetworkInterfaceInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -3432,57 +4028,31 @@ public final class NetworkInterfacesClientImpl
     }
 
     /**
-     * Gets information about all network interfaces in a role instance in a cloud service.
+     * Get the next page of items.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudServiceName The name of the cloud service.
-     * @param roleInstanceName The name of role instance.
+     * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all network interfaces in a role instance in a cloud service.
+     * @return response for the ListNetworkInterface API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkInterfaceInner>> listCloudServiceRoleInstanceNetworkInterfacesSinglePageAsync(
-        String resourceGroupName, String cloudServiceName, String roleInstanceName, Context context) {
+    private Mono<PagedResponse<NetworkInterfaceInner>> listCloudServiceRoleInstanceNetworkInterfacesNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudServiceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
-        }
-        if (roleInstanceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter roleInstanceName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listCloudServiceRoleInstanceNetworkInterfaces(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                cloudServiceName,
-                roleInstanceName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context)
+            .listCloudServiceRoleInstanceNetworkInterfacesNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -3495,133 +4065,31 @@ public final class NetworkInterfacesClientImpl
     }
 
     /**
-     * Gets information about all network interfaces in a role instance in a cloud service.
+     * Get the next page of items.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudServiceName The name of the cloud service.
-     * @param roleInstanceName The name of role instance.
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all network interfaces in a role instance in a cloud service.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<NetworkInterfaceInner> listCloudServiceRoleInstanceNetworkInterfacesAsync(
-        String resourceGroupName, String cloudServiceName, String roleInstanceName) {
-        return new PagedFlux<>(
-            () ->
-                listCloudServiceRoleInstanceNetworkInterfacesSinglePageAsync(
-                    resourceGroupName, cloudServiceName, roleInstanceName),
-            nextLink -> listCloudServiceRoleInstanceNetworkInterfacesNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Gets information about all network interfaces in a role instance in a cloud service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudServiceName The name of the cloud service.
-     * @param roleInstanceName The name of role instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all network interfaces in a role instance in a cloud service.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<NetworkInterfaceInner> listCloudServiceRoleInstanceNetworkInterfacesAsync(
-        String resourceGroupName, String cloudServiceName, String roleInstanceName, Context context) {
-        return new PagedFlux<>(
-            () ->
-                listCloudServiceRoleInstanceNetworkInterfacesSinglePageAsync(
-                    resourceGroupName, cloudServiceName, roleInstanceName, context),
-            nextLink -> listCloudServiceRoleInstanceNetworkInterfacesNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets information about all network interfaces in a role instance in a cloud service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudServiceName The name of the cloud service.
-     * @param roleInstanceName The name of role instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all network interfaces in a role instance in a cloud service.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<NetworkInterfaceInner> listCloudServiceRoleInstanceNetworkInterfaces(
-        String resourceGroupName, String cloudServiceName, String roleInstanceName) {
-        return new PagedIterable<>(
-            listCloudServiceRoleInstanceNetworkInterfacesAsync(resourceGroupName, cloudServiceName, roleInstanceName));
-    }
-
-    /**
-     * Gets information about all network interfaces in a role instance in a cloud service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudServiceName The name of the cloud service.
-     * @param roleInstanceName The name of role instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all network interfaces in a role instance in a cloud service.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<NetworkInterfaceInner> listCloudServiceRoleInstanceNetworkInterfaces(
-        String resourceGroupName, String cloudServiceName, String roleInstanceName, Context context) {
-        return new PagedIterable<>(
-            listCloudServiceRoleInstanceNetworkInterfacesAsync(
-                resourceGroupName, cloudServiceName, roleInstanceName, context));
-    }
-
-    /**
-     * Gets all network interfaces in a cloud service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudServiceName The name of the cloud service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network interfaces in a cloud service.
+     * @return response for the ListNetworkInterface API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkInterfaceInner>> listCloudServiceNetworkInterfacesSinglePageAsync(
-        String resourceGroupName, String cloudServiceName) {
+    private Mono<PagedResponse<NetworkInterfaceInner>> listCloudServiceNetworkInterfacesNextSinglePageAsync(
+        String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudServiceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
-                    service
-                        .listCloudServiceNetworkInterfaces(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            cloudServiceName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+                    service.listCloudServiceNetworkInterfacesNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<NetworkInterfaceInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -3635,51 +4103,31 @@ public final class NetworkInterfacesClientImpl
     }
 
     /**
-     * Gets all network interfaces in a cloud service.
+     * Get the next page of items.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudServiceName The name of the cloud service.
+     * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network interfaces in a cloud service.
+     * @return response for the ListNetworkInterface API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkInterfaceInner>> listCloudServiceNetworkInterfacesSinglePageAsync(
-        String resourceGroupName, String cloudServiceName, Context context) {
+    private Mono<PagedResponse<NetworkInterfaceInner>> listCloudServiceNetworkInterfacesNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudServiceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listCloudServiceNetworkInterfaces(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                cloudServiceName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context)
+            .listCloudServiceNetworkInterfacesNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -3689,320 +4137,6 @@ public final class NetworkInterfacesClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null));
-    }
-
-    /**
-     * Gets all network interfaces in a cloud service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudServiceName The name of the cloud service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network interfaces in a cloud service.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<NetworkInterfaceInner> listCloudServiceNetworkInterfacesAsync(
-        String resourceGroupName, String cloudServiceName) {
-        return new PagedFlux<>(
-            () -> listCloudServiceNetworkInterfacesSinglePageAsync(resourceGroupName, cloudServiceName),
-            nextLink -> listCloudServiceNetworkInterfacesNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Gets all network interfaces in a cloud service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudServiceName The name of the cloud service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network interfaces in a cloud service.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<NetworkInterfaceInner> listCloudServiceNetworkInterfacesAsync(
-        String resourceGroupName, String cloudServiceName, Context context) {
-        return new PagedFlux<>(
-            () -> listCloudServiceNetworkInterfacesSinglePageAsync(resourceGroupName, cloudServiceName, context),
-            nextLink -> listCloudServiceNetworkInterfacesNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets all network interfaces in a cloud service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudServiceName The name of the cloud service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network interfaces in a cloud service.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<NetworkInterfaceInner> listCloudServiceNetworkInterfaces(
-        String resourceGroupName, String cloudServiceName) {
-        return new PagedIterable<>(listCloudServiceNetworkInterfacesAsync(resourceGroupName, cloudServiceName));
-    }
-
-    /**
-     * Gets all network interfaces in a cloud service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudServiceName The name of the cloud service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network interfaces in a cloud service.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<NetworkInterfaceInner> listCloudServiceNetworkInterfaces(
-        String resourceGroupName, String cloudServiceName, Context context) {
-        return new PagedIterable<>(
-            listCloudServiceNetworkInterfacesAsync(resourceGroupName, cloudServiceName, context));
-    }
-
-    /**
-     * Get the specified network interface in a cloud service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudServiceName The name of the cloud service.
-     * @param roleInstanceName The name of role instance.
-     * @param networkInterfaceName The name of the network interface.
-     * @param expand Expands referenced resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface in a cloud service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<NetworkInterfaceInner>> getCloudServiceNetworkInterfaceWithResponseAsync(
-        String resourceGroupName,
-        String cloudServiceName,
-        String roleInstanceName,
-        String networkInterfaceName,
-        String expand) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudServiceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
-        }
-        if (roleInstanceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter roleInstanceName is required and cannot be null."));
-        }
-        if (networkInterfaceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-08-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getCloudServiceNetworkInterface(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            cloudServiceName,
-                            roleInstanceName,
-                            networkInterfaceName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            expand,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get the specified network interface in a cloud service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudServiceName The name of the cloud service.
-     * @param roleInstanceName The name of role instance.
-     * @param networkInterfaceName The name of the network interface.
-     * @param expand Expands referenced resources.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface in a cloud service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NetworkInterfaceInner>> getCloudServiceNetworkInterfaceWithResponseAsync(
-        String resourceGroupName,
-        String cloudServiceName,
-        String roleInstanceName,
-        String networkInterfaceName,
-        String expand,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudServiceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
-        }
-        if (roleInstanceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter roleInstanceName is required and cannot be null."));
-        }
-        if (networkInterfaceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-08-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .getCloudServiceNetworkInterface(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                cloudServiceName,
-                roleInstanceName,
-                networkInterfaceName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                expand,
-                accept,
-                context);
-    }
-
-    /**
-     * Get the specified network interface in a cloud service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudServiceName The name of the cloud service.
-     * @param roleInstanceName The name of role instance.
-     * @param networkInterfaceName The name of the network interface.
-     * @param expand Expands referenced resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface in a cloud service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NetworkInterfaceInner> getCloudServiceNetworkInterfaceAsync(
-        String resourceGroupName,
-        String cloudServiceName,
-        String roleInstanceName,
-        String networkInterfaceName,
-        String expand) {
-        return getCloudServiceNetworkInterfaceWithResponseAsync(
-                resourceGroupName, cloudServiceName, roleInstanceName, networkInterfaceName, expand)
-            .flatMap(
-                (Response<NetworkInterfaceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get the specified network interface in a cloud service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudServiceName The name of the cloud service.
-     * @param roleInstanceName The name of role instance.
-     * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface in a cloud service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NetworkInterfaceInner> getCloudServiceNetworkInterfaceAsync(
-        String resourceGroupName, String cloudServiceName, String roleInstanceName, String networkInterfaceName) {
-        final String expand = null;
-        return getCloudServiceNetworkInterfaceWithResponseAsync(
-                resourceGroupName, cloudServiceName, roleInstanceName, networkInterfaceName, expand)
-            .flatMap(
-                (Response<NetworkInterfaceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get the specified network interface in a cloud service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudServiceName The name of the cloud service.
-     * @param roleInstanceName The name of role instance.
-     * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface in a cloud service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkInterfaceInner getCloudServiceNetworkInterface(
-        String resourceGroupName, String cloudServiceName, String roleInstanceName, String networkInterfaceName) {
-        final String expand = null;
-        return getCloudServiceNetworkInterfaceAsync(
-                resourceGroupName, cloudServiceName, roleInstanceName, networkInterfaceName, expand)
-            .block();
-    }
-
-    /**
-     * Get the specified network interface in a cloud service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudServiceName The name of the cloud service.
-     * @param roleInstanceName The name of role instance.
-     * @param networkInterfaceName The name of the network interface.
-     * @param expand Expands referenced resources.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface in a cloud service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NetworkInterfaceInner> getCloudServiceNetworkInterfaceWithResponse(
-        String resourceGroupName,
-        String cloudServiceName,
-        String roleInstanceName,
-        String networkInterfaceName,
-        String expand,
-        Context context) {
-        return getCloudServiceNetworkInterfaceWithResponseAsync(
-                resourceGroupName, cloudServiceName, roleInstanceName, networkInterfaceName, expand, context)
-            .block();
     }
 
     /**
@@ -4367,158 +4501,6 @@ public final class NetworkInterfacesClientImpl
         context = this.client.mergeContext(context);
         return service
             .listVirtualMachineScaleSetIpConfigurationsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the ListNetworkInterface API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkInterfaceInner>> listCloudServiceRoleInstanceNetworkInterfacesNextSinglePageAsync(
-        String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listCloudServiceRoleInstanceNetworkInterfacesNext(
-                            nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<NetworkInterfaceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the ListNetworkInterface API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkInterfaceInner>> listCloudServiceRoleInstanceNetworkInterfacesNextSinglePageAsync(
-        String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listCloudServiceRoleInstanceNetworkInterfacesNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the ListNetworkInterface API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkInterfaceInner>> listCloudServiceNetworkInterfacesNextSinglePageAsync(
-        String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service.listCloudServiceNetworkInterfacesNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<NetworkInterfaceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the ListNetworkInterface API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkInterfaceInner>> listCloudServiceNetworkInterfacesNextSinglePageAsync(
-        String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listCloudServiceNetworkInterfacesNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

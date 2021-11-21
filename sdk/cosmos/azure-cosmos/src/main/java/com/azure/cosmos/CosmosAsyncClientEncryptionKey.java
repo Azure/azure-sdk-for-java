@@ -27,24 +27,13 @@ public final class CosmosAsyncClientEncryptionKey {
     }
 
     /**
-     * Get the id of the {@link CosmosAsyncUser}
+     * Get the id of the {@link CosmosAsyncClientEncryptionKey}
      *
-     * @return the id of the {@link CosmosAsyncUser}
+     * @return the id of the {@link CosmosAsyncClientEncryptionKey}
      */
     @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getId() {
         return id;
-    }
-
-    /**
-     * Set the id of the {@link CosmosAsyncUser}
-     *
-     * @param id the id of the {@link CosmosAsyncUser}
-     * @return the same {@link CosmosAsyncUser} that had the id set
-     */
-    CosmosAsyncClientEncryptionKey setId(String id) {
-        this.id = id;
-        return this;
     }
 
     /**

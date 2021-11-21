@@ -91,7 +91,14 @@ public final class DataLakePathClientBuilder {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathClientBuilder.buildFileClient}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathClientBuilder.buildFileClient -->
+     * <pre>
+     * DataLakeFileClient client = new DataLakePathClientBuilder&#40;&#41;
+     *     .endpoint&#40;endpoint&#41;
+     *     .credential&#40;storageSharedKeyCredential&#41;
+     *     .buildFileClient&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathClientBuilder.buildFileClient -->
      *
      * @return a {@link DataLakeFileClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint} or {@code pathName} is {@code null}.
@@ -107,7 +114,14 @@ public final class DataLakePathClientBuilder {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathClientBuilder.buildFileAsyncClient}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathClientBuilder.buildFileAsyncClient -->
+     * <pre>
+     * DataLakeFileAsyncClient client = new DataLakePathClientBuilder&#40;&#41;
+     *     .endpoint&#40;endpoint&#41;
+     *     .credential&#40;storageSharedKeyCredential&#41;
+     *     .buildFileAsyncClient&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathClientBuilder.buildFileAsyncClient -->
      *
      * @return a {@link DataLakeFileAsyncClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint} or {@code pathName} is {@code null}.
@@ -141,7 +155,14 @@ public final class DataLakePathClientBuilder {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathClientBuilder.buildDirectoryClient}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathClientBuilder.buildDirectoryClient -->
+     * <pre>
+     * DataLakeDirectoryClient client = new DataLakePathClientBuilder&#40;&#41;
+     *     .endpoint&#40;endpoint&#41;
+     *     .credential&#40;storageSharedKeyCredential&#41;
+     *     .buildDirectoryClient&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathClientBuilder.buildDirectoryClient -->
      *
      * @return a {@link DataLakeDirectoryClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint} or {@code pathName} is {@code null}.
@@ -156,7 +177,14 @@ public final class DataLakePathClientBuilder {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathClientBuilder.buildDirectoryAsyncClient}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathClientBuilder.buildDirectoryAsyncClient -->
+     * <pre>
+     * DataLakeDirectoryAsyncClient client = new DataLakePathClientBuilder&#40;&#41;
+     *     .endpoint&#40;endpoint&#41;
+     *     .credential&#40;storageSharedKeyCredential&#41;
+     *     .buildDirectoryAsyncClient&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathClientBuilder.buildDirectoryAsyncClient -->
      *
      * @return a {@link DataLakeDirectoryAsyncClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint} or {@code pathName} is {@code null}.
@@ -217,7 +245,8 @@ public final class DataLakePathClientBuilder {
     /**
      * Sets the SAS token used to authorize requests sent to the service.
      *
-     * @param sasToken The SAS token to use for authenticating requests.
+     * @param sasToken The SAS token to use for authenticating requests. This string should only be the query parameters
+     * (with or without a leading '?') and not a full url.
      * @return the updated DataLakePathClientBuilder
      * @throws NullPointerException If {@code sasToken} is {@code null}.
      */
@@ -364,7 +393,7 @@ public final class DataLakePathClientBuilder {
     }
 
     /**
-     * Gets the default Storage whitelist log headers and query parameters.
+     * Gets the default Storage allowlist log headers and query parameters.
      *
      * @return the default http log options.
      */

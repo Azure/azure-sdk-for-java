@@ -16,6 +16,7 @@ import com.azure.resourcemanager.monitor.models.Source;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /** The Log Search Rule resource. */
 @JsonFlatten
@@ -24,10 +25,35 @@ public class LogSearchRuleResourceInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(LogSearchRuleResourceInner.class);
 
     /*
+     * The api-version used when creating this alert rule
+     */
+    @JsonProperty(value = "properties.createdWithApiVersion", access = JsonProperty.Access.WRITE_ONLY)
+    private String createdWithApiVersion;
+
+    /*
+     * True if alert rule is legacy Log Analytic rule
+     */
+    @JsonProperty(value = "properties.isLegacyLogAnalyticsRule", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean isLegacyLogAnalyticsRule;
+
+    /*
      * The description of the Log Search rule.
      */
     @JsonProperty(value = "properties.description")
     private String description;
+
+    /*
+     * The display name of the alert rule
+     */
+    @JsonProperty(value = "properties.displayName")
+    private String displayName;
+
+    /*
+     * The flag that indicates whether the alert should be automatically
+     * resolved or not. The default is false.
+     */
+    @JsonProperty(value = "properties.autoMitigate")
+    private Boolean autoMitigate;
 
     /*
      * The flag which indicates whether the Log Search rule is enabled. Value
@@ -67,6 +93,44 @@ public class LogSearchRuleResourceInner extends Resource {
     @JsonProperty(value = "properties.action", required = true)
     private Action action;
 
+    /*
+     * Metadata used by portal/tooling/etc to render different UX experiences
+     * for resources of the same type; e.g. ApiApps are a kind of
+     * Microsoft.Web/sites type.  If supported, the resource provider must
+     * validate and persist this value.
+     */
+    @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
+    private String kind;
+
+    /*
+     * The etag field is *not* required. If it is provided in the response
+     * body, it must also be provided as a header per the normal etag
+     * convention.  Entity tags are used for comparing two or more entities
+     * from the same requested resource. HTTP/1.1 uses entity tags in the etag
+     * (section 14.19), If-Match (section 14.24), If-None-Match (section
+     * 14.26), and If-Range (section 14.27) header fields.
+     */
+    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    private String etag;
+
+    /**
+     * Get the createdWithApiVersion property: The api-version used when creating this alert rule.
+     *
+     * @return the createdWithApiVersion value.
+     */
+    public String createdWithApiVersion() {
+        return this.createdWithApiVersion;
+    }
+
+    /**
+     * Get the isLegacyLogAnalyticsRule property: True if alert rule is legacy Log Analytic rule.
+     *
+     * @return the isLegacyLogAnalyticsRule value.
+     */
+    public Boolean isLegacyLogAnalyticsRule() {
+        return this.isLegacyLogAnalyticsRule;
+    }
+
     /**
      * Get the description property: The description of the Log Search rule.
      *
@@ -84,6 +148,48 @@ public class LogSearchRuleResourceInner extends Resource {
      */
     public LogSearchRuleResourceInner withDescription(String description) {
         this.description = description;
+        return this;
+    }
+
+    /**
+     * Get the displayName property: The display name of the alert rule.
+     *
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.displayName;
+    }
+
+    /**
+     * Set the displayName property: The display name of the alert rule.
+     *
+     * @param displayName the displayName value to set.
+     * @return the LogSearchRuleResourceInner object itself.
+     */
+    public LogSearchRuleResourceInner withDisplayName(String displayName) {
+        this.displayName = displayName;
+        return this;
+    }
+
+    /**
+     * Get the autoMitigate property: The flag that indicates whether the alert should be automatically resolved or not.
+     * The default is false.
+     *
+     * @return the autoMitigate value.
+     */
+    public Boolean autoMitigate() {
+        return this.autoMitigate;
+    }
+
+    /**
+     * Set the autoMitigate property: The flag that indicates whether the alert should be automatically resolved or not.
+     * The default is false.
+     *
+     * @param autoMitigate the autoMitigate value to set.
+     * @return the LogSearchRuleResourceInner object itself.
+     */
+    public LogSearchRuleResourceInner withAutoMitigate(Boolean autoMitigate) {
+        this.autoMitigate = autoMitigate;
         return this;
     }
 
@@ -184,6 +290,43 @@ public class LogSearchRuleResourceInner extends Resource {
      */
     public LogSearchRuleResourceInner withAction(Action action) {
         this.action = action;
+        return this;
+    }
+
+    /**
+     * Get the kind property: Metadata used by portal/tooling/etc to render different UX experiences for resources of
+     * the same type; e.g. ApiApps are a kind of Microsoft.Web/sites type. If supported, the resource provider must
+     * validate and persist this value.
+     *
+     * @return the kind value.
+     */
+    public String kind() {
+        return this.kind;
+    }
+
+    /**
+     * Get the etag property: The etag field is *not* required. If it is provided in the response body, it must also be
+     * provided as a header per the normal etag convention. Entity tags are used for comparing two or more entities from
+     * the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24),
+     * If-None-Match (section 14.26), and If-Range (section 14.27) header fields.
+     *
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LogSearchRuleResourceInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LogSearchRuleResourceInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

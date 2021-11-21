@@ -48,6 +48,7 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "HdfsSource", value = HdfsSource.class),
     @JsonSubTypes.Type(name = "AzureDataExplorerSource", value = AzureDataExplorerSource.class),
     @JsonSubTypes.Type(name = "OracleSource", value = OracleSource.class),
+    @JsonSubTypes.Type(name = "AmazonRdsForOracleSource", value = AmazonRdsForOracleSource.class),
     @JsonSubTypes.Type(name = "WebSource", value = WebSource.class),
     @JsonSubTypes.Type(name = "MongoDbSource", value = MongoDbSource.class),
     @JsonSubTypes.Type(name = "MongoDbAtlasSource", value = MongoDbAtlasSource.class),
@@ -85,6 +86,13 @@ public class CopySource {
      */
     @JsonProperty(value = "maxConcurrentConnections")
     private Object maxConcurrentConnections;
+
+    /*
+     * If true, disable data store metrics collection. Default is false. Type:
+     * boolean (or Expression with resultType boolean).
+     */
+    @JsonProperty(value = "disableMetricsCollection")
+    private Object disableMetricsCollection;
 
     /*
      * A copy activity source.
@@ -152,6 +160,28 @@ public class CopySource {
      */
     public CopySource withMaxConcurrentConnections(Object maxConcurrentConnections) {
         this.maxConcurrentConnections = maxConcurrentConnections;
+        return this;
+    }
+
+    /**
+     * Get the disableMetricsCollection property: If true, disable data store metrics collection. Default is false.
+     * Type: boolean (or Expression with resultType boolean).
+     *
+     * @return the disableMetricsCollection value.
+     */
+    public Object disableMetricsCollection() {
+        return this.disableMetricsCollection;
+    }
+
+    /**
+     * Set the disableMetricsCollection property: If true, disable data store metrics collection. Default is false.
+     * Type: boolean (or Expression with resultType boolean).
+     *
+     * @param disableMetricsCollection the disableMetricsCollection value to set.
+     * @return the CopySource object itself.
+     */
+    public CopySource withDisableMetricsCollection(Object disableMetricsCollection) {
+        this.disableMetricsCollection = disableMetricsCollection;
         return this;
     }
 

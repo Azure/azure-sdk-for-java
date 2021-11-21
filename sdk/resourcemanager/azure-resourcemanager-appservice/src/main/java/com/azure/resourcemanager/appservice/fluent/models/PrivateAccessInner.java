@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.PrivateAccessVirtualNetwork;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
@@ -14,22 +13,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Description of the parameters of Private Access for a Web Site. */
-@JsonFlatten
 @Fluent
-public class PrivateAccessInner extends ProxyOnlyResource {
+public final class PrivateAccessInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateAccessInner.class);
 
     /*
-     * Whether private access is enabled or not.
+     * PrivateAccess resource specific properties
      */
-    @JsonProperty(value = "properties.enabled")
-    private Boolean enabled;
+    @JsonProperty(value = "properties")
+    private PrivateAccessProperties innerProperties;
 
-    /*
-     * The Virtual Networks (and subnets) allowed to access the site privately.
+    /**
+     * Get the innerProperties property: PrivateAccess resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.virtualNetworks")
-    private List<PrivateAccessVirtualNetwork> virtualNetworks;
+    private PrivateAccessProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PrivateAccessInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the enabled property: Whether private access is enabled or not.
@@ -37,7 +45,7 @@ public class PrivateAccessInner extends ProxyOnlyResource {
      * @return the enabled value.
      */
     public Boolean enabled() {
-        return this.enabled;
+        return this.innerProperties() == null ? null : this.innerProperties().enabled();
     }
 
     /**
@@ -47,7 +55,10 @@ public class PrivateAccessInner extends ProxyOnlyResource {
      * @return the PrivateAccessInner object itself.
      */
     public PrivateAccessInner withEnabled(Boolean enabled) {
-        this.enabled = enabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateAccessProperties();
+        }
+        this.innerProperties().withEnabled(enabled);
         return this;
     }
 
@@ -57,7 +68,7 @@ public class PrivateAccessInner extends ProxyOnlyResource {
      * @return the virtualNetworks value.
      */
     public List<PrivateAccessVirtualNetwork> virtualNetworks() {
-        return this.virtualNetworks;
+        return this.innerProperties() == null ? null : this.innerProperties().virtualNetworks();
     }
 
     /**
@@ -67,14 +78,10 @@ public class PrivateAccessInner extends ProxyOnlyResource {
      * @return the PrivateAccessInner object itself.
      */
     public PrivateAccessInner withVirtualNetworks(List<PrivateAccessVirtualNetwork> virtualNetworks) {
-        this.virtualNetworks = virtualNetworks;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public PrivateAccessInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateAccessProperties();
+        }
+        this.innerProperties().withVirtualNetworks(virtualNetworks);
         return this;
     }
 
@@ -86,8 +93,8 @@ public class PrivateAccessInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
-        if (virtualNetworks() != null) {
-            virtualNetworks().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -28,7 +28,7 @@ public class ListSeriesDefinitionsForMetricSample {
         final OffsetDateTime activeSince = OffsetDateTime.parse("2020-07-10T00:00:00Z");
         final ListMetricSeriesDefinitionOptions options
             = new ListMetricSeriesDefinitionOptions()
-            .setTop(10)
+            .setMaxPageSize(10)
             .setDimensionCombinationToFilter(new HashMap<String, List<String>>() {{
                     put("city", Collections.singletonList("Redmond"));
                 }});

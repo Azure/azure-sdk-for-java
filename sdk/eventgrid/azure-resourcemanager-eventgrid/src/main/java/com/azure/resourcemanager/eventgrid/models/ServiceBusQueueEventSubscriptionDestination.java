@@ -5,27 +5,35 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.eventgrid.fluent.models.ServiceBusQueueEventSubscriptionDestinationProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /** Information about the service bus destination for an event subscription. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
 @JsonTypeName("ServiceBusQueue")
-@JsonFlatten
 @Fluent
-public class ServiceBusQueueEventSubscriptionDestination extends EventSubscriptionDestination {
+public final class ServiceBusQueueEventSubscriptionDestination extends EventSubscriptionDestination {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceBusQueueEventSubscriptionDestination.class);
 
     /*
-     * The Azure Resource Id that represents the endpoint of the Service Bus
-     * destination of an event subscription.
+     * Service Bus Properties of the event subscription destination.
      */
-    @JsonProperty(value = "properties.resourceId")
-    private String resourceId;
+    @JsonProperty(value = "properties")
+    private ServiceBusQueueEventSubscriptionDestinationProperties innerProperties;
+
+    /**
+     * Get the innerProperties property: Service Bus Properties of the event subscription destination.
+     *
+     * @return the innerProperties value.
+     */
+    private ServiceBusQueueEventSubscriptionDestinationProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the resourceId property: The Azure Resource Id that represents the endpoint of the Service Bus destination of
@@ -34,7 +42,7 @@ public class ServiceBusQueueEventSubscriptionDestination extends EventSubscripti
      * @return the resourceId value.
      */
     public String resourceId() {
-        return this.resourceId;
+        return this.innerProperties() == null ? null : this.innerProperties().resourceId();
     }
 
     /**
@@ -45,7 +53,34 @@ public class ServiceBusQueueEventSubscriptionDestination extends EventSubscripti
      * @return the ServiceBusQueueEventSubscriptionDestination object itself.
      */
     public ServiceBusQueueEventSubscriptionDestination withResourceId(String resourceId) {
-        this.resourceId = resourceId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServiceBusQueueEventSubscriptionDestinationProperties();
+        }
+        this.innerProperties().withResourceId(resourceId);
+        return this;
+    }
+
+    /**
+     * Get the deliveryAttributeMappings property: Delivery attribute details.
+     *
+     * @return the deliveryAttributeMappings value.
+     */
+    public List<DeliveryAttributeMapping> deliveryAttributeMappings() {
+        return this.innerProperties() == null ? null : this.innerProperties().deliveryAttributeMappings();
+    }
+
+    /**
+     * Set the deliveryAttributeMappings property: Delivery attribute details.
+     *
+     * @param deliveryAttributeMappings the deliveryAttributeMappings value to set.
+     * @return the ServiceBusQueueEventSubscriptionDestination object itself.
+     */
+    public ServiceBusQueueEventSubscriptionDestination withDeliveryAttributeMappings(
+        List<DeliveryAttributeMapping> deliveryAttributeMappings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServiceBusQueueEventSubscriptionDestinationProperties();
+        }
+        this.innerProperties().withDeliveryAttributeMappings(deliveryAttributeMappings);
         return this;
     }
 
@@ -57,5 +92,8 @@ public class ServiceBusQueueEventSubscriptionDestination extends EventSubscripti
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

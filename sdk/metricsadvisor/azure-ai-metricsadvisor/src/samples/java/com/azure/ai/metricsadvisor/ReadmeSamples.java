@@ -5,45 +5,46 @@ package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient;
 import com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClientBuilder;
-import com.azure.ai.metricsadvisor.models.AnomalyAlertConfiguration;
-import com.azure.ai.metricsadvisor.models.AnomalyDetectionConfiguration;
-import com.azure.ai.metricsadvisor.models.AnomalyDetectorDirection;
-import com.azure.ai.metricsadvisor.models.AnomalySeverity;
-import com.azure.ai.metricsadvisor.models.ChangeThresholdCondition;
-import com.azure.ai.metricsadvisor.models.DataFeed;
-import com.azure.ai.metricsadvisor.models.DataFeedDimension;
-import com.azure.ai.metricsadvisor.models.DataFeedGranularity;
-import com.azure.ai.metricsadvisor.models.DataFeedGranularityType;
-import com.azure.ai.metricsadvisor.models.DataFeedIngestionSettings;
-import com.azure.ai.metricsadvisor.models.DataFeedMetric;
-import com.azure.ai.metricsadvisor.models.DataFeedOptions;
-import com.azure.ai.metricsadvisor.models.DataFeedRollupSettings;
-import com.azure.ai.metricsadvisor.models.DataFeedRollupType;
-import com.azure.ai.metricsadvisor.models.DataFeedSchema;
-import com.azure.ai.metricsadvisor.models.DetectionConditionsOperator;
-import com.azure.ai.metricsadvisor.models.EmailNotificationHook;
-import com.azure.ai.metricsadvisor.models.HardThresholdCondition;
-import com.azure.ai.metricsadvisor.models.ListDataFeedIngestionOptions;
-import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConditions;
-import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConfiguration;
-import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConfigurationsOperator;
-import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertScope;
-import com.azure.ai.metricsadvisor.models.MetricWholeSeriesDetectionCondition;
+import com.azure.ai.metricsadvisor.administration.models.AnomalyAlertConfiguration;
+import com.azure.ai.metricsadvisor.administration.models.AnomalyDetectionConfiguration;
+import com.azure.ai.metricsadvisor.administration.models.AnomalyDetectorDirection;
+import com.azure.ai.metricsadvisor.administration.models.AnomalySeverity;
+import com.azure.ai.metricsadvisor.administration.models.ChangeThresholdCondition;
+import com.azure.ai.metricsadvisor.administration.models.DataFeed;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedDimension;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedGranularity;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedGranularityType;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionSettings;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedMetric;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedOptions;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedRollupSettings;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedRollupType;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedSchema;
+import com.azure.ai.metricsadvisor.administration.models.DetectionConditionOperator;
+import com.azure.ai.metricsadvisor.administration.models.EmailNotificationHook;
+import com.azure.ai.metricsadvisor.administration.models.HardThresholdCondition;
+import com.azure.ai.metricsadvisor.administration.models.ListDataFeedIngestionOptions;
+import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConditions;
+import com.azure.ai.metricsadvisor.administration.models.MetricAlertConfiguration;
+import com.azure.ai.metricsadvisor.administration.models.MetricAlertConfigurationsOperator;
+import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertScope;
+import com.azure.ai.metricsadvisor.administration.models.MetricWholeSeriesDetectionCondition;
+import com.azure.ai.metricsadvisor.administration.models.SeverityCondition;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
-import com.azure.ai.metricsadvisor.models.MySqlDataFeedSource;
-import com.azure.ai.metricsadvisor.models.NotificationHook;
-import com.azure.ai.metricsadvisor.models.SQLServerDataFeedSource;
-import com.azure.ai.metricsadvisor.models.SeverityCondition;
-import com.azure.ai.metricsadvisor.models.SmartDetectionCondition;
-import com.azure.ai.metricsadvisor.models.SuppressCondition;
+import com.azure.ai.metricsadvisor.administration.models.MySqlDataFeedSource;
+import com.azure.ai.metricsadvisor.administration.models.NotificationHook;
+import com.azure.ai.metricsadvisor.administration.models.SmartDetectionCondition;
+import com.azure.ai.metricsadvisor.administration.models.SqlServerDataFeedSource;
+import com.azure.ai.metricsadvisor.administration.models.SuppressCondition;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.SQL_SERVER_DB;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.SQL_SERVER_DB;
 
 /**
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS ARE USED TO EXTRACT
@@ -61,64 +62,73 @@ public class ReadmeSamples {
      * Code snippet for getting advisor client using MetricsAdvisorKeyCredential.
      */
     public void useMetricsAdvisorKeyCredential() {
+        // BEGIN: readme-sample-createMetricsAdvisorClient
         MetricsAdvisorKeyCredential credential = new MetricsAdvisorKeyCredential("subscription_key", "api_key");
         MetricsAdvisorClient metricsAdvisorClient = new MetricsAdvisorClientBuilder()
             .endpoint("{endpoint}")
             .credential(credential)
             .buildClient();
+        // END: readme-sample-createMetricsAdvisorClient
     }
 
     /**
      * Code snippet for getting administration client using MetricsAdvisorKeyCredential.
      */
     public void getMetricsAdvisorAdministrationClient() {
+        // BEGIN: readme-sample-createMetricsAdvisorAdministrationClient
         MetricsAdvisorKeyCredential credential = new MetricsAdvisorKeyCredential("subscription_key", "api_key");
         MetricsAdvisorAdministrationClient metricsAdvisorAdminClient =
             new MetricsAdvisorAdministrationClientBuilder()
                 .endpoint("{endpoint}")
                 .credential(credential)
                 .buildClient();
+        // END: readme-sample-createMetricsAdvisorAdministrationClient
     }
 
     /**
      * Code snippet for getting advisor client using AAD Authentication.
      */
     public void useAADAuthentication() {
+        // BEGIN: readme-sample-createMetricsAdvisorClientWithAAD
         TokenCredential credential = new DefaultAzureCredentialBuilder().build();
         MetricsAdvisorClient metricsAdvisorClient = new MetricsAdvisorClientBuilder()
             .endpoint("{endpoint}")
             .credential(credential)
             .buildClient();
+        // END: readme-sample-createMetricsAdvisorClientWithAAD
     }
 
     /**
      * Code snippet for getting administration client using AAD Authentication.
      */
     public void metricsAdvisorAdministrationClientAAD() {
+        // BEGIN: readme-sample-createMetricsAdvisorAdministrationClientWithAAD
         TokenCredential credential = new DefaultAzureCredentialBuilder().build();
         MetricsAdvisorAdministrationClient metricsAdvisorAdminClient =
             new MetricsAdvisorAdministrationClientBuilder()
                 .endpoint("{endpoint}")
                 .credential(credential)
                 .buildClient();
+        // END: readme-sample-createMetricsAdvisorAdministrationClientWithAAD
     }
 
     /**
      * Code snippet for creating a data feed.
      */
     public void createDataFeed() {
+        // BEGIN: readme-sample-createDataFeed
         DataFeed dataFeed = new DataFeed()
             .setName("dataFeedName")
             .setSource(new MySqlDataFeedSource("conn-string", "query"))
             .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
             .setSchema(new DataFeedSchema(
                 Arrays.asList(
-                    new DataFeedMetric().setName("cost"),
-                    new DataFeedMetric().setName("revenue")
+                    new DataFeedMetric("cost"),
+                    new DataFeedMetric("revenue")
                 )).setDimensions(
                 Arrays.asList(
-                    new DataFeedDimension().setName("city"),
-                    new DataFeedDimension().setName("category")
+                    new DataFeedDimension("city"),
+                    new DataFeedDimension("category")
                 ))
             )
             .setIngestionSettings(new DataFeedIngestionSettings(OffsetDateTime.parse("2020-01-01T00:00:00Z")))
@@ -143,14 +153,16 @@ public class ReadmeSamples {
 
         if (SQL_SERVER_DB == createdSqlDataFeed.getSourceType()) {
             System.out.printf("Data feed sql server query: %s%n",
-                ((SQLServerDataFeedSource) createdSqlDataFeed.getSource()).getQuery());
+                ((SqlServerDataFeedSource) createdSqlDataFeed.getSource()).getQuery());
         }
+        // END: readme-sample-createDataFeed
     }
 
     /**
      * Code snippet for checking ingestion status.
      */
     public void checkIngestionStatus() {
+        // BEGIN: readme-sample-checkIngestionStatus
         String dataFeedId = "3d48er30-6e6e-4391-b78f-b00dfee1e6f5";
 
         metricsAdvisorAdminClient.listDataFeedIngestionStatus(
@@ -163,33 +175,35 @@ public class ReadmeSamples {
             System.out.printf("Timestamp value : %s%n", dataFeedIngestionStatus.getTimestamp());
             System.out.printf("Status : %s%n", dataFeedIngestionStatus.getStatus());
         });
+        // END: readme-sample-checkIngestionStatus
     }
 
     /**
      * Code snippet for configuring anomaly detection.
      */
     public void configureAnomalyDetection() {
+        // BEGIN: readme-sample-createAnomalyDetectionConfiguration
         String metricId = "3d48er30-6e6e-4391-b78f-b00dfee1e6f5";
 
-        ChangeThresholdCondition changeThresholdCondition = new ChangeThresholdCondition()
-            .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-            .setChangePercentage(20)
-            .setShiftPoint(10)
-            .setWithinRange(true)
-            .setSuppressCondition(new SuppressCondition().setMinNumber(1).setMinRatio(2));
+        ChangeThresholdCondition changeThresholdCondition = new ChangeThresholdCondition(
+            20,
+            10,
+            true,
+            AnomalyDetectorDirection.BOTH,
+            new SuppressCondition(1, 2));
 
-        HardThresholdCondition hardThresholdCondition = new HardThresholdCondition()
-            .setAnomalyDetectorDirection(AnomalyDetectorDirection.DOWN)
-            .setLowerBound(5.0)
-            .setSuppressCondition(new SuppressCondition().setMinNumber(1).setMinRatio(1));
+        HardThresholdCondition hardThresholdCondition = new HardThresholdCondition(
+            AnomalyDetectorDirection.DOWN,
+            new SuppressCondition(1, 1))
+            .setLowerBound(5.0);
 
-        SmartDetectionCondition smartDetectionCondition = new SmartDetectionCondition()
-            .setAnomalyDetectorDirection(AnomalyDetectorDirection.UP)
-            .setSensitivity(10.0)
-            .setSuppressCondition(new SuppressCondition().setMinNumber(1).setMinRatio(2));
+        SmartDetectionCondition smartDetectionCondition = new SmartDetectionCondition(
+            10.0,
+            AnomalyDetectorDirection.UP,
+            new SuppressCondition(1, 2));
 
         final AnomalyDetectionConfiguration anomalyDetectionConfiguration =
-            metricsAdvisorAdminClient.createMetricAnomalyDetectionConfig(
+            metricsAdvisorAdminClient.createDetectionConfig(
                 metricId,
                 new AnomalyDetectionConfiguration("My dataPoint anomaly detection configuration")
                     .setDescription("anomaly detection config description")
@@ -198,17 +212,19 @@ public class ReadmeSamples {
                             .setChangeThresholdCondition(changeThresholdCondition)
                             .setHardThresholdCondition(hardThresholdCondition)
                             .setSmartDetectionCondition(smartDetectionCondition)
-                            .setCrossConditionOperator(DetectionConditionsOperator.OR))
+                            .setConditionOperator(DetectionConditionOperator.OR))
             );
+        // END: readme-sample-createAnomalyDetectionConfiguration
     }
 
     /**
      * Code snippet for creating an email hook alert.
      */
     public void createHook() {
+        // BEGIN: readme-sample-createHook
         NotificationHook emailNotificationHook = new EmailNotificationHook("email Hook")
             .setDescription("my email Hook")
-            .addEmailToAlert("alertme@alertme.com")
+            .setEmailsToAlert(new ArrayList<String>() {{ add("alertme@alertme.com"); }})
             .setExternalLink("https://adwiki.azurewebsites.net/articles/howto/alerts/create-hooks.html");
 
         final NotificationHook notificationHook = metricsAdvisorAdminClient.createHook(emailNotificationHook);
@@ -219,39 +235,43 @@ public class ReadmeSamples {
         System.out.printf("Email Hook external Link: %s%n", createdEmailHook.getExternalLink());
         System.out.printf("Email Hook emails to alert: %s%n",
             String.join(",", createdEmailHook.getEmailsToAlert()));
+        // END: readme-sample-createHook
     }
 
     /**
      * Code snippet for configuring alert.
      */
     public void configureAlert() {
+        // BEGIN: readme-sample-createAnomalyAlertConfiguration
         String detectionConfigurationId1 = "9ol48er30-6e6e-4391-b78f-b00dfee1e6f5";
         String detectionConfigurationId2 = "3e58er30-6e6e-4391-b78f-b00dfee1e6f5";
         String hookId1 = "5f48er30-6e6e-4391-b78f-b00dfee1e6f5";
         String hookId2 = "8i48er30-6e6e-4391-b78f-b00dfee1e6f5";
 
         final AnomalyAlertConfiguration anomalyAlertConfiguration
-            = metricsAdvisorAdminClient.createAnomalyAlertConfig(
+            = metricsAdvisorAdminClient.createAlertConfig(
                 new AnomalyAlertConfiguration("My anomaly alert config name")
                     .setDescription("alert config description")
                     .setMetricAlertConfigurations(
                         Arrays.asList(
-                            new MetricAnomalyAlertConfiguration(detectionConfigurationId1,
+                            new MetricAlertConfiguration(detectionConfigurationId1,
                                 MetricAnomalyAlertScope.forWholeSeries()),
-                            new MetricAnomalyAlertConfiguration(detectionConfigurationId2,
+                            new MetricAlertConfiguration(detectionConfigurationId2,
                                 MetricAnomalyAlertScope.forWholeSeries())
                                 .setAlertConditions(new MetricAnomalyAlertConditions()
-                                    .setSeverityRangeCondition(new SeverityCondition()
-                                        .setMaxAlertSeverity(AnomalySeverity.HIGH)))
+                                    .setSeverityRangeCondition(new SeverityCondition(AnomalySeverity.HIGH,
+                                        AnomalySeverity.HIGH)))
                         ))
-                    .setCrossMetricsOperator(MetricAnomalyAlertConfigurationsOperator.AND)
-                    .setIdOfHooksToAlert(Arrays.asList(hookId1, hookId2)));
+                    .setCrossMetricsOperator(MetricAlertConfigurationsOperator.AND)
+                    .setHookIdsToAlert(Arrays.asList(hookId1, hookId2)));
+        // END: readme-sample-createAnomalyAlertConfiguration
     }
 
     /**
      * Code snippet for querying anomaly detection.
      */
     public void queryAlertsForDetection() {
+        // BEGIN: readme-sample-listAnomaliesForAlert
         String alertConfigurationId = "9ol48er30-6e6e-4391-b78f-b00dfee1e6f5";
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-01-01T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
@@ -273,27 +293,32 @@ public class ReadmeSamples {
                         System.out.printf("DataPoint Anomaly related series key: %s%n", anomaly.getSeriesKey().asMap());
                     });
             });
+        // END: readme-sample-listAnomaliesForAlert
     }
 
     /**
      * Code snippet for handling exception
      */
     public void handlingException() {
+        // BEGIN: readme-sample-handlingException
         try {
             metricsAdvisorClient.getFeedback("non_existing_feedback_id");
         } catch (HttpResponseException e) {
             System.out.println(e.getMessage());
         }
+        // END: readme-sample-handlingException
     }
 
     /**
      * Code snippet for getting async client using the MetricsAdvisorKeyCredential authentication.
      */
     public void useMetricsAdvisorKeyCredentialAsyncClient() {
+        // BEGIN: readme-sample-asyncClient
         MetricsAdvisorKeyCredential credential = new MetricsAdvisorKeyCredential("subscription_key", "api_key");
         MetricsAdvisorAsyncClient metricsAdvisorAsyncClient = new MetricsAdvisorClientBuilder()
             .credential(credential)
             .endpoint("{endpoint}")
             .buildAsyncClient();
+        // END: readme-sample-asyncClient
     }
 }

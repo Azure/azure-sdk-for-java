@@ -42,14 +42,14 @@ public final class ConfigurationAssignmentsClientImpl implements ConfigurationAs
     private final ConfigurationAssignmentsService service;
 
     /** The service client containing this operation class. */
-    private final MaintenanceClientImpl client;
+    private final MaintenanceManagementClientImpl client;
 
     /**
      * Initializes an instance of ConfigurationAssignmentsClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ConfigurationAssignmentsClientImpl(MaintenanceClientImpl client) {
+    ConfigurationAssignmentsClientImpl(MaintenanceManagementClientImpl client) {
         this.service =
             RestProxy
                 .create(ConfigurationAssignmentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -57,11 +57,11 @@ public final class ConfigurationAssignmentsClientImpl implements ConfigurationAs
     }
 
     /**
-     * The interface defining all the services for MaintenanceClientConfigurationAssignments to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for MaintenanceManagementClientConfigurationAssignments to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MaintenanceClientCon")
+    @ServiceInterface(name = "MaintenanceManagemen")
     private interface ConfigurationAssignmentsService {
         @Headers({"Content-Type: application/json"})
         @Put(
@@ -90,7 +90,7 @@ public final class ConfigurationAssignmentsClientImpl implements ConfigurationAs
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}"
                 + "/{resourceParentType}/{resourceParentName}/{resourceType}/{resourceName}/providers"
                 + "/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ConfigurationAssignmentInner>> deleteParent(
             @HostParam("$host") String endpoint,
@@ -131,7 +131,7 @@ public final class ConfigurationAssignmentsClientImpl implements ConfigurationAs
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceType}"
                 + "/{resourceName}/providers/Microsoft.Maintenance/configurationAssignments"
                 + "/{configurationAssignmentName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ConfigurationAssignmentInner>> delete(
             @HostParam("$host") String endpoint,

@@ -9,6 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -59,6 +60,7 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "CosmosDbMongoDbApiCollection", value = CosmosDbMongoDbApiCollectionDataset.class),
     @JsonSubTypes.Type(name = "ODataResource", value = ODataResourceDataset.class),
     @JsonSubTypes.Type(name = "OracleTable", value = OracleTableDataset.class),
+    @JsonSubTypes.Type(name = "AmazonRdsForOracleTable", value = AmazonRdsForOracleTableDataset.class),
     @JsonSubTypes.Type(name = "TeradataTable", value = TeradataTableDataset.class),
     @JsonSubTypes.Type(name = "AzureMySqlTable", value = AzureMySqlTableDataset.class),
     @JsonSubTypes.Type(name = "AmazonRedshiftTable", value = AmazonRedshiftTableDataset.class),
@@ -78,6 +80,7 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "SapHanaTable", value = SapHanaTableDataset.class),
     @JsonSubTypes.Type(name = "SapOpenHubTable", value = SapOpenHubTableDataset.class),
     @JsonSubTypes.Type(name = "SqlServerTable", value = SqlServerTableDataset.class),
+    @JsonSubTypes.Type(name = "AmazonRdsForSqlServerTable", value = AmazonRdsForSqlServerTableDataset.class),
     @JsonSubTypes.Type(name = "RestResource", value = RestResourceDataset.class),
     @JsonSubTypes.Type(name = "SapTableResource", value = SapTableResourceDataset.class),
     @JsonSubTypes.Type(name = "WebTable", value = WebTableDataset.class),
@@ -157,6 +160,7 @@ public class Dataset {
      * Parameters for dataset.
      */
     @JsonProperty(value = "parameters")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ParameterSpecification> parameters;
 
     /*

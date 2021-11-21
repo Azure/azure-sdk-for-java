@@ -3,6 +3,8 @@
 
 package com.azure.security.keyvault.keys.models;
 
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.KeyClient;
 
@@ -13,13 +15,15 @@ import java.net.URL;
  * Information about a {@link KeyVaultKey} parsed from the key URL. You can use this information when calling methods
  * of {@link KeyClient} or {@link KeyAsyncClient}.
  */
+@Immutable
 public final class KeyVaultKeyIdentifier {
-    private final String keyId, vaultUrl, name, version;
+    private final ClientLogger logger = new ClientLogger(KeyVaultKeyIdentifier.class);
+    private final String sourceId, vaultUrl, name, version;
 
     /**
-     * Create a new {@link KeyVaultKeyIdentifier} from a given key identifier.
+     * Create a new {@link KeyVaultKeyIdentifier} from a given Key Vault identifier.
      *
-     * <p>Valid examples are:
+     * <p>Some examples:
      *
      * <ul>
      *     <li>https://{key-vault-name}.vault.azure.net/keys/{key-name}</li>
@@ -28,34 +32,34 @@ public final class KeyVaultKeyIdentifier {
      *     <li>https://{key-vault-name}.vault.azure.net/deletedkeys/{deleted-key-name}</li>
      * </ul>
      *
-     * @param keyId The key identifier to extract information from.
+     * @param sourceId The identifier to extract information from.
      *
-     * @throws IllegalArgumentException If {@code keyId} is an invalid Key Vault Key identifier.
-     * @throws NullPointerException If {@code keyId} is {@code null}.
+     * @throws IllegalArgumentException If {@code sourceId} is an invalid Key Vault identifier.
+     * @throws NullPointerException If {@code sourceId} is {@code null}.
      */
-    public KeyVaultKeyIdentifier(String keyId) {
-        if (keyId == null) {
-            throw new NullPointerException("'keyId' cannot be null.");
+    public KeyVaultKeyIdentifier(String sourceId) {
+        if (sourceId == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'sourceId' cannot be null."));
         }
 
         try {
-            final URL url = new URL(keyId);
-            // We expect an identifier with either 2 or 3 path segments: collection + name [+ version]
+            final URL url = new URL(sourceId);
+            // We expect an sourceId with either 3 or 4 path segments: key vault + collection + name + "pending"/version
             final String[] pathSegments = url.getPath().split("/");
 
-            if ((pathSegments.length != 3 && pathSegments.length != 4) // More or less segments in the URI than expected.
-                || !"https".equals(url.getProtocol()) // Invalid protocol.
-                || ("deletedkeys".equals(pathSegments[1]) && pathSegments.length == 4)) { // Deleted items do not include a version.
-
-                throw new IllegalArgumentException("'keyId' is not a valid Key Vault Key identifier.");
+            // More or less segments in the URI than expected.
+            if (pathSegments.length != 3 && pathSegments.length != 4) {
+                throw logger.logExceptionAsError(
+                    new IllegalArgumentException("'sourceId' is not a valid Key Vault identifier."));
             }
 
-            this.keyId = keyId;
+            this.sourceId = sourceId;
             this.vaultUrl = String.format("%s://%s", url.getProtocol(), url.getHost());
             this.name = pathSegments[2];
             this.version = pathSegments.length == 4 ? pathSegments[3] : null;
         } catch (MalformedURLException e) {
-            throw new IllegalArgumentException("'keyId' is not a valid Key Vault Key identifier.", e);
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'sourceId' is not a valid Key Vault identifier.", e));
         }
     }
 
@@ -64,8 +68,8 @@ public final class KeyVaultKeyIdentifier {
      *
      * @return The key identifier.
      */
-    public String getKeyId() {
-        return keyId;
+    public String getSourceId() {
+        return sourceId;
     }
 
     /**

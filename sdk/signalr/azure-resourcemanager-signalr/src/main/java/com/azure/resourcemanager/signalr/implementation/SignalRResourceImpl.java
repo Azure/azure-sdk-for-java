@@ -15,6 +15,7 @@ import com.azure.resourcemanager.signalr.models.ManagedIdentity;
 import com.azure.resourcemanager.signalr.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.signalr.models.ProvisioningState;
 import com.azure.resourcemanager.signalr.models.RegenerateKeyParameters;
+import com.azure.resourcemanager.signalr.models.ResourceLogConfiguration;
 import com.azure.resourcemanager.signalr.models.ResourceSku;
 import com.azure.resourcemanager.signalr.models.ServerlessUpstreamSettings;
 import com.azure.resourcemanager.signalr.models.ServiceKind;
@@ -132,6 +133,10 @@ public final class SignalRResourceImpl implements SignalRResource, SignalRResour
         return this.innerModel().tls();
     }
 
+    public String hostnamePrefix() {
+        return this.innerModel().hostnamePrefix();
+    }
+
     public List<SignalRFeature> features() {
         List<SignalRFeature> inner = this.innerModel().features();
         if (inner != null) {
@@ -139,6 +144,10 @@ public final class SignalRResourceImpl implements SignalRResource, SignalRResour
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public ResourceLogConfiguration resourceLogConfiguration() {
+        return this.innerModel().resourceLogConfiguration();
     }
 
     public SignalRCorsSettings cors() {
@@ -151,6 +160,18 @@ public final class SignalRResourceImpl implements SignalRResource, SignalRResour
 
     public SignalRNetworkACLs networkACLs() {
         return this.innerModel().networkACLs();
+    }
+
+    public String publicNetworkAccess() {
+        return this.innerModel().publicNetworkAccess();
+    }
+
+    public Boolean disableLocalAuth() {
+        return this.innerModel().disableLocalAuth();
+    }
+
+    public Boolean disableAadAuth() {
+        return this.innerModel().disableAadAuth();
     }
 
     public Region region() {
@@ -316,6 +337,11 @@ public final class SignalRResourceImpl implements SignalRResource, SignalRResour
         return this;
     }
 
+    public SignalRResourceImpl withResourceLogConfiguration(ResourceLogConfiguration resourceLogConfiguration) {
+        this.innerModel().withResourceLogConfiguration(resourceLogConfiguration);
+        return this;
+    }
+
     public SignalRResourceImpl withCors(SignalRCorsSettings cors) {
         this.innerModel().withCors(cors);
         return this;
@@ -328,6 +354,21 @@ public final class SignalRResourceImpl implements SignalRResource, SignalRResour
 
     public SignalRResourceImpl withNetworkACLs(SignalRNetworkACLs networkACLs) {
         this.innerModel().withNetworkACLs(networkACLs);
+        return this;
+    }
+
+    public SignalRResourceImpl withPublicNetworkAccess(String publicNetworkAccess) {
+        this.innerModel().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    public SignalRResourceImpl withDisableLocalAuth(Boolean disableLocalAuth) {
+        this.innerModel().withDisableLocalAuth(disableLocalAuth);
+        return this;
+    }
+
+    public SignalRResourceImpl withDisableAadAuth(Boolean disableAadAuth) {
+        this.innerModel().withDisableAadAuth(disableAadAuth);
         return this;
     }
 }

@@ -3,30 +3,36 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/digitaltwins/
+      - sdk/digitaltwins/ci.yml
+      - sdk/digitaltwins/azure-digitaltwins-core/
+      - sdk/digitaltwins/azure-resourcemanager-digitaltwins/
     exclude:
-      - sdk/digitaltwins/mgmt-v2020_03_01_preview
+      - sdk/digitaltwins/pom.xml
+      - sdk/digitaltwins/azure-digitaltwins-core/pom.xml
+      - sdk/digitaltwins/azure-resourcemanager-digitaltwins/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/digitaltwins/
+      - sdk/digitaltwins/ci.yml
+      - sdk/digitaltwins/azure-digitaltwins-core/
+      - sdk/digitaltwins/azure-resourcemanager-digitaltwins/
     exclude:
-      - sdk/digitaltwins/mgmt-v2020_03_01_preview
+      - sdk/digitaltwins/pom.xml
+      - sdk/digitaltwins/azure-digitaltwins-core/pom.xml
+      - sdk/digitaltwins/azure-resourcemanager-digitaltwins/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

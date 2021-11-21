@@ -189,7 +189,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             cosmosClientBuilder.directMode(DirectConnectionConfig.getDefaultConfig()).buildClient();
         CosmosAsyncContainer cosmosAsyncContainer = getSharedMultiPartitionCosmosContainer(cosmosClient.asyncClient());
         RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) cosmosClient.asyncClient().getContextClient();
-        RxStoreModel mockStoreModel = Mockito.mock(RxStoreModel.class);
+        RxStoreModel mockStoreModel = Mockito.mock(RxStoreModel.class, Mockito.CALLS_REAL_METHODS);
         RxDocumentServiceResponse mockRxDocumentServiceResponse = Mockito.mock(RxDocumentServiceResponse.class);
 
         Field storeModelField = RxDocumentClientImpl.class.getDeclaredField("storeModel");
@@ -469,7 +469,9 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             } catch (CosmosException ex) {
                 RetryContext retryContext =
                     ex.getDiagnostics().clientSideRequestStatistics().getRetryContext();
-                assertThat(retryContext.getStatusAndSubStatusCodes().size()).isLessThanOrEqualTo(7);
+
+                //In CI pipeline, the emulator starts with strong consitency
+                assertThat(retryContext.getStatusAndSubStatusCodes().size()).isLessThanOrEqualTo(9);
                 assertThat(retryContext.getStatusAndSubStatusCodes().size()).isGreaterThanOrEqualTo(6);
                 assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[0]).isEqualTo(410);
                 assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[1]).isEqualTo(0);

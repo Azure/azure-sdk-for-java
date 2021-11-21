@@ -3,9 +3,10 @@
 
 package com.azure.storage.file.share.perf;
 
-import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.RepeatingInputStream;
 import com.azure.perf.test.core.TestDataCreationHelper;
+import com.azure.storage.StoragePerfStressOptions;
+import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.file.share.perf.core.FileTestBase;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -14,11 +15,11 @@ import java.nio.ByteBuffer;
 
 import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBufferFlux;
 
-public class UploadFileShareTest extends FileTestBase<PerfStressOptions> {
+public class UploadFileShareTest extends FileTestBase<StoragePerfStressOptions> {
     protected final RepeatingInputStream inputStream;
     protected final Flux<ByteBuffer> byteBufferFlux;
 
-    public UploadFileShareTest(PerfStressOptions options) {
+    public UploadFileShareTest(StoragePerfStressOptions options) {
         super(options);
         inputStream = (RepeatingInputStream) TestDataCreationHelper.createRandomInputStream(options.getSize());
         byteBufferFlux = createRandomByteBufferFlux(options.getSize());
@@ -27,12 +28,20 @@ public class UploadFileShareTest extends FileTestBase<PerfStressOptions> {
     @Override
     public void run() {
         inputStream.reset();
-        shareFileClient.upload(inputStream, options.getSize());
+        ParallelTransferOptions transferOptions = new ParallelTransferOptions()
+            .setMaxSingleUploadSizeLong(options.getTransferSingleUploadSize())
+            .setBlockSizeLong(options.getTransferBlockSize())
+            .setMaxConcurrency(options.getTransferConcurrency());
+        shareFileClient.upload(inputStream, options.getSize(), transferOptions);
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return shareFileAsyncClient.upload(byteBufferFlux, options.getSize())
+        ParallelTransferOptions transferOptions = new ParallelTransferOptions()
+            .setMaxSingleUploadSizeLong(options.getTransferSingleUploadSize())
+            .setBlockSizeLong(options.getTransferBlockSize())
+            .setMaxConcurrency(options.getTransferConcurrency());
+        return shareFileAsyncClient.upload(byteBufferFlux, transferOptions)
             .then();
     }
 

@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.farmbeats-dogfood.azure.net/farmers?api-version=2021-03-31-preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "1cc90b2b-e0a6-4a2f-8199-6670c32a826a",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "316",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Server" : "nginx/1.19.1",
+      "api-supported-versions" : "2021-03-31-preview",
+      "Connection" : "keep-alive",
+      "Vary" : "Accept-Encoding",
+      "api-deprecated-versions" : "2020-12-31-preview",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"id\":\"agadhika-farmer\",\"eTag\":\"0600533a-0000-0700-0000-608b12aa0000\",\"createdDateTime\":\"2021-04-29T20:10:18Z\",\"modifiedDateTime\":\"2021-04-29T20:10:18Z\"},{\"id\":\"iscai-farmer\",\"eTag\":\"20028a13-0000-0700-0000-6092d1f50000\",\"createdDateTime\":\"2021-04-29T23:34:05Z\",\"modifiedDateTime\":\"2021-05-05T17:12:21Z\"}]}",
+      "Date" : "Fri, 07 May 2021 19:34:32 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

@@ -57,7 +57,6 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponseWithHeaders;
-import java.io.IOException;
 import java.util.List;
 import rx.Observable;
 
@@ -1282,7 +1281,7 @@ public interface Pools {
 
     /**
      * Removes Compute Nodes from the specified Pool.
-     * This operation can only run when the allocation state of the Pool is steady. When this operation runs, the allocation state changes from steady to resizing.
+     * This operation can only run when the allocation state of the Pool is steady. When this operation runs, the allocation state changes from steady to resizing. Each request may remove up to 100 nodes.
      *
      * @param poolId The ID of the Pool from which you want to remove Compute Nodes.
      * @param nodeRemoveParameter The parameters for the request.
@@ -1294,7 +1293,7 @@ public interface Pools {
 
     /**
      * Removes Compute Nodes from the specified Pool.
-     * This operation can only run when the allocation state of the Pool is steady. When this operation runs, the allocation state changes from steady to resizing.
+     * This operation can only run when the allocation state of the Pool is steady. When this operation runs, the allocation state changes from steady to resizing. Each request may remove up to 100 nodes.
      *
      * @param poolId The ID of the Pool from which you want to remove Compute Nodes.
      * @param nodeRemoveParameter The parameters for the request.
@@ -1306,7 +1305,7 @@ public interface Pools {
 
     /**
      * Removes Compute Nodes from the specified Pool.
-     * This operation can only run when the allocation state of the Pool is steady. When this operation runs, the allocation state changes from steady to resizing.
+     * This operation can only run when the allocation state of the Pool is steady. When this operation runs, the allocation state changes from steady to resizing. Each request may remove up to 100 nodes.
      *
      * @param poolId The ID of the Pool from which you want to remove Compute Nodes.
      * @param nodeRemoveParameter The parameters for the request.
@@ -1317,7 +1316,7 @@ public interface Pools {
 
     /**
      * Removes Compute Nodes from the specified Pool.
-     * This operation can only run when the allocation state of the Pool is steady. When this operation runs, the allocation state changes from steady to resizing.
+     * This operation can only run when the allocation state of the Pool is steady. When this operation runs, the allocation state changes from steady to resizing. Each request may remove up to 100 nodes.
      *
      * @param poolId The ID of the Pool from which you want to remove Compute Nodes.
      * @param nodeRemoveParameter The parameters for the request.
@@ -1327,7 +1326,7 @@ public interface Pools {
     Observable<ServiceResponseWithHeaders<Void, PoolRemoveNodesHeaders>> removeNodesWithServiceResponseAsync(String poolId, NodeRemoveParameter nodeRemoveParameter);
     /**
      * Removes Compute Nodes from the specified Pool.
-     * This operation can only run when the allocation state of the Pool is steady. When this operation runs, the allocation state changes from steady to resizing.
+     * This operation can only run when the allocation state of the Pool is steady. When this operation runs, the allocation state changes from steady to resizing. Each request may remove up to 100 nodes.
      *
      * @param poolId The ID of the Pool from which you want to remove Compute Nodes.
      * @param nodeRemoveParameter The parameters for the request.
@@ -1340,7 +1339,7 @@ public interface Pools {
 
     /**
      * Removes Compute Nodes from the specified Pool.
-     * This operation can only run when the allocation state of the Pool is steady. When this operation runs, the allocation state changes from steady to resizing.
+     * This operation can only run when the allocation state of the Pool is steady. When this operation runs, the allocation state changes from steady to resizing. Each request may remove up to 100 nodes.
      *
      * @param poolId The ID of the Pool from which you want to remove Compute Nodes.
      * @param nodeRemoveParameter The parameters for the request.
@@ -1353,7 +1352,7 @@ public interface Pools {
 
     /**
      * Removes Compute Nodes from the specified Pool.
-     * This operation can only run when the allocation state of the Pool is steady. When this operation runs, the allocation state changes from steady to resizing.
+     * This operation can only run when the allocation state of the Pool is steady. When this operation runs, the allocation state changes from steady to resizing. Each request may remove up to 100 nodes.
      *
      * @param poolId The ID of the Pool from which you want to remove Compute Nodes.
      * @param nodeRemoveParameter The parameters for the request.
@@ -1365,7 +1364,7 @@ public interface Pools {
 
     /**
      * Removes Compute Nodes from the specified Pool.
-     * This operation can only run when the allocation state of the Pool is steady. When this operation runs, the allocation state changes from steady to resizing.
+     * This operation can only run when the allocation state of the Pool is steady. When this operation runs, the allocation state changes from steady to resizing. Each request may remove up to 100 nodes.
      *
      * @param poolId The ID of the Pool from which you want to remove Compute Nodes.
      * @param nodeRemoveParameter The parameters for the request.

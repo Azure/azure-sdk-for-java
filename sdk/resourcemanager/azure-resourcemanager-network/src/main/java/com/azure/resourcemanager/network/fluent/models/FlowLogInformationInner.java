@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.FlowLogFormatParameters;
 import com.azure.resourcemanager.network.models.RetentionPolicyParameters;
@@ -14,9 +13,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Information on the configuration of flow log and traffic analytics (optional) . */
-@JsonFlatten
 @Fluent
-public class FlowLogInformationInner {
+public final class FlowLogInformationInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(FlowLogInformationInner.class);
 
     /*
@@ -27,34 +25,16 @@ public class FlowLogInformationInner {
     private String targetResourceId;
 
     /*
+     * Properties of the flow log.
+     */
+    @JsonProperty(value = "properties", required = true)
+    private FlowLogProperties innerProperties = new FlowLogProperties();
+
+    /*
      * Parameters that define the configuration of traffic analytics.
      */
     @JsonProperty(value = "flowAnalyticsConfiguration")
     private TrafficAnalyticsProperties flowAnalyticsConfiguration;
-
-    /*
-     * ID of the storage account which is used to store the flow log.
-     */
-    @JsonProperty(value = "properties.storageId", required = true)
-    private String storageId;
-
-    /*
-     * Flag to enable/disable flow logging.
-     */
-    @JsonProperty(value = "properties.enabled", required = true)
-    private boolean enabled;
-
-    /*
-     * Parameters that define the retention policy for flow log.
-     */
-    @JsonProperty(value = "properties.retentionPolicy")
-    private RetentionPolicyParameters retentionPolicy;
-
-    /*
-     * Parameters that define the flow log format.
-     */
-    @JsonProperty(value = "properties.format")
-    private FlowLogFormatParameters format;
 
     /**
      * Get the targetResourceId property: The ID of the resource to configure for flow log and traffic analytics
@@ -76,6 +56,15 @@ public class FlowLogInformationInner {
     public FlowLogInformationInner withTargetResourceId(String targetResourceId) {
         this.targetResourceId = targetResourceId;
         return this;
+    }
+
+    /**
+     * Get the innerProperties property: Properties of the flow log.
+     *
+     * @return the innerProperties value.
+     */
+    private FlowLogProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -105,7 +94,7 @@ public class FlowLogInformationInner {
      * @return the storageId value.
      */
     public String storageId() {
-        return this.storageId;
+        return this.innerProperties() == null ? null : this.innerProperties().storageId();
     }
 
     /**
@@ -115,7 +104,10 @@ public class FlowLogInformationInner {
      * @return the FlowLogInformationInner object itself.
      */
     public FlowLogInformationInner withStorageId(String storageId) {
-        this.storageId = storageId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FlowLogProperties();
+        }
+        this.innerProperties().withStorageId(storageId);
         return this;
     }
 
@@ -125,7 +117,7 @@ public class FlowLogInformationInner {
      * @return the enabled value.
      */
     public boolean enabled() {
-        return this.enabled;
+        return this.innerProperties() == null ? false : this.innerProperties().enabled();
     }
 
     /**
@@ -135,7 +127,10 @@ public class FlowLogInformationInner {
      * @return the FlowLogInformationInner object itself.
      */
     public FlowLogInformationInner withEnabled(boolean enabled) {
-        this.enabled = enabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FlowLogProperties();
+        }
+        this.innerProperties().withEnabled(enabled);
         return this;
     }
 
@@ -145,7 +140,7 @@ public class FlowLogInformationInner {
      * @return the retentionPolicy value.
      */
     public RetentionPolicyParameters retentionPolicy() {
-        return this.retentionPolicy;
+        return this.innerProperties() == null ? null : this.innerProperties().retentionPolicy();
     }
 
     /**
@@ -155,7 +150,10 @@ public class FlowLogInformationInner {
      * @return the FlowLogInformationInner object itself.
      */
     public FlowLogInformationInner withRetentionPolicy(RetentionPolicyParameters retentionPolicy) {
-        this.retentionPolicy = retentionPolicy;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FlowLogProperties();
+        }
+        this.innerProperties().withRetentionPolicy(retentionPolicy);
         return this;
     }
 
@@ -165,7 +163,7 @@ public class FlowLogInformationInner {
      * @return the format value.
      */
     public FlowLogFormatParameters format() {
-        return this.format;
+        return this.innerProperties() == null ? null : this.innerProperties().format();
     }
 
     /**
@@ -175,7 +173,10 @@ public class FlowLogInformationInner {
      * @return the FlowLogInformationInner object itself.
      */
     public FlowLogInformationInner withFormat(FlowLogFormatParameters format) {
-        this.format = format;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FlowLogProperties();
+        }
+        this.innerProperties().withFormat(format);
         return this;
     }
 
@@ -191,20 +192,16 @@ public class FlowLogInformationInner {
                     new IllegalArgumentException(
                         "Missing required property targetResourceId in model FlowLogInformationInner"));
         }
-        if (flowAnalyticsConfiguration() != null) {
-            flowAnalyticsConfiguration().validate();
-        }
-        if (storageId() == null) {
+        if (innerProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property storageId in model FlowLogInformationInner"));
+                        "Missing required property innerProperties in model FlowLogInformationInner"));
+        } else {
+            innerProperties().validate();
         }
-        if (retentionPolicy() != null) {
-            retentionPolicy().validate();
-        }
-        if (format() != null) {
-            format().validate();
+        if (flowAnalyticsConfiguration() != null) {
+            flowAnalyticsConfiguration().validate();
         }
     }
 }

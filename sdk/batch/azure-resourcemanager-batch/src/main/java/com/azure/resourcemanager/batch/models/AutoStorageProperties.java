@@ -49,6 +49,20 @@ public final class AutoStorageProperties extends AutoStorageBaseProperties {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AutoStorageProperties withAuthenticationMode(AutoStorageAuthenticationMode authenticationMode) {
+        super.withAuthenticationMode(authenticationMode);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AutoStorageProperties withNodeIdentityReference(ComputeNodeIdentityReference nodeIdentityReference) {
+        super.withNodeIdentityReference(nodeIdentityReference);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

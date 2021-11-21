@@ -10,13 +10,13 @@ import com.azure.cosmos.implementation.feedranges.{FeedRangeContinuation, FeedRa
 import com.azure.cosmos.implementation.query.CompositeContinuationToken
 import com.azure.cosmos.implementation.routing.Range
 import com.azure.cosmos.models.FeedRange
-import com.azure.cosmos.spark.{CosmosLoggingTrait, NormalizedRange}
+import com.azure.cosmos.spark.NormalizedRange
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
-private[cosmos] object SparkBridgeImplementationInternal extends CosmosLoggingTrait {
+private[cosmos] object SparkBridgeImplementationInternal {
   def setMetadataCacheSnapshot(cosmosClientBuilder: CosmosClientBuilder,
                                metadataCache: CosmosClientMetadataCachesSnapshot): Unit = {
 
@@ -53,7 +53,7 @@ private[cosmos] object SparkBridgeImplementationInternal extends CosmosLoggingTr
       ChangeFeedState.fromString(s)
     }).toArray
 
-    ChangeFeedState.merge(states).toString()
+    ChangeFeedState.merge(states).toString
   }
 
   def createChangeFeedStateJson
@@ -106,7 +106,7 @@ private[cosmos] object SparkBridgeImplementationInternal extends CosmosLoggingTr
   def toLsn(lsnToken: String): Long = {
     // the continuation from the backend is encoded as '"<LSN>"' where LSN is a long integer
     // removing the first and last characters - which are the quotes
-    if (lsnToken != null && lsnToken.length > 2) {
+    if (lsnToken != null) {
       if (lsnToken.startsWith("\"")) {
         lsnToken.substring(1, lsnToken.length - 1).toLong
       } else {

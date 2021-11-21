@@ -5,30 +5,30 @@ package com.azure.spring.integration.servicebus.topic;
 
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
 import com.azure.spring.integration.servicebus.inbound.ServiceBusTopicInboundChannelAdapter;
-import com.azure.spring.integration.servicebus.topic.support.ServiceBusTopicTestOperation;
-import com.microsoft.azure.servicebus.SubscriptionClient;
+import com.azure.spring.integration.servicebus.support.ServiceBusTopicTestOperation;
 import com.azure.spring.integration.test.support.InboundChannelAdapterTest;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 
-import static org.mockito.Mockito.when;
-
-@RunWith(MockitoJUnitRunner.class)
 public class ServiceBusTopicInboundAdapterTest extends InboundChannelAdapterTest<ServiceBusTopicInboundChannelAdapter> {
 
     @Mock
     ServiceBusTopicClientFactory clientFactory;
 
-    @Mock
-    SubscriptionClient subscriptionClient;
+    private AutoCloseable closeable;
 
+    @AfterEach
+    public void close() throws Exception {
+        closeable.close();
+    }
+
+    @BeforeEach
     @Override
     public void setUp() {
-        when(this.clientFactory.getOrCreateSubscriptionClient(this.destination, this.consumerGroup))
-            .thenReturn(this.subscriptionClient);
-        this.adapter =
-            new ServiceBusTopicInboundChannelAdapter(destination, new ServiceBusTopicTestOperation(clientFactory),
-                consumerGroup);
+        this.closeable = MockitoAnnotations.openMocks(this);
+        this.adapter = new ServiceBusTopicInboundChannelAdapter(destination,
+            new ServiceBusTopicTestOperation(clientFactory), consumerGroup);
     }
 }

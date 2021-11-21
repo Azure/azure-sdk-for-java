@@ -28,10 +28,7 @@ public enum State {
     CANCELLED("cancelled"),
 
     /** Enum value cancelling. */
-    CANCELLING("cancelling"),
-
-    /** Enum value partiallyCompleted. */
-    PARTIALLY_COMPLETED("partiallyCompleted");
+    CANCELLING("cancelling");
 
     /** The actual serialized value for a State instance. */
     private final String value;

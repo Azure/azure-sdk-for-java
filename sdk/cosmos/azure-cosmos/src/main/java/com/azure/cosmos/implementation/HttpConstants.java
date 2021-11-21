@@ -249,6 +249,8 @@ public class HttpConstants {
         public static final String USE_POLYGONS_SMALLER_THAN_AHEMISPHERE = "x-ms-documentdb-usepolygonssmallerthanahemisphere";
         public static final String API_TYPE = "x-ms-cosmos-apitype";
         public static final String QUERY_METRICS = "x-ms-documentdb-query-metrics";
+        public static final String POPULATE_INDEX_METRICS = "x-ms-cosmos-populateindexmetrics";
+        public static final String INDEX_UTILIZATION = "x-ms-cosmos-index-utilization";
 
         // Batch operations
         public static final String IS_BATCH_ATOMIC = "x-ms-cosmos-batch-atomic";
@@ -265,6 +267,10 @@ public class HttpConstants {
 
         // Dedicated Gateway Headers
         public static final String DEDICATED_GATEWAY_PER_REQUEST_CACHE_STALENESS = "x-ms-dedicatedgateway-max-age";
+
+        // Client Encryption Headers
+        public static final String IS_CLIENT_ENCRYPTED_HEADER = "x-ms-cosmos-is-client-encrypted";
+        public static final String INTENDED_COLLECTION_RID_HEADER = "x-ms-cosmos-intended-collection-rid";
     }
 
     public static class A_IMHeaderValues {
@@ -273,7 +279,7 @@ public class HttpConstants {
     }
 
     public static class Versions {
-        public static final String CURRENT_VERSION = "2018-12-31";
+        public static final String CURRENT_VERSION = "2020-07-15";
         public static final String QUERY_VERSION = "1.0";
         public static final String AZURE_COSMOS_PROPERTIES_FILE_NAME = "azure-cosmos.properties";
 
@@ -340,6 +346,9 @@ public class HttpConstants {
 
         // Client generated offer not configured exception
         public static final int OFFER_NOT_CONFIGURED = 10004;
+
+        // Client generated request rate too large exception
+        public static final int THROUGHPUT_CONTROL_BULK_REQUEST_RATE_TOO_LARGE = 10005;
     }
 
     public static class HeaderValues {

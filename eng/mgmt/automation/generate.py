@@ -18,6 +18,7 @@ from typing import Tuple
 pwd = os.getcwd()
 os.chdir(os.path.abspath(os.path.dirname(sys.argv[0])))
 from parameters import *
+from generate_data import sdk_automation as sdk_automation_data
 os.chdir(pwd)
 
 
@@ -37,6 +38,7 @@ def generate(
     use: str,
     tag: str = None,
     version: str = None,
+    autorest_options: str = '',
     **kwargs,
 ):
     module = ARTIFACT_FORMAT.format(service)
@@ -47,6 +49,11 @@ def generate(
         module,
     )
     shutil.rmtree(os.path.join(output_dir, 'src/main'), ignore_errors = True)
+    if os.path.exists(os.path.join(output_dir, 'src/samples/README.md')):
+        # samples contains hand-written code
+        shutil.rmtree(os.path.join(output_dir, 'src/samples/java', namespace.replace('.', '/'), 'generated'), ignore_errors = True)
+    else:
+        shutil.rmtree(os.path.join(output_dir, 'src/samples'), ignore_errors = True)
 
     if re.match(r'https?://', spec_root):
         readme = urllib.parse.urljoin(spec_root, readme)
@@ -62,7 +69,7 @@ def generate(
         os.path.abspath(sdk_root),
         os.path.abspath(output_dir),
         namespace,
-        ' '.join((tag_option, version_option, FLUENTLITE_ARGUMENTS, readme)),
+        ' '.join((tag_option, version_option, FLUENTLITE_ARGUMENTS, autorest_options, readme)),
     )
     logging.info(command)
     if os.system(command) != 0:
@@ -79,7 +86,7 @@ def generate(
 def compile_package(sdk_root, service):
     module = ARTIFACT_FORMAT.format(service)
     if os.system(
-            'mvn clean verify package -f {0}/pom.xml -pl {1}:{2} -am'.format(
+            'mvn --no-transfer-progress clean verify package -f {0}/pom.xml -pl {1}:{2} -am'.format(
                 sdk_root, GROUP_ID, module)) != 0:
         logging.error('[COMPILE] Maven build fail')
         return False
@@ -95,7 +102,7 @@ def generate_changelog_and_breaking_change(
     logging.info('[CHANGELOG] changelog jar: {0} -> {1}'.format(
         old_jar, new_jar))
     stdout = subprocess.run(
-        'mvn clean compile exec:java -q -f {0}/eng/mgmt/changelog/pom.xml -DOLD_JAR="{1}" -DNEW_JAR="{2}"'
+        'mvn --no-transfer-progress clean compile exec:java -q -f {0}/eng/mgmt/changelog/pom.xml -DOLD_JAR="{1}" -DNEW_JAR="{2}"'
         .format(sdk_root, old_jar, new_jar),
         stdout = subprocess.PIPE,
         shell = True,
@@ -128,8 +135,13 @@ def update_changelog(changelog_file, changelog):
 
     first_version_part = old_changelog[:first_version.end() +
                                        second_version.start()]
+    # remove text starting from the first '###' (usually the block '### Features Added')
+    first_version_part = re.sub('\n###.*', '\n', first_version_part, re.S)
     first_version_part = re.sub('\s+$', '', first_version_part)
-    first_version_part += '\n\n' + changelog.strip() + '\n\n'
+
+    first_version_part += '\n\n'
+    if changelog.strip() != '':
+        first_version_part += changelog.strip() + '\n\n'
 
     with open(changelog_file, 'w') as fout:
         fout.write(first_version_part +
@@ -140,6 +152,8 @@ def update_changelog(changelog_file, changelog):
 
 def compare_with_maven_package(sdk_root, service, stable_version,
                                current_version):
+    logging.info('[Changelog] Compare stable version {0} with current version {1}'.format(stable_version, current_version))
+
     if stable_version == current_version:
         logging.info('[Changelog][Skip] no previous version')
         return
@@ -163,7 +177,7 @@ def compare_with_maven_package(sdk_root, service, stable_version,
             raise Exception('Cannot found built jar in {0}'.format(new_jar))
         breaking, changelog = generate_changelog_and_breaking_change(
             sdk_root, old_jar, new_jar)
-        if changelog and changelog.strip() != '':
+        if changelog:
             changelog_file = os.path.join(
                 sdk_root,
                 CHANGELOG_FORMAT.format(service = service,
@@ -491,6 +505,11 @@ def parse_args() -> argparse.Namespace:
         default = AUTOREST_CORE_VERSION,
         help = 'Autorest version',
     )
+    parser.add_argument(
+        '--autorest-options',
+        default = '',
+        help = 'Additional autorest options',
+    )
     parser.add_argument('--suffix', help = 'Suffix for namespace and artifact')
     parser.add_argument(
         '--auto-commit-external-change',
@@ -605,7 +624,7 @@ def sdk_automation(input_file: str, output_file: str):
             re.IGNORECASE,
         )
         if not match:
-            logging.error(
+            logging.info(
                 '[Skip] readme path does not format as specification/*/resource-manager/readme.md'
             )
         else:
@@ -632,7 +651,7 @@ def sdk_automation(input_file: str, output_file: str):
                 sdk_root,
                 service,
             )
-            generate(
+            succeeded = generate(
                 sdk_root,
                 service,
                 spec_root = config['specFolder'],
@@ -641,7 +660,8 @@ def sdk_automation(input_file: str, output_file: str):
                 use = AUTOREST_JAVA,
                 tag = tag,
             )
-            compile_package(sdk_root, service)
+            if succeeded:
+                compile_package(sdk_root, service)
 
             generated_folder = OUTPUT_FOLDER_FORMAT.format(service)
             packages.append({
@@ -662,10 +682,14 @@ def sdk_automation(input_file: str, output_file: str):
                         generated_folder))
                 ],
                 'result':
-                    'succeeded',
+                    'succeeded' if succeeded else 'failed',
             })
 
             update_parameters(pre_suffix)
+
+    if not packages:
+        # try data-plane codegen
+        packages = sdk_automation_data(config)
 
     with open(output_file, 'w') as fout:
         output = {

@@ -3,7 +3,7 @@
 
 package com.azure.ai.metricsadvisor.administration;
 
-import com.azure.ai.metricsadvisor.models.ListDataFeedIngestionOptions;
+import com.azure.ai.metricsadvisor.administration.models.ListDataFeedIngestionOptions;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 
 import java.time.OffsetDateTime;

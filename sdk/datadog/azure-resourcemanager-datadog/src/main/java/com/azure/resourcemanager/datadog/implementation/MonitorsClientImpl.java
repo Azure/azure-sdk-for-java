@@ -227,9 +227,9 @@ public final class MonitorsClientImpl implements MonitorsClient {
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors"
                 + "/{monitorName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DatadogMonitorResourceInner>> update(
+        Mono<Response<Flux<ByteBuffer>>> update(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -2133,7 +2133,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatadogMonitorResourceInner>> updateWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
         String resourceGroupName, String monitorName, DatadogMonitorResourceUpdateParameters body) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -2187,7 +2187,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatadogMonitorResourceInner>> updateWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
         String resourceGroupName, String monitorName, DatadogMonitorResourceUpdateParameters body, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -2237,17 +2237,98 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    private PollerFlux<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner> beginUpdateAsync(
+        String resourceGroupName, String monitorName, DatadogMonitorResourceUpdateParameters body) {
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, monitorName, body);
+        return this
+            .client
+            .<DatadogMonitorResourceInner, DatadogMonitorResourceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                DatadogMonitorResourceInner.class,
+                DatadogMonitorResourceInner.class,
+                Context.NONE);
+    }
+
+    /**
+     * Update a monitor resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param body The parameters for a PATCH request to a monitor resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PollerFlux<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner> beginUpdateAsync(
+        String resourceGroupName, String monitorName, DatadogMonitorResourceUpdateParameters body, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, monitorName, body, context);
+        return this
+            .client
+            .<DatadogMonitorResourceInner, DatadogMonitorResourceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                DatadogMonitorResourceInner.class,
+                DatadogMonitorResourceInner.class,
+                context);
+    }
+
+    /**
+     * Update a monitor resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param body The parameters for a PATCH request to a monitor resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner> beginUpdate(
+        String resourceGroupName, String monitorName, DatadogMonitorResourceUpdateParameters body) {
+        return beginUpdateAsync(resourceGroupName, monitorName, body).getSyncPoller();
+    }
+
+    /**
+     * Update a monitor resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param body The parameters for a PATCH request to a monitor resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner> beginUpdate(
+        String resourceGroupName, String monitorName, DatadogMonitorResourceUpdateParameters body, Context context) {
+        return beginUpdateAsync(resourceGroupName, monitorName, body, context).getSyncPoller();
+    }
+
+    /**
+     * Update a monitor resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param body The parameters for a PATCH request to a monitor resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DatadogMonitorResourceInner> updateAsync(
         String resourceGroupName, String monitorName, DatadogMonitorResourceUpdateParameters body) {
-        return updateWithResponseAsync(resourceGroupName, monitorName, body)
-            .flatMap(
-                (Response<DatadogMonitorResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return beginUpdateAsync(resourceGroupName, monitorName, body)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2263,15 +2344,46 @@ public final class MonitorsClientImpl implements MonitorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DatadogMonitorResourceInner> updateAsync(String resourceGroupName, String monitorName) {
         final DatadogMonitorResourceUpdateParameters body = null;
-        return updateWithResponseAsync(resourceGroupName, monitorName, body)
-            .flatMap(
-                (Response<DatadogMonitorResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return beginUpdateAsync(resourceGroupName, monitorName, body)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Update a monitor resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param body The parameters for a PATCH request to a monitor resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<DatadogMonitorResourceInner> updateAsync(
+        String resourceGroupName, String monitorName, DatadogMonitorResourceUpdateParameters body, Context context) {
+        return beginUpdateAsync(resourceGroupName, monitorName, body, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Update a monitor resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param body The parameters for a PATCH request to a monitor resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DatadogMonitorResourceInner update(
+        String resourceGroupName, String monitorName, DatadogMonitorResourceUpdateParameters body) {
+        return updateAsync(resourceGroupName, monitorName, body).block();
     }
 
     /**
@@ -2303,9 +2415,9 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DatadogMonitorResourceInner> updateWithResponse(
+    public DatadogMonitorResourceInner update(
         String resourceGroupName, String monitorName, DatadogMonitorResourceUpdateParameters body, Context context) {
-        return updateWithResponseAsync(resourceGroupName, monitorName, body, context).block();
+        return updateAsync(resourceGroupName, monitorName, body, context).block();
     }
 
     /**

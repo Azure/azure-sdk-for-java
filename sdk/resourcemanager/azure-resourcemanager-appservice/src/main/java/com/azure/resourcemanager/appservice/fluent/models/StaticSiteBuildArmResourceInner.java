@@ -4,8 +4,7 @@
 
 package com.azure.resourcemanager.appservice.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.BuildStatus;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
@@ -16,129 +15,23 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 /** Static Site Build ARM resource. */
-@JsonFlatten
-@Immutable
-public class StaticSiteBuildArmResourceInner extends ProxyOnlyResource {
+@Fluent
+public final class StaticSiteBuildArmResourceInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(StaticSiteBuildArmResourceInner.class);
 
     /*
-     * An identifier for the static site build.
+     * StaticSiteBuildARMResource resource specific properties
      */
-    @JsonProperty(value = "properties.buildId", access = JsonProperty.Access.WRITE_ONLY)
-    private String buildId;
-
-    /*
-     * The source branch.
-     */
-    @JsonProperty(value = "properties.sourceBranch", access = JsonProperty.Access.WRITE_ONLY)
-    private String sourceBranch;
-
-    /*
-     * The title of a pull request that a static site build is related to.
-     */
-    @JsonProperty(value = "properties.pullRequestTitle", access = JsonProperty.Access.WRITE_ONLY)
-    private String pullRequestTitle;
-
-    /*
-     * The hostname for a static site build.
-     */
-    @JsonProperty(value = "properties.hostname", access = JsonProperty.Access.WRITE_ONLY)
-    private String hostname;
-
-    /*
-     * When this build was created.
-     */
-    @JsonProperty(value = "properties.createdTimeUtc", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdTimeUtc;
-
-    /*
-     * When this build was updated.
-     */
-    @JsonProperty(value = "properties.lastUpdatedOn", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastUpdatedOn;
-
-    /*
-     * The status of the static site build.
-     */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private BuildStatus status;
-
-    /*
-     * User provided function apps registered with the static site build
-     */
-    @JsonProperty(value = "properties.userProvidedFunctionApps", access = JsonProperty.Access.WRITE_ONLY)
-    private List<StaticSiteUserProvidedFunctionApp> userProvidedFunctionApps;
+    @JsonProperty(value = "properties")
+    private StaticSiteBuildArmResourceProperties innerProperties;
 
     /**
-     * Get the buildId property: An identifier for the static site build.
+     * Get the innerProperties property: StaticSiteBuildARMResource resource specific properties.
      *
-     * @return the buildId value.
+     * @return the innerProperties value.
      */
-    public String buildId() {
-        return this.buildId;
-    }
-
-    /**
-     * Get the sourceBranch property: The source branch.
-     *
-     * @return the sourceBranch value.
-     */
-    public String sourceBranch() {
-        return this.sourceBranch;
-    }
-
-    /**
-     * Get the pullRequestTitle property: The title of a pull request that a static site build is related to.
-     *
-     * @return the pullRequestTitle value.
-     */
-    public String pullRequestTitle() {
-        return this.pullRequestTitle;
-    }
-
-    /**
-     * Get the hostname property: The hostname for a static site build.
-     *
-     * @return the hostname value.
-     */
-    public String hostname() {
-        return this.hostname;
-    }
-
-    /**
-     * Get the createdTimeUtc property: When this build was created.
-     *
-     * @return the createdTimeUtc value.
-     */
-    public OffsetDateTime createdTimeUtc() {
-        return this.createdTimeUtc;
-    }
-
-    /**
-     * Get the lastUpdatedOn property: When this build was updated.
-     *
-     * @return the lastUpdatedOn value.
-     */
-    public OffsetDateTime lastUpdatedOn() {
-        return this.lastUpdatedOn;
-    }
-
-    /**
-     * Get the status property: The status of the static site build.
-     *
-     * @return the status value.
-     */
-    public BuildStatus status() {
-        return this.status;
-    }
-
-    /**
-     * Get the userProvidedFunctionApps property: User provided function apps registered with the static site build.
-     *
-     * @return the userProvidedFunctionApps value.
-     */
-    public List<StaticSiteUserProvidedFunctionApp> userProvidedFunctionApps() {
-        return this.userProvidedFunctionApps;
+    private StaticSiteBuildArmResourceProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -149,6 +42,78 @@ public class StaticSiteBuildArmResourceInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the buildId property: An identifier for the static site build.
+     *
+     * @return the buildId value.
+     */
+    public String buildId() {
+        return this.innerProperties() == null ? null : this.innerProperties().buildId();
+    }
+
+    /**
+     * Get the sourceBranch property: The source branch.
+     *
+     * @return the sourceBranch value.
+     */
+    public String sourceBranch() {
+        return this.innerProperties() == null ? null : this.innerProperties().sourceBranch();
+    }
+
+    /**
+     * Get the pullRequestTitle property: The title of a pull request that a static site build is related to.
+     *
+     * @return the pullRequestTitle value.
+     */
+    public String pullRequestTitle() {
+        return this.innerProperties() == null ? null : this.innerProperties().pullRequestTitle();
+    }
+
+    /**
+     * Get the hostname property: The hostname for a static site build.
+     *
+     * @return the hostname value.
+     */
+    public String hostname() {
+        return this.innerProperties() == null ? null : this.innerProperties().hostname();
+    }
+
+    /**
+     * Get the createdTimeUtc property: When this build was created.
+     *
+     * @return the createdTimeUtc value.
+     */
+    public OffsetDateTime createdTimeUtc() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdTimeUtc();
+    }
+
+    /**
+     * Get the lastUpdatedOn property: When this build was updated.
+     *
+     * @return the lastUpdatedOn value.
+     */
+    public OffsetDateTime lastUpdatedOn() {
+        return this.innerProperties() == null ? null : this.innerProperties().lastUpdatedOn();
+    }
+
+    /**
+     * Get the status property: The status of the static site build.
+     *
+     * @return the status value.
+     */
+    public BuildStatus status() {
+        return this.innerProperties() == null ? null : this.innerProperties().status();
+    }
+
+    /**
+     * Get the userProvidedFunctionApps property: User provided function apps registered with the static site build.
+     *
+     * @return the userProvidedFunctionApps value.
+     */
+    public List<StaticSiteUserProvidedFunctionApp> userProvidedFunctionApps() {
+        return this.innerProperties() == null ? null : this.innerProperties().userProvidedFunctionApps();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -156,8 +121,8 @@ public class StaticSiteBuildArmResourceInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
-        if (userProvidedFunctionApps() != null) {
-            userProvidedFunctionApps().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

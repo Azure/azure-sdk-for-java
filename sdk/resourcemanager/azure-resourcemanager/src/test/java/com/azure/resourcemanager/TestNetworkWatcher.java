@@ -23,6 +23,7 @@ import com.azure.resourcemanager.storage.models.StorageAccounts;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import org.junit.jupiter.api.Assertions;
 
 /** Tests Network Watcher. */
@@ -120,7 +121,7 @@ public class TestNetworkWatcher extends TestTemplate<NetworkWatcher, NetworkWatc
                 .withExistingPrimaryNetworkInterface(nic)
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
                 .withRootUsername(userName)
-                .withRootPassword("Abcdef.123456")
+                .withRootPassword(ResourceManagerTestBase.password())
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .defineNewExtension("packetCapture")
                 .withPublisher("Microsoft.Azure.NetworkWatcher")
@@ -142,7 +143,7 @@ public class TestNetworkWatcher extends TestTemplate<NetworkWatcher, NetworkWatc
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
                 .withRootUsername(userName)
-                .withRootPassword("Abcdef.123456")
+                .withRootPassword(ResourceManagerTestBase.password())
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"));
 
         vmDefinitions.add(vm1);

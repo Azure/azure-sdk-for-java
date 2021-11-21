@@ -86,7 +86,7 @@ and support" menu in the upper right-hand corner of the page.
 
 If you find issues in this library or have suggestions for improvement of code or documentation, you can [file an issue
 in the project's GitHub repository](https://github.com/Azure/azure-sdk-for-java/issues) or send across a pull request -
-see our [Contribution Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/azure-messaging-eventhubs/CONTRIBUTING.md).
+see our [Contribution Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/CONTRIBUTING.md).
 
 Issues related to runtime behavior of the service, such as sporadic exceptions or apparent service-side performance or
 reliability issues cannot be handled here.

@@ -6,6 +6,7 @@ package com.azure.spring.integration.test.support.pojo;
 import java.util.Objects;
 
 public class User {
+
     String name;
 
     public User() {
@@ -37,7 +38,6 @@ public class User {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(name);
     }
 }

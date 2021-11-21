@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/60cc2099060cc2099ed1457786ca3f6dec7fd4a5cae6?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-08-04",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.13.0-beta.1 azsdk-java-azure-storage-file-datalake/12.7.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "18ff2347-381b-4912-a384-e425a34cf6cd"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-08-04",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D92D16F322264B",
+      "Last-Modified" : "Fri, 11 Jun 2021 20:24:44 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "e96188dd-701e-003e-5fff-5e4dbd000000",
+      "x-ms-client-request-id" : "18ff2347-381b-4912-a384-e425a34cf6cd",
+      "Date" : "Fri, 11 Jun 2021 20:24:43 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/60cc2099060cc2099ed1457786ca3f6dec7fd4a5cae6/60cc2099160cc2099ed19642935f2bdbc04a947e1aca?resource=file",
+    "Headers" : {
+      "x-ms-version" : "2020-08-04",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.7.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7f3581b1-6614-4f77-98f6-65e105bfd02c"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-08-04",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D92D16F3343439",
+      "Last-Modified" : "Fri, 11 Jun 2021 20:24:44 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "x-ms-request-id" : "801f6e5a-201f-009a-3dff-5e441b000000",
+      "x-ms-client-request-id" : "7f3581b1-6614-4f77-98f6-65e105bfd02c",
+      "Date" : "Fri, 11 Jun 2021 20:24:43 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "60cc2099060cc2099ed1457786ca3f6dec7fd4a5cae6", "60cc2099160cc2099ed19642935f2bdbc04a947e1aca" ]
+}

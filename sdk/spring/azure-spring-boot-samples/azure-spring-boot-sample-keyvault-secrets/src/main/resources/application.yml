@@ -1,6 +1,0 @@
-azure:
-  keyvault:
-    client-id: put-your-client-id-here
-    client-key: put-your-client-key-here
-    uri: put-your-uri-here
-    tenant-id: put-your-tenant-id-here

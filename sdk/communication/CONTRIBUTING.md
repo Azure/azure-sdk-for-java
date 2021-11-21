@@ -1,6 +1,6 @@
 # Contributing Guide
 
-This is a contributing guide made specifically for the Azure Communication Services SDK. The Azure SDK repository also has a contributing guide that might help you in some other general processes. If you haven't checked that one out yet, you can find it [here](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md). This guide assumes you have set up your development environment for this repository.
+This is a contributing guide made specifically for the Azure Communication Services SDK. The Azure SDK repository also has a contributing guide that might help you in some other general processes. If you haven't checked that one out yet, you can find it [here](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md). This guide assumes you have set up your development environment for this repository.
 
 The Azure Communication Services SDK for Java currently consists of 5 different packages. While each package has its own set of environment variables to make their tests run successfully, all of them follow a similar structure that allows a smooth onboarding process.
 
@@ -61,6 +61,6 @@ That guide also serves as a great starting point for ideas on how to run the cod
 
 ## Submitting a Pull Request
 
-Follow the general [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md) for instructions on the GitHub Forks / Pull requests model we use for our submissions. Make sure to name your PR with the following format once you are ready to submit it: [Communication] - `package-you-are-updating` - `pr-description`.
+Follow the general [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md) for instructions on the GitHub Forks / Pull requests model we use for our submissions. Make sure to name your PR with the following format once you are ready to submit it: [Communication] - `package-you-are-updating` - `pr-description`.
 
 Additionally, write a good description about what your PR does in the description section of the PR itself. This will help your reviewers have a better understanding of what you are trying to accomplish in your PR.

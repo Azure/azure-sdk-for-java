@@ -79,6 +79,13 @@ public final class BinarySink extends CopySink {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public BinarySink withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

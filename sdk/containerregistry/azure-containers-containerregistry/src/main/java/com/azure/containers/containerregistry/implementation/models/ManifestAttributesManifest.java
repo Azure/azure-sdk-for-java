@@ -4,6 +4,7 @@
 
 package com.azure.containers.containerregistry.implementation.models;
 
+import com.azure.containers.containerregistry.models.ArtifactManifestPlatform;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -15,20 +16,14 @@ public final class ManifestAttributesManifest {
      * List of manifest attributes details
      */
     @JsonProperty(value = "references")
-    private List<ManifestAttributesManifestReferences> references;
-
-    /*
-     * Quarantine tag name
-     */
-    @JsonProperty(value = "quarantineTag")
-    private String quarantineTag;
+    private List<ArtifactManifestPlatform> references;
 
     /**
      * Get the references property: List of manifest attributes details.
      *
      * @return the references value.
      */
-    public List<ManifestAttributesManifestReferences> getReferences() {
+    public List<ArtifactManifestPlatform> getReferences() {
         return this.references;
     }
 
@@ -38,28 +33,8 @@ public final class ManifestAttributesManifest {
      * @param references the references value to set.
      * @return the ManifestAttributesManifest object itself.
      */
-    public ManifestAttributesManifest setReferences(List<ManifestAttributesManifestReferences> references) {
+    public ManifestAttributesManifest setReferences(List<ArtifactManifestPlatform> references) {
         this.references = references;
-        return this;
-    }
-
-    /**
-     * Get the quarantineTag property: Quarantine tag name.
-     *
-     * @return the quarantineTag value.
-     */
-    public String getQuarantineTag() {
-        return this.quarantineTag;
-    }
-
-    /**
-     * Set the quarantineTag property: Quarantine tag name.
-     *
-     * @param quarantineTag the quarantineTag value to set.
-     * @return the ManifestAttributesManifest object itself.
-     */
-    public ManifestAttributesManifest setQuarantineTag(String quarantineTag) {
-        this.quarantineTag = quarantineTag;
         return this;
     }
 }

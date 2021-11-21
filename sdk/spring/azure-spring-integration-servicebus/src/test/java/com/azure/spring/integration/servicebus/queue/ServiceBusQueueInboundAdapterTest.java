@@ -5,29 +5,30 @@ package com.azure.spring.integration.servicebus.queue;
 
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
 import com.azure.spring.integration.servicebus.inbound.ServiceBusQueueInboundChannelAdapter;
-import com.azure.spring.integration.servicebus.queue.support.ServiceBusQueueTestOperation;
-import com.microsoft.azure.servicebus.IQueueClient;
+import com.azure.spring.integration.servicebus.support.ServiceBusQueueTestOperation;
 import com.azure.spring.integration.test.support.InboundChannelAdapterTest;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
-
-@RunWith(MockitoJUnitRunner.class)
 public class ServiceBusQueueInboundAdapterTest extends InboundChannelAdapterTest<ServiceBusQueueInboundChannelAdapter> {
 
     @Mock
     ServiceBusQueueClientFactory clientFactory;
 
-    @Mock
-    IQueueClient queueClient;
+    private AutoCloseable closeable;
 
+    @BeforeEach
     @Override
     public void setUp() {
-        when(this.clientFactory.getOrCreateClient(anyString())).thenReturn(queueClient);
-        this.adapter =
-            new ServiceBusQueueInboundChannelAdapter(destination, new ServiceBusQueueTestOperation(clientFactory));
+        this.closeable = MockitoAnnotations.openMocks(this);
+        this.adapter = new ServiceBusQueueInboundChannelAdapter(destination,
+            new ServiceBusQueueTestOperation(clientFactory));
+    }
+
+    @AfterEach
+    public void close() throws Exception {
+        closeable.close();
     }
 }

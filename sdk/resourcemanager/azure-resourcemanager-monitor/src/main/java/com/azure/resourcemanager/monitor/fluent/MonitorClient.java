@@ -10,7 +10,7 @@ import java.time.Duration;
 /** The interface for MonitorClient class. */
 public interface MonitorClient {
     /**
-     * Gets The Azure subscription Id.
+     * Gets The ID of the target subscription.
      *
      * @return the subscriptionId value.
      */
@@ -94,13 +94,6 @@ public interface MonitorClient {
     ActionGroupsClient getActionGroups();
 
     /**
-     * Gets the ActivityLogAlertsClient object to access its operations.
-     *
-     * @return the ActivityLogAlertsClient object.
-     */
-    ActivityLogAlertsClient getActivityLogAlerts();
-
-    /**
      * Gets the ActivityLogsClient object to access its operations.
      *
      * @return the ActivityLogsClient object.
@@ -134,13 +127,6 @@ public interface MonitorClient {
      * @return the MetricsClient object.
      */
     MetricsClient getMetrics();
-
-    /**
-     * Gets the MetricBaselinesClient object to access its operations.
-     *
-     * @return the MetricBaselinesClient object.
-     */
-    MetricBaselinesClient getMetricBaselines();
 
     /**
      * Gets the BaselinesClient object to access its operations.
@@ -183,4 +169,67 @@ public interface MonitorClient {
      * @return the VMInsightsClient object.
      */
     VMInsightsClient getVMInsights();
+
+    /**
+     * Gets the PrivateLinkScopesClient object to access its operations.
+     *
+     * @return the PrivateLinkScopesClient object.
+     */
+    PrivateLinkScopesClient getPrivateLinkScopes();
+
+    /**
+     * Gets the PrivateLinkScopeOperationStatusClient object to access its operations.
+     *
+     * @return the PrivateLinkScopeOperationStatusClient object.
+     */
+    PrivateLinkScopeOperationStatusClient getPrivateLinkScopeOperationStatus();
+
+    /**
+     * Gets the PrivateLinkResourcesClient object to access its operations.
+     *
+     * @return the PrivateLinkResourcesClient object.
+     */
+    PrivateLinkResourcesClient getPrivateLinkResources();
+
+    /**
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
+     *
+     * @return the PrivateEndpointConnectionsClient object.
+     */
+    PrivateEndpointConnectionsClient getPrivateEndpointConnections();
+
+    /**
+     * Gets the PrivateLinkScopedResourcesClient object to access its operations.
+     *
+     * @return the PrivateLinkScopedResourcesClient object.
+     */
+    PrivateLinkScopedResourcesClient getPrivateLinkScopedResources();
+
+    /**
+     * Gets the ActivityLogAlertsClient object to access its operations.
+     *
+     * @return the ActivityLogAlertsClient object.
+     */
+    ActivityLogAlertsClient getActivityLogAlerts();
+
+    /**
+     * Gets the DataCollectionEndpointsClient object to access its operations.
+     *
+     * @return the DataCollectionEndpointsClient object.
+     */
+    DataCollectionEndpointsClient getDataCollectionEndpoints();
+
+    /**
+     * Gets the DataCollectionRuleAssociationsClient object to access its operations.
+     *
+     * @return the DataCollectionRuleAssociationsClient object.
+     */
+    DataCollectionRuleAssociationsClient getDataCollectionRuleAssociations();
+
+    /**
+     * Gets the DataCollectionRulesClient object to access its operations.
+     *
+     * @return the DataCollectionRulesClient object.
+     */
+    DataCollectionRulesClient getDataCollectionRules();
 }

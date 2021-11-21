@@ -46,12 +46,12 @@
   	<dependency>
   		<groupId>org.apache.commons</groupId>
   		<artifactId>commons-lang3</artifactId>
-    <version>3.11</version> <!-- {x-version-update;org.apache.commons:commons-lang3;external_dependency} -->
+    <version>3.12.0</version> <!-- {x-version-update;org.apache.commons:commons-lang3;external_dependency} -->
   	</dependency>
   	<dependency>
   		<groupId>com.google.guava</groupId>
   		<artifactId>guava</artifactId>
-    <version>29.0-jre</version> <!-- {x-version-update;com.google.guava:guava;external_dependency} -->
+    <version>30.1.1-jre</version> <!-- {x-version-update;com.google.guava:guava;external_dependency} -->
   	</dependency>
   </dependencies>
 

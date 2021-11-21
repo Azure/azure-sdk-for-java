@@ -173,7 +173,7 @@ public class LinuxWebAppsTests extends AppServiceTest {
         WebApp webApp =
             webApp1
                 .update()
-                .withBuiltInImage(RuntimeStack.NODEJS_10_LTS)
+                .withBuiltInImage(RuntimeStack.NODEJS_14_LTS)
                 .defineSourceControl()
                 .withPublicGitRepository("https://github.com/jianghaolu/azure-site-test.git")
                 .withBranch("master")
@@ -181,8 +181,8 @@ public class LinuxWebAppsTests extends AppServiceTest {
                 .apply();
         Assertions.assertNotNull(webApp);
         if (!isPlaybackMode()) {
-            // maybe 2 minutes is enough?
-            ResourceManagerUtils.sleep(Duration.ofMinutes(2));
+            // wait long
+            ResourceManagerUtils.sleep(Duration.ofMinutes(5));
             Response<String> response = curl("https://" + webApp1.defaultHostname());
             Assertions.assertEquals(200, response.getStatusCode());
             String body = response.getValue();

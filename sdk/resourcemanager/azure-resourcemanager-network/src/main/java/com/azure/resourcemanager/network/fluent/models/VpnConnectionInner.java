@@ -5,12 +5,12 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.IpsecPolicy;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RoutingConfiguration;
+import com.azure.resourcemanager.network.models.TrafficSelectorPolicy;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionProtocol;
 import com.azure.resourcemanager.network.models.VpnConnectionStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -18,10 +18,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** VpnConnection Resource. */
-@JsonFlatten
 @Fluent
-public class VpnConnectionInner extends SubResource {
+public final class VpnConnectionInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnConnectionInner.class);
+
+    /*
+     * Properties of the VPN connection.
+     */
+    @JsonProperty(value = "properties")
+    private VpnConnectionProperties innerProperties;
 
     /*
      * The name of the resource that is unique within a resource group. This
@@ -36,114 +41,14 @@ public class VpnConnectionInner extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /*
-     * Id of the connected vpn site.
+    /**
+     * Get the innerProperties property: Properties of the VPN connection.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.remoteVpnSite")
-    private SubResource remoteVpnSite;
-
-    /*
-     * Routing weight for vpn connection.
-     */
-    @JsonProperty(value = "properties.routingWeight")
-    private Integer routingWeight;
-
-    /*
-     * DPD timeout in seconds for vpn connection.
-     */
-    @JsonProperty(value = "properties.dpdTimeoutSeconds")
-    private Integer dpdTimeoutSeconds;
-
-    /*
-     * The connection status.
-     */
-    @JsonProperty(value = "properties.connectionStatus", access = JsonProperty.Access.WRITE_ONLY)
-    private VpnConnectionStatus connectionStatus;
-
-    /*
-     * Connection protocol used for this connection.
-     */
-    @JsonProperty(value = "properties.vpnConnectionProtocolType")
-    private VirtualNetworkGatewayConnectionProtocol vpnConnectionProtocolType;
-
-    /*
-     * Ingress bytes transferred.
-     */
-    @JsonProperty(value = "properties.ingressBytesTransferred", access = JsonProperty.Access.WRITE_ONLY)
-    private Long ingressBytesTransferred;
-
-    /*
-     * Egress bytes transferred.
-     */
-    @JsonProperty(value = "properties.egressBytesTransferred", access = JsonProperty.Access.WRITE_ONLY)
-    private Long egressBytesTransferred;
-
-    /*
-     * Expected bandwidth in MBPS.
-     */
-    @JsonProperty(value = "properties.connectionBandwidth")
-    private Integer connectionBandwidth;
-
-    /*
-     * SharedKey for the vpn connection.
-     */
-    @JsonProperty(value = "properties.sharedKey")
-    private String sharedKey;
-
-    /*
-     * EnableBgp flag.
-     */
-    @JsonProperty(value = "properties.enableBgp")
-    private Boolean enableBgp;
-
-    /*
-     * Enable policy-based traffic selectors.
-     */
-    @JsonProperty(value = "properties.usePolicyBasedTrafficSelectors")
-    private Boolean usePolicyBasedTrafficSelectors;
-
-    /*
-     * The IPSec Policies to be considered by this connection.
-     */
-    @JsonProperty(value = "properties.ipsecPolicies")
-    private List<IpsecPolicy> ipsecPolicies;
-
-    /*
-     * EnableBgp flag.
-     */
-    @JsonProperty(value = "properties.enableRateLimiting")
-    private Boolean enableRateLimiting;
-
-    /*
-     * Enable internet security.
-     */
-    @JsonProperty(value = "properties.enableInternetSecurity")
-    private Boolean enableInternetSecurity;
-
-    /*
-     * Use local azure ip to initiate connection.
-     */
-    @JsonProperty(value = "properties.useLocalAzureIpAddress")
-    private Boolean useLocalAzureIpAddress;
-
-    /*
-     * The provisioning state of the VPN connection resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * List of all vpn site link connections to the gateway.
-     */
-    @JsonProperty(value = "properties.vpnLinkConnections")
-    private List<VpnSiteLinkConnectionInner> vpnLinkConnections;
-
-    /*
-     * The Routing Configuration indicating the associated and propagated route
-     * tables on this connection.
-     */
-    @JsonProperty(value = "properties.routingConfiguration")
-    private RoutingConfiguration routingConfiguration;
+    private VpnConnectionProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
@@ -176,13 +81,20 @@ public class VpnConnectionInner extends SubResource {
         return this.etag;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public VpnConnectionInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the remoteVpnSite property: Id of the connected vpn site.
      *
      * @return the remoteVpnSite value.
      */
     public SubResource remoteVpnSite() {
-        return this.remoteVpnSite;
+        return this.innerProperties() == null ? null : this.innerProperties().remoteVpnSite();
     }
 
     /**
@@ -192,7 +104,10 @@ public class VpnConnectionInner extends SubResource {
      * @return the VpnConnectionInner object itself.
      */
     public VpnConnectionInner withRemoteVpnSite(SubResource remoteVpnSite) {
-        this.remoteVpnSite = remoteVpnSite;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VpnConnectionProperties();
+        }
+        this.innerProperties().withRemoteVpnSite(remoteVpnSite);
         return this;
     }
 
@@ -202,7 +117,7 @@ public class VpnConnectionInner extends SubResource {
      * @return the routingWeight value.
      */
     public Integer routingWeight() {
-        return this.routingWeight;
+        return this.innerProperties() == null ? null : this.innerProperties().routingWeight();
     }
 
     /**
@@ -212,7 +127,10 @@ public class VpnConnectionInner extends SubResource {
      * @return the VpnConnectionInner object itself.
      */
     public VpnConnectionInner withRoutingWeight(Integer routingWeight) {
-        this.routingWeight = routingWeight;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VpnConnectionProperties();
+        }
+        this.innerProperties().withRoutingWeight(routingWeight);
         return this;
     }
 
@@ -222,7 +140,7 @@ public class VpnConnectionInner extends SubResource {
      * @return the dpdTimeoutSeconds value.
      */
     public Integer dpdTimeoutSeconds() {
-        return this.dpdTimeoutSeconds;
+        return this.innerProperties() == null ? null : this.innerProperties().dpdTimeoutSeconds();
     }
 
     /**
@@ -232,7 +150,10 @@ public class VpnConnectionInner extends SubResource {
      * @return the VpnConnectionInner object itself.
      */
     public VpnConnectionInner withDpdTimeoutSeconds(Integer dpdTimeoutSeconds) {
-        this.dpdTimeoutSeconds = dpdTimeoutSeconds;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VpnConnectionProperties();
+        }
+        this.innerProperties().withDpdTimeoutSeconds(dpdTimeoutSeconds);
         return this;
     }
 
@@ -242,7 +163,7 @@ public class VpnConnectionInner extends SubResource {
      * @return the connectionStatus value.
      */
     public VpnConnectionStatus connectionStatus() {
-        return this.connectionStatus;
+        return this.innerProperties() == null ? null : this.innerProperties().connectionStatus();
     }
 
     /**
@@ -251,7 +172,7 @@ public class VpnConnectionInner extends SubResource {
      * @return the vpnConnectionProtocolType value.
      */
     public VirtualNetworkGatewayConnectionProtocol vpnConnectionProtocolType() {
-        return this.vpnConnectionProtocolType;
+        return this.innerProperties() == null ? null : this.innerProperties().vpnConnectionProtocolType();
     }
 
     /**
@@ -262,7 +183,10 @@ public class VpnConnectionInner extends SubResource {
      */
     public VpnConnectionInner withVpnConnectionProtocolType(
         VirtualNetworkGatewayConnectionProtocol vpnConnectionProtocolType) {
-        this.vpnConnectionProtocolType = vpnConnectionProtocolType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VpnConnectionProperties();
+        }
+        this.innerProperties().withVpnConnectionProtocolType(vpnConnectionProtocolType);
         return this;
     }
 
@@ -272,7 +196,7 @@ public class VpnConnectionInner extends SubResource {
      * @return the ingressBytesTransferred value.
      */
     public Long ingressBytesTransferred() {
-        return this.ingressBytesTransferred;
+        return this.innerProperties() == null ? null : this.innerProperties().ingressBytesTransferred();
     }
 
     /**
@@ -281,7 +205,7 @@ public class VpnConnectionInner extends SubResource {
      * @return the egressBytesTransferred value.
      */
     public Long egressBytesTransferred() {
-        return this.egressBytesTransferred;
+        return this.innerProperties() == null ? null : this.innerProperties().egressBytesTransferred();
     }
 
     /**
@@ -290,7 +214,7 @@ public class VpnConnectionInner extends SubResource {
      * @return the connectionBandwidth value.
      */
     public Integer connectionBandwidth() {
-        return this.connectionBandwidth;
+        return this.innerProperties() == null ? null : this.innerProperties().connectionBandwidth();
     }
 
     /**
@@ -300,7 +224,10 @@ public class VpnConnectionInner extends SubResource {
      * @return the VpnConnectionInner object itself.
      */
     public VpnConnectionInner withConnectionBandwidth(Integer connectionBandwidth) {
-        this.connectionBandwidth = connectionBandwidth;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VpnConnectionProperties();
+        }
+        this.innerProperties().withConnectionBandwidth(connectionBandwidth);
         return this;
     }
 
@@ -310,7 +237,7 @@ public class VpnConnectionInner extends SubResource {
      * @return the sharedKey value.
      */
     public String sharedKey() {
-        return this.sharedKey;
+        return this.innerProperties() == null ? null : this.innerProperties().sharedKey();
     }
 
     /**
@@ -320,7 +247,10 @@ public class VpnConnectionInner extends SubResource {
      * @return the VpnConnectionInner object itself.
      */
     public VpnConnectionInner withSharedKey(String sharedKey) {
-        this.sharedKey = sharedKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VpnConnectionProperties();
+        }
+        this.innerProperties().withSharedKey(sharedKey);
         return this;
     }
 
@@ -330,7 +260,7 @@ public class VpnConnectionInner extends SubResource {
      * @return the enableBgp value.
      */
     public Boolean enableBgp() {
-        return this.enableBgp;
+        return this.innerProperties() == null ? null : this.innerProperties().enableBgp();
     }
 
     /**
@@ -340,7 +270,10 @@ public class VpnConnectionInner extends SubResource {
      * @return the VpnConnectionInner object itself.
      */
     public VpnConnectionInner withEnableBgp(Boolean enableBgp) {
-        this.enableBgp = enableBgp;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VpnConnectionProperties();
+        }
+        this.innerProperties().withEnableBgp(enableBgp);
         return this;
     }
 
@@ -350,7 +283,7 @@ public class VpnConnectionInner extends SubResource {
      * @return the usePolicyBasedTrafficSelectors value.
      */
     public Boolean usePolicyBasedTrafficSelectors() {
-        return this.usePolicyBasedTrafficSelectors;
+        return this.innerProperties() == null ? null : this.innerProperties().usePolicyBasedTrafficSelectors();
     }
 
     /**
@@ -360,7 +293,10 @@ public class VpnConnectionInner extends SubResource {
      * @return the VpnConnectionInner object itself.
      */
     public VpnConnectionInner withUsePolicyBasedTrafficSelectors(Boolean usePolicyBasedTrafficSelectors) {
-        this.usePolicyBasedTrafficSelectors = usePolicyBasedTrafficSelectors;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VpnConnectionProperties();
+        }
+        this.innerProperties().withUsePolicyBasedTrafficSelectors(usePolicyBasedTrafficSelectors);
         return this;
     }
 
@@ -370,7 +306,7 @@ public class VpnConnectionInner extends SubResource {
      * @return the ipsecPolicies value.
      */
     public List<IpsecPolicy> ipsecPolicies() {
-        return this.ipsecPolicies;
+        return this.innerProperties() == null ? null : this.innerProperties().ipsecPolicies();
     }
 
     /**
@@ -380,7 +316,33 @@ public class VpnConnectionInner extends SubResource {
      * @return the VpnConnectionInner object itself.
      */
     public VpnConnectionInner withIpsecPolicies(List<IpsecPolicy> ipsecPolicies) {
-        this.ipsecPolicies = ipsecPolicies;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VpnConnectionProperties();
+        }
+        this.innerProperties().withIpsecPolicies(ipsecPolicies);
+        return this;
+    }
+
+    /**
+     * Get the trafficSelectorPolicies property: The Traffic Selector Policies to be considered by this connection.
+     *
+     * @return the trafficSelectorPolicies value.
+     */
+    public List<TrafficSelectorPolicy> trafficSelectorPolicies() {
+        return this.innerProperties() == null ? null : this.innerProperties().trafficSelectorPolicies();
+    }
+
+    /**
+     * Set the trafficSelectorPolicies property: The Traffic Selector Policies to be considered by this connection.
+     *
+     * @param trafficSelectorPolicies the trafficSelectorPolicies value to set.
+     * @return the VpnConnectionInner object itself.
+     */
+    public VpnConnectionInner withTrafficSelectorPolicies(List<TrafficSelectorPolicy> trafficSelectorPolicies) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VpnConnectionProperties();
+        }
+        this.innerProperties().withTrafficSelectorPolicies(trafficSelectorPolicies);
         return this;
     }
 
@@ -390,7 +352,7 @@ public class VpnConnectionInner extends SubResource {
      * @return the enableRateLimiting value.
      */
     public Boolean enableRateLimiting() {
-        return this.enableRateLimiting;
+        return this.innerProperties() == null ? null : this.innerProperties().enableRateLimiting();
     }
 
     /**
@@ -400,7 +362,10 @@ public class VpnConnectionInner extends SubResource {
      * @return the VpnConnectionInner object itself.
      */
     public VpnConnectionInner withEnableRateLimiting(Boolean enableRateLimiting) {
-        this.enableRateLimiting = enableRateLimiting;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VpnConnectionProperties();
+        }
+        this.innerProperties().withEnableRateLimiting(enableRateLimiting);
         return this;
     }
 
@@ -410,7 +375,7 @@ public class VpnConnectionInner extends SubResource {
      * @return the enableInternetSecurity value.
      */
     public Boolean enableInternetSecurity() {
-        return this.enableInternetSecurity;
+        return this.innerProperties() == null ? null : this.innerProperties().enableInternetSecurity();
     }
 
     /**
@@ -420,7 +385,10 @@ public class VpnConnectionInner extends SubResource {
      * @return the VpnConnectionInner object itself.
      */
     public VpnConnectionInner withEnableInternetSecurity(Boolean enableInternetSecurity) {
-        this.enableInternetSecurity = enableInternetSecurity;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VpnConnectionProperties();
+        }
+        this.innerProperties().withEnableInternetSecurity(enableInternetSecurity);
         return this;
     }
 
@@ -430,7 +398,7 @@ public class VpnConnectionInner extends SubResource {
      * @return the useLocalAzureIpAddress value.
      */
     public Boolean useLocalAzureIpAddress() {
-        return this.useLocalAzureIpAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().useLocalAzureIpAddress();
     }
 
     /**
@@ -440,7 +408,10 @@ public class VpnConnectionInner extends SubResource {
      * @return the VpnConnectionInner object itself.
      */
     public VpnConnectionInner withUseLocalAzureIpAddress(Boolean useLocalAzureIpAddress) {
-        this.useLocalAzureIpAddress = useLocalAzureIpAddress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VpnConnectionProperties();
+        }
+        this.innerProperties().withUseLocalAzureIpAddress(useLocalAzureIpAddress);
         return this;
     }
 
@@ -450,7 +421,7 @@ public class VpnConnectionInner extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -459,7 +430,7 @@ public class VpnConnectionInner extends SubResource {
      * @return the vpnLinkConnections value.
      */
     public List<VpnSiteLinkConnectionInner> vpnLinkConnections() {
-        return this.vpnLinkConnections;
+        return this.innerProperties() == null ? null : this.innerProperties().vpnLinkConnections();
     }
 
     /**
@@ -469,7 +440,10 @@ public class VpnConnectionInner extends SubResource {
      * @return the VpnConnectionInner object itself.
      */
     public VpnConnectionInner withVpnLinkConnections(List<VpnSiteLinkConnectionInner> vpnLinkConnections) {
-        this.vpnLinkConnections = vpnLinkConnections;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VpnConnectionProperties();
+        }
+        this.innerProperties().withVpnLinkConnections(vpnLinkConnections);
         return this;
     }
 
@@ -480,7 +454,7 @@ public class VpnConnectionInner extends SubResource {
      * @return the routingConfiguration value.
      */
     public RoutingConfiguration routingConfiguration() {
-        return this.routingConfiguration;
+        return this.innerProperties() == null ? null : this.innerProperties().routingConfiguration();
     }
 
     /**
@@ -491,14 +465,10 @@ public class VpnConnectionInner extends SubResource {
      * @return the VpnConnectionInner object itself.
      */
     public VpnConnectionInner withRoutingConfiguration(RoutingConfiguration routingConfiguration) {
-        this.routingConfiguration = routingConfiguration;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public VpnConnectionInner withId(String id) {
-        super.withId(id);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VpnConnectionProperties();
+        }
+        this.innerProperties().withRoutingConfiguration(routingConfiguration);
         return this;
     }
 
@@ -508,14 +478,8 @@ public class VpnConnectionInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (ipsecPolicies() != null) {
-            ipsecPolicies().forEach(e -> e.validate());
-        }
-        if (vpnLinkConnections() != null) {
-            vpnLinkConnections().forEach(e -> e.validate());
-        }
-        if (routingConfiguration() != null) {
-            routingConfiguration().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

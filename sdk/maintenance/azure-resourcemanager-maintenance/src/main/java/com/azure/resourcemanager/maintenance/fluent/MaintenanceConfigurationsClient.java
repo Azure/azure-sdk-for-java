@@ -17,7 +17,7 @@ public interface MaintenanceConfigurationsClient {
      * Get Configuration record.
      *
      * @param resourceGroupName Resource Group Name.
-     * @param resourceName Resource Identifier.
+     * @param resourceName Maintenance Configuration Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -30,7 +30,7 @@ public interface MaintenanceConfigurationsClient {
      * Get Configuration record.
      *
      * @param resourceGroupName Resource Group Name.
-     * @param resourceName Resource Identifier.
+     * @param resourceName Maintenance Configuration Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -45,7 +45,7 @@ public interface MaintenanceConfigurationsClient {
      * Create or Update configuration record.
      *
      * @param resourceGroupName Resource Group Name.
-     * @param resourceName Resource Identifier.
+     * @param resourceName Maintenance Configuration Name.
      * @param configuration The configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -60,7 +60,7 @@ public interface MaintenanceConfigurationsClient {
      * Create or Update configuration record.
      *
      * @param resourceGroupName Resource Group Name.
-     * @param resourceName Resource Identifier.
+     * @param resourceName Maintenance Configuration Name.
      * @param configuration The configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -76,7 +76,7 @@ public interface MaintenanceConfigurationsClient {
      * Delete Configuration record.
      *
      * @param resourceGroupName Resource Group Name.
-     * @param resourceName Resource Identifier.
+     * @param resourceName Maintenance Configuration Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -89,7 +89,7 @@ public interface MaintenanceConfigurationsClient {
      * Delete Configuration record.
      *
      * @param resourceGroupName Resource Group Name.
-     * @param resourceName Resource Identifier.
+     * @param resourceName Maintenance Configuration Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -104,7 +104,7 @@ public interface MaintenanceConfigurationsClient {
      * Patch configuration record.
      *
      * @param resourceGroupName Resource Group Name.
-     * @param resourceName Resource Identifier.
+     * @param resourceName Maintenance Configuration Name.
      * @param configuration The configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -119,7 +119,7 @@ public interface MaintenanceConfigurationsClient {
      * Patch configuration record.
      *
      * @param resourceGroupName Resource Group Name.
-     * @param resourceName Resource Identifier.
+     * @param resourceName Maintenance Configuration Name.
      * @param configuration The configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

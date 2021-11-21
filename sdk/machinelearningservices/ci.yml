@@ -3,25 +3,31 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/machinelearningservices/
+      - sdk/machinelearningservices/ci.yml
+      - sdk/machinelearningservices/azure-resourcemanager-machinelearningservices/
+    exclude:
+      - sdk/machinelearningservices/pom.xml
+      - sdk/machinelearningservices/azure-resourcemanager-machinelearningservices/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/machinelearningservices/
+      - sdk/machinelearningservices/ci.yml
+      - sdk/machinelearningservices/azure-resourcemanager-machinelearningservices/
+    exclude:
+      - sdk/machinelearningservices/pom.xml
+      - sdk/machinelearningservices/azure-resourcemanager-machinelearningservices/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

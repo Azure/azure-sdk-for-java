@@ -3,25 +3,31 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/commerce/
+      - sdk/commerce/ci.yml
+      - sdk/commerce/azure-resourcemanager-commerce/
+    exclude:
+      - sdk/commerce/pom.xml
+      - sdk/commerce/azure-resourcemanager-commerce/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/commerce/
+      - sdk/commerce/ci.yml
+      - sdk/commerce/azure-resourcemanager-commerce/
+    exclude:
+      - sdk/commerce/pom.xml
+      - sdk/commerce/azure-resourcemanager-commerce/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

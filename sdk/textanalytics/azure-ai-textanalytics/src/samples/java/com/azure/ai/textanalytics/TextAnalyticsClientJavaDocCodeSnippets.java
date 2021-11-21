@@ -3,7 +3,6 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
@@ -16,13 +15,12 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.EntityDataSource;
-import com.azure.ai.textanalytics.models.ExtractKeyPhrasesOptions;
+import com.azure.ai.textanalytics.models.ExtractKeyPhrasesAction;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
-import com.azure.ai.textanalytics.models.PiiEntityDomainType;
-import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
-import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesOptions;
+import com.azure.ai.textanalytics.models.PiiEntityDomain;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TargetSentiment;
@@ -30,17 +28,17 @@ import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
+import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
+import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedIterable;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
@@ -267,38 +265,6 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntitiesBatch#Iterable-TextAnalyticsRequestOptions-Context
     }
 
-    /**
-     * Code snippet for
-     * {@link TextAnalyticsClient#recognizeEntitiesBatchWithResponse(Iterable, RecognizeEntitiesOptions, Context)}
-     */
-    public void recognizeBatchEntitiesMaxOverloadWithRecognizeEntitiesOptions() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntitiesBatch#Iterable-RecognizeEntitiesOptions-Context
-        List<TextDocumentInput> textDocumentInputs = Arrays.asList(
-            new TextDocumentInput("0", "I had a wonderful trip to Seattle last week.").setLanguage("en"),
-            new TextDocumentInput("1", "I work at Microsoft.").setLanguage("en")
-        );
-
-        Response<RecognizeEntitiesResultCollection> response =
-            textAnalyticsClient.recognizeEntitiesBatchWithResponse(textDocumentInputs,
-                new RecognizeEntitiesOptions().setIncludeStatistics(true), Context.NONE);
-
-        // Response's status code
-        System.out.printf("Status code of request response: %d%n", response.getStatusCode());
-        RecognizeEntitiesResultCollection recognizeEntitiesResultCollection = response.getValue();
-
-        // Batch statistics
-        TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResultCollection.getStatistics();
-        System.out.printf(
-            "A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
-            batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
-
-        recognizeEntitiesResultCollection.forEach(
-            recognizeEntitiesResult -> recognizeEntitiesResult.getEntities().forEach(
-                entity -> System.out.printf("Recognized entity: %s, entity category: %s, confidence score: %f.%n",
-                    entity.getText(), entity.getCategory(), entity.getConfidenceScore())));
-        // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntitiesBatch#Iterable-RecognizeEntitiesOptions-Context
-    }
-
     // Personally Identifiable Information Entity
 
     /**
@@ -339,7 +305,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String-String-RecognizePiiEntitiesOptions
         PiiEntityCollection piiEntityCollection = textAnalyticsClient.recognizePiiEntities(
             "My SSN is 859-98-0987", "en",
-            new RecognizePiiEntitiesOptions().setDomainFilter(PiiEntityDomainType.PROTECTED_HEALTH_INFORMATION));
+            new RecognizePiiEntitiesOptions().setDomainFilter(PiiEntityDomain.PROTECTED_HEALTH_INFORMATION));
         System.out.printf("Redacted Text: %s%n", piiEntityCollection.getRedactedText());
         piiEntityCollection.forEach(entity -> System.out.printf(
             "Recognized Personally Identifiable Information entity: %s, entity category: %s,"
@@ -516,45 +482,6 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                     entityMatch.getText(), entityMatch.getConfidenceScore()));
             }));
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntitiesBatch#Iterable-TextAnalyticsRequestOptions-Context
-    }
-
-    /**
-     * Code snippet for
-     * {@link TextAnalyticsClient#recognizeLinkedEntitiesBatchWithResponse(Iterable, RecognizeLinkedEntitiesOptions, Context)}
-     */
-    public void recognizeLinkedEntitiesBatchMaxOverloadWithRecognizeLinkedEntitiesOptions() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntitiesBatch#Iterable-RecognizeLinkedEntitiesOptions-Context
-        List<TextDocumentInput> textDocumentInputs = Arrays.asList(
-            new TextDocumentInput("1", "Old Faithful is a geyser at Yellowstone Park.").setLanguage("en"),
-            new TextDocumentInput("2", "Mount Shasta has lenticular clouds.").setLanguage("en")
-        );
-
-        Response<RecognizeLinkedEntitiesResultCollection> response =
-            textAnalyticsClient.recognizeLinkedEntitiesBatchWithResponse(textDocumentInputs,
-                new RecognizeLinkedEntitiesOptions().setIncludeStatistics(true), Context.NONE);
-
-        // Response's status code
-        System.out.printf("Status code of request response: %d%n", response.getStatusCode());
-        RecognizeLinkedEntitiesResultCollection resultCollection = response.getValue();
-
-        // Batch statistics
-        TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics();
-        System.out.printf(
-            "A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
-            batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
-
-        resultCollection.forEach(
-            recognizeLinkedEntitiesResult -> recognizeLinkedEntitiesResult.getEntities().forEach(
-                linkedEntity -> {
-                    System.out.println("Linked Entities:");
-                    System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
-                        linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
-                        linkedEntity.getDataSource());
-                    linkedEntity.getMatches().forEach(entityMatch -> System.out.printf(
-                        "Matched entity: %s, confidence score: %.2f.%n",
-                        entityMatch.getText(), entityMatch.getConfidenceScore()));
-                }));
-        // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntitiesBatch#Iterable-RecognizeLinkedEntitiesOptions-Context
     }
 
     // Key Phrases
@@ -925,30 +852,31 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         AnalyzeHealthcareEntitiesOptions options = new AnalyzeHealthcareEntitiesOptions()
             .setIncludeStatistics(true);
 
-        SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedIterable<AnalyzeHealthcareEntitiesResultCollection>>
+        SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedIterable>
             syncPoller = textAnalyticsClient.beginAnalyzeHealthcareEntities(documents, options, Context.NONE);
 
         syncPoller.waitForCompletion();
-        PagedIterable<AnalyzeHealthcareEntitiesResultCollection> healthcareResultIterable = syncPoller.getFinalResult();
+        AnalyzeHealthcareEntitiesPagedIterable result = syncPoller.getFinalResult();
 
         // Task operation statistics
         final AnalyzeHealthcareEntitiesOperationDetail operationResult = syncPoller.poll().getValue();
         System.out.printf("Operation created time: %s, expiration time: %s.%n",
             operationResult.getCreatedAt(), operationResult.getExpiresAt());
 
-        healthcareResultIterable.forEach(healthcareTaskResult -> {
+        result.forEach(analyzeHealthcareEntitiesResultCollection -> {
             // Model version
             System.out.printf("Results of Azure Text Analytics \"Analyze Healthcare\" Model, version: %s%n",
-                healthcareTaskResult.getModelVersion());
+                analyzeHealthcareEntitiesResultCollection.getModelVersion());
 
-            TextDocumentBatchStatistics healthcareTaskStatistics = healthcareTaskResult.getStatistics();
+            TextDocumentBatchStatistics healthcareTaskStatistics =
+                analyzeHealthcareEntitiesResultCollection.getStatistics();
             // Batch statistics
             System.out.printf("Documents statistics: document count = %s, erroneous document count = %s,"
                     + " transaction count = %s, valid document count = %s.%n",
                 healthcareTaskStatistics.getDocumentCount(), healthcareTaskStatistics.getInvalidDocumentCount(),
                 healthcareTaskStatistics.getTransactionCount(), healthcareTaskStatistics.getValidDocumentCount());
 
-            healthcareTaskResult.forEach(healthcareEntitiesResult -> {
+            analyzeHealthcareEntitiesResultCollection.forEach(healthcareEntitiesResult -> {
                 System.out.println("document id = " + healthcareEntitiesResult.getId());
                 System.out.println("Document entities: ");
                 AtomicInteger ct = new AtomicInteger();
@@ -990,22 +918,22 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             "My SSN is 859-98-0987"
         );
 
-        SyncPoller<AnalyzeActionsOperationDetail, PagedIterable<AnalyzeActionsResult>> syncPoller =
+        SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
             textAnalyticsClient.beginAnalyzeActions(
                 documents,
                 new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
-                    .setRecognizeEntitiesOptions(new RecognizeEntitiesOptions())
-                    .setExtractKeyPhrasesOptions(new ExtractKeyPhrasesOptions()),
+                    .setRecognizeEntitiesActions(new RecognizeEntitiesAction())
+                    .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction()),
                 "en",
                 new AnalyzeActionsOptions().setIncludeStatistics(false));
         syncPoller.waitForCompletion();
-        PagedIterable<AnalyzeActionsResult> result = syncPoller.getFinalResult();
+        AnalyzeActionsResultPagedIterable result = syncPoller.getFinalResult();
         result.forEach(analyzeActionsResult -> {
             System.out.println("Entities recognition action results:");
-            analyzeActionsResult.getRecognizeEntitiesActionResults().forEach(
+            analyzeActionsResult.getRecognizeEntitiesResults().forEach(
                 actionResult -> {
                     if (!actionResult.isError()) {
-                        actionResult.getResult().forEach(
+                        actionResult.getDocumentsResults().forEach(
                             entitiesResult -> entitiesResult.getEntities().forEach(
                                 entity -> System.out.printf(
                                     "Recognized entity: %s, entity category: %s, entity subcategory: %s,"
@@ -1015,10 +943,10 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                     }
                 });
             System.out.println("Key phrases extraction action results:");
-            analyzeActionsResult.getExtractKeyPhrasesActionResults().forEach(
+            analyzeActionsResult.getExtractKeyPhrasesResults().forEach(
                 actionResult -> {
                     if (!actionResult.isError()) {
-                        actionResult.getResult().forEach(extractKeyPhraseResult -> {
+                        actionResult.getDocumentsResults().forEach(extractKeyPhraseResult -> {
                             System.out.println("Extracted phrases:");
                             extractKeyPhraseResult.getKeyPhrases()
                                 .forEach(keyPhrases -> System.out.printf("\t%s.%n", keyPhrases));
@@ -1040,22 +968,22 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             new TextDocumentInput("1", "My SSN is 859-98-0987").setLanguage("en")
         );
 
-        SyncPoller<AnalyzeActionsOperationDetail, PagedIterable<AnalyzeActionsResult>> syncPoller =
+        SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
             textAnalyticsClient.beginAnalyzeActions(
                 documents,
                 new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
-                   .setRecognizeEntitiesOptions(new RecognizeEntitiesOptions())
-                   .setExtractKeyPhrasesOptions(new ExtractKeyPhrasesOptions()),
+                   .setRecognizeEntitiesActions(new RecognizeEntitiesAction())
+                   .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction()),
                 new AnalyzeActionsOptions().setIncludeStatistics(false),
                 Context.NONE);
         syncPoller.waitForCompletion();
-        PagedIterable<AnalyzeActionsResult> result = syncPoller.getFinalResult();
+        AnalyzeActionsResultPagedIterable result = syncPoller.getFinalResult();
         result.forEach(analyzeActionsResult -> {
             System.out.println("Entities recognition action results:");
-            analyzeActionsResult.getRecognizeEntitiesActionResults().forEach(
+            analyzeActionsResult.getRecognizeEntitiesResults().forEach(
                 actionResult -> {
                     if (!actionResult.isError()) {
-                        actionResult.getResult().forEach(
+                        actionResult.getDocumentsResults().forEach(
                             entitiesResult -> entitiesResult.getEntities().forEach(
                                 entity -> System.out.printf(
                                     "Recognized entity: %s, entity category: %s, entity subcategory: %s,"
@@ -1065,10 +993,10 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                     }
                 });
             System.out.println("Key phrases extraction action results:");
-            analyzeActionsResult.getExtractKeyPhrasesActionResults().forEach(
+            analyzeActionsResult.getExtractKeyPhrasesResults().forEach(
                 actionResult -> {
                     if (!actionResult.isError()) {
-                        actionResult.getResult().forEach(extractKeyPhraseResult -> {
+                        actionResult.getDocumentsResults().forEach(extractKeyPhraseResult -> {
                             System.out.println("Extracted phrases:");
                             extractKeyPhraseResult.getKeyPhrases()
                                 .forEach(keyPhrases -> System.out.printf("\t%s.%n", keyPhrases));

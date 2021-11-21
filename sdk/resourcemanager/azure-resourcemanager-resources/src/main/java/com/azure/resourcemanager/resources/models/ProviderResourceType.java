@@ -7,6 +7,7 @@ package com.azure.resourcemanager.resources.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,12 @@ public final class ProviderResourceType {
      */
     @JsonProperty(value = "locations")
     private List<String> locations;
+
+    /*
+     * The location mappings that are supported by this resource type.
+     */
+    @JsonProperty(value = "locationMappings")
+    private List<ProviderExtendedLocation> locationMappings;
 
     /*
      * The aliases that are supported by this resource type.
@@ -62,6 +69,7 @@ public final class ProviderResourceType {
      * The properties.
      */
     @JsonProperty(value = "properties")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> properties;
 
     /**
@@ -101,6 +109,26 @@ public final class ProviderResourceType {
      */
     public ProviderResourceType withLocations(List<String> locations) {
         this.locations = locations;
+        return this;
+    }
+
+    /**
+     * Get the locationMappings property: The location mappings that are supported by this resource type.
+     *
+     * @return the locationMappings value.
+     */
+    public List<ProviderExtendedLocation> locationMappings() {
+        return this.locationMappings;
+    }
+
+    /**
+     * Set the locationMappings property: The location mappings that are supported by this resource type.
+     *
+     * @param locationMappings the locationMappings value to set.
+     * @return the ProviderResourceType object itself.
+     */
+    public ProviderResourceType withLocationMappings(List<ProviderExtendedLocation> locationMappings) {
+        this.locationMappings = locationMappings;
         return this;
     }
 
@@ -208,6 +236,9 @@ public final class ProviderResourceType {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (locationMappings() != null) {
+            locationMappings().forEach(e -> e.validate());
+        }
         if (aliases() != null) {
             aliases().forEach(e -> e.validate());
         }

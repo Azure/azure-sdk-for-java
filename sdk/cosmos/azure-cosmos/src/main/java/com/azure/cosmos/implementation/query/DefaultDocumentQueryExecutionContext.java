@@ -185,8 +185,11 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
                                                     tFeedResponse.getRequestCharge(),
                                                     this.fetchExecutionRangeAccumulator.getExecutionRanges(),
                                                     Arrays.asList(schedulingTimeSpanMap)),
-                                            tFeedResponse.getActivityId());
-                            BridgeInternal.putQueryMetricsIntoMap(tFeedResponse, DEFAULT_PARTITION_RANGE, qm);
+                                            tFeedResponse.getActivityId(),
+                                        tFeedResponse.getResponseHeaders().getOrDefault(HttpConstants.HttpHeaders.INDEX_UTILIZATION, null));
+                            String pkrId = tFeedResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
+                            String queryMetricKey = DEFAULT_PARTITION_RANGE + ",pkrId:" + pkrId;
+                            BridgeInternal.putQueryMetricsIntoMap(tFeedResponse, queryMetricKey, qm);
                         }
                         return tFeedResponse;
                     });

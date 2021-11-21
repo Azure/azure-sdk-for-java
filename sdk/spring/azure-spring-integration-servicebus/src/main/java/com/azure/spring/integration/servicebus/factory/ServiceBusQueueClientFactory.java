@@ -3,7 +3,12 @@
 
 package com.azure.spring.integration.servicebus.factory;
 
-import com.microsoft.azure.servicebus.IQueueClient;
+
+import com.azure.messaging.servicebus.ServiceBusErrorContext;
+import com.azure.messaging.servicebus.ServiceBusProcessorClient;
+import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
+import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
+import com.azure.spring.integration.servicebus.ServiceBusMessageProcessor;
 
 /**
  * Factory to return functional creator of service bus queue client
@@ -11,10 +16,19 @@ import com.microsoft.azure.servicebus.IQueueClient;
  * @author Warren Zhu
  */
 public interface ServiceBusQueueClientFactory extends ServiceBusSenderFactory {
+
     /**
-     * Return a function which accepts service bus queue name, then returns {@link IQueueClient}
-     * @param name name
-     * @return queue client
+     * Return a function which accepts service bus queue name, then returns {@link ServiceBusProcessorClient}
+     *
+     * @param name The queue name.
+     * @param clientConfig The queue client config.
+     * @param messageProcessor Callback processor to be registered on service bus processor client.
+     * @return ServiceBusProcessorClient queue processor client
      */
-    IQueueClient getOrCreateClient(String name);
+    ServiceBusProcessorClient getOrCreateProcessor(String name,
+                                                   ServiceBusClientConfig clientConfig,
+                                                   ServiceBusMessageProcessor<ServiceBusReceivedMessageContext,
+                                                                                 ServiceBusErrorContext> messageProcessor);
+
+
 }

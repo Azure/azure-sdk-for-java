@@ -7,6 +7,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.SubResource;
 import com.azure.core.management.provider.IdentifierProvider;
 import com.azure.core.management.serializer.SerializerFactory;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -1287,8 +1288,14 @@ class VirtualMachineImpl
     }
 
     @Override
+    public VirtualMachineImpl withBootDiagnosticsOnManagedStorageAccount() {
+        this.bootDiagnosticsHandler.withBootDiagnostics(true);
+        return this;
+    }
+
+    @Override
     public VirtualMachineImpl withBootDiagnostics() {
-        this.bootDiagnosticsHandler.withBootDiagnostics();
+        this.bootDiagnosticsHandler.withBootDiagnostics(false);
         return this;
     }
 
@@ -1473,7 +1480,7 @@ class VirtualMachineImpl
 
     @Override
     public String osUnmanagedDiskVhdUri() {
-        if (isManagedDiskEnabled()) {
+        if (isManagedDiskEnabled() || this.storageProfile().osDisk().vhd() == null) {
             return null;
         }
         return innerModel().storageProfile().osDisk().vhd().uri();
@@ -1532,7 +1539,12 @@ class VirtualMachineImpl
 
     @Override
     public NetworkInterface getPrimaryNetworkInterface() {
-        return this.networkManager.networkInterfaces().getById(primaryNetworkInterfaceId());
+        return this.getPrimaryNetworkInterfaceAsync().block();
+    }
+
+    @Override
+    public Mono<NetworkInterface> getPrimaryNetworkInterfaceAsync() {
+        return this.networkManager.networkInterfaces().getByIdAsync(primaryNetworkInterfaceId());
     }
 
     @Override
@@ -1843,7 +1855,8 @@ class VirtualMachineImpl
                     // same as createResourceAsync
                     prepareCreateResourceAsync().block();
                 },
-                this::reset);
+                this::reset,
+                Context.NONE);
     }
 
     @Override
@@ -2383,7 +2396,7 @@ class VirtualMachineImpl
     }
 
     private void copyInnerToUpdateParameter(VirtualMachineUpdateInner updateParameter) {
-        updateParameter.withPlan(this.innerModel().plan());
+        //updateParameter.withPlan(this.innerModel().plan());   // update cannot change plan
         updateParameter.withHardwareProfile(this.innerModel().hardwareProfile());
         updateParameter.withStorageProfile(this.innerModel().storageProfile());
         updateParameter.withOsProfile(this.innerModel().osProfile());
@@ -2627,9 +2640,14 @@ class VirtualMachineImpl
     private class BootDiagnosticsHandler {
         private final VirtualMachineImpl vmImpl;
         private String creatableDiagnosticsStorageAccountKey;
+        private boolean useManagedStorageAccount = false;
 
         BootDiagnosticsHandler(VirtualMachineImpl vmImpl) {
             this.vmImpl = vmImpl;
+            if (isBootDiagnosticsEnabled()
+                && this.vmInner().diagnosticsProfile().bootDiagnostics().storageUri() == null) {
+                this.useManagedStorageAccount = true;
+            }
         }
 
         public boolean isBootDiagnosticsEnabled() {
@@ -2650,21 +2668,24 @@ class VirtualMachineImpl
             return null;
         }
 
-        BootDiagnosticsHandler withBootDiagnostics() {
+        BootDiagnosticsHandler withBootDiagnostics(boolean useManagedStorageAccount) {
             // Diagnostics storage uri will be set later by this.handleDiagnosticsSettings(..)
             this.enableDisable(true);
+            this.useManagedStorageAccount = useManagedStorageAccount;
             return this;
         }
 
         BootDiagnosticsHandler withBootDiagnostics(Creatable<StorageAccount> creatable) {
             // Diagnostics storage uri will be set later by this.handleDiagnosticsSettings(..)
             this.enableDisable(true);
+            this.useManagedStorageAccount = false;
             this.creatableDiagnosticsStorageAccountKey = this.vmImpl.addDependency(creatable);
             return this;
         }
 
         BootDiagnosticsHandler withBootDiagnostics(String storageAccountBlobEndpointUri) {
             this.enableDisable(true);
+            this.useManagedStorageAccount = false;
             this.vmInner().diagnosticsProfile().bootDiagnostics().withStorageUri(storageAccountBlobEndpointUri);
             return this;
         }
@@ -2675,10 +2696,15 @@ class VirtualMachineImpl
 
         BootDiagnosticsHandler withoutBootDiagnostics() {
             this.enableDisable(false);
+            this.useManagedStorageAccount = false;
             return this;
         }
 
         void prepare() {
+            if (useManagedStorageAccount) {
+                return;
+            }
+
             DiagnosticsProfile diagnosticsProfile = this.vmInner().diagnosticsProfile();
             if (diagnosticsProfile == null
                 || diagnosticsProfile.bootDiagnostics() == null
@@ -2719,6 +2745,10 @@ class VirtualMachineImpl
         }
 
         void handleDiagnosticsSettings() {
+            if (useManagedStorageAccount) {
+                return;
+            }
+
             DiagnosticsProfile diagnosticsProfile = this.vmInner().diagnosticsProfile();
             if (diagnosticsProfile == null
                 || diagnosticsProfile.bootDiagnostics() == null

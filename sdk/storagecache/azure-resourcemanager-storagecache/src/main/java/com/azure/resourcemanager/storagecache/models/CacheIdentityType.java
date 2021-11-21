@@ -12,6 +12,12 @@ public enum CacheIdentityType {
     /** Enum value SystemAssigned. */
     SYSTEM_ASSIGNED("SystemAssigned"),
 
+    /** Enum value UserAssigned. */
+    USER_ASSIGNED("UserAssigned"),
+
+    /** Enum value SystemAssigned, UserAssigned. */
+    SYSTEM_ASSIGNED_USER_ASSIGNED("SystemAssigned, UserAssigned"),
+
     /** Enum value None. */
     NONE("None");
 

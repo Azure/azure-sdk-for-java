@@ -108,7 +108,7 @@ public final class ManageStorageAccountNetworkRules {
                     .withExistingPrimaryPublicIPAddress(publicIPAddress)
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername("tirekicker")
-                    .withRootPassword("12NewPA$$w0rd!")
+                    .withRootPassword(Utils.password())
                     .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     .create();
 

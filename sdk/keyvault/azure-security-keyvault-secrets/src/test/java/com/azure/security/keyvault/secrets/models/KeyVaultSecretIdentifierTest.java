@@ -12,10 +12,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class KeyVaultSecretIdentifierTest {
     @Test
     void parseWithoutVersion() {
-        String secretId = "https://test-key-vault.vault.azure.net/secrets/test-secret";
-        KeyVaultSecretIdentifier keyVaultSecretIdentifier = new KeyVaultSecretIdentifier(secretId);
+        String sourceId = "https://test-key-vault.vault.azure.net/secrets/test-secret";
+        KeyVaultSecretIdentifier keyVaultSecretIdentifier = new KeyVaultSecretIdentifier(sourceId);
 
-        assertEquals(secretId, keyVaultSecretIdentifier.getSecretId());
+        assertEquals(sourceId, keyVaultSecretIdentifier.getSourceId());
         assertEquals("https://test-key-vault.vault.azure.net", keyVaultSecretIdentifier.getVaultUrl());
         assertEquals("test-secret", keyVaultSecretIdentifier.getName());
         assertNull(keyVaultSecretIdentifier.getVersion());
@@ -23,10 +23,10 @@ class KeyVaultSecretIdentifierTest {
 
     @Test
     void parseWithVersion() {
-        String secretId = "https://test-key-vault.vault.azure.net/secrets/test-secret/version";
-        KeyVaultSecretIdentifier keyVaultSecretIdentifier = new KeyVaultSecretIdentifier(secretId);
+        String sourceId = "https://test-key-vault.vault.azure.net/secrets/test-secret/version";
+        KeyVaultSecretIdentifier keyVaultSecretIdentifier = new KeyVaultSecretIdentifier(sourceId);
 
-        assertEquals(secretId, keyVaultSecretIdentifier.getSecretId());
+        assertEquals(sourceId, keyVaultSecretIdentifier.getSourceId());
         assertEquals("https://test-key-vault.vault.azure.net", keyVaultSecretIdentifier.getVaultUrl());
         assertEquals("test-secret", keyVaultSecretIdentifier.getName());
         assertEquals("version", keyVaultSecretIdentifier.getVersion());
@@ -34,18 +34,12 @@ class KeyVaultSecretIdentifierTest {
 
     @Test
     void parseForDeletedSecret() {
-        String secretId = "https://test-key-vault.vault.azure.net/deletedsecrets/test-secret";
-        KeyVaultSecretIdentifier keyVaultSecretIdentifier = new KeyVaultSecretIdentifier(secretId);
+        String sourceId = "https://test-key-vault.vault.azure.net/deletedsecrets/test-secret";
+        KeyVaultSecretIdentifier keyVaultSecretIdentifier = new KeyVaultSecretIdentifier(sourceId);
 
-        assertEquals(secretId, keyVaultSecretIdentifier.getSecretId());
+        assertEquals(sourceId, keyVaultSecretIdentifier.getSourceId());
         assertEquals("https://test-key-vault.vault.azure.net", keyVaultSecretIdentifier.getVaultUrl());
         assertEquals("test-secret", keyVaultSecretIdentifier.getName());
-    }
-
-    @Test
-    void parseInvalidIdentifierForDeletedSecret() {
-        String secretId = "https://test-key-vault.vault.azure.net/deletedsecrets/test-secret/version";
-        assertThrows(IllegalArgumentException.class, () -> new KeyVaultSecretIdentifier(secretId));
     }
 
     @Test
@@ -55,7 +49,7 @@ class KeyVaultSecretIdentifierTest {
 
     @Test
     void parseInvalidIdentifierWithExtraSegment() {
-        String secretId = "https://test-key-vault.vault.azure.net/secrets/test-secret/version/extra";
-        assertThrows(IllegalArgumentException.class, () -> new KeyVaultSecretIdentifier(secretId));
+        String sourceId = "https://test-key-vault.vault.azure.net/secrets/test-secret/version/extra";
+        assertThrows(IllegalArgumentException.class, () -> new KeyVaultSecretIdentifier(sourceId));
     }
 }

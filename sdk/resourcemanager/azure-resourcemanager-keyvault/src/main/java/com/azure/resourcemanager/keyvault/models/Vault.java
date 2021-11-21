@@ -157,9 +157,11 @@ public interface Vault
             /**
              * Enables role based access control (RBAC) for authorization of data access.
              *
+             * It overrides access policies configure.
+             *
              * @return the next stage of key vault definition
              */
-            WithCreate enableRoleBasedAccessControl();
+            WithCreate withRoleBasedAccessControl();
         }
 
         /** A key vault definition allowing the networkAcl to be set. */
@@ -344,16 +346,18 @@ public interface Vault
             /**
              * Enables role based access control (RBAC) for authorization of data access.
              *
+             * It overrides access policies configure.
+             *
              * @return the update stage of the access policy definition
              */
-            Update enableRoleBasedAccessControl();
+            Update withRoleBasedAccessControl();
 
             /**
              * Disables role based access control (RBAC) for authorization of data access.
              *
              * @return the update stage of the access policy definition
              */
-            Update disableRoleBasedAccessControl();
+            Update withoutRoleBasedAccessControl();
         }
 
         /** A key vault update allowing the NetworkRuleSet to be set. */

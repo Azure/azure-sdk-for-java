@@ -15,7 +15,7 @@ public class AnalyzeSentimentResultCollection extends IterableStream<AnalyzeSent
     private final String modelVersion;
     private final TextDocumentBatchStatistics statistics;
     /**
-     * Create a {@link AnalyzeSentimentResultCollection} model that maintains a list of {@link AnalyzeSentimentResult}
+     * Creates a {@link AnalyzeSentimentResultCollection} model that maintains a list of {@link AnalyzeSentimentResult}
      * along with model version and batch's statistics.
      *
      * @param documentResults A list of {@link AnalyzeSentimentResult}.
@@ -30,7 +30,7 @@ public class AnalyzeSentimentResultCollection extends IterableStream<AnalyzeSent
     }
 
     /**
-     * Get the model version trained in service for the request.
+     * Gets the model version trained in service for the request.
      *
      * @return The model version trained in service for the request.
      */
@@ -39,7 +39,7 @@ public class AnalyzeSentimentResultCollection extends IterableStream<AnalyzeSent
     }
 
     /**
-     * Get the batch statistics of response.
+     * Gets the batch statistics of response.
      *
      * @return The batch statistics of response.
      */

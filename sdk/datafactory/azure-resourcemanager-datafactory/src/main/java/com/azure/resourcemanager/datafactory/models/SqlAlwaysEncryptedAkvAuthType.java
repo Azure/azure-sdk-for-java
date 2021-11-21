@@ -16,6 +16,10 @@ public final class SqlAlwaysEncryptedAkvAuthType extends ExpandableStringEnum<Sq
     /** Static value ManagedIdentity for SqlAlwaysEncryptedAkvAuthType. */
     public static final SqlAlwaysEncryptedAkvAuthType MANAGED_IDENTITY = fromString("ManagedIdentity");
 
+    /** Static value UserAssignedManagedIdentity for SqlAlwaysEncryptedAkvAuthType. */
+    public static final SqlAlwaysEncryptedAkvAuthType USER_ASSIGNED_MANAGED_IDENTITY =
+        fromString("UserAssignedManagedIdentity");
+
     /**
      * Creates or finds a SqlAlwaysEncryptedAkvAuthType from its string representation.
      *

@@ -12,7 +12,6 @@ import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.azure.spring.cloud.context.core.impl.EventHubNamespaceManager;
 import com.azure.spring.cloud.context.core.impl.StorageAccountManager;
 import com.azure.spring.cloud.context.core.storage.StorageConnectionStringProvider;
-import com.azure.spring.cloud.telemetry.TelemetryCollector;
 import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
 import com.azure.spring.integration.eventhub.factory.DefaultEventHubClientFactory;
@@ -31,8 +30,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 
-import javax.annotation.PostConstruct;
-
 /**
  * An auto-configuration for Event Hub, which provides {@link EventHubOperation}
  *
@@ -47,14 +44,6 @@ public class AzureEventHubAutoConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureEventHubAutoConfiguration.class);
 
-    private static final String EVENT_HUB = "EventHub";
-    private static final String NAMESPACE = "Namespace";
-
-    @PostConstruct
-    public void collectTelemetry() {
-        TelemetryCollector.getInstance().addService(EVENT_HUB);
-    }
-
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(AzureResourceManager.class)
@@ -66,6 +55,7 @@ public class AzureEventHubAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(AzureResourceManager.class)
+    @ConditionalOnProperty(value = "spring.cloud.azure.eventhub.checkpoint-storage-account")
     public StorageAccountManager storageAccountManager(AzureResourceManager azureResourceManager,
                                                        AzureProperties azureProperties) {
         return new StorageAccountManager(azureResourceManager, azureProperties);
@@ -119,10 +109,6 @@ public class AzureEventHubAutoConfiguration {
             storageAccountManager,
             environmentProvider == null ? null : environmentProvider.getEnvironment());
 
-        TelemetryCollector.getInstance()
-                          .addProperty(EVENT_HUB, NAMESPACE, EventHubUtils.getNamespace(eventHubConnectionString));
-
-
         return new DefaultEventHubClientFactory(eventHubConnectionString, storageConnectionString,
             properties.getCheckpointContainer());
     }
@@ -133,7 +119,6 @@ public class AzureEventHubAutoConfiguration {
         return new EventHubTemplate(clientFactory);
     }
 
-
     private String getStorageConnectionString(AzureEventHubProperties properties,
                                               StorageAccountManager storageAccountManager,
                                               AzureEnvironment azureEnvironment) {
@@ -141,6 +126,10 @@ public class AzureEventHubAutoConfiguration {
         final String accountName = properties.getCheckpointStorageAccount();
         final String accountKey = properties.getCheckpointAccessKey();
         final StorageConnectionStringProvider provider;
+
+        if (accountName == null) {
+            return null;
+        }
 
         if (storageAccountManager != null) {
             provider = new StorageConnectionStringProvider(storageAccountManager.getOrCreate(accountName));

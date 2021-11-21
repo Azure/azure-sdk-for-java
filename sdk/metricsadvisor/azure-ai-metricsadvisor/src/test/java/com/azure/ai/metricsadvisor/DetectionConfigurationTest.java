@@ -4,10 +4,9 @@
 package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient;
-import com.azure.ai.metricsadvisor.models.AnomalyDetectionConfiguration;
-import com.azure.ai.metricsadvisor.models.DataFeed;
-import com.azure.ai.metricsadvisor.models.DataFeedMetric;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
+import com.azure.ai.metricsadvisor.administration.models.AnomalyDetectionConfiguration;
+import com.azure.ai.metricsadvisor.administration.models.DataFeed;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedMetric;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.CoreUtils;
@@ -60,7 +59,7 @@ public class DetectionConfigurationTest extends DetectionConfigurationTestBase {
             final String costMetricId = costMetric.getId();
 
             AnomalyDetectionConfiguration configuration
-                = client.createMetricAnomalyDetectionConfig(costMetricId,
+                = client.createDetectionConfig(costMetricId,
                 CreateDetectionConfigurationForWholeSeriesInput.INSTANCE.detectionConfiguration);
             assertNotNull(configuration);
 
@@ -69,7 +68,7 @@ public class DetectionConfigurationTest extends DetectionConfigurationTestBase {
 
         } finally {
             if (!CoreUtils.isNullOrEmpty(id.get())) {
-                client.deleteMetricAnomalyDetectionConfig(id.get());
+                client.deleteDetectionConfig(id.get());
             }
             if (dataFeed != null) {
                 super.deleteDateFeed(dataFeed, httpClient, serviceVersion);
@@ -98,7 +97,7 @@ public class DetectionConfigurationTest extends DetectionConfigurationTestBase {
             final String costMetricId = costMetric.getId();
 
             AnomalyDetectionConfiguration configuration
-                = client.createMetricAnomalyDetectionConfig(costMetricId,
+                = client.createDetectionConfig(costMetricId,
                 CreateDetectionConfigurationForSeriesAndGroupInput.INSTANCE.detectionConfiguration);
             assertNotNull(configuration);
             id.set(configuration.getId());
@@ -106,7 +105,7 @@ public class DetectionConfigurationTest extends DetectionConfigurationTestBase {
             super.assertCreateDetectionConfigurationForSeriesAndGroupOutput(configuration, costMetricId);
         } finally {
             if (!CoreUtils.isNullOrEmpty(id.get())) {
-                client.deleteMetricAnomalyDetectionConfig(id.get());
+                client.deleteDetectionConfig(id.get());
             }
             if (dataFeed != null) {
                 super.deleteDateFeed(dataFeed, httpClient, serviceVersion);
@@ -135,18 +134,18 @@ public class DetectionConfigurationTest extends DetectionConfigurationTestBase {
             final String costMetricId = costMetric.getId();
 
             AnomalyDetectionConfiguration configuration
-                = client.createMetricAnomalyDetectionConfig(costMetricId,
+                = client.createDetectionConfig(costMetricId,
                 CreateDetectionConfigurationForMultipleSeriesAndGroupInput.INSTANCE.detectionConfiguration);
 
             super.assertCreateDetectionConfigurationForMultipleSeriesAndGroupOutput(configuration, costMetricId);
             assertNotNull(configuration);
             id.set(configuration.getId());
 
-            client.listMetricAnomalyDetectionConfigs(costMetricId)
+            client.listDetectionConfigs(costMetricId)
                 .forEach(config -> Assertions.assertNotNull(config));
         } finally {
             if (!CoreUtils.isNullOrEmpty(id.get())) {
-                client.deleteMetricAnomalyDetectionConfig(id.get());
+                client.deleteDetectionConfig(id.get());
             }
             if (dataFeed != null) {
                 super.deleteDateFeed(dataFeed, httpClient, serviceVersion);
@@ -175,7 +174,7 @@ public class DetectionConfigurationTest extends DetectionConfigurationTestBase {
             final String costMetricId = costMetric.getId();
 
             AnomalyDetectionConfiguration configuration
-                = client.createMetricAnomalyDetectionConfig(costMetricId,
+                = client.createDetectionConfig(costMetricId,
                 UpdateDetectionConfigurationInput.INSTANCE.detectionConfiguration);
 
             Assertions.assertNotNull(configuration);
@@ -188,12 +187,12 @@ public class DetectionConfigurationTest extends DetectionConfigurationTestBase {
                 .INSTANCE
                 .seriesGroupConditionToAddOnUpdate);
 
-            configuration = client.updateMetricAnomalyDetectionConfig(configuration);
+            configuration = client.updateDetectionConfig(configuration);
             super.assertUpdateDetectionConfigurationOutput(configuration, costMetricId);
             id.set(configuration.getId());
         } finally {
             if (!CoreUtils.isNullOrEmpty(id.get())) {
-                client.deleteMetricAnomalyDetectionConfig(id.get());
+                client.deleteDetectionConfig(id.get());
             }
             if (dataFeed != null) {
                 super.deleteDateFeed(dataFeed, httpClient, serviceVersion);

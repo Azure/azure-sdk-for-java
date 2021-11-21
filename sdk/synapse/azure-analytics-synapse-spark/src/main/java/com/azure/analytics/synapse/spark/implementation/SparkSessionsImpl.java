@@ -56,108 +56,110 @@ public final class SparkSessionsImpl {
      * The interface defining all the services for SparkClientSparkSessions to be used by the proxy service to perform
      * REST calls.
      */
-    @Host("{endpoint}/livyApi/versions/{livyApiVersion}/sparkPools/{sparkPoolName}")
+    @Host("{endpoint}")
     @ServiceInterface(name = "SparkClientSparkSess")
     private interface SparkSessionsService {
-        @Get("/sessions")
+        @Get("/livyApi/versions/{livyApiVersion}/sparkPools/{sparkPoolName}/sessions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<SparkSessionCollection>> getSparkSessions(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("livyApiVersion") String livyApiVersion,
-                @HostParam("sparkPoolName") String sparkPoolName,
+                @PathParam(value = "livyApiVersion", encoded = true) String livyApiVersion,
+                @PathParam(value = "sparkPoolName", encoded = true) String sparkPoolName,
                 @QueryParam("from") Integer from,
                 @QueryParam("size") Integer size,
                 @QueryParam("detailed") Boolean detailed,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/sessions")
+        @Post("/livyApi/versions/{livyApiVersion}/sparkPools/{sparkPoolName}/sessions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<SparkSession>> createSparkSession(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("livyApiVersion") String livyApiVersion,
-                @HostParam("sparkPoolName") String sparkPoolName,
+                @PathParam(value = "livyApiVersion", encoded = true) String livyApiVersion,
+                @PathParam(value = "sparkPoolName", encoded = true) String sparkPoolName,
                 @QueryParam("detailed") Boolean detailed,
                 @BodyParam("application/json") SparkSessionOptions sparkSessionOptions,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Get("/sessions/{sessionId}")
+        @Get("/livyApi/versions/{livyApiVersion}/sparkPools/{sparkPoolName}/sessions/{sessionId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<SparkSession>> getSparkSession(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("livyApiVersion") String livyApiVersion,
-                @HostParam("sparkPoolName") String sparkPoolName,
+                @PathParam(value = "livyApiVersion", encoded = true) String livyApiVersion,
+                @PathParam(value = "sparkPoolName", encoded = true) String sparkPoolName,
                 @PathParam("sessionId") int sessionId,
                 @QueryParam("detailed") Boolean detailed,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Delete("/sessions/{sessionId}")
+        @Delete("/livyApi/versions/{livyApiVersion}/sparkPools/{sparkPoolName}/sessions/{sessionId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> cancelSparkSession(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("livyApiVersion") String livyApiVersion,
-                @HostParam("sparkPoolName") String sparkPoolName,
+                @PathParam(value = "livyApiVersion", encoded = true) String livyApiVersion,
+                @PathParam(value = "sparkPoolName", encoded = true) String sparkPoolName,
                 @PathParam("sessionId") int sessionId,
                 Context context);
 
-        @Put("/sessions/{sessionId}/reset-timeout")
+        @Put("/livyApi/versions/{livyApiVersion}/sparkPools/{sparkPoolName}/sessions/{sessionId}/reset-timeout")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> resetSparkSessionTimeout(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("livyApiVersion") String livyApiVersion,
-                @HostParam("sparkPoolName") String sparkPoolName,
+                @PathParam(value = "livyApiVersion", encoded = true) String livyApiVersion,
+                @PathParam(value = "sparkPoolName", encoded = true) String sparkPoolName,
                 @PathParam("sessionId") int sessionId,
                 Context context);
 
-        @Get("/sessions/{sessionId}/statements")
+        @Get("/livyApi/versions/{livyApiVersion}/sparkPools/{sparkPoolName}/sessions/{sessionId}/statements")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<SparkStatementCollection>> getSparkStatements(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("livyApiVersion") String livyApiVersion,
-                @HostParam("sparkPoolName") String sparkPoolName,
+                @PathParam(value = "livyApiVersion", encoded = true) String livyApiVersion,
+                @PathParam(value = "sparkPoolName", encoded = true) String sparkPoolName,
                 @PathParam("sessionId") int sessionId,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/sessions/{sessionId}/statements")
+        @Post("/livyApi/versions/{livyApiVersion}/sparkPools/{sparkPoolName}/sessions/{sessionId}/statements")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<SparkStatement>> createSparkStatement(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("livyApiVersion") String livyApiVersion,
-                @HostParam("sparkPoolName") String sparkPoolName,
+                @PathParam(value = "livyApiVersion", encoded = true) String livyApiVersion,
+                @PathParam(value = "sparkPoolName", encoded = true) String sparkPoolName,
                 @PathParam("sessionId") int sessionId,
                 @BodyParam("application/json") SparkStatementOptions sparkStatementOptions,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Get("/sessions/{sessionId}/statements/{statementId}")
+        @Get(
+                "/livyApi/versions/{livyApiVersion}/sparkPools/{sparkPoolName}/sessions/{sessionId}/statements/{statementId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<SparkStatement>> getSparkStatement(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("livyApiVersion") String livyApiVersion,
-                @HostParam("sparkPoolName") String sparkPoolName,
+                @PathParam(value = "livyApiVersion", encoded = true) String livyApiVersion,
+                @PathParam(value = "sparkPoolName", encoded = true) String sparkPoolName,
                 @PathParam("sessionId") int sessionId,
                 @PathParam("statementId") int statementId,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/sessions/{sessionId}/statements/{statementId}/cancel")
+        @Post(
+                "/livyApi/versions/{livyApiVersion}/sparkPools/{sparkPoolName}/sessions/{sessionId}/statements/{statementId}/cancel")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<SparkStatementCancellationResult>> cancelSparkStatement(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("livyApiVersion") String livyApiVersion,
-                @HostParam("sparkPoolName") String sparkPoolName,
+                @PathParam(value = "livyApiVersion", encoded = true) String livyApiVersion,
+                @PathParam(value = "sparkPoolName", encoded = true) String sparkPoolName,
                 @PathParam("sessionId") int sessionId,
                 @PathParam("statementId") int statementId,
                 @HeaderParam("Accept") String accept,

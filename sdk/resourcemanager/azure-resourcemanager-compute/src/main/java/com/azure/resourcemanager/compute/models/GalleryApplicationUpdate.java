@@ -5,59 +5,39 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.fluent.models.GalleryApplicationProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** Specifies information about the gallery Application Definition that you want to update. */
-@JsonFlatten
 @Fluent
-public class GalleryApplicationUpdate extends UpdateResourceDefinition {
+public final class GalleryApplicationUpdate extends UpdateResourceDefinition {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryApplicationUpdate.class);
 
     /*
-     * The description of this gallery Application Definition resource. This
-     * property is updatable.
+     * Describes the properties of a gallery Application Definition.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    @JsonProperty(value = "properties")
+    private GalleryApplicationProperties innerProperties;
 
-    /*
-     * The Eula agreement for the gallery Application Definition.
+    /**
+     * Get the innerProperties property: Describes the properties of a gallery Application Definition.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.eula")
-    private String eula;
+    private GalleryApplicationProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * The privacy statement uri.
-     */
-    @JsonProperty(value = "properties.privacyStatementUri")
-    private String privacyStatementUri;
-
-    /*
-     * The release note uri.
-     */
-    @JsonProperty(value = "properties.releaseNoteUri")
-    private String releaseNoteUri;
-
-    /*
-     * The end of life date of the gallery Application Definition. This
-     * property can be used for decommissioning purposes. This property is
-     * updatable.
-     */
-    @JsonProperty(value = "properties.endOfLifeDate")
-    private OffsetDateTime endOfLifeDate;
-
-    /*
-     * This property allows you to specify the supported type of the OS that
-     * application is built for. <br><br> Possible values are: <br><br>
-     * **Windows** <br><br> **Linux**
-     */
-    @JsonProperty(value = "properties.supportedOSType")
-    private OperatingSystemTypes supportedOSType;
+    /** {@inheritDoc} */
+    @Override
+    public GalleryApplicationUpdate withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
 
     /**
      * Get the description property: The description of this gallery Application Definition resource. This property is
@@ -66,7 +46,7 @@ public class GalleryApplicationUpdate extends UpdateResourceDefinition {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -77,7 +57,10 @@ public class GalleryApplicationUpdate extends UpdateResourceDefinition {
      * @return the GalleryApplicationUpdate object itself.
      */
     public GalleryApplicationUpdate withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryApplicationProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -87,7 +70,7 @@ public class GalleryApplicationUpdate extends UpdateResourceDefinition {
      * @return the eula value.
      */
     public String eula() {
-        return this.eula;
+        return this.innerProperties() == null ? null : this.innerProperties().eula();
     }
 
     /**
@@ -97,7 +80,10 @@ public class GalleryApplicationUpdate extends UpdateResourceDefinition {
      * @return the GalleryApplicationUpdate object itself.
      */
     public GalleryApplicationUpdate withEula(String eula) {
-        this.eula = eula;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryApplicationProperties();
+        }
+        this.innerProperties().withEula(eula);
         return this;
     }
 
@@ -107,7 +93,7 @@ public class GalleryApplicationUpdate extends UpdateResourceDefinition {
      * @return the privacyStatementUri value.
      */
     public String privacyStatementUri() {
-        return this.privacyStatementUri;
+        return this.innerProperties() == null ? null : this.innerProperties().privacyStatementUri();
     }
 
     /**
@@ -117,7 +103,10 @@ public class GalleryApplicationUpdate extends UpdateResourceDefinition {
      * @return the GalleryApplicationUpdate object itself.
      */
     public GalleryApplicationUpdate withPrivacyStatementUri(String privacyStatementUri) {
-        this.privacyStatementUri = privacyStatementUri;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryApplicationProperties();
+        }
+        this.innerProperties().withPrivacyStatementUri(privacyStatementUri);
         return this;
     }
 
@@ -127,7 +116,7 @@ public class GalleryApplicationUpdate extends UpdateResourceDefinition {
      * @return the releaseNoteUri value.
      */
     public String releaseNoteUri() {
-        return this.releaseNoteUri;
+        return this.innerProperties() == null ? null : this.innerProperties().releaseNoteUri();
     }
 
     /**
@@ -137,7 +126,10 @@ public class GalleryApplicationUpdate extends UpdateResourceDefinition {
      * @return the GalleryApplicationUpdate object itself.
      */
     public GalleryApplicationUpdate withReleaseNoteUri(String releaseNoteUri) {
-        this.releaseNoteUri = releaseNoteUri;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryApplicationProperties();
+        }
+        this.innerProperties().withReleaseNoteUri(releaseNoteUri);
         return this;
     }
 
@@ -148,7 +140,7 @@ public class GalleryApplicationUpdate extends UpdateResourceDefinition {
      * @return the endOfLifeDate value.
      */
     public OffsetDateTime endOfLifeDate() {
-        return this.endOfLifeDate;
+        return this.innerProperties() == null ? null : this.innerProperties().endOfLifeDate();
     }
 
     /**
@@ -159,7 +151,10 @@ public class GalleryApplicationUpdate extends UpdateResourceDefinition {
      * @return the GalleryApplicationUpdate object itself.
      */
     public GalleryApplicationUpdate withEndOfLifeDate(OffsetDateTime endOfLifeDate) {
-        this.endOfLifeDate = endOfLifeDate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryApplicationProperties();
+        }
+        this.innerProperties().withEndOfLifeDate(endOfLifeDate);
         return this;
     }
 
@@ -171,7 +166,7 @@ public class GalleryApplicationUpdate extends UpdateResourceDefinition {
      * @return the supportedOSType value.
      */
     public OperatingSystemTypes supportedOSType() {
-        return this.supportedOSType;
+        return this.innerProperties() == null ? null : this.innerProperties().supportedOSType();
     }
 
     /**
@@ -183,14 +178,10 @@ public class GalleryApplicationUpdate extends UpdateResourceDefinition {
      * @return the GalleryApplicationUpdate object itself.
      */
     public GalleryApplicationUpdate withSupportedOSType(OperatingSystemTypes supportedOSType) {
-        this.supportedOSType = supportedOSType;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public GalleryApplicationUpdate withTags(Map<String, String> tags) {
-        super.withTags(tags);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryApplicationProperties();
+        }
+        this.innerProperties().withSupportedOSType(supportedOSType);
         return this;
     }
 
@@ -202,5 +193,8 @@ public class GalleryApplicationUpdate extends UpdateResourceDefinition {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

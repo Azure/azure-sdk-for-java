@@ -3,7 +3,12 @@
 
 package com.azure.spring.integration.servicebus.factory;
 
-import com.microsoft.azure.servicebus.ISubscriptionClient;
+
+import com.azure.messaging.servicebus.ServiceBusErrorContext;
+import com.azure.messaging.servicebus.ServiceBusProcessorClient;
+import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
+import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
+import com.azure.spring.integration.servicebus.ServiceBusMessageProcessor;
 
 /**
  * Factory to return functional creator of service bus topic and subscription client
@@ -12,10 +17,18 @@ import com.microsoft.azure.servicebus.ISubscriptionClient;
  */
 public interface ServiceBusTopicClientFactory extends ServiceBusSenderFactory {
     /**
-     * Return a function which accepts service bus topic and subscription name, then returns {@link ISubscriptionClient}
-     * @param topic topic
-     * @param subscription subscription
+     * Return a function which accepts service bus topic and subscription name, then returns {@link
+     * ServiceBusProcessorClient}
+     *
+     * @param topic The topic.
+     * @param subscription The subscription.
+     * @param clientConfig The topic client config.
+     * @param messageProcessor The callback processor to be registered on service bus processor client.
      * @return subscription client
      */
-    ISubscriptionClient getOrCreateSubscriptionClient(String topic, String subscription);
+    ServiceBusProcessorClient getOrCreateProcessor(String topic,
+                                                   String subscription,
+                                                   ServiceBusClientConfig clientConfig,
+                                                   ServiceBusMessageProcessor<ServiceBusReceivedMessageContext,
+                                                                                 ServiceBusErrorContext> messageProcessor);
 }

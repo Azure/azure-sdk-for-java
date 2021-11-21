@@ -46,11 +46,11 @@ public class SqlFilterImpl extends RuleFilterImpl {
     private String compatibilityLevel;
 
     private static final class ParametersWrapper {
-        @JacksonXmlProperty(localName = "KeyValueOfstringanyType")
+        @JacksonXmlProperty(localName = "KeyValueOfstringanyType", namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
         private final List<KeyValueImpl> items;
 
         @JsonCreator
-        private ParametersWrapper(@JacksonXmlProperty(localName = "KeyValueOfstringanyType") List<KeyValueImpl> items) {
+        private ParametersWrapper(@JacksonXmlProperty(localName = "KeyValueOfstringanyType", namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect") List<KeyValueImpl> items) {
             this.items = items;
         }
     }

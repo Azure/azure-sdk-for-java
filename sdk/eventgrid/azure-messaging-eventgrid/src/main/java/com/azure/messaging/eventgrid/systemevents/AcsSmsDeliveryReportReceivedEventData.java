@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Schema of the Data property of an EventGridEvent for an Microsoft.Communication.SMSDeliveryReportReceived event. */
+/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.SMSDeliveryReportReceived event. */
 @Fluent
 public final class AcsSmsDeliveryReportReceivedEventData extends AcsSmsEventBaseProperties {
     /*

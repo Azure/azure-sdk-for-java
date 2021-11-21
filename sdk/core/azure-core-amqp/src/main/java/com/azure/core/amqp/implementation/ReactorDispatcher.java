@@ -24,20 +24,19 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
+ * The following utility class is used to generate an event to hook into {@link Reactor}'s event delegation pattern. It
+ * uses a {@link Pipe} as the IO on which Reactor listens to.
+ *
+ * <p>
  * {@link Reactor} is not thread-safe - all calls to {@link Proton} APIs should be on the Reactor Thread. {@link
  * Reactor} works out-of-box for all event driven API - ex: onReceive - which could raise upon onSocketRead. {@link
  * Reactor} doesn't support APIs like send() out-of-box - which could potentially run on different thread to that of the
  * Reactor thread.
- *
- * <p>
- * The following utility class is used to generate an Event to hook into {@link Reactor}'s event delegation pattern. It
- * uses a {@link Pipe} as the IO on which Reactor listens to.
  * </p>
  *
  * <p>
  * Cardinality: Multiple {@link ReactorDispatcher}'s could be attached to 1 {@link Reactor}. Each {@link
- * ReactorDispatcher} should be initialized synchronously - as it calls API in {@link Reactor} which is not
- * thread-safe.
+ * ReactorDispatcher} should be initialized synchronously - as it calls API in {@link Reactor} which is not thread-safe.
  * </p>
  */
 public final class ReactorDispatcher {
@@ -52,6 +51,13 @@ public final class ReactorDispatcher {
     private final AtomicBoolean isClosed = new AtomicBoolean();
     private final Sinks.One<AmqpShutdownSignal> shutdownSignal = Sinks.one();
 
+    /**
+     * Creates an instance. The {@code ioSignal} is associated with {@code reactor} as a child {@link Selectable}.
+     *
+     * @param connectionId The connection id.
+     * @param reactor The reactor instance.
+     * @param ioSignal IO pipe to signal work on the {@code reactor}.
+     */
     public ReactorDispatcher(final String connectionId, final Reactor reactor, final Pipe ioSignal) {
         this.connectionId = connectionId;
         this.reactor = reactor;
@@ -60,6 +66,13 @@ public final class ReactorDispatcher {
         this.onClose = new CloseHandler();
         this.workScheduler = new WorkScheduler();
 
+        // The Proton-J reactor goes quiescent when there is no work to do, and it only wakes up when a Selectable (by
+        // default, the network connection) signals that data is available.
+        //
+        // That's a problem in the send-only scenario, which is a common scenario, or any scenario where activity is
+        // sparse. If the reactor has gone quiescent, the SDK can put a pending send in the work queue, but it will just
+        // sit there until a Selectable wakes the reactor up. The pipe gives the SDK code a guaranteed way to ensure the
+        // reactor is awake.
         final Selectable schedulerSelectable = this.reactor.selectable();
 
         schedulerSelectable.setChannel(this.ioSignal.source());
@@ -74,6 +87,15 @@ public final class ReactorDispatcher {
         return shutdownSignal.asMono();
     }
 
+    /**
+     * Schedules work to be performed on the underlying proton-j reactor.
+     *
+     * @param work Work to be run on the underlying proton-j reactor.
+     *
+     * @throws IOException If the underlying IO pipe cannot be signalled saying that there is more work to be done.
+     * @throws RejectedExecutionException if the reactor instance has already been closed or the underlying IO Pipe
+     *     has been closed.
+     */
     public void invoke(final Runnable work) throws IOException {
         this.throwIfSchedulerError();
 
@@ -81,6 +103,16 @@ public final class ReactorDispatcher {
         this.signalWorkQueue();
     }
 
+    /**
+     * Schedules work to be performed on the proton-j reactor after {@code delay}.
+     *
+     * @param work Work to be run on the underlying proton-j reactor.
+     * @param delay Delay before work should scheduled for execution.
+     *
+     * @throws IOException If the underlying IO pipe cannot be signalled saying that there is more work to be done.
+     * @throws RejectedExecutionException if the reactor instance has already been closed or the underlying IO Pipe
+     *     has been closed.
+     */
     public void invoke(final Runnable work, final Duration delay) throws IOException {
         this.throwIfSchedulerError();
 
@@ -93,14 +125,16 @@ public final class ReactorDispatcher {
         final RejectedExecutionException rejectedException = this.reactor.attachments()
             .get(RejectedExecutionException.class, RejectedExecutionException.class);
         if (rejectedException != null) {
-            throw logger.logExceptionAsError(new RejectedExecutionException(rejectedException.getMessage(),
-                rejectedException));
+            throw logger.logExceptionAsWarning(new RejectedExecutionException(
+                "Underlying Reactor was already disposed. Should not continue dispatching work to this. "
+                    + rejectedException.getMessage(), rejectedException));
         }
 
         // throw when the pipe is in closed state - in which case,
         // signalling the new event-dispatch will fail
         if (!this.ioSignal.sink().isOpen()) {
-            throw logger.logExceptionAsError(new RejectedExecutionException("ReactorDispatcher instance is closed."));
+            throw logger.logExceptionAsWarning(new RejectedExecutionException(
+                "ReactorDispatcher instance is closed. Should not continue dispatching work to this reactor."));
         }
     }
 
@@ -190,7 +224,7 @@ public final class ReactorDispatcher {
             logger.info("connectionId[{}] Reactor selectable is being disposed.", connectionId);
 
             shutdownSignal.emitValue(new AmqpShutdownSignal(false, false,
-                String.format("connectionId[%s] Reactor selectable is disposed.", connectionId)),
+                    String.format("connectionId[%s] Reactor selectable is disposed.", connectionId)),
                 Sinks.EmitFailureHandler.FAIL_FAST);
 
             try {

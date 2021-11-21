@@ -79,6 +79,13 @@ public final class FileSystemSink extends CopySink {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public FileSystemSink withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

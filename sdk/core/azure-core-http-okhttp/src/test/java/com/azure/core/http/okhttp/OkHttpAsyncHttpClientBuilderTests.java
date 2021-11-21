@@ -50,7 +50,7 @@ public class OkHttpAsyncHttpClientBuilderTests {
     private static final String DEFAULT_PATH = "/default";
     private static final String DISPATCHER_PATH = "/dispatcher";
 
-    private static final String JAVA_PROXY_PREREQUISITE = "java.net.useSystemProxies";
+    private static final String JAVA_SYSTEM_PROXY_PREREQUISITE = "java.net.useSystemProxies";
     private static final String JAVA_NON_PROXY_HOSTS = "http.nonProxyHosts";
 
     private static final String JAVA_HTTP_PROXY_HOST = "http.proxyHost";
@@ -394,7 +394,6 @@ public class OkHttpAsyncHttpClientBuilderTests {
 
     private static Stream<Arguments> buildWithConfigurationProxySupplier() {
         Supplier<Configuration> baseJavaProxyConfigurationSupplier = () -> new Configuration()
-            .put(JAVA_PROXY_PREREQUISITE, "true")
             .put(JAVA_HTTP_PROXY_HOST, "localhost")
             .put(JAVA_HTTP_PROXY_PORT, "12345");
 
@@ -406,7 +405,8 @@ public class OkHttpAsyncHttpClientBuilderTests {
         arguments.add(Arguments.of(true, baseJavaProxyConfigurationSupplier.get(), defaultUrl));
 
         Configuration simpleEnvProxy = new Configuration()
-            .put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:12345");
+            .put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:12345")
+            .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true");
         arguments.add(Arguments.of(true, simpleEnvProxy, defaultUrl));
 
         /*
@@ -418,7 +418,8 @@ public class OkHttpAsyncHttpClientBuilderTests {
         arguments.add(Arguments.of(true, javaProxyWithAuthentication, defaultUrl));
 
         Configuration envProxyWithAuthentication = new Configuration()
-            .put(Configuration.PROPERTY_HTTP_PROXY, "http://1:1@localhost:12345");
+            .put(Configuration.PROPERTY_HTTP_PROXY, "http://1:1@localhost:12345")
+            .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true");
         arguments.add(Arguments.of(true, envProxyWithAuthentication, defaultUrl));
 
         /*
@@ -442,7 +443,8 @@ public class OkHttpAsyncHttpClientBuilderTests {
             .put(JAVA_NON_PROXY_HOSTS, rawJavaNonProxyHosts);
         Supplier<Configuration> envNonProxyHostsSupplier = () -> new Configuration()
             .put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:12345")
-            .put(Configuration.PROPERTY_NO_PROXY, rawEnvNonProxyHosts);
+            .put(Configuration.PROPERTY_NO_PROXY, rawEnvNonProxyHosts)
+            .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true");
 
         List<Supplier<Configuration>> nonProxyHostsSuppliers = Arrays.asList(javaNonProxyHostsSupplier,
             envNonProxyHostsSupplier);
@@ -465,7 +467,8 @@ public class OkHttpAsyncHttpClientBuilderTests {
             .put(JAVA_HTTP_PROXY_PASSWORD, "1");
         Supplier<Configuration> authenticatedEnvNonProxyHostsSupplier = () -> new Configuration()
             .put(Configuration.PROPERTY_HTTP_PROXY, "http://1:1@localhost:12345")
-            .put(Configuration.PROPERTY_NO_PROXY, rawEnvNonProxyHosts);
+            .put(Configuration.PROPERTY_NO_PROXY, rawEnvNonProxyHosts)
+            .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true");
 
         List<Supplier<Configuration>> authenticatedNonProxyHostsSuppliers = Arrays.asList(
             authenticatedJavaNonProxyHostsSupplier, authenticatedEnvNonProxyHostsSupplier);
@@ -486,6 +489,18 @@ public class OkHttpAsyncHttpClientBuilderTests {
     private static OkHttpClient okHttpClientWithProxyValidation(boolean shouldHaveProxy, Proxy.Type proxyType) {
         return new OkHttpClient.Builder()
             .eventListener(new TestEventListenerValidator(shouldHaveProxy, proxyType))
+            // Use a custom Dispatcher and ExecutorService which overrides the uncaught exception handler.
+            // This is done to prevent the tests using this from printing their error stack trace.
+            // The reason this happens is the test throws an exception which goes uncaught in a thread, and this is an
+            // expected exception, which results in the exception and its stack trace being logged, which is very
+            // verbose.
+            .dispatcher(new Dispatcher(Executors.newFixedThreadPool(2, r -> {
+                Thread thread = new Thread(r);
+                thread.setUncaughtExceptionHandler((t, e) -> {
+                });
+
+                return thread;
+            })))
             .build();
     }
 

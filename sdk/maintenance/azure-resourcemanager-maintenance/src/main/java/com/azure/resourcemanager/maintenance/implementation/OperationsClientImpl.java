@@ -38,25 +38,25 @@ public final class OperationsClientImpl implements OperationsClient {
     private final OperationsService service;
 
     /** The service client containing this operation class. */
-    private final MaintenanceClientImpl client;
+    private final MaintenanceManagementClientImpl client;
 
     /**
      * Initializes an instance of OperationsClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    OperationsClientImpl(MaintenanceClientImpl client) {
+    OperationsClientImpl(MaintenanceManagementClientImpl client) {
         this.service =
             RestProxy.create(OperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for MaintenanceClientOperations to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for MaintenanceManagementClientOperations to be used by the proxy service
+     * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MaintenanceClientOpe")
+    @ServiceInterface(name = "MaintenanceManagemen")
     private interface OperationsService {
         @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.Maintenance/operations")

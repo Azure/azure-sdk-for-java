@@ -1,0 +1,124 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/analyze",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a8692341-2bd3-4530-bed7-e9eb417754c4",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "144",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "operation-location" : "https://centralusta.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/analyze/jobs/b4c0273d-36a3-4e60-a66a-4f89a7626971",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "0aff5ffd-1f69-4d3a-ad9d-083d7c597ea1",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "Date" : "Fri, 30 Jul 2021 18:01:56 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/analyze/jobs/b4c0273d-36a3-4e60-a66a-4f89a7626971?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "fed047c7-ea19-4c3a-aec4-8667555ef381"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "6",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "f33f948d-5f96-4006-9bd1-98493ba9872c",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"jobId\":\"b4c0273d-36a3-4e60-a66a-4f89a7626971\",\"lastUpdateDateTime\":\"2021-07-30T18:01:58Z\",\"createdDateTime\":\"2021-07-30T18:01:57Z\",\"expirationDateTime\":\"2021-07-31T18:01:57Z\",\"status\":\"running\",\"errors\":[],\"displayName\":\"NA\",\"tasks\":{\"completed\":0,\"failed\":0,\"inProgress\":1,\"total\":1}}",
+      "Date" : "Fri, 30 Jul 2021 18:02:02 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/analyze/jobs/b4c0273d-36a3-4e60-a66a-4f89a7626971?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "706ae724-1f9a-4a13-9784-8704da047641"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "9",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "f9aaac88-f3c3-4211-a469-380b29234c97",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"jobId\":\"b4c0273d-36a3-4e60-a66a-4f89a7626971\",\"lastUpdateDateTime\":\"2021-07-30T18:01:58Z\",\"createdDateTime\":\"2021-07-30T18:01:57Z\",\"expirationDateTime\":\"2021-07-31T18:01:57Z\",\"status\":\"running\",\"errors\":[],\"displayName\":\"NA\",\"tasks\":{\"completed\":0,\"failed\":0,\"inProgress\":1,\"total\":1}}",
+      "Date" : "Fri, 30 Jul 2021 18:02:07 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/analyze/jobs/b4c0273d-36a3-4e60-a66a-4f89a7626971?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5005c547-762a-443b-a5f6-c02eeb70ea01"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "6",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "ea58b8bf-f862-4ec3-b2d3-58aa2e0693dd",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"jobId\":\"b4c0273d-36a3-4e60-a66a-4f89a7626971\",\"lastUpdateDateTime\":\"2021-07-30T18:01:58Z\",\"createdDateTime\":\"2021-07-30T18:01:57Z\",\"expirationDateTime\":\"2021-07-31T18:01:57Z\",\"status\":\"running\",\"errors\":[],\"displayName\":\"NA\",\"tasks\":{\"completed\":0,\"failed\":0,\"inProgress\":1,\"total\":1}}",
+      "Date" : "Fri, 30 Jul 2021 18:02:12 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/analyze/jobs/b4c0273d-36a3-4e60-a66a-4f89a7626971?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5147699e-7215-4084-9c66-70019a78302e"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "49",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "010582e4-c0f2-4818-8b99-cacfb93f76c9",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"jobId\":\"b4c0273d-36a3-4e60-a66a-4f89a7626971\",\"lastUpdateDateTime\":\"2021-07-30T18:02:16Z\",\"createdDateTime\":\"2021-07-30T18:01:57Z\",\"expirationDateTime\":\"2021-07-31T18:01:57Z\",\"status\":\"succeeded\",\"errors\":[],\"displayName\":\"NA\",\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"extractiveSummarizationTasks\":[{\"lastUpdateDateTime\":\"2021-07-30T18:02:16.2783708Z\",\"taskName\":\"ExtractiveSummarization_latest\",\"state\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"sentences\":[{\"text\":\"The government of British Prime Minster Theresa May has been plunged into turmoil with the resignation of two senior Cabinet ministers in a deep split over her Brexit strategy.\",\"rankScore\":1.0,\"offset\":0,\"length\":176},{\"text\":\"The Foreign Secretary Boris Johnson, quit on Monday, hours after the resignation late onSunday night of the minister in charge of Brexit negotiations, David Davis.\",\"rankScore\":0.9909339592938046,\"offset\":176,\"length\":163},{\"text\":\"Theirdecision to leave the government came three days after May appeared to have agreed adeal with her fractured Cabinet on the UK's post-Brexit relationship with the EU.\",\"rankScore\":0.8899765592117193,\"offset\":341,\"length\":170}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-08-01\"}}]}}",
+      "Date" : "Fri, 30 Jul 2021 18:02:17 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/analyze/jobs/b4c0273d-36a3-4e60-a66a-4f89a7626971?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5c15e3e3-869a-432c-a7a5-6e104d098623"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "44",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "13559ad6-0741-42d3-9209-e3fee105dd8c",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"jobId\":\"b4c0273d-36a3-4e60-a66a-4f89a7626971\",\"lastUpdateDateTime\":\"2021-07-30T18:02:16Z\",\"createdDateTime\":\"2021-07-30T18:01:57Z\",\"expirationDateTime\":\"2021-07-31T18:01:57Z\",\"status\":\"succeeded\",\"errors\":[],\"displayName\":\"NA\",\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"extractiveSummarizationTasks\":[{\"lastUpdateDateTime\":\"2021-07-30T18:02:16.2783708Z\",\"taskName\":\"ExtractiveSummarization_latest\",\"state\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"sentences\":[{\"text\":\"The government of British Prime Minster Theresa May has been plunged into turmoil with the resignation of two senior Cabinet ministers in a deep split over her Brexit strategy.\",\"rankScore\":1.0,\"offset\":0,\"length\":176},{\"text\":\"The Foreign Secretary Boris Johnson, quit on Monday, hours after the resignation late onSunday night of the minister in charge of Brexit negotiations, David Davis.\",\"rankScore\":0.9909339592938046,\"offset\":176,\"length\":163},{\"text\":\"Theirdecision to leave the government came three days after May appeared to have agreed adeal with her fractured Cabinet on the UK's post-Brexit relationship with the EU.\",\"rankScore\":0.8899765592117193,\"offset\":341,\"length\":170}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-08-01\"}}]}}",
+      "Date" : "Fri, 30 Jul 2021 18:02:17 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

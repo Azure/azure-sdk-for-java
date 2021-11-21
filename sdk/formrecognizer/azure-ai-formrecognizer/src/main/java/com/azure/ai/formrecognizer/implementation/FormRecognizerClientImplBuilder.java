@@ -38,22 +38,6 @@ public final class FormRecognizerClientImplBuilder {
     }
 
     /*
-     * Client Api Version.
-     */
-    private String apiVersion;
-
-    /**
-     * Sets Client Api Version.
-     *
-     * @param apiVersion the apiVersion value.
-     * @return the FormRecognizerClientImplBuilder.
-     */
-    public FormRecognizerClientImplBuilder apiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
-        return this;
-    }
-
-    /*
      * Supported Cognitive Services endpoints (protocol and hostname, for
      * example: https://westus2.api.cognitive.microsoft.com).
      */
@@ -68,6 +52,22 @@ public final class FormRecognizerClientImplBuilder {
      */
     public FormRecognizerClientImplBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
+        return this;
+    }
+
+    /*
+     * Api Version
+     */
+    private String apiVersion;
+
+    /**
+     * Sets Api Version.
+     *
+     * @param apiVersion the apiVersion value.
+     * @return the FormRecognizerClientImplBuilder.
+     */
+    public FormRecognizerClientImplBuilder apiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
         return this;
     }
 
@@ -191,6 +191,9 @@ public final class FormRecognizerClientImplBuilder {
      * @return an instance of FormRecognizerClientImpl.
      */
     public FormRecognizerClientImpl buildClient() {
+        if (apiVersion == null) {
+            this.apiVersion = "2021-09-30-preview";
+        }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
@@ -198,7 +201,7 @@ public final class FormRecognizerClientImplBuilder {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
         FormRecognizerClientImpl client =
-                new FormRecognizerClientImpl(pipeline, serializerAdapter, apiVersion, endpoint);
+                new FormRecognizerClientImpl(pipeline, serializerAdapter, endpoint, apiVersion);
         return client;
     }
 

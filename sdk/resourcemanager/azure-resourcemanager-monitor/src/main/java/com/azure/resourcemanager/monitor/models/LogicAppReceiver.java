@@ -36,8 +36,8 @@ public final class LogicAppReceiver {
     /*
      * Indicates whether to use common alert schema.
      */
-    @JsonProperty(value = "useCommonAlertSchema", required = true)
-    private boolean useCommonAlertSchema;
+    @JsonProperty(value = "useCommonAlertSchema")
+    private Boolean useCommonAlertSchema;
 
     /**
      * Get the name property: The name of the logic app receiver. Names must be unique across all receivers within an
@@ -106,7 +106,7 @@ public final class LogicAppReceiver {
      *
      * @return the useCommonAlertSchema value.
      */
-    public boolean useCommonAlertSchema() {
+    public Boolean useCommonAlertSchema() {
         return this.useCommonAlertSchema;
     }
 
@@ -116,7 +116,7 @@ public final class LogicAppReceiver {
      * @param useCommonAlertSchema the useCommonAlertSchema value to set.
      * @return the LogicAppReceiver object itself.
      */
-    public LogicAppReceiver withUseCommonAlertSchema(boolean useCommonAlertSchema) {
+    public LogicAppReceiver withUseCommonAlertSchema(Boolean useCommonAlertSchema) {
         this.useCommonAlertSchema = useCommonAlertSchema;
         return this;
     }

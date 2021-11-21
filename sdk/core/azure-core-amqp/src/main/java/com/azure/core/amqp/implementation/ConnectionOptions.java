@@ -8,6 +8,7 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.amqp.implementation.handler.WebSocketsConnectionHandler;
+import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
@@ -22,11 +23,6 @@ import java.util.Objects;
  */
 @Immutable
 public class ConnectionOptions {
-    // These name version keys are used in our properties files to specify client product and version information.
-    static final String NAME_KEY = "name";
-    static final String VERSION_KEY = "version";
-    static final String UNKNOWN = "UNKNOWN";
-
     private final TokenCredential tokenCredential;
     private final AmqpTransportType transport;
     private final AmqpRetryOptions retryOptions;
@@ -34,6 +30,7 @@ public class ConnectionOptions {
     private final Scheduler scheduler;
     private final String fullyQualifiedNamespace;
     private final CbsAuthorizationType authorizationType;
+    private final String authorizationScope;
     private final ClientOptions clientOptions;
     private final String product;
     private final String clientVersion;
@@ -61,10 +58,10 @@ public class ConnectionOptions {
      *     {@code proxyOptions} or {@code verifyMode} is null.
      */
     public ConnectionOptions(String fullyQualifiedNamespace, TokenCredential tokenCredential,
-        CbsAuthorizationType authorizationType, AmqpTransportType transport, AmqpRetryOptions retryOptions,
-        ProxyOptions proxyOptions, Scheduler scheduler, ClientOptions clientOptions,
+        CbsAuthorizationType authorizationType, String authorizationScope, AmqpTransportType transport,
+        AmqpRetryOptions retryOptions, ProxyOptions proxyOptions, Scheduler scheduler, ClientOptions clientOptions,
         SslDomain.VerifyMode verifyMode, String product, String clientVersion) {
-        this(fullyQualifiedNamespace, tokenCredential, authorizationType, transport, retryOptions,
+        this(fullyQualifiedNamespace, tokenCredential, authorizationType, authorizationScope, transport, retryOptions,
             proxyOptions, scheduler, clientOptions, verifyMode, product, clientVersion, fullyQualifiedNamespace,
             getPort(transport));
     }
@@ -93,14 +90,15 @@ public class ConnectionOptions {
      *     {@code clientOptions}, {@code hostname}, or {@code verifyMode} is null.
      */
     public ConnectionOptions(String fullyQualifiedNamespace, TokenCredential tokenCredential,
-        CbsAuthorizationType authorizationType, AmqpTransportType transport, AmqpRetryOptions retryOptions,
-        ProxyOptions proxyOptions, Scheduler scheduler, ClientOptions clientOptions,
+        CbsAuthorizationType authorizationType, String authorizationScope, AmqpTransportType transport,
+        AmqpRetryOptions retryOptions, ProxyOptions proxyOptions, Scheduler scheduler, ClientOptions clientOptions,
         SslDomain.VerifyMode verifyMode, String product, String clientVersion, String hostname, int port) {
 
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' is required.");
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' is required.");
         this.authorizationType = Objects.requireNonNull(authorizationType, "'authorizationType' is required.");
+        this.authorizationScope = Objects.requireNonNull(authorizationScope, "'authorizationScope' is required.");
         this.transport = Objects.requireNonNull(transport, "'transport' is required.");
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' is required.");
         this.scheduler = Objects.requireNonNull(scheduler, "'scheduler' is required.");
@@ -112,6 +110,15 @@ public class ConnectionOptions {
 
         this.product = Objects.requireNonNull(product, "'product' cannot be null.");
         this.clientVersion = Objects.requireNonNull(clientVersion, "'clientVersion' cannot be null.");
+    }
+
+    /**
+     * Gets the scope to use when authorizing.
+     *
+     * @return The scope to use when authorizing.
+     */
+    public String getAuthorizationScope() {
+        return authorizationScope;
     }
 
     /**

@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/** The QueueMetrics model. */
+/** a summary of request statistics grouped by API in hour or minute aggregates for queues. */
 @JacksonXmlRootElement(localName = "Metrics")
 @Fluent
 public final class QueueMetrics {

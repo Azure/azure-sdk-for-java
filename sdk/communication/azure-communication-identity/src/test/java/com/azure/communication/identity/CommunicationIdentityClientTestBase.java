@@ -3,6 +3,7 @@
 
 package com.azure.communication.identity;
 
+import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -16,33 +17,55 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.microsoft.aad.msal4j.IAuthenticationResult;
+import com.microsoft.aad.msal4j.IPublicClientApplication;
+import com.microsoft.aad.msal4j.PublicClientApplication;
+import com.microsoft.aad.msal4j.UserNamePasswordParameters;
 import reactor.core.publisher.Mono;
 
+import java.net.MalformedURLException;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.Locale;
-import java.util.StringJoiner;
+import java.util.*;
+import java.util.concurrent.ExecutionException;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 public class CommunicationIdentityClientTestBase extends TestBase {
     protected static final TestMode TEST_MODE = initializeTestMode();
-    protected static final String ENDPOINT = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_SERVICE_ENDPOINT", "https://REDACTED.communication.azure.com");
-
-    protected static final String ACCESSKEYRAW = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
-    protected static final String ACCESSKEYENCODED = Base64.getEncoder().encodeToString(ACCESSKEYRAW.getBytes());
-    protected static final String ACCESSKEY = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_SERVICE_ACCESS_KEY", ACCESSKEYENCODED);
 
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_LIVETEST_DYNAMIC_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=" + ACCESSKEYENCODED);
+        .get("COMMUNICATION_LIVETEST_DYNAMIC_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
 
-    private static final String TEST_PACKAGES_ENABLED = Configuration.getGlobalConfiguration()
-        .get("TEST_PACKAGES_ENABLED", "all");
+    private static final String COMMUNICATION_M365_APP_ID = Configuration.getGlobalConfiguration()
+        .get("COMMUNICATION_M365_APP_ID", "Sanitized");
+
+    private static final String COMMUNICATION_M365_AAD_AUTHORITY = Configuration.getGlobalConfiguration()
+        .get("COMMUNICATION_M365_AAD_AUTHORITY", "Sanitized");
+
+    private static final String COMMUNICATION_M365_AAD_TENANT = Configuration.getGlobalConfiguration()
+        .get("COMMUNICATION_M365_AAD_TENANT", "Sanitized");
+
+    private static final String COMMUNICATION_M365_REDIRECT_URI = Configuration.getGlobalConfiguration()
+        .get("COMMUNICATION_M365_REDIRECT_URI", "Sanitized");
+
+    private static final String COMMUNICATION_M365_SCOPE = Configuration.getGlobalConfiguration()
+        .get("COMMUNICATION_M365_SCOPE", "Sanitized");
+
+    protected static final String COMMUNICATION_EXPIRED_TEAMS_TOKEN = Configuration.getGlobalConfiguration()
+        .get("COMMUNICATION_EXPIRED_TEAMS_TOKEN", "Sanitized");
+
+    private static final String COMMUNICATION_MSAL_USERNAME = Configuration.getGlobalConfiguration()
+        .get("COMMUNICATION_MSAL_USERNAME", "Sanitized");
+
+    private static final String COMMUNICATION_MSAL_PASSWORD = Configuration.getGlobalConfiguration()
+        .get("COMMUNICATION_MSAL_PASSWORD", "Sanitized");
+
+    private static final String COMMUNICATION_SKIP_INT_IDENTITY_EXCHANGE_TOKEN_TEST = Configuration.getGlobalConfiguration()
+        .get("SKIP_INT_IDENTITY_EXCHANGE_TOKEN_TEST", "false");
 
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
@@ -54,8 +77,13 @@ public class CommunicationIdentityClientTestBase extends TestBase {
 
     protected CommunicationIdentityClientBuilder createClientBuilder(HttpClient httpClient) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
-        builder.endpoint(ENDPOINT)
-            .credential(new AzureKeyCredential(ACCESSKEY))
+
+        CommunicationConnectionString communicationConnectionString = new CommunicationConnectionString(CONNECTION_STRING);
+        String communicationEndpoint = communicationConnectionString.getEndpoint();
+        String communicationAccessKey = communicationConnectionString.getAccessKey();
+
+        builder.endpoint(communicationEndpoint)
+            .credential(new AzureKeyCredential(communicationAccessKey))
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {
@@ -69,8 +97,12 @@ public class CommunicationIdentityClientTestBase extends TestBase {
 
     protected CommunicationIdentityClientBuilder createClientBuilderUsingManagedIdentity(HttpClient httpClient) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
+
+        CommunicationConnectionString communicationConnectionString = new CommunicationConnectionString(CONNECTION_STRING);
+        String communicationEndpoint = communicationConnectionString.getEndpoint();
+
         builder
-            .endpoint(ENDPOINT)
+            .endpoint(communicationEndpoint)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -136,10 +168,6 @@ public class CommunicationIdentityClientTestBase extends TestBase {
             });
     }
 
-    protected boolean shouldEnableIdentityTests() {
-        return TEST_PACKAGES_ENABLED.matches("(all|identity)");
-    }
-
     static class FakeCredentials implements TokenCredential {
         @Override
         public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
@@ -156,5 +184,37 @@ public class CommunicationIdentityClientTestBase extends TestBase {
         }
 
         return content;
+    }
+
+    protected static String generateTeamsUserAadToken() throws MalformedURLException, ExecutionException, InterruptedException {
+        String teamsUserAadToken = "Sanitized";
+        if (TEST_MODE != TestMode.PLAYBACK) {
+            try {
+                IPublicClientApplication publicClientApplication = PublicClientApplication.builder(COMMUNICATION_M365_APP_ID)
+                    .authority(COMMUNICATION_M365_AAD_AUTHORITY + "/" + COMMUNICATION_M365_AAD_TENANT)
+                    .build();
+                Set<String> scopes = Collections.singleton(COMMUNICATION_M365_SCOPE);
+                char[] password = COMMUNICATION_MSAL_PASSWORD.toCharArray();
+                UserNamePasswordParameters userNamePasswordParameters =  UserNamePasswordParameters.builder(scopes, COMMUNICATION_MSAL_USERNAME, password)
+                        .build();
+                Arrays.fill(password, '0');
+                IAuthenticationResult result = publicClientApplication.acquireToken(userNamePasswordParameters).get();
+                teamsUserAadToken = result.accessToken();
+            } catch (Exception e) {
+                throw e;
+            }
+        }
+        return teamsUserAadToken;
+    }
+
+    protected void verifyTokenNotEmpty(AccessToken issuedToken) {
+        assertNotNull(issuedToken.getToken());
+        assertFalse(issuedToken.getToken().isEmpty());
+        assertNotNull(issuedToken.getExpiresAt());
+        assertFalse(issuedToken.getExpiresAt().toString().isEmpty());
+    }
+
+    public static boolean skipExchangeAadTeamsTokenTest() {
+        return Boolean.parseBoolean(COMMUNICATION_SKIP_INT_IDENTITY_EXCHANGE_TOKEN_TEST);
     }
 }

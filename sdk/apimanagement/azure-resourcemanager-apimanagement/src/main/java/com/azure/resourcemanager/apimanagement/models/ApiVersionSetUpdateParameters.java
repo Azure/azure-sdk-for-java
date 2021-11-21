@@ -5,112 +5,29 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.apimanagement.fluent.models.ApiVersionSetUpdateParametersProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameters to update or create an Api Version Set Contract. */
-@JsonFlatten
 @Fluent
-public class ApiVersionSetUpdateParameters {
+public final class ApiVersionSetUpdateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiVersionSetUpdateParameters.class);
 
     /*
-     * Description of API Version Set.
+     * Parameters to update or create an Api Version Set Contract.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * Name of query parameter that indicates the API Version if
-     * versioningScheme is set to `query`.
-     */
-    @JsonProperty(value = "properties.versionQueryName")
-    private String versionQueryName;
-
-    /*
-     * Name of HTTP header parameter that indicates the API Version if
-     * versioningScheme is set to `header`.
-     */
-    @JsonProperty(value = "properties.versionHeaderName")
-    private String versionHeaderName;
-
-    /*
-     * Name of API Version Set
-     */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
-
-    /*
-     * An value that determines where the API Version identifier will be
-     * located in a HTTP request.
-     */
-    @JsonProperty(value = "properties.versioningScheme")
-    private VersioningScheme versioningScheme;
+    @JsonProperty(value = "properties")
+    private ApiVersionSetUpdateParametersProperties innerProperties;
 
     /**
-     * Get the description property: Description of API Version Set.
+     * Get the innerProperties property: Parameters to update or create an Api Version Set Contract.
      *
-     * @return the description value.
+     * @return the innerProperties value.
      */
-    public String description() {
-        return this.description;
-    }
-
-    /**
-     * Set the description property: Description of API Version Set.
-     *
-     * @param description the description value to set.
-     * @return the ApiVersionSetUpdateParameters object itself.
-     */
-    public ApiVersionSetUpdateParameters withDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    /**
-     * Get the versionQueryName property: Name of query parameter that indicates the API Version if versioningScheme is
-     * set to `query`.
-     *
-     * @return the versionQueryName value.
-     */
-    public String versionQueryName() {
-        return this.versionQueryName;
-    }
-
-    /**
-     * Set the versionQueryName property: Name of query parameter that indicates the API Version if versioningScheme is
-     * set to `query`.
-     *
-     * @param versionQueryName the versionQueryName value to set.
-     * @return the ApiVersionSetUpdateParameters object itself.
-     */
-    public ApiVersionSetUpdateParameters withVersionQueryName(String versionQueryName) {
-        this.versionQueryName = versionQueryName;
-        return this;
-    }
-
-    /**
-     * Get the versionHeaderName property: Name of HTTP header parameter that indicates the API Version if
-     * versioningScheme is set to `header`.
-     *
-     * @return the versionHeaderName value.
-     */
-    public String versionHeaderName() {
-        return this.versionHeaderName;
-    }
-
-    /**
-     * Set the versionHeaderName property: Name of HTTP header parameter that indicates the API Version if
-     * versioningScheme is set to `header`.
-     *
-     * @param versionHeaderName the versionHeaderName value to set.
-     * @return the ApiVersionSetUpdateParameters object itself.
-     */
-    public ApiVersionSetUpdateParameters withVersionHeaderName(String versionHeaderName) {
-        this.versionHeaderName = versionHeaderName;
-        return this;
+    private ApiVersionSetUpdateParametersProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -119,7 +36,7 @@ public class ApiVersionSetUpdateParameters {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -129,7 +46,10 @@ public class ApiVersionSetUpdateParameters {
      * @return the ApiVersionSetUpdateParameters object itself.
      */
     public ApiVersionSetUpdateParameters withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiVersionSetUpdateParametersProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -140,7 +60,7 @@ public class ApiVersionSetUpdateParameters {
      * @return the versioningScheme value.
      */
     public VersioningScheme versioningScheme() {
-        return this.versioningScheme;
+        return this.innerProperties() == null ? null : this.innerProperties().versioningScheme();
     }
 
     /**
@@ -151,7 +71,83 @@ public class ApiVersionSetUpdateParameters {
      * @return the ApiVersionSetUpdateParameters object itself.
      */
     public ApiVersionSetUpdateParameters withVersioningScheme(VersioningScheme versioningScheme) {
-        this.versioningScheme = versioningScheme;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiVersionSetUpdateParametersProperties();
+        }
+        this.innerProperties().withVersioningScheme(versioningScheme);
+        return this;
+    }
+
+    /**
+     * Get the description property: Description of API Version Set.
+     *
+     * @return the description value.
+     */
+    public String description() {
+        return this.innerProperties() == null ? null : this.innerProperties().description();
+    }
+
+    /**
+     * Set the description property: Description of API Version Set.
+     *
+     * @param description the description value to set.
+     * @return the ApiVersionSetUpdateParameters object itself.
+     */
+    public ApiVersionSetUpdateParameters withDescription(String description) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiVersionSetUpdateParametersProperties();
+        }
+        this.innerProperties().withDescription(description);
+        return this;
+    }
+
+    /**
+     * Get the versionQueryName property: Name of query parameter that indicates the API Version if versioningScheme is
+     * set to `query`.
+     *
+     * @return the versionQueryName value.
+     */
+    public String versionQueryName() {
+        return this.innerProperties() == null ? null : this.innerProperties().versionQueryName();
+    }
+
+    /**
+     * Set the versionQueryName property: Name of query parameter that indicates the API Version if versioningScheme is
+     * set to `query`.
+     *
+     * @param versionQueryName the versionQueryName value to set.
+     * @return the ApiVersionSetUpdateParameters object itself.
+     */
+    public ApiVersionSetUpdateParameters withVersionQueryName(String versionQueryName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiVersionSetUpdateParametersProperties();
+        }
+        this.innerProperties().withVersionQueryName(versionQueryName);
+        return this;
+    }
+
+    /**
+     * Get the versionHeaderName property: Name of HTTP header parameter that indicates the API Version if
+     * versioningScheme is set to `header`.
+     *
+     * @return the versionHeaderName value.
+     */
+    public String versionHeaderName() {
+        return this.innerProperties() == null ? null : this.innerProperties().versionHeaderName();
+    }
+
+    /**
+     * Set the versionHeaderName property: Name of HTTP header parameter that indicates the API Version if
+     * versioningScheme is set to `header`.
+     *
+     * @param versionHeaderName the versionHeaderName value to set.
+     * @return the ApiVersionSetUpdateParameters object itself.
+     */
+    public ApiVersionSetUpdateParameters withVersionHeaderName(String versionHeaderName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiVersionSetUpdateParametersProperties();
+        }
+        this.innerProperties().withVersionHeaderName(versionHeaderName);
         return this;
     }
 
@@ -161,5 +157,8 @@ public class ApiVersionSetUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

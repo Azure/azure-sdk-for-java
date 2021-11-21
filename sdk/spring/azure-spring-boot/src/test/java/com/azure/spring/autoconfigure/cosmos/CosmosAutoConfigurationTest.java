@@ -2,49 +2,78 @@
 // Licensed under the MIT License.
 package com.azure.spring.autoconfigure.cosmos;
 
-
-import com.azure.cosmos.ThrottlingRetryOptions;
-import com.azure.cosmos.implementation.ConnectionPolicy;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.springframework.context.annotation.Bean;
+import com.azure.core.credential.AzureKeyCredential;
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.spring.data.cosmos.config.CosmosConfig;
+import com.azure.spring.data.cosmos.core.CosmosTemplate;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.autoconfigure.AutoConfigurations;
+import org.springframework.boot.test.context.FilteredClassLoader;
+import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
 
-@Ignore
+import static com.azure.spring.autoconfigure.cosmos.PropertySettingUtil.DATABASE_NAME;
+import static com.azure.spring.autoconfigure.cosmos.PropertySettingUtil.KEY;
+import static com.azure.spring.autoconfigure.cosmos.PropertySettingUtil.URI;
+import static com.azure.spring.autoconfigure.cosmos.PropertySettingUtil.getCommonPropertyValues;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+
 public class CosmosAutoConfigurationTest {
-    @BeforeClass
-    public static void beforeClass() {
-        PropertySettingUtil.setProperties();
+
+    private final ApplicationContextRunner contextRunner = new ApplicationContextRunner();
+
+    @Test
+    public void testCosmosAutoConfigurationWithoutEnableConfigFile() {
+        this.contextRunner
+            .withConfiguration(AutoConfigurations.of(CosmosAutoConfiguration.class))
+            .withClassLoader(new FilteredClassLoader(new ClassPathResource("cosmos.enable.config")))
+            .run((context) -> {
+                assertThat(context).doesNotHaveBean(CosmosConfig.class);
+            });
     }
 
-    @AfterClass
-    public static void afterClass() {
-        PropertySettingUtil.unsetProperties();
+    @Test
+    public void testCosmosAutoConfigurationWithoutConditionalOnClass() {
+        this.contextRunner
+            .withConfiguration(AutoConfigurations.of(CosmosAutoConfiguration.class))
+            .withClassLoader(new FilteredClassLoader(CosmosAsyncClient.class, CosmosTemplate.class))
+            .run((context) -> {
+                assertThat(context).doesNotHaveBean(CosmosConfig.class);
+            });
     }
 
-    @Configuration
-    static class ConnectionPolicyConfig {
-        @Bean
-        public ConnectionPolicy connectionPolicy() {
-            final ConnectionPolicy connectionPolicy = ConnectionPolicy.getDefaultPolicy();
+    @Test
+    public void testCosmosAutoConfigurationBean() {
+        this.contextRunner
+            .withPropertyValues(getCommonPropertyValues())
+            .withConfiguration(AutoConfigurations.of(ConfigurationWithMockCosmosAsyncClient.class))
+            .run((context) -> {
+                assertThat(context).hasSingleBean(CosmosAsyncClient.class);
+                assertThat(context).hasSingleBean(CosmosTemplate.class);
+                assertThat(context).hasSingleBean(AzureKeyCredential.class);
+                assertThat(context).hasSingleBean(CosmosClientBuilder.class);
+                assertThat(context).hasSingleBean(CosmosConfig.class);
 
-            connectionPolicy.setRequestTimeout(PropertySettingUtil.REQUEST_TIMEOUT);
-            connectionPolicy.setConnectionMode(PropertySettingUtil.CONNECTION_MODE);
-            connectionPolicy.setMaxConnectionPoolSize(PropertySettingUtil.MAX_CONNECTION_POOL_SIZE);
-            connectionPolicy.setIdleHttpConnectionTimeout(PropertySettingUtil.IDLE_HTTP_CONNECTION_TIMEOUT);
-            connectionPolicy.setIdleTcpConnectionTimeout(PropertySettingUtil.IDLE_TCP_CONNECTION_TIMEOUT);
-            // TODO (data) User agent from configured ConnectionPolicy is not taken
-            connectionPolicy.setUserAgentSuffix(PropertySettingUtil.USER_AGENT_SUFFIX);
-            final ThrottlingRetryOptions retryOptions = new ThrottlingRetryOptions();
-            retryOptions.setMaxRetryAttemptsOnThrottledRequests(
-                PropertySettingUtil.RETRY_OPTIONS_MAX_RETRY_ATTEMPTS_ON_THROTTLED_REQUESTS);
-            retryOptions.setMaxRetryWaitTime(PropertySettingUtil.MAX_RETRY_WAIT_TIME);
-            connectionPolicy.setThrottlingRetryOptions(retryOptions);
+                CosmosProperties cosmosProperties = context.getBean(CosmosProperties.class);
+                assertThat(cosmosProperties.getUri()).isEqualTo(URI);
+                assertThat(cosmosProperties.getKey()).isEqualTo(KEY);
+                assertThat(cosmosProperties.getDatabase()).isEqualTo(DATABASE_NAME);
+            });
+    }
 
-            connectionPolicy.setEndpointDiscoveryEnabled(PropertySettingUtil.ENDPOINT_DISCOVERY_ENABLED);
-            connectionPolicy.setPreferredRegions(PropertySettingUtil.PREFERRED_REGIONS);
-            return connectionPolicy;
+    @Configuration(proxyBeanMethods = false)
+    static class ConfigurationWithMockCosmosAsyncClient extends CosmosAutoConfiguration {
+
+        ConfigurationWithMockCosmosAsyncClient(CosmosProperties properties) {
+            super(properties);
+        }
+
+        @Override
+        public CosmosAsyncClient cosmosAsyncClient(CosmosClientBuilder cosmosClientBuilder) {
+            return mock(CosmosAsyncClient.class);
         }
     }
 }

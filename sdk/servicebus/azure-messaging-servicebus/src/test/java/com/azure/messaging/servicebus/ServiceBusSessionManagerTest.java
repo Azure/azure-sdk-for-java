@@ -7,16 +7,17 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
+import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
+import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
@@ -25,15 +26,16 @@ import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junit.jupiter.api.parallel.Isolated;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
-import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.EmitterProcessor;
@@ -51,12 +53,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -67,6 +71,10 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+// This class is executed synchronously as it runs into a NullPointerException when attempting to dispose
+// connectionProcessor in parallel runs.
+@Execution(ExecutionMode.SAME_THREAD)
+@Isolated
 class ServiceBusSessionManagerTest {
     private static final ClientOptions CLIENT_OPTIONS = new ClientOptions();
     private static final Duration TIMEOUT = Duration.ofSeconds(10);
@@ -124,11 +132,13 @@ class ServiceBusSessionManagerTest {
         when(amqpReceiveLink.getHostname()).thenReturn(NAMESPACE);
         when(amqpReceiveLink.getEntityPath()).thenReturn(ENTITY_PATH);
         when(amqpReceiveLink.getEndpointStates()).thenReturn(endpointProcessor);
+        when(amqpReceiveLink.closeAsync()).thenReturn(Mono.empty());
 
         ConnectionOptions connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
-            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP,
-            new AmqpRetryOptions().setTryTimeout(TIMEOUT), ProxyOptions.SYSTEM_DEFAULTS, Schedulers.boundedElastic(),
-            CLIENT_OPTIONS, SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-version");
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
+            AmqpTransportType.AMQP, new AmqpRetryOptions().setTryTimeout(TIMEOUT), ProxyOptions.SYSTEM_DEFAULTS,
+            Schedulers.boundedElastic(), CLIENT_OPTIONS, SslDomain.VerifyMode.VERIFY_PEER_NAME,
+            "test-product", "test-version");
 
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
         endpointSink.next(AmqpEndpointState.ACTIVE);
@@ -146,6 +156,8 @@ class ServiceBusSessionManagerTest {
     void afterEach(TestInfo testInfo) throws Exception {
         logger.info("===== [{}] Tearing down. =====", testInfo.getDisplayName());
 
+        // If this test class is made to run in parallel this will need to change to
+        // Mockito.framework().clearInlineMock(this), as that is scoped to the specific test object.
         Mockito.framework().clearInlineMocks();
 
         if (mocksCloseable != null) {
@@ -230,7 +242,7 @@ class ServiceBusSessionManagerTest {
     }
 
     /**
-     * Verify that when we receive for a single, unnamed session, the session Lock renew is called once only.
+     * Verify that when we receive for a single, unnamed session, the session Lock renew is called for one session only.
      */
     @Test
     void singleUnnamedSessionLockRenew() {
@@ -243,7 +255,7 @@ class ServiceBusSessionManagerTest {
         final String sessionId = "session-1";
         final String lockToken = "a-lock-token";
         final String linkName = "my-link-name";
-        final OffsetDateTime sessionLockedUntil = OffsetDateTime.now().plus(Duration.ofSeconds(30));
+        final OffsetDateTime sessionLockedUntil = OffsetDateTime.now().plus(Duration.ofSeconds(1));
 
         final Message message = mock(Message.class);
         final ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
@@ -265,14 +277,12 @@ class ServiceBusSessionManagerTest {
         when(connection.createReceiveLink(anyString(), eq(ENTITY_PATH), any(ServiceBusReceiveMode.class), isNull(),
             any(MessagingEntityType.class), isNull())).thenReturn(Mono.just(amqpReceiveLink));
 
+        AtomicBoolean sessionLockRenewCalled = new AtomicBoolean();
         when(managementNode.renewSessionLock(sessionId, linkName)).thenReturn(
-            Mono.fromCallable(() -> OffsetDateTime.now().plus(Duration.ofSeconds(5))));
-
-        MockedConstruction<LockRenewalOperation> mockedLockRenewOperation = Mockito.mockConstructionWithAnswer(LockRenewalOperation.class,
-            invocationOnMock -> new LockRenewalOperation("lockToken", Duration.ofSeconds(30), true,
-                (lock) -> Mono.empty(), OffsetDateTime.now()));
-
-        // Act & Assert
+            Mono.fromCallable(() -> {
+                sessionLockRenewCalled.set(true);
+                return OffsetDateTime.now().plus(Duration.ofSeconds(5));
+            }));
         StepVerifier.create(sessionManager.receive())
             .then(() -> {
                 for (int i = 0; i < numberOfMessages; i++) {
@@ -281,11 +291,12 @@ class ServiceBusSessionManagerTest {
             })
             .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
             .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
+            .thenAwait(Duration.ofSeconds(5))
             .thenCancel()
             .verify(Duration.ofSeconds(45));
 
-        // message onNext should trigger `LockRenewalOperation` once only for one session.
-        Assertions.assertEquals(1, mockedLockRenewOperation.constructed().size());
+        assertTrue(sessionLockRenewCalled.get());
+
     }
 
     /**

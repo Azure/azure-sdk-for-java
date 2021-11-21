@@ -7,6 +7,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 /**
@@ -38,6 +40,18 @@ class Util {
     }
 
     /**
+     * Gets value of Azure-AsyncOperation header from the given Http headers.
+     *
+     * @param headers the Http headers
+     * @param logger the logger
+     * @param ignoreException whether to ignore malformed URL
+     * @return the Azure-AsyncOperation header value if exists, null otherwise
+     */
+    static URL getAzureAsyncOperationUrl(HttpHeaders headers, ClientLogger logger, boolean ignoreException) {
+        return getUrl("Azure-AsyncOperation", headers, logger, ignoreException);
+    }
+
+    /**
      * Gets value of Location header from the given Http headers.
      *
      * @param headers the Http headers
@@ -53,7 +67,7 @@ class Util {
      *
      * @param headers the Http headers
      * @param logger the logger
-     * @return the Location header value if exists, null otherwise
+     * @param ignoreException whether to ignore malformed URL
      * @return the URL value of the given header, null if header does not exists.
      */
     static URL getLocationUrl(HttpHeaders headers, ClientLogger logger, boolean ignoreException) {
@@ -73,8 +87,8 @@ class Util {
         String value = headers.getValue(urlHeaderName);
         if (value != null) {
             try {
-                return new URL(value);
-            } catch (MalformedURLException me) {
+                return new URI(value).toURL();
+            } catch (MalformedURLException | URISyntaxException | IllegalArgumentException me) {
                 String message = "Malformed value '" + value + "' for URL header: '" + urlHeaderName + "'.";
                 if (ignoreException) {
                     logger.logExceptionAsError(new MalformedUrlException(message, me));

@@ -8,6 +8,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.SqlPoolInner;
+import com.azure.resourcemanager.synapse.models.CreateMode;
 import com.azure.resourcemanager.synapse.models.ResourceMoveDefinition;
 import com.azure.resourcemanager.synapse.models.Sku;
 import com.azure.resourcemanager.synapse.models.SqlPool;
@@ -79,7 +80,7 @@ public final class SqlPoolImpl implements SqlPool, SqlPool.Definition, SqlPool.U
         return this.innerModel().restorePointInTime();
     }
 
-    public String createMode() {
+    public CreateMode createMode() {
         return this.innerModel().createMode();
     }
 
@@ -89,6 +90,10 @@ public final class SqlPoolImpl implements SqlPool, SqlPool.Definition, SqlPool.U
 
     public StorageAccountType storageAccountType() {
         return this.innerModel().storageAccountType();
+    }
+
+    public OffsetDateTime sourceDatabaseDeletionDate() {
+        return this.innerModel().sourceDatabaseDeletionDate();
     }
 
     public Region region() {
@@ -324,7 +329,7 @@ public final class SqlPoolImpl implements SqlPool, SqlPool.Definition, SqlPool.U
         }
     }
 
-    public SqlPoolImpl withCreateMode(String createMode) {
+    public SqlPoolImpl withCreateMode(CreateMode createMode) {
         if (isInCreateMode()) {
             this.innerModel().withCreateMode(createMode);
             return this;
@@ -350,6 +355,16 @@ public final class SqlPoolImpl implements SqlPool, SqlPool.Definition, SqlPool.U
             return this;
         } else {
             this.updateSqlPoolInfo.withStorageAccountType(storageAccountType);
+            return this;
+        }
+    }
+
+    public SqlPoolImpl withSourceDatabaseDeletionDate(OffsetDateTime sourceDatabaseDeletionDate) {
+        if (isInCreateMode()) {
+            this.innerModel().withSourceDatabaseDeletionDate(sourceDatabaseDeletionDate);
+            return this;
+        } else {
+            this.updateSqlPoolInfo.withSourceDatabaseDeletionDate(sourceDatabaseDeletionDate);
             return this;
         }
     }

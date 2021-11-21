@@ -9,6 +9,7 @@ import com.azure.resourcemanager.network.fluent.models.SecurityRuleInner;
 import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
 import com.azure.resourcemanager.network.models.NetworkSecurityRule;
 import com.azure.resourcemanager.network.models.Subnet;
+import com.azure.resourcemanager.network.models.TagsObject;
 import reactor.core.publisher.Mono;
 
 import java.util.Collections;
@@ -94,7 +95,7 @@ class NetworkSecurityGroupImpl
             .manager()
             .serviceClient()
             .getNetworkSecurityGroups()
-            .updateTagsAsync(resourceGroupName(), name(), innerModel().tags());
+            .updateTagsAsync(resourceGroupName(), name(), new TagsObject().withTags(innerModel().tags()));
     }
 
     @Override

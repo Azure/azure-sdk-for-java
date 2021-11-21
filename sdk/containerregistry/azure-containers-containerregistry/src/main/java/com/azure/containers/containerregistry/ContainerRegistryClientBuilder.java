@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.models.ContainerRegistryServiceVersion;
+import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -30,14 +30,28 @@ import java.util.Objects;
  * #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of
  * the desired client.
  *
- * <p>The client needs the service endpoint of the Azure Container Registry and Azure access credentials.
- * <p><strong>Instantiating an asynchronous {@link ContainerRegistryAsyncClient}</strong></p>
+ * <p>The client needs the service endpoint of the Azure Container Registry, Audience for ACR that you want to target and Azure access credentials to use for authentication.
+ * <p><strong>Instantiating an asynchronous Container Registry client</strong></p>
+ * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryAsyncClient.instantiation -->
+ * <pre>
+ * ContainerRegistryAsyncClient registryAsyncClient = new ContainerRegistryClientBuilder&#40;&#41;
+ *     .endpoint&#40;endpoint&#41;
+ *     .credential&#40;credential&#41;
+ *     .audience&#40;ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.containers.containerregistry.ContainerRegistryAsyncClient.instantiation -->
  *
- * {@codesnippet com.azure.containers.containerregistry.async.repository.instantiation}
- *
- * <p><strong>Instantiating a synchronous Configuration Client</strong></p>
- *
- * {@codesnippet com.azure.containers.containerregistry.repository.instantiation}
+ * <p><strong>Instantiating a synchronous Container Registry client</strong></p>
+ * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryClient.instantiation -->
+ * <pre>
+ * ContainerRegistryClient registryAsyncClient = new ContainerRegistryClientBuilder&#40;&#41;
+ *     .endpoint&#40;endpoint&#41;
+ *     .audience&#40;ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD&#41;
+ *     .credential&#40;credential&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.containers.containerregistry.ContainerRegistryClient.instantiation -->
  *
  * <p>Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an
  * authenticated way to communicate with the service but it doesn't contain the service endpoint. Set the pipeline with
@@ -49,13 +63,37 @@ import java.util.Objects;
  * would need to provide implementation for this policy as well.
  * For more information please see <a href="https://github.com/Azure/acr/blob/main/docs/AAD-OAuth.md"> Azure Container Registry Authentication </a>.</p>
  *
- * <p><strong>Instantiating an asynchronous {@link ContainerRegistryAsyncClient}</strong></p>
+ * <p><strong>Instantiating an asynchronous Container Registry client using a custom pipeline</strong></p>
+ * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryAsyncClient.pipeline.instantiation -->
+ * <pre>
+ * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
+ *     .policies&#40;&#47;* add policies *&#47;&#41;
+ *     .build&#40;&#41;;
  *
- * {@codesnippet com.azure.containers.containerregistry.async.repository.pipeline.instantiation}
+ * ContainerRegistryAsyncClient registryAsyncClient = new ContainerRegistryClientBuilder&#40;&#41;
+ *     .pipeline&#40;pipeline&#41;
+ *     .endpoint&#40;endpoint&#41;
+ *     .audience&#40;ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD&#41;
+ *     .credential&#40;credential&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.containers.containerregistry.ContainerRegistryAsyncClient.pipeline.instantiation -->
  *
- * <p><strong>Instantiating a synchronous Configuration Client</strong></p>
+ * <p><strong>Instantiating a synchronous Container Registry client with custom pipeline</strong></p>
+ * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryClient.pipeline.instantiation -->
+ * <pre>
+ * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
+ *     .policies&#40;&#47;* add policies *&#47;&#41;
+ *     .build&#40;&#41;;
  *
- * {@codesnippet com.azure.containers.containerregistry.repository.pipeline.instantiation}
+ * ContainerRegistryClient registryAsyncClient = new ContainerRegistryClientBuilder&#40;&#41;
+ *     .pipeline&#40;pipeline&#41;
+ *     .endpoint&#40;endpoint&#41;
+ *     .audience&#40;ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD&#41;
+ *     .credential&#40;credential&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.containers.containerregistry.ContainerRegistryClient.pipeline.instantiation -->
  *
  *
  * @see ContainerRegistryAsyncClient
@@ -89,6 +127,7 @@ public final class ContainerRegistryClientBuilder {
     private HttpLogOptions httpLogOptions;
     private RetryPolicy retryPolicy;
     private ContainerRegistryServiceVersion version;
+    private ContainerRegistryAudience audience;
 
     /**
      * Sets the service endpoint for the Azure Container Registry instance.
@@ -109,11 +148,23 @@ public final class ContainerRegistryClientBuilder {
     }
 
     /**
+     * Sets the audience for the Azure Container Registry service.
+     *
+     * @param audience ARM management scope associated with the given registry.
+     * @throws NullPointerException If {@code audience} is null.
+     * @return The updated {@link ContainerRegistryClientBuilder} object.
+     */
+    public ContainerRegistryClientBuilder audience(ContainerRegistryAudience audience) {
+        Objects.requireNonNull(audience, "'audience' can't be null");
+        this.audience = audience;
+        return this;
+    }
+
+    /**
      * Sets the {@link TokenCredential} used to authenticate REST API calls.
      *
      * @param credential Azure token credentials used to authenticate HTTP requests.
      * @return The updated {@link ContainerRegistryClientBuilder} object.
-     * @throws NullPointerException if credential is null.
      */
     public ContainerRegistryClientBuilder credential(TokenCredential credential) {
         this.credential = credential;
@@ -257,10 +308,13 @@ public final class ContainerRegistryClientBuilder {
      * are used to create the {@link ContainerRegistryAsyncClient client}. All other builder settings are ignored.
      *
      * @return A {@link ContainerRegistryAsyncClient} with the options set from the builder.
-     * @throws NullPointerException If {@code endpoint} has not been set. You can set it by calling {@link #endpoint(String)}.
-     * @throws NullPointerException If {@code credential} or {@code httpPipeline} has not been set.
+     * @throws NullPointerException If {@code endpoint} or {@code audience} is null.
+     * You can set the values by calling {@link #endpoint(String)} and {@link #audience(ContainerRegistryAudience)} respectively.
      */
     public ContainerRegistryAsyncClient buildAsyncClient() {
+        Objects.requireNonNull(endpoint, "'endpoint' can't be null");
+        Objects.requireNonNull(audience, "'audience' can't be null");
+
         // Service version
         ContainerRegistryServiceVersion serviceVersion = (version != null)
             ? version
@@ -283,10 +337,12 @@ public final class ContainerRegistryClientBuilder {
             this.configuration,
             this.retryPolicy,
             this.credential,
+            this.audience,
             this.perCallPolicies,
             this.perRetryPolicies,
             this.httpClient,
             this.endpoint,
+            this.version,
             this.logger);
     }
 
@@ -300,7 +356,7 @@ public final class ContainerRegistryClientBuilder {
      *
      * @return A {@link ContainerRegistryClient} with the options set from the builder.
      * @throws NullPointerException If {@code endpoint} has not been set. You can set it by calling {@link #endpoint(String)}.
-     * @throws NullPointerException If {@code credential} or {@code httpPipeline} has not been set.
+     * @throws NullPointerException If {@code audience} has not been set. You can set it by calling {@link #audience(ContainerRegistryAudience)}.
      */
     public ContainerRegistryClient buildClient() {
         return new ContainerRegistryClient(buildAsyncClient());

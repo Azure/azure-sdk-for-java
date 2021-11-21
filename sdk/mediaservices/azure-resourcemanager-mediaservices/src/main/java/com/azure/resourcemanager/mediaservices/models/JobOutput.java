@@ -35,6 +35,13 @@ public class JobOutput {
     private JobError error;
 
     /*
+     * A preset used to override the preset in the corresponding transform
+     * output.
+     */
+    @JsonProperty(value = "presetOverride")
+    private Preset presetOverride;
+
+    /*
      * Describes the state of the JobOutput.
      */
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
@@ -86,6 +93,26 @@ public class JobOutput {
      */
     public JobError error() {
         return this.error;
+    }
+
+    /**
+     * Get the presetOverride property: A preset used to override the preset in the corresponding transform output.
+     *
+     * @return the presetOverride value.
+     */
+    public Preset presetOverride() {
+        return this.presetOverride;
+    }
+
+    /**
+     * Set the presetOverride property: A preset used to override the preset in the corresponding transform output.
+     *
+     * @param presetOverride the presetOverride value to set.
+     * @return the JobOutput object itself.
+     */
+    public JobOutput withPresetOverride(Preset presetOverride) {
+        this.presetOverride = presetOverride;
+        return this;
     }
 
     /**
@@ -168,6 +195,9 @@ public class JobOutput {
     public void validate() {
         if (error() != null) {
             error().validate();
+        }
+        if (presetOverride() != null) {
+            presetOverride().validate();
         }
     }
 }

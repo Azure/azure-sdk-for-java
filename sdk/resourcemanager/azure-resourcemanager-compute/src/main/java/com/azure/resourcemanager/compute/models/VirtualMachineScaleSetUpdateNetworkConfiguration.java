@@ -5,17 +5,16 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetUpdateNetworkConfigurationProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes a virtual machine scale set network profile's network configurations. */
-@JsonFlatten
 @Fluent
-public class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResource {
+public final class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResource {
     @JsonIgnore
     private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetUpdateNetworkConfiguration.class);
 
@@ -26,47 +25,12 @@ public class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResourc
     private String name;
 
     /*
-     * Whether this is a primary NIC on a virtual machine.
+     * Describes a virtual machine scale set updatable network profile's IP
+     * configuration.Use this object for updating network profile's IP
+     * Configuration.
      */
-    @JsonProperty(value = "properties.primary")
-    private Boolean primary;
-
-    /*
-     * Specifies whether the network interface is accelerated
-     * networking-enabled.
-     */
-    @JsonProperty(value = "properties.enableAcceleratedNetworking")
-    private Boolean enableAcceleratedNetworking;
-
-    /*
-     * Specifies whether the network interface is FPGA networking-enabled.
-     */
-    @JsonProperty(value = "properties.enableFpga")
-    private Boolean enableFpga;
-
-    /*
-     * The network security group.
-     */
-    @JsonProperty(value = "properties.networkSecurityGroup")
-    private SubResource networkSecurityGroup;
-
-    /*
-     * The dns settings to be applied on the network interfaces.
-     */
-    @JsonProperty(value = "properties.dnsSettings")
-    private VirtualMachineScaleSetNetworkConfigurationDnsSettings dnsSettings;
-
-    /*
-     * The virtual machine scale set IP Configuration.
-     */
-    @JsonProperty(value = "properties.ipConfigurations")
-    private List<VirtualMachineScaleSetUpdateIpConfiguration> ipConfigurations;
-
-    /*
-     * Whether IP forwarding enabled on this NIC.
-     */
-    @JsonProperty(value = "properties.enableIPForwarding")
-    private Boolean enableIpForwarding;
+    @JsonProperty(value = "properties")
+    private VirtualMachineScaleSetUpdateNetworkConfigurationProperties innerProperties;
 
     /**
      * Get the name property: The network configuration name.
@@ -89,12 +53,29 @@ public class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResourc
     }
 
     /**
+     * Get the innerProperties property: Describes a virtual machine scale set updatable network profile's IP
+     * configuration.Use this object for updating network profile's IP Configuration.
+     *
+     * @return the innerProperties value.
+     */
+    private VirtualMachineScaleSetUpdateNetworkConfigurationProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualMachineScaleSetUpdateNetworkConfiguration withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
+    /**
      * Get the primary property: Whether this is a primary NIC on a virtual machine.
      *
      * @return the primary value.
      */
     public Boolean primary() {
-        return this.primary;
+        return this.innerProperties() == null ? null : this.innerProperties().primary();
     }
 
     /**
@@ -104,7 +85,10 @@ public class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResourc
      * @return the VirtualMachineScaleSetUpdateNetworkConfiguration object itself.
      */
     public VirtualMachineScaleSetUpdateNetworkConfiguration withPrimary(Boolean primary) {
-        this.primary = primary;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetUpdateNetworkConfigurationProperties();
+        }
+        this.innerProperties().withPrimary(primary);
         return this;
     }
 
@@ -115,7 +99,7 @@ public class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResourc
      * @return the enableAcceleratedNetworking value.
      */
     public Boolean enableAcceleratedNetworking() {
-        return this.enableAcceleratedNetworking;
+        return this.innerProperties() == null ? null : this.innerProperties().enableAcceleratedNetworking();
     }
 
     /**
@@ -127,7 +111,10 @@ public class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResourc
      */
     public VirtualMachineScaleSetUpdateNetworkConfiguration withEnableAcceleratedNetworking(
         Boolean enableAcceleratedNetworking) {
-        this.enableAcceleratedNetworking = enableAcceleratedNetworking;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetUpdateNetworkConfigurationProperties();
+        }
+        this.innerProperties().withEnableAcceleratedNetworking(enableAcceleratedNetworking);
         return this;
     }
 
@@ -137,7 +124,7 @@ public class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResourc
      * @return the enableFpga value.
      */
     public Boolean enableFpga() {
-        return this.enableFpga;
+        return this.innerProperties() == null ? null : this.innerProperties().enableFpga();
     }
 
     /**
@@ -147,7 +134,10 @@ public class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResourc
      * @return the VirtualMachineScaleSetUpdateNetworkConfiguration object itself.
      */
     public VirtualMachineScaleSetUpdateNetworkConfiguration withEnableFpga(Boolean enableFpga) {
-        this.enableFpga = enableFpga;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetUpdateNetworkConfigurationProperties();
+        }
+        this.innerProperties().withEnableFpga(enableFpga);
         return this;
     }
 
@@ -157,7 +147,7 @@ public class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResourc
      * @return the networkSecurityGroup value.
      */
     public SubResource networkSecurityGroup() {
-        return this.networkSecurityGroup;
+        return this.innerProperties() == null ? null : this.innerProperties().networkSecurityGroup();
     }
 
     /**
@@ -167,7 +157,10 @@ public class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResourc
      * @return the VirtualMachineScaleSetUpdateNetworkConfiguration object itself.
      */
     public VirtualMachineScaleSetUpdateNetworkConfiguration withNetworkSecurityGroup(SubResource networkSecurityGroup) {
-        this.networkSecurityGroup = networkSecurityGroup;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetUpdateNetworkConfigurationProperties();
+        }
+        this.innerProperties().withNetworkSecurityGroup(networkSecurityGroup);
         return this;
     }
 
@@ -177,7 +170,7 @@ public class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResourc
      * @return the dnsSettings value.
      */
     public VirtualMachineScaleSetNetworkConfigurationDnsSettings dnsSettings() {
-        return this.dnsSettings;
+        return this.innerProperties() == null ? null : this.innerProperties().dnsSettings();
     }
 
     /**
@@ -188,7 +181,10 @@ public class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResourc
      */
     public VirtualMachineScaleSetUpdateNetworkConfiguration withDnsSettings(
         VirtualMachineScaleSetNetworkConfigurationDnsSettings dnsSettings) {
-        this.dnsSettings = dnsSettings;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetUpdateNetworkConfigurationProperties();
+        }
+        this.innerProperties().withDnsSettings(dnsSettings);
         return this;
     }
 
@@ -198,7 +194,7 @@ public class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResourc
      * @return the ipConfigurations value.
      */
     public List<VirtualMachineScaleSetUpdateIpConfiguration> ipConfigurations() {
-        return this.ipConfigurations;
+        return this.innerProperties() == null ? null : this.innerProperties().ipConfigurations();
     }
 
     /**
@@ -209,7 +205,10 @@ public class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResourc
      */
     public VirtualMachineScaleSetUpdateNetworkConfiguration withIpConfigurations(
         List<VirtualMachineScaleSetUpdateIpConfiguration> ipConfigurations) {
-        this.ipConfigurations = ipConfigurations;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetUpdateNetworkConfigurationProperties();
+        }
+        this.innerProperties().withIpConfigurations(ipConfigurations);
         return this;
     }
 
@@ -219,7 +218,7 @@ public class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResourc
      * @return the enableIpForwarding value.
      */
     public Boolean enableIpForwarding() {
-        return this.enableIpForwarding;
+        return this.innerProperties() == null ? null : this.innerProperties().enableIpForwarding();
     }
 
     /**
@@ -229,14 +228,33 @@ public class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResourc
      * @return the VirtualMachineScaleSetUpdateNetworkConfiguration object itself.
      */
     public VirtualMachineScaleSetUpdateNetworkConfiguration withEnableIpForwarding(Boolean enableIpForwarding) {
-        this.enableIpForwarding = enableIpForwarding;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetUpdateNetworkConfigurationProperties();
+        }
+        this.innerProperties().withEnableIpForwarding(enableIpForwarding);
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public VirtualMachineScaleSetUpdateNetworkConfiguration withId(String id) {
-        super.withId(id);
+    /**
+     * Get the deleteOption property: Specify what happens to the network interface when the VM is deleted.
+     *
+     * @return the deleteOption value.
+     */
+    public DeleteOptions deleteOption() {
+        return this.innerProperties() == null ? null : this.innerProperties().deleteOption();
+    }
+
+    /**
+     * Set the deleteOption property: Specify what happens to the network interface when the VM is deleted.
+     *
+     * @param deleteOption the deleteOption value to set.
+     * @return the VirtualMachineScaleSetUpdateNetworkConfiguration object itself.
+     */
+    public VirtualMachineScaleSetUpdateNetworkConfiguration withDeleteOption(DeleteOptions deleteOption) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetUpdateNetworkConfigurationProperties();
+        }
+        this.innerProperties().withDeleteOption(deleteOption);
         return this;
     }
 
@@ -246,11 +264,8 @@ public class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResourc
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (dnsSettings() != null) {
-            dnsSettings().validate();
-        }
-        if (ipConfigurations() != null) {
-            ipConfigurations().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

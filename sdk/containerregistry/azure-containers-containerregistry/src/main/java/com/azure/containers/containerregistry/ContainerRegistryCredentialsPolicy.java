@@ -6,9 +6,9 @@ package com.azure.containers.containerregistry;
 import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryTokenRequestContext;
 import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryTokenService;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.experimental.http.policy.BearerTokenAuthenticationChallengePolicy;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
@@ -36,7 +36,7 @@ import java.util.regex.Pattern;
  * <p>Step5: GET /api/v1/acr/repositories
  * Request Header: {Bearer acrTokenAccess}</p>
  */
-final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthenticationChallengePolicy {
+final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthenticationPolicy {
 
     private static final String BEARER = "Bearer";
     public static final Pattern AUTHENTICATION_CHALLENGE_PARAMS_PATTERN =
@@ -60,6 +60,17 @@ final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthentication
     }
 
     /**
+     * Executed before sending the initial request and authenticates the request.
+     *
+     * @param context The request context.
+     * @return A {@link Mono} containing {@link Void}
+     */
+    @Override
+    public Mono<Void> authorizeRequest(HttpPipelineCallContext context) {
+        return Mono.empty();
+    }
+
+    /**
      * Authorizes the request with the bearer token acquired using the specified {@code tokenRequestContext}
      *
      * @param context the HTTP pipeline context.
@@ -67,7 +78,7 @@ final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthentication
      * @return a {@link Mono} containing {@link Void}
      */
     @Override
-    public Mono<Void> authorizeRequest(HttpPipelineCallContext context, TokenRequestContext tokenRequestContext) {
+    public Mono<Void> setAuthorizationHeader(HttpPipelineCallContext context, TokenRequestContext tokenRequestContext) {
         return tokenService.getToken(tokenRequestContext)
             .flatMap((token) -> {
                 context.getHttpRequest().getHeaders().set(AUTHORIZATION, BEARER + " " + token.getToken());
@@ -85,7 +96,7 @@ final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthentication
      * @return A {@link Mono} containing {@link Boolean}
      */
     @Override
-    public Mono<Boolean> onChallenge(HttpPipelineCallContext context, HttpResponse response) {
+    public Mono<Boolean> authorizeRequestOnChallenge(HttpPipelineCallContext context, HttpResponse response) {
         return Mono.defer(() -> {
             String authHeader = response.getHeaderValue(WWW_AUTHENTICATE);
             if (!(response.getStatusCode() == 401 && authHeader != null)) {
@@ -95,7 +106,7 @@ final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthentication
                 if (extractedChallengeParams != null && extractedChallengeParams.containsKey(SCOPES_PARAMETER)) {
                     String scope = extractedChallengeParams.get(SCOPES_PARAMETER);
                     String serviceName = extractedChallengeParams.get(SERVICE_PARAMETER);
-                    return authorizeRequest(context, new ContainerRegistryTokenRequestContext(serviceName, scope))
+                    return setAuthorizationHeader(context, new ContainerRegistryTokenRequestContext(serviceName, scope))
                         .then(Mono.defer(() -> Mono.just(true)));
                 }
 

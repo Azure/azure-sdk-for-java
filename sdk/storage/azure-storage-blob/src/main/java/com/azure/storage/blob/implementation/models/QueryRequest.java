@@ -8,18 +8,19 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/** the quick query body. */
+/** Groups the set of query request settings. */
 @JacksonXmlRootElement(localName = "QueryRequest")
 @Fluent
 public final class QueryRequest {
     /*
-     * the query type
+     * Required. The type of the provided query expression.
      */
     @JsonProperty(value = "QueryType", required = true)
     private String queryType;
 
     /*
-     * a query statement
+     * The query expression in SQL. The maximum size of the query expression is
+     * 256KiB.
      */
     @JsonProperty(value = "Expression", required = true)
     private String expression;
@@ -42,7 +43,7 @@ public final class QueryRequest {
     }
 
     /**
-     * Get the queryType property: the query type.
+     * Get the queryType property: Required. The type of the provided query expression.
      *
      * @return the queryType value.
      */
@@ -51,7 +52,7 @@ public final class QueryRequest {
     }
 
     /**
-     * Set the queryType property: the query type.
+     * Set the queryType property: Required. The type of the provided query expression.
      *
      * @param queryType the queryType value to set.
      * @return the QueryRequest object itself.
@@ -62,7 +63,7 @@ public final class QueryRequest {
     }
 
     /**
-     * Get the expression property: a query statement.
+     * Get the expression property: The query expression in SQL. The maximum size of the query expression is 256KiB.
      *
      * @return the expression value.
      */
@@ -71,7 +72,7 @@ public final class QueryRequest {
     }
 
     /**
-     * Set the expression property: a query statement.
+     * Set the expression property: The query expression in SQL. The maximum size of the query expression is 256KiB.
      *
      * @param expression the expression value to set.
      * @return the QueryRequest object itself.

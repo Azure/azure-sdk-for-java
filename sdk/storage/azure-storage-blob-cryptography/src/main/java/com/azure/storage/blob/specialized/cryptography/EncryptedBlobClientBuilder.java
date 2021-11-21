@@ -32,6 +32,7 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.util.BlobUserAgentModificationPolicy;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.models.CpkInfo;
@@ -124,6 +125,7 @@ public final class EncryptedBlobClientBuilder {
     private String keyWrapAlgorithm;
     private BlobServiceVersion version;
     private CpkInfo customerProvidedKey;
+    private EncryptionScope encryptionScope;
 
     /**
      * Creates a new instance of the EncryptedBlobClientBuilder
@@ -137,7 +139,15 @@ public final class EncryptedBlobClientBuilder {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlobAsyncClient}
+     * <!-- src_embed com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlobAsyncClient -->
+     * <pre>
+     * EncryptedBlobAsyncClient client = new EncryptedBlobClientBuilder&#40;&#41;
+     *     .key&#40;key, keyWrapAlgorithm&#41;
+     *     .keyResolver&#40;keyResolver&#41;
+     *     .connectionString&#40;connectionString&#41;
+     *     .buildEncryptedBlobAsyncClient&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlobAsyncClient -->
      *
      * @return a {@link EncryptedBlobClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
@@ -152,7 +162,15 @@ public final class EncryptedBlobClientBuilder {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlobClient}
+     * <!-- src_embed com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlobClient -->
+     * <pre>
+     * EncryptedBlobClient client = new EncryptedBlobClientBuilder&#40;&#41;
+     *     .key&#40;key, keyWrapAlgorithm&#41;
+     *     .keyResolver&#40;keyResolver&#41;
+     *     .connectionString&#40;connectionString&#41;
+     *     .buildEncryptedBlobClient&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlobClient -->
      *
      * @return a {@link EncryptedBlobAsyncClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
@@ -172,8 +190,8 @@ public final class EncryptedBlobClientBuilder {
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
         return new EncryptedBlobAsyncClient(addBlobUserAgentModificationPolicy(getHttpPipeline()), endpoint,
-            serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey, keyWrapper,
-            keyWrapAlgorithm, versionId);
+            serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope,
+            keyWrapper, keyWrapAlgorithm, versionId);
     }
 
 
@@ -346,7 +364,8 @@ public final class EncryptedBlobClientBuilder {
     /**
      * Sets the SAS token used to authorize requests sent to the service.
      *
-     * @param sasToken The SAS token to use for authenticating requests.
+     * @param sasToken The SAS token to use for authenticating requests. This string should only be the query parameters
+     * (with or without a leading '?') and not a full url.
      * @return the updated EncryptedBlobClientBuilder
      * @throws NullPointerException If {@code sasToken} is {@code null}.
      */
@@ -548,7 +567,7 @@ public final class EncryptedBlobClientBuilder {
     }
 
     /**
-     * Gets the default Storage whitelist log headers and query parameters.
+     * Gets the default Storage allowlist log headers and query parameters.
      *
      * @return the default http log options.
      */
@@ -641,6 +660,22 @@ public final class EncryptedBlobClientBuilder {
                 .setEncryptionKey(customerProvidedKey.getKey())
                 .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
                 .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
+        }
+
+        return this;
+    }
+
+    /**
+     * Sets the {@code encryption scope} that is used to encrypt blob contents on the server.
+     *
+     * @param encryptionScope Encryption scope containing the encryption key information.
+     * @return the updated EncryptedBlobClientBuilder object
+     */
+    public EncryptedBlobClientBuilder encryptionScope(String encryptionScope) {
+        if (encryptionScope == null) {
+            this.encryptionScope = null;
+        } else {
+            this.encryptionScope = new EncryptionScope().setEncryptionScope(encryptionScope);
         }
 
         return this;

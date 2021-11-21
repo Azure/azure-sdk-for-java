@@ -8,6 +8,8 @@ import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
+import com.azure.core.http.HttpResponse
+import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.util.Context
 import com.azure.core.util.FluxUtil
 import com.azure.identity.DefaultAzureCredentialBuilder
@@ -15,6 +17,7 @@ import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.BlobServiceClientBuilder
+import com.azure.storage.blob.BlobServiceVersion
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.ProgressReceiver
 import com.azure.storage.blob.models.AccessTier
@@ -38,11 +41,12 @@ import com.azure.storage.blob.sas.BlobContainerSasPermission
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.RequestRetryOptions
+import com.azure.storage.common.test.shared.extensions.LiveOnly
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
-import spock.lang.Ignore
-import spock.lang.Requires
+import spock.lang.IgnoreIf
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -62,15 +66,15 @@ class BlockBlobAPITest extends APISpec {
         blobName = generateBlobName()
         blobClient = cc.getBlobClient(blobName)
         blockBlobClient = blobClient.getBlockBlobClient()
-        blockBlobClient.upload(defaultInputStream.get(), defaultDataSize)
+        blockBlobClient.upload(data.defaultInputStream, data.defaultDataSize, true)
         blobAsyncClient = ccAsync.getBlobAsyncClient(generateBlobName())
         blockBlobAsyncClient = blobAsyncClient.getBlockBlobAsyncClient()
-        blockBlobAsyncClient.upload(defaultFlux, defaultDataSize).block()
+        blockBlobAsyncClient.upload(data.defaultFlux, data.defaultDataSize, true).block()
     }
 
     def "Stage block"() {
         setup:
-        def response = blockBlobClient.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize, null, null,
+        def response = blockBlobClient.stageBlockWithResponse(getBlockID(), data.defaultInputStream, data.defaultDataSize, null, null,
             null, null)
         def headers = response.getHeaders()
 
@@ -85,7 +89,7 @@ class BlockBlobAPITest extends APISpec {
 
     def "Stage block min"() {
         when:
-        blockBlobClient.stageBlock(getBlockID(), defaultInputStream.get(), defaultDataSize) == 201
+        blockBlobClient.stageBlock(getBlockID(), data.defaultInputStream, data.defaultDataSize) == 201
 
         then:
         blockBlobClient.listBlocks(BlockListType.ALL).getUncommittedBlocks().size() == 1
@@ -95,17 +99,17 @@ class BlockBlobAPITest extends APISpec {
     def "Stage block illegal arguments"() {
         when:
         def blockID = (getBlockId) ? getBlockID() : null
-        blockBlobClient.stageBlock(blockID, data == null ? null : data.get(), dataSize)
+        blockBlobClient.stageBlock(blockID, data == null ? null : stream, dataSize)
 
         then:
         thrown(exceptionType)
 
         where:
-        getBlockId | data               | dataSize            | exceptionType
-        false      | defaultInputStream | defaultDataSize     | BlobStorageException
-        true       | null               | defaultDataSize     | NullPointerException
-        true       | defaultInputStream | defaultDataSize + 1 | UnexpectedLengthException
-        true       | defaultInputStream | defaultDataSize - 1 | UnexpectedLengthException
+        getBlockId | stream                  | dataSize                 | exceptionType
+        false      | data.defaultInputStream | data.defaultDataSize     | BlobStorageException
+        true       | null                    | data.defaultDataSize     | NullPointerException
+        true       | data.defaultInputStream | data.defaultDataSize + 1 | UnexpectedLengthException
+        true       | data.defaultInputStream | data.defaultDataSize - 1 | UnexpectedLengthException
     }
 
     def "Stage block empty body"() {
@@ -118,16 +122,16 @@ class BlockBlobAPITest extends APISpec {
 
     def "Stage block transactionalMD5"() {
         setup:
-        byte[] md5 = MessageDigest.getInstance("MD5").digest(defaultData.array())
+        byte[] md5 = MessageDigest.getInstance("MD5").digest(data.defaultBytes)
 
         expect:
-        blockBlobClient.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize, md5, null, null, null)
+        blockBlobClient.stageBlockWithResponse(getBlockID(), data.defaultInputStream, data.defaultDataSize, md5, null, null, null)
             .statusCode == 201
     }
 
     def "Stage block transactionalMD5 fail"() {
         when:
-        blockBlobClient.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize,
+        blockBlobClient.stageBlockWithResponse(getBlockID(), data.defaultInputStream, data.defaultDataSize,
             MessageDigest.getInstance("MD5").digest("garbage".getBytes()), null, null, null)
 
         then:
@@ -148,7 +152,7 @@ class BlockBlobAPITest extends APISpec {
         def leaseID = setupBlobLeaseCondition(blockBlobClient, receivedLeaseID)
 
         expect:
-        blockBlobClient.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize, null, leaseID, null, null)
+        blockBlobClient.stageBlockWithResponse(getBlockID(), data.defaultInputStream, data.defaultDataSize, null, leaseID, null, null)
             .getStatusCode() == 201
     }
 
@@ -157,7 +161,7 @@ class BlockBlobAPITest extends APISpec {
         setupBlobLeaseCondition(blockBlobClient, receivedLeaseID)
 
         when:
-        blockBlobClient.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize, null, garbageLeaseID, null,
+        blockBlobClient.stageBlockWithResponse(getBlockID(), data.defaultInputStream, data.defaultDataSize, null, garbageLeaseID, null,
             null)
 
         then:
@@ -170,7 +174,7 @@ class BlockBlobAPITest extends APISpec {
         blockBlobClient = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
-        blockBlobClient.stageBlock("id", defaultInputStream.get(), defaultDataSize)
+        blockBlobClient.stageBlock("id", data.defaultInputStream, data.defaultDataSize)
 
         then:
         thrown(BlobStorageException)
@@ -179,7 +183,7 @@ class BlockBlobAPITest extends APISpec {
     def "Stage block retry on transient failure"() {
         setup:
         def clientWithFailure = getBlobClient(
-            primaryCredential,
+            environment.primaryAccount.credential,
             blobClient.getBlobUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         ).getBlockBlobClient()
@@ -222,7 +226,7 @@ class BlockBlobAPITest extends APISpec {
         bu2.download(outputStream)
 
         then:
-        ByteBuffer.wrap(outputStream.toByteArray()) == defaultData
+        ByteBuffer.wrap(outputStream.toByteArray()) == data.defaultData
     }
 
     def "Stage block from url min"() {
@@ -271,7 +275,7 @@ class BlockBlobAPITest extends APISpec {
 
         when:
         destURL.stageBlockFromUrlWithResponse(getBlockID(), blockBlobClient.getBlobUrl(), null,
-            MessageDigest.getInstance("MD5").digest(defaultData.array()), null, null, null, null)
+            MessageDigest.getInstance("MD5").digest(data.defaultBytes), null, null, null, null)
 
         then:
         notThrown(BlobStorageException)
@@ -332,7 +336,7 @@ class BlockBlobAPITest extends APISpec {
         def blockID = getBlockID()
 
         def sourceURL = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
-        sourceURL.upload(defaultInputStream.get(), defaultDataSize)
+        sourceURL.upload(data.defaultInputStream, data.defaultDataSize)
 
         sourceIfMatch = setupBlobMatchCondition(sourceURL, sourceIfMatch)
         def smac = new BlobRequestConditions()
@@ -360,7 +364,7 @@ class BlockBlobAPITest extends APISpec {
         def blockID = getBlockID()
 
         def sourceURL = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
-        sourceURL.upload(defaultInputStream.get(), defaultDataSize)
+        sourceURL.upload(data.defaultInputStream, data.defaultDataSize)
 
         def smac = new BlobRequestConditions()
             .setIfModifiedSince(sourceIfModifiedSince)
@@ -385,7 +389,7 @@ class BlockBlobAPITest extends APISpec {
     def "Commit block list"() {
         setup:
         def blockID = getBlockID()
-        blockBlobClient.stageBlock(blockID, defaultInputStream.get(), defaultDataSize)
+        blockBlobClient.stageBlock(blockID, data.defaultInputStream, data.defaultDataSize)
         def ids = [blockID] as List
 
         when:
@@ -403,7 +407,7 @@ class BlockBlobAPITest extends APISpec {
         setup:
         blockBlobClient = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
         def blockID = getBlockID()
-        blockBlobClient.stageBlock(blockID, defaultInputStream.get(), defaultDataSize)
+        blockBlobClient.stageBlock(blockID, data.defaultInputStream, data.defaultDataSize)
         def ids = [blockID] as List
 
         expect:
@@ -436,7 +440,7 @@ class BlockBlobAPITest extends APISpec {
     def "Commit block list headers"() {
         setup:
         def blockID = getBlockID()
-        blockBlobClient.stageBlock(blockID, defaultInputStream.get(), defaultDataSize)
+        blockBlobClient.stageBlock(blockID, data.defaultInputStream, data.defaultDataSize)
         def ids = [blockID] as List
         def headers = new BlobHttpHeaders().setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
@@ -456,9 +460,9 @@ class BlockBlobAPITest extends APISpec {
         validateBlobProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType)
 
         where:
-        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                   | contentType
-        null         | null               | null            | null            | null                                                         | null
-        "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(defaultData.array()) | "type"
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                 | contentType
+        null         | null               | null            | null            | null                                                       | null
+        "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(data.defaultBytes) | "type"
     }
 
     @Unroll
@@ -486,6 +490,7 @@ class BlockBlobAPITest extends APISpec {
         "foo" | "bar"  | "fizz" | "buzz"
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Commit block list tags"() {
         setup:
@@ -512,6 +517,7 @@ class BlockBlobAPITest extends APISpec {
         " +-./:=_  +-./:=_" | " +-./:=_" | null   | null
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Commit block list AC"() {
         setup:
@@ -542,6 +548,7 @@ class BlockBlobAPITest extends APISpec {
         null     | null       | null         | null        | null            | "\"foo\" = 'bar'"
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Commit block list AC fail"() {
         setup:
@@ -586,13 +593,13 @@ class BlockBlobAPITest extends APISpec {
     def "Get block list"() {
         setup:
         def committedBlocks = [getBlockID(), getBlockID()]
-        blockBlobClient.stageBlock(committedBlocks.get(0), defaultInputStream.get(), defaultDataSize)
-        blockBlobClient.stageBlock(committedBlocks.get(1), defaultInputStream.get(), defaultDataSize)
+        blockBlobClient.stageBlock(committedBlocks.get(0), data.defaultInputStream, data.defaultDataSize)
+        blockBlobClient.stageBlock(committedBlocks.get(1), data.defaultInputStream, data.defaultDataSize)
         blockBlobClient.commitBlockList(committedBlocks, true)
 
         def uncommittedBlocks = [getBlockID(), getBlockID()]
-        blockBlobClient.stageBlock(uncommittedBlocks.get(0), defaultInputStream.get(), defaultDataSize)
-        blockBlobClient.stageBlock(uncommittedBlocks.get(1), defaultInputStream.get(), defaultDataSize)
+        blockBlobClient.stageBlock(uncommittedBlocks.get(0), data.defaultInputStream, data.defaultDataSize)
+        blockBlobClient.stageBlock(uncommittedBlocks.get(1), data.defaultInputStream, data.defaultDataSize)
         uncommittedBlocks.sort(true)
 
         when:
@@ -603,7 +610,7 @@ class BlockBlobAPITest extends APISpec {
         blockList.getUncommittedBlocks().collect { it.getName() } as Set == uncommittedBlocks as Set
 
         (blockList.getCommittedBlocks() + blockList.getUncommittedBlocks())
-            .each { assert it.getSizeLong() == defaultDataSize }
+            .each { assert it.getSizeLong() == data.defaultDataSize }
     }
 
     def "Get block list min"() {
@@ -618,9 +625,9 @@ class BlockBlobAPITest extends APISpec {
     def "Get block list type"() {
         setup:
         def blockID = getBlockID()
-        blockBlobClient.stageBlock(blockID, defaultInputStream.get(), defaultDataSize)
+        blockBlobClient.stageBlock(blockID, data.defaultInputStream, data.defaultDataSize)
         blockBlobClient.commitBlockList([blockID], true)
-        blockBlobClient.stageBlock(getBlockID(), defaultInputStream.get(), defaultDataSize)
+        blockBlobClient.stageBlock(getBlockID(), data.defaultInputStream, data.defaultDataSize)
 
         when:
         def response = blockBlobClient.listBlocks(type)
@@ -667,6 +674,7 @@ class BlockBlobAPITest extends APISpec {
         e.getErrorCode() == BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Get block list tags"() {
         setup:
         def t = new HashMap<String, String>()
@@ -680,6 +688,7 @@ class BlockBlobAPITest extends APISpec {
         notThrown(BlobStorageException)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Get block list tags fail"() {
         when:
         blockBlobClient.listBlocksWithResponse(new BlockBlobListBlocksOptions(BlockListType.ALL).setIfTagsMatch("\"notfoo\" = 'notbar'"), null, Context.NONE)
@@ -702,14 +711,14 @@ class BlockBlobAPITest extends APISpec {
 
     def "Upload"() {
         when:
-        def response = blockBlobClient.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, null,
+        def response = blockBlobClient.uploadWithResponse(data.defaultInputStream, data.defaultDataSize, null, null, null, null, null,
             null, null)
 
         then:
         response.getStatusCode() == 201
         def outStream = new ByteArrayOutputStream()
         blockBlobClient.download(outStream)
-        outStream.toByteArray() == defaultText.getBytes(StandardCharsets.UTF_8)
+        outStream.toByteArray() == data.defaultText.getBytes(StandardCharsets.UTF_8)
         validateBasicHeaders(response.getHeaders())
         response.getHeaders().getValue("Content-MD5") != null
         Boolean.parseBoolean(response.getHeaders().getValue("x-ms-request-server-encrypted"))
@@ -718,8 +727,7 @@ class BlockBlobAPITest extends APISpec {
     /* Upload From File Tests: Need to run on liveMode only since blockBlob wil generate a `UUID.randomUUID()`
        for getBlockID that will change every time test is run
      */
-
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Upload from file"() {
         setup:
@@ -758,7 +766,7 @@ class BlockBlobAPITest extends APISpec {
         101 * Constants.MB                             | 4 * 1024 * 1024 || 0  // Size is too small to trigger stage block uploading
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Upload from file with metadata"() {
         given:
         def metadata = Collections.singletonMap("metadata", "value")
@@ -777,10 +785,11 @@ class BlockBlobAPITest extends APISpec {
         file.delete()
     }
 
-    @Requires({ liveMode() })
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
+    @LiveOnly
     def "Upload from file with tags"() {
         given:
-        def tags = Collections.singletonMap("tag", "value")
+        def tags = Collections.singletonMap(namer.getRandomName(20), namer.getRandomName(20))
         def file = getRandomFile(Constants.KB)
         def outStream = new ByteArrayOutputStream()
 
@@ -797,7 +806,7 @@ class BlockBlobAPITest extends APISpec {
         file.delete()
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Upload from file default no overwrite"() {
         when:
         def file = getRandomFile(50)
@@ -817,7 +826,7 @@ class BlockBlobAPITest extends APISpec {
         file.delete()
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Upload from file overwrite"() {
         when:
         def file = getRandomFile(50)
@@ -847,7 +856,7 @@ class BlockBlobAPITest extends APISpec {
 
         @Override
         void reportProgress(long bytesTransferred) {
-            this.reportedByteCount += bytesTransferred
+            this.reportedByteCount = bytesTransferred
         }
 
         long getReportedByteCount() {
@@ -856,8 +865,7 @@ class BlockBlobAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
-    @Ignore("Failing in live test run with unexpected reported byte count")
+    @LiveOnly
     def "Upload from file reporter"() {
         when:
         def uploadReporter = new FileUploadReporter()
@@ -877,16 +885,16 @@ class BlockBlobAPITest extends APISpec {
         file.delete()
 
         where:
-        size              | blockSize         | bufferCount | maxSingleUploadSize
-        10 * Constants.MB | 10 * Constants.MB | 8           | 10 * Constants.MB - 1 // Variable number of buffers and reports
-        20 * Constants.MB | 1 * Constants.MB  | 5           | 1 * Constants.MB - 1
-        10 * Constants.MB | 5 * Constants.MB  | 2           | 5 * Constants.MB - 1
-        10 * Constants.MB | 10 * Constants.KB | 100         | 10 * Constants.KB - 1 // Reporting with many buffers/reports
-        100               | 1 * Constants.MB  | 2           | 256 * Constants.MB // Progress on small files
+        size              | blockSize         | bufferCount
+        10 * Constants.MB | 10 * Constants.MB | 8
+        20 * Constants.MB | 1 * Constants.MB  | 5
+        10 * Constants.MB | 5 * Constants.MB  | 2
+        10 * Constants.MB | 10 * Constants.KB | 100
+        100               | 1 * Constants.MB  | 2
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Upload from file options"() {
         setup:
         def file = getRandomFile(dataSize)
@@ -913,27 +921,27 @@ class BlockBlobAPITest extends APISpec {
 
     def "Upload min"() {
         when:
-        blockBlobClient.upload(defaultInputStream.get(), defaultDataSize, true)
+        blockBlobClient.upload(data.defaultInputStream, data.defaultDataSize, true)
 
         then:
         def outStream = new ByteArrayOutputStream()
         blockBlobClient.download(outStream)
-        outStream.toByteArray() == defaultText.getBytes(StandardCharsets.UTF_8)
+        outStream.toByteArray() == data.defaultText.getBytes(StandardCharsets.UTF_8)
     }
 
     @Unroll
     def "Upload illegal argument"() {
         when:
-        blockBlobClient.upload(data, dataSize)
+        blockBlobClient.upload(stream, dataSize)
 
         then:
         thrown(exceptionType)
 
         where:
-        data                     | dataSize            | exceptionType
-        null                     | defaultDataSize     | NullPointerException
-        defaultInputStream.get() | defaultDataSize + 1 | UnexpectedLengthException
-        defaultInputStream.get() | defaultDataSize - 1 | UnexpectedLengthException
+        stream                   | dataSize                 | exceptionType
+        null                     | data.defaultDataSize     | NullPointerException
+        data.defaultInputStream | data.defaultDataSize + 1 | UnexpectedLengthException
+        data.defaultInputStream | data.defaultDataSize - 1 | UnexpectedLengthException
     }
 
     def "Upload empty body"() {
@@ -961,34 +969,34 @@ class BlockBlobAPITest extends APISpec {
             .setContentType(contentType)
 
         when:
-        blockBlobClient.uploadWithResponse(defaultInputStream.get(), defaultDataSize, headers, null, null, null, null, null, null)
+        blockBlobClient.uploadWithResponse(data.defaultInputStream, data.defaultDataSize, headers, null, null, null, null, null, null)
         def response = blockBlobClient.getPropertiesWithResponse(null, null, null)
 
         // If the value isn't set the service will automatically set it
-        contentMD5 = (contentMD5 == null) ? MessageDigest.getInstance("MD5").digest(defaultData.array()) : contentMD5
+        contentMD5 = (contentMD5 == null) ? MessageDigest.getInstance("MD5").digest(data.defaultBytes) : contentMD5
         contentType = (contentType == null) ? "application/octet-stream" : contentType
 
         then:
         validateBlobProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType)
 
         where:
-        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                   | contentType
-        null         | null               | null            | null            | null                                                         | null
-        "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(defaultData.array()) | "type"
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                        | contentType
+        null         | null               | null            | null            | null                                                              | null
+        "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(data.defaultBytes) | "type"
     }
 
     def "Upload transactionalMD5"() {
         setup:
-        byte[] md5 = MessageDigest.getInstance("MD5").digest(defaultData.array())
+        byte[] md5 = MessageDigest.getInstance("MD5").digest(data.defaultBytes)
 
         expect:
-        blockBlobClient.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, md5, null, null, null)
+        blockBlobClient.uploadWithResponse(data.defaultInputStream, data.defaultDataSize, null, null, null, md5, null, null, null)
             .statusCode == 201
     }
 
     def "Upload transactionalMD5 fail"() {
         when:
-        blockBlobClient.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize,
+        blockBlobClient.stageBlockWithResponse(getBlockID(), data.defaultInputStream, data.defaultDataSize,
             MessageDigest.getInstance("MD5").digest("garbage".getBytes()), null, null, null)
 
         then:
@@ -1008,7 +1016,7 @@ class BlockBlobAPITest extends APISpec {
         }
 
         when:
-        blockBlobClient.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, metadata, null, null, null, null, null)
+        blockBlobClient.uploadWithResponse(data.defaultInputStream, data.defaultDataSize, null, metadata, null, null, null, null, null)
         def response = blockBlobClient.getPropertiesWithResponse(null, null, null)
 
         then:
@@ -1021,6 +1029,7 @@ class BlockBlobAPITest extends APISpec {
         "foo" | "bar"  | "fizz" | "buzz"
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Upload tags"() {
         setup:
@@ -1033,7 +1042,7 @@ class BlockBlobAPITest extends APISpec {
         }
 
         when:
-        blockBlobClient.uploadWithResponse(new BlockBlobSimpleUploadOptions(defaultInputStream.get(), defaultDataSize)
+        blockBlobClient.uploadWithResponse(new BlockBlobSimpleUploadOptions(data.defaultInputStream, data.defaultDataSize)
             .setTags(tags), null, null)
         def response = blockBlobClient.getTagsWithResponse(new BlobGetTagsOptions(), null, null)
 
@@ -1048,6 +1057,7 @@ class BlockBlobAPITest extends APISpec {
         " +-./:=_  +-./:=_" | " +-./:=_" | null   | null
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Upload AC"() {
         setup:
@@ -1065,7 +1075,7 @@ class BlockBlobAPITest extends APISpec {
             .setTagsConditions(tags)
 
         expect:
-        blockBlobClient.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, bac, null, null).getStatusCode() == 201
+        blockBlobClient.uploadWithResponse(data.defaultInputStream, data.defaultDataSize, null, null, null, null, bac, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID         | tags
@@ -1078,6 +1088,7 @@ class BlockBlobAPITest extends APISpec {
         null     | null       | null         | null        | null            | "\"foo\" = 'bar'"
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Upload AC fail"() {
         setup:
@@ -1092,7 +1103,7 @@ class BlockBlobAPITest extends APISpec {
             .setTagsConditions(tags)
 
         when:
-        blockBlobClient.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, bac, null, null)
+        blockBlobClient.uploadWithResponse(data.defaultInputStream, data.defaultDataSize, null, null, null, null, bac, null, null)
 
         then:
         def e = thrown(BlobStorageException)
@@ -1114,7 +1125,7 @@ class BlockBlobAPITest extends APISpec {
         blockBlobClient = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
-        blockBlobClient.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null,
+        blockBlobClient.uploadWithResponse(data.defaultInputStream, data.defaultDataSize, null, null, null, null,
             new BlobRequestConditions().setLeaseId("id"), null, null)
 
         then:
@@ -1126,7 +1137,7 @@ class BlockBlobAPITest extends APISpec {
         def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
-        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, AccessTier.COOL, null, null, null,
+        bc.uploadWithResponse(data.defaultInputStream, data.defaultDataSize, null, null, AccessTier.COOL, null, null, null,
             null)
 
         then:
@@ -1135,7 +1146,7 @@ class BlockBlobAPITest extends APISpec {
 
     def "Upload overwrite false"() {
         when:
-        blockBlobClient.upload(defaultInputStream.get(), defaultDataSize)
+        blockBlobClient.upload(data.defaultInputStream, data.defaultDataSize)
 
         then:
         thrown(BlobStorageException)
@@ -1143,7 +1154,7 @@ class BlockBlobAPITest extends APISpec {
 
     def "Upload overwrite true"() {
         when:
-        blockBlobClient.upload(defaultInputStream.get(), defaultDataSize, true)
+        blockBlobClient.upload(data.defaultInputStream, data.defaultDataSize, true)
 
         then:
         notThrown(Throwable)
@@ -1152,7 +1163,7 @@ class BlockBlobAPITest extends APISpec {
     def "Upload retry on transient failure"() {
         setup:
         def clientWithFailure = getBlobClient(
-            primaryCredential,
+            environment.primaryAccount.credential,
             blobClient.getBlobUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         ).getBlockBlobClient()
@@ -1167,7 +1178,7 @@ class BlockBlobAPITest extends APISpec {
         os.toByteArray() == data
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Async buffered upload empty"() {
 
         expect:
@@ -1181,7 +1192,7 @@ class BlockBlobAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Async buffered upload empty buffers"() {
         expect:
         StepVerifier.create(blobAsyncClient.upload(Flux.fromIterable([buffer1, buffer2, buffer3]), null, true))
@@ -1202,22 +1213,22 @@ class BlockBlobAPITest extends APISpec {
 
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
-    @Requires({ liveMode() })
-    def "Async buffered upload"() {
-        setup:
-        def blobAsyncClient = getPrimaryServiceClientForWrites(bufferSize)
-            .getBlobContainerAsyncClient(blobAsyncClient.getContainerName())
-            .getBlobAsyncClient(blobAsyncClient.getBlobName())
+    @LiveOnly
+        def "Async buffered upload"() {
+            setup:
+            def blobAsyncClient = getPrimaryServiceClientForWrites(bufferSize)
+                .getBlobContainerAsyncClient(blobAsyncClient.getContainerName())
+                .getBlobAsyncClient(blobAsyncClient.getBlobName())
 
-        when:
-        def data = getRandomData(dataSize)
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(bufferSize).setMaxConcurrency(numBuffs).setMaxSingleUploadSizeLong(4 * Constants.MB)
-        blobAsyncClient.upload(Flux.just(data), parallelTransferOptions, true).block()
-        data.position(0)
+            when:
+            def data = getRandomData(dataSize)
+            ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(bufferSize).setMaxConcurrency(numBuffs).setMaxSingleUploadSizeLong(4 * Constants.MB)
+            blobAsyncClient.upload(Flux.just(data), parallelTransferOptions, true).block()
+            data.position(0)
 
-        then:
-        // Due to memory issues, this check only runs on small to medium sized data sets.
-        if (dataSize < 100 * 1024 * 1024) {
+            then:
+            // Due to memory issues, this check only runs on small to medium sized data sets.
+            if (dataSize < 100 * 1024 * 1024) {
             StepVerifier.create(collectBytesInBuffer(blockBlobAsyncClient.download()))
                 .assertNext({ assert it == data })
                 .verifyComplete()
@@ -1241,16 +1252,16 @@ class BlockBlobAPITest extends APISpec {
 
     def "Async upload binary data"() {
         when:
-        blobAsyncClient.upload(defaultBinaryData, true).block()
+        blobAsyncClient.upload(data.defaultBinaryData, true).block()
 
         then:
         StepVerifier.create(blockBlobAsyncClient.downloadContent())
-                .assertNext({ assert it.toBytes() == defaultBinaryData.toBytes() })
+                .assertNext({ assert it.toBytes() == data.defaultBinaryData.toBytes() })
                 .verifyComplete()
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Async buffered upload computeMd5"() {
         setup:
         def byteBufferList = []
@@ -1274,7 +1285,7 @@ class BlockBlobAPITest extends APISpec {
 
     def "Async upload binary data with response"() {
         expect:
-        blobAsyncClient.uploadWithResponse(new BlobParallelUploadOptions(defaultBinaryData)).block().getStatusCode() == 201
+        blobAsyncClient.uploadWithResponse(new BlobParallelUploadOptions(data.defaultBinaryData)).block().getStatusCode() == 201
     }
 
     def compareListToBuffer(List<ByteBuffer> buffers, ByteBuffer result) {
@@ -1314,7 +1325,7 @@ class BlockBlobAPITest extends APISpec {
 
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload with reporter"() {
         setup:
         def blobAsyncClient = getPrimaryServiceClientForWrites(blockSize)
@@ -1350,7 +1361,7 @@ class BlockBlobAPITest extends APISpec {
 
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload chunked source"() {
         /*
         This test should validate that the upload should work regardless of what format the passed data is in because
@@ -1384,7 +1395,7 @@ class BlockBlobAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload handle pathing"() {
         setup:
         def dataList = [] as List<ByteBuffer>
@@ -1410,7 +1421,7 @@ class BlockBlobAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload handle pathing hot flux"() {
         setup:
         def dataList = [] as List<ByteBuffer>
@@ -1436,11 +1447,11 @@ class BlockBlobAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload handle pathing hot flux with transient failure"() {
         setup:
         def clientWithFailure = getBlobAsyncClient(
-            primaryCredential,
+            environment.primaryAccount.credential,
             blobAsyncClient.getBlobUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         )
@@ -1468,7 +1479,7 @@ class BlockBlobAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload sync handle pathing with transient failure"() {
         /*
         This test ensures that although we no longer mark and reset the source stream for buffered upload, it still
@@ -1476,7 +1487,7 @@ class BlockBlobAPITest extends APISpec {
          */
         setup:
         def clientWithFailure = getBlobClient(
-            primaryCredential,
+            environment.primaryAccount.credential,
             blobClient.getBlobUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         )
@@ -1524,12 +1535,12 @@ class BlockBlobAPITest extends APISpec {
 
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload headers"() {
         when:
-        def data = getRandomByteArray(dataSize)
-        def contentMD5 = validateContentMD5 ? MessageDigest.getInstance("MD5").digest(data) : null
-        def uploadOperation = blobAsyncClient.uploadWithResponse(Flux.just(ByteBuffer.wrap(data)), new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * Constants.MB), new BlobHttpHeaders()
+        def bytes = getRandomByteArray(dataSize)
+        def contentMD5 = validateContentMD5 ? MessageDigest.getInstance("MD5").digest(bytes) : null
+        def uploadOperation = blobAsyncClient.uploadWithResponse(Flux.just(ByteBuffer.wrap(bytes)), new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * Constants.MB), new BlobHttpHeaders()
             .setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)
@@ -1549,16 +1560,16 @@ class BlockBlobAPITest extends APISpec {
         where:
         // Depending on the size of the stream either Put Blob or Put Block List will be used.
         // Put Blob will implicitly calculate the MD5 whereas Put Block List won't.
-        dataSize         | cacheControl | contentDisposition | contentEncoding | contentLanguage | validateContentMD5 | contentType
-        defaultDataSize  | null         | null               | null            | null            | true               | null
-        defaultDataSize  | "control"    | "disposition"      | "encoding"      | "language"      | true               | "type"
-        6 * Constants.MB | null         | null               | null            | null            | false              | null
-        6 * Constants.MB | "control"    | "disposition"      | "encoding"      | "language"      | true               | "type"
+        dataSize              | cacheControl | contentDisposition | contentEncoding | contentLanguage | validateContentMD5 | contentType
+        data.defaultDataSize  | null         | null               | null            | null            | true               | null
+        data.defaultDataSize  | "control"    | "disposition"      | "encoding"      | "language"      | true               | "type"
+        6 * Constants.MB      | null         | null               | null            | null            | false              | null
+        6 * Constants.MB      | "control"    | "disposition"      | "encoding"      | "language"      | true               | "type"
     }
 
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload metadata"() {
         setup:
         def metadata = [:] as Map<String, String>
@@ -1588,8 +1599,9 @@ class BlockBlobAPITest extends APISpec {
     }
 
     // Only run these tests in live mode as they use variables that can't be captured.
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload tags"() {
         setup:
         def tags = new HashMap<String, String>()
@@ -1621,7 +1633,7 @@ class BlockBlobAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload options"() {
         setup:
         def data = getRandomData(dataSize)
@@ -1644,10 +1656,10 @@ class BlockBlobAPITest extends APISpec {
 
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload AC"() {
         setup:
-        blockBlobAsyncClient.upload(defaultFlux, defaultDataSize, true).block()
+        blockBlobAsyncClient.upload(data.defaultFlux, data.defaultDataSize, true).block()
         match = setupBlobMatchCondition(blockBlobAsyncClient, match)
         leaseID = setupBlobLeaseCondition(blockBlobAsyncClient, leaseID)
         def requestConditions = new BlobRequestConditions()
@@ -1676,10 +1688,10 @@ class BlockBlobAPITest extends APISpec {
 
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload AC fail"() {
         setup:
-        blockBlobAsyncClient.upload(defaultFlux, defaultDataSize, true).block()
+        blockBlobAsyncClient.upload(data.defaultFlux, data.defaultDataSize, true).block()
         noneMatch = setupBlobMatchCondition(blockBlobAsyncClient, noneMatch)
         leaseID = setupBlobLeaseCondition(blockBlobAsyncClient, leaseID)
         def requestConditions = new BlobRequestConditions()
@@ -1711,10 +1723,10 @@ class BlockBlobAPITest extends APISpec {
     // UploadBufferPool used to lock when the number of failed stageblocks exceeded the maximum number of buffers
     // (discovered when a leaseId was invalid)
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "UploadBufferPool lock three or more buffers"() {
         setup:
-        blockBlobAsyncClient.upload(defaultFlux, defaultDataSize, true).block()
+        blockBlobAsyncClient.upload(data.defaultFlux, data.defaultDataSize, true).block()
         def leaseID = setupBlobLeaseCondition(blockBlobAsyncClient, garbageLeaseID)
         def requestConditions = new BlobRequestConditions().setLeaseId(leaseID)
 
@@ -1769,30 +1781,33 @@ class BlockBlobAPITest extends APISpec {
     notThrown(IllegalArgumentException)
 }*/
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload network error"() {
         setup:
         /*
          This test uses a Flowable that does not allow multiple subscriptions and therefore ensures that we are
          buffering properly to allow for retries even given this source behavior.
          */
-        blockBlobAsyncClient.upload(Flux.just(defaultData), defaultDataSize, true).block()
+        blockBlobAsyncClient.upload(Flux.just(data.defaultData), data.defaultDataSize, true).block()
 
         // Mock a response that will always be retried.
         def mockHttpResponse = getStubResponse(500, new HttpRequest(HttpMethod.PUT, new URL("https://www.fake.com")))
 
         // Mock a policy that will always then check that the data is still the same and return a retryable error.
-        def mockPolicy = { HttpPipelineCallContext context, HttpPipelineNextPolicy next ->
-            return collectBytesInBuffer(context.getHttpRequest().getBody())
-                .map({ it == defaultData })
-                .flatMap({ it ? Mono.just(mockHttpResponse) : Mono.error(new IllegalArgumentException()) })
+        def localData = data.defaultData
+        def mockPolicy = new HttpPipelinePolicy() {
+            @Override
+            Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+                return collectBytesInBuffer(context.getHttpRequest().getBody())
+                    .map({ it == localData })
+                    .flatMap({ it ? Mono.just(mockHttpResponse) : Mono.error(new IllegalArgumentException()) }) as Mono<HttpResponse>
+            }
         }
 
         // Build the pipeline
         blobAsyncClient = new BlobServiceClientBuilder()
-            .credential(primaryCredential)
-            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
-            .httpClient(getHttpClient())
+            .credential(environment.primaryAccount.credential)
+            .endpoint(environment.primaryAccount.blobEndpoint)
             .retryOptions(new RequestRetryOptions(null, 3, null, 500, 1500, null))
             .addPolicy(mockPolicy).buildAsyncClient()
             .getBlobContainerAsyncClient(generateContainerName()).getBlobAsyncClient(generateBlobName())
@@ -1811,20 +1826,20 @@ class BlockBlobAPITest extends APISpec {
             })
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload default no overwrite"() {
         expect:
-        StepVerifier.create(blobAsyncClient.upload(defaultFlux, null))
+        StepVerifier.create(blobAsyncClient.upload(data.defaultFlux, null))
             .verifyError(IllegalArgumentException)
     }
 
     def "Upload binary data no overwrite"() {
         expect:
-        StepVerifier.create(blobAsyncClient.upload(defaultBinaryData))
+        StepVerifier.create(blobAsyncClient.upload(data.defaultBinaryData))
             .verifyError(IllegalArgumentException)
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload no overwrite interrupted"() {
         setup:
         def smallFile = getRandomFile(50)
@@ -1847,7 +1862,7 @@ class BlockBlobAPITest extends APISpec {
         smallFile.delete()
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload overwrite"() {
         when:
         def file = getRandomFile(50)
@@ -1935,10 +1950,11 @@ class BlockBlobAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
+    @IgnoreIf( { getEnvironment().serviceVersion != null } )
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
         setup:
-        def specialBlob = getSpecializedBuilder(primaryCredential, blockBlobClient.getBlobUrl(), getPerCallVersionPolicy())
+        def specialBlob = getSpecializedBuilder(environment.primaryAccount.credential, blockBlobClient.getBlobUrl(), getPerCallVersionPolicy())
             .buildBlockBlobClient()
 
         when:
@@ -1949,10 +1965,11 @@ class BlockBlobAPITest extends APISpec {
         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_04_08")
     def "Upload from Url min"() {
         setup:
         def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
-        sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
+        sourceBlob.upload(data.defaultInputStream, data.defaultDataSize)
         def sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)))
         if (blockBlobClient.exists()) {
@@ -1969,13 +1986,14 @@ class BlockBlobAPITest extends APISpec {
         blockBlobItem != null
         blockBlobItem.ETag != null
         blockBlobItem.lastModified != null
-        os.toByteArray() == defaultData.array()
+        os.toByteArray() == data.defaultBytes
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_04_08")
     def "Upload from Url overwrite"() {
         setup:
         def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
-        sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
+        sourceBlob.upload(data.defaultInputStream, data.defaultDataSize)
         def sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)))
         blockBlobClient.upload(new ByteArrayInputStream(), 0, true)
@@ -1990,13 +2008,14 @@ class BlockBlobAPITest extends APISpec {
         blockBlobItem != null
         blockBlobItem.ETag != null
         blockBlobItem.lastModified != null
-        os.toByteArray() == defaultData.array()
+        os.toByteArray() == data.defaultBytes
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_04_08")
     def "Upload from Url overwrite fails on existing blob"() {
         setup:
         def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
-        sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
+        sourceBlob.upload(data.defaultInputStream, data.defaultDataSize)
         def sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)))
         blockBlobClient.upload(new ByteArrayInputStream(), 0, true)
@@ -2016,12 +2035,13 @@ class BlockBlobAPITest extends APISpec {
         e.getErrorCode() == BlobErrorCode.BLOB_ALREADY_EXISTS
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_04_08")
     def "Upload from Url max"() {
         setup:
         def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
-        sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
+        sourceBlob.upload(data.defaultInputStream, data.defaultDataSize)
         sourceBlob.setHttpHeaders(new BlobHttpHeaders().setContentLanguage("en-GB"))
-        byte[] sourceBlobMD5 = MessageDigest.getInstance("MD5").digest(defaultData.array())
+        byte[] sourceBlobMD5 = MessageDigest.getInstance("MD5").digest(data.defaultBytes)
         def sourceProperties = sourceBlob.getProperties()
         def sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)))
@@ -2050,16 +2070,17 @@ class BlockBlobAPITest extends APISpec {
         blockBlobItem != null
         blockBlobItem.ETag != null
         blockBlobItem.lastModified != null
-        os.toByteArray() == defaultData.array()
+        os.toByteArray() == data.defaultBytes
         destinationProperties.getContentLanguage() == "en-GB"
         destinationProperties.getContentType() == "text"
         destinationProperties.getAccessTier() == AccessTier.COOL
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_04_08")
     def "Upload from with invalid source MD5"() {
         setup:
         def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
-        sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
+        sourceBlob.upload(data.defaultInputStream, data.defaultDataSize)
         byte[] sourceBlobMD5 = MessageDigest.getInstance("MD5").digest("garbage".getBytes(StandardCharsets.UTF_8))
         def sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)))
@@ -2075,11 +2096,12 @@ class BlockBlobAPITest extends APISpec {
         e.getErrorCode() == BlobErrorCode.MD5MISMATCH
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_04_08")
     @Unroll
     def "Upload from Url source request conditions"() {
         setup:
         def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
-        sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
+        sourceBlob.upload(data.defaultInputStream, data.defaultDataSize)
         def sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)))
         blockBlobClient.upload(new ByteArrayInputStream(), 0, true)
@@ -2099,11 +2121,12 @@ class BlockBlobAPITest extends APISpec {
         new BlobRequestConditions().setIfUnmodifiedSince(OffsetDateTime.now().minusDays(1))  | BlobErrorCode.CANNOT_VERIFY_COPY_SOURCE
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_04_08")
     @Unroll
     def "Upload from Url destination request conditions"() {
         setup:
         def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
-        sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
+        sourceBlob.upload(data.defaultInputStream, data.defaultDataSize)
         def sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)))
         blockBlobClient.upload(new ByteArrayInputStream(), 0, true)

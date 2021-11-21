@@ -38,6 +38,7 @@ import com.azure.resourcemanager.storage.models.StorageAccountCreateParameters;
 import com.azure.resourcemanager.storage.models.StorageAccountEncryptionKeySource;
 import com.azure.resourcemanager.storage.models.StorageAccountEncryptionStatus;
 import com.azure.resourcemanager.storage.models.StorageAccountKey;
+import com.azure.resourcemanager.storage.models.StorageAccountRegenerateKeyParameters;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import com.azure.resourcemanager.storage.models.StorageAccountUpdateParameters;
 import com.azure.resourcemanager.storage.models.StorageService;
@@ -128,6 +129,11 @@ class StorageAccountImpl
     @Override
     public Map<StorageService, StorageAccountEncryptionStatus> encryptionStatuses() {
         return StorageEncryptionHelper.encryptionStatuses(this.innerModel());
+    }
+
+    @Override
+    public boolean infrastructureEncryptionEnabled() {
+        return this.encryptionHelper.infrastructureEncryptionEnabled();
     }
 
     @Override
@@ -260,7 +266,8 @@ class StorageAccountImpl
             .manager()
             .serviceClient()
             .getStorageAccounts()
-            .regenerateKeyAsync(this.resourceGroupName(), this.name(), keyName)
+            .regenerateKeyAsync(this.resourceGroupName(), this.name(),
+                new StorageAccountRegenerateKeyParameters().withKeyName(keyName))
             .map(storageAccountListKeysResultInner -> storageAccountListKeysResultInner.keys());
     }
 
@@ -300,10 +307,10 @@ class StorageAccountImpl
     public Mono<Void> approvePrivateEndpointConnectionAsync(String privateEndpointConnectionName) {
         return this.manager().serviceClient().getPrivateEndpointConnections()
             .putWithResponseAsync(this.resourceGroupName(), this.name(), privateEndpointConnectionName,
-                null,
-                new com.azure.resourcemanager.storage.models.PrivateLinkServiceConnectionState()
-                    .withStatus(
-                        com.azure.resourcemanager.storage.models.PrivateEndpointServiceConnectionStatus.APPROVED))
+                new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(
+                    new PrivateLinkServiceConnectionState()
+                        .withStatus(
+                            PrivateEndpointServiceConnectionStatus.APPROVED)))
             .then();
     }
 
@@ -316,10 +323,10 @@ class StorageAccountImpl
     public Mono<Void> rejectPrivateEndpointConnectionAsync(String privateEndpointConnectionName) {
         return this.manager().serviceClient().getPrivateEndpointConnections()
             .putWithResponseAsync(this.resourceGroupName(), this.name(), privateEndpointConnectionName,
-                null,
-                new PrivateLinkServiceConnectionState()
-                    .withStatus(
-                        PrivateEndpointServiceConnectionStatus.REJECTED))
+                new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(
+                    new PrivateLinkServiceConnectionState()
+                        .withStatus(
+                            PrivateEndpointServiceConnectionStatus.REJECTED)))
             .then();
     }
 
@@ -381,6 +388,12 @@ class StorageAccountImpl
     }
 
     @Override
+    public StorageAccountImpl withInfrastructureEncryption() {
+        this.encryptionHelper.withInfrastructureEncryption();
+        return this;
+    }
+
+    @Override
     public StorageAccountImpl withBlobEncryption() {
         this.encryptionHelper.withBlobEncryption();
         return this;
@@ -407,6 +420,18 @@ class StorageAccountImpl
     @Override
     public StorageAccountImpl withoutFileEncryption() {
         this.encryptionHelper.withoutFileEncryption();
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl withTableAccountScopedEncryptionKey() {
+        this.encryptionHelper.withTableEncryption();
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl withQueueAccountScopedEncryptionKey() {
+        this.encryptionHelper.withQueueEncryption();
         return this;
     }
 

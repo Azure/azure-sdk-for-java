@@ -45,7 +45,7 @@ public interface NetAppResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information regarding availability of a resource.
      */
-    CheckAvailabilityResponse checkFilePathAvailability(String location, ResourceNameAvailabilityRequest body);
+    CheckAvailabilityResponse checkFilePathAvailability(String location, FilePathAvailabilityRequest body);
 
     /**
      * Check if a file path is available.
@@ -59,7 +59,7 @@ public interface NetAppResources {
      * @return information regarding availability of a resource.
      */
     Response<CheckAvailabilityResponse> checkFilePathAvailabilityWithResponse(
-        String location, ResourceNameAvailabilityRequest body, Context context);
+        String location, FilePathAvailabilityRequest body, Context context);
 
     /**
      * Check if a quota is available.

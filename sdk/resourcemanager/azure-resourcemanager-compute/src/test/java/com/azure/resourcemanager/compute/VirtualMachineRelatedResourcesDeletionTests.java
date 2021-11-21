@@ -147,7 +147,7 @@ public class VirtualMachineRelatedResourcesDeletionTests extends ComputeManageme
                     .withNewPrimaryNetworkInterface(nicDefinition)
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername(userName)
-                    .withRootPassword("Abcdef.123456!")
+                    .withSsh(sshPublicKey())
                     .withNewStorageAccount(storageAccountDefinition)
                     .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     .withNewAvailabilitySet(availabilitySetDefinition);

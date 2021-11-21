@@ -5,11 +5,11 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.models.DomainProvisioningState;
+import com.azure.resourcemanager.eventgrid.models.IdentityInfo;
 import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
 import com.azure.resourcemanager.eventgrid.models.InputSchema;
 import com.azure.resourcemanager.eventgrid.models.InputSchemaMapping;
@@ -20,10 +20,15 @@ import java.util.List;
 import java.util.Map;
 
 /** EventGrid Domain. */
-@JsonFlatten
 @Fluent
-public class DomainInner extends Resource {
+public final class DomainInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DomainInner.class);
+
+    /*
+     * Properties of the Event Grid Domain resource.
+     */
+    @JsonProperty(value = "properties")
+    private DomainProperties innerProperties;
 
     /*
      * The system metadata relating to Domain resource.
@@ -32,59 +37,19 @@ public class DomainInner extends Resource {
     private SystemData systemData;
 
     /*
-     * List of private endpoint connections.
+     * Identity information for the Event Grid Domain resource.
      */
-    @JsonProperty(value = "properties.privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
-    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
+    @JsonProperty(value = "identity")
+    private IdentityInfo identity;
 
-    /*
-     * Provisioning state of the domain.
+    /**
+     * Get the innerProperties property: Properties of the Event Grid Domain resource.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private DomainProvisioningState provisioningState;
-
-    /*
-     * Endpoint for the domain.
-     */
-    @JsonProperty(value = "properties.endpoint", access = JsonProperty.Access.WRITE_ONLY)
-    private String endpoint;
-
-    /*
-     * This determines the format that Event Grid should expect for incoming
-     * events published to the domain.
-     */
-    @JsonProperty(value = "properties.inputSchema")
-    private InputSchema inputSchema;
-
-    /*
-     * Information about the InputSchemaMapping which specified the info about
-     * mapping event payload.
-     */
-    @JsonProperty(value = "properties.inputSchemaMapping")
-    private InputSchemaMapping inputSchemaMapping;
-
-    /*
-     * Metric resource id for the domain.
-     */
-    @JsonProperty(value = "properties.metricResourceId", access = JsonProperty.Access.WRITE_ONLY)
-    private String metricResourceId;
-
-    /*
-     * This determines if traffic is allowed over public network. By default it
-     * is enabled.
-     * You can further restrict to specific IPs by configuring <seealso
-     * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.DomainProperties.InboundIpRules"
-     * />
-     */
-    @JsonProperty(value = "properties.publicNetworkAccess")
-    private PublicNetworkAccess publicNetworkAccess;
-
-    /*
-     * This can be used to restrict traffic from specific IPs instead of all
-     * IPs. Note: These are considered only if PublicNetworkAccess is enabled.
-     */
-    @JsonProperty(value = "properties.inboundIpRules")
-    private List<InboundIpRule> inboundIpRules;
+    private DomainProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the systemData property: The system metadata relating to Domain resource.
@@ -96,128 +61,22 @@ public class DomainInner extends Resource {
     }
 
     /**
-     * Get the privateEndpointConnections property: List of private endpoint connections.
+     * Get the identity property: Identity information for the Event Grid Domain resource.
      *
-     * @return the privateEndpointConnections value.
+     * @return the identity value.
      */
-    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
-        return this.privateEndpointConnections;
+    public IdentityInfo identity() {
+        return this.identity;
     }
 
     /**
-     * Get the provisioningState property: Provisioning state of the domain.
+     * Set the identity property: Identity information for the Event Grid Domain resource.
      *
-     * @return the provisioningState value.
-     */
-    public DomainProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the endpoint property: Endpoint for the domain.
-     *
-     * @return the endpoint value.
-     */
-    public String endpoint() {
-        return this.endpoint;
-    }
-
-    /**
-     * Get the inputSchema property: This determines the format that Event Grid should expect for incoming events
-     * published to the domain.
-     *
-     * @return the inputSchema value.
-     */
-    public InputSchema inputSchema() {
-        return this.inputSchema;
-    }
-
-    /**
-     * Set the inputSchema property: This determines the format that Event Grid should expect for incoming events
-     * published to the domain.
-     *
-     * @param inputSchema the inputSchema value to set.
+     * @param identity the identity value to set.
      * @return the DomainInner object itself.
      */
-    public DomainInner withInputSchema(InputSchema inputSchema) {
-        this.inputSchema = inputSchema;
-        return this;
-    }
-
-    /**
-     * Get the inputSchemaMapping property: Information about the InputSchemaMapping which specified the info about
-     * mapping event payload.
-     *
-     * @return the inputSchemaMapping value.
-     */
-    public InputSchemaMapping inputSchemaMapping() {
-        return this.inputSchemaMapping;
-    }
-
-    /**
-     * Set the inputSchemaMapping property: Information about the InputSchemaMapping which specified the info about
-     * mapping event payload.
-     *
-     * @param inputSchemaMapping the inputSchemaMapping value to set.
-     * @return the DomainInner object itself.
-     */
-    public DomainInner withInputSchemaMapping(InputSchemaMapping inputSchemaMapping) {
-        this.inputSchemaMapping = inputSchemaMapping;
-        return this;
-    }
-
-    /**
-     * Get the metricResourceId property: Metric resource id for the domain.
-     *
-     * @return the metricResourceId value.
-     */
-    public String metricResourceId() {
-        return this.metricResourceId;
-    }
-
-    /**
-     * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
-     * enabled. You can further restrict to specific IPs by configuring &lt;seealso
-     * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.DomainProperties.InboundIpRules" /&gt;.
-     *
-     * @return the publicNetworkAccess value.
-     */
-    public PublicNetworkAccess publicNetworkAccess() {
-        return this.publicNetworkAccess;
-    }
-
-    /**
-     * Set the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
-     * enabled. You can further restrict to specific IPs by configuring &lt;seealso
-     * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.DomainProperties.InboundIpRules" /&gt;.
-     *
-     * @param publicNetworkAccess the publicNetworkAccess value to set.
-     * @return the DomainInner object itself.
-     */
-    public DomainInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
-        this.publicNetworkAccess = publicNetworkAccess;
-        return this;
-    }
-
-    /**
-     * Get the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs. Note:
-     * These are considered only if PublicNetworkAccess is enabled.
-     *
-     * @return the inboundIpRules value.
-     */
-    public List<InboundIpRule> inboundIpRules() {
-        return this.inboundIpRules;
-    }
-
-    /**
-     * Set the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs. Note:
-     * These are considered only if PublicNetworkAccess is enabled.
-     *
-     * @param inboundIpRules the inboundIpRules value to set.
-     * @return the DomainInner object itself.
-     */
-    public DomainInner withInboundIpRules(List<InboundIpRule> inboundIpRules) {
-        this.inboundIpRules = inboundIpRules;
+    public DomainInner withIdentity(IdentityInfo identity) {
+        this.identity = identity;
         return this;
     }
 
@@ -236,19 +95,259 @@ public class DomainInner extends Resource {
     }
 
     /**
+     * Get the privateEndpointConnections property: List of private endpoint connections.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the Event Grid Domain Resource.
+     *
+     * @return the provisioningState value.
+     */
+    public DomainProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the endpoint property: Endpoint for the domain.
+     *
+     * @return the endpoint value.
+     */
+    public String endpoint() {
+        return this.innerProperties() == null ? null : this.innerProperties().endpoint();
+    }
+
+    /**
+     * Get the inputSchema property: This determines the format that Event Grid should expect for incoming events
+     * published to the domain.
+     *
+     * @return the inputSchema value.
+     */
+    public InputSchema inputSchema() {
+        return this.innerProperties() == null ? null : this.innerProperties().inputSchema();
+    }
+
+    /**
+     * Set the inputSchema property: This determines the format that Event Grid should expect for incoming events
+     * published to the domain.
+     *
+     * @param inputSchema the inputSchema value to set.
+     * @return the DomainInner object itself.
+     */
+    public DomainInner withInputSchema(InputSchema inputSchema) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DomainProperties();
+        }
+        this.innerProperties().withInputSchema(inputSchema);
+        return this;
+    }
+
+    /**
+     * Get the inputSchemaMapping property: Information about the InputSchemaMapping which specified the info about
+     * mapping event payload.
+     *
+     * @return the inputSchemaMapping value.
+     */
+    public InputSchemaMapping inputSchemaMapping() {
+        return this.innerProperties() == null ? null : this.innerProperties().inputSchemaMapping();
+    }
+
+    /**
+     * Set the inputSchemaMapping property: Information about the InputSchemaMapping which specified the info about
+     * mapping event payload.
+     *
+     * @param inputSchemaMapping the inputSchemaMapping value to set.
+     * @return the DomainInner object itself.
+     */
+    public DomainInner withInputSchemaMapping(InputSchemaMapping inputSchemaMapping) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DomainProperties();
+        }
+        this.innerProperties().withInputSchemaMapping(inputSchemaMapping);
+        return this;
+    }
+
+    /**
+     * Get the metricResourceId property: Metric resource id for the domain.
+     *
+     * @return the metricResourceId value.
+     */
+    public String metricResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().metricResourceId();
+    }
+
+    /**
+     * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
+     * enabled. You can further restrict to specific IPs by configuring &lt;seealso
+     * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.DomainProperties.InboundIpRules" /&gt;.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
+     * enabled. You can further restrict to specific IPs by configuring &lt;seealso
+     * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.DomainProperties.InboundIpRules" /&gt;.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the DomainInner object itself.
+     */
+    public DomainInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DomainProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
+     * Get the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs. Note:
+     * These are considered only if PublicNetworkAccess is enabled.
+     *
+     * @return the inboundIpRules value.
+     */
+    public List<InboundIpRule> inboundIpRules() {
+        return this.innerProperties() == null ? null : this.innerProperties().inboundIpRules();
+    }
+
+    /**
+     * Set the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs. Note:
+     * These are considered only if PublicNetworkAccess is enabled.
+     *
+     * @param inboundIpRules the inboundIpRules value to set.
+     * @return the DomainInner object itself.
+     */
+    public DomainInner withInboundIpRules(List<InboundIpRule> inboundIpRules) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DomainProperties();
+        }
+        this.innerProperties().withInboundIpRules(inboundIpRules);
+        return this;
+    }
+
+    /**
+     * Get the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
+     * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
+     * the domain.
+     *
+     * @return the disableLocalAuth value.
+     */
+    public Boolean disableLocalAuth() {
+        return this.innerProperties() == null ? null : this.innerProperties().disableLocalAuth();
+    }
+
+    /**
+     * Set the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
+     * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
+     * the domain.
+     *
+     * @param disableLocalAuth the disableLocalAuth value to set.
+     * @return the DomainInner object itself.
+     */
+    public DomainInner withDisableLocalAuth(Boolean disableLocalAuth) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DomainProperties();
+        }
+        this.innerProperties().withDisableLocalAuth(disableLocalAuth);
+        return this;
+    }
+
+    /**
+     * Get the autoCreateTopicWithFirstSubscription property: This Boolean is used to specify the creation mechanism for
+     * 'all' the Event Grid Domain Topics associated with this Event Grid Domain resource. In this context, creation of
+     * domain topic can be auto-managed (when true) or self-managed (when false). The default value for this property is
+     * true. When this property is null or set to true, Event Grid is responsible of automatically creating the domain
+     * topic when the first event subscription is created at the scope of the domain topic. If this property is set to
+     * false, then creating the first event subscription will require creating a domain topic by the user. The
+     * self-management mode can be used if the user wants full control of when the domain topic is created, while
+     * auto-managed mode provides the flexibility to perform less operations and manage fewer resources by the user.
+     * Also, note that in auto-managed creation mode, user is allowed to create the domain topic on demand if needed.
+     *
+     * @return the autoCreateTopicWithFirstSubscription value.
+     */
+    public Boolean autoCreateTopicWithFirstSubscription() {
+        return this.innerProperties() == null ? null : this.innerProperties().autoCreateTopicWithFirstSubscription();
+    }
+
+    /**
+     * Set the autoCreateTopicWithFirstSubscription property: This Boolean is used to specify the creation mechanism for
+     * 'all' the Event Grid Domain Topics associated with this Event Grid Domain resource. In this context, creation of
+     * domain topic can be auto-managed (when true) or self-managed (when false). The default value for this property is
+     * true. When this property is null or set to true, Event Grid is responsible of automatically creating the domain
+     * topic when the first event subscription is created at the scope of the domain topic. If this property is set to
+     * false, then creating the first event subscription will require creating a domain topic by the user. The
+     * self-management mode can be used if the user wants full control of when the domain topic is created, while
+     * auto-managed mode provides the flexibility to perform less operations and manage fewer resources by the user.
+     * Also, note that in auto-managed creation mode, user is allowed to create the domain topic on demand if needed.
+     *
+     * @param autoCreateTopicWithFirstSubscription the autoCreateTopicWithFirstSubscription value to set.
+     * @return the DomainInner object itself.
+     */
+    public DomainInner withAutoCreateTopicWithFirstSubscription(Boolean autoCreateTopicWithFirstSubscription) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DomainProperties();
+        }
+        this.innerProperties().withAutoCreateTopicWithFirstSubscription(autoCreateTopicWithFirstSubscription);
+        return this;
+    }
+
+    /**
+     * Get the autoDeleteTopicWithLastSubscription property: This Boolean is used to specify the deletion mechanism for
+     * 'all' the Event Grid Domain Topics associated with this Event Grid Domain resource. In this context, deletion of
+     * domain topic can be auto-managed (when true) or self-managed (when false). The default value for this property is
+     * true. When this property is set to true, Event Grid is responsible of automatically deleting the domain topic
+     * when the last event subscription at the scope of the domain topic is deleted. If this property is set to false,
+     * then the user needs to manually delete the domain topic when it is no longer needed (e.g., when last event
+     * subscription is deleted and the resource needs to be cleaned up). The self-management mode can be used if the
+     * user wants full control of when the domain topic needs to be deleted, while auto-managed mode provides the
+     * flexibility to perform less operations and manage fewer resources by the user.
+     *
+     * @return the autoDeleteTopicWithLastSubscription value.
+     */
+    public Boolean autoDeleteTopicWithLastSubscription() {
+        return this.innerProperties() == null ? null : this.innerProperties().autoDeleteTopicWithLastSubscription();
+    }
+
+    /**
+     * Set the autoDeleteTopicWithLastSubscription property: This Boolean is used to specify the deletion mechanism for
+     * 'all' the Event Grid Domain Topics associated with this Event Grid Domain resource. In this context, deletion of
+     * domain topic can be auto-managed (when true) or self-managed (when false). The default value for this property is
+     * true. When this property is set to true, Event Grid is responsible of automatically deleting the domain topic
+     * when the last event subscription at the scope of the domain topic is deleted. If this property is set to false,
+     * then the user needs to manually delete the domain topic when it is no longer needed (e.g., when last event
+     * subscription is deleted and the resource needs to be cleaned up). The self-management mode can be used if the
+     * user wants full control of when the domain topic needs to be deleted, while auto-managed mode provides the
+     * flexibility to perform less operations and manage fewer resources by the user.
+     *
+     * @param autoDeleteTopicWithLastSubscription the autoDeleteTopicWithLastSubscription value to set.
+     * @return the DomainInner object itself.
+     */
+    public DomainInner withAutoDeleteTopicWithLastSubscription(Boolean autoDeleteTopicWithLastSubscription) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DomainProperties();
+        }
+        this.innerProperties().withAutoDeleteTopicWithLastSubscription(autoDeleteTopicWithLastSubscription);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (privateEndpointConnections() != null) {
-            privateEndpointConnections().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
-        if (inputSchemaMapping() != null) {
-            inputSchemaMapping().validate();
-        }
-        if (inboundIpRules() != null) {
-            inboundIpRules().forEach(e -> e.validate());
+        if (identity() != null) {
+            identity().validate();
         }
     }
 }

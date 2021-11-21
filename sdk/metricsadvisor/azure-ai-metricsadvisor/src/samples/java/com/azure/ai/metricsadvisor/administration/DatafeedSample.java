@@ -3,16 +3,16 @@
 
 package com.azure.ai.metricsadvisor.administration;
 
-import com.azure.ai.metricsadvisor.models.AzureAppInsightsDataFeedSource;
-import com.azure.ai.metricsadvisor.models.DataFeed;
-import com.azure.ai.metricsadvisor.models.DataFeedDimension;
-import com.azure.ai.metricsadvisor.models.DataFeedGranularity;
-import com.azure.ai.metricsadvisor.models.DataFeedGranularityType;
-import com.azure.ai.metricsadvisor.models.DataFeedIngestionSettings;
-import com.azure.ai.metricsadvisor.models.DataFeedMetric;
-import com.azure.ai.metricsadvisor.models.DataFeedOptions;
-import com.azure.ai.metricsadvisor.models.DataFeedSchema;
-import com.azure.ai.metricsadvisor.models.DataFeedSourceType;
+import com.azure.ai.metricsadvisor.administration.models.AzureAppInsightsDataFeedSource;
+import com.azure.ai.metricsadvisor.administration.models.DataFeed;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedDimension;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedGranularity;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedGranularityType;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionSettings;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedMetric;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedOptions;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedSchema;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 
 import java.time.OffsetDateTime;
@@ -39,12 +39,12 @@ public class DatafeedSample {
             .setSchema(
                 new DataFeedSchema(
                     Arrays.asList(
-                        new DataFeedMetric().setName("cost"),
-                        new DataFeedMetric().setName("revenue")
+                        new DataFeedMetric("cost"),
+                        new DataFeedMetric("revenue")
                     )).setDimensions(
                     Arrays.asList(
-                        new DataFeedDimension().setName("city"),
-                        new DataFeedDimension().setName("category")
+                        new DataFeedDimension("city"),
+                        new DataFeedDimension("category")
                     ))
             ).setIngestionSettings(new DataFeedIngestionSettings(OffsetDateTime.parse("2020-07-01T00:00:00Z")));
 
@@ -79,9 +79,11 @@ public class DatafeedSample {
 
         // Update the data feed.
         System.out.printf("Updating data feed: %s%n", dataFeed.getId());
-        dataFeed = advisorAdministrationClient.updateDataFeed(dataFeed
-            .setOptions(new DataFeedOptions().setAdminEmails(Collections.singletonList("admin1@admin.com"))));
-        System.out.printf("Updated data feed admin list: %s%n", dataFeed.getOptions().getAdminEmails());
+        dataFeed = advisorAdministrationClient.updateDataFeed(dataFeed.setOptions(new DataFeedOptions()
+            .setAdmins(Collections.singletonList("admin1@admin.com"))
+        ));
+        System.out.printf("Updated data feed admin list: %s%n",
+            String.join(",", dataFeed.getOptions().getAdmins()));
 
         // Delete the data feed.
         System.out.printf("Deleting data feed: %s%n", dataFeed.getId());

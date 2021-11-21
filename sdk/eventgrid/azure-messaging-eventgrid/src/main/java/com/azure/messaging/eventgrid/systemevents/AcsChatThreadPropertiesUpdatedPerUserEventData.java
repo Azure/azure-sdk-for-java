@@ -10,7 +10,7 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
- * Schema of the Data property of an EventGridEvent for an Microsoft.Communication.ChatThreadPropertiesUpdatedPerUser
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatThreadPropertiesUpdatedPerUser
  * event.
  */
 @Fluent

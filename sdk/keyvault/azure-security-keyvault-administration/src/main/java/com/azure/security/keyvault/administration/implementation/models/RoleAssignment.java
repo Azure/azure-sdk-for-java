@@ -7,7 +7,7 @@ package com.azure.security.keyvault.administration.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RoleAssignment model. */
+/** Role Assignments. */
 @Fluent
 public final class RoleAssignment {
     /*

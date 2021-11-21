@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the gallery Image Definition purchase plan. This is used by marketplace images. */
+/** Describes the gallery image definition purchase plan. This is used by marketplace images. */
 @Fluent
 public final class ImagePurchasePlan {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ImagePurchasePlan.class);

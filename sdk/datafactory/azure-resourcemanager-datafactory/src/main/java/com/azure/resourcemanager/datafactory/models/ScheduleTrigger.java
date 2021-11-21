@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.ScheduleTriggerTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -16,35 +16,23 @@ import java.util.List;
 /** Trigger that creates pipeline runs periodically, on schedule. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("ScheduleTrigger")
-@JsonFlatten
 @Fluent
-public class ScheduleTrigger extends MultiplePipelineTrigger {
+public final class ScheduleTrigger extends MultiplePipelineTrigger {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ScheduleTrigger.class);
 
     /*
-     * Recurrence schedule configuration.
+     * Schedule Trigger properties.
      */
-    @JsonProperty(value = "typeProperties.recurrence", required = true)
-    private ScheduleTriggerRecurrence recurrence;
+    @JsonProperty(value = "typeProperties", required = true)
+    private ScheduleTriggerTypeProperties innerTypeProperties = new ScheduleTriggerTypeProperties();
 
     /**
-     * Get the recurrence property: Recurrence schedule configuration.
+     * Get the innerTypeProperties property: Schedule Trigger properties.
      *
-     * @return the recurrence value.
+     * @return the innerTypeProperties value.
      */
-    public ScheduleTriggerRecurrence recurrence() {
-        return this.recurrence;
-    }
-
-    /**
-     * Set the recurrence property: Recurrence schedule configuration.
-     *
-     * @param recurrence the recurrence value to set.
-     * @return the ScheduleTrigger object itself.
-     */
-    public ScheduleTrigger withRecurrence(ScheduleTriggerRecurrence recurrence) {
-        this.recurrence = recurrence;
-        return this;
+    private ScheduleTriggerTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -69,6 +57,29 @@ public class ScheduleTrigger extends MultiplePipelineTrigger {
     }
 
     /**
+     * Get the recurrence property: Recurrence schedule configuration.
+     *
+     * @return the recurrence value.
+     */
+    public ScheduleTriggerRecurrence recurrence() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().recurrence();
+    }
+
+    /**
+     * Set the recurrence property: Recurrence schedule configuration.
+     *
+     * @param recurrence the recurrence value to set.
+     * @return the ScheduleTrigger object itself.
+     */
+    public ScheduleTrigger withRecurrence(ScheduleTriggerRecurrence recurrence) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new ScheduleTriggerTypeProperties();
+        }
+        this.innerTypeProperties().withRecurrence(recurrence);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -76,12 +87,13 @@ public class ScheduleTrigger extends MultiplePipelineTrigger {
     @Override
     public void validate() {
         super.validate();
-        if (recurrence() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property recurrence in model ScheduleTrigger"));
+                    new IllegalArgumentException(
+                        "Missing required property innerTypeProperties in model ScheduleTrigger"));
         } else {
-            recurrence().validate();
+            innerTypeProperties().validate();
         }
     }
 }

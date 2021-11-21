@@ -151,6 +151,13 @@ public final class SalesforceSink extends CopySink {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public SalesforceSink withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

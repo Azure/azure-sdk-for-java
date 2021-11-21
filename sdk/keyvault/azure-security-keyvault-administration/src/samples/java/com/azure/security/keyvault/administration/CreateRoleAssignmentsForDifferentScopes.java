@@ -24,7 +24,7 @@ public class CreateRoleAssignmentsForDifferentScopes {
         using default Azure credentials. To make default credentials work, ensure that environment variables
         'AZURE_CLIENT_ID', 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
 
-        To get started, you'll need a URI to an 1Azure Key Vault. See the README (https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-administration/README.md)
+        To get started, you'll need a URI to an 1Azure Key Vault. See the README (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-administration/README.md)
         for links and instructions. */
         KeyVaultAccessControlClient accessControlClient = new KeyVaultAccessControlClientBuilder()
             .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")

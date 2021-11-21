@@ -5,15 +5,14 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes a virtual machines scale set IP Configuration's PublicIPAddress configuration. */
-@JsonFlatten
 @Fluent
-public class VirtualMachineScaleSetUpdatePublicIpAddressConfiguration {
+public final class VirtualMachineScaleSetUpdatePublicIpAddressConfiguration {
     @JsonIgnore
     private final ClientLogger logger =
         new ClientLogger(VirtualMachineScaleSetUpdatePublicIpAddressConfiguration.class);
@@ -25,16 +24,11 @@ public class VirtualMachineScaleSetUpdatePublicIpAddressConfiguration {
     private String name;
 
     /*
-     * The idle timeout of the public IP address.
+     * Describes a virtual machines scale set IP Configuration's
+     * PublicIPAddress configuration
      */
-    @JsonProperty(value = "properties.idleTimeoutInMinutes")
-    private Integer idleTimeoutInMinutes;
-
-    /*
-     * The dns settings to be applied on the publicIP addresses .
-     */
-    @JsonProperty(value = "properties.dnsSettings")
-    private VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings dnsSettings;
+    @JsonProperty(value = "properties")
+    private VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties innerProperties;
 
     /**
      * Get the name property: The publicIP address configuration name.
@@ -57,12 +51,22 @@ public class VirtualMachineScaleSetUpdatePublicIpAddressConfiguration {
     }
 
     /**
+     * Get the innerProperties property: Describes a virtual machines scale set IP Configuration's PublicIPAddress
+     * configuration.
+     *
+     * @return the innerProperties value.
+     */
+    private VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the idleTimeoutInMinutes property: The idle timeout of the public IP address.
      *
      * @return the idleTimeoutInMinutes value.
      */
     public Integer idleTimeoutInMinutes() {
-        return this.idleTimeoutInMinutes;
+        return this.innerProperties() == null ? null : this.innerProperties().idleTimeoutInMinutes();
     }
 
     /**
@@ -73,7 +77,10 @@ public class VirtualMachineScaleSetUpdatePublicIpAddressConfiguration {
      */
     public VirtualMachineScaleSetUpdatePublicIpAddressConfiguration withIdleTimeoutInMinutes(
         Integer idleTimeoutInMinutes) {
-        this.idleTimeoutInMinutes = idleTimeoutInMinutes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties();
+        }
+        this.innerProperties().withIdleTimeoutInMinutes(idleTimeoutInMinutes);
         return this;
     }
 
@@ -83,7 +90,7 @@ public class VirtualMachineScaleSetUpdatePublicIpAddressConfiguration {
      * @return the dnsSettings value.
      */
     public VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings dnsSettings() {
-        return this.dnsSettings;
+        return this.innerProperties() == null ? null : this.innerProperties().dnsSettings();
     }
 
     /**
@@ -94,7 +101,33 @@ public class VirtualMachineScaleSetUpdatePublicIpAddressConfiguration {
      */
     public VirtualMachineScaleSetUpdatePublicIpAddressConfiguration withDnsSettings(
         VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings dnsSettings) {
-        this.dnsSettings = dnsSettings;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties();
+        }
+        this.innerProperties().withDnsSettings(dnsSettings);
+        return this;
+    }
+
+    /**
+     * Get the deleteOption property: Specify what happens to the public IP when the VM is deleted.
+     *
+     * @return the deleteOption value.
+     */
+    public DeleteOptions deleteOption() {
+        return this.innerProperties() == null ? null : this.innerProperties().deleteOption();
+    }
+
+    /**
+     * Set the deleteOption property: Specify what happens to the public IP when the VM is deleted.
+     *
+     * @param deleteOption the deleteOption value to set.
+     * @return the VirtualMachineScaleSetUpdatePublicIpAddressConfiguration object itself.
+     */
+    public VirtualMachineScaleSetUpdatePublicIpAddressConfiguration withDeleteOption(DeleteOptions deleteOption) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties();
+        }
+        this.innerProperties().withDeleteOption(deleteOption);
         return this;
     }
 
@@ -104,8 +137,8 @@ public class VirtualMachineScaleSetUpdatePublicIpAddressConfiguration {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (dnsSettings() != null) {
-            dnsSettings().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -24,14 +24,21 @@ public class ContainerRegistry {
     /**
      * The user name to log into the registry server.
      */
-    @JsonProperty(value = "username", required = true)
+    @JsonProperty(value = "username")
     private String userName;
 
     /**
      * The password to log into the registry server.
      */
-    @JsonProperty(value = "password", required = true)
+    @JsonProperty(value = "password")
     private String password;
+
+    /**
+     * The reference to the user assigned identity to use to access an Azure
+     * Container Registry instead of username and password.
+     */
+    @JsonProperty(value = "identityReference")
+    private ComputeNodeIdentityReference identityReference;
 
     /**
      * Get if omitted, the default is "docker.io".
@@ -90,6 +97,26 @@ public class ContainerRegistry {
      */
     public ContainerRegistry withPassword(String password) {
         this.password = password;
+        return this;
+    }
+
+    /**
+     * Get the identityReference value.
+     *
+     * @return the identityReference value
+     */
+    public ComputeNodeIdentityReference identityReference() {
+        return this.identityReference;
+    }
+
+    /**
+     * Set the identityReference value.
+     *
+     * @param identityReference the identityReference value to set
+     * @return the ContainerRegistry object itself.
+     */
+    public ContainerRegistry withIdentityReference(ComputeNodeIdentityReference identityReference) {
+        this.identityReference = identityReference;
         return this;
     }
 

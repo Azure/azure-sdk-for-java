@@ -2,17 +2,19 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import reactor.core.publisher.Mono;
 
 /** An interface representing a model's ability to reference a public IP address. */
-@Fluent
 public interface HasPublicIpAddress {
     /** @return the resource ID of the associated public IP address */
     String publicIpAddressId();
 
     /** @return the associated public IP address */
     PublicIpAddress getPublicIpAddress();
+
+    /** @return the associated public IP address */
+    Mono<PublicIpAddress> getPublicIpAddressAsync();
 
     /** Grouping of definition stages involving specifying the public IP address. */
     interface DefinitionStages {

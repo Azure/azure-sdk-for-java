@@ -4,11 +4,13 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.SentenceOpinionPropertiesHelper;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
  * The {@link SentenceOpinion} model.
  */
+@Immutable
 public final class SentenceOpinion {
     private TargetSentiment target;
     private IterableStream<AssessmentSentiment> assessments;
@@ -29,7 +31,7 @@ public final class SentenceOpinion {
     }
 
     /**
-     * Get the target sentiment in text, such as the attributes of products or services. For example, if a customer leaves
+     * Gets the target sentiment in text, such as the attributes of products or services. For example, if a customer leaves
      * feedback about a hotel such as "the room was great, but the staff was unfriendly", opinion mining will locate
      * target sentiments in the text. The "room" and "staff" are two target sentiments recognized.
      *
@@ -40,7 +42,7 @@ public final class SentenceOpinion {
     }
 
     /**
-     * Get the assessments of target text.
+     * Gets the assessments of target text.
      *
      * @return The assessments of target text.
      */

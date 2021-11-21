@@ -5,28 +5,36 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.eventgrid.fluent.models.HybridConnectionEventSubscriptionDestinationProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /** Information about the HybridConnection destination for an event subscription. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
 @JsonTypeName("HybridConnection")
-@JsonFlatten
 @Fluent
-public class HybridConnectionEventSubscriptionDestination extends EventSubscriptionDestination {
+public final class HybridConnectionEventSubscriptionDestination extends EventSubscriptionDestination {
     @JsonIgnore
     private final ClientLogger logger = new ClientLogger(HybridConnectionEventSubscriptionDestination.class);
 
     /*
-     * The Azure Resource ID of an hybrid connection that is the destination of
-     * an event subscription.
+     * Hybrid connection Properties of the event subscription destination.
      */
-    @JsonProperty(value = "properties.resourceId")
-    private String resourceId;
+    @JsonProperty(value = "properties")
+    private HybridConnectionEventSubscriptionDestinationProperties innerProperties;
+
+    /**
+     * Get the innerProperties property: Hybrid connection Properties of the event subscription destination.
+     *
+     * @return the innerProperties value.
+     */
+    private HybridConnectionEventSubscriptionDestinationProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the resourceId property: The Azure Resource ID of an hybrid connection that is the destination of an event
@@ -35,7 +43,7 @@ public class HybridConnectionEventSubscriptionDestination extends EventSubscript
      * @return the resourceId value.
      */
     public String resourceId() {
-        return this.resourceId;
+        return this.innerProperties() == null ? null : this.innerProperties().resourceId();
     }
 
     /**
@@ -46,7 +54,34 @@ public class HybridConnectionEventSubscriptionDestination extends EventSubscript
      * @return the HybridConnectionEventSubscriptionDestination object itself.
      */
     public HybridConnectionEventSubscriptionDestination withResourceId(String resourceId) {
-        this.resourceId = resourceId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HybridConnectionEventSubscriptionDestinationProperties();
+        }
+        this.innerProperties().withResourceId(resourceId);
+        return this;
+    }
+
+    /**
+     * Get the deliveryAttributeMappings property: Delivery attribute details.
+     *
+     * @return the deliveryAttributeMappings value.
+     */
+    public List<DeliveryAttributeMapping> deliveryAttributeMappings() {
+        return this.innerProperties() == null ? null : this.innerProperties().deliveryAttributeMappings();
+    }
+
+    /**
+     * Set the deliveryAttributeMappings property: Delivery attribute details.
+     *
+     * @param deliveryAttributeMappings the deliveryAttributeMappings value to set.
+     * @return the HybridConnectionEventSubscriptionDestination object itself.
+     */
+    public HybridConnectionEventSubscriptionDestination withDeliveryAttributeMappings(
+        List<DeliveryAttributeMapping> deliveryAttributeMappings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HybridConnectionEventSubscriptionDestinationProperties();
+        }
+        this.innerProperties().withDeliveryAttributeMappings(deliveryAttributeMappings);
         return this;
     }
 
@@ -58,5 +93,8 @@ public class HybridConnectionEventSubscriptionDestination extends EventSubscript
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

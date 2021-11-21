@@ -9,6 +9,7 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.util.CertificateUtil;
+import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
@@ -306,7 +307,31 @@ public class IdentityClientTests {
 
 
         // mock
-        mockForIMDSCodeFlow(tokenJson);
+        mockForIMDSCodeFlow(IdentityConstants.DEFAULT_IMDS_ENDPOINT, tokenJson);
+
+        // mockForDeviceCodeFlow(request, accessToken, expiresOn);
+
+        // test
+        IdentityClient client = new IdentityClientBuilder().build();
+        AccessToken token = client.authenticateToIMDSEndpoint(request).block();
+        Assert.assertEquals("token1", token.getToken());
+        Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
+    }
+
+    @Test
+    public void testCustomIMDSCodeFlow() throws Exception {
+        // setup
+        Configuration configuration = Configuration.getGlobalConfiguration();
+        String endpoint = "http://awesome.pod.url";
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        configuration.put(Configuration.PROPERTY_AZURE_POD_IDENTITY_TOKEN_URL, endpoint);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("M/d/yyyy H:mm:ss XXX");
+        String tokenJson = "{ \"access_token\" : \"token1\", \"expires_on\" : \"" + expiresOn.format(dtf) + "\" }";
+
+
+        // mock
+        mockForIMDSCodeFlow(endpoint, tokenJson);
 
         // mockForDeviceCodeFlow(request, accessToken, expiresOn);
 
@@ -394,7 +419,7 @@ public class IdentityClientTests {
         // test
         IdentityClientOptions options = new IdentityClientOptions();
         IdentityClient client = new IdentityClientBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).identityClientOptions(options).build();
-        StepVerifier.create(client.authenticateWithBrowserInteraction(request, 4567, null))
+        StepVerifier.create(client.authenticateWithBrowserInteraction(request, 4567, null, null))
             .expectNextMatches(accessToken -> token.equals(accessToken.getToken())
                 && expiresOn.getSecond() == accessToken.getExpiresAt().getSecond())
             .verifyComplete();
@@ -570,8 +595,9 @@ public class IdentityClientTests {
         when(initConnection.getResponseCode()).thenReturn(responseCode);
     }
 
-    private void mockForIMDSCodeFlow(String tokenJson) throws Exception {
+    private void mockForIMDSCodeFlow(String endpoint, String tokenJson) throws Exception {
         URL u = PowerMockito.mock(URL.class);
+        whenNew(URL.class).withArguments(ArgumentMatchers.startsWith(endpoint)).thenReturn(u);
         whenNew(URL.class).withAnyArguments().thenReturn(u);
         HttpURLConnection huc = PowerMockito.mock(HttpURLConnection.class);
         when(u.openConnection()).thenReturn(huc);

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.ProductState;
@@ -13,70 +12,47 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Product details. */
-@JsonFlatten
 @Fluent
-public class ProductContractInner extends ProxyResource {
+public final class ProductContractInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ProductContractInner.class);
 
     /*
-     * Product description. May include HTML formatting tags.
+     * Product entity contract properties.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    @JsonProperty(value = "properties")
+    private ProductContractProperties innerProperties;
 
-    /*
-     * Product terms of use. Developers trying to subscribe to the product will
-     * be presented and required to accept these terms before they can complete
-     * the subscription process.
+    /**
+     * Get the innerProperties property: Product entity contract properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.terms")
-    private String terms;
+    private ProductContractProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Whether a product subscription is required for accessing APIs included
-     * in this product. If true, the product is referred to as "protected" and
-     * a valid subscription key is required for a request to an API included in
-     * the product to succeed. If false, the product is referred to as "open"
-     * and requests to an API included in the product can be made without a
-     * subscription key. If property is omitted when creating a new product
-     * it's value is assumed to be true.
+    /**
+     * Get the displayName property: Product name.
+     *
+     * @return the displayName value.
      */
-    @JsonProperty(value = "properties.subscriptionRequired")
-    private Boolean subscriptionRequired;
+    public String displayName() {
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
+    }
 
-    /*
-     * whether subscription approval is required. If false, new subscriptions
-     * will be approved automatically enabling developers to call the product’s
-     * APIs immediately after subscribing. If true, administrators must
-     * manually approve the subscription before the developer can any of the
-     * product’s APIs. Can be present only if subscriptionRequired property is
-     * present and has a value of false.
+    /**
+     * Set the displayName property: Product name.
+     *
+     * @param displayName the displayName value to set.
+     * @return the ProductContractInner object itself.
      */
-    @JsonProperty(value = "properties.approvalRequired")
-    private Boolean approvalRequired;
-
-    /*
-     * Whether the number of subscriptions a user can have to this product at
-     * the same time. Set to null or omit to allow unlimited per user
-     * subscriptions. Can be present only if subscriptionRequired property is
-     * present and has a value of false.
-     */
-    @JsonProperty(value = "properties.subscriptionsLimit")
-    private Integer subscriptionsLimit;
-
-    /*
-     * whether product is published or not. Published products are discoverable
-     * by users of developer portal. Non published products are visible only to
-     * administrators. Default state of Product is notPublished.
-     */
-    @JsonProperty(value = "properties.state")
-    private ProductState state;
-
-    /*
-     * Product name.
-     */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
+    public ProductContractInner withDisplayName(String displayName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProductContractProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
+        return this;
+    }
 
     /**
      * Get the description property: Product description. May include HTML formatting tags.
@@ -84,7 +60,7 @@ public class ProductContractInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -94,7 +70,10 @@ public class ProductContractInner extends ProxyResource {
      * @return the ProductContractInner object itself.
      */
     public ProductContractInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProductContractProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -105,7 +84,7 @@ public class ProductContractInner extends ProxyResource {
      * @return the terms value.
      */
     public String terms() {
-        return this.terms;
+        return this.innerProperties() == null ? null : this.innerProperties().terms();
     }
 
     /**
@@ -116,7 +95,10 @@ public class ProductContractInner extends ProxyResource {
      * @return the ProductContractInner object itself.
      */
     public ProductContractInner withTerms(String terms) {
-        this.terms = terms;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProductContractProperties();
+        }
+        this.innerProperties().withTerms(terms);
         return this;
     }
 
@@ -130,7 +112,7 @@ public class ProductContractInner extends ProxyResource {
      * @return the subscriptionRequired value.
      */
     public Boolean subscriptionRequired() {
-        return this.subscriptionRequired;
+        return this.innerProperties() == null ? null : this.innerProperties().subscriptionRequired();
     }
 
     /**
@@ -144,7 +126,10 @@ public class ProductContractInner extends ProxyResource {
      * @return the ProductContractInner object itself.
      */
     public ProductContractInner withSubscriptionRequired(Boolean subscriptionRequired) {
-        this.subscriptionRequired = subscriptionRequired;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProductContractProperties();
+        }
+        this.innerProperties().withSubscriptionRequired(subscriptionRequired);
         return this;
     }
 
@@ -157,7 +142,7 @@ public class ProductContractInner extends ProxyResource {
      * @return the approvalRequired value.
      */
     public Boolean approvalRequired() {
-        return this.approvalRequired;
+        return this.innerProperties() == null ? null : this.innerProperties().approvalRequired();
     }
 
     /**
@@ -170,7 +155,10 @@ public class ProductContractInner extends ProxyResource {
      * @return the ProductContractInner object itself.
      */
     public ProductContractInner withApprovalRequired(Boolean approvalRequired) {
-        this.approvalRequired = approvalRequired;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProductContractProperties();
+        }
+        this.innerProperties().withApprovalRequired(approvalRequired);
         return this;
     }
 
@@ -182,7 +170,7 @@ public class ProductContractInner extends ProxyResource {
      * @return the subscriptionsLimit value.
      */
     public Integer subscriptionsLimit() {
-        return this.subscriptionsLimit;
+        return this.innerProperties() == null ? null : this.innerProperties().subscriptionsLimit();
     }
 
     /**
@@ -194,7 +182,10 @@ public class ProductContractInner extends ProxyResource {
      * @return the ProductContractInner object itself.
      */
     public ProductContractInner withSubscriptionsLimit(Integer subscriptionsLimit) {
-        this.subscriptionsLimit = subscriptionsLimit;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProductContractProperties();
+        }
+        this.innerProperties().withSubscriptionsLimit(subscriptionsLimit);
         return this;
     }
 
@@ -206,7 +197,7 @@ public class ProductContractInner extends ProxyResource {
      * @return the state value.
      */
     public ProductState state() {
-        return this.state;
+        return this.innerProperties() == null ? null : this.innerProperties().state();
     }
 
     /**
@@ -218,27 +209,10 @@ public class ProductContractInner extends ProxyResource {
      * @return the ProductContractInner object itself.
      */
     public ProductContractInner withState(ProductState state) {
-        this.state = state;
-        return this;
-    }
-
-    /**
-     * Get the displayName property: Product name.
-     *
-     * @return the displayName value.
-     */
-    public String displayName() {
-        return this.displayName;
-    }
-
-    /**
-     * Set the displayName property: Product name.
-     *
-     * @param displayName the displayName value to set.
-     * @return the ProductContractInner object itself.
-     */
-    public ProductContractInner withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProductContractProperties();
+        }
+        this.innerProperties().withState(state);
         return this;
     }
 
@@ -248,5 +222,8 @@ public class ProductContractInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

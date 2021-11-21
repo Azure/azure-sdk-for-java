@@ -35,6 +35,15 @@ public final class AlertImpl implements Alert {
         return this.innerModel().type();
     }
 
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
+    }
+
     public AlertPropertiesDefinition definition() {
         return this.innerModel().definition();
     }
@@ -77,15 +86,6 @@ public final class AlertImpl implements Alert {
 
     public String statusModificationTime() {
         return this.innerModel().statusModificationTime();
-    }
-
-    public Map<String, String> tags() {
-        Map<String, String> inner = this.innerModel().tags();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
     }
 
     public AlertInner innerModel() {

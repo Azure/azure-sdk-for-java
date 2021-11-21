@@ -28,6 +28,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Function;
 
 import static com.azure.spring.data.cosmos.common.ExpressionResolver.resolveExpression;
@@ -65,6 +66,8 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     private final boolean autoCreateContainer;
     private final boolean autoGenerateId;
     private final boolean persitable;
+    private final boolean autoScale;
+    private final boolean isIndexingPolicySpecified;
 
 
     /**
@@ -98,6 +101,8 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         this.indexingPolicy = getIndexingPolicy(domainType);
         this.autoCreateContainer = getIsAutoCreateContainer(domainType);
         this.persitable = Persistable.class.isAssignableFrom(domainType);
+        this.autoScale = getIsAutoScale(domainType);
+        this.isIndexingPolicySpecified = isIndexingPolicySpecified(domainType);
     }
 
     @Override
@@ -249,12 +254,39 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     }
 
     /**
+     * @return the partition key field name
+     */
+    public String getPartitionKeyFieldName() {
+        return partitionKeyField == null ? null : partitionKeyField.getName();
+    }
+
+    /**
      * Check if auto creating container is allowed
      *
      * @return boolean
      */
     public boolean isAutoCreateContainer() {
         return autoCreateContainer;
+    }
+
+    /**
+     * Check if container should use autoscale for resource units
+     *
+     * @return boolean
+     */
+    public boolean isAutoScale() {
+        return autoScale;
+    }
+
+    /**
+     * @return whether indexing policy is specified
+     */
+    public boolean isIndexingPolicySpecified() {
+        return this.isIndexingPolicySpecified;
+    }
+
+    private boolean isIndexingPolicySpecified(Class<?> domainType) {
+        return domainType.getAnnotation(CosmosIndexingPolicy.class) != null;
     }
 
     private IndexingPolicy getIndexingPolicy(Class<?> domainType) {
@@ -287,8 +319,9 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
                 && idField.getType() != Integer.class
                 && idField.getType() != int.class
                 && idField.getType() != Long.class
-                && idField.getType() != long.class) {
-            throw new IllegalArgumentException("type of id field must be String, Integer or Long");
+                && idField.getType() != long.class
+                && idField.getType() != UUID.class) {
+            throw new IllegalArgumentException("type of id field must be String, Integer, Long or UUID");
         }
 
         return idField;
@@ -468,6 +501,17 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         }
 
         return autoCreateContainer;
+    }
+
+    private boolean getIsAutoScale(Class<T> domainType) {
+        final Container annotation = domainType.getAnnotation(Container.class);
+
+        boolean autoScale = Constants.DEFAULT_AUTO_SCALE;
+        if (annotation != null) {
+            autoScale = annotation.autoScale();
+        }
+
+        return autoScale;
     }
 }
 

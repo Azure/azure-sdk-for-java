@@ -7,6 +7,7 @@ package com.azure.security.attestation.implementation;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -21,9 +22,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.security.attestation.implementation.models.CloudErrorException;
+import com.azure.security.attestation.implementation.models.PolicyResponse;
 import com.azure.security.attestation.models.AttestationType;
-import com.azure.security.attestation.models.CloudErrorException;
-import com.azure.security.attestation.models.PolicyResponse;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Policies. */
@@ -58,6 +59,7 @@ public final class PoliciesImpl {
                 @HostParam("instanceUrl") String instanceUrl,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("attestationType") AttestationType attestationType,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Put("/policies/{attestationType}")
@@ -68,6 +70,7 @@ public final class PoliciesImpl {
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("attestationType") AttestationType attestationType,
                 @BodyParam("text/plain") String newAttestationPolicy,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/policies/{attestationType}:reset")
@@ -78,6 +81,7 @@ public final class PoliciesImpl {
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("attestationType") AttestationType attestationType,
                 @BodyParam("text/plain") String policyJws,
+                @HeaderParam("Accept") String accept,
                 Context context);
     }
 
@@ -101,10 +105,15 @@ public final class PoliciesImpl {
             return Mono.error(
                     new IllegalArgumentException("Parameter attestationType is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.get(
-                                this.client.getInstanceUrl(), this.client.getApiVersion(), attestationType, context));
+                                this.client.getInstanceUrl(),
+                                this.client.getApiVersion(),
+                                attestationType,
+                                accept,
+                                context));
     }
 
     /**
@@ -128,7 +137,8 @@ public final class PoliciesImpl {
             return Mono.error(
                     new IllegalArgumentException("Parameter attestationType is required and cannot be null."));
         }
-        return service.get(this.client.getInstanceUrl(), this.client.getApiVersion(), attestationType, context);
+        final String accept = "application/json";
+        return service.get(this.client.getInstanceUrl(), this.client.getApiVersion(), attestationType, accept, context);
     }
 
     /**
@@ -209,7 +219,7 @@ public final class PoliciesImpl {
      * Sets the policy for a given attestation type.
      *
      * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
-     * @param newAttestationPolicy simple string.
+     * @param newAttestationPolicy JWT Expressing the new policy whose body is a StoredAttestationPolicy object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -231,6 +241,7 @@ public final class PoliciesImpl {
             return Mono.error(
                     new IllegalArgumentException("Parameter newAttestationPolicy is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.set(
@@ -238,6 +249,7 @@ public final class PoliciesImpl {
                                 this.client.getApiVersion(),
                                 attestationType,
                                 newAttestationPolicy,
+                                accept,
                                 context));
     }
 
@@ -245,7 +257,7 @@ public final class PoliciesImpl {
      * Sets the policy for a given attestation type.
      *
      * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
-     * @param newAttestationPolicy simple string.
+     * @param newAttestationPolicy JWT Expressing the new policy whose body is a StoredAttestationPolicy object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -268,11 +280,13 @@ public final class PoliciesImpl {
             return Mono.error(
                     new IllegalArgumentException("Parameter newAttestationPolicy is required and cannot be null."));
         }
+        final String accept = "application/json";
         return service.set(
                 this.client.getInstanceUrl(),
                 this.client.getApiVersion(),
                 attestationType,
                 newAttestationPolicy,
+                accept,
                 context);
     }
 
@@ -280,7 +294,7 @@ public final class PoliciesImpl {
      * Sets the policy for a given attestation type.
      *
      * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
-     * @param newAttestationPolicy simple string.
+     * @param newAttestationPolicy JWT Expressing the new policy whose body is a StoredAttestationPolicy object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -303,7 +317,7 @@ public final class PoliciesImpl {
      * Sets the policy for a given attestation type.
      *
      * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
-     * @param newAttestationPolicy simple string.
+     * @param newAttestationPolicy JWT Expressing the new policy whose body is a StoredAttestationPolicy object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -328,7 +342,7 @@ public final class PoliciesImpl {
      * Sets the policy for a given attestation type.
      *
      * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
-     * @param newAttestationPolicy simple string.
+     * @param newAttestationPolicy JWT Expressing the new policy whose body is a StoredAttestationPolicy object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -343,7 +357,7 @@ public final class PoliciesImpl {
      * Sets the policy for a given attestation type.
      *
      * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
-     * @param newAttestationPolicy simple string.
+     * @param newAttestationPolicy JWT Expressing the new policy whose body is a StoredAttestationPolicy object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -360,7 +374,7 @@ public final class PoliciesImpl {
      * Resets the attestation policy for the specified tenant and reverts to the default policy.
      *
      * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
-     * @param policyJws simple string.
+     * @param policyJws JSON Web Signature with an empty policy document.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -380,6 +394,7 @@ public final class PoliciesImpl {
         if (policyJws == null) {
             return Mono.error(new IllegalArgumentException("Parameter policyJws is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.reset(
@@ -387,6 +402,7 @@ public final class PoliciesImpl {
                                 this.client.getApiVersion(),
                                 attestationType,
                                 policyJws,
+                                accept,
                                 context));
     }
 
@@ -394,7 +410,7 @@ public final class PoliciesImpl {
      * Resets the attestation policy for the specified tenant and reverts to the default policy.
      *
      * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
-     * @param policyJws simple string.
+     * @param policyJws JSON Web Signature with an empty policy document.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -416,15 +432,16 @@ public final class PoliciesImpl {
         if (policyJws == null) {
             return Mono.error(new IllegalArgumentException("Parameter policyJws is required and cannot be null."));
         }
+        final String accept = "application/json";
         return service.reset(
-                this.client.getInstanceUrl(), this.client.getApiVersion(), attestationType, policyJws, context);
+                this.client.getInstanceUrl(), this.client.getApiVersion(), attestationType, policyJws, accept, context);
     }
 
     /**
      * Resets the attestation policy for the specified tenant and reverts to the default policy.
      *
      * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
-     * @param policyJws simple string.
+     * @param policyJws JSON Web Signature with an empty policy document.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -447,7 +464,7 @@ public final class PoliciesImpl {
      * Resets the attestation policy for the specified tenant and reverts to the default policy.
      *
      * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
-     * @param policyJws simple string.
+     * @param policyJws JSON Web Signature with an empty policy document.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -471,7 +488,7 @@ public final class PoliciesImpl {
      * Resets the attestation policy for the specified tenant and reverts to the default policy.
      *
      * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
-     * @param policyJws simple string.
+     * @param policyJws JSON Web Signature with an empty policy document.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -486,7 +503,7 @@ public final class PoliciesImpl {
      * Resets the attestation policy for the specified tenant and reverts to the default policy.
      *
      * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
-     * @param policyJws simple string.
+     * @param policyJws JSON Web Signature with an empty policy document.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.

@@ -18,6 +18,7 @@ import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
@@ -53,7 +54,7 @@ public final class CommunicationIdentityClientBuilder {
     private ClientOptions clientOptions;
     private final Map<String, String> properties = CoreUtils.getProperties(COMMUNICATION_IDENTITY_PROPERTIES);
     private final List<HttpPipelinePolicy> customPolicies = new ArrayList<HttpPipelinePolicy>();
-
+    private CommunicationIdentityServiceVersion serviceVersion;
     /**
      * Set endpoint of the service
      *
@@ -201,6 +202,7 @@ public final class CommunicationIdentityClientBuilder {
      * @return the updated CommunicationIdentityClientBuilder object
      */
     public CommunicationIdentityClientBuilder serviceVersion(CommunicationIdentityServiceVersion version) {
+        this.serviceVersion = version;
         return this;
     }
 
@@ -236,8 +238,11 @@ public final class CommunicationIdentityClientBuilder {
                 customPolicies);
         }
 
+        CommunicationIdentityServiceVersion apiVersion = serviceVersion != null ? serviceVersion : CommunicationIdentityServiceVersion.getLatest();
+
         CommunicationIdentityClientImplBuilder clientBuilder = new CommunicationIdentityClientImplBuilder();
         clientBuilder.endpoint(endpoint)
+            .apiVersion(apiVersion.getVersion())
             .pipeline(builderPipeline);
 
         return clientBuilder.buildClient();
@@ -264,8 +269,7 @@ public final class CommunicationIdentityClientBuilder {
                                             List<HttpPipelinePolicy> customPolicies) {
 
         List<HttpPipelinePolicy> policies = new ArrayList<HttpPipelinePolicy>();
-        policies.add(authorizationPolicy);
-        applyRequiredPolicies(policies);
+        applyRequiredPolicies(policies, authorizationPolicy);
 
         if (customPolicies != null && customPolicies.size() > 0) {
             policies.addAll(customPolicies);
@@ -278,7 +282,7 @@ public final class CommunicationIdentityClientBuilder {
             .build();
     }
 
-    private void applyRequiredPolicies(List<HttpPipelinePolicy> policies) {
+    private void applyRequiredPolicies(List<HttpPipelinePolicy> policies, HttpPipelinePolicy authorizationPolicy) {
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
 
@@ -293,8 +297,11 @@ public final class CommunicationIdentityClientBuilder {
         }
 
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, configuration));
+        policies.add(new RequestIdPolicy());
         policies.add(this.retryPolicy == null ? new RetryPolicy() : this.retryPolicy);
         policies.add(new CookiePolicy());
+        // auth policy is per request, should be after retry
+        policies.add(authorizationPolicy);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
     }
 }

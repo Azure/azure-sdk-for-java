@@ -7,14 +7,14 @@ package com.azure.security.keyvault.administration.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RoleAssignmentPropertiesWithScope model. */
+/** Role assignment properties with scope. */
 @Fluent
 public final class RoleAssignmentPropertiesWithScope {
     /*
-     * The role assignment scope.
+     * The role scope.
      */
     @JsonProperty(value = "scope")
-    private String scope;
+    private RoleScope scope;
 
     /*
      * The role definition ID.
@@ -29,21 +29,21 @@ public final class RoleAssignmentPropertiesWithScope {
     private String principalId;
 
     /**
-     * Get the scope property: The role assignment scope.
+     * Get the scope property: The role scope.
      *
      * @return the scope value.
      */
-    public String getScope() {
+    public RoleScope getScope() {
         return this.scope;
     }
 
     /**
-     * Set the scope property: The role assignment scope.
+     * Set the scope property: The role scope.
      *
      * @param scope the scope value to set.
      * @return the RoleAssignmentPropertiesWithScope object itself.
      */
-    public RoleAssignmentPropertiesWithScope setScope(String scope) {
+    public RoleAssignmentPropertiesWithScope setScope(RoleScope scope) {
         this.scope = scope;
         return this;
     }

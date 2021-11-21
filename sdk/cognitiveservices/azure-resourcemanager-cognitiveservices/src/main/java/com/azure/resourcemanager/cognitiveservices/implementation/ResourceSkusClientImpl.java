@@ -28,7 +28,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cognitiveservices.fluent.ResourceSkusClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.ResourceSkuInner;
-import com.azure.resourcemanager.cognitiveservices.models.ResourceSkusResult;
+import com.azure.resourcemanager.cognitiveservices.models.ResourceSkuListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ResourceSkusClient. */
@@ -63,7 +63,7 @@ public final class ResourceSkusClientImpl implements ResourceSkusClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/skus")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourceSkusResult>> list(
+        Mono<Response<ResourceSkuListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -74,7 +74,7 @@ public final class ResourceSkusClientImpl implements ResourceSkusClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourceSkusResult>> listNext(
+        Mono<Response<ResourceSkuListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
@@ -86,7 +86,7 @@ public final class ResourceSkusClientImpl implements ResourceSkusClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Microsoft.
+     * @return the list of Microsoft.CognitiveServices SKUs available for your Subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceSkuInner>> listSinglePageAsync() {
@@ -132,7 +132,7 @@ public final class ResourceSkusClientImpl implements ResourceSkusClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Microsoft.
+     * @return the list of Microsoft.CognitiveServices SKUs available for your Subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceSkuInner>> listSinglePageAsync(Context context) {
@@ -173,7 +173,7 @@ public final class ResourceSkusClientImpl implements ResourceSkusClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Microsoft.
+     * @return the list of Microsoft.CognitiveServices SKUs available for your Subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ResourceSkuInner> listAsync() {
@@ -187,7 +187,7 @@ public final class ResourceSkusClientImpl implements ResourceSkusClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Microsoft.
+     * @return the list of Microsoft.CognitiveServices SKUs available for your Subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ResourceSkuInner> listAsync(Context context) {
@@ -200,7 +200,7 @@ public final class ResourceSkusClientImpl implements ResourceSkusClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Microsoft.
+     * @return the list of Microsoft.CognitiveServices SKUs available for your Subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceSkuInner> list() {
@@ -214,7 +214,7 @@ public final class ResourceSkusClientImpl implements ResourceSkusClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Microsoft.
+     * @return the list of Microsoft.CognitiveServices SKUs available for your Subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceSkuInner> list(Context context) {

@@ -5,67 +5,47 @@
 package com.azure.resourcemanager.confluent.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Confluent Agreements Resource. */
-@JsonFlatten
+/** Agreement Terms definition. */
 @Fluent
-public class ConfluentAgreementResourceInner extends ProxyResource {
+public final class ConfluentAgreementResourceInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfluentAgreementResourceInner.class);
 
     /*
-     * Publisher identifier string.
+     * Metadata pertaining to creation and last modification of the resource
      */
-    @JsonProperty(value = "properties.publisher")
-    private String publisher;
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /*
-     * Product identifier string.
+     * Represents the properties of the resource.
      */
-    @JsonProperty(value = "properties.product")
-    private String product;
+    @JsonProperty(value = "properties")
+    private ConfluentAgreementProperties innerProperties;
 
-    /*
-     * Plan identifier string.
+    /**
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
      */
-    @JsonProperty(value = "properties.plan")
-    private String plan;
+    public SystemData systemData() {
+        return this.systemData;
+    }
 
-    /*
-     * Link to HTML with Microsoft and Publisher terms.
+    /**
+     * Get the innerProperties property: Represents the properties of the resource.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.licenseTextLink")
-    private String licenseTextLink;
-
-    /*
-     * Link to the privacy policy of the publisher.
-     */
-    @JsonProperty(value = "properties.privacyPolicyLink")
-    private String privacyPolicyLink;
-
-    /*
-     * Date and time in UTC of when the terms were accepted. This is empty if
-     * Accepted is false.
-     */
-    @JsonProperty(value = "properties.retrieveDatetime")
-    private OffsetDateTime retrieveDatetime;
-
-    /*
-     * Terms signature.
-     */
-    @JsonProperty(value = "properties.signature")
-    private String signature;
-
-    /*
-     * If any version of the terms have been accepted, otherwise false.
-     */
-    @JsonProperty(value = "properties.accepted")
-    private Boolean accepted;
+    private ConfluentAgreementProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the publisher property: Publisher identifier string.
@@ -73,7 +53,7 @@ public class ConfluentAgreementResourceInner extends ProxyResource {
      * @return the publisher value.
      */
     public String publisher() {
-        return this.publisher;
+        return this.innerProperties() == null ? null : this.innerProperties().publisher();
     }
 
     /**
@@ -83,7 +63,10 @@ public class ConfluentAgreementResourceInner extends ProxyResource {
      * @return the ConfluentAgreementResourceInner object itself.
      */
     public ConfluentAgreementResourceInner withPublisher(String publisher) {
-        this.publisher = publisher;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConfluentAgreementProperties();
+        }
+        this.innerProperties().withPublisher(publisher);
         return this;
     }
 
@@ -93,7 +76,7 @@ public class ConfluentAgreementResourceInner extends ProxyResource {
      * @return the product value.
      */
     public String product() {
-        return this.product;
+        return this.innerProperties() == null ? null : this.innerProperties().product();
     }
 
     /**
@@ -103,7 +86,10 @@ public class ConfluentAgreementResourceInner extends ProxyResource {
      * @return the ConfluentAgreementResourceInner object itself.
      */
     public ConfluentAgreementResourceInner withProduct(String product) {
-        this.product = product;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConfluentAgreementProperties();
+        }
+        this.innerProperties().withProduct(product);
         return this;
     }
 
@@ -113,7 +99,7 @@ public class ConfluentAgreementResourceInner extends ProxyResource {
      * @return the plan value.
      */
     public String plan() {
-        return this.plan;
+        return this.innerProperties() == null ? null : this.innerProperties().plan();
     }
 
     /**
@@ -123,7 +109,10 @@ public class ConfluentAgreementResourceInner extends ProxyResource {
      * @return the ConfluentAgreementResourceInner object itself.
      */
     public ConfluentAgreementResourceInner withPlan(String plan) {
-        this.plan = plan;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConfluentAgreementProperties();
+        }
+        this.innerProperties().withPlan(plan);
         return this;
     }
 
@@ -133,7 +122,7 @@ public class ConfluentAgreementResourceInner extends ProxyResource {
      * @return the licenseTextLink value.
      */
     public String licenseTextLink() {
-        return this.licenseTextLink;
+        return this.innerProperties() == null ? null : this.innerProperties().licenseTextLink();
     }
 
     /**
@@ -143,7 +132,10 @@ public class ConfluentAgreementResourceInner extends ProxyResource {
      * @return the ConfluentAgreementResourceInner object itself.
      */
     public ConfluentAgreementResourceInner withLicenseTextLink(String licenseTextLink) {
-        this.licenseTextLink = licenseTextLink;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConfluentAgreementProperties();
+        }
+        this.innerProperties().withLicenseTextLink(licenseTextLink);
         return this;
     }
 
@@ -153,7 +145,7 @@ public class ConfluentAgreementResourceInner extends ProxyResource {
      * @return the privacyPolicyLink value.
      */
     public String privacyPolicyLink() {
-        return this.privacyPolicyLink;
+        return this.innerProperties() == null ? null : this.innerProperties().privacyPolicyLink();
     }
 
     /**
@@ -163,7 +155,10 @@ public class ConfluentAgreementResourceInner extends ProxyResource {
      * @return the ConfluentAgreementResourceInner object itself.
      */
     public ConfluentAgreementResourceInner withPrivacyPolicyLink(String privacyPolicyLink) {
-        this.privacyPolicyLink = privacyPolicyLink;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConfluentAgreementProperties();
+        }
+        this.innerProperties().withPrivacyPolicyLink(privacyPolicyLink);
         return this;
     }
 
@@ -174,7 +169,7 @@ public class ConfluentAgreementResourceInner extends ProxyResource {
      * @return the retrieveDatetime value.
      */
     public OffsetDateTime retrieveDatetime() {
-        return this.retrieveDatetime;
+        return this.innerProperties() == null ? null : this.innerProperties().retrieveDatetime();
     }
 
     /**
@@ -185,7 +180,10 @@ public class ConfluentAgreementResourceInner extends ProxyResource {
      * @return the ConfluentAgreementResourceInner object itself.
      */
     public ConfluentAgreementResourceInner withRetrieveDatetime(OffsetDateTime retrieveDatetime) {
-        this.retrieveDatetime = retrieveDatetime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConfluentAgreementProperties();
+        }
+        this.innerProperties().withRetrieveDatetime(retrieveDatetime);
         return this;
     }
 
@@ -195,7 +193,7 @@ public class ConfluentAgreementResourceInner extends ProxyResource {
      * @return the signature value.
      */
     public String signature() {
-        return this.signature;
+        return this.innerProperties() == null ? null : this.innerProperties().signature();
     }
 
     /**
@@ -205,7 +203,10 @@ public class ConfluentAgreementResourceInner extends ProxyResource {
      * @return the ConfluentAgreementResourceInner object itself.
      */
     public ConfluentAgreementResourceInner withSignature(String signature) {
-        this.signature = signature;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConfluentAgreementProperties();
+        }
+        this.innerProperties().withSignature(signature);
         return this;
     }
 
@@ -215,7 +216,7 @@ public class ConfluentAgreementResourceInner extends ProxyResource {
      * @return the accepted value.
      */
     public Boolean accepted() {
-        return this.accepted;
+        return this.innerProperties() == null ? null : this.innerProperties().accepted();
     }
 
     /**
@@ -225,7 +226,10 @@ public class ConfluentAgreementResourceInner extends ProxyResource {
      * @return the ConfluentAgreementResourceInner object itself.
      */
     public ConfluentAgreementResourceInner withAccepted(Boolean accepted) {
-        this.accepted = accepted;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConfluentAgreementProperties();
+        }
+        this.innerProperties().withAccepted(accepted);
         return this;
     }
 
@@ -235,5 +239,8 @@ public class ConfluentAgreementResourceInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

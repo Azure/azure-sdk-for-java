@@ -9,13 +9,14 @@ import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.MethodCustomization;
 import com.azure.autorest.customization.PackageCustomization;
 import com.azure.autorest.customization.PropertyCustomization;
+import org.slf4j.Logger;
 
 /**
  * Customization class for Blob Storage.
  */
 public class BlobStorageCustomization extends Customization {
     @Override
-    public void customize(LibraryCustomization customization) {
+    public void customize(LibraryCustomization customization, Logger logger) {
 
         PackageCustomization impl = customization.getPackage("com.azure.storage.blob.implementation");
 
@@ -29,12 +30,12 @@ public class BlobStorageCustomization extends Customization {
         modifyUnexpectedResponseExceptionType(blobsImpl.getMethod("download"));
         modifyUnexpectedResponseExceptionType(blobsImpl.getMethod("getProperties"));
         modifyUnexpectedResponseExceptionType(blobsImpl.getMethod("delete"));
-        modifyUnexpectedResponseExceptionType(blobsImpl.getMethod("setAccessControl"));
-        modifyUnexpectedResponseExceptionType(blobsImpl.getMethod("getAccessControl"));
-        modifyUnexpectedResponseExceptionType(blobsImpl.getMethod("rename"));
         modifyUnexpectedResponseExceptionType(blobsImpl.getMethod("undelete"));
         modifyUnexpectedResponseExceptionType(blobsImpl.getMethod("setExpiry"));
         modifyUnexpectedResponseExceptionType(blobsImpl.getMethod("setHttpHeaders"));
+        modifyUnexpectedResponseExceptionType(blobsImpl.getMethod("setImmutabilityPolicy"));
+        modifyUnexpectedResponseExceptionType(blobsImpl.getMethod("deleteImmutabilityPolicy"));
+        modifyUnexpectedResponseExceptionType(blobsImpl.getMethod("setLegalHold"));
         modifyUnexpectedResponseExceptionType(blobsImpl.getMethod("setMetadata"));
         modifyUnexpectedResponseExceptionType(blobsImpl.getMethod("acquireLease"));
         modifyUnexpectedResponseExceptionType(blobsImpl.getMethod("releaseLease"));
@@ -103,35 +104,45 @@ public class BlobStorageCustomization extends Customization {
 
         PackageCustomization implementationModels = customization.getPackage("com.azure.storage.blob.implementation.models");
 
-        implementationModels.getClass("DataLakeStorageErrorError").rename("DataLakeStorageErrorDetails");
-
         implementationModels.getClass("BlobHierarchyListSegment").addAnnotation("@JsonDeserialize(using = com.azure.storage.blob.implementation.util.CustomHierarchicalListingDeserializer.class)");
 
         ClassCustomization blobItemInternal = implementationModels.getClass("BlobItemInternal");
         PropertyCustomization objectReplicationMetadata = blobItemInternal.getProperty("objectReplicationMetadata");
-        objectReplicationMetadata.removeAnnotation("@JsonProperty(value = \"ObjectReplicationMetadata\")");
-        objectReplicationMetadata.addAnnotation("@JsonProperty(value = \"OrMetadata\")");
+        objectReplicationMetadata.removeAnnotation("@JsonProperty(value = \"ObjectReplicationMetadata\")")
+            .addAnnotation("@JsonProperty(value = \"OrMetadata\")");
+
+        ClassCustomization blobPrefix = implementationModels.getClass("BlobPrefix");
+        blobPrefix.rename("BlobPrefixInternal");
 
         PackageCustomization models = customization.getPackage("com.azure.storage.blob.models");
         models.getClass("PageList").addAnnotation("@JsonDeserialize(using = PageListDeserializer.class)");
 
         ClassCustomization blobHttpHeaders = models.getClass("BlobHttpHeaders");
-        blobHttpHeaders.removeAnnotation("@JacksonXmlRootElement(localName = \"BlobHttpHeaders\")");
-        blobHttpHeaders.addAnnotation("@JacksonXmlRootElement(localName = \"blob-http-headers\")");
+        blobHttpHeaders.removeAnnotation("@JacksonXmlRootElement(localName = \"BlobHttpHeaders\")")
+            .addAnnotation("@JacksonXmlRootElement(localName = \"blob-http-headers\")");
+        blobHttpHeaders.getMethod("getContentMd5").getJavadoc().setDescription("Get the contentMd5 property: " +
+            "Optional. An MD5 hash of the blob content. Note that this hash is not validated, as the hashes for " +
+            "the individual blocks were validated when each was uploaded. The value does not need to be base64 " +
+            "encoded as the SDK will perform the encoding.");
+        blobHttpHeaders.getMethod("setContentMd5").getJavadoc().setDescription("Set the contentMd5 property: " +
+            "Optional. An MD5 hash of the blob content. Note that this hash is not validated, as the hashes for " +
+            "the individual blocks were validated when each was uploaded. The value does not need to be base64 " +
+            "encoded as the SDK will perform the encoding.");
 
         ClassCustomization blobContainerEncryptionScope = models.getClass("BlobContainerEncryptionScope");
-        blobContainerEncryptionScope.removeAnnotation("@JacksonXmlRootElement(localName = \"BlobContainerEncryptionScope\")");
-        blobContainerEncryptionScope.addAnnotation("@JacksonXmlRootElement(localName = \"blob-container-encryption-scope\")");
+        blobContainerEncryptionScope.removeAnnotation("@JacksonXmlRootElement(localName = \"BlobContainerEncryptionScope\")")
+            .addAnnotation("@JacksonXmlRootElement(localName = \"blob-container-encryption-scope\")");
         PropertyCustomization defaultEncryptionScope = blobContainerEncryptionScope.getProperty("defaultEncryptionScope");
-        defaultEncryptionScope.removeAnnotation("@JsonProperty(value = \"DefaultEncryptionScope\")");
-        defaultEncryptionScope.addAnnotation("@JsonProperty(value = \"defaultEncryptionScope\")");
+        defaultEncryptionScope.removeAnnotation("@JsonProperty(value = \"DefaultEncryptionScope\")")
+            .addAnnotation("@JsonProperty(value = \"defaultEncryptionScope\")");
         PropertyCustomization encryptionScopeOverridePrevented = blobContainerEncryptionScope.getProperty("encryptionScopeOverridePrevented");
-        encryptionScopeOverridePrevented.removeAnnotation("@JsonProperty(value = \"EncryptionScopeOverridePrevented\")");
-        encryptionScopeOverridePrevented.addAnnotation("@JsonProperty(value = \"encryptionScopeOverridePrevented\")");
+        encryptionScopeOverridePrevented.removeAnnotation("@JsonProperty(value = \"EncryptionScopeOverridePrevented\")")
+            .addAnnotation("@JsonProperty(value = \"encryptionScopeOverridePrevented\")");
         blobContainerEncryptionScope.getMethod("isEncryptionScopeOverridePrevented").setReturnType("boolean", "return Boolean.TRUE.equals(%s);", true);
 
         ClassCustomization blobContainerItemProperties = models.getClass("BlobContainerItemProperties");
         blobContainerItemProperties.getMethod("isEncryptionScopeOverridePrevented").setReturnType("boolean", "return Boolean.TRUE.equals(%s);", true);
+        blobContainerItemProperties.getMethod("setIsImmutableStorageWithVersioningEnabled").rename("setImmutableStorageWithVersioningEnabled");
 
         // Block - Generator
         ClassCustomization block = models.getClass("Block");
@@ -150,14 +161,14 @@ public class BlobStorageCustomization extends Customization {
 
         ClassCustomization blobServiceProperties = models.getClass("BlobServiceProperties");
         PropertyCustomization hourMetrics = blobServiceProperties.getProperty("hourMetrics");
-        hourMetrics.removeAnnotation("@JsonProperty(value = \"Metrics\")");
-        hourMetrics.addAnnotation("@JsonProperty(value = \"HourMetrics\")");
+        hourMetrics.removeAnnotation("@JsonProperty(value = \"Metrics\")")
+            .addAnnotation("@JsonProperty(value = \"HourMetrics\")");
         PropertyCustomization minuteMetrics = blobServiceProperties.getProperty("minuteMetrics");
-        minuteMetrics.removeAnnotation("@JsonProperty(value = \"Metrics\")");
-        minuteMetrics.addAnnotation("@JsonProperty(value = \"MinuteMetrics\")");
+        minuteMetrics.removeAnnotation("@JsonProperty(value = \"Metrics\")")
+            .addAnnotation("@JsonProperty(value = \"MinuteMetrics\")");
         PropertyCustomization deleteRetentionPolicy = blobServiceProperties.getProperty("deleteRetentionPolicy");
-        deleteRetentionPolicy.removeAnnotation("@JsonProperty(value = \"RetentionPolicy\")");
-        deleteRetentionPolicy.addAnnotation("@JsonProperty(value = \"DeleteRetentionPolicy\")");
+        deleteRetentionPolicy.removeAnnotation("@JsonProperty(value = \"RetentionPolicy\")")
+            .addAnnotation("@JsonProperty(value = \"DeleteRetentionPolicy\")");
 
         // CPKInfo - New generator removed a property and it's getter and setter methods.
         ClassCustomization cpkInfo = models.getClass("CpkInfo")
@@ -172,10 +183,14 @@ public class BlobStorageCustomization extends Customization {
         customization.getRawEditor().removeFile(fileName);
         customization.getRawEditor().addFile(fileName, updatedCode);
 
+        ClassCustomization listBlobsIncludeItem = models.getClass("ListBlobsIncludeItem");
+        listBlobsIncludeItem.renameEnumMember("IMMUTABILITYPOLICY", "IMMUTABILITY_POLICY")
+            .renameEnumMember("LEGALHOLD", "LEGAL_HOLD")
+            .renameEnumMember("DELETEDWITHVERSIONS", "DELETED_WITH_VERSIONS");
     }
 
     private void modifyUnexpectedResponseExceptionType(MethodCustomization method) {
-        method.removeAnnotation("@UnexpectedResponseExceptionType(StorageErrorException.class)");
-        method.addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)");
+        method.removeAnnotation("@UnexpectedResponseExceptionType(StorageErrorException.class)")
+            .addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)");
     }
 }

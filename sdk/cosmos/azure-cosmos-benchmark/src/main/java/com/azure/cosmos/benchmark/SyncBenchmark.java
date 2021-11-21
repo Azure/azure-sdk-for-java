@@ -106,6 +106,7 @@ abstract class SyncBenchmark<T> {
 
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(cfg.getServiceEndpoint())
+            .preferredRegions(cfg.getPreferredRegionsList())
             .key(cfg.getMasterKey())
             .consistencyLevel(cfg.getConsistencyLevel())
             .contentResponseOnWriteEnabled(Boolean.parseBoolean(cfg.isContentResponseOnWriteEnabled()));

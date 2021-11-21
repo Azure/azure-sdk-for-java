@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.confluent.ConfluentManager;
 import com.azure.resourcemanager.confluent.fluent.MarketplaceAgreementsClient;
 import com.azure.resourcemanager.confluent.fluent.models.ConfluentAgreementResourceInner;
 import com.azure.resourcemanager.confluent.models.ConfluentAgreementResource;
@@ -21,21 +20,22 @@ public final class MarketplaceAgreementsImpl implements MarketplaceAgreements {
 
     private final MarketplaceAgreementsClient innerClient;
 
-    private final ConfluentManager serviceManager;
+    private final com.azure.resourcemanager.confluent.ConfluentManager serviceManager;
 
-    public MarketplaceAgreementsImpl(MarketplaceAgreementsClient innerClient, ConfluentManager serviceManager) {
+    public MarketplaceAgreementsImpl(
+        MarketplaceAgreementsClient innerClient, com.azure.resourcemanager.confluent.ConfluentManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<ConfluentAgreementResource> list() {
         PagedIterable<ConfluentAgreementResourceInner> inner = this.serviceClient().list();
-        return inner.mapPage(inner1 -> new ConfluentAgreementResourceImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ConfluentAgreementResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ConfluentAgreementResource> list(Context context) {
         PagedIterable<ConfluentAgreementResourceInner> inner = this.serviceClient().list(context);
-        return inner.mapPage(inner1 -> new ConfluentAgreementResourceImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ConfluentAgreementResourceImpl(inner1, this.manager()));
     }
 
     public ConfluentAgreementResource create() {
@@ -65,7 +65,7 @@ public final class MarketplaceAgreementsImpl implements MarketplaceAgreements {
         return this.innerClient;
     }
 
-    private ConfluentManager manager() {
+    private com.azure.resourcemanager.confluent.ConfluentManager manager() {
         return this.serviceManager;
     }
 }

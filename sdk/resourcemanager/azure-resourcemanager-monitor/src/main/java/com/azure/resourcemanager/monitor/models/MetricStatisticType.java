@@ -19,7 +19,10 @@ public enum MetricStatisticType {
     MAX("Max"),
 
     /** Enum value Sum. */
-    SUM("Sum");
+    SUM("Sum"),
+
+    /** Enum value Count. */
+    COUNT("Count");
 
     /** The actual serialized value for a MetricStatisticType instance. */
     private final String value;

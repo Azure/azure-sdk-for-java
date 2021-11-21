@@ -44,6 +44,10 @@ public final class ReservationRecommendationDetailsModelImpl implements Reservat
         return this.innerModel().sku();
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
     public String currency() {
         return this.innerModel().currency();
     }
@@ -66,10 +70,6 @@ public final class ReservationRecommendationDetailsModelImpl implements Reservat
 
     public ReservationRecommendationDetailsUsageProperties usage() {
         return this.innerModel().usage();
-    }
-
-    public String etag() {
-        return this.innerModel().etag();
     }
 
     public Map<String, String> tags() {

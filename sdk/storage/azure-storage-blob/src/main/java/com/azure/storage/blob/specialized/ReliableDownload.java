@@ -20,7 +20,9 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.concurrent.TimeoutException;
+import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * This class automatically retries failed reads from a blob download stream.
@@ -30,7 +32,9 @@ import java.util.function.Function;
  * will be resumed from the point where the download failed. This allows for the download to be consumed as one
  * continuous stream.
  * </p>
+ * @deprecated use {@link com.azure.core.util.FluxUtil#createRetriableDownloadFlux(Supplier, BiFunction, int)} instead.
  */
+@Deprecated
 final class ReliableDownload {
     private final ClientLogger logger = new ClientLogger(ReliableDownload.class);
 
@@ -57,8 +61,9 @@ final class ReliableDownload {
         from the response for better book keeping towards the end.
          */
         if (this.info.getCount() == null) {
-            long blobLength = BlobAsyncClientBase.getBlobLength(
-                ModelHelper.populateBlobDownloadHeaders(deserializedHeaders, ModelHelper.getErrorCode(rawResponse.getHeaders())));
+            long blobLength = ModelHelper.getBlobLength(
+                ModelHelper.populateBlobDownloadHeaders(deserializedHeaders,
+                    ModelHelper.getErrorCode(rawResponse.getHeaders())));
             info.setCount(blobLength - info.getOffset());
         }
     }
@@ -89,7 +94,7 @@ final class ReliableDownload {
             ? rawResponse.getValue().timeout(TIMEOUT_VALUE)
             : applyReliableDownload(rawResponse.getValue(), -1, options);
 
-        return value.switchIfEmpty(Flux.just(ByteBuffer.wrap(new byte[0])));
+        return value.switchIfEmpty(Flux.defer(() -> Flux.just(ByteBuffer.wrap(new byte[0]))));
     }
 
     private Flux<ByteBuffer> tryContinueFlux(Throwable t, int retryCount, DownloadRetryOptions options) {

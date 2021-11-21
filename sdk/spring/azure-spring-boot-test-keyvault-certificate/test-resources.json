@@ -1,0 +1,352 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "baseName": {
+      "type": "String"
+    },
+    "tenantId": {
+      "type": "String",
+      "defaultValue": "[subscription().tenantId]"
+    },
+    "testApplicationOid": {
+      "type": "String"
+    },
+    "endpointSuffix": {
+      "type": "String",
+      "defaultValue": "vault.azure.net"
+    },
+    "testApplicationId": {
+      "type": "String"
+    },
+    "testApplicationSecret": {
+      "type": "String"
+    },
+    "enabledForDeployment": {
+      "type": "bool",
+      "defaultValue": false,
+      "allowedValues": [
+        true,
+        false
+      ]
+    },
+    "enabledForDiskEncryption": {
+      "type": "bool",
+      "defaultValue": false,
+      "allowedValues": [
+        true,
+        false
+      ]
+    },
+    "enabledForTemplateDeployment": {
+      "type": "bool",
+      "defaultValue": false,
+      "allowedValues": [
+        true,
+        false
+      ]
+    },
+    "skuName": {
+      "type": "string",
+      "defaultValue": "Standard",
+      "allowedValues": [
+        "Standard",
+        "Premium"
+      ]
+    },
+    "identityName": {
+      "type": "string",
+      "defaultValue": "identityForKeyVault"
+    },
+    "certificateName": {
+      "type": "string",
+      "defaultValue": "myalias"
+    },
+    "RSAKeyLessCertificateName": {
+      "type": "string",
+      "defaultValue": "myaliasForRSAKeyLess"
+    },
+    "EC256KeyLessCertificateName": {
+      "type": "string",
+      "defaultValue": "myaliasForEC256KeyLess"
+    },
+    "EC384KeyLessCertificateName": {
+      "type": "string",
+      "defaultValue": "myaliasForEC384KeyLess"
+    },
+    "EC521KeyLessCertificateName": {
+      "type": "string",
+      "defaultValue": "myaliasForEC521KeyLess"
+    },
+    "subjectName": {
+      "type": "string",
+      "defaultValue": "CN=contoso.com"
+    },
+    "utcValue": {
+      "type": "string",
+      "defaultValue": "[utcNow()]"
+    }
+  },
+  "variables": {
+    "keyVaultName": "[parameters('baseName')]",
+    "azureKeyVaultUrl": "[format('https://{0}.{1}/', parameters('baseName'), parameters('endpointSuffix'))]",
+    "bootstrapRoleAssignmentId": "[guid(concat(resourceGroup().id, 'contributor'))]",
+    "contributorRoleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+      "apiVersion": "2018-11-30",
+      "name": "[parameters('identityName')]",
+      "location": "[resourceGroup().location]"
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2018-09-01-preview",
+      "name": "[variables('bootstrapRoleAssignmentId')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('identityName'))]"
+      ],
+      "properties": {
+        "roleDefinitionId": "[variables('contributorRoleDefinitionId')]",
+        "principalId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('identityName')), '2018-11-30').principalId]",
+        "scope": "[resourceGroup().id]",
+        "principalType": "ServicePrincipal"
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults",
+      "apiVersion": "2018-02-14",
+      "name": "[parameters('baseName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "sku": {
+          "family": "A",
+          "name": "standard"
+        },
+        "tenantId": "[parameters('tenantId')]",
+        "accessPolicies": [
+          {
+            "tenantId": "[parameters('tenantId')]",
+            "objectId": "[parameters('testApplicationOid')]",
+            "permissions": {
+              "keys": [
+                "backup",
+                "create",
+                "decrypt",
+                "delete",
+                "encrypt",
+                "get",
+                "import",
+                "list",
+                "purge",
+                "recover",
+                "restore",
+                "sign",
+                "unwrapKey",
+                "update",
+                "verify",
+                "wrapKey"
+              ],
+              "secrets": [
+                "backup",
+                "delete",
+                "get",
+                "list",
+                "purge",
+                "recover",
+                "restore",
+                "set"
+              ],
+              "certificates": [
+                "backup",
+                "create",
+                "delete",
+                "deleteissuers",
+                "get",
+                "getissuers",
+                "import",
+                "list",
+                "listissuers",
+                "managecontacts",
+                "manageissuers",
+                "purge",
+                "recover",
+                "restore",
+                "setissuers",
+                "update"
+              ]
+            }
+          },
+          {
+            "objectId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('identityName')), '2018-11-30').principalId]",
+            "tenantId": "[parameters('tenantId')]",
+            "permissions": {
+              "keys": [
+                "backup",
+                "create",
+                "decrypt",
+                "delete",
+                "encrypt",
+                "get",
+                "import",
+                "list",
+                "purge",
+                "recover",
+                "restore",
+                "sign",
+                "unwrapKey",
+                "update",
+                "verify",
+                "wrapKey"
+              ],
+              "secrets": [
+                "backup",
+                "delete",
+                "get",
+                "list",
+                "purge",
+                "recover",
+                "restore",
+                "set"
+              ],
+              "certificates": [
+                "backup",
+                "create",
+                "delete",
+                "deleteissuers",
+                "get",
+                "getissuers",
+                "import",
+                "list",
+                "listissuers",
+                "managecontacts",
+                "manageissuers",
+                "purge",
+                "recover",
+                "restore",
+                "setissuers",
+                "update"
+              ]
+            }
+          }
+        ],
+        "enabledForDeployment": "[parameters('enabledForDeployment')]",
+        "enabledForDiskEncryption": "[parameters('enabledForDiskEncryption')]",
+        "enabledForTemplateDeployment": "[parameters('enabledForTemplateDeployment')]",
+        "enableSoftDelete": true,
+        "networkAcls": {
+          "defaultAction": "Allow",
+          "bypass": "AzureServices"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deploymentScripts",
+      "apiVersion": "2020-10-01",
+      "name": "createAddCertificate",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]",
+        "[resourceId('Microsoft.Authorization/roleAssignments', variables('bootstrapRoleAssignmentId'))]"
+      ],
+      "identity": {
+        "type": "UserAssigned",
+        "userAssignedIdentities": {
+          "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('identityName'))]": {
+          }
+        }
+      },
+      "kind": "AzurePowerShell",
+      "properties": {
+        "forceUpdateTag": "[parameters('utcValue')]",
+        "azPowerShellVersion": "5.0",
+        "timeout": "PT30M",
+        "arguments": "[format(' -vaultName {0} -certificateName {1} -subjectName {2} -RSAKeyLessCertificateName {3} -EC256KeyLessCertificateName {4} -EC384KeyLessCertificateName {5} -EC521KeyLessCertificateName {6}', variables('keyVaultName'), parameters('certificateName'), parameters('subjectName'), parameters('RSAKeyLessCertificateName'), parameters('EC256KeyLessCertificateName'), parameters('EC384KeyLessCertificateName'), parameters('EC521KeyLessCertificateName'))]",
+        "scriptContent": "
+        param(
+    [string] [Parameter(Mandatory=$true)] $vaultName,
+    [string] [Parameter(Mandatory=$true)] $certificateName,
+    [string] [Parameter(Mandatory=$true)] $subjectName,
+    [string] [Parameter(Mandatory=$true)] $RSAKeyLessCertificateName,
+    [string] [Parameter(Mandatory=$true)] $EC256KeyLessCertificateName,
+    [string] [Parameter(Mandatory=$true)] $EC384KeyLessCertificateName,
+    [string] [Parameter(Mandatory=$true)] $EC521KeyLessCertificateName
+    )
+
+    $ErrorActionPreference = 'Stop'
+    $DeploymentScriptOutputs = @{}
+
+    $policy = New-AzKeyVaultCertificatePolicy -SubjectName $subjectName -IssuerName Self -ValidityInMonths 12 -Verbose
+
+    $policyForKeyLessRSA = New-AzKeyVaultCertificatePolicy -SubjectName $subjectName -IssuerName Self -ValidityInMonths 12 -KeyType RSA -KeyNotExportable true -Verbose
+
+    $policyForKeyLessEC256 = New-AzKeyVaultCertificatePolicy -SubjectName $subjectName -IssuerName Self -ValidityInMonths 12 -KeyType EC -Curve P-256 -KeyNotExportable true -Verbose
+
+    $policyForKeyLessEC384 = New-AzKeyVaultCertificatePolicy -SubjectName $subjectName -IssuerName Self -ValidityInMonths 12 -KeyType EC -Curve P-384 -KeyNotExportable true -Verbose
+
+    $policyForKeyLessEC521 = New-AzKeyVaultCertificatePolicy -SubjectName $subjectName -IssuerName Self -ValidityInMonths 12 -KeyType EC -Curve P-521 -KeyNotExportable true -Verbose
+
+    Add-AzKeyVaultCertificate -VaultName $vaultName -Name $certificateName -CertificatePolicy $policy -Verbose
+
+    Add-AzKeyVaultCertificate -VaultName $vaultName -Name $RSAKeyLessCertificateName -CertificatePolicy $policyForKeyLessRSA -Verbose
+
+    Add-AzKeyVaultCertificate -VaultName $vaultName -Name $EC256KeyLessCertificateName -CertificatePolicy $policyForKeyLessEC256 -Verbose
+
+    Add-AzKeyVaultCertificate -VaultName $vaultName -Name $EC384KeyLessCertificateName -CertificatePolicy $policyForKeyLessEC384 -Verbose
+
+    Add-AzKeyVaultCertificate -VaultName $vaultName -Name $EC521KeyLessCertificateName -CertificatePolicy $policyForKeyLessEC521 -Verbose
+
+    $newCert = Get-AzKeyVaultCertificate -VaultName $vaultName -Name $certificateName
+
+    $tries = 0
+    do {
+      Write-Host 'Waiting for certificate creation completion...'
+      Start-Sleep -Seconds 10
+      $operation = Get-AzKeyVaultCertificateOperation -VaultName $vaultName -Name $certificateName
+      $tries++
+
+      if (($operation.Status -eq 'failed') -or ($operationRSA.Status -eq 'failed') -or ($operationEC256.Status -eq 'failed') -or ($operationEC384.Status -eq 'failed') -or ($operationEC521.Status -eq 'failed')) {
+        throw 'Creating certificate $certificateName in vault $vaultName failed with error $($operation.ErrorMessage)'
+      }
+
+      if ($tries -gt 120) {
+        throw 'Timed out waiting for creation of certificate $certificateName in vault $vaultName'
+      }
+    } while ($operation.Status -ne 'completed')
+
+      $DeploymentScriptOutputs['certThumbprint'] = $newCert.Thumbprint
+      $newCert | Out-String
+      ",
+      "cleanupPreference": "OnSuccess",
+      "retentionInterval": "P1D"
+      }
+    }
+  ],
+  "outputs": {
+    "CERTIFICATE_AZURE_KEYVAULT_ENDPOINT": {
+      "type": "string",
+      "value": "[variables('azureKeyVaultUrl')]"
+    },
+    "CERTIFICATE_AZURE_KEYVAULT_URI": {
+      "type": "string",
+      "value": "[variables('azureKeyVaultUrl')]"
+    },
+    "CERTIFICATE_AZURE_KEYVAULT_TENANT_ID": {
+      "type": "string",
+      "value": "[parameters('tenantId')]"
+    },
+    "CERTIFICATE_AZURE_KEYVAULT_CLIENT_ID": {
+      "type": "string",
+      "value": "[parameters('testApplicationId')]"
+    },
+    "CERTIFICATE_AZURE_KEYVAULT_CLIENT_SECRET": {
+      "type": "string",
+      "value": "[parameters('testApplicationSecret')]"
+    },
+    "CERTIFICATE_AZURE_KEYVAULT_CERTIFICATE_NAME": {
+      "type": "string",
+      "value": "[parameters('certificateName')]"
+    }
+  }
+}

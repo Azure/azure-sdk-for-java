@@ -1,7 +1,87 @@
 # Release History
 
-## 4.3.0-beta.1 (Unreleased)
+## 4.8.0-beta.1 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 4.7.1 (2021-11-11)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` from `1.21.0` to `1.22.0`.
+- Updated `azure-core-http-netty` from `1.11.1` to `1.11.2`.
+
+## 4.7.0 (2021-10-13)
+
+### Features Added
+- Added new Api Management service system events, `ApiManagementApiCreatedEventData`, `ApiManagementApiDeletedEventData`, 
+  `ApiManagementApiReleaseCreatedEventData`, `ApiManagementApiReleaseDeletedEventData`, 
+  `ApiManagementApiReleaseUpdatedEventData`, `ApiManagementApiUpdatedEventData`, `ApiManagementProductCreatedEventData`,
+  `ApiManagementProductDeletedEventData`, `ApiManagementProductUpdatedEventData`,
+  `ApiManagementSubscriptionCreatedEventData`, `ApiManagementSubscriptionDeletedEventData`,
+  `ApiManagementSubscriptionUpdatedEventData`,`ApiManagementUserCreatedEventData`, `ApiManagementUserDeletedEventData`,
+  `ApiManagementUserUpdatedEventData`. 
+- Added a new Media service system event, `MediaLiveEventChannelArchiveHeartbeatEventData`.
+- Added a new Communication service system event, `AcsUserDisconnectedEventData`.
+- Added fields `transcriptionLanguage`, `transcriptionState`, `ingestDriftValue`, `lastFragmentArrivalTime` 
+  to system event classes `MediaLiveEventIngestHeartbeatEventData`.
+
+### Other Changes
+
+#### Dependency Updates
+- Update `azure-core` dependency to `1.21.0`.
+- Update `azure-core-http-netty` dependency to `1.11.1`.
+
+## 4.6.1 (2021-09-10)
+
+### Other Changes
+
+#### Dependency Updates
+- Update `azure-core` dependency to `1.20.0`.
+- Update `azure-core-http-netty` dependency to `1.11.0`.
+
+## 4.6.0 (2021-08-11)
+### Features Added
+- Added new Container Service system event `ContainerServiceNewKubernetesVersionAvailableEventData`.
+
+### Dependency Updates
+- Update `azure-core` dependency to `1.19.0`.
+- Update `azure-core-http-netty` dependency to `1.10.2`.
+
+## 4.5.0 (2021-07-19)
+### Features Added
+- Added `EventGridPublisherClientBuilder#credential(TokenCredential credential)` to support Azure Active Directory authentication.
+- Added field `metadata` to system event classes `AcsChatMessageEditedEventData`, `AcsChatMessageEditedInThreadEventData`, `AcsChatMessageReceivedEventData` and `AcsChatMessageReceivedInThreadEventData`.
+
+### Dependency Updates
+- Update `azure-core` dependency to `1.18.0`.
+- Update `azure-core-http-netty` dependency to `1.10.1`.
+
+## 4.4.0 (2021-06-09)
+### New Features
+- Added new Storage system event `StorageBlobInventoryPolicyCompletedEventData`.
+- Added new attributes `contentLocation` and `metadataLocation` to `AcsRecordingChunkInfoProperties`.
+
+### Dependency Updates
+- Update `azure-core` dependency to `1.17.0`.
+- Update `azure-core-http-netty` dependency to `1.10.0`.
+
+
+## 4.3.0 (2021-05-12)
+### New Features
+- Added new Storage system events `StorageAsyncOperationInitiatedEventData` and `StorageBlobTierChangedEventData`.
+- Added new Policy Insights system events `PolicyInsightsPolicyStateCreatedEventData`, `PolicyInsightsPolicyStateChangedEventData`, and `PolicyInsightsPolicyStateDeletedEventData`.
+
+### Dependency Updates
+- Update `azure-core` dependency to `1.16.0`.
+- Update `azure-core-http-netty` dependency to `1.9.2`.
 
 ## 4.2.0 (2021-04-07)
 
@@ -76,4 +156,3 @@ set of libraries that are consistent across multiple services as well as differe
     Event Grid, Cloud Event, or a custom schema.
 + Parsing and deserialization of system and user-defined events from JSON payload
     at an event destination in EventGrid or Cloud Event schema.
-

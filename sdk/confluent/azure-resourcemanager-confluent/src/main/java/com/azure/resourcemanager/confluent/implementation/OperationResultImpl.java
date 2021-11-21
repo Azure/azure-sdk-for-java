@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.confluent.implementation;
 
-import com.azure.resourcemanager.confluent.ConfluentManager;
 import com.azure.resourcemanager.confluent.fluent.models.OperationResultInner;
 import com.azure.resourcemanager.confluent.models.OperationDisplay;
 import com.azure.resourcemanager.confluent.models.OperationResult;
@@ -12,9 +11,10 @@ import com.azure.resourcemanager.confluent.models.OperationResult;
 public final class OperationResultImpl implements OperationResult {
     private OperationResultInner innerObject;
 
-    private final ConfluentManager serviceManager;
+    private final com.azure.resourcemanager.confluent.ConfluentManager serviceManager;
 
-    OperationResultImpl(OperationResultInner innerObject, ConfluentManager serviceManager) {
+    OperationResultImpl(
+        OperationResultInner innerObject, com.azure.resourcemanager.confluent.ConfluentManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -35,7 +35,7 @@ public final class OperationResultImpl implements OperationResult {
         return this.innerObject;
     }
 
-    private ConfluentManager manager() {
+    private com.azure.resourcemanager.confluent.ConfluentManager manager() {
         return this.serviceManager;
     }
 }

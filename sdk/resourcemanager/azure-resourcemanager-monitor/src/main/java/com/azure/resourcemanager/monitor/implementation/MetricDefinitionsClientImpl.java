@@ -6,6 +6,7 @@ package com.azure.resourcemanager.monitor.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -58,8 +59,8 @@ public final class MetricDefinitionsClientImpl implements MetricDefinitionsClien
     @Host("{$host}")
     @ServiceInterface(name = "MonitorClientMetricD")
     private interface MetricDefinitionsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("/{resourceUri}/providers/microsoft.insights/metricDefinitions")
+        @Headers({"Content-Type: application/json"})
+        @Get("/{resourceUri}/providers/Microsoft.Insights/metricDefinitions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MetricDefinitionCollection>> list(
@@ -67,6 +68,7 @@ public final class MetricDefinitionsClientImpl implements MetricDefinitionsClien
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
             @QueryParam("api-version") String apiVersion,
             @QueryParam("metricnamespace") String metricnamespace,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -92,14 +94,16 @@ public final class MetricDefinitionsClientImpl implements MetricDefinitionsClien
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         final String apiVersion = "2018-01-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context -> service.list(this.client.getEndpoint(), resourceUri, apiVersion, metricnamespace, context))
+                context ->
+                    service.list(this.client.getEndpoint(), resourceUri, apiVersion, metricnamespace, accept, context))
             .<PagedResponse<MetricDefinitionInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -126,9 +130,10 @@ public final class MetricDefinitionsClientImpl implements MetricDefinitionsClien
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         final String apiVersion = "2018-01-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), resourceUri, apiVersion, metricnamespace, context)
+            .list(this.client.getEndpoint(), resourceUri, apiVersion, metricnamespace, accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -185,6 +190,21 @@ public final class MetricDefinitionsClientImpl implements MetricDefinitionsClien
      * Lists the metric definitions for the resource.
      *
      * @param resourceUri The identifier of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents collection of metric definitions.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<MetricDefinitionInner> list(String resourceUri) {
+        final String metricnamespace = null;
+        return new PagedIterable<>(listAsync(resourceUri, metricnamespace));
+    }
+
+    /**
+     * Lists the metric definitions for the resource.
+     *
+     * @param resourceUri The identifier of the resource.
      * @param metricnamespace Metric namespace to query metric definitions for.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -195,20 +215,5 @@ public final class MetricDefinitionsClientImpl implements MetricDefinitionsClien
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricDefinitionInner> list(String resourceUri, String metricnamespace, Context context) {
         return new PagedIterable<>(listAsync(resourceUri, metricnamespace, context));
-    }
-
-    /**
-     * Lists the metric definitions for the resource.
-     *
-     * @param resourceUri The identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of metric definitions.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MetricDefinitionInner> list(String resourceUri) {
-        final String metricnamespace = null;
-        return new PagedIterable<>(listAsync(resourceUri, metricnamespace));
     }
 }

@@ -4,8 +4,7 @@
 
 package com.azure.resourcemanager.batch.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,29 +12,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Contains information about a private link resource. */
-@JsonFlatten
-@Immutable
-public class PrivateLinkResourceInner extends ProxyResource {
+@Fluent
+public final class PrivateLinkResourceInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourceInner.class);
 
     /*
-     * The group id is used to establish the private link connection.
+     * The properties associated with the private link resource.
      */
-    @JsonProperty(value = "properties.groupId", access = JsonProperty.Access.WRITE_ONLY)
-    private String groupId;
-
-    /*
-     * The list of required members that are used to establish the private link
-     * connection.
-     */
-    @JsonProperty(value = "properties.requiredMembers", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> requiredMembers;
-
-    /*
-     * The list of required zone names for the private DNS resource name
-     */
-    @JsonProperty(value = "properties.requiredZoneNames", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> requiredZoneNames;
+    @JsonProperty(value = "properties")
+    private PrivateLinkResourceProperties innerProperties;
 
     /*
      * The ETag of the resource, used for concurrency statements.
@@ -44,31 +29,12 @@ public class PrivateLinkResourceInner extends ProxyResource {
     private String etag;
 
     /**
-     * Get the groupId property: The group id is used to establish the private link connection.
+     * Get the innerProperties property: The properties associated with the private link resource.
      *
-     * @return the groupId value.
+     * @return the innerProperties value.
      */
-    public String groupId() {
-        return this.groupId;
-    }
-
-    /**
-     * Get the requiredMembers property: The list of required members that are used to establish the private link
-     * connection.
-     *
-     * @return the requiredMembers value.
-     */
-    public List<String> requiredMembers() {
-        return this.requiredMembers;
-    }
-
-    /**
-     * Get the requiredZoneNames property: The list of required zone names for the private DNS resource name.
-     *
-     * @return the requiredZoneNames value.
-     */
-    public List<String> requiredZoneNames() {
-        return this.requiredZoneNames;
+    private PrivateLinkResourceProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -81,10 +47,42 @@ public class PrivateLinkResourceInner extends ProxyResource {
     }
 
     /**
+     * Get the groupId property: The group id of the private link resource. The group id is used to establish the
+     * private link connection.
+     *
+     * @return the groupId value.
+     */
+    public String groupId() {
+        return this.innerProperties() == null ? null : this.innerProperties().groupId();
+    }
+
+    /**
+     * Get the requiredMembers property: The list of required members that are used to establish the private link
+     * connection.
+     *
+     * @return the requiredMembers value.
+     */
+    public List<String> requiredMembers() {
+        return this.innerProperties() == null ? null : this.innerProperties().requiredMembers();
+    }
+
+    /**
+     * Get the requiredZoneNames property: The list of required zone names for the private DNS resource name.
+     *
+     * @return the requiredZoneNames value.
+     */
+    public List<String> requiredZoneNames() {
+        return this.innerProperties() == null ? null : this.innerProperties().requiredZoneNames();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

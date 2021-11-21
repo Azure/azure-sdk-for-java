@@ -5,25 +5,23 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The FileSystemTokenStore model. */
-@JsonFlatten
+/** The configuration settings of the storage of the tokens if a file system is used. */
 @Fluent
-public class FileSystemTokenStore extends ProxyOnlyResource {
+public final class FileSystemTokenStore {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(FileSystemTokenStore.class);
 
     /*
-     * The directory property.
+     * The directory in which the tokens will be stored.
      */
-    @JsonProperty(value = "properties.directory")
+    @JsonProperty(value = "directory")
     private String directory;
 
     /**
-     * Get the directory property: The directory property.
+     * Get the directory property: The directory in which the tokens will be stored.
      *
      * @return the directory value.
      */
@@ -32,7 +30,7 @@ public class FileSystemTokenStore extends ProxyOnlyResource {
     }
 
     /**
-     * Set the directory property: The directory property.
+     * Set the directory property: The directory in which the tokens will be stored.
      *
      * @param directory the directory value to set.
      * @return the FileSystemTokenStore object itself.
@@ -42,20 +40,11 @@ public class FileSystemTokenStore extends ProxyOnlyResource {
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public FileSystemTokenStore withKind(String kind) {
-        super.withKind(kind);
-        return this;
-    }
-
     /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
     }
 }

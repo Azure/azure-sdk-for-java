@@ -31,11 +31,19 @@ public class OutputFileBlobContainerDestination {
     /**
      * The URL of the container within Azure Blob Storage to which to upload
      * the file(s).
-     * The URL must include a Shared Access Signature (SAS) granting write
-     * permissions to the container.
+     * If not using a managed identity, the URL must include a Shared Access
+     * Signature (SAS) granting write permissions to the container.
      */
     @JsonProperty(value = "containerUrl", required = true)
     private String containerUrl;
+
+    /**
+     * The reference to the user assigned identity to use to access Azure Blob
+     * Storage specified by containerUrl.
+     * The identity must have write access to the Azure Blob Storage container.
+     */
+    @JsonProperty(value = "identityReference")
+    private ComputeNodeIdentityReference identityReference;
 
     /**
      * Get if filePattern refers to a specific file (i.e. contains no wildcards), then path is the name of the blob to which to upload that file. If filePattern contains one or more wildcards (and therefore may match multiple files), then path is the name of the blob virtual directory (which is prepended to each blob name) to which to upload the file(s). If omitted, file(s) are uploaded to the root of the container with a blob name matching their file name.
@@ -58,7 +66,7 @@ public class OutputFileBlobContainerDestination {
     }
 
     /**
-     * Get the URL must include a Shared Access Signature (SAS) granting write permissions to the container.
+     * Get if not using a managed identity, the URL must include a Shared Access Signature (SAS) granting write permissions to the container.
      *
      * @return the containerUrl value
      */
@@ -67,13 +75,33 @@ public class OutputFileBlobContainerDestination {
     }
 
     /**
-     * Set the URL must include a Shared Access Signature (SAS) granting write permissions to the container.
+     * Set if not using a managed identity, the URL must include a Shared Access Signature (SAS) granting write permissions to the container.
      *
      * @param containerUrl the containerUrl value to set
      * @return the OutputFileBlobContainerDestination object itself.
      */
     public OutputFileBlobContainerDestination withContainerUrl(String containerUrl) {
         this.containerUrl = containerUrl;
+        return this;
+    }
+
+    /**
+     * Get the identity must have write access to the Azure Blob Storage container.
+     *
+     * @return the identityReference value
+     */
+    public ComputeNodeIdentityReference identityReference() {
+        return this.identityReference;
+    }
+
+    /**
+     * Set the identity must have write access to the Azure Blob Storage container.
+     *
+     * @param identityReference the identityReference value to set
+     * @return the OutputFileBlobContainerDestination object itself.
+     */
+    public OutputFileBlobContainerDestination withIdentityReference(ComputeNodeIdentityReference identityReference) {
+        this.identityReference = identityReference;
         return this;
     }
 

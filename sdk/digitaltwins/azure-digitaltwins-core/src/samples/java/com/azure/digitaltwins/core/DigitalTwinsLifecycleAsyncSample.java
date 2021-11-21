@@ -7,7 +7,9 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.digitaltwins.core.helpers.ConsoleLogger;
 import com.azure.digitaltwins.core.helpers.FileHelper;
 import com.azure.digitaltwins.core.helpers.SamplesArguments;
+import com.azure.digitaltwins.core.helpers.SamplesConstants;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
+import com.azure.digitaltwins.core.models.QueryChargeHelper;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -18,15 +20,16 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
-import static com.azure.digitaltwins.core.models.QueryChargeHelper.*;
-import static com.azure.digitaltwins.core.helpers.SamplesConstants.*;
-import static com.azure.digitaltwins.core.helpers.SamplesUtil.IgnoreConflictError;
-import static com.azure.digitaltwins.core.helpers.SamplesUtil.IgnoreNotFoundError;
+import static com.azure.digitaltwins.core.helpers.SamplesUtil.IGNORE_CONFLICT_ERROR;
+import static com.azure.digitaltwins.core.helpers.SamplesUtil.IGNORE_NOT_FOUND_ERROR;
 import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
 import static java.util.Arrays.asList;
 
@@ -148,14 +151,14 @@ public class DigitalTwinsLifecycleAsyncSample {
             // Call APIs to retrieve all relationships.
             client.listRelationships(twinId, BasicRelationship.class)
                 .doOnNext(relationshipList::add)
-                .doOnError(IgnoreNotFoundError)
+                .doOnError(IGNORE_NOT_FOUND_ERROR)
                 .doOnTerminate(listRelationshipSemaphore::countDown)
                 .subscribe();
 
             // Call APIs to retrieve all incoming relationships.
             client.listIncomingRelationships(twinId, null)
                 .doOnNext(e -> relationshipList.add(MAPPER.convertValue(e, BasicRelationship.class)))
-                .doOnError(IgnoreNotFoundError)
+                .doOnError(IGNORE_NOT_FOUND_ERROR)
                 .doOnTerminate(listRelationshipSemaphore::countDown)
                 .subscribe();
 
@@ -170,7 +173,7 @@ public class DigitalTwinsLifecycleAsyncSample {
                                 ConsoleLogger.printSuccess("Found and deleted incoming relationship: " + relationship.getId());
                             }
                         })
-                        .doOnError(IgnoreNotFoundError)
+                        .doOnError(IGNORE_NOT_FOUND_ERROR)
                         .doOnTerminate(deleteRelationshipsSemaphore::release)
                         .subscribe());
             }
@@ -182,7 +185,7 @@ public class DigitalTwinsLifecycleAsyncSample {
                 // Call APIs to delete the twins.
                 client.deleteDigitalTwin(twinId)
                     .doOnSuccess(aVoid -> ConsoleLogger.printSuccess("Deleted digital twin: " + twinId))
-                    .doOnError(IgnoreNotFoundError)
+                    .doOnError(IGNORE_NOT_FOUND_ERROR)
                     .doOnTerminate(deleteTwinsLatch::countDown)
                     .subscribe();
 
@@ -200,7 +203,7 @@ public class DigitalTwinsLifecycleAsyncSample {
         ConsoleLogger.printHeader("Deleting models");
 
         // This is to ensure models are deleted in an order such that no other models are referencing it.
-        List<String> models = asList(ROOM_MODEL_ID, WIFI_MODEL_ID, BUILDING_MODEL_ID, FLOOR_MODEL_ID, HVAC_MODEL_ID);
+        List<String> models = asList(SamplesConstants.ROOM_MODEL_ID, SamplesConstants.WIFI_MODEL_ID, SamplesConstants.BUILDING_MODEL_ID, SamplesConstants.FLOOR_MODEL_ID, SamplesConstants.HVAC_MODEL_ID);
 
         // Call APIs to delete the models.
         // Note that we are blocking the async API call. This is to ensure models are deleted in an order such that no other models are referencing it.
@@ -232,7 +235,7 @@ public class DigitalTwinsLifecycleAsyncSample {
             .doOnNext(listOfModelData -> listOfModelData.forEach(
                 modelData -> ConsoleLogger.printSuccess("Created model: " + modelData.getModelId())
             ))
-            .doOnError(IgnoreConflictError)
+            .doOnError(IGNORE_CONFLICT_ERROR)
             .doOnTerminate(createModelsLatch::countDown)
             .subscribe();
 
@@ -250,8 +253,8 @@ public class DigitalTwinsLifecycleAsyncSample {
 
         // Call API to list the models. For each async operation, once the operation is completed successfully, a latch is counted down.
         client.listModels()
-            .doOnNext(modelData -> ConsoleLogger.printSuccess("Retrieved model: " + modelData.getModelId() + ", display name '" + modelData.getDisplayNameLanguageMap().get("en") + "'," +
-                    " upload time '" + modelData.getUploadedOn() + "' and decommissioned '" + modelData.isDecommissioned() + "'"))
+            .doOnNext(modelData -> ConsoleLogger.printSuccess("Retrieved model: " + modelData.getModelId() + ", display name '" + modelData.getDisplayNameLanguageMap().get("en") + "',"
+                + " upload time '" + modelData.getUploadedOn() + "' and decommissioned '" + modelData.isDecommissioned() + "'"))
             .doOnError(throwable -> ConsoleLogger.printFatal("List models error: " + throwable))
             .doOnTerminate(listModelsLatch::countDown)
             .subscribe();
@@ -305,7 +308,7 @@ public class DigitalTwinsLifecycleAsyncSample {
                             try {
                                 client.createOrReplaceRelationship(relationship.getSourceId(), relationship.getId(), MAPPER.writeValueAsString(relationship), String.class)
                                     .doOnSuccess(s -> ConsoleLogger.printSuccess("Linked twin " + relationship.getSourceId() + " to twin " + relationship.getTargetId() + " as " + relationship.getName()))
-                                    .doOnError(IgnoreConflictError)
+                                    .doOnError(IGNORE_CONFLICT_ERROR)
                                     .doOnTerminate(connectTwinsLatch::countDown)
                                     .subscribe();
                             } catch (JsonProcessingException e) {
@@ -351,9 +354,8 @@ public class DigitalTwinsLifecycleAsyncSample {
         // Call API to query digital twins. For each async operation, once the operation is completed successfully, a latch is counted down.
         client.query("SELECT * FROM digitaltwins", BasicDigitalTwin.class, null)
             .byPage()
-            .doOnNext(page ->
-            {
-                ConsoleLogger.printHeader("Query charge: " + getQueryCharge(page));
+            .doOnNext(page -> {
+                ConsoleLogger.printHeader("Query charge: " + QueryChargeHelper.getQueryCharge(page));
                 page.getValue()
                     .forEach(item -> ConsoleLogger.printHeader("Found digital twin: " + item.getId()));
             })

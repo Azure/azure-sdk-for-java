@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.SwitchActivityTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -19,98 +19,23 @@ import java.util.List;
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Switch")
-@JsonFlatten
 @Fluent
-public class SwitchActivity extends ControlActivity {
+public final class SwitchActivity extends ControlActivity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SwitchActivity.class);
 
     /*
-     * An expression that would evaluate to a string or integer. This is used
-     * to determine the block of activities in cases that will be executed.
+     * Switch activity properties.
      */
-    @JsonProperty(value = "typeProperties.on", required = true)
-    private Expression on;
-
-    /*
-     * List of cases that correspond to expected values of the 'on' property.
-     * This is an optional property and if not provided, the activity will
-     * execute activities provided in defaultActivities.
-     */
-    @JsonProperty(value = "typeProperties.cases")
-    private List<SwitchCase> cases;
-
-    /*
-     * List of activities to execute if no case condition is satisfied. This is
-     * an optional property and if not provided, the activity will exit without
-     * any action.
-     */
-    @JsonProperty(value = "typeProperties.defaultActivities")
-    private List<Activity> defaultActivities;
+    @JsonProperty(value = "typeProperties", required = true)
+    private SwitchActivityTypeProperties innerTypeProperties = new SwitchActivityTypeProperties();
 
     /**
-     * Get the on property: An expression that would evaluate to a string or integer. This is used to determine the
-     * block of activities in cases that will be executed.
+     * Get the innerTypeProperties property: Switch activity properties.
      *
-     * @return the on value.
+     * @return the innerTypeProperties value.
      */
-    public Expression on() {
-        return this.on;
-    }
-
-    /**
-     * Set the on property: An expression that would evaluate to a string or integer. This is used to determine the
-     * block of activities in cases that will be executed.
-     *
-     * @param on the on value to set.
-     * @return the SwitchActivity object itself.
-     */
-    public SwitchActivity withOn(Expression on) {
-        this.on = on;
-        return this;
-    }
-
-    /**
-     * Get the cases property: List of cases that correspond to expected values of the 'on' property. This is an
-     * optional property and if not provided, the activity will execute activities provided in defaultActivities.
-     *
-     * @return the cases value.
-     */
-    public List<SwitchCase> cases() {
-        return this.cases;
-    }
-
-    /**
-     * Set the cases property: List of cases that correspond to expected values of the 'on' property. This is an
-     * optional property and if not provided, the activity will execute activities provided in defaultActivities.
-     *
-     * @param cases the cases value to set.
-     * @return the SwitchActivity object itself.
-     */
-    public SwitchActivity withCases(List<SwitchCase> cases) {
-        this.cases = cases;
-        return this;
-    }
-
-    /**
-     * Get the defaultActivities property: List of activities to execute if no case condition is satisfied. This is an
-     * optional property and if not provided, the activity will exit without any action.
-     *
-     * @return the defaultActivities value.
-     */
-    public List<Activity> defaultActivities() {
-        return this.defaultActivities;
-    }
-
-    /**
-     * Set the defaultActivities property: List of activities to execute if no case condition is satisfied. This is an
-     * optional property and if not provided, the activity will exit without any action.
-     *
-     * @param defaultActivities the defaultActivities value to set.
-     * @return the SwitchActivity object itself.
-     */
-    public SwitchActivity withDefaultActivities(List<Activity> defaultActivities) {
-        this.defaultActivities = defaultActivities;
-        return this;
+    private SwitchActivityTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -142,6 +67,81 @@ public class SwitchActivity extends ControlActivity {
     }
 
     /**
+     * Get the on property: An expression that would evaluate to a string or integer. This is used to determine the
+     * block of activities in cases that will be executed.
+     *
+     * @return the on value.
+     */
+    public Expression on() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().on();
+    }
+
+    /**
+     * Set the on property: An expression that would evaluate to a string or integer. This is used to determine the
+     * block of activities in cases that will be executed.
+     *
+     * @param on the on value to set.
+     * @return the SwitchActivity object itself.
+     */
+    public SwitchActivity withOn(Expression on) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SwitchActivityTypeProperties();
+        }
+        this.innerTypeProperties().withOn(on);
+        return this;
+    }
+
+    /**
+     * Get the cases property: List of cases that correspond to expected values of the 'on' property. This is an
+     * optional property and if not provided, the activity will execute activities provided in defaultActivities.
+     *
+     * @return the cases value.
+     */
+    public List<SwitchCase> cases() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().cases();
+    }
+
+    /**
+     * Set the cases property: List of cases that correspond to expected values of the 'on' property. This is an
+     * optional property and if not provided, the activity will execute activities provided in defaultActivities.
+     *
+     * @param cases the cases value to set.
+     * @return the SwitchActivity object itself.
+     */
+    public SwitchActivity withCases(List<SwitchCase> cases) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SwitchActivityTypeProperties();
+        }
+        this.innerTypeProperties().withCases(cases);
+        return this;
+    }
+
+    /**
+     * Get the defaultActivities property: List of activities to execute if no case condition is satisfied. This is an
+     * optional property and if not provided, the activity will exit without any action.
+     *
+     * @return the defaultActivities value.
+     */
+    public List<Activity> defaultActivities() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().defaultActivities();
+    }
+
+    /**
+     * Set the defaultActivities property: List of activities to execute if no case condition is satisfied. This is an
+     * optional property and if not provided, the activity will exit without any action.
+     *
+     * @param defaultActivities the defaultActivities value to set.
+     * @return the SwitchActivity object itself.
+     */
+    public SwitchActivity withDefaultActivities(List<Activity> defaultActivities) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SwitchActivityTypeProperties();
+        }
+        this.innerTypeProperties().withDefaultActivities(defaultActivities);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -149,18 +149,13 @@ public class SwitchActivity extends ControlActivity {
     @Override
     public void validate() {
         super.validate();
-        if (on() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property on in model SwitchActivity"));
+                    new IllegalArgumentException(
+                        "Missing required property innerTypeProperties in model SwitchActivity"));
         } else {
-            on().validate();
-        }
-        if (cases() != null) {
-            cases().forEach(e -> e.validate());
-        }
-        if (defaultActivities() != null) {
-            defaultActivities().forEach(e -> e.validate());
+            innerTypeProperties().validate();
         }
     }
 }

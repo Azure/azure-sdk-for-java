@@ -103,7 +103,7 @@ public interface PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private cloud resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateCloudInner>, PrivateCloudInner> beginCreateOrUpdate(
         String resourceGroupName, String privateCloudName, PrivateCloudInner privateCloud);
 
@@ -119,7 +119,7 @@ public interface PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private cloud resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateCloudInner>, PrivateCloudInner> beginCreateOrUpdate(
         String resourceGroupName, String privateCloudName, PrivateCloudInner privateCloud, Context context);
 
@@ -164,7 +164,7 @@ public interface PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private cloud resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateCloudInner>, PrivateCloudInner> beginUpdate(
         String resourceGroupName, String privateCloudName, PrivateCloudUpdate privateCloudUpdate);
 
@@ -180,7 +180,7 @@ public interface PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private cloud resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateCloudInner>, PrivateCloudInner> beginUpdate(
         String resourceGroupName, String privateCloudName, PrivateCloudUpdate privateCloudUpdate, Context context);
 
@@ -224,7 +224,7 @@ public interface PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateCloudName);
 
     /**
@@ -238,7 +238,7 @@ public interface PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateCloudName, Context context);
 
     /**
@@ -265,6 +265,112 @@ public interface PrivateCloudsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String privateCloudName, Context context);
+
+    /**
+     * Rotate the vCenter password.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginRotateVcenterPassword(String resourceGroupName, String privateCloudName);
+
+    /**
+     * Rotate the vCenter password.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginRotateVcenterPassword(
+        String resourceGroupName, String privateCloudName, Context context);
+
+    /**
+     * Rotate the vCenter password.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void rotateVcenterPassword(String resourceGroupName, String privateCloudName);
+
+    /**
+     * Rotate the vCenter password.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void rotateVcenterPassword(String resourceGroupName, String privateCloudName, Context context);
+
+    /**
+     * Rotate the NSX-T Manager password.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginRotateNsxtPassword(String resourceGroupName, String privateCloudName);
+
+    /**
+     * Rotate the NSX-T Manager password.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginRotateNsxtPassword(
+        String resourceGroupName, String privateCloudName, Context context);
+
+    /**
+     * Rotate the NSX-T Manager password.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void rotateNsxtPassword(String resourceGroupName, String privateCloudName);
+
+    /**
+     * Rotate the NSX-T Manager password.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void rotateNsxtPassword(String resourceGroupName, String privateCloudName, Context context);
 
     /**
      * List the admin credentials for the private cloud.

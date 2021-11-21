@@ -28,16 +28,16 @@ public class AzureBlobFileSystemConfiguration {
 
     /**
      * The Azure Storage Account key.
-     * This property is mutually exclusive with sasKey and one must be
-     * specified.
+     * This property is mutually exclusive with both sasKey and identity;
+     * exactly one must be specified.
      */
     @JsonProperty(value = "accountKey")
     private String accountKey;
 
     /**
      * The Azure Storage SAS token.
-     * This property is mutually exclusive with accountKey and one must be
-     * specified.
+     * This property is mutually exclusive with both accountKey and identity;
+     * exactly one must be specified.
      */
     @JsonProperty(value = "sasKey")
     private String sasKey;
@@ -57,6 +57,15 @@ public class AzureBlobFileSystemConfiguration {
      */
     @JsonProperty(value = "relativeMountPath", required = true)
     private String relativeMountPath;
+
+    /**
+     * The reference to the user assigned identity to use to access
+     * containerName.
+     * This property is mutually exclusive with both accountKey and sasKey;
+     * exactly one must be specified.
+     */
+    @JsonProperty(value = "identityReference")
+    private ComputeNodeIdentityReference identityReference;
 
     /**
      * Get the accountName value.
@@ -99,7 +108,7 @@ public class AzureBlobFileSystemConfiguration {
     }
 
     /**
-     * Get this property is mutually exclusive with sasKey and one must be specified.
+     * Get this property is mutually exclusive with both sasKey and identity; exactly one must be specified.
      *
      * @return the accountKey value
      */
@@ -108,7 +117,7 @@ public class AzureBlobFileSystemConfiguration {
     }
 
     /**
-     * Set this property is mutually exclusive with sasKey and one must be specified.
+     * Set this property is mutually exclusive with both sasKey and identity; exactly one must be specified.
      *
      * @param accountKey the accountKey value to set
      * @return the AzureBlobFileSystemConfiguration object itself.
@@ -119,7 +128,7 @@ public class AzureBlobFileSystemConfiguration {
     }
 
     /**
-     * Get this property is mutually exclusive with accountKey and one must be specified.
+     * Get this property is mutually exclusive with both accountKey and identity; exactly one must be specified.
      *
      * @return the sasKey value
      */
@@ -128,7 +137,7 @@ public class AzureBlobFileSystemConfiguration {
     }
 
     /**
-     * Set this property is mutually exclusive with accountKey and one must be specified.
+     * Set this property is mutually exclusive with both accountKey and identity; exactly one must be specified.
      *
      * @param sasKey the sasKey value to set
      * @return the AzureBlobFileSystemConfiguration object itself.
@@ -175,6 +184,26 @@ public class AzureBlobFileSystemConfiguration {
      */
     public AzureBlobFileSystemConfiguration withRelativeMountPath(String relativeMountPath) {
         this.relativeMountPath = relativeMountPath;
+        return this;
+    }
+
+    /**
+     * Get this property is mutually exclusive with both accountKey and sasKey; exactly one must be specified.
+     *
+     * @return the identityReference value
+     */
+    public ComputeNodeIdentityReference identityReference() {
+        return this.identityReference;
+    }
+
+    /**
+     * Set this property is mutually exclusive with both accountKey and sasKey; exactly one must be specified.
+     *
+     * @param identityReference the identityReference value to set
+     * @return the AzureBlobFileSystemConfiguration object itself.
+     */
+    public AzureBlobFileSystemConfiguration withIdentityReference(ComputeNodeIdentityReference identityReference) {
+        this.identityReference = identityReference;
         return this;
     }
 

@@ -47,7 +47,7 @@ public class SettingSelector {
     /**
      * Gets the expressions to filter {@link ConfigurationSetting#getKey() keys} on for the request.
      *
-     * <p>See <a href="https://github.com/Azure/AppConfiguration/blob/master/docs/REST/kv.md#filtering">Filtering</a>
+     * <p>See <a href="https://docs.microsoft.com/azure/azure-app-configuration/rest-api-key-value#supported-filters">Filtering</a>
      * for more information about these supported filters.</p>
      *
      * @return The expressions to filter ConfigurationSetting keys on.
@@ -59,7 +59,7 @@ public class SettingSelector {
     /**
      * Sets the expressions to filter {@link ConfigurationSetting#getKey() keys} on for the request.
      *
-     * <p>See <a href="https://github.com/Azure/AppConfiguration/blob/master/docs/REST/kv.md#filtering">Filtering</a>
+     * <p>See <a href="https://docs.microsoft.com/azure/azure-app-configuration/rest-api-key-value#supported-filters">Filtering</a>
      * for more information about these supported filters.</p>
      *
      * @param keyFilter The expressions to filter ConfigurationSetting keys on.
@@ -74,7 +74,7 @@ public class SettingSelector {
      * Gets the labels used to filter settings based on their {@link ConfigurationSetting#getLabel() label} in the
      * service.
      *
-     * <p>See <a href="https://github.com/Azure/AppConfiguration/blob/master/docs/REST/kv.md#filtering">Filtering</a>
+     * <p>See <a href="https://docs.microsoft.com/azure/azure-app-configuration/rest-api-key-value#supported-filters">Filtering</a>
      * for more information about these supported filters.</p>
      *
      * @return labels The labels used to filter GET requests from the service.
@@ -86,7 +86,7 @@ public class SettingSelector {
     /**
      * Sets the expression to filter {@link ConfigurationSetting#getLabel() labels} on for the request.
      *
-     * <p>See <a href="https://github.com/Azure/AppConfiguration/blob/master/docs/REST/kv.md#filtering">Filtering</a>
+     * <p>See <a href="https://docs.microsoft.com/azure/azure-app-configuration/rest-api-key-value#supported-filters">Filtering</a>
      * for more information about these supported filters.</p>
      *
      * @param labelFilter The expressions to filter ConfigurationSetting labels on.

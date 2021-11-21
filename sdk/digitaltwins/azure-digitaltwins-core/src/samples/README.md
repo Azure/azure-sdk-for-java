@@ -92,9 +92,9 @@ client = new DigitalTwinsClientBuilder()
 It provides an opportunity to override default behavior including:
 
 - Specifying API version
-- Overriding [HttpPipeline](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/http/HttpPipeline.java).
-- Enabling [HttpLogOptions](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/http/policy/HttpLogOptions.java).
-- Controlling [retry strategy](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/http/policy/RetryPolicy.java).
+- Overriding [HttpPipeline](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/http/HttpPipeline.java).
+- Enabling [HttpLogOptions](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/http/policy/HttpLogOptions.java).
+- Controlling [retry strategy](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/http/policy/RetryPolicy.java).
 
 ## Working with Response types
 
@@ -122,7 +122,7 @@ DigitalTwinsModelData modelObject = modelResponse.getValue();
 ### Create models
 
 Let's create models using the code below. You need to pass in `List<string>` containing list of json models.
-Check out sample models [here](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/digitaltwins/azure-digitaltwins-core/src/samples/resources/DTDL/Models).
+Check out sample models [here](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/digitaltwins/azure-digitaltwins-core/src/samples/resources/DTDL/Models).
 
 Example of using sync client to create models.
 
@@ -137,7 +137,7 @@ for (DigitalTwinsModelData model : modelList) {
 
 ### List models
 
-Using the sync client, `listModels`, all created models are returned as [`PagedIterable<DigitalTwinsModelData>`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/http/rest/PagedIterable.java) while the async API will return a [`PagedFlux<ModelData>`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/http/rest/PagedFlux.java).
+Using the sync client, `listModels`, all created models are returned as [`PagedIterable<DigitalTwinsModelData>`](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/http/rest/PagedIterable.java) while the async API will return a [`PagedFlux<ModelData>`](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/http/rest/PagedFlux.java).
 
 Example of using the async client to list all models:
 
@@ -190,7 +190,7 @@ client.deleteModel(modelId);
 
 ### Create digital twins
 
-For Creating Twin you will need to provide Id of a digital Twin such as `myTwin` and the application/json digital twin based on the model created earlier. You can look at sample application/json [here](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/digitaltwins/azure-digitaltwins-core/src/samples/resources/DTDL/DigitalTwins).
+For Creating Twin you will need to provide Id of a digital Twin such as `myTwin` and the application/json digital twin based on the model created earlier. You can look at sample application/json [here](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/digitaltwins/azure-digitaltwins-core/src/samples/resources/DTDL/DigitalTwins).
 
 One option is to use the provided class BasicDigitalTwin for serialization and deserialization.
 
@@ -298,7 +298,7 @@ String getComponentResponse = client.getComponent(digitalTwinId, "Component1", S
 
 ### Create digital twin relationships
 
-`createRelationship` creates a relationship on a digital twin provided with Id of a digital twin, name of relationship such as "contains", Id of a relationship such as "FloorContainsRoom" and an application/json relationship to be created. Must contain property with key "$targetId" to specify the target of the relationship. Sample payloads for relationships can be found [here](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/digitaltwins/azure-digitaltwins-core/src/samples/resources/DTDL/Relationships/HospitalRelationships.json).
+`createRelationship` creates a relationship on a digital twin provided with Id of a digital twin, name of relationship such as "contains", Id of a relationship such as "FloorContainsRoom" and an application/json relationship to be created. Must contain property with key "$targetId" to specify the target of the relationship. Sample payloads for relationships can be found [here](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/digitaltwins/azure-digitaltwins-core/src/samples/resources/DTDL/Relationships/HospitalRelationships.json).
 
 One option is to use the provided class BasicRelationship for serialization and deserialization.
 

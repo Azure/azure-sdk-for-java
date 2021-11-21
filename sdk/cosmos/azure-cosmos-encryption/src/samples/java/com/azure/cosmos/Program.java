@@ -63,6 +63,7 @@ public class Program {
     private static CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient = null;
     private static CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase = null;
     private static CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer = null;
+    private static AzureKeyVaultKeyStoreProvider encryptionKeyStoreProvider = null;
 
     public static void main(String[] args) throws Exception {
         try {
@@ -98,7 +99,7 @@ public class Program {
         // This application must have keys/wrapKey and keys/unwrapKey permissions
         // on the keys that will be used for encryption.
         TokenCredential tokenCredentials = Program.getTokenCredential(configuration);
-        AzureKeyVaultKeyStoreProvider encryptionKeyStoreProvider = new AzureKeyVaultKeyStoreProvider(tokenCredentials);
+        encryptionKeyStoreProvider = new AzureKeyVaultKeyStoreProvider(tokenCredentials);
 
         return CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(asyncClient, encryptionKeyStoreProvider);
     }
@@ -132,13 +133,13 @@ public class Program {
             throw new IllegalArgumentException("Please specify a valid MasterKeyUrl in the appSettings.json");
         }
 
-        EncryptionKeyWrapMetadata metadata = new EncryptionKeyWrapMetadata(dataEncryptionKeyId, masterKeyUrlFromConfig);
+        EncryptionKeyWrapMetadata metadata = new EncryptionKeyWrapMetadata(encryptionKeyStoreProvider.getProviderName(), dataEncryptionKeyId, masterKeyUrlFromConfig);
 
         /// Generates an encryption key, wraps it using the key wrap metadata provided
         /// and saves the wrapped encryption key as an asynchronous operation in the Azure Cosmos service.
         CosmosClientEncryptionKeyProperties keyProperties = cosmosEncryptionAsyncDatabase.createClientEncryptionKey(
             dataEncryptionKeyId,
-            CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256, metadata).block().getProperties();
+            CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256, metadata).block().getProperties();
 
         System.out.println("The demo will create a 1000 RU/s container, with encryption policy on " +
             "account number, press enter key to continue.");
@@ -148,7 +149,7 @@ public class Program {
         includedPath.setClientEncryptionKeyId(dataEncryptionKeyId);
         includedPath.setPath("/accountNumber");
         includedPath.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
-        includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
+        includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
         List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
         paths.add(includedPath);
 

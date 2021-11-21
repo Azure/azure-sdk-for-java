@@ -3,6 +3,9 @@
 
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpTransportType;
+import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -14,6 +17,10 @@ public class AzureServiceBusProperties {
     private String namespace;
 
     private String connectionString;
+
+    private AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(ServiceBusConstants.OPERATION_TIMEOUT);
+
+    private AmqpTransportType transportType = AmqpTransportType.AMQP;
 
     public String getNamespace() {
         return namespace;
@@ -31,4 +38,19 @@ public class AzureServiceBusProperties {
         this.connectionString = connectionString;
     }
 
+    public AmqpTransportType getTransportType() {
+        return transportType;
+    }
+
+    public void setTransportType(AmqpTransportType transportType) {
+        this.transportType = transportType;
+    }
+
+    public AmqpRetryOptions getRetryOptions() {
+        return retryOptions;
+    }
+
+    public void setRetryOptions(AmqpRetryOptions retryOptions) {
+        this.retryOptions = retryOptions;
+    }
 }

@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.GoogleAdWordsLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,331 +17,24 @@ import java.util.Map;
 /** Google AdWords service linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("GoogleAdWords")
-@JsonFlatten
 @Fluent
-public class GoogleAdWordsLinkedService extends LinkedService {
+public final class GoogleAdWordsLinkedService extends LinkedService {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GoogleAdWordsLinkedService.class);
 
     /*
-     * The Client customer ID of the AdWords account that you want to fetch
-     * report data for.
+     * Google AdWords service linked service properties.
      */
-    @JsonProperty(value = "typeProperties.clientCustomerID", required = true)
-    private Object clientCustomerId;
-
-    /*
-     * The developer token associated with the manager account that you use to
-     * grant access to the AdWords API.
-     */
-    @JsonProperty(value = "typeProperties.developerToken", required = true)
-    private SecretBase developerToken;
-
-    /*
-     * The OAuth 2.0 authentication mechanism used for authentication.
-     * ServiceAuthentication can only be used on self-hosted IR.
-     */
-    @JsonProperty(value = "typeProperties.authenticationType", required = true)
-    private GoogleAdWordsAuthenticationType authenticationType;
-
-    /*
-     * The refresh token obtained from Google for authorizing access to AdWords
-     * for UserAuthentication.
-     */
-    @JsonProperty(value = "typeProperties.refreshToken")
-    private SecretBase refreshToken;
-
-    /*
-     * The client id of the google application used to acquire the refresh
-     * token. Type: string (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.clientId")
-    private Object clientId;
-
-    /*
-     * The client secret of the google application used to acquire the refresh
-     * token.
-     */
-    @JsonProperty(value = "typeProperties.clientSecret")
-    private SecretBase clientSecret;
-
-    /*
-     * The service account email ID that is used for ServiceAuthentication and
-     * can only be used on self-hosted IR.
-     */
-    @JsonProperty(value = "typeProperties.email")
-    private Object email;
-
-    /*
-     * The full path to the .p12 key file that is used to authenticate the
-     * service account email address and can only be used on self-hosted IR.
-     */
-    @JsonProperty(value = "typeProperties.keyFilePath")
-    private Object keyFilePath;
-
-    /*
-     * The full path of the .pem file containing trusted CA certificates for
-     * verifying the server when connecting over SSL. This property can only be
-     * set when using SSL on self-hosted IR. The default value is the
-     * cacerts.pem file installed with the IR.
-     */
-    @JsonProperty(value = "typeProperties.trustedCertPath")
-    private Object trustedCertPath;
-
-    /*
-     * Specifies whether to use a CA certificate from the system trust store or
-     * from a specified PEM file. The default value is false.
-     */
-    @JsonProperty(value = "typeProperties.useSystemTrustStore")
-    private Object useSystemTrustStore;
-
-    /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
-    private Object encryptedCredential;
+    @JsonProperty(value = "typeProperties", required = true)
+    private GoogleAdWordsLinkedServiceTypeProperties innerTypeProperties =
+        new GoogleAdWordsLinkedServiceTypeProperties();
 
     /**
-     * Get the clientCustomerId property: The Client customer ID of the AdWords account that you want to fetch report
-     * data for.
+     * Get the innerTypeProperties property: Google AdWords service linked service properties.
      *
-     * @return the clientCustomerId value.
+     * @return the innerTypeProperties value.
      */
-    public Object clientCustomerId() {
-        return this.clientCustomerId;
-    }
-
-    /**
-     * Set the clientCustomerId property: The Client customer ID of the AdWords account that you want to fetch report
-     * data for.
-     *
-     * @param clientCustomerId the clientCustomerId value to set.
-     * @return the GoogleAdWordsLinkedService object itself.
-     */
-    public GoogleAdWordsLinkedService withClientCustomerId(Object clientCustomerId) {
-        this.clientCustomerId = clientCustomerId;
-        return this;
-    }
-
-    /**
-     * Get the developerToken property: The developer token associated with the manager account that you use to grant
-     * access to the AdWords API.
-     *
-     * @return the developerToken value.
-     */
-    public SecretBase developerToken() {
-        return this.developerToken;
-    }
-
-    /**
-     * Set the developerToken property: The developer token associated with the manager account that you use to grant
-     * access to the AdWords API.
-     *
-     * @param developerToken the developerToken value to set.
-     * @return the GoogleAdWordsLinkedService object itself.
-     */
-    public GoogleAdWordsLinkedService withDeveloperToken(SecretBase developerToken) {
-        this.developerToken = developerToken;
-        return this;
-    }
-
-    /**
-     * Get the authenticationType property: The OAuth 2.0 authentication mechanism used for authentication.
-     * ServiceAuthentication can only be used on self-hosted IR.
-     *
-     * @return the authenticationType value.
-     */
-    public GoogleAdWordsAuthenticationType authenticationType() {
-        return this.authenticationType;
-    }
-
-    /**
-     * Set the authenticationType property: The OAuth 2.0 authentication mechanism used for authentication.
-     * ServiceAuthentication can only be used on self-hosted IR.
-     *
-     * @param authenticationType the authenticationType value to set.
-     * @return the GoogleAdWordsLinkedService object itself.
-     */
-    public GoogleAdWordsLinkedService withAuthenticationType(GoogleAdWordsAuthenticationType authenticationType) {
-        this.authenticationType = authenticationType;
-        return this;
-    }
-
-    /**
-     * Get the refreshToken property: The refresh token obtained from Google for authorizing access to AdWords for
-     * UserAuthentication.
-     *
-     * @return the refreshToken value.
-     */
-    public SecretBase refreshToken() {
-        return this.refreshToken;
-    }
-
-    /**
-     * Set the refreshToken property: The refresh token obtained from Google for authorizing access to AdWords for
-     * UserAuthentication.
-     *
-     * @param refreshToken the refreshToken value to set.
-     * @return the GoogleAdWordsLinkedService object itself.
-     */
-    public GoogleAdWordsLinkedService withRefreshToken(SecretBase refreshToken) {
-        this.refreshToken = refreshToken;
-        return this;
-    }
-
-    /**
-     * Get the clientId property: The client id of the google application used to acquire the refresh token. Type:
-     * string (or Expression with resultType string).
-     *
-     * @return the clientId value.
-     */
-    public Object clientId() {
-        return this.clientId;
-    }
-
-    /**
-     * Set the clientId property: The client id of the google application used to acquire the refresh token. Type:
-     * string (or Expression with resultType string).
-     *
-     * @param clientId the clientId value to set.
-     * @return the GoogleAdWordsLinkedService object itself.
-     */
-    public GoogleAdWordsLinkedService withClientId(Object clientId) {
-        this.clientId = clientId;
-        return this;
-    }
-
-    /**
-     * Get the clientSecret property: The client secret of the google application used to acquire the refresh token.
-     *
-     * @return the clientSecret value.
-     */
-    public SecretBase clientSecret() {
-        return this.clientSecret;
-    }
-
-    /**
-     * Set the clientSecret property: The client secret of the google application used to acquire the refresh token.
-     *
-     * @param clientSecret the clientSecret value to set.
-     * @return the GoogleAdWordsLinkedService object itself.
-     */
-    public GoogleAdWordsLinkedService withClientSecret(SecretBase clientSecret) {
-        this.clientSecret = clientSecret;
-        return this;
-    }
-
-    /**
-     * Get the email property: The service account email ID that is used for ServiceAuthentication and can only be used
-     * on self-hosted IR.
-     *
-     * @return the email value.
-     */
-    public Object email() {
-        return this.email;
-    }
-
-    /**
-     * Set the email property: The service account email ID that is used for ServiceAuthentication and can only be used
-     * on self-hosted IR.
-     *
-     * @param email the email value to set.
-     * @return the GoogleAdWordsLinkedService object itself.
-     */
-    public GoogleAdWordsLinkedService withEmail(Object email) {
-        this.email = email;
-        return this;
-    }
-
-    /**
-     * Get the keyFilePath property: The full path to the .p12 key file that is used to authenticate the service account
-     * email address and can only be used on self-hosted IR.
-     *
-     * @return the keyFilePath value.
-     */
-    public Object keyFilePath() {
-        return this.keyFilePath;
-    }
-
-    /**
-     * Set the keyFilePath property: The full path to the .p12 key file that is used to authenticate the service account
-     * email address and can only be used on self-hosted IR.
-     *
-     * @param keyFilePath the keyFilePath value to set.
-     * @return the GoogleAdWordsLinkedService object itself.
-     */
-    public GoogleAdWordsLinkedService withKeyFilePath(Object keyFilePath) {
-        this.keyFilePath = keyFilePath;
-        return this;
-    }
-
-    /**
-     * Get the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for verifying
-     * the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default
-     * value is the cacerts.pem file installed with the IR.
-     *
-     * @return the trustedCertPath value.
-     */
-    public Object trustedCertPath() {
-        return this.trustedCertPath;
-    }
-
-    /**
-     * Set the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for verifying
-     * the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default
-     * value is the cacerts.pem file installed with the IR.
-     *
-     * @param trustedCertPath the trustedCertPath value to set.
-     * @return the GoogleAdWordsLinkedService object itself.
-     */
-    public GoogleAdWordsLinkedService withTrustedCertPath(Object trustedCertPath) {
-        this.trustedCertPath = trustedCertPath;
-        return this;
-    }
-
-    /**
-     * Get the useSystemTrustStore property: Specifies whether to use a CA certificate from the system trust store or
-     * from a specified PEM file. The default value is false.
-     *
-     * @return the useSystemTrustStore value.
-     */
-    public Object useSystemTrustStore() {
-        return this.useSystemTrustStore;
-    }
-
-    /**
-     * Set the useSystemTrustStore property: Specifies whether to use a CA certificate from the system trust store or
-     * from a specified PEM file. The default value is false.
-     *
-     * @param useSystemTrustStore the useSystemTrustStore value to set.
-     * @return the GoogleAdWordsLinkedService object itself.
-     */
-    public GoogleAdWordsLinkedService withUseSystemTrustStore(Object useSystemTrustStore) {
-        this.useSystemTrustStore = useSystemTrustStore;
-        return this;
-    }
-
-    /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @return the encryptedCredential value.
-     */
-    public Object encryptedCredential() {
-        return this.encryptedCredential;
-    }
-
-    /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @param encryptedCredential the encryptedCredential value to set.
-     * @return the GoogleAdWordsLinkedService object itself.
-     */
-    public GoogleAdWordsLinkedService withEncryptedCredential(Object encryptedCredential) {
-        this.encryptedCredential = encryptedCredential;
-        return this;
+    private GoogleAdWordsLinkedServiceTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -373,6 +66,281 @@ public class GoogleAdWordsLinkedService extends LinkedService {
     }
 
     /**
+     * Get the clientCustomerId property: The Client customer ID of the AdWords account that you want to fetch report
+     * data for.
+     *
+     * @return the clientCustomerId value.
+     */
+    public Object clientCustomerId() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().clientCustomerId();
+    }
+
+    /**
+     * Set the clientCustomerId property: The Client customer ID of the AdWords account that you want to fetch report
+     * data for.
+     *
+     * @param clientCustomerId the clientCustomerId value to set.
+     * @return the GoogleAdWordsLinkedService object itself.
+     */
+    public GoogleAdWordsLinkedService withClientCustomerId(Object clientCustomerId) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new GoogleAdWordsLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withClientCustomerId(clientCustomerId);
+        return this;
+    }
+
+    /**
+     * Get the developerToken property: The developer token associated with the manager account that you use to grant
+     * access to the AdWords API.
+     *
+     * @return the developerToken value.
+     */
+    public SecretBase developerToken() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().developerToken();
+    }
+
+    /**
+     * Set the developerToken property: The developer token associated with the manager account that you use to grant
+     * access to the AdWords API.
+     *
+     * @param developerToken the developerToken value to set.
+     * @return the GoogleAdWordsLinkedService object itself.
+     */
+    public GoogleAdWordsLinkedService withDeveloperToken(SecretBase developerToken) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new GoogleAdWordsLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withDeveloperToken(developerToken);
+        return this;
+    }
+
+    /**
+     * Get the authenticationType property: The OAuth 2.0 authentication mechanism used for authentication.
+     * ServiceAuthentication can only be used on self-hosted IR.
+     *
+     * @return the authenticationType value.
+     */
+    public GoogleAdWordsAuthenticationType authenticationType() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().authenticationType();
+    }
+
+    /**
+     * Set the authenticationType property: The OAuth 2.0 authentication mechanism used for authentication.
+     * ServiceAuthentication can only be used on self-hosted IR.
+     *
+     * @param authenticationType the authenticationType value to set.
+     * @return the GoogleAdWordsLinkedService object itself.
+     */
+    public GoogleAdWordsLinkedService withAuthenticationType(GoogleAdWordsAuthenticationType authenticationType) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new GoogleAdWordsLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withAuthenticationType(authenticationType);
+        return this;
+    }
+
+    /**
+     * Get the refreshToken property: The refresh token obtained from Google for authorizing access to AdWords for
+     * UserAuthentication.
+     *
+     * @return the refreshToken value.
+     */
+    public SecretBase refreshToken() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().refreshToken();
+    }
+
+    /**
+     * Set the refreshToken property: The refresh token obtained from Google for authorizing access to AdWords for
+     * UserAuthentication.
+     *
+     * @param refreshToken the refreshToken value to set.
+     * @return the GoogleAdWordsLinkedService object itself.
+     */
+    public GoogleAdWordsLinkedService withRefreshToken(SecretBase refreshToken) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new GoogleAdWordsLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withRefreshToken(refreshToken);
+        return this;
+    }
+
+    /**
+     * Get the clientId property: The client id of the google application used to acquire the refresh token. Type:
+     * string (or Expression with resultType string).
+     *
+     * @return the clientId value.
+     */
+    public Object clientId() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().clientId();
+    }
+
+    /**
+     * Set the clientId property: The client id of the google application used to acquire the refresh token. Type:
+     * string (or Expression with resultType string).
+     *
+     * @param clientId the clientId value to set.
+     * @return the GoogleAdWordsLinkedService object itself.
+     */
+    public GoogleAdWordsLinkedService withClientId(Object clientId) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new GoogleAdWordsLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withClientId(clientId);
+        return this;
+    }
+
+    /**
+     * Get the clientSecret property: The client secret of the google application used to acquire the refresh token.
+     *
+     * @return the clientSecret value.
+     */
+    public SecretBase clientSecret() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().clientSecret();
+    }
+
+    /**
+     * Set the clientSecret property: The client secret of the google application used to acquire the refresh token.
+     *
+     * @param clientSecret the clientSecret value to set.
+     * @return the GoogleAdWordsLinkedService object itself.
+     */
+    public GoogleAdWordsLinkedService withClientSecret(SecretBase clientSecret) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new GoogleAdWordsLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withClientSecret(clientSecret);
+        return this;
+    }
+
+    /**
+     * Get the email property: The service account email ID that is used for ServiceAuthentication and can only be used
+     * on self-hosted IR.
+     *
+     * @return the email value.
+     */
+    public Object email() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().email();
+    }
+
+    /**
+     * Set the email property: The service account email ID that is used for ServiceAuthentication and can only be used
+     * on self-hosted IR.
+     *
+     * @param email the email value to set.
+     * @return the GoogleAdWordsLinkedService object itself.
+     */
+    public GoogleAdWordsLinkedService withEmail(Object email) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new GoogleAdWordsLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEmail(email);
+        return this;
+    }
+
+    /**
+     * Get the keyFilePath property: The full path to the .p12 key file that is used to authenticate the service account
+     * email address and can only be used on self-hosted IR.
+     *
+     * @return the keyFilePath value.
+     */
+    public Object keyFilePath() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().keyFilePath();
+    }
+
+    /**
+     * Set the keyFilePath property: The full path to the .p12 key file that is used to authenticate the service account
+     * email address and can only be used on self-hosted IR.
+     *
+     * @param keyFilePath the keyFilePath value to set.
+     * @return the GoogleAdWordsLinkedService object itself.
+     */
+    public GoogleAdWordsLinkedService withKeyFilePath(Object keyFilePath) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new GoogleAdWordsLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withKeyFilePath(keyFilePath);
+        return this;
+    }
+
+    /**
+     * Get the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for verifying
+     * the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default
+     * value is the cacerts.pem file installed with the IR.
+     *
+     * @return the trustedCertPath value.
+     */
+    public Object trustedCertPath() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().trustedCertPath();
+    }
+
+    /**
+     * Set the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for verifying
+     * the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default
+     * value is the cacerts.pem file installed with the IR.
+     *
+     * @param trustedCertPath the trustedCertPath value to set.
+     * @return the GoogleAdWordsLinkedService object itself.
+     */
+    public GoogleAdWordsLinkedService withTrustedCertPath(Object trustedCertPath) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new GoogleAdWordsLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withTrustedCertPath(trustedCertPath);
+        return this;
+    }
+
+    /**
+     * Get the useSystemTrustStore property: Specifies whether to use a CA certificate from the system trust store or
+     * from a specified PEM file. The default value is false.
+     *
+     * @return the useSystemTrustStore value.
+     */
+    public Object useSystemTrustStore() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().useSystemTrustStore();
+    }
+
+    /**
+     * Set the useSystemTrustStore property: Specifies whether to use a CA certificate from the system trust store or
+     * from a specified PEM file. The default value is false.
+     *
+     * @param useSystemTrustStore the useSystemTrustStore value to set.
+     * @return the GoogleAdWordsLinkedService object itself.
+     */
+    public GoogleAdWordsLinkedService withUseSystemTrustStore(Object useSystemTrustStore) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new GoogleAdWordsLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withUseSystemTrustStore(useSystemTrustStore);
+        return this;
+    }
+
+    /**
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @return the encryptedCredential value.
+     */
+    public Object encryptedCredential() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
+    }
+
+    /**
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @param encryptedCredential the encryptedCredential value to set.
+     * @return the GoogleAdWordsLinkedService object itself.
+     */
+    public GoogleAdWordsLinkedService withEncryptedCredential(Object encryptedCredential) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new GoogleAdWordsLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEncryptedCredential(encryptedCredential);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -380,31 +348,13 @@ public class GoogleAdWordsLinkedService extends LinkedService {
     @Override
     public void validate() {
         super.validate();
-        if (clientCustomerId() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property clientCustomerId in model GoogleAdWordsLinkedService"));
-        }
-        if (developerToken() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property developerToken in model GoogleAdWordsLinkedService"));
+                        "Missing required property innerTypeProperties in model GoogleAdWordsLinkedService"));
         } else {
-            developerToken().validate();
-        }
-        if (authenticationType() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property authenticationType in model GoogleAdWordsLinkedService"));
-        }
-        if (refreshToken() != null) {
-            refreshToken().validate();
-        }
-        if (clientSecret() != null) {
-            clientSecret().validate();
+            innerTypeProperties().validate();
         }
     }
 }
