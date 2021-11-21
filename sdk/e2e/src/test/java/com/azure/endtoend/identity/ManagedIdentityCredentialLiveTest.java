@@ -9,6 +9,7 @@ import com.azure.identity.ManagedIdentityCredential;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
+import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
@@ -185,7 +186,8 @@ public class ManagedIdentityCredentialLiveTest {
         HttpURLConnection connection = null;
 
         try {
-            URL url = new URL(String.format("http://169.254.169.254/metadata/identity/oauth2/token?%s",
+            URL url = new URL(String.format("%s%s?%s", IdentityConstants.DEFAULT_IMDS_ENDPOINT,
+                IdentityConstants.DEFAULT_IMDS_TOKENPATH,
                 payload.toString()));
 
             connection = (HttpURLConnection) url.openConnection();
