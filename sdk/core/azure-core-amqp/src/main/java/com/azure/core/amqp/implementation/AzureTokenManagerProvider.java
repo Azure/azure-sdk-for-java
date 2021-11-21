@@ -48,7 +48,10 @@ public class AzureTokenManagerProvider implements TokenManagerProvider {
         final String scopes = getScopesFromResource(resource);
         final String tokenAudience = String.format(Locale.US, TOKEN_AUDIENCE_FORMAT, fullyQualifiedNamespace, resource);
 
-        logger.verbose("Creating new token manager for audience[{}], resource[{}]", tokenAudience, resource);
+        logger.atVerbose()
+            .addKeyValue("audience", tokenAudience)
+            .addKeyValue("resource", resource)
+            .log("Creating new token manager.");
 
         return new ActiveClientTokenManager(cbsNodeMono, tokenAudience, scopes);
     }
@@ -63,7 +66,7 @@ public class AzureTokenManagerProvider implements TokenManagerProvider {
         } else if (CbsAuthorizationType.SHARED_ACCESS_SIGNATURE.equals(authorizationType)) {
             return String.format(Locale.US, TOKEN_AUDIENCE_FORMAT, fullyQualifiedNamespace, resource);
         } else {
-            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
+            throw logger.atError().log(new IllegalArgumentException(String.format(Locale.US,
                 "'%s' is not supported authorization type for token audience.", authorizationType)));
         }
     }

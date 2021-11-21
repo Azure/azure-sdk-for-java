@@ -39,13 +39,12 @@ public class HandlerTest {
     @Test
     public void constructor() {
         // Arrange
-        final ClientLogger logger = new ClientLogger(TestHandler.class);
         final String connectionId = "id";
         final String hostname = "hostname";
 
         // Act
-        assertThrows(NullPointerException.class, () -> new TestHandler(null, hostname, logger));
-        assertThrows(NullPointerException.class, () -> new TestHandler(connectionId, null, logger));
+        assertThrows(NullPointerException.class, () -> new TestHandler(null, hostname, TestHandler.class.getName()));
+        assertThrows(NullPointerException.class, () -> new TestHandler(connectionId, null, TestHandler.class.getName()));
         assertThrows(NullPointerException.class, () -> new TestHandler(connectionId, hostname, null));
     }
 
@@ -158,11 +157,11 @@ public class HandlerTest {
         static final String HOSTNAME = "test-hostname";
 
         TestHandler() {
-            super(CONNECTION_ID, HOSTNAME, new ClientLogger(TestHandler.class));
+            super(CONNECTION_ID, HOSTNAME, TestHandler.class.getName());
         }
 
-        TestHandler(String connectionId, String hostname, ClientLogger logger) {
-            super(connectionId, hostname, logger);
+        TestHandler(String connectionId, String hostname, String loggerName) {
+            super(connectionId, hostname, loggerName);
         }
     }
 }

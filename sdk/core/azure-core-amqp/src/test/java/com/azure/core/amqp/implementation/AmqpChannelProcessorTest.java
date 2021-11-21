@@ -58,8 +58,7 @@ class AmqpChannelProcessorTest {
         mocksCloseable = MockitoAnnotations.openMocks(this);
 
         channelProcessor = new AmqpChannelProcessor<>("connection-test", "test-path",
-            TestObject::getStates, retryPolicy,
-            new ClientLogger(AmqpChannelProcessor.class.getName() + "<TestObject>"));
+            TestObject::getStates, retryPolicy, "TestLogger");
     }
 
     @AfterEach

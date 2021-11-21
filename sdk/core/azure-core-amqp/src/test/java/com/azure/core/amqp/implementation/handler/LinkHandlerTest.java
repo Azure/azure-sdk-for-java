@@ -59,11 +59,11 @@ public class LinkHandlerTest {
     @Mock
     private Session session;
 
-    private final ClientLogger logger = new ClientLogger(LinkHandlerTest.class);
+    private final String loggerName = LinkHandlerTest.class.getName();
     private final AmqpErrorCondition linkStolen = LINK_STOLEN;
     private final Symbol symbol = Symbol.getSymbol(linkStolen.getErrorCondition());
     private final String description = "test-description";
-    private final LinkHandler handler = new MockLinkHandler(CONNECTION_ID, HOSTNAME, ENTITY_PATH, logger);
+    private final LinkHandler handler = new MockLinkHandler(CONNECTION_ID, HOSTNAME, ENTITY_PATH, loggerName);
     private AutoCloseable mocksCloseable;
 
     @BeforeEach
@@ -333,11 +333,11 @@ public class LinkHandlerTest {
     public void constructor() {
         // Act
         assertThrows(NullPointerException.class,
-            () -> new MockLinkHandler(null, HOSTNAME, ENTITY_PATH, logger));
+            () -> new MockLinkHandler(null, HOSTNAME, ENTITY_PATH, loggerName));
         assertThrows(NullPointerException.class,
-            () -> new MockLinkHandler(CONNECTION_ID, null, ENTITY_PATH, logger));
+            () -> new MockLinkHandler(CONNECTION_ID, null, ENTITY_PATH, loggerName));
         assertThrows(NullPointerException.class,
-            () -> new MockLinkHandler(CONNECTION_ID, HOSTNAME, null, logger));
+            () -> new MockLinkHandler(CONNECTION_ID, HOSTNAME, null, loggerName));
         assertThrows(NullPointerException.class,
             () -> new MockLinkHandler(CONNECTION_ID, HOSTNAME, ENTITY_PATH, null));
     }
@@ -409,8 +409,8 @@ public class LinkHandlerTest {
     }
 
     private static final class MockLinkHandler extends LinkHandler {
-        MockLinkHandler(String connectionId, String hostname, String entityPath, ClientLogger logger) {
-            super(connectionId, hostname, entityPath, logger);
+        MockLinkHandler(String connectionId, String hostname, String entityPath, String loggerName) {
+            super(connectionId, hostname, entityPath, loggerName);
         }
     }
 }
