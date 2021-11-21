@@ -10,6 +10,11 @@
 
 ### Other Changes
 
+## 1.4.2 (2021-11-21)
+
+### Fixes and improvements
+- Build IMDS endpoint URL in `IdentityClient` with 1 forward slash between the host and path, instead of 2 which was causing a `FileNotFound` exception when GETting from the endpoint.
+
 ## 1.4.1 (2021-11-09)
 
 ### Other Changes
