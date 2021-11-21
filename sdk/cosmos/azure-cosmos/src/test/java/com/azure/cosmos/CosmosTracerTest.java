@@ -42,6 +42,7 @@ import com.azure.cosmos.models.TriggerType;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
@@ -495,24 +496,26 @@ public class CosmosTracerTest extends TestSuiteBase {
                                         Context context, String databaseName,
                                         int numberOfTimesCalledWithinTest, String errorType,
                                         CosmosDiagnostics cosmosDiagnostics,
-                                        Map<String, Map<String, Object>> attributesMap) throws JsonProcessingException {
+                                        Map<String, Map<String, Object>> eventAttributesMap) throws JsonProcessingException {
         Mockito.verify(tracerProvider, Mockito.times(numberOfTimesCalledWithinTest)).startSpan(ArgumentMatchers.any(),
             ArgumentMatchers.any(),
             ArgumentMatchers.any(), ArgumentMatchers.any(Context.class));
 
+        ArgumentCaptor<StartSpanOptions> optionsCaptor = ArgumentCaptor.forClass(StartSpanOptions.class);
+        Mockito.verify(mockTracer, Mockito.times(numberOfTimesCalledWithinTest))
+            .start(Mockito.eq(methodName), optionsCaptor.capture(), Mockito.eq(Context.NONE));
+
+        Map<String, Object> startAttributes = optionsCaptor.getValue().getAttributes();
         if (databaseName != null) {
-            Mockito.verify(mockTracer, Mockito.times(numberOfTimesCalledWithinTest)).setAttribute(TracerProvider.DB_INSTANCE,
-                databaseName, context);
+            assertThat(startAttributes.get(TracerProvider.DB_INSTANCE)).isEqualTo(databaseName);
         }
-        Mockito.verify(mockTracer, Mockito.times(numberOfTimesCalledWithinTest)).setAttribute(TracerProvider.DB_TYPE,
-            TracerProvider.DB_TYPE_VALUE, context);
-        Mockito.verify(mockTracer, Mockito.times(numberOfTimesCalledWithinTest)).setAttribute(TracerProvider.DB_URL,
-            TestConfigurations.HOST,
-            context);
-        Mockito.verify(mockTracer, Mockito.times(1)).setAttribute(TracerProvider.DB_STATEMENT, methodName, context);
+
+        assertThat(startAttributes.get(TracerProvider.DB_TYPE)).isEqualTo(TracerProvider.DB_TYPE_VALUE);
+        assertThat(startAttributes.get(TracerProvider.DB_URL)).isEqualTo(TestConfigurations.HOST);
+        assertThat(startAttributes.get(TracerProvider.DB_STATEMENT)).isEqualTo(methodName);
 
         //verifying diagnostics as events
-        verifyTracerDiagnostics(tracerProvider, cosmosDiagnostics, attributesMap);
+        verifyTracerDiagnostics(tracerProvider, cosmosDiagnostics, eventAttributesMap);
     }
 
     private void verifyTracerDiagnostics(TracerProvider tracerProvider,

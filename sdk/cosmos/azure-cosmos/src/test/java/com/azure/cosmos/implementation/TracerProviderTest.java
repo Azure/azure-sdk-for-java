@@ -37,7 +37,7 @@ public class TracerProviderTest {
 
         TracerProvider provider = new TracerProvider(tracerMock);
         provider.startSpan(methodName, instance, endpoint, context);
-        verify(tracerMock, times(1)).start(eq(methodName), optionsCaptor.capture(),  eq(context));
+        verify(tracerMock, times(1)).start(eq(methodName), optionsCaptor.capture(), eq(context));
 
         assertThat(optionsCaptor.getValue().getSpanKind()).isEqualTo(SpanKind.CLIENT);
 
