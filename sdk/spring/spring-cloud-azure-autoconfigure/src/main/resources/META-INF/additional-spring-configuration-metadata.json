@@ -5,7 +5,7 @@
       "type": "java.util.List<java.lang.String>",
       "deprecation": {
         "level": "error",
-        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
         "replacement": "spring.cloud.azure.active-directory.user-group.allowed-group-names"
       }
     },
@@ -25,7 +25,7 @@
       "description": "App ID URI which might be used in the <code>\"aud\"<\/code> claim of an <code>id_token<\/code>.",
       "deprecation": {
         "level": "error",
-        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
         "replacement": "spring.cloud.azure.active-directory.app-id-uri"
       }
     },
@@ -34,7 +34,7 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
         "replacement": "spring.cloud.azure.active-directory.application-type"
       }
     },
@@ -44,7 +44,7 @@
       "description": "Add additional parameters to the Authorization URL.",
       "deprecation": {
         "level": "error",
-        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
         "replacement": "spring.cloud.azure.active-directory.authenticate-additional-parameters"
       }
     },
@@ -52,7 +52,7 @@
       "name": "azure.activedirectory.authorization-clients",
       "deprecation": {
         "level": "error",
-        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
         "replacement": "spring.cloud.azure.active-directory.authorization-clients"
       }
     },
@@ -72,7 +72,7 @@
       "description": "App ID URI which might be used in the <code>\"aud\"<\/code> claim of an token.",
       "deprecation": {
         "level": "error",
-        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
         "replacement": "spring.cloud.azure.active-directory.b2c.app-id-uri"
       }
     },
@@ -81,7 +81,7 @@
       "type": "java.util.Map<java.lang.String,java.lang.Object>",
       "deprecation": {
         "level": "error",
-        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
         "replacement": "spring.cloud.azure.active-directory.b2c.authenticate-additional-parameters"
       }
     },
@@ -90,7 +90,7 @@
       "description": "Specify client configuration.",
       "deprecation": {
         "level": "error",
-        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
         "replacement": "spring.cloud.azure.active-directory.b2c.authorization-clients"
       }
     },
@@ -100,7 +100,7 @@
       "description": "AAD B2C endpoint base uri.",
       "deprecation": {
         "level": "error",
-        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
         "replacement": "spring.cloud.azure.active-directory.b2c.base-uri"
       }
     },
@@ -110,7 +110,7 @@
       "description": "The application ID that registered under b2c tenant.",
       "deprecation": {
         "level": "error",
-        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
         "replacement": "spring.cloud.azure.active-directory.b2c.client-id"
       }
     },
@@ -120,7 +120,7 @@
       "description": "The application secret that registered under b2c tenant.",
       "deprecation": {
         "level": "error",
-        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
         "replacement": "spring.cloud.azure.active-directory.b2c.client-secret"
       }
     },
@@ -130,7 +130,7 @@
       "description": "Connection Timeout for the JWKSet Remote URL call.",
       "deprecation": {
         "level": "error",
-        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
         "replacement": "spring.cloud.azure.active-directory.b2c.jwt-connect-timeout"
       }
     },
@@ -140,7 +140,7 @@
       "description": "Read Timeout for the JWKSet Remote URL call.",
       "deprecation": {
         "level": "error",
-        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
         "replacement": "spring.cloud.azure.active-directory.b2c.jwt-read-timeout"
       }
     },
@@ -150,7 +150,7 @@
       "description": "Size limit in Bytes of the JWKSet Remote URL call.",
       "deprecation": {
         "level": "error",
-        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
         "replacement": "spring.cloud.azure.active-directory.b2c.jwt-size-limit"
       }
     },
@@ -161,7 +161,7 @@
       "defaultValue": "sign-up-or-sign-in",
       "deprecation": {
         "level": "error",
-        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
         "replacement": "spring.cloud.azure.active-directory.b2c.login-flow"
       }
     },
@@ -171,7 +171,7 @@
       "defaultValue": "http:\/\/localhost:8080\/login",
       "deprecation": {
         "level": "error",
-        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
         "replacement": "spring.cloud.azure.active-directory.b2c.logout-success-url"
       }
     },
@@ -181,7 +181,7 @@
       "defaultValue": "{baseUrl}\/login\/oauth2\/code\/",
       "deprecation": {
         "level": "error",
-        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
         "replacement": "spring.cloud.azure.active-directory.b2c.reply-url"
       }
     },
@@ -201,7 +201,7 @@
       "description": "The name of the b2c tenant id.",
       "deprecation": {
         "level": "error",
-        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
         "replacement": "spring.cloud.azure.active-directory.b2c.tenant-id"
       }
     },
@@ -210,7 +210,7 @@
       "type": "java.util.Map<java.lang.String,java.lang.String>",
       "deprecation": {
         "level": "error",
-        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
         "replacement": "spring.cloud.azure.active-directory.b2c.user-flows"
       }
     },
@@ -220,7 +220,7 @@
       "description": "User name attribute name.",
       "deprecation": {
         "level": "error",
-        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
         "replacement": "spring.cloud.azure.active-directory.b2c.user-name-attribute-name"
       }
     },
@@ -229,7 +229,7 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
         "replacement": "spring.cloud.azure.active-directory.base-uri"
       }
     },
@@ -239,7 +239,7 @@
       "description": "Registered application ID in Azure AD. Must be configured when OAuth2 authentication is done in front end.",
       "deprecation": {
         "level": "error",
-        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
         "replacement": "spring.cloud.azure.active-directory.client-id"
       }
     },
@@ -249,7 +249,7 @@
       "description": "API Access Key of the registered application. Must be configured when OAuth2 authentication is done in front end.",
       "deprecation": {
         "level": "error",
-        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
         "replacement": "spring.cloud.azure.active-directory.client-secret"
       }
     },
@@ -258,7 +258,7 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
         "replacement": "spring.cloud.azure.active-directory.graph-base-uri"
       }
     },
@@ -267,7 +267,7 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
         "replacement": "spring.cloud.azure.active-directory.graph-membership-uri"
       }
     },
@@ -278,7 +278,7 @@
       "defaultValue": 5,
       "deprecation": {
         "level": "error",
-        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
         "replacement": "spring.cloud.azure.active-directory.jwk-set-cache-lifespan"
       }
     },
@@ -289,7 +289,7 @@
       "defaultValue": 5,
       "deprecation": {
         "level": "error",
-        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
         "replacement": "spring.cloud.azure.active-directory.jwk-set-cache-refresh-time"
       }
     },
@@ -299,7 +299,7 @@
       "description": "Connection Timeout for the JWKSet Remote URL call.",
       "deprecation": {
         "level": "error",
-        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
         "replacement": "spring.cloud.azure.active-directory.jwt-connect-timeout"
       }
     },
@@ -309,7 +309,7 @@
       "description": "Read Timeout for the JWKSet Remote URL call.",
       "deprecation": {
         "level": "error",
-        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
         "replacement": "spring.cloud.azure.active-directory.jwt-read-timeout"
       }
     },
@@ -319,7 +319,7 @@
       "description": "Size limit in Bytes of the JWKSet Remote URL call.",
       "deprecation": {
         "level": "error",
-        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
         "replacement": "spring.cloud.azure.active-directory.jwt-size-limit"
       }
     },
@@ -328,7 +328,7 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
         "replacement": "spring.cloud.azure.active-directory.post-logout-redirect-uri"
       }
     },
@@ -338,7 +338,7 @@
       "description": "Redirection Endpoint: Used by the authorization server to return responses containing authorization credentials to the client via the resource owner user-agent.",
       "deprecation": {
         "level": "error",
-        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
         "replacement": "spring.cloud.azure.active-directory.redirect-uri-template"
       }
     },
@@ -348,7 +348,7 @@
       "description": "<pre> Configure which claim will be used to build GrantedAuthority, and prefix of the GrantedAuthority's string value. Default value is: \"scp\" -> \"SCOPE_\", \"roles\" -> \"APPROLE_\". Example: If use the default value, and the access_token's \"scp\" scope value is \"testValue\", then GrantedAuthority with \"SCOPE_testValue\" will be created.. <\/pre> @see org.springframework.security.core.GrantedAuthority.",
       "deprecation": {
         "level": "error",
-        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
         "replacement": "spring.cloud.azure.active-directory.resource-server.claim-to-authority-prefix-map"
       }
     },
@@ -358,7 +358,7 @@
       "description": "<pre> Configure which claim in access token be returned in AuthenticatedPrincipal#getName. Default value is \"sub\". Example: If use the default value, and the access_token's \"sub\" scope value is \"testValue\", then AuthenticatedPrincipal#getName will return \"testValue\". <\/pre> @see org.springframework.security.core.AuthenticatedPrincipal#getName.",
       "deprecation": {
         "level": "error",
-        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
         "replacement": "spring.cloud.azure.active-directory.resource-server.principal-claim-name"
       }
     },
@@ -369,7 +369,7 @@
       "defaultValue": false,
       "deprecation": {
         "level": "error",
-        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
         "replacement": "spring.cloud.azure.active-directory.session-stateless"
       }
     },
@@ -379,7 +379,7 @@
       "description": "Azure Tenant ID.",
       "deprecation": {
         "level": "error",
-        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
         "replacement": "spring.cloud.azure.active-directory.tenant-id"
       }
     },
@@ -388,7 +388,7 @@
       "type": "java.util.Set<java.lang.String>",
       "deprecation": {
         "level": "error",
-        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
         "replacement": "spring.cloud.azure.active-directory.user-group.allowed-group-ids"
       }
     },
@@ -398,7 +398,7 @@
       "description": "Expected UserGroups that an authority will be granted to if found in the response from the MemeberOf Graph API Call.",
       "deprecation": {
         "level": "error",
-        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
         "replacement": "spring.cloud.azure.active-directory.user-group.allowed-group-names"
       }
     },
@@ -428,7 +428,7 @@
       "description": "Decide which claim to be principal's name.",
       "deprecation": {
         "level": "error",
-        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
         "replacement": "spring.cloud.azure.active-directory.user-name-attribute"
       }
     },
