@@ -1,4 +1,4 @@
-# 4.0.0-beta.1 (2021-11-22)
+# 4.0.0-beta.2 (2021-11-22)
 
 Please refer to [Spring Cloud Azure Migration Guide for 4.0][Spring-Cloud-Azure-Migration-Guide-for-4.0] to learn how to migrate to version 4.0.
 
@@ -134,5 +134,5 @@ Please refer to [Spring Cloud Azure Migration Guide for 4.0][Spring-Cloud-Azure-
 
 - Support http pipeline policy implemented by Spring Cloud Sleuth API. ([#24192])
 
-[Spring-Cloud-Azure-Migration-Guide-for-4.0]: https://microsoft.github.io/spring-cloud-azure/docs/4.0.0-beta.1/reference/html/appendix.html#migration-guide-for-4-0
+[Spring-Cloud-Azure-Migration-Guide-for-4.0]: https://microsoft.github.io/spring-cloud-azure/docs/4.0.0-beta.2/reference/html/appendix.html#migration-guide-for-4-0
 [#24192]: https://github.com/Azure/azure-sdk-for-java/pull/24192

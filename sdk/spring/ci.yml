@@ -131,6 +131,16 @@ extends:
         safeName: springcloudazureservice
         skipPublishDocMs: true
         skipVerifyChangelog: true
+      - name: spring-cloud-azure-resourcemanager
+        groupId: com.azure.spring
+        safeName: springcloudazureresourcemanager
+        skipPublishDocMs: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-trace-sleuth
+        groupId: com.azure.spring
+        safeName: springcloudazuretracesleuth
+        skipPublishDocMs: true
+        skipVerifyChangelog: true
       - name: spring-messaging-azure
         groupId: com.azure.spring
         safeName: springmessagingazure
@@ -151,6 +161,26 @@ extends:
         safeName: springmessagingazurestoragequeue
         skipPublishDocMs: true
         skipVerifyChangelog: true
+      - name: spring-integration-azure-core
+        groupId: com.azure.spring
+        safeName: springintegrationazurecore
+        skipPublishDocMs: true
+        skipVerifyChangelog: true
+      - name: spring-integration-azure-eventhubs
+        groupId: com.azure.spring
+        safeName: springintegrationazureeventhubs
+        skipPublishDocMs: true
+        skipVerifyChangelog: true
+      - name: spring-integration-azure-servicebus
+        groupId: com.azure.spring
+        safeName: springintegrationazureservicebus
+        skipPublishDocMs: true
+        skipVerifyChangelog: true
+      - name: spring-integration-azure-storage-queue
+        groupId: com.azure.spring
+        safeName: springintegrationazurestoragequeue
+        skipPublishDocMs: true
+        skipVerifyChangelog: true
       - name: spring-cloud-azure-autoconfigure
         groupId: com.azure.spring
         safeName: springcloudazureautoconfigure
@@ -166,14 +196,15 @@ extends:
         safeName: springcloudazureactuatorautoconfigure
         skipPublishDocMs: true
         skipVerifyChangelog: true
-      - name: spring-cloud-azure-resourcemanager
-        groupId: com.azure.spring
-        safeName: springcloudazureresourcemanager
-        skipPublishDocMs: true
-        skipVerifyChangelog: true
       - name: spring-cloud-azure-starter
         groupId: com.azure.spring
         safeName: springcloudazurestarter
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-actuator
+        groupId: com.azure.spring
+        safeName: springcloudazurestarteractuator
         skipPublishDocMs: true
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
@@ -195,6 +226,12 @@ extends:
         skipPublishDocMs: true
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-eventhubs
+        groupId: com.azure.spring
+        safeName: springcloudazurestartereventhubs
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
       - name: spring-cloud-azure-starter-keyvault-certificates
         groupId: com.azure.spring
         safeName: springcloudazurestarterkeyvaultcertificates
@@ -204,6 +241,12 @@ extends:
       - name: spring-cloud-azure-starter-keyvault-secrets
         groupId: com.azure.spring
         safeName: springcloudazurestarterkeyvaultsecrets
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-servicebus
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterservicebus
         skipPublishDocMs: true
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
@@ -231,24 +274,6 @@ extends:
         skipPublishDocMs: true
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
-      - name: spring-cloud-azure-starter-eventhubs
-        groupId: com.azure.spring
-        safeName: springcloudazurestartereventhubs
-        skipPublishDocMs: true
-        skipUpdatePackageJson: true
-        skipVerifyChangelog: true
-      - name: spring-cloud-azure-starter-servicebus
-        groupId: com.azure.spring
-        safeName: springcloudazurestarterservicebus
-        skipPublishDocMs: true
-        skipUpdatePackageJson: true
-        skipVerifyChangelog: true
-      - name: spring-cloud-azure-starter-integration-storage-queue
-        groupId: com.azure.spring
-        safeName: springcloudazurestarterintegrationstoragequeue
-        skipPublishDocMs: true
-        skipUpdatePackageJson: true
-        skipVerifyChangelog: true
       - name: spring-cloud-azure-starter-integration-eventhubs
         groupId: com.azure.spring
         safeName: springcloudazurestarterintegrationeventhubs
@@ -261,46 +286,9 @@ extends:
         skipPublishDocMs: true
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
-      - name: spring-integration-azure-core
+      - name: spring-cloud-azure-starter-integration-storage-queue
         groupId: com.azure.spring
-        safeName: springintegrationazurecore
-        skipPublishDocMs: true
-        skipVerifyChangelog: true
-      - name: spring-integration-azure-eventhubs
-        groupId: com.azure.spring
-        safeName: springintegrationazureeventhubs
-        skipPublishDocMs: true
-        skipVerifyChangelog: true
-      - name: spring-integration-azure-servicebus
-        groupId: com.azure.spring
-        safeName: springintegrationazureservicebus
-        skipPublishDocMs: true
-        skipVerifyChangelog: true
-      - name: spring-integration-azure-storage-queue
-        groupId: com.azure.spring
-        safeName: springintegrationazurestoragequeue
-        skipVerifyChangelog: true
-      - name: spring-cloud-azure-starter-actuator
-        groupId: com.azure.spring
-        safeName: springcloudazurestarteractuator
-        skipPublishDocMs: true
-        skipUpdatePackageJson: true
-        skipVerifyChangelog: true
-      - name: spring-cloud-azure-starter-stream-eventhubs
-        groupId: com.azure.spring
-        safeName: springcloudazurestarterstreameventhubs
-        skipPublishDocMs: true
-        skipUpdatePackageJson: true
-        skipVerifyChangelog: true
-      - name: spring-cloud-azure-starter-stream-servicebus
-        groupId: com.azure.spring
-        safeName: springcloudazurestarterstreamservicebus
-        skipPublishDocMs: true
-        skipUpdatePackageJson: true
-        skipVerifyChangelog: true
-      - name: spring-cloud-azure-starter-storage-queue
-        groupId: com.azure.spring
-        safeName: springcloudazurestarterstoragequeue
+        safeName: springcloudazurestarterintegrationstoragequeue
         skipPublishDocMs: true
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
@@ -323,6 +311,24 @@ extends:
         groupId: com.azure.spring
         safeName: springcloudazurestreambindereventhubscore
         skipPublishDocMs: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-stream-eventhubs
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterstreameventhubs
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-stream-servicebus
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterstreamservicebus
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-storage-queue
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterstoragequeue
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
         skipVerifyChangelog: true
       - name: spring-cloud-azure-stream-binder-test
         groupId: com.azure.spring
