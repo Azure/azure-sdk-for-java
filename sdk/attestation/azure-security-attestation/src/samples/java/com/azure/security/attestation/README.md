@@ -4,7 +4,7 @@ languages:
 - java
 products:
 - azure
-- azure-security-attestation
+- azure-attestation
 urlFragment: attestation-samples
 ---
 # Samples for the Microsoft Azure Attestation client library for Java
