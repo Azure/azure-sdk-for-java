@@ -30,6 +30,8 @@ import com.azure.cosmos.implementation.cpu.CpuMemoryListener;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.http.HttpClient;
+import com.azure.cosmos.implementation.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlTrackingUnit;
 import com.azure.cosmos.implementation.throughputControl.ThroughputRequestThrottler;
@@ -218,6 +220,10 @@ public class ReflectionUtils {
         set(client, httpClient, "httpClient");
     }
 
+    public static HttpHeaders getHttpHeaders(HttpRequest httpRequest) {
+        return get(HttpHeaders.class, httpRequest, "headers");
+    }
+
     public static ReplicatedResourceClient getReplicatedResourceClient(StoreClient storeClient) {
         return get(ReplicatedResourceClient.class, storeClient, "replicatedResourceClient");
     }
@@ -313,6 +319,10 @@ public class ReflectionUtils {
     public static ConcurrentHashMap<OperationType, ThroughputControlTrackingUnit> getThroughputControlTrackingDictionary(
         ThroughputRequestThrottler requestThrottler) {
         return get(ConcurrentHashMap.class, requestThrottler, "trackingDictionary");
+    }
+
+    public static HttpClient getHttpClient(RxStoreModel rxStoreModel) {
+        return get(HttpClient.class, rxStoreModel, "httpClient");
     }
 
     public static HttpClient getHttpClient(ClientTelemetry telemetry) {
