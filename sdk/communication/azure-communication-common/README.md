@@ -80,7 +80,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 ## Examples
 
 ### Create a credential with a static token
-For a short-lived clients, refreshing the token upon expiry is not necessary and `CommunicationTokenCredential` may be instantiated with a static token.
+For short-lived clients, refreshing the token upon expiry is not necessary and `CommunicationTokenCredential` may be instantiated with a static token.
 
 ```java Snippet:CommunicationTokenCredential_CreateWithStaticToken
 String token = System.getenv("COMMUNICATION_SERVICES_USER_TOKEN");
@@ -89,7 +89,7 @@ CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(
 
 ### Create a credential with proactive refreshing with a callback
 
-Alternatively, you can create a `CommunicationTokenCredential` with callback to renew tokens if expired.
+Alternatively, you can create a `CommunicationTokenCredential` with a callback to renew tokens if expired.
 Here we assume that we have a function `fetchTokenFromMyServerForUser` that makes a network request to retrieve a token string for a user. 
 
 Optionally, you can enable proactive token refreshing where a fresh token will be acquired as soon as the
@@ -103,9 +103,8 @@ CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(
 
 ### Create a credential with proactive refreshing and refresh time span before token expiry
 
-Optionally, you can provide a time span before token expiry that `tokenRefresher` will be called if `refreshProactively` is true.
-For example, setting it to 5min means that 5min before the cached token expires, the proactive refresh will request a new token.
-By default, the value of `refreshTimeBeforeTokenExpiry` is equal to 10 minutes.
+Optionally, you can adjust the time span before token expiry that will trigger the proactive refreshing of the token. For example, if the proactive refreshing is enabled ('refreshProactively' is true), setting the time span to 5 minutes means that 5 minutes before the cached token expires, the proactive refresh will request a new token by calling the 'tokenRefresher' callback.
+The default value is 10 minutes.
 
 ```java 
 String token = System.getenv("COMMUNICATION_SERVICES_USER_TOKEN");

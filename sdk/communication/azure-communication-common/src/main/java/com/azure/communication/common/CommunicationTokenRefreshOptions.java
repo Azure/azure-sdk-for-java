@@ -19,46 +19,31 @@ public final class CommunicationTokenRefreshOptions {
     /**
      * Creates a CommunicationTokenRefreshOptions object
      *
-     * @param tokenRefresher the token refresher to provide capacity to fetch fresh token
-     * @param refreshProactively when set to true, turn on proactive fetching to call
-     *                           tokenRefresher before token expiry by minutes set
-     *                           with setCallbackOffsetMinutes or default value of
-     *                           two minutes
+     * @param tokenRefresher The callback function that acquires a fresh token from the Communication Identity API, e.g. by calling the CommunicationIdentityClient
+     * @param refreshProactively Determines whether the token should be proactively renewed prior to its expiry or on demand.
      */
     public CommunicationTokenRefreshOptions(Supplier<Mono<String>> tokenRefresher, boolean refreshProactively) {
-        this.tokenRefresher = tokenRefresher;
-        this.refreshProactively = refreshProactively;
-        this.initialToken = null;
-        this.refreshTimeBeforeTokenExpiry = getDefaultRefreshTimeBeforeTokenExpiry();
+        this(tokenRefresher, refreshProactively, null, getDefaultRefreshTimeBeforeTokenExpiry());
     }
 
     /**
      * Creates a CommunicationTokenRefreshOptions object
      *
-     * @param tokenRefresher the token refresher to provide capacity to fetch fresh token
-     * @param refreshProactively when set to true, turn on proactive fetching to call
-     *                           tokenRefresher before token expiry by minutes set
-     *                           with setCallbackOffsetMinutes or default value of
-     *                           two minutes
-     * @param initialToken the optional serialized JWT token
+     * @param tokenRefresher The callback function that acquires a fresh token from the Communication Identity API, e.g. by calling the CommunicationIdentityClient
+     * @param refreshProactively Determines whether the token should be proactively renewed prior to its expiry or on demand.
+     * @param initialToken The optional serialized JWT token
      */
     public CommunicationTokenRefreshOptions(Supplier<Mono<String>> tokenRefresher, boolean refreshProactively, String initialToken) {
-        this.tokenRefresher = tokenRefresher;
-        this.refreshProactively = refreshProactively;
-        this.initialToken = initialToken;
-        this.refreshTimeBeforeTokenExpiry = getDefaultRefreshTimeBeforeTokenExpiry();
+        this(tokenRefresher, refreshProactively, initialToken, getDefaultRefreshTimeBeforeTokenExpiry());
     }
 
     /**
      * Creates a CommunicationTokenRefreshOptions object
      *
-     * @param tokenRefresher the token refresher to provide capacity to fetch fresh token
-     * @param refreshProactively when set to true, turn on proactive fetching to call
-     *                           tokenRefresher before token expiry by minutes set
-     *                           with setCallbackOffsetMinutes or default value of
-     *                           two minutes
-     * @param initialToken the optional serialized JWT token
-     * @param refreshTimeBeforeTokenExpiry The time span before token expiry that tokenRefresher will be called if refreshProactively is true. For example, setting it to 5min means that 5min before the cached token expires, proactive refresh will request a new token. The default value is 10min.
+     * @param tokenRefresher The callback function that acquires a fresh token from the Communication Identity API, e.g. by calling the CommunicationIdentityClient
+     * @param refreshProactively Determines whether the token should be proactively renewed prior to its expiry or on demand.
+     * @param initialToken The optional serialized JWT token
+     * @param refreshTimeBeforeTokenExpiry The time span before token expiry that causes the tokenRefresher to be called if refreshProactively is true. For example, setting it to 5 minutes means that 5 minutes before the cached token expires, the proactive refresh will request a new token. The default value is 10 minutes.
      */
     public CommunicationTokenRefreshOptions(Supplier<Mono<String>> tokenRefresher, boolean refreshProactively, String initialToken, Duration refreshTimeBeforeTokenExpiry) {
         this.tokenRefresher = tokenRefresher;
@@ -68,35 +53,35 @@ public final class CommunicationTokenRefreshOptions {
     }
 
     /**
-     * @return the token refresher to provide capacity to fetch fresh token
+     * @return The token refresher to provide capacity to fetch fresh token
      */
     public Supplier<Mono<String>> getTokenRefresher() {
         return tokenRefresher;
     }
 
     /**
-     * @return whether or not to refresh token proactively
+     * @return Whether or not to refresh token proactively
      */
     public boolean isRefreshProactively() {
         return refreshProactively;
     }
 
     /**
-     * @return the initial token
+     * @return The initial token
      */
     public String getInitialToken() {
         return initialToken;
     }
 
     /**
-     * @return the time span before token expiry that tokenRefresher will be called if refreshProactively is true
+     * @return The time span before token expiry that causes the tokenRefresher to be called if refreshProactively is true
      */
     public Duration getRefreshTimeBeforeTokenExpiry() {
         return refreshTimeBeforeTokenExpiry;
     }
 
     /**
-     * @return default time span before token expiry that tokenRefresher will be called if refreshProactively is true
+     * @return The default time span before token expiry that causes the tokenRefresher to be called if refreshProactively is true
      */
     public static Duration getDefaultRefreshTimeBeforeTokenExpiry() {
         return Duration.ofMinutes(DEFAULT_EXPIRING_OFFSET_MINUTES);
