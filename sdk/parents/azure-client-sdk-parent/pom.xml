@@ -149,7 +149,7 @@
     <javadocDoclet>org.apidesign.javadoc.codesnippet.Doclet</javadocDoclet>
     <javadocDocletOptions>-maxLineLength 120 -snippetpath ${project.basedir}/src/samples/java -suppressMissingLinkWarnings</javadocDocletOptions>
 
-    <!-- THis property configures whether Spotbugs analysis is ran on samples and tests. Default is false. -->
+    <!-- This property configures whether Spotbugs analysis is ran on samples and tests. Default is false. -->
     <spotbugs.includeTests>false</spotbugs.includeTests>
   </properties>
 
