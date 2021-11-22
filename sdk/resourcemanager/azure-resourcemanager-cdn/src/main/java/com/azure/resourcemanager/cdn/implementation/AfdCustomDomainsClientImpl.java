@@ -681,7 +681,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
         return this
             .client
             .<AfdDomainInner, AfdDomainInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AfdDomainInner.class, AfdDomainInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), AfdDomainInner.class, AfdDomainInner.class, this.client.getContext());
     }
 
     /**
@@ -1021,7 +1021,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
         return this
             .client
             .<AfdDomainInner, AfdDomainInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AfdDomainInner.class, AfdDomainInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), AfdDomainInner.class, AfdDomainInner.class, this.client.getContext());
     }
 
     /**
@@ -1395,7 +1395,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
             deleteWithResponseAsync(resourceGroupName, profileName, customDomainName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1661,7 +1661,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
                 this.client.getHttpPipeline(),
                 ValidationTokenInner.class,
                 ValidationTokenInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

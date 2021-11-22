@@ -703,7 +703,7 @@ public final class RoutesClientImpl implements RoutesClient {
         return this
             .client
             .<RouteInner, RouteInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RouteInner.class, RouteInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), RouteInner.class, RouteInner.class, this.client.getContext());
     }
 
     /**
@@ -1048,7 +1048,7 @@ public final class RoutesClientImpl implements RoutesClient {
         return this
             .client
             .<RouteInner, RouteInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RouteInner.class, RouteInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), RouteInner.class, RouteInner.class, this.client.getContext());
     }
 
     /**
@@ -1377,7 +1377,7 @@ public final class RoutesClientImpl implements RoutesClient {
             deleteWithResponseAsync(resourceGroupName, profileName, endpointName, routeName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

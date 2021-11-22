@@ -370,7 +370,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                 this.client.getHttpPipeline(),
                 ConnectionMonitorResultInner.class,
                 ConnectionMonitorResultInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -912,7 +912,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             deleteWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1368,7 +1368,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             stopWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1627,7 +1627,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             startWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1891,7 +1891,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                 this.client.getHttpPipeline(),
                 ConnectionMonitorQueryResultInner.class,
                 ConnectionMonitorQueryResultInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
