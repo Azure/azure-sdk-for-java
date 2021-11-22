@@ -82,7 +82,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 ### Create a credential with a static token
 For short-lived clients, refreshing the token upon expiry is not necessary and `CommunicationTokenCredential` may be instantiated with a static token.
 
-```java Snippet:CommunicationTokenCredential_CreateWithStaticToken
+```java 
 String token = System.getenv("COMMUNICATION_SERVICES_USER_TOKEN");
 CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(token);
 ```
