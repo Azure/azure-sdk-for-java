@@ -52,6 +52,13 @@ public abstract class AzureServiceClient {
 
     private final String sdkName;
 
+    /**
+     * Creates a new instance of {@link AzureServiceClient}.
+     *
+     * @param httpPipeline The HttpPipline used by the client.
+     * @param serializerAdapter The SerializerAdapter used by the client.
+     * @param environment The AzureEnvironment used by the client.
+     */
     protected AzureServiceClient(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
                                  AzureEnvironment environment) {
         this.httpPipeline = httpPipeline;
