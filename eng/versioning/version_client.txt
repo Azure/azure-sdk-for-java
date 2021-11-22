@@ -153,7 +153,7 @@ com.azure.spring:azure-spring-boot-test-keyvault;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-parent;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-servicebus-jms;1.0.0;1.0.0
 com.azure.spring:spring-cloud-azure-dependencies;4.0.0-beta.2;4.0.0-beta.2
-com.azure.spring:spring-messaging-azure;4.0.0-beta.2;4.0.0-beta.2
+com.azure.spring:spring-messaging-azure;4.0.0-beta.2;4.0.0-beta.3
 com.azure.spring:spring-messaging-azure-eventhubs;4.0.0-beta.2;4.0.0-beta.2
 com.azure.spring:spring-messaging-azure-servicebus;4.0.0-beta.2;4.0.0-beta.2
 com.azure.spring:spring-messaging-azure-storage-queue;4.0.0-beta.2;4.0.0-beta.2
