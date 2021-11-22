@@ -13,8 +13,8 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.messaging.webpubsub.WebPubSubServiceVersion;
 
-/** Initializes a new instance of the AzureWebPubSubServiceRestAPI type. */
-public final class AzureWebPubSubServiceRestAPIImpl {
+/** Initializes a new instance of the AzureWebPubSubServiceRestApi type. */
+public final class AzureWebPubSubServiceRestApiImpl {
     /** HTTP or HTTPS endpoint for the Web PubSub service instance. */
     private final String endpoint;
 
@@ -88,12 +88,12 @@ public final class AzureWebPubSubServiceRestAPIImpl {
     }
 
     /**
-     * Initializes an instance of AzureWebPubSubServiceRestAPI client.
+     * Initializes an instance of AzureWebPubSubServiceRestApi client.
      *
      * @param endpoint HTTP or HTTPS endpoint for the Web PubSub service instance.
      * @param serviceVersion Service version.
      */
-    public AzureWebPubSubServiceRestAPIImpl(String endpoint, WebPubSubServiceVersion serviceVersion) {
+    public AzureWebPubSubServiceRestApiImpl(String endpoint, WebPubSubServiceVersion serviceVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
@@ -104,26 +104,26 @@ public final class AzureWebPubSubServiceRestAPIImpl {
     }
 
     /**
-     * Initializes an instance of AzureWebPubSubServiceRestAPI client.
+     * Initializes an instance of AzureWebPubSubServiceRestApi client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint HTTP or HTTPS endpoint for the Web PubSub service instance.
      * @param serviceVersion Service version.
      */
-    public AzureWebPubSubServiceRestAPIImpl(
+    public AzureWebPubSubServiceRestApiImpl(
             HttpPipeline httpPipeline, String endpoint, WebPubSubServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
-     * Initializes an instance of AzureWebPubSubServiceRestAPI client.
+     * Initializes an instance of AzureWebPubSubServiceRestApi client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint HTTP or HTTPS endpoint for the Web PubSub service instance.
      * @param serviceVersion Service version.
      */
-    public AzureWebPubSubServiceRestAPIImpl(
+    public AzureWebPubSubServiceRestApiImpl(
             HttpPipeline httpPipeline,
             SerializerAdapter serializerAdapter,
             String endpoint,
