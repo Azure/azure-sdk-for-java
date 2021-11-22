@@ -471,7 +471,7 @@ public final class ManagedServerSecurityAlertPoliciesClientImpl implements Manag
                 this.client.getHttpPipeline(),
                 ManagedServerSecurityAlertPolicyInner.class,
                 ManagedServerSecurityAlertPolicyInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

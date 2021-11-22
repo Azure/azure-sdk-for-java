@@ -305,15 +305,14 @@ public final class TriggersImpl {
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return trigger information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTriggerWithResponse(
-            String dataSourceName, String scanName, RequestOptions requestOptions, Context context) {
-        return getTriggerWithResponseAsync(dataSourceName, scanName, requestOptions, context).block();
+            String dataSourceName, String scanName, RequestOptions requestOptions) {
+        return getTriggerWithResponseAsync(dataSourceName, scanName, requestOptions).block();
     }
 
     /**
@@ -698,15 +697,14 @@ public final class TriggersImpl {
      * @param scanName The scanName parameter.
      * @param body The body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createTriggerWithResponse(
-            String dataSourceName, String scanName, BinaryData body, RequestOptions requestOptions, Context context) {
-        return createTriggerWithResponseAsync(dataSourceName, scanName, body, requestOptions, context).block();
+            String dataSourceName, String scanName, BinaryData body, RequestOptions requestOptions) {
+        return createTriggerWithResponseAsync(dataSourceName, scanName, body, requestOptions).block();
     }
 
     /**
@@ -936,14 +934,13 @@ public final class TriggersImpl {
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> deleteTriggerWithResponse(
-            String dataSourceName, String scanName, RequestOptions requestOptions, Context context) {
-        return deleteTriggerWithResponseAsync(dataSourceName, scanName, requestOptions, context).block();
+            String dataSourceName, String scanName, RequestOptions requestOptions) {
+        return deleteTriggerWithResponseAsync(dataSourceName, scanName, requestOptions).block();
     }
 }

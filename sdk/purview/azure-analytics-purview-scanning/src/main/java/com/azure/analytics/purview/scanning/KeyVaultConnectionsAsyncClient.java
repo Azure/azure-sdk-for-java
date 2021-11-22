@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.scanning;
 
 import com.azure.analytics.purview.scanning.implementation.KeyVaultConnectionsImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -18,13 +19,14 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewScanningClient type. */
 @ServiceClient(builder = PurviewScanningClientBuilder.class, isAsync = true)
 public final class KeyVaultConnectionsAsyncClient {
-    private final KeyVaultConnectionsImpl serviceClient;
+    @Generated private final KeyVaultConnectionsImpl serviceClient;
 
     /**
      * Initializes an instance of KeyVaultConnections client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     KeyVaultConnectionsAsyncClient(KeyVaultConnectionsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -59,6 +61,7 @@ public final class KeyVaultConnectionsAsyncClient {
      *     false.
      * @return key vault information.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponse(String keyVaultName, RequestOptions requestOptions) {
         return this.serviceClient.getWithResponseAsync(keyVaultName, requestOptions);
@@ -108,6 +111,7 @@ public final class KeyVaultConnectionsAsyncClient {
      *     false.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createWithResponse(
             String keyVaultName, BinaryData body, RequestOptions requestOptions) {
@@ -144,6 +148,7 @@ public final class KeyVaultConnectionsAsyncClient {
      *     false.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteWithResponse(String keyVaultName, RequestOptions requestOptions) {
         return this.serviceClient.deleteWithResponseAsync(keyVaultName, requestOptions);
@@ -184,6 +189,7 @@ public final class KeyVaultConnectionsAsyncClient {
      *     false.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listAll(RequestOptions requestOptions) {
         return this.serviceClient.listAllAsync(requestOptions);

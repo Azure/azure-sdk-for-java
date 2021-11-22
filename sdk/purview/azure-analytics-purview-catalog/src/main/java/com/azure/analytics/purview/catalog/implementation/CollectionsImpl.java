@@ -246,7 +246,7 @@ public final class CollectionsImpl {
      * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> upsertWithResponseAsync(
+    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
             String collection, BinaryData entity, RequestOptions requestOptions) {
         return FluxUtil.withContext(
                 context ->
@@ -430,7 +430,7 @@ public final class CollectionsImpl {
      * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> upsertWithResponseAsync(
+    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
             String collection, BinaryData entity, RequestOptions requestOptions, Context context) {
         return service.createOrUpdate(
                 this.client.getEndpoint(),
@@ -606,15 +606,14 @@ public final class CollectionsImpl {
      * @param collection the collection unique name.
      * @param entity Atlas entity with extended information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> upsertWithResponse(
-            String collection, BinaryData entity, RequestOptions requestOptions, Context context) {
-        return upsertWithResponseAsync(collection, entity, requestOptions, context).block();
+    public Response<BinaryData> createOrUpdateWithResponse(
+            String collection, BinaryData entity, RequestOptions requestOptions) {
+        return createOrUpdateWithResponseAsync(collection, entity, requestOptions).block();
     }
 
     /**
@@ -789,7 +788,7 @@ public final class CollectionsImpl {
      * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> upsertBulkWithResponseAsync(
+    public Mono<Response<BinaryData>> createOrUpdateBulkWithResponseAsync(
             String collection, BinaryData entities, RequestOptions requestOptions) {
         return FluxUtil.withContext(
                 context ->
@@ -975,7 +974,7 @@ public final class CollectionsImpl {
      * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> upsertBulkWithResponseAsync(
+    public Mono<Response<BinaryData>> createOrUpdateBulkWithResponseAsync(
             String collection, BinaryData entities, RequestOptions requestOptions, Context context) {
         return service.createOrUpdateBulk(
                 this.client.getEndpoint(),
@@ -1153,15 +1152,14 @@ public final class CollectionsImpl {
      * @param collection the collection unique name.
      * @param entities Atlas entities with extended information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> upsertBulkWithResponse(
-            String collection, BinaryData entities, RequestOptions requestOptions, Context context) {
-        return upsertBulkWithResponseAsync(collection, entities, requestOptions, context).block();
+    public Response<BinaryData> createOrUpdateBulkWithResponse(
+            String collection, BinaryData entities, RequestOptions requestOptions) {
+        return createOrUpdateBulkWithResponseAsync(collection, entities, requestOptions).block();
     }
 
     /**
@@ -1481,15 +1479,13 @@ public final class CollectionsImpl {
      * @param collection the collection unique name.
      * @param moveEntitiesRequest Entity guids to be moved to target collection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> moveEntitiesToCollectionWithResponse(
-            String collection, BinaryData moveEntitiesRequest, RequestOptions requestOptions, Context context) {
-        return moveEntitiesToCollectionWithResponseAsync(collection, moveEntitiesRequest, requestOptions, context)
-                .block();
+            String collection, BinaryData moveEntitiesRequest, RequestOptions requestOptions) {
+        return moveEntitiesToCollectionWithResponseAsync(collection, moveEntitiesRequest, requestOptions).block();
     }
 }

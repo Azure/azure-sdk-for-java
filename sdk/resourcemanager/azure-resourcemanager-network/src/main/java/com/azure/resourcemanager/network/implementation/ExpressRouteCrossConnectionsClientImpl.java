@@ -817,7 +817,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                 this.client.getHttpPipeline(),
                 ExpressRouteCrossConnectionInner.class,
                 ExpressRouteCrossConnectionInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1298,7 +1298,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                 this.client.getHttpPipeline(),
                 ExpressRouteCircuitsArpTableListResultInner.class,
                 ExpressRouteCircuitsArpTableListResultInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1613,7 +1613,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     this.client.getHttpPipeline(),
                     ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner.class,
                     ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner.class,
-                    Context.NONE);
+                    this.client.getContext());
     }
 
     /**
@@ -1936,7 +1936,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     this.client.getHttpPipeline(),
                     ExpressRouteCircuitsRoutesTableListResultInner.class,
                     ExpressRouteCircuitsRoutesTableListResultInner.class,
-                    Context.NONE);
+                    this.client.getContext());
     }
 
     /**

@@ -7,11 +7,14 @@
 - Added support for listing system containers.
 - Added support for listing blobs which contain invalid xml characters.
 
+- When opening a BlobInputStream, removed the initial getProperties call in favor of a download for better performance.
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+- Deprecated BlobClient.uploadWithResponse that does not return a response.
 
 ## 12.14.2 (2021-11-10)
 

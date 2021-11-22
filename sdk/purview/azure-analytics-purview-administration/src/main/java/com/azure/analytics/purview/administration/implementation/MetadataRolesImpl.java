@@ -408,14 +408,13 @@ public final class MetadataRolesImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return list of Metadata roles.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> list(RequestOptions requestOptions, Context context) {
-        return new PagedIterable<>(listAsync(requestOptions, context));
+    public PagedIterable<BinaryData> list(RequestOptions requestOptions) {
+        return new PagedIterable<>(listAsync(requestOptions));
     }
 
     /**
