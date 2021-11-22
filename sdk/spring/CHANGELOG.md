@@ -1,16 +1,4 @@
-# Release History
-
-## 1.0.0 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
-## 4.0.0-beta.1 (2021-11-22)
+# 4.0.0-beta.1 (2021-11-22)
 
 Please refer to [Spring Cloud Azure Migration Guide for 4.0][Spring-Cloud-Azure-Migration-Guide-for-4.0] to learn how to migrate to version 4.0.
 
