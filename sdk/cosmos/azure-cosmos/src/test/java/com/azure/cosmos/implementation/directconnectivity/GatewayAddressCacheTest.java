@@ -658,7 +658,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
 
         URI serviceEndpoint = new URI(TestConfigurations.HOST);
         IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
-        String apiType = ApiType.TABLE.toString();
+        String apiType = ApiType.SQL.toString();
 
         int refreshPeriodInSeconds = 10;
 
@@ -670,7 +670,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                                 clientWrapper.getSpyHttpClient(),
                                                                 refreshPeriodInSeconds,
                                                                 false,
-                                                                ApiType.TABLE);
+                                                                ApiType.SQL);
 
         GatewayAddressCache spyCache = Mockito.spy(origCache);
 

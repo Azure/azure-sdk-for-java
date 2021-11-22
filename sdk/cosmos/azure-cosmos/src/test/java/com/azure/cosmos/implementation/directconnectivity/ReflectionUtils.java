@@ -8,19 +8,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.implementation.ApiType;
-import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.ClientSideRequestStatistics;
-import com.azure.cosmos.implementation.ConnectionPolicy;
-import com.azure.cosmos.implementation.DocumentCollection;
-import com.azure.cosmos.implementation.GlobalEndpointManager;
-import com.azure.cosmos.implementation.OperationType;
-import com.azure.cosmos.implementation.RetryContext;
-import com.azure.cosmos.implementation.RxDocumentClientImpl;
-import com.azure.cosmos.implementation.RxStoreModel;
-import com.azure.cosmos.implementation.TracerProvider;
-import com.azure.cosmos.implementation.UserAgentContainer;
-import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.*;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
@@ -30,6 +18,8 @@ import com.azure.cosmos.implementation.cpu.CpuMemoryListener;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.http.HttpClient;
+import com.azure.cosmos.implementation.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlTrackingUnit;
 import com.azure.cosmos.implementation.throughputControl.ThroughputRequestThrottler;
@@ -218,6 +208,10 @@ public class ReflectionUtils {
         set(client, httpClient, "httpClient");
     }
 
+    public static HttpHeaders getHttpHeaders(HttpRequest httpRequest) {
+        return get(HttpHeaders.class, httpRequest, "headers");
+    }
+
     public static ReplicatedResourceClient getReplicatedResourceClient(StoreClient storeClient) {
         return get(ReplicatedResourceClient.class, storeClient, "replicatedResourceClient");
     }
@@ -313,6 +307,10 @@ public class ReflectionUtils {
     public static ConcurrentHashMap<OperationType, ThroughputControlTrackingUnit> getThroughputControlTrackingDictionary(
         ThroughputRequestThrottler requestThrottler) {
         return get(ConcurrentHashMap.class, requestThrottler, "trackingDictionary");
+    }
+
+    public static HttpClient getHttpClient(RxStoreModel rxStoreModel) {
+        return get(HttpClient.class, rxStoreModel, "httpClient");
     }
 
     public static HttpClient getHttpClient(ClientTelemetry telemetry) {

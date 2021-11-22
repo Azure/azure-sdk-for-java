@@ -5,10 +5,14 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.http.HttpClient;
-import com.azure.cosmos.implementation.http.HttpRequest;
+import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
+import com.azure.cosmos.implementation.http.*;
+import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.timeout.ReadTimeoutException;
 import io.reactivex.subscribers.TestSubscriber;
+import org.apache.tools.ant.taskdefs.condition.Http;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -16,10 +20,12 @@ import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.concurrent.TimeUnit;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 
 public class RxGatewayStoreModelTest {
     private final static int TIMEOUT = 10000;
@@ -71,10 +77,10 @@ public class RxGatewayStoreModelTest {
         UserAgentContainer userAgentContainer = new UserAgentContainer();
         GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
         Mockito.doReturn(new URI("https://localhost"))
-                .when(globalEndpointManager).resolveServiceEndpoint(Mockito.any());
+                .when(globalEndpointManager).resolveServiceEndpoint(any());
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         Mockito.doReturn(Mono.error(ReadTimeoutException.INSTANCE))
-                .when(httpClient).send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class));
+                .when(httpClient).send(any(HttpRequest.class), any(Duration.class));
 
         RxGatewayStoreModel storeModel = new RxGatewayStoreModel(clientContext,
                 sessionContainer,
@@ -114,15 +120,15 @@ public class RxGatewayStoreModelTest {
         ApiType apiType = ApiType.SQL;
         DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
         ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
-        Mockito.doReturn(sdkGlobalSessionToken).when(sessionContainer).resolveGlobalSessionToken(Mockito.any());
+        Mockito.doReturn(sdkGlobalSessionToken).when(sessionContainer).resolveGlobalSessionToken(any());
 
         GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
         Mockito.doReturn(new URI("https://localhost"))
-            .when(globalEndpointManager).resolveServiceEndpoint(Mockito.any());
+            .when(globalEndpointManager).resolveServiceEndpoint(any());
 
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         Mockito.doReturn(Mono.error(ReadTimeoutException.INSTANCE))
-            .when(httpClient).send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class));
+            .when(httpClient).send(any(HttpRequest.class), any(Duration.class));
 
         RxGatewayStoreModel storeModel = new RxGatewayStoreModel(
             clientContext,
@@ -134,6 +140,7 @@ public class RxGatewayStoreModelTest {
             httpClient,
             apiType);
 
+        httpClient = ReflectionUtils.getHttpClient(storeModel);
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
             clientContext,
             operationType,
@@ -159,6 +166,44 @@ public class RxGatewayStoreModelTest {
         } else {
             assertThat(dsr.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isNull();
         }
+    }
+
+    @Test(groups = "unit")
+    public void validateApiType() throws Exception {
+        String sdkGlobalSessionToken = "1#100#1=20#2=5#3=30";
+        ApiType apiType = ApiType.SQL;
+        DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
+        ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
+        Mockito.doReturn(sdkGlobalSessionToken).when(sessionContainer).resolveGlobalSessionToken(any());
+
+        GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
+        Mockito.doReturn(new URI("https://localhost"))
+            .when(globalEndpointManager).resolveServiceEndpoint(any());
+
+        HttpClient httpClient = Mockito.mock(HttpClient.class);
+        ArgumentCaptor<HttpRequest> httpClientRequestCaptor = ArgumentCaptor.forClass(HttpRequest.class);
+
+        RxGatewayStoreModel storeModel = new RxGatewayStoreModel(
+            clientContext,
+            sessionContainer,
+            ConsistencyLevel.SESSION,
+            QueryCompatibilityMode.Default,
+            new UserAgentContainer(),
+            globalEndpointManager,
+            httpClient,
+            apiType);
+
+        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
+            clientContext,
+            OperationType.Query,
+            "/fakeResourceFullName",
+            ResourceType.Document);
+
+        storeModel.performRequest(dsr, HttpMethod.POST);
+        Mockito.verify(httpClient).send(httpClientRequestCaptor.capture(), any());
+        HttpRequest httpRequest = httpClientRequestCaptor.getValue();
+        HttpHeaders headers = ReflectionUtils.getHttpHeaders(httpRequest);
+        assertThat(headers.toMap().get(HttpConstants.HttpHeaders.API_TYPE)).isEqualTo(apiType.toString());
     }
 
     public void validateFailure(Mono<RxDocumentServiceResponse> observable,

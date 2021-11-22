@@ -808,7 +808,6 @@ public class GatewayAddressCache implements IAddressCache {
                 ResourceType.DocumentCollection,
                 //       AuthorizationTokenType.PrimaryMasterKey
                 Collections.emptyMap());
-
         for (int i = 0; i < partitionKeyRangeIdentities.size(); i += batchSize) {
 
             int endIndex = i + batchSize;
