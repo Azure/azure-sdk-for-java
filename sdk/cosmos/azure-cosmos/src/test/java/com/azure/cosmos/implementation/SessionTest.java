@@ -223,9 +223,9 @@ public class SessionTest extends TestSuiteBase {
             spyClient.clearCapturedRequests();
             Document document = newDocument();
             document.set("mypk", document.getId());
-            ItemBatchOperation itemBatchOperation = new ItemBatchOperation(CosmosItemOperationType.CREATE,
+            ItemBatchOperation<Document> itemBatchOperation = new ItemBatchOperation<Document>(CosmosItemOperationType.CREATE,
                 documentCreated.getId(), new PartitionKey(documentCreated.getId()), new RequestOptions(), document);
-            List<ItemBatchOperation> itemBatchOperations = new ArrayList<>();
+            List<ItemBatchOperation<Document>> itemBatchOperations = new ArrayList<>();
             itemBatchOperations.add(itemBatchOperation);
 
             Method method = SinglePartitionKeyServerBatchRequest.class.getDeclaredMethod("createBatchRequest",
