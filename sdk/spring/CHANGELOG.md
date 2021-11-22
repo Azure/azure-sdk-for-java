@@ -1,6 +1,6 @@
-# 4.0.0-beta.1 (Unreleased)
+# 4.0.0-beta.1 (2021-11-25)
 
-Please refer to [Spring-Cloud-Azure-Migration-Guide-for-4.0] to learn how to migrate to version 4.0.
+Please refer to [Spring Cloud Azure Migration Guide for 4.0][Spring-Cloud-Azure-Migration-Guide-for-4.0] to learn how to migrate to version 4.0.
 
 ## spring-cloud-azure-stream-binder-eventhubs
 ### Features Added
@@ -84,5 +84,5 @@ Please refer to [Spring-Cloud-Azure-Migration-Guide-for-4.0] to learn how to mig
 
 
 
-[Spring-Cloud-Azure-Migration-Guide-for-4.0]: https://github.com/Azure/azure-sdk-for-java/wiki/Spring-Cloud-Azure-Migration-Guide-for-4.0
+[Spring-Cloud-Azure-Migration-Guide-for-4.0]: https://microsoft.github.io/spring-cloud-azure/docs/4.0.0-beta.1/reference/html/appendix.html#migration-guide-for-4-0
 [#24192]: https://github.com/Azure/azure-sdk-for-java/pull/24192
