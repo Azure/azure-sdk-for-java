@@ -126,6 +126,11 @@ extends:
         safeName: springcloudazurecore
         skipPublishDocMs: true
         skipVerifyChangelog: true
+      - name: spring-cloud-azure-service
+        groupId: com.azure.spring
+        safeName: springcloudazureservice
+        skipPublishDocMs: true
+        skipVerifyChangelog: true
       - name: spring-messaging-azure
         groupId: com.azure.spring
         safeName: springmessagingazure
