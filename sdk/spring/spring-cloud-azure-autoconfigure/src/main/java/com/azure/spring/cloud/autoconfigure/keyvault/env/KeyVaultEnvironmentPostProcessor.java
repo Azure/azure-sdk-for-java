@@ -63,7 +63,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
 
         if (isKeyVaultPropertySourceEnabled(keyVaultSecretProperties)) {
 
-            // TODO (xiada): confirm the order
+            // In propertySources list, smaller index has higher priority.
             final List<AzureKeyVaultPropertySourceProperties> propertySources = keyVaultSecretProperties.getPropertySources();
             Collections.reverse(propertySources);
 
@@ -74,7 +74,9 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
             for (AzureKeyVaultPropertySourceProperties propertySource : propertySources) {
                 final AzureKeyVaultPropertySourceProperties properties = getMergeProperties(keyVaultSecretProperties,
                                                                                             propertySource);
-                addKeyVaultPropertySource(environment, properties);
+                if (properties.isEnabled()) {
+                    addKeyVaultPropertySource(environment, properties);
+                }
             }
         } else {
             logger.debug("Key Vault 'propertySourceEnabled' or 'enabled' is not enabled");
@@ -89,6 +91,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
 
         mergedResult.setEndpoint(secretProperties.getEndpoint());
         mergedResult.setServiceVersion(secretProperties.getServiceVersion());
+        mergedResult.setEnabled(propertySource.isEnabled());
         mergedResult.setName(propertySource.getName());
         mergedResult.setCaseSensitive(propertySource.getCaseSensitive());
         mergedResult.setSecretKeys(propertySource.getSecretKeys());
@@ -117,7 +120,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
      */
     public void addKeyVaultPropertySource(ConfigurableEnvironment environment,
                                           AzureKeyVaultPropertySourceProperties propertySource) {
-        Assert.notNull(propertySource.getEndpoint(), "vaultUri must not be null!");
+        Assert.notNull(propertySource.getEndpoint(), "endpoint must not be null!");
 
         AzureKeyVaultSecretProperties secretProperties = new AzureKeyVaultSecretProperties();
         AzurePropertiesUtils.copyAzureCommonProperties(propertySource, secretProperties);
