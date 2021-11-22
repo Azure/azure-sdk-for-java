@@ -1,36 +1,49 @@
-# 4.0.0-beta.2 (2021-11-22)
+# Release History
 
-Please refer to [Spring Cloud Azure Migration Guide for 4.0][Spring-Cloud-Azure-Migration-Guide-for-4.0] to learn how to migrate to version 4.0.
-
-## spring-cloud-azure-stream-binder-eventhubs
+## 4.0.0-beta.3 (Unreleased)
 
 ### Features Added
 
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 4.0.0-beta.2 (2021-11-22)
+
+
+Please refer to [Spring Cloud Azure Migration Guide for 4.0][Spring-Cloud-Azure-Migration-Guide-for-4.0] to learn how to migrate to version 4.0.
+
+### spring-cloud-azure-stream-binder-eventhubs
+
+#### Features Added
+
 - Support batch consumers.
 
-### Breaking Changes
+#### Breaking Changes
 
 - Change artifact id from `azure-spring-cloud-stream-binder-eventhubs` to `spring-cloud-azure-stream-binder-eventhubs`.
 - Change the binder type from `eventhub` to `eventhubs`.
 - Change the Spring Cloud Stream Binding extended properties prefix from `spring.cloud.stream.eventhub` to `spring.cloud.stream.eventhubs`.
 - BATCH checkpoint-mode only works in batch-consuming mode.
 
-## spring-cloud-azure-stream-binder-servicebus
+### spring-cloud-azure-stream-binder-servicebus
 
-### Breaking Changes
+#### Breaking Changes
 
 - Combine libraries of `azure-spring-cloud-stream-binder-servicebus-queue` and `azure-spring-cloud-stream-binder-servicebus-topic` to `spring-cloud-azure-stream-binder-servicebus` with new binder type as `servicebus`.
 - When using the binder to send messages, one of the following two attributes must be provided:
   - spring.cloud.stream.servicebus.bindings.{channel-name}.producer.entity-type
   - spring.cloud.azure.servicebus.producer.entity-type
 
-### Features Added
+#### Features Added
 
 - Provide the ability of interacting with both queue and topic.
 
-## spring-cloud-azure-starter-integration-eventhubs
+### spring-cloud-azure-starter-integration-eventhubs
 
-### Breaking Changes
+#### Breaking Changes
 
 - Change artifact id from `azure-spring-cloud-starter-eventhubs` to
   `spring-cloud-azure-starter-integration-eventhubs`.
@@ -42,9 +55,9 @@ Please refer to [Spring Cloud Azure Migration Guide for 4.0][Spring-Cloud-Azure-
 
 * Change `CheckpointConfig` instantiation style to simple constructor instead of build style.
 
-## spring-integration-azure-eventhubs
+### spring-integration-azure-eventhubs
 
-### Breaking Changes
+#### Breaking Changes
 
 - Change artifact id from `azure-spring-integration-eventhubs` to
   `spring-integration-azure-eventhubs`.
@@ -56,9 +69,9 @@ Please refer to [Spring Cloud Azure Migration Guide for 4.0][Spring-Cloud-Azure-
 
 * Change `CheckpointConfig` instantiation style to simple constructor instead of build style.
 
-## spring-cloud-azure-starter-integration-servicebus
+### spring-cloud-azure-starter-integration-servicebus
 
-### Breaking Changes
+#### Breaking Changes
 
 - Change artifact id from `azure-spring-cloud-starter-servicebus` to `spring-cloud-azure-starter-integration-servicebus`.
 - Annotation of `@AzureMessageListeners`, `@AzureMessageListener` and `@EnableAzureMessaging` are dropped.
@@ -72,13 +85,13 @@ Please refer to [Spring Cloud Azure Migration Guide for 4.0][Spring-Cloud-Azure-
 - Drop class of `ServiceBusQueueInboundChannelAdapter` and `ServiceBusTopicInboundChannelAdapter` and combine them as `ServiceBusInboundChannelAdapter`.
 - Class of `DefaultMessageHandler` is moved from `com.azure.spring.integration.core` to package `com.azure.spring.integration.handler`
 
-### Features Added
+#### Features Added
 
 - Provide the ability to connect to multiple Azure Service Bus entities in different namespaces.
 
-## spring-integration-azure-servicebus
+### spring-integration-azure-servicebus
 
-### Breaking Changes
+#### Breaking Changes
 
 - Change artifact id from `azure-spring-integration-servicebus` to `spring-integration-azure-servicebus`.
 - Combine the original `ServiceBusQueueTemplate#sendAsync` and `ServiceBusTopicTemplate#sendAsync` as `ServiceBusTemplate#sendAsync` and drop classes of `ServiceBusQueueTemplate` and `ServiceBusTopicTemplate`.
@@ -91,26 +104,26 @@ Please refer to [Spring Cloud Azure Migration Guide for 4.0][Spring-Cloud-Azure-
 - Drop class of `ServiceBusQueueInboundChannelAdapter` and `ServiceBusTopicInboundChannelAdapter` and combine them as `ServiceBusInboundChannelAdapter`.
 - Class of `DefaultMessageHandler` is moved from `com.azure.spring.integration.core` to package `com.azure.spring.integration.handler`
 
-### Features Added
+#### Features Added
 
 - Provide the ability to connect to multiple Azure Service Bus entities in different namespaces.
 
-## spring-messaging-azure
+### spring-messaging-azure
 
-### Breaking Changes
+#### Breaking Changes
 
 - Annotation of `@AzureMessageListeners`, `@AzureMessageListener` and `@EnableAzureMessaging` are dropped.
 - Change artifact id from `azure-spring-cloud-messaging` to `spring-messaging-azure`.
 
-## spring-cloud-azure-starter-servicebus-jms
+### spring-cloud-azure-starter-servicebus-jms
 
-### Breaking Changes
+#### Breaking Changes
 
 - Change artifact id from `azure-spring-boot-starter-servicebus-jms` to `spring-cloud-azure-starter-servicebus-jms`.
 
-## spring-integration-azure-storage-queue
+### spring-integration-azure-storage-queue
 
-### Breaking Changes
+#### Breaking Changes
 
 - Change artifact id from `azure-spring-integration-storage-queue` to `spring-integration-azure-storage-queue`.
 - Class of `DefaultMessageHandler` is moved from `com.azure.spring.integration.core` to package `com.azure.spring.integration.handler`.
@@ -118,9 +131,9 @@ Please refer to [Spring Cloud Azure Migration Guide for 4.0][Spring-Cloud-Azure-
 - Class of `StorageQueueOperation` is moved from `com.azure.spring.integration.storage.queue.StorageQueueOperation` to package `com.azure.spring.storage.queue.core.StorageQueueOperation`.
 - Class of `StorageQueueTemplate` is moved from `com.azure.spring.integration.storage.queue.StorageQueueTemplate` to package `com.azure.spring.storage.queue.core.StorageQueueTemplate`.
 
-## spring-cloud-azure-starter-integration-storage-queue
+### spring-cloud-azure-starter-integration-storage-queue
 
-### Breaking Changes
+#### Breaking Changes
 
 - Change artifact id from `azure-spring-cloud-starter-storage-queue` to `spring-cloud-azure-starter-integration-storage-queue`.
 - Class of `DefaultMessageHandler` is moved from `com.azure.spring.integration.core` to package `com.azure.spring.integration.handler`.
@@ -128,9 +141,9 @@ Please refer to [Spring Cloud Azure Migration Guide for 4.0][Spring-Cloud-Azure-
 - Class of `StorageQueueOperation` is moved from `com.azure.spring.integration.storage.queue.StorageQueueOperation` to package `com.azure.spring.storage.queue.core.StorageQueueOperation`.
 - Class of `StorageQueueTemplate` is moved from `com.azure.spring.integration.storage.queue.StorageQueueTemplate` to package `com.azure.spring.storage.queue.core.StorageQueueTemplate`.
 
-## spring-cloud-azure-trace-sleuth
+### spring-cloud-azure-trace-sleuth
 
-### Features Added
+#### Features Added
 
 - Support http pipeline policy implemented by Spring Cloud Sleuth API. ([#24192])
 
