@@ -14,6 +14,7 @@ import com.azure.resourcemanager.compute.models.AvailabilitySet;
 import com.azure.resourcemanager.compute.models.CachingTypes;
 import com.azure.resourcemanager.compute.models.Disk;
 import com.azure.resourcemanager.compute.models.DiskState;
+import com.azure.resourcemanager.compute.models.InstanceViewStatus;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.KnownWindowsVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.PowerState;
@@ -919,7 +920,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     public void canHibernateVirtualMachine() {
         // preview feature
 
-        // create
+        // create to enable hibernation
         VirtualMachine vm = computeManager.virtualMachines()
             .define(vmName)
             .withRegion("eastus2euap")
@@ -927,12 +928,12 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withNewPrimaryNetwork("10.0.0.0/28")
             .withPrimaryPrivateIPAddressDynamic()
             .withoutPrimaryPublicIPAddress()
-            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
-            .withRootUsername("Foo12")
-            .withSsh(sshPublicKey())
-//            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
-//            .withAdminUsername("Foo12")
-//            .withAdminPassword(password())
+//            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+//            .withRootUsername("Foo12")
+//            .withSsh(sshPublicKey())
+            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2019_DATACENTER)
+            .withAdminUsername("Foo12")
+            .withAdminPassword(password())
             .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
             .enableHibernation()
             .create();
@@ -941,17 +942,21 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
         // deallocate with hibernate
         vm.deallocate(true);
+
+        InstanceViewStatus hibernationStatus = vm.instanceView().statuses().stream()
+            .filter(status -> "HibernationState/Hibernated".equals(status.code()))
+            .findFirst().orElse(null);
+        Assertions.assertNotNull(hibernationStatus);
+
         vm.start();
 
-        // update to disable
+        // update to disable hibernation
+        vm.deallocate();
         vm.update()
             .disableHibernation()
             .apply();
 
         Assertions.assertFalse(vm.isHibernationEnabled());
-
-        // deallocate with hibernate fails as feature not enabled
-        Assertions.assertThrows(ManagementException.class, () -> vm.deallocateAsync(true));
     }
 
     private CreatablesInfo prepareCreatableVirtualMachines(

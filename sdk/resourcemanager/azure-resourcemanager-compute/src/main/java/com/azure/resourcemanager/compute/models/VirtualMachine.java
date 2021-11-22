@@ -1701,6 +1701,10 @@ public interface VirtualMachine
             /**
              * Enables hibernation feature.
              *
+             * Hibernation is supported on premium general purpose SKUs, e.g. STANDARD_D2S_V3.
+             * Hibernation is supported on Windows 10 19H1 and higher, and Windows Server 2019 and higher.
+             * For Ubuntu 18.04 or higher, hibernation-setup-tool is required to be installed on the virtual machine.
+             *
              * @return the next stage of the definition
              */
             WithCreate enableHibernation();
@@ -2182,12 +2186,16 @@ public interface VirtualMachine
             /**
              * Enables hibernation feature.
              *
+             * Update can only be applied when the virtual machine is stopped (deallocated).
+             *
              * @return the next stage of the update
              */
             Update enableHibernation();
 
             /**
              * Disables hibernation feature.
+             *
+             * Update can only be applied when the virtual machine is stopped (deallocated).
              *
              * @return the next stage of the update
              */
