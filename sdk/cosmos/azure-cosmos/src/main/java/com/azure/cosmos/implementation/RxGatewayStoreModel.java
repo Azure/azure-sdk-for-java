@@ -518,12 +518,16 @@ class RxGatewayStoreModel implements RxStoreModel {
             return Mono.empty();
         }
 
-        if (!Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
-            return Mono.empty(); // User is explicitly controlling the session.
-        }
-
         boolean sessionConsistency = RequestHelper.getConsistencyLevelToUse(this.gatewayServiceConfigurationReader,
             request) == ConsistencyLevel.SESSION;
+
+        if (!Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
+            if (!sessionConsistency ||
+                (!request.isReadOnlyRequest() && request.getOperationType() != OperationType.Batch && !this.useMultipleWriteLocations)){
+                request.getHeaders().remove(HttpConstants.HttpHeaders.SESSION_TOKEN);
+            }
+            return Mono.empty(); //User is explicitly controlling the session.
+        }
 
         if (!sessionConsistency ||
             (!request.isReadOnlyRequest() && request.getOperationType() != OperationType.Batch && !this.useMultipleWriteLocations)) {
