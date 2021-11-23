@@ -400,7 +400,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
 
             //adding systemInformation
             attributes.put("RegionContacted",
-                mapper.writeValueAsString(clientSideRequestStatistics.getRegionsContacted()));
+                mapper.writeValueAsString(clientSideRequestStatistics.getContactedRegionNames()));
 
 
             //adding systemInformation

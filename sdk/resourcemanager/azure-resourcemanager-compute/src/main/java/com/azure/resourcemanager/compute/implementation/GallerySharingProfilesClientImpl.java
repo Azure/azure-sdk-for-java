@@ -206,7 +206,7 @@ public final class GallerySharingProfilesClientImpl implements GallerySharingPro
         return this
             .client
             .<SharingUpdateInner, SharingUpdateInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SharingUpdateInner.class, SharingUpdateInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), SharingUpdateInner.class, SharingUpdateInner.class, this.client.getContext());
     }
 
     /**

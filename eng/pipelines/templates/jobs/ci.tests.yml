@@ -34,6 +34,9 @@ parameters:
   - name: UsePlatformContainer
     type: boolean
     default: false
+  - name: SkipAggregateReports
+    type: boolean
+    default: false
 
 jobs:
   - job: 'Test'
@@ -110,7 +113,7 @@ jobs:
 
       - task: Maven@3
         displayName: 'Generate aggregate code coverage report'
-        condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.SDKType }}', 'client'))
+        condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.SDKType }}', 'client'), eq('${{ parameters.SkipAggregateReports }}', 'false'))
         inputs:
           mavenPomFile: sdk/${{ parameters.ServiceDirectory }}/pom.xml
           options: '$(DefaultOptions) -Pcoverage'

@@ -306,7 +306,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
         return this
             .client
             .<DedicatedHostInner, DedicatedHostInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DedicatedHostInner.class, DedicatedHostInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), DedicatedHostInner.class, DedicatedHostInner.class, this.client.getContext());
     }
 
     /**
@@ -610,7 +610,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
         return this
             .client
             .<DedicatedHostInner, DedicatedHostInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DedicatedHostInner.class, DedicatedHostInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), DedicatedHostInner.class, DedicatedHostInner.class, this.client.getContext());
     }
 
     /**
@@ -888,7 +888,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, hostGroupName, hostname);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

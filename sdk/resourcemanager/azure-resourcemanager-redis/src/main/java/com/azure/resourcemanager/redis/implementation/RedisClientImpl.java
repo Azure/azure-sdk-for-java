@@ -754,7 +754,7 @@ public final class RedisClientImpl
         return this
             .client
             .<RedisResourceInner, RedisResourceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RedisResourceInner.class, RedisResourceInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), RedisResourceInner.class, RedisResourceInner.class, this.client.getContext());
     }
 
     /**
@@ -1163,7 +1163,7 @@ public final class RedisClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, name);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2344,7 +2344,7 @@ public final class RedisClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = importDataWithResponseAsync(resourceGroupName, name, parameters);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2599,7 +2599,7 @@ public final class RedisClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = exportDataWithResponseAsync(resourceGroupName, name, parameters);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

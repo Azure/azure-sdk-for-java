@@ -694,7 +694,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
                 this.client.getHttpPipeline(),
                 ManagedDatabaseInner.class,
                 ManagedDatabaseInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -987,7 +987,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             deleteWithResponseAsync(resourceGroupName, managedInstanceName, databaseName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1273,7 +1273,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
                 this.client.getHttpPipeline(),
                 ManagedDatabaseInner.class,
                 ManagedDatabaseInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1772,7 +1772,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             completeRestoreWithResponseAsync(resourceGroupName, managedInstanceName, databaseName, lastBackupName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

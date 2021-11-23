@@ -617,4 +617,10 @@ the main ServiceBusClientBuilder. -->
   <!-- Suppress VisibilityModifier in MemberConverterImplTests.-->
   <suppress checks="VisibilityModifier"
             files="com.azure.core.implementation.jackson.MemberNameConverterImplTests.java"/>
+
+  <!-- Code generation doesn't add a space between '{' and '}' when the class is empty. -->
+  <suppress checks="WhitespaceAround" files="com.azure.search.documents.indexes.models.DataChangeDetectionPolicy"/>
+  <suppress checks="WhitespaceAround" files="com.azure.search.documents.indexes.models.DataDeletionDetectionPolicy"/>
+  <suppress checks="WhitespaceAround" files="com.azure.search.documents.indexes.models.SearchIndexerDataIdentity"/>
+  <suppress checks="WhitespaceAround" files="com.azure.search.documents.indexes.models.SimilarityAlgorithm"/>
 </suppressions>
