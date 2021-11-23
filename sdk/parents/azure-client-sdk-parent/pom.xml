@@ -147,6 +147,10 @@
 
     <!-- This property configures whether Spotbugs analysis is ran on samples and tests. Default is false. -->
     <spotbugs.includeTests>false</spotbugs.includeTests>
+
+    <!-- These properties exist for libraries using the new codesnippet-maven-plugin can easily disable the old doclet. -->
+    <javadocDoclet>org.apidesign.javadoc.codesnippet.Doclet</javadocDoclet>
+    <javadocDocletOptions>-maxLineLength 120 -snippetpath ${project.basedir}/src/samples/java -suppressMissingLinkWarnings</javadocDocletOptions>
   </properties>
 
   <build>
@@ -672,6 +676,18 @@
             <doclint>all</doclint>
             <quiet>true</quiet>
             <jarOutputDirectory>${packageOutputDirectory}</jarOutputDirectory>
+            <doclet>${javadocDoclet}</doclet>
+            <docletArtifact>
+              <groupId>org.apidesign.javadoc</groupId>
+              <artifactId>codesnippet-doclet</artifactId>
+              <version>0.53</version> <!-- {x-version-update;org.apidesign.javadoc:codesnippet-doclet;external_dependency} -->
+            </docletArtifact>
+            <additionalOptions>
+              <!-- '-version' is a dummy option, it's needed to prevent the Javadoc plugin from throwing a NullPointerException when '${javadocDocletOptions}' is empty. -->
+              <!-- '${javadocDocletOptions}' will be empty when the new codesnippet tooling is being used. -->
+              <!-- '-version' will indicate to Javadoc to include '@version' tags in generation, but none of the SDKs use this, so it is a good dummy option. -->
+              <additionalOption>-version ${javadocDocletOptions}</additionalOption>
+            </additionalOptions>
           </configuration>
         </plugin>
 
