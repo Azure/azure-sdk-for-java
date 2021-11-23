@@ -16,10 +16,24 @@ import org.springframework.util.ClassUtils;
  * </pre>
  */
 public enum AADApplicationType {
-
+    /**
+     * Web application
+     */
     WEB_APPLICATION("web_application"),
+
+    /**
+     * Resource server
+     */
     RESOURCE_SERVER("resource_server"),
+
+    /**
+     * Resource server with OBO
+     */
     RESOURCE_SERVER_WITH_OBO("resource_server_with_obo"),
+
+    /**
+     * Web application and resource server
+     */
     WEB_APPLICATION_AND_RESOURCE_SERVER("web_application_and_resource_server");
 
     private final String applicationType;
@@ -28,12 +42,24 @@ public enum AADApplicationType {
         this.applicationType = applicationType;
     }
 
+    /**
+     * Gets the string representation of the enum.
+     *
+     * @return the string representation of the enum
+     */
     public String getValue() {
         return applicationType;
     }
 
+    /**
+     * The Spring security OAuth2 client class name
+     */
     public static final String SPRING_SECURITY_OAUTH2_CLIENT_CLASS_NAME =
         "org.springframework.security.oauth2.client.registration.ClientRegistration";
+
+    /**
+     * The Spring security OAuth2 resource server class name
+     */
     public static final String SPRING_SECURITY_OAUTH2_RESOURCE_SERVER_CLASS_NAME =
         "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken";
 
