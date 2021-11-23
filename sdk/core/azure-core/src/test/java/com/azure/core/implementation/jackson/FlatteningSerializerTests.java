@@ -683,9 +683,9 @@ public class FlatteningSerializerTests {
     @Test
     public void jsonFlattenRepeatedPropertyNameDeserialize() throws IOException {
         SampleResource deserialized = JacksonAdapter.createDefaultSerializerAdapter().deserialize(
-            "{\"name\":\"...-01\",\"properties\":{\"registrationTtl\":\"10675199.02:48:05.4775807\",\"authorizationRules\":[]}}"
-            , SampleResource.class
-            , SerializerEncoding.JSON
+            "{\"name\":\"...-01\",\"properties\":{\"registrationTtl\":\"10675199.02:48:05.4775807\",\"authorizationRules\":[]}}",
+            SampleResource.class,
+            SerializerEncoding.JSON
         );
 
         assertEquals("10675199.02:48:05.4775807", deserialized.getRegistrationTtl());

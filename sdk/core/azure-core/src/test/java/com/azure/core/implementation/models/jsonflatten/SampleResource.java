@@ -20,12 +20,12 @@ public class SampleResource {
     @JsonProperty(value = "properties.registrationTtl")
     private String registrationTtl;
 
-    public SampleResource withNamePropertiesName(String namePropertiesName){
+    public SampleResource withNamePropertiesName(String namePropertiesName) {
         this.namePropertiesName = namePropertiesName;
         return this;
     }
 
-    public SampleResource withRegistrationTtl(String registrationTtl){
+    public SampleResource withRegistrationTtl(String registrationTtl) {
         this.registrationTtl = registrationTtl;
         return this;
     }
