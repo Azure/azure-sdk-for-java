@@ -1,8 +1,8 @@
 param (
   [string]$TargetDirectory = "", # Code path to code owners. e.g sdk/core/azure-amqp
-  [string]$CodeOwnerFileLocation = (Join-Path (Get-Item $PSScriptRoot ).Parent.Parent.Parent.FullName ".github/CODEOWNERS"), # The absolute path of CODEOWNERS file. 
+  [string]$CodeOwnerFileLocation = (Resolve-Path $PSScriptRoot/../../../.github/CODEOWNERS), # The absolute path of CODEOWNERS file. 
   [string]$ToolVersion = "1.0.0-dev.20211122.14", # Placeholder. Will update in next PR
-  [string]$ToolPath = (Resolve-Path $PSScriptRoot/../../../.github/CODEOWNERS), # The place to check the tool existence. Put temp path as default
+  [string]$ToolPath = (Join-Path ([System.IO.Path]::GetTempPath()) "codeowners-tool-path"), # The place to check the tool existence. Put temp path as default
   [string]$DevOpsFeed = "https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-net/nuget/v3/index.json", # DevOp tool feeds.
   [string]$VsoVariable = "", # Option of write code owners into devop variable
   [switch]$IncludeNonUserAliases, # Option to filter out the team alias in code owner list. e.g. Azure/azure-sdk-team
