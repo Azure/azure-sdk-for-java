@@ -7,6 +7,7 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.SinglePartitionKeyServerBatchRequest;
+import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemOperationType;
@@ -155,8 +156,15 @@ public class SessionTest extends TestSuiteBase {
             documentCreated = spyClient.createDocument(getCollectionLink(isNameBased), document, requestOptions, false)
                 .block().getResource();
         }
-        // No session token set for write call
-        assertThat(getSessionTokensInRequests()).hasSize(0);
+        GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(spyClient);
+        if(!globalEndpointManager.getLatestDatabaseAccount().getEnableMultipleWriteLocations()) {
+            // No session token set for write call
+            assertThat(getSessionTokensInRequests()).hasSize(0);
+        } else {
+            assertThat(getSessionTokensInRequests().size()).isGreaterThanOrEqualTo(1);
+            assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
+            assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
+        }
         spyClient.clearCapturedRequests();
 
         // Session token set for default session consistency
@@ -258,8 +266,15 @@ public class SessionTest extends TestSuiteBase {
             documentCreated = spyClient.createDocument(getCollectionLink(isNameBased), document, requestOptions, false)
                 .block().getResource();
         }
-        // No session token set for write call
-        assertThat(getSessionTokensInRequests()).hasSize(0);
+        GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(spyClient);
+        if(!globalEndpointManager.getLatestDatabaseAccount().getEnableMultipleWriteLocations()) {
+            // No session token set for write call
+            assertThat(getSessionTokensInRequests()).hasSize(0);
+        } else {
+            assertThat(getSessionTokensInRequests().size()).isGreaterThanOrEqualTo(1);
+            assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
+            assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
+        }
         spyClient.clearCapturedRequests();
 
         // No session token set for EVENTUAL consistency
