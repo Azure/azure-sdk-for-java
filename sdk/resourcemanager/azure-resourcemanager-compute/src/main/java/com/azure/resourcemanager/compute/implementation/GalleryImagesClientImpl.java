@@ -313,7 +313,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
         return this
             .client
             .<GalleryImageInner, GalleryImageInner>getLroResult(
-                mono, this.client.getHttpPipeline(), GalleryImageInner.class, GalleryImageInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), GalleryImageInner.class, GalleryImageInner.class, this.client.getContext());
     }
 
     /**
@@ -639,7 +639,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
         return this
             .client
             .<GalleryImageInner, GalleryImageInner>getLroResult(
-                mono, this.client.getHttpPipeline(), GalleryImageInner.class, GalleryImageInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), GalleryImageInner.class, GalleryImageInner.class, this.client.getContext());
     }
 
     /**
@@ -1105,7 +1105,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
             deleteWithResponseAsync(resourceGroupName, galleryName, galleryImageName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

@@ -229,6 +229,7 @@ public class KeyVaultProperties {
      * Whether telemetry is allowed.
      *
      * @return whether telemetry is allowed
+     * @deprecated Determined by HTTP header User-Agent instead
      */
     @Deprecated
     @DeprecatedConfigurationProperty(

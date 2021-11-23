@@ -339,6 +339,7 @@ public class AADB2CProperties implements InitializingBean {
      * Whether telemetry is allowed.
      *
      * @return whether telemetry is allowed
+     * @deprecated Determined by HTTP header User-Agent instead
      */
     @Deprecated
     @DeprecatedConfigurationProperty(

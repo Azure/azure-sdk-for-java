@@ -25,16 +25,34 @@ public class AADOAuth2AuthenticatedPrincipal implements OAuth2AuthenticatedPrinc
 
     private static final String PERSONAL_ACCOUNT_TENANT_ID = "9188040d-6c67-4c5b-b112-36a304b66dad";
 
+    /**
+     * The authorities
+     */
     private final Collection<GrantedAuthority> authorities;
 
+    /**
+     * The headers
+     */
     private final Map<String, Object> headers;
 
+    /**
+     * The attributes
+     */
     private final Map<String, Object> attributes;
 
+    /**
+     * The token value
+     */
     private final String tokenValue;
 
+    /**
+     * The JWT claims set
+     */
     private JWTClaimsSet jwtClaimsSet;
 
+    /**
+     * The name
+     */
     private final String name;
 
     /**

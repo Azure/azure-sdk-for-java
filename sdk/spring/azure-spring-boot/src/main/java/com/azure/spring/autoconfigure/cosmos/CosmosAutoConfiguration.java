@@ -26,6 +26,11 @@ import org.springframework.context.annotation.Configuration;
 public class CosmosAutoConfiguration extends AbstractCosmosConfiguration {
     private final CosmosProperties properties;
 
+    /**
+     * Creates a new instance of {@link CosmosAutoConfiguration}.
+     *
+     * @param properties the Cosmos properties
+     */
     public CosmosAutoConfiguration(CosmosProperties properties) {
         this.properties = properties;
     }

@@ -539,7 +539,7 @@ public final class AppsClientImpl implements AppsClient {
         return this
             .client
             .<AppResourceInner, AppResourceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AppResourceInner.class, AppResourceInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), AppResourceInner.class, AppResourceInner.class, this.client.getContext());
     }
 
     /**
@@ -813,7 +813,7 @@ public final class AppsClientImpl implements AppsClient {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, serviceName, appName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1090,7 +1090,7 @@ public final class AppsClientImpl implements AppsClient {
         return this
             .client
             .<AppResourceInner, AppResourceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AppResourceInner.class, AppResourceInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), AppResourceInner.class, AppResourceInner.class, this.client.getContext());
     }
 
     /**

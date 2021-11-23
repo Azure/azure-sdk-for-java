@@ -225,6 +225,7 @@ public class AADAuthenticationProperties implements InitializingBean {
          * Whether full list is enabled.
          *
          * @return whether full list is enabled
+         * @deprecated Use 'allowed-group-ids: all'
          */
         @Deprecated
         @DeprecatedConfigurationProperty(
@@ -238,6 +239,7 @@ public class AADAuthenticationProperties implements InitializingBean {
          * Sets whether full list is enabled.
          *
          * @param enableFullList whether full list is enabled
+         * @deprecated Use 'azure.activedirectory.user-group.allowed-group-ids: all'
          */
         @Deprecated
         public void setEnableFullList(Boolean enableFullList) {
@@ -250,6 +252,7 @@ public class AADAuthenticationProperties implements InitializingBean {
          * Gets the list of allowed groups.
          *
          * @return the list of allowed groups
+         * @deprecated Use 'azure.activedirectory.user-group.allowed-group-names'
          */
         @Deprecated
         @DeprecatedConfigurationProperty(
@@ -264,6 +267,7 @@ public class AADAuthenticationProperties implements InitializingBean {
          * Sets the list of allowed groups.
          *
          * @param allowedGroups the list of allowed groups
+         * @deprecated Use 'azure.activedirectory.user-group.allowed-group-names'
          */
         @Deprecated
         public void setAllowedGroups(List<String> allowedGroups) {
@@ -392,6 +396,7 @@ public class AADAuthenticationProperties implements InitializingBean {
      * Sets the list of Active Directory groups.
      *
      * @param activeDirectoryGroups the list of Active Directory groups
+     * @deprecated deprecated
      */
     @Deprecated
     public void setActiveDirectoryGroups(List<String> activeDirectoryGroups) {
@@ -564,6 +569,7 @@ public class AADAuthenticationProperties implements InitializingBean {
      * Whether telemetry is allowed.
      *
      * @return whether telemetry is allowed
+     * @deprecated Determined by HTTP header User-Agent instead
      */
     @Deprecated
     @DeprecatedConfigurationProperty(

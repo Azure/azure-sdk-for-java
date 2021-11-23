@@ -132,6 +132,7 @@ public class AADTrustedIssuerRepository {
      * Adds a B2C issuer.
      *
      * @param baseUri the base URI
+     * @deprecated deprecated
      */
     @Deprecated
     public void addB2CIssuer(String baseUri) {

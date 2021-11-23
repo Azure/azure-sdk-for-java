@@ -640,7 +640,7 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
         return this
             .client
             .<RuleSetInner, RuleSetInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RuleSetInner.class, RuleSetInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), RuleSetInner.class, RuleSetInner.class, this.client.getContext());
     }
 
     /**
@@ -897,7 +897,7 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, profileName, ruleSetName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

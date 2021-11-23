@@ -1168,7 +1168,7 @@ public final class AppServiceCertificateOrdersClientImpl
                 this.client.getHttpPipeline(),
                 AppServiceCertificateOrderInner.class,
                 AppServiceCertificateOrderInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2169,7 +2169,7 @@ public final class AppServiceCertificateOrdersClientImpl
                 this.client.getHttpPipeline(),
                 AppServiceCertificateResourceInner.class,
                 AppServiceCertificateResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

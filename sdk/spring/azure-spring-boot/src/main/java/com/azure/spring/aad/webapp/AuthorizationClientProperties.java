@@ -59,6 +59,8 @@ public class AuthorizationClientProperties {
      * Whether authorization is on demand.
      *
      * @return whether authorization is on demand
+     * @deprecated The AuthorizationGrantType of on-demand clients should be authorization_code.
+     * Set oauth client AuthorizationGrantType to authorization_code, which means it's on-demand.
      */
     @Deprecated
     @DeprecatedConfigurationProperty(
@@ -72,6 +74,8 @@ public class AuthorizationClientProperties {
      * Sets whether authorization is on demand.
      *
      * @param onDemand whether authorization is on demand
+     * @deprecated The AuthorizationGrantType of on-demand clients should be authorization_code.
+     * Set oauth client AuthorizationGrantType to authorization_code, which means it's on-demand.
      */
     @Deprecated
     public void setOnDemand(boolean onDemand) {

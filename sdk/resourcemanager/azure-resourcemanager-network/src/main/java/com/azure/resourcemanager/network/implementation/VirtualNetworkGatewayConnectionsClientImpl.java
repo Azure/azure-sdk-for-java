@@ -429,7 +429,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
                 this.client.getHttpPipeline(),
                 VirtualNetworkGatewayConnectionInner.class,
                 VirtualNetworkGatewayConnectionInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -872,7 +872,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
             deleteWithResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1135,7 +1135,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
                 this.client.getHttpPipeline(),
                 VirtualNetworkGatewayConnectionInner.class,
                 VirtualNetworkGatewayConnectionInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1432,7 +1432,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
                 this.client.getHttpPipeline(),
                 ConnectionSharedKeyInner.class,
                 ConnectionSharedKeyInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2092,7 +2092,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
                 this.client.getHttpPipeline(),
                 ConnectionResetSharedKeyInner.class,
                 ConnectionResetSharedKeyInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2416,7 +2416,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
         return this
             .client
             .<String, String>getLroResult(
-                mono, this.client.getHttpPipeline(), String.class, String.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), String.class, String.class, this.client.getContext());
     }
 
     /**
@@ -2759,7 +2759,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
         return this
             .client
             .<String, String>getLroResult(
-                mono, this.client.getHttpPipeline(), String.class, String.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), String.class, String.class, this.client.getContext());
     }
 
     /**
@@ -3043,7 +3043,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
         return this
             .client
             .<String, String>getLroResult(
-                mono, this.client.getHttpPipeline(), String.class, String.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), String.class, String.class, this.client.getContext());
     }
 
     /**
@@ -3287,7 +3287,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
             resetConnectionWithResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

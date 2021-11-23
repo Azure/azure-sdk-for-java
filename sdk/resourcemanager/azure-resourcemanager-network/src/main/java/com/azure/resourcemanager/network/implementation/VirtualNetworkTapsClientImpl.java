@@ -294,7 +294,7 @@ public final class VirtualNetworkTapsClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, tapName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -694,7 +694,7 @@ public final class VirtualNetworkTapsClientImpl
                 this.client.getHttpPipeline(),
                 VirtualNetworkTapInner.class,
                 VirtualNetworkTapInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
