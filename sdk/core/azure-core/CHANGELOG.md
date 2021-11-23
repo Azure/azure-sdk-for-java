@@ -6,8 +6,6 @@
 - Removed `ErrorOptions`
 - Removed `setErrorOptions()` from `RequestOptions`
 
-### Other Changes
-
 ## 1.22.0 (2021-11-05)
 
 ### Features Added
