@@ -145,6 +145,9 @@
     <!-- This property configures whether the codesnippet-maven-plugin should be used. -->
     <codesnippet.skip>true</codesnippet.skip>
 
+    <!-- This property configures whether the maven-javadoc-plugin should be used. -->
+    <javadoc.skip>false</javadoc.skip>
+
     <!-- This property configures whether Spotbugs analysis is ran on samples and tests. Default is false. -->
     <spotbugs.includeTests>false</spotbugs.includeTests>
 
@@ -243,6 +246,9 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+        <configuration>
+          <skip>${javadoc.skip}</skip>
+        </configuration>
         <executions>
           <execution>
             <id>attach-javadocs</id>

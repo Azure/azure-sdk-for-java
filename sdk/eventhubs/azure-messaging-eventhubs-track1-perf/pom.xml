@@ -22,6 +22,10 @@
 
     <!-- Don't require tests for perf tests. -->
     <jacoco.skip>true</jacoco.skip>
+
+    <!-- Don't require javadoc for perf tests -->
+    <codesnippet.skip>true</codesnippet.skip>
+    <javadoc.skip>true</javadoc.skip>
   </properties>
 
   <dependencies>
