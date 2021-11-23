@@ -28,7 +28,10 @@ parameters:
   - name: MatrixReplace
     type: object
     default: []
-
+  - name: SkipAggregateReports
+    type: boolean
+    default: false
+    
 jobs:
   - job: 'Build'
 
