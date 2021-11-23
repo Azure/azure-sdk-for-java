@@ -19,7 +19,7 @@
   <properties>
     <!-- Don't require javadoc for perf tests -->
     <codesnippet.skip>true</codesnippet.skip>
-    <javadoc.skip>true</javadoc.skip>
+    <maven.javadoc.skip>true</maven.javadoc.skip>
   </properties>
 
   <dependencies>
