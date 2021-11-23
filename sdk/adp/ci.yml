@@ -1,0 +1,39 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/adp/ci.yml
+      - sdk/adp/azure-resourcemanager-adp/
+    exclude:
+      - sdk/adp/pom.xml
+      - sdk/adp/azure-resourcemanager-adp/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/adp/ci.yml
+      - sdk/adp/azure-resourcemanager-adp/
+    exclude:
+      - sdk/adp/pom.xml
+      - sdk/adp/azure-resourcemanager-adp/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: adp
+    Artifacts:
+      - name: azure-resourcemanager-adp
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanageradp
