@@ -307,7 +307,7 @@ public final class AttestationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AttestationResult> attestOpenEnclaveWithResponse(
         BinaryData report, Context context) {
-        return asyncClient.attestOpenEnclaveWithResponse(report, context).block();
+        return asyncClient.attestOpenEnclaveWithResponse(new AttestationOptions(report), context).block();
     }
 
     /**
@@ -420,7 +420,7 @@ public final class AttestationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AttestationResult> attestSgxEnclaveWithResponse(BinaryData quote, Context context) {
-        return asyncClient.attestSgxEnclaveWithResponse(quote, context).block();
+        return asyncClient.attestSgxEnclaveWithResponse(new AttestationOptions(quote), context).block();
     }
 
 

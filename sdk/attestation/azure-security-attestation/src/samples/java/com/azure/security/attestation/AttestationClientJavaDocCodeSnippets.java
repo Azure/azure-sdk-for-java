@@ -222,40 +222,7 @@ public class AttestationClientJavaDocCodeSnippets {
 
     }
 
-    public static void attestSgxEnclaveSync1() {
-        BinaryData runtimeData = BinaryData.fromBytes(SampleCollateral.getRunTimeData());
-        BinaryData inittimeData = null;
-        BinaryData sgxEnclaveReport = BinaryData.fromBytes(SampleCollateral.getSgxEnclaveQuote());
-        BinaryData sgxQuote = BinaryData.fromBytes(SampleCollateral.getSgxEnclaveQuote());
-
-        AttestationClient client = new AttestationClientBuilder()
-            .endpoint("https://sharedcus.cus.attest.azure.net")
-            .buildClient();
-
-        // BEGIN: com.azure.security.attestation.AttestationClient.attestSgxEnclaveWithReport
-        AttestationResult resultWithReport = client.attestSgxEnclave(sgxEnclaveReport);
-        // END: com.azure.security.attestation.AttestationClient.attestSgxEnclaveWithReport
-
-        // BEGIN: com.azure.security.attestation.AttestationClient.attestSgxEnclaveWithResponseWithReport
-        Response<AttestationResult> responseWithReport = client.attestSgxEnclaveWithResponse(sgxQuote, Context.NONE);
-        // END: com.azure.security.attestation.AttestationClient.attestSgxEnclaveWithResponseWithReport
-
-
-        // BEGIN: com.azure.security.attestation.AttestationClient.attestSgxEnclave
-        AttestationResult result = client.attestSgxEnclave(new AttestationOptions(sgxQuote)
-            .setRunTimeData(new AttestationData(runtimeData, AttestationDataInterpretation.BINARY)));
-
-        // END: com.azure.security.attestation.AttestationClient.attestSgxEnclave
-
-        // BEGIN: com.azure.security.attestation.AttestationClient.attestSgxEnclaveWithResponse
-        Response<AttestationResult> openEnclaveResponse = client.attestSgxEnclaveWithResponse(new AttestationOptions(sgxQuote)
-            .setRunTimeData(new AttestationData(runtimeData, AttestationDataInterpretation.JSON)), Context.NONE);
-
-        // END: com.azure.security.attestation.AttestationClient.attestSgxEnclaveWithResponse
-    }
-
-
-    public static void attestAsync1() {
+    public static void attestOpenEnclaveAsync1() {
         BinaryData runtimeData = BinaryData.fromBytes(SampleCollateral.getRunTimeData());
         BinaryData inittimeData = null;
         BinaryData openEnclaveReport = BinaryData.fromBytes(SampleCollateral.getOpenEnclaveReport());
@@ -291,8 +258,99 @@ public class AttestationClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.security.attestation.AttestationAsyncClient.getAttestationSignersWithResponse
         Mono<Response<List<AttestationSigner>>> responseOfSigners = client.listAttestationSignersWithResponse();
+        responseOfSigners.subscribe();
         // END: com.azure.security.attestation.AttestationAsyncClient.getAttestationSignersWithResponse
+
+        // BEGIN: com.azure.security.attestation.AttestationAsyncClient.attestOpenEnclaveWithReport
+        Mono<AttestationResult> resultWithReport = client.attestOpenEnclave(openEnclaveReport);
+        // END: com.azure.security.attestation.AttestationAsyncClient.attestOpenEnclaveWithReport
+
+        // BEGIN: com.azure.security.attestation.AttestationAsyncClient.attestOpenEnclaveWithResponseWithReport
+        Mono<Response<AttestationResult>> responseWithReport = client.attestOpenEnclaveWithResponse(openEnclaveReport);
+        // END: com.azure.security.attestation.AttestationAsyncClient.attestOpenEnclaveWithResponseWithReport
+
+
+        // BEGIN: com.azure.security.attestation.AttestationAsyncClient.attestOpenEnclave
+        Mono<AttestationResult> result = client.attestOpenEnclave(new AttestationOptions(openEnclaveReport)
+            .setRunTimeData(new AttestationData(runtimeData, AttestationDataInterpretation.BINARY)));
+
+        // END: com.azure.security.attestation.AttestationAsyncClient.attestOpenEnclave
+
+        // BEGIN: com.azure.security.attestation.AttestationAsyncClient.attestOpenEnclaveWithResponse
+        Mono<Response<AttestationResult>> openEnclaveResponse = client.attestOpenEnclaveWithResponse(new AttestationOptions(openEnclaveReport)
+            .setRunTimeData(new AttestationData(runtimeData, AttestationDataInterpretation.JSON)), Context.NONE);
+
+        // END: com.azure.security.attestation.AttestationAsyncClient.attestOpenEnclaveWithResponse
+
+
     }
+
+    public static void attestSgxEnclaveSync1() {
+        BinaryData runtimeData = BinaryData.fromBytes(SampleCollateral.getRunTimeData());
+        BinaryData inittimeData = null;
+        BinaryData sgxEnclaveReport = BinaryData.fromBytes(SampleCollateral.getSgxEnclaveQuote());
+        BinaryData sgxQuote = BinaryData.fromBytes(SampleCollateral.getSgxEnclaveQuote());
+
+        AttestationClient client = new AttestationClientBuilder()
+            .endpoint("https://sharedcus.cus.attest.azure.net")
+            .buildClient();
+
+        // BEGIN: com.azure.security.attestation.AttestationClient.attestSgxEnclaveWithReport
+        AttestationResult resultWithReport = client.attestSgxEnclave(sgxEnclaveReport);
+        // END: com.azure.security.attestation.AttestationClient.attestSgxEnclaveWithReport
+
+        // BEGIN: com.azure.security.attestation.AttestationClient.attestSgxEnclaveWithResponseWithReport
+        Response<AttestationResult> responseWithReport = client.attestSgxEnclaveWithResponse(sgxQuote, Context.NONE);
+        // END: com.azure.security.attestation.AttestationClient.attestSgxEnclaveWithResponseWithReport
+
+
+        // BEGIN: com.azure.security.attestation.AttestationClient.attestSgxEnclave
+        AttestationResult result = client.attestSgxEnclave(new AttestationOptions(sgxQuote)
+            .setRunTimeData(new AttestationData(runtimeData, AttestationDataInterpretation.BINARY)));
+
+        // END: com.azure.security.attestation.AttestationClient.attestSgxEnclave
+
+        // BEGIN: com.azure.security.attestation.AttestationClient.attestSgxEnclaveWithResponse
+        Response<AttestationResult> openEnclaveResponse = client.attestSgxEnclaveWithResponse(new AttestationOptions(sgxQuote)
+            .setRunTimeData(new AttestationData(runtimeData, AttestationDataInterpretation.JSON)), Context.NONE);
+
+        // END: com.azure.security.attestation.AttestationClient.attestSgxEnclaveWithResponse
+    }
+
+    public static void attestSgxEnclaveAsync1() {
+        BinaryData runtimeData = BinaryData.fromBytes(SampleCollateral.getRunTimeData());
+        BinaryData inittimeData = null;
+        BinaryData openEnclaveReport = BinaryData.fromBytes(SampleCollateral.getOpenEnclaveReport());
+        BinaryData sgxQuote = BinaryData.fromBytes(SampleCollateral.getSgxEnclaveQuote());
+
+        AttestationAsyncClient client = new AttestationClientBuilder()
+            .endpoint("https://sharedcus.cus.attest.azure.net")
+            .buildAsyncClient();
+
+        // BEGIN: com.azure.security.attestation.AttestationAsyncClient.attestSgxEnclaveWithReport
+        Mono<AttestationResult> resultWithReport = client.attestSgxEnclave(sgxQuote);
+        // END: com.azure.security.attestation.AttestationAsyncClient.attestSgxEnclaveWithReport
+
+        // BEGIN: com.azure.security.attestation.AttestationAsyncClient.attestSgxEnclaveWithResponseWithReport
+        Mono<Response<AttestationResult>> responseWithReport = client.attestSgxEnclaveWithResponse(sgxQuote);
+        // END: com.azure.security.attestation.AttestationAsyncClient.attestSgxEnclaveWithResponseWithReport
+
+
+        // BEGIN: com.azure.security.attestation.AttestationAsyncClient.attestSgxEnclave
+        Mono<AttestationResult> result = client.attestSgxEnclave(new AttestationOptions(sgxQuote)
+            .setRunTimeData(new AttestationData(runtimeData, AttestationDataInterpretation.BINARY)));
+
+        // END: com.azure.security.attestation.AttestationAsyncClient.attestSgxEnclave
+
+        // BEGIN: com.azure.security.attestation.AttestationAsyncClient.attestSgxEnclaveWithResponse
+        Mono<Response<AttestationResult>> openEnclaveResponse = client.attestSgxEnclaveWithResponse(new AttestationOptions(sgxQuote)
+            .setRunTimeData(new AttestationData(runtimeData, AttestationDataInterpretation.JSON)), Context.NONE);
+        // END: com.azure.security.attestation.AttestationAsyncClient.attestSgxEnclaveWithResponse
+
+
+    }
+
+
 
     public static void setPolicyCheckHashAsync() {
         String endpoint = System.getenv("ATTESTATION_AAD_URL");
@@ -344,9 +402,10 @@ public class AttestationClientJavaDocCodeSnippets {
         // END: com.azure.security.attestation.AttestationAdministrationClient.checkPolicyTokenHash
     }
     static void executeSamples() {
-        attestAsync1();
+        attestOpenEnclaveAsync1();
         attestOpenEnclaveSync1();
         attestSgxEnclaveSync1();
+        attestOpenEnclaveAsync1();
         attestationOptionsSnippets();
         attestationOptionsSnippets2();
         attestationOptionsSnippets3();
