@@ -232,7 +232,7 @@ public final class AttestationClient {
      *
      * @return Returns an array of {@link AttestationSigner} objects which will be used to sign tokens returned from the attestation service.
      */
-
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public List<AttestationSigner> listAttestationSigners() {
         return asyncClient.listAttestationSignersWithResponse()
             .map(Response::getValue).block();
