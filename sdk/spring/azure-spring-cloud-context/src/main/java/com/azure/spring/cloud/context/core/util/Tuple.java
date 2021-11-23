@@ -20,14 +20,33 @@ public final class Tuple<T, U> {
         this.second = second;
     }
 
+    /**
+     * Creates a tuple from two value.
+     *
+     * @param first The first value.
+     * @param second The second value.
+     * @param <T> The type of the first value.
+     * @param <U> The type of the second value.
+     * @return A new tuple.
+     */
     public static <T, U> Tuple<T, U> of(T first, U second) {
         return new Tuple<>(first, second);
     }
 
+    /**
+     * Gets the first value.
+     *
+     * @return The first value.
+     */
     public T getFirst() {
         return first;
     }
 
+    /**
+     * Gets the second value.
+     *
+     * @return The second value.
+     */
     public U getSecond() {
         return second;
     }

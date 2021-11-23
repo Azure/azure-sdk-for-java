@@ -17,6 +17,12 @@ public class AADB2COidcLoginConfigurer extends AbstractHttpConfigurer<AADB2COidc
 
     private final AADB2CAuthorizationRequestResolver resolver;
 
+    /**
+     * Creates a new instance of {@link AADB2COidcLoginConfigurer}.
+     *
+     * @param handler the AAD B2C logout success handler
+     * @param resolver the AAD B2C authorization request resolver
+     */
     public AADB2COidcLoginConfigurer(AADB2CLogoutSuccessHandler handler, AADB2CAuthorizationRequestResolver resolver) {
         this.handler = handler;
         this.resolver = resolver;
@@ -37,6 +43,11 @@ public class AADB2COidcLoginConfigurer extends AbstractHttpConfigurer<AADB2COidc
         // @formatter:on
     }
 
+    /**
+     * Gets the access token response client.
+     *
+     * @return the access token response client
+     */
     protected OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {
         DefaultAuthorizationCodeTokenResponseClient result = new DefaultAuthorizationCodeTokenResponseClient();
         result.setRequestEntityConverter(new AADB2COAuth2AuthorizationCodeGrantRequestEntityConverter());
