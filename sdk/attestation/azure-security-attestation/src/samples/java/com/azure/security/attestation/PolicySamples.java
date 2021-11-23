@@ -115,7 +115,6 @@ public class PolicySamples {
         X509Certificate certificate = SampleCollateral.getSigningCertificate();
         PrivateKey privateKey = SampleCollateral.getSigningKey();
 
-
         System.out.println("Setting an async policy");
         // Set the listed policy on an attestation instance. Please note that this particular policy will deny all
         // attestation requests and should not be used in production.
@@ -157,6 +156,38 @@ public class PolicySamples {
 
     }
 
+    /**
+     * Reset all attestation policies to their default value, for both the AAD and Isolated instance.
+     */
+    public static void resetAllPolicies() {
+        System.out.println("Reset all attestation policies.\n");
+        String endpoint = System.getenv("ATTESTATION_AAD_URL");
+        AttestationAdministrationClientBuilder attestationBuilder = new AttestationAdministrationClientBuilder();
+        X509Certificate certificate = SampleCollateral.getIsolatedSigningCertificate();
+        PrivateKey privateKey = SampleCollateral.getIsolatedSigningKey();
+
+        // Note that the "policy" calls require authentication.
+        AttestationAdministrationClient aadClient = attestationBuilder
+            .endpoint(endpoint)
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildClient();
+
+        endpoint = System.getenv("ATTESTATION_ISOLATED_URL");
+        AttestationAdministrationClient isolatedClient = attestationBuilder
+            .endpoint(endpoint)
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildClient();
+
+        for (AttestationType attestationType : AttestationType.values()) {
+            System.out.printf("Reset AAD attestation policy %s\n", attestationType.toString());
+            aadClient.resetAttestationPolicy(attestationType);
+
+            System.out.printf("Reset Isolated attestation policy %s\n", attestationType.toString());
+            isolatedClient.resetAttestationPolicy(attestationType,
+                new AttestationPolicySetOptions()
+                    .setAttestationSigner(new AttestationSigningKey(certificate, privateKey)));
+        }
+    }
 
     static void executeSamples() {
         getCurrentPolicy();

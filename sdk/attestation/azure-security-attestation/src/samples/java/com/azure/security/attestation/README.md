@@ -90,11 +90,13 @@ into the attestation service instance because they use [DefaultAzureCredential](
 This directory contains functional samples for the attestation service SDK.
 
 ## Samples descriptions
+
 The samples are roughly grouped into four source files, by functionality:
- - AttestationSamples - demonstrate the "attestation" family of APIs.
- - PolicySamples - demonstrate the "policy" family of APIs, including setting, getting and resetting attestation policies.
- - PolicyManagementCertificateSamples - demonstrates the "policy certificates" family of APIs.
- - ReadmeSamples - these are samples which show functions which are not specific to the above families.
+
+* AttestationSamples - demonstrate the "attestation" family of APIs.
+* PolicySamples - demonstrate the "policy" family of APIs, including setting, getting and resetting attestation policies.
+* PolicyManagementCertificateSamples - demonstrates the "policy certificates" family of APIs.
+* ReadmeSamples - these are samples which show functions which are not specific to the above families.
 
 ## Additional Information
 
@@ -141,7 +143,6 @@ For more information on authoring attestation policy documents, see: [Authoring 
 ## Next Steps
 
 For more information about the Microsoft Azure Attestation service, please see our [documentation page](https://docs.microsoft.com/azure/attestation/) .
-
 
 <!-- LINKS -->
 <!-- links are known to be broken, they will be fixed after this initial pull

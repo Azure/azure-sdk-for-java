@@ -12,14 +12,18 @@ import com.azure.security.attestation.models.AttestationData;
 import com.azure.security.attestation.models.AttestationDataInterpretation;
 import com.azure.security.attestation.models.AttestationOpenIdMetadata;
 import com.azure.security.attestation.models.AttestationOptions;
+import com.azure.security.attestation.models.AttestationPolicySetOptions;
 import com.azure.security.attestation.models.AttestationResult;
 import com.azure.security.attestation.models.AttestationSigner;
+import com.azure.security.attestation.models.AttestationSigningKey;
 import com.azure.security.attestation.models.AttestationTokenValidationOptions;
 import com.azure.security.attestation.models.AttestationType;
 import com.azure.security.attestation.models.PolicyResult;
 import org.bouncycastle.util.encoders.Hex;
 import reactor.core.publisher.Mono;
 
+import java.security.PrivateKey;
+import java.security.cert.X509Certificate;
 import java.time.Duration;
 import java.util.List;
 
@@ -350,9 +354,26 @@ public class AttestationClientJavaDocCodeSnippets {
 
     }
 
+    public static void getPolicySync() {
+        String endpoint = System.getenv("ATTESTATION_AAD_URL");
+        AttestationAdministrationClient client = new AttestationAdministrationClientBuilder()
+            .endpoint(endpoint)
+            .credential(new DefaultAzureCredentialBuilder()
+                .build())
+            .buildClient();
 
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationClient.getPolicy
+        String policy = client.getAttestationPolicy(AttestationType.SGX_ENCLAVE);
+        // END: com.azure.security.attestation.AttestationAdministrationClient.getPolicy
+        System.out.printf("Current SGX policy: %s", policy);
 
-    public static void setPolicyCheckHashAsync() {
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationClient.getPolicyWithResponse
+        Response<String> response = client.getAttestationPolicyWithResponse(AttestationType.SGX_ENCLAVE, null, Context.NONE);
+        // END: com.azure.security.attestation.AttestationAdministrationClient.getPolicyWithResponse
+        System.out.printf("Current SGX policy: %s", response.getValue());
+    }
+
+    public static void getPolicyAsync() {
         String endpoint = System.getenv("ATTESTATION_AAD_URL");
         AttestationAdministrationAsyncClient client = new AttestationAdministrationClientBuilder()
             .endpoint(endpoint)
@@ -360,11 +381,39 @@ public class AttestationClientJavaDocCodeSnippets {
                 .build())
             .buildAsyncClient();
 
-        // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.setPolicy
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.getPolicy
+        Mono<String> policyMono = client.getAttestationPolicy(AttestationType.SGX_ENCLAVE);
+        String policy = policyMono.block();
+        // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.getPolicy
+        System.out.printf("Current SGX policy: %s", policy);
+
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.getPolicyWithResponse
+        Mono<Response<String>> responseMono = client.getAttestationPolicyWithResponse(AttestationType.SGX_ENCLAVE, null);
+        Response<String> response = responseMono.block();
+        // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.getPolicyWithResponse
+        System.out.printf("Current SGX policy: %s", response.getValue());
+    }
+
+    public static void setPolicySimpleCheckHashAsync() {
+        String endpoint = System.getenv("ATTESTATION_AAD_URL");
+        AttestationAdministrationAsyncClient client = new AttestationAdministrationClientBuilder()
+            .endpoint(endpoint)
+            .credential(new DefaultAzureCredentialBuilder()
+                .build())
+            .buildAsyncClient();
+
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.setPolicySimple
         String policyToSet = "version=1.0; authorizationrules{=> permit();}; issuancerules{};";
         Mono<PolicyResult> resultMono = client.setAttestationPolicy(AttestationType.OPEN_ENCLAVE, policyToSet);
         PolicyResult result = resultMono.block();
-        // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.setPolicy
+        // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.setPolicySimple
+
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.setPolicyWithResponseSimple
+        Mono<Response<PolicyResult>> resultWithResponseMono = client.setAttestationPolicyWithResponse(
+            AttestationType.OPEN_ENCLAVE, "version=1.0; authorizationrules{=> permit();}; issuancerules{};");
+        Response<PolicyResult> response = resultWithResponseMono.block();
+        // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.setPolicyWithResponseSimple
+
 
         // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.checkPolicyTokenHash
         BinaryData expectedHash = client.calculatePolicyTokenHash(policyToSet, null);
@@ -378,7 +427,7 @@ public class AttestationClientJavaDocCodeSnippets {
 
     }
 
-    public static void setPolicyCheckHash() {
+    public static void setPolicySimpleCheckHash() {
         String endpoint = System.getenv("ATTESTATION_AAD_URL");
         AttestationAdministrationClient client = new AttestationAdministrationClientBuilder()
             .endpoint(endpoint)
@@ -386,10 +435,16 @@ public class AttestationClientJavaDocCodeSnippets {
                 .build())
             .buildClient();
 
-        // BEGIN: com.azure.security.attestation.AttestationAdministrationClient.setPolicy
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationClient.setPolicySimple
         String policyToSet = "version=1.0; authorizationrules{=> permit();}; issuancerules{};";
         PolicyResult result = client.setAttestationPolicy(AttestationType.OPEN_ENCLAVE, policyToSet);
-        // END: com.azure.security.attestation.AttestationAdministrationClient.setPolicy
+        // END: com.azure.security.attestation.AttestationAdministrationClient.setPolicySimple
+
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationClient.setPolicySimpleWithResponse
+        Response<PolicyResult> response = client.setAttestationPolicyWithResponse(AttestationType.OPEN_ENCLAVE,
+            "version=1.0; authorizationrules{=> permit();}; issuancerules{};", Context.NONE);
+        // END: com.azure.security.attestation.AttestationAdministrationClient.setPolicySimpleWithResponse
+
 
         // BEGIN: com.azure.security.attestation.AttestationAdministrationClient.checkPolicyTokenHash
         BinaryData expectedHash = client.calculatePolicyTokenHash(policyToSet, null);
@@ -401,18 +456,89 @@ public class AttestationClientJavaDocCodeSnippets {
         }
         // END: com.azure.security.attestation.AttestationAdministrationClient.checkPolicyTokenHash
     }
+
+    public static void setPolicyAsync() {
+        String endpoint = System.getenv("ATTESTATION_AAD_URL");
+        AttestationAdministrationAsyncClient client = new AttestationAdministrationClientBuilder()
+            .endpoint(endpoint)
+            .credential(new DefaultAzureCredentialBuilder()
+                .build())
+            .buildAsyncClient();
+
+        X509Certificate certificate = SampleCollateral.getSigningCertificate();
+        PrivateKey privateKey = SampleCollateral.getSigningKey();
+
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.setPolicy
+        String policyToSet = "version=1.0; authorizationrules{=> permit();}; issuancerules{};";
+        Mono<PolicyResult> resultMono = client.setAttestationPolicy(AttestationType.OPEN_ENCLAVE,
+            new AttestationPolicySetOptions()
+                .setAttestationPolicy(policyToSet)
+                .setAttestationSigner(new AttestationSigningKey(certificate, privateKey)));
+        PolicyResult result = resultMono.block();
+        // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.setPolicy
+
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.setPolicyWithResponse
+        Mono<Response<PolicyResult>> resultWithResponseMono = client.setAttestationPolicyWithResponse(AttestationType.OPEN_ENCLAVE,
+            new AttestationPolicySetOptions()
+                .setAttestationPolicy(policyToSet)
+                .setAttestationSigner(new AttestationSigningKey(certificate, privateKey)));
+        Response<PolicyResult> response = resultWithResponseMono.block();
+        // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.setPolicyWithResponse
+    }
+
+    public static void setPolicy() {
+        String endpoint = System.getenv("ATTESTATION_AAD_URL");
+        AttestationAdministrationClient client = new AttestationAdministrationClientBuilder()
+            .endpoint(endpoint)
+            .credential(new DefaultAzureCredentialBuilder()
+                .build())
+            .buildClient();
+
+        X509Certificate certificate = SampleCollateral.getSigningCertificate();
+        PrivateKey privateKey = SampleCollateral.getSigningKey();
+
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationClient.setPolicy
+        String policyToSet = "version=1.0; authorizationrules{=> permit();}; issuancerules{};";
+        PolicyResult result = client.setAttestationPolicy(AttestationType.OPEN_ENCLAVE,
+            new AttestationPolicySetOptions()
+                .setAttestationPolicy(policyToSet)
+                .setAttestationSigner(new AttestationSigningKey(certificate, privateKey)));
+        // END: com.azure.security.attestation.AttestationAdministrationClient.setPolicy
+
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationClient.setPolicyWithResponse
+        Response<PolicyResult> response = client.setAttestationPolicyWithResponse(AttestationType.OPEN_ENCLAVE,
+            new AttestationPolicySetOptions()
+                .setAttestationPolicy(policyToSet)
+                .setAttestationSigner(new AttestationSigningKey(certificate, privateKey)), Context.NONE);
+
+        // END: com.azure.security.attestation.AttestationAdministrationClient.setPolicyWithResponse
+
+
+    }
+
+
     static void executeSamples() {
+        createAdminSyncClient();
+        createSyncClient();
+
         attestOpenEnclaveAsync1();
         attestOpenEnclaveSync1();
+
         attestSgxEnclaveSync1();
-        attestOpenEnclaveAsync1();
+        attestSgxEnclaveAsync1();
+
         attestationOptionsSnippets();
         attestationOptionsSnippets2();
         attestationOptionsSnippets3();
-        createAdminSyncClient();
-        createSyncClient();
-        setPolicyCheckHash();
-        setPolicyCheckHashAsync();
+
+        getPolicySync();
+        getPolicyAsync();
+
+        setPolicySimpleCheckHash();
+        setPolicySimpleCheckHashAsync();
+
+        setPolicy();
+        setPolicyAsync();
     }
 
 }

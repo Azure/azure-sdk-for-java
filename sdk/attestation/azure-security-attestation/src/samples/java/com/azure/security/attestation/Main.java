@@ -8,8 +8,7 @@ package com.azure.security.attestation;
  */
 public class Main {
     public static void main(String[] args) throws InterruptedException {
-        PolicySamples.resetCurrentPolicy();
-        PolicySamples.resetCurrentPolicyAsync();
+        PolicySamples.resetAllPolicies();
 
         // Readme samples.
         ReadmeSamples.executeSamples();

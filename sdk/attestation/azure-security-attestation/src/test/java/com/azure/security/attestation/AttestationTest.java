@@ -384,11 +384,11 @@ public class AttestationTest extends AttestationClientTestBase {
         Object deserializedResponse = assertDoesNotThrow(() -> serializer.deserialize(tpmResponse, Object.class, SerializerEncoding.JSON));
         assertTrue(deserializedResponse instanceof LinkedHashMap);
         @SuppressWarnings("unchecked")
-        LinkedHashMap<String, Object> initialResponse = (LinkedHashMap) deserializedResponse;
+        LinkedHashMap<String, Object> initialResponse = (LinkedHashMap<String, Object>) deserializedResponse;
         assertTrue(initialResponse.containsKey("payload"));
         assertTrue(initialResponse.get("payload") instanceof LinkedHashMap);
         @SuppressWarnings("unchecked")
-        LinkedHashMap<String, Object> payload = (LinkedHashMap) initialResponse.get("payload");
+        LinkedHashMap<String, Object> payload = (LinkedHashMap<String, Object>) initialResponse.get("payload");
         assertTrue(payload.containsKey("challenge"));
         assertTrue(payload.containsKey("service_context"));
 
@@ -432,11 +432,11 @@ public class AttestationTest extends AttestationClientTestBase {
         Object deserializedResponse = assertDoesNotThrow(() -> serializer.deserialize(tpmResponse.getValue(), Object.class, SerializerEncoding.JSON));
         assertTrue(deserializedResponse instanceof LinkedHashMap);
         @SuppressWarnings("unchecked")
-        LinkedHashMap<String, Object> initialResponse = (LinkedHashMap) deserializedResponse;
+        LinkedHashMap<String, Object> initialResponse = (LinkedHashMap<String, Object>) deserializedResponse;
         assertTrue(initialResponse.containsKey("payload"));
         assertTrue(initialResponse.get("payload") instanceof LinkedHashMap);
         @SuppressWarnings("unchecked")
-        LinkedHashMap<String, Object> payload = (LinkedHashMap) initialResponse.get("payload");
+        LinkedHashMap<String, Object> payload = (LinkedHashMap<String, Object>) initialResponse.get("payload");
         assertTrue(payload.containsKey("challenge"));
         assertTrue(payload.containsKey("service_context"));
     }
@@ -477,11 +477,11 @@ public class AttestationTest extends AttestationClientTestBase {
                 Object deserializedResponse = assertDoesNotThrow(() -> serializer.deserialize(tpmResponse, Object.class, SerializerEncoding.JSON));
                 assertTrue(deserializedResponse instanceof LinkedHashMap);
                 @SuppressWarnings("unchecked")
-                LinkedHashMap<String, Object> initialResponse = (LinkedHashMap) deserializedResponse;
+                LinkedHashMap<String, Object> initialResponse = (LinkedHashMap<String, Object>) deserializedResponse;
                 assertTrue(initialResponse.containsKey("payload"));
                 assertTrue(initialResponse.get("payload") instanceof LinkedHashMap);
                 @SuppressWarnings("unchecked")
-                LinkedHashMap<String, Object> payload = (LinkedHashMap) initialResponse.get("payload");
+                LinkedHashMap<String, Object> payload = (LinkedHashMap<String, Object>) initialResponse.get("payload");
                 assertTrue(payload.containsKey("challenge"));
                 assertTrue(payload.containsKey("service_context"));
             })

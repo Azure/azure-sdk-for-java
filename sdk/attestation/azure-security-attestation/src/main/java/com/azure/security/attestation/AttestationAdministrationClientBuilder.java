@@ -121,12 +121,6 @@ public final class AttestationAdministrationClientBuilder {
         tokenValidationOptions = new AttestationTokenValidationOptions();
     }
 
-    /*
-     * The attestation instance base URI, for example
-     * https://mytenant.attest.azure.net.
-     */
-    private String endpoint;
-
     /**
      * Sets The attestation endpoint URI, for example https://mytenant.attest.azure.net.
      *
