@@ -55,10 +55,21 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
     private static final String DEFAULT_OIDC_USER = "defaultOidcUser";
     private static final String ROLES = "roles";
 
+    /**
+     * Creates a new instance of {@link AADOAuth2UserService}.
+     *
+     * @param properties the AAD authentication properties
+     */
     public AADOAuth2UserService(AADAuthenticationProperties properties) {
         this(properties, new GraphClient(properties));
     }
 
+    /**
+     * Creates a new instance of {@link AADOAuth2UserService}.
+     *
+     * @param properties the AAD authentication properties
+     * @param graphClient the graph client
+     */
     public AADOAuth2UserService(AADAuthenticationProperties properties, GraphClient graphClient) {
         allowedGroupNames = Optional.ofNullable(properties)
                                     .map(AADAuthenticationProperties::getUserGroup)

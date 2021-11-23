@@ -16,15 +16,54 @@ import java.util.Objects;
  * @param <T> type presenting Windows or Linux specific settings
  */
 public abstract class VirtualMachineEncryptionConfiguration<T extends VirtualMachineEncryptionConfiguration<T>> {
+    /**
+     * The KeyVault ID.
+     */
     protected final String keyVaultId;
+
+    /**
+     * The AAD client ID.
+     */
     protected final String aadClientId;
+
+    /**
+     * The AAD secret.
+     */
     protected final String aadSecret;
+
+    /**
+     * The volume type.
+     */
     protected DiskVolumeType volumeType = DiskVolumeType.ALL;
+
+    /**
+     * The key encryption key URL.
+     */
     protected String keyEncryptionKeyUrl;
+
+    /**
+     * The key encryption key KeyVault ID.
+     */
     protected String keyEncryptionKeyVaultId;
+
+    /**
+     * The encryption algorithm.
+     */
     protected String encryptionAlgorithm = "RSA-OAEP";
+
+    /**
+     * The pass phrase.
+     */
     protected String passPhrase;
+
+    /**
+     * The AzureEnvironment.
+     */
     protected final AzureEnvironment azureEnvironment;
+
+    /**
+     * The KeyVault URI.
+     */
     protected final String vaultUri;
 
     /**

@@ -265,6 +265,9 @@ public interface SearchService extends
             WithPartitionsAndCreate withStandardSku();
         }
 
+        /**
+         * The stage of the Search service definition allowing to specify the replica count.
+         */
         interface WithReplicasAndCreate extends WithCreate {
             /**
              * Specifies the SKU of the Search service.
@@ -275,6 +278,9 @@ public interface SearchService extends
             WithCreate withReplicaCount(int count);
         }
 
+        /**
+         * The stage of the Search service definition allowing to specify the partition count.
+         */
         interface WithPartitionsAndCreate extends WithReplicasAndCreate {
             /**
              * Specifies the SKU of the Search service.
