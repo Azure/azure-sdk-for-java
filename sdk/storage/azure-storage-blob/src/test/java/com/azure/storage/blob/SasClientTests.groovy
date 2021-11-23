@@ -146,6 +146,11 @@ class SasClientTests extends APISpec {
                 .setMovePermission(true)
                 .setExecutePermission(true)
         }
+        if (Constants.SAS_SERVICE_VERSION >= "2021-04-10") {
+            permissions
+                .setFilterPermission(true)
+        }
+
         def expiryTime = namer.getUtcNow().plusDays(1)
 
         when:
@@ -400,6 +405,14 @@ class SasClientTests extends APISpec {
 
         then:
         thrown(BlobStorageException)
+    }
+
+    def "container sas filter blobs"() {
+
+    }
+
+    def "container sas filter blobs fail"() {
+
     }
 
     // RBAC replication lag

@@ -35,6 +35,8 @@ public final class BlobContainerSasPermission {
 
     private boolean executePermission;
 
+    private boolean filterPermission;
+
     private boolean immutabilityPolicyPermission;
 
     /**
@@ -87,6 +89,9 @@ public final class BlobContainerSasPermission {
                     break;
                 case 'e':
                     permissions.executePermission = true;
+                    break;
+                case 'f':
+                    permissions.filterPermission = true;
                     break;
                 case 'i':
                     permissions.immutabilityPolicyPermission = true;
@@ -281,6 +286,24 @@ public final class BlobContainerSasPermission {
     }
 
     /**
+     * @return the filter permission status.
+     */
+    public boolean hasFilterPermission() {
+        return filterPermission;
+    }
+
+    /**
+     * Sets the filter permission status.
+     *
+     * @param hasFilterPermission Permission status to set
+     * @return the updated BlobSasPermission object.
+     */
+    public BlobContainerSasPermission setFilterPermission(boolean hasFilterPermission) {
+        this.filterPermission = hasFilterPermission;
+        return this;
+    }
+
+    /**
      * @return the set immutability policy permission status.
      */
     public boolean hasImmutabilityPolicyPermission() {
@@ -348,6 +371,10 @@ public final class BlobContainerSasPermission {
 
         if (this.executePermission) {
             builder.append('e');
+        }
+
+        if (this.filterPermission) {
+            builder.append('f');
         }
 
         if (this.immutabilityPolicyPermission) {
