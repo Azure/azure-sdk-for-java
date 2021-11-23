@@ -8,4 +8,8 @@ import com.azure.core.annotation.Immutable;
 /** The call locator. */
 @Immutable
 public abstract class CallLocator {
+    /**
+     * The call id.
+     */
+    protected String id;
 }
