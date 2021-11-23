@@ -681,22 +681,15 @@ public class FlatteningSerializerTests {
     }
 
     @Test
-    public void jsonFlattenSampleResource() throws IOException {
-        SampleResource sampleResourceObject = new SampleResource()
-            .withNamePropertiesName("...-01")
-            .withRegistrationTtl("10675199.02:48:05.4775807");
-
-        String serialized = serialize(sampleResourceObject);
-        String expected = "{\"properties\":{\"name\":\"...-01\",\"registrationTtl\":\"10675199.02:48:05.4775807\"}}";
-        assertEquals(expected, serialized);
-
-        SampleResource sampleResource = JacksonAdapter.createDefaultSerializerAdapter().deserialize(
-            "{\"id\":\"/subscriptions/.../resourceGroups/nhbangbang/providers/Microsoft.NotificationHubs/namespaces/.../notificationHubs/...\",\"name\":\"...-01\",\"type\":\"Microsoft.NotificationHubs/namespaces/notificationHubs\",\"location\":\"East Asia\",\"tags\":{},\"properties\":{\"registrationTtl\":\"10675199.02:48:05.4775807\",\"authorizationRules\":[]}}"
+    public void jsonFlattenRepeatedPropertyNameDeserialize() throws IOException {
+        SampleResource deserialized = JacksonAdapter.createDefaultSerializerAdapter().deserialize(
+            "{\"name\":\"...-01\",\"properties\":{\"registrationTtl\":\"10675199.02:48:05.4775807\",\"authorizationRules\":[]}}"
             , SampleResource.class
             , SerializerEncoding.JSON
         );
 
-        System.out.println(sampleResource.getRegistrationTtl()); // can't reach here
+        assertEquals("10675199.02:48:05.4775807", deserialized.getRegistrationTtl());
+        assertNull(deserialized.getNamePropertiesName());
     }
 
     private static String serialize(Object object) {
