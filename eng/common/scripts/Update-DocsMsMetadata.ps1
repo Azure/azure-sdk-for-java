@@ -184,7 +184,7 @@ foreach ($packageInfo in $PackageInfoJsonLocations) {
   if ($ValidateDocsMsPackagesFn -and (Test-Path "Function:$ValidateDocsMsPackagesFn")) {
     &$ValidateDocsMsPackagesFn -PackageInfo $packageInfo 
     if ($LASTEXITCODE -ne 0) {
-      LogError "The package failed Doc.Ms validation. Please fixed the doc and republish to Doc.Ms."
+      LogError "The package failed Doc.Ms validation. Please fix the doc and republish to Doc.Ms."
     }
   }
   UpdateDocsMsMetadataForPackage $packageInfo
