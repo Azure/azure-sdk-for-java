@@ -7,6 +7,7 @@ products:
 - azure-attestation
 urlFragment: attestation-samples
 ---
+
 # Samples for the Microsoft Azure Attestation client library for Java
 
 These code samples show common scenario operations with the Azure Attestation client library.

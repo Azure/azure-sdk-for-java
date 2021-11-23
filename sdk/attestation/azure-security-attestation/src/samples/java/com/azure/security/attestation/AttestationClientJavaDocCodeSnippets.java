@@ -6,17 +6,21 @@ package com.azure.security.attestation;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.attestation.models.AttestationData;
 import com.azure.security.attestation.models.AttestationDataInterpretation;
 import com.azure.security.attestation.models.AttestationOpenIdMetadata;
 import com.azure.security.attestation.models.AttestationOptions;
+import com.azure.security.attestation.models.AttestationResult;
 import com.azure.security.attestation.models.AttestationSigner;
+import com.azure.security.attestation.models.AttestationTokenValidationOptions;
 import com.azure.security.attestation.models.AttestationType;
 import com.azure.security.attestation.models.PolicyResult;
 import org.bouncycastle.util.encoders.Hex;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.List;
 
 public class AttestationClientJavaDocCodeSnippets {
@@ -28,11 +32,30 @@ public class AttestationClientJavaDocCodeSnippets {
             .buildClient();
         // END: com.azure.security.attestation.AttestationClientBuilder.buildClient
 
+        // BEGIN: com.azure.security.attestation.AttestationClientBuilder.buildClientWithValidation
+        AttestationClient validatedClient = new AttestationClientBuilder()
+            .endpoint(endpoint)
+            .tokenValidationOptions(new AttestationTokenValidationOptions()
+                .setValidationSlack(Duration.ofSeconds(10)) // Allow 10 seconds of clock drift between attestation service and client.
+                .setValidationCallback((token, signer) -> { // Perform custom validation steps.
+                    System.out.printf("Validate token signed by signer %s", signer.getCertificates().get(0).getSubjectDN().toString());
+                }))
+            .buildClient();
+        // END: com.azure.security.attestation.AttestationClientBuilder.buildClientWithValidation
+
         // BEGIN: com.azure.security.attestation.AttestationClientBuilder.buildAsyncClient
         AttestationAsyncClient asyncClient = new AttestationClientBuilder()
             .endpoint(endpoint)
             .buildAsyncClient();
         // END: com.azure.security.attestation.AttestationClientBuilder.buildAsyncClient
+
+        // BEGIN: com.azure.security.attestation.AttestationClientBuilder.buildAsyncClientForTpm
+        AttestationAsyncClient asyncClientForTpm = new AttestationClientBuilder()
+            .endpoint(endpoint)
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildAsyncClient();
+        // END: com.azure.security.attestation.AttestationClientBuilder.buildAsyncClientForTpm
+
 
         return client;
     }
@@ -42,18 +65,28 @@ public class AttestationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.attestation.AttestationAdministrationClientBuilder.buildClient
         AttestationAdministrationClient client = new AttestationAdministrationClientBuilder()
             .endpoint(endpoint)
-            .credential(new DefaultAzureCredentialBuilder()
-                .build())
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
         // END: com.azure.security.attestation.AttestationAdministrationClientBuilder.buildClient
 
         // BEGIN: com.azure.security.attestation.AttestationAdministrationClientBuilder.buildAsyncClient
         AttestationAdministrationAsyncClient asyncClient = new AttestationAdministrationClientBuilder()
             .endpoint(endpoint)
-            .credential(new DefaultAzureCredentialBuilder()
-                .build())
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
         // END: com.azure.security.attestation.AttestationAdministrationClientBuilder.buildAsyncClient
+
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationClientBuilder.buildClientWithValidation
+        AttestationAdministrationClient validatedClient = new AttestationAdministrationClientBuilder()
+            .endpoint(endpoint)
+            .tokenValidationOptions(new AttestationTokenValidationOptions()
+                .setValidationSlack(Duration.ofSeconds(10)) // Allow 10 seconds of clock drift between attestation service and client.
+                .setValidationCallback((token, signer) -> { // Perform custom validation steps.
+                    System.out.printf("Validate token signed by signer %s", signer.getCertificates().get(0).getSubjectDN().toString());
+                }))
+            .buildClient();
+        // END: com.azure.security.attestation.AttestationAdministrationClientBuilder.buildClientWithValidation
+
 
         return client;
     }
@@ -95,10 +128,10 @@ public class AttestationClientJavaDocCodeSnippets {
         BinaryData inittimeData = null;
         BinaryData openEnclaveReport = null;
 
-        // BEGIN: com.azure.security.attestation.models.AttestationOptions.getRunTimeData
         AttestationOptions attestationOptions = new AttestationOptions(openEnclaveReport)
             .setRunTimeData(new AttestationData(runtimeData, AttestationDataInterpretation.JSON));
 
+        // BEGIN: com.azure.security.attestation.models.AttestationOptions.getRunTimeData
         AttestationData existingRuntimeData = attestationOptions.getRunTimeData();
         // END: com.azure.security.attestation.models.AttestationOptions.getRunTimeData
 
@@ -127,6 +160,100 @@ public class AttestationClientJavaDocCodeSnippets {
         // END: com.azure.security.attestation.models.AttestationOptions.getDraftPolicyForAttestation
 
     }
+
+    public static void attestOpenEnclaveSync1() {
+        BinaryData runtimeData = BinaryData.fromBytes(SampleCollateral.getRunTimeData());
+        BinaryData inittimeData = null;
+        BinaryData openEnclaveReport = BinaryData.fromBytes(SampleCollateral.getOpenEnclaveReport());
+        BinaryData sgxQuote = BinaryData.fromBytes(SampleCollateral.getSgxEnclaveQuote());
+
+        AttestationClient client = new AttestationClientBuilder()
+            .endpoint("https://sharedcus.cus.attest.azure.net")
+            .buildClient();
+
+        // BEGIN: com.azure.security.attestation.AttestationClient.getOpenIdMetadataWithResponse
+        Response<AttestationOpenIdMetadata> response = client.getOpenIdMetadataWithResponse(Context.NONE);
+        // END: com.azure.security.attestation.AttestationClient.getOpenIdMetadataWithResponse
+
+        // BEGIN: com.azure.security.attestation.AttestationClient.getOpenIdMetadata
+        AttestationOpenIdMetadata openIdMetadata = client.getOpenIdMetadata();
+        // END: com.azure.security.attestation.AttestationClient.getOpenIdMetadata
+
+        // BEGIN: com.azure.security.attestation.AttestationClient.getAttestationSigners
+        List<AttestationSigner> signers = client.listAttestationSigners();
+        signers.forEach(cert -> {
+            System.out.println("Found certificate.");
+            if (cert.getKeyId() != null) {
+                System.out.println("    Certificate Key ID: " + cert.getKeyId());
+            } else {
+                System.out.println("    Signer does not have a Key ID");
+            }
+            cert.getCertificates().forEach(chainElement -> {
+                System.out.println("        Cert Subject: " + chainElement.getSubjectDN().getName());
+                System.out.println("        Cert Issuer: " + chainElement.getIssuerDN().getName());
+            });
+        });
+        // END: com.azure.security.attestation.AttestationClient.getAttestationSigners
+
+        // BEGIN: com.azure.security.attestation.AttestationClient.getAttestationSignersWithResponse
+        Response<List<AttestationSigner>> responseOfSigners = client.listAttestationSignersWithResponse(Context.NONE);
+        // END: com.azure.security.attestation.AttestationClient.getAttestationSignersWithResponse
+
+        // BEGIN: com.azure.security.attestation.AttestationClient.attestOpenEnclaveWithReport
+        AttestationResult resultWithReport = client.attestOpenEnclave(openEnclaveReport);
+        // END: com.azure.security.attestation.AttestationClient.attestOpenEnclaveWithReport
+
+        // BEGIN: com.azure.security.attestation.AttestationClient.attestOpenEnclaveWithResponseWithReport
+        Response<AttestationResult> responseWithReport = client.attestOpenEnclaveWithResponse(openEnclaveReport, Context.NONE);
+        // END: com.azure.security.attestation.AttestationClient.attestOpenEnclaveWithResponseWithReport
+
+
+        // BEGIN: com.azure.security.attestation.AttestationClient.attestOpenEnclave
+        AttestationResult result = client.attestOpenEnclave(new AttestationOptions(openEnclaveReport)
+            .setRunTimeData(new AttestationData(runtimeData, AttestationDataInterpretation.BINARY)));
+
+        // END: com.azure.security.attestation.AttestationClient.attestOpenEnclave
+
+        // BEGIN: com.azure.security.attestation.AttestationClient.attestOpenEnclaveWithResponse
+        Response<AttestationResult> openEnclaveResponse = client.attestOpenEnclaveWithResponse(new AttestationOptions(openEnclaveReport)
+            .setRunTimeData(new AttestationData(runtimeData, AttestationDataInterpretation.JSON)), Context.NONE);
+
+        // END: com.azure.security.attestation.AttestationClient.attestOpenEnclaveWithResponse
+
+    }
+
+    public static void attestSgxEnclaveSync1() {
+        BinaryData runtimeData = BinaryData.fromBytes(SampleCollateral.getRunTimeData());
+        BinaryData inittimeData = null;
+        BinaryData sgxEnclaveReport = BinaryData.fromBytes(SampleCollateral.getSgxEnclaveQuote());
+        BinaryData sgxQuote = BinaryData.fromBytes(SampleCollateral.getSgxEnclaveQuote());
+
+        AttestationClient client = new AttestationClientBuilder()
+            .endpoint("https://sharedcus.cus.attest.azure.net")
+            .buildClient();
+
+        // BEGIN: com.azure.security.attestation.AttestationClient.attestSgxEnclaveWithReport
+        AttestationResult resultWithReport = client.attestSgxEnclave(sgxEnclaveReport);
+        // END: com.azure.security.attestation.AttestationClient.attestSgxEnclaveWithReport
+
+        // BEGIN: com.azure.security.attestation.AttestationClient.attestSgxEnclaveWithResponseWithReport
+        Response<AttestationResult> responseWithReport = client.attestSgxEnclaveWithResponse(sgxQuote, Context.NONE);
+        // END: com.azure.security.attestation.AttestationClient.attestSgxEnclaveWithResponseWithReport
+
+
+        // BEGIN: com.azure.security.attestation.AttestationClient.attestSgxEnclave
+        AttestationResult result = client.attestSgxEnclave(new AttestationOptions(sgxQuote)
+            .setRunTimeData(new AttestationData(runtimeData, AttestationDataInterpretation.BINARY)));
+
+        // END: com.azure.security.attestation.AttestationClient.attestSgxEnclave
+
+        // BEGIN: com.azure.security.attestation.AttestationClient.attestSgxEnclaveWithResponse
+        Response<AttestationResult> openEnclaveResponse = client.attestSgxEnclaveWithResponse(new AttestationOptions(sgxQuote)
+            .setRunTimeData(new AttestationData(runtimeData, AttestationDataInterpretation.JSON)), Context.NONE);
+
+        // END: com.azure.security.attestation.AttestationClient.attestSgxEnclaveWithResponse
+    }
+
 
     public static void attestAsync1() {
         BinaryData runtimeData = BinaryData.fromBytes(SampleCollateral.getRunTimeData());
@@ -218,6 +345,8 @@ public class AttestationClientJavaDocCodeSnippets {
     }
     static void executeSamples() {
         attestAsync1();
+        attestOpenEnclaveSync1();
+        attestSgxEnclaveSync1();
         attestationOptionsSnippets();
         attestationOptionsSnippets2();
         attestationOptionsSnippets3();

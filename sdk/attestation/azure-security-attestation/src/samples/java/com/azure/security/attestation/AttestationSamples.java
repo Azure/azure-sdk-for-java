@@ -10,11 +10,15 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.attestation.models.AttestationData;
 import com.azure.security.attestation.models.AttestationDataInterpretation;
 import com.azure.security.attestation.models.AttestationOptions;
 import com.azure.security.attestation.models.AttestationResult;
 import com.azure.security.attestation.models.AttestationTokenValidationOptions;
+import com.azure.security.attestation.models.AttestationType;
+import com.azure.security.attestation.models.PolicyModification;
+import com.azure.security.attestation.models.PolicyResult;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -256,6 +260,78 @@ public class AttestationSamples {
         }
     }
 
+    static void attestTpmInitialExchange() {
+
+        String endpoint = System.getenv("ATTESTATION_AAD_URL");
+        AttestationClientBuilder attestationBuilder = new AttestationClientBuilder();
+        // Set the TPM attestation policy to a default value.
+        AttestationAdministrationClient adminClient = new AttestationAdministrationClientBuilder()
+            .endpoint(endpoint)
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildClient();
+        PolicyResult result = adminClient.setAttestationPolicy(AttestationType.TPM, "version=1.0; authorizationrules{=>permit();};issuancerules{};");
+
+        if (result.getPolicyResolution() != PolicyModification.UPDATED) {
+            System.out.printf("Unexpected resolution setting TPM policy: %s", result.getPolicyResolution().toString());
+            return;
+        }
+
+        // Note that TPM attestation requires an authenticated attestation builder.
+        AttestationClient client = attestationBuilder
+            .endpoint(endpoint)
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .tokenValidationOptions(new AttestationTokenValidationOptions().setValidationSlack(Duration.ofSeconds(10)))
+            .buildClient();
+
+
+        // We cannot perform the entire protocol exchange for TPM attestation, but we CAN perform the
+        // first leg of the attestation operation.
+
+        // BEGIN: com.azure.security.attestation.AttestationClient.attestTpm
+        // The initial payload for TPM attestation is a JSON object with a property named "payload",
+        // containing an object with a property named "type" whose value is "aikcert".
+
+        String attestInitialPayload = "{\"payload\": { \"type\": \"aikcert\" } }";
+        String tpmResponse = client.attestTpm(attestInitialPayload);
+        // END: com.azure.security.attestation.AttestationClient.attestTpm
+    }
+
+    static void attestTpmInitialExchangeWithResponse() {
+
+        String endpoint = System.getenv("ATTESTATION_AAD_URL");
+        AttestationClientBuilder attestationBuilder = new AttestationClientBuilder();
+        // Set the TPM attestation policy to a default value.
+        AttestationAdministrationClient adminClient = new AttestationAdministrationClientBuilder()
+            .endpoint(endpoint)
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildClient();
+        PolicyResult result = adminClient.setAttestationPolicy(AttestationType.TPM, "version=1.0; authorizationrules{=>permit();};issuancerules{};");
+
+        if (result.getPolicyResolution() != PolicyModification.UPDATED) {
+            System.out.printf("Unexpected resolution setting TPM policy: %s", result.getPolicyResolution().toString());
+            return;
+        }
+
+        // Note that TPM attestation requires an authenticated attestation builder.
+        AttestationClient client = attestationBuilder
+            .endpoint(endpoint)
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .tokenValidationOptions(new AttestationTokenValidationOptions().setValidationSlack(Duration.ofSeconds(10)))
+            .buildClient();
+
+
+        // We cannot perform the entire protocol exchange for TPM attestation, but we CAN perform the
+        // first leg of the attestation operation.
+
+        // BEGIN: com.azure.security.attestation.AttestationClient.attestTpmWithResponse
+        // The initial payload for TPM attestation is a JSON object with a property named "payload",
+        // containing an object with a property named "type" whose value is "aikcert".
+
+        String attestInitialPayload = "{\"payload\": { \"type\": \"aikcert\" } }";
+        Response<String> tpmResponse = client.attestTpmWithResponse(attestInitialPayload, Context.NONE);
+        // END: com.azure.security.attestation.AttestationClient.attestTpmWithResponse
+    }
+
     static void executeSamples() {
         attestOpenEnclaveBinary();
         attestOpenEnclaveJson();
@@ -263,5 +339,7 @@ public class AttestationSamples {
         attestSgxEnclaveJson();
         attestSgxEnclaveWithBadDraftPolicy();
         attestSgxEnclaveWithDraftPolicy();
+        attestTpmInitialExchange();
+        attestTpmInitialExchangeWithResponse();
     }
 }
