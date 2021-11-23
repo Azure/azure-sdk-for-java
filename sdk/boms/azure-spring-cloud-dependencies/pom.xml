@@ -43,7 +43,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
-    <azure.resourcemanager.version>2.9.0</azure.resourcemanager.version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;dependency} -->
+    <azure.resourcemanager.version>2.10.0</azure.resourcemanager.version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;dependency} -->
     <azure.spring.appconfigure.version>2.1.1</azure.spring.appconfigure.version>
     <azure.spring.appconfigure.starter.version>2.1.1</azure.spring.appconfigure.starter.version>
     <azure.spring.appconfigure.feature.management.version>2.0.1</azure.spring.appconfigure.feature.management.version>
