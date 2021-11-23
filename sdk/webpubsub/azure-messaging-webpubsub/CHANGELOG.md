@@ -2,6 +2,10 @@
 
 ## 1.0.0 (2021-11-23)
 
+### Breaking Changes
+
+- `setErrorOptions` is removed from `RequestOptions` in `azure-core`.
+
 ### Other Changes
 
 #### Dependency Updates
