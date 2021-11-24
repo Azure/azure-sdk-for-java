@@ -12,7 +12,7 @@ You can refer to the [maven doc] about more details about dependency management.
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot-bom</artifactId>
-      <version>3.10.2</version>
+      <version>3.11.0</version>
       <type>pom</type>
       <scope>import</scope>
     </dependency>
@@ -30,7 +30,7 @@ You can refer to the [maven doc] about more details about dependency management.
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-dependencies</artifactId>
-      <version>2.10.2</version>
+      <version>2.11.0</version>
       <type>pom</type>
       <scope>import</scope>
     </dependency>
