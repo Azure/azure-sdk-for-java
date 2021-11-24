@@ -1,14 +1,9 @@
 # Release History
 
-## 1.5.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.4.2 (2021-11-24)
 
 ### Bugs Fixed
-
-### Other Changes
+- Fixes the edge case scenario when MSI Tokens return booth `expires_on` and `expires_in` fields populated.
 
 ## 1.4.1 (2021-11-09)
 
