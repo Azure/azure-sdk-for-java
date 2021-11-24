@@ -69,7 +69,7 @@ import java.util.stream.Collectors;
 
 public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest {
     private String rgName = "";
-    private final Region region = Region.US_WEST;
+    private final Region region = Region.US_EAST2;
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
@@ -1116,6 +1116,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
     }
 
     @Test
+    @Disabled("Low priority virtual machines won't always be scheduled.")
     public void canCreateLowPriorityVMSSInstance() throws Exception {
         final String vmssName = generateRandomResourceName("vmss", 10);
         ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
@@ -1147,7 +1148,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .define(vmssName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
-                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_D3_V2)
+                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_D1_V2)
                 .withExistingPrimaryNetworkSubnet(network, "subnet1")
                 .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
                 .withPrimaryInternetFacingLoadBalancerBackends(backends.get(0), backends.get(1))
@@ -1171,6 +1172,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
     }
 
     @Test
+    @Disabled("Low priority virtual machines won't always be scheduled.")
     public void canPerformSimulateEvictionOnSpotVMSSInstance() {
         final String vmssName = generateRandomResourceName("vmss", 10);
 
@@ -1347,11 +1349,10 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
     @Test
     public void canDeleteVMSSInstance() throws Exception {
-        String euapRegion = "eastus2euap";
-
+        String region = "westus";
         final String vmssName = generateRandomResourceName("vmss", 10);
         ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName)
-            .withRegion(euapRegion)
+            .withRegion(region)
             .create();
 
         Network network =
@@ -1359,7 +1360,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .networkManager
                 .networks()
                 .define("vmssvnet")
-                .withRegion(euapRegion)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withAddressSpace("10.0.0.0/28")
                 .withSubnet("subnet1", "10.0.0.0/28")
@@ -1369,7 +1370,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .computeManager
             .virtualMachineScaleSets()
             .define(vmssName)
-            .withRegion(euapRegion)
+            .withRegion(region)
             .withExistingResourceGroup(resourceGroup)
             .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
             .withExistingPrimaryNetworkSubnet(network, "subnet1")
@@ -1383,21 +1384,21 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         Assertions.assertEquals(4, vmss.virtualMachines().list().stream().count());
 
-        // force delete first 2 instances
+        // delete first 2 instances
         List<String> firstTwoIds = vmss.virtualMachines().list().stream()
             .limit(2)
             .map(VirtualMachineScaleSetVM::instanceId)
             .collect(Collectors.toList());
-        vmss.virtualMachines().deleteInstances(firstTwoIds, true);
+        vmss.virtualMachines().deleteInstances(firstTwoIds);
 
         Assertions.assertEquals(2, vmss.virtualMachines().list().stream().count());
 
         // delete next 1 instance
-        vmss.virtualMachines().deleteInstances(Collections.singleton(vmss.virtualMachines().list().stream().findFirst().get().instanceId()), false);
+        vmss.virtualMachines().deleteInstances(Collections.singleton(vmss.virtualMachines().list().stream().findFirst().get().instanceId()));
 
         Assertions.assertEquals(1, vmss.virtualMachines().list().stream().count());
 
-        // force delete next 1 instance
-        computeManager.virtualMachineScaleSets().deleteInstances(rgName, vmssName, Collections.singleton(vmss.virtualMachines().list().stream().findFirst().get().instanceId()), false);
+        // delete next 1 instance
+        computeManager.virtualMachineScaleSets().deleteInstances(rgName, vmssName, Collections.singleton(vmss.virtualMachines().list().stream().findFirst().get().instanceId()));
     }
 }

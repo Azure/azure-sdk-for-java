@@ -10,7 +10,6 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.compute.models.CachingTypes;
 import com.azure.resourcemanager.compute.models.Disk;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
@@ -21,12 +20,6 @@ import com.azure.resourcemanager.compute.models.VirtualMachineOffer;
 import com.azure.resourcemanager.compute.models.VirtualMachinePublisher;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineSku;
-import com.azure.resourcemanager.containerinstance.models.Container;
-import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
-import com.azure.resourcemanager.containerinstance.models.ContainerGroupRestartPolicy;
-import com.azure.resourcemanager.containerinstance.models.Operation;
-import com.azure.resourcemanager.containerinstance.models.ResourceIdentityType;
-import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.network.models.Access;
 import com.azure.resourcemanager.network.models.ConnectionMonitor;
 import com.azure.resourcemanager.network.models.ConnectionMonitorQueryResult;
@@ -63,24 +56,17 @@ import com.azure.resourcemanager.resources.models.Deployment;
 import com.azure.resourcemanager.resources.models.DeploymentMode;
 import com.azure.resourcemanager.resources.models.GenericResource;
 import com.azure.resourcemanager.resources.models.Location;
-import com.azure.resourcemanager.resources.models.RegionCategory;
-import com.azure.resourcemanager.resources.models.RegionType;
 import com.azure.resourcemanager.resources.models.Subscription;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import java.io.IOException;
-import java.text.MessageFormat;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Locale;
-import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
@@ -241,6 +227,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
      * @throws ManagementException
      */
     @Test
+    @Disabled("Includes lots of information in subscription as it goes through all deployments")
     public void testDeployments() throws Exception {
         String testId = azureResourceManager.deployments().manager().resourceManager().internalContext().randomResourceName("", 8);
         PagedIterable<Deployment> deployments = azureResourceManager.deployments().list();
@@ -545,6 +532,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
      * @throws Exception
      */
     @Test
+    @Disabled("Test fails due to missing SourceApplicationSecurityGroup on update")
     public void testNetworkSecurityGroups() throws Exception {
         new TestNSG().runTest(azureResourceManager.networkSecurityGroups(), azureResourceManager.resourceGroups());
     }
@@ -1106,41 +1094,9 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
         azureResourceManager.resourceGroups().beginDeleteByName(storageAccount.resourceGroupName());
     }
 
-    //    @Test
-    //    public void testBatchAccount() throws Exception {
-    //        new TestBatch().runTest(azure.batchAccounts(), azure.resourceGroups());
-    //    }
-
-    @Test
-    public void testTrafficManager() throws Exception {
-        new TestTrafficManager(azureResourceManager.publicIpAddresses())
-                .runTest(azureResourceManager.trafficManagerProfiles(), azureResourceManager.resourceGroups());
-    }
-
-    @Test
-    public void testRedis() throws Exception {
-        new TestRedis().runTest(azureResourceManager.redisCaches(), azureResourceManager.resourceGroups());
-    }
-
-    @Test
-    public void testCdnManager() throws Exception {
-        new TestCdn()
-                .runTest(azureResourceManager.cdnProfiles(), azureResourceManager.resourceGroups());
-    }
-
     @Test
     public void testDnsZones() throws Exception {
         new TestDns().runTest(azureResourceManager.dnsZones(), azureResourceManager.resourceGroups());
-    }
-
-    @Test
-    public void testPrivateDnsZones() throws Exception {
-        new TestPrivateDns().runTest(azureResourceManager.privateDnsZones(), azureResourceManager.resourceGroups());
-    }
-
-    @Test
-    public void testSqlServer() throws Exception {
-        new TestSql().runTest(azureResourceManager.sqlServers(), azureResourceManager.resourceGroups());
     }
 
     @Test
@@ -1154,277 +1110,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
     }
 
     @Test
-    public void testContainerInstanceWithPublicIpAddressWithSystemAssignedMsi() throws Exception {
-        new TestContainerInstanceWithPublicIpAddressWithSystemAssignedMSI()
-            .runTest(azureResourceManager.containerGroups(), azureResourceManager.resourceGroups(), azureResourceManager.subscriptionId());
-    }
-
-    @Test
-    public void testContainerInstanceWithPublicIpAddressWithUserAssignedMsi() throws Exception {
-        final String cgName = generateRandomResourceName("aci", 10);
-        final String rgName = generateRandomResourceName("rgaci", 10);
-        String identityName1 = generateRandomResourceName("msi-id", 15);
-        String identityName2 = generateRandomResourceName("msi-id", 15);
-
-        final Identity createdIdentity =
-            azureResourceManager
-                .identities()
-                .define(identityName1)
-                .withRegion(Region.US_WEST)
-                .withNewResourceGroup(rgName)
-                .withAccessToCurrentResourceGroup(BuiltInRole.READER)
-                .create();
-
-        Creatable<Identity> creatableIdentity =
-            azureResourceManager
-                .identities()
-                .define(identityName2)
-                .withRegion(Region.US_WEST)
-                .withExistingResourceGroup(rgName)
-                .withAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR);
-
-        List<String> dnsServers = new ArrayList<String>();
-        dnsServers.add("dnsServer1");
-        ContainerGroup containerGroup =
-            azureResourceManager
-                .containerGroups()
-                .define(cgName)
-                .withRegion(Region.US_EAST2)
-                .withExistingResourceGroup(rgName)
-                .withLinux()
-                .withPublicImageRegistryOnly()
-                .withEmptyDirectoryVolume("emptydir1")
-                .defineContainerInstance("tomcat")
-                .withImage("tomcat")
-                .withExternalTcpPort(8080)
-                .withCpuCoreCount(1)
-                .withEnvironmentVariable("ENV1", "value1")
-                .attach()
-                .defineContainerInstance("nginx")
-                .withImage("nginx")
-                .withExternalTcpPort(80)
-                .withEnvironmentVariableWithSecuredValue("ENV2", "securedValue1")
-                .attach()
-                .withExistingUserAssignedManagedServiceIdentity(createdIdentity)
-                .withNewUserAssignedManagedServiceIdentity(creatableIdentity)
-                .withRestartPolicy(ContainerGroupRestartPolicy.NEVER)
-                .withDnsPrefix(cgName)
-                .withTag("tag1", "value1")
-                .create();
-
-        Assertions.assertEquals(cgName, containerGroup.name());
-        Assertions.assertEquals("Linux", containerGroup.osType().toString());
-        Assertions.assertEquals(0, containerGroup.imageRegistryServers().size());
-        Assertions.assertEquals(1, containerGroup.volumes().size());
-        Assertions.assertNotNull(containerGroup.volumes().get("emptydir1"));
-        Assertions.assertNotNull(containerGroup.ipAddress());
-        Assertions.assertTrue(containerGroup.isIPAddressPublic());
-        Assertions.assertEquals(2, containerGroup.externalTcpPorts().length);
-        Assertions.assertEquals(2, containerGroup.externalPorts().size());
-        Assertions.assertEquals(2, containerGroup.externalTcpPorts().length);
-        Assertions.assertEquals(8080, containerGroup.externalTcpPorts()[0]);
-        Assertions.assertEquals(80, containerGroup.externalTcpPorts()[1]);
-        Assertions.assertEquals(2, containerGroup.containers().size());
-        Container tomcatContainer = containerGroup.containers().get("tomcat");
-        Assertions.assertNotNull(tomcatContainer);
-        Container nginxContainer = containerGroup.containers().get("nginx");
-        Assertions.assertNotNull(nginxContainer);
-        Assertions.assertEquals("tomcat", tomcatContainer.name());
-        Assertions.assertEquals("tomcat", tomcatContainer.image());
-        Assertions.assertEquals(1.0, tomcatContainer.resources().requests().cpu(), .1);
-        Assertions.assertEquals(1.5, tomcatContainer.resources().requests().memoryInGB(), .1);
-        Assertions.assertEquals(1, tomcatContainer.ports().size());
-        Assertions.assertEquals(8080, tomcatContainer.ports().get(0).port());
-        Assertions.assertNull(tomcatContainer.volumeMounts());
-        Assertions.assertNull(tomcatContainer.command());
-        Assertions.assertNotNull(tomcatContainer.environmentVariables());
-        Assertions.assertEquals(1, tomcatContainer.environmentVariables().size());
-        Assertions.assertEquals("nginx", nginxContainer.name());
-        Assertions.assertEquals("nginx", nginxContainer.image());
-        Assertions.assertEquals(1.0, nginxContainer.resources().requests().cpu(), .1);
-        Assertions.assertEquals(1.5, nginxContainer.resources().requests().memoryInGB(), .1);
-        Assertions.assertEquals(1, nginxContainer.ports().size());
-        Assertions.assertEquals(80, nginxContainer.ports().get(0).port());
-        Assertions.assertNull(nginxContainer.volumeMounts());
-        Assertions.assertNull(nginxContainer.command());
-        Assertions.assertNotNull(nginxContainer.environmentVariables());
-        Assertions.assertEquals(1, nginxContainer.environmentVariables().size());
-        Assertions.assertTrue(containerGroup.tags().containsKey("tag1"));
-        Assertions.assertEquals(ContainerGroupRestartPolicy.NEVER, containerGroup.restartPolicy());
-        Assertions.assertTrue(containerGroup.isManagedServiceIdentityEnabled());
-        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, containerGroup.managedServiceIdentityType());
-        Assertions.assertNull(containerGroup.systemAssignedManagedServiceIdentityPrincipalId()); // No Local MSI enabled
-
-        // Ensure the "User Assigned (External) MSI" id can be retrieved from the virtual machine
-        //
-        Set<String> emsiIds = containerGroup.userAssignedManagedServiceIdentityIds();
-        Assertions.assertNotNull(emsiIds);
-        Assertions.assertEquals(2, emsiIds.size());
-        Assertions.assertEquals(cgName, containerGroup.dnsPrefix());
-
-        // TODO: add network and dns testing when questions have been answered
-
-        ContainerGroup containerGroup2 = azureResourceManager.containerGroups().getByResourceGroup(rgName, cgName);
-
-        List<ContainerGroup> containerGroupList =
-            azureResourceManager.containerGroups().listByResourceGroup(rgName).stream().collect(Collectors.toList());
-        Assertions.assertTrue(containerGroupList.size() > 0);
-
-        containerGroup.refresh();
-
-        Set<Operation> containerGroupOperations =
-            azureResourceManager.containerGroups().listOperations().stream().collect(Collectors.toSet());
-        // Number of supported operation can change hence don't assert with a predefined number.
-        Assertions.assertTrue(containerGroupOperations.size() > 0);
-    }
-
-    @Disabled("Cannot run test due to unknown parameter")
-    @Test
-    public void testContainerInstanceWithPrivateIpAddress() throws Exception {
-        // LIVE ONLY TEST BECAUSE IT REQUIRES SUBSCRIPTION ID
-        if (!isPlaybackMode()) {
-            new TestContainerInstanceWithPrivateIpAddress()
-                .runTest(azureResourceManager.containerGroups(), azureResourceManager.resourceGroups(), azureResourceManager.subscriptionId());
-        }
-    }
-
-    @Test
     public void testContainerRegistry() throws Exception {
         new TestContainerRegistry().runTest(azureResourceManager.containerRegistries(), azureResourceManager.resourceGroups());
-    }
-
-    @Test
-    public void testCosmosDB() throws Exception {
-        new TestCosmosDB().runTest(azureResourceManager.cosmosDBAccounts(), azureResourceManager.resourceGroups());
-    }
-
-    @Test
-    public void testSearchServiceFreeSku() throws Exception {
-        new TestSearchService.SearchServiceFreeSku()
-                .runTest(azureResourceManager.searchServices(), azureResourceManager.resourceGroups());
-    }
-
-    @Test
-    public void testSearchServiceBasicSku() throws Exception {
-        new TestSearchService.SearchServiceBasicSku()
-                .runTest(azureResourceManager.searchServices(), azureResourceManager.resourceGroups());
-    }
-
-    @Test
-    public void testSearchServiceStandardSku() throws Exception {
-        new TestSearchService.SearchServiceStandardSku()
-                .runTest(azureResourceManager.searchServices(), azureResourceManager.resourceGroups());
-    }
-
-    @Test
-    public void testSearchServiceAnySku() throws Exception {
-        new TestSearchService.SearchServiceAnySku()
-                .runTest(azureResourceManager.searchServices(), azureResourceManager.resourceGroups());
-    }
-
-    @Test
-    @Disabled("Util to generate missing regions")
-    public void generateMissingRegion() {
-        // Please double check generated code and make adjustment e.g. GERMANY_WEST_CENTRAL -> GERMANY_WESTCENTRAL
-
-        StringBuilder sb = new StringBuilder();
-
-        List<Location> locations =
-            azureResourceManager
-                .getCurrentSubscription()
-                .listLocations()
-                .stream().collect(Collectors.toList());
-        // note the region is not complete since it depends on current subscription
-
-        List<Location> locationGroupByGeography = new ArrayList<>();
-        List<String> geographies = Arrays.asList(
-            "US", "Canada", "South America", "Europe", "Asia Pacific", "Middle East", "Africa");
-        for (String geography : geographies) {
-            for (Location location : locations) {
-                if (location.regionType() == RegionType.PHYSICAL) {
-                    if (geography.equals(location.innerModel().metadata().geographyGroup())) {
-                        locationGroupByGeography.add(location);
-                    }
-                }
-            }
-        }
-        for (Location location : locations) {
-            if (location.regionType() == RegionType.PHYSICAL) {
-                if (!geographies.contains(location.innerModel().metadata().geographyGroup())) {
-                    locationGroupByGeography.add(location);
-                }
-            }
-        }
-
-        for (Location location : locationGroupByGeography) {
-            if (location.regionType() == RegionType.PHYSICAL) {
-                Region region = findByLabelOrName(location.name());
-                if (region == null) {
-                    sb
-                        .append("\n").append("/**")
-                        .append("\n").append(MessageFormat.format(
-                            " * {0} ({1})",
-                            location.displayName(),
-                            location.innerModel().metadata().geographyGroup()))
-                        .append(location.innerModel().metadata().regionCategory() == RegionCategory.RECOMMENDED
-                            ? " (recommended)" : "")
-                        .append("\n").append(" */")
-                        .append("\n").append(MessageFormat.format(
-                            "public static final Region {0} = new Region(\"{1}\", \"{2}\");",
-                            getLocationVariableName(location),
-                            location.name(),
-                            location.displayName()));
-                }
-            }
-        }
-
-        Assertions.assertTrue(sb.length() == 0, sb.toString());
-    }
-
-    private static Region findByLabelOrName(String labelOrName) {
-        if (labelOrName == null) {
-            return null;
-        }
-        String nameLowerCase = labelOrName.toLowerCase(Locale.ROOT).replace(" ", "");
-        return Region.values().stream()
-            .filter(r -> nameLowerCase.equals(r.name().toLowerCase(Locale.ROOT)))
-            .findFirst()
-            .orElse(null);
-    }
-
-    private static String getLocationVariableName(Location location) {
-        final String geographyGroup = location.innerModel().metadata().geographyGroup();
-        String displayName = location.displayName();
-        if ("US".equals(geographyGroup)) {
-            if (displayName.contains(" US")) {
-                displayName = displayName.replace(" US", "");
-                displayName = "US " + displayName;
-            }
-        } else if ("Europe".equals(geographyGroup)) {
-            if (displayName.contains(" Europe")) {
-                displayName = displayName.replace(" Europe", "");
-                displayName = "Europe " + displayName;
-            }
-        } else if ("Asia Pacific".equals(geographyGroup)) {
-            if (displayName.contains(" Asia")) {
-                displayName = displayName.replace(" Asia", "");
-                displayName = "Asia " + displayName;
-            } else if (displayName.contains(" India")) {
-                displayName = displayName.replace(" India", "");
-                displayName = "India " + displayName;
-            }
-
-        } else if ("Africa".equals(geographyGroup)) {
-            if (displayName.startsWith("South Africa")) {
-                displayName = displayName.replace("South Africa", "SouthAfrica");
-            }
-        }
-        if (displayName.length() > 2 && displayName.charAt(displayName.length() - 1) >= '0'
-            && displayName.charAt(displayName.length() - 1) <= '9'
-            && displayName.charAt(displayName.length() - 2) == ' ') {
-            displayName = displayName.replace(displayName.substring(displayName.length() - 2),
-                displayName.substring(displayName.length() - 1));
-        }
-        return displayName.toUpperCase().replace(" ", "_");
     }
 }

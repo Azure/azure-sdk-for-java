@@ -43,6 +43,7 @@ import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -267,6 +268,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     }
 
     @Test
+    @Disabled("Low priority virtual machines won't always be scheduled.")
     public void canCreateUpdatePriorityAndPrice() throws Exception {
         // Create
         computeManager
@@ -880,6 +882,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     }
 
     @Test
+    @Disabled("'Force deletion of VM is not supported in this region' error while running")
     public void canForceDeleteVirtualMachine() {
         // Create
         computeManager.virtualMachines()
