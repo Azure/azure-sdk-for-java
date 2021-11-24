@@ -4,7 +4,6 @@
 package com.azure.core.util.logging;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.core.io.JsonStringEncoder;
 import org.slf4j.Logger;
 import org.slf4j.helpers.FormattingTuple;
@@ -38,7 +37,7 @@ import static com.azure.core.implementation.logging.LoggingUtils.removeThrowable
  */
 @Fluent
 public final class LoggingEventBuilder {
-    private final static JsonStringEncoder JSON_STRING_ENCODER = JsonStringEncoder.getInstance();
+    private static final JsonStringEncoder JSON_STRING_ENCODER = JsonStringEncoder.getInstance();
     private static final LoggingEventBuilder NOOP = new LoggingEventBuilder(null, null, false);
     private static final String AZURE_SDK_LOG_MESSAGE_KEY = "az.sdk.message";
 

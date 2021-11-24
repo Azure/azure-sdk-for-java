@@ -242,7 +242,8 @@ the main ServiceBusClientBuilder. -->
   <!-- Logger class suppression -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="ClientLogger.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="DefaultLogger.java"/>
-
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="LoggingEventBuilder.java"/>
+  
   <!-- Requires static access to logger to report errors while loading i18n messages (from within a static initializer )-->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="Messages.java"/>
 
