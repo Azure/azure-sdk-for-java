@@ -16,11 +16,18 @@ import reactor.core.publisher.Mono;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * EventGrid Cloud Native Event Publisher
  */
 public final class EventGridCloudNativeEventPublisher {
+    private static final Pattern PATTERN;
+    static {
+        PATTERN = Pattern.compile("[*/|*/*+]json", Pattern.MULTILINE);
+    }
+
     /**
      * Publishes the given native cloud event to the set topic or domain.
      *
@@ -103,15 +110,28 @@ public final class EventGridCloudNativeEventPublisher {
         if (event == null) {
             return null;
         }
+
         // Identify data format by data content type
         CloudEventDataFormat dataFormat;
         final String dataContentType = event.getDataContentType();
-        if ("application/json".equals(dataContentType)) {
+        if (dataContentType == null) {
             dataFormat = CloudEventDataFormat.JSON;
         } else {
-            dataFormat = CloudEventDataFormat.BYTES;
-        }
+            // Future version:
+            // https://github.com/cloudevents/spec/blob/main/cloudevents/formats/json-format.md#311-payload-serialization
+            // That is, a datacontenttype declares JSON-formatted content if its media type, when stripped of parameters,
+            // has the form */json or */*+json. If the datacontenttype is unspecified, processing SHOULD proceed as if
+            // the datacontenttype had been specified explicitly as application/json.
 
+            // Current version: https://github.com/cloudevents/sdk-java/blob/ff07dd83150deeb5eca5405cb80760b71e7b470c/
+            // formats/json-jackson/src/main/java/io/cloudevents/jackson/JsonFormat.java#L146-L149
+            final Matcher matcher = PATTERN.matcher(dataContentType);
+            if (matcher.find()) {
+                dataFormat = CloudEventDataFormat.JSON;
+            } else {
+                dataFormat = CloudEventDataFormat.BYTES;
+            }
+        }
         final CloudEventData data = event.getData();
         final BinaryData binaryData; // Create this variable to avoid NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE
         if (data != null) {
@@ -121,7 +141,7 @@ public final class EventGridCloudNativeEventPublisher {
         }
 
         // io.cloudevents.CloudEvent's id, source, type, and specversion are required.
-        // azure CloudEvent's  source, type, and format(if data exist) are required.
+        // azure CloudEvent's source, type, and format(if data exist) are required.
         final com.azure.core.models.CloudEvent cloudEvent = new com.azure.core.models.CloudEvent(
             event.getSource().toString(), // required
             event.getType(), // required
@@ -147,8 +167,10 @@ public final class EventGridCloudNativeEventPublisher {
         cloudEvent.setId(event.getId()); // required
         // SpecVersion is internally set by Azure CloudEvent to 1.0
 
-        // TODO: add extensions attribute support
-        // event.getExtensionNames();
+        // optional: extensionNames
+        event.getExtensionNames()
+            .stream()
+            .forEach(name -> cloudEvent.addExtensionAttribute(name, event.getAttribute(name)));
         return cloudEvent;
     }
 }
