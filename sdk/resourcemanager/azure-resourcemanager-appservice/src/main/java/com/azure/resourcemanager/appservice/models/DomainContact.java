@@ -257,12 +257,6 @@ public interface DomainContact extends HasInnerModel<Contact>, ChildResource<App
          * @param <ParentT> the stage of the parent definition to return to after attaching
          */
         interface WithFaxNumber<ParentT> {
-            /**
-             * Specifies the fax number.
-             *
-             * @param faxNumber the fax number
-             * @return the next stage of the definition
-             */
             WithAttach<ParentT> withFaxNumber(String faxNumber);
         }
 
