@@ -50,6 +50,9 @@
 
       --add-reads com.azure.resourcemanager.appplatform=java.xml.bind
     </javaModulesSurefireArgLine>
+    <codesnippet.skip>false</codesnippet.skip>
+    <javadocDoclet></javadocDoclet>
+    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <developers>
