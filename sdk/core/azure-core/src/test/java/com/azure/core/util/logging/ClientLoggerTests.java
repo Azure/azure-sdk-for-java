@@ -416,10 +416,10 @@ public class ClientLoggerTests {
     }
 
     /**
-     * Tests that newline is removed from the message, keys and values.
+     * Tests that newline is escaped in  message, keys and values.
      */
     @Test
-    public void logWithContextNewLineIsReplaced() {
+    public void logWithContextNewLineIsEscaped() {
         setupLogLevel(LogLevel.VERBOSE.getLogLevel());
         ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
 
@@ -468,7 +468,7 @@ public class ClientLoggerTests {
         logger.atWarning()
             // this is technically invalid, but we should not throw because of logging in runtime
             .addKeyValue("connectionId", (Supplier<String>) null)
-            .addKeyValue("linkName", String.format("complex value %s", 123))
+            .addKeyValue("linkName", () -> String.format("complex value %s", 123))
             .log("test");
 
         assertMessage(
@@ -523,6 +523,38 @@ public class ClientLoggerTests {
 
         assertMessage(
             message,
+            byteArraySteamToString(logCaptureStream),
+            logLevelToConfigure,
+            LogLevel.WARNING);
+    }
+
+    /**
+     * Tests json escape in keys, values, message and exception message
+     */
+    @ParameterizedTest
+    @MethodSource("provideLogLevels")
+    public void logWithContextWithThrowableInArgsAndEscaping(LogLevel logLevelToConfigure) {
+        setupLogLevel(logLevelToConfigure.getLogLevel());
+        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+
+        String exceptionMessage = "An exception \tmessage with \"special characters\"\r\n";
+        RuntimeException runtimeException = createIllegalStateException(exceptionMessage);
+
+        logger.atWarning()
+            .addKeyValue("connection\tId", "foo")
+            .addKeyValue("linkName", "\rbar")
+            .log("hello {}, \"and\" {more}", "world", runtimeException);
+
+
+        String escapedExceptionMessage = "An exception \\tmessage with \\\"special characters\\\"\\r\\n";
+
+        String expectedMessage = "{\"az.sdk.message\":\"hello world, \\\"and\\\" {more}\",\"exception\":\"" + escapedExceptionMessage + "\",\"connection\\tId\":\"foo\",\"linkName\":\"\\rbar\"}";
+        if (logLevelToConfigure.equals(LogLevel.VERBOSE)) {
+            expectedMessage += System.lineSeparator() + runtimeException.toString() + System.lineSeparator() + "\tat " + runtimeException.getStackTrace()[0].toString();
+        }
+
+        assertMessage(
+            expectedMessage,
             byteArraySteamToString(logCaptureStream),
             logLevelToConfigure,
             LogLevel.WARNING);

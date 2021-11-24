@@ -15,8 +15,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-import static com.azure.core.implementation.logging.LoggingUtil.doesArgsHaveThrowable;
-import static com.azure.core.implementation.logging.LoggingUtil.removeThrowable;
+import static com.azure.core.implementation.logging.LoggingUtils.doesArgsHaveThrowable;
+import static com.azure.core.implementation.logging.LoggingUtils.removeThrowable;
 
 /**
  * This class provides fluent API to write logs using {@link ClientLogger} and

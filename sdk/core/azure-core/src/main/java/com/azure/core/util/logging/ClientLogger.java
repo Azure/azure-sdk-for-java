@@ -16,8 +16,8 @@ import java.util.function.Supplier;
 
 import static com.azure.core.implementation.logging.LoggingUtils.removeNewLinesFromLogMessage;
 
-import static com.azure.core.implementation.logging.LoggingUtil.doesArgsHaveThrowable;
-import static com.azure.core.implementation.logging.LoggingUtil.removeThrowable;
+import static com.azure.core.implementation.logging.LoggingUtils.doesArgsHaveThrowable;
+import static com.azure.core.implementation.logging.LoggingUtils.removeThrowable;
 
 /**
  * This is a fluent logger helper class that wraps a pluggable {@link Logger}.
