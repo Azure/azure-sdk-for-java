@@ -161,6 +161,7 @@ public class VirtualMachineScaleSetImpl
     // To manage OS profile
     private boolean removeOsProfile;
     private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetImpl.class);
+    private boolean profileNotSet = true;
 
     VirtualMachineScaleSetImpl(
         String name,
@@ -674,6 +675,19 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetImpl withSku(VirtualMachineScaleSetSkuTypes skuType) {
         this.innerModel().withSku(skuType.sku());
+        this.profileNotSet = false;
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withFlexibleOrchestrationMode() {
+        return withFlexibleOrchestrationMode(1);
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withFlexibleOrchestrationMode(int faultDomainCount) {
+        this.innerModel().withOrchestrationMode(OrchestrationMode.FLEXIBLE);
+        this.innerModel().withPlatformFaultDomainCount(faultDomainCount);
         return this;
     }
 
@@ -1795,6 +1809,12 @@ public class VirtualMachineScaleSetImpl
         }
         if (this.osDiskCachingType() == null) {
             withOSDiskCaching(CachingTypes.READ_WRITE);
+        }
+    }
+
+    private void adjustForFlexibleModeIfNecessary() {
+        if (this.orchestrationMode() == OrchestrationMode.FLEXIBLE && profileNotSet) {
+            this.innerModel().withVirtualMachineProfile(null);
         }
     }
 

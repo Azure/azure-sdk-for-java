@@ -1504,20 +1504,14 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         final String vmssName2 = generateRandomResourceName("vmss", 10);
         // create resource through raw method
-        VirtualMachineScaleSetInner result = this
-            .computeManager
-            .virtualMachineScaleSets()
-            .manager()
-            .serviceClient()
-            .getVirtualMachineScaleSets()
-            .createOrUpdate(
-                rgName, vmssName2, options
-            );
-
         VirtualMachineScaleSet vmss2 = this
             .computeManager
             .virtualMachineScaleSets()
-            .getById(result.id());
+            .define(vmssName2)
+            .withRegion(euapRegion)
+            .withExistingResourceGroup(rgName)
+            .withFlexibleOrchestrationMode()
+            .create();
 
         Assertions.assertNotNull(vmss2);
         Assertions.assertEquals(vmss2.orchestrationMode(), OrchestrationMode.FLEXIBLE);
