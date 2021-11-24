@@ -222,8 +222,8 @@ public final class AttestationAsyncClient {
      * <p><strong>Retrieve Attestation Signers for this async client.</strong></p>
      * <!-- src_embed com.azure.security.attestation.AttestationAsyncClient.getAttestationSigners -->
      * <pre>
-     * Mono&lt;List&lt;AttestationSigner&gt;&gt; signers = client.listAttestationSigners&#40;&#41;;
-     * signers.block&#40;&#41;.forEach&#40;cert -&gt; &#123;
+     * Mono&lt;List&lt;AttestationSigner&gt;&gt; signersMono = client.listAttestationSigners&#40;&#41;;
+     * signersMono.subscribe&#40;signers -&gt; signers.forEach&#40;cert -&gt; &#123;
      *     System.out.println&#40;&quot;Found certificate.&quot;&#41;;
      *     if &#40;cert.getKeyId&#40;&#41; != null&#41; &#123;
      *         System.out.println&#40;&quot;    Certificate Key ID: &quot; + cert.getKeyId&#40;&#41;&#41;;
@@ -234,7 +234,7 @@ public final class AttestationAsyncClient {
      *         System.out.println&#40;&quot;        Cert Subject: &quot; + chainElement.getSubjectDN&#40;&#41;.getName&#40;&#41;&#41;;
      *         System.out.println&#40;&quot;        Cert Issuer: &quot; + chainElement.getIssuerDN&#40;&#41;.getName&#40;&#41;&#41;;
      *     &#125;&#41;;
-     * &#125;&#41;;
+     * &#125;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.security.attestation.AttestationAsyncClient.getAttestationSigners -->
      *
