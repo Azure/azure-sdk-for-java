@@ -16,12 +16,12 @@ public final class LoggingUtils {
     }
 
     /*
-     * Removes CRLF pattern in the {@code logMessage}.
+     * Removes CR, LF or CRLF pattern in the {@code logMessage}.
      *
      * @param logMessage The log message to sanitize.
      * @return The updated logMessage.
      */
-    public static String sanitizeLogMessageInput(String logMessage) {
+    public static String removeNewLinesFromLogMessage(String logMessage) {
         if (CoreUtils.isNullOrEmpty(logMessage)) {
             return logMessage;
         }

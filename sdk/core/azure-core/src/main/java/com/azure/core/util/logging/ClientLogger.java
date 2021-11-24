@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-import static com.azure.core.implementation.logging.LoggingUtils.sanitizeLogMessageInput;
+import static com.azure.core.implementation.logging.LoggingUtils.removeNewLinesFromLogMessage;
 
 /**
  * This is a fluent logger helper class that wraps a pluggable {@link Logger}.
@@ -124,7 +124,7 @@ public class ClientLogger {
      */
     public void verbose(String message) {
         if (logger.isDebugEnabled()) {
-            logger.debug(sanitizeLogMessageInput(message));
+            logger.debug(removeNewLinesFromLogMessage(message));
         }
     }
 
@@ -168,7 +168,7 @@ public class ClientLogger {
      */
     public void info(String message) {
         if (logger.isInfoEnabled()) {
-            logger.info(sanitizeLogMessageInput(message));
+            logger.info(removeNewLinesFromLogMessage(message));
         }
     }
 
@@ -213,7 +213,7 @@ public class ClientLogger {
      */
     public void warning(String message) {
         if (logger.isWarnEnabled()) {
-            logger.warn(sanitizeLogMessageInput(message));
+            logger.warn(removeNewLinesFromLogMessage(message));
         }
     }
 
@@ -262,7 +262,7 @@ public class ClientLogger {
      */
     public void error(String message) {
         if (logger.isErrorEnabled()) {
-            logger.error(sanitizeLogMessageInput(message));
+            logger.error(removeNewLinesFromLogMessage(message));
         }
     }
 
@@ -419,7 +419,7 @@ public class ClientLogger {
             }
         }
 
-        format = sanitizeLogMessageInput(format);
+        format = removeNewLinesFromLogMessage(format);
 
         switch (logLevel) {
             case VERBOSE:
@@ -455,7 +455,7 @@ public class ClientLogger {
     private void performDeferredLogging(LogLevel logLevel, Supplier<String> messageSupplier, Throwable throwable) {
         String throwableMessage = (throwable != null) ? throwable.getMessage() : "";
         String message = messageSupplier.get();
-        message = sanitizeLogMessageInput(message);
+        message = removeNewLinesFromLogMessage(message);
         switch (logLevel) {
             case VERBOSE:
                 if (throwable != null) {
