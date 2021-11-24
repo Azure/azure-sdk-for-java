@@ -44,6 +44,9 @@
       --add-opens com.azure.resourcemanager.authorization/com.azure.resourcemanager.authorization=ALL-UNNAMED
       --add-opens com.azure.resourcemanager.keyvault/com.azure.resourcemanager.keyvault=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <codesnippet.skip>false</codesnippet.skip>
+    <javadocDoclet></javadocDoclet>
+    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <developers>
