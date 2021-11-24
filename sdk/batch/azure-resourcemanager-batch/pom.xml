@@ -82,14 +82,6 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
-        <configuration>
-          <skip>true</skip>
-        </configuration>
-      </plugin>
-      <plugin>
         <groupId>org.revapi</groupId>
         <artifactId>revapi-maven-plugin</artifactId>
         <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
