@@ -30,8 +30,9 @@ steps:
         mvn --no-transfer-progress -f $pomf compile
         if (!$LASTEXITCODE) { break }
         Write-Host "Install failed, retrying in 1 minute..."
-        sleep 60
+        Start-Sleep -s 60
       }
+      mvn --no-transfer-progress -f $pomf compile
       exit $LASTEXITCODE
 
     workingDirectory: ${{parameters.ArtifactDirectory}}
