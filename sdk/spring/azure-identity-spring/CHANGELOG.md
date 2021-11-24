@@ -1,14 +1,8 @@
 # Release History
 
-## 1.11.0-beta.1 (Unreleased)
+## 1.11.0 (2021-11-24)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+Regular updates for dependency versions.
 
 ## 1.10.0 (2021-11-02)
 Regular updates for dependency versions.
