@@ -102,7 +102,7 @@ class RouteFilterImpl
 
     @Override
     public String provisioningState() {
-        return innerModel().provisioningState().toString();
+        return innerModel().provisioningState();
     }
 
     @Override

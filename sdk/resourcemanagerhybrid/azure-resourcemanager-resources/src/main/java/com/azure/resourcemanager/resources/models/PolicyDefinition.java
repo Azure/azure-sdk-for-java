@@ -14,8 +14,6 @@ import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
-import java.util.Map;
-
 /**
  * An immutable client-side representation of an Azure policy.
  */
@@ -51,7 +49,7 @@ public interface PolicyDefinition extends
     /**
      * @return the parameters of the policy definition
      */
-    Map<String, ParameterDefinitionsValue> parameters();
+    Object parameters();
 
     /**
      * Container interface for all the definitions that need to be implemented.
@@ -138,21 +136,10 @@ public interface PolicyDefinition extends
             /**
              * Specifies the parameters of the policy.
              *
-             * @param name the name of the parameter
-             * @param definition the definition of the parameter
+             * @param parameters the parameters of the policy
              * @return the next stage of policy definition
              */
-            WithCreate withParameter(String name, ParameterDefinitionsValue definition);
-
-            /**
-             * Specifies the parameters of the policy.
-             *
-             * @param name the name of the parameter
-             * @param parameterType the type of the parameter
-             * @param defaultValue the default value of the parameter
-             * @return the next stage of policy definition
-             */
-            WithCreate withParameter(String name, ParameterType parameterType, Object defaultValue);
+            WithCreate withParameters(Object parameters);
         }
 
         /**

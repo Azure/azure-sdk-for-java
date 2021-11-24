@@ -6,8 +6,6 @@ package com.azure.resourcemanager;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.resourcemanager.appplatform.AppPlatformManager;
-import com.azure.resourcemanager.appplatform.models.SpringServices;
 import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrders;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificates;
@@ -22,8 +20,6 @@ import com.azure.resourcemanager.authorization.models.ActiveDirectoryUsers;
 import com.azure.resourcemanager.authorization.models.RoleAssignments;
 import com.azure.resourcemanager.authorization.models.RoleDefinitions;
 import com.azure.resourcemanager.authorization.models.ServicePrincipals;
-import com.azure.resourcemanager.cdn.CdnManager;
-import com.azure.resourcemanager.cdn.models.CdnProfiles;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.models.AvailabilitySets;
 import com.azure.resourcemanager.compute.models.ComputeSkus;
@@ -37,16 +33,12 @@ import com.azure.resourcemanager.compute.models.VirtualMachineCustomImages;
 import com.azure.resourcemanager.compute.models.VirtualMachineImages;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSets;
 import com.azure.resourcemanager.compute.models.VirtualMachines;
-import com.azure.resourcemanager.containerinstance.ContainerInstanceManager;
-import com.azure.resourcemanager.containerinstance.models.ContainerGroups;
 import com.azure.resourcemanager.containerregistry.ContainerRegistryManager;
 import com.azure.resourcemanager.containerregistry.models.Registries;
 import com.azure.resourcemanager.containerregistry.models.RegistryTaskRuns;
 import com.azure.resourcemanager.containerregistry.models.RegistryTasks;
 import com.azure.resourcemanager.containerservice.ContainerServiceManager;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusters;
-import com.azure.resourcemanager.cosmos.CosmosManager;
-import com.azure.resourcemanager.cosmos.models.CosmosDBAccounts;
 import com.azure.resourcemanager.dns.DnsZoneManager;
 import com.azure.resourcemanager.dns.models.DnsZones;
 import com.azure.resourcemanager.eventhubs.EventHubsManager;
@@ -62,8 +54,6 @@ import com.azure.resourcemanager.monitor.models.AlertRules;
 import com.azure.resourcemanager.monitor.models.AutoscaleSettings;
 import com.azure.resourcemanager.monitor.models.DiagnosticSettings;
 import com.azure.resourcemanager.monitor.models.MetricDefinitions;
-import com.azure.resourcemanager.msi.MsiManager;
-import com.azure.resourcemanager.msi.models.Identities;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.models.ApplicationGateways;
 import com.azure.resourcemanager.network.models.ApplicationSecurityGroups;
@@ -78,16 +68,11 @@ import com.azure.resourcemanager.network.models.NetworkSecurityGroups;
 import com.azure.resourcemanager.network.models.NetworkUsages;
 import com.azure.resourcemanager.network.models.NetworkWatchers;
 import com.azure.resourcemanager.network.models.Networks;
-import com.azure.resourcemanager.network.models.PrivateEndpoints;
 import com.azure.resourcemanager.network.models.PublicIpAddresses;
 import com.azure.resourcemanager.network.models.PublicIpPrefixes;
 import com.azure.resourcemanager.network.models.RouteFilters;
 import com.azure.resourcemanager.network.models.RouteTables;
 import com.azure.resourcemanager.network.models.VirtualNetworkGateways;
-import com.azure.resourcemanager.privatedns.PrivateDnsZoneManager;
-import com.azure.resourcemanager.privatedns.models.PrivateDnsZones;
-import com.azure.resourcemanager.redis.RedisManager;
-import com.azure.resourcemanager.redis.models.RedisCaches;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
@@ -106,12 +91,6 @@ import com.azure.resourcemanager.resources.models.Subscription;
 import com.azure.resourcemanager.resources.models.Subscriptions;
 import com.azure.resourcemanager.resources.models.TagOperations;
 import com.azure.resourcemanager.resources.models.Tenants;
-import com.azure.resourcemanager.search.SearchServiceManager;
-import com.azure.resourcemanager.search.models.SearchServices;
-import com.azure.resourcemanager.servicebus.ServiceBusManager;
-import com.azure.resourcemanager.servicebus.models.ServiceBusNamespaces;
-import com.azure.resourcemanager.sql.SqlServerManager;
-import com.azure.resourcemanager.sql.models.SqlServers;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.models.BlobContainers;
 import com.azure.resourcemanager.storage.models.BlobServices;
@@ -119,8 +98,6 @@ import com.azure.resourcemanager.storage.models.ManagementPolicies;
 import com.azure.resourcemanager.storage.models.StorageAccounts;
 import com.azure.resourcemanager.storage.models.StorageSkus;
 import com.azure.resourcemanager.storage.models.Usages;
-import com.azure.resourcemanager.trafficmanager.TrafficManager;
-import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfiles;
 
 import java.util.Objects;
 
@@ -131,23 +108,12 @@ public final class AzureResourceManager {
     private final ComputeManager computeManager;
     private final NetworkManager networkManager;
     private final KeyVaultManager keyVaultManager;
-    private final TrafficManager trafficManager;
-    private final RedisManager redisManager;
-    private final CdnManager cdnManager;
     private final DnsZoneManager dnsZoneManager;
     private final AppServiceManager appServiceManager;
-    private final SqlServerManager sqlServerManager;
-    private final ServiceBusManager serviceBusManager;
-    private final ContainerInstanceManager containerInstanceManager;
     private final ContainerRegistryManager containerRegistryManager;
     private final ContainerServiceManager containerServiceManager;
-    private final SearchServiceManager searchServiceManager;
-    private final CosmosManager cosmosManager;
-    private final MsiManager msiManager;
     private final MonitorManager monitorManager;
     private final EventHubsManager eventHubsManager;
-    private final AppPlatformManager appPlatformManager;
-    private final PrivateDnsZoneManager privateDnsZoneManager;
     private final Authenticated authenticated;
     private final String subscriptionId;
     private final String tenantId;
@@ -363,40 +329,17 @@ public final class AzureResourceManager {
             .authenticate(null, profile);
         this.keyVaultManager = withHttpPipeline(httpPipeline, KeyVaultManager.configure())
             .authenticate(null, profile);
-        //        this.batchManager = BatchManager.authenticate(restClient, subscriptionId, internalContext);
-        this.trafficManager = withHttpPipeline(httpPipeline, TrafficManager.configure())
-            .authenticate(null, profile);
-        this.redisManager = withHttpPipeline(httpPipeline, RedisManager.configure())
-            .authenticate(null, profile);
-        this.cdnManager = withHttpPipeline(httpPipeline, CdnManager.configure())
-            .authenticate(null, profile);
         this.dnsZoneManager = withHttpPipeline(httpPipeline, DnsZoneManager.configure())
             .authenticate(null, profile);
         this.appServiceManager = withHttpPipeline(httpPipeline, AppServiceManager.configure())
-            .authenticate(null, profile);
-        this.sqlServerManager = withHttpPipeline(httpPipeline, SqlServerManager.configure())
-            .authenticate(null, profile);
-        this.serviceBusManager = withHttpPipeline(httpPipeline, ServiceBusManager.configure())
-            .authenticate(null, profile);
-        this.containerInstanceManager = withHttpPipeline(httpPipeline, ContainerInstanceManager.configure())
             .authenticate(null, profile);
         this.containerRegistryManager = withHttpPipeline(httpPipeline, ContainerRegistryManager.configure())
             .authenticate(null, profile);
         this.containerServiceManager = withHttpPipeline(httpPipeline, ContainerServiceManager.configure())
             .authenticate(null, profile);
-        this.cosmosManager = withHttpPipeline(httpPipeline, CosmosManager.configure())
-            .authenticate(null, profile);
-        this.searchServiceManager = withHttpPipeline(httpPipeline, SearchServiceManager.configure())
-            .authenticate(null, profile);
-        this.msiManager = withHttpPipeline(httpPipeline, MsiManager.configure())
-            .authenticate(null, profile);
         this.monitorManager = withHttpPipeline(httpPipeline, MonitorManager.configure())
             .authenticate(null, profile);
         this.eventHubsManager = withHttpPipeline(httpPipeline, EventHubsManager.configure())
-            .authenticate(null, profile);
-        this.appPlatformManager = withHttpPipeline(httpPipeline, AppPlatformManager.configure())
-            .authenticate(null, profile);
-        this.privateDnsZoneManager = withHttpPipeline(httpPipeline, PrivateDnsZoneManager.configure())
             .authenticate(null, profile);
         this.authenticated = authenticated;
         this.subscriptionId = profile.getSubscriptionId();
@@ -630,25 +573,6 @@ public final class AzureResourceManager {
     //        return batchManager.batchAccounts();
     //    }
 
-    /**
-     * @return entry point to managing traffic manager profiles.
-     */
-    public TrafficManagerProfiles trafficManagerProfiles() {
-        return trafficManager.profiles();
-    }
-
-    /** @return entry point to managing Redis Caches. */
-    public RedisCaches redisCaches() {
-        return redisManager.redisCaches();
-    }
-
-    /**
-     * @return entry point to managing cdn manager profiles.
-     */
-    public CdnProfiles cdnProfiles() {
-        return cdnManager.profiles();
-    }
-
     /** @return entry point to managing DNS zones. */
     public DnsZones dnsZones() {
         return dnsZoneManager.zones();
@@ -684,33 +608,9 @@ public final class AzureResourceManager {
         return appServiceManager.certificateOrders();
     }
 
-    /** @return entry point to managing Sql server. */
-    public SqlServers sqlServers() {
-        return sqlServerManager.sqlServers();
-    }
-
-    /**
-     * @return entry point to managing Service Bus.
-     */
-    public ServiceBusNamespaces serviceBusNamespaces() {
-        return serviceBusManager.namespaces();
-    }
-
-    /** @return entry point to managing Service Bus operations. */
-    // TODO: To be revisited in the future
-    // @Beta(SinceVersion.V1_1_0)
-    // public ServiceBusOperations serviceBusOperations() {
-    //    return serviceBusManager.operations();
-    // }
-
     /** @return entry point to managing Kubernetes clusters. */
     public KubernetesClusters kubernetesClusters() {
         return containerServiceManager.kubernetesClusters();
-    }
-
-    /** @return entry point to managing Azure Container Instances. */
-    public ContainerGroups containerGroups() {
-        return containerInstanceManager.containerGroups();
     }
 
     /** @return entry point to managing Container Registries. */
@@ -726,23 +626,6 @@ public final class AzureResourceManager {
     /** @return entry point to managing Container Registry RegistryTask Runs. */
     public RegistryTaskRuns containerRegistryTaskRuns() {
         return containerRegistryManager.registryTaskRuns();
-    }
-
-    /** @return entry point to managing Container Regsitries. */
-    public CosmosDBAccounts cosmosDBAccounts() {
-        return cosmosManager.databaseAccounts();
-    }
-
-    /**
-     * @return entry point to managing Search services.
-     */
-    public SearchServices searchServices() {
-        return searchServiceManager.searchServices();
-    }
-
-    /** @return entry point to managing Managed Service Identity (MSI) identities. */
-    public Identities identities() {
-        return msiManager.identities();
     }
 
     /** @return entry point to authentication and authorization management in Azure */
@@ -829,21 +712,6 @@ public final class AzureResourceManager {
     /** @return the blob service management API entry point */
     public ManagementPolicies storageManagementPolicies() {
         return this.storageManager.managementPolicies();
-    }
-
-    /** @return the spring service management API entry point */
-    public SpringServices springServices() {
-        return this.appPlatformManager.springServices();
-    }
-
-    /** @return the private DNS zone management API entry point */
-    public PrivateDnsZones privateDnsZones() {
-        return this.privateDnsZoneManager.privateZones();
-    }
-
-    /** @return entry point to private endpoints management */
-    public PrivateEndpoints privateEndpoints() {
-        return this.networkManager.privateEndpoints();
     }
 
     /** @return entry point to tag management management */

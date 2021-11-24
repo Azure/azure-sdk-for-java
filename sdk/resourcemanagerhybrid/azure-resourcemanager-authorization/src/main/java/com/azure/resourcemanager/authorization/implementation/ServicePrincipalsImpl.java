@@ -14,7 +14,6 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Mono;
-import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation of ServicePrincipals and its parent interfaces. */
 public class ServicePrincipalsImpl
@@ -36,7 +35,7 @@ public class ServicePrincipalsImpl
 
     @Override
     public PagedFlux<ServicePrincipal> listAsync() {
-        return PagedConverter.flatMapPage(inner().listAsync(), servicePrincipalInner -> {
+        return PagedConverter.flatMapPage(inner().listAsync(this.manager.tenantId()), servicePrincipalInner -> {
             ServicePrincipalImpl servicePrincipal = this.wrapModel(servicePrincipalInner);
             return servicePrincipal.refreshCredentialsAsync().thenReturn(servicePrincipal);
         });
@@ -58,7 +57,7 @@ public class ServicePrincipalsImpl
     @Override
     public Mono<ServicePrincipal> getByIdAsync(String id) {
         return innerCollection
-            .getAsync(id)
+            .getAsync(id, this.manager.tenantId())
             .flatMap(
                 servicePrincipalInner ->
                     new ServicePrincipalImpl(servicePrincipalInner, manager()).refreshCredentialsAsync());
@@ -72,10 +71,12 @@ public class ServicePrincipalsImpl
     @Override
     public Mono<ServicePrincipal> getByNameAsync(final String name) {
         return inner()
-            .listAsync(String.format("servicePrincipalNames/any(c:c eq '%s')", name))
+            .listAsync(this.manager.tenantId(), String.format("servicePrincipalNames/any(c:c eq '%s')", name))
             .singleOrEmpty()
             .switchIfEmpty(
-                Mono.defer(() -> inner().listAsync(String.format("displayName eq '%s'", name)).singleOrEmpty()))
+                Mono.defer(() -> inner()
+                    .listAsync(this.manager.tenantId(), String.format("displayName eq '%s'", name))
+                    .singleOrEmpty()))
             .map(servicePrincipalInner -> new ServicePrincipalImpl(servicePrincipalInner, manager()))
             .flatMap(servicePrincipal -> servicePrincipal.refreshCredentialsAsync());
     }
@@ -92,7 +93,7 @@ public class ServicePrincipalsImpl
 
     @Override
     public Mono<Void> deleteByIdAsync(String id) {
-        return inner().deleteAsync(id);
+        return inner().deleteAsync(id, this.manager.tenantId());
     }
 
     @Override
@@ -111,7 +112,7 @@ public class ServicePrincipalsImpl
 
     @Override
     public PagedFlux<ServicePrincipal> listByFilterAsync(String filter) {
-        return PagedConverter.flatMapPage(inner().listAsync(filter), servicePrincipalInner -> {
+        return PagedConverter.flatMapPage(inner().listAsync(this.manager.tenantId(), filter), servicePrincipalInner -> {
             ServicePrincipalImpl servicePrincipal = this.wrapModel(servicePrincipalInner);
             return servicePrincipal.refreshCredentialsAsync().thenReturn(servicePrincipal);
         });

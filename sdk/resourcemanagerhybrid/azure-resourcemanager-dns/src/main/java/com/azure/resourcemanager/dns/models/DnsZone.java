@@ -30,14 +30,6 @@ public interface DnsZone
     /** @return the access type of this zone (Private or Public). */
     ZoneType accessType();
 
-    /**
-     * @return a list of references to virtual networks that register hostnames in this DNS zone for Private DNS zone.
-     */
-    List<String> registrationVirtualNetworkIds();
-
-    /** @return a list of references to virtual networks that resolve records in this DNS zone for Private DNS zone. */
-    List<String> resolutionVirtualNetworkIds();
-
     /** @return the record sets in this zone. */
     PagedIterable<DnsRecordSet> listRecordSets();
 
@@ -75,9 +67,6 @@ public interface DnsZone
 
     /** @return entry point to manage record sets in this zone containing AAAA (IPv6 address) records */
     AaaaRecordSets aaaaRecordSets();
-
-    /** @return entry point to manage record sets in this zone containing Caa (canonical name) records */
-    CaaRecordSets caaRecordSets();
 
     /** @return entry point to manage record sets in this zone containing CNAME (canonical name) records */
     CnameRecordSets cNameRecordSets();
@@ -127,14 +116,6 @@ public interface DnsZone
              * @return the stage representing configuration for the AAAA record set
              */
             DnsRecordSet.DefinitionStages.AaaaRecordSetBlank<WithCreate> defineAaaaRecordSet(String name);
-
-            /**
-             * Specifies definition of a Caa record set.
-             *
-             * @param name the name of the Caa record set
-             * @return the stage representing configuration for the Caa record set
-             */
-            DnsRecordSet.DefinitionStages.CaaRecordSetBlank<WithCreate> defineCaaRecordSet(String name);
 
             /**
              * Specifies definition of a CNAME record set.
@@ -237,14 +218,6 @@ public interface DnsZone
             DnsRecordSet.UpdateDefinitionStages.AaaaRecordSetBlank<Update> defineAaaaRecordSet(String name);
 
             /**
-             * Specifies definition of a Caa record set to be attached to the DNS zone.
-             *
-             * @param name the name of the Caa record set
-             * @return the stage representing configuration for the Caa record set
-             */
-            DnsRecordSet.UpdateDefinitionStages.CaaRecordSetBlank<Update> defineCaaRecordSet(String name);
-
-            /**
              * Specifies definition of a CNAME record set to be attached to the DNS zone.
              *
              * @param name name of the CNAME record set
@@ -316,14 +289,6 @@ public interface DnsZone
              * @return the stage representing configuration for the AAAA record set
              */
             DnsRecordSet.UpdateAaaaRecordSet updateAaaaRecordSet(String name);
-
-            /**
-             * Begins the description of an update of an existing Caa record set in this DNS zone.
-             *
-             * @param name the name of the Caa record set
-             * @return the stage representing configuration for the Caa record set
-             */
-            DnsRecordSet.UpdateCaaRecordSet updateCaaRecordSet(String name);
 
             /**
              * Specifies definition of a CNAME record set.
@@ -413,23 +378,6 @@ public interface DnsZone
              * @return the next stage of DNS zone update
              */
             Update withoutAaaaRecordSet(String name, String etagValue);
-
-            /**
-             * Removes a Caa record set in the DNS zone.
-             *
-             * @param name name of the Caa record set
-             * @return the next stage of DNS zone update
-             */
-            Update withoutCaaRecordSet(String name);
-
-            /**
-             * Removes a Caa record set in the DNS zone.
-             *
-             * @param name name of the Caa record set
-             * @param etagValue the etag to use for concurrent protection
-             * @return the next stage of DNS zone update
-             */
-            Update withoutCaaRecordSet(String name, String etagValue);
 
             /**
              * Removes a CNAME record set in the DNS zone.

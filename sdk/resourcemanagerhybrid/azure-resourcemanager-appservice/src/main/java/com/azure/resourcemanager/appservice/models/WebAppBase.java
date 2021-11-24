@@ -7,7 +7,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
-import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
@@ -354,8 +353,7 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
     interface Definition<FluentT>
         extends DefinitionStages.WithWebContainer<FluentT>,
             DefinitionStages.WithCreate<FluentT>,
-            DefinitionStages.WithSystemAssignedIdentityBasedAccessOrCreate<FluentT>,
-            DefinitionStages.WithUserAssignedManagedServiceIdentityBasedAccessOrCreate<FluentT> {
+            DefinitionStages.WithSystemAssignedIdentityBasedAccessOrCreate<FluentT> {
     }
 
     /** Grouping of all the site definition stages. */
@@ -801,13 +799,6 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
             WithSystemAssignedIdentityBasedAccessOrCreate<FluentT> withSystemAssignedManagedServiceIdentity();
 
             /**
-             * Specifies that User Assigned Managed Service Identity needs to be enabled in the web app.
-             *
-             * @return the next stage of the web app definition
-             */
-            WithUserAssignedManagedServiceIdentityBasedAccessOrCreate<FluentT> withUserAssignedManagedServiceIdentity();
-
-            /**
              * Specifies that System Assigned (Local) Managed Service Identity needs to be disabled.
              *
              * @return the next stage of the update
@@ -867,35 +858,6 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
              */
             WithSystemAssignedIdentityBasedAccessOrCreate<FluentT>
                 withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(String roleDefinitionId);
-        }
-
-        /** The stage of the web app definition allowing to add User Assigned (External) Managed Service Identities. */
-        interface WithUserAssignedManagedServiceIdentityBasedAccessOrCreate<FluentT> extends WithCreate<FluentT> {
-            /**
-             * Specifies the definition of a not-yet-created user assigned identity to be associated with the web app.
-             *
-             * @param creatableIdentity a creatable identity definition
-             * @return the next stage of the definition.
-             */
-            WithUserAssignedManagedServiceIdentityBasedAccessOrCreate<FluentT>
-                withNewUserAssignedManagedServiceIdentity(Creatable<Identity> creatableIdentity);
-
-            /**
-             * Specifies an existing user assigned identity to be associated with the web app.
-             *
-             * @param identity the identity
-             * @return the next stage of the definition.
-             */
-            WithUserAssignedManagedServiceIdentityBasedAccessOrCreate<FluentT>
-                withExistingUserAssignedManagedServiceIdentity(Identity identity);
-
-            /**
-             * Specifies that an user assigned identity associated with the web app should be removed.
-             *
-             * @param identityId ARM resource id of the identity
-             * @return the next stage of the definition
-             */
-            Update<FluentT> withoutUserAssignedManagedServiceIdentity(String identityId);
         }
 
         /** The stage of web app definition allowing to configure network access settings. */
@@ -1550,25 +1512,6 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
             Update<FluentT> withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(String roleDefinitionId);
         }
 
-        /** The stage of the web app update allowing to add User Assigned (External) Managed Service Identities. */
-        interface WithUserAssignedManagedServiceIdentityBasedAccess<FluentT> {
-            /**
-             * Specifies the definition of a not-yet-created user assigned identity to be associated with the web app.
-             *
-             * @param creatableIdentity a creatable identity definition
-             * @return the next stage of the definition.
-             */
-            Update<FluentT> withNewUserAssignedManagedServiceIdentity(Creatable<Identity> creatableIdentity);
-
-            /**
-             * Specifies an existing user assigned identity to be associated with the web app.
-             *
-             * @param identity the identity
-             * @return the next stage of the definition.
-             */
-            Update<FluentT> withExistingUserAssignedManagedServiceIdentity(Identity identity);
-        }
-
         /** The stage of storage account update allowing to configure network access. */
         interface WithNetworkAccess<FluentT> {
             /**
@@ -1676,7 +1619,6 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
             UpdateStages.WithDiagnosticLogging<FluentT>,
             UpdateStages.WithManagedServiceIdentity<FluentT>,
             UpdateStages.WithSystemAssignedIdentityBasedAccess<FluentT>,
-            UpdateStages.WithUserAssignedManagedServiceIdentityBasedAccess<FluentT>,
             UpdateStages.WithNetworkAccess<FluentT> {
     }
 }

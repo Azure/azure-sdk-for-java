@@ -3,9 +3,7 @@
 
 package com.azure.resourcemanager.resources.implementation;
 
-import com.azure.resourcemanager.resources.models.EnforcementMode;
 import com.azure.resourcemanager.resources.models.GenericResource;
-import com.azure.resourcemanager.resources.models.ParameterValuesValue;
 import com.azure.resourcemanager.resources.models.PolicyAssignment;
 import com.azure.resourcemanager.resources.models.PolicyDefinition;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
@@ -13,12 +11,6 @@ import com.azure.resourcemanager.resources.fluentcore.model.implementation.Creat
 import com.azure.resourcemanager.resources.fluent.models.PolicyAssignmentInner;
 import com.azure.resourcemanager.resources.fluent.PolicyAssignmentsClient;
 import reactor.core.publisher.Mono;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * Implementation for {@link PolicyAssignment}.
@@ -64,23 +56,7 @@ final class PolicyAssignmentImpl extends
     }
 
     @Override
-    public List<String> excludedScopes() {
-        return innerModel().notScopes() == null
-            ? Collections.emptyList()
-            : Collections.unmodifiableList(innerModel().notScopes());
-    }
-
-    @Override
-    public EnforcementMode enforcementMode() {
-        return innerModel().enforcementMode();
-    }
-
-    @Override
-    public Map<String, ParameterValuesValue> parameters() {
-        return innerModel().parameters() == null
-            ? Collections.emptyMap()
-            : Collections.unmodifiableMap(innerModel().parameters());
-    }
+    public Object parameters() { return innerModel().parameters(); }
 
     @Override
     public PolicyAssignmentImpl withDisplayName(String displayName) {
@@ -134,26 +110,8 @@ final class PolicyAssignmentImpl extends
     }
 
     @Override
-    public PolicyAssignmentImpl withExcludedScope(String scope) {
-        if (innerModel().notScopes() == null) {
-            innerModel().withNotScopes(new ArrayList<>());
-        }
-        innerModel().notScopes().add(scope);
-        return this;
-    }
-
-    @Override
-    public PolicyAssignmentImpl withParameter(String name, Object value) {
-        if (innerModel().parameters() == null) {
-            innerModel().withParameters(new TreeMap<>());
-        }
-        innerModel().parameters().put(name, new ParameterValuesValue().withValue(value));
-        return this;
-    }
-
-    @Override
-    public PolicyAssignmentImpl withEnforcementMode(EnforcementMode mode) {
-        innerModel().withEnforcementMode(mode);
+    public PolicyAssignmentImpl withParameters(Object parameters) {
+        innerModel().withParameters(parameters);
         return this;
     }
 }

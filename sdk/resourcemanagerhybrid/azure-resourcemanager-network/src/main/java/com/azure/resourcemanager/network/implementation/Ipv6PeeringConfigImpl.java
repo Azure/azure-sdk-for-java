@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.fluent.models.RouteFilterInner;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeeringConfig;
 import com.azure.resourcemanager.network.models.ExpressRouteCrossConnectionPeering;

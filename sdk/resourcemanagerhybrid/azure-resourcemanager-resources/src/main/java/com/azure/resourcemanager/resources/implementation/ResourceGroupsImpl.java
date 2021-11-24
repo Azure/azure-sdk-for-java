@@ -11,7 +11,6 @@ import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import com.azure.resourcemanager.resources.models.ForceDeletionResourceType;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.models.ResourceGroups;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
@@ -19,9 +18,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import com.azure.resourcemanager.resources.fluent.models.ResourceGroupInner;
 import reactor.core.publisher.Mono;
 
-import java.util.Collection;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /**
@@ -71,17 +68,6 @@ public final class ResourceGroupsImpl
     }
 
     @Override
-    public Mono<Void> deleteByNameAsync(String name, Collection<ForceDeletionResourceType> forceDeletionResourceTypes) {
-        return manager().serviceClient().getResourceGroups()
-            .deleteAsync(name, forceDeletionTypes(forceDeletionResourceTypes));
-    }
-
-    @Override
-    public void deleteByName(String name, Collection<ForceDeletionResourceType> forceDeletionResourceTypes) {
-        deleteByNameAsync(name, forceDeletionResourceTypes).block();
-    }
-
-    @Override
     public Mono<Void> deleteByNameAsync(String name) {
         return manager().serviceClient().getResourceGroups().deleteAsync(name);
     }
@@ -111,17 +97,11 @@ public final class ResourceGroupsImpl
 
     @Override
     public Accepted<Void> beginDeleteByName(String name) {
-        return beginDeleteByName(name, null);
-    }
-
-
-    @Override
-    public Accepted<Void> beginDeleteByName(String name, Collection<ForceDeletionResourceType> forceDeletionResourceTypes) {
         return AcceptedImpl.newAccepted(logger,
             this.manager().serviceClient().getHttpPipeline(),
             this.manager().serviceClient().getDefaultPollInterval(),
             () -> this.manager().serviceClient().getResourceGroups()
-                .deleteWithResponseAsync(name, forceDeletionTypes(forceDeletionResourceTypes)).block(),
+                .deleteWithResponseAsync(name).block(),
             Function.identity(),
             Void.class,
             null,
@@ -147,15 +127,5 @@ public final class ResourceGroupsImpl
     @Override
     public ResourceManager manager() {
         return resourceManager;
-    }
-
-    private static String forceDeletionTypes(Collection<ForceDeletionResourceType> forceDeletionResourceTypes) {
-        String typesInStr = null;
-        if (forceDeletionResourceTypes != null && !forceDeletionResourceTypes.isEmpty()) {
-            typesInStr = forceDeletionResourceTypes.stream()
-                .map(ForceDeletionResourceType::toString)
-                .collect(Collectors.joining(","));
-        }
-        return typesInStr;
     }
 }

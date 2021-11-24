@@ -5,15 +5,16 @@ package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
-import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroup;
-import com.azure.resourcemanager.authorization.models.ActiveDirectoryObject;
-import com.azure.resourcemanager.authorization.models.ActiveDirectoryUser;
-import com.azure.resourcemanager.authorization.models.GroupCreateParameters;
-import com.azure.resourcemanager.authorization.models.ServicePrincipal;
 import com.azure.resourcemanager.authorization.fluent.models.ADGroupInner;
 import com.azure.resourcemanager.authorization.fluent.models.ApplicationInner;
 import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalInner;
 import com.azure.resourcemanager.authorization.fluent.models.UserInner;
+import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroup;
+import com.azure.resourcemanager.authorization.models.ActiveDirectoryObject;
+import com.azure.resourcemanager.authorization.models.ActiveDirectoryUser;
+import com.azure.resourcemanager.authorization.models.GroupAddMemberParameters;
+import com.azure.resourcemanager.authorization.models.GroupCreateParameters;
+import com.azure.resourcemanager.authorization.models.ServicePrincipal;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Flux;
@@ -65,7 +66,7 @@ class ActiveDirectoryGroupImpl
         return manager()
             .serviceClient()
             .getGroups()
-            .getGroupMembersAsync(id())
+            .getGroupMembersAsync(id(), this.manager.tenantId())
             .mapPage(
                 directoryObjectInner -> {
                     if (directoryObjectInner instanceof UserInner) {
@@ -84,7 +85,7 @@ class ActiveDirectoryGroupImpl
 
     @Override
     protected Mono<ADGroupInner> getInnerAsync() {
-        return manager().serviceClient().getGroups().getAsync(id());
+        return manager().serviceClient().getGroups().getAsync(id(), this.manager.tenantId());
     }
 
     @Override
@@ -96,7 +97,11 @@ class ActiveDirectoryGroupImpl
     public Mono<ActiveDirectoryGroup> createResourceAsync() {
         Mono<?> group = Mono.just(this);
         if (isInCreateMode()) {
-            group = manager().serviceClient().getGroups().createAsync(createParameters).map(innerToFluentMap(this));
+            group = manager()
+                .serviceClient()
+                .getGroups()
+                .createAsync(this.manager.tenantId(), createParameters)
+                .map(innerToFluentMap(this));
         }
         if (!membersToRemove.isEmpty()) {
             group =
@@ -105,7 +110,10 @@ class ActiveDirectoryGroupImpl
                         o ->
                             Flux
                                 .fromIterable(membersToRemove)
-                                .flatMap(s -> manager().serviceClient().getGroups().removeMemberAsync(id(), s))
+                                .flatMap(s -> manager()
+                                    .serviceClient()
+                                    .getGroups()
+                                    .removeMemberAsync(id(), s, this.manager.tenantId()))
                                 .singleOrEmpty()
                                 .thenReturn(Mono.just(this))
                                 .doFinally(signalType -> membersToRemove.clear()));
@@ -117,7 +125,13 @@ class ActiveDirectoryGroupImpl
                         o ->
                             Flux
                                 .fromIterable(membersToAdd)
-                                .flatMap(s -> manager().serviceClient().getGroups().addMemberAsync(id(), s))
+                                .flatMap(s -> manager()
+                                    .serviceClient()
+                                    .getGroups()
+                                    .addMemberAsync(
+                                        id(),
+                                        this.manager.tenantId(),
+                                        new GroupAddMemberParameters().withUrl(s)))
                                 .singleOrEmpty()
                                 .thenReturn(Mono.just(this))
                                 .doFinally(signalType -> membersToAdd.clear()));

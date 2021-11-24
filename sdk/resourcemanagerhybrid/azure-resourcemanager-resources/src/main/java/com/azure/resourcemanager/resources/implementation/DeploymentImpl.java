@@ -87,7 +87,7 @@ public final class DeploymentImpl extends
         if (this.innerModel().properties() == null) {
             return null;
         }
-        return this.innerModel().properties().provisioningState().toString();
+        return this.innerModel().properties().provisioningState();
     }
 
     @Override

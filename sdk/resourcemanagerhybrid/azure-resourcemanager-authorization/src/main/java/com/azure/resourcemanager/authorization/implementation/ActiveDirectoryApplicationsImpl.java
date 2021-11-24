@@ -17,9 +17,6 @@ import java.util.UUID;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Mono;
 
-import java.util.UUID;
-import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
-
 /** The implementation of Applications and its parent interfaces. */
 public class ActiveDirectoryApplicationsImpl
     extends CreatableResourcesImpl<ActiveDirectoryApplication, ActiveDirectoryApplicationImpl, ApplicationInner>
@@ -40,7 +37,7 @@ public class ActiveDirectoryApplicationsImpl
 
     @Override
     public PagedFlux<ActiveDirectoryApplication> listAsync() {
-        return PagedConverter.flatMapPage(inner().listAsync(), applicationInner -> {
+        return PagedConverter.flatMapPage(inner().listAsync(this.manager.tenantId()), applicationInner -> {
             ActiveDirectoryApplicationImpl application = this.wrapModel(applicationInner);
             return application.refreshCredentialsAsync().thenReturn(application);
         });
@@ -62,7 +59,7 @@ public class ActiveDirectoryApplicationsImpl
     @Override
     public Mono<ActiveDirectoryApplication> getByIdAsync(String id) {
         return innerCollection
-            .getAsync(id)
+            .getAsync(id, this.manager.tenantId())
             .flatMap(
                 applicationInner ->
                     new ActiveDirectoryApplicationImpl(applicationInner, manager()).refreshCredentialsAsync());
@@ -77,7 +74,7 @@ public class ActiveDirectoryApplicationsImpl
     public Mono<ActiveDirectoryApplication> getByNameAsync(String name) {
         final String trimmed = name.replaceFirst("^'+", "").replaceAll("'+$", "");
         return inner()
-            .listAsync(String.format("displayName eq '%s'", trimmed))
+            .listAsync(this.manager.tenantId(), String.format("displayName eq '%s'", trimmed))
             .singleOrEmpty()
             .switchIfEmpty(Mono.defer(() -> {
                 try {
@@ -86,7 +83,9 @@ public class ActiveDirectoryApplicationsImpl
                     return Mono.empty();
                 }
 
-                return inner().listAsync(String.format("appId eq '%s'", trimmed)).singleOrEmpty();
+                return inner()
+                    .listAsync(this.manager.tenantId(), String.format("appId eq '%s'", trimmed))
+                    .singleOrEmpty();
             }))
             .map(applicationInner -> new ActiveDirectoryApplicationImpl(applicationInner, manager()))
             .flatMap(activeDirectoryApplication -> activeDirectoryApplication.refreshCredentialsAsync());
@@ -99,7 +98,7 @@ public class ActiveDirectoryApplicationsImpl
 
     @Override
     public Mono<Void> deleteByIdAsync(String id) {
-        return inner().deleteAsync(id);
+        return inner().deleteAsync(id, this.manager.tenantId());
     }
 
     @Override
@@ -123,7 +122,7 @@ public class ActiveDirectoryApplicationsImpl
 
     @Override
     public PagedFlux<ActiveDirectoryApplication> listByFilterAsync(String filter) {
-        return PagedConverter.flatMapPage(inner().listAsync(filter), applicationInner -> {
+        return PagedConverter.flatMapPage(inner().listAsync(this.manager.tenantId(), filter), applicationInner -> {
             ActiveDirectoryApplicationImpl application = this.wrapModel(applicationInner);
             return application.refreshCredentialsAsync().thenReturn(application);
         });

@@ -8,21 +8,9 @@ import com.azure.resourcemanager.appservice.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.appservice.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
 import com.azure.resourcemanager.appservice.fluent.models.SitePatchResourceInner;
-import com.azure.resourcemanager.appservice.models.UserAssignedIdentity;
 import com.azure.resourcemanager.appservice.models.WebAppBase;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
-import com.azure.resourcemanager.msi.models.Identity;
-import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
-import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
 
 /**
  * Utility class to set Managed Service Identity (MSI) property on a web app, install or update MSI extension and create
@@ -35,9 +23,6 @@ public class WebAppMsiHandler<FluentT extends WebAppBase, FluentImplT extends We
 
     private WebAppBaseImpl<FluentT, FluentImplT> webAppBase;
 
-    private List<String> creatableIdentityKeys;
-    private Map<String, UserAssignedIdentity> userAssignedIdentities;
-
     /**
      * Creates VirtualMachineMsiHandler.
      *
@@ -48,8 +33,6 @@ public class WebAppMsiHandler<FluentT extends WebAppBase, FluentImplT extends We
     WebAppMsiHandler(final AuthorizationManager authorizationManager, WebAppBaseImpl<FluentT, FluentImplT> webAppBase) {
         super(authorizationManager, webAppBase.taskGroup(), webAppBase.idProvider());
         this.webAppBase = webAppBase;
-        this.creatableIdentityKeys = new ArrayList<>();
-        this.userAssignedIdentities = new HashMap<>();
     }
 
     /**
@@ -84,172 +67,30 @@ public class WebAppMsiHandler<FluentT extends WebAppBase, FluentImplT extends We
         return this;
     }
 
-    /**
-     * Specifies that given identity should be set as one of the External Managed Service Identity of the web app.
-     *
-     * @param creatableIdentity yet-to-be-created identity to be associated with the virtual machine
-     * @return WebAppMsiHandler
-     */
-    WebAppMsiHandler<FluentT, FluentImplT> withNewExternalManagedServiceIdentity(
-        Creatable<Identity> creatableIdentity) {
-        this.initSiteIdentity(ManagedServiceIdentityType.USER_ASSIGNED);
-
-        TaskGroup.HasTaskGroup dependency = (TaskGroup.HasTaskGroup) creatableIdentity;
-        Objects.requireNonNull(dependency);
-
-        this.webAppBase.taskGroup().addDependency(dependency);
-        this.creatableIdentityKeys.add(creatableIdentity.key());
-
-        return this;
-    }
-
-    /**
-     * Specifies that given identity should be set as one of the External Managed Service Identity of the web app.
-     *
-     * @param identity an identity to associate
-     * @return WebAppMsiHandler
-     */
-    WebAppMsiHandler<FluentT, FluentImplT> withExistingExternalManagedServiceIdentity(Identity identity) {
-        this.initSiteIdentity(ManagedServiceIdentityType.USER_ASSIGNED);
-        this.userAssignedIdentities.put(identity.id(), new UserAssignedIdentity());
-        return this;
-    }
-
-    /**
-     * Specifies that given identity should be removed from the list of External Managed Service Identity associated
-     * with the web app.
-     *
-     * @param identityId resource id of the identity
-     * @return WebAppMsiHandler
-     */
-    WebAppMsiHandler<FluentT, FluentImplT> withoutExternalManagedServiceIdentity(String identityId) {
-        this.userAssignedIdentities.put(identityId, null);
-        return this;
-    }
-
-    void processCreatedExternalIdentities() {
-        for (String key : this.creatableIdentityKeys) {
-            Identity identity = (Identity) this.webAppBase.taskGroup().taskResult(key);
-            Objects.requireNonNull(identity);
-            this.userAssignedIdentities.put(identity.id(), new UserAssignedIdentity());
-        }
-        this.creatableIdentityKeys.clear();
-    }
-
-    void handleExternalIdentities() {
-        SiteInner siteInner = this.webAppBase.innerModel();
-        if (!this.userAssignedIdentities.isEmpty()) {
-            siteInner.identity().withUserAssignedIdentities(this.userAssignedIdentities);
-        }
-    }
-
     void handleExternalIdentities(SitePatchResourceInner siteUpdate) {
-        if (this.handleRemoveAllExternalIdentitiesCase(siteUpdate)) {
-            return;
-        } else {
-            // At this point one of the following condition is met:
-            //
-            // 1. User don't want touch the 'Site.Identity.userAssignedIdentities' property
-            //      [this.userAssignedIdentities.empty() == true]
-            // 2. User want to add some identities to 'Site.Identity.userAssignedIdentities'
-            //      [this.userAssignedIdentities.empty() == false and this.webAppBase.inner().identity() != null]
-            // 3. User want to remove some (not all) identities in 'Site.Identity.userAssignedIdentities'
-            //      [this.userAssignedIdentities.empty() == false and this.webAppBase.inner().identity() != null]
-            //      Note: The scenario where this.webAppBase.inner().identity() is null in #3 is already handled in
-            //      handleRemoveAllExternalIdentitiesCase method
-            // 4. User want to add and remove (all or subset) some identities in 'Site.Identity.userAssignedIdentities'
-            //      [this.userAssignedIdentities.empty() == false and this.webAppBase.inner().identity() != null]
-            //
-            SiteInner siteInner = this.webAppBase.innerModel();
-            ManagedServiceIdentity currentIdentity = siteInner.identity();
-            siteUpdate.withIdentity(currentIdentity);
-            if (!this.userAssignedIdentities.isEmpty()) {
-                // At this point its guaranteed that 'currentIdentity' is not null so vmUpdate.identity() is.
-                siteUpdate.identity().withUserAssignedIdentities(this.userAssignedIdentities);
-            } else {
-                // User don't want to touch 'VM.Identity.userAssignedIdentities' property
-                if (currentIdentity != null) {
-                    // and currently there is identity exists or user want to manipulate some other properties of
-                    // identity, set identities to null so that it won't send over wire.
-                    currentIdentity.withUserAssignedIdentities(null);
-                }
-            }
-        }
-    }
-
-    /** Clear VirtualMachineMsiHandler post-run specific internal state. */
-    void clear() {
-        this.userAssignedIdentities = new HashMap<>();
-    }
-
-    /**
-     * Method that handle the case where user request indicates all it want to do is remove all identities associated
-     * with the virtual machine.
-     *
-     * @param siteUpdate the vm update payload model
-     * @return true if user indented to remove all the identities.
-     */
-    private boolean handleRemoveAllExternalIdentitiesCase(SitePatchResourceInner siteUpdate) {
+        // At this point one of the following condition is met:
+        //
+        // 1. User don't want touch the 'Site.Identity.userAssignedIdentities' property
+        //      [this.userAssignedIdentities.empty() == true]
+        // 2. User want to add some identities to 'Site.Identity.userAssignedIdentities'
+        //      [this.userAssignedIdentities.empty() == false and this.webAppBase.inner().identity() != null]
+        // 3. User want to remove some (not all) identities in 'Site.Identity.userAssignedIdentities'
+        //      [this.userAssignedIdentities.empty() == false and this.webAppBase.inner().identity() != null]
+        //      Note: The scenario where this.webAppBase.inner().identity() is null in #3 is already handled in
+        //      handleRemoveAllExternalIdentitiesCase method
+        // 4. User want to add and remove (all or subset) some identities in 'Site.Identity.userAssignedIdentities'
+        //      [this.userAssignedIdentities.empty() == false and this.webAppBase.inner().identity() != null]
+        //
         SiteInner siteInner = this.webAppBase.innerModel();
-        if (!this.userAssignedIdentities.isEmpty()) {
-            int rmCount = 0;
-            for (UserAssignedIdentity v : this.userAssignedIdentities.values()) {
-                if (v == null) {
-                    rmCount++;
-                } else {
-                    break;
-                }
-            }
-            boolean containsRemoveOnly = rmCount > 0 && rmCount == this.userAssignedIdentities.size();
-            // Check if user request contains only request for removal of identities.
-            if (containsRemoveOnly) {
-                Set<String> currentIds = new HashSet<>();
-                ManagedServiceIdentity currentIdentity = siteInner.identity();
-                if (currentIdentity != null && currentIdentity.userAssignedIdentities() != null) {
-                    for (String id : currentIdentity.userAssignedIdentities().keySet()) {
-                        currentIds.add(id.toLowerCase(Locale.ROOT));
-                    }
-                }
-                Set<String> removeIds = new HashSet<>();
-                for (Map.Entry<String, UserAssignedIdentity> entrySet
-                    : this.userAssignedIdentities.entrySet()) {
-                    if (entrySet.getValue() == null) {
-                        removeIds.add(entrySet.getKey().toLowerCase(Locale.ROOT));
-                    }
-                }
-                // If so check user want to remove all the identities
-                boolean removeAllCurrentIds =
-                    currentIds.size() == removeIds.size() && currentIds.containsAll(removeIds);
-                if (removeAllCurrentIds) {
-                    // If so adjust  the identity type [Setting type to SYSTEM_ASSIGNED orNONE will remove all the
-                    // identities]
-                    if (currentIdentity == null || currentIdentity.type() == null) {
-                        siteUpdate.withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE));
-                    } else if (currentIdentity
-                        .type()
-                        .equals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)) {
-                        siteUpdate.withIdentity(currentIdentity);
-                        siteUpdate.identity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED);
-                    } else if (currentIdentity.type().equals(ManagedServiceIdentityType.USER_ASSIGNED)) {
-                        siteUpdate.withIdentity(currentIdentity);
-                        siteUpdate.identity().withType(ManagedServiceIdentityType.NONE);
-                    }
-                    // and set identities property in the payload model to null so that it won't be sent
-                    siteUpdate.identity().withUserAssignedIdentities(null);
-                    return true;
-                } else {
-                    // Check user is asking to remove identities though there is no identities currently associated
-                    if (currentIds.size() == 0 && removeIds.size() != 0 && currentIdentity == null) {
-                        // If so we are in a invalid state but we want to send user input to service and let service
-                        // handle it (ignore or error).
-                        siteUpdate.withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE));
-                        siteUpdate.identity().withUserAssignedIdentities(null);
-                        return true;
-                    }
-                }
-            }
+        ManagedServiceIdentity currentIdentity = siteInner.identity();
+        siteUpdate.withIdentity(currentIdentity);
+
+        // User don't want to touch 'VM.Identity.userAssignedIdentities' property
+        if (currentIdentity != null) {
+            // and currently there is identity exists or user want to manipulate some other properties of
+            // identity, set identities to null so that it won't send over wire.
+            currentIdentity.withUserAssignedIdentities(null);
         }
-        return false;
     }
 
     /**
