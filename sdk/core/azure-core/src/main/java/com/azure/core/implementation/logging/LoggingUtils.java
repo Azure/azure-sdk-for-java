@@ -30,7 +30,7 @@ public final class LoggingUtils {
         int prevStart = 0;
 
         for (int i = 0; i < logMessage.length(); i++) {
-            if (logMessage.charAt(i) == CL || logMessage.charAt(i) == RF) {
+            if (logMessage.charAt(i) == CR || logMessage.charAt(i) == LF) {
                 if (sb == null) {
                     sb = new StringBuilder(logMessage.length());
                 }
