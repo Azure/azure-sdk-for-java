@@ -58,7 +58,7 @@ jobs:
             - metadata/
           Repositories:
             - Name: "azure-sdk/$(DocRepoName)"
-              WorkingDirectory: $(DocRepoLocation)
+              WorkingDirectory: $(DocRepoLocation)/dailyDocs
       - pwsh: |
           $ErrorActionPreference = "Continue"
           git checkout "origin/$(DailyDocsBranchName)" 2>&1 | Out-Null
