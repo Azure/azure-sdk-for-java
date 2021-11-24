@@ -352,7 +352,26 @@ public class ClientLoggerTests {
             LogLevel.WARNING);
     }
 
+    /**
+     * Tests that contextual logging without context of string message writes
+     * log message and context in correct format and depending on the level.
+     */
+    @ParameterizedTest
+    @MethodSource("provideLogLevels")
+    public void contextualLogWithoutContext(LogLevel logLevelToConfigure) {
+        setupLogLevel(logLevelToConfigure.getLogLevel());
+        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
 
+        String message = String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
+
+        logger.atWarning().log(message);
+
+        assertMessage(
+            "{\"az.sdk.message\":\"Param 1: test1, Param 2: test2, Param 3: test3\"}",
+            byteArraySteamToString(logCaptureStream),
+            logLevelToConfigure,
+            LogLevel.WARNING);
+    }
     /**
      * Tests message supplier with context.
      */
@@ -405,12 +424,12 @@ public class ClientLoggerTests {
         ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
 
         logger.atVerbose()
-            .addKeyValue("connectionId" + System.lineSeparator(), "foo")
-            .addKeyValue("linkName", "test" + System.lineSeparator() + "me")
+            .addKeyValue("connection\nId" + System.lineSeparator(), "foo")
+            .addKeyValue("link\rName", "test" + System.lineSeparator() + "me")
             .log("multiline " + System.lineSeparator() + "message");
 
         assertMessage(
-            "{\"az.sdk.message\":\"multiline message\",\"connectionId\":\"foo\",\"linkName\":\"testme\"}",
+            "{\"az.sdk.message\":\"multiline \\r\\nmessage\",\"connection\\nId\\r\\n\":\"foo\",\"link\\rName\":\"test\\r\\nme\"}",
             byteArraySteamToString(logCaptureStream),
             LogLevel.VERBOSE,
             LogLevel.INFORMATIONAL);
@@ -497,7 +516,7 @@ public class ClientLoggerTests {
             .addKeyValue("linkName", "bar")
             .log("hello {}", "world", runtimeException);
 
-        String message = "{\"az.sdk.message\":\"hello world\",\"connectionId\":\"foo\",\"linkName\":\"bar\"}" + System.lineSeparator() + exceptionMessage;
+        String message = "{\"az.sdk.message\":\"hello world\",\"exception\":\"" + exceptionMessage + "\",\"connectionId\":\"foo\",\"linkName\":\"bar\"}";
         if (logLevelToConfigure.equals(LogLevel.VERBOSE)) {
             message += System.lineSeparator() + runtimeException.toString() + System.lineSeparator() + "\tat " + runtimeException.getStackTrace()[0].toString();
         }
@@ -526,10 +545,9 @@ public class ClientLoggerTests {
             .addKeyValue("linkName", "bar")
             .log(runtimeException));
 
-        String message = "{\"az.sdk.message\":\"" + exceptionMessage + "\",\"connectionId\":\"foo\",\"linkName\":\"bar\"}";
-
+        String message = "{\"az.sdk.message\":\"\",\"exception\":\"" + exceptionMessage + "\",\"connectionId\":\"foo\",\"linkName\":\"bar\"}";
         if (logLevelToConfigure.equals(LogLevel.VERBOSE)) {
-            message +=  System.lineSeparator() + runtimeException.toString() + System.lineSeparator() + "\tat " + runtimeException.getStackTrace()[0].toString();
+            message += System.lineSeparator() + runtimeException.toString() + System.lineSeparator() + "\tat " + runtimeException.getStackTrace()[0].toString();
         }
 
         assertMessage(

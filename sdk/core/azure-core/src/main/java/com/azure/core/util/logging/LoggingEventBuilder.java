@@ -4,10 +4,19 @@
 package com.azure.core.util.logging;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.fasterxml.jackson.core.io.JsonStringEncoder;
+import org.slf4j.Logger;
+import org.slf4j.helpers.FormattingTuple;
+import org.slf4j.helpers.MessageFormatter;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
+
+import static com.azure.core.implementation.logging.LoggingUtil.doesArgsHaveThrowable;
+import static com.azure.core.implementation.logging.LoggingUtil.removeThrowable;
 
 /**
  * This class provides fluent API to write logs using {@link ClientLogger} and
@@ -29,10 +38,11 @@ import java.util.function.Supplier;
  */
 @Fluent
 public final class LoggingEventBuilder {
+    private final static JsonStringEncoder JSON_STRING_ENCODER = JsonStringEncoder.getInstance();
     private static final LoggingEventBuilder NOOP = new LoggingEventBuilder(null, null, false);
     private static final String AZURE_SDK_LOG_MESSAGE_KEY = "az.sdk.message";
 
-    private final ClientLogger logger;
+    private final Logger logger;
     private final LogLevel level;
     private List<ContextKeyValuePair> context;
 
@@ -43,15 +53,15 @@ public final class LoggingEventBuilder {
      * Creates {@code LoggingEventBuilder} for provided level and  {@link ClientLogger}.
      * If level is disabled, returns no-op instance.
      */
-    static LoggingEventBuilder create(ClientLogger logger, LogLevel level) {
-        if (logger.canLogAtLevel(level)) {
+    static LoggingEventBuilder create(Logger logger, LogLevel level, boolean canLogAtLevel) {
+        if (canLogAtLevel) {
             return new LoggingEventBuilder(logger, level, true);
         }
 
         return NOOP;
     }
 
-    private LoggingEventBuilder(ClientLogger logger, LogLevel level, boolean isEnabled) {
+    private LoggingEventBuilder(Logger logger, LogLevel level, boolean isEnabled) {
         this.logger = logger;
         this.level = level;
         this.isEnabled = isEnabled;
@@ -150,7 +160,7 @@ public final class LoggingEventBuilder {
      */
     public void log(String message) {
         if (this.isEnabled) {
-            logger.performLogging(level, false, getMessageWithContext(message));
+            performLogging(level, message);
         }
     }
 
@@ -162,7 +172,7 @@ public final class LoggingEventBuilder {
     public void log(Supplier<String> messageSupplier) {
         if (this.isEnabled) {
             String message = messageSupplier != null ? messageSupplier.get() : null;
-            logger.performLogging(level, false, getMessageWithContext(message));
+            performLogging(level, message);
         }
     }
 
@@ -175,7 +185,7 @@ public final class LoggingEventBuilder {
      */
     public void log(String format, Object... args) {
         if (this.isEnabled) {
-            logger.performLogging(level, false, getMessageWithContext(format), args);
+            performLogging(level, format, args);
         }
     }
 
@@ -184,19 +194,19 @@ public final class LoggingEventBuilder {
      *
      * @param throwable Throwable to be logged and returned.
      * @return The passed {@link Throwable}.
-     * @throws NullPointerException If {@code runtimeException} is {@code null}.
+     * @throws NullPointerException If {@code throwable} is {@code null}.
      */
     public Throwable log(Throwable throwable) {
         Objects.requireNonNull(throwable, "'throwable' cannot be null.");
 
         if (this.isEnabled) {
-            logger.performLogging(level, true, getMessageWithContext(throwable.getMessage()), throwable);
+            performLogging(level, null, throwable);
         }
 
         return throwable;
     }
 
-    private String getMessageWithContext(String message) {
+    private String getMessageWithContext(String message, Throwable throwable) {
         if (message == null) {
             message = "";
         }
@@ -208,20 +218,21 @@ public final class LoggingEventBuilder {
             // message must be first for log parsing tooling to work, key also works as a
             // marker for Azure SDK logs so we'll write it even if there is no message
             .append(AZURE_SDK_LOG_MESSAGE_KEY)
-            .append("\":\"")
-            .append(message)
-            .append("\",");
+            .append("\":\"");
+        JSON_STRING_ENCODER.quoteAsString(message, sb);
+        sb.append("\"");
+
+        if (throwable != null) {
+            sb.append(",\"exception\":\"");
+            JSON_STRING_ENCODER.quoteAsString(throwable.getMessage(), sb);
+            sb.append("\"");
+        }
 
         if (contextSize > 0) {
-            for (int i = 0; i < context.size() - 1; i++) {
+            for (int i = 0; i < context.size(); i++) {
                 context.get(i)
-                    .writeKeyAndValue(sb)
-                    .append(",");
+                    .writeKeyAndValue(sb.append(","));
             }
-
-            // json does not allow trailing commas
-            context.get(context.size() - 1)
-                .writeKeyAndValue(sb);
         }
 
         sb.append("}");
@@ -234,6 +245,54 @@ public final class LoggingEventBuilder {
         }
 
         this.context.add(new ContextKeyValuePair(key, value));
+    }
+
+    /*
+     * Performs the logging.
+     *
+     * @param format format-able message.
+     * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
+     */
+    void performLogging(LogLevel logLevel, String format, Object... args) {
+
+        Throwable throwable = null;
+        if (doesArgsHaveThrowable(args)) {
+            Object throwableObj = args[args.length - 1];
+
+            // This is true from before but is needed to appease SpotBugs.
+            if (throwableObj instanceof Throwable) {
+                throwable = (Throwable) throwableObj;
+            }
+
+            /*
+             * Environment is logging at a level higher than verbose, strip out the throwable as it would log its
+             * stack trace which is only expected when logging at a verbose level.
+             */
+            if (!logger.isDebugEnabled()) {
+                args = removeThrowable(args);
+            }
+        }
+
+        FormattingTuple tuple = MessageFormatter.arrayFormat(format, args);
+        String message = getMessageWithContext(tuple.getMessage(), throwable);
+
+        switch (logLevel) {
+            case VERBOSE:
+                logger.debug(message, tuple.getThrowable());
+                break;
+            case INFORMATIONAL:
+                logger.info(message, tuple.getThrowable());
+                break;
+            case WARNING:
+                logger.warn(message, tuple.getThrowable());
+                break;
+            case ERROR:
+                logger.error(message, tuple.getThrowable());
+                break;
+            default:
+                // Don't do anything, this state shouldn't be possible.
+                break;
+        }
     }
 
     /**
@@ -260,16 +319,16 @@ public final class LoggingEventBuilder {
          * Writes {"key":"value"} json string to provided StringBuilder.
          */
         public StringBuilder writeKeyAndValue(StringBuilder formatter) {
-            formatter.append("\"")
-                .append(key)
-                .append("\"")
-                .append(":");
+            formatter.append("\"");
+            JSON_STRING_ENCODER.quoteAsString(key, formatter);
+            formatter.append("\":");
 
             String valueStr = null;
             if (value != null) {
                 // LoggingEventBuilder only supports primitives and strings
                 if (!(value instanceof String)) {
-                    return formatter.append(value);
+                    JSON_STRING_ENCODER.quoteAsString(value.toString(), formatter);
+                    return formatter;
                 }
 
                 valueStr = (String) value;
@@ -281,9 +340,10 @@ public final class LoggingEventBuilder {
                 return formatter.append("null");
             }
 
-            return formatter.append("\"")
-                .append(valueStr)
-                .append("\"");
+            formatter.append("\"");
+            JSON_STRING_ENCODER.quoteAsString(valueStr, formatter);
+
+            return formatter.append("\"");
         }
     }
 }

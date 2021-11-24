@@ -16,6 +16,9 @@ import java.util.function.Supplier;
 
 import static com.azure.core.implementation.logging.LoggingUtils.removeNewLinesFromLogMessage;
 
+import static com.azure.core.implementation.logging.LoggingUtil.doesArgsHaveThrowable;
+import static com.azure.core.implementation.logging.LoggingUtil.removeThrowable;
+
 /**
  * This is a fluent logger helper class that wraps a pluggable {@link Logger}.
  *
@@ -395,7 +398,7 @@ public class ClientLogger {
      * @param format format-able message.
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
-    void performLogging(LogLevel logLevel, boolean isExceptionLogging, String format, Object... args) {
+    private void performLogging(LogLevel logLevel, boolean isExceptionLogging, String format, Object... args) {
         // If the logging level is less granular than verbose remove the potential throwable from the args.
         String throwableMessage = "";
         if (doesArgsHaveThrowable(args)) {
@@ -546,7 +549,7 @@ public class ClientLogger {
      * @return instance of {@link LoggingEventBuilder}  or no-op if verbose logging is disabled.
      */
     public LoggingEventBuilder atError() {
-        return LoggingEventBuilder.create(this, LogLevel.ERROR);
+        return LoggingEventBuilder.create(logger, LogLevel.ERROR, canLogAtLevel(LogLevel.ERROR));
     }
 
     /**
@@ -568,7 +571,7 @@ public class ClientLogger {
      * @return instance of {@link LoggingEventBuilder} or no-op if verbose logging is disabled.
      */
     public LoggingEventBuilder atWarning() {
-        return LoggingEventBuilder.create(this, LogLevel.WARNING);
+        return LoggingEventBuilder.create(logger, LogLevel.WARNING, canLogAtLevel(LogLevel.WARNING));
     }
 
     /**
@@ -590,7 +593,7 @@ public class ClientLogger {
      * @return instance of {@link LoggingEventBuilder} or no-op if verbose logging is disabled.
      */
     public LoggingEventBuilder atInfo() {
-        return LoggingEventBuilder.create(this, LogLevel.INFORMATIONAL);
+        return LoggingEventBuilder.create(logger, LogLevel.INFORMATIONAL, canLogAtLevel(LogLevel.INFORMATIONAL));
     }
 
     /**
@@ -611,31 +614,6 @@ public class ClientLogger {
      * @return instance of {@link LoggingEventBuilder} or no-op if verbose logging is disabled.
      */
     public LoggingEventBuilder atVerbose() {
-        return LoggingEventBuilder.create(this, LogLevel.VERBOSE);
-    }
-
-    /*
-     * Determines if the arguments contains a throwable that would be logged, SLF4J logs a throwable if it is the last
-     * element in the argument list.
-     *
-     * @param args The arguments passed to format the log message.
-     * @return True if the last element is a throwable, false otherwise.
-     */
-    private boolean doesArgsHaveThrowable(Object... args) {
-        if (args.length == 0) {
-            return false;
-        }
-
-        return args[args.length - 1] instanceof Throwable;
-    }
-
-    /*
-     * Removes the last element from the arguments as it is a throwable.
-     *
-     * @param args The arguments passed to format the log message.
-     * @return The arguments with the last element removed.
-     */
-    private Object[] removeThrowable(Object... args) {
-        return Arrays.copyOf(args, args.length - 1);
+        return LoggingEventBuilder.create(logger, LogLevel.VERBOSE, canLogAtLevel(LogLevel.VERBOSE));
     }
 }
