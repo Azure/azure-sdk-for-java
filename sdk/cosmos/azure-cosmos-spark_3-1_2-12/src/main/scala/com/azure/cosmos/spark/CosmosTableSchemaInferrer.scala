@@ -99,16 +99,15 @@ private object CosmosTableSchemaInferrer
       queryOptions.setMaxBufferedItemCount(cosmosInferenceConfig.inferSchemaSamplingSize)
       val queryText = cosmosInferenceConfig.inferSchemaQuery match {
         case None =>
-          cosmosReadConfig.customQuery match {
-            case None =>
-              ImplementationBridgeHelpers
-                .CosmosQueryRequestOptionsHelper
-                .getCosmosQueryRequestOptionsAccessor
-                .disallowQueryPlanRetrieval(queryOptions)
-              queryOptions.setMaxDegreeOfParallelism(1);
-              queryOptions.setFeedRange(FeedRange.forFullRange())
+          ImplementationBridgeHelpers
+            .CosmosQueryRequestOptionsHelper
+            .getCosmosQueryRequestOptionsAccessor
+            .disallowQueryPlanRetrieval(queryOptions)
+          queryOptions.setMaxDegreeOfParallelism(1);
+          queryOptions.setFeedRange(FeedRange.forFullRange())
 
-              s"select TOP ${cosmosInferenceConfig.inferSchemaSamplingSize} * from c"
+          cosmosReadConfig.customQuery match {
+            case None => s"select TOP ${cosmosInferenceConfig.inferSchemaSamplingSize} * from c"
             case _ => cosmosReadConfig.customQuery.get.queryText
           }
         case _ => cosmosInferenceConfig.inferSchemaQuery.get
