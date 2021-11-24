@@ -388,7 +388,7 @@ stages:
                   - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
                     - $(Pipeline.Workspace)/${{parameters.ArtifactName}}/PackageInfo/${{artifact.name}}.json
               WorkingDirectory: $(System.DefaultWorkingDirectory)
-              TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
+              TargetDocRepoOwner: "azure-sdk"
               TargetDocRepoName: ${{parameters.TargetDocRepoName}}
               Language: 'java'
               DailyDocsBuild: true
