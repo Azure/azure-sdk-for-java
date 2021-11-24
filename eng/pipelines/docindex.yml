@@ -19,7 +19,7 @@ jobs:
             - package.json
             - metadata/
           Repositories:
-            - Name: $(DocRepoOwner)/$(DocRepoName)
+            - Name: "azure-sdk/$(DocRepoName)"
               WorkingDirectory: $(DocRepoLocation)
 
       # Call update docs ci script to onboard packages
@@ -81,7 +81,7 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/git-push-changes.yml
         parameters:
           BaseRepoBranch: $(DailyDocsBranchName)
-          BaseRepoOwner: $(DocRepoOwner)
+          BaseRepoOwner: "azure-sdk"
           CommitMsg: "Update targeting packages based on release metadata. (Daily docs)"
           TargetRepoName: $(DocRepoName)
           TargetRepoOwner: $(DocRepoOwner)
