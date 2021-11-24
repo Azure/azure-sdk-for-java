@@ -19,23 +19,23 @@ public class LoggingUtilsTests {
     @NullAndEmptySource
     @ValueSource(strings = {"hello", "hello world\t123"})
     public void noNewLine(String message) {
-        assertEquals(message, LoggingUtils.sanitizeLogMessageInput(message));
+        assertEquals(message, LoggingUtils.removeNewLinesFromLogMessage(message));
     }
 
     @ParameterizedTest
     @MethodSource("messagesWithNewLine")
     public void newLine(String message) {
-        assertEquals("hello", LoggingUtils.sanitizeLogMessageInput(message));
+        assertEquals("hello", LoggingUtils.removeNewLinesFromLogMessage(message));
     }
 
     @Test
     public void newLineOnly() {
-        assertEquals("", LoggingUtils.sanitizeLogMessageInput(NEW_LINE + NEW_LINE + NEW_LINE));
+        assertEquals("", LoggingUtils.removeNewLinesFromLogMessage(NEW_LINE + NEW_LINE + NEW_LINE));
     }
 
     @Test
     public void withCL() {
-        assertEquals("\thelloworld", LoggingUtils.sanitizeLogMessageInput("\r\thello\r" + NEW_LINE + "world"));
+        assertEquals("\thelloworld", LoggingUtils.removeNewLinesFromLogMessage("\r\thello\r" + NEW_LINE + "world"));
     }
 
     private static Stream<String> messagesWithNewLine() {
