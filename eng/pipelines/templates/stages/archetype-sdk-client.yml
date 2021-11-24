@@ -44,6 +44,9 @@ parameters:
 - name: MatrixReplace
   type: object
   default: []
+- name: SkipAggregateReports
+  type: boolean
+  default: false
 
 stages:
   - stage: Build
@@ -56,6 +59,7 @@ stages:
         SDKType: ${{ parameters.SDKType }}
         Artifacts: ${{ parameters.Artifacts }}
         AdditionalModules: ${{ parameters.AdditionalModules }}
+        SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
         MatrixConfigs:
           - ${{ each config in parameters.MatrixConfigs }}:
             -  ${{ config }}
