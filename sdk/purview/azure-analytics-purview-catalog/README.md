@@ -18,7 +18,7 @@ Azure Purview Catalog is a fully managed cloud service whose users can discover 
 - [Azure Subscription][azure_subscription]
 - An existing Azure Purview account.
 
-For more information about creating the account see [here][create_azure_purview_account].
+For more information about creating the account, see [here][create_azure_purview_account].
 
 ### Include the Package
 
@@ -100,5 +100,11 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [package]: https://mvnrepository.com/artifact/com.azure/azure-analytics-purview-catalog
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/purview/azure-analytics-purview-catalog/src/samples/README.md
 [low_level_client]: https://github.com/Azure/azure-sdk-for-java/wiki/Low-Level-Client
+[create_azure_purview_account]: https://docs.microsoft.com/azure/purview/create-catalog-portal
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
+[cla]: https://cla.microsoft.com
+[coc]: https://opensource.microsoft.com/codeofconduct/
+[coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
+[coc_contact]: mailto:opencode@microsoft.com
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fpurview%2Fazure-analytics-purview-catalog%2FREADME.png)
