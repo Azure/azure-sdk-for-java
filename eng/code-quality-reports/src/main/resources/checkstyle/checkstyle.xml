@@ -106,7 +106,9 @@ page at http://checkstyle.sourceforge.net/config.html -->
       <property name="severity" value="warning"/>
     </module>
 
-    <module name="HideUtilityClassConstructor"/>
+    <module name="HideUtilityClassConstructor">
+      <property name="severity" value="error"/>
+    </module>
 
     <module name="MissingDeprecated"/>
 
@@ -132,6 +134,8 @@ page at http://checkstyle.sourceforge.net/config.html -->
       <property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
       <property name="severity" value="warning"/>
     </module>
+
+    <module name="OuterTypeFilename"/>
 
     <module name="MethodNameCheck">
       <!-- Validates identifiers for method names. -->
