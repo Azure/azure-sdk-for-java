@@ -50,6 +50,10 @@ jobs:
         parameters:
           DailyBranchVariableName: DailyDocsBranchName
       # Sync docs fork repo onboarding files/folders
+      - pwsh: |
+          $ErrorActionPreference = "Continue"
+          rm -rf .git
+        displayName: Remove existing git repo
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:
           SkipDefaultCheckout: true
