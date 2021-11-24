@@ -8,9 +8,12 @@ import com.azure.core.util.CoreUtils;
 /**
  * Contains utility methods for logging.
  */
-public class LoggingUtils {
+public final class LoggingUtils {
     private static final char CR = '\r';
     private static final char LF = '\n';
+    
+    private LoggingUtils() {
+    }
 
     /*
      * Removes CRLF pattern in the {@code logMessage}.
