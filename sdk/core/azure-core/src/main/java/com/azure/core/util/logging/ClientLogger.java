@@ -546,7 +546,7 @@ public class ClientLogger {
      * </pre>
      * <!-- end com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
      *
-     * @return instance of {@link LoggingEventBuilder}  or no-op if verbose logging is disabled.
+     * @return instance of {@link LoggingEventBuilder}  or no-op if error logging is disabled.
      */
     public LoggingEventBuilder atError() {
         return LoggingEventBuilder.create(logger, LogLevel.ERROR, canLogAtLevel(LogLevel.ERROR));
@@ -568,7 +568,7 @@ public class ClientLogger {
      * </pre>
      * <!-- end com.azure.core.util.logging.clientlogger.atWarning -->
      *
-     * @return instance of {@link LoggingEventBuilder} or no-op if verbose logging is disabled.
+     * @return instance of {@link LoggingEventBuilder} or no-op if warn logging is disabled.
      */
     public LoggingEventBuilder atWarning() {
         return LoggingEventBuilder.create(logger, LogLevel.WARNING, canLogAtLevel(LogLevel.WARNING));
@@ -590,7 +590,7 @@ public class ClientLogger {
      * </pre>
      * <!-- end com.azure.core.util.logging.clientlogger.atInfo -->
      *
-     * @return instance of {@link LoggingEventBuilder} or no-op if verbose logging is disabled.
+     * @return instance of {@link LoggingEventBuilder} or no-op if info logging is disabled.
      */
     public LoggingEventBuilder atInfo() {
         return LoggingEventBuilder.create(logger, LogLevel.INFORMATIONAL, canLogAtLevel(LogLevel.INFORMATIONAL));
