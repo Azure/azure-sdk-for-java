@@ -1,11 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.util.serializer;
+package com.azure.core.util.logging;
 
 import com.azure.core.util.Configuration;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
 import org.openjdk.jmh.Main;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
@@ -27,8 +25,8 @@ import java.util.concurrent.TimeUnit;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_LOG_LEVEL;
 
 @Fork(3)
-@Warmup(iterations = 5, time = 2)
-@Measurement(iterations = 5, time = 10)
+@Warmup(iterations = 2, time = 2)
+@Measurement(iterations = 2, time = 5)
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @State(Scope.Thread)

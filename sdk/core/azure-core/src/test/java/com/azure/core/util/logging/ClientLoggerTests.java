@@ -5,6 +5,7 @@ package com.azure.core.util.logging;
 
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.fasterxml.jackson.core.io.JsonStringEncoder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -425,11 +426,13 @@ public class ClientLoggerTests {
 
         logger.atVerbose()
             .addKeyValue("connection\nId" + System.lineSeparator(), "foo")
-            .addKeyValue("link\rName", "test" + System.lineSeparator() + "me")
+            .addKeyValue("link\r\nName", "test" + System.lineSeparator() + "me")
             .log("multiline " + System.lineSeparator() + "message");
 
+        String escapedNewLine = new String(JsonStringEncoder.getInstance().quoteAsString(System.lineSeparator()));
+
         assertMessage(
-            "{\"az.sdk.message\":\"multiline \\r\\nmessage\",\"connection\\nId\\r\\n\":\"foo\",\"link\\rName\":\"test\\r\\nme\"}",
+            "{\"az.sdk.message\":\"multiline " + escapedNewLine + "message\",\"connection\\nId" + escapedNewLine + "\":\"foo\",\"link\\r\\nName\":\"test" + escapedNewLine + "me\"}",
             byteArraySteamToString(logCaptureStream),
             LogLevel.VERBOSE,
             LogLevel.INFORMATIONAL);

@@ -228,7 +228,7 @@ public final class LoggingEventBuilder {
             sb.append("\"");
         }
 
-        if (contextSize > 0) {
+        if (context != null) {
             for (int i = 0; i < context.size(); i++) {
                 context.get(i)
                     .writeKeyAndValue(sb.append(","));
@@ -316,7 +316,7 @@ public final class LoggingEventBuilder {
         }
 
         /**
-         * Writes {"key":"value"} json string to provided StringBuilder.
+         * Writes "key":"value" json string to provided StringBuilder.
          */
         public StringBuilder writeKeyAndValue(StringBuilder formatter) {
             formatter.append("\"");
