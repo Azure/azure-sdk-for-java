@@ -19,7 +19,7 @@ jobs:
             - package.json
             - metadata/
           Repositories:
-            - Name: "azure-sdk/$(DocRepoName)"
+            - Name: "$(DocRepoOwner)/$(DocRepoName)"
               WorkingDirectory: $(DocRepoLocation)
 
       # Call update docs ci script to onboard packages
@@ -49,6 +49,16 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/set-daily-docs-branch-name.yml
         parameters:
           DailyBranchVariableName: DailyDocsBranchName
+      # Sync docs fork repo onboarding files/folders
+      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+        parameters:
+          SkipDefaultCheckout: true
+          Paths:
+            - package.json
+            - metadata/
+          Repositories:
+            - Name: "azure-sdk/$(DocRepoName)"
+              WorkingDirectory: $(DocRepoLocation)
       - pwsh: |
           $ErrorActionPreference = "Continue"
           git checkout "origin/$(DailyDocsBranchName)" 2>&1 | Out-Null
@@ -81,7 +91,7 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/git-push-changes.yml
         parameters:
           BaseRepoBranch: $(DailyDocsBranchName)
-          BaseRepoOwner: "azure-sdk"
+          BaseRepoOwner: $(DocRepoOwner)
           CommitMsg: "Update targeting packages based on release metadata. (Daily docs)"
           TargetRepoName: $(DocRepoName)
           TargetRepoOwner: $(DocRepoOwner)
