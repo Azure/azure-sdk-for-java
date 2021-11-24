@@ -1457,6 +1457,31 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
     }
 
     @Test
+    public void canCreateFlexibleVMSS(){
+        // create vmss with flexible orchestration type
+        VirtualMachineScaleSetInner options = new VirtualMachineScaleSetInner();
+        options.withOrchestrationMode(OrchestrationMode.FLEXIBLE)
+            .withPlatformFaultDomainCount(1)
+            .withLocation(region.name());
+
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName)
+            .withRegion(region.name())
+            .create();
+
+        final String vmssName = generateRandomResourceName("vmss", 10);
+        // create resource through raw method
+        VirtualMachineScaleSet vmss2 = this
+            .computeManager
+            .virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(region.name())
+            .withExistingResourceGroup(resourceGroup)
+            .withFlexibleOrchestrationMode()
+            .create();
+
+    }
+
+    @Test
     public void canGetOrchestrationType() {
 
         //create vmss with uniform orchestration type

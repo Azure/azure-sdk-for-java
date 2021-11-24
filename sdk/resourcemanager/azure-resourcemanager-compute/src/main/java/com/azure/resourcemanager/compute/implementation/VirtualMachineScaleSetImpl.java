@@ -1615,6 +1615,17 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     protected Mono<VirtualMachineScaleSetInner> createInner() {
+        //support flexible vmss with no profile
+        if (this.orchestrationMode() == OrchestrationMode.FLEXIBLE && this.profileNotSet) {
+            this.innerModel().withVirtualMachineProfile(null);
+            return Mono.just(this)
+                .flatMap(virtualMachineScaleSet -> this
+                    .manager()
+                    .serviceClient()
+                    .getVirtualMachineScaleSets()
+                    .createOrUpdateAsync(resourceGroupName(), name(), innerModel()));
+        }
+
         if (isInCreateMode()) {
             this.setOSProfileDefaults();
             this.setOSDiskDefault();
@@ -1734,14 +1745,14 @@ public class VirtualMachineScaleSetImpl
         if (isInUpdateMode()) {
             return;
         }
+        if (this.innerModel() == null || this.innerModel().virtualMachineProfile() == null) {
+            return;
+        }
         if (this.innerModel().sku().capacity() == null) {
             this.withCapacity(2);
         }
         if (this.innerModel().upgradePolicy() == null || this.innerModel().upgradePolicy().mode() == null) {
             this.innerModel().withUpgradePolicy(new UpgradePolicy().withMode(UpgradeMode.AUTOMATIC));
-        }
-        if (this.innerModel() == null || this.innerModel().virtualMachineProfile() == null) {
-            return;
         }
         VirtualMachineScaleSetOSProfile osProfile = this.innerModel().virtualMachineProfile().osProfile();
         VirtualMachineScaleSetOSDisk osDisk = this.innerModel().virtualMachineProfile().storageProfile().osDisk();
