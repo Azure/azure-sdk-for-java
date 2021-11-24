@@ -49,7 +49,10 @@ private case class ItemsPartitionReader
     config, containerTargetConfig, clientCacheItem.client)
   SparkUtils.safeOpenConnectionInitCaches(cosmosAsyncContainer, log)
 
-  private val queryOptions = new CosmosQueryRequestOptions()
+  private val queryOptions = ImplementationBridgeHelpers
+    .CosmosQueryRequestOptionsHelper
+    .getCosmosQueryRequestOptionsAccessor
+    .disallowQueryPlanRetrieval(new CosmosQueryRequestOptions())
 
   private val cosmosSerializationConfig = CosmosSerializationConfig.parseSerializationConfig(config)
   private val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
