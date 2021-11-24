@@ -5,6 +5,7 @@ package com.azure.core.util.logging;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Code snippets for {@link ClientLogger} javadocs
@@ -74,6 +75,12 @@ public class ClientLoggerJavaDocCodeSnippets {
         }
         // END: com.azure.core.util.logging.clientlogger.error#string-object
 
+        // BEGIN: com.azure.core.util.logging.clientlogger#globalcontext
+        ClientLogger loggerWithContext = new ClientLogger(ClientLoggerJavaDocCodeSnippets.class,
+            Map.of("connectionId", "95a47cf"));
+        loggerWithContext.info("A formattable message. Hello, {}", name);
+        // END: com.azure.core.util.logging.clientlogger#globalcontext
+
         // BEGIN: com.azure.core.util.logging.clientlogger.atInfo
         logger.atInfo()
             .addKeyValue("key", "value")
@@ -109,6 +116,13 @@ public class ClientLoggerJavaDocCodeSnippets {
             .addKeyValue("key3", () -> getName())
             .log("A formattable message. Hello, {}", name);
         // END: com.azure.core.util.logging.loggingeventbuilder
+
+        // BEGIN: com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#object
+        logger.atVerbose()
+            // equivalent to addKeyValue("key", () -> new LoggableObject("string representation").toString()
+            .addKeyValue("key", new LoggableObject("string representation"))
+            .log("Param 1: {}, Param 2: {}, Param 3: {}", "param1", "param2", "param3");
+        // END: com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#object
     }
 
     /**
@@ -137,5 +151,17 @@ public class ClientLoggerJavaDocCodeSnippets {
      */
     private void upload(File resource) throws IOException {
         throw new IOException();
+    }
+
+    class LoggableObject {
+        private final String str;
+        LoggableObject(String str) {
+            this.str = str;
+        }
+
+        @Override
+        public String toString() {
+            return str;
+        }
     }
 }

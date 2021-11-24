@@ -4,13 +4,16 @@
 package com.azure.core.util.logging;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.core.io.JsonStringEncoder;
 import org.slf4j.Logger;
 import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MessageFormatter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
 
@@ -38,12 +41,13 @@ import static com.azure.core.implementation.logging.LoggingUtils.removeThrowable
 @Fluent
 public final class LoggingEventBuilder {
     private static final JsonStringEncoder JSON_STRING_ENCODER = JsonStringEncoder.getInstance();
-    private static final LoggingEventBuilder NOOP = new LoggingEventBuilder(null, null, false);
+    private static final LoggingEventBuilder NOOP = new LoggingEventBuilder(null, null, null, false);
     private static final String AZURE_SDK_LOG_MESSAGE_KEY = "az.sdk.message";
 
     private final Logger logger;
     private final LogLevel level;
     private List<ContextKeyValuePair> context;
+    private final String globalContextCached;
 
     // use flag instead for no-op instance instead of inheritance
     private final boolean isEnabled;
@@ -52,19 +56,20 @@ public final class LoggingEventBuilder {
      * Creates {@code LoggingEventBuilder} for provided level and  {@link ClientLogger}.
      * If level is disabled, returns no-op instance.
      */
-    static LoggingEventBuilder create(Logger logger, LogLevel level, boolean canLogAtLevel) {
+    static LoggingEventBuilder create(Logger logger, LogLevel level, String globalContextSerialized, boolean canLogAtLevel) {
         if (canLogAtLevel) {
-            return new LoggingEventBuilder(logger, level, true);
+            return new LoggingEventBuilder(logger, level, globalContextSerialized, true);
         }
 
         return NOOP;
     }
 
-    private LoggingEventBuilder(Logger logger, LogLevel level, boolean isEnabled) {
+    private LoggingEventBuilder(Logger logger, LogLevel level, String globalContextSerialized, boolean isEnabled) {
         this.logger = logger;
         this.level = level;
         this.isEnabled = isEnabled;
-        this.context = null;
+        this.context = Collections.emptyList();
+        this.globalContextCached = globalContextSerialized == null ? "" : globalContextSerialized;
     }
 
     /**
@@ -89,6 +94,36 @@ public final class LoggingEventBuilder {
     public LoggingEventBuilder addKeyValue(String key, String value) {
         if (this.isEnabled) {
             addKeyValueInternal(key, value);
+        }
+
+        return this;
+    }
+
+    /**
+     * Adds key with Object value to the context of current log being created.
+     * If logging is enabled at given level, and object is not null, uses {@code value.toString()} to
+     * serialize object.
+     *
+     * <p><strong>Code samples</strong></p>
+     *
+     * <p>Adding string value to logging event context.</p>
+     *
+     * <!-- src_embed com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#object -->
+     * <pre>
+     * logger.atVerbose&#40;&#41;
+     *     &#47;&#47; equivalent to addKeyValue&#40;&quot;key&quot;, &#40;&#41; -&gt; new LoggableObject&#40;&quot;string representation&quot;&#41;.toString&#40;&#41;
+     *     .addKeyValue&#40;&quot;key&quot;, new LoggableObject&#40;&quot;string representation&quot;&#41;&#41;
+     *     .log&#40;&quot;Param 1: &#123;&#125;, Param 2: &#123;&#125;, Param 3: &#123;&#125;&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#object -->
+     *
+     * @param key String key.
+     * @param value Object value.
+     * @return The updated {@code LoggingEventBuilder} object.
+     */
+    public LoggingEventBuilder addKeyValue(String key, Object value) {
+        if (this.isEnabled) {
+            addKeyValueInternal(key, value == null ? null : value.toString());
         }
 
         return this;
@@ -143,7 +178,7 @@ public final class LoggingEventBuilder {
      */
     public LoggingEventBuilder addKeyValue(String key, Supplier<String> valueSupplier) {
         if (this.isEnabled) {
-            if (this.context == null) {
+            if (this.context.isEmpty()) {
                 this.context = new ArrayList<>();
             }
 
@@ -172,6 +207,19 @@ public final class LoggingEventBuilder {
         if (this.isEnabled) {
             String message = messageSupplier != null ? messageSupplier.get() : null;
             performLogging(level, message);
+        }
+    }
+
+    /**
+     * Logs message annotated with context.
+     *
+     * @param messageSupplier string message supplier.
+     * @param throwable {@link Throwable} for the message.
+     */
+    public void log(Supplier<String> messageSupplier, Throwable throwable) {
+        if (this.isEnabled) {
+            String message = messageSupplier != null ? messageSupplier.get() : null;
+            performLogging(level, message, throwable);
         }
     }
 
@@ -205,14 +253,30 @@ public final class LoggingEventBuilder {
         return throwable;
     }
 
+    /**
+     * Logs the {@link RuntimeException} and returns it to be thrown.
+     * This API covers the cases where a checked exception type needs to be thrown and logged.
+     *
+     * @param runtimeException RuntimeException to be logged and returned.
+     * @return The passed {@link RuntimeException}.
+     * @throws NullPointerException If {@code runtimeException} is {@code null}.
+     */
+    public RuntimeException log(RuntimeException runtimeException) {
+        Objects.requireNonNull(runtimeException, "'runtimeException' cannot be null.");
+
+        if (this.isEnabled) {
+            performLogging(level, null, runtimeException);
+        }
+
+        return runtimeException;
+    }
+
     private String getMessageWithContext(String message, Throwable throwable) {
         if (message == null) {
             message = "";
         }
 
-        int contextSize = context == null ? 0 : context.size();
-
-        StringBuilder sb = new StringBuilder(20 + contextSize * 20 + message.length());
+        StringBuilder sb = new StringBuilder(20 + context.size() * 20 + message.length() + globalContextCached.length());
         sb.append("{\"")
             // message must be first for log parsing tooling to work, key also works as a
             // marker for Azure SDK logs so we'll write it even if there is no message
@@ -227,11 +291,13 @@ public final class LoggingEventBuilder {
             sb.append("\"");
         }
 
-        if (context != null) {
-            for (int i = 0; i < context.size(); i++) {
-                context.get(i)
-                    .writeKeyAndValue(sb.append(","));
-            }
+        if (!globalContextCached.isEmpty()) {
+            sb.append(",").append(globalContextCached);
+        }
+
+        for (int i = 0; i < context.size(); i++) {
+            context.get(i)
+                .write(sb.append(","));
         }
 
         sb.append("}");
@@ -239,7 +305,7 @@ public final class LoggingEventBuilder {
     }
 
     private void addKeyValueInternal(String key, Object value) {
-        if (this.context == null) {
+        if (this.context.isEmpty()) {
             this.context = new ArrayList<>();
         }
 
@@ -295,6 +361,62 @@ public final class LoggingEventBuilder {
     }
 
     /**
+     * Serializes passed map to string containing valid JSON fragment:
+     * e.g. "k1":"v1","k2":"v2", properly escaped and without trailing comma.
+     *
+     * Does not support custom or complex object serialization, uses {@code toString()} on them.
+     *
+     * @param context to serialize.
+     */
+    static String writeJsonFragment(Map<String, Object> context) {
+        if (CoreUtils.isNullOrEmpty(context)) {
+            return "";
+        }
+
+        StringBuilder formatter = new StringBuilder(context.size() * 20);
+        for (Map.Entry<String, Object> pair : context.entrySet()) {
+            Object value = pair.getValue();
+
+            if (value == null
+                || value instanceof String
+                || value instanceof Boolean
+                || value instanceof Integer
+                || value instanceof Long
+                || value instanceof Byte) {
+                writeKeyAndValue(pair.getKey(), value, formatter);
+            } else {
+                writeKeyAndValue(pair.getKey(), value.toString(), formatter);
+            }
+
+            formatter.append(",");
+        }
+
+        // remove trailing comma just in case
+        return formatter.deleteCharAt(formatter.length() - 1)
+            .toString();
+    }
+
+    private static StringBuilder writeKeyAndValue(String key, Object value, StringBuilder formatter) {
+        formatter.append("\"");
+        JSON_STRING_ENCODER.quoteAsString(key, formatter);
+        formatter.append("\":");
+
+        if (value == null) {
+            return formatter.append("null");
+        }
+
+        // LoggingEventBuilder only populates primitives and Strings
+        if (!(value instanceof String)) {
+            JSON_STRING_ENCODER.quoteAsString(value.toString(), formatter);
+            return formatter;
+        }
+
+        formatter.append("\"");
+        JSON_STRING_ENCODER.quoteAsString(value.toString(), formatter);
+        return formatter.append("\"");
+    }
+
+    /**
      * Key value pair with basic serialization capabilities.
      */
     private static final class ContextKeyValuePair {
@@ -317,32 +439,12 @@ public final class LoggingEventBuilder {
         /**
          * Writes "key":"value" json string to provided StringBuilder.
          */
-        public StringBuilder writeKeyAndValue(StringBuilder formatter) {
-            formatter.append("\"");
-            JSON_STRING_ENCODER.quoteAsString(key, formatter);
-            formatter.append("\":");
-
-            String valueStr = null;
-            if (value != null) {
-                // LoggingEventBuilder only supports primitives and strings
-                if (!(value instanceof String)) {
-                    JSON_STRING_ENCODER.quoteAsString(value.toString(), formatter);
-                    return formatter;
-                }
-
-                valueStr = (String) value;
-            } else if (valueSupplier != null) {
-                valueStr = valueSupplier.get();
+        public StringBuilder write(StringBuilder formatter) {
+            if (valueSupplier == null) {
+                return writeKeyAndValue(key, value, formatter);
             }
 
-            if (valueStr == null) {
-                return formatter.append("null");
-            }
-
-            formatter.append("\"");
-            JSON_STRING_ENCODER.quoteAsString(valueStr, formatter);
-
-            return formatter.append("\"");
+            return writeKeyAndValue(key, valueSupplier.get(), formatter);
         }
     }
 }
