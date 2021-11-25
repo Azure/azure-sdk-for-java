@@ -40,7 +40,7 @@ public class EventHubBinderConsumingBatchModeIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubBinderConsumingBatchModeIT.class);
 
-    private static final String MESSAGE = "\"" + UUID.randomUUID() + "\"";
+    private static final String MESSAGE = UUID.randomUUID().toString();
 
     private static final CountDownLatch LATCH = new CountDownLatch(1);
 
@@ -79,7 +79,7 @@ public class EventHubBinderConsumingBatchModeIT {
         LOGGER.info("EventHubBinderBatchModeIT begin.");
         EventHubBinderConsumingBatchModeIT.LATCH.await(15, TimeUnit.SECONDS);
         LOGGER.info("Send a message:" + MESSAGE + ".");
-        many.emitNext(new GenericMessage<>(MESSAGE), Sinks.EmitFailureHandler.FAIL_FAST);
+        many.emitNext(new GenericMessage<>("\"" + MESSAGE + "\""), Sinks.EmitFailureHandler.FAIL_FAST);
         assertThat(EventHubBinderConsumingBatchModeIT.LATCH.await(600, TimeUnit.SECONDS)).isTrue();
         LOGGER.info("EventHubBinderBatchModeIT end.");
     }
