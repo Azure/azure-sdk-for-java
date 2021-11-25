@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.eventhub.stream.binder;
+package com.azure.spring.test.eventhubs.stream.binder;
 
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -25,21 +25,21 @@ import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(classes = EventHubsBinderBatchModeIT.TestConfig.class)
+@SpringBootTest(classes = EventHubBinderConsumingBatchModeIT.TestConfig.class)
 @TestPropertySource(properties =
     {
     "spring.cloud.stream.eventhub.bindings.consume-in-0.consumer.checkpoint-mode=BATCH",
     "spring.cloud.stream.eventhub.bindings.consume-in-0.consumer.max-batch-size=10",
     "spring.cloud.stream.eventhub.bindings.consume-in-0.consumer.max-wait-time=2s",
-    "spring.cloud.stream.bindings.consume-in-0.destination=test-eventhub-batch",
-    "spring.cloud.stream.bindings.supply-out-0.destination=test-eventhub-batch",
-    "spring.cloud.azure.eventhub.checkpoint-container=test-eventhub-batch",
+    "spring.cloud.stream.bindings.consume-in-0.destination=test-eventhub-consuming-batch",
+    "spring.cloud.stream.bindings.supply-out-0.destination=test-eventhub-consuming-batch",
+    "spring.cloud.azure.eventhub.checkpoint-container=test-eventhub-consuming-batch",
     "spring.cloud.stream.bindings.consume-in-0.content-type=text/plain",
     "spring.cloud.stream.bindings.consume-in-0.consumer.batch-mode=true"
     })
-public class EventHubsBinderBatchModeIT {
+public class EventHubBinderConsumingBatchModeIT {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsBinderBatchModeIT.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EventHubBinderConsumingBatchModeIT.class);
 
     private static final String MESSAGE = UUID.randomUUID().toString();
 
@@ -68,7 +68,7 @@ public class EventHubsBinderBatchModeIT {
             return message -> {
                 List<String> payload = message.getPayload();
                 LOGGER.info("EventHubBinderBatchModeIT: New message received: '{}'", payload);
-                if (payload.contains(EventHubsBinderBatchModeIT.MESSAGE)) {
+                if (payload.contains(EventHubBinderConsumingBatchModeIT.MESSAGE)) {
                     LATCH.countDown();
                 }
             };
@@ -78,10 +78,10 @@ public class EventHubsBinderBatchModeIT {
     @Test
     public void testSendAndReceiveMessage() throws InterruptedException {
         LOGGER.info("EventHubBinderBatchModeIT begin.");
-        EventHubsBinderBatchModeIT.LATCH.await(15, TimeUnit.SECONDS);
+        EventHubBinderConsumingBatchModeIT.LATCH.await(15, TimeUnit.SECONDS);
         LOGGER.info("Send a message:" + MESSAGE + ".");
         many.emitNext(new GenericMessage<>(MESSAGE), Sinks.EmitFailureHandler.FAIL_FAST);
-        assertThat(EventHubsBinderBatchModeIT.LATCH.await(600, TimeUnit.SECONDS)).isTrue();
+        assertThat(EventHubBinderConsumingBatchModeIT.LATCH.await(600, TimeUnit.SECONDS)).isTrue();
         LOGGER.info("EventHubBinderBatchModeIT end.");
     }
 }
