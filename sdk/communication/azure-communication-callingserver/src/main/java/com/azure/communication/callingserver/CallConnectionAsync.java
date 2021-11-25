@@ -421,6 +421,7 @@ public final class CallConnectionAsync {
      * Transfer the call to a participant.
      *
      * @param targetParticipant The identifier of the participant.
+     * @param alternateCallerId The phone number to use when transferring to a pstn participant.
      * @param userToUserInformation The user to user information.
      * @param operationContext The operation context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -428,9 +429,9 @@ public final class CallConnectionAsync {
      * @return Response payload for a successful transfer to participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TransferCallResult> transferToParticipant(CommunicationIdentifier targetParticipant, String userToUserInformation, String operationContext) {
+    public Mono<TransferCallResult> transferToParticipant(CommunicationIdentifier targetParticipant, String alternateCallerId, String userToUserInformation, String operationContext) {
         try {
-            TransferToParticipantRequest request = TransferToParticipantRequestConverter.convert(targetParticipant, userToUserInformation, operationContext);
+            TransferToParticipantRequest request = TransferToParticipantRequestConverter.convert(targetParticipant, alternateCallerId, userToUserInformation, operationContext);
             return callConnectionInternal.transferToParticipantAsync(callConnectionId, request)
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                 .flatMap(result -> Mono.just(TransferCallResultConverter.convert(result)));
@@ -443,6 +444,7 @@ public final class CallConnectionAsync {
      * Transfer the call to a participant.
      *
      * @param participant The identifier of the participant.
+     * @param alternateCallerId The phone number to use when transferring to a pstn participant.
      * @param userToUserInformation The user to user information.
      * @param operationContext The operation context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -450,13 +452,13 @@ public final class CallConnectionAsync {
      * @return Response payload for a successful transfer to participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TransferCallResult>> transferToParticipantWithResponse(CommunicationIdentifier participant, String userToUserInformation, String operationContext) {
-        return transferToParticipantWithResponse(participant, userToUserInformation, operationContext, Context.NONE);
+    public Mono<Response<TransferCallResult>> transferToParticipantWithResponse(CommunicationIdentifier participant, String alternateCallerId, String userToUserInformation, String operationContext) {
+        return transferToParticipantWithResponse(participant, alternateCallerId, userToUserInformation, operationContext, Context.NONE);
     }
 
-    Mono<Response<TransferCallResult>> transferToParticipantWithResponse(CommunicationIdentifier targetParticipant, String userToUserInformation, String operationContext, Context context) {
+    Mono<Response<TransferCallResult>> transferToParticipantWithResponse(CommunicationIdentifier targetParticipant, String alternateCallerId, String userToUserInformation, String operationContext, Context context) {
         try {
-            TransferToParticipantRequest request = TransferToParticipantRequestConverter.convert(targetParticipant, userToUserInformation, operationContext);
+            TransferToParticipantRequest request = TransferToParticipantRequestConverter.convert(targetParticipant, alternateCallerId, userToUserInformation, operationContext);
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return callConnectionInternal

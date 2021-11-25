@@ -249,6 +249,7 @@ public class CallConnectionUnitTests {
         TransferCallResult transferCallResult = callConnection.transferToParticipant(
             new CommunicationUserIdentifier(NEW_PARTICIPANT_ID),
             "",
+            "",
             ""
         );
 
@@ -265,6 +266,7 @@ public class CallConnectionUnitTests {
 
         Response<TransferCallResult> transferCallResponse = callConnection.transferToParticipantWithResponse(
             new CommunicationUserIdentifier(NEW_PARTICIPANT_ID),
+            "",
             "",
             "",
             Context.NONE

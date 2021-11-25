@@ -225,6 +225,7 @@ public final class CallConnection {
      * Transfer the call to a participant.
      *
      * @param targetParticipant The identifier of the participant.
+     * @param alternateCallerId The phone number to use when transferring to a pstn participant.
      * @param userToUserInformation The user to user information.
      * @param operationContext The operation context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -232,14 +233,15 @@ public final class CallConnection {
      * @return Response for a successful transfer to participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TransferCallResult transferToParticipant(CommunicationIdentifier targetParticipant, String userToUserInformation, String operationContext) {
-        return callConnectionAsync.transferToParticipant(targetParticipant, userToUserInformation, operationContext).block();
+    public TransferCallResult transferToParticipant(CommunicationIdentifier targetParticipant, String alternateCallerId, String userToUserInformation, String operationContext) {
+        return callConnectionAsync.transferToParticipant(targetParticipant, alternateCallerId, userToUserInformation, operationContext).block();
     }
 
     /**
      * Transfer the call to a participant.
      *
      * @param targetParticipant The identifier of the participant.
+     * @param alternateCallerId The phone number to use when transferring to a pstn participant.
      * @param userToUserInformation The user to user information.
      * @param operationContext The operation context.
      * @param context {@link Context} representing the request context.
@@ -248,8 +250,8 @@ public final class CallConnection {
      * @return Response for a successful transfer to participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TransferCallResult> transferToParticipantWithResponse(CommunicationIdentifier targetParticipant, String userToUserInformation, String operationContext, Context context) {
-        return callConnectionAsync.transferToParticipantWithResponse(targetParticipant, userToUserInformation, operationContext, context).block();
+    public Response<TransferCallResult> transferToParticipantWithResponse(CommunicationIdentifier targetParticipant, String alternateCallerId, String userToUserInformation, String operationContext, Context context) {
+        return callConnectionAsync.transferToParticipantWithResponse(targetParticipant,  alternateCallerId, userToUserInformation, operationContext, context).block();
     }
 
     /**

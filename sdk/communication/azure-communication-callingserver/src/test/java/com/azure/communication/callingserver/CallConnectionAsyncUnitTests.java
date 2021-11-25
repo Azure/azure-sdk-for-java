@@ -248,6 +248,7 @@ public class CallConnectionAsyncUnitTests {
         TransferCallResult transferCallResult = callConnectionAsync.transferToParticipant(
             new CommunicationUserIdentifier(NEW_PARTICIPANT_ID),
             "",
+            "",
             ""
         ).block();
 
@@ -264,6 +265,7 @@ public class CallConnectionAsyncUnitTests {
 
         Response<TransferCallResult> transferCallResponse = callConnectionAsync.transferToParticipantWithResponse(
             new CommunicationUserIdentifier(NEW_PARTICIPANT_ID),
+            "",
             "",
             ""
         ).block();
