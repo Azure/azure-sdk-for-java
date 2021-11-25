@@ -3,14 +3,18 @@
 === Test scenario analysis
 
 .Test scenario
-[width=10%, cols="^~,20%,20%,20%,~,^~,~", options="header"]
+[width=10%, cols="^~,15%,15%,~,~,^~,~", options="header"]
 |===
-| Category | Scenario | Test Step | Expected Result | How Spring test such case? | Is UT enough?  | Current use cases
+| Category | Scenario | Test Prerequisites & Step | Expected Result | How Spring test such case? | Is UT enough?  | Current use cases
 |Storage blob, Indicator
 | *Test blob health indicator returns the up state*
 
 The Azure actuator starter should work well with storage blob indicator when using Azure storage blob starter, the blob status should be healthy.
 |
+*Prerequisites* +
+1. Azure Storage Blob instance exists. +
+
+*Steps* +
 1. Add `spring-cloud-azure-starter-storage-blob` and `spring-cloud-azure-starter-actuator` dependencies. +
 2. Configure the below combinations for storage blob properties. +
 
@@ -49,6 +53,10 @@ Mock `RedisConnection` and `RedisConnectionFactory` to make the redis connection
 
 The Azure actuator starter should work well with storage blob indicator when using Azure storage blob starter, the blob status should be down when blob service client does not respond data normally.
 |
+*Prerequisites* +
+1. Azure Storage Blob instance exists. +
+
+*Steps* +
 1. Add `spring-cloud-azure-starter-storage-blob` and `spring-cloud-azure-starter-actuator` dependencies. +
 2. Configure the below combinations for storage blob properties. +
 [source, yaml]
@@ -87,6 +95,10 @@ Mock `RedisConnection` and `RedisConnectionFactory` to make the redis connection
 
 The Azure actuator starter should work well with storage fileshare indicator when using Azure storage fileshare starter, the fileshare status should be healthy.
 |
+*Prerequisites* +
+1. Azure Storage File instance exists. +
+
+*Steps* +
 1. Add `spring-cloud-azure-starter-storage-fileshare` and `spring-cloud-azure-starter-actuator` dependencies. +
 2. Configure the below combinations for storage fileshare properties. +
 
@@ -121,6 +133,10 @@ management:
 
 Use Azure storage blob dependency to write, then read the testing data normally.
 |
+*Prerequisites* +
+1. Azure Storage Blob instance exists. +
+
+*Steps* +
 1. Add `spring-cloud-azure-starter-storage-blob` dependency. +
 2. Configure the below combinations for storage blob properties. +
 
@@ -133,8 +149,9 @@ my-blob=${AZURE_STORAGE_BLOB}
 ----
 
 |
-1. The data for the testing resource should be written in Azure Storage Blob service successfully. +
-2. The read data from Azure Storage Blob service should be the same with testing resources. +
+1. The beans of storage blob resolver, builder factory, service client should be configured. +
+2. The data for the testing resource should be written in Azure Storage Blob service successfully. +
+3. The read data from Azure Storage Blob service should be the same with testing resources. +
 |There are 3 UTs for reference. +
 1. https://github.com/moarychan/spring-framework/blob/c8f430ee9188ad082bf76e5b05877d00bafe1a82/spring-core/src/test/java/org/springframework/core/io/support/PathMatchingResourcePatternResolverTests.java#L69[PathMatchingResourcePatternResolverTests] in spring-core +
 Resolve the `azure-blob:xxx` resource using `AzureStorageBlobProtocolResolver`, confirm that the actual resource type is `StorageBlobResource`, and the others properties are the same with the testing resource. +
@@ -150,6 +167,10 @@ Configure necessary properties, and validate bean creations from `RedisCacheConf
 
 Use Azure file share starter dependency to write, then read the testing data normally.
 |
+Prerequisites +
+1. Azure Storage File instance exists. +
+
+Steps +
 1. Add `spring-cloud-azure-starter-storage-fileshare` dependency. +
 2. Configure the below combinations for storage fileshare properties. +
 
@@ -161,8 +182,9 @@ spring.cloud.azure.storage.fileshare.endpoint=${AZURE_STORAGE_FILE_ENDPOINT}
 my-file=${AZURE_STORAGE_FILE}
 ----
 |
-1. The data for the testing resource should be written in Azure Storage file service successfully. +
-2. The read data from Azure Storage File service should be the same with testing resources. +
+1. The beans of storage fileshare resolver, builder factory, service client should be configured. +
+2. The data for the testing resource should be written in Azure Storage file service successfully. +
+3. The read data from Azure Storage File service should be the same with testing resources. +
 |Same with above
 | Yes
 | https://github.com/Azure/azure-sdk-for-java/blob/8c6650a298b51cefe559c470b8f818bfa53a8992/sdk/spring/azure-spring-boot-test-storage/src/test/java/com/azure/spring/test/storage/StorageWriteIT.java#39[testWriteFileStorage]
