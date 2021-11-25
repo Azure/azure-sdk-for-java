@@ -167,10 +167,10 @@ Configure necessary properties, and validate bean creations from `RedisCacheConf
 
 Use Azure file share starter dependency to write, then read the testing data normally.
 |
-Prerequisites +
+*Prerequisites* +
 1. Azure Storage File instance exists. +
 
-Steps +
+*Steps* +
 1. Add `spring-cloud-azure-starter-storage-fileshare` dependency. +
 2. Configure the below combinations for storage fileshare properties. +
 
