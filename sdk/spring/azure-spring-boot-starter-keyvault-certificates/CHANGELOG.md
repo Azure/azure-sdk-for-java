@@ -2,7 +2,9 @@
 
 ## 3.11.0 (2021-11-24)
 
-Regular updates for Azure SDK dependency versions. This release is compatible with Spring Boot 2.5.0 - 2.5.4.
+This release is compatible with Spring Boot 2.5.0 - 2.5.4.
+### Dependency Upgrades
+Regular updates for Azure SDK dependency versions.
 
 ## 3.10.0 (2021-11-02)
 ### Breaking Changes
