@@ -6,7 +6,7 @@ Azure Purview Catalog is a fully managed cloud service whose users can discover 
 - Browse associated technical, business, semantic, and operational metadata
 - Identify the sensitivity level of data.
 
-**Please rely heavily on the [service's documentation][product_documentation] and our [Low-Level client docs][low_level_client] to use this library**
+**Please rely heavily on the [service's documentation][product_documentation] and our [data-plane client docs][protocol_method] to use this library**
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][samples_readme]
 
@@ -99,7 +99,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [package]: https://mvnrepository.com/artifact/com.azure/azure-analytics-purview-catalog
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/purview/azure-analytics-purview-catalog/src/samples/README.md
-[low_level_client]: https://github.com/Azure/azure-sdk-for-java/wiki/Low-Level-Client
+[protocol_method]: https://github.com/Azure/azure-sdk-for-java/wiki/Protocol-Methods
 [create_azure_purview_account]: https://docs.microsoft.com/azure/purview/create-catalog-portal
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [cla]: https://cla.microsoft.com
