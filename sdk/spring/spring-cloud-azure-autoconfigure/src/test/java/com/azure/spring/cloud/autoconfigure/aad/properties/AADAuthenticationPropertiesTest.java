@@ -34,7 +34,7 @@ class AADAuthenticationPropertiesTest {
 
         webApplicationContextRunner()
             .withPropertyValues(
-                "spring.cloud.azure.active-directory.graph-base-uri=https://microsoftgraph.chinacloudapi.cn"
+                "spring.cloud.azure.active-directory.profile.environment.microsoft-graph-endpoint=https://microsoftgraph.chinacloudapi.cn"
             )
             .run(context -> {
                 AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
@@ -45,7 +45,7 @@ class AADAuthenticationPropertiesTest {
 
         webApplicationContextRunner()
             .withPropertyValues(
-                "spring.cloud.azure.active-directory.graph-base-uri=https://microsoftgraph.chinacloudapi.cn/"
+                "spring.cloud.azure.active-directory..profile.environment.microsoft-graph-endpoint=https://microsoftgraph.chinacloudapi.cn/"
             )
             .run(context -> {
                 AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
@@ -55,9 +55,6 @@ class AADAuthenticationPropertiesTest {
             });
 
         webApplicationContextRunner()
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory.graph-membership-uri=https://graph.microsoft.com/v1.0/me/memberOf"
-            )
             .run(context -> {
                 AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
                 assertEquals(properties.getGraphBaseUri(), "https://graph.microsoft.com/");
@@ -66,8 +63,7 @@ class AADAuthenticationPropertiesTest {
 
         webApplicationContextRunner()
             .withPropertyValues(
-                "spring.cloud.azure.active-directory.graph-base-uri=https://microsoftgraph.chinacloudapi.cn/",
-                "spring.cloud.azure.active-directory.graph-membership-uri=https://microsoftgraph.chinacloudapi.cn/v1.0/me/memberOf"
+                "spring.cloud.azure.active-directory.profile.environment.microsoft-graph-endpoint=https://microsoftgraph.chinacloudapi.cn/"
             )
             .run(context -> {
                 AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
@@ -75,17 +71,6 @@ class AADAuthenticationPropertiesTest {
                 assertEquals(properties.getGraphMembershipUri(),
                     "https://microsoftgraph.chinacloudapi.cn/v1.0/me/memberOf");
             });
-    }
-
-    @Test
-    void graphUriConfigurationWithExceptionTest() {
-        webApplicationContextRunner()
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory.graph-membership-uri=https://microsoftgraph.chinacloudapi.cn/v1.0/me/memberOf"
-            )
-            .run(context ->
-                assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class))
-            );
     }
 
     @Test
@@ -275,15 +260,11 @@ class AADAuthenticationPropertiesTest {
                 "spring.cloud.azure.active-directory.enabled=true",
                 "spring.cloud.azure.active-directory.application-type=web_application"
             )
-            .run(context -> {
-                assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class));
-            });
+            .run(context -> assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class)));
 
         webApplicationContextRunner()
             .withPropertyValues("spring.cloud.azure.active-directory.application-type=resource_server")
-            .run(context -> {
-                assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class));
-            });
+            .run(context -> assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class)));
     }
 
     @Test
@@ -294,8 +275,6 @@ class AADAuthenticationPropertiesTest {
                 "spring.cloud.azure.active-directory.authorization-clients.graph.on-demand = true",
                 "spring.cloud.azure.active-directory.authorization-clients.graph.authorizationGrantType = azure_delegated"
             )
-            .run(context -> {
-                assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class));
-            });
+            .run(context -> assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class)));
     }
 }

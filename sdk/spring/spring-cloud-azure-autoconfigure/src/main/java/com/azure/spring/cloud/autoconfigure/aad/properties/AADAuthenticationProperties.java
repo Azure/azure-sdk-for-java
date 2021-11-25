@@ -47,19 +47,20 @@ public class AADAuthenticationProperties implements InitializingBean {
     private static final long DEFAULT_JWK_SET_CACHE_REFRESH_TIME = DEFAULT_JWK_SET_CACHE_LIFESPAN;
 
     /**
+     * Profile of Azure cloud environment.
+     */
+    private AADProfileProperties profile = new AADProfileProperties();
+
+    /**
+     * Properties used for authorize.
+     */
+    private AADCredentialProperties credential = new AADCredentialProperties();
+
+
+    /**
      * Default UserGroup configuration.
      */
     private UserGroupProperties userGroup = new UserGroupProperties();
-
-    /**
-     * Registered application ID in Azure AD. Must be configured when OAuth2 authentication is done in front end
-     */
-    private String clientId;
-
-    /**
-     * API Access Key of the registered application. Must be configured when OAuth2 authentication is done in front end
-     */
-    private String clientSecret;
 
     /**
      * Decide which claim to be principal's name..
@@ -107,11 +108,6 @@ public class AADAuthenticationProperties implements InitializingBean {
      */
     private long jwkSetCacheRefreshTime = DEFAULT_JWK_SET_CACHE_REFRESH_TIME;
 
-    /**
-     * Azure Tenant ID.
-     */
-    private String tenantId;
-
     private String postLogoutRedirectUri;
 
     /**
@@ -125,15 +121,25 @@ public class AADAuthenticationProperties implements InitializingBean {
      */
     private Boolean sessionStateless = false;
 
-    private String baseUri;
-
-    private String graphBaseUri;
-
-    private String graphMembershipUri;
-
     private Map<String, AuthorizationClientProperties> authorizationClients = new HashMap<>();
 
     private AADApplicationType applicationType;
+
+    public AADProfileProperties getProfile() {
+        return profile;
+    }
+
+    public void setProfile(AADProfileProperties profile) {
+        this.profile = profile;
+    }
+
+    public void setCredential(AADCredentialProperties credential) {
+        this.credential = credential;
+    }
+
+    public AADCredentialProperties getCredential(AADCredentialProperties credential) {
+        return credential;
+    }
 
     public AADApplicationType getApplicationType() {
         return applicationType;
@@ -165,6 +171,8 @@ public class AADAuthenticationProperties implements InitializingBean {
         private List<String> allowedGroupNames = new ArrayList<>();
 
         private Set<String> allowedGroupIds = new HashSet<>();
+
+        private Boolean useTransitiveMembers = false;
 
         /**
          * enableFullList is used to control whether to list all group id, default is false
@@ -218,9 +226,17 @@ public class AADAuthenticationProperties implements InitializingBean {
 
         @Deprecated
         public void setAllowedGroups(List<String> allowedGroups) {
-            logger.warn(" 'spring.cloud.azure.active-directory.user-group.allowed-groups' property detected! " + " Use 'azure"
-                + ".activedirectory.user-group.allowed-group-names' instead!");
+            logger.warn(" 'spring.cloud.azure.active-directory.user-group.allowed-groups' property detected! "
+                + " Use 'azure.activedirectory.user-group.allowed-group-names' instead!");
             this.allowedGroupNames = allowedGroups;
+        }
+
+        public Boolean getUseTransitiveMembers() {
+            return useTransitiveMembers;
+        }
+
+        public void setUseTransitiveMembers(Boolean useTransitiveMembers) {
+            this.useTransitiveMembers = useTransitiveMembers;
         }
 
     }
@@ -248,19 +264,19 @@ public class AADAuthenticationProperties implements InitializingBean {
     }
 
     public String getClientId() {
-        return clientId;
+        return credential.getClientId();
     }
 
     public void setClientId(String clientId) {
-        this.clientId = clientId;
+        credential.setClientId(clientId);
     }
 
     public String getClientSecret() {
-        return clientSecret;
+        return credential.getClientSecret();
     }
 
     public void setClientSecret(String clientSecret) {
-        this.clientSecret = clientSecret;
+        credential.setClientSecret(clientSecret);
     }
 
     public String getUserNameAttribute() {
@@ -341,11 +357,11 @@ public class AADAuthenticationProperties implements InitializingBean {
     }
 
     public String getTenantId() {
-        return tenantId;
+        return profile.getTenantId();
     }
 
     public void setTenantId(String tenantId) {
-        this.tenantId = tenantId;
+        this.profile.setTenantId(tenantId);
     }
 
     public String getPostLogoutRedirectUri() {
@@ -376,27 +392,22 @@ public class AADAuthenticationProperties implements InitializingBean {
     }
 
     public String getBaseUri() {
-        return baseUri;
+        return profile.getEnvironment().getActiveDirectoryEndpoint();
     }
 
     public void setBaseUri(String baseUri) {
-        this.baseUri = baseUri;
+        profile.getEnvironment().setActiveDirectoryEndpoint(baseUri);
     }
 
     public String getGraphBaseUri() {
-        return graphBaseUri;
-    }
-
-    public void setGraphBaseUri(String graphBaseUri) {
-        this.graphBaseUri = graphBaseUri;
+        return profile.getEnvironment().getMicrosoftGraphEndpoint();
     }
 
     public String getGraphMembershipUri() {
-        return graphMembershipUri;
-    }
-
-    public void setGraphMembershipUri(String graphMembershipUri) {
-        this.graphMembershipUri = graphMembershipUri;
+        return getGraphBaseUri()
+            + (getUserGroup().getUseTransitiveMembers()
+                ? "v1.0/me/transitiveMemberOf"
+                : "v1.0/me/memberOf");
     }
 
     public Map<String, AuthorizationClientProperties> getAuthorizationClients() {
@@ -421,37 +432,14 @@ public class AADAuthenticationProperties implements InitializingBean {
     @Override
     public void afterPropertiesSet() {
 
-        if (!StringUtils.hasText(baseUri)) {
-            baseUri = "https://login.microsoftonline.com/";
-        } else {
-            baseUri = addSlash(baseUri);
-        }
-
         if (!StringUtils.hasText(redirectUriTemplate)) {
             redirectUriTemplate = "{baseUrl}/login/oauth2/code/";
         }
 
-        if (!StringUtils.hasText(graphBaseUri)) {
-            graphBaseUri = "https://graph.microsoft.com/";
-        } else {
-            graphBaseUri = addSlash(graphBaseUri);
-        }
-
-        if (!StringUtils.hasText(graphMembershipUri)) {
-            graphMembershipUri = graphBaseUri + "v1.0/me/memberOf";
-        }
-
-        if (!graphMembershipUri.startsWith(graphBaseUri)) {
-            throw new IllegalStateException("spring.cloud.azure.active-directory.graph-base-uri should be "
-                + "the prefix of spring.cloud.azure.active-directory.graph-membership-uri. "
-                + "spring.cloud.azure.active-directory.graph-base-uri = " + graphBaseUri + ", "
-                + "spring.cloud.azure.active-directory.graph-membership-uri = " + graphMembershipUri + ".");
-        }
-
         Set<String> allowedGroupIds = userGroup.getAllowedGroupIds();
         if (allowedGroupIds.size() > 1 && allowedGroupIds.contains("all")) {
-            throw new IllegalStateException("When spring.cloud.azure.active-directory.user-group.allowed-group-ids contains 'all', "
-                + "no other group ids can be configured. "
+            throw new IllegalStateException("When spring.cloud.azure.active-directory.user-group.allowed-group-ids "
+                + "contains 'all', no other group ids can be configured. "
                 + "But actually spring.cloud.azure.active-directory.user-group.allowed-group-ids="
                 + allowedGroupIds);
         }
@@ -466,22 +454,24 @@ public class AADAuthenticationProperties implements InitializingBean {
     }
 
     private void validateTenantId() {
-        if (!StringUtils.hasText(tenantId)) {
-            tenantId = "common";
+        if (!StringUtils.hasText(getTenantId())) {
+            profile.setTenantId("common");
         }
 
-        if (isMultiTenantsApplication(tenantId) && !userGroup.getAllowedGroups().isEmpty()) {
-            throw new IllegalStateException("When spring.cloud.azure.active-directory.tenant-id is 'common/organizations/consumers', "
+        if (isMultiTenantsApplication(getTenantId()) && !userGroup.getAllowedGroups().isEmpty()) {
+            throw new IllegalStateException("When spring.cloud.azure.active-directory.profile.tenant-id is "
+                + "'common/organizations/consumers', "
                 + "spring.cloud.azure.active-directory.user-group.allowed-groups/allowed-group-names should be empty. "
-                + "But actually spring.cloud.azure.active-directory.tenant-id=" + tenantId
+                + "But actually spring.cloud.azure.active-directory.profile.tenant-id=" + getTenantId()
                 + ", and spring.cloud.azure.active-directory.user-group.allowed-groups/allowed-group-names="
                 + userGroup.getAllowedGroups());
         }
 
-        if (isMultiTenantsApplication(tenantId) && !userGroup.getAllowedGroupIds().isEmpty()) {
-            throw new IllegalStateException("When spring.cloud.azure.active-directory.tenant-id is 'common/organizations/consumers', "
+        if (isMultiTenantsApplication(getTenantId()) && !userGroup.getAllowedGroupIds().isEmpty()) {
+            throw new IllegalStateException("When spring.cloud.azure.active-directory.profile.tenant-id is "
+                + "'common/organizations/consumers', "
                 + "spring.cloud.azure.active-directory.user-group.allowed-group-ids should be empty. "
-                + "But actually spring.cloud.azure.active-directory.tenant-id=" + tenantId
+                + "But actually spring.cloud.azure.active-directory.profile.tenant-id=" + getTenantId()
                 + ", and spring.cloud.azure.active-directory.user-group.allowed-group-ids=" + userGroup.getAllowedGroupIds());
         }
     }
@@ -615,9 +605,5 @@ public class AADAuthenticationProperties implements InitializingBean {
 
     private boolean isMultiTenantsApplication(String tenantId) {
         return "common".equals(tenantId) || "organizations".equals(tenantId) || "consumers".equals(tenantId);
-    }
-
-    private String addSlash(String uri) {
-        return uri.endsWith("/") ? uri : uri + "/";
     }
 }
