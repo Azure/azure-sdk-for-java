@@ -42,7 +42,7 @@ public class AADAuthenticationFilterAutoConfiguration {
      * The property prefix
      */
     public static final String PROPERTY_PREFIX = "spring.cloud.azure.active-directory";
-    public static final String PROPERTY_PREFIX = "azure.activedirectory";
+
     private static final Logger LOG = LoggerFactory.getLogger(AADAuthenticationProperties.class);
 
     private final AADAuthenticationProperties properties;
