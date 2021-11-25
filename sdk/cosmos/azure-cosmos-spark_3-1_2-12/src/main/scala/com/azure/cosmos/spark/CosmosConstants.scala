@@ -14,6 +14,7 @@ private object CosmosConstants {
   val currentName: String =
     CoreUtils.getProperties(propertiesFileName).get("name")
   val userAgentSuffix = s"SparkConnector/$currentName/$currentVersion"
+  val bufferedIteratorPollingIntervalInMs = 100
 
   object Names {
     val ItemsDataSourceShortName = "cosmos.oltp"

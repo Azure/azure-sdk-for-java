@@ -1,16 +1,17 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.CosmosAsyncContainer
 import com.azure.cosmos.implementation.CosmosDaemonThreadFactory
-import com.azure.cosmos.models.{CosmosQueryRequestOptions, SqlQuerySpec}
 import com.azure.cosmos.spark.diagnostics.ILogger
-import com.azure.cosmos.util.CosmosPagedIterable
 import com.fasterxml.jackson.databind.node.ObjectNode
 
 import java.util.concurrent.{ArrayBlockingQueue, Executors, TimeUnit}
 import java.util.concurrent.atomic.{AtomicBoolean, AtomicReference}
 import scala.util.control.Breaks.{break, breakable}
 
+//scalastyle:off null
 private class BufferedCosmosIterator
 (
   log: ILogger,
@@ -18,6 +19,7 @@ private class BufferedCosmosIterator
   sourceIterator: java.util.Iterator[ObjectNode],
   maxBufferedItemCount: Int
 ) extends java.util.Iterator[ObjectNode] {
+
 
   private val buffer = new ArrayBlockingQueue[ObjectNode](maxBufferedItemCount)
   private val queryIteratorFullyDrained = new AtomicBoolean(false)
@@ -65,7 +67,7 @@ private class BufferedCosmosIterator
           break
         }
 
-        Thread.sleep(100)
+        Thread.sleep(CosmosConstants.bufferedIteratorPollingIntervalInMs)
         throwIfInnerErrorExists()
       }
     }
@@ -78,7 +80,9 @@ private class BufferedCosmosIterator
 
     breakable {
       while (true) {
-        returnValue = buffer.poll(100, TimeUnit.MILLISECONDS)
+        returnValue = buffer.poll(
+          CosmosConstants.bufferedIteratorPollingIntervalInMs,
+          TimeUnit.MILLISECONDS)
         if (returnValue != null) {
           break
         }
@@ -96,3 +100,4 @@ private class BufferedCosmosIterator
     returnValue
   }
 }
+//scalastyle:on null
