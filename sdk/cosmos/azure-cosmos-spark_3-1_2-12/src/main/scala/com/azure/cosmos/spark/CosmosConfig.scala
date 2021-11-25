@@ -42,6 +42,7 @@ private object CosmosConfigNames {
   val UseGatewayMode = "spark.cosmos.useGatewayMode"
   val ReadCustomQuery = "spark.cosmos.read.customQuery"
   val ReadMaxItemCount = "spark.cosmos.read.maxItemCount"
+  val ReadMaxBufferedItemCount = "spark.cosmos.read.maxBufferedItemCount"
   val ReadForceEventualConsistency = "spark.cosmos.read.forceEventualConsistency"
   val ReadSchemaConversionMode = "spark.cosmos.read.schemaConversionMode"
   val ReadInferSchemaSamplingSize = "spark.cosmos.read.inferSchema.samplingSize"
@@ -90,6 +91,7 @@ private object CosmosConfigNames {
     ReadForceEventualConsistency,
     ReadSchemaConversionMode,
     ReadMaxItemCount,
+    ReadMaxBufferedItemCount,
     ReadInferSchemaSamplingSize,
     ReadInferSchemaEnabled,
     ReadInferSchemaIncludeSystemProperties,
@@ -305,6 +307,7 @@ private object CosmosAccountConfig {
 private case class CosmosReadConfig(forceEventualConsistency: Boolean,
                                     schemaConversionMode: SchemaConversionMode,
                                     maxItemCount: Int,
+                                    maxBufferedItemCount: Int,
                                     customQuery: Option[CosmosParameterizedQuery])
 
 private object SchemaConversionModes extends Enumeration {
@@ -317,6 +320,7 @@ private object SchemaConversionModes extends Enumeration {
 private object CosmosReadConfig {
   private val DefaultSchemaConversionMode: SchemaConversionMode = SchemaConversionModes.Relaxed
   private val DefaultMaxItemCount : Int = 1000
+  private val DefaultMaxBufferedItemCount : Int = 100000
 
   private val ForceEventualConsistency = CosmosConfigEntry[Boolean](key = CosmosConfigNames.ReadForceEventualConsistency,
     mandatory = false,
@@ -352,13 +356,26 @@ private object CosmosReadConfig {
     parseFromStringFunction = queryText => queryText.toInt,
     helpMessage = "The maximum number of documents returned in a single request. The default is 1000.")
 
+  private val MaxBufferedItemCount = CosmosConfigEntry[Int](
+    key = CosmosConfigNames.ReadMaxBufferedItemCount,
+    mandatory = false,
+    defaultValue = Some(DefaultMaxBufferedItemCount),
+    parseFromStringFunction = queryText => queryText.toInt,
+    helpMessage = "The maximum number of documents that are buffered in the Spark connector. The default is 100,000.")
+
   def parseCosmosReadConfig(cfg: Map[String, String]): CosmosReadConfig = {
     val forceEventualConsistency = CosmosConfigEntry.parse(cfg, ForceEventualConsistency)
     val jsonSchemaConversionMode = CosmosConfigEntry.parse(cfg, JsonSchemaConversion)
     val customQuery = CosmosConfigEntry.parse(cfg, CustomQuery)
     val maxItemCount = CosmosConfigEntry.parse(cfg, MaxItemCount)
+    val maxBufferedItemCount = CosmosConfigEntry.parse(cfg, MaxBufferedItemCount)
 
-    CosmosReadConfig(forceEventualConsistency.get, jsonSchemaConversionMode.get, maxItemCount.get, customQuery)
+    CosmosReadConfig(
+      forceEventualConsistency.get,
+      jsonSchemaConversionMode.get,
+      maxItemCount.get,
+      maxBufferedItemCount.get,
+      customQuery)
   }
 }
 
