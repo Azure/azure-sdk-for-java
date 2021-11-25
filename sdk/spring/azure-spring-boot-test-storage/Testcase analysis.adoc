@@ -1,0 +1,36 @@
+
+.azure-spring-boot-test-storage Testcase
+[cols="3*", options="header"]
+|===
+| Test case   | Is UT enough? | How Spring test such case?
+| com.azure.spring.test.storage.StorageActuatorIT#testBlobStorageActuatorHealth
+
+Use `spring-cloud-azure-starter-storage-blob` and `spring-cloud-azure-starter-actuator` modules, configure various combinations for storage blob properties, the blob health indicator bean should be configured, expect the up status of the response from the storage blob health endpoint.
+| Yes|
+1. https://github.com/moarychan/spring-boot/blob/dac63fc3e52ecb36677965b97b96ebbf1a7871c8/spring-boot-project/spring-boot-actuator-autoconfigure/src/test/java/org/springframework/boot/actuate/autoconfigure/redis/RedisHealthContributorAutoConfigurationTests.java#L44[RedisHealthContributorAutoConfigurationTests] in spring-boot-actuator-autoconfigure +
+Use `ApplicationContextRunner`  with Redis related auto-configuration to validate the bean creation. +
+2. https://github.com/moarychan/spring-boot/blob/49baacbc1cb02a59efce1fe1698166de92d41d67/spring-boot-project/spring-boot-actuator/src/test/java/org/springframework/boot/actuate/redis/RedisHealthIndicatorTests.java#L50[RedisHealthIndicatorTests] in spring-boot-actuator +
+Mock `RedisConnection` and `RedisConnectionFactory` to make the redis connection's `info` method return pre-defined data, the status of the `org.springframework.boot.actuate.health.Health` will be up.
+
+|com.azure.spring.test.storage.StorageWriteIT.testWriteBlobStorage
+
+Use `spring-cloud-azure-starter-storage-fileshare` and `spring-cloud-azure-starter-actuator` modules, configure various combinations for storage fileshare properties, the file health indicator bean should be configured, expect the up status of the response from the storage fileshare health endpoint.
+| Yes |Same as above
+|com.azure.spring.test.storage.StorageWriteIT.testWriteBlobStorage
+
+Use `spring-cloud-azure-starter-storage-blob` starter to process the Azure Storage Blob resource, expect the resource to be written and read successfully.
+|Yes  |
+1. https://github.com/moarychan/spring-framework/blob/c8f430ee9188ad082bf76e5b05877d00bafe1a82/spring-core/src/test/java/org/springframework/core/io/support/PathMatchingResourcePatternResolverTests.java#L69[PathMatchingResourcePatternResolverTests] in spring-core +
+Resolve the `azure-blob:xxx` resource using `AzureStorageBlobProtocolResolver`, confirm that the actual resource type is `StorageBlobResource`, and the others properties are the same with the testing resource. +
+2. Same with `RedisHealthContributorAutoConfigurationTests` test class to validate the storage blob resolver bean creation. +
+3. https://github.com/moarychan/spring-boot/blob/4009acf025b3a6926c6eeedd38618d2fd67210cc/spring-boot-project/spring-boot-autoconfigure/src/test/java/org/springframework/boot/autoconfigure/cache/CacheAutoConfigurationTests.java#L274[CacheAutoConfigurationTests] in spring-boot-autoconfigure
+Configure necessary properties, and validate bean creations from `RedisCacheConfiguration`.
+|com.azure.spring.test.storage.StorageWriteIT.testWriteFileStorage
+
+Use `spring-cloud-azure-starter-storage-fileshare` starter to process the Azure Storage File resource, expect the resource to be written and read successfully.
+|Yes  |
+Same as above
+|
+|===
+
+
