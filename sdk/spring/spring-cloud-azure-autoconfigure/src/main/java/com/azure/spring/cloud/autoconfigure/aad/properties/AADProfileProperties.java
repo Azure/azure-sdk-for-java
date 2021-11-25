@@ -5,8 +5,6 @@ package com.azure.spring.cloud.autoconfigure.aad.properties;
 
 import com.azure.spring.core.aware.AzureProfileAware;
 
-import static com.azure.spring.core.aware.AzureProfileAware.CloudType.AZURE;
-
 /**
  * Profile of Azure cloud environment.
  */
@@ -19,11 +17,11 @@ public class AADProfileProperties {
      * Name of the Azure cloud to connect to.
      * Supported types are: AZURE, AZURE_CHINA, AZURE_GERMANY, AZURE_US_GOVERNMENT, OTHER.
      */
-    private AzureProfileAware.CloudType cloud = AZURE;
+    private AzureProfileAware.CloudType cloud;
     /**
      * Properties to Azure Active Directory endpoints.
      */
-    private AADProfileEnvironmentProperties environment = new AADProfileEnvironmentProperties(AZURE);
+    private AADProfileEnvironmentProperties environment = new AADProfileEnvironmentProperties();
 
     public String getTenantId() {
         return tenantId;
@@ -39,6 +37,7 @@ public class AADProfileProperties {
 
     public void setCloud(AzureProfileAware.CloudType cloud) {
         this.cloud = cloud;
+        environment.updatePropertiesByCloudType(cloud);
     }
 
     public AADProfileEnvironmentProperties getEnvironment() {

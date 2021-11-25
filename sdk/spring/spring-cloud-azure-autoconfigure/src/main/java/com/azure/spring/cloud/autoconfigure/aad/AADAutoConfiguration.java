@@ -33,4 +33,27 @@ import org.springframework.context.annotation.Import;
 })
 public class AADAutoConfiguration {
 
+    public AADAutoConfiguration(AzureGlobalProperties global, AADAuthenticationProperties aad) {
+        if (aad.getCredential().getClientId() == null) {
+            aad.setClientId(global.getCredential().getClientId());
+        }
+        if (aad.getCredential().getClientSecret() == null) {
+            aad.setClientSecret(global.getCredential().getClientSecret());
+        }
+        if (aad.getProfile().getTenantId() == null) {
+            aad.setTenantId(global.getProfile().getTenantId());
+        }
+        if (aad.getProfile().getCloud() == null) {
+            aad.getProfile().setCloud(global.getProfile().getCloud());
+        }
+        if (aad.getProfile().getEnvironment().getActiveDirectoryEndpoint() == null) {
+            aad.getProfile().getEnvironment().setActiveDirectoryEndpoint(
+                global.getProfile().getEnvironment().getActiveDirectoryEndpoint());
+        }
+        if (aad.getProfile().getEnvironment().getMicrosoftGraphEndpoint() == null) {
+            aad.getProfile().getEnvironment().setMicrosoftGraphEndpoint(
+                global.getProfile().getEnvironment().getMicrosoftGraphEndpoint());
+        }
+    }
+
 }

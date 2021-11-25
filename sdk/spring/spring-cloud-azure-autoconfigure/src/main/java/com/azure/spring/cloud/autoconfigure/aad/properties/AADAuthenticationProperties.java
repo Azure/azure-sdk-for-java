@@ -63,7 +63,7 @@ public class AADAuthenticationProperties implements InitializingBean {
     private UserGroupProperties userGroup = new UserGroupProperties();
 
     /**
-     * Decide which claim to be principal's name..
+     * Decide which claim to be principal's name.
      */
     private String userNameAttribute;
 
@@ -137,7 +137,7 @@ public class AADAuthenticationProperties implements InitializingBean {
         this.credential = credential;
     }
 
-    public AADCredentialProperties getCredential(AADCredentialProperties credential) {
+    public AADCredentialProperties getCredential() {
         return credential;
     }
 

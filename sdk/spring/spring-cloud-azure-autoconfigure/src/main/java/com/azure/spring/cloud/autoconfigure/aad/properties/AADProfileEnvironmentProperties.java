@@ -20,12 +20,6 @@ public class AADProfileEnvironmentProperties {
      */
     private String microsoftGraphEndpoint;
 
-    public AADProfileEnvironmentProperties(AzureProfileAware.CloudType cloud) {
-        KnownAzureEnvironment knownAzureEnvironment = new KnownAzureEnvironment(cloud);
-        this.activeDirectoryEndpoint = knownAzureEnvironment.getActiveDirectoryEndpoint();
-        this.microsoftGraphEndpoint = knownAzureEnvironment.getMicrosoftGraphEndpoint();
-    }
-
     public String getActiveDirectoryEndpoint() {
         return activeDirectoryEndpoint;
     }
@@ -40,6 +34,16 @@ public class AADProfileEnvironmentProperties {
 
     public void setMicrosoftGraphEndpoint(String microsoftGraphEndpoint) {
         this.microsoftGraphEndpoint = addSlash(microsoftGraphEndpoint);
+    }
+
+    public void updatePropertiesByCloudType(AzureProfileAware.CloudType cloudType) {
+        KnownAzureEnvironment knownAzureEnvironment = new KnownAzureEnvironment(cloudType);
+        if (this.activeDirectoryEndpoint == null) {
+            this.activeDirectoryEndpoint = knownAzureEnvironment.getActiveDirectoryEndpoint();
+        }
+        if (this.microsoftGraphEndpoint == null) {
+            this.microsoftGraphEndpoint = knownAzureEnvironment.getMicrosoftGraphEndpoint();
+        }
     }
 
     private String addSlash(String uri) {
