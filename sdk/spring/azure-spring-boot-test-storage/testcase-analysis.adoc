@@ -3,11 +3,11 @@
 === Test scenario analysis
 
 .Test scenario
-[width=10%, cols="^~,20%,20%,20%,~,^~,~, options="header"]
+[width=10%, cols="^~,20%,20%,20%,~,^~,~", options="header"]
 |===
 | Category | Scenario | Test Step | Expected Result | How Spring test such case? | Is UT enough?  | Current use cases
 |Storage blob, Indicator
-| *Test blob health indicator returns to up state*
+| *Test blob health indicator returns the up state*
 
 The Azure actuator starter should work well with storage blob indicator when using Azure storage blob starter, the blob status should be healthy.
 |
@@ -45,7 +45,7 @@ Mock `RedisConnection` and `RedisConnectionFactory` to make the redis connection
 
 
 |Storage blob, Indicator
-| *Test blob health indicator returns to down state*
+| *Test blob health indicator returns the down state*
 
 The Azure actuator starter should work well with storage blob indicator when using Azure storage blob starter, the blob status should be down when blob service client does not respond data normally.
 |
@@ -83,7 +83,7 @@ Mock `RedisConnection` and `RedisConnectionFactory` to make the redis connection
 
 
 |Storage fileshare, Indicator
-| *Test fileshare health indicator returns to up state*
+| *Test fileshare health indicator returns the up state*
 
 The Azure actuator starter should work well with storage fileshare indicator when using Azure storage fileshare starter, the fileshare status should be healthy.
 |
