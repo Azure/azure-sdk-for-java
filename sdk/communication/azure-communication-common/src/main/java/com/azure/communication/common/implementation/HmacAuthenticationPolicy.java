@@ -37,6 +37,7 @@ import javax.crypto.spec.SecretKeySpec;
  * HttpPipelinePolicy to append CommunicationClient required headers
  */
 public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
+    private static final String DATE_HEADER = "date";
     private static final String X_MS_DATE_HEADER = "x-ms-date";
     private static final String X_MS_STRING_TO_SIGN_HEADER = "x-ms-hmac-string-to-sign-base64";
     private static final String HOST_HEADER = "host";
@@ -57,6 +58,8 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
         DateTimeFormatter.ofPattern("E, dd MMM yyyy HH:mm:ss 'GMT'", Locale.US);
 
     private final AzureKeyCredential credential;
+
+    private Mac sha256HMAC;
     private final ClientLogger logger = new ClientLogger(HmacAuthenticationPolicy.class);
 
     /**
@@ -69,7 +72,18 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+    public synchronized Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        String accessKey = credential.getKey();
+        byte[] key = Base64.getDecoder().decode(accessKey);
+        Mac sha256HMAC;
+        try {
+            sha256HMAC = Mac.getInstance("HmacSHA256");
+            sha256HMAC.init(new SecretKeySpec(key, "HmacSHA256"));
+        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+            throw logger.logExceptionAsError(new RuntimeException(e));
+        }
+        this.sha256HMAC = sha256HMAC;
+
         final Flux<ByteBuffer> contents = context.getHttpRequest().getBody() == null
             ? Flux.just(ByteBuffer.allocate(0))
             : context.getHttpRequest().getBody();
@@ -80,15 +94,10 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
         }
 
         try {
-            URL hostnameToSignWith = context.getData("hmacSignatureURL")
-                .filter(alternativeUrl -> alternativeUrl instanceof URL)
-                .map(alternativeUrl -> (URL) alternativeUrl)
-                .orElse(context.getHttpRequest().getUrl());
-
             return appendAuthorizationHeaders(
-                    hostnameToSignWith,
-                    context.getHttpRequest().getHttpMethod().toString(),
-                    contents)
+                context.getHttpRequest().getUrl(),
+                context.getHttpRequest().getHttpMethod().toString(),
+                contents)
                 .flatMap(headers -> {
                     headers.entrySet().forEach(
                         header -> context.getHttpRequest().setHeader(header.getKey(), header.getValue()));
@@ -102,12 +111,12 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
 
     private Mono<Map<String, String>> appendAuthorizationHeaders(URL url, String httpMethod, Flux<ByteBuffer> contents) {
         return contents.collect(() -> {
-            try {
-                return MessageDigest.getInstance("SHA-256");
-            } catch (NoSuchAlgorithmException e) {
-                throw logger.logExceptionAsError(Exceptions.propagate(e));
-            }
-        }, MessageDigest::update)
+                try {
+                    return MessageDigest.getInstance("SHA-256");
+                } catch (NoSuchAlgorithmException e) {
+                    throw logger.logExceptionAsError(Exceptions.propagate(e));
+                }
+            }, MessageDigest::update)
             .map(messageDigest -> addAuthenticationHeaders(url, httpMethod, messageDigest));
     }
 
@@ -121,12 +130,13 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
         String utcNow = OffsetDateTime.now(ZoneOffset.UTC)
             .format(HMAC_DATETIMEFORMATTER_PATTERN);
         headers.put(X_MS_DATE_HEADER, utcNow);
+        headers.put(DATE_HEADER, utcNow);
         headers.put(HOST_HEADER, url.getHost());
         addSignatureHeader(url, httpMethod, headers);
         return headers;
     }
 
-    private void addSignatureHeader(final URL url, final String httpMethod, final Map<String, String> httpHeaders) {
+    private synchronized void addSignatureHeader(final URL url, final String httpMethod, final Map<String, String> httpHeaders) {
         final String signedHeaderNames = String.join(";", SIGNED_HEADERS);
         final String signedHeaderValues = Arrays.stream(SIGNED_HEADERS)
             .map(httpHeaders::get)
@@ -140,17 +150,6 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
         // String-To-Sign=HTTP_METHOD + '\n' + path_and_query + '\n' + signed_headers_values
         // The line separator has to be \n. Using %n with String.format will result in a 401 from the service.
         String stringToSign = httpMethod.toUpperCase(Locale.US) + "\n" + pathAndQuery + "\n" + signedHeaderValues;
-
-        String accessKey = credential.getKey();
-        byte[] key = Base64.getDecoder().decode(accessKey);
-        Mac sha256HMAC;
-        try {
-            sha256HMAC = Mac.getInstance("HmacSHA256");
-            sha256HMAC.init(new SecretKeySpec(key, "HmacSHA256"));
-        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
-            throw logger.logExceptionAsError(new RuntimeException(e));
-        }
-
         final String signature =
             Base64.getEncoder().encodeToString(sha256HMAC.doFinal(stringToSign.getBytes(StandardCharsets.UTF_8)));
         httpHeaders.put(AUTHORIZATIONHEADERNAME, String.format(HMACSHA256FORMAT, signedHeaderNames, signature));

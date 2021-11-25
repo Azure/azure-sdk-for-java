@@ -25,14 +25,15 @@ public class HmacAuthenticationPolicyTest extends PerfStressTest<PerfStressOptio
 
     public HmacAuthenticationPolicyTest(PerfStressOptions options) throws MalformedURLException {
         super(options);
-        AzureKeyCredential keyCredential = new AzureKeyCredential("<access_key>");
+        String mockedKey = "JdppJP5eH1w/CQ0cx4RGYWoC7NmQ0nmDbYR2PYWSDTXojV9bI1ck0Eh0sUIg8xj4KYj7tv+ZPLICu3BgLt6mMz==";
+        AzureKeyCredential keyCredential = new AzureKeyCredential(mockedKey);
         hmacAuthenticationPolicy = new HmacAuthenticationPolicy(keyCredential);
         pipeline = new HttpPipelineBuilder()
             .httpClient(new NoOpHttpClient())
             .policies(hmacAuthenticationPolicy)
             .build();
 
-       request = new HttpRequest(HttpMethod.GET, new URL("https://localhost?id=b93a5ef4-f622-44d8-a80b-ff983122554e"));
+        request = new HttpRequest(HttpMethod.GET, new URL("https://test.com/"));
     }
 
     @Override
