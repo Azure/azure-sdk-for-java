@@ -37,8 +37,6 @@ public class AADB2CProperties implements InitializingBean {
      */
     public static final String PREFIX = "spring.cloud.azure.active-directory.b2c";
 
-    public static final String PREFIX = "azure.activedirectory.b2c";
-
     private static final String TENANT_NAME_PART_REGEX = "([A-Za-z0-9]+\\.)";
 
     /**
