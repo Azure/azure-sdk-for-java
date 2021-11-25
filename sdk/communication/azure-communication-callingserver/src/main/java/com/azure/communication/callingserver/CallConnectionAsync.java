@@ -19,7 +19,8 @@ import com.azure.communication.callingserver.implementation.converters.Communica
 import com.azure.communication.callingserver.implementation.converters.PhoneNumberIdentifierConverter;
 import com.azure.communication.callingserver.implementation.converters.PlayAudioResultConverter;
 import com.azure.communication.callingserver.implementation.converters.RemoveParticipantRequestConverter;
-import com.azure.communication.callingserver.implementation.converters.TransferCallRequestConverter;
+import com.azure.communication.callingserver.implementation.converters.TransferToCallRequestConverter;
+import com.azure.communication.callingserver.implementation.converters.TransferToParticipantRequestConverter;
 import com.azure.communication.callingserver.implementation.converters.TransferCallResultConverter;
 import com.azure.communication.callingserver.implementation.models.AddParticipantRequest;
 import com.azure.communication.callingserver.implementation.models.AudioRoutingGroupRequest;
@@ -31,7 +32,8 @@ import com.azure.communication.callingserver.implementation.models.MuteParticipa
 import com.azure.communication.callingserver.implementation.models.PlayAudioRequest;
 import com.azure.communication.callingserver.implementation.models.PlayAudioToParticipantRequest;
 import com.azure.communication.callingserver.implementation.models.ResumeMeetingAudioRequest;
-import com.azure.communication.callingserver.implementation.models.TransferCallRequest;
+import com.azure.communication.callingserver.implementation.models.TransferToCallRequest;
+import com.azure.communication.callingserver.implementation.models.TransferToParticipantRequest;
 import com.azure.communication.callingserver.implementation.models.UnmuteParticipantRequest;
 import com.azure.communication.callingserver.implementation.models.UpdateAudioRoutingGroupRequest;
 import com.azure.communication.callingserver.models.AddParticipantResult;
@@ -416,20 +418,20 @@ public final class CallConnectionAsync {
     }
 
     /**
-     * Transfer the call.
+     * Transfer the call to a participant.
      *
      * @param targetParticipant The identifier of the participant.
-     * @param targetCallConnectionId The target call connection id to transfer to.
      * @param userToUserInformation The user to user information.
+     * @param operationContext The operation context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for a successful transfer to participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TransferCallResult> transfer(CommunicationIdentifier targetParticipant, String targetCallConnectionId, String userToUserInformation) {
+    public Mono<TransferCallResult> transferToParticipant(CommunicationIdentifier targetParticipant, String userToUserInformation, String operationContext) {
         try {
-            TransferCallRequest request = TransferCallRequestConverter.convert(targetParticipant, targetCallConnectionId, userToUserInformation);
-            return callConnectionInternal.transferAsync(callConnectionId, request)
+            TransferToParticipantRequest request = TransferToParticipantRequestConverter.convert(targetParticipant, userToUserInformation, operationContext);
+            return callConnectionInternal.transferToParticipantAsync(callConnectionId, request)
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                 .flatMap(result -> Mono.just(TransferCallResultConverter.convert(result)));
         } catch (RuntimeException ex) {
@@ -441,24 +443,77 @@ public final class CallConnectionAsync {
      * Transfer the call to a participant.
      *
      * @param participant The identifier of the participant.
-     * @param targetCallConnectionId The target call connection id to transfer to.
      * @param userToUserInformation The user to user information.
+     * @param operationContext The operation context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for a successful transfer to participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TransferCallResult>> transferWithResponse(CommunicationIdentifier participant, String targetCallConnectionId, String userToUserInformation) {
-        return transferWithResponse(participant, userToUserInformation, targetCallConnectionId, Context.NONE);
+    public Mono<Response<TransferCallResult>> transferToParticipantWithResponse(CommunicationIdentifier participant, String userToUserInformation, String operationContext) {
+        return transferToParticipantWithResponse(participant, userToUserInformation, operationContext, Context.NONE);
     }
 
-    Mono<Response<TransferCallResult>> transferWithResponse(CommunicationIdentifier targetParticipant, String targetCallConnectionId, String userToUserInformation, Context context) {
+    Mono<Response<TransferCallResult>> transferToParticipantWithResponse(CommunicationIdentifier targetParticipant, String userToUserInformation, String operationContext, Context context) {
         try {
-            TransferCallRequest request = TransferCallRequestConverter.convert(targetParticipant, targetCallConnectionId, userToUserInformation);
+            TransferToParticipantRequest request = TransferToParticipantRequestConverter.convert(targetParticipant, userToUserInformation, operationContext);
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return callConnectionInternal
-                    .transferWithResponseAsync(callConnectionId, request, contextValue)
+                    .transferToParticipantWithResponseAsync(callConnectionId, request, contextValue)
+                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                    .map(response ->
+                        new SimpleResponse<>(response, TransferCallResultConverter.convert(response.getValue())));
+            });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Transfer the call to another call.
+     *
+     * @param targetCallConnectionId The target call connection id to transfer to.
+     * @param userToUserInformation The user to user information.
+     * @param operationContext The operation context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for a successful transfer to participant request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TransferCallResult> transferToCall(String targetCallConnectionId, String userToUserInformation, String operationContext) {
+        try {
+            TransferToCallRequest request = TransferToCallRequestConverter.convert(targetCallConnectionId, userToUserInformation, operationContext);
+            return callConnectionInternal.transferToCallAsync(callConnectionId, request)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.just(TransferCallResultConverter.convert(result)));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Transfer the call to another call.
+     *
+     * @param targetCallConnectionId The target call connection id to transfer to.
+     * @param userToUserInformation The user to user information.
+     * @param operationContext The operation context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for a successful transfer to participant request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<TransferCallResult>> transferToCallWithResponse(String targetCallConnectionId, String userToUserInformation, String operationContext) {
+        return transferToCallWithResponse(targetCallConnectionId, userToUserInformation, operationContext, Context.NONE);
+    }
+
+    Mono<Response<TransferCallResult>> transferToCallWithResponse(String targetCallConnectionId, String userToUserInformation, String operationContext, Context context) {
+        try {
+            TransferToCallRequest request = TransferToCallRequestConverter.convert(targetCallConnectionId, userToUserInformation, operationContext);
+            return withContext(contextValue -> {
+                contextValue = context == null ? contextValue : context;
+                return callConnectionInternal
+                    .transferToCallWithResponseAsync(callConnectionId, request, contextValue)
                     .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                     .map(response ->
                         new SimpleResponse<>(response, TransferCallResultConverter.convert(response.getValue())));

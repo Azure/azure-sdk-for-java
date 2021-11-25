@@ -239,16 +239,16 @@ public class CallConnectionUnitTests {
     }
 
     @Test
-    public void transfer() {
+    public void transferToParticipant() {
         CallConnection callConnection = getCallConnection(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(generateCreateCallResult(CALL_CONNECTION_ID), 201),
                 new SimpleEntry<String, Integer>(generateTransferCallResult(), 202)
             )));
 
-        TransferCallResult transferCallResult = callConnection.transfer(
+        TransferCallResult transferCallResult = callConnection.transferToParticipant(
             new CommunicationUserIdentifier(NEW_PARTICIPANT_ID),
-            CALL_CONNECTION_ID,
+            "",
             ""
         );
 
@@ -256,16 +256,53 @@ public class CallConnectionUnitTests {
     }
 
     @Test
-    public void transferWithResponse() {
+    public void transferToParticipantWithResponse() {
         CallConnection callConnection = getCallConnection(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(generateCreateCallResult(CALL_CONNECTION_ID), 201),
                 new SimpleEntry<String, Integer>(generateTransferCallResult(), 202)
             )));
 
-        Response<TransferCallResult> transferCallResponse = callConnection.transferWithResponse(
+        Response<TransferCallResult> transferCallResponse = callConnection.transferToParticipantWithResponse(
             new CommunicationUserIdentifier(NEW_PARTICIPANT_ID),
+            "",
+            "",
+            Context.NONE
+        );
+
+        assertEquals(202, transferCallResponse.getStatusCode());
+        TransferCallResult transferCallResult = transferCallResponse.getValue();
+        assertEquals(CallingOperationStatus.COMPLETED, transferCallResult.getStatus());
+    }
+
+    @Test
+    public void transferToCall() {
+        CallConnection callConnection = getCallConnection(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(generateCreateCallResult(CALL_CONNECTION_ID), 201),
+                new SimpleEntry<String, Integer>(generateTransferCallResult(), 202)
+            )));
+
+        TransferCallResult transferCallResult = callConnection.transferToCall(
             CALL_CONNECTION_ID,
+            "",
+            ""
+        );
+
+        assertEquals(CallingOperationStatus.COMPLETED, transferCallResult.getStatus());
+    }
+
+    @Test
+    public void transferToCallWithResponse() {
+        CallConnection callConnection = getCallConnection(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(generateCreateCallResult(CALL_CONNECTION_ID), 201),
+                new SimpleEntry<String, Integer>(generateTransferCallResult(), 202)
+            )));
+
+        Response<TransferCallResult> transferCallResponse = callConnection.transferToCallWithResponse(
+            CALL_CONNECTION_ID,
+            "",
             "",
             Context.NONE
         );

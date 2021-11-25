@@ -3,32 +3,32 @@
 
 package com.azure.communication.callingserver.implementation.converters;
 
-import com.azure.communication.callingserver.implementation.models.TransferCallRequest;
+import com.azure.communication.callingserver.implementation.models.TransferToParticipantRequest;
 import com.azure.communication.common.CommunicationIdentifier;
 
 /**
- * A converter for {@link TransferCallRequest}
+ * A converter for {@link TransferToParticipantRequest}
  */
-public final class TransferCallRequestConverter {
+public final class TransferToParticipantRequestConverter {
 
     /**
-     * Converts to {@link TransferCallRequest}.
+     * Converts to {@link TransferToParticipantRequest}.
      */
-    public static TransferCallRequest convert(
+    public static TransferToParticipantRequest convert(
         CommunicationIdentifier targetParticipant,
-        String targetCallConnectionId,
-        String userToUserInformation) {
+        String userToUserInformation,
+        String operationContext) {
 
         if (targetParticipant == null) {
             return null;
         }
 
-        return new TransferCallRequest()
+        return new TransferToParticipantRequest()
             .setTargetParticipant(CommunicationIdentifierConverter.convert(targetParticipant))
             .setUserToUserInformation(userToUserInformation)
-            .setTargetCallConnectionId(targetCallConnectionId);
+            .setOperationContext(operationContext);
     }
 
-    private TransferCallRequestConverter() {
+    private TransferToParticipantRequestConverter() {
     }
 }

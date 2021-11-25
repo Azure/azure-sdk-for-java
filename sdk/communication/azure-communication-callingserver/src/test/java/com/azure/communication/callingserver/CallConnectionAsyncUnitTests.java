@@ -238,16 +238,16 @@ public class CallConnectionAsyncUnitTests {
     }
 
     @Test
-    public void transferAsync() {
+    public void transferToParticipantAsync() {
         CallConnectionAsync callConnectionAsync = getCallConnectionAsync(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(generateCreateCallResult(CALL_CONNECTION_ID), 201),
                 new SimpleEntry<String, Integer>(generateTransferCallResult(), 202)
             )));
 
-        TransferCallResult transferCallResult = callConnectionAsync.transfer(
+        TransferCallResult transferCallResult = callConnectionAsync.transferToParticipant(
             new CommunicationUserIdentifier(NEW_PARTICIPANT_ID),
-            CALL_CONNECTION_ID,
+            "",
             ""
         ).block();
 
@@ -255,16 +255,52 @@ public class CallConnectionAsyncUnitTests {
     }
 
     @Test
-    public void transferAsyncWithResponse() {
+    public void transferToParticipantAsyncWithResponse() {
         CallConnectionAsync callConnectionAsync = getCallConnectionAsync(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(generateCreateCallResult(CALL_CONNECTION_ID), 201),
                 new SimpleEntry<String, Integer>(generateTransferCallResult(), 202)
             )));
 
-        Response<TransferCallResult> transferCallResponse = callConnectionAsync.transferWithResponse(
+        Response<TransferCallResult> transferCallResponse = callConnectionAsync.transferToParticipantWithResponse(
             new CommunicationUserIdentifier(NEW_PARTICIPANT_ID),
+            "",
+            ""
+        ).block();
+
+        assertEquals(202, transferCallResponse.getStatusCode());
+        TransferCallResult transferCallResult = transferCallResponse.getValue();
+        assertEquals(CallingOperationStatus.COMPLETED, transferCallResult.getStatus());
+    }
+
+    @Test
+    public void transferToCallAsync() {
+        CallConnectionAsync callConnectionAsync = getCallConnectionAsync(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(generateCreateCallResult(CALL_CONNECTION_ID), 201),
+                new SimpleEntry<String, Integer>(generateTransferCallResult(), 202)
+            )));
+
+        TransferCallResult transferCallResult = callConnectionAsync.transferToCall(
             CALL_CONNECTION_ID,
+            "",
+            ""
+        ).block();
+
+        assertEquals(CallingOperationStatus.COMPLETED, transferCallResult.getStatus());
+    }
+
+    @Test
+    public void transferToCallAsyncWithResponse() {
+        CallConnectionAsync callConnectionAsync = getCallConnectionAsync(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(generateCreateCallResult(CALL_CONNECTION_ID), 201),
+                new SimpleEntry<String, Integer>(generateTransferCallResult(), 202)
+            )));
+
+        Response<TransferCallResult> transferCallResponse = callConnectionAsync.transferToCallWithResponse(
+            CALL_CONNECTION_ID,
+            "",
             ""
         ).block();
 
