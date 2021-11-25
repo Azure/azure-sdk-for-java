@@ -36,7 +36,8 @@ management:
 * The up status should be returned from the storage blob health endpoint. +
 
 === How Spring test such case?
-There are 2 UTs for reference. +
+There are 2 UTs for reference:
+
 * https://github.com/moarychan/spring-boot/blob/dac63fc3e52ecb36677965b97b96ebbf1a7871c8/spring-boot-project/spring-boot-actuator-autoconfigure/src/test/java/org/springframework/boot/actuate/autoconfigure/redis/RedisHealthContributorAutoConfigurationTests.java#L44[RedisHealthContributorAutoConfigurationTests] in spring-boot-actuator-autoconfigure +
 Use `ApplicationContextRunner`  with Redis related auto-configuration to validate the bean creation. +
 * https://github.com/moarychan/spring-boot/blob/49baacbc1cb02a59efce1fe1698166de92d41d67/spring-boot-project/spring-boot-actuator/src/test/java/org/springframework/boot/actuate/redis/RedisHealthIndicatorTests.java#L50[RedisHealthIndicatorTests] in spring-boot-actuator +
@@ -85,7 +86,8 @@ management:
 * The down status should be returned from the storage blob health endpoint. +
 
 === How Spring test such case?
-There are 2 UTs for reference. +
+There are 2 UTs for reference:
+
 * https://github.com/moarychan/spring-boot/blob/dac63fc3e52ecb36677965b97b96ebbf1a7871c8/spring-boot-project/spring-boot-actuator-autoconfigure/src/test/java/org/springframework/boot/actuate/autoconfigure/redis/RedisHealthContributorAutoConfigurationTests.java#L44[RedisHealthContributorAutoConfigurationTests] in spring-boot-actuator-autoconfigure +
 Use `ApplicationContextRunner`  with Redis related auto-configuration to validate the bean creation. +
 * https://github.com/moarychan/spring-boot/blob/49baacbc1cb02a59efce1fe1698166de92d41d67/spring-boot-project/spring-boot-actuator/src/test/java/org/springframework/boot/actuate/redis/RedisHealthIndicatorTests.java#L62[RedisHealthIndicatorTests] in spring-boot-actuator +
@@ -213,7 +215,8 @@ my-blob=${AZURE_STORAGE_BLOB}
 * The read data from Azure Storage Blob service should be the same with testing resources. +
 
 === How Spring test such case?
-There are 3 UTs for reference. +
+There are 3 UTs for reference:
+
 * https://github.com/moarychan/spring-framework/blob/c8f430ee9188ad082bf76e5b05877d00bafe1a82/spring-core/src/test/java/org/springframework/core/io/support/PathMatchingResourcePatternResolverTests.java#L69[PathMatchingResourcePatternResolverTests] in spring-core +
 Resolve the `azure-blob:xxx` resource using `AzureStorageBlobProtocolResolver`, confirm that the actual resource type is `StorageBlobResource`, and the others properties are the same with the testing resource. +
 * Same with `RedisHealthContributorAutoConfigurationTests` test class to validate the storage blob resolver bean creation. +
