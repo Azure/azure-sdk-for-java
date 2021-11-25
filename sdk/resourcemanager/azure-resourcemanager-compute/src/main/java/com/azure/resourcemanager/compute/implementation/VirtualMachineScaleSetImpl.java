@@ -7,6 +7,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.SubResource;
 import com.azure.core.management.provider.IdentifierProvider;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
@@ -26,6 +27,7 @@ import com.azure.resourcemanager.compute.models.ImageReference;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.KnownWindowsVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.LinuxConfiguration;
+import com.azure.resourcemanager.compute.models.NetworkApiVersion;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.OrchestrationMode;
 import com.azure.resourcemanager.compute.models.Plan;
@@ -100,6 +102,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
+import java.util.function.Consumer;
 
 /** Implementation of VirtualMachineScaleSet. */
 public class VirtualMachineScaleSetImpl
@@ -1601,21 +1604,13 @@ public class VirtualMachineScaleSetImpl
     //
     @Override
     protected void beforeCreating() {
-        if (this.extensions.size() > 0
-            && this.innerModel() != null
-            && this.innerModel().virtualMachineProfile() != null) {
-            this
-                .innerModel()
-                .virtualMachineProfile()
-                .withExtensionProfile(new VirtualMachineScaleSetExtensionProfile())
-                .extensionProfile()
-                .withExtensions(innersFromWrappers(this.extensions.values()));
-        }
+        setExtensions();
+        initializeProfileIfNecessary();
     }
 
     @Override
     protected Mono<VirtualMachineScaleSetInner> createInner() {
-        //support flexible vmss with no profile
+        // support flexible vmss with no profile
         if (this.orchestrationMode() == OrchestrationMode.FLEXIBLE && this.profileNotSet) {
             this.innerModel().withVirtualMachineProfile(null);
             return Mono.just(this)
@@ -1626,7 +1621,7 @@ public class VirtualMachineScaleSetImpl
                     .createOrUpdateAsync(resourceGroupName(), name(), innerModel()));
         }
 
-        if (isInCreateMode()) {
+        if (isInCreateMode() || createFlexibleProfile()) {
             this.setOSProfileDefaults();
             this.setOSDiskDefault();
         }
@@ -1637,7 +1632,7 @@ public class VirtualMachineScaleSetImpl
                 virtualMachineScaleSet -> {
                     if (isManagedDiskEnabled()) {
                         this.managedDataDisks.setDataDisksDefaults();
-                    } else if (this.innerModel() != null && this.innerModel().virtualMachineProfile() != null) {
+                    } else {
                         List<VirtualMachineScaleSetDataDisk> dataDisks =
                             this.innerModel().virtualMachineProfile().storageProfile().dataDisks();
                         VirtualMachineScaleSetUnmanagedDataDiskImpl.setDataDisksDefaults(dataDisks, this.name());
@@ -1647,12 +1642,36 @@ public class VirtualMachineScaleSetImpl
                     this.virtualMachineScaleSetMsiHandler.processCreatedExternalIdentities();
                     this.virtualMachineScaleSetMsiHandler.handleExternalIdentities();
                     this.createNewProximityPlacementGroup();
+                    this.adjustProfileForFlexibleMode();
                     return this
                         .manager()
                         .serviceClient()
                         .getVirtualMachineScaleSets()
                         .createOrUpdateAsync(resourceGroupName(), name(), innerModel());
                 });
+    }
+
+    private void adjustProfileForFlexibleMode() {
+        if (this.orchestrationMode() == OrchestrationMode.FLEXIBLE) {
+            if (this.innerModel().virtualMachineProfile().networkProfile().networkInterfaceConfigurations() != null) {
+                this.innerModel().virtualMachineProfile().networkProfile().networkInterfaceConfigurations().forEach(virtualMachineScaleSetNetworkConfiguration -> {
+                    if (virtualMachineScaleSetNetworkConfiguration.ipConfigurations() != null) {
+                        virtualMachineScaleSetNetworkConfiguration.ipConfigurations().forEach(virtualMachineScaleSetIpConfiguration -> {
+                            // this property is not allowed to appear when creating vmss in flexible mode
+//                            if (CoreUtils.isNullOrEmpty(virtualMachineScaleSetIpConfiguration.loadBalancerInboundNatPools())) {
+                                virtualMachineScaleSetIpConfiguration.withLoadBalancerInboundNatPools(null);
+//                            }
+                        });
+                    }
+                });
+            }
+            this.innerModel()
+                // upgradePolicy is not supported in flexible vmss
+                .withUpgradePolicy(null)
+                .virtualMachineProfile().networkProfile()
+                // NetworkApiVersion must be specified when creating in flexible mode
+                .withNetworkApiVersion(NetworkApiVersion.TWO_ZERO_TWO_ZERO_ONE_ONE_ZERO_ONE);
+        }
     }
 
     @Override
@@ -1663,15 +1682,8 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public Mono<VirtualMachineScaleSet> updateResourceAsync() {
-        if (this.extensions.size() > 0
-            && this.innerModel() != null && this.innerModel().virtualMachineProfile() != null) {
-            this
-                .innerModel()
-                .virtualMachineProfile()
-                .withExtensionProfile(new VirtualMachineScaleSetExtensionProfile())
-                .extensionProfile()
-                .withExtensions(innersFromWrappers(this.extensions.values()));
-        }
+        setExtensions();
+        initializeProfileIfNecessary();
         this.setPrimaryIpConfigurationSubnet();
         final VirtualMachineScaleSetImpl self = this;
         return this
@@ -1689,6 +1701,7 @@ public class VirtualMachineScaleSetImpl
                     this.handleUnManagedOSDiskContainers();
                     this.bootDiagnosticsHandler.handleDiagnosticsSettings();
                     this.virtualMachineScaleSetMsiHandler.processCreatedExternalIdentities();
+                    this.adjustProfileForFlexibleMode();
                     //
                     VirtualMachineScaleSetUpdate updateParameter = VMSSPatchPayload.preparePatchPayload(this);
                     //
@@ -1823,9 +1836,29 @@ public class VirtualMachineScaleSetImpl
         }
     }
 
-    private void adjustForFlexibleModeIfNecessary() {
-        if (this.orchestrationMode() == OrchestrationMode.FLEXIBLE && profileNotSet) {
-            this.innerModel().withVirtualMachineProfile(null);
+    private boolean createFlexibleProfile() {
+        return this.orchestrationMode() == OrchestrationMode.FLEXIBLE
+            && !this.profileNotSet;
+    }
+
+    private void setExtensions() {
+        if (this.extensions.size() > 0
+            && this.innerModel() != null
+            && this.innerModel().virtualMachineProfile() != null) {
+            this
+                .innerModel()
+                .virtualMachineProfile()
+                .withExtensionProfile(new VirtualMachineScaleSetExtensionProfile())
+                .extensionProfile()
+                .withExtensions(innersFromWrappers(this.extensions.values()));
+        }
+    }
+
+    private void initializeProfileIfNecessary() {
+        if (this.orchestrationMode() == OrchestrationMode.FLEXIBLE) {
+            if (profileNotSet) {
+                this.innerModel().withVirtualMachineProfile(null);
+            }
         }
     }
 
@@ -2081,6 +2114,7 @@ public class VirtualMachineScaleSetImpl
     private void clearCachedProperties() {
         this.primaryInternetFacingLoadBalancer = null;
         this.primaryInternalLoadBalancer = null;
+        this.profileNotSet = true;
     }
 
     private Mono<VirtualMachineScaleSetImpl> loadCurrentPrimaryLoadBalancersIfAvailableAsync() throws IOException {

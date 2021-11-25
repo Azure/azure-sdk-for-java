@@ -41,6 +41,7 @@ import com.azure.resourcemanager.network.models.LoadBalancerSkuType;
 import com.azure.resourcemanager.network.models.LoadBalancingRule;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
+import com.azure.resourcemanager.network.models.PublicIPSkuType;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNetworkInterface;
@@ -1457,7 +1458,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
     }
 
     @Test
-    public void canCreateFlexibleVMSS(){
+    public void canCreateFlexibleVMSS() throws Exception {
         // create vmss with flexible orchestration type
         VirtualMachineScaleSetInner options = new VirtualMachineScaleSetInner();
         options.withOrchestrationMode(OrchestrationMode.FLEXIBLE)
@@ -1468,17 +1469,43 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withRegion(region.name())
             .create();
 
+        Network network =
+            this
+                .networkManager
+                .networks()
+                .define("vmssvnet")
+                .withRegion(region.name())
+                .withExistingResourceGroup(resourceGroup)
+                .withAddressSpace("10.0.0.0/28")
+                .withSubnet("subnet1", "10.0.0.0/28")
+                .create();
         final String vmssName = generateRandomResourceName("vmss", 10);
+        LoadBalancer publicLoadBalancer = createHttpLoadBalancers(region, resourceGroup, "1", LoadBalancerSkuType.STANDARD, PublicIPSkuType.STANDARD, true);
+
         // create resource through raw method
-        VirtualMachineScaleSet vmss2 = this
+        VirtualMachineScaleSet vmss = this
             .computeManager
             .virtualMachineScaleSets()
             .define(vmssName)
             .withRegion(region.name())
             .withExistingResourceGroup(resourceGroup)
             .withFlexibleOrchestrationMode()
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+            .withExistingPrimaryNetworkSubnet(network, "subnet1")
+            .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
+            .withoutPrimaryInternalLoadBalancer()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.CENTOS_8_3)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
             .create();
 
+        Assertions.assertNotNull(vmss.innerModel().virtualMachineProfile());
+    }
+
+    @Test
+    public void canUpdateFlexibleVMSS(){
+        this.computeManager
+            .virtualMachineScaleSets();
     }
 
     @Test
