@@ -2213,7 +2213,7 @@ public final class NamespacesClientImpl
         return this
             .client
             .<SBNamespaceInner, SBNamespaceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SBNamespaceInner.class, SBNamespaceInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), SBNamespaceInner.class, SBNamespaceInner.class, this.client.getContext());
     }
 
     /**
@@ -2464,7 +2464,7 @@ public final class NamespacesClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, namespaceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

@@ -24,6 +24,12 @@ public abstract class AbstractResourceCrud<T, K> implements ResourceCrud<T, K> {
     protected final AzureResourceManager resourceManager;
     protected final AzureResourceMetadata resourceMetadata;
 
+    /**
+     * Creates a new instance of {@link AbstractResourceCrud}.
+     *
+     * @param resourceManager The Azure resource manager.
+     * @param resourceMetadata The Azure resource metadata.
+     */
     public AbstractResourceCrud(@NonNull AzureResourceManager resourceManager,
                                 @NonNull AzureResourceMetadata resourceMetadata) {
         this.resourceManager = resourceManager;

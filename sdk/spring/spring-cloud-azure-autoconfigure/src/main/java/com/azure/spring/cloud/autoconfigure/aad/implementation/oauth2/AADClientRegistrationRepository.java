@@ -34,11 +34,19 @@ import static com.azure.spring.cloud.autoconfigure.aad.core.AADAuthorizationGran
  */
 public class AADClientRegistrationRepository implements ClientRegistrationRepository, Iterable<ClientRegistration> {
 
+    /**
+     * Azure client registration ID
+     */
     public static final String AZURE_CLIENT_REGISTRATION_ID = "azure";
 
     private final Set<String> azureClientAccessTokenScopes;
     private final Map<String, ClientRegistration> allClients;
 
+    /**
+     * Creates a new instance of {@link AADClientRegistrationRepository}.
+     *
+     * @param properties the AAD authentication properties
+     */
     public AADClientRegistrationRepository(AADAuthenticationProperties properties) {
         Set<String> accessTokenScopes = azureClientAccessTokenScopes(properties); // Used to get access_token
         Set<String> delegatedScopes = delegatedClientsAccessTokenScopes(properties);
@@ -67,6 +75,11 @@ public class AADClientRegistrationRepository implements ClientRegistrationReposi
         allClients.put(AZURE_CLIENT_REGISTRATION_ID, azureClient);
     }
 
+    /**
+     * Gets the set of Azure client access token scopes.
+     *
+     * @return the set of Azure client access token scopes
+     */
     public Set<String> getAzureClientAccessTokenScopes() {
         return azureClientAccessTokenScopes;
     }
@@ -152,6 +165,12 @@ public class AADClientRegistrationRepository implements ClientRegistrationReposi
         return result;
     }
 
+    /**
+     * Gets the resource server count.
+     *
+     * @param scopes the set of scope
+     * @return the resource server count
+     */
     public static int resourceServerCount(Set<String> scopes) {
         return (int) scopes.stream()
                            .filter(scope -> scope.contains("/"))

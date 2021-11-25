@@ -12,6 +12,11 @@ import reactor.core.publisher.Mono;
 
 import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
 
+/**
+ * DO NOT USE.
+ * This is meant to be used only internally as a bridge access to classes in
+ * com.azure.cosmos.encryption
+ **/
 public class EncryptionBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static Mono<CosmosContainerProperties> getContainerPropertiesMono(CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient,

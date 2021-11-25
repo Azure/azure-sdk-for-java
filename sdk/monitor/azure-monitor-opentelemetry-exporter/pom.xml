@@ -37,6 +37,9 @@
     <javaModulesSurefireArgLine>
       --add-opens com.azure.monitor.opentelemetry.exporter/com.azure.monitor.opentelemetry.exporter=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <codesnippet.skip>false</codesnippet.skip>
+    <javadocDoclet></javadocDoclet>
+    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <dependencies>

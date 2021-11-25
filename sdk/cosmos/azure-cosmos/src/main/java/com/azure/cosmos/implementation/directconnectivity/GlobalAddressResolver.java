@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 
+import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
@@ -48,20 +49,22 @@ public class GlobalAddressResolver implements IAddressResolver {
     private final GatewayServiceConfigurationReader serviceConfigReader;
     final Map<URI, EndpointCache> addressCacheByEndpoint;
     private final boolean tcpConnectionEndpointRediscoveryEnabled;
+    private ApiType apiType;
 
     private HttpClient httpClient;
 
     public GlobalAddressResolver(
-            DiagnosticsClientContext diagnosticsClientContext,
-            HttpClient httpClient,
-            GlobalEndpointManager endpointManager,
-            Protocol protocol,
-            IAuthorizationTokenProvider tokenProvider,
-            RxCollectionCache collectionCache,
-            RxPartitionKeyRangeCache routingMapProvider,
-            UserAgentContainer userAgentContainer,
-            GatewayServiceConfigurationReader serviceConfigReader,
-            ConnectionPolicy connectionPolicy) {
+        DiagnosticsClientContext diagnosticsClientContext,
+        HttpClient httpClient,
+        GlobalEndpointManager endpointManager,
+        Protocol protocol,
+        IAuthorizationTokenProvider tokenProvider,
+        RxCollectionCache collectionCache,
+        RxPartitionKeyRangeCache routingMapProvider,
+        UserAgentContainer userAgentContainer,
+        GatewayServiceConfigurationReader serviceConfigReader,
+        ConnectionPolicy connectionPolicy,
+        ApiType apiType) {
         this.diagnosticsClientContext = diagnosticsClientContext;
         this.httpClient = httpClient;
         this.endpointManager = endpointManager;
@@ -76,6 +79,7 @@ public class GlobalAddressResolver implements IAddressResolver {
         int maxBackupReadEndpoints = (connectionPolicy.isReadRequestsFallbackEnabled()) ? GlobalAddressResolver.MaxBackupReadRegions : 0;
         this.maxEndpoints = maxBackupReadEndpoints + 2; // for write and alternate write getEndpoint (during failover)
         this.addressCacheByEndpoint = new ConcurrentHashMap<>();
+        this.apiType = apiType;
 
         for (URI endpoint : endpointManager.getWriteEndpoints()) {
             this.getOrAddEndpoint(endpoint);
@@ -151,7 +155,8 @@ public class GlobalAddressResolver implements IAddressResolver {
                 this.tokenProvider,
                 this.userAgentContainer,
                 this.httpClient,
-                this.tcpConnectionEndpointRediscoveryEnabled);
+                this.tcpConnectionEndpointRediscoveryEnabled,
+                this.apiType);
             AddressResolver addressResolver = new AddressResolver();
             addressResolver.initializeCaches(this.collectionCache, this.routingMapProvider, gatewayAddressCache);
             EndpointCache cache = new EndpointCache();

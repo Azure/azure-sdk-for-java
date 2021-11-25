@@ -29,10 +29,20 @@ public class NonPremiumServiceBusJmsAutoConfiguration extends AbstractServiceBus
 
     private static final String AMQP_URI_FORMAT = "amqps://%s?amqp.idleTimeout=%d";
 
+    /**
+     * Creates a new instance of {@link NonPremiumServiceBusJmsAutoConfiguration}.
+     *
+     * @param azureServiceBusJMSProperties the Azure ServiceBus JMS properties
+     */
     public NonPremiumServiceBusJmsAutoConfiguration(AzureServiceBusJmsProperties azureServiceBusJMSProperties) {
         super(azureServiceBusJMSProperties);
     }
 
+    /**
+     * Declare JMS ConnectionFactory bean.
+     *
+     * @return JMS ConnectionFactory bean
+     */
     @Bean
     @ConditionalOnMissingBean
     public ConnectionFactory jmsConnectionFactory(AzureServiceBusJmsProperties serviceBusJMSProperties) {

@@ -38,7 +38,6 @@ import static com.azure.spring.cloud.autoconfigure.aad.implementation.constants.
  * A stateless authentication filter which uses app roles feature of Azure Active Directory. Since it's a stateless
  * implementation so the principal will not be stored in session. By using roles claim in the token it will not call
  * Microsoft Graph to retrieve users' groups.
- * <p>
  *
  * @deprecated See the <a href="https://github.com/Azure/azure-sdk-for-java/issues/17860">Alternative method</a>.
  */
@@ -49,6 +48,11 @@ public class AADAppRoleStatelessAuthenticationFilter extends OncePerRequestFilte
 
     private final UserPrincipalManager principalManager;
 
+    /**
+     * Creates a new instance of {@link AADAppRoleStatelessAuthenticationFilter}.
+     *
+     * @param principalManager the user principal manager
+     */
     public AADAppRoleStatelessAuthenticationFilter(UserPrincipalManager principalManager) {
         this.principalManager = principalManager;
     }
@@ -99,6 +103,12 @@ public class AADAppRoleStatelessAuthenticationFilter extends OncePerRequestFilte
                        .orElse(false);
     }
 
+    /**
+     * Converts to user principal to a set of simple granted authorities.
+     *
+     * @param userPrincipal the user principal
+     * @return A set of SimpleGrantedAuthoritys
+     */
     protected Set<SimpleGrantedAuthority> toSimpleGrantedAuthoritySet(UserPrincipal userPrincipal) {
         Set<SimpleGrantedAuthority> simpleGrantedAuthoritySet =
             Optional.of(userPrincipal)
