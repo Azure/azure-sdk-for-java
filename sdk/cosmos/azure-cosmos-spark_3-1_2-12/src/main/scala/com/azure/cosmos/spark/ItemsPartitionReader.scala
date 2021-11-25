@@ -81,10 +81,19 @@ private case class ItemsPartitionReader
 
   queryOptions.setFeedRange(SparkBridgeImplementationInternal.toFeedRange(feedRange))
 
-  private lazy val iterator = new CosmosPagedIterable[ObjectNode](
+  private val threadName = s"ItemsPartitionReader($feedRange, ${containerTargetConfig.database}." +
+    s"${containerTargetConfig.container})"
+
+  private lazy val queryIterator = new CosmosPagedIterable[ObjectNode](
     cosmosAsyncContainer.queryItems(cosmosQuery.toSqlQuerySpec, queryOptions, classOf[ObjectNode]),
     readConfig.maxItemCount
   ).iterator()
+
+  private lazy val iterator = new BufferedCosmosIterator(
+    log,
+    threadName,
+    queryIterator,
+    100000)
 
   private val rowSerializer: ExpressionEncoder.Serializer[Row] = RowSerializerPool.getOrCreateSerializer(readSchema)
 
