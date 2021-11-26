@@ -16,7 +16,6 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 import org.springframework.util.StringUtils;
-import org.springframework.validation.annotation.Validated;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,7 +36,6 @@ import static com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.AAD
 /**
  * Configuration properties for Azure Active Directory Authentication.
  */
-@Validated
 @ConfigurationProperties("spring.cloud.azure.active-directory")
 public class AADAuthenticationProperties implements InitializingBean {
 
