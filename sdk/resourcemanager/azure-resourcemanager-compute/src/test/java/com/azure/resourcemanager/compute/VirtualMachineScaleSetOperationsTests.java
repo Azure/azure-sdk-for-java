@@ -1503,9 +1503,59 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
     }
 
     @Test
-    public void canUpdateFlexibleVMSS(){
-        this.computeManager
-            .virtualMachineScaleSets();
+    public void canUpdateVMSSInCreateOrUpdateMode() throws Exception {
+        // create vmss with empty profile
+        //create vmss with uniform orchestration type
+        String euapRegion = "eastus2euap";
+
+        final String vmssName = generateRandomResourceName("vmss", 10);
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName)
+            .withRegion(euapRegion)
+            .create();
+
+        VirtualMachineScaleSet vmss = this.computeManager
+            .virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(euapRegion)
+            .withExistingResourceGroup(resourceGroup)
+            .withFlexibleOrchestrationMode()
+            .create();
+
+        Assertions.assertEquals(vmss.orchestrationMode(), OrchestrationMode.FLEXIBLE);
+
+
+        Network network =
+            this
+                .networkManager
+                .networks()
+                .define("vmssvnet")
+                .withRegion(euapRegion)
+                .withExistingResourceGroup(resourceGroup)
+                .withAddressSpace("10.0.0.0/28")
+                .withSubnet("subnet1", "10.0.0.0/28")
+                .create();
+        LoadBalancer publicLoadBalancer = createHttpLoadBalancers(Region.fromName(euapRegion), resourceGroup, "1", LoadBalancerSkuType.STANDARD, PublicIPSkuType.STANDARD, true);
+
+        // update vmss, add profile
+        vmss = this.computeManager
+            .virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(euapRegion)
+            .withExistingResourceGroup(resourceGroup)
+            .withFlexibleOrchestrationMode()
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+            .withExistingPrimaryNetworkSubnet(network, "subnet1")
+            .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
+            .withoutPrimaryInternalLoadBalancer()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
+            .withCapacity(1)
+            .create()
+        ;
+        Assertions.assertNotNull(vmss.innerModel().virtualMachineProfile());
+        Assertions.assertEquals(vmss.orchestrationMode(), OrchestrationMode.FLEXIBLE);
+
     }
 
     @Test
