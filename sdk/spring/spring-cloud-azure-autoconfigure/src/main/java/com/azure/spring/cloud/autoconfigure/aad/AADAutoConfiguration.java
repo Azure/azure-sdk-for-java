@@ -8,6 +8,7 @@ import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthenticationProp
 import com.azure.spring.cloud.autoconfigure.aad.properties.AADResourceServerProperties;
 import com.azure.spring.cloud.autoconfigure.aad.webapi.AADResourceServerConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.webapp.AADWebApplicationConfiguration;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -22,11 +23,11 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @ConditionalOnProperty(value = "spring.cloud.azure.active-directory.enabled", havingValue = "true")
 @EnableConfigurationProperties({
-    AzureGlobalProperties.class,
     AADAuthenticationProperties.class,
     AADResourceServerProperties.class
 })
 @Import({
+    AzureGlobalPropertiesAutoConfiguration.class,
     AADWebApplicationConfiguration.class,
     AADResourceServerConfiguration.class,
     AADOAuth2ClientConfiguration.class
