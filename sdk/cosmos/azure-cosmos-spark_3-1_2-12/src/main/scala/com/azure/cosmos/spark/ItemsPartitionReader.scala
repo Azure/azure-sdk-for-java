@@ -93,7 +93,7 @@ private case class ItemsPartitionReader
     log,
     threadName,
     queryIterator,
-    readConfig.maxBufferedItemCount)
+    100000)
 
   private val rowSerializer: ExpressionEncoder.Serializer[Row] = RowSerializerPool.getOrCreateSerializer(readSchema)
 

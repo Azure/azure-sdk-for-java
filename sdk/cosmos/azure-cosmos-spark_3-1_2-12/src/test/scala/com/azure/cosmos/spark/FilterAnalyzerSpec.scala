@@ -14,12 +14,7 @@ class FilterAnalyzerSpec extends UnitSpec {
   //scalastyle:off magic.number
 
   private[this] val readConfigWithoutCustomQuery =
-    new CosmosReadConfig(
-      true,
-      SchemaConversionModes.Relaxed,
-      100,
-      100000,
-      None)
+    new CosmosReadConfig(true, SchemaConversionModes.Relaxed, 100, None)
   private[this] val queryText = "SELECT * FROM c WHERE c.abc='Hello World'"
   private[this] val query = Some(CosmosParameterizedQuery(
     queryText,
@@ -29,7 +24,6 @@ class FilterAnalyzerSpec extends UnitSpec {
     true,
     SchemaConversionModes.Relaxed,
     100,
-    100000,
     query)
 
   "many filters" should "be translated to cosmos predicates with AND" in {
