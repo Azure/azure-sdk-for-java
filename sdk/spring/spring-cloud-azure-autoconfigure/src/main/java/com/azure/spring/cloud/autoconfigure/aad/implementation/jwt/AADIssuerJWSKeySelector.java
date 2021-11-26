@@ -37,6 +37,14 @@ public class AADIssuerJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<
 
     private final Map<String, JWSKeySelector<SecurityContext>> selectors = new ConcurrentHashMap<>();
 
+    /**
+     * Creates a new instance of {@link AADIssuerJWSKeySelector}.
+     *
+     * @param trustedIssuerRepo the AAD trusted issuer repository
+     * @param connectTimeout the connect timeout
+     * @param readTimeout the read timeout
+     * @param sizeLimit te size limit
+     */
     public AADIssuerJWSKeySelector(AADTrustedIssuerRepository trustedIssuerRepo,
                                    int connectTimeout,
                                    int readTimeout, int sizeLimit) {

@@ -14,6 +14,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+- Deprecated BlobClient.uploadWithResponse that does not return a response.
 
 ## 12.14.2 (2021-11-10)
 

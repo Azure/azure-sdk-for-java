@@ -688,7 +688,7 @@ public final class RulesClientImpl implements RulesClient {
         return this
             .client
             .<RuleInner, RuleInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RuleInner.class, RuleInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), RuleInner.class, RuleInner.class, this.client.getContext());
     }
 
     /**
@@ -1022,7 +1022,7 @@ public final class RulesClientImpl implements RulesClient {
         return this
             .client
             .<RuleInner, RuleInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RuleInner.class, RuleInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), RuleInner.class, RuleInner.class, this.client.getContext());
     }
 
     /**
@@ -1341,7 +1341,7 @@ public final class RulesClientImpl implements RulesClient {
             deleteWithResponseAsync(resourceGroupName, profileName, ruleSetName, ruleName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

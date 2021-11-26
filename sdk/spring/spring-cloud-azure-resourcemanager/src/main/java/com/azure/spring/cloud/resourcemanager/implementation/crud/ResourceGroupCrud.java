@@ -13,6 +13,12 @@ import com.azure.spring.core.properties.resource.AzureResourceMetadata;
  */
 public class ResourceGroupCrud extends AbstractResourceCrud<ResourceGroup, String> {
 
+    /**
+     * Creates a new instance of {@link ResourceGroupCrud}.
+     *
+     * @param azureResourceManager The Azure resource manager.
+     * @param azureResourceMetadata The Azure resource metadata.
+     */
     public ResourceGroupCrud(AzureResourceManager azureResourceManager, AzureResourceMetadata azureResourceMetadata) {
         super(azureResourceManager, azureResourceMetadata);
     }

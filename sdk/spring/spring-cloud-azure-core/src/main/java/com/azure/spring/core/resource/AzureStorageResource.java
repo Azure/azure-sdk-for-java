@@ -30,6 +30,12 @@ abstract class AzureStorageResource extends AbstractResource implements Writable
         return location.substring(getProtocolPrefix().length(), containerEndIndex);
     }
 
+    /**
+     * Gets the content type.
+     *
+     * @param location the location
+     * @return the content type
+     */
     String getContentType(String location) {
         String objectName = getFilename(location);
         if (StringUtils.hasText(objectName)) {

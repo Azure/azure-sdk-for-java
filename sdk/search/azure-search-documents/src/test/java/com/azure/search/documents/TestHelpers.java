@@ -44,6 +44,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import static com.azure.search.documents.SearchTestBase.API_KEY;
 import static com.azure.search.documents.SearchTestBase.ENDPOINT;
 import static com.azure.search.documents.SearchTestBase.HOTELS_DATA_JSON;
+import static com.azure.search.documents.SearchTestBase.HOTELS_TESTS_INDEX_DATA_JSON;
 import static com.azure.search.documents.SearchTestBase.SERVICE_THROTTLE_SAFE_RETRY_POLICY;
 import static com.azure.search.documents.implementation.util.Utility.MAP_STRING_OBJECT_TYPE_REFERENCE;
 import static com.azure.search.documents.implementation.util.Utility.getDefaultSerializerAdapter;
@@ -320,7 +321,7 @@ public final class TestHelpers {
 
     public static SearchIndexClient setupSharedIndex(String indexName) {
         try {
-            byte[] hotelsTestIndexDataJsonData = loadResource(indexName);
+            byte[] hotelsTestIndexDataJsonData = loadResource(HOTELS_TESTS_INDEX_DATA_JSON);
             JsonNode jsonNode = MAPPER.readTree(hotelsTestIndexDataJsonData);
             ((ObjectNode) jsonNode).set("name", new TextNode(indexName));
 

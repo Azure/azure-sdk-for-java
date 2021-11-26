@@ -37,8 +37,20 @@ public class AzureSpringIdentifier {
     public static final String AZURE_SPRING_APP_CONFIG = "az-sp-cfg/" + VERSION;
     public static final String AZURE_SPRING_EVENT_HUBS = "az-sp-eh/" + VERSION;
     public static final String AZURE_SPRING_KEY_VAULT = "az-sp-kv/" + VERSION;
+
+    /**
+     * Azure Spring ServiceBus
+     */
     public static final String AZURE_SPRING_SERVICE_BUS = "az-sp-bus/" + VERSION;
+
+    /**
+     * Azure Spring Storage Blob
+     */
     public static final String AZURE_SPRING_STORAGE_BLOB = "az-sp-sb/" + VERSION;
+
+    /**
+     * Azure Spring Storage Files
+     */
     public static final String AZURE_SPRING_STORAGE_FILES = "az-sp-sf/" + VERSION;
     public static final String AZURE_SPRING_COSMOS = "az-sp-cos/" + VERSION;
     public static final String AZURE_SPRING_STORAGE_QUEUE = "az-sp-sq/" + VERSION;
@@ -51,6 +63,10 @@ public class AzureSpringIdentifier {
      * x-client-VER;
      */
     public static final String AZURE_SPRING_AAD = "az-sp-aad";
+
+    /**
+     * Azure Spring B2C
+     */
     public static final String AZURE_SPRING_B2C = "az-sp-b2c";
 
     private static String getVersion() {

@@ -1227,7 +1227,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 this.client.getHttpPipeline(),
                 SqlDatabaseGetResultsInner.class,
                 SqlDatabaseGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1529,7 +1529,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             deleteSqlDatabaseWithResponseAsync(resourceGroupName, accountName, databaseName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1993,7 +1993,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 this.client.getHttpPipeline(),
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2306,7 +2306,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 this.client.getHttpPipeline(),
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2577,7 +2577,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 this.client.getHttpPipeline(),
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -3257,7 +3257,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 this.client.getHttpPipeline(),
                 SqlContainerGetResultsInner.class,
                 SqlContainerGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -3606,7 +3606,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             deleteSqlContainerWithResponseAsync(resourceGroupName, accountName, databaseName, containerName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -4101,7 +4101,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 this.client.getHttpPipeline(),
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -4441,7 +4441,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 this.client.getHttpPipeline(),
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -4737,7 +4737,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 this.client.getHttpPipeline(),
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -5513,7 +5513,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 this.client.getHttpPipeline(),
                 SqlStoredProcedureGetResultsInner.class,
                 SqlStoredProcedureGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -5922,7 +5922,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 resourceGroupName, accountName, databaseName, containerName, storedProcedureName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -6736,7 +6736,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 this.client.getHttpPipeline(),
                 SqlUserDefinedFunctionGetResultsInner.class,
                 SqlUserDefinedFunctionGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -7154,7 +7154,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -7938,7 +7938,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 this.client.getHttpPipeline(),
                 SqlTriggerGetResultsInner.class,
                 SqlTriggerGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -8334,7 +8334,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             deleteSqlTriggerWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, triggerName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -8835,7 +8835,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 this.client.getHttpPipeline(),
                 SqlRoleDefinitionGetResultsInner.class,
                 SqlRoleDefinitionGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -9145,7 +9145,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             deleteSqlRoleDefinitionWithResponseAsync(roleDefinitionId, resourceGroupName, accountName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -9774,7 +9774,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 this.client.getHttpPipeline(),
                 SqlRoleAssignmentGetResultsInner.class,
                 SqlRoleAssignmentGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -10084,7 +10084,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             deleteSqlRoleAssignmentWithResponseAsync(roleAssignmentId, resourceGroupName, accountName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -10553,7 +10553,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 this.client.getHttpPipeline(),
                 BackupInformationInner.class,
                 BackupInformationInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

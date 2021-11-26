@@ -29,6 +29,11 @@ public interface ReactiveCosmosQueryExecution {
 
         private final ReactiveCosmosOperations operations;
 
+        /**
+         * Creates a new instance of container execution.
+         *
+         * @param operations Reactive Cosmos operations
+         */
         public ContainerExecution(ReactiveCosmosOperations operations) {
             this.operations = operations;
         }
@@ -46,6 +51,11 @@ public interface ReactiveCosmosQueryExecution {
 
         private final ReactiveCosmosOperations operations;
 
+        /**
+         * Creates a new instance of multi-entity execution.
+         *
+         * @param operations Reactive Cosmos operations
+         */
         public MultiEntityExecution(ReactiveCosmosOperations operations) {
             this.operations = operations;
         }
@@ -64,6 +74,12 @@ public interface ReactiveCosmosQueryExecution {
         private final ReactiveCosmosOperations operations;
         private final ReturnedType returnedType;
 
+        /**
+         * Creates a new instance of single-entity execution.
+         *
+         * @param operations Reactive Cosmos operations
+         * @param returnedType Return type
+         */
         public SingleEntityExecution(ReactiveCosmosOperations operations, ReturnedType returnedType) {
             this.operations = operations;
             this.returnedType = returnedType;
@@ -91,6 +107,11 @@ public interface ReactiveCosmosQueryExecution {
 
         private final ReactiveCosmosOperations operations;
 
+        /**
+         * Creates a new instance of exists execution.
+         *
+         * @param operations Reactive Cosmos operations
+         */
         public ExistsExecution(ReactiveCosmosOperations operations) {
             this.operations = operations;
         }
@@ -108,6 +129,11 @@ public interface ReactiveCosmosQueryExecution {
 
         private final ReactiveCosmosOperations operations;
 
+        /**
+         * Creates a new instance of delete execution.
+         *
+         * @param operations Reactive Cosmos operations
+         */
         public DeleteExecution(ReactiveCosmosOperations operations) {
             this.operations = operations;
         }
@@ -125,6 +151,11 @@ public interface ReactiveCosmosQueryExecution {
 
         private final ReactiveCosmosOperations operations;
 
+        /**
+         * Creates a new instance of count execution.
+         *
+         * @param operations Reactive Cosmos operations
+         */
         public CountExecution(ReactiveCosmosOperations operations) {
             this.operations = operations;
         }

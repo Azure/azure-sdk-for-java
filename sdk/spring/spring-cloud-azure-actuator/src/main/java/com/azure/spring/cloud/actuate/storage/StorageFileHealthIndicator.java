@@ -22,6 +22,11 @@ public class StorageFileHealthIndicator implements HealthIndicator {
     private final ShareServiceAsyncClient shareServiceAsyncClient;
     private Duration timeout = DEFAULT_HEALTH_CHECK_TIMEOUT;
 
+    /**
+     * Creates a new instance of {@link StorageFileHealthIndicator}.
+     *
+     * @param shareServiceAsyncClient the ShareServiceAsyncClient
+     */
     public StorageFileHealthIndicator(ShareServiceAsyncClient shareServiceAsyncClient) {
         this.shareServiceAsyncClient = shareServiceAsyncClient;
     }

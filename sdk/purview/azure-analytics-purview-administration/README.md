@@ -57,8 +57,7 @@ Set the values of the client ID, tenant ID, and client secret of the AAD applica
 
 ##### Example
 
-<!-- embedme ./src/samples/java/com/azure/analytics/purview/administration/ReadmeSamples.java#L10-L13 -->
-```java
+```java readme-sample-createAccountsClient
 AccountsClient client = new PurviewAccountClientBuilder()
     .endpoint(System.getenv("ACCOUNT_ENDPOINT"))
     .credential(new DefaultAzureCredentialBuilder().build())
@@ -69,8 +68,7 @@ AccountsClient client = new PurviewAccountClientBuilder()
 
 ## Examples
 
-<!-- embedme ./src/samples/java/com/azure/analytics/purview/administration/GetAccount.java#L11-L15 -->
-```java
+```java readme-sample-getAccountProperties
 AccountsClient client = new PurviewAccountClientBuilder()
     .endpoint(System.getenv("ACCOUNT_ENDPOINT"))
     .credential(new DefaultAzureCredentialBuilder().build())

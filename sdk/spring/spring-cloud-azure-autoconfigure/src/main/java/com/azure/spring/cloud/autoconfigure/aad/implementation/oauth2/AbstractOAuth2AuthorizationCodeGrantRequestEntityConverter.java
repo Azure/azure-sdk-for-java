@@ -22,6 +22,11 @@ import java.util.UUID;
 public abstract class AbstractOAuth2AuthorizationCodeGrantRequestEntityConverter
     extends OAuth2AuthorizationCodeGrantRequestEntityConverter {
 
+    /**
+     * Gets the application ID.
+     *
+     * @return the application ID
+     */
     protected abstract String getApplicationId();
 
     @Override

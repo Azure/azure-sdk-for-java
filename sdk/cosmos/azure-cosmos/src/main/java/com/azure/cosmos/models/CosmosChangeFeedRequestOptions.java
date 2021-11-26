@@ -20,6 +20,9 @@ import java.util.Map;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
+/**
+ * Encapsulates options that can be specified for an operation within a change feed request.
+ */
 @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
     Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class CosmosChangeFeedRequestOptions {
@@ -74,6 +77,11 @@ public final class CosmosChangeFeedRequestOptions {
         return this.continuationState;
     }
 
+    /**
+     * Gets the feed range.
+     *
+     * @return the feed range.
+     */
     @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
         Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public FeedRange getFeedRange() {
