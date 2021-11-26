@@ -34,7 +34,8 @@
   <developers>
     <developer>
       <id>microsoft</id>
-      <name>Microsoft Corporation</name>
+       <name>Spring Cloud Azure</name>
+      <email>SpringIntegSupport@microsoft.com</email>
     </developer>
   </developers>
 
@@ -87,7 +88,7 @@
   <scm>
     <url>https://github.com/Azure/azure-sdk-for-java</url>
     <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</connection>
-    <developerConnection/>
+    <developerConnection>scm:git:ssh://git@github.com:Azure/azure-sdk-for-java.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
 
