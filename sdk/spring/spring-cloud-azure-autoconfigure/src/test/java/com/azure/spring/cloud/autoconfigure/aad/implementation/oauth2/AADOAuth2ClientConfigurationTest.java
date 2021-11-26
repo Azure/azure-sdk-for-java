@@ -37,7 +37,7 @@ class AADOAuth2ClientConfigurationTest {
         oauthClientAndResourceServerRunner()
             .withPropertyValues(
                 "spring.cloud.azure.active-directory.enabled=true",
-                "spring.cloud.azure.active-directory.client-id=fake-client-id"
+                "spring.cloud.azure.active-directory.credential.client-id=fake-client-id"
             )
             .run(context -> {
                 assertThat(context).hasSingleBean(AADAuthenticationProperties.class);

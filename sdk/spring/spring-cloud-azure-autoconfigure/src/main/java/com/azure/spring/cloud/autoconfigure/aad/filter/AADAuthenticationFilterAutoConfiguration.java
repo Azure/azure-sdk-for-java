@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Azure Active Authentication filters.
  * <p>
- * The configuration will not be activated if no {@literal spring.cloud.azure.active-directory.client-id} property provided.
+ * The configuration will not be activated if no {@literal spring.cloud.azure.active-directory.credential.client-id} property provided.
  * <p>
  * A stateless filter {@link AADAppRoleStatelessAuthenticationFilter} will be auto-configured by specifying {@literal
  * spring.cloud.azure.active-directory.session-stateless=true}. Otherwise, {@link AADAuthenticationFilter} will be configured.
@@ -35,7 +35,7 @@ import java.util.concurrent.TimeUnit;
 @ConditionalOnWebApplication
 @ConditionalOnExpression("${spring.cloud.azure.active-directory.enabled:false}")
 @ConditionalOnMissingClass({ "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken" })
-@ConditionalOnProperty(prefix = AADAuthenticationFilterAutoConfiguration.PROPERTY_PREFIX, value = { "client-id" })
+@ConditionalOnProperty(prefix = AADAuthenticationFilterAutoConfiguration.PROPERTY_PREFIX, value = { "credential.client-id" })
 @EnableConfigurationProperties({ AADAuthenticationProperties.class })
 public class AADAuthenticationFilterAutoConfiguration {
     public static final String PROPERTY_PREFIX = "spring.cloud.azure.active-directory";

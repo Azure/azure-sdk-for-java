@@ -77,7 +77,7 @@ class AADAuthenticationPropertiesTest {
     void multiTenantWithAllowedGroupsConfiguredTest1() {
         webApplicationContextRunner()
             .withPropertyValues(
-                "spring.cloud.azure.active-directory.tenant-id=",
+                "spring.cloud.azure.active-directory.profile.tenant-id=",
                 "spring.cloud.azure.active-directory.user-group.allowed-groups=group1,group2"
             )
             .run(context ->
@@ -89,7 +89,7 @@ class AADAuthenticationPropertiesTest {
     void multiTenantWithAllowedGroupsConfiguredTest2() {
         webApplicationContextRunner()
             .withPropertyValues(
-                "spring.cloud.azure.active-directory.tenant-id=common",
+                "spring.cloud.azure.active-directory.profile.tenant-id=common",
                 "spring.cloud.azure.active-directory.user-group.allowed-groups=group1,group2"
             )
             .run(context ->
@@ -101,7 +101,7 @@ class AADAuthenticationPropertiesTest {
     void multiTenantWithAllowedGroupsConfiguredTest3() {
         webApplicationContextRunner()
             .withPropertyValues(
-                "spring.cloud.azure.active-directory.tenant-id=organizations",
+                "spring.cloud.azure.active-directory.profile.tenant-id=organizations",
                 "spring.cloud.azure.active-directory.user-group.allowed-groups=group1,group2"
             )
             .run(context ->
@@ -113,7 +113,7 @@ class AADAuthenticationPropertiesTest {
     void multiTenantWithAllowedGroupsIdConfiguredTest1() {
         webApplicationContextRunner()
             .withPropertyValues(
-                "spring.cloud.azure.active-directory.tenant-id=",
+                "spring.cloud.azure.active-directory.profile.tenant-id=",
                 "spring.cloud.azure.active-directory.user-group.allowed-group-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718,"
                     + "39087533-2593-4b5b-ad05-4a73a01ea6a9"
             )
@@ -126,7 +126,7 @@ class AADAuthenticationPropertiesTest {
     void multiTenantWithAllowedGroupsIdConfiguredTest2() {
         webApplicationContextRunner()
             .withPropertyValues(
-                "spring.cloud.azure.active-directory.tenant-id=common",
+                "spring.cloud.azure.active-directory.profile.tenant-id=common",
                 "spring.cloud.azure.active-directory.user-group.allowed-group-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718,"
                     + "39087533-2593-4b5b-ad05-4a73a01ea6a9"
             )
@@ -139,7 +139,7 @@ class AADAuthenticationPropertiesTest {
     void multiTenantWithAllowedGroupsIdConfiguredTest3() {
         webApplicationContextRunner()
             .withPropertyValues(
-                "spring.cloud.azure.active-directory.tenant-id=organizations",
+                "spring.cloud.azure.active-directory.profile.tenant-id=organizations",
                 "spring.cloud.azure.active-directory.user-group.allowed-group-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718,"
                     + "39087533-2593-4b5b-ad05-4a73a01ea6a9"
             )
@@ -152,7 +152,7 @@ class AADAuthenticationPropertiesTest {
     void multiTenantWithAllowedGroupsIdConfiguredTest4() {
         webApplicationContextRunner()
             .withPropertyValues(
-                "spring.cloud.azure.active-directory.tenant-id=consumers",
+                "spring.cloud.azure.active-directory.profile.tenant-id=consumers",
                 "spring.cloud.azure.active-directory.user-group.allowed-group-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718,"
                     + "39087533-2593-4b5b-ad05-4a73a01ea6a9"
             )
@@ -165,7 +165,7 @@ class AADAuthenticationPropertiesTest {
     void multiTenantWithAllowedGroupsConfiguredTest4() {
         webApplicationContextRunner()
             .withPropertyValues(
-                "spring.cloud.azure.active-directory.tenant-id=consumers",
+                "spring.cloud.azure.active-directory.profile.tenant-id=consumers",
                 "spring.cloud.azure.active-directory.user-group.allowed-groups=group1,group2"
             )
             .run(context ->

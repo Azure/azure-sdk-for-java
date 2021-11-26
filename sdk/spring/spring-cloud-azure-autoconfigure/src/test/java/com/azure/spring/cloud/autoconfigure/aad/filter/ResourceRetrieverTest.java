@@ -20,8 +20,8 @@ class ResourceRetrieverTest {
         .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
         .withPropertyValues(
             "spring.cloud.azure.active-directory.enabled=true",
-            "spring.cloud.azure.active-directory.client-id=fake-client-id",
-            "spring.cloud.azure.active-directory.client-secret=fake-client-secret"
+            "spring.cloud.azure.active-directory.credential.client-id=fake-client-id",
+            "spring.cloud.azure.active-directory.credential.client-secret=fake-client-secret"
         );
 
     @Test
@@ -43,7 +43,7 @@ class ResourceRetrieverTest {
     }
 
     @Test
-    void resourceRetriverIsConfigurable() {
+    void resourceRetrieverIsConfigurable() {
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.active-directory.enabled=true",

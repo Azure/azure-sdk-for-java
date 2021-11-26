@@ -181,7 +181,7 @@ class AADClientRegistrationRepositoryTest {
     void customizeUriTest() {
         webApplicationContextRunner()
             .withPropertyValues(
-                "spring.cloud.azure.active-directory.base-uri = http://localhost/"
+                "spring.cloud.azure.active-directory.profile.environment.active-directory-endpoint = http://localhost/"
             )
             .run(context -> {
                 ClientRegistrationRepository repository = context.getBean(ClientRegistrationRepository.class);

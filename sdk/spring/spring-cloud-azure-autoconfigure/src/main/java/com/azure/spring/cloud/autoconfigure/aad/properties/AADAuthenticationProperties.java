@@ -7,6 +7,7 @@ import com.azure.spring.cloud.autoconfigure.aad.core.AADApplicationType;
 import com.azure.spring.cloud.autoconfigure.aad.core.AADAuthorizationGrantType;
 import com.azure.spring.cloud.autoconfigure.aad.filter.AADAppRoleStatelessAuthenticationFilter;
 import com.azure.spring.cloud.autoconfigure.aad.filter.AADAuthenticationFilter;
+import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -15,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -36,22 +38,25 @@ import static com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.AAD
 /**
  * Configuration properties for Azure Active Directory Authentication.
  */
-@ConfigurationProperties("spring.cloud.azure.active-directory")
+@ConfigurationProperties(AADAuthenticationProperties.PREFIX)
 public class AADAuthenticationProperties implements InitializingBean {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AADAuthenticationProperties.class);
+    public static final String PREFIX = "spring.cloud.azure.active-directory";
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AADAuthenticationProperties.class);
     private static final long DEFAULT_JWK_SET_CACHE_LIFESPAN = TimeUnit.MINUTES.toMillis(5);
     private static final long DEFAULT_JWK_SET_CACHE_REFRESH_TIME = DEFAULT_JWK_SET_CACHE_LIFESPAN;
 
     /**
      * Profile of Azure cloud environment.
      */
+    @NestedConfigurationProperty
     private AADProfileProperties profile = new AADProfileProperties();
 
     /**
      * Properties used for authorize.
      */
+    @NestedConfigurationProperty
     private AADCredentialProperties credential = new AADCredentialProperties();
 
 
@@ -425,6 +430,29 @@ public class AADAuthenticationProperties implements InitializingBean {
                        .map(UserGroupProperties::getAllowedGroupIds)
                        .orElseGet(Collections::emptySet)
                        .contains(group);
+    }
+
+    public void setDefaultValueFromAzureGlobalProperties(AzureGlobalProperties global) {
+        if (this.getCredential().getClientId() == null) {
+            this.setClientId(global.getCredential().getClientId());
+        }
+        if (this.getCredential().getClientSecret() == null) {
+            this.setClientSecret(global.getCredential().getClientSecret());
+        }
+        if (this.getProfile().getTenantId() == null) {
+            this.setTenantId(global.getProfile().getTenantId());
+        }
+        if (this.getProfile().getCloud() == null) {
+            this.getProfile().setCloud(global.getProfile().getCloud());
+        }
+        if (this.getProfile().getEnvironment().getActiveDirectoryEndpoint() == null) {
+            this.getProfile().getEnvironment().setActiveDirectoryEndpoint(
+                global.getProfile().getEnvironment().getActiveDirectoryEndpoint());
+        }
+        if (this.getProfile().getEnvironment().getMicrosoftGraphEndpoint() == null) {
+            this.getProfile().getEnvironment().setMicrosoftGraphEndpoint(
+                global.getProfile().getEnvironment().getMicrosoftGraphEndpoint());
+        }
     }
 
     @Override

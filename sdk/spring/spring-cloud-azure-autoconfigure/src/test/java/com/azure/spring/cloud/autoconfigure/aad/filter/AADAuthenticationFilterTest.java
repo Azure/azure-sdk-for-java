@@ -56,9 +56,9 @@ public class AADAuthenticationFilterTest {
     @Test
     @Disabled
     public void doFilterInternal() {
-        this.contextRunner.withPropertyValues("spring.cloud.azure.active-directory.client-id", TestConstants.CLIENT_ID)
-                .withPropertyValues("spring.cloud.azure.active-directory.client-secret", TestConstants.CLIENT_SECRET)
-                .withPropertyValues("spring.cloud.azure.active-directory.client-secret",
+        this.contextRunner.withPropertyValues("spring.cloud.azure.active-directory.credential.client-id", TestConstants.CLIENT_ID)
+                .withPropertyValues("spring.cloud.azure.active-directory.credential.client-secret", TestConstants.CLIENT_SECRET)
+                .withPropertyValues("spring.cloud.azure.active-directory.credential.client-secret",
                         TestConstants.TARGETED_GROUPS.toString()
                                                      .replace("[", "").replace("]", ""));
 

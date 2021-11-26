@@ -58,8 +58,8 @@ public class AADAuthenticationFilterPropertiesTest {
     @Test
     //TODO (wepa) clientId and clientSecret can also be configured in oauth2 config, test to be refactored
     public void emptySettingsNotAllowed() {
-        System.setProperty("spring.cloud.azure.active-directory.client-id", "");
-        System.setProperty("spring.cloud.azure.active-directory.client-secret", "");
+        System.setProperty("spring.cloud.azure.active-directory.credential.client-id", "");
+        System.setProperty("spring.cloud.azure.active-directory.credential.client-secret", "");
 
         try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
             Exception exception = null;
