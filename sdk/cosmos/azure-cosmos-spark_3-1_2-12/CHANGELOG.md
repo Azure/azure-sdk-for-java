@@ -1,5 +1,5 @@
 ## Release History
-### 4.4.3-beta.2 (Unreleased)
+### 4.4.3-beta.1 (Unreleased)
 
 ### 4.4.2 (2021-11-15)
 #### Key Bug Fixes
