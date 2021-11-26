@@ -6,6 +6,8 @@ This release is compatible with Spring Boot 2.5.0 - 2.5.4 and Spring Cloud 2020.
 ### Dependency Upgrades
 - Upgrade Azure SDK bom version to 1.0.6.
 - Upgrade Azure Spring versions to 2.11.0.
+- Upgrade Spring Cloud App Configuration version to 2.2.0.
+- Upgrade Spring Cloud App Configuration Feature Management version to 2.1.0.
 
 ## 2.10.2 (2021-11-19)
 This release is compatible with Spring Boot 2.5.0 - 2.5.4.
