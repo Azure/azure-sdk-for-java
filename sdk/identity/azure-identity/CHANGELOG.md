@@ -3,7 +3,7 @@
 ## 1.4.2 (2021-11-24)
 
 ### Bugs Fixed
-- Fixes the edge case scenario when MSI Tokens return both `expires_on` and `expires_in` fields populated.
+- Fixes the edge case scenario when MSI Tokens return both `expires_on` and `expires_in` fields populated for `ManagedIdentityCredential`.
 
 ## 1.4.1 (2021-11-09)
 
