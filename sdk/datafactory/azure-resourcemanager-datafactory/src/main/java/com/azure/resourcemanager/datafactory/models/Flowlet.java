@@ -7,15 +7,11 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.FlowletTypeProperties;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /** Data flow flowlet. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -30,11 +26,6 @@ public final class Flowlet extends DataFlow {
     @JsonProperty(value = "typeProperties")
     private FlowletTypeProperties innerTypeProperties;
 
-    /*
-     * Data flow flowlet
-     */
-    @JsonIgnore private Map<String, Object> additionalProperties;
-
     /**
      * Get the innerTypeProperties property: Flowlet type properties.
      *
@@ -42,35 +33,6 @@ public final class Flowlet extends DataFlow {
      */
     private FlowletTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
-    }
-
-    /**
-     * Get the additionalProperties property: Data flow flowlet.
-     *
-     * @return the additionalProperties value.
-     */
-    @JsonAnyGetter
-    public Map<String, Object> additionalProperties() {
-        return this.additionalProperties;
-    }
-
-    /**
-     * Set the additionalProperties property: Data flow flowlet.
-     *
-     * @param additionalProperties the additionalProperties value to set.
-     * @return the Flowlet object itself.
-     */
-    public Flowlet withAdditionalProperties(Map<String, Object> additionalProperties) {
-        this.additionalProperties = additionalProperties;
-        return this;
-    }
-
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
     }
 
     /** {@inheritDoc} */
@@ -206,29 +168,6 @@ public final class Flowlet extends DataFlow {
             this.innerTypeProperties = new FlowletTypeProperties();
         }
         this.innerTypeProperties().withScriptLines(scriptLines);
-        return this;
-    }
-
-    /**
-     * Get the additionalProperties property: Any object.
-     *
-     * @return the additionalProperties value.
-     */
-    public Object additionalPropertiesTypePropertiesAdditionalProperties() {
-        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().additionalProperties();
-    }
-
-    /**
-     * Set the additionalProperties property: Any object.
-     *
-     * @param additionalProperties the additionalProperties value to set.
-     * @return the Flowlet object itself.
-     */
-    public Flowlet withAdditionalPropertiesTypePropertiesAdditionalProperties(Object additionalProperties) {
-        if (this.innerTypeProperties() == null) {
-            this.innerTypeProperties = new FlowletTypeProperties();
-        }
-        this.innerTypeProperties().withAdditionalProperties(additionalProperties);
         return this;
     }
 
