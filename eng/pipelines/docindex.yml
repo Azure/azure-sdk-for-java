@@ -8,6 +8,7 @@ jobs:
       vmImage: ubuntu-20.04
     variables:
       DocRepoLocation: $(Pipeline.Workspace)/docs
+      DailyDocRepoLocation: $(Pipeline.Workspace)/dailyDocsFork 
       DocRepoOwner: Azure
       DocRepoName: azure-docs-sdk-java
     steps:
