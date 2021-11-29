@@ -154,6 +154,13 @@ public class AzureWorkloadSqlRestoreRequest extends AzureWorkloadRestoreRequest 
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureWorkloadSqlRestoreRequest withTargetVirtualMachineId(String targetVirtualMachineId) {
+        super.withTargetVirtualMachineId(targetVirtualMachineId);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

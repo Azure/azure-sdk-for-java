@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 /** MAB workload-specific backup item. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "protectedItemType")
@@ -289,6 +290,13 @@ public final class MabFileFolderProtectedItem extends ProtectedItem {
     @Override
     public MabFileFolderProtectedItem withIsRehydrate(Boolean isRehydrate) {
         super.withIsRehydrate(isRehydrate);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MabFileFolderProtectedItem withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
+        super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
         return this;
     }
 
