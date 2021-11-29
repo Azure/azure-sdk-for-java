@@ -61,7 +61,7 @@ public class ClientLogger {
      * Retrieves a logger for the passed class name using the {@link LoggerFactory}.
      *
      * @param className Class name creating the logger.
-     * @throws RuntimeException in case of invalid arguments.
+     * @throws RuntimeException when logging configuration is invalid depending on SDL4J implementation.
      */
     public ClientLogger(String className) {
         this(className, Collections.emptyMap());
@@ -93,10 +93,9 @@ public class ClientLogger {
      * @param className Class name creating the logger.
      * @param context Context to be populated on every log record written with this logger.
      *                Objects are serialized with {@code toString()} method.
-     * @throws RuntimeException in case of invalid arguments.
+     * @throws RuntimeException when logging configuration is invalid depending on SDL4J implementation.
      */
     public ClientLogger(String className, Map<String, Object> context) {
-        Objects.requireNonNull(context, "'context' cannot be null.");
         Logger initLogger = LoggerFactory.getLogger(className);
         logger = initLogger instanceof NOPLogger ? new DefaultLogger(className) : initLogger;
         globalContextSerialized = LoggingEventBuilder.writeJsonFragment(context);

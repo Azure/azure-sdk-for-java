@@ -403,7 +403,16 @@ public class ClientLoggerTests {
      */
     @Test
     public void logWithNullGlobalContext() {
-        assertThrows(NullPointerException.class, () -> new ClientLogger(ClientLoggerTests.class, null));
+        setupLogLevel(LogLevel.INFORMATIONAL.getLogLevel());
+
+        ClientLogger logger = new ClientLogger(ClientLoggerTests.class, null);
+        logger.info("Param 1: {}, Param 2: {}, Param 3: {}", "test1", "test2", "test3");
+
+        assertMessage(
+            "Param 1: test1, Param 2: test2, Param 3: test3",
+            byteArraySteamToString(logCaptureStream),
+            LogLevel.INFORMATIONAL,
+            LogLevel.INFORMATIONAL);
     }
 
     /**
