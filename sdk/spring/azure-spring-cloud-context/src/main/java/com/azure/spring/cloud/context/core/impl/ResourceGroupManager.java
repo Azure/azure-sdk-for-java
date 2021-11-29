@@ -14,7 +14,13 @@ import com.azure.spring.cloud.context.core.config.AzureProperties;
 public class ResourceGroupManager extends AzureManager<ResourceGroup, String> {
 
     private final AzureResourceManager azureResourceManager;
-    
+
+    /**
+     * Creates a new instance of {@link ResourceGroupManager}.
+     *
+     * @param azureResourceManager The Azure resource manager.
+     * @param azureProperties The Azure properties.
+     */
     public ResourceGroupManager(AzureResourceManager azureResourceManager, AzureProperties azureProperties) {
         super(azureProperties);
         this.azureResourceManager = azureResourceManager;

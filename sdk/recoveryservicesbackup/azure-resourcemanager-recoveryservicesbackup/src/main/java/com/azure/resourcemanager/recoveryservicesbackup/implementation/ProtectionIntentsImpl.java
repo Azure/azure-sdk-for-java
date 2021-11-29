@@ -199,7 +199,7 @@ public final class ProtectionIntentsImpl implements ProtectionIntents {
                                 "The resource ID '%s' is not valid. Missing path segment 'backupProtectionIntent'.",
                                 id)));
         }
-        this.deleteWithResponse(vaultName, resourceGroupName, fabricName, intentObjectName, Context.NONE).getValue();
+        this.deleteWithResponse(vaultName, resourceGroupName, fabricName, intentObjectName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {

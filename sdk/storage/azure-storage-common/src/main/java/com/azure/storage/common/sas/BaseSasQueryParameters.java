@@ -23,19 +23,39 @@ import java.util.function.Function;
  */
 @Deprecated
 public abstract class BaseSasQueryParameters {
-
+    /**
+     * The Storage version.
+     */
     protected String version;
 
+    /**
+     * The allowed HTTP/HTTPS protocols.
+     */
     protected SasProtocol protocol;
 
+    /**
+     * The start time for the SAS's validity.
+     */
     protected OffsetDateTime startTime;
 
+    /**
+     * The end time for the SAS's validity.
+     */
     protected OffsetDateTime expiryTime;
 
+    /**
+     * The IP range that the SAS validates.
+     */
     protected SasIpRange sasIpRange;
 
+    /**
+     * The permissions of the SAS.
+     */
     protected String permissions;
 
+    /**
+     * The signature of the SAS.
+     */
     protected String signature;
 
     /**

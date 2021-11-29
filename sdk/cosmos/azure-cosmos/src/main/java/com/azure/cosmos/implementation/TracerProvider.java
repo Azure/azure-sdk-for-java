@@ -480,7 +480,7 @@ public class TracerProvider {
         //adding systemInformation
         attributes = new HashMap<>();
         attributes.put(JSON_STRING,
-            mapper.writeValueAsString(clientSideRequestStatistics.getRegionsContacted()));
+            mapper.writeValueAsString(clientSideRequestStatistics.getContactedRegionNames()));
         this.addEvent("RegionContacted", attributes,
             OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC), context);
 

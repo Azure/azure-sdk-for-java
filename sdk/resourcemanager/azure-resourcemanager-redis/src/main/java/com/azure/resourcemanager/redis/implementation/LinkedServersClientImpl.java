@@ -295,7 +295,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
                 this.client.getHttpPipeline(),
                 RedisLinkedServerWithPropertiesInner.class,
                 RedisLinkedServerWithPropertiesInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

@@ -172,7 +172,7 @@ public class WebPubSubServiceClientTests extends TestBase {
         // TODO (jogiles) can we determine if this user exists anywhere in the current hub?
         Response<Void> removeUserResponse =
             client.removeUserFromAllGroupsWithResponse("testRemoveNonExistentUserFromHub", new RequestOptions());
-        assertEquals(200, removeUserResponse.getStatusCode());
+        assertEquals(204, removeUserResponse.getStatusCode());
     }
 
     @Test
@@ -204,7 +204,7 @@ public class WebPubSubServiceClientTests extends TestBase {
     @Test
     public void testRemoveNonExistentUserFromGroup() {
         assertResponse(client.removeUserFromGroupWithResponse("java",
-                "testRemoveNonExistentUserFromGroup", new RequestOptions()), 200);
+                "testRemoveNonExistentUserFromGroup", new RequestOptions()), 204);
     }
 
     @Test

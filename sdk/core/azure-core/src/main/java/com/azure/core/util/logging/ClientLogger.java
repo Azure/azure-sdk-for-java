@@ -10,10 +10,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.helpers.NOPLogger;
 
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Supplier;
-import java.util.regex.Pattern;
+
+import static com.azure.core.implementation.logging.LoggingUtils.removeNewLinesFromLogMessage;
+
+import static com.azure.core.implementation.logging.LoggingUtils.doesArgsHaveThrowable;
+import static com.azure.core.implementation.logging.LoggingUtils.removeThrowable;
 
 /**
  * This is a fluent logger helper class that wraps a pluggable {@link Logger}.
@@ -37,7 +40,6 @@ import java.util.regex.Pattern;
  * @see Configuration
  */
 public class ClientLogger {
-    private static final Pattern CRLF_PATTERN = Pattern.compile("[\r\n]");
     private final Logger logger;
 
     /**
@@ -124,7 +126,7 @@ public class ClientLogger {
      */
     public void verbose(String message) {
         if (logger.isDebugEnabled()) {
-            logger.debug(sanitizeLogMessageInput(message));
+            logger.debug(removeNewLinesFromLogMessage(message));
         }
     }
 
@@ -168,7 +170,7 @@ public class ClientLogger {
      */
     public void info(String message) {
         if (logger.isInfoEnabled()) {
-            logger.info(sanitizeLogMessageInput(message));
+            logger.info(removeNewLinesFromLogMessage(message));
         }
     }
 
@@ -213,7 +215,7 @@ public class ClientLogger {
      */
     public void warning(String message) {
         if (logger.isWarnEnabled()) {
-            logger.warn(sanitizeLogMessageInput(message));
+            logger.warn(removeNewLinesFromLogMessage(message));
         }
     }
 
@@ -262,7 +264,7 @@ public class ClientLogger {
      */
     public void error(String message) {
         if (logger.isErrorEnabled()) {
-            logger.error(sanitizeLogMessageInput(message));
+            logger.error(removeNewLinesFromLogMessage(message));
         }
     }
 
@@ -345,11 +347,10 @@ public class ClientLogger {
      */
     public <T extends Throwable> T logThrowableAsWarning(T throwable) {
         Objects.requireNonNull(throwable, "'throwable' cannot be null.");
-        if (!logger.isWarnEnabled()) {
-            return throwable;
+        if (logger.isWarnEnabled()) {
+            performLogging(LogLevel.WARNING, true, throwable.getMessage(), throwable);
         }
 
-        performLogging(LogLevel.WARNING, true, throwable.getMessage(), throwable);
         return throwable;
     }
 
@@ -419,7 +420,7 @@ public class ClientLogger {
             }
         }
 
-        sanitizeLogMessageInput(format);
+        format = removeNewLinesFromLogMessage(format);
 
         switch (logLevel) {
             case VERBOSE:
@@ -453,9 +454,9 @@ public class ClientLogger {
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
     private void performDeferredLogging(LogLevel logLevel, Supplier<String> messageSupplier, Throwable throwable) {
+        String message = removeNewLinesFromLogMessage(messageSupplier.get());
         String throwableMessage = (throwable != null) ? throwable.getMessage() : "";
-        String message = messageSupplier.get();
-        sanitizeLogMessageInput(message);
+
         switch (logLevel) {
             case VERBOSE:
                 if (throwable != null) {
@@ -489,7 +490,6 @@ public class ClientLogger {
      * @param args The arguments passed to evaluate suppliers in args.
      * @return Return the argument with evaluated supplier
      */
-
     Object[] evaluateSupplierArgument(Object[] args) {
         if (isSupplierLogging(args)) {
             args[0] = ((Supplier<?>) args[0]).get();
@@ -530,41 +530,89 @@ public class ClientLogger {
         }
     }
 
-    /*
-     * Determines if the arguments contains a throwable that would be logged, SLF4J logs a throwable if it is the last
-     * element in the argument list.
+    /**
+     * Creates {@link LoggingEventBuilder} for {@code error} log level that can be
+     * used to enrich log with additional context.
+     * <p><strong>Code samples</strong></p>
      *
-     * @param args The arguments passed to format the log message.
-     * @return True if the last element is a throwable, false otherwise.
+     * <p>Logging with context at error level.</p>
+     *
+     * <!-- src_embed com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     * <pre>
+     * logger.atVerbose&#40;&#41;
+     *     .addKeyValue&#40;&quot;key&quot;, 1L&#41;
+     *     .log&#40;&#40;&#41; -&gt; String.format&#40;&quot;Param 1: %s, Param 2: %s, Param 3: %s&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     *
+     * @return instance of {@link LoggingEventBuilder}  or no-op if error logging is disabled.
      */
-    private boolean doesArgsHaveThrowable(Object... args) {
-        if (args.length == 0) {
-            return false;
-        }
-
-        return args[args.length - 1] instanceof Throwable;
+    public LoggingEventBuilder atError() {
+        return LoggingEventBuilder.create(logger, LogLevel.ERROR, canLogAtLevel(LogLevel.ERROR));
     }
 
-    /*
-     * Removes the last element from the arguments as it is a throwable.
+    /**
+     * Creates {@link LoggingEventBuilder} for {@code warning} log level that can be
+     * used to enrich log with additional context.
+
+     * <p><strong>Code samples</strong></p>
      *
-     * @param args The arguments passed to format the log message.
-     * @return The arguments with the last element removed.
+     * <p>Logging with context at warning level.</p>
+     *
+     * <!-- src_embed com.azure.core.util.logging.clientlogger.atWarning -->
+     * <pre>
+     * logger.atWarning&#40;&#41;
+     *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
+     *     .log&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name, exception&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.logging.clientlogger.atWarning -->
+     *
+     * @return instance of {@link LoggingEventBuilder} or no-op if warn logging is disabled.
      */
-    private Object[] removeThrowable(Object... args) {
-        return Arrays.copyOf(args, args.length - 1);
+    public LoggingEventBuilder atWarning() {
+        return LoggingEventBuilder.create(logger, LogLevel.WARNING, canLogAtLevel(LogLevel.WARNING));
     }
 
-    /*
-     * Removes CRLF pattern in the {@code logMessage}.
+    /**
+     * Creates {@link LoggingEventBuilder} for {@code info} log level that can be
+     * used to enrich log with additional context.
      *
-     * @param logMessage The log message to sanitize.
-     * @return The updated logMessage.
+     * <p><strong>Code samples</strong></p>
+     *
+     * <p>Logging with context at info level.</p>
+     *
+     * <!-- src_embed com.azure.core.util.logging.clientlogger.atInfo -->
+     * <pre>
+     * logger.atInfo&#40;&#41;
+     *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
+     *     .log&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.logging.clientlogger.atInfo -->
+     *
+     * @return instance of {@link LoggingEventBuilder} or no-op if info logging is disabled.
      */
-    private static String sanitizeLogMessageInput(String logMessage) {
-        if (CoreUtils.isNullOrEmpty(logMessage)) {
-            return logMessage;
-        }
-        return CRLF_PATTERN.matcher(logMessage).replaceAll("");
+    public LoggingEventBuilder atInfo() {
+        return LoggingEventBuilder.create(logger, LogLevel.INFORMATIONAL, canLogAtLevel(LogLevel.INFORMATIONAL));
+    }
+
+    /**
+     * Creates {@link LoggingEventBuilder} for {@code verbose} log level that can be
+     * used to enrich log with additional context.
+     * <p><strong>Code samples</strong></p>
+     *
+     * <p>Logging with context at verbose level.</p>
+     *
+     * <!-- src_embed com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     * <pre>
+     * logger.atVerbose&#40;&#41;
+     *     .addKeyValue&#40;&quot;key&quot;, 1L&#41;
+     *     .log&#40;&#40;&#41; -&gt; String.format&#40;&quot;Param 1: %s, Param 2: %s, Param 3: %s&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     *
+     * @return instance of {@link LoggingEventBuilder} or no-op if verbose logging is disabled.
+     */
+    public LoggingEventBuilder atVerbose() {
+        return LoggingEventBuilder.create(logger, LogLevel.VERBOSE, canLogAtLevel(LogLevel.VERBOSE));
     }
 }

@@ -49,6 +49,7 @@ on the `AttestationClientBuilder` class and implemented a new `AttestationAdmini
 with the  `listPolicyManagementCertificates`, `addPolicyManagementCertificate` and `removePolicyManagementCertificate` APIs on the `AttestationAdministrationClient` object.
  * Removed `JsonWebKey`, `JsonWebKeySet`, `PolicyCertificatesModificationResult`, `PolicyCertificatesModifyResponse`, and `CertificatesResponse` objects 
 because they are no longer a part of the public API surface.
+ * Refactored `AttestationSigningKey` class to require certificate and signing key parameters in constructor.
 
 ### Bugs Fixed
 * Attestation tests now all pass when run in Live mode.

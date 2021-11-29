@@ -20,6 +20,12 @@ public class AADAuthorizationServerEndpoints {
     private final String baseUri;
     private final String tenantId;
 
+    /**
+     * Creates a new instance of {@link AADAuthorizationServerEndpoints}.
+     *
+     * @param baseUri the base URI
+     * @param tenantId the tenant ID
+     */
     public AADAuthorizationServerEndpoints(String baseUri, String tenantId) {
         if (StringUtils.isBlank(baseUri)) {
             baseUri = DEFAULT_BASE_URI;
@@ -28,6 +34,11 @@ public class AADAuthorizationServerEndpoints {
         this.tenantId = tenantId;
     }
 
+    /**
+     * Gets the base URI.
+     *
+     * @return the base URI
+     */
     public String getBaseUri() {
         return this.baseUri;
     }
@@ -36,18 +47,38 @@ public class AADAuthorizationServerEndpoints {
         return uri.endsWith("/") ? uri : uri + "/";
     }
 
+    /**
+     * Gets the authorization endpoint.
+     *
+     * @return the authorization endpoint
+     */
     public String authorizationEndpoint() {
         return baseUri + tenantId + AUTHORIZATION_ENDPOINT;
     }
 
+    /**
+     * Gets the token endpoint.
+     *
+     * @return the token endpoint
+     */
     public String tokenEndpoint() {
         return baseUri + tenantId + TOKEN_ENDPOINT;
     }
 
+    /**
+     * Gets the JWK set endpoint.
+     *
+     * @return the JWK set endpoint
+     */
     public String jwkSetEndpoint() {
         return baseUri + tenantId + JWK_SET_ENDPOINT;
     }
 
+    /**
+     * Gets the end session endpoint.
+     *
+     * @return the end session endpoint
+     */
     public String endSessionEndpoint() {
         return baseUri + tenantId + END_SESSION_ENDPOINT;
     }
