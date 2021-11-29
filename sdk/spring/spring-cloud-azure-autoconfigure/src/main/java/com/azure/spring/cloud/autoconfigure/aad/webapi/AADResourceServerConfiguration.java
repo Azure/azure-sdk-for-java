@@ -60,6 +60,11 @@ public class AADResourceServerConfiguration {
         return nimbusJwtDecoder;
     }
 
+    /**
+     * Creates a default validator.
+     *
+     * @return a default validator
+     */
     public List<OAuth2TokenValidator<Jwt>> createDefaultValidator() {
         List<OAuth2TokenValidator<Jwt>> validators = new ArrayList<>();
         List<String> validAudiences = new ArrayList<>();

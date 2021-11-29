@@ -15,27 +15,114 @@ import java.util.Map;
  */
 public enum CriteriaType {
 
+    /**
+     * All
+     */
     ALL(""),
+
+    /**
+     * Is equal
+     */
     IS_EQUAL("="),
+
+    /**
+     * Or
+     */
     OR("OR"),
+
+    /**
+     * And
+     */
     AND("AND"),
+
+    /**
+     * Not
+     */
     NOT("<>"),
+
+    /**
+     * Before
+     */
     BEFORE("<"),
+
+    /**
+     * After
+     */
     AFTER(">"),
+
+    /**
+     * In
+     */
     IN("IN"),
+
+    /**
+     * Not in
+     */
     NOT_IN("NOT IN"),
+
+    /**
+     * Is null
+     */
     IS_NULL("IS_NULL"),
+
+    /**
+     * Is not null
+     */
     IS_NOT_NULL("NOT IS_NULL"),
+
+    /**
+     * Less than
+     */
     LESS_THAN("<"),
+
+    /**
+     * Less than or equal
+     */
     LESS_THAN_EQUAL("<="),
+
+    /**
+     * Greater than
+     */
     GREATER_THAN(">"),
+
+    /**
+     * Greater than or equal
+     */
     GREATER_THAN_EQUAL(">="),
+
+    /**
+     * Contain
+     */
     CONTAINING("CONTAINS"),
+
+    /**
+     * Ends with
+     */
     ENDS_WITH("ENDSWITH"),
+
+    /**
+     * Starts with
+     */
     STARTS_WITH("STARTSWITH"),
+
+    /**
+     * True
+     */
     TRUE("= true"),
+
+    /**
+     * False
+     */
     FALSE("= false"),
+
+    /**
+     * Between
+     */
     BETWEEN("BETWEEN"),
+
+    /**
+     * Array contains
+     */
     ARRAY_CONTAINS("ARRAY_CONTAINS");
 
     private String sqlKeyword;

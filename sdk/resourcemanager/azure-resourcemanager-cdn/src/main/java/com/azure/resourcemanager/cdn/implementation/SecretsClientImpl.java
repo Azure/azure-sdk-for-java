@@ -639,7 +639,7 @@ public final class SecretsClientImpl implements SecretsClient {
         return this
             .client
             .<SecretInner, SecretInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SecretInner.class, SecretInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), SecretInner.class, SecretInner.class, this.client.getContext());
     }
 
     /**
@@ -956,7 +956,7 @@ public final class SecretsClientImpl implements SecretsClient {
         return this
             .client
             .<SecretInner, SecretInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SecretInner.class, SecretInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), SecretInner.class, SecretInner.class, this.client.getContext());
     }
 
     /**
@@ -1256,7 +1256,7 @@ public final class SecretsClientImpl implements SecretsClient {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, profileName, secretName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

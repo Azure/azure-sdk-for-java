@@ -269,7 +269,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
             deleteWithResponseAsync(resourceGroupName, virtualRouterName, peeringName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -716,7 +716,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
                 this.client.getHttpPipeline(),
                 VirtualRouterPeeringInner.class,
                 VirtualRouterPeeringInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

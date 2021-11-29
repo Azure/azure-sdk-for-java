@@ -20,6 +20,11 @@ public class AADB2CTrustedIssuerRepository extends AADTrustedIssuerRepository {
 
     private final AADB2CProperties aadb2CProperties;
 
+    /**
+     * Creates a new instance of {@link AADB2CTrustedIssuerRepository}.
+     *
+     * @param aadb2CProperties the AAD B2C properties
+     */
     public AADB2CTrustedIssuerRepository(AADB2CProperties aadb2CProperties) {
         super(aadb2CProperties.getTenantId());
         this.aadb2CProperties = aadb2CProperties;

@@ -551,7 +551,7 @@ public final class ServicesClientImpl
                 this.client.getHttpPipeline(),
                 ServiceResourceInner.class,
                 ServiceResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -805,7 +805,7 @@ public final class ServicesClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, serviceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1063,7 +1063,7 @@ public final class ServicesClientImpl
                 this.client.getHttpPipeline(),
                 ServiceResourceInner.class,
                 ServiceResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

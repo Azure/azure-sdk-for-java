@@ -87,8 +87,8 @@ public class Configuration {
     @Parameter(names = "-numberOfCollectionForCtl", description = "Number of collections for ctl load")
     private int numberOfCollectionForCtl = 4;
 
-    @Parameter(names = "-readWriteQueryPct", description = "Comma separated read write query workload percent")
-    private String readWriteQueryPct = "90,9,1";
+    @Parameter(names = "-readWriteQueryReadManyPct", description = "Comma separated read write query readMany workload percent")
+    private String readWriteQueryReadManyPct = "90,8,1,1";
 
     @Parameter(names = "-manageDatabase", description = "Control switch for creating/deleting underlying database resource")
     private boolean manageDatabase = false;
@@ -438,8 +438,8 @@ public class Configuration {
         return this.numberOfCollectionForCtl;
     }
 
-    public String getReadWriteQueryPct() {
-        return this.readWriteQueryPct;
+    public String getReadWriteQueryReadManyPct() {
+        return this.readWriteQueryReadManyPct;
     }
 
     public boolean shouldManageDatabase() {

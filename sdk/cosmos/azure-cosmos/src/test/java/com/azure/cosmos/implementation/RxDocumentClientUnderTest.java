@@ -50,7 +50,8 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
             QueryCompatibilityMode queryCompatibilityMode,
             UserAgentContainer userAgentContainer,
             GlobalEndpointManager globalEndpointManager,
-            HttpClient rxOrigClient) {
+            HttpClient rxOrigClient,
+            ApiType apiType) {
 
         origHttpClient = rxOrigClient;
         spyHttpClient = Mockito.spy(rxOrigClient);
@@ -67,6 +68,7 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
                 queryCompatibilityMode,
                 userAgentContainer,
                 globalEndpointManager,
-                spyHttpClient);
+                spyHttpClient,
+                apiType);
     }
 }

@@ -12,11 +12,35 @@ package com.azure.spring.cloud.resourcemanager.implementation.crud;
  */
 public interface ResourceCrud<T, K> {
 
+    /**
+     * Gets a value for a given key.
+     *
+     * @param key The key.
+     * @return The retrieved value.
+     */
     T get(K key);
 
+    /**
+     * Checks for the existence of a given key.
+     *
+     * @param key The key.
+     * @return Whether the key exists.
+     */
     boolean exists(K key);
 
+    /**
+     * Creates a value for a given key.
+     *
+     * @param key The key.
+     * @return The created value.
+     */
     T create(K key);
 
+    /**
+     * Gets or creates a value for a given key.
+     *
+     * @param key The key.
+     * @return The retrieved or created value.
+     */
     T getOrCreate(K key);
 }

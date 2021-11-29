@@ -20,7 +20,22 @@
   <version>4.0.0-beta.3</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-actuator;current} -->
 
   <name>Spring Cloud Azure Actuator</name>
-  <url>https://github.com/Azure/azure-sdk-for-java</url>
+  <url>https://microsoft.github.io/spring-cloud-azure</url>
+  <developers>
+    <developer>
+      <name>Spring Cloud Azure</name>
+      <email>SpringIntegSupport@microsoft.com</email>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com:Azure/azure-sdk-for-java.git</developerConnection>
+    <url>https://github.com/Azure/azure-sdk-for-java</url>
+  </scm>
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/Azure/azure-sdk-for-java/issues</url>
+  </issueManagement>
 
   <dependencies>
     <dependency>
@@ -46,7 +61,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-servicebus</artifactId>
-      <version>7.4.2</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
+      <version>7.5.0</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>

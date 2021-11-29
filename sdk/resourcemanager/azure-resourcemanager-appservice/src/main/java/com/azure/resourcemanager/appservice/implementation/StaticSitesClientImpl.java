@@ -1718,7 +1718,7 @@ public final class StaticSitesClientImpl
                 this.client.getHttpPipeline(),
                 StaticSiteArmResourceInner.class,
                 StaticSiteArmResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1967,7 +1967,7 @@ public final class StaticSitesClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, name);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -3309,7 +3309,7 @@ public final class StaticSitesClientImpl
             deleteStaticSiteBuildWithResponseAsync(resourceGroupName, name, environmentName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -4964,7 +4964,7 @@ public final class StaticSitesClientImpl
                     this.client.getHttpPipeline(),
                     StaticSiteUserProvidedFunctionAppArmResourceInner.class,
                     StaticSiteUserProvidedFunctionAppArmResourceInner.class,
-                    Context.NONE);
+                    this.client.getContext());
     }
 
     /**
@@ -5649,7 +5649,7 @@ public final class StaticSitesClientImpl
                 resourceGroupName, name, environmentName, staticSiteZipDeploymentEnvelope);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -6873,7 +6873,7 @@ public final class StaticSitesClientImpl
                     this.client.getHttpPipeline(),
                     StaticSiteCustomDomainOverviewArmResourceInner.class,
                     StaticSiteCustomDomainOverviewArmResourceInner.class,
-                    Context.NONE);
+                    this.client.getContext());
     }
 
     /**
@@ -7192,7 +7192,7 @@ public final class StaticSitesClientImpl
             deleteStaticSiteCustomDomainWithResponseAsync(resourceGroupName, name, domainName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -7480,7 +7480,7 @@ public final class StaticSitesClientImpl
                 resourceGroupName, name, domainName, staticSiteCustomDomainRequestPropertiesEnvelope);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -7771,7 +7771,7 @@ public final class StaticSitesClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = detachStaticSiteWithResponseAsync(resourceGroupName, name);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -9192,7 +9192,7 @@ public final class StaticSitesClientImpl
                     this.client.getHttpPipeline(),
                     RemotePrivateEndpointConnectionArmResourceInner.class,
                     RemotePrivateEndpointConnectionArmResourceInner.class,
-                    Context.NONE);
+                    this.client.getContext());
     }
 
     /**
@@ -9514,7 +9514,7 @@ public final class StaticSitesClientImpl
         return this
             .client
             .<Object, Object>getLroResult(
-                mono, this.client.getHttpPipeline(), Object.class, Object.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), Object.class, Object.class, this.client.getContext());
     }
 
     /**
@@ -10511,7 +10511,7 @@ public final class StaticSitesClientImpl
                     this.client.getHttpPipeline(),
                     StaticSiteUserProvidedFunctionAppArmResourceInner.class,
                     StaticSiteUserProvidedFunctionAppArmResourceInner.class,
-                    Context.NONE);
+                    this.client.getContext());
     }
 
     /**
@@ -11088,7 +11088,7 @@ public final class StaticSitesClientImpl
             createZipDeploymentForStaticSiteWithResponseAsync(resourceGroupName, name, staticSiteZipDeploymentEnvelope);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

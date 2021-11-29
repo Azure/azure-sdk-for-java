@@ -619,7 +619,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
                 this.client.getHttpPipeline(),
                 DeploymentResourceInner.class,
                 DeploymentResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -954,7 +954,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             deleteWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1270,7 +1270,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
                 this.client.getHttpPipeline(),
                 DeploymentResourceInner.class,
                 DeploymentResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2054,7 +2054,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             startWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2335,7 +2335,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             stopWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2616,7 +2616,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             restartWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

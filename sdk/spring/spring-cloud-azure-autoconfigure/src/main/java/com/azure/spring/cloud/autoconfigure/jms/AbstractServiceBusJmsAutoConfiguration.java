@@ -17,8 +17,16 @@ import javax.jms.ConnectionFactory;
  */
 public abstract class AbstractServiceBusJmsAutoConfiguration {
 
+    /**
+     * The Azure ServiceBus JMS properties
+     */
     protected final AzureServiceBusJmsProperties azureServiceBusJMSProperties;
 
+    /**
+     * Creates a new instance of {@link AbstractServiceBusJmsAutoConfiguration}.
+     *
+     * @param azureServiceBusJMSProperties the Azure ServiceBus JMS properties
+     */
     public AbstractServiceBusJmsAutoConfiguration(AzureServiceBusJmsProperties azureServiceBusJMSProperties) {
         this.azureServiceBusJMSProperties = azureServiceBusJMSProperties;
     }

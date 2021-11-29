@@ -528,7 +528,7 @@ public class CosmosTracerTest extends TestSuiteBase {
                 , ArgumentMatchers.any(),
                 Mockito.eq(OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(),
                     ZoneOffset.UTC)), ArgumentMatchers.any());
-            assertThat(attributesMap.get("RegionContacted").get("JSON")).isEqualTo(OBJECT_MAPPER.writeValueAsString(clientSideRequestStatistics.getRegionsContacted()));
+            assertThat(attributesMap.get("RegionContacted").get("JSON")).isEqualTo(OBJECT_MAPPER.writeValueAsString(clientSideRequestStatistics.getContactedRegionNames()));
 
             //verifying add event call for clientCfgs
             Mockito.verify(tracerProvider, Mockito.times(1)).addEvent(Mockito.eq("ClientCfgs")
