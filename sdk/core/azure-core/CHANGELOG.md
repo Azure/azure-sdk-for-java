@@ -1,6 +1,6 @@
 # Release History
 
-## 1.23.0-beta.1 (Unreleased)
+## 1.24.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,12 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.23.0 (2021-11-22)
+
+### Breaking Changes
+- Removed `ErrorOptions`
+- Removed `setErrorOptions()` from `RequestOptions`
 
 ## 1.22.0 (2021-11-05)
 
