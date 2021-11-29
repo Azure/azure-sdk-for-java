@@ -117,8 +117,8 @@ public class AADAuthenticationProperties implements InitializingBean {
     private boolean allowTelemetry = true;
 
     /**
-     * If <code>true</code> activates the stateless auth filter {@link AADAppRoleStatelessAuthenticationFilter}. The
-     * default is <code>false</code> which activates {@link AADAuthenticationFilter}.
+     * If true activates the stateless auth filter {@link AADAppRoleStatelessAuthenticationFilter}. The
+     * default is false which activates {@link AADAuthenticationFilter}.
      */
     private Boolean sessionStateless = false;
 
@@ -583,7 +583,7 @@ public class AADAuthenticationProperties implements InitializingBean {
                 scopes.add("openid"); // "openid" allows to request an ID token.
             }
             if (!scopes.contains("profile")) {
-                scopes.add("profile"); // "profile" allows to return additional claims in the ID token.
+                scopes.add("profile"); // "profile" allows returning additional claims in the ID token.
             }
             if (!scopes.contains("offline_access")) {
                 scopes.add("offline_access"); // "offline_access" allows to request a refresh token.
