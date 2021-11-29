@@ -122,40 +122,7 @@ class ServiceAPITest extends APISpec {
         then:
         headers.getValue("x-ms-request-id") != null
         headers.getValue("x-ms-version") != null
-        received.getLogging().isRead() == sent.getLogging().isRead()
-            received.getLogging().isDelete() == sent.getLogging().isDelete()
-            received.getLogging().isWrite() == sent.getLogging().isWrite()
-            received.getLogging().getVersion() == sent.getLogging().getVersion()
-            received.getLogging().getRetentionPolicy().getDays() == sent.getLogging().getRetentionPolicy().getDays()
-            received.getLogging().getRetentionPolicy().isEnabled() == sent.getLogging().getRetentionPolicy().isEnabled()
-
-            received.getCors().size() == sent.getCors().size()
-            received.getCors().get(0).getAllowedMethods() == sent.getCors().get(0).getAllowedMethods()
-            received.getCors().get(0).getAllowedHeaders() == sent.getCors().get(0).getAllowedHeaders()
-            received.getCors().get(0).getAllowedOrigins() == sent.getCors().get(0).getAllowedOrigins()
-            received.getCors().get(0).getExposedHeaders() == sent.getCors().get(0).getExposedHeaders()
-            received.getCors().get(0).getMaxAgeInSeconds() == sent.getCors().get(0).getMaxAgeInSeconds()
-
-            received.getDefaultServiceVersion() == sent.getDefaultServiceVersion()
-
-            received.getHourMetrics().isEnabled() == sent.getHourMetrics().isEnabled()
-            received.getHourMetrics().isIncludeApis() == sent.getHourMetrics().isIncludeApis()
-            received.getHourMetrics().getRetentionPolicy().isEnabled() == sent.getHourMetrics().getRetentionPolicy().isEnabled()
-            received.getHourMetrics().getRetentionPolicy().getDays() == sent.getHourMetrics().getRetentionPolicy().getDays()
-            received.getHourMetrics().getVersion() == sent.getHourMetrics().getVersion()
-
-            received.getMinuteMetrics().isEnabled() == sent.getMinuteMetrics().isEnabled()
-            received.getMinuteMetrics().isIncludeApis() == sent.getMinuteMetrics().isIncludeApis()
-            received.getMinuteMetrics().getRetentionPolicy().isEnabled() == sent.getMinuteMetrics().getRetentionPolicy().isEnabled()
-            received.getMinuteMetrics().getRetentionPolicy().getDays() == sent.getMinuteMetrics().getRetentionPolicy().getDays()
-            received.getMinuteMetrics().getVersion() == sent.getMinuteMetrics().getVersion()
-
-            received.getDeleteRetentionPolicy().isEnabled() == sent.getDeleteRetentionPolicy().isEnabled()
-            received.getDeleteRetentionPolicy().getDays() == sent.getDeleteRetentionPolicy().getDays()
-
-            received.getStaticWebsite().isEnabled() == sent.getStaticWebsite().isEnabled()
-            received.getStaticWebsite().getIndexDocument() == sent.getStaticWebsite().getIndexDocument()
-            received.getStaticWebsite().getErrorDocument404Path() == sent.getStaticWebsite().getErrorDocument404Path()
+        validatePropsSet(sentProperties, receivedProperties)
     }
 
     // In java, we don't have support from the validator for checking the bounds on days. The service will catch these.
