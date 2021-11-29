@@ -51,6 +51,7 @@ public class ClientLoggerTests {
     private String originalLogLevel;
     private PrintStream originalSystemOut;
     private ByteArrayOutputStream logCaptureStream;
+    private Map<String, Object> globalContext;
 
     @BeforeEach
     public void setupLoggingConfiguration() {
@@ -61,6 +62,12 @@ public class ClientLoggerTests {
         originalSystemOut = System.out;
         logCaptureStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(logCaptureStream));
+
+        // preserve order
+        globalContext = new LinkedHashMap<>();
+        globalContext.put("connectionId", "foo");
+        globalContext.put("linkName", 1);
+        globalContext.put("anotherKey", new LoggableObject("hello world"));
     }
 
     @AfterEach
@@ -365,12 +372,6 @@ public class ClientLoggerTests {
     public void logWithGlobalContext(LogLevel logLevelToConfigure) {
         setupLogLevel(logLevelToConfigure.getLogLevel());
 
-        // preserve order
-        Map<String, Object> globalContext = new LinkedHashMap<>();
-        globalContext.put("connectionId", "foo");
-        globalContext.put("linkName", 1);
-        globalContext.put("anotherKey", new LoggableObject("hello world"));
-
         ClientLogger logger = new ClientLogger(ClientLoggerTests.class, globalContext);
         logger.warning("Param 1: {}, Param 2: {}, Param 3: {}", "test1", "test2", "test3");
 
@@ -379,6 +380,78 @@ public class ClientLoggerTests {
             byteArraySteamToString(logCaptureStream),
             logLevelToConfigure,
             LogLevel.WARNING);
+    }
+
+    /**
+     * Tests that logging with context of string message writes
+     * log message and global context in correct format at info level
+     */
+    @Test
+    public void logInfoWithGlobalContext() {
+        setupLogLevel(LogLevel.VERBOSE.getLogLevel());
+
+        ClientLogger logger = new ClientLogger(ClientLoggerTests.class, globalContext);
+        logger.info("message");
+
+        assertMessage(
+            "{\"az.sdk.message\":\"message\",\"connectionId\":\"foo\",\"linkName\":1,\"anotherKey\":\"hello world\"}",
+            byteArraySteamToString(logCaptureStream),
+            LogLevel.VERBOSE,
+            LogLevel.VERBOSE);
+    }
+
+    /**
+     * Tests that logging with context of string message writes
+     * log message and global context in correct format at verbose level
+     */
+    @Test
+    public void logVerboseWithGlobalContext() {
+        setupLogLevel(LogLevel.VERBOSE.getLogLevel());
+
+        ClientLogger logger = new ClientLogger(ClientLoggerTests.class, globalContext);
+        logger.verbose("message");
+
+        assertMessage(
+            "{\"az.sdk.message\":\"message\",\"connectionId\":\"foo\",\"linkName\":1,\"anotherKey\":\"hello world\"}",
+            byteArraySteamToString(logCaptureStream),
+            LogLevel.VERBOSE,
+            LogLevel.INFORMATIONAL);
+    }
+
+    /**
+     * Tests that logging with context of string message writes
+     * log message and global context in correct format at warning level
+     */
+    @Test
+    public void logWarningWithGlobalContext() {
+        setupLogLevel(LogLevel.VERBOSE.getLogLevel());
+
+        new ClientLogger(ClientLoggerTests.class, globalContext)
+            .warning("message");
+
+        assertMessage(
+            "{\"az.sdk.message\":\"message\",\"connectionId\":\"foo\",\"linkName\":1,\"anotherKey\":\"hello world\"}",
+            byteArraySteamToString(logCaptureStream),
+            LogLevel.VERBOSE,
+            LogLevel.WARNING);
+    }
+
+    /**
+     * Tests that logging with context of string message writes
+     * log message and global context in correct format at error level
+     */
+    @Test
+    public void logErrorWithGlobalContext() {
+        setupLogLevel(LogLevel.VERBOSE.getLogLevel());
+
+        new ClientLogger(ClientLoggerTests.class, globalContext)
+            .error("message");
+
+        assertMessage(
+            "{\"az.sdk.message\":\"message\",\"connectionId\":\"foo\",\"linkName\":1,\"anotherKey\":\"hello world\"}",
+            byteArraySteamToString(logCaptureStream),
+            LogLevel.VERBOSE,
+            LogLevel.ERROR);
     }
 
     /**
@@ -424,12 +497,6 @@ public class ClientLoggerTests {
     public void logWithGlobalAndLocalContext(LogLevel logLevelToConfigure) {
         setupLogLevel(logLevelToConfigure.getLogLevel());
 
-        // preserve order
-        Map<String, Object> globalContext = new LinkedHashMap<>();
-        globalContext.put("connectionId", "foo");
-        globalContext.put("linkName", 1);
-        globalContext.put("anotherKey", new LoggableObject("hello world"));
-
         ClientLogger logger = new ClientLogger(ClientLoggerTests.class, globalContext);
         logger.atInfo()
             .addKeyValue("local", true)
@@ -453,9 +520,7 @@ public class ClientLoggerTests {
         setupLogLevel(logLevelToConfigure.getLogLevel());
         ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
 
-        String message = String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
-
-        logger.atWarning().log(message);
+        logger.atWarning().log(String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3"));
 
         assertMessage(
             "{\"az.sdk.message\":\"Param 1: test1, Param 2: test2, Param 3: test3\"}",
@@ -463,6 +528,26 @@ public class ClientLoggerTests {
             logLevelToConfigure,
             LogLevel.WARNING);
     }
+
+
+    /**
+     * Tests message supplier with local and global context.
+     */
+    @ParameterizedTest
+    @MethodSource("provideLogLevels")
+    public void logWithGlobalContextMessageSupplier(LogLevel logLevelToConfigure) {
+        setupLogLevel(logLevelToConfigure.getLogLevel());
+        ClientLogger logger = new ClientLogger(ClientLoggerTests.class, globalContext);
+
+        logger.log(LogLevel.INFORMATIONAL, () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3"));
+
+        assertMessage(
+            "{\"az.sdk.message\":\"Param 1: test1, Param 2: test2, Param 3: test3\",\"connectionId\":\"foo\",\"linkName\":1,\"anotherKey\":\"hello world\"}",
+            byteArraySteamToString(logCaptureStream),
+            logLevelToConfigure,
+            LogLevel.INFORMATIONAL);
+    }
+
     /**
      * Tests message supplier with context.
      */
@@ -536,11 +621,11 @@ public class ClientLoggerTests {
         setupLogLevel(LogLevel.VERBOSE.getLogLevel());
 
         // preserve order
-        Map<String, Object> globalContext = new LinkedHashMap<>();
-        globalContext.put("link\tName", 1);
-        globalContext.put("another\rKey\n", new LoggableObject("hello \"world\"\r\n"));
+        Map<String, Object> globalCtx = new LinkedHashMap<>();
+        globalCtx.put("link\tName", 1);
+        globalCtx.put("another\rKey\n", new LoggableObject("hello \"world\"\r\n"));
 
-        ClientLogger logger = new ClientLogger(ClientLoggerTests.class, globalContext);
+        ClientLogger logger = new ClientLogger(ClientLoggerTests.class, globalCtx);
 
         logger.verbose("\"message\"");
 
