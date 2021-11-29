@@ -6,6 +6,7 @@ package com.azure.spring.cloud.autoconfigure.aad.properties;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AADTokenClaim;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AuthorityPrefix;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.util.StringUtils;
 
 import java.util.Collections;
@@ -15,6 +16,7 @@ import java.util.Map;
 /**
  * Configuration properties for Azure Active Directory B2C.
  */
+@ConfigurationProperties(prefix = AADResourceServerProperties.PREFIX)
 public class AADResourceServerProperties implements InitializingBean {
 
     public static final String PREFIX = "spring.cloud.azure.active-directory.resource-server";
