@@ -5,6 +5,7 @@ package com.azure.core.util.logging;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -76,8 +77,10 @@ public class ClientLoggerJavaDocCodeSnippets {
         // END: com.azure.core.util.logging.clientlogger.error#string-object
 
         // BEGIN: com.azure.core.util.logging.clientlogger#globalcontext
-        ClientLogger loggerWithContext = new ClientLogger(ClientLoggerJavaDocCodeSnippets.class,
-            Map.of("connectionId", "95a47cf"));
+        Map<String, Object> context = new HashMap<>();
+        context.put("connectionId", "95a47cf");
+
+        ClientLogger loggerWithContext = new ClientLogger(ClientLoggerJavaDocCodeSnippets.class, context);
         loggerWithContext.info("A formattable message. Hello, {}", name);
         // END: com.azure.core.util.logging.clientlogger#globalcontext
 

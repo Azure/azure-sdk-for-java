@@ -61,7 +61,7 @@ public class ClientLogger {
      * Retrieves a logger for the passed class name using the {@link LoggerFactory}.
      *
      * @param className Class name creating the logger.
-     * @throws RuntimeException when logging configuration is invalid depending on SDL4J implementation.
+     * @throws RuntimeException when logging configuration is invalid depending on SLF4J implementation.
      */
     public ClientLogger(String className) {
         this(className, Collections.emptyMap());
@@ -93,7 +93,7 @@ public class ClientLogger {
      * @param className Class name creating the logger.
      * @param context Context to be populated on every log record written with this logger.
      *                Objects are serialized with {@code toString()} method.
-     * @throws RuntimeException when logging configuration is invalid depending on SDL4J implementation.
+     * @throws RuntimeException when logging configuration is invalid depending on SLF4J implementation.
      */
     public ClientLogger(String className, Map<String, Object> context) {
         Logger initLogger = LoggerFactory.getLogger(className);
@@ -448,7 +448,7 @@ public class ClientLogger {
     }
 
     /*
-     * Performs the logging.
+     * Performs the logging. Call only if logging at this level is enabled.
      *
      * @param format format-able message.
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
@@ -510,7 +510,7 @@ public class ClientLogger {
     }
 
     /*
-     * Performs deferred logging. Call only if logging at this level is enable,.
+     * Performs deferred logging. Call only if logging at this level is enabled.
      *
      * @param logLevel sets the logging level
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
@@ -520,7 +520,7 @@ public class ClientLogger {
         if (hasGlobalContext) {
             // LoggingEventBuilder writes log messages as json and performs all necessary escaping, i.e. no
             // sanitization needed
-            LoggingEventBuilder.create(logger, logLevel, globalContextSerialized, canLogAtLevel(logLevel))
+            LoggingEventBuilder.create(logger, logLevel, globalContextSerialized, true)
                 .log(messageSupplier, throwable);
             return;
         }
