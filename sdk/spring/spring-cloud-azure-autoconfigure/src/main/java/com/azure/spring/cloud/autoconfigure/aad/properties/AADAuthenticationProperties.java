@@ -645,7 +645,7 @@ public class AADAuthenticationProperties implements InitializingBean {
     public void afterPropertiesSet() {
         setDefaultValueFromAzureGlobalProperties(globalProperties);
         if (!StringUtils.hasText(getProfile().getTenantId())) {
-            this.getProfile().setTenantId("common"); // This can only be set in this method, can not set in AADAuthenticationProperties#afterPropertiesSet
+            this.getProfile().setTenantId("common");
         }
         validateProperties();
     }
