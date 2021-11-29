@@ -4,14 +4,15 @@
 package com.azure.spring.cloud.autoconfigure.aad.filter;
 
 import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthenticationProperties;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AADPropertiesConfiguration;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBindException;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.context.properties.bind.validation.BindValidationException;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.validation.ObjectError;
 
 import java.util.Arrays;
@@ -98,7 +99,7 @@ public class AADAuthenticationFilterPropertiesTest {
     }
 
     @Configuration
-    @EnableConfigurationProperties(AADAuthenticationProperties.class)
+    @Import(AADPropertiesConfiguration.class)
     static class Config {
     }
 }

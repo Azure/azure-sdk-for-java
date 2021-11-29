@@ -5,11 +5,13 @@ package com.azure.spring.cloud.autoconfigure.aad.properties;
 
 import com.azure.spring.cloud.autoconfigure.aad.core.AADApplicationType;
 import org.junit.jupiter.api.Test;
+import org.springframework.util.StringUtils;
 
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils.resourceServerContextRunner;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils.resourceServerWithOboContextRunner;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils.webApplicationContextRunner;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class AADAuthenticationPropertiesTest {
@@ -276,5 +278,36 @@ class AADAuthenticationPropertiesTest {
                 "spring.cloud.azure.active-directory.authorization-clients.graph.authorizationGrantType = azure_delegated"
             )
             .run(context -> assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class)));
+    }
+
+    @Test
+    void setDefaultValueFromAzureGlobalPropertiesTest() {
+        webApplicationContextRunner()
+            .withPropertyValues(
+                "spring.cloud.azure.active-directory.credential.client-id = ",
+                "spring.cloud.azure.active-directory.credential.client-secret = ",
+                "spring.cloud.azure.active-directory.profile.tenant-id = "
+            )
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+                assertFalse(StringUtils.hasText(properties.getClientId()));
+                assertFalse(StringUtils.hasText(properties.getClientSecret()));
+                assertEquals("common", properties.getTenantId());
+            });
+        webApplicationContextRunner()
+            .withPropertyValues(
+                "spring.cloud.azure.active-directory.credential.client-id = aad-client-id",
+                "spring.cloud.azure.active-directory.credential.client-secret = ",
+                "spring.cloud.azure.active-directory.profile.tenant-id = ",
+                "spring.cloud.azure.credential.client-id = aad-client-id",
+                "spring.cloud.azure.credential.client-secret = global-client-secret",
+                "spring.cloud.azure.profile.tenant-id = global-tenant-id"
+            )
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+                assertEquals("aad-client-id", properties.getClientId());
+                assertEquals("global-client-secret", properties.getClientSecret());
+                assertEquals("global-tenant-id", properties.getTenantId());
+            });
     }
 }

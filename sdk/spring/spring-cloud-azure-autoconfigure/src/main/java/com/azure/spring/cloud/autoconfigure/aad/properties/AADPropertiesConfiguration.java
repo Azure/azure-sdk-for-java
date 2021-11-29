@@ -5,8 +5,8 @@ package com.azure.spring.cloud.autoconfigure.aad.properties;
 
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,26 +17,32 @@ import org.springframework.context.annotation.Configuration;
  * </p>
  */
 @Configuration
-@EnableConfigurationProperties({
-    AADAuthenticationProperties.class,
-    AADResourceServerProperties.class
-})
+@EnableConfigurationProperties
 public class AADPropertiesConfiguration implements InitializingBean {
-
-    @Autowired
-    AzureGlobalProperties global;
-
-    @Autowired
-    AADAuthenticationProperties aad;
 
     @Bean
     @ConditionalOnMissingBean
+    @ConfigurationProperties(prefix = AzureGlobalProperties.PREFIX)
     public AzureGlobalProperties azureGlobalProperties() {
         return new AzureGlobalProperties();
     }
 
+    @Bean
+    @ConditionalOnMissingBean
+    @ConfigurationProperties(prefix = AADAuthenticationProperties.PREFIX)
+    public AADAuthenticationProperties aadAuthenticationProperties() {
+        return new AADAuthenticationProperties();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConfigurationProperties(prefix = AADResourceServerProperties.PREFIX)
+    public AADResourceServerProperties aadResourceServerProperties() {
+        return new AADResourceServerProperties();
+    }
+
     @Override
     public void afterPropertiesSet() throws Exception {
-        aad.setDefaultValueFromAzureGlobalProperties(global);
+        aadAuthenticationProperties().setDefaultValueFromAzureGlobalProperties(azureGlobalProperties());
     }
 }

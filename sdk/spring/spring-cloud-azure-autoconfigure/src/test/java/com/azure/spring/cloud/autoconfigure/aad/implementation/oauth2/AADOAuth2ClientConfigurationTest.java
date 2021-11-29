@@ -70,7 +70,6 @@ class AADOAuth2ClientConfigurationTest {
         resourceServerWithOboContextRunner()
             .withPropertyValues(
                 "spring.cloud.azure.active-directory.enabled=true",
-                "spring.cloud.azure.active-directory.authorization-clients.graph.on-demand = true",
                 "spring.cloud.azure.active-directory.authorization-clients.graph.scopes=https://graph.microsoft.com/User.Read")
             .run(context -> {
                 final AADClientRegistrationRepository oboRepo = context.getBean(

@@ -14,7 +14,6 @@ import org.apache.commons.logging.LogFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.util.StringUtils;
@@ -38,7 +37,6 @@ import static com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.AAD
 /**
  * Configuration properties for Azure Active Directory Authentication.
  */
-@ConfigurationProperties(AADAuthenticationProperties.PREFIX)
 public class AADAuthenticationProperties implements InitializingBean {
 
     public static final String PREFIX = "spring.cloud.azure.active-directory";
@@ -433,31 +431,38 @@ public class AADAuthenticationProperties implements InitializingBean {
     }
 
     public void setDefaultValueFromAzureGlobalProperties(AzureGlobalProperties global) {
-        if (this.getCredential().getClientId() == null) {
+        if (!StringUtils.hasText(this.getCredential().getClientId())) {
             this.setClientId(global.getCredential().getClientId());
         }
-        if (this.getCredential().getClientSecret() == null) {
+        if (!StringUtils.hasText(this.getCredential().getClientSecret())) {
             this.setClientSecret(global.getCredential().getClientSecret());
         }
-        if (this.getProfile().getTenantId() == null) {
+        if (!StringUtils.hasText(this.getProfile().getTenantId())) {
             this.setTenantId(global.getProfile().getTenantId());
+        }
+        if (!StringUtils.hasText(getTenantId())) {
+            this.setTenantId("common");
         }
         if (this.getProfile().getCloud() == null) {
             this.getProfile().setCloud(global.getProfile().getCloud());
         }
-        if (this.getProfile().getEnvironment().getActiveDirectoryEndpoint() == null) {
+        if (!StringUtils.hasText(this.getProfile().getEnvironment().getActiveDirectoryEndpoint())) {
             this.getProfile().getEnvironment().setActiveDirectoryEndpoint(
                 global.getProfile().getEnvironment().getActiveDirectoryEndpoint());
         }
-        if (this.getProfile().getEnvironment().getMicrosoftGraphEndpoint() == null) {
+        if (!StringUtils.hasText(this.getProfile().getEnvironment().getMicrosoftGraphEndpoint())) {
             this.getProfile().getEnvironment().setMicrosoftGraphEndpoint(
                 global.getProfile().getEnvironment().getMicrosoftGraphEndpoint());
         }
+        validateProperties();
     }
 
     @Override
     public void afterPropertiesSet() {
+        validateProperties();
+    }
 
+    private void validateProperties() {
         if (!StringUtils.hasText(redirectUriTemplate)) {
             redirectUriTemplate = "{baseUrl}/login/oauth2/code/";
         }
@@ -480,10 +485,6 @@ public class AADAuthenticationProperties implements InitializingBean {
     }
 
     private void validateTenantId() {
-        if (!StringUtils.hasText(getTenantId())) {
-            profile.setTenantId("common");
-        }
-
         if (isMultiTenantsApplication(getTenantId()) && !userGroup.getAllowedGroups().isEmpty()) {
             throw new IllegalStateException("When spring.cloud.azure.active-directory.profile.tenant-id is "
                 + "'common/organizations/consumers', "
@@ -535,7 +536,7 @@ public class AADAuthenticationProperties implements InitializingBean {
             // Set default value for authorization grant grantType
             switch (applicationType) {
                 case WEB_APPLICATION:
-                    if (properties.isOnDemand()) {
+                    if (properties.isOnDemand() || registrationId.equals(AZURE_CLIENT_REGISTRATION_ID)) {
                         properties.setAuthorizationGrantType(AUTHORIZATION_CODE);
                     } else {
                         properties.setAuthorizationGrantType(AZURE_DELEGATED);
@@ -603,7 +604,7 @@ public class AADAuthenticationProperties implements InitializingBean {
                 && !AUTHORIZATION_CODE.equals(properties.getAuthorizationGrantType())) {
                 throw new IllegalStateException("spring.cloud.azure.active-directory.authorization-clients."
                     + AZURE_CLIENT_REGISTRATION_ID
-                    + ".authorization-grant-grantType must be configured to 'authorization_code'.");
+                    + ".authorization-grant-type must be configured to 'authorization_code'.");
             }
         }
 
