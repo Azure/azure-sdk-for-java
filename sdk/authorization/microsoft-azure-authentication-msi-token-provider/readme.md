@@ -1,3 +1,6 @@
+***DISCLAIMER: The samples in this readme are for azure-authentication-msi-token-provider. This SDK has been deprecated.
+Please use [azure-identity](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity/readme.md) for authentication support. If you have existing code that uses the library, please use the [Migration Guide](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/authorization/microsoft-azure-authentication-msi-token-provider/migration-guide.md) to migrate to `azure-identity`.***
+
 # What is this?
 
 The "msi-auth-token-provider" jar is a library that enables :
