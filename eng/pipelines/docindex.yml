@@ -19,7 +19,7 @@ jobs:
             - package.json
             - metadata/
           Repositories:
-            - Name: "$(DocRepoOwner)/$(DocRepoName)"
+            - Name: $(DocRepoOwner)/$(DocRepoName)
               WorkingDirectory: $(DocRepoLocation)
 
       # Call update docs ci script to onboard packages
