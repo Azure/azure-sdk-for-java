@@ -225,31 +225,64 @@ public final class CallConnection {
      * Transfer the call to a participant.
      *
      * @param targetParticipant The identifier of the participant.
-     * @param targetCallConnectionId The target call connection id to transfer to.
+     * @param alternateCallerId The phone number to use when transferring to a pstn participant.
      * @param userToUserInformation The user to user information.
+     * @param operationContext The operation context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful transfer to participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TransferCallResult transfer(CommunicationIdentifier targetParticipant, String targetCallConnectionId, String userToUserInformation) {
-        return callConnectionAsync.transfer(targetParticipant, targetCallConnectionId, userToUserInformation).block();
+    public TransferCallResult transferToParticipant(CommunicationIdentifier targetParticipant, String alternateCallerId, String userToUserInformation, String operationContext) {
+        return callConnectionAsync.transferToParticipant(targetParticipant, alternateCallerId, userToUserInformation, operationContext).block();
     }
 
     /**
      * Transfer the call to a participant.
      *
      * @param targetParticipant The identifier of the participant.
-     * @param targetCallConnectionId The target call connection id to transfer to.
+     * @param alternateCallerId The phone number to use when transferring to a pstn participant.
      * @param userToUserInformation The user to user information.
+     * @param operationContext The operation context.
      * @param context {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful transfer to participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TransferCallResult> transferWithResponse(CommunicationIdentifier targetParticipant, String targetCallConnectionId, String userToUserInformation, Context context) {
-        return callConnectionAsync.transferWithResponse(targetParticipant, targetCallConnectionId, userToUserInformation, context).block();
+    public Response<TransferCallResult> transferToParticipantWithResponse(CommunicationIdentifier targetParticipant, String alternateCallerId, String userToUserInformation, String operationContext, Context context) {
+        return callConnectionAsync.transferToParticipantWithResponse(targetParticipant,  alternateCallerId, userToUserInformation, operationContext, context).block();
+    }
+
+    /**
+     * Transfer the call to another call.
+     *
+     * @param targetCallConnectionId The target call connection id to transfer to.
+     * @param userToUserInformation The user to user information.
+     * @param operationContext The operation context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful transfer to participant request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TransferCallResult transferToCall(String targetCallConnectionId, String userToUserInformation, String operationContext) {
+        return callConnectionAsync.transferToCall(targetCallConnectionId, userToUserInformation, operationContext).block();
+    }
+
+    /**
+     * Transfer the call to another call..
+     *
+     * @param targetCallConnectionId The target call connection id to transfer to.
+     * @param userToUserInformation The user to user information.
+     * @param operationContext The operation context.
+     * @param context {@link Context} representing the request context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful transfer to participant request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TransferCallResult> transferToCallWithResponse(String targetCallConnectionId, String userToUserInformation, String operationContext, Context context) {
+        return callConnectionAsync.transferToCallWithResponse(targetCallConnectionId, userToUserInformation, operationContext, context).block();
     }
 
     /**

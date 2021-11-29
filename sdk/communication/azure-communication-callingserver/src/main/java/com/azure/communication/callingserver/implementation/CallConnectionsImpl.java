@@ -23,8 +23,9 @@ import com.azure.communication.callingserver.implementation.models.PlayAudioResu
 import com.azure.communication.callingserver.implementation.models.PlayAudioToParticipantRequest;
 import com.azure.communication.callingserver.implementation.models.RemoveParticipantRequest;
 import com.azure.communication.callingserver.implementation.models.ResumeMeetingAudioRequest;
-import com.azure.communication.callingserver.implementation.models.TransferCallRequest;
 import com.azure.communication.callingserver.implementation.models.TransferCallResultInternal;
+import com.azure.communication.callingserver.implementation.models.TransferToCallRequest;
+import com.azure.communication.callingserver.implementation.models.TransferToParticipantRequest;
 import com.azure.communication.callingserver.implementation.models.UnmuteParticipantRequest;
 import com.azure.communication.callingserver.implementation.models.UpdateAudioRoutingGroupRequest;
 import com.azure.core.annotation.BodyParam;
@@ -180,14 +181,25 @@ public final class CallConnectionsImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/calling/callConnections/{callConnectionId}/:transfer")
+        @Post("/calling/callConnections/{callConnectionId}/:transferToParticipant")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<TransferCallResultInternal>> transfer(
+        Mono<Response<TransferCallResultInternal>> transferToParticipant(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") TransferCallRequest transferCallRequest,
+                @BodyParam("application/json") TransferToParticipantRequest transferToParticipantRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/calling/callConnections/{callConnectionId}/:transferToCall")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<TransferCallResultInternal>> transferToCall(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("callConnectionId") String callConnectionId,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") TransferToCallRequest transferToCallRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -1438,35 +1450,35 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Transfer the call to a participant or to another call.
+     * Transfer the call to a participant.
      *
      * @param callConnectionId The call connection id.
-     * @param transferCallRequest The transfer call request.
+     * @param transferToParticipantRequest The transfer to participant request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response payload for transfer call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TransferCallResultInternal>> transferWithResponseAsync(
-            String callConnectionId, TransferCallRequest transferCallRequest) {
+    public Mono<Response<TransferCallResultInternal>> transferToParticipantWithResponseAsync(
+            String callConnectionId, TransferToParticipantRequest transferToParticipantRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.transfer(
+                        service.transferToParticipant(
                                 this.client.getEndpoint(),
                                 callConnectionId,
                                 this.client.getApiVersion(),
-                                transferCallRequest,
+                                transferToParticipantRequest,
                                 accept,
                                 context));
     }
 
     /**
-     * Transfer the call to a participant or to another call.
+     * Transfer the call to a participant.
      *
      * @param callConnectionId The call connection id.
-     * @param transferCallRequest The transfer call request.
+     * @param transferToParticipantRequest The transfer to participant request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1474,32 +1486,32 @@ public final class CallConnectionsImpl {
      * @return the response payload for transfer call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TransferCallResultInternal>> transferWithResponseAsync(
-            String callConnectionId, TransferCallRequest transferCallRequest, Context context) {
+    public Mono<Response<TransferCallResultInternal>> transferToParticipantWithResponseAsync(
+            String callConnectionId, TransferToParticipantRequest transferToParticipantRequest, Context context) {
         final String accept = "application/json";
-        return service.transfer(
+        return service.transferToParticipant(
                 this.client.getEndpoint(),
                 callConnectionId,
                 this.client.getApiVersion(),
-                transferCallRequest,
+                transferToParticipantRequest,
                 accept,
                 context);
     }
 
     /**
-     * Transfer the call to a participant or to another call.
+     * Transfer the call to a participant.
      *
      * @param callConnectionId The call connection id.
-     * @param transferCallRequest The transfer call request.
+     * @param transferToParticipantRequest The transfer to participant request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response payload for transfer call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TransferCallResultInternal> transferAsync(
-            String callConnectionId, TransferCallRequest transferCallRequest) {
-        return transferWithResponseAsync(callConnectionId, transferCallRequest)
+    public Mono<TransferCallResultInternal> transferToParticipantAsync(
+            String callConnectionId, TransferToParticipantRequest transferToParticipantRequest) {
+        return transferToParticipantWithResponseAsync(callConnectionId, transferToParticipantRequest)
                 .flatMap(
                         (Response<TransferCallResultInternal> res) -> {
                             if (res.getValue() != null) {
@@ -1511,10 +1523,10 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Transfer the call to a participant or to another call.
+     * Transfer the call to a participant.
      *
      * @param callConnectionId The call connection id.
-     * @param transferCallRequest The transfer call request.
+     * @param transferToParticipantRequest The transfer to participant request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1522,9 +1534,9 @@ public final class CallConnectionsImpl {
      * @return the response payload for transfer call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TransferCallResultInternal> transferAsync(
-            String callConnectionId, TransferCallRequest transferCallRequest, Context context) {
-        return transferWithResponseAsync(callConnectionId, transferCallRequest, context)
+    public Mono<TransferCallResultInternal> transferToParticipantAsync(
+            String callConnectionId, TransferToParticipantRequest transferToParticipantRequest, Context context) {
+        return transferToParticipantWithResponseAsync(callConnectionId, transferToParticipantRequest, context)
                 .flatMap(
                         (Response<TransferCallResultInternal> res) -> {
                             if (res.getValue() != null) {
@@ -1536,25 +1548,26 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Transfer the call to a participant or to another call.
+     * Transfer the call to a participant.
      *
      * @param callConnectionId The call connection id.
-     * @param transferCallRequest The transfer call request.
+     * @param transferToParticipantRequest The transfer to participant request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response payload for transfer call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TransferCallResultInternal transfer(String callConnectionId, TransferCallRequest transferCallRequest) {
-        return transferAsync(callConnectionId, transferCallRequest).block();
+    public TransferCallResultInternal transferToParticipant(
+            String callConnectionId, TransferToParticipantRequest transferToParticipantRequest) {
+        return transferToParticipantAsync(callConnectionId, transferToParticipantRequest).block();
     }
 
     /**
-     * Transfer the call to a participant or to another call.
+     * Transfer the call to a participant.
      *
      * @param callConnectionId The call connection id.
-     * @param transferCallRequest The transfer call request.
+     * @param transferToParticipantRequest The transfer to participant request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1562,9 +1575,140 @@ public final class CallConnectionsImpl {
      * @return the response payload for transfer call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TransferCallResultInternal> transferWithResponse(
-            String callConnectionId, TransferCallRequest transferCallRequest, Context context) {
-        return transferWithResponseAsync(callConnectionId, transferCallRequest, context).block();
+    public Response<TransferCallResultInternal> transferToParticipantWithResponse(
+            String callConnectionId, TransferToParticipantRequest transferToParticipantRequest, Context context) {
+        return transferToParticipantWithResponseAsync(callConnectionId, transferToParticipantRequest, context).block();
+    }
+
+    /**
+     * Transfer the current call to another call.
+     *
+     * @param callConnectionId The call connection id.
+     * @param transferToCallRequest The transfer to call request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for transfer call operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<TransferCallResultInternal>> transferToCallWithResponseAsync(
+            String callConnectionId, TransferToCallRequest transferToCallRequest) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.transferToCall(
+                                this.client.getEndpoint(),
+                                callConnectionId,
+                                this.client.getApiVersion(),
+                                transferToCallRequest,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Transfer the current call to another call.
+     *
+     * @param callConnectionId The call connection id.
+     * @param transferToCallRequest The transfer to call request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for transfer call operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<TransferCallResultInternal>> transferToCallWithResponseAsync(
+            String callConnectionId, TransferToCallRequest transferToCallRequest, Context context) {
+        final String accept = "application/json";
+        return service.transferToCall(
+                this.client.getEndpoint(),
+                callConnectionId,
+                this.client.getApiVersion(),
+                transferToCallRequest,
+                accept,
+                context);
+    }
+
+    /**
+     * Transfer the current call to another call.
+     *
+     * @param callConnectionId The call connection id.
+     * @param transferToCallRequest The transfer to call request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for transfer call operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TransferCallResultInternal> transferToCallAsync(
+            String callConnectionId, TransferToCallRequest transferToCallRequest) {
+        return transferToCallWithResponseAsync(callConnectionId, transferToCallRequest)
+                .flatMap(
+                        (Response<TransferCallResultInternal> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Transfer the current call to another call.
+     *
+     * @param callConnectionId The call connection id.
+     * @param transferToCallRequest The transfer to call request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for transfer call operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TransferCallResultInternal> transferToCallAsync(
+            String callConnectionId, TransferToCallRequest transferToCallRequest, Context context) {
+        return transferToCallWithResponseAsync(callConnectionId, transferToCallRequest, context)
+                .flatMap(
+                        (Response<TransferCallResultInternal> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Transfer the current call to another call.
+     *
+     * @param callConnectionId The call connection id.
+     * @param transferToCallRequest The transfer to call request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for transfer call operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TransferCallResultInternal transferToCall(
+            String callConnectionId, TransferToCallRequest transferToCallRequest) {
+        return transferToCallAsync(callConnectionId, transferToCallRequest).block();
+    }
+
+    /**
+     * Transfer the current call to another call.
+     *
+     * @param callConnectionId The call connection id.
+     * @param transferToCallRequest The transfer to call request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for transfer call operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TransferCallResultInternal> transferToCallWithResponse(
+            String callConnectionId, TransferToCallRequest transferToCallRequest, Context context) {
+        return transferToCallWithResponseAsync(callConnectionId, transferToCallRequest, context).block();
     }
 
     /**

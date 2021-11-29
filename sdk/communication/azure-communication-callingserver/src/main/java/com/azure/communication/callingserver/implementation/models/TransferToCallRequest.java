@@ -7,28 +7,15 @@ package com.azure.communication.callingserver.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The transfer call request. */
+/** The transfer to call request. */
 @Fluent
-public final class TransferCallRequest {
-    /*
-     * The identity of the target where call should be transfer to.
-     */
-    @JsonProperty(value = "targetParticipant")
-    private CommunicationIdentifierModel targetParticipant;
-
+public final class TransferToCallRequest {
     /*
      * The call connection id to replace the current call with. This parameter
      * should be used for consultative transfer.
      */
-    @JsonProperty(value = "targetCallConnectionId")
+    @JsonProperty(value = "targetCallConnectionId", required = true)
     private String targetCallConnectionId;
-
-    /*
-     * The alternate identity of the transferor if transferring to a pstn
-     * number.
-     */
-    @JsonProperty(value = "alternateCallerId")
-    private PhoneNumberIdentifierModel alternateCallerId;
 
     /*
      * The user to user information.
@@ -41,26 +28,6 @@ public final class TransferCallRequest {
      */
     @JsonProperty(value = "operationContext")
     private String operationContext;
-
-    /**
-     * Get the targetParticipant property: The identity of the target where call should be transfer to.
-     *
-     * @return the targetParticipant value.
-     */
-    public CommunicationIdentifierModel getTargetParticipant() {
-        return this.targetParticipant;
-    }
-
-    /**
-     * Set the targetParticipant property: The identity of the target where call should be transfer to.
-     *
-     * @param targetParticipant the targetParticipant value to set.
-     * @return the TransferCallRequest object itself.
-     */
-    public TransferCallRequest setTargetParticipant(CommunicationIdentifierModel targetParticipant) {
-        this.targetParticipant = targetParticipant;
-        return this;
-    }
 
     /**
      * Get the targetCallConnectionId property: The call connection id to replace the current call with. This parameter
@@ -77,30 +44,10 @@ public final class TransferCallRequest {
      * should be used for consultative transfer.
      *
      * @param targetCallConnectionId the targetCallConnectionId value to set.
-     * @return the TransferCallRequest object itself.
+     * @return the TransferToCallRequest object itself.
      */
-    public TransferCallRequest setTargetCallConnectionId(String targetCallConnectionId) {
+    public TransferToCallRequest setTargetCallConnectionId(String targetCallConnectionId) {
         this.targetCallConnectionId = targetCallConnectionId;
-        return this;
-    }
-
-    /**
-     * Get the alternateCallerId property: The alternate identity of the transferor if transferring to a pstn number.
-     *
-     * @return the alternateCallerId value.
-     */
-    public PhoneNumberIdentifierModel getAlternateCallerId() {
-        return this.alternateCallerId;
-    }
-
-    /**
-     * Set the alternateCallerId property: The alternate identity of the transferor if transferring to a pstn number.
-     *
-     * @param alternateCallerId the alternateCallerId value to set.
-     * @return the TransferCallRequest object itself.
-     */
-    public TransferCallRequest setAlternateCallerId(PhoneNumberIdentifierModel alternateCallerId) {
-        this.alternateCallerId = alternateCallerId;
         return this;
     }
 
@@ -117,9 +64,9 @@ public final class TransferCallRequest {
      * Set the userToUserInformation property: The user to user information.
      *
      * @param userToUserInformation the userToUserInformation value to set.
-     * @return the TransferCallRequest object itself.
+     * @return the TransferToCallRequest object itself.
      */
-    public TransferCallRequest setUserToUserInformation(String userToUserInformation) {
+    public TransferToCallRequest setUserToUserInformation(String userToUserInformation) {
         this.userToUserInformation = userToUserInformation;
         return this;
     }
@@ -137,9 +84,9 @@ public final class TransferCallRequest {
      * Set the operationContext property: The operation context.
      *
      * @param operationContext the operationContext value to set.
-     * @return the TransferCallRequest object itself.
+     * @return the TransferToCallRequest object itself.
      */
-    public TransferCallRequest setOperationContext(String operationContext) {
+    public TransferToCallRequest setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }
