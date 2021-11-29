@@ -1,5 +1,15 @@
 # Release History
 
+## 3.12.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 3.11.0 (2021-11-24)
 
 This release is compatible with Spring Boot 2.5.0 - 2.5.4.
