@@ -5,7 +5,7 @@ package com.azure.storage.common.sas;
 
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
-import com.azure.storage.common.TimeAndFormat;
+import com.azure.storage.common.implementation.TimeAndFormat;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.time.OffsetDateTime;

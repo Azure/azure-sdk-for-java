@@ -9,7 +9,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.TimeAndFormat;
 import com.azure.storage.common.Utility;
 
 import java.net.MalformedURLException;
