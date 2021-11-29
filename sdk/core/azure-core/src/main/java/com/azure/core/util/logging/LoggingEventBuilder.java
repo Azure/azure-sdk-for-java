@@ -288,12 +288,16 @@ public final class LoggingEventBuilder {
         sb.append("\"");
 
         if (throwable != null) {
-            sb.append(",\"exception\":\"");
+            sb.append(",\"exception\":");
 
-            String exceptionMessage = throwable.getMessage() == null ? "" : throwable.getMessage();
-
-            JSON_STRING_ENCODER.quoteAsString(exceptionMessage, sb);
-            sb.append("\"");
+            String exceptionMessage = throwable.getMessage();
+            if (exceptionMessage != null) {
+                sb.append("\"");
+                JSON_STRING_ENCODER.quoteAsString(exceptionMessage, sb);
+                sb.append("\"");
+            } else {
+                sb.append("null");
+            }
         }
 
         if (hasGlobalContext) {
@@ -369,11 +373,11 @@ public final class LoggingEventBuilder {
      * Serializes passed map to string containing valid JSON fragment:
      * e.g. "k1":"v1","k2":"v2", properly escaped and without trailing comma.
      *
-     * Does not support custom or complex object serialization, uses {@code toString()} on them.
+     * For complex object serialization, it calls {@code toString()} guarded with null check.
      *
      * @param context to serialize.
      *
-     * @returns Serialized JSON fragment or empty string.
+     * @returns Serialized JSON fragment or an empty string.
      */
     static String writeJsonFragment(Map<String, Object> context) {
         if (CoreUtils.isNullOrEmpty(context)) {
@@ -399,13 +403,9 @@ public final class LoggingEventBuilder {
             return formatter.append("null");
         }
 
-        // LoggingEventBuilder only populates primitives and Strings
-        if (value instanceof Boolean
-            || value instanceof Integer
-            || value instanceof Long
-            || value instanceof Byte) {
-                JSON_STRING_ENCODER.quoteAsString(value.toString(), formatter);
-                return formatter;
+        if (isPrimitive(value)) {
+            JSON_STRING_ENCODER.quoteAsString(value.toString(), formatter);
+            return formatter;
         }
 
         formatter.append("\"");
@@ -413,6 +413,26 @@ public final class LoggingEventBuilder {
         return formatter.append("\"");
     }
 
+    /**
+     *  Returns true if the value is an instance of a primitive type and false otherwise.
+     */
+    private static boolean isPrimitive(Object value) {
+        // most of the time values are strings
+        if (value instanceof String) {
+            return false;
+        }
+
+        if (value instanceof Boolean
+            || value instanceof Integer
+            || value instanceof Long
+            || value instanceof Byte
+            || value instanceof Double
+            || value instanceof Float) {
+            return true;
+        }
+
+        return false;
+    }
 
     private static final class ContextKeyValuePair {
         private final String key;
