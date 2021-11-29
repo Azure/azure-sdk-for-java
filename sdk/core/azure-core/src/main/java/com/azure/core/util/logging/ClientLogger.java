@@ -84,8 +84,10 @@ public class ClientLogger {
      *
      * <!-- src_embed com.azure.core.util.logging.clientlogger#globalcontext -->
      * <pre>
-     * ClientLogger loggerWithContext = new ClientLogger&#40;ClientLoggerJavaDocCodeSnippets.class,
-     *     Map.of&#40;&quot;connectionId&quot;, &quot;95a47cf&quot;&#41;&#41;;
+     * Map&lt;String, Object&gt; context = new HashMap&lt;&gt;&#40;&#41;;
+     * context.put&#40;&quot;connectionId&quot;, &quot;95a47cf&quot;&#41;;
+     *
+     * ClientLogger loggerWithContext = new ClientLogger&#40;ClientLoggerJavaDocCodeSnippets.class, context&#41;;
      * loggerWithContext.info&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name&#41;;
      * </pre>
      * <!-- end com.azure.core.util.logging.clientlogger#globalcontext -->
