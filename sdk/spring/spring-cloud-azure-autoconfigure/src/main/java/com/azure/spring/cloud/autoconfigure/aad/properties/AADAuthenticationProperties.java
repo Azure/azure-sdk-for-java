@@ -72,7 +72,7 @@ public class AADAuthenticationProperties implements InitializingBean {
      * Redirection Endpoint: Used by the authorization server to return responses containing authorization credentials
      * to the client via the resource owner user-agent.
      */
-    private String redirectUriTemplate;
+    private String redirectUriTemplate = "{baseUrl}/login/oauth2/code/";
 
     /**
      * App ID URI which might be used in the <code>"aud"</code> claim of an <code>id_token</code>.
@@ -404,9 +404,6 @@ public class AADAuthenticationProperties implements InitializingBean {
         if (!StringUtils.hasText(this.getProfile().getTenantId())) {
             this.getProfile().setTenantId(global.getProfile().getTenantId());
         }
-        if (!StringUtils.hasText(getProfile().getTenantId())) {
-            this.getProfile().setTenantId("common");
-        }
         if (this.getProfile().getCloud() == null) {
             this.getProfile().setCloud(global.getProfile().getCloud());
         }
@@ -418,6 +415,9 @@ public class AADAuthenticationProperties implements InitializingBean {
             this.getProfile().getEnvironment().setMicrosoftGraphEndpoint(
                 global.getProfile().getEnvironment().getMicrosoftGraphEndpoint());
         }
+        if (!StringUtils.hasText(getProfile().getTenantId())) {
+            this.getProfile().setTenantId("common"); // This can only be set in this method, can not set in AADAuthenticationProperties#afterPropertiesSet
+        }
         validateProperties();
     }
 
@@ -427,9 +427,6 @@ public class AADAuthenticationProperties implements InitializingBean {
     }
 
     private void validateProperties() {
-        if (!StringUtils.hasText(redirectUriTemplate)) {
-            redirectUriTemplate = "{baseUrl}/login/oauth2/code/";
-        }
 
         Set<String> allowedGroupIds = userGroup.getAllowedGroupIds();
         if (allowedGroupIds.size() > 1 && allowedGroupIds.contains("all")) {
