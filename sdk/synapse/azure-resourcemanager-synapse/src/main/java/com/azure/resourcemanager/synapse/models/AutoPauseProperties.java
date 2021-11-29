@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Auto-pausing properties of a Big Data pool powered by Apache Spark. */
+/** Spark pool auto-pausing properties Auto-pausing properties of a Big Data pool powered by Apache Spark. */
 @Fluent
 public final class AutoPauseProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoPauseProperties.class);

@@ -18,6 +18,9 @@
             "reactor\\.netty\\..+",
             "reactor\\.util\\..+",
             "io\\.netty\\..+",
+            "kotlin(\\..+)?",
+            "okhttp3(\\..+)?",
+            "okio(\\..+)?",
             "com\\.nimbusds(\\..+)?",
             "com\\.microsoft\\.azure\\..+",
             "javax\\.jms(\\..+)?",
@@ -171,25 +174,21 @@
         "justification": "azure-cosmos classes are allowed to be exposed by dependencies using them."
       },
       {
-        "code": "java.class.externalClassExposedInAPI",
-        "new": "class com.azure.data.schemaregistry.SchemaRegistryAsyncClient",
-        "justification": "This is a preview release"
-      },
-      {
-        "code": "java.class.externalClassExposedInAPI",
-        "new": "class com.azure.data.schemaregistry.models.SchemaProperties",
-        "justification": "This is a preview release"
-      },
-      {
-        "code": "java.class.externalClassExposedInAPI",
-        "new": "class com.azure.data.schemaregistry.models.SerializationType",
-        "justification": "This is a preview release"
+        "regex": true,
+        "code": "java\\.class\\.externalClassExposedInAPI",
+        "new": "(class|enum) com\\.azure\\.data\\.schemaregistry\\..+",
+        "justification": "azure-data-schemaregistry-avro depends on the schema registry classes."
       },
       {
         "regex": true,
         "code": "java\\.class\\.externalClassExposedInAPI",
         "new": "(interface|class|enum) io\\.opentelemetry.*",
         "justification": "Azure Monitor Exporter is allowed to use OpenTelemetry types in public APIs as it implements interfaces defined by OpenTelemetry"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface com.google.gson.ToNumberStrategy",
+        "justification": "This occurs because we check transitive dependencies, so it checks gson jars."
       },
       {
         "code": "java.annotation.added",
@@ -345,6 +344,101 @@
         "code": "java.method.added",
         "new": "method void com.azure.core.credential.AzureSasCredential::<init>(java.lang.String, java.util.function.Function<java.lang.String, java.lang.String>)",
         "justification": "New constructor added in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.util.HttpClientOptions com.azure.core.util.HttpClientOptions::setConnectTimeout(java.time.Duration)",
+        "justification": "New setter added in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method java.time.Duration com.azure.core.util.HttpClientOptions::getConnectTimeout()",
+        "justification": "New getter added in azure-core."
+      },
+      {
+        "code": "java.method.defaultMethodAddedToInterface",
+        "new": "method boolean com.azure.core.http.policy.RetryStrategy::shouldRetryException(java.lang.Throwable)",
+        "justification": "New default method added in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method void com.azure.core.util.logging.ClientLogger::log(com.azure.core.util.logging.LogLevel, java.util.function.Supplier<java.lang.String>)",
+        "justification": "New default method added in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method void com.azure.core.util.logging.ClientLogger::log(com.azure.core.util.logging.LogLevel, java.util.function.Supplier<java.lang.String>, java.lang.Throwable)",
+        "justification": "New default method added in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method java.lang.Long com.azure.core.util.BinaryData::getLength()",
+        "justification": "New method added to BinaryData in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method reactor.core.publisher.Flux<java.nio.ByteBuffer> com.azure.core.util.BinaryData::toFluxByteBuffer()",
+        "justification": "New method added to BinaryData in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method reactor.core.publisher.Mono<com.azure.core.util.BinaryData> com.azure.core.util.BinaryData::fromFlux(reactor.core.publisher.Flux<java.nio.ByteBuffer>, java.lang.Long)",
+        "justification": "New method added to BinaryData in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.util.BinaryData com.azure.core.util.BinaryData::fromFile(java.nio.file.Path)",
+        "justification": "New method added to BinaryData in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.util.BinaryData com.azure.core.util.BinaryData::fromFile(java.nio.file.Path, int)",
+        "justification": "New method added to BinaryData in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.http.HttpHeaders com.azure.core.http.HttpHeaders::add(java.lang.String, java.lang.String)",
+        "justification": "New method added to HttpHeaders in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method reactor.core.publisher.Mono<java.io.InputStream> com.azure.core.http.HttpResponse::getBodyAsInputStream()",
+        "justification": "New default method added to HttpResponse in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method java.lang.String com.azure.core.credential.TokenRequestContext::getTenantId()",
+        "justification": "New method added to TokenRequestContext in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.credential.TokenRequestContext com.azure.core.credential.TokenRequestContext::setTenantId(java.lang.String)",
+        "justification": "New method added to TokenRequestContext in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method java.lang.String com.azure.storage.common.StorageSharedKeyCredential::generateAuthorizationHeader(java.net.URL, java.lang.String, com.azure.core.http.HttpHeaders, boolean)",
+        "justification": "New method added to SharedKeyCredential in common not intended for use by customers. Only public for access by other packages."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method <T, U> com.azure.core.util.polling.PollerFlux<T, U> com.azure.core.util.polling.PollerFlux<T, U>::create(java.time.Duration, java.util.function.Supplier<reactor.core.publisher.Mono<? extends com.azure.core.http.rest.Response<?>>>, com.azure.core.util.polling.PollingStrategy<T, U>, com.azure.core.util.serializer.TypeReference<T>, com.azure.core.util.serializer.TypeReference<U>)",
+        "justification": "New method added to PollerFlux in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method java.lang.Class<T> com.azure.core.util.serializer.TypeReference<T>::getJavaClass()",
+        "justification": "New method added to TypeReference in azure-core."
+      },
+      {
+        "code": "java.method.visibilityReduced",
+        "new": "method com.azure.core.http.rest.RequestOptions com.azure.core.http.rest.RequestOptions::setErrorOptions(java.util.EnumSet<com.azure.core.http.rest.ErrorOptions>)",
+        "justification": "The use case for ErrorOptions is not yet clear. It will be added later if there are enough data points to suggest this is needed."
+      },
+      {
+        "code": "java.class.visibilityReduced",
+        "new": "enum com.azure.core.http.rest.ErrorOptions",
+        "justification": "The use case for ErrorOptions is not yet clear. It will be added later if there are enough data points to suggest this is needed."
       }
     ]
   }

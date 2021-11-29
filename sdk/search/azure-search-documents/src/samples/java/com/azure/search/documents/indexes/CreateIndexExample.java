@@ -5,6 +5,7 @@ package com.azure.search.documents.indexes;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
+import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
@@ -18,23 +19,65 @@ public class CreateIndexExample {
      */
     private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ENDPOINT");
     private static final String ADMIN_KEY = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_API_KEY");
-    private static final String INDEX_NAME = "good-food";
 
     public static void main(String[] args) {
-        AzureKeyCredential searchApiKeyCredential = new AzureKeyCredential(ADMIN_KEY);
-
+        // Create the SearchIndex client.
         SearchIndexClient client = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(searchApiKeyCredential)
+            .credential(new AzureKeyCredential(ADMIN_KEY))
             .buildClient();
 
-        SearchIndex newIndex = new SearchIndex(INDEX_NAME,
-            Arrays.asList(new SearchField("Name", SearchFieldDataType.STRING).setKey(Boolean.TRUE),
-                new SearchField("Cuisine", SearchFieldDataType.STRING)));
+        // Configure the index using SearchFields
+        String indexName = "hotels";
+        SearchIndex newIndex = new SearchIndex(indexName, Arrays.asList(
+            new SearchField("hotelId", SearchFieldDataType.STRING)
+                .setKey(true)
+                .setFilterable(true)
+                .setSortable(true),
+            new SearchField("hotelName", SearchFieldDataType.STRING)
+                .setSearchable(true)
+                .setFilterable(true)
+                .setSortable(true),
+            new SearchField("description", SearchFieldDataType.STRING)
+                .setSearchable(true)
+                .setAnalyzerName(LexicalAnalyzerName.EN_LUCENE),
+            new SearchField("descriptionFr", SearchFieldDataType.STRING)
+                .setSearchable(true)
+                .setAnalyzerName(LexicalAnalyzerName.FR_LUCENE),
+            new SearchField("tags", SearchFieldDataType.collection(SearchFieldDataType.STRING))
+                .setSearchable(true)
+                .setFilterable(true)
+                .setFacetable(true),
+            new SearchField("address", SearchFieldDataType.COMPLEX)
+                .setFields(
+                    new SearchField("streetAddress", SearchFieldDataType.STRING)
+                        .setSearchable(true),
+                    new SearchField("city", SearchFieldDataType.STRING)
+                        .setFilterable(true)
+                        .setSortable(true)
+                        .setFacetable(true),
+                    new SearchField("stateProvince", SearchFieldDataType.STRING)
+                        .setSearchable(true)
+                        .setFilterable(true)
+                        .setSortable(true)
+                        .setFacetable(true),
+                    new SearchField("country", SearchFieldDataType.STRING)
+                        .setSearchable(true)
+                        .setSynonymMapNames("synonymMapName")
+                        .setFilterable(true)
+                        .setSortable(true)
+                        .setFacetable(true),
+                    new SearchField("postalCode", SearchFieldDataType.STRING)
+                        .setSearchable(true)
+                        .setFilterable(true)
+                        .setSortable(true)
+                        .setFacetable(true))
+        ));
+
         // Create index.
         client.createIndex(newIndex);
 
         // Cleanup index resource.
-        client.deleteIndex(INDEX_NAME);
+        client.deleteIndex(indexName);
     }
 }

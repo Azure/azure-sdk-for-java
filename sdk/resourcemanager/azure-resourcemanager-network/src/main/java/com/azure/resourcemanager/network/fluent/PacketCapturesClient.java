@@ -50,7 +50,7 @@ public interface PacketCapturesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about packet capture session.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<PacketCaptureResultInner>, PacketCaptureResultInner> beginCreateAsync(
         String resourceGroupName, String networkWatcherName, String packetCaptureName, PacketCaptureInner parameters);
 
@@ -66,7 +66,7 @@ public interface PacketCapturesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about packet capture session.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PacketCaptureResultInner>, PacketCaptureResultInner> beginCreate(
         String resourceGroupName, String networkWatcherName, String packetCaptureName, PacketCaptureInner parameters);
 
@@ -83,7 +83,7 @@ public interface PacketCapturesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about packet capture session.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PacketCaptureResultInner>, PacketCaptureResultInner> beginCreate(
         String resourceGroupName,
         String networkWatcherName,
@@ -230,7 +230,7 @@ public interface PacketCapturesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String networkWatcherName, String packetCaptureName);
 
@@ -245,7 +245,7 @@ public interface PacketCapturesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String networkWatcherName, String packetCaptureName);
 
@@ -261,7 +261,7 @@ public interface PacketCapturesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String networkWatcherName, String packetCaptureName, Context context);
 
@@ -332,7 +332,7 @@ public interface PacketCapturesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginStopAsync(
         String resourceGroupName, String networkWatcherName, String packetCaptureName);
 
@@ -347,7 +347,7 @@ public interface PacketCapturesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String networkWatcherName, String packetCaptureName);
 
@@ -363,7 +363,7 @@ public interface PacketCapturesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String networkWatcherName, String packetCaptureName, Context context);
 
@@ -434,7 +434,7 @@ public interface PacketCapturesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return status of packet capture session.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<PacketCaptureQueryStatusResultInner>, PacketCaptureQueryStatusResultInner>
         beginGetStatusAsync(String resourceGroupName, String networkWatcherName, String packetCaptureName);
 
@@ -449,7 +449,7 @@ public interface PacketCapturesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return status of packet capture session.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PacketCaptureQueryStatusResultInner>, PacketCaptureQueryStatusResultInner> beginGetStatus(
         String resourceGroupName, String networkWatcherName, String packetCaptureName);
 
@@ -465,7 +465,7 @@ public interface PacketCapturesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return status of packet capture session.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PacketCaptureQueryStatusResultInner>, PacketCaptureQueryStatusResultInner> beginGetStatus(
         String resourceGroupName, String networkWatcherName, String packetCaptureName, Context context);
 

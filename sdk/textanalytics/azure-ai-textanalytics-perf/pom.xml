@@ -18,6 +18,12 @@
 
   <name>Microsoft Azure client library for Text Analytics performance tests</name>
 
+  <properties>
+    <codesnippet.skip>false</codesnippet.skip>
+    <javadocDoclet></javadocDoclet>
+    <javadocDocletOptions></javadocDocletOptions>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
@@ -27,7 +33,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-ai-textanalytics</artifactId>
-      <version>5.2.0-beta.2</version> <!-- {x-version-update;com.azure:azure-ai-textanalytics;current} -->
+      <version>5.2.0-beta.3</version> <!-- {x-version-update;com.azure:azure-ai-textanalytics;current} -->
     </dependency>
   </dependencies>
 

@@ -32,6 +32,20 @@ public interface BackendContract {
     String type();
 
     /**
+     * Gets the url property: Runtime Url of the Backend.
+     *
+     * @return the url value.
+     */
+    String url();
+
+    /**
+     * Gets the protocol property: Backend communication protocol.
+     *
+     * @return the protocol value.
+     */
+    BackendProtocol protocol();
+
+    /**
      * Gets the title property: Backend Title.
      *
      * @return the title value.
@@ -82,20 +96,6 @@ public interface BackendContract {
     BackendTlsProperties tls();
 
     /**
-     * Gets the url property: Runtime Url of the Backend.
-     *
-     * @return the url value.
-     */
-    String url();
-
-    /**
-     * Gets the protocol property: Backend communication protocol.
-     *
-     * @return the protocol value.
-     */
-    BackendProtocol protocol();
-
-    /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.BackendContractInner object.
      *
      * @return the inner object.
@@ -127,15 +127,15 @@ public interface BackendContract {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTitle,
+            extends DefinitionStages.WithUrl,
+                DefinitionStages.WithProtocol,
+                DefinitionStages.WithTitle,
                 DefinitionStages.WithDescription,
                 DefinitionStages.WithResourceId,
                 DefinitionStages.WithProperties,
                 DefinitionStages.WithCredentials,
                 DefinitionStages.WithProxy,
                 DefinitionStages.WithTls,
-                DefinitionStages.WithUrl,
-                DefinitionStages.WithProtocol,
                 DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
@@ -151,6 +151,26 @@ public interface BackendContract {
              * @return the created resource.
              */
             BackendContract create(Context context);
+        }
+        /** The stage of the BackendContract definition allowing to specify url. */
+        interface WithUrl {
+            /**
+             * Specifies the url property: Runtime Url of the Backend..
+             *
+             * @param url Runtime Url of the Backend.
+             * @return the next definition stage.
+             */
+            WithCreate withUrl(String url);
+        }
+        /** The stage of the BackendContract definition allowing to specify protocol. */
+        interface WithProtocol {
+            /**
+             * Specifies the protocol property: Backend communication protocol..
+             *
+             * @param protocol Backend communication protocol.
+             * @return the next definition stage.
+             */
+            WithCreate withProtocol(BackendProtocol protocol);
         }
         /** The stage of the BackendContract definition allowing to specify title. */
         interface WithTitle {
@@ -224,26 +244,6 @@ public interface BackendContract {
              */
             WithCreate withTls(BackendTlsProperties tls);
         }
-        /** The stage of the BackendContract definition allowing to specify url. */
-        interface WithUrl {
-            /**
-             * Specifies the url property: Runtime Url of the Backend..
-             *
-             * @param url Runtime Url of the Backend.
-             * @return the next definition stage.
-             */
-            WithCreate withUrl(String url);
-        }
-        /** The stage of the BackendContract definition allowing to specify protocol. */
-        interface WithProtocol {
-            /**
-             * Specifies the protocol property: Backend communication protocol..
-             *
-             * @param protocol Backend communication protocol.
-             * @return the next definition stage.
-             */
-            WithCreate withProtocol(BackendProtocol protocol);
-        }
         /** The stage of the BackendContract definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -266,15 +266,15 @@ public interface BackendContract {
 
     /** The template for BackendContract update. */
     interface Update
-        extends UpdateStages.WithTitle,
+        extends UpdateStages.WithUrl,
+            UpdateStages.WithProtocol,
+            UpdateStages.WithTitle,
             UpdateStages.WithDescription,
             UpdateStages.WithResourceId,
             UpdateStages.WithProperties,
             UpdateStages.WithCredentials,
             UpdateStages.WithProxy,
             UpdateStages.WithTls,
-            UpdateStages.WithUrl,
-            UpdateStages.WithProtocol,
             UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
@@ -293,6 +293,26 @@ public interface BackendContract {
     }
     /** The BackendContract update stages. */
     interface UpdateStages {
+        /** The stage of the BackendContract update allowing to specify url. */
+        interface WithUrl {
+            /**
+             * Specifies the url property: Runtime Url of the Backend..
+             *
+             * @param url Runtime Url of the Backend.
+             * @return the next definition stage.
+             */
+            Update withUrl(String url);
+        }
+        /** The stage of the BackendContract update allowing to specify protocol. */
+        interface WithProtocol {
+            /**
+             * Specifies the protocol property: Backend communication protocol..
+             *
+             * @param protocol Backend communication protocol.
+             * @return the next definition stage.
+             */
+            Update withProtocol(BackendProtocol protocol);
+        }
         /** The stage of the BackendContract update allowing to specify title. */
         interface WithTitle {
             /**
@@ -364,26 +384,6 @@ public interface BackendContract {
              * @return the next definition stage.
              */
             Update withTls(BackendTlsProperties tls);
-        }
-        /** The stage of the BackendContract update allowing to specify url. */
-        interface WithUrl {
-            /**
-             * Specifies the url property: Runtime Url of the Backend..
-             *
-             * @param url Runtime Url of the Backend.
-             * @return the next definition stage.
-             */
-            Update withUrl(String url);
-        }
-        /** The stage of the BackendContract update allowing to specify protocol. */
-        interface WithProtocol {
-            /**
-             * Specifies the protocol property: Backend communication protocol..
-             *
-             * @param protocol Backend communication protocol.
-             * @return the next definition stage.
-             */
-            Update withProtocol(BackendProtocol protocol);
         }
         /** The stage of the BackendContract update allowing to specify ifMatch. */
         interface WithIfMatch {

@@ -105,7 +105,6 @@ public final class FeatureSupportsClientImpl implements FeatureSupportsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2017-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -113,7 +112,7 @@ public final class FeatureSupportsClientImpl implements FeatureSupportsClient {
                     service
                         .validate(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             azureRegion,
                             this.client.getSubscriptionId(),
                             parameters,
@@ -156,13 +155,12 @@ public final class FeatureSupportsClientImpl implements FeatureSupportsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2017-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .validate(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 azureRegion,
                 this.client.getSubscriptionId(),
                 parameters,

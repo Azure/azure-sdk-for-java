@@ -59,6 +59,12 @@ public class StringBasedCosmosQuery extends AbstractCosmosQuery {
         if (isPageQuery()) {
             return this.operations.runPaginationQuery(querySpec, accessor.getPageable(), processor.getReturnedType().getDomainType(),
                                                       processor.getReturnedType().getReturnedType());
+        } else if (isSliceQuery()) {
+            return this.operations.runSliceQuery(
+                querySpec,
+                accessor.getPageable(),
+                processor.getReturnedType().getDomainType(),
+                processor.getReturnedType().getReturnedType());
         } else if (isCountQuery()) {
             final String container = ((CosmosEntityMetadata<?>) getQueryMethod().getEntityInformation()).getContainerName();
             return this.operations.count(querySpec, container);

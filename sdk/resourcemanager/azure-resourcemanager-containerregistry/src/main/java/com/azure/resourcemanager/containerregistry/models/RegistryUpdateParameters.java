@@ -5,22 +5,29 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.containerregistry.fluent.models.RegistryPropertiesUpdateParameters;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The parameters for updating a container registry. */
-@JsonFlatten
 @Fluent
-public class RegistryUpdateParameters {
+public final class RegistryUpdateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RegistryUpdateParameters.class);
+
+    /*
+     * The identity of the container registry.
+     */
+    @JsonProperty(value = "identity")
+    private IdentityProperties identity;
 
     /*
      * The tags for the container registry.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
@@ -30,22 +37,30 @@ public class RegistryUpdateParameters {
     private Sku sku;
 
     /*
-     * The value that indicates whether the admin user is enabled.
+     * The properties that the container registry will be updated with.
      */
-    @JsonProperty(value = "properties.adminUserEnabled")
-    private Boolean adminUserEnabled;
+    @JsonProperty(value = "properties")
+    private RegistryPropertiesUpdateParameters innerProperties;
 
-    /*
-     * The network rule set for a container registry.
+    /**
+     * Get the identity property: The identity of the container registry.
+     *
+     * @return the identity value.
      */
-    @JsonProperty(value = "properties.networkRuleSet")
-    private NetworkRuleSet networkRuleSet;
+    public IdentityProperties identity() {
+        return this.identity;
+    }
 
-    /*
-     * The policies for a container registry.
+    /**
+     * Set the identity property: The identity of the container registry.
+     *
+     * @param identity the identity value to set.
+     * @return the RegistryUpdateParameters object itself.
      */
-    @JsonProperty(value = "properties.policies")
-    private Policies policies;
+    public RegistryUpdateParameters withIdentity(IdentityProperties identity) {
+        this.identity = identity;
+        return this;
+    }
 
     /**
      * Get the tags property: The tags for the container registry.
@@ -88,12 +103,21 @@ public class RegistryUpdateParameters {
     }
 
     /**
+     * Get the innerProperties property: The properties that the container registry will be updated with.
+     *
+     * @return the innerProperties value.
+     */
+    private RegistryPropertiesUpdateParameters innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the adminUserEnabled property: The value that indicates whether the admin user is enabled.
      *
      * @return the adminUserEnabled value.
      */
     public Boolean adminUserEnabled() {
-        return this.adminUserEnabled;
+        return this.innerProperties() == null ? null : this.innerProperties().adminUserEnabled();
     }
 
     /**
@@ -103,7 +127,10 @@ public class RegistryUpdateParameters {
      * @return the RegistryUpdateParameters object itself.
      */
     public RegistryUpdateParameters withAdminUserEnabled(Boolean adminUserEnabled) {
-        this.adminUserEnabled = adminUserEnabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RegistryPropertiesUpdateParameters();
+        }
+        this.innerProperties().withAdminUserEnabled(adminUserEnabled);
         return this;
     }
 
@@ -113,7 +140,7 @@ public class RegistryUpdateParameters {
      * @return the networkRuleSet value.
      */
     public NetworkRuleSet networkRuleSet() {
-        return this.networkRuleSet;
+        return this.innerProperties() == null ? null : this.innerProperties().networkRuleSet();
     }
 
     /**
@@ -123,7 +150,10 @@ public class RegistryUpdateParameters {
      * @return the RegistryUpdateParameters object itself.
      */
     public RegistryUpdateParameters withNetworkRuleSet(NetworkRuleSet networkRuleSet) {
-        this.networkRuleSet = networkRuleSet;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RegistryPropertiesUpdateParameters();
+        }
+        this.innerProperties().withNetworkRuleSet(networkRuleSet);
         return this;
     }
 
@@ -133,7 +163,7 @@ public class RegistryUpdateParameters {
      * @return the policies value.
      */
     public Policies policies() {
-        return this.policies;
+        return this.innerProperties() == null ? null : this.innerProperties().policies();
     }
 
     /**
@@ -143,7 +173,104 @@ public class RegistryUpdateParameters {
      * @return the RegistryUpdateParameters object itself.
      */
     public RegistryUpdateParameters withPolicies(Policies policies) {
-        this.policies = policies;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RegistryPropertiesUpdateParameters();
+        }
+        this.innerProperties().withPolicies(policies);
+        return this;
+    }
+
+    /**
+     * Get the encryption property: The encryption settings of container registry.
+     *
+     * @return the encryption value.
+     */
+    public EncryptionProperty encryption() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryption();
+    }
+
+    /**
+     * Set the encryption property: The encryption settings of container registry.
+     *
+     * @param encryption the encryption value to set.
+     * @return the RegistryUpdateParameters object itself.
+     */
+    public RegistryUpdateParameters withEncryption(EncryptionProperty encryption) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RegistryPropertiesUpdateParameters();
+        }
+        this.innerProperties().withEncryption(encryption);
+        return this;
+    }
+
+    /**
+     * Get the dataEndpointEnabled property: Enable a single data endpoint per region for serving data.
+     *
+     * @return the dataEndpointEnabled value.
+     */
+    public Boolean dataEndpointEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataEndpointEnabled();
+    }
+
+    /**
+     * Set the dataEndpointEnabled property: Enable a single data endpoint per region for serving data.
+     *
+     * @param dataEndpointEnabled the dataEndpointEnabled value to set.
+     * @return the RegistryUpdateParameters object itself.
+     */
+    public RegistryUpdateParameters withDataEndpointEnabled(Boolean dataEndpointEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RegistryPropertiesUpdateParameters();
+        }
+        this.innerProperties().withDataEndpointEnabled(dataEndpointEnabled);
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Whether or not public network access is allowed for the container registry.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Whether or not public network access is allowed for the container registry.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the RegistryUpdateParameters object itself.
+     */
+    public RegistryUpdateParameters withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RegistryPropertiesUpdateParameters();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
+     * Get the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network restricted
+     * registry.
+     *
+     * @return the networkRuleBypassOptions value.
+     */
+    public NetworkRuleBypassOptions networkRuleBypassOptions() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkRuleBypassOptions();
+    }
+
+    /**
+     * Set the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network restricted
+     * registry.
+     *
+     * @param networkRuleBypassOptions the networkRuleBypassOptions value to set.
+     * @return the RegistryUpdateParameters object itself.
+     */
+    public RegistryUpdateParameters withNetworkRuleBypassOptions(NetworkRuleBypassOptions networkRuleBypassOptions) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RegistryPropertiesUpdateParameters();
+        }
+        this.innerProperties().withNetworkRuleBypassOptions(networkRuleBypassOptions);
         return this;
     }
 
@@ -153,14 +280,14 @@ public class RegistryUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
         if (sku() != null) {
             sku().validate();
         }
-        if (networkRuleSet() != null) {
-            networkRuleSet().validate();
-        }
-        if (policies() != null) {
-            policies().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

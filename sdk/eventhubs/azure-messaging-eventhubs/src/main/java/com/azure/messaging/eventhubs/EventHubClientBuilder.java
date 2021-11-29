@@ -78,20 +78,53 @@ import java.util.regex.Pattern;
  * <p>In the sample, the namespace connection string is used to create an asynchronous Event Hub producer. Notice that
  * {@code "EntityPath"} <b>is not</b> a component in the connection string.</p>
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducerclient.instantiation}
+ * <!-- src_embed com.azure.messaging.eventhubs.eventhubasyncproducerclient.instantiation -->
+ * <pre>
+ * &#47;&#47; The required parameter is a way to authenticate with Event Hubs using credentials.
+ * &#47;&#47; The connectionString provides a way to authenticate with Event Hub.
+ * EventHubProducerAsyncClient producer = new EventHubClientBuilder&#40;&#41;
+ *     .connectionString&#40;
+ *         &quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;SharedAccessKey=&#123;key&#125;&quot;,
+ *         &quot;event-hub-name&quot;&#41;
+ *     .buildAsyncProducerClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.eventhubs.eventhubasyncproducerclient.instantiation -->
  *
  * <p><strong>Creating a synchronous {@link EventHubConsumerClient} using an Event Hub instance connection string
  * </strong></p>
  * <p>In the sample, the namespace connection string is used to create a synchronous Event Hub consumer. Notice that
  * {@code "EntityPath"} <b>is</b> in the connection string.</p>
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerclient.instantiation}
+ * <!-- src_embed com.azure.messaging.eventhubs.eventhubconsumerclient.instantiation -->
+ * <pre>
+ * &#47;&#47; The required parameters are `consumerGroup`, and a way to authenticate with Event Hubs using credentials.
+ * EventHubConsumerClient consumer = new EventHubClientBuilder&#40;&#41;
+ *     .connectionString&#40;&quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;&quot;
+ *         + &quot;SharedAccessKey=&#123;key&#125;;Entity-Path=&#123;hub-name&#125;&quot;&#41;
+ *     .consumerGroup&#40;&quot;$DEFAULT&quot;&#41;
+ *     .buildConsumerClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.eventhubs.eventhubconsumerclient.instantiation -->
  *
  * <p><strong>Creating producers and consumers that share the same connection</strong></p>
  * <p>By default, a dedicated connection is created for each producer and consumer created from the builder. If users
  * wish to use the same underlying connection, they can toggle {@link #shareConnection() shareConnection()}.</p>
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.instantiation}
+ * <!-- src_embed com.azure.messaging.eventhubs.eventhubclientbuilder.instantiation -->
+ * <pre>
+ * &#47;&#47; Toggling `shareConnection` instructs the builder to use the same underlying connection
+ * &#47;&#47; for each consumer or producer created using the same builder instance.
+ * EventHubClientBuilder builder = new EventHubClientBuilder&#40;&#41;
+ *     .connectionString&#40;&quot;event-hubs-instance-connection-string&quot;&#41;
+ *     .shareConnection&#40;&#41;;
+ *
+ * &#47;&#47; Both the producer and consumer created share the same underlying connection.
+ * EventHubProducerAsyncClient producer = builder.buildAsyncProducerClient&#40;&#41;;
+ * EventHubConsumerAsyncClient consumer = builder
+ *     .consumerGroup&#40;&quot;my-consumer-group&quot;&#41;
+ *     .buildAsyncConsumerClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.eventhubs.eventhubclientbuilder.instantiation -->
  *
  * @see EventHubProducerAsyncClient
  * @see EventHubProducerClient
@@ -802,11 +835,12 @@ public class EventHubClientBuilder {
             return ProxyOptions.SYSTEM_DEFAULTS;
         }
 
-        return getProxyOptions(authentication, proxyAddress, configuration);
+        return getProxyOptions(authentication, proxyAddress, configuration,
+            Boolean.parseBoolean(configuration.get("java.net.useSystemProxies")));
     }
 
     private ProxyOptions getProxyOptions(ProxyAuthenticationType authentication, String proxyAddress,
-                                         Configuration configuration) {
+                                         Configuration configuration, boolean useSystemProxies) {
         String host;
         int port;
         if (HOST_PORT_PATTERN.matcher(proxyAddress.trim()).find()) {
@@ -817,7 +851,9 @@ public class EventHubClientBuilder {
             final String username = configuration.get(ProxyOptions.PROXY_USERNAME);
             final String password = configuration.get(ProxyOptions.PROXY_PASSWORD);
             return new ProxyOptions(authentication, proxy, username, password);
-        } else {
+        } else if (useSystemProxies) {
+            // java.net.useSystemProxies needs to be set to true in this scenario.
+            // If it is set to false 'ProxyOptions' in azure-core will return null.
             com.azure.core.http.ProxyOptions coreProxyOptions = com.azure.core.http.ProxyOptions
                 .fromConfiguration(configuration);
             Proxy.Type proxyType = coreProxyOptions.getType().toProxyType();
@@ -825,6 +861,10 @@ public class EventHubClientBuilder {
             String username = coreProxyOptions.getUsername();
             String password = coreProxyOptions.getPassword();
             return new ProxyOptions(authentication, new Proxy(proxyType, coreProxyAddress), username, password);
+        } else {
+            logger.verbose("'HTTP_PROXY' was configured but ignored as 'java.net.useSystemProxies' wasn't "
+                + "set or was false.");
+            return ProxyOptions.SYSTEM_DEFAULTS;
         }
     }
 }

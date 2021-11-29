@@ -182,7 +182,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -240,7 +240,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -266,14 +266,14 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String networkVirtualApplianceName, String siteName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, networkVirtualApplianceName, siteName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -288,7 +288,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String networkVirtualApplianceName, String siteName, Context context) {
         context = this.client.mergeContext(context);
@@ -310,7 +310,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String networkVirtualApplianceName, String siteName) {
         return beginDeleteAsync(resourceGroupName, networkVirtualApplianceName, siteName).getSyncPoller();
@@ -328,7 +328,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String networkVirtualApplianceName, String siteName, Context context) {
         return beginDeleteAsync(resourceGroupName, networkVirtualApplianceName, siteName, context).getSyncPoller();
@@ -442,7 +442,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -500,7 +500,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -623,7 +623,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -692,7 +692,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -720,7 +720,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Appliance Site resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualApplianceSiteInner>, VirtualApplianceSiteInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String networkVirtualApplianceName,
@@ -735,7 +735,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
                 this.client.getHttpPipeline(),
                 VirtualApplianceSiteInner.class,
                 VirtualApplianceSiteInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -751,7 +751,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Appliance Site resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualApplianceSiteInner>, VirtualApplianceSiteInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String networkVirtualApplianceName,
@@ -784,7 +784,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Appliance Site resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualApplianceSiteInner>, VirtualApplianceSiteInner> beginCreateOrUpdate(
         String resourceGroupName,
         String networkVirtualApplianceName,
@@ -807,7 +807,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Appliance Site resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualApplianceSiteInner>, VirtualApplianceSiteInner> beginCreateOrUpdate(
         String resourceGroupName,
         String networkVirtualApplianceName,
@@ -946,7 +946,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1008,7 +1008,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

@@ -3,9 +3,11 @@
 
 package com.azure.spring.autoconfigure.storage.resource;
 
+import com.azure.core.util.Context;
 import com.azure.storage.file.share.ShareClient;
 import com.azure.storage.file.share.ShareFileClient;
 import com.azure.storage.file.share.ShareServiceClient;
+import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareStorageException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +20,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.InputStream;
 import java.net.URL;
+import org.springframework.util.StringUtils;
 
 /**
  * Implements {@link WritableResource} for reading and writing objects in Azure
@@ -36,19 +39,48 @@ public class FileStorageResource extends AzureStorageResource {
     private final ShareFileClient shareFileClient;
     private final String location;
     private final boolean autoCreateFiles;
+    private final String contentType;
 
+    /**
+     * Creates a new instance of {@link FileStorageResource}.
+     *
+     * @param shareServiceClient the ShareServiceClient
+     * @param location the location
+     */
     public FileStorageResource(ShareServiceClient shareServiceClient, String location) {
         this(shareServiceClient, location, false);
     }
 
-    FileStorageResource(ShareServiceClient shareServiceClient, String location, boolean autoCreateFiles) {
+    /**
+     * Creates a new instance of {@link FileStorageResource}.
+     *
+     * @param shareServiceClient the ShareServiceClient
+     * @param location the location
+     * @param autoCreateFiles whether to automatically create files
+     */
+    public FileStorageResource(ShareServiceClient shareServiceClient, String location, Boolean autoCreateFiles) {
+        this(shareServiceClient, location, autoCreateFiles, null);
+    }
+
+    /**
+     * Creates a new instance of {@link FileStorageResource}.
+     *
+     * @param shareServiceClient the ShareServiceClient
+     * @param location the location
+     * @param autoCreateFiles whether to automatically create files
+     * @param contentType the content type
+     */
+    public FileStorageResource(ShareServiceClient shareServiceClient, String location, Boolean autoCreateFiles,
+                               String contentType) {
+
         assertIsAzureStorageLocation(location);
-        this.autoCreateFiles = autoCreateFiles;
+        this.autoCreateFiles = autoCreateFiles != null && autoCreateFiles;
         this.location = location;
         this.shareServiceClient = shareServiceClient;
 
         this.shareClient = shareServiceClient.getShareClient(getContainerName(location));
         this.shareFileClient = shareClient.getFileClient(getFilename(location));
+        this.contentType = StringUtils.hasText(contentType) ? contentType : getContentType(location);
     }
 
     @Override
@@ -138,8 +170,13 @@ public class FileStorageResource extends AzureStorageResource {
             this.shareClient.create();
         }
         if (!shareFileClient.exists()) {
+            ShareFileHttpHeaders header = null;
+            if (StringUtils.hasText(contentType)) {
+                header = new ShareFileHttpHeaders();
+                header.setContentType(contentType);
+            }
             //TODO: create method must provide file length, but we don't know actual
-            this.shareFileClient.create(1024);
+            this.shareFileClient.createWithResponse(1024, header, null, null, null, null, Context.NONE).getValue();
         }
     }
 }

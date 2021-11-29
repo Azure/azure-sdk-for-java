@@ -21,6 +21,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 /**
  * Utility methods for storage client libraries.
@@ -30,8 +31,10 @@ public final class Utility {
     private static final String UTF8_CHARSET = "UTF-8";
     private static final String INVALID_DATE_STRING = "Invalid Date String: %s.";
 
-    // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
-    // for more information on Azure resource provider namespaces.
+    /**
+     * Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
+     * for more information on Azure resource provider namespaces.
+      */
     public static final String STORAGE_TRACING_NAMESPACE_VALUE = "Microsoft.Storage";
 
     /**
@@ -51,6 +54,11 @@ public final class Utility {
      */
     private static final int MAX_PRECISION_DATESTRING_LENGTH = MAX_PRECISION_PATTERN.replaceAll("'", "")
             .length();
+    /**
+     * A compiled Pattern that finds 'Z'. This is used as Java 8's String.replace method uses Pattern.compile
+     * internally without simple case opt-outs.
+     */
+    private static final Pattern Z_PATTERN = Pattern.compile("Z");
 
 
     /**
@@ -193,11 +201,11 @@ public final class Utility {
                 break;
             case 23: // "yyyy-MM-dd'T'HH:mm:ss.SS'Z'"-> [2012-01-04T23:21:59.12Z] length = 23
                 // SS is assumed to be milliseconds, so a trailing 0 is necessary
-                dateString = dateString.replace("Z", "0");
+                dateString = Z_PATTERN.matcher(dateString).replaceAll("0");
                 break;
             case 22: // "yyyy-MM-dd'T'HH:mm:ss.S'Z'"-> [2012-01-04T23:21:59.1Z] length = 22
                 // S is assumed to be milliseconds, so trailing 0's are necessary
-                dateString = dateString.replace("Z", "00");
+                dateString = Z_PATTERN.matcher(dateString).replaceAll("00");
                 break;
             case 20: // "yyyy-MM-dd'T'HH:mm:ss'Z'"-> [2012-01-04T23:21:59Z] length = 20
                 pattern = Utility.ISO8601_PATTERN;

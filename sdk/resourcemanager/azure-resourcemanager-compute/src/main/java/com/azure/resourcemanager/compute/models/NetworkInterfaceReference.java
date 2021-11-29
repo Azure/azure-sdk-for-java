@@ -5,71 +5,30 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.fluent.models.NetworkInterfaceReferenceProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes a network interface reference. */
-@JsonFlatten
 @Fluent
-public class NetworkInterfaceReference extends SubResource {
+public final class NetworkInterfaceReference extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkInterfaceReference.class);
 
     /*
-     * Specifies the primary network interface in case the virtual machine has
-     * more than 1 network interface.
+     * Describes a network interface reference properties.
      */
-    @JsonProperty(value = "properties.primary")
-    private Boolean primary;
-
-    /*
-     * Specify what happens to the network interface when the VM is deleted
-     */
-    @JsonProperty(value = "properties.deleteOption")
-    private DeleteOptions deleteOption;
+    @JsonProperty(value = "properties")
+    private NetworkInterfaceReferenceProperties innerProperties;
 
     /**
-     * Get the primary property: Specifies the primary network interface in case the virtual machine has more than 1
-     * network interface.
+     * Get the innerProperties property: Describes a network interface reference properties.
      *
-     * @return the primary value.
+     * @return the innerProperties value.
      */
-    public Boolean primary() {
-        return this.primary;
-    }
-
-    /**
-     * Set the primary property: Specifies the primary network interface in case the virtual machine has more than 1
-     * network interface.
-     *
-     * @param primary the primary value to set.
-     * @return the NetworkInterfaceReference object itself.
-     */
-    public NetworkInterfaceReference withPrimary(Boolean primary) {
-        this.primary = primary;
-        return this;
-    }
-
-    /**
-     * Get the deleteOption property: Specify what happens to the network interface when the VM is deleted.
-     *
-     * @return the deleteOption value.
-     */
-    public DeleteOptions deleteOption() {
-        return this.deleteOption;
-    }
-
-    /**
-     * Set the deleteOption property: Specify what happens to the network interface when the VM is deleted.
-     *
-     * @param deleteOption the deleteOption value to set.
-     * @return the NetworkInterfaceReference object itself.
-     */
-    public NetworkInterfaceReference withDeleteOption(DeleteOptions deleteOption) {
-        this.deleteOption = deleteOption;
-        return this;
+    private NetworkInterfaceReferenceProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -80,10 +39,61 @@ public class NetworkInterfaceReference extends SubResource {
     }
 
     /**
+     * Get the primary property: Specifies the primary network interface in case the virtual machine has more than 1
+     * network interface.
+     *
+     * @return the primary value.
+     */
+    public Boolean primary() {
+        return this.innerProperties() == null ? null : this.innerProperties().primary();
+    }
+
+    /**
+     * Set the primary property: Specifies the primary network interface in case the virtual machine has more than 1
+     * network interface.
+     *
+     * @param primary the primary value to set.
+     * @return the NetworkInterfaceReference object itself.
+     */
+    public NetworkInterfaceReference withPrimary(Boolean primary) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkInterfaceReferenceProperties();
+        }
+        this.innerProperties().withPrimary(primary);
+        return this;
+    }
+
+    /**
+     * Get the deleteOption property: Specify what happens to the network interface when the VM is deleted.
+     *
+     * @return the deleteOption value.
+     */
+    public DeleteOptions deleteOption() {
+        return this.innerProperties() == null ? null : this.innerProperties().deleteOption();
+    }
+
+    /**
+     * Set the deleteOption property: Specify what happens to the network interface when the VM is deleted.
+     *
+     * @param deleteOption the deleteOption value to set.
+     * @return the NetworkInterfaceReference object itself.
+     */
+    public NetworkInterfaceReference withDeleteOption(DeleteOptions deleteOption) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkInterfaceReferenceProperties();
+        }
+        this.innerProperties().withDeleteOption(deleteOption);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

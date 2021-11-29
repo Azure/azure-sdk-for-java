@@ -1,0 +1,23 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.purview.azure.com?api-version=2019-11-01-preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "767a33e6-9d77-40b2-969a-d9e4492b83dc"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-ms-account-status" : "Succeeded",
+      "Server" : "Kestrel",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"sku\":{\"name\":\"Standard\",\"capacity\":1},\"properties\":{\"cloudConnectors\":{\"awsExternalId\":\"2624b04a-bfaa-4ae6-82ce-70056f25baeb\"},\"friendlyName\":\"purview-weidxu\",\"createdBy\":\"weidxu@microsoft.com\",\"createdByObjectId\":\"ee0d7c8c-838b-4b6a-8633-912e324d445f\",\"createdAt\":\"2021-09-24T09:06:33.240519Z\",\"endpoints\":{\"catalog\":\"https://purview-weidxu.purview.azure.com/catalog\",\"scan\":\"https://purview-weidxu.purview.azure.com/scan\",\"guardian\":\"https://purview-weidxu.purview.azure.com/guardian\"},\"provisioningState\":\"Succeeded\",\"privateEndpointConnections\":[],\"managedResources\":{\"resourceGroup\":\"/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/managed-rg-purview-weidxu\",\"storageAccount\":\"/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/managed-rg-purview-weidxu/providers/Microsoft.Storage/storageAccounts/scaneastus2qiwolls\",\"eventHubNamespace\":\"/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/managed-rg-purview-weidxu/providers/Microsoft.EventHub/namespaces/Atlas-55f5f1e8-26f1-45c1-9855-22c0cd4b6d6d\"},\"publicNetworkAccess\":\"Enabled\",\"managedResourceGroupName\":\"managed-rg-purview-weidxu\"},\"id\":\"/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rg-weidxu/providers/Microsoft.Purview/accounts/purview-weidxu\",\"name\":\"purview-weidxu\",\"type\":\"Microsoft.Purview/accounts\",\"location\":\"eastus2\",\"identity\":{\"type\":\"SystemAssigned\",\"principalId\":\"a61e0169-05c1-40ce-82df-00f7659d2b04\",\"tenantId\":\"72f988bf-86f1-41af-91ab-2d7cd011db47\"},\"tags\":{},\"systemData\":{\"createdBy\":\"weidxu@microsoft.com\",\"createdByType\":\"User\",\"createdAt\":\"2021-09-24T09:06:33.240519Z\",\"lastModifiedBy\":\"weidxu@microsoft.com\",\"lastModifiedByType\":\"User\",\"lastModifiedAt\":\"2021-09-24T09:06:33.240519Z\"}}",
+      "Date" : "Mon, 27 Sep 2021 02:27:50 GMT",
+      "x-ms-correlation-request-id" : "c364a03e-e930-47b8-954d-1089ded869fe",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.apimanagement.fluent.models.GroupContractProperties;
 import com.azure.resourcemanager.apimanagement.fluent.models.UserContractInner;
 import com.azure.resourcemanager.apimanagement.fluent.models.UserIdentityContractInner;
 import java.time.OffsetDateTime;
@@ -33,28 +34,6 @@ public interface UserContract {
      * @return the type value.
      */
     String type();
-
-    /**
-     * Gets the state property: Account state. Specifies whether the user is active or not. Blocked users are unable to
-     * sign into the developer portal or call any APIs of subscribed products. Default state is Active.
-     *
-     * @return the state value.
-     */
-    UserState state();
-
-    /**
-     * Gets the note property: Optional note about a user set by the administrator.
-     *
-     * @return the note value.
-     */
-    String note();
-
-    /**
-     * Gets the identities property: Collection of user identities.
-     *
-     * @return the identities value.
-     */
-    List<UserIdentityContract> identities();
 
     /**
      * Gets the firstName property: First name.
@@ -93,6 +72,28 @@ public interface UserContract {
     List<GroupContractProperties> groups();
 
     /**
+     * Gets the state property: Account state. Specifies whether the user is active or not. Blocked users are unable to
+     * sign into the developer portal or call any APIs of subscribed products. Default state is Active.
+     *
+     * @return the state value.
+     */
+    UserState state();
+
+    /**
+     * Gets the note property: Optional note about a user set by the administrator.
+     *
+     * @return the note value.
+     */
+    String note();
+
+    /**
+     * Gets the identities property: Collection of user identities.
+     *
+     * @return the identities value.
+     */
+    List<UserIdentityContract> identities();
+
+    /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.UserContractInner object.
      *
      * @return the inner object.
@@ -124,15 +125,15 @@ public interface UserContract {
          * to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithState,
-                DefinitionStages.WithNote,
-                DefinitionStages.WithIdentities,
-                DefinitionStages.WithEmail,
+            extends DefinitionStages.WithEmail,
                 DefinitionStages.WithFirstName,
                 DefinitionStages.WithLastName,
                 DefinitionStages.WithPassword,
                 DefinitionStages.WithAppType,
                 DefinitionStages.WithConfirmation,
+                DefinitionStages.WithState,
+                DefinitionStages.WithNote,
+                DefinitionStages.WithIdentities,
                 DefinitionStages.WithNotify,
                 DefinitionStages.WithIfMatch {
             /**
@@ -149,39 +150,6 @@ public interface UserContract {
              * @return the created resource.
              */
             UserContract create(Context context);
-        }
-        /** The stage of the UserContract definition allowing to specify state. */
-        interface WithState {
-            /**
-             * Specifies the state property: Account state. Specifies whether the user is active or not. Blocked users
-             * are unable to sign into the developer portal or call any APIs of subscribed products. Default state is
-             * Active..
-             *
-             * @param state Account state. Specifies whether the user is active or not. Blocked users are unable to sign
-             *     into the developer portal or call any APIs of subscribed products. Default state is Active.
-             * @return the next definition stage.
-             */
-            WithCreate withState(UserState state);
-        }
-        /** The stage of the UserContract definition allowing to specify note. */
-        interface WithNote {
-            /**
-             * Specifies the note property: Optional note about a user set by the administrator..
-             *
-             * @param note Optional note about a user set by the administrator.
-             * @return the next definition stage.
-             */
-            WithCreate withNote(String note);
-        }
-        /** The stage of the UserContract definition allowing to specify identities. */
-        interface WithIdentities {
-            /**
-             * Specifies the identities property: Collection of user identities..
-             *
-             * @param identities Collection of user identities.
-             * @return the next definition stage.
-             */
-            WithCreate withIdentities(List<UserIdentityContractInner> identities);
         }
         /** The stage of the UserContract definition allowing to specify email. */
         interface WithEmail {
@@ -249,6 +217,39 @@ public interface UserContract {
              */
             WithCreate withConfirmation(Confirmation confirmation);
         }
+        /** The stage of the UserContract definition allowing to specify state. */
+        interface WithState {
+            /**
+             * Specifies the state property: Account state. Specifies whether the user is active or not. Blocked users
+             * are unable to sign into the developer portal or call any APIs of subscribed products. Default state is
+             * Active..
+             *
+             * @param state Account state. Specifies whether the user is active or not. Blocked users are unable to sign
+             *     into the developer portal or call any APIs of subscribed products. Default state is Active.
+             * @return the next definition stage.
+             */
+            WithCreate withState(UserState state);
+        }
+        /** The stage of the UserContract definition allowing to specify note. */
+        interface WithNote {
+            /**
+             * Specifies the note property: Optional note about a user set by the administrator..
+             *
+             * @param note Optional note about a user set by the administrator.
+             * @return the next definition stage.
+             */
+            WithCreate withNote(String note);
+        }
+        /** The stage of the UserContract definition allowing to specify identities. */
+        interface WithIdentities {
+            /**
+             * Specifies the identities property: Collection of user identities..
+             *
+             * @param identities Collection of user identities.
+             * @return the next definition stage.
+             */
+            WithCreate withIdentities(List<UserIdentityContractInner> identities);
+        }
         /** The stage of the UserContract definition allowing to specify notify. */
         interface WithNotify {
             /**
@@ -281,13 +282,13 @@ public interface UserContract {
 
     /** The template for UserContract update. */
     interface Update
-        extends UpdateStages.WithState,
-            UpdateStages.WithNote,
-            UpdateStages.WithIdentities,
-            UpdateStages.WithEmail,
+        extends UpdateStages.WithEmail,
             UpdateStages.WithPassword,
             UpdateStages.WithFirstName,
             UpdateStages.WithLastName,
+            UpdateStages.WithState,
+            UpdateStages.WithNote,
+            UpdateStages.WithIdentities,
             UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
@@ -306,39 +307,6 @@ public interface UserContract {
     }
     /** The UserContract update stages. */
     interface UpdateStages {
-        /** The stage of the UserContract update allowing to specify state. */
-        interface WithState {
-            /**
-             * Specifies the state property: Account state. Specifies whether the user is active or not. Blocked users
-             * are unable to sign into the developer portal or call any APIs of subscribed products. Default state is
-             * Active..
-             *
-             * @param state Account state. Specifies whether the user is active or not. Blocked users are unable to sign
-             *     into the developer portal or call any APIs of subscribed products. Default state is Active.
-             * @return the next definition stage.
-             */
-            Update withState(UserState state);
-        }
-        /** The stage of the UserContract update allowing to specify note. */
-        interface WithNote {
-            /**
-             * Specifies the note property: Optional note about a user set by the administrator..
-             *
-             * @param note Optional note about a user set by the administrator.
-             * @return the next definition stage.
-             */
-            Update withNote(String note);
-        }
-        /** The stage of the UserContract update allowing to specify identities. */
-        interface WithIdentities {
-            /**
-             * Specifies the identities property: Collection of user identities..
-             *
-             * @param identities Collection of user identities.
-             * @return the next definition stage.
-             */
-            Update withIdentities(List<UserIdentityContractInner> identities);
-        }
         /** The stage of the UserContract update allowing to specify email. */
         interface WithEmail {
             /**
@@ -379,6 +347,39 @@ public interface UserContract {
              * @return the next definition stage.
              */
             Update withLastName(String lastName);
+        }
+        /** The stage of the UserContract update allowing to specify state. */
+        interface WithState {
+            /**
+             * Specifies the state property: Account state. Specifies whether the user is active or not. Blocked users
+             * are unable to sign into the developer portal or call any APIs of subscribed products. Default state is
+             * Active..
+             *
+             * @param state Account state. Specifies whether the user is active or not. Blocked users are unable to sign
+             *     into the developer portal or call any APIs of subscribed products. Default state is Active.
+             * @return the next definition stage.
+             */
+            Update withState(UserState state);
+        }
+        /** The stage of the UserContract update allowing to specify note. */
+        interface WithNote {
+            /**
+             * Specifies the note property: Optional note about a user set by the administrator..
+             *
+             * @param note Optional note about a user set by the administrator.
+             * @return the next definition stage.
+             */
+            Update withNote(String note);
+        }
+        /** The stage of the UserContract update allowing to specify identities. */
+        interface WithIdentities {
+            /**
+             * Specifies the identities property: Collection of user identities..
+             *
+             * @param identities Collection of user identities.
+             * @return the next definition stage.
+             */
+            Update withIdentities(List<UserIdentityContractInner> identities);
         }
         /** The stage of the UserContract update allowing to specify ifMatch. */
         interface WithIfMatch {

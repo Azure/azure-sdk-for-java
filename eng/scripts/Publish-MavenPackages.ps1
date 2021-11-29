@@ -5,6 +5,7 @@ param(
   [Parameter(Mandatory=$true)][string]$RepositoryPassword,
   [Parameter(Mandatory=$true)][string]$GPGExecutablePath,
   [Parameter(Mandatory=$false)][switch]$StageOnly,
+  [Parameter(Mandatory=$false)][switch]$ShouldPublish,
   [Parameter(Mandatory=$false)][AllowEmptyString()][string]$GroupIDFilter,
   [Parameter(Mandatory=$false)][AllowEmptyString()][string]$ArtifactIDFilter
 )
@@ -37,6 +38,7 @@ Write-Information "GPG Executable Path is: $GPGExecutablePath"
 Write-Information "Group ID Filter is: $GroupIDFilter"
 Write-Information "Artifact ID Filter is: $ArtifactIDFilter"
 Write-Information "Stage Only is: $StageOnly"
+Write-Information "Should Publish is: $ShouldPublish"
 
 Write-Information "Getting filtered package details."
 $packageDetails = Get-FilteredMavenPackageDetails -ArtifactDirectory $ArtifactDirectory -GroupIDFilter $GroupIDFilter -ArtifactIDFilter $ArtifactIDFilter
@@ -48,13 +50,19 @@ if ($packageDetails.Length -eq 0) {
   throw "Aborting, no packages to publish."
 }
 
+if ($StageOnly)
+{
+  foreach ($packageDetail in $packageDetails) {
+    if ($packageDetail.IsSnapshot) {
+      throw "Package $($packageDetail.FullyQualifiedName) is a Snapshot and StageOnly is set to 'true'. Staging of snapshot packages is not supported."
+    }
+  }
+}
+
 Write-Host "Starting GPG signing and publishing"
 
 foreach ($packageDetail in $packageDetails) {
   Write-Host "GPG signing and publishing package: $($packageDetail.FullyQualifiedName)"
-  $localRepositoryDirectory = Get-RandomRepositoryDirectory
-  $localRepositoryDirectoryUri = $([Uri]$localRepositoryDirectory.FullName).AbsoluteUri
-  Write-Information "Local Repository Directory URI is: $localRepositoryDirectoryUri"
 
   $pomAssociatedArtifact = $packageDetail.AssociatedArtifacts | Where-Object { ($_.Classifier -eq $null) -and ($_.Type -eq "pom") }
   $pomOption = "-DpomFile=$($pomAssociatedArtifact.File.FullName)"
@@ -113,50 +121,100 @@ foreach ($packageDetail in $packageDetails) {
     $typesOption = "-Dtypes=$($commaDelimitedTypes.Substring(1))"
   }
 
+  $shouldPublishPackage = $ShouldPublish
+  $packageReposityUrl = $RepositoryUrl
+
+  if ($packageReposityUrl -match "https://pkgs.dev.azure.com/azure-sdk/\b(internal|public)\b/*") {
+    # Azure DevOps feeds don't support staging
+    $shouldPublishPackage = $ShouldPublish -and !$StageOnly
+    $releaseType = 'AzureDevOps'
+  }
+  elseif ($packageReposityUrl -like "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+    if ($packageDetail.IsSnapshot) {
+      # Snapshots don't go to the standard maven central url
+      $packageReposityUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+      $releaseType = 'MavenCentralSnapshot'
+    }
+    elseif ($StageOnly) {
+      $releaseType = 'MavenCentralStaging'
+    }
+    else {
+      $releaseType = 'MavenCentral'
+    }
+  }
+  else {
+    throw "Repository URL must be either an Azure Artifacts feed, or a SonaType Nexus feed."
+  }
+
+  #Local GPG deployment is required when we're not going to publish a package, or when we're publishing to maven central
+  $requiresLocalGpg = !$shouldPublishPackage -or ($releaseType -eq 'MavenCentralStaging') -or ($releaseType -eq 'MavenCentral')
+
+  Write-Information "Release Type: $releaseType"
+  Write-Information "Should Publish Package: $shouldPublishPackage"
+  Write-Information "Requires local GPG deployment: $requiresLocalGpg"
+
   Write-Information "Files Option is: $filesOption"
   Write-Information "Classifiers Option is: $classifiersOption"
   Write-Information "Types Option is: $typesOption"
 
-  $urlOption = "-Durl=$localRepositoryDirectoryUri"
-  Write-Information "URL Option is: $urlOption"
-
-  $repositoryDirectoryOption = "-DrepositoryDirectory=$localRepositoryDirectory"
-  Write-Information "Repository Directory Option is: $repositoryDirectoryOption"
-
   $gpgexeOption = "-Dgpgexe=$GPGExecutablePath"
   Write-Information "GPG Executable Option is: $gpgexeOption"
 
-  $stagingProfileIdOption = "-DstagingProfileId=$($packageDetail.SonaTypeProfileID)"
-  Write-Information "Staging Profile ID Option is: $stagingProfileIdOption"
+  if ($requiresLocalGpg) {
+    $localRepositoryDirectory = Get-RandomRepositoryDirectory
+    $localRepositoryDirectoryUri = $([Uri]$localRepositoryDirectory.FullName).AbsoluteUri
+    Write-Information "Local Repository Directory URI is: $localRepositoryDirectoryUri"
 
-  $stagingDescriptionOption = "-DstagingDescription=$($packageDetail.FullyQualifiedName)"
-  Write-Information "Staging Description Option is: $stagingDescriptionOption"
-
-  if ($RepositoryUrl -match "https://pkgs.dev.azure.com/azure-sdk/\b(internal|public)\b/*") {
-    if (Test-ReleasedPackage -RepositoryUrl $RepositoryUrl -PackageDetail $packageDetail -BearerToken $RepositoryPassword) {
-      Write-Information "Package $($packageDetail.FullyQualifiedName) already deployed. Skipping deployment."
-      continue
-    }
-
-    Write-Information "GPG Signing and deploying package in one step to devops feed: $RepositoryUrl"
-    Write-Information "mvn gpg:sign-and-deploy-file `"--batch-mode`" `"$pomOption`" `"$fileOption`" `"$javadocOption`" `"$sourcesOption`" `"$filesOption`" $classifiersOption `"$typesOption`" `"-Durl=$RepositoryUrl`" `"$gpgexeOption`" `"-DrepositoryId=target-repo`" `"-Drepo.password=[redacted]`" `"--settings=$PSScriptRoot\..\maven.publish.settings.xml`""
-    mvn gpg:sign-and-deploy-file "--batch-mode" "$pomOption" "$fileOption" "$javadocOption" "$sourcesOption" "$filesOption" $classifiersOption "$typesOption" "-Durl=$RepositoryUrl" "$gpgexeOption" "-DrepositoryId=target-repo" "-Drepo.password=$RepositoryPassword" "--settings=$PSScriptRoot\..\maven.publish.settings.xml"
-    if ($LASTEXITCODE) { exit $LASTEXITCODE }
-  }
-  elseif ($RepositoryUrl -like "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-    if (!$StageOnly) {
-      Write-Information "Checking to see if package $($packageDetail.FullyQualifiedName) is already deployed."
-      
-      if (Test-ReleasedPackage -RepositoryUrl $RepositoryUrl -PackageDetail $packageDetail) {
-        Write-Information "Package $($packageDetail.FullyQualifiedName) already deployed. Skipping deployment."
-        continue  
-      }
-    }
+    $urlOption = "-Durl=$localRepositoryDirectoryUri"
+    Write-Information "URL Option is: $urlOption"
 
     Write-Information "Signing and deploying package to $localRepositoryDirectoryUri"
     Write-Information "mvn gpg:sign-and-deploy-file `"--batch-mode`" `"$pomOption`" `"$fileOption`" `"$javadocOption`" `"$sourcesOption`" `"$filesOption`" $classifiersOption `"$typesOption`" `"$urlOption`" `"$gpgexeOption`" `"-DrepositoryId=target-repo`" `"--settings=$PSScriptRoot\..\maven.publish.settings.xml`""
     mvn gpg:sign-and-deploy-file "--batch-mode" "$pomOption" "$fileOption" "$javadocOption" "$sourcesOption" "$filesOption" $classifiersOption "$typesOption" "$urlOption" "$gpgexeOption" "-DrepositoryId=target-repo" "--settings=$PSScriptRoot\..\maven.publish.settings.xml"
     if ($LASTEXITCODE) { exit $LASTEXITCODE }
+  }
+
+  if(!$shouldPublishPackage)
+  {
+    Write-Information "Skipping deployment because Should Publish Package == false."
+    continue
+  }
+
+  if ($releaseType -eq 'AzureDevOps') {
+    Write-Information "GPG Signing and deploying package in one step to devops feed: $packageReposityUrl"
+    Write-Information "mvn gpg:sign-and-deploy-file `"--batch-mode`" `"$pomOption`" `"$fileOption`" `"$javadocOption`" `"$sourcesOption`" `"$filesOption`" $classifiersOption `"$typesOption`" `"-Durl=$packageReposityUrl`" `"$gpgexeOption`" `"-DrepositoryId=target-repo`" `"-Drepo.password=[redacted]`" `"--settings=$PSScriptRoot\..\maven.publish.settings.xml`""
+    mvn gpg:sign-and-deploy-file "--batch-mode" "$pomOption" "$fileOption" "$javadocOption" "$sourcesOption" "$filesOption" $classifiersOption "$typesOption" "-Durl=$packageReposityUrl" "$gpgexeOption" "-DrepositoryId=target-repo" "-Drepo.password=$RepositoryPassword" "--settings=$PSScriptRoot\..\maven.publish.settings.xml"
+
+    if ($LASTEXITCODE -eq 0) {
+      Write-Information "Package $($packageDetail.FullyQualifiedName) deployed"
+      continue
+    }
+
+    Write-Information "Release attempt $attemt exited with code $LASTEXITCODE"
+    Write-Information "Checking Azure DevOps to see if release was successful"
+    if (Test-ReleasedPackage -RepositoryUrl $packageReposityUrl -PackageDetail $packageDetail) {
+      Write-Information "Package $($packageDetail.FullyQualifiedName) deployed despite non-zero exit code."
+      continue
+    }
+
+    exit $LASTEXITCODE
+  }
+  elseif ($releaseType -eq 'MavenCentralSnapshot') {
+    Write-Information "GPG Signing and deploying package in one step to Sonatype snapshots: $packageReposityUrl"
+    Write-Information "mvn gpg:sign-and-deploy-file `"--batch-mode`" `"$pomOption`" `"$fileOption`" `"$javadocOption`" `"$sourcesOption`" `"$filesOption`" $classifiersOption `"$typesOption`" `"-Durl=$packageReposityUrl`" `"$gpgexeOption`" `"-DrepositoryId=target-repo`" `"-Drepo.username=`"`"$RepositoryUsername`"`"`" `"-Drepo.password=[redacted]`" `"--settings=$PSScriptRoot\..\maven.publish.settings.xml`""
+    mvn gpg:sign-and-deploy-file "--batch-mode" "$pomOption" "$fileOption" "$javadocOption" "$sourcesOption" "$filesOption" $classifiersOption "$typesOption" "-Durl=$packageReposityUrl" "$gpgexeOption" "-DrepositoryId=target-repo" "-Drepo.username=""$RepositoryUsername""" "-Drepo.password=""$RepositoryPassword""" "--settings=$PSScriptRoot\..\maven.publish.settings.xml"
+    if ($LASTEXITCODE) { exit $LASTEXITCODE }
+  }
+  else {
+    # Maven Central Staging + optional Release
+    $repositoryDirectoryOption = "-DrepositoryDirectory=$localRepositoryDirectory"
+    Write-Information "Repository Directory Option is: $repositoryDirectoryOption"
+
+    $stagingProfileIdOption = "-DstagingProfileId=$($packageDetail.SonaTypeProfileID)"
+    Write-Information "Staging Profile ID Option is: $stagingProfileIdOption"
+
+    $stagingDescriptionOption = "-DstagingDescription=$($packageDetail.FullyQualifiedName)"
+    Write-Information "Staging Description Option is: $stagingDescriptionOption"
 
     Write-Information "Staging package to Maven Central"
     Write-Information "mvn org.sonatype.plugins:nexus-staging-maven-plugin:deploy-staged-repository `"--batch-mode`" `"-DnexusUrl=https://oss.sonatype.org`" `"$repositoryDirectoryOption`" `"$stagingProfileIdOption`" `"$stagingDescriptionOption`" `"-DrepositoryId=target-repo`" `"-DserverId=target-repo`" `"-Drepo.username=$RepositoryUsername`" `"-Drepo.password=`"[redacted]`"`" `"--settings=$PSScriptRoot\..\maven.publish.settings.xml`""
@@ -172,36 +230,33 @@ foreach ($packageDetail in $packageDetails) {
     $stagedRepositoryUrl = $stagedRepositoryProperties["stagingRepository.url"]
     Write-Information "Staging Repository URL is: $stagedRepositoryUrl"
 
-    if ($StageOnly) {
-      Write-Information "Skipping release of staging repository because stage only is set to false."
+    if ($releaseType -eq 'MavenCentralStaging') {
+      Write-Information "Skipping release of staging repository because Stage Only == true."
+      continue
     }
-    else {
-      $attempt = 0
-      while ($attempt++ -lt 3) {
-        Write-Information "Releasing staging repostiory $stagedRepositoryId, attempt $attempt"
-        Write-Information "mvn org.sonatype.plugins:nexus-staging-maven-plugin:rc-release `"-DstagingRepositoryId=$stagedRepositoryId`" `"-DnexusUrl=https://oss.sonatype.org`" `"-DrepositoryId=target-repo`" `"-DserverId=target-repo`" `"-Drepo.username=$RepositoryUsername`" `"-Drepo.password=`"`"[redacted]`"`"`" `"--settings=$PSScriptRoot\..\maven.publish.settings.xml`""
-        mvn org.sonatype.plugins:nexus-staging-maven-plugin:rc-release "-DstagingRepositoryId=$stagedRepositoryId" "-DnexusUrl=https://oss.sonatype.org" "-DrepositoryId=target-repo" "-DserverId=target-repo" "-Drepo.username=$RepositoryUsername" "-Drepo.password=""$RepositoryPassword""" "--settings=$PSScriptRoot\..\maven.publish.settings.xml"
-  
-        if ($LASTEXITCODE -eq 0) {
-          Write-Information "Package $($packageDetail.FullyQualifiedName) deployed"
-          break
-        }
 
-        Write-Information "Release attempt $attemt exited with code $LASTEXITCODE"
-        Write-Information "Checking Maven Central to see if release was successful"
+    $attempt = 0
+    while ($attempt++ -lt 3) {
+      Write-Information "Releasing staging repostiory $stagedRepositoryId, attempt $attempt"
+      Write-Information "mvn org.sonatype.plugins:nexus-staging-maven-plugin:rc-release `"-DstagingRepositoryId=$stagedRepositoryId`" `"-DnexusUrl=https://oss.sonatype.org`" `"-DrepositoryId=target-repo`" `"-DserverId=target-repo`" `"-Drepo.username=$RepositoryUsername`" `"-Drepo.password=`"`"[redacted]`"`"`" `"--settings=$PSScriptRoot\..\maven.publish.settings.xml`""
+      mvn org.sonatype.plugins:nexus-staging-maven-plugin:rc-release "-DstagingRepositoryId=$stagedRepositoryId" "-DnexusUrl=https://oss.sonatype.org" "-DrepositoryId=target-repo" "-DserverId=target-repo" "-Drepo.username=$RepositoryUsername" "-Drepo.password=""$RepositoryPassword""" "--settings=$PSScriptRoot\..\maven.publish.settings.xml"
 
-        if (Test-ReleasedPackage -RepositoryUrl $RepositoryUrl -PackageDetail $packageDetail) {
-          Write-Information "Package $($packageDetail.FullyQualifiedName) deployed despite non-zero exit code."
-          break
-        }
-  
-        if ($attempt -ge 3) {
-          exit $LASTEXITCODE
-        }        
+      if ($LASTEXITCODE -eq 0) {
+        Write-Information "Package $($packageDetail.FullyQualifiedName) deployed"
+        break
+      }
+
+      Write-Information "Release attempt $attemt exited with code $LASTEXITCODE"
+      Write-Information "Checking Maven Central to see if release was successful"
+
+      if (Test-ReleasedPackage -RepositoryUrl $packageReposityUrl -PackageDetail $packageDetail) {
+        Write-Information "Package $($packageDetail.FullyQualifiedName) deployed despite non-zero exit code."
+        break
+      }
+
+      if ($attempt -ge 3) {
+        exit $LASTEXITCODE
       }
     }
-  }
-  else {
-    throw "Repository URL must be either an Azure Artifacts feed, or a SonaType Nexus feed."
   }
 }

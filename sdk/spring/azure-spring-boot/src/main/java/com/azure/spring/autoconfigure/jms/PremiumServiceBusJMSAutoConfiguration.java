@@ -5,6 +5,7 @@ package com.azure.spring.autoconfigure.jms;
 
 import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactorySettings;
+import java.util.LinkedHashMap;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -13,8 +14,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
-import org.springframework.jms.config.JmsListenerContainerFactory;
 
 import javax.jms.ConnectionFactory;
 
@@ -29,40 +28,55 @@ import static com.azure.spring.utils.ApplicationId.AZURE_SPRING_SERVICE_BUS;
 @ConditionalOnProperty(value = "spring.jms.servicebus.enabled", matchIfMissing = true)
 @ConditionalOnExpression(value = "'${spring.jms.servicebus.pricing-tier}'.equalsIgnoreCase('premium')")
 @EnableConfigurationProperties(AzureServiceBusJMSProperties.class)
-public class PremiumServiceBusJMSAutoConfiguration {
+public class PremiumServiceBusJMSAutoConfiguration extends AbstractServiceBusJMSAutoConfiguration {
 
+    /**
+     * Creates a new instance of {@link PremiumServiceBusJMSAutoConfiguration}.
+     *
+     * @param azureServiceBusJMSProperties the Azure ServiceBus JMS properties
+     */
+    public PremiumServiceBusJMSAutoConfiguration(AzureServiceBusJMSProperties azureServiceBusJMSProperties) {
+        super(azureServiceBusJMSProperties);
+    }
+
+    /**
+     * Declare JMS ConnectionFactory bean.
+     *
+     * @return JMS ConnectionFactory bean
+     */
     @Bean
     @ConditionalOnMissingBean
-    public ConnectionFactory jmsConnectionFactory(AzureServiceBusJMSProperties serviceBusJMSProperties) {
-        final String connectionString = serviceBusJMSProperties.getConnectionString();
-        final String clientId = serviceBusJMSProperties.getTopicClientId();
-        final int idleTimeout = serviceBusJMSProperties.getIdleTimeout();
+    public ConnectionFactory jmsConnectionFactory() {
+        String connectionString = azureServiceBusJMSProperties.getConnectionString();
+        String clientId = azureServiceBusJMSProperties.getTopicClientId();
+        int idleTimeout = azureServiceBusJMSProperties.getIdleTimeout();
+        int prefetchPolicyAll = azureServiceBusJMSProperties.getPrefetchPolicy().getAll();
+        int durableTopicPrefetch = azureServiceBusJMSProperties.getPrefetchPolicy().getDurableTopicPrefetch();
+        int queueBrowserPrefetch = azureServiceBusJMSProperties.getPrefetchPolicy().getQueueBrowserPrefetch();
+        int queuePrefetch = azureServiceBusJMSProperties.getPrefetchPolicy().getQueuePrefetch();
+        int topicPrefetch = azureServiceBusJMSProperties.getPrefetchPolicy().getTopicPrefetch();
 
-        final ServiceBusJmsConnectionFactorySettings settings =
-            new ServiceBusJmsConnectionFactorySettings(idleTimeout, false);
+        ServiceBusJmsConnectionFactorySettings settings =
+            new ServiceBusJmsConnectionFactorySettings(new LinkedHashMap<>());
+        settings.setConnectionIdleTimeoutMS(idleTimeout);
+        settings.setTraceFrames(false);
         settings.setShouldReconnect(false);
-        final SpringServiceBusJmsConnectionFactory springServiceBusJmsConnectionFactory =
+        settings.getConfigurationOptions()
+            .put("jms.prefetchPolicy.all", String.valueOf(prefetchPolicyAll));
+        settings.getConfigurationOptions()
+            .put("jms.prefetchPolicy.durableTopicPrefetch", String.valueOf(durableTopicPrefetch));
+        settings.getConfigurationOptions()
+            .put("jms.prefetchPolicy.queueBrowserPrefetch", String.valueOf(queueBrowserPrefetch));
+        settings.getConfigurationOptions()
+            .put("jms.prefetchPolicy.queuePrefetch", String.valueOf(queuePrefetch));
+        settings.getConfigurationOptions()
+            .put("jms.prefetchPolicy.topicPrefetch", String.valueOf(topicPrefetch));
+        SpringServiceBusJmsConnectionFactory springServiceBusJmsConnectionFactory =
             new SpringServiceBusJmsConnectionFactory(connectionString, settings);
         springServiceBusJmsConnectionFactory.setClientId(clientId);
         springServiceBusJmsConnectionFactory.setCustomUserAgent(AZURE_SPRING_SERVICE_BUS);
 
         return springServiceBusJmsConnectionFactory;
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public JmsListenerContainerFactory<?> jmsListenerContainerFactory(ConnectionFactory connectionFactory) {
-        final DefaultJmsListenerContainerFactory jmsListenerContainerFactory = new DefaultJmsListenerContainerFactory();
-        jmsListenerContainerFactory.setConnectionFactory(connectionFactory);
-        return jmsListenerContainerFactory;
-    }
-
-    @Bean
-    public JmsListenerContainerFactory<?> topicJmsListenerContainerFactory(ConnectionFactory connectionFactory) {
-        final DefaultJmsListenerContainerFactory jmsListenerContainerFactory = new DefaultJmsListenerContainerFactory();
-        jmsListenerContainerFactory.setConnectionFactory(connectionFactory);
-        jmsListenerContainerFactory.setSubscriptionDurable(Boolean.TRUE);
-        return jmsListenerContainerFactory;
     }
 
 }

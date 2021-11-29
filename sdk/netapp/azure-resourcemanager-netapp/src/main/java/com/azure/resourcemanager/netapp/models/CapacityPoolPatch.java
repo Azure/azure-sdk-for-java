@@ -5,72 +5,31 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.netapp.fluent.models.PoolPatchProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Capacity pool patch resource. */
-@JsonFlatten
 @Fluent
-public class CapacityPoolPatch extends Resource {
+public final class CapacityPoolPatch extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CapacityPoolPatch.class);
 
     /*
-     * Provisioned size of the pool (in bytes). Allowed values are in 4TiB
-     * chunks (value must be multiply of 4398046511104).
+     * Capacity pool properties
      */
-    @JsonProperty(value = "properties.size")
-    private Long size;
-
-    /*
-     * The qos type of the pool
-     */
-    @JsonProperty(value = "properties.qosType")
-    private QosType qosType;
+    @JsonProperty(value = "properties")
+    private PoolPatchProperties innerProperties;
 
     /**
-     * Get the size property: Provisioned size of the pool (in bytes). Allowed values are in 4TiB chunks (value must be
-     * multiply of 4398046511104).
+     * Get the innerProperties property: Capacity pool properties.
      *
-     * @return the size value.
+     * @return the innerProperties value.
      */
-    public Long size() {
-        return this.size;
-    }
-
-    /**
-     * Set the size property: Provisioned size of the pool (in bytes). Allowed values are in 4TiB chunks (value must be
-     * multiply of 4398046511104).
-     *
-     * @param size the size value to set.
-     * @return the CapacityPoolPatch object itself.
-     */
-    public CapacityPoolPatch withSize(Long size) {
-        this.size = size;
-        return this;
-    }
-
-    /**
-     * Get the qosType property: The qos type of the pool.
-     *
-     * @return the qosType value.
-     */
-    public QosType qosType() {
-        return this.qosType;
-    }
-
-    /**
-     * Set the qosType property: The qos type of the pool.
-     *
-     * @param qosType the qosType value to set.
-     * @return the CapacityPoolPatch object itself.
-     */
-    public CapacityPoolPatch withQosType(QosType qosType) {
-        this.qosType = qosType;
-        return this;
+    private PoolPatchProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -88,10 +47,61 @@ public class CapacityPoolPatch extends Resource {
     }
 
     /**
+     * Get the size property: size Provisioned size of the pool (in bytes). Allowed values are in 4TiB chunks (value
+     * must be multiply of 4398046511104).
+     *
+     * @return the size value.
+     */
+    public Long size() {
+        return this.innerProperties() == null ? null : this.innerProperties().size();
+    }
+
+    /**
+     * Set the size property: size Provisioned size of the pool (in bytes). Allowed values are in 4TiB chunks (value
+     * must be multiply of 4398046511104).
+     *
+     * @param size the size value to set.
+     * @return the CapacityPoolPatch object itself.
+     */
+    public CapacityPoolPatch withSize(Long size) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PoolPatchProperties();
+        }
+        this.innerProperties().withSize(size);
+        return this;
+    }
+
+    /**
+     * Get the qosType property: The qos type of the pool.
+     *
+     * @return the qosType value.
+     */
+    public QosType qosType() {
+        return this.innerProperties() == null ? null : this.innerProperties().qosType();
+    }
+
+    /**
+     * Set the qosType property: The qos type of the pool.
+     *
+     * @param qosType the qosType value to set.
+     * @return the CapacityPoolPatch object itself.
+     */
+    public CapacityPoolPatch withQosType(QosType qosType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PoolPatchProperties();
+        }
+        this.innerProperties().withQosType(qosType);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -4,6 +4,7 @@
 package com.azure.identity.implementation;
 
 import com.azure.core.credential.AccessToken;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -30,6 +31,9 @@ public final class MSIToken extends AccessToken {
     @JsonProperty(value = "expires_on")
     private String expiresOn;
 
+    @JsonProperty(value = "expires_in")
+    private String expiresIn;
+
     /**
      * Creates an access token instance.
      *
@@ -39,10 +43,13 @@ public final class MSIToken extends AccessToken {
     @JsonCreator
     public MSIToken(
         @JsonProperty(value = "access_token") String token,
-        @JsonProperty(value = "expires_on") String expiresOn) {
-        super(token, EPOCH.plusSeconds(parseDateToEpochSeconds(expiresOn)));
+        @JsonProperty(value = "expires_on") String expiresOn,
+        @JsonProperty(value = "expires_in") String expiresIn) {
+        super(token, EPOCH.plusSeconds(parseDateToEpochSeconds(CoreUtils.isNullOrEmpty(expiresOn) ? expiresIn
+            : expiresOn)));
         this.accessToken = token;
         this.expiresOn =  expiresOn;
+        this.expiresIn = expiresIn;
     }
 
     @Override

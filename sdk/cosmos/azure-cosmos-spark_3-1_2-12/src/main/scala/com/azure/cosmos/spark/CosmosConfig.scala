@@ -4,14 +4,14 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.routing.LocationHelper
-import com.azure.cosmos.implementation.spark.OperationListener
 import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, CosmosParameterizedQuery, FeedRange}
 import com.azure.cosmos.spark.ChangeFeedModes.ChangeFeedMode
 import com.azure.cosmos.spark.ChangeFeedStartFromModes.{ChangeFeedStartFromMode, PointInTime}
 import com.azure.cosmos.spark.ItemWriteStrategy.{ItemWriteStrategy, values}
 import com.azure.cosmos.spark.PartitioningStrategies.PartitioningStrategy
 import com.azure.cosmos.spark.SchemaConversionModes.SchemaConversionMode
-import com.azure.cosmos.spark.diagnostics.SimpleDiagnosticsProvider
+import com.azure.cosmos.spark.SerializationInclusionModes.SerializationInclusionMode
+import com.azure.cosmos.spark.diagnostics.{DiagnosticsProvider, SimpleDiagnosticsProvider}
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.util.CaseInsensitiveMap
@@ -29,6 +29,7 @@ import scala.collection.JavaConverters._
 
 // scalastyle:off multiple.string.literals
 // scalastyle:off file.size.limit
+// scalastyle:off number.of.types
 
 private object CosmosConfigNames {
   val AccountEndpoint = "spark.cosmos.accountEndpoint"
@@ -71,6 +72,8 @@ private object CosmosConfigNames {
     "spark.cosmos.throughputControl.globalControl.renewIntervalInMS"
   val ThroughputControlGlobalControlExpireIntervalInMS =
     "spark.cosmos.throughputControl.globalControl.expireIntervalInMS"
+  val SerializationInclusionMode =
+    "spark.cosmos.serialization.inclusionMode"
 
   private val cosmosPrefix = "spark.cosmos."
 
@@ -112,7 +115,8 @@ private object CosmosConfigNames {
     ThroughputControlGlobalControlDatabase,
     ThroughputControlGlobalControlContainer,
     ThroughputControlGlobalControlRenewalIntervalInMS,
-    ThroughputControlGlobalControlExpireIntervalInMS
+    ThroughputControlGlobalControlExpireIntervalInMS,
+    SerializationInclusionMode
   )
 
   def validateConfigName(name: String): Unit = {
@@ -127,8 +131,6 @@ private object CosmosConfigNames {
     }
   }
 }
-
-
 
 private object CosmosConfig {
   def getEffectiveConfig
@@ -410,7 +412,7 @@ private object DiagnosticsConfig {
         classOf[SimpleDiagnosticsProvider].getName
       } else {
         // this is experimental and to be used by cosmos db dev engineers.
-        Class.forName(diagnostics).asSubclass(classOf[OperationListener]).getDeclaredConstructor()
+        Class.forName(diagnostics).asSubclass(classOf[DiagnosticsProvider]).getDeclaredConstructor()
         diagnostics
       }
     },
@@ -491,6 +493,39 @@ private object CosmosWriteConfig {
       bulkEnabled = bulkEnabledOpt.get,
       bulkMaxPendingOperations = CosmosConfigEntry.parse(cfg, bulkMaxPendingOperations),
       pointMaxConcurrency = CosmosConfigEntry.parse(cfg, pointWriteConcurrency))
+  }
+}
+
+private object SerializationInclusionModes extends Enumeration {
+  type SerializationInclusionMode = Value
+
+  val Always: SerializationInclusionModes.Value = Value("Always")
+  val NonEmpty: SerializationInclusionModes.Value = Value("NonEmpty")
+  val NonNull: SerializationInclusionModes.Value = Value("NonNull")
+  val NonDefault: SerializationInclusionModes.Value = Value("NonDefault")
+}
+
+private case class CosmosSerializationConfig(serializationInclusionMode: SerializationInclusionMode)
+
+private object CosmosSerializationConfig {
+  private val inclusionMode = CosmosConfigEntry[SerializationInclusionMode](
+    key = CosmosConfigNames.SerializationInclusionMode,
+    mandatory = false,
+    defaultValue = Some(SerializationInclusionModes.Always),
+    parseFromStringFunction = value => CosmosConfigEntry.parseEnumeration(value, SerializationInclusionModes),
+    helpMessage = "The serialization inclusion mode (`Always`, `NonNull`, `NonEmpty` or `NonDefault`)." +
+      " When serializing json documents this setting determines whether json properties will be emitted" +
+      " for columns in the RDD that are null/empty. The default value is `Always`.")
+
+  def parseSerializationConfig(cfg: Map[String, String]): CosmosSerializationConfig = {
+    val inclusionModeOpt = CosmosConfigEntry.parse(cfg, inclusionMode)
+
+    // parsing above already validated this
+    assert(inclusionModeOpt.isDefined)
+
+    CosmosSerializationConfig(
+      serializationInclusionMode = inclusionModeOpt.get
+    )
   }
 }
 
@@ -922,3 +957,4 @@ private object CosmosConfigEntry {
 }
 // scalastyle:on multiple.string.literals
 // scalastyle:on file.size.limit
+// scalastyle:on number.of.types

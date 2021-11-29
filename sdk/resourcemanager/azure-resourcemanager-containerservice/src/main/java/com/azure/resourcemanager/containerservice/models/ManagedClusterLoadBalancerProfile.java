@@ -54,6 +54,12 @@ public final class ManagedClusterLoadBalancerProfile {
     @JsonProperty(value = "idleTimeoutInMinutes")
     private Integer idleTimeoutInMinutes;
 
+    /*
+     * Enable multiple standard load balancers per AKS cluster or not.
+     */
+    @JsonProperty(value = "enableMultipleStandardLoadBalancers")
+    private Boolean enableMultipleStandardLoadBalancers;
+
     /**
      * Get the managedOutboundIPs property: Desired managed outbound IPs for the cluster load balancer.
      *
@@ -177,6 +183,29 @@ public final class ManagedClusterLoadBalancerProfile {
      */
     public ManagedClusterLoadBalancerProfile withIdleTimeoutInMinutes(Integer idleTimeoutInMinutes) {
         this.idleTimeoutInMinutes = idleTimeoutInMinutes;
+        return this;
+    }
+
+    /**
+     * Get the enableMultipleStandardLoadBalancers property: Enable multiple standard load balancers per AKS cluster or
+     * not.
+     *
+     * @return the enableMultipleStandardLoadBalancers value.
+     */
+    public Boolean enableMultipleStandardLoadBalancers() {
+        return this.enableMultipleStandardLoadBalancers;
+    }
+
+    /**
+     * Set the enableMultipleStandardLoadBalancers property: Enable multiple standard load balancers per AKS cluster or
+     * not.
+     *
+     * @param enableMultipleStandardLoadBalancers the enableMultipleStandardLoadBalancers value to set.
+     * @return the ManagedClusterLoadBalancerProfile object itself.
+     */
+    public ManagedClusterLoadBalancerProfile withEnableMultipleStandardLoadBalancers(
+        Boolean enableMultipleStandardLoadBalancers) {
+        this.enableMultipleStandardLoadBalancers = enableMultipleStandardLoadBalancers;
         return this;
     }
 

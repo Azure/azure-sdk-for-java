@@ -17,16 +17,17 @@ import com.azure.search.documents.indexes.models.SearchIndex;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.TextNode;
 import org.reactivestreams.Publisher;
 import reactor.core.Exceptions;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
+import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
@@ -38,6 +39,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.azure.search.documents.SearchTestBase.API_KEY;
 import static com.azure.search.documents.SearchTestBase.ENDPOINT;
@@ -67,6 +69,8 @@ public final class TestHelpers {
     public static final TypeReference<List<Map<String, Object>>> LIST_TYPE_REFERENCE =
         new TypeReference<List<Map<String, Object>>>() {
         };
+
+    private static final Map<String, byte[]> LOADED_FILE_DATA = new ConcurrentHashMap<>();
 
     /**
      * Assert whether two objects are equal.
@@ -316,20 +320,12 @@ public final class TestHelpers {
     }
 
     public static SearchIndexClient setupSharedIndex(String indexName) {
-        InputStream stream = Objects.requireNonNull(AutocompleteSyncTests.class
-            .getClassLoader()
-            .getResourceAsStream(HOTELS_TESTS_INDEX_DATA_JSON));
-
         try {
-            SearchIndex index = MAPPER.readValue(stream, SearchIndex.class);
+            byte[] hotelsTestIndexDataJsonData = loadResource(HOTELS_TESTS_INDEX_DATA_JSON);
+            JsonNode jsonNode = MAPPER.readTree(hotelsTestIndexDataJsonData);
+            ((ObjectNode) jsonNode).set("name", new TextNode(indexName));
 
-            Field searchIndexName = index.getClass().getDeclaredField("name");
-            AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-                searchIndexName.setAccessible(true);
-                return null;
-            });
-
-            searchIndexName.set(index, indexName);
+            SearchIndex index = MAPPER.treeToValue(jsonNode, SearchIndex.class);
 
             SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
                 .endpoint(ENDPOINT)
@@ -364,5 +360,19 @@ public final class TestHelpers {
         }
 
         return builder.append("))'").toString();
+    }
+
+    static byte[] loadResource(String fileName) {
+        return LOADED_FILE_DATA.computeIfAbsent(fileName, fName -> {
+            try {
+                URI fileUri = AutocompleteSyncTests.class.getClassLoader()
+                    .getResource(fileName)
+                    .toURI();
+
+                return Files.readAllBytes(Paths.get(fileUri));
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
     }
 }

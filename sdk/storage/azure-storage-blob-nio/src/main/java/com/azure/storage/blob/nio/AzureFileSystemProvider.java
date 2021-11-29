@@ -274,7 +274,6 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * overwriting existing files.
      * <p>
      * This type is not threadsafe to prevent having to hold locks across network calls.
-     * <p>
      *
      * @param path the path of the file to open
      * @param set options specifying how the file should be opened
@@ -1143,9 +1142,9 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
 
         String endpoint = Flux.fromArray(uri.getQuery().split("&"))
                 .filter(s -> s.startsWith(ENDPOINT_QUERY_KEY + "="))
-                .switchIfEmpty(Mono.error(LoggingUtility.logError(this.logger, new IllegalArgumentException(
-                        "URI does not contain an \"" + ENDPOINT_QUERY_KEY + "=\" parameter. FileSystems require a URI "
-                            + "of the format \"azb://?endpoint=<endpoint>\""))))
+                .switchIfEmpty(Mono.defer(() -> Mono.error(LoggingUtility.logError(this.logger,
+                    new IllegalArgumentException("URI does not contain an \"" + ENDPOINT_QUERY_KEY + "=\" parameter. "
+                        + "FileSystems require a URI of the format \"azb://?endpoint=<endpoint>\"")))))
                 .map(s -> s.substring(ENDPOINT_QUERY_KEY.length() + 1)) // Trim the query key and =
                 .blockLast();
 

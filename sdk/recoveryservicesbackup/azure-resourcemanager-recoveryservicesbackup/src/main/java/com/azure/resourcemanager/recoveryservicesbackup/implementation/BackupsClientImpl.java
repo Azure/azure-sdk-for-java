@@ -132,7 +132,6 @@ public final class BackupsClientImpl implements BackupsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -140,7 +139,7 @@ public final class BackupsClientImpl implements BackupsClient {
                     service
                         .trigger(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             vaultName,
                             resourceGroupName,
                             this.client.getSubscriptionId(),
@@ -212,13 +211,12 @@ public final class BackupsClientImpl implements BackupsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .trigger(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 vaultName,
                 resourceGroupName,
                 this.client.getSubscriptionId(),

@@ -27,7 +27,10 @@ import com.azure.resourcemanager.botservice.fluent.BotsClient;
 import com.azure.resourcemanager.botservice.fluent.ChannelsClient;
 import com.azure.resourcemanager.botservice.fluent.DirectLinesClient;
 import com.azure.resourcemanager.botservice.fluent.HostSettingsClient;
+import com.azure.resourcemanager.botservice.fluent.OperationResultsClient;
 import com.azure.resourcemanager.botservice.fluent.OperationsClient;
+import com.azure.resourcemanager.botservice.fluent.PrivateEndpointConnectionsClient;
+import com.azure.resourcemanager.botservice.fluent.PrivateLinkResourcesClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -187,6 +190,42 @@ public final class AzureBotServiceImpl implements AzureBotService {
         return this.hostSettings;
     }
 
+    /** The OperationResultsClient object to access its operations. */
+    private final OperationResultsClient operationResults;
+
+    /**
+     * Gets the OperationResultsClient object to access its operations.
+     *
+     * @return the OperationResultsClient object.
+     */
+    public OperationResultsClient getOperationResults() {
+        return this.operationResults;
+    }
+
+    /** The PrivateEndpointConnectionsClient object to access its operations. */
+    private final PrivateEndpointConnectionsClient privateEndpointConnections;
+
+    /**
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
+     *
+     * @return the PrivateEndpointConnectionsClient object.
+     */
+    public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /** The PrivateLinkResourcesClient object to access its operations. */
+    private final PrivateLinkResourcesClient privateLinkResources;
+
+    /**
+     * Gets the PrivateLinkResourcesClient object to access its operations.
+     *
+     * @return the PrivateLinkResourcesClient object.
+     */
+    public PrivateLinkResourcesClient getPrivateLinkResources() {
+        return this.privateLinkResources;
+    }
+
     /**
      * Initializes an instance of AzureBotService client.
      *
@@ -209,13 +248,16 @@ public final class AzureBotServiceImpl implements AzureBotService {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-03-01";
+        this.apiVersion = "2021-05-01-preview";
         this.bots = new BotsClientImpl(this);
         this.channels = new ChannelsClientImpl(this);
         this.directLines = new DirectLinesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.botConnections = new BotConnectionsClientImpl(this);
         this.hostSettings = new HostSettingsClientImpl(this);
+        this.operationResults = new OperationResultsClientImpl(this);
+        this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
+        this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
     }
 
     /**

@@ -48,7 +48,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-amqp</artifactId>
-    <version>2.3.0</version>
+    <version>2.3.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

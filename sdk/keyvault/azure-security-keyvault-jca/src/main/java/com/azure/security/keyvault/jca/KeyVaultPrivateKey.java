@@ -8,7 +8,11 @@ import java.security.PrivateKey;
 
 /**
  * KeyVault fake private which work when key less
+ *
+ * @deprecated Should not use this class outside of azure-security-keyvault-jca.jar.
+ * Move this class to implementation package.
  */
+@Deprecated
 public class KeyVaultPrivateKey implements PrivateKey, SecretKey {
 
     /**
@@ -16,8 +20,14 @@ public class KeyVaultPrivateKey implements PrivateKey, SecretKey {
      */
     private static final long serialVersionUID = 30_10_00;
 
+    /**
+     * Key ID.
+     */
     private String kid;
 
+    /**
+     * Algorithm.
+     */
     private String algorithm;
 
     /**

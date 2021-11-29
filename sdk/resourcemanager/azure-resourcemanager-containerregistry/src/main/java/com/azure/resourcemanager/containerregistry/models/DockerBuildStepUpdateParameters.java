@@ -180,6 +180,20 @@ public final class DockerBuildStepUpdateParameters extends TaskStepUpdateParamet
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public DockerBuildStepUpdateParameters withContextPath(String contextPath) {
+        super.withContextPath(contextPath);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DockerBuildStepUpdateParameters withContextAccessToken(String contextAccessToken) {
+        super.withContextAccessToken(contextAccessToken);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

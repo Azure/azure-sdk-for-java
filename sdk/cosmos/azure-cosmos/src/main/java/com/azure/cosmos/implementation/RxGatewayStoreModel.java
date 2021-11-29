@@ -58,13 +58,18 @@ class RxGatewayStoreModel implements RxStoreModel {
             QueryCompatibilityMode queryCompatibilityMode,
             UserAgentContainer userAgentContainer,
             GlobalEndpointManager globalEndpointManager,
-            HttpClient httpClient) {
+            HttpClient httpClient,
+            ApiType apiType) {
         this.clientContext = clientContext;
         this.defaultHeaders = new HashMap<>();
         this.defaultHeaders.put(HttpConstants.HttpHeaders.CACHE_CONTROL,
                 "no-cache");
         this.defaultHeaders.put(HttpConstants.HttpHeaders.VERSION,
                 HttpConstants.Versions.CURRENT_VERSION);
+
+        if (apiType != null){
+            this.defaultHeaders.put(HttpConstants.HttpHeaders.API_TYPE, apiType.toString());
+        }
 
         if (userAgentContainer == null) {
             userAgentContainer = new UserAgentContainer();
@@ -107,6 +112,10 @@ class RxGatewayStoreModel implements RxStoreModel {
 
     private Mono<RxDocumentServiceResponse> delete(RxDocumentServiceRequest request) {
         return this.performRequest(request, HttpMethod.DELETE);
+    }
+
+    private Mono<RxDocumentServiceResponse> deleteByPartitionKey(RxDocumentServiceRequest request) {
+        return this.performRequest(request, HttpMethod.POST);
     }
 
     private Mono<RxDocumentServiceResponse> execute(RxDocumentServiceRequest request) {
@@ -390,6 +399,9 @@ class RxGatewayStoreModel implements RxStoreModel {
             case Upsert:
                 return this.upsert(request);
             case Delete:
+                if (request.getResourceType() == ResourceType.PartitionKey) {
+                    return this.deleteByPartitionKey(request);
+                }
                 return this.delete(request);
             case ExecuteJavaScript:
                 return this.execute(request);

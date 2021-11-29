@@ -240,6 +240,14 @@ public interface VirtualMachineScaleSetVM
      */
     VirtualMachineScaleSetNetworkInterface getNetworkInterface(String name);
 
+    /**
+     * Gets a network interface associated with this virtual machine instance.
+     *
+     * @param name the name of the network interface
+     * @return the network interface
+     */
+    Mono<VirtualMachineScaleSetNetworkInterface> getNetworkInterfaceAsync(String name);
+
     /** @return the network interfaces associated with this virtual machine instance. */
     PagedIterable<VirtualMachineScaleSetNetworkInterface> listNetworkInterfaces();
 

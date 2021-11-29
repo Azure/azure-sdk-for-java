@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.KeyVaultContractProperties;
@@ -14,86 +13,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** NamedValue details. */
-@JsonFlatten
 @Fluent
-public class NamedValueContractInner extends ProxyResource {
+public final class NamedValueContractInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NamedValueContractInner.class);
 
     /*
-     * Optional tags that when provided can be used to filter the NamedValue
-     * list.
+     * NamedValue entity contract properties.
      */
-    @JsonProperty(value = "properties.tags")
-    private List<String> tags;
-
-    /*
-     * Determines whether the value is a secret and should be encrypted or not.
-     * Default value is false.
-     */
-    @JsonProperty(value = "properties.secret")
-    private Boolean secret;
-
-    /*
-     * Unique name of NamedValue. It may contain only letters, digits, period,
-     * dash, and underscore characters.
-     */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
-
-    /*
-     * Value of the NamedValue. Can contain policy expressions. It may not be
-     * empty or consist only of whitespace. This property will not be filled on
-     * 'GET' operations! Use '/listSecrets' POST request to get the value.
-     */
-    @JsonProperty(value = "properties.value")
-    private String value;
-
-    /*
-     * KeyVault location details of the namedValue.
-     */
-    @JsonProperty(value = "properties.keyVault")
-    private KeyVaultContractProperties keyVault;
+    @JsonProperty(value = "properties")
+    private NamedValueContractProperties innerProperties;
 
     /**
-     * Get the tags property: Optional tags that when provided can be used to filter the NamedValue list.
+     * Get the innerProperties property: NamedValue entity contract properties.
      *
-     * @return the tags value.
+     * @return the innerProperties value.
      */
-    public List<String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Optional tags that when provided can be used to filter the NamedValue list.
-     *
-     * @param tags the tags value to set.
-     * @return the NamedValueContractInner object itself.
-     */
-    public NamedValueContractInner withTags(List<String> tags) {
-        this.tags = tags;
-        return this;
-    }
-
-    /**
-     * Get the secret property: Determines whether the value is a secret and should be encrypted or not. Default value
-     * is false.
-     *
-     * @return the secret value.
-     */
-    public Boolean secret() {
-        return this.secret;
-    }
-
-    /**
-     * Set the secret property: Determines whether the value is a secret and should be encrypted or not. Default value
-     * is false.
-     *
-     * @param secret the secret value to set.
-     * @return the NamedValueContractInner object itself.
-     */
-    public NamedValueContractInner withSecret(Boolean secret) {
-        this.secret = secret;
-        return this;
+    private NamedValueContractProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -103,7 +39,7 @@ public class NamedValueContractInner extends ProxyResource {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -114,7 +50,10 @@ public class NamedValueContractInner extends ProxyResource {
      * @return the NamedValueContractInner object itself.
      */
     public NamedValueContractInner withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NamedValueContractProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -126,7 +65,7 @@ public class NamedValueContractInner extends ProxyResource {
      * @return the value value.
      */
     public String value() {
-        return this.value;
+        return this.innerProperties() == null ? null : this.innerProperties().value();
     }
 
     /**
@@ -138,7 +77,10 @@ public class NamedValueContractInner extends ProxyResource {
      * @return the NamedValueContractInner object itself.
      */
     public NamedValueContractInner withValue(String value) {
-        this.value = value;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NamedValueContractProperties();
+        }
+        this.innerProperties().withValue(value);
         return this;
     }
 
@@ -148,7 +90,7 @@ public class NamedValueContractInner extends ProxyResource {
      * @return the keyVault value.
      */
     public KeyVaultContractProperties keyVault() {
-        return this.keyVault;
+        return this.innerProperties() == null ? null : this.innerProperties().keyVault();
     }
 
     /**
@@ -158,7 +100,58 @@ public class NamedValueContractInner extends ProxyResource {
      * @return the NamedValueContractInner object itself.
      */
     public NamedValueContractInner withKeyVault(KeyVaultContractProperties keyVault) {
-        this.keyVault = keyVault;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NamedValueContractProperties();
+        }
+        this.innerProperties().withKeyVault(keyVault);
+        return this;
+    }
+
+    /**
+     * Get the tags property: Optional tags that when provided can be used to filter the NamedValue list.
+     *
+     * @return the tags value.
+     */
+    public List<String> tags() {
+        return this.innerProperties() == null ? null : this.innerProperties().tags();
+    }
+
+    /**
+     * Set the tags property: Optional tags that when provided can be used to filter the NamedValue list.
+     *
+     * @param tags the tags value to set.
+     * @return the NamedValueContractInner object itself.
+     */
+    public NamedValueContractInner withTags(List<String> tags) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NamedValueContractProperties();
+        }
+        this.innerProperties().withTags(tags);
+        return this;
+    }
+
+    /**
+     * Get the secret property: Determines whether the value is a secret and should be encrypted or not. Default value
+     * is false.
+     *
+     * @return the secret value.
+     */
+    public Boolean secret() {
+        return this.innerProperties() == null ? null : this.innerProperties().secret();
+    }
+
+    /**
+     * Set the secret property: Determines whether the value is a secret and should be encrypted or not. Default value
+     * is false.
+     *
+     * @param secret the secret value to set.
+     * @return the NamedValueContractInner object itself.
+     */
+    public NamedValueContractInner withSecret(Boolean secret) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NamedValueContractProperties();
+        }
+        this.innerProperties().withSecret(secret);
         return this;
     }
 
@@ -168,8 +161,8 @@ public class NamedValueContractInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (keyVault() != null) {
-            keyVault().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

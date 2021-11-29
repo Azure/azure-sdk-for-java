@@ -7,6 +7,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
+import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
@@ -18,10 +19,13 @@ import com.azure.spring.data.cosmos.Constants;
 import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.common.CosmosUtils;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
+import com.azure.spring.data.cosmos.config.DatabaseThroughputConfig;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.generator.CountQueryGenerator;
 import com.azure.spring.data.cosmos.core.generator.FindQuerySpecGenerator;
 import com.azure.spring.data.cosmos.core.generator.NativeQueryGenerator;
+import com.azure.spring.data.cosmos.core.mapping.event.AfterLoadEvent;
+import com.azure.spring.data.cosmos.core.mapping.event.CosmosMappingEvent;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
@@ -59,6 +63,9 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     private final boolean queryMetricsEnabled;
     private final CosmosAsyncClient cosmosAsyncClient;
     private final IsNewAwareAuditingHandler cosmosAuditingHandler;
+    private final DatabaseThroughputConfig databaseThroughputConfig;
+
+    private ApplicationContext applicationContext;
 
     /**
      * Initialization
@@ -110,6 +117,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         this.responseDiagnosticsProcessor = cosmosConfig.getResponseDiagnosticsProcessor();
         this.queryMetricsEnabled = cosmosConfig.isQueryMetricsEnabled();
         this.cosmosAuditingHandler = cosmosAuditingHandler;
+        this.databaseThroughputConfig = cosmosConfig.getDatabaseThroughputConfig();
     }
 
     /**
@@ -130,7 +138,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      * @throws BeansException the bean exception
      */
     public void setApplicationContext(@NonNull ApplicationContext applicationContext) throws BeansException {
-        //  NOTE: When application context instance variable gets introduced, assign it here.
+        this.applicationContext = applicationContext;
     }
 
     /**
@@ -142,8 +150,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     @Override
     public Mono<CosmosContainerResponse> createContainerIfNotExists(CosmosEntityInformation<?, ?> information) {
 
-        return cosmosAsyncClient
-            .createDatabaseIfNotExists(this.databaseName)
+        return createDatabaseIfNotExists()
             .publishOn(Schedulers.parallel())
             .onErrorResume(throwable ->
                 CosmosExceptionUtils.exceptionHandler("Failed to create database", throwable))
@@ -182,6 +189,19 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                             throwable));
             });
 
+    }
+
+    private Mono<CosmosDatabaseResponse> createDatabaseIfNotExists() {
+        if (databaseThroughputConfig == null) {
+            return cosmosAsyncClient
+                .createDatabaseIfNotExists(this.databaseName);
+        } else {
+            ThroughputProperties throughputProperties = databaseThroughputConfig.isAutoScale()
+                ? ThroughputProperties.createAutoscaledThroughput(databaseThroughputConfig.getRequestUnits())
+                : ThroughputProperties.createManualThroughput(databaseThroughputConfig.getRequestUnits());
+            return cosmosAsyncClient
+                .createDatabaseIfNotExists(this.databaseName, throughputProperties);
+        }
     }
 
     @Override
@@ -249,7 +269,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                     cosmosItemFeedResponse.getCosmosDiagnostics(), cosmosItemFeedResponse);
                 return Flux.fromIterable(cosmosItemFeedResponse.getResults());
             })
-            .map(cosmosItemProperties -> toDomainObject(domainType, cosmosItemProperties))
+            .map(cosmosItemProperties -> emitOnLoadEventAndConvertToDomainObject(domainType, cosmosItemProperties))
             .onErrorResume(throwable ->
                 CosmosExceptionUtils.exceptionHandler("Failed to find items", throwable));
     }
@@ -298,7 +318,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                                     return Mono.justOrEmpty(cosmosItemFeedResponse
                                         .getResults()
                                         .stream()
-                                        .map(cosmosItem -> toDomainObject(domainType, cosmosItem))
+                                        .map(cosmosItem -> emitOnLoadEventAndConvertToDomainObject(domainType, cosmosItem))
                                         .findFirst());
                                 })
                                 .onErrorResume(throwable ->
@@ -327,7 +347,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                                 .flatMap(cosmosItemResponse -> {
                                     CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                                         cosmosItemResponse.getDiagnostics(), null);
-                                    return Mono.justOrEmpty(toDomainObject(domainType,
+                                    return Mono.justOrEmpty(emitOnLoadEventAndConvertToDomainObject(domainType,
                                         cosmosItemResponse.getItem()));
                                 })
                                 .onErrorResume(throwable ->
@@ -550,7 +570,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     @Override
     public <T> Flux<T> find(CosmosQuery query, Class<T> domainType, String containerName) {
         return findItems(query, containerName, domainType)
-            .map(cosmosItemProperties -> toDomainObject(domainType, cosmosItemProperties));
+            .map(cosmosItemProperties -> emitOnLoadEventAndConvertToDomainObject(domainType, cosmosItemProperties));
     }
 
     /**
@@ -630,7 +650,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     public <T> Flux<T> runQuery(SqlQuerySpec querySpec, Sort sort, Class<?> domainType, Class<T> returnType) {
         SqlQuerySpec sortedQuerySpec = NativeQueryGenerator.getInstance().generateSortedQuery(querySpec, sort);
         return runQuery(sortedQuerySpec, domainType)
-            .map(cosmosItemProperties -> toDomainObject(returnType, cosmosItemProperties));
+            .map(cosmosItemProperties -> emitOnLoadEventAndConvertToDomainObject(returnType, cosmosItemProperties));
     }
 
     private Flux<JsonNode> runQuery(SqlQuerySpec querySpec, Class<?> domainType) {
@@ -762,6 +782,12 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                                     CosmosExceptionUtils.exceptionHandler("Failed to delete item", throwable));
     }
 
+    private <T> T emitOnLoadEventAndConvertToDomainObject(@NonNull Class<T> domainType, JsonNode responseJsonNode) {
+        CosmosEntityInformation<?, ?> entityInformation = CosmosEntityInformation.getInstance(domainType);
+        maybeEmitEvent(new AfterLoadEvent<>(responseJsonNode, domainType, entityInformation.getContainerName()));
+        return toDomainObject(domainType, responseJsonNode);
+    }
+
     private <T> T toDomainObject(@NonNull Class<T> domainType, JsonNode jsonNode) {
         return mappingCosmosConverter.read(domainType, jsonNode);
     }
@@ -774,4 +800,15 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
             options.setIfMatchETag(jsonNode.get(Constants.ETAG_PROPERTY_DEFAULT_NAME).asText());
         }
     }
+
+    private void maybeEmitEvent(CosmosMappingEvent<?> event) {
+        if (canPublishEvent()) {
+            this.applicationContext.publishEvent(event);
+        }
+    }
+
+    private boolean canPublishEvent() {
+        return this.applicationContext != null;
+    }
+
 }

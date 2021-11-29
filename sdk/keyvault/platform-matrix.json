@@ -2,18 +2,31 @@
   "displayNames": {
     "@{ enableHsm = $true }": "HSM"
   },
+  "matrix": {
+    "$IMPORT": "eng/pipelines/templates/stages/platform-matrix.json"
+  },
+  "exclude": [
+    {
+      "TestFromSource": true
+    },
+    {
+      "TestGoals": "verify"
+    }
+  ],
   "include": [
     {
       "Agent": {
-        "ubuntu-20.04": {
+        "ubuntu-20.04_TestFromSource": {
           "OSVmImage": "MMSUbuntu20.04",
-          "Pool": "azsdk-pool-mms-ubuntu-2004-general"
-        },
-        "JavaTestVersion": "1.11",
-        "AZURE_TEST_HTTP_CLIENTS": "netty",
-        "TestGoals": "surefire:test"
+          "Pool": "azsdk-pool-mms-ubuntu-2004-general",
+          "TestGoals": "surefire:test",
+          "TestFromSource": true
+        }
       },
-      "ArmTemplateParameters": "@{ enableHsm = $true }"
+      "ArmTemplateParameters": "@{ enableHsm = $true }",
+      "AZURE_TEST_HTTP_CLIENTS": "netty",
+      "JavaTestVersion": "1.11",
+      "TestOptions": ""
     }
   ]
 }

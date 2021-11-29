@@ -8,6 +8,7 @@ import com.azure.resourcemanager.network.fluent.models.ConnectionSharedKeyInner;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuit;
 import com.azure.resourcemanager.network.models.IpsecPolicy;
 import com.azure.resourcemanager.network.models.LocalNetworkGateway;
+import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.network.models.TunnelConnectionHealth;
 import com.azure.resourcemanager.network.models.VirtualNetworkGateway;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnection;
@@ -255,7 +256,7 @@ public class VirtualNetworkGatewayConnectionImpl
             .manager()
             .serviceClient()
             .getVirtualNetworkGatewayConnections()
-            .updateTagsAsync(resourceGroupName(), name(), innerModel().tags())
+            .updateTagsAsync(resourceGroupName(), name(), new TagsObject().withTags(innerModel().tags()))
             .flatMap(inner -> refreshAsync());
     }
 }

@@ -45,17 +45,25 @@ private case class ChangeFeedPartitionReader
   log.logInfo(s"Reading from feed range ${partition.feedRange} of " +
     s"container ${containerTargetConfig.database}.${containerTargetConfig.container}")
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
-  private val client = CosmosClientCache(
-    CosmosClientConfiguration(config, readConfig.forceEventualConsistency), Some(cosmosClientStateHandle))
+  private val clientCacheItem = CosmosClientCache(
+    CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+    Some(cosmosClientStateHandle),
+    s"ChangeFeedPartitionReader(partition ${partition})")
 
-  private val cosmosAsyncContainer = ThroughputControlHelper.getContainer(config, containerTargetConfig, client)
-  cosmosAsyncContainer.openConnectionsAndInitCaches().block()
+  private val cosmosAsyncContainer =
+    ThroughputControlHelper
+      .getContainer(config, containerTargetConfig, clientCacheItem.client)
+  SparkUtils.safeOpenConnectionInitCaches(cosmosAsyncContainer, log)
+
+  private val cosmosSerializationConfig = CosmosSerializationConfig.parseSerializationConfig(config)
+  private val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
 
   private val changeFeedRequestOptions = {
 
     val startLsn =
       SparkBridgeImplementationInternal.extractLsnFromChangeFeedContinuation(this.partition.continuationState.get)
-    log.logDebug(s"Request options for Range '${partition.feedRange.min}-${partition.feedRange.max}' LSN '$startLsn'")
+    log.logDebug(
+      s"Request options for Range '${partition.feedRange.min}-${partition.feedRange.max}' LSN '$startLsn'")
 
     CosmosChangeFeedRequestOptions
       .createForProcessingFromContinuation(this.partition.continuationState.get)
@@ -93,7 +101,7 @@ private case class ChangeFeedPartitionReader
 
   override def get(): InternalRow = {
     val objectNode = this.iterator.next()
-    CosmosRowConverter.fromObjectNodeToInternalRow(
+    cosmosRowConverter.fromObjectNodeToInternalRow(
       readSchema,
       rowSerializer,
       objectNode,
@@ -102,5 +110,6 @@ private case class ChangeFeedPartitionReader
 
   override def close(): Unit = {
     RowSerializerPool.returnSerializerToPool(readSchema, rowSerializer)
+    clientCacheItem.close()
   }
 }

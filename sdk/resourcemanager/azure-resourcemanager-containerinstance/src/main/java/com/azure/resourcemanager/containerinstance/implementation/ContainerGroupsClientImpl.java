@@ -42,6 +42,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
+import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -201,6 +202,21 @@ public final class ContainerGroupsClientImpl
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> start(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("containerGroupName") String containerGroupName,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance"
+                + "/containerGroups/{containerGroupName}/outboundNetworkDependenciesEndpoints")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<List<String>>> getOutboundNetworkDependenciesEndpoints(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -839,7 +855,7 @@ public final class ContainerGroupsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a container group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ContainerGroupInner>, ContainerGroupInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -851,7 +867,7 @@ public final class ContainerGroupsClientImpl
                 this.client.getHttpPipeline(),
                 ContainerGroupInner.class,
                 ContainerGroupInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -866,7 +882,7 @@ public final class ContainerGroupsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a container group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ContainerGroupInner>, ContainerGroupInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup, Context context) {
         context = this.client.mergeContext(context);
@@ -889,7 +905,7 @@ public final class ContainerGroupsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a container group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContainerGroupInner>, ContainerGroupInner> beginCreateOrUpdate(
         String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup) {
         return beginCreateOrUpdateAsync(resourceGroupName, containerGroupName, containerGroup).getSyncPoller();
@@ -907,7 +923,7 @@ public final class ContainerGroupsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a container group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContainerGroupInner>, ContainerGroupInner> beginCreateOrUpdate(
         String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, containerGroupName, containerGroup, context).getSyncPoller();
@@ -1261,7 +1277,7 @@ public final class ContainerGroupsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a container group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ContainerGroupInner>, ContainerGroupInner> beginDeleteAsync(
         String resourceGroupName, String containerGroupName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, containerGroupName);
@@ -1272,7 +1288,7 @@ public final class ContainerGroupsClientImpl
                 this.client.getHttpPipeline(),
                 ContainerGroupInner.class,
                 ContainerGroupInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1287,7 +1303,7 @@ public final class ContainerGroupsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a container group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ContainerGroupInner>, ContainerGroupInner> beginDeleteAsync(
         String resourceGroupName, String containerGroupName, Context context) {
         context = this.client.mergeContext(context);
@@ -1309,7 +1325,7 @@ public final class ContainerGroupsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a container group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContainerGroupInner>, ContainerGroupInner> beginDelete(
         String resourceGroupName, String containerGroupName) {
         return beginDeleteAsync(resourceGroupName, containerGroupName).getSyncPoller();
@@ -1327,7 +1343,7 @@ public final class ContainerGroupsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a container group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContainerGroupInner>, ContainerGroupInner> beginDelete(
         String resourceGroupName, String containerGroupName, Context context) {
         return beginDeleteAsync(resourceGroupName, containerGroupName, context).getSyncPoller();
@@ -1513,12 +1529,12 @@ public final class ContainerGroupsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginRestartAsync(String resourceGroupName, String containerGroupName) {
         Mono<Response<Flux<ByteBuffer>>> mono = restartWithResponseAsync(resourceGroupName, containerGroupName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1533,7 +1549,7 @@ public final class ContainerGroupsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRestartAsync(
         String resourceGroupName, String containerGroupName, Context context) {
         context = this.client.mergeContext(context);
@@ -1555,7 +1571,7 @@ public final class ContainerGroupsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String containerGroupName) {
         return beginRestartAsync(resourceGroupName, containerGroupName).getSyncPoller();
     }
@@ -1572,7 +1588,7 @@ public final class ContainerGroupsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(
         String resourceGroupName, String containerGroupName, Context context) {
         return beginRestartAsync(resourceGroupName, containerGroupName, context).getSyncPoller();
@@ -1893,12 +1909,12 @@ public final class ContainerGroupsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String containerGroupName) {
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, containerGroupName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1912,7 +1928,7 @@ public final class ContainerGroupsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStartAsync(
         String resourceGroupName, String containerGroupName, Context context) {
         context = this.client.mergeContext(context);
@@ -1932,7 +1948,7 @@ public final class ContainerGroupsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String containerGroupName) {
         return beginStartAsync(resourceGroupName, containerGroupName).getSyncPoller();
     }
@@ -1948,7 +1964,7 @@ public final class ContainerGroupsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String containerGroupName, Context context) {
         return beginStartAsync(resourceGroupName, containerGroupName, context).getSyncPoller();
@@ -2016,6 +2032,169 @@ public final class ContainerGroupsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void start(String resourceGroupName, String containerGroupName, Context context) {
         startAsync(resourceGroupName, containerGroupName, context).block();
+    }
+
+    /**
+     * Gets all the network dependencies for this container group to allow complete control of network setting and
+     * configuration. For container groups, this will always be an empty list.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the network dependencies for this container group to allow complete control of network setting and
+     *     configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<List<String>>> getOutboundNetworkDependenciesEndpointsWithResponseAsync(
+        String resourceGroupName, String containerGroupName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (containerGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter containerGroupName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getOutboundNetworkDependenciesEndpoints(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            resourceGroupName,
+                            containerGroupName,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets all the network dependencies for this container group to allow complete control of network setting and
+     * configuration. For container groups, this will always be an empty list.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the network dependencies for this container group to allow complete control of network setting and
+     *     configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<List<String>>> getOutboundNetworkDependenciesEndpointsWithResponseAsync(
+        String resourceGroupName, String containerGroupName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (containerGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter containerGroupName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .getOutboundNetworkDependenciesEndpoints(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                resourceGroupName,
+                containerGroupName,
+                accept,
+                context);
+    }
+
+    /**
+     * Gets all the network dependencies for this container group to allow complete control of network setting and
+     * configuration. For container groups, this will always be an empty list.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the network dependencies for this container group to allow complete control of network setting and
+     *     configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<List<String>> getOutboundNetworkDependenciesEndpointsAsync(
+        String resourceGroupName, String containerGroupName) {
+        return getOutboundNetworkDependenciesEndpointsWithResponseAsync(resourceGroupName, containerGroupName)
+            .flatMap(
+                (Response<List<String>> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Gets all the network dependencies for this container group to allow complete control of network setting and
+     * configuration. For container groups, this will always be an empty list.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the network dependencies for this container group to allow complete control of network setting and
+     *     configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<String> getOutboundNetworkDependenciesEndpoints(String resourceGroupName, String containerGroupName) {
+        return getOutboundNetworkDependenciesEndpointsAsync(resourceGroupName, containerGroupName).block();
+    }
+
+    /**
+     * Gets all the network dependencies for this container group to allow complete control of network setting and
+     * configuration. For container groups, this will always be an empty list.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the network dependencies for this container group to allow complete control of network setting and
+     *     configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<List<String>> getOutboundNetworkDependenciesEndpointsWithResponse(
+        String resourceGroupName, String containerGroupName, Context context) {
+        return getOutboundNetworkDependenciesEndpointsWithResponseAsync(resourceGroupName, containerGroupName, context)
+            .block();
     }
 
     /**

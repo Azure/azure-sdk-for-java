@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.ParameterContract;
@@ -16,160 +15,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Api Operation details. */
-@JsonFlatten
 @Fluent
-public class OperationContractInner extends ProxyResource {
+public final class OperationContractInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationContractInner.class);
 
     /*
-     * Collection of URL template parameters.
+     * Properties of the Operation Contract.
      */
-    @JsonProperty(value = "properties.templateParameters")
-    private List<ParameterContract> templateParameters;
-
-    /*
-     * Description of the operation. May include HTML formatting tags.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * An entity containing request details.
-     */
-    @JsonProperty(value = "properties.request")
-    private RequestContract request;
-
-    /*
-     * Array of Operation responses.
-     */
-    @JsonProperty(value = "properties.responses")
-    private List<ResponseContract> responses;
-
-    /*
-     * Operation Policies
-     */
-    @JsonProperty(value = "properties.policies")
-    private String policies;
-
-    /*
-     * Operation Name.
-     */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
-
-    /*
-     * A Valid HTTP Operation Method. Typical Http Methods like GET, PUT, POST
-     * but not limited by only them.
-     */
-    @JsonProperty(value = "properties.method")
-    private String method;
-
-    /*
-     * Relative URL template identifying the target resource for this
-     * operation. May include parameters. Example:
-     * /customers/{cid}/orders/{oid}/?date={date}
-     */
-    @JsonProperty(value = "properties.urlTemplate")
-    private String urlTemplate;
+    @JsonProperty(value = "properties")
+    private OperationContractProperties innerProperties;
 
     /**
-     * Get the templateParameters property: Collection of URL template parameters.
+     * Get the innerProperties property: Properties of the Operation Contract.
      *
-     * @return the templateParameters value.
+     * @return the innerProperties value.
      */
-    public List<ParameterContract> templateParameters() {
-        return this.templateParameters;
-    }
-
-    /**
-     * Set the templateParameters property: Collection of URL template parameters.
-     *
-     * @param templateParameters the templateParameters value to set.
-     * @return the OperationContractInner object itself.
-     */
-    public OperationContractInner withTemplateParameters(List<ParameterContract> templateParameters) {
-        this.templateParameters = templateParameters;
-        return this;
-    }
-
-    /**
-     * Get the description property: Description of the operation. May include HTML formatting tags.
-     *
-     * @return the description value.
-     */
-    public String description() {
-        return this.description;
-    }
-
-    /**
-     * Set the description property: Description of the operation. May include HTML formatting tags.
-     *
-     * @param description the description value to set.
-     * @return the OperationContractInner object itself.
-     */
-    public OperationContractInner withDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    /**
-     * Get the request property: An entity containing request details.
-     *
-     * @return the request value.
-     */
-    public RequestContract request() {
-        return this.request;
-    }
-
-    /**
-     * Set the request property: An entity containing request details.
-     *
-     * @param request the request value to set.
-     * @return the OperationContractInner object itself.
-     */
-    public OperationContractInner withRequest(RequestContract request) {
-        this.request = request;
-        return this;
-    }
-
-    /**
-     * Get the responses property: Array of Operation responses.
-     *
-     * @return the responses value.
-     */
-    public List<ResponseContract> responses() {
-        return this.responses;
-    }
-
-    /**
-     * Set the responses property: Array of Operation responses.
-     *
-     * @param responses the responses value to set.
-     * @return the OperationContractInner object itself.
-     */
-    public OperationContractInner withResponses(List<ResponseContract> responses) {
-        this.responses = responses;
-        return this;
-    }
-
-    /**
-     * Get the policies property: Operation Policies.
-     *
-     * @return the policies value.
-     */
-    public String policies() {
-        return this.policies;
-    }
-
-    /**
-     * Set the policies property: Operation Policies.
-     *
-     * @param policies the policies value to set.
-     * @return the OperationContractInner object itself.
-     */
-    public OperationContractInner withPolicies(String policies) {
-        this.policies = policies;
-        return this;
+    private OperationContractProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -178,7 +40,7 @@ public class OperationContractInner extends ProxyResource {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -188,7 +50,10 @@ public class OperationContractInner extends ProxyResource {
      * @return the OperationContractInner object itself.
      */
     public OperationContractInner withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OperationContractProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -199,7 +64,7 @@ public class OperationContractInner extends ProxyResource {
      * @return the method value.
      */
     public String method() {
-        return this.method;
+        return this.innerProperties() == null ? null : this.innerProperties().method();
     }
 
     /**
@@ -210,7 +75,10 @@ public class OperationContractInner extends ProxyResource {
      * @return the OperationContractInner object itself.
      */
     public OperationContractInner withMethod(String method) {
-        this.method = method;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OperationContractProperties();
+        }
+        this.innerProperties().withMethod(method);
         return this;
     }
 
@@ -221,7 +89,7 @@ public class OperationContractInner extends ProxyResource {
      * @return the urlTemplate value.
      */
     public String urlTemplate() {
-        return this.urlTemplate;
+        return this.innerProperties() == null ? null : this.innerProperties().urlTemplate();
     }
 
     /**
@@ -232,7 +100,125 @@ public class OperationContractInner extends ProxyResource {
      * @return the OperationContractInner object itself.
      */
     public OperationContractInner withUrlTemplate(String urlTemplate) {
-        this.urlTemplate = urlTemplate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OperationContractProperties();
+        }
+        this.innerProperties().withUrlTemplate(urlTemplate);
+        return this;
+    }
+
+    /**
+     * Get the templateParameters property: Collection of URL template parameters.
+     *
+     * @return the templateParameters value.
+     */
+    public List<ParameterContract> templateParameters() {
+        return this.innerProperties() == null ? null : this.innerProperties().templateParameters();
+    }
+
+    /**
+     * Set the templateParameters property: Collection of URL template parameters.
+     *
+     * @param templateParameters the templateParameters value to set.
+     * @return the OperationContractInner object itself.
+     */
+    public OperationContractInner withTemplateParameters(List<ParameterContract> templateParameters) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OperationContractProperties();
+        }
+        this.innerProperties().withTemplateParameters(templateParameters);
+        return this;
+    }
+
+    /**
+     * Get the description property: Description of the operation. May include HTML formatting tags.
+     *
+     * @return the description value.
+     */
+    public String description() {
+        return this.innerProperties() == null ? null : this.innerProperties().description();
+    }
+
+    /**
+     * Set the description property: Description of the operation. May include HTML formatting tags.
+     *
+     * @param description the description value to set.
+     * @return the OperationContractInner object itself.
+     */
+    public OperationContractInner withDescription(String description) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OperationContractProperties();
+        }
+        this.innerProperties().withDescription(description);
+        return this;
+    }
+
+    /**
+     * Get the request property: An entity containing request details.
+     *
+     * @return the request value.
+     */
+    public RequestContract request() {
+        return this.innerProperties() == null ? null : this.innerProperties().request();
+    }
+
+    /**
+     * Set the request property: An entity containing request details.
+     *
+     * @param request the request value to set.
+     * @return the OperationContractInner object itself.
+     */
+    public OperationContractInner withRequest(RequestContract request) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OperationContractProperties();
+        }
+        this.innerProperties().withRequest(request);
+        return this;
+    }
+
+    /**
+     * Get the responses property: Array of Operation responses.
+     *
+     * @return the responses value.
+     */
+    public List<ResponseContract> responses() {
+        return this.innerProperties() == null ? null : this.innerProperties().responses();
+    }
+
+    /**
+     * Set the responses property: Array of Operation responses.
+     *
+     * @param responses the responses value to set.
+     * @return the OperationContractInner object itself.
+     */
+    public OperationContractInner withResponses(List<ResponseContract> responses) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OperationContractProperties();
+        }
+        this.innerProperties().withResponses(responses);
+        return this;
+    }
+
+    /**
+     * Get the policies property: Operation Policies.
+     *
+     * @return the policies value.
+     */
+    public String policies() {
+        return this.innerProperties() == null ? null : this.innerProperties().policies();
+    }
+
+    /**
+     * Set the policies property: Operation Policies.
+     *
+     * @param policies the policies value to set.
+     * @return the OperationContractInner object itself.
+     */
+    public OperationContractInner withPolicies(String policies) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OperationContractProperties();
+        }
+        this.innerProperties().withPolicies(policies);
         return this;
     }
 
@@ -242,14 +228,8 @@ public class OperationContractInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (templateParameters() != null) {
-            templateParameters().forEach(e -> e.validate());
-        }
-        if (request() != null) {
-            request().validate();
-        }
-        if (responses() != null) {
-            responses().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -59,7 +59,7 @@ public interface AppsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IoT Central application.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AppInner>, AppInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, AppInner app);
 
@@ -77,7 +77,7 @@ public interface AppsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IoT Central application.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AppInner>, AppInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, AppInner app, Context context);
 
@@ -125,7 +125,7 @@ public interface AppsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IoT Central application.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AppInner>, AppInner> beginUpdate(
         String resourceGroupName, String resourceName, AppPatch appPatch);
 
@@ -141,7 +141,7 @@ public interface AppsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IoT Central application.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AppInner>, AppInner> beginUpdate(
         String resourceGroupName, String resourceName, AppPatch appPatch, Context context);
 
@@ -184,7 +184,7 @@ public interface AppsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName);
 
     /**
@@ -198,7 +198,7 @@ public interface AppsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName, Context context);
 
     /**

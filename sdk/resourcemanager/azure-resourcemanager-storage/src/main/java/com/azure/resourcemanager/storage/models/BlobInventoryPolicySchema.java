@@ -22,13 +22,6 @@ public final class BlobInventoryPolicySchema {
     private boolean enabled;
 
     /*
-     * Container name where blob inventory files are stored. Must be
-     * pre-created.
-     */
-    @JsonProperty(value = "destination", required = true)
-    private String destination;
-
-    /*
      * The valid value is Inventory
      */
     @JsonProperty(value = "type", required = true)
@@ -58,26 +51,6 @@ public final class BlobInventoryPolicySchema {
      */
     public BlobInventoryPolicySchema withEnabled(boolean enabled) {
         this.enabled = enabled;
-        return this;
-    }
-
-    /**
-     * Get the destination property: Container name where blob inventory files are stored. Must be pre-created.
-     *
-     * @return the destination value.
-     */
-    public String destination() {
-        return this.destination;
-    }
-
-    /**
-     * Set the destination property: Container name where blob inventory files are stored. Must be pre-created.
-     *
-     * @param destination the destination value to set.
-     * @return the BlobInventoryPolicySchema object itself.
-     */
-    public BlobInventoryPolicySchema withDestination(String destination) {
-        this.destination = destination;
         return this;
     }
 
@@ -127,12 +100,6 @@ public final class BlobInventoryPolicySchema {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (destination() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property destination in model BlobInventoryPolicySchema"));
-        }
         if (type() == null) {
             throw logger
                 .logExceptionAsError(

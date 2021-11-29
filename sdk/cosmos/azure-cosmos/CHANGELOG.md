@@ -1,7 +1,65 @@
 ## Release History
 
-## 4.19.0-beta.1 (Unreleased)
+### 4.22.0-beta.1 (Unreleased)
 
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
+### 4.21.1 (2021-11-13)
+#### Key Bug Fixes
+* Fixed an issue in `ChangeFeedProcessor` where processing stops in some rare cases because of a race condition can occur which prevents work to be promptly assigned to other instances.
+
+### 4.21.0 (2021-11-12)
+#### Features Added
+* GA of `Patch`, `Batch` and `Bulk` API.
+* GA of `ChangeFeedProcessorState` API.
+* Added `networkRequestTimeout` API for `DirectConnectionConfig`.
+
+#### Key Bug Fixes
+* Override the default keep-alive config on linux to keep connections open and detect a broken connection faster.
+
+### 4.20.1 (2021-10-27)
+#### Key Bug Fixes
+* Removed `AfterBurner` module for Java version 16+.
+* Fixed `BadRequestException` issue when using `Distinct` with matched `orderBy` queries via `continuationToken`.
+
+### 4.20.0 (2021-10-14)
+#### Features Added
+* Enabling `queryplan` cache by default.
+
+#### Key Bug Fixes
+* Fixed issue with bulk reads when `contentResponseOnWrite` is not explicitly enabled on the cosmos client.
+
+### 4.19.1 (2021-09-24)
+#### Features Added
+* Added support to config retry count for `openConnectionsAndInitCaches`.
+
+#### Key Bug Fixes
+* Fixed ReadMany Api on partition split.
+* Removed full exception trace from 404 error on open telemetry.
+* Fixed issue with onErrorDropped being called when using concatWith in QuorumReader.
+
+### 4.20.0-beta.1 (2021-09-22)
+#### Features Added
+* Added support to config retry count for `openConnectionsAndInitCaches`.
+
+### 4.19.0 (2021-09-09)
+#### New Features
+* Added support for distinct count queries.
+* Added support for capturing `IndexMetrics` in `CosmosQueryRequestOptions`.
+
+#### Key Bug Fixes
+* Added support to switch off IO thread for response processing.
+* Fixed issue for resuming order by queries from continuation token that includes undefined/null.
+
+### 4.19.0-beta.1 (2021-09-02)
+#### Key Bug Fixes
+* Added support to switch off IO thread for response processing.
 
 ### 4.18.0 (2021-08-16)
 > [!IMPORTANT]
@@ -80,7 +138,7 @@
 * Fixed warning caused because of afterburner module usage in `CosmosDiagnostics`.
 * Query performance improvements.
 
-### 4.13.0 (2021-03-11) 
+### 4.13.0 (2021-03-11)
 > [!IMPORTANT] 
 > This release updates `reactor-core` and `reactor-netty` major versions to `2020.0.4 (Europium)` release train.
 #### New Features

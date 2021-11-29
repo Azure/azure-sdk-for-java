@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -17,10 +16,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** VpnGatewayNatRule Resource. */
-@JsonFlatten
 @Fluent
-public class VpnGatewayNatRuleInner extends SubResource {
+public final class VpnGatewayNatRuleInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnGatewayNatRuleInner.class);
+
+    /*
+     * Properties of the VpnGateway NAT rule.
+     */
+    @JsonProperty(value = "properties")
+    private VpnGatewayNatRuleProperties innerProperties;
 
     /*
      * The name of the resource that is unique within a resource group. This
@@ -41,53 +45,14 @@ public class VpnGatewayNatRuleInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * The provisioning state of the NAT Rule resource.
+    /**
+     * Get the innerProperties property: Properties of the VpnGateway NAT rule.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * The type of NAT rule for VPN NAT.
-     */
-    @JsonProperty(value = "properties.type")
-    private VpnNatRuleType typePropertiesType;
-
-    /*
-     * The Source NAT direction of a VPN NAT.
-     */
-    @JsonProperty(value = "properties.mode")
-    private VpnNatRuleMode mode;
-
-    /*
-     * The private IP address internal mapping for NAT.
-     */
-    @JsonProperty(value = "properties.internalMappings")
-    private List<VpnNatRuleMapping> internalMappings;
-
-    /*
-     * The private IP address external mapping for NAT.
-     */
-    @JsonProperty(value = "properties.externalMappings")
-    private List<VpnNatRuleMapping> externalMappings;
-
-    /*
-     * The IP Configuration ID this NAT rule applies to.
-     */
-    @JsonProperty(value = "properties.ipConfigurationId")
-    private String ipConfigurationId;
-
-    /*
-     * List of egress VpnSiteLinkConnections.
-     */
-    @JsonProperty(value = "properties.egressVpnSiteLinkConnections", access = JsonProperty.Access.WRITE_ONLY)
-    private List<SubResource> egressVpnSiteLinkConnections;
-
-    /*
-     * List of ingress VpnSiteLinkConnections.
-     */
-    @JsonProperty(value = "properties.ingressVpnSiteLinkConnections", access = JsonProperty.Access.WRITE_ONLY)
-    private List<SubResource> ingressVpnSiteLinkConnections;
+    private VpnGatewayNatRuleProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
@@ -129,32 +94,42 @@ public class VpnGatewayNatRuleInner extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public VpnGatewayNatRuleInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the provisioningState property: The provisioning state of the NAT Rule resource.
      *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
-     * Get the typePropertiesType property: The type of NAT rule for VPN NAT.
+     * Get the type property: The type of NAT rule for VPN NAT.
      *
-     * @return the typePropertiesType value.
+     * @return the type value.
      */
     public VpnNatRuleType typePropertiesType() {
-        return this.typePropertiesType;
+        return this.innerProperties() == null ? null : this.innerProperties().type();
     }
 
     /**
-     * Set the typePropertiesType property: The type of NAT rule for VPN NAT.
+     * Set the type property: The type of NAT rule for VPN NAT.
      *
-     * @param typePropertiesType the typePropertiesType value to set.
+     * @param type the type value to set.
      * @return the VpnGatewayNatRuleInner object itself.
      */
-    public VpnGatewayNatRuleInner withTypePropertiesType(VpnNatRuleType typePropertiesType) {
-        this.typePropertiesType = typePropertiesType;
+    public VpnGatewayNatRuleInner withTypePropertiesType(VpnNatRuleType type) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VpnGatewayNatRuleProperties();
+        }
+        this.innerProperties().withType(type);
         return this;
     }
 
@@ -164,7 +139,7 @@ public class VpnGatewayNatRuleInner extends SubResource {
      * @return the mode value.
      */
     public VpnNatRuleMode mode() {
-        return this.mode;
+        return this.innerProperties() == null ? null : this.innerProperties().mode();
     }
 
     /**
@@ -174,7 +149,10 @@ public class VpnGatewayNatRuleInner extends SubResource {
      * @return the VpnGatewayNatRuleInner object itself.
      */
     public VpnGatewayNatRuleInner withMode(VpnNatRuleMode mode) {
-        this.mode = mode;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VpnGatewayNatRuleProperties();
+        }
+        this.innerProperties().withMode(mode);
         return this;
     }
 
@@ -184,7 +162,7 @@ public class VpnGatewayNatRuleInner extends SubResource {
      * @return the internalMappings value.
      */
     public List<VpnNatRuleMapping> internalMappings() {
-        return this.internalMappings;
+        return this.innerProperties() == null ? null : this.innerProperties().internalMappings();
     }
 
     /**
@@ -194,7 +172,10 @@ public class VpnGatewayNatRuleInner extends SubResource {
      * @return the VpnGatewayNatRuleInner object itself.
      */
     public VpnGatewayNatRuleInner withInternalMappings(List<VpnNatRuleMapping> internalMappings) {
-        this.internalMappings = internalMappings;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VpnGatewayNatRuleProperties();
+        }
+        this.innerProperties().withInternalMappings(internalMappings);
         return this;
     }
 
@@ -204,7 +185,7 @@ public class VpnGatewayNatRuleInner extends SubResource {
      * @return the externalMappings value.
      */
     public List<VpnNatRuleMapping> externalMappings() {
-        return this.externalMappings;
+        return this.innerProperties() == null ? null : this.innerProperties().externalMappings();
     }
 
     /**
@@ -214,7 +195,10 @@ public class VpnGatewayNatRuleInner extends SubResource {
      * @return the VpnGatewayNatRuleInner object itself.
      */
     public VpnGatewayNatRuleInner withExternalMappings(List<VpnNatRuleMapping> externalMappings) {
-        this.externalMappings = externalMappings;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VpnGatewayNatRuleProperties();
+        }
+        this.innerProperties().withExternalMappings(externalMappings);
         return this;
     }
 
@@ -224,7 +208,7 @@ public class VpnGatewayNatRuleInner extends SubResource {
      * @return the ipConfigurationId value.
      */
     public String ipConfigurationId() {
-        return this.ipConfigurationId;
+        return this.innerProperties() == null ? null : this.innerProperties().ipConfigurationId();
     }
 
     /**
@@ -234,7 +218,10 @@ public class VpnGatewayNatRuleInner extends SubResource {
      * @return the VpnGatewayNatRuleInner object itself.
      */
     public VpnGatewayNatRuleInner withIpConfigurationId(String ipConfigurationId) {
-        this.ipConfigurationId = ipConfigurationId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VpnGatewayNatRuleProperties();
+        }
+        this.innerProperties().withIpConfigurationId(ipConfigurationId);
         return this;
     }
 
@@ -244,7 +231,7 @@ public class VpnGatewayNatRuleInner extends SubResource {
      * @return the egressVpnSiteLinkConnections value.
      */
     public List<SubResource> egressVpnSiteLinkConnections() {
-        return this.egressVpnSiteLinkConnections;
+        return this.innerProperties() == null ? null : this.innerProperties().egressVpnSiteLinkConnections();
     }
 
     /**
@@ -253,14 +240,7 @@ public class VpnGatewayNatRuleInner extends SubResource {
      * @return the ingressVpnSiteLinkConnections value.
      */
     public List<SubResource> ingressVpnSiteLinkConnections() {
-        return this.ingressVpnSiteLinkConnections;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public VpnGatewayNatRuleInner withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().ingressVpnSiteLinkConnections();
     }
 
     /**
@@ -269,11 +249,8 @@ public class VpnGatewayNatRuleInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (internalMappings() != null) {
-            internalMappings().forEach(e -> e.validate());
-        }
-        if (externalMappings() != null) {
-            externalMappings().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

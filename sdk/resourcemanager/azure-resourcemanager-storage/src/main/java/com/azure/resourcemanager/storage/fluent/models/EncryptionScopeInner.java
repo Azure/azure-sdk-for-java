@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.EncryptionScopeKeyVaultProperties;
@@ -16,51 +15,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The Encryption Scope resource. */
-@JsonFlatten
 @Fluent
-public class EncryptionScopeInner extends ProxyResource {
+public final class EncryptionScopeInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionScopeInner.class);
 
     /*
-     * The provider for the encryption scope. Possible values
-     * (case-insensitive):  Microsoft.Storage, Microsoft.KeyVault.
+     * Properties of the encryption scope.
      */
-    @JsonProperty(value = "properties.source")
-    private EncryptionScopeSource source;
+    @JsonProperty(value = "properties")
+    private EncryptionScopeProperties innerEncryptionScopeProperties;
 
-    /*
-     * The state of the encryption scope. Possible values (case-insensitive):
-     * Enabled, Disabled.
+    /**
+     * Get the innerEncryptionScopeProperties property: Properties of the encryption scope.
+     *
+     * @return the innerEncryptionScopeProperties value.
      */
-    @JsonProperty(value = "properties.state")
-    private EncryptionScopeState state;
-
-    /*
-     * Gets the creation date and time of the encryption scope in UTC.
-     */
-    @JsonProperty(value = "properties.creationTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime creationTime;
-
-    /*
-     * Gets the last modification date and time of the encryption scope in UTC.
-     */
-    @JsonProperty(value = "properties.lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastModifiedTime;
-
-    /*
-     * The key vault properties for the encryption scope. This is a required
-     * field if encryption scope 'source' attribute is set to
-     * 'Microsoft.KeyVault'.
-     */
-    @JsonProperty(value = "properties.keyVaultProperties")
-    private EncryptionScopeKeyVaultProperties keyVaultProperties;
-
-    /*
-     * A boolean indicating whether or not the service applies a secondary
-     * layer of encryption with platform managed keys for data at rest.
-     */
-    @JsonProperty(value = "properties.requireInfrastructureEncryption")
-    private Boolean requireInfrastructureEncryption;
+    private EncryptionScopeProperties innerEncryptionScopeProperties() {
+        return this.innerEncryptionScopeProperties;
+    }
 
     /**
      * Get the source property: The provider for the encryption scope. Possible values (case-insensitive):
@@ -69,7 +41,7 @@ public class EncryptionScopeInner extends ProxyResource {
      * @return the source value.
      */
     public EncryptionScopeSource source() {
-        return this.source;
+        return this.innerEncryptionScopeProperties() == null ? null : this.innerEncryptionScopeProperties().source();
     }
 
     /**
@@ -80,7 +52,10 @@ public class EncryptionScopeInner extends ProxyResource {
      * @return the EncryptionScopeInner object itself.
      */
     public EncryptionScopeInner withSource(EncryptionScopeSource source) {
-        this.source = source;
+        if (this.innerEncryptionScopeProperties() == null) {
+            this.innerEncryptionScopeProperties = new EncryptionScopeProperties();
+        }
+        this.innerEncryptionScopeProperties().withSource(source);
         return this;
     }
 
@@ -90,7 +65,7 @@ public class EncryptionScopeInner extends ProxyResource {
      * @return the state value.
      */
     public EncryptionScopeState state() {
-        return this.state;
+        return this.innerEncryptionScopeProperties() == null ? null : this.innerEncryptionScopeProperties().state();
     }
 
     /**
@@ -100,7 +75,10 @@ public class EncryptionScopeInner extends ProxyResource {
      * @return the EncryptionScopeInner object itself.
      */
     public EncryptionScopeInner withState(EncryptionScopeState state) {
-        this.state = state;
+        if (this.innerEncryptionScopeProperties() == null) {
+            this.innerEncryptionScopeProperties = new EncryptionScopeProperties();
+        }
+        this.innerEncryptionScopeProperties().withState(state);
         return this;
     }
 
@@ -110,7 +88,9 @@ public class EncryptionScopeInner extends ProxyResource {
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
-        return this.creationTime;
+        return this.innerEncryptionScopeProperties() == null
+            ? null
+            : this.innerEncryptionScopeProperties().creationTime();
     }
 
     /**
@@ -119,7 +99,9 @@ public class EncryptionScopeInner extends ProxyResource {
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
-        return this.lastModifiedTime;
+        return this.innerEncryptionScopeProperties() == null
+            ? null
+            : this.innerEncryptionScopeProperties().lastModifiedTime();
     }
 
     /**
@@ -129,7 +111,9 @@ public class EncryptionScopeInner extends ProxyResource {
      * @return the keyVaultProperties value.
      */
     public EncryptionScopeKeyVaultProperties keyVaultProperties() {
-        return this.keyVaultProperties;
+        return this.innerEncryptionScopeProperties() == null
+            ? null
+            : this.innerEncryptionScopeProperties().keyVaultProperties();
     }
 
     /**
@@ -140,7 +124,10 @@ public class EncryptionScopeInner extends ProxyResource {
      * @return the EncryptionScopeInner object itself.
      */
     public EncryptionScopeInner withKeyVaultProperties(EncryptionScopeKeyVaultProperties keyVaultProperties) {
-        this.keyVaultProperties = keyVaultProperties;
+        if (this.innerEncryptionScopeProperties() == null) {
+            this.innerEncryptionScopeProperties = new EncryptionScopeProperties();
+        }
+        this.innerEncryptionScopeProperties().withKeyVaultProperties(keyVaultProperties);
         return this;
     }
 
@@ -151,7 +138,9 @@ public class EncryptionScopeInner extends ProxyResource {
      * @return the requireInfrastructureEncryption value.
      */
     public Boolean requireInfrastructureEncryption() {
-        return this.requireInfrastructureEncryption;
+        return this.innerEncryptionScopeProperties() == null
+            ? null
+            : this.innerEncryptionScopeProperties().requireInfrastructureEncryption();
     }
 
     /**
@@ -162,7 +151,10 @@ public class EncryptionScopeInner extends ProxyResource {
      * @return the EncryptionScopeInner object itself.
      */
     public EncryptionScopeInner withRequireInfrastructureEncryption(Boolean requireInfrastructureEncryption) {
-        this.requireInfrastructureEncryption = requireInfrastructureEncryption;
+        if (this.innerEncryptionScopeProperties() == null) {
+            this.innerEncryptionScopeProperties = new EncryptionScopeProperties();
+        }
+        this.innerEncryptionScopeProperties().withRequireInfrastructureEncryption(requireInfrastructureEncryption);
         return this;
     }
 
@@ -172,8 +164,8 @@ public class EncryptionScopeInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (keyVaultProperties() != null) {
-            keyVaultProperties().validate();
+        if (innerEncryptionScopeProperties() != null) {
+            innerEncryptionScopeProperties().validate();
         }
     }
 }

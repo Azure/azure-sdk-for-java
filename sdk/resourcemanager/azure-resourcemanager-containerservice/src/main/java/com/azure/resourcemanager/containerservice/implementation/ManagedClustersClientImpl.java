@@ -450,7 +450,7 @@ public final class ManagedClustersClientImpl
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -496,7 +496,7 @@ public final class ManagedClustersClientImpl
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -609,7 +609,7 @@ public final class ManagedClustersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -651,7 +651,7 @@ public final class ManagedClustersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -747,7 +747,7 @@ public final class ManagedClustersClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -801,7 +801,7 @@ public final class ManagedClustersClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -917,7 +917,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -967,7 +967,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1077,7 +1077,7 @@ public final class ManagedClustersClientImpl
         if (roleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter roleName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1136,7 +1136,7 @@ public final class ManagedClustersClientImpl
         if (roleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter roleName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1256,7 +1256,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1308,7 +1308,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1441,7 +1441,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1493,7 +1493,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1625,7 +1625,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1677,7 +1677,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1810,7 +1810,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1860,7 +1860,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1967,7 +1967,7 @@ public final class ManagedClustersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2024,7 +2024,7 @@ public final class ManagedClustersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2050,7 +2050,7 @@ public final class ManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return managed cluster.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ManagedClusterInner>, ManagedClusterInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String resourceName, ManagedClusterInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -2062,7 +2062,7 @@ public final class ManagedClustersClientImpl
                 this.client.getHttpPipeline(),
                 ManagedClusterInner.class,
                 ManagedClusterInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2077,7 +2077,7 @@ public final class ManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return managed cluster.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ManagedClusterInner>, ManagedClusterInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String resourceName, ManagedClusterInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -2100,7 +2100,7 @@ public final class ManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return managed cluster.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedClusterInner>, ManagedClusterInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, ManagedClusterInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
@@ -2118,7 +2118,7 @@ public final class ManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return managed cluster.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedClusterInner>, ManagedClusterInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, ManagedClusterInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, resourceName, parameters, context).getSyncPoller();
@@ -2236,7 +2236,7 @@ public final class ManagedClustersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2293,7 +2293,7 @@ public final class ManagedClustersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2319,7 +2319,7 @@ public final class ManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return managed cluster.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ManagedClusterInner>, ManagedClusterInner> beginUpdateTagsAsync(
         String resourceGroupName, String resourceName, TagsObject parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -2331,7 +2331,7 @@ public final class ManagedClustersClientImpl
                 this.client.getHttpPipeline(),
                 ManagedClusterInner.class,
                 ManagedClusterInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2346,7 +2346,7 @@ public final class ManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return managed cluster.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ManagedClusterInner>, ManagedClusterInner> beginUpdateTagsAsync(
         String resourceGroupName, String resourceName, TagsObject parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -2369,7 +2369,7 @@ public final class ManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return managed cluster.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedClusterInner>, ManagedClusterInner> beginUpdateTags(
         String resourceGroupName, String resourceName, TagsObject parameters) {
         return beginUpdateTagsAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
@@ -2387,7 +2387,7 @@ public final class ManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return managed cluster.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedClusterInner>, ManagedClusterInner> beginUpdateTags(
         String resourceGroupName, String resourceName, TagsObject parameters, Context context) {
         return beginUpdateTagsAsync(resourceGroupName, resourceName, parameters, context).getSyncPoller();
@@ -2497,7 +2497,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2547,7 +2547,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2571,12 +2571,13 @@ public final class ManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2590,7 +2591,7 @@ public final class ManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String resourceName, Context context) {
         context = this.client.mergeContext(context);
@@ -2610,7 +2611,7 @@ public final class ManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName) {
         return beginDeleteAsync(resourceGroupName, resourceName).getSyncPoller();
     }
@@ -2626,7 +2627,7 @@ public final class ManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String resourceName, Context context) {
         return beginDeleteAsync(resourceGroupName, resourceName, context).getSyncPoller();
@@ -2732,7 +2733,7 @@ public final class ManagedClustersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2792,7 +2793,7 @@ public final class ManagedClustersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2818,14 +2819,15 @@ public final class ManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginResetServicePrincipalProfileAsync(
         String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             resetServicePrincipalProfileWithResponseAsync(resourceGroupName, resourceName, parameters);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2840,7 +2842,7 @@ public final class ManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginResetServicePrincipalProfileAsync(
         String resourceGroupName,
         String resourceName,
@@ -2865,7 +2867,7 @@ public final class ManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResetServicePrincipalProfile(
         String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters) {
         return beginResetServicePrincipalProfileAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
@@ -2883,7 +2885,7 @@ public final class ManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResetServicePrincipalProfile(
         String resourceGroupName,
         String resourceName,
@@ -3009,7 +3011,7 @@ public final class ManagedClustersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3066,7 +3068,7 @@ public final class ManagedClustersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3092,14 +3094,15 @@ public final class ManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginResetAadProfileAsync(
         String resourceGroupName, String resourceName, ManagedClusterAadProfile parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             resetAadProfileWithResponseAsync(resourceGroupName, resourceName, parameters);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -3114,7 +3117,7 @@ public final class ManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginResetAadProfileAsync(
         String resourceGroupName, String resourceName, ManagedClusterAadProfile parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -3136,7 +3139,7 @@ public final class ManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResetAadProfile(
         String resourceGroupName, String resourceName, ManagedClusterAadProfile parameters) {
         return beginResetAadProfileAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
@@ -3154,7 +3157,7 @@ public final class ManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResetAadProfile(
         String resourceGroupName, String resourceName, ManagedClusterAadProfile parameters, Context context) {
         return beginResetAadProfileAsync(resourceGroupName, resourceName, parameters, context).getSyncPoller();
@@ -3264,7 +3267,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3315,7 +3318,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3340,14 +3343,15 @@ public final class ManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginRotateClusterCertificatesAsync(
         String resourceGroupName, String resourceName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             rotateClusterCertificatesWithResponseAsync(resourceGroupName, resourceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -3362,7 +3366,7 @@ public final class ManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRotateClusterCertificatesAsync(
         String resourceGroupName, String resourceName, Context context) {
         context = this.client.mergeContext(context);
@@ -3384,7 +3388,7 @@ public final class ManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRotateClusterCertificates(
         String resourceGroupName, String resourceName) {
         return beginRotateClusterCertificatesAsync(resourceGroupName, resourceName).getSyncPoller();
@@ -3402,7 +3406,7 @@ public final class ManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRotateClusterCertificates(
         String resourceGroupName, String resourceName, Context context) {
         return beginRotateClusterCertificatesAsync(resourceGroupName, resourceName, context).getSyncPoller();
@@ -3510,7 +3514,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3563,7 +3567,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3590,12 +3594,13 @@ public final class ManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String resourceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = stopWithResponseAsync(resourceGroupName, resourceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -3612,7 +3617,7 @@ public final class ManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStopAsync(
         String resourceGroupName, String resourceName, Context context) {
         context = this.client.mergeContext(context);
@@ -3635,7 +3640,7 @@ public final class ManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String resourceName) {
         return beginStopAsync(resourceGroupName, resourceName).getSyncPoller();
     }
@@ -3654,7 +3659,7 @@ public final class ManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String resourceName, Context context) {
         return beginStopAsync(resourceGroupName, resourceName, context).getSyncPoller();
@@ -3766,7 +3771,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3817,7 +3822,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3842,12 +3847,13 @@ public final class ManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String resourceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, resourceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -3862,7 +3868,7 @@ public final class ManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStartAsync(
         String resourceGroupName, String resourceName, Context context) {
         context = this.client.mergeContext(context);
@@ -3883,7 +3889,7 @@ public final class ManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String resourceName) {
         return beginStartAsync(resourceGroupName, resourceName).getSyncPoller();
     }
@@ -3900,7 +3906,7 @@ public final class ManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String resourceName, Context context) {
         return beginStartAsync(resourceGroupName, resourceName, context).getSyncPoller();
@@ -4011,7 +4017,7 @@ public final class ManagedClustersClientImpl
         } else {
             requestPayload.validate();
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -4069,7 +4075,7 @@ public final class ManagedClustersClientImpl
         } else {
             requestPayload.validate();
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -4096,7 +4102,7 @@ public final class ManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return run command result.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommandAsync(
         String resourceGroupName, String resourceName, RunCommandRequest requestPayload) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -4108,7 +4114,7 @@ public final class ManagedClustersClientImpl
                 this.client.getHttpPipeline(),
                 RunCommandResultInner.class,
                 RunCommandResultInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -4124,7 +4130,7 @@ public final class ManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return run command result.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommandAsync(
         String resourceGroupName, String resourceName, RunCommandRequest requestPayload, Context context) {
         context = this.client.mergeContext(context);
@@ -4148,7 +4154,7 @@ public final class ManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return run command result.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommand(
         String resourceGroupName, String resourceName, RunCommandRequest requestPayload) {
         return beginRunCommandAsync(resourceGroupName, resourceName, requestPayload).getSyncPoller();
@@ -4167,7 +4173,7 @@ public final class ManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return run command result.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommand(
         String resourceGroupName, String resourceName, RunCommandRequest requestPayload, Context context) {
         return beginRunCommandAsync(resourceGroupName, resourceName, requestPayload, context).getSyncPoller();
@@ -4287,7 +4293,7 @@ public final class ManagedClustersClientImpl
         if (commandId == null) {
             return Mono.error(new IllegalArgumentException("Parameter commandId is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -4342,7 +4348,7 @@ public final class ManagedClustersClientImpl
         if (commandId == null) {
             return Mono.error(new IllegalArgumentException("Parameter commandId is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -4450,7 +4456,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -4512,7 +4518,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

@@ -17,9 +17,15 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.util.StringUtils;
 
 import com.azure.spring.cloud.feature.manager.entities.Feature;
 import com.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
+import com.azure.spring.cloud.feature.manager.entities.featurevariants.DynamicFeature;
+import com.azure.spring.cloud.feature.manager.entities.featurevariants.FeatureDefinition;
+import com.azure.spring.cloud.feature.manager.entities.featurevariants.FeatureVariant;
+import com.azure.spring.cloud.feature.manager.entities.featurevariants.IFeatureVariantAssigner;
+import com.azure.spring.cloud.feature.manager.entities.featurevariants.IFeatureVariantAssignerMetadata;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 
@@ -39,19 +45,25 @@ public class FeatureManager extends HashMap<String, Object> {
     @Autowired
     private transient ApplicationContext context;
 
+    @Autowired
+    private FeatureVariantProperties variantProperties;
+
     private transient FeatureManagementConfigProperties properties;
 
     private transient Map<String, Feature> featureManagement;
 
     private Map<String, Boolean> onOff;
 
-    private ObjectMapper mapper = new ObjectMapper();
+    private transient Map<String, DynamicFeature> dynamicFeatures;
+
+    private static final ObjectMapper MAPPER = new ObjectMapper()
+        .setPropertyNamingStrategy(PropertyNamingStrategy.KEBAB_CASE);
 
     public FeatureManager(FeatureManagementConfigProperties properties) {
         this.properties = properties;
         featureManagement = new HashMap<>();
+        dynamicFeatures = new HashMap<>();
         onOff = new HashMap<>();
-        mapper.setPropertyNamingStrategy(PropertyNamingStrategy.KEBAB_CASE);
     }
 
     /**
@@ -65,6 +77,10 @@ public class FeatureManager extends HashMap<String, Object> {
      */
     public Mono<Boolean> isEnabledAsync(String feature) throws FilterNotFoundException {
         return Mono.just(checkFeatures(feature));
+    }
+
+    public <T> Mono<T> getVariantAsync(String feature, Class<T> returnClass) throws FilterNotFoundException {
+        return Mono.just(generateVariant(feature, returnClass));
     }
 
     private boolean checkFeatures(String feature) throws FilterNotFoundException {
@@ -106,6 +122,90 @@ public class FeatureManager extends HashMap<String, Object> {
     }
 
     @SuppressWarnings("unchecked")
+    private <T> T generateVariant(String featureName, Class<T> type) {
+
+        if (!StringUtils.hasText(featureName)) {
+            throw new IllegalArgumentException("Feature Variant is empty or null.");
+        }
+
+        FeatureVariant variant = null;
+
+        DynamicFeature dynamicFeature = dynamicFeatures.get(featureName);
+
+        FeatureDefinition featureDefinition = new FeatureDefinition(featureName, dynamicFeature);
+
+        FeatureVariant defaultVariant = validateDynamicFeature(featureDefinition, featureName);
+
+        IFeatureVariantAssignerMetadata assigner = null;
+
+        try {
+            assigner = (IFeatureVariantAssignerMetadata) context.getBean(featureDefinition.getAssigner());
+        } catch (NoSuchBeanDefinitionException e) {
+            throw new FeatureManagementException("The feature variant assigner " + featureDefinition.getAssigner()
+                + " specified for feature " + featureName + "was not found.");
+        }
+
+        if (assigner instanceof IFeatureVariantAssigner) {
+            variant = ((IFeatureVariantAssigner) assigner).assignVariantAsync(featureDefinition).block();
+        }
+
+        if (variant == null) {
+            variant = defaultVariant;
+
+        }
+
+        String reference = variant.getConfigurationReference();
+
+        String[] parts = reference.split(":");
+
+        Object configurations = null;
+
+        for (String part : parts) {
+            if (configurations == null) {
+                configurations = variantProperties.get(part);
+            } else if (configurations instanceof HashMap){
+                configurations = ((HashMap<String, Object>) configurations).get(part);
+            }
+        }
+
+        return MAPPER.convertValue(configurations, type);
+    }
+    
+    private FeatureVariant validateDynamicFeature(FeatureDefinition featureDefinition, String featureName) {
+        if (!StringUtils.hasText(featureDefinition.getAssigner())) {
+            throw new FeatureManagementException(
+                "Missing Feature Variant assigner name for the feature " + featureName);
+        }
+
+        if (featureDefinition.getVariants() == null || featureDefinition.getVariants().size() == 0) {
+            throw new FeatureManagementException(
+                "No Variants are registered for the feature " + featureName);
+        }
+
+        FeatureVariant defaultVariant = null;
+
+        for (FeatureVariant v : featureDefinition.getVariants()) {
+            if (v.getDefault()) {
+                if (defaultVariant != null) {
+                    throw new FeatureManagementException(
+                        "Multiple default variants are registered for the feature " + featureName);
+                }
+                defaultVariant = v;
+            }
+
+            if (!StringUtils.hasText(v.getConfigurationReference())) {
+                throw new FeatureManagementException("The variant " + v.getName() + " for the feature " + featureName
+                    + "does not have a configuration reference.");
+            }
+        }
+
+        if (defaultVariant == null) {
+            throw new FeatureManagementException("A default variant cannot be found for the feature " + featureName);
+        }
+        return defaultVariant;
+    }
+
+    @SuppressWarnings("unchecked")
     private void addToFeatures(Map<? extends String, ? extends Object> features, String key, String combined) {
         Object featureKey = features.get(key);
         if (!combined.isEmpty() && !combined.endsWith(".")) {
@@ -115,14 +215,18 @@ public class FeatureManager extends HashMap<String, Object> {
             onOff.put(combined + key, (Boolean) featureKey);
         } else {
             Feature feature = null;
+            DynamicFeature dynamicFeature = null;
             try {
-                feature = mapper.convertValue(featureKey, Feature.class);
+                feature = MAPPER.convertValue(featureKey, Feature.class);
+                dynamicFeature = MAPPER.convertValue(featureKey, DynamicFeature.class);
             } catch (IllegalArgumentException e) {
                 LOGGER.error("Found invalid feature {} with value {}.", combined + key, featureKey.toString());
             }
-
             // When coming from a file "feature.flag" is not a possible flag name
-            if (feature != null && feature.getEnabledFor() == null && feature.getKey() == null) {
+            if (dynamicFeature != null && StringUtils.hasText(dynamicFeature.getAssigner())
+                && dynamicFeature.getVariants().size() > 0) {
+                dynamicFeatures.put(key, dynamicFeature);
+            } else if (feature != null && feature.getEnabledFor() == null && feature.getKey() == null) {
                 if (LinkedHashMap.class.isAssignableFrom(featureKey.getClass())) {
                     features = (LinkedHashMap<String, Object>) featureKey;
                     for (String fKey : features.keySet()) {
@@ -148,6 +252,7 @@ public class FeatureManager extends HashMap<String, Object> {
         // Need to reset or switch between on/off to conditional doesn't work
         featureManagement = new HashMap<>();
         onOff = new HashMap<>();
+        dynamicFeatures = new HashMap<>();
 
         if (m.size() == 1 && m.containsKey("featureManagement")) {
             m = (Map<? extends String, ? extends Object>) m.get("featureManagement");

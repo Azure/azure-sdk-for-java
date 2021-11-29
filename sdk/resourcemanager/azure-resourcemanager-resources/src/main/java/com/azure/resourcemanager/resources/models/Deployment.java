@@ -560,6 +560,9 @@ public interface Deployment extends
             WithWhatIf withSpecialDeploymentOnErrorDeployment();
         }
 
+        /**
+         * A deployment definition allowing the execution to be specified.
+         */
         interface WithExecute {
             /**
              * Gets changes that will be made by the deployment if executed at the scope of the resource group.

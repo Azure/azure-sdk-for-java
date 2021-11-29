@@ -39,16 +39,22 @@ private case class ItemsPartitionReader
   log.logInfo(s"Reading from feed range $feedRange of " +
     s"container ${containerTargetConfig.database}.${containerTargetConfig.container}")
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
-  private val client = CosmosClientCache(
+  private val clientCacheItem = CosmosClientCache(
     CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
-    Some(cosmosClientStateHandle))
+    Some(cosmosClientStateHandle),
+    s"ItemsPartitionReader($feedRange, ${containerTargetConfig.database}.${containerTargetConfig.container})"
+  )
 
-  private val cosmosAsyncContainer = ThroughputControlHelper.getContainer(config, containerTargetConfig, client)
-  cosmosAsyncContainer.openConnectionsAndInitCaches().block()
+  private val cosmosAsyncContainer = ThroughputControlHelper.getContainer(
+    config, containerTargetConfig, clientCacheItem.client)
+  SparkUtils.safeOpenConnectionInitCaches(cosmosAsyncContainer, log)
 
   private val queryOptions = new CosmosQueryRequestOptions()
 
-  initializeDiagnosticsIfConfigured
+  private val cosmosSerializationConfig = CosmosSerializationConfig.parseSerializationConfig(config)
+  private val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
+
+  initializeDiagnosticsIfConfigured()
 
   private def initializeDiagnosticsIfConfigured(): Unit = {
     if (diagnosticsConfig.mode.isDefined) {
@@ -83,7 +89,7 @@ private case class ItemsPartitionReader
 
   override def get(): InternalRow = {
     val objectNode = iterator.next()
-    CosmosRowConverter.fromObjectNodeToInternalRow(
+    cosmosRowConverter.fromObjectNodeToInternalRow(
       readSchema,
       rowSerializer,
       objectNode,
@@ -92,5 +98,6 @@ private case class ItemsPartitionReader
 
   override def close(): Unit = {
     RowSerializerPool.returnSerializerToPool(readSchema, rowSerializer)
+    clientCacheItem.close()
   }
 }

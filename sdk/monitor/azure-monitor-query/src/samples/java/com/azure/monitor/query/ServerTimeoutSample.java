@@ -47,12 +47,12 @@ public class ServerTimeoutSample {
 
         // make service call with these request options set as filter header
         Response<LogsQueryResult> response = logsQueryClient
-            .queryWithResponse("d2d0e126-fa1e-4b0a-b647-250cdd471e68",
+            .queryWorkspaceWithResponse("d2d0e126-fa1e-4b0a-b647-250cdd471e68",
                     "AppRequests | take 5", null, options, Context.NONE);
         LogsQueryResult logsQueryResult = response.getValue();
 
         // Sample to iterate by row
-        for (LogsTable table : logsQueryResult.getLogsTables()) {
+        for (LogsTable table : logsQueryResult.getAllTables()) {
             for (LogsTableRow row : table.getRows()) {
                 System.out.println("Row index " + row.getRowIndex());
                 row.getRow()

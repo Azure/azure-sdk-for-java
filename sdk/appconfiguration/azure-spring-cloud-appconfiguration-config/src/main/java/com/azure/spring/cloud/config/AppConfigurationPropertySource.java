@@ -2,32 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config;
 
-import static com.azure.spring.cloud.config.Constants.FEATURE_FLAG_PREFIX;
-import static com.azure.spring.cloud.config.Constants.FEATURE_MANAGEMENT_KEY;
-import static java.util.Collections.emptyList;
-import static java.util.stream.Collectors.toMap;
-
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.stream.IntStream;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.env.EnumerablePropertySource;
-import org.springframework.util.ReflectionUtils;
-import org.springframework.util.StringUtils;
-
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
@@ -47,15 +22,37 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.env.EnumerablePropertySource;
+import org.springframework.util.ReflectionUtils;
+import org.springframework.util.StringUtils;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.stream.IntStream;
+
+import static com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_FLAG_PREFIX;
+import static com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_MANAGEMENT_KEY;
+import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.toMap;
 
 /**
  * Azure App Configuration PropertySource unique per Store Label(Profile) combo.
- * 
- * <p>
- * i.e. If connecting to 2 stores and have 2 labels set 4 AppConfigurationPropertySources need to be created.
- * </p>
+ *
+ * <p>i.e. If connecting to 2 stores and have 2 labels set 4 AppConfigurationPropertySources need to be created.</p>
  */
-public class AppConfigurationPropertySource extends EnumerablePropertySource<ConfigurationClient> {
+public final class AppConfigurationPropertySource extends EnumerablePropertySource<ConfigurationClient> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationPropertySource.class);
 
@@ -78,8 +75,11 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
     private static final ObjectMapper CASE_INSENSITIVE_MAPPER = new ObjectMapper()
         .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
 
+    private static final ObjectMapper FEATURE_MAPPER = new ObjectMapper()
+        .setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
+
     private final AppConfigurationStoreSelects selectedKeys;
-    
+
     private final List<String> profiles;
 
     private final Map<String, Object> properties = new LinkedHashMap<>();
@@ -100,13 +100,14 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
 
     private final ConfigStore configStore;
 
-    AppConfigurationPropertySource(String context, ConfigStore configStore, AppConfigurationStoreSelects selectedKeys, List<String> profiles,
+    AppConfigurationPropertySource(String context, ConfigStore configStore, AppConfigurationStoreSelects selectedKeys,
+        List<String> profiles,
         AppConfigurationProperties appConfigurationProperties, ClientStore clients,
         AppConfigurationProviderProperties appProperties, KeyVaultCredentialProvider keyVaultCredentialProvider,
         SecretClientBuilderSetup keyVaultClientProvider, KeyVaultSecretProvider keyVaultSecretProvider) {
         // The context alone does not uniquely define a PropertySource, append storeName
         // and label to uniquely define a PropertySource
-        super(context + configStore.getEndpoint() + "/" + selectedKeys.getLabel());
+        super(context + configStore.getEndpoint() + "/" + selectedKeys.getLabelFilterText(profiles));
         this.configStore = configStore;
         this.selectedKeys = selectedKeys;
         this.profiles = profiles;
@@ -157,8 +158,8 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
         String storeName = configStore.getEndpoint();
         Date date = new Date();
         SettingSelector settingSelector = new SettingSelector();
-        
-        List<ConfigurationSetting> features = new ArrayList<>();
+
+        PagedIterable<ConfigurationSetting> features = null;
         // Reading In Features
         if (configStore.getFeatureFlags().getEnabled()) {
             settingSelector.setKeyFilter(configStore.getFeatureFlags().getKeyFilter())
@@ -169,20 +170,21 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
                 throw new IOException("Unable to load properties from App Configuration Store.");
             }
         }
-        
+
         List<String> labels = Arrays.asList(selectedKeys.getLabelFilter(profiles));
         Collections.reverse(labels);
 
-        for (String label: labels) {
-            settingSelector = new SettingSelector().setKeyFilter(selectedKeys.getKeyFilter() + "*").setLabelFilter(label);
+        for (String label : labels) {
+            settingSelector = new SettingSelector().setKeyFilter(selectedKeys.getKeyFilter() + "*")
+                .setLabelFilter(label);
 
             // * for wildcard match
-            List<ConfigurationSetting> settings = clients.listSettings(settingSelector, storeName);
-            
+            PagedIterable<ConfigurationSetting> settings = clients.listSettings(settingSelector, storeName);
+
             if (settings == null) {
                 throw new IOException("Unable to load properties from App Configuration Store.");
             }
-            
+
             for (ConfigurationSetting setting : settings) {
                 String key = setting.getKey().trim().substring(selectedKeys.getKeyFilter().length()).replace('/', '.');
                 if (setting instanceof SecretReferenceConfigurationSetting) {
@@ -210,7 +212,7 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
     /**
      * Given a Setting's Key Vault Reference stored in the Settings value, it will get its entry in Key Vault.
      *
-     * @param value {"uri": "&lt;your-vault-url&gt;/secret/&lt;secret&gt;/&lt;version&gt;"}
+     * @param secretReference {"uri": "&lt;your-vault-url&gt;/secret/&lt;secret&gt;/&lt;version&gt;"}
      * @return Key Vault Secret Value
      */
     private String getKeyVaultEntry(SecretReferenceConfigurationSetting secretReference) {
@@ -252,16 +254,17 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
      * @param featureSet Feature Flag info to be set to this property source.
      */
     void initFeatures(FeatureSet featureSet) {
-        ObjectMapper featureMapper = new ObjectMapper();
-        featureMapper.setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
         properties.put(FEATURE_MANAGEMENT_KEY,
-            featureMapper.convertValue(featureSet.getFeatureManagement(), LinkedHashMap.class));
+            FEATURE_MAPPER.convertValue(featureSet.getFeatureManagement(), LinkedHashMap.class));
     }
 
-    private FeatureSet addToFeatureSet(FeatureSet featureSet, List<ConfigurationSetting> settings, Date date)
+    private FeatureSet addToFeatureSet(FeatureSet featureSet, PagedIterable<ConfigurationSetting> features, Date date)
         throws IOException {
+        if (features == null) {
+            return featureSet;
+        }
         // Reading In Features
-        for (ConfigurationSetting setting : settings) {
+        for (ConfigurationSetting setting : features) {
             if (setting instanceof FeatureFlagConfigurationSetting) {
                 Object feature = createFeature((FeatureFlagConfigurationSetting) setting);
                 if (feature != null) {
@@ -277,10 +280,9 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
      *
      * @param item Used to create Features before being converted to be set into properties.
      * @return Feature created from KeyValueItem
-     * @throws IOException - If a ConfigurationSetting isn't of the feature flag content type.
      */
     @SuppressWarnings("unchecked")
-    private Object createFeature(FeatureFlagConfigurationSetting item) throws IOException {
+    private Object createFeature(FeatureFlagConfigurationSetting item) {
         String key = getFeatureSimpleName(item);
         Feature feature = new Feature(key, item);
         Map<Integer, FeatureFlagFilter> featureEnabledFor = feature.getEnabledFor();

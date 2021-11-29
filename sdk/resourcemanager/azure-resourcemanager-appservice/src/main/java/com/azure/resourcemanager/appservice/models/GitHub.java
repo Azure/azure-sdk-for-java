@@ -6,36 +6,33 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.fluent.models.GitHubProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The configuration settings of the GitHub provider. */
 @Fluent
-public final class GitHub extends ProxyOnlyResource {
+public final class GitHub {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GitHub.class);
 
     /*
-     * GitHub resource specific properties
+     * <code>false</code> if the GitHub provider should not be enabled despite
+     * the set registration; otherwise, <code>true</code>.
      */
-    @JsonProperty(value = "properties")
-    private GitHubProperties innerProperties;
+    @JsonProperty(value = "enabled")
+    private Boolean enabled;
 
-    /**
-     * Get the innerProperties property: GitHub resource specific properties.
-     *
-     * @return the innerProperties value.
+    /*
+     * The configuration settings of the app registration for the GitHub
+     * provider.
      */
-    private GitHubProperties innerProperties() {
-        return this.innerProperties;
-    }
+    @JsonProperty(value = "registration")
+    private ClientRegistration registration;
 
-    /** {@inheritDoc} */
-    @Override
-    public GitHub withKind(String kind) {
-        super.withKind(kind);
-        return this;
-    }
+    /*
+     * The configuration settings of the login flow.
+     */
+    @JsonProperty(value = "login")
+    private LoginScopes login;
 
     /**
      * Get the enabled property: &lt;code&gt;false&lt;/code&gt; if the GitHub provider should not be enabled despite the
@@ -44,7 +41,7 @@ public final class GitHub extends ProxyOnlyResource {
      * @return the enabled value.
      */
     public Boolean enabled() {
-        return this.innerProperties() == null ? null : this.innerProperties().enabled();
+        return this.enabled;
     }
 
     /**
@@ -55,10 +52,7 @@ public final class GitHub extends ProxyOnlyResource {
      * @return the GitHub object itself.
      */
     public GitHub withEnabled(Boolean enabled) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new GitHubProperties();
-        }
-        this.innerProperties().withEnabled(enabled);
+        this.enabled = enabled;
         return this;
     }
 
@@ -68,7 +62,7 @@ public final class GitHub extends ProxyOnlyResource {
      * @return the registration value.
      */
     public ClientRegistration registration() {
-        return this.innerProperties() == null ? null : this.innerProperties().registration();
+        return this.registration;
     }
 
     /**
@@ -78,10 +72,7 @@ public final class GitHub extends ProxyOnlyResource {
      * @return the GitHub object itself.
      */
     public GitHub withRegistration(ClientRegistration registration) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new GitHubProperties();
-        }
-        this.innerProperties().withRegistration(registration);
+        this.registration = registration;
         return this;
     }
 
@@ -91,7 +82,7 @@ public final class GitHub extends ProxyOnlyResource {
      * @return the login value.
      */
     public LoginScopes login() {
-        return this.innerProperties() == null ? null : this.innerProperties().login();
+        return this.login;
     }
 
     /**
@@ -101,10 +92,7 @@ public final class GitHub extends ProxyOnlyResource {
      * @return the GitHub object itself.
      */
     public GitHub withLogin(LoginScopes login) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new GitHubProperties();
-        }
-        this.innerProperties().withLogin(login);
+        this.login = login;
         return this;
     }
 
@@ -113,11 +101,12 @@ public final class GitHub extends ProxyOnlyResource {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (registration() != null) {
+            registration().validate();
+        }
+        if (login() != null) {
+            login().validate();
         }
     }
 }

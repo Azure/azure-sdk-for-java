@@ -35,7 +35,7 @@ public interface DscpConfigurationsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dSCP Configuration in a resource group.
+     * @return differentiated Services Code Point configuration for any given network interface.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -50,9 +50,9 @@ public interface DscpConfigurationsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dSCP Configuration in a resource group.
+     * @return differentiated Services Code Point configuration for any given network interface.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<DscpConfigurationInner>, DscpConfigurationInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String dscpConfigurationName, DscpConfigurationInner parameters);
 
@@ -65,9 +65,9 @@ public interface DscpConfigurationsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dSCP Configuration in a resource group.
+     * @return differentiated Services Code Point configuration for any given network interface.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DscpConfigurationInner>, DscpConfigurationInner> beginCreateOrUpdate(
         String resourceGroupName, String dscpConfigurationName, DscpConfigurationInner parameters);
 
@@ -81,9 +81,9 @@ public interface DscpConfigurationsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dSCP Configuration in a resource group.
+     * @return differentiated Services Code Point configuration for any given network interface.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DscpConfigurationInner>, DscpConfigurationInner> beginCreateOrUpdate(
         String resourceGroupName, String dscpConfigurationName, DscpConfigurationInner parameters, Context context);
 
@@ -96,7 +96,7 @@ public interface DscpConfigurationsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dSCP Configuration in a resource group.
+     * @return differentiated Services Code Point configuration for any given network interface.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DscpConfigurationInner> createOrUpdateAsync(
@@ -111,7 +111,7 @@ public interface DscpConfigurationsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dSCP Configuration in a resource group.
+     * @return differentiated Services Code Point configuration for any given network interface.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     DscpConfigurationInner createOrUpdate(
@@ -127,7 +127,7 @@ public interface DscpConfigurationsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dSCP Configuration in a resource group.
+     * @return differentiated Services Code Point configuration for any given network interface.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     DscpConfigurationInner createOrUpdate(
@@ -156,7 +156,7 @@ public interface DscpConfigurationsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String dscpConfigurationName);
 
     /**
@@ -169,7 +169,7 @@ public interface DscpConfigurationsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dscpConfigurationName);
 
     /**
@@ -183,7 +183,7 @@ public interface DscpConfigurationsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String dscpConfigurationName, Context context);
 

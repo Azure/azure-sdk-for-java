@@ -169,6 +169,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String dataMaskingPolicyName = "Default";
         final String accept = "application/json";
         return FluxUtil
@@ -177,7 +178,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
                     service
                         .createOrUpdate(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -243,13 +244,14 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String dataMaskingPolicyName = "Default";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -385,6 +387,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter dataMaskingRuleName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String dataMaskingPolicyName = "Default";
         final String accept = "application/json";
         return FluxUtil
@@ -393,7 +396,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
                     service
                         .get(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -451,13 +454,14 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter dataMaskingRuleName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String dataMaskingPolicyName = "Default";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -572,6 +576,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String dataMaskingPolicyName = "Default";
         final String accept = "application/json";
         return FluxUtil
@@ -580,7 +585,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
                     service
                         .listBySqlPool(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -632,13 +637,14 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String dataMaskingPolicyName = "Default";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listBySqlPool(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,

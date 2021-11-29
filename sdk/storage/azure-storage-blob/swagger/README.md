@@ -16,7 +16,7 @@ autorest --java --use:@autorest/java@4.0.x
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.BlobStorage/preview/2020-10-02/blob.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/storage/data-plane/Microsoft.BlobStorage/preview/2021-02-12/blob.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.blob
@@ -29,7 +29,7 @@ license-header: MICROSOFT_MIT_SMALL
 context-client-method-parameter: true
 optional-constant-as-enum: true
 models-subpackage: implementation.models
-custom-types: BlobAccessPolicy,AccessTier,AccountKind,ArchiveStatus,BlobHttpHeaders,BlobContainerItem,BlobContainerItemProperties,BlobContainerEncryptionScope,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,BlobPrefix,ClearRange,CopyStatusType,BlobCorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,BlobAnalyticsLogging,BlobMetrics,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,BlobRetentionPolicy,SequenceNumberActionType,BlobSignedIdentifier,SkuName,StaticWebsite,BlobErrorCode,BlobServiceStatistics,SyncCopyStatusType,UserDelegationKey,BlobQueryHeaders,GeoReplicationStatus,BlobImmutabilityPolicyMode
+custom-types: BlobAccessPolicy,AccessTier,AccountKind,ArchiveStatus,BlobHttpHeaders,BlobContainerItem,BlobContainerItemProperties,BlobContainerEncryptionScope,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,ClearRange,CopyStatusType,BlobCorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,BlobAnalyticsLogging,BlobMetrics,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,BlobRetentionPolicy,SequenceNumberActionType,BlobSignedIdentifier,SkuName,StaticWebsite,BlobErrorCode,BlobServiceStatistics,SyncCopyStatusType,UserDelegationKey,BlobQueryHeaders,GeoReplicationStatus,BlobImmutabilityPolicyMode
 custom-types-subpackage: models
 customization-jar-path: target/azure-storage-blob-customization-1.0.0-beta.1.jar
 customization-class: com.azure.storage.blob.customization.BlobStorageCustomization

@@ -262,6 +262,7 @@ function Update-java-CIConfig($pkgs, $ciRepo, $locationInDocRepo, $monikerId=$nu
 
 $PackageExclusions = @{
   "azure-core-experimental" = "Don't want to include an experimental package.";
+  "azure-sdk-bom" = "Don't want to include the sdk bom.";
 }
 
 # Validates if the package will succeed in the CI build by validating the
@@ -461,11 +462,11 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
   $remainingPackages = @()
   if ($Mode -eq 'preview') {
     $remainingPackages = $DocsMetadata.Where({
-      $_.VersionPreview.Trim() -and !$outputPackagesHash.ContainsKey("$($package.packageGroupId):$($package.packageArtifactId)")
+      $_.VersionPreview.Trim() -and !$outputPackagesHash.ContainsKey("$($_.GroupId):$($_.Package)")
     })
   } else {
     $remainingPackages = $DocsMetadata.Where({
-      $_.VersionGA.Trim() -and !$outputPackagesHash.ContainsKey("$($package.packageGroupId):$($package.packageArtifactId)")
+      $_.VersionGA.Trim() -and !$outputPackagesHash.ContainsKey("$($_.GroupId):$($_.Package)")
     })
   }
 
@@ -487,7 +488,7 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
 
     Write-Host "Add new package from metadata: ${packageGroupId}:$packageName"
     $package = [ordered]@{
-      packageArtifactId = $packageArtifactId
+      packageArtifactId = $packageName
       packageGroupId = $packageGroupId
       packageVersion = $packageVersion
       packageDownloadUrl = "https://repo1.maven.org/maven2"
@@ -509,7 +510,7 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
 
   $outputJson = ConvertTo-Json $packageConfig -Depth 100
   Set-Content -Path $DocConfigFile -Value $outputJson
-  Write-Host "Onboarding configuration written to: $DocConfigFile"
+  Write-Host "Onboarding configuration $Mode written to: $DocConfigFile"
 }
 
 # function is used to filter packages to submit to API view tool
@@ -539,7 +540,7 @@ function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName)
   return $packages
 }
 
-function SetPackageVersion ($PackageName, $Version, $ServiceDirectory, $ReleaseDate, $BuildType = "client", $GroupId = "com.azure", $PackageProperties)
+function SetPackageVersion ($PackageName, $Version, $ServiceDirectory, $ReleaseDate, $ReplaceLatestEntryTitle=$true, $BuildType = "client", $GroupId = "com.azure", $PackageProperties)
 {
   if ($PackageProperties)
   {
@@ -562,20 +563,51 @@ function SetPackageVersion ($PackageName, $Version, $ServiceDirectory, $ReleaseD
   python "$EngDir/versioning/set_versions.py" --build-type $BuildType --new-version $Version --ai $PackageName --gi $GroupId
   python "$EngDir/versioning/update_versions.py" --update-type library --build-type $BuildType --sr
   & "$EngCommonScriptsDir/Update-ChangeLog.ps1" -Version $Version -ServiceDirectory $ServiceDirectory -PackageName $PackageName `
-  -Unreleased $False -ReplaceLatestEntryTitle $True -ReleaseDate $ReleaseDate
+  -Unreleased $False -ReplaceLatestEntryTitle $ReplaceLatestEntryTitle -ReleaseDate $ReleaseDate
 }
 
 function GetExistingPackageVersions ($PackageName, $GroupId=$null)
 {
   try {
     $Uri = 'https://search.maven.org/solrsearch/select?q=g:"' + $GroupId + '"+AND+a:"' + $PackageName +'"&core=gav&rows=20&wt=json'
-    $existingVersion = Invoke-RestMethod -Method GET -Uri $Uri
-    $existingVersion = $existingVersion.response.docs.v
-    [Array]::Reverse($existingVersion)
-    return $existingVersion
+    $response = (Invoke-RestMethod -Method GET -Uri $Uri).response
+    if($response.numFound -ne 0)
+    {
+      $existingVersion = $response.docs.v
+      if ($existingVersion.Count -gt 0) 
+      {
+        [Array]::Reverse($existingVersion)
+        return $existingVersion
+      }
+    }
+    return $null
   }
   catch {
-    LogError "Failed to retrieve package versions. `n$_"
+    LogError "Failed to retrieve package versions for ${PackageName}. $($_.Exception.Message)"
     return $null
+  }
+}
+
+function Get-java-DocsMsMetadataForPackage($PackageInfo) { 
+  $readmeName = $PackageInfo.Name.ToLower()
+  Write-Host "Docs.ms Readme name: $($readmeName)"
+
+  # Readme names (which are used in the URL) should not include redundant terms
+  # when viewed in URL form. For example: 
+  # https://review.docs.microsoft.com/en-us/java/api/overview/azure/storage-blob-readme
+  # Note how the end of the URL doesn't look like:
+  # ".../azure/azure-storage-blobs-readme" 
+
+  # This logic eliminates a preceeding "azure-" in the readme filename.
+  # "azure-storage-blobs" -> "storage-blobs"
+  if ($readmeName.StartsWith('azure-')) {
+    $readmeName = $readmeName.Substring(6)
+  }
+
+  New-Object PSObject -Property @{
+    DocsMsReadMeName = $readmeName
+    LatestReadMeLocation  = 'docs-ref-services/latest'
+    PreviewReadMeLocation = 'docs-ref-services/preview'
+    Suffix = ''
   }
 }

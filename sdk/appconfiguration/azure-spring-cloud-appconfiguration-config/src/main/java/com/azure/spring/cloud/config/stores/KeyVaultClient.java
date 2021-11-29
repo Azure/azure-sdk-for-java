@@ -5,7 +5,7 @@ package com.azure.spring.cloud.config.stores;
 import java.net.URI;
 import java.time.Duration;
 
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringUtils;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
@@ -21,7 +21,7 @@ import com.azure.spring.cloud.config.resource.AppConfigManagedIdentityProperties
 /**
  * Client for connecting to and getting secrets from a Key Vault
  */
-public class KeyVaultClient {
+public final class KeyVaultClient {
 
     private SecretAsyncClient secretClient;
 
@@ -63,7 +63,7 @@ public class KeyVaultClient {
         if (tokenCredential != null) {
             // User Provided Token Credential
             builder.credential(tokenCredential);
-        } else if (msiProps != null && StringUtils.isNotEmpty(msiProps.getClientId())) {
+        } else if (msiProps != null && StringUtils.hasText(msiProps.getClientId())) {
             // User Assigned Identity - Client ID through configuration file.
             builder.credential(new ManagedIdentityCredentialBuilder().clientId(msiProps.getClientId()).build());
         } else if (keyVaultSecretProvider != null) { // This is the Secret Resolver

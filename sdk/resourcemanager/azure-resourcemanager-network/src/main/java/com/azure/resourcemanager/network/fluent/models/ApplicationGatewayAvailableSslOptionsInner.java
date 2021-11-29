@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
@@ -18,35 +17,15 @@ import java.util.List;
 import java.util.Map;
 
 /** Response for ApplicationGatewayAvailableSslOptions API service call. */
-@JsonFlatten
 @Fluent
-public class ApplicationGatewayAvailableSslOptionsInner extends Resource {
+public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayAvailableSslOptionsInner.class);
 
     /*
-     * List of available Ssl predefined policy.
+     * Properties of the application gateway available SSL options.
      */
-    @JsonProperty(value = "properties.predefinedPolicies")
-    private List<SubResource> predefinedPolicies;
-
-    /*
-     * Name of the Ssl predefined policy applied by default to application
-     * gateway.
-     */
-    @JsonProperty(value = "properties.defaultPolicy")
-    private ApplicationGatewaySslPolicyName defaultPolicy;
-
-    /*
-     * List of available Ssl cipher suites.
-     */
-    @JsonProperty(value = "properties.availableCipherSuites")
-    private List<ApplicationGatewaySslCipherSuite> availableCipherSuites;
-
-    /*
-     * List of available Ssl protocols.
-     */
-    @JsonProperty(value = "properties.availableProtocols")
-    private List<ApplicationGatewaySslProtocol> availableProtocols;
+    @JsonProperty(value = "properties")
+    private ApplicationGatewayAvailableSslOptionsPropertiesFormat innerProperties;
 
     /*
      * Resource ID.
@@ -55,85 +34,12 @@ public class ApplicationGatewayAvailableSslOptionsInner extends Resource {
     private String id;
 
     /**
-     * Get the predefinedPolicies property: List of available Ssl predefined policy.
+     * Get the innerProperties property: Properties of the application gateway available SSL options.
      *
-     * @return the predefinedPolicies value.
+     * @return the innerProperties value.
      */
-    public List<SubResource> predefinedPolicies() {
-        return this.predefinedPolicies;
-    }
-
-    /**
-     * Set the predefinedPolicies property: List of available Ssl predefined policy.
-     *
-     * @param predefinedPolicies the predefinedPolicies value to set.
-     * @return the ApplicationGatewayAvailableSslOptionsInner object itself.
-     */
-    public ApplicationGatewayAvailableSslOptionsInner withPredefinedPolicies(List<SubResource> predefinedPolicies) {
-        this.predefinedPolicies = predefinedPolicies;
-        return this;
-    }
-
-    /**
-     * Get the defaultPolicy property: Name of the Ssl predefined policy applied by default to application gateway.
-     *
-     * @return the defaultPolicy value.
-     */
-    public ApplicationGatewaySslPolicyName defaultPolicy() {
-        return this.defaultPolicy;
-    }
-
-    /**
-     * Set the defaultPolicy property: Name of the Ssl predefined policy applied by default to application gateway.
-     *
-     * @param defaultPolicy the defaultPolicy value to set.
-     * @return the ApplicationGatewayAvailableSslOptionsInner object itself.
-     */
-    public ApplicationGatewayAvailableSslOptionsInner withDefaultPolicy(ApplicationGatewaySslPolicyName defaultPolicy) {
-        this.defaultPolicy = defaultPolicy;
-        return this;
-    }
-
-    /**
-     * Get the availableCipherSuites property: List of available Ssl cipher suites.
-     *
-     * @return the availableCipherSuites value.
-     */
-    public List<ApplicationGatewaySslCipherSuite> availableCipherSuites() {
-        return this.availableCipherSuites;
-    }
-
-    /**
-     * Set the availableCipherSuites property: List of available Ssl cipher suites.
-     *
-     * @param availableCipherSuites the availableCipherSuites value to set.
-     * @return the ApplicationGatewayAvailableSslOptionsInner object itself.
-     */
-    public ApplicationGatewayAvailableSslOptionsInner withAvailableCipherSuites(
-        List<ApplicationGatewaySslCipherSuite> availableCipherSuites) {
-        this.availableCipherSuites = availableCipherSuites;
-        return this;
-    }
-
-    /**
-     * Get the availableProtocols property: List of available Ssl protocols.
-     *
-     * @return the availableProtocols value.
-     */
-    public List<ApplicationGatewaySslProtocol> availableProtocols() {
-        return this.availableProtocols;
-    }
-
-    /**
-     * Set the availableProtocols property: List of available Ssl protocols.
-     *
-     * @param availableProtocols the availableProtocols value to set.
-     * @return the ApplicationGatewayAvailableSslOptionsInner object itself.
-     */
-    public ApplicationGatewayAvailableSslOptionsInner withAvailableProtocols(
-        List<ApplicationGatewaySslProtocol> availableProtocols) {
-        this.availableProtocols = availableProtocols;
-        return this;
+    private ApplicationGatewayAvailableSslOptionsPropertiesFormat innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -171,10 +77,107 @@ public class ApplicationGatewayAvailableSslOptionsInner extends Resource {
     }
 
     /**
+     * Get the predefinedPolicies property: List of available Ssl predefined policy.
+     *
+     * @return the predefinedPolicies value.
+     */
+    public List<SubResource> predefinedPolicies() {
+        return this.innerProperties() == null ? null : this.innerProperties().predefinedPolicies();
+    }
+
+    /**
+     * Set the predefinedPolicies property: List of available Ssl predefined policy.
+     *
+     * @param predefinedPolicies the predefinedPolicies value to set.
+     * @return the ApplicationGatewayAvailableSslOptionsInner object itself.
+     */
+    public ApplicationGatewayAvailableSslOptionsInner withPredefinedPolicies(List<SubResource> predefinedPolicies) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayAvailableSslOptionsPropertiesFormat();
+        }
+        this.innerProperties().withPredefinedPolicies(predefinedPolicies);
+        return this;
+    }
+
+    /**
+     * Get the defaultPolicy property: Name of the Ssl predefined policy applied by default to application gateway.
+     *
+     * @return the defaultPolicy value.
+     */
+    public ApplicationGatewaySslPolicyName defaultPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().defaultPolicy();
+    }
+
+    /**
+     * Set the defaultPolicy property: Name of the Ssl predefined policy applied by default to application gateway.
+     *
+     * @param defaultPolicy the defaultPolicy value to set.
+     * @return the ApplicationGatewayAvailableSslOptionsInner object itself.
+     */
+    public ApplicationGatewayAvailableSslOptionsInner withDefaultPolicy(ApplicationGatewaySslPolicyName defaultPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayAvailableSslOptionsPropertiesFormat();
+        }
+        this.innerProperties().withDefaultPolicy(defaultPolicy);
+        return this;
+    }
+
+    /**
+     * Get the availableCipherSuites property: List of available Ssl cipher suites.
+     *
+     * @return the availableCipherSuites value.
+     */
+    public List<ApplicationGatewaySslCipherSuite> availableCipherSuites() {
+        return this.innerProperties() == null ? null : this.innerProperties().availableCipherSuites();
+    }
+
+    /**
+     * Set the availableCipherSuites property: List of available Ssl cipher suites.
+     *
+     * @param availableCipherSuites the availableCipherSuites value to set.
+     * @return the ApplicationGatewayAvailableSslOptionsInner object itself.
+     */
+    public ApplicationGatewayAvailableSslOptionsInner withAvailableCipherSuites(
+        List<ApplicationGatewaySslCipherSuite> availableCipherSuites) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayAvailableSslOptionsPropertiesFormat();
+        }
+        this.innerProperties().withAvailableCipherSuites(availableCipherSuites);
+        return this;
+    }
+
+    /**
+     * Get the availableProtocols property: List of available Ssl protocols.
+     *
+     * @return the availableProtocols value.
+     */
+    public List<ApplicationGatewaySslProtocol> availableProtocols() {
+        return this.innerProperties() == null ? null : this.innerProperties().availableProtocols();
+    }
+
+    /**
+     * Set the availableProtocols property: List of available Ssl protocols.
+     *
+     * @param availableProtocols the availableProtocols value to set.
+     * @return the ApplicationGatewayAvailableSslOptionsInner object itself.
+     */
+    public ApplicationGatewayAvailableSslOptionsInner withAvailableProtocols(
+        List<ApplicationGatewaySslProtocol> availableProtocols) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayAvailableSslOptionsPropertiesFormat();
+        }
+        this.innerProperties().withAvailableProtocols(availableProtocols);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }
