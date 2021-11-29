@@ -139,7 +139,6 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -147,7 +146,7 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
                     service
                         .get(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             vaultName,
                             resourceGroupName,
                             this.client.getSubscriptionId(),
@@ -189,13 +188,12 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 vaultName,
                 resourceGroupName,
                 this.client.getSubscriptionId(),
@@ -296,7 +294,6 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -304,7 +301,7 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
                     service
                         .update(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             vaultName,
                             resourceGroupName,
                             this.client.getSubscriptionId(),
@@ -356,13 +353,12 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 vaultName,
                 resourceGroupName,
                 this.client.getSubscriptionId(),
@@ -472,7 +468,6 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -480,7 +475,7 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
                     service
                         .put(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             vaultName,
                             resourceGroupName,
                             this.client.getSubscriptionId(),
@@ -532,13 +527,12 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .put(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 vaultName,
                 resourceGroupName,
                 this.client.getSubscriptionId(),
