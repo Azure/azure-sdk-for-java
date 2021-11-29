@@ -1,6 +1,5 @@
 = Spring Cloud Azure Test cases Scenarios
 
-
 == Test blob health indicator returns the up state
 The Azure actuator starter should work well with storage blob indicator when using Azure storage blob starter, the storage blob status should be healthy.
 
@@ -263,3 +262,447 @@ Yes
 
 === Current use cases
 https://github.com/Azure/azure-sdk-for-java/blob/8c6650a298b51cefe559c470b8f818bfa53a8992/sdk/spring/azure-spring-boot-test-storage/src/test/java/com/azure/spring/test/storage/StorageWriteIT.java#39[testWriteFileStorage]
+
+== Use service bus jms starter to send and receive message through topic in standard pricing tier
+Use service bus jms starter dependency to send message to standard service bus topic, and receive the same message from the topic.
+
+=== Tags
+Service Bus, JMS, Topic, Non-premium
+
+=== Test Prerequisites
+Standard pricing Azure Service Bus topic exists.
+
+=== Steps
+* Add `azure-spring-boot-test-servicebus-jms` dependency. +
+* Configure the below combinations for standard service bus properties. +
+
+[source,properties]
+----
+spring.jms.servicebus.connection-string=${SPRING_JMS_STANDARD_SERVICEBUS_CONNECTION_STRING}
+spring.jms.servicebus.pricing-tier=standard
+spring.jms.servicebus.topic-client-id=${random.value}
+----
+
+* Send test message to topic. +
+
+=== Expected Result
+* The non-premium `ConnectionFactory` bean should be configured. +
+* Send the test message to standard service bus topic. +
+* Receive the same test message from standard service bus topic. +
+
+=== How Spring test such case?
+* Mock `ConnectionFactory`, `Connection`, etc. +
+
+link:https://github.com/moarychan/spring-framework/blob/d84ca2ba90d27a7c63d7b35a6259b5b9cf341118/spring-jms/src/test/java/org/springframework/jms/core/JmsTemplateTests.java#L311[testSendDefaultDestination] in spring-jms +
+
+link:https://github.com/moarychan/spring-framework/blob/d84ca2ba90d27a7c63d7b35a6259b5b9cf341118/spring-jms/src/test/java/org/springframework/jms/core/JmsTemplateTests.java#L459[testReceiveDestination] in spring-jms +
+
+=== Is UT enough?
+Yes
+
+=== Current use cases
+
+link:https://github.com/Azure/azure-sdk-for-java/blob/66986d7ebf015fc013b8be994de2e1b574b54386/sdk/spring/azure-spring-boot-test-servicebus-jms/src/test/java/com/azure/spring/sample/servicebus/jms/standard/StandardServiceBusJmsIT.java#L29[integrationTestTopic]
+
+== Use service bus jms starter to send and receive message through queue in standard pricing tier
+Use service bus jms starter dependency to send message to standard service bus queue, and receive the same message from the queue.
+
+=== Tags
+Service Bus, JMS, Queue, Non-premium
+
+=== Test Prerequisites
+Standard pricing Azure Service Bus queue exists.
+
+=== Steps
+* Add `azure-spring-boot-test-servicebus-jms` dependency. +
+* Configure the below combinations for standard service bus properties. +
+
+[source,properties]
+----
+spring.jms.servicebus.connection-string=${SPRING_JMS_STANDARD_SERVICEBUS_CONNECTION_STRING}
+spring.jms.servicebus.pricing-tier=standard
+spring.jms.servicebus.topic-client-id=${random.value}
+----
+* Send test message to the queue. +
+
+=== Expected Result
+* The non-premium `ConnectionFactory` bean should be configured. +
+* Send the test message to standard service bus queue. +
+* Receive the same test message from standard service bus queue. +
+
+=== How Spring test such case?
+Same with link:testcase-document.adoc#use-service-bus-jms-starter-to-send-and-receive-message-through-topic-in-standard-pricing-tier[Use service bus jms starter to send and receive message through topic in standard pricing tier]
+
+=== Is UT enough?
+Yes
+
+=== Current use cases
+
+link:https://github.com/Azure/azure-sdk-for-java/blob/66986d7ebf015fc013b8be994de2e1b574b54386/sdk/spring/azure-spring-boot-test-servicebus-jms/src/test/java/com/azure/spring/sample/servicebus/jms/standard/StandardServiceBusJmsIT.java#L21[integrationTestQueue]
+
+== Use service bus jms starter to send and receive message through topic in premium pricing tier
+Use service bus jms starter dependency to send message to premium service bus topic, and receive the same message from the topic.
+
+=== Tags
+Service Bus, JMS, Topic, Premium
+
+=== Test Prerequisites
+Premium pricing Azure Service Bus topic exists.
+
+=== Steps
+* Add `azure-spring-boot-test-servicebus-jms` dependency. +
+* Configure the below combinations for standard service bus properties. +
+
+[source,properties]
+----
+spring.jms.servicebus.connection-string=${SPRING_JMS_STANDARD_SERVICEBUS_CONNECTION_STRING}
+spring.jms.servicebus.pricing-tier=premium
+spring.jms.servicebus.topic-client-id=${random.value}
+----
+
+* Send test message to topic. +
+
+=== Expected Result
+* The premium `ConnectionFactory` bean should be configured. +
+* Send the test message to premium service bus topic. +
+* Receive the same test message from premium service bus topic. +
+
+=== How Spring test such case?
+Same with link:testcase-document.adoc#use-service-bus-jms-starter-to-send-and-receive-message-through-topic-in-standard-pricing-tier[Use service bus jms starter to send and receive message through topic in standard pricing tier]
+
+=== Is UT enough?
+Yes
+
+=== Current use cases
+link:https://github.com/Azure/azure-sdk-for-java/blob/66986d7ebf015fc013b8be994de2e1b574b54386/sdk/spring/azure-spring-boot-test-servicebus-jms/src/test/java/com/azure/spring/sample/servicebus/jms/premium/PremiumServiceBusJmsIT.java[integrationTestQueue, integrationTestTopic]
+
+== Use service bus jms starter to send and receive message through queue in premium pricing tier
+Use service bus jms starter dependency to send message to premium service bus queue, and receive the same message from the queue.
+
+=== Tags
+Service Bus, JMS, Queue
+
+=== Test Prerequisites
+Premium pricing Azure Service Bus queue exists.
+
+=== Steps
+* Add `azure-spring-boot-test-servicebus-jms` dependency. +
+* Configure the below combinations for standard service bus properties. +
+
+[source,properties]
+----
+spring.jms.servicebus.connection-string=${SPRING_JMS_STANDARD_SERVICEBUS_CONNECTION_STRING}
+spring.jms.servicebus.pricing-tier=premium
+spring.jms.servicebus.topic-client-id=${random.value}
+----
+
+* Send test message to queue. +
+
+=== Expected Result
+* The premium `ConnectionFactory` bean should be configured. +
+* Send the test message to premium service bus queue. +
+* Receive the same test message from premium service bus queue. +
+
+=== How Spring test such case?
+Same with link:testcase-document.adoc#use-service-bus-jms-starter-to-send-and-receive-message-through-topic-in-standard-pricing-tier[Use service bus jms starter to send and receive message through topic in standard pricing tier]
+
+=== Is UT enough?
+Yes
+
+=== Current use cases
+link:https://github.com/Azure/azure-sdk-for-java/blob/66986d7ebf015fc013b8be994de2e1b574b54386/sdk/spring/azure-spring-boot-test-servicebus-jms/src/test/java/com/azure/spring/sample/servicebus/jms/premium/PremiumServiceBusJmsIT.java[integrationTestQueue, integrationTestTopic]
+
+== Test cosmos health indicator returns the up state
+The Azure actuator starter should work well with cosmos indicator when using Spring Cloud Azure Cosmos Starter, the Cosmos status should be healthy.
+
+=== Tags
+Cosmos, Indicator
+
+=== Test Prerequisites
+* Azure Cosmos instance exists. +
+
+=== Steps
+* Add `spring-cloud-azure-starter-cosmos` and `spring-cloud-azure-starter-actuator` dependencies. +
+* Configure the below combinations for Cosmos properties. +
+
+[source, yaml]
+----
+spring:
+  cloud:
+    azure:
+      cosmos:
+        endpoint: xxx
+        key: xxx
+        database: xxx
+        populateQueryMetrics: true
+management:
+  endpoint:
+    health:
+      show-details: always
+----
+
+=== Expected Result
+* The Cosmos health indicator bean should be configured. +
+* The up status should be returned from the Cosmos health endpoint. +
+
+=== How Spring test such case?
+link:testcase-document.adoc#test-blob-health-indicator-returns-the-up-state[Test blob health indicator returns the up state]
+
+=== Is UT enough?
+Yes
+
+=== Current use cases
+link:https://github.com/Azure/azure-sdk-for-java/blob/996691145f2ade80b5fea71813c4a22e7ef18036/sdk/spring/azure-spring-boot-test-cosmos/src/test/java/com/azure/test/cosmos/CosmosActuatorIT.java#L19[testCosmosSpringBootActuatorHealth]
+
+== Test cosmos health indicator returns the down state
+The Azure actuator starter should work well with Cosmos indicator when using Spring Cloud Azure Cosmos Starter, the Cosmos status should be down when Cosmos service client does not respond data normally.
+
+=== Tags
+Cosmos, Indicator
+
+=== Test Prerequisites
+* Azure Cosmos instance exists. +
+
+=== Steps
+* Add `spring-cloud-azure-starter-cosmos` and `spring-cloud-azure-starter-actuator` dependencies. +
+* Configure the below combinations for Cosmos properties. +
+
+[source, yaml]
+----
+spring:
+  cloud:
+    azure:
+      cosmos:
+        endpoint: xxx
+        key: xxx
+        database: xxx
+        populateQueryMetrics: true
+management:
+  endpoint:
+    health:
+      show-details: always
+----
+
+* Request the Cosmos health endpoint. +
+
+=== Expected Result
+* The Cosmos health indicator bean should be configured. +
+* The application should start up normally. +
+* The down status should be returned from the Cosmos health endpoint. +
+
+=== How Spring test such case?
+link:testcase-document.adoc#test-blob-health-indicator-returns-the-down-state[Test blob health indicator returns the down state]
+
+=== Is UT enough?
+Yes
+
+=== Current use cases
+N/A
+
+== Test Spring Cloud Azure Cosmos database operation
+Use Spring Cloud Azure Cosmos Starter dependency, configure minimal properties to enable Cosmos auto-configuration, and operate the database data normally.
+
+=== Tags
+Cosmos, Data Plane
+
+=== Test Prerequisites
+* Azure Cosmos instance exists. +
+
+=== Steps
+* Add `spring-cloud-azure-starter-data-cosmos` and `spring-cloud-azure-starter-actuator` dependencies. +
+* Configure the below combinations for Cosmos properties. +
+
+[source, yaml]
+----
+spring:
+  cloud:
+    azure:
+      cosmos:
+        endpoint: xxx
+        key: xxx
+        database: xxx
+        populateQueryMetrics: true
+management:
+  endpoint:
+    health:
+      show-details: always
+----
+
+* Do delete, insert, query action against the database. +
+
+=== Expected Result
+* The Cosmos auto-configuration should be configured. +
+* The Spring Data Cosmos auto-configuration should be configured. +
+* The application should start up normally. +
+* The data should change with the operation of the database. +
+
+=== How Spring test such case?
+The following 2 aspects can complete the Spring Data Cosmos test: +
+
+* Verify Spring Data Cosmos auto-configuration beans +
+link:https://github.com/moarychan/spring-boot/blob/ef2bcdd3ed9d92b110e86531b7aef94e89321c67/spring-boot-project/spring-boot-autoconfigure/src/test/java/org/springframework/boot/autoconfigure/data/mongo/MongoDataAutoConfigurationTests.java#L68[templateExists] in srping-boot +
+
+* Verify repositories auto-configuration beans +
+link:https://github.com/moarychan/spring-boot/blob/c4daff72250a8f301ee602f4fbff558abdbc9629/spring-boot-project/spring-boot-autoconfigure/src/test/java/org/springframework/boot/autoconfigure/data/mongo/MongoRepositoriesAutoConfigurationTests.java#L53[testDefaultRepositoryConfiguration] in spring-boot +
+
+=== Is UT enough?
+Yes
+
+=== Current use cases
+Compared to the Mongo in spring-boot-autoconfigure module, perphaps more scenarios can be added. +
+link:https://github.com/Azure/azure-sdk-for-java/blob/15dda6cdc3219e9128a4d5207cb66d891fd1baf8/sdk/spring/spring-cloud-azure-autoconfigure/src/test/java/com/azure/spring/cloud/autoconfigure/data/cosmos/CosmosDataAutoConfigurationTest.java#L14[CosmosDataAutoConfigurationTest] +
+link:https://github.com/Azure/azure-sdk-for-java/blob/15dda6cdc3219e9128a4d5207cb66d891fd1baf8/sdk/spring/spring-cloud-azure-autoconfigure/src/test/java/com/azure/spring/cloud/autoconfigure/data/cosmos/CosmosRepositoriesAutoConfigurationUnitTest.java#L32[CosmosRepositoriesAutoConfigurationUnitTest] +
+
+== Test Keyvault health indicator returns the up state
+The Azure actuator starter should work well with Key Vault indicator when using Spring Cloud Azure Keyvault Secert Starter, the Cosmos status should be healthy.
+
+=== Tags
+Keyvault, Indicator
+
+=== Test Prerequisites
+* Azure Keyvault instance exists. +
+
+=== Steps
+* Add `spring-cloud-azure-starter-keyvault-secrets` and `spring-cloud-azure-starter-actuator` dependencies. +
+* Configure the below combinations for Keyvault properties. +
+
+[source, yaml]
+----
+spring:
+  cloud:
+    azure:
+      keyvault:
+        secret:
+          property-source-enabled: true
+          endpoint: xxx
+          credential:
+            client-id: xxx
+            client-secret: xxx
+          profile:
+            tenant-id: xxx
+management:
+  endpoint:
+    health:
+      show-details: always
+----
+
+=== Expected Result
+* The Keyvault health indicator bean should be configured. +
+* The up status should be returned from the Keyvault health endpoint. +
+
+=== How Spring test such case?
+link:testcase-document.adoc#test-blob-health-indicator-returns-the-up-state[Test blob health indicator returns the up state]
+
+=== Is UT enough?
+Yes
+
+=== Current use cases
+link:https://github.com/Azure/azure-sdk-for-java/blob/e366d3c3d152761e0fb922b438e2582e77f7ec62/sdk/spring/azure-spring-boot-test-keyvault/src/test/java/com/azure/spring/test/keyvault/KeyVaultActuatorIT.java#L28[testSpringBootActuatorHealth]
+
+== Test Keyvault health indicator returns the down state
+The Azure actuator starter should work well with Keyvault indicator when using Spring Cloud Azure Cosmos Starter, the Keyvault status should be down when Keyvault service client does not respond data normally.
+
+=== Tags
+Keyvault, Indicator
+
+=== Test Prerequisites
+* Azure Keyvault instance exists. +
+
+=== Steps
+* Add `spring-cloud-azure-starter-keyvault-secrets` and `spring-cloud-azure-starter-actuator` dependencies. +
+* Configure the below combinations for Keyvault properties. +
+
+[source, yaml]
+----
+spring:
+  cloud:
+    azure:
+      keyvault:
+        secret:
+          property-source-enabled: true
+          endpoint: xxx
+          credential:
+            client-id: xxx
+            client-secret: xxx
+          profile:
+            tenant-id: xxx
+management:
+  endpoint:
+    health:
+      show-details: always
+    web:
+      exposure:
+        include: *
+        exclude: env,beans
+----
+
+* Request the Keyvault health endpoint. +
+
+=== Expected Result
+* The Keyvault health indicator bean should be configured. +
+* The application should start up normally. +
+* The down status should be returned from the Keyvault health endpoint. +
+
+=== How Spring test such case?
+link:testcase-document.adoc#test-blob-health-indicator-returns-the-down-state[Test blob health indicator returns the down state]
+
+=== Is UT enough?
+Yes
+
+=== Current use cases
+N/A
+
+== Test the default Azure Keyvault property source name that exists
+Use `spring-cloud-azure-starter-keyvault-secrets` dependency to start the application, then the default property source name `azurekv` should be in Spring environment.
+
+=== Tags
+Keyvault, Indicator, Env
+
+=== Test Prerequisites
+* Azure Keyvault instance exists. +
+
+=== Steps
+* Add `spring-cloud-azure-starter-keyvault-secrets` and `spring-cloud-azure-starter-actuator` dependencies. +
+* Configure the below combinations for Keyvault properties. +
+
+[source, yaml]
+----
+spring:
+  cloud:
+    azure:
+      keyvault:
+        secret:
+          property-source-enabled: true
+          endpoint: xxx
+          credential:
+            client-id: xxx
+            client-secret: xxx
+          profile:
+            tenant-id: xxx
+management:
+  endpoint:
+    health:
+      show-details: always
+    web:
+      exposure:
+        include: *
+        exclude: env,beans
+----
+
+* Request the actuator env endpoint. +
+
+=== Expected Result
+* The Keyvault health indicator bean should be configured. +
+* The application should start up normally. +
+* The `true` should be returned when checking the property source name is in the Spring environment. +
+
+=== How Spring test such case?
+link:https://github.com/moarychan/spring-boot/blob/52ecc1e0dd31738472be7ac120017c7a68ae12f8/spring-boot-project/spring-boot-actuator-autoconfigure/src/test/java/org/springframework/boot/actuate/autoconfigure/env/EnvironmentEndpointAutoConfigurationTests.java#L49[runShouldHaveEndpointBean]
+
+=== Is UT enough?
+Yes
+
+=== Current use cases
+link:https://github.com/Azure/azure-sdk-for-java/blob/e366d3c3d152761e0fb922b438e2582e77f7ec62/sdk/spring/azure-spring-boot-test-keyvault/src/test/java/com/azure/spring/test/keyvault/KeyVaultActuatorIT.java#L53[testSpringBootActuatorEnv]
+
+
