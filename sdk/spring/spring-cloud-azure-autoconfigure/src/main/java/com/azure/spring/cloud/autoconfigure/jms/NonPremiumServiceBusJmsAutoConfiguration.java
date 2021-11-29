@@ -41,6 +41,7 @@ public class NonPremiumServiceBusJmsAutoConfiguration extends AbstractServiceBus
     /**
      * Declare JMS ConnectionFactory bean.
      *
+     * @param serviceBusJMSProperties serviceBusJMSProperties name
      * @return JMS ConnectionFactory bean
      */
     @Bean

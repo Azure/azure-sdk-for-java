@@ -71,6 +71,8 @@ public class StorageBlobResource extends AzureStorageResource {
      * @param blobServiceClient the BlobServiceClient
      * @param location the location
      * @param autoCreateFiles whether to automatically create files
+     * @param snapshot the snapshot name
+     * @param versionId the version id
      * @param contentType the content type
      */
     public StorageBlobResource(BlobServiceClient blobServiceClient, String location, Boolean autoCreateFiles,
