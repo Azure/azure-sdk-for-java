@@ -594,7 +594,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
             deleteWithResponseAsync(locationName, managedInstanceName, databaseName, backupName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1809,7 +1809,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
                 resourceGroupName, locationName, managedInstanceName, databaseName, backupName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

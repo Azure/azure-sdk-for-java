@@ -485,7 +485,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         return this
             .client
             .<BgpConnectionInner, BgpConnectionInner>getLroResult(
-                mono, this.client.getHttpPipeline(), BgpConnectionInner.class, BgpConnectionInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), BgpConnectionInner.class, BgpConnectionInner.class, this.client.getContext());
     }
 
     /**
@@ -769,7 +769,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             deleteWithResponseAsync(resourceGroupName, virtualHubName, connectionName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1204,7 +1204,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         return this
             .client
             .<PeerRouteListInner, PeerRouteListInner>getLroResult(
-                mono, this.client.getHttpPipeline(), PeerRouteListInner.class, PeerRouteListInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), PeerRouteListInner.class, PeerRouteListInner.class, this.client.getContext());
     }
 
     /**
@@ -1464,7 +1464,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         return this
             .client
             .<PeerRouteListInner, PeerRouteListInner>getLroResult(
-                mono, this.client.getHttpPipeline(), PeerRouteListInner.class, PeerRouteListInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), PeerRouteListInner.class, PeerRouteListInner.class, this.client.getContext());
     }
 
     /**

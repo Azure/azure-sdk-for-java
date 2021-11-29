@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.catalog;
 
 import com.azure.analytics.purview.catalog.implementation.GlossariesImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -20,13 +21,14 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewCatalogClient type. */
 @ServiceClient(builder = PurviewCatalogClientBuilder.class, isAsync = true)
 public final class GlossaryAsyncClient {
-    private final GlossariesImpl serviceClient;
+    @Generated private final GlossariesImpl serviceClient;
 
     /**
      * Initializes an instance of Glossaries client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     GlossaryAsyncClient(GlossariesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -107,10 +109,10 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return all glossaries registered with Atlas.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listGlossariesWithResponse(RequestOptions requestOptions) {
         return this.serviceClient.listGlossariesWithResponseAsync(requestOptions);
@@ -240,10 +242,10 @@ public final class GlossaryAsyncClient {
      * @param atlasGlossary Glossary definition, terms &amp;amp; categories can be anchored to a glossary. Using the
      *     anchor attribute when creating the Term/Category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossary.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryWithResponse(
             BinaryData atlasGlossary, RequestOptions requestOptions) {
@@ -385,10 +387,10 @@ public final class GlossaryAsyncClient {
      *
      * @param glossaryCategory An array of glossary category definitions to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return an array of glossary category created successfully in bulk.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryCategoriesWithResponse(
             BinaryData glossaryCategory, RequestOptions requestOptions) {
@@ -527,10 +529,10 @@ public final class GlossaryAsyncClient {
      * @param glossaryCategory The glossary category definition. A category must be anchored to a Glossary when
      *     creating. Optionally, terms belonging to the category and the hierarchy can also be defined during creation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossaryCategory.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryCategoryWithResponse(
             BinaryData glossaryCategory, RequestOptions requestOptions) {
@@ -605,10 +607,10 @@ public final class GlossaryAsyncClient {
      *
      * @param categoryGuid The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return specific glossary category by its GUID.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getGlossaryCategoryWithResponse(
             String categoryGuid, RequestOptions requestOptions) {
@@ -747,10 +749,10 @@ public final class GlossaryAsyncClient {
      * @param categoryGuid The globally unique identifier of the category.
      * @param glossaryCategory The glossary category to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossaryCategory.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateGlossaryCategoryWithResponse(
             String categoryGuid, BinaryData glossaryCategory, RequestOptions requestOptions) {
@@ -763,10 +765,10 @@ public final class GlossaryAsyncClient {
      *
      * @param categoryGuid The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteGlossaryCategoryWithResponse(String categoryGuid, RequestOptions requestOptions) {
         return this.serviceClient.deleteGlossaryCategoryWithResponseAsync(categoryGuid, requestOptions);
@@ -850,10 +852,10 @@ public final class GlossaryAsyncClient {
      * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute values for
      *     partial update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossaryCategory.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateGlossaryCategoryWithResponse(
             String categoryGuid, BinaryData partialUpdates, RequestOptions requestOptions) {
@@ -893,10 +895,10 @@ public final class GlossaryAsyncClient {
      *
      * @param categoryGuid The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return all related categories (parent and children).
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listRelatedCategoriesWithResponse(
             String categoryGuid, RequestOptions requestOptions) {
@@ -935,10 +937,10 @@ public final class GlossaryAsyncClient {
      *
      * @param categoryGuid The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return all terms associated with the specific category.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listCategoryTermsWithResponse(
             String categoryGuid, RequestOptions requestOptions) {
@@ -1261,10 +1263,10 @@ public final class GlossaryAsyncClient {
      * @param glossaryTerm The glossary term definition. A term must be anchored to a Glossary at the time of creation.
      *     Optionally it can be categorized as well.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossaryTerm.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryTermWithResponse(
             BinaryData glossaryTerm, RequestOptions requestOptions) {
@@ -1435,10 +1437,10 @@ public final class GlossaryAsyncClient {
      *
      * @param termGuid The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return a specific glossary term by its GUID.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getGlossaryTermWithResponse(String termGuid, RequestOptions requestOptions) {
         return this.serviceClient.getGlossaryTermWithResponseAsync(termGuid, requestOptions);
@@ -1752,10 +1754,10 @@ public final class GlossaryAsyncClient {
      * @param termGuid The globally unique identifier for glossary term.
      * @param glossaryTerm The glossary term to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossaryTerm.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateGlossaryTermWithResponse(
             String termGuid, BinaryData glossaryTerm, RequestOptions requestOptions) {
@@ -1767,10 +1769,10 @@ public final class GlossaryAsyncClient {
      *
      * @param termGuid The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteGlossaryTermWithResponse(String termGuid, RequestOptions requestOptions) {
         return this.serviceClient.deleteGlossaryTermWithResponseAsync(termGuid, requestOptions);
@@ -1950,10 +1952,10 @@ public final class GlossaryAsyncClient {
      * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute values to be
      *     updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossaryTerm.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateGlossaryTermWithResponse(
             String termGuid, BinaryData partialUpdates, RequestOptions requestOptions) {
@@ -2279,10 +2281,10 @@ public final class GlossaryAsyncClient {
      *
      * @param glossaryTerm An array of glossary term definitions to be created in bulk.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return if bulk glossary terms creation was successful.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryTermsWithResponse(
             BinaryData glossaryTerm, RequestOptions requestOptions) {
@@ -2330,10 +2332,10 @@ public final class GlossaryAsyncClient {
      *
      * @param termGuid The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return all related objects assigned with the specified term.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEntitiesAssignedWithTermWithResponse(
             String termGuid, RequestOptions requestOptions) {
@@ -2372,10 +2374,10 @@ public final class GlossaryAsyncClient {
      * @param termGuid The globally unique identifier for glossary term.
      * @param relatedObjectIds An array of related object IDs to which the term has to be associated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> assignTermToEntitiesWithResponse(
             String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions) {
@@ -2414,10 +2416,10 @@ public final class GlossaryAsyncClient {
      * @param termGuid The globally unique identifier for glossary term.
      * @param relatedObjectIds An array of related object IDs from which the term has to be dissociated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeTermAssignmentFromEntitiesWithResponse(
             String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions) {
@@ -2457,10 +2459,10 @@ public final class GlossaryAsyncClient {
      * @param termGuid The globally unique identifier for glossary term.
      * @param relatedObjectIds An array of related object IDs from which the term has to be dissociated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTermAssignmentFromEntitiesWithResponse(
             String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions) {
@@ -2503,10 +2505,10 @@ public final class GlossaryAsyncClient {
      *
      * @param termGuid The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return all related terms for a specific term by its GUID.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listRelatedTermsWithResponse(String termGuid, RequestOptions requestOptions) {
         return this.serviceClient.listRelatedTermsWithResponseAsync(termGuid, requestOptions);
@@ -2576,10 +2578,10 @@ public final class GlossaryAsyncClient {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return a specific Glossary by its GUID.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getGlossaryWithResponse(String glossaryGuid, RequestOptions requestOptions) {
         return this.serviceClient.getGlossaryWithResponseAsync(glossaryGuid, requestOptions);
@@ -2709,10 +2711,10 @@ public final class GlossaryAsyncClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param updatedGlossary The glossary definition to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossary.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateGlossaryWithResponse(
             String glossaryGuid, BinaryData updatedGlossary, RequestOptions requestOptions) {
@@ -2724,10 +2726,10 @@ public final class GlossaryAsyncClient {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteGlossaryWithResponse(String glossaryGuid, RequestOptions requestOptions) {
         return this.serviceClient.deleteGlossaryWithResponseAsync(glossaryGuid, requestOptions);
@@ -2813,10 +2815,10 @@ public final class GlossaryAsyncClient {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the categories belonging to a specific glossary.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listGlossaryCategoriesWithResponse(
             String glossaryGuid, RequestOptions requestOptions) {
@@ -2852,10 +2854,10 @@ public final class GlossaryAsyncClient {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the category headers belonging to a specific glossary.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listGlossaryCategoriesHeadersWithResponse(
             String glossaryGuid, RequestOptions requestOptions) {
@@ -3074,10 +3076,10 @@ public final class GlossaryAsyncClient {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return a specific glossary with detailed information.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDetailedGlossaryWithResponse(
             String glossaryGuid, RequestOptions requestOptions) {
@@ -3165,10 +3167,10 @@ public final class GlossaryAsyncClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute values.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossary.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateGlossaryWithResponse(
             String glossaryGuid, BinaryData partialUpdates, RequestOptions requestOptions) {
@@ -3344,10 +3346,10 @@ public final class GlossaryAsyncClient {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return terms belonging to a specific glossary.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listGlossaryTermsWithResponse(
             String glossaryGuid, RequestOptions requestOptions) {
@@ -3386,10 +3388,10 @@ public final class GlossaryAsyncClient {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return term headers belonging to a specific glossary.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listGlossaryTermHeadersWithResponse(
             String glossaryGuid, RequestOptions requestOptions) {
@@ -3444,10 +3446,10 @@ public final class GlossaryAsyncClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param file The csv file to import glossary terms from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return status of import csv operation.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> importGlossaryTermsViaCsvWithResponse(
             String glossaryGuid, BinaryData file, RequestOptions requestOptions) {
@@ -3502,10 +3504,10 @@ public final class GlossaryAsyncClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param file The csv file to import glossary terms from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return status of import csv operation.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginImportGlossaryTermsViaCsv(
             String glossaryGuid, BinaryData file, RequestOptions requestOptions) {
@@ -3560,10 +3562,10 @@ public final class GlossaryAsyncClient {
      * @param glossaryName The name of the glossary.
      * @param file The csv file to import glossary terms from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return status of import csv operation.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> importGlossaryTermsViaCsvByGlossaryNameWithResponse(
             String glossaryName, BinaryData file, RequestOptions requestOptions) {
@@ -3619,10 +3621,10 @@ public final class GlossaryAsyncClient {
      * @param glossaryName The name of the glossary.
      * @param file The csv file to import glossary terms from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return status of import csv operation.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginImportGlossaryTermsViaCsvByGlossaryName(
             String glossaryName, BinaryData file, RequestOptions requestOptions) {
@@ -3661,10 +3663,10 @@ public final class GlossaryAsyncClient {
      *
      * @param operationGuid The globally unique identifier for async operation/job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the status of import csv operation.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getImportCsvOperationStatusWithResponse(
             String operationGuid, RequestOptions requestOptions) {
@@ -3700,10 +3702,10 @@ public final class GlossaryAsyncClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param termGuids An array of term guids.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> exportGlossaryTermsAsCsvWithResponse(
             String glossaryGuid, BinaryData termGuids, RequestOptions requestOptions) {
@@ -3879,10 +3881,10 @@ public final class GlossaryAsyncClient {
      *
      * @param glossaryName The name of the glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return terms by glossary name.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listTermsByGlossaryNameWithResponse(
             String glossaryName, RequestOptions requestOptions) {

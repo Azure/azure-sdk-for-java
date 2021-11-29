@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.security.attestation;
 
-import com.azure.core.http.HttpClient;
 import com.azure.core.util.BinaryData;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.attestation.models.AttestationData;
 import com.azure.security.attestation.models.AttestationDataInterpretation;
 import com.azure.security.attestation.models.AttestationOptions;
@@ -29,10 +29,11 @@ class ReadmeSamples {
         BinaryData decodedRuntimeData = BinaryData.fromBytes(SampleCollateral.getRunTimeData());
         BinaryData decodedOpenEnclaveReport = BinaryData.fromBytes(SampleCollateral.getOpenEnclaveReport());
 
+        // BEGIN: readme-sample-attestSgxEnclave
         AttestationOptions options = new AttestationOptions(decodedOpenEnclaveReport)
             .setRunTimeData(new AttestationData(decodedRuntimeData, AttestationDataInterpretation.BINARY));
         AttestationResult result = client.attestOpenEnclave(options);
-
+        // END: readme-sample-attestSgxEnclave
         assertNotNull(result.getIssuer());
 
         assertEquals(endpoint, result.getIssuer());
@@ -41,10 +42,11 @@ class ReadmeSamples {
         System.out.println("Attest OpenEnclave completed. Issuer: " + issuer);
     }
 
-    static void getAttestationPolicy(HttpClient httpClient, String clientUri) {
-        AttestationAdministrationClientBuilder attestationBuilder = new AttestationAdministrationClientBuilder();
-        attestationBuilder.httpClient(httpClient);
-        attestationBuilder.endpoint(clientUri);
+    static void getAttestationPolicy() {
+        String endpoint = System.getenv("ATTESTATION_AAD_URL");
+        AttestationAdministrationClientBuilder attestationBuilder = new AttestationAdministrationClientBuilder()
+            .endpoint(endpoint)
+            .credential(new DefaultAzureCredentialBuilder().build());
 
         AttestationAdministrationClient client = attestationBuilder.buildClient();
 
@@ -59,6 +61,7 @@ class ReadmeSamples {
             .endpoint(endpoint)
             .buildClient();
 
+        // BEGIN: readme-sample-getSigningCertificates
         List<AttestationSigner> certs = client.listAttestationSigners();
 
         certs.forEach(cert -> {
@@ -73,6 +76,14 @@ class ReadmeSamples {
                 System.out.println("        Cert Issuer: " + chainElement.getIssuerDN().getName());
             });
         });
+        // END: readme-sample-getSigningCertificates
     }
+
+    static void executeSamples() {
+        signingCertificatesGet();
+        getAttestationPolicy();
+        testAttestSgxEnclave();
+    }
+
 
 }

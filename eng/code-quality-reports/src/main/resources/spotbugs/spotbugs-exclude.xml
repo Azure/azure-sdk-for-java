@@ -2404,6 +2404,10 @@
     <Class name="com.azure.core.util.logging.ClientLogger"/>
     <Bug pattern="CRLF_INJECTION_LOGS"/>
   </Match>
+  <Match>
+    <Class name="com.azure.core.util.logging.LoggingEventBuilder"/>
+    <Bug pattern="CRLF_INJECTION_LOGS"/>
+  </Match>
 
   <!-- The predictable randomness doesn't expose any crucial detail in this case. -->
   <Match>

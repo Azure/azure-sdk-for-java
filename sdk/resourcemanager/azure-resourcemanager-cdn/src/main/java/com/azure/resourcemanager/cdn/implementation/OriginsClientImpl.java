@@ -691,7 +691,7 @@ public final class OriginsClientImpl implements OriginsClient {
         return this
             .client
             .<OriginInner, OriginInner>getLroResult(
-                mono, this.client.getHttpPipeline(), OriginInner.class, OriginInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), OriginInner.class, OriginInner.class, this.client.getContext());
     }
 
     /**
@@ -1028,7 +1028,7 @@ public final class OriginsClientImpl implements OriginsClient {
         return this
             .client
             .<OriginInner, OriginInner>getLroResult(
-                mono, this.client.getHttpPipeline(), OriginInner.class, OriginInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), OriginInner.class, OriginInner.class, this.client.getContext());
     }
 
     /**
@@ -1349,7 +1349,7 @@ public final class OriginsClientImpl implements OriginsClient {
             deleteWithResponseAsync(resourceGroupName, profileName, endpointName, originName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

@@ -48,12 +48,6 @@ public final class FlowletTypeProperties {
     @JsonProperty(value = "scriptLines")
     private List<String> scriptLines;
 
-    /*
-     * Any object
-     */
-    @JsonProperty(value = "additionalProperties")
-    private Object additionalProperties;
-
     /**
      * Get the sources property: List of sources in Flowlet.
      *
@@ -151,26 +145,6 @@ public final class FlowletTypeProperties {
      */
     public FlowletTypeProperties withScriptLines(List<String> scriptLines) {
         this.scriptLines = scriptLines;
-        return this;
-    }
-
-    /**
-     * Get the additionalProperties property: Any object.
-     *
-     * @return the additionalProperties value.
-     */
-    public Object additionalProperties() {
-        return this.additionalProperties;
-    }
-
-    /**
-     * Set the additionalProperties property: Any object.
-     *
-     * @param additionalProperties the additionalProperties value to set.
-     * @return the FlowletTypeProperties object itself.
-     */
-    public FlowletTypeProperties withAdditionalProperties(Object additionalProperties) {
-        this.additionalProperties = additionalProperties;
         return this;
     }
 

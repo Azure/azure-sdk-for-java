@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.catalog;
 
 import com.azure.analytics.purview.catalog.implementation.CollectionsImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -12,18 +13,18 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Context;
 
 /** Initializes a new instance of the synchronous PurviewCatalogClient type. */
 @ServiceClient(builder = PurviewCatalogClientBuilder.class)
 public final class CollectionClient {
-    private final CollectionsImpl serviceClient;
+    @Generated private final CollectionsImpl serviceClient;
 
     /**
      * Initializes an instance of Collections client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     CollectionClient(CollectionsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -193,15 +194,14 @@ public final class CollectionClient {
      * @param collection the collection unique name.
      * @param entity Atlas entity with extended information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return entityMutationResponse.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> upsertWithResponse(
-            String collection, BinaryData entity, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.upsertWithResponse(collection, entity, requestOptions, context);
+    public Response<BinaryData> createOrUpdateWithResponse(
+            String collection, BinaryData entity, RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateWithResponse(collection, entity, requestOptions);
     }
 
     /**
@@ -371,15 +371,14 @@ public final class CollectionClient {
      * @param collection the collection unique name.
      * @param entities Atlas entities with extended information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return entityMutationResponse.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> upsertBulkWithResponse(
-            String collection, BinaryData entities, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.upsertBulkWithResponse(collection, entities, requestOptions, context);
+    public Response<BinaryData> createOrUpdateBulkWithResponse(
+            String collection, BinaryData entities, RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateBulkWithResponse(collection, entities, requestOptions);
     }
 
     /**
@@ -476,15 +475,13 @@ public final class CollectionClient {
      * @param collection the collection unique name.
      * @param moveEntitiesRequest Entity guids to be moved to target collection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return entityMutationResponse.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> moveEntitiesToCollectionWithResponse(
-            String collection, BinaryData moveEntitiesRequest, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.moveEntitiesToCollectionWithResponse(
-                collection, moveEntitiesRequest, requestOptions, context);
+            String collection, BinaryData moveEntitiesRequest, RequestOptions requestOptions) {
+        return this.serviceClient.moveEntitiesToCollectionWithResponse(collection, moveEntitiesRequest, requestOptions);
     }
 }

@@ -18,6 +18,7 @@ from typing import Tuple
 pwd = os.getcwd()
 os.chdir(os.path.abspath(os.path.dirname(sys.argv[0])))
 from parameters import *
+from generate_data import sdk_automation as sdk_automation_data
 os.chdir(pwd)
 
 
@@ -623,7 +624,7 @@ def sdk_automation(input_file: str, output_file: str):
             re.IGNORECASE,
         )
         if not match:
-            logging.error(
+            logging.info(
                 '[Skip] readme path does not format as specification/*/resource-manager/readme.md'
             )
         else:
@@ -650,7 +651,7 @@ def sdk_automation(input_file: str, output_file: str):
                 sdk_root,
                 service,
             )
-            generate(
+            succeeded = generate(
                 sdk_root,
                 service,
                 spec_root = config['specFolder'],
@@ -659,7 +660,8 @@ def sdk_automation(input_file: str, output_file: str):
                 use = AUTOREST_JAVA,
                 tag = tag,
             )
-            compile_package(sdk_root, service)
+            if succeeded:
+                compile_package(sdk_root, service)
 
             generated_folder = OUTPUT_FOLDER_FORMAT.format(service)
             packages.append({
@@ -680,10 +682,14 @@ def sdk_automation(input_file: str, output_file: str):
                         generated_folder))
                 ],
                 'result':
-                    'succeeded',
+                    'succeeded' if succeeded else 'failed',
             })
 
             update_parameters(pre_suffix)
+
+    if not packages:
+        # try data-plane codegen
+        packages = sdk_automation_data(config)
 
     with open(output_file, 'w') as fout:
         output = {

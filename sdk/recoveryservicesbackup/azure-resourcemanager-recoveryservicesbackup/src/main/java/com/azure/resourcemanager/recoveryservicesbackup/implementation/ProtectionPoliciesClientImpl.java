@@ -149,7 +149,6 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
         if (policyName == null) {
             return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -157,7 +156,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
                     service
                         .get(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             vaultName,
                             resourceGroupName,
                             this.client.getSubscriptionId(),
@@ -205,13 +204,12 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
         if (policyName == null) {
             return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 vaultName,
                 resourceGroupName,
                 this.client.getSubscriptionId(),
@@ -325,7 +323,6 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -333,7 +330,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
                     service
                         .createOrUpdate(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             vaultName,
                             resourceGroupName,
                             this.client.getSubscriptionId(),
@@ -392,13 +389,12 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 vaultName,
                 resourceGroupName,
                 this.client.getSubscriptionId(),
@@ -515,7 +511,6 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
         if (policyName == null) {
             return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -523,7 +518,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
                     service
                         .delete(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             vaultName,
                             resourceGroupName,
                             this.client.getSubscriptionId(),
@@ -571,13 +566,12 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
         if (policyName == null) {
             return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 vaultName,
                 resourceGroupName,
                 this.client.getSubscriptionId(),
@@ -598,13 +592,14 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String vaultName, String resourceGroupName, String policyName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(vaultName, resourceGroupName, policyName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -620,7 +615,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String vaultName, String resourceGroupName, String policyName, Context context) {
         context = this.client.mergeContext(context);
@@ -643,7 +638,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String vaultName, String resourceGroupName, String policyName) {
         return beginDeleteAsync(vaultName, resourceGroupName, policyName).getSyncPoller();
@@ -662,7 +657,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String vaultName, String resourceGroupName, String policyName, Context context) {
         return beginDeleteAsync(vaultName, resourceGroupName, policyName, context).getSyncPoller();

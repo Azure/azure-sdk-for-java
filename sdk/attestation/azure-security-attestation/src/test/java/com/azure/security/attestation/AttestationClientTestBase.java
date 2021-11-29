@@ -6,27 +6,17 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.EnvironmentCredentialBuilder;
-import com.azure.security.attestation.models.AttestationSigner;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.attestation.models.AttestationTokenValidationOptions;
 import com.azure.security.attestation.models.AttestationType;
-import com.nimbusds.jose.JOSEException;
-import com.nimbusds.jose.JWSSigner;
-import com.nimbusds.jose.crypto.RSASSASigner;
-import com.nimbusds.jose.crypto.RSASSAVerifier;
 import com.nimbusds.jose.util.X509CertUtils;
-import com.nimbusds.jwt.JWTClaimsSet;
-import com.nimbusds.jwt.SignedJWT;
 import org.bouncycastle.asn1.x509.BasicConstraints;
 import org.bouncycastle.asn1.x509.Extension;
 import org.bouncycastle.x509.X509V3CertificateGenerator;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.provider.Arguments;
-import reactor.core.publisher.Mono;
 
 import javax.security.auth.x500.X500Principal;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.math.BigInteger;
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
@@ -34,15 +24,12 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
-import java.security.PublicKey;
 import java.security.Security;
 import java.security.SignatureException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
-import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
@@ -52,7 +39,6 @@ import java.util.Random;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 //import io.github.cdimascio.dotenv.Dotenv;
 
@@ -98,41 +84,17 @@ public class AttestationClientTestBase extends TestBase {
     }
 
     /**
-     * Convert a base64 encoded string into a byte stream.
-     * @param base64 - Base64 encoded string to be decoded
-     * @return stream of bytes encoded in the base64 encoded string.
-     */
-    InputStream base64ToStream(String base64) {
-        byte[] decoded = Base64.getDecoder().decode(base64);
-        return new ByteArrayInputStream(decoded);
-    }
-
-    /**
-     * Retrieve an authenticated attestationAdministrationClientBuilder for the specified HTTP
-     * client and client URI.
-     * @param httpClient - HTTP client ot be used for the attestation client.
-     * @param clientUri - Client base URI to access the service.
-     * @return Returns an attestation client builder corresponding to the httpClient and clientUri.
-     */
-    AttestationAdministrationClientBuilder getAdministrationBuilder(HttpClient httpClient, String clientUri) {
-        AttestationAdministrationClientBuilder builder = getAttestationAdministrationBuilder(httpClient, clientUri);
-        if (!interceptorManager.isPlaybackMode()) {
-            builder.credential(new EnvironmentCredentialBuilder().httpClient(httpClient).build());
-        }
-        return builder;
-    }
-
-
-    /**
      * Retrieve an authenticated attestationClientBuilder for the specified HTTP client and client URI
      * @param httpClient - HTTP client ot be used for the attestation client.
      * @param clientUri - Client base URI to access the service.
      * @return Returns an attestation client builder corresponding to the httpClient and clientUri.
      */
-    AttestationAdministrationClientBuilder getAuthenticatedAttestationBuilder(HttpClient httpClient, String clientUri) {
-        AttestationAdministrationClientBuilder builder = getAttestationAdministrationBuilder(httpClient, clientUri);
+    AttestationClientBuilder getAuthenticatedAttestationBuilder(HttpClient httpClient, String clientUri) {
+        AttestationClientBuilder builder = getAttestationBuilder(httpClient, clientUri);
         if (!interceptorManager.isPlaybackMode()) {
-            builder.credential(new EnvironmentCredentialBuilder().httpClient(httpClient).build());
+            builder
+                .credential(new DefaultAzureCredentialBuilder()
+                .httpClient(httpClient).build());
         }
         return builder;
     }
@@ -181,101 +143,10 @@ public class AttestationClientTestBase extends TestBase {
                 .setValidateNotBefore(false)
             );
         }
+        if (!interceptorManager.isPlaybackMode()) {
+            builder.credential(new DefaultAzureCredentialBuilder().httpClient(httpClient).build());
+        }
         return builder;
-    }
-
-
-    /**
-     * Verifies an MAA attestation token and returns the set of attestation claims embedded in the token.
-     * @param httpClient - the HTTP client which was used to retrieve the token (used to retrieve the signing certificates for the attestation instance)
-     * @param clientUri - the base URI used to access the attestation instance (used to retrieve the signing certificates for the attestation instance)
-     * @param attestationToken - Json Web Token issued by the Attestation Service.
-     * @return a JWTClaimSet containing the claims associated with the attestation token.
-     */
-    Mono<JWTClaimsSet> verifyAttestationToken(HttpClient httpClient, String clientUri, String attestationToken) {
-        final SignedJWT token;
-        try {
-            token = SignedJWT.parse(attestationToken);
-        } catch (ParseException e) {
-            return Mono.error(logger.logThrowableAsError(e));
-        }
-
-        SignedJWT finalToken = token;
-        return getSigningCertificateByKeyId(token.getHeader().getKeyID(), httpClient, clientUri)
-            .handle((signer, sink) -> {
-                final PublicKey key = signer.getCertificates().get(0).getPublicKey();
-                final RSAPublicKey rsaKey = (RSAPublicKey) key;
-
-                final RSASSAVerifier verifier = new RSASSAVerifier(rsaKey);
-                try {
-                    assertTrue(finalToken.verify(verifier));
-                } catch (JOSEException e) {
-                    sink.error(logger.logThrowableAsError(e));
-                    return;
-                }
-
-                final JWTClaimsSet claims;
-                try {
-                    claims = finalToken.getJWTClaimsSet();
-                } catch (ParseException e) {
-                    sink.error(logger.logThrowableAsError(e));
-                    return;
-                }
-
-                assertNotNull(claims);
-                sink.next(claims);
-            });
-    }
-
-    /**
-     * Create a JWS Signer from the specified PKCS8 encoded signing key.
-     * @param signingKeyBase64 Base64 encoded PKCS8 encoded RSA Private key.
-     * @return JWSSigner created over the specified signing key.
-     */
-    JWSSigner getJwsSigner(String signingKeyBase64) {
-        byte[] signingKey = Base64.getDecoder().decode(signingKeyBase64);
-        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(signingKey);
-        KeyFactory keyFactory;
-        try {
-            keyFactory = KeyFactory.getInstance("RSA");
-        } catch (NoSuchAlgorithmException e) {
-            throw logger.logThrowableAsError(new RuntimeException(e));
-        }
-
-        PrivateKey privateKey;
-        try {
-            privateKey = keyFactory.generatePrivate(keySpec);
-        } catch (InvalidKeySpecException e) {
-            throw logger.logExceptionAsError(new RuntimeException(e));
-        }
-
-        return new RSASSASigner(privateKey);
-    }
-
-    /**
-     * Find the signing certificate associated with the specified SignedJWT token.
-     *
-     * @param client - Http Client used to retrieve signing certificates.
-     * @param clientUri - Base URI for the attestation client.
-     * @return X509Certificate which will have been used to sign the token.
-     */
-    Mono<AttestationSigner> getSigningCertificateByKeyId(String keyId, HttpClient client, String clientUri) {
-        AttestationClientBuilder builder = getAttestationBuilder(client, clientUri);
-        return builder.buildAsyncClient().listAttestationSigners()
-            .handle((signers, sink) -> {
-                boolean foundKey = false;
-
-                for (AttestationSigner signer : signers) {
-                    if (keyId.equals(signer.getKeyId())) {
-                        foundKey = true;
-                        sink.next(signer);
-                    }
-                }
-                if (!foundKey) {
-                    sink.error(logger.logThrowableAsError(new RuntimeException(String.format(
-                        "Key %s not found in JSON Web Key Set", keyId))));
-                }
-            });
     }
 
     /**

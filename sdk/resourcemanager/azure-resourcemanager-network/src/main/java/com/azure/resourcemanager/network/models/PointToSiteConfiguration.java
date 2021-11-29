@@ -22,7 +22,18 @@ public interface PointToSiteConfiguration extends HasInnerModel<VpnClientConfigu
         interface Blank<ParentT> extends WithAddressPool<ParentT> {
         }
 
+        /**
+         * the stage of the point-to-site configuration definition allowing to specify the address pool.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         */
         interface WithAddressPool<ParentT> {
+            /**
+             * Specifies the address pool.
+             *
+             * @param addressPool the address pool
+             * @return the next stage of the definition
+             */
             WithAuthenticationType<ParentT> withAddressPool(String addressPool);
         }
 
@@ -72,7 +83,19 @@ public interface PointToSiteConfiguration extends HasInnerModel<VpnClientConfigu
                 throws IOException;
         }
 
+        /**
+         * The stage of the point-to-site configuration definition allowing to specify the revoked certificate.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         */
         interface WithRevokedCertificate<ParentT> {
+            /**
+             * Specifies the revoked certificate.
+             *
+             * @param name name of the certificate
+             * @param thumbprint thumbprint of the certificate
+             * @return the next stage of the definition
+             */
             WithAttach<ParentT> withRevokedCertificate(String name, String thumbprint);
         }
 

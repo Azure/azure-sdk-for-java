@@ -472,7 +472,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
         return this
             .client
             .<ReplicationInner, ReplicationInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ReplicationInner.class, ReplicationInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), ReplicationInner.class, ReplicationInner.class, this.client.getContext());
     }
 
     /**
@@ -753,7 +753,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
             deleteWithResponseAsync(resourceGroupName, registryName, replicationName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1041,7 +1041,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
         return this
             .client
             .<ReplicationInner, ReplicationInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ReplicationInner.class, ReplicationInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), ReplicationInner.class, ReplicationInner.class, this.client.getContext());
     }
 
     /**

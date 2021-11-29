@@ -14,6 +14,11 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Performs suggestion operations.
  */
 public class SuggestTest extends ServiceTest<SearchPerfStressOptions> {
+    /**
+     * Creates the suggestion operations performance test.
+     *
+     * @param options Performance test configuration options.
+     */
     public SuggestTest(SearchPerfStressOptions options) {
         super(options);
     }
