@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@EnableConfigurationProperties({FeatureManagementConfigProperties.class})
+@EnableConfigurationProperties({FeatureManagementConfigProperties.class, FeatureVariantProperties.class})
 public class FeatureManagementConfiguration {
 
     @Bean
