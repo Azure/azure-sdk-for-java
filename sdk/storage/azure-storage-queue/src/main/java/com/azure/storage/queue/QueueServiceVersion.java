@@ -18,7 +18,8 @@ public enum QueueServiceVersion implements ServiceVersion {
     V2020_08_04("2020-08-04"),
     V2020_10_02("2020-10-02"),
     V2020_12_06("2020-12-06"),
-    V2021_02_12("2021-02-12");
+    V2021_02_12("2021-02-12"),
+    V2021_04_10("2021-04-10");
 
     private final String version;
 
