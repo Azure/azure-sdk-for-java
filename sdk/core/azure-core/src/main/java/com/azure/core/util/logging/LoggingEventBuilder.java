@@ -48,8 +48,9 @@ public final class LoggingEventBuilder {
     private final LogLevel level;
     private List<ContextKeyValuePair> context;
     private final String globalContextCached;
+    private final boolean hasGlobalContext;
 
-    // use flag instead for no-op instance instead of inheritance
+    // flag for no-op instance instead of inheritance
     private final boolean isEnabled;
 
     /**
@@ -70,6 +71,7 @@ public final class LoggingEventBuilder {
         this.isEnabled = isEnabled;
         this.context = Collections.emptyList();
         this.globalContextCached = globalContextSerialized == null ? "" : globalContextSerialized;
+        this.hasGlobalContext = !this.globalContextCached.isEmpty();
     }
 
     /**
@@ -287,11 +289,14 @@ public final class LoggingEventBuilder {
 
         if (throwable != null) {
             sb.append(",\"exception\":\"");
-            JSON_STRING_ENCODER.quoteAsString(throwable.getMessage(), sb);
+
+            String exceptionMessage = throwable.getMessage() == null ? "" : throwable.getMessage();
+
+            JSON_STRING_ENCODER.quoteAsString(exceptionMessage, sb);
             sb.append("\"");
         }
 
-        if (!globalContextCached.isEmpty()) {
+        if (hasGlobalContext) {
             sb.append(",").append(globalContextCached);
         }
 
@@ -318,7 +323,7 @@ public final class LoggingEventBuilder {
      * @param format format-able message.
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
-    void performLogging(LogLevel logLevel, String format, Object... args) {
+    private void performLogging(LogLevel logLevel, String format, Object... args) {
 
         Throwable throwable = null;
         if (doesArgsHaveThrowable(args)) {
@@ -367,6 +372,8 @@ public final class LoggingEventBuilder {
      * Does not support custom or complex object serialization, uses {@code toString()} on them.
      *
      * @param context to serialize.
+     *
+     * @returns Serialized JSON fragment or empty string.
      */
     static String writeJsonFragment(Map<String, Object> context) {
         if (CoreUtils.isNullOrEmpty(context)) {
@@ -375,20 +382,7 @@ public final class LoggingEventBuilder {
 
         StringBuilder formatter = new StringBuilder(context.size() * 20);
         for (Map.Entry<String, Object> pair : context.entrySet()) {
-            Object value = pair.getValue();
-
-            if (value == null
-                || value instanceof String
-                || value instanceof Boolean
-                || value instanceof Integer
-                || value instanceof Long
-                || value instanceof Byte) {
-                writeKeyAndValue(pair.getKey(), value, formatter);
-            } else {
-                writeKeyAndValue(pair.getKey(), value.toString(), formatter);
-            }
-
-            formatter.append(",");
+            writeKeyAndValue(pair.getKey(), pair.getValue(), formatter).append(",");
         }
 
         // remove trailing comma just in case
@@ -406,9 +400,12 @@ public final class LoggingEventBuilder {
         }
 
         // LoggingEventBuilder only populates primitives and Strings
-        if (!(value instanceof String)) {
-            JSON_STRING_ENCODER.quoteAsString(value.toString(), formatter);
-            return formatter;
+        if (value instanceof Boolean
+            || value instanceof Integer
+            || value instanceof Long
+            || value instanceof Byte) {
+                JSON_STRING_ENCODER.quoteAsString(value.toString(), formatter);
+                return formatter;
         }
 
         formatter.append("\"");
@@ -416,9 +413,7 @@ public final class LoggingEventBuilder {
         return formatter.append("\"");
     }
 
-    /**
-     * Key value pair with basic serialization capabilities.
-     */
+
     private static final class ContextKeyValuePair {
         private final String key;
         private final Object value;

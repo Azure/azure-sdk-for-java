@@ -46,6 +46,7 @@ import static com.azure.core.implementation.logging.LoggingUtils.removeThrowable
 public class ClientLogger {
     private final Logger logger;
     private final String globalContextSerialized;
+    private final boolean hasGlobalContext;
 
     /**
      * Retrieves a logger for the passed class using the {@link LoggerFactory}.
@@ -71,6 +72,7 @@ public class ClientLogger {
      *
      * @param clazz Class creating the logger.
      * @param context Context to be populated on every log record written with this logger.
+     *                Objects are serialized with {@code toString()} method.
      */
     public ClientLogger(Class<?> clazz, Map<String, Object> context) {
         this(clazz.getName(), context);
@@ -90,6 +92,7 @@ public class ClientLogger {
      *
      * @param className Class name creating the logger.
      * @param context Context to be populated on every log record written with this logger.
+     *                Objects are serialized with {@code toString()} method.
      * @throws RuntimeException in case of invalid arguments.
      */
     public ClientLogger(String className, Map<String, Object> context) {
@@ -97,6 +100,7 @@ public class ClientLogger {
         Logger initLogger = LoggerFactory.getLogger(className);
         logger = initLogger instanceof NOPLogger ? new DefaultLogger(className) : initLogger;
         globalContextSerialized = LoggingEventBuilder.writeJsonFragment(context);
+        hasGlobalContext = !CoreUtils.isNullOrEmpty(globalContextSerialized);
     }
 
     /**
@@ -163,10 +167,10 @@ public class ClientLogger {
      */
     public void verbose(String message) {
         if (logger.isDebugEnabled()) {
-            if (globalContextSerialized.isEmpty()) {
-                logger.debug(removeNewLinesFromLogMessage(message));
-            } else {
+            if (hasGlobalContext) {
                 atVerbose().log(message);
+            } else {
+                logger.debug(removeNewLinesFromLogMessage(message));
             }
         }
     }
@@ -211,10 +215,10 @@ public class ClientLogger {
      */
     public void info(String message) {
         if (logger.isInfoEnabled()) {
-            if (globalContextSerialized.isEmpty()) {
-                logger.info(removeNewLinesFromLogMessage(message));
-            } else {
+            if (hasGlobalContext) {
                 atInfo().log(message);
+            } else {
+                logger.info(removeNewLinesFromLogMessage(message));
             }
         }
     }
@@ -260,10 +264,10 @@ public class ClientLogger {
      */
     public void warning(String message) {
         if (logger.isWarnEnabled()) {
-            if (globalContextSerialized.isEmpty()) {
-                logger.warn(removeNewLinesFromLogMessage(message));
-            } else {
+            if (hasGlobalContext) {
                 atWarning().log(message);
+            } else {
+                logger.warn(removeNewLinesFromLogMessage(message));
             }
         }
     }
@@ -313,12 +317,11 @@ public class ClientLogger {
      */
     public void error(String message) {
         if (logger.isErrorEnabled()) {
-            if (globalContextSerialized.isEmpty()) {
-                logger.error(removeNewLinesFromLogMessage(message));
-            } else {
+            if (hasGlobalContext) {
                 atError().log(message);
+            } else {
+                logger.error(removeNewLinesFromLogMessage(message));
             }
-
         }
     }
 
@@ -452,8 +455,7 @@ public class ClientLogger {
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
     private void performLogging(LogLevel logLevel, boolean isExceptionLogging, String format, Object... args) {
-
-        if (!globalContextSerialized.isEmpty()) {
+        if (hasGlobalContext) {
             LoggingEventBuilder.create(logger, logLevel, globalContextSerialized, true)
                 .log(format, args);
             return;
@@ -509,15 +511,18 @@ public class ClientLogger {
     }
 
     /*
-     * Performs deferred logging.
+     * Performs deferred logging. Call only if logging at this level is enable,.
      *
      * @param logLevel sets the logging level
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
     private void performDeferredLogging(LogLevel logLevel, Supplier<String> messageSupplier, Throwable throwable) {
-        if (!globalContextSerialized.isEmpty()) {
+
+        if (hasGlobalContext) {
+            // LoggingEventBuilder writes log messages as json and performs all necessary escaping, i.e. no
+            // sanitization needed
             LoggingEventBuilder.create(logger, logLevel, globalContextSerialized, canLogAtLevel(logLevel))
-                .log(messageSupplier.get(), throwable);
+                .log(messageSupplier, throwable);
             return;
         }
 
