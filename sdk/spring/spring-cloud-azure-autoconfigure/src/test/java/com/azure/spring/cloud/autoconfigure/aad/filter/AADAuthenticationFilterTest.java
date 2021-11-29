@@ -5,6 +5,8 @@ package com.azure.spring.cloud.autoconfigure.aad.filter;
 
 import com.azure.spring.cloud.autoconfigure.aad.core.AADAuthorizationServerEndpoints;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthenticationProperties;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AADCredentialProperties;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AADProfileProperties;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.proc.BadJOSEException;
 import org.junit.jupiter.api.Disabled;
@@ -45,8 +47,11 @@ public class AADAuthenticationFilterTest {
         userPrincipalManager = mock(UserPrincipalManager.class);
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
+        AADAuthenticationProperties properties = mock(AADAuthenticationProperties.class);
+        when(properties.getCredential()).thenReturn(new AADCredentialProperties());
+        when(properties.getProfile()).thenReturn(new AADProfileProperties());
         filter = new AADAuthenticationFilter(
-            mock(AADAuthenticationProperties.class),
+            properties,
             mock(AADAuthorizationServerEndpoints.class),
             userPrincipalManager
         );

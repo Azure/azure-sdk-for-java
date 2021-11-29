@@ -37,8 +37,8 @@ public class AADAuthenticationFilterPropertiesTest {
 
             final AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
 
-            assertThat(properties.getClientId()).isEqualTo(TestConstants.CLIENT_ID);
-            assertThat(properties.getClientSecret()).isEqualTo(TestConstants.CLIENT_SECRET);
+            assertThat(properties.getCredential().getClientId()).isEqualTo(TestConstants.CLIENT_ID);
+            assertThat(properties.getCredential().getClientSecret()).isEqualTo(TestConstants.CLIENT_SECRET);
             assertThat(properties.getActiveDirectoryGroups()
                                  .toString()).isEqualTo(TestConstants.TARGETED_GROUPS.toString());
         }
@@ -47,9 +47,9 @@ public class AADAuthenticationFilterPropertiesTest {
     private void configureAllRequiredProperties(AnnotationConfigApplicationContext context) {
         addInlinedPropertiesToEnvironment(
             context,
-            AAD_PROPERTY_PREFIX + "tenant-id=demo-tenant-id",
-            AAD_PROPERTY_PREFIX + "client-id=" + TestConstants.CLIENT_ID,
-            AAD_PROPERTY_PREFIX + "client-secret=" + TestConstants.CLIENT_SECRET,
+            AAD_PROPERTY_PREFIX + "profile.tenant-id=demo-tenant-id",
+            AAD_PROPERTY_PREFIX + "credential.client-id=" + TestConstants.CLIENT_ID,
+            AAD_PROPERTY_PREFIX + "credential.client-secret=" + TestConstants.CLIENT_SECRET,
             AAD_PROPERTY_PREFIX + "user-group.allowed-groups="
                 + TestConstants.TARGETED_GROUPS.toString().replace("[", "").replace("]", "")
         );

@@ -290,9 +290,9 @@ class AADAuthenticationPropertiesTest {
             )
             .run(context -> {
                 AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
-                assertFalse(StringUtils.hasText(properties.getClientId()));
-                assertFalse(StringUtils.hasText(properties.getClientSecret()));
-                assertEquals("common", properties.getTenantId());
+                assertFalse(StringUtils.hasText(properties.getCredential().getClientId()));
+                assertFalse(StringUtils.hasText(properties.getCredential().getClientSecret()));
+                assertEquals("common", properties.getProfile().getTenantId());
             });
         webApplicationContextRunner()
             .withPropertyValues(
@@ -305,9 +305,9 @@ class AADAuthenticationPropertiesTest {
             )
             .run(context -> {
                 AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
-                assertEquals("aad-client-id", properties.getClientId());
-                assertEquals("global-client-secret", properties.getClientSecret());
-                assertEquals("global-tenant-id", properties.getTenantId());
+                assertEquals("aad-client-id", properties.getCredential().getClientId());
+                assertEquals("global-client-secret", properties.getCredential().getClientSecret());
+                assertEquals("global-tenant-id", properties.getProfile().getTenantId());
             });
     }
 }

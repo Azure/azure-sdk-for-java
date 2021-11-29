@@ -129,15 +129,15 @@ public class AADClientRegistrationRepository implements ClientRegistrationReposi
                                                     Collection<String> scopes,
                                                     AADAuthenticationProperties properties) {
         AADAuthorizationServerEndpoints endpoints =
-            new AADAuthorizationServerEndpoints(properties.getBaseUri(), properties.getTenantId());
+            new AADAuthorizationServerEndpoints(properties.getBaseUri(), properties.getProfile().getTenantId());
         return ClientRegistration.withRegistrationId(registrationId)
                                  .clientName(registrationId)
                                  .authorizationGrantType(new AuthorizationGrantType((aadAuthorizationGrantType.getValue())))
                                  .scope(scopes)
                                  .redirectUri(properties.getRedirectUriTemplate())
                                  .userNameAttributeName(properties.getUserNameAttribute())
-                                 .clientId(properties.getClientId())
-                                 .clientSecret(properties.getClientSecret())
+                                 .clientId(properties.getCredential().getClientId())
+                                 .clientSecret(properties.getCredential().getClientSecret())
                                  .authorizationUri(endpoints.authorizationEndpoint())
                                  .tokenUri(endpoints.tokenEndpoint())
                                  .jwkSetUri(endpoints.jwkSetEndpoint())

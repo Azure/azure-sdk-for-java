@@ -34,7 +34,7 @@ public final class ClientRegistrationCondition extends SpringBootCondition {
                 message.notAvailable("AAD authorization properties(spring.cloud.azure.active-directory" + ".xxx)"));
         }
 
-        if (!StringUtils.hasText(properties.getClientId())) {
+        if (!StringUtils.hasText(properties.getCredential().getClientId())) {
             return ConditionOutcome.noMatch(message.didNotFind("spring.cloud.azure.active-directory.credential.client-id").atAll());
         }
 

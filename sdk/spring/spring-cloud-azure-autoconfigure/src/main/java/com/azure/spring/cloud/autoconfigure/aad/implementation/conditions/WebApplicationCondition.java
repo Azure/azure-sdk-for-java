@@ -34,7 +34,7 @@ public final class WebApplicationCondition extends SpringBootCondition {
             return ConditionOutcome.noMatch(message.notAvailable("aad authorization properties"));
         }
 
-        if (!StringUtils.hasText(properties.getClientId())) {
+        if (!StringUtils.hasText(properties.getCredential().getClientId())) {
             return ConditionOutcome.noMatch(message.didNotFind("client-id").atAll());
         }
 

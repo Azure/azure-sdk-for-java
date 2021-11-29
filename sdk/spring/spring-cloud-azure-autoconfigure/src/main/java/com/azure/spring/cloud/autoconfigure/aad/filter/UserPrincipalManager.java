@@ -84,7 +84,7 @@ public class UserPrincipalManager {
         this.explicitAudienceCheck = explicitAudienceCheck;
         if (explicitAudienceCheck) {
             // client-id for "normal" check
-            this.validAudiences.add(this.aadAuthenticationProperties.getClientId());
+            this.validAudiences.add(this.aadAuthenticationProperties.getCredential().getClientId());
             // app id uri for client credentials flow (server to server communication)
             this.validAudiences.add(this.aadAuthenticationProperties.getAppIdUri());
         }
@@ -120,7 +120,7 @@ public class UserPrincipalManager {
         this.explicitAudienceCheck = explicitAudienceCheck;
         if (explicitAudienceCheck) {
             // client-id for "normal" check
-            this.validAudiences.add(this.aadAuthenticationProperties.getClientId());
+            this.validAudiences.add(this.aadAuthenticationProperties.getCredential().getClientId());
             // app id uri for client credentials flow (server to server communication)
             this.validAudiences.add(this.aadAuthenticationProperties.getAppIdUri());
         }

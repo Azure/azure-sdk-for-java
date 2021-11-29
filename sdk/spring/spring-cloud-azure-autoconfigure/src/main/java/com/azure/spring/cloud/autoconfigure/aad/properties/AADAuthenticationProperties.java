@@ -264,22 +264,6 @@ public class AADAuthenticationProperties implements InitializingBean {
         this.userGroup = userGroup;
     }
 
-    public String getClientId() {
-        return credential.getClientId();
-    }
-
-    public void setClientId(String clientId) {
-        credential.setClientId(clientId);
-    }
-
-    public String getClientSecret() {
-        return credential.getClientSecret();
-    }
-
-    public void setClientSecret(String clientSecret) {
-        credential.setClientSecret(clientSecret);
-    }
-
     public String getUserNameAttribute() {
         return userNameAttribute;
     }
@@ -357,14 +341,6 @@ public class AADAuthenticationProperties implements InitializingBean {
         this.jwkSetCacheRefreshTime = jwkSetCacheRefreshTime;
     }
 
-    public String getTenantId() {
-        return profile.getTenantId();
-    }
-
-    public void setTenantId(String tenantId) {
-        this.profile.setTenantId(tenantId);
-    }
-
     public String getPostLogoutRedirectUri() {
         return postLogoutRedirectUri;
     }
@@ -432,16 +408,16 @@ public class AADAuthenticationProperties implements InitializingBean {
 
     public void setDefaultValueFromAzureGlobalProperties(AzureGlobalProperties global) {
         if (!StringUtils.hasText(this.getCredential().getClientId())) {
-            this.setClientId(global.getCredential().getClientId());
+            this.getCredential().setClientId(global.getCredential().getClientId());
         }
         if (!StringUtils.hasText(this.getCredential().getClientSecret())) {
-            this.setClientSecret(global.getCredential().getClientSecret());
+            this.getCredential().setClientSecret(global.getCredential().getClientSecret());
         }
         if (!StringUtils.hasText(this.getProfile().getTenantId())) {
-            this.setTenantId(global.getProfile().getTenantId());
+            this.getProfile().setTenantId(global.getProfile().getTenantId());
         }
-        if (!StringUtils.hasText(getTenantId())) {
-            this.setTenantId("common");
+        if (!StringUtils.hasText(getProfile().getTenantId())) {
+            this.getProfile().setTenantId("common");
         }
         if (this.getProfile().getCloud() == null) {
             this.getProfile().setCloud(global.getProfile().getCloud());
@@ -485,20 +461,20 @@ public class AADAuthenticationProperties implements InitializingBean {
     }
 
     private void validateTenantId() {
-        if (isMultiTenantsApplication(getTenantId()) && !userGroup.getAllowedGroups().isEmpty()) {
+        if (isMultiTenantsApplication(getProfile().getTenantId()) && !userGroup.getAllowedGroups().isEmpty()) {
             throw new IllegalStateException("When spring.cloud.azure.active-directory.profile.tenant-id is "
                 + "'common/organizations/consumers', "
                 + "spring.cloud.azure.active-directory.user-group.allowed-groups/allowed-group-names should be empty. "
-                + "But actually spring.cloud.azure.active-directory.profile.tenant-id=" + getTenantId()
+                + "But actually spring.cloud.azure.active-directory.profile.tenant-id=" + getProfile().getTenantId()
                 + ", and spring.cloud.azure.active-directory.user-group.allowed-groups/allowed-group-names="
                 + userGroup.getAllowedGroups());
         }
 
-        if (isMultiTenantsApplication(getTenantId()) && !userGroup.getAllowedGroupIds().isEmpty()) {
+        if (isMultiTenantsApplication(getProfile().getTenantId()) && !userGroup.getAllowedGroupIds().isEmpty()) {
             throw new IllegalStateException("When spring.cloud.azure.active-directory.profile.tenant-id is "
                 + "'common/organizations/consumers', "
                 + "spring.cloud.azure.active-directory.user-group.allowed-group-ids should be empty. "
-                + "But actually spring.cloud.azure.active-directory.profile.tenant-id=" + getTenantId()
+                + "But actually spring.cloud.azure.active-directory.profile.tenant-id=" + getProfile().getTenantId()
                 + ", and spring.cloud.azure.active-directory.user-group.allowed-group-ids=" + userGroup.getAllowedGroupIds());
         }
     }
