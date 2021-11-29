@@ -78,7 +78,7 @@ class UserPrincipalMicrosoftGraphTest {
         accessToken = MicrosoftGraphConstants.BEARER_TOKEN;
         properties = new AADAuthenticationProperties();
         properties.getProfile().getEnvironment().setMicrosoftGraphEndpoint("http://localhost:8080/");
-        endpoints = new AADAuthorizationServerEndpoints(properties.getBaseUri(), properties.getProfile().getTenantId());
+        endpoints = new AADAuthorizationServerEndpoints(properties.getProfile().getEnvironment().getActiveDirectoryEndpoint(), properties.getProfile().getTenantId());
         clientId = "client";
         clientSecret = "pass";
         wireMockRule = new WireMockRule(8080);

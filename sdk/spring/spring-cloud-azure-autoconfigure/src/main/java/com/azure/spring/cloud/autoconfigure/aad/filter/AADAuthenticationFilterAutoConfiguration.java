@@ -47,7 +47,7 @@ public class AADAuthenticationFilterAutoConfiguration {
 
     public AADAuthenticationFilterAutoConfiguration(AADAuthenticationProperties properties) {
         this.properties = properties;
-        this.endpoints = new AADAuthorizationServerEndpoints(properties.getBaseUri(),
+        this.endpoints = new AADAuthorizationServerEndpoints(properties.getProfile().getEnvironment().getActiveDirectoryEndpoint(),
             properties.getProfile().getTenantId());
     }
 

@@ -166,7 +166,7 @@ public class AADAuthenticationProperties implements InitializingBean {
         private final Log logger = LogFactory.getLog(UserGroupProperties.class);
 
         /**
-         * Expected UserGroups that an authority will be granted to if found in the response from the MemeberOf Graph
+         * Expected UserGroups that an authority will be granted to if found in the response from the MemberOf Graph
          * API Call.
          */
         private List<String> allowedGroupNames = new ArrayList<>();
@@ -368,20 +368,8 @@ public class AADAuthenticationProperties implements InitializingBean {
         this.sessionStateless = sessionStateless;
     }
 
-    public String getBaseUri() {
-        return profile.getEnvironment().getActiveDirectoryEndpoint();
-    }
-
-    public void setBaseUri(String baseUri) {
-        profile.getEnvironment().setActiveDirectoryEndpoint(baseUri);
-    }
-
-    public String getGraphBaseUri() {
-        return profile.getEnvironment().getMicrosoftGraphEndpoint();
-    }
-
     public String getGraphMembershipUri() {
-        return getGraphBaseUri()
+        return getProfile().getEnvironment().getMicrosoftGraphEndpoint()
             + (getUserGroup().getUseTransitiveMembers()
                 ? "v1.0/me/transitiveMemberOf"
                 : "v1.0/me/memberOf");

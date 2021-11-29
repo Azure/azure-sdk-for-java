@@ -49,7 +49,7 @@ public class AADClientRegistrationRepository implements ClientRegistrationReposi
             // AAD server will return error if:
             // 1. authorizationCodeScopes have more than one resource server.
             // 2. accessTokenScopes have no resource server
-            String newScope = properties.getGraphBaseUri() + "User.Read";
+            String newScope = properties.getProfile().getEnvironment().getMicrosoftGraphEndpoint() + "User.Read";
             accessTokenScopes.add(newScope);
             authorizationCodeScopes.add(newScope);
         }
@@ -107,10 +107,10 @@ public class AADClientRegistrationRepository implements ClientRegistrationReposi
         // 2. https://github.com/Azure/azure-sdk-for-java/issues/21284#issuecomment-888725241
         if (properties.allowedGroupNamesConfigured()) {
             // "Directory.Read.All" allows to get group id and group name.
-            result.add(properties.getGraphBaseUri() + "Directory.Read.All");
+            result.add(properties.getProfile().getEnvironment().getMicrosoftGraphEndpoint() + "Directory.Read.All");
         } else if (properties.allowedGroupIdsConfigured()) {
-            // "User.Read" allows to get group id, but not allow to get group name.
-            result.add(properties.getGraphBaseUri() + "User.Read");
+            // "User.Read" allows getting group id, but not allow getting group name.
+            result.add(properties.getProfile().getEnvironment().getMicrosoftGraphEndpoint() + "User.Read");
         }
         return result;
     }
@@ -129,7 +129,7 @@ public class AADClientRegistrationRepository implements ClientRegistrationReposi
                                                     Collection<String> scopes,
                                                     AADAuthenticationProperties properties) {
         AADAuthorizationServerEndpoints endpoints =
-            new AADAuthorizationServerEndpoints(properties.getBaseUri(), properties.getProfile().getTenantId());
+            new AADAuthorizationServerEndpoints(properties.getProfile().getEnvironment().getActiveDirectoryEndpoint(), properties.getProfile().getTenantId());
         return ClientRegistration.withRegistrationId(registrationId)
                                  .clientName(registrationId)
                                  .authorizationGrantType(new AuthorizationGrantType((aadAuthorizationGrantType.getValue())))
