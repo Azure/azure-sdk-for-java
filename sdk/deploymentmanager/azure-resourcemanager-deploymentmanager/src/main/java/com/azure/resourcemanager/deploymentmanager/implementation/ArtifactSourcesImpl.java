@@ -151,7 +151,7 @@ public final class ArtifactSourcesImpl implements ArtifactSources {
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'artifactSources'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, artifactSourceName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, artifactSourceName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {

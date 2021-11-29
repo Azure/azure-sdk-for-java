@@ -41,14 +41,6 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
         }
     }
 
-    public String targetLocation() {
-        return this.innerModel().targetLocation();
-    }
-
-    public String targetSubscriptionId() {
-        return this.innerModel().targetSubscriptionId();
-    }
-
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -168,16 +160,6 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
 
     public ServiceResourceImpl withRegion(String location) {
         this.innerModel().withLocation(location);
-        return this;
-    }
-
-    public ServiceResourceImpl withTargetLocation(String targetLocation) {
-        this.innerModel().withTargetLocation(targetLocation);
-        return this;
-    }
-
-    public ServiceResourceImpl withTargetSubscriptionId(String targetSubscriptionId) {
-        this.innerModel().withTargetSubscriptionId(targetSubscriptionId);
         return this;
     }
 

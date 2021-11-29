@@ -42,10 +42,6 @@ public final class ServiceTopologyResourceImpl
         }
     }
 
-    public String artifactSourceId() {
-        return this.innerModel().artifactSourceId();
-    }
-
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -163,11 +159,6 @@ public final class ServiceTopologyResourceImpl
 
     public ServiceTopologyResourceImpl withTags(Map<String, String> tags) {
         this.innerModel().withTags(tags);
-        return this;
-    }
-
-    public ServiceTopologyResourceImpl withArtifactSourceId(String artifactSourceId) {
-        this.innerModel().withArtifactSourceId(artifactSourceId);
         return this;
     }
 }

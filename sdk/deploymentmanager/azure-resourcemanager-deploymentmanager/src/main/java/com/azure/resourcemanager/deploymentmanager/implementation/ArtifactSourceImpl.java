@@ -8,7 +8,6 @@ import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.deploymentmanager.fluent.models.ArtifactSourceInner;
 import com.azure.resourcemanager.deploymentmanager.models.ArtifactSource;
-import com.azure.resourcemanager.deploymentmanager.models.Authentication;
 import java.util.Collections;
 import java.util.Map;
 
@@ -40,18 +39,6 @@ public final class ArtifactSourceImpl implements ArtifactSource, ArtifactSource.
         } else {
             return Collections.emptyMap();
         }
-    }
-
-    public String sourceType() {
-        return this.innerModel().sourceType();
-    }
-
-    public String artifactRoot() {
-        return this.innerModel().artifactRoot();
-    }
-
-    public Authentication authentication() {
-        return this.innerModel().authentication();
     }
 
     public Region region() {
@@ -169,21 +156,6 @@ public final class ArtifactSourceImpl implements ArtifactSource, ArtifactSource.
 
     public ArtifactSourceImpl withTags(Map<String, String> tags) {
         this.innerModel().withTags(tags);
-        return this;
-    }
-
-    public ArtifactSourceImpl withSourceType(String sourceType) {
-        this.innerModel().withSourceType(sourceType);
-        return this;
-    }
-
-    public ArtifactSourceImpl withArtifactRoot(String artifactRoot) {
-        this.innerModel().withArtifactRoot(artifactRoot);
-        return this;
-    }
-
-    public ArtifactSourceImpl withAuthentication(Authentication authentication) {
-        this.innerModel().withAuthentication(authentication);
         return this;
     }
 }

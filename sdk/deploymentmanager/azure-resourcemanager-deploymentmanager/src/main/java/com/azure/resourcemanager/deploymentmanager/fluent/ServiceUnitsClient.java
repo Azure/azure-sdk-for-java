@@ -29,7 +29,7 @@ public interface ServiceUnitsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents the response of a service unit resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServiceUnitResourceInner>, ServiceUnitResourceInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serviceTopologyName,
@@ -52,7 +52,7 @@ public interface ServiceUnitsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents the response of a service unit resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServiceUnitResourceInner>, ServiceUnitResourceInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serviceTopologyName,

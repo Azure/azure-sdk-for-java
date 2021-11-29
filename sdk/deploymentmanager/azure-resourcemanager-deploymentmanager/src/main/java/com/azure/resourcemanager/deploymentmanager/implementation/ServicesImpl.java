@@ -177,7 +177,7 @@ public final class ServicesImpl implements Services {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, serviceTopologyName, serviceName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, serviceTopologyName, serviceName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {

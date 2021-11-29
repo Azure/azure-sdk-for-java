@@ -291,7 +291,7 @@ public final class ServiceUnitsClientImpl implements ServiceUnitsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents the response of a service unit resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServiceUnitResourceInner>, ServiceUnitResourceInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String serviceTopologyName,
@@ -326,7 +326,7 @@ public final class ServiceUnitsClientImpl implements ServiceUnitsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents the response of a service unit resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServiceUnitResourceInner>, ServiceUnitResourceInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String serviceTopologyName,
@@ -362,7 +362,7 @@ public final class ServiceUnitsClientImpl implements ServiceUnitsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents the response of a service unit resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServiceUnitResourceInner>, ServiceUnitResourceInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serviceTopologyName,
@@ -389,7 +389,7 @@ public final class ServiceUnitsClientImpl implements ServiceUnitsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents the response of a service unit resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServiceUnitResourceInner>, ServiceUnitResourceInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serviceTopologyName,

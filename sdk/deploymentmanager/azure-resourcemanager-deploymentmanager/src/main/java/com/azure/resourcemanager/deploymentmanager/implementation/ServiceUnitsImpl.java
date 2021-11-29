@@ -216,9 +216,7 @@ public final class ServiceUnitsImpl implements ServiceUnits {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'serviceUnits'.", id)));
         }
-        this
-            .deleteWithResponse(resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, Context.NONE)
-            .getValue();
+        this.deleteWithResponse(resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {

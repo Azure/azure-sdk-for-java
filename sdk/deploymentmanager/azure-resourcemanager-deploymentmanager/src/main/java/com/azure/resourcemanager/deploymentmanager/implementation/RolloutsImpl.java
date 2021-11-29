@@ -152,7 +152,7 @@ public final class RolloutsImpl implements Rollouts {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'rollouts'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, rolloutName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, rolloutName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {

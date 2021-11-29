@@ -156,7 +156,7 @@ public final class ServiceTopologiesImpl implements ServiceTopologies {
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'serviceTopologies'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, serviceTopologyName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, serviceTopologyName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {

@@ -147,7 +147,7 @@ public final class StepsImpl implements Steps {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'steps'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, stepName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, stepName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {

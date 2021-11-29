@@ -28,7 +28,7 @@ public interface RolloutsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the PUT rollout request body.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RolloutRequestInner>, RolloutRequestInner> beginCreateOrUpdate(
         String resourceGroupName, String rolloutName, RolloutRequestInner rolloutRequest);
 
@@ -45,7 +45,7 @@ public interface RolloutsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the PUT rollout request body.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RolloutRequestInner>, RolloutRequestInner> beginCreateOrUpdate(
         String resourceGroupName, String rolloutName, RolloutRequestInner rolloutRequest, Context context);
 

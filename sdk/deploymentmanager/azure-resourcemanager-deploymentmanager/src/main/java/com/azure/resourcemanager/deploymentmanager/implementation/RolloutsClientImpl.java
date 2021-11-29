@@ -275,7 +275,7 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the PUT rollout request body.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RolloutRequestInner>, RolloutRequestInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String rolloutName, RolloutRequestInner rolloutRequest) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -303,7 +303,7 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the PUT rollout request body.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RolloutRequestInner>, RolloutRequestInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String rolloutName, RolloutRequestInner rolloutRequest, Context context) {
         context = this.client.mergeContext(context);
@@ -327,7 +327,7 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the PUT rollout request body.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RolloutRequestInner>, RolloutRequestInner> beginCreateOrUpdate(
         String resourceGroupName, String rolloutName, RolloutRequestInner rolloutRequest) {
         return beginCreateOrUpdateAsync(resourceGroupName, rolloutName, rolloutRequest).getSyncPoller();
@@ -346,7 +346,7 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the PUT rollout request body.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RolloutRequestInner>, RolloutRequestInner> beginCreateOrUpdate(
         String resourceGroupName, String rolloutName, RolloutRequestInner rolloutRequest, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, rolloutName, rolloutRequest, context).getSyncPoller();
