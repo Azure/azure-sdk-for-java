@@ -292,17 +292,17 @@ public class RequestResponseChannel implements AsyncCloseable {
      */
     public Mono<Message> sendWithAck(final Message message, DeliveryState deliveryState) {
         if (isDisposed()) {
-            return monoError(logger.atError(), new IllegalStateException("Cannot send a message when request response channel is disposed."));
+            return monoError(logger, new IllegalStateException("Cannot send a message when request response channel is disposed."));
         }
 
         if (message == null) {
-            return monoError(logger.atError(), new NullPointerException("message cannot be null"));
+            return monoError(logger, new NullPointerException("message cannot be null"));
         }
         if (message.getMessageId() != null) {
-            return monoError(logger.atError(), new IllegalArgumentException("message.getMessageId() should be null"));
+            return monoError(logger, new IllegalArgumentException("message.getMessageId() should be null"));
         }
         if (message.getReplyTo() != null) {
-            return monoError(logger.atError(), new IllegalArgumentException("message.getReplyTo() should be null"));
+            return monoError(logger, new IllegalArgumentException("message.getReplyTo() should be null"));
         }
 
         final UnsignedLong messageId = UnsignedLong.valueOf(requestId.incrementAndGet());

@@ -26,7 +26,7 @@ import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addSignalTypeA
  * Manages the re-authorization of the client to the token audience against the CBS node.
  */
 public class ActiveClientTokenManager implements TokenManager {
-    private final ClientLogger logger;
+    private final ClientLogger logger = new ClientLogger(ActiveClientTokenManager.class);
     private final AtomicBoolean hasScheduled = new AtomicBoolean();
     private final AtomicBoolean hasDisposed = new AtomicBoolean();
     private final Mono<ClaimsBasedSecurityNode> cbsNode;
@@ -42,7 +42,6 @@ public class ActiveClientTokenManager implements TokenManager {
         this.cbsNode = cbsNode;
         this.tokenAudience = tokenAudience;
         this.scopes = scopes;
-        this.logger = new ClientLogger(ActiveClientTokenManager.class);
     }
 
     /**
