@@ -57,7 +57,7 @@ final class ReflectionUtils implements ReflectionUtilsApi {
             CORE_MODULE.addReads(responseModule);
         }
 
-        return LOOKUP;
+        return MethodHandles.privateLookupIn(targetClass, LOOKUP);
     }
 
     public int getJavaImplementationMajorVersion() {

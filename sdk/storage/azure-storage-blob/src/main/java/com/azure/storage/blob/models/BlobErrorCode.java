@@ -326,8 +326,8 @@ public final class BlobErrorCode extends ExpandableStringEnum<BlobErrorCode> {
     /** Static value SnapshotCountExceeded for BlobErrorCode. */
     public static final BlobErrorCode SNAPSHOT_COUNT_EXCEEDED = fromString("SnapshotCountExceeded");
 
-    /** Static value SnaphotOperationRateExceeded for BlobErrorCode. */
-    public static final BlobErrorCode SNAPHOT_OPERATION_RATE_EXCEEDED = fromString("SnaphotOperationRateExceeded");
+    /** Static value SnapshotOperationRateExceeded for BlobErrorCode. */
+    public static final BlobErrorCode SNAPSHOT_OPERATION_RATE_EXCEEDED = fromString("SnapshotOperationRateExceeded");
 
     /** Static value SnapshotsPresent for BlobErrorCode. */
     public static final BlobErrorCode SNAPSHOTS_PRESENT = fromString("SnapshotsPresent");

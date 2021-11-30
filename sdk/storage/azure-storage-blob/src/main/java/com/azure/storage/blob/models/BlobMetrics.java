@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** a summary of request statistics grouped by API in hour or minute aggregates for blobs. */
-@JacksonXmlRootElement(localName = "Metrics")
+@JacksonXmlRootElement(localName = "BlobMetrics")
 @Fluent
 public final class BlobMetrics {
     /*

@@ -5,11 +5,13 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
+import java.util.Base64;
 
 /** The BlockBlobsStageBlockFromURLHeaders model. */
 @JacksonXmlRootElement(localName = "null")
@@ -21,11 +23,17 @@ public final class BlockBlobsStageBlockFromURLHeaders {
     @JsonProperty(value = "x-ms-version")
     private String xMsVersion;
 
+    // Maintains deserialization status for xMsVersion.
+    private boolean xMsVersionHasBeenDeserialized;
+
     /*
      * The x-ms-content-crc64 property.
      */
     @JsonProperty(value = "x-ms-content-crc64")
     private byte[] xMsContentCrc64;
+
+    // Maintains deserialization status for xMsContentCrc64.
+    private boolean xMsContentCrc64HasBeenDeserialized;
 
     /*
      * The x-ms-encryption-key-sha256 property.
@@ -33,11 +41,17 @@ public final class BlockBlobsStageBlockFromURLHeaders {
     @JsonProperty(value = "x-ms-encryption-key-sha256")
     private String xMsEncryptionKeySha256;
 
+    // Maintains deserialization status for xMsEncryptionKeySha256.
+    private boolean xMsEncryptionKeySha256HasBeenDeserialized;
+
     /*
      * The x-ms-request-id property.
      */
     @JsonProperty(value = "x-ms-request-id")
     private String xMsRequestId;
+
+    // Maintains deserialization status for xMsRequestId.
+    private boolean xMsRequestIdHasBeenDeserialized;
 
     /*
      * The x-ms-request-server-encrypted property.
@@ -45,11 +59,17 @@ public final class BlockBlobsStageBlockFromURLHeaders {
     @JsonProperty(value = "x-ms-request-server-encrypted")
     private Boolean xMsRequestServerEncrypted;
 
+    // Maintains deserialization status for xMsRequestServerEncrypted.
+    private boolean xMsRequestServerEncryptedHasBeenDeserialized;
+
     /*
      * The x-ms-client-request-id property.
      */
     @JsonProperty(value = "x-ms-client-request-id")
     private String xMsClientRequestId;
+
+    // Maintains deserialization status for xMsClientRequestId.
+    private boolean xMsClientRequestIdHasBeenDeserialized;
 
     /*
      * The Date property.
@@ -57,11 +77,17 @@ public final class BlockBlobsStageBlockFromURLHeaders {
     @JsonProperty(value = "Date")
     private DateTimeRfc1123 dateProperty;
 
+    // Maintains deserialization status for dateProperty.
+    private boolean datePropertyHasBeenDeserialized;
+
     /*
      * The Content-MD5 property.
      */
     @JsonProperty(value = "Content-MD5")
     private byte[] contentMD5;
+
+    // Maintains deserialization status for contentMD5.
+    private boolean contentMD5HasBeenDeserialized;
 
     /*
      * The x-ms-encryption-scope property.
@@ -69,12 +95,27 @@ public final class BlockBlobsStageBlockFromURLHeaders {
     @JsonProperty(value = "x-ms-encryption-scope")
     private String xMsEncryptionScope;
 
+    // Maintains deserialization status for xMsEncryptionScope.
+    private boolean xMsEncryptionScopeHasBeenDeserialized;
+
+    // HttpHeaders containing the raw property values.
+    private final HttpHeaders rawHeaders;
+
+    /** Creates an instance of BlockBlobsStageBlockFromURLHeaders class. */
+    BlockBlobsStageBlockFromURLHeaders(HttpHeaders rawHeaders) {
+        this.rawHeaders = rawHeaders;
+    }
+
     /**
      * Get the xMsVersion property: The x-ms-version property.
      *
      * @return the xMsVersion value.
      */
     public String getXMsVersion() {
+        if (!this.xMsVersionHasBeenDeserialized) {
+            this.xMsVersion = rawHeaders.getValue("x-ms-version");
+            this.xMsVersionHasBeenDeserialized = true;
+        }
         return this.xMsVersion;
     }
 
@@ -95,6 +136,10 @@ public final class BlockBlobsStageBlockFromURLHeaders {
      * @return the xMsContentCrc64 value.
      */
     public byte[] getXMsContentCrc64() {
+        if (!this.xMsContentCrc64HasBeenDeserialized) {
+            this.xMsContentCrc64 = Base64.getDecoder().decode(rawHeaders.getValue("x-ms-content-crc64"));
+            this.xMsContentCrc64HasBeenDeserialized = true;
+        }
         return CoreUtils.clone(this.xMsContentCrc64);
     }
 
@@ -115,6 +160,10 @@ public final class BlockBlobsStageBlockFromURLHeaders {
      * @return the xMsEncryptionKeySha256 value.
      */
     public String getXMsEncryptionKeySha256() {
+        if (!this.xMsEncryptionKeySha256HasBeenDeserialized) {
+            this.xMsEncryptionKeySha256 = rawHeaders.getValue("x-ms-encryption-key-sha256");
+            this.xMsEncryptionKeySha256HasBeenDeserialized = true;
+        }
         return this.xMsEncryptionKeySha256;
     }
 
@@ -135,6 +184,10 @@ public final class BlockBlobsStageBlockFromURLHeaders {
      * @return the xMsRequestId value.
      */
     public String getXMsRequestId() {
+        if (!this.xMsRequestIdHasBeenDeserialized) {
+            this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
+            this.xMsRequestIdHasBeenDeserialized = true;
+        }
         return this.xMsRequestId;
     }
 
@@ -155,6 +208,10 @@ public final class BlockBlobsStageBlockFromURLHeaders {
      * @return the xMsRequestServerEncrypted value.
      */
     public Boolean isXMsRequestServerEncrypted() {
+        if (!this.xMsRequestServerEncryptedHasBeenDeserialized) {
+            this.xMsRequestServerEncrypted = Boolean.valueOf(rawHeaders.getValue("x-ms-request-server-encrypted"));
+            this.xMsRequestServerEncryptedHasBeenDeserialized = true;
+        }
         return this.xMsRequestServerEncrypted;
     }
 
@@ -175,6 +232,10 @@ public final class BlockBlobsStageBlockFromURLHeaders {
      * @return the xMsClientRequestId value.
      */
     public String getXMsClientRequestId() {
+        if (!this.xMsClientRequestIdHasBeenDeserialized) {
+            this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
+            this.xMsClientRequestIdHasBeenDeserialized = true;
+        }
         return this.xMsClientRequestId;
     }
 
@@ -195,6 +256,10 @@ public final class BlockBlobsStageBlockFromURLHeaders {
      * @return the dateProperty value.
      */
     public OffsetDateTime getDateProperty() {
+        if (!this.datePropertyHasBeenDeserialized) {
+            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+            this.datePropertyHasBeenDeserialized = true;
+        }
         if (this.dateProperty == null) {
             return null;
         }
@@ -222,6 +287,10 @@ public final class BlockBlobsStageBlockFromURLHeaders {
      * @return the contentMD5 value.
      */
     public byte[] getContentMD5() {
+        if (!this.contentMD5HasBeenDeserialized) {
+            this.contentMD5 = Base64.getDecoder().decode(rawHeaders.getValue("Content-MD5"));
+            this.contentMD5HasBeenDeserialized = true;
+        }
         return CoreUtils.clone(this.contentMD5);
     }
 
@@ -242,6 +311,10 @@ public final class BlockBlobsStageBlockFromURLHeaders {
      * @return the xMsEncryptionScope value.
      */
     public String getXMsEncryptionScope() {
+        if (!this.xMsEncryptionScopeHasBeenDeserialized) {
+            this.xMsEncryptionScope = rawHeaders.getValue("x-ms-encryption-scope");
+            this.xMsEncryptionScopeHasBeenDeserialized = true;
+        }
         return this.xMsEncryptionScope;
     }
 

@@ -6,6 +6,8 @@ package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.HeaderCollection;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.blob.models.LeaseDurationType;
 import com.azure.storage.blob.models.LeaseStateType;
@@ -14,6 +16,7 @@ import com.azure.storage.blob.models.PublicAccessType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
+import java.util.HashMap;
 import java.util.Map;
 
 /** The ContainersGetPropertiesHeaders model. */
@@ -26,11 +29,17 @@ public final class ContainersGetPropertiesHeaders {
     @JsonProperty(value = "x-ms-lease-status")
     private LeaseStatusType xMsLeaseStatus;
 
+    // Maintains deserialization status for xMsLeaseStatus.
+    private boolean xMsLeaseStatusHasBeenDeserialized;
+
     /*
      * The x-ms-version property.
      */
     @JsonProperty(value = "x-ms-version")
     private String xMsVersion;
+
+    // Maintains deserialization status for xMsVersion.
+    private boolean xMsVersionHasBeenDeserialized;
 
     /*
      * The x-ms-immutable-storage-with-versioning-enabled property.
@@ -38,11 +47,17 @@ public final class ContainersGetPropertiesHeaders {
     @JsonProperty(value = "x-ms-immutable-storage-with-versioning-enabled")
     private Boolean xMsImmutableStorageWithVersioningEnabled;
 
+    // Maintains deserialization status for xMsImmutableStorageWithVersioningEnabled.
+    private boolean xMsImmutableStorageWithVersioningEnabledHasBeenDeserialized;
+
     /*
      * The x-ms-lease-state property.
      */
     @JsonProperty(value = "x-ms-lease-state")
     private LeaseStateType xMsLeaseState;
+
+    // Maintains deserialization status for xMsLeaseState.
+    private boolean xMsLeaseStateHasBeenDeserialized;
 
     /*
      * The x-ms-deny-encryption-scope-override property.
@@ -50,11 +65,17 @@ public final class ContainersGetPropertiesHeaders {
     @JsonProperty(value = "x-ms-deny-encryption-scope-override")
     private Boolean xMsDenyEncryptionScopeOverride;
 
+    // Maintains deserialization status for xMsDenyEncryptionScopeOverride.
+    private boolean xMsDenyEncryptionScopeOverrideHasBeenDeserialized;
+
     /*
      * The Last-Modified property.
      */
     @JsonProperty(value = "Last-Modified")
     private DateTimeRfc1123 lastModified;
+
+    // Maintains deserialization status for lastModified.
+    private boolean lastModifiedHasBeenDeserialized;
 
     /*
      * The x-ms-meta- property.
@@ -62,11 +83,17 @@ public final class ContainersGetPropertiesHeaders {
     @HeaderCollection("x-ms-meta-")
     private Map<String, String> xMsMeta;
 
+    // Maintains deserialization status for xMsMeta.
+    private boolean xMsMetaHasBeenDeserialized;
+
     /*
      * The Date property.
      */
     @JsonProperty(value = "Date")
     private DateTimeRfc1123 dateProperty;
+
+    // Maintains deserialization status for dateProperty.
+    private boolean datePropertyHasBeenDeserialized;
 
     /*
      * The x-ms-has-legal-hold property.
@@ -74,11 +101,17 @@ public final class ContainersGetPropertiesHeaders {
     @JsonProperty(value = "x-ms-has-legal-hold")
     private Boolean xMsHasLegalHold;
 
+    // Maintains deserialization status for xMsHasLegalHold.
+    private boolean xMsHasLegalHoldHasBeenDeserialized;
+
     /*
      * The x-ms-default-encryption-scope property.
      */
     @JsonProperty(value = "x-ms-default-encryption-scope")
     private String xMsDefaultEncryptionScope;
+
+    // Maintains deserialization status for xMsDefaultEncryptionScope.
+    private boolean xMsDefaultEncryptionScopeHasBeenDeserialized;
 
     /*
      * The ETag property.
@@ -86,11 +119,17 @@ public final class ContainersGetPropertiesHeaders {
     @JsonProperty(value = "ETag")
     private String eTag;
 
+    // Maintains deserialization status for eTag.
+    private boolean eTagHasBeenDeserialized;
+
     /*
      * The x-ms-has-immutability-policy property.
      */
     @JsonProperty(value = "x-ms-has-immutability-policy")
     private Boolean xMsHasImmutabilityPolicy;
+
+    // Maintains deserialization status for xMsHasImmutabilityPolicy.
+    private boolean xMsHasImmutabilityPolicyHasBeenDeserialized;
 
     /*
      * The x-ms-lease-duration property.
@@ -98,11 +137,17 @@ public final class ContainersGetPropertiesHeaders {
     @JsonProperty(value = "x-ms-lease-duration")
     private LeaseDurationType xMsLeaseDuration;
 
+    // Maintains deserialization status for xMsLeaseDuration.
+    private boolean xMsLeaseDurationHasBeenDeserialized;
+
     /*
      * The x-ms-blob-public-access property.
      */
     @JsonProperty(value = "x-ms-blob-public-access")
     private PublicAccessType xMsBlobPublicAccess;
+
+    // Maintains deserialization status for xMsBlobPublicAccess.
+    private boolean xMsBlobPublicAccessHasBeenDeserialized;
 
     /*
      * The x-ms-request-id property.
@@ -110,11 +155,25 @@ public final class ContainersGetPropertiesHeaders {
     @JsonProperty(value = "x-ms-request-id")
     private String xMsRequestId;
 
+    // Maintains deserialization status for xMsRequestId.
+    private boolean xMsRequestIdHasBeenDeserialized;
+
     /*
      * The x-ms-client-request-id property.
      */
     @JsonProperty(value = "x-ms-client-request-id")
     private String xMsClientRequestId;
+
+    // Maintains deserialization status for xMsClientRequestId.
+    private boolean xMsClientRequestIdHasBeenDeserialized;
+
+    // HttpHeaders containing the raw property values.
+    private final HttpHeaders rawHeaders;
+
+    /** Creates an instance of ContainersGetPropertiesHeaders class. */
+    ContainersGetPropertiesHeaders(HttpHeaders rawHeaders) {
+        this.rawHeaders = rawHeaders;
+    }
 
     /**
      * Get the xMsLeaseStatus property: The x-ms-lease-status property.
@@ -122,6 +181,10 @@ public final class ContainersGetPropertiesHeaders {
      * @return the xMsLeaseStatus value.
      */
     public LeaseStatusType getXMsLeaseStatus() {
+        if (!this.xMsLeaseStatusHasBeenDeserialized) {
+            this.xMsLeaseStatus = LeaseStatusType.fromString(rawHeaders.getValue("x-ms-lease-status"));
+            this.xMsLeaseStatusHasBeenDeserialized = true;
+        }
         return this.xMsLeaseStatus;
     }
 
@@ -142,6 +205,10 @@ public final class ContainersGetPropertiesHeaders {
      * @return the xMsVersion value.
      */
     public String getXMsVersion() {
+        if (!this.xMsVersionHasBeenDeserialized) {
+            this.xMsVersion = rawHeaders.getValue("x-ms-version");
+            this.xMsVersionHasBeenDeserialized = true;
+        }
         return this.xMsVersion;
     }
 
@@ -163,6 +230,11 @@ public final class ContainersGetPropertiesHeaders {
      * @return the xMsImmutableStorageWithVersioningEnabled value.
      */
     public Boolean isXMsImmutableStorageWithVersioningEnabled() {
+        if (!this.xMsImmutableStorageWithVersioningEnabledHasBeenDeserialized) {
+            this.xMsImmutableStorageWithVersioningEnabled =
+                    Boolean.valueOf(rawHeaders.getValue("x-ms-immutable-storage-with-versioning-enabled"));
+            this.xMsImmutableStorageWithVersioningEnabledHasBeenDeserialized = true;
+        }
         return this.xMsImmutableStorageWithVersioningEnabled;
     }
 
@@ -185,6 +257,10 @@ public final class ContainersGetPropertiesHeaders {
      * @return the xMsLeaseState value.
      */
     public LeaseStateType getXMsLeaseState() {
+        if (!this.xMsLeaseStateHasBeenDeserialized) {
+            this.xMsLeaseState = LeaseStateType.fromString(rawHeaders.getValue("x-ms-lease-state"));
+            this.xMsLeaseStateHasBeenDeserialized = true;
+        }
         return this.xMsLeaseState;
     }
 
@@ -205,6 +281,11 @@ public final class ContainersGetPropertiesHeaders {
      * @return the xMsDenyEncryptionScopeOverride value.
      */
     public Boolean isXMsDenyEncryptionScopeOverride() {
+        if (!this.xMsDenyEncryptionScopeOverrideHasBeenDeserialized) {
+            this.xMsDenyEncryptionScopeOverride =
+                    Boolean.valueOf(rawHeaders.getValue("x-ms-deny-encryption-scope-override"));
+            this.xMsDenyEncryptionScopeOverrideHasBeenDeserialized = true;
+        }
         return this.xMsDenyEncryptionScopeOverride;
     }
 
@@ -225,6 +306,10 @@ public final class ContainersGetPropertiesHeaders {
      * @return the lastModified value.
      */
     public OffsetDateTime getLastModified() {
+        if (!this.lastModifiedHasBeenDeserialized) {
+            this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
+            this.lastModifiedHasBeenDeserialized = true;
+        }
         if (this.lastModified == null) {
             return null;
         }
@@ -252,6 +337,18 @@ public final class ContainersGetPropertiesHeaders {
      * @return the xMsMeta value.
      */
     public Map<String, String> getXMsMeta() {
+        if (!this.xMsMetaHasBeenDeserialized) {
+            Map<String, String> headerCollection = new HashMap<String, String>();
+
+            for (HttpHeader header : rawHeaders) {
+                if (!header.getName().startsWith("x-ms-meta-")) {
+                    continue;
+                }
+                headerCollection.put(header.getName().substring(10), header.getValue());
+            }
+            this.xMsMeta = headerCollection;
+            this.xMsMetaHasBeenDeserialized = true;
+        }
         return this.xMsMeta;
     }
 
@@ -272,6 +369,10 @@ public final class ContainersGetPropertiesHeaders {
      * @return the dateProperty value.
      */
     public OffsetDateTime getDateProperty() {
+        if (!this.datePropertyHasBeenDeserialized) {
+            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+            this.datePropertyHasBeenDeserialized = true;
+        }
         if (this.dateProperty == null) {
             return null;
         }
@@ -299,6 +400,10 @@ public final class ContainersGetPropertiesHeaders {
      * @return the xMsHasLegalHold value.
      */
     public Boolean isXMsHasLegalHold() {
+        if (!this.xMsHasLegalHoldHasBeenDeserialized) {
+            this.xMsHasLegalHold = Boolean.valueOf(rawHeaders.getValue("x-ms-has-legal-hold"));
+            this.xMsHasLegalHoldHasBeenDeserialized = true;
+        }
         return this.xMsHasLegalHold;
     }
 
@@ -319,6 +424,10 @@ public final class ContainersGetPropertiesHeaders {
      * @return the xMsDefaultEncryptionScope value.
      */
     public String getXMsDefaultEncryptionScope() {
+        if (!this.xMsDefaultEncryptionScopeHasBeenDeserialized) {
+            this.xMsDefaultEncryptionScope = rawHeaders.getValue("x-ms-default-encryption-scope");
+            this.xMsDefaultEncryptionScopeHasBeenDeserialized = true;
+        }
         return this.xMsDefaultEncryptionScope;
     }
 
@@ -339,6 +448,10 @@ public final class ContainersGetPropertiesHeaders {
      * @return the eTag value.
      */
     public String getETag() {
+        if (!this.eTagHasBeenDeserialized) {
+            this.eTag = rawHeaders.getValue("ETag");
+            this.eTagHasBeenDeserialized = true;
+        }
         return this.eTag;
     }
 
@@ -359,6 +472,10 @@ public final class ContainersGetPropertiesHeaders {
      * @return the xMsHasImmutabilityPolicy value.
      */
     public Boolean isXMsHasImmutabilityPolicy() {
+        if (!this.xMsHasImmutabilityPolicyHasBeenDeserialized) {
+            this.xMsHasImmutabilityPolicy = Boolean.valueOf(rawHeaders.getValue("x-ms-has-immutability-policy"));
+            this.xMsHasImmutabilityPolicyHasBeenDeserialized = true;
+        }
         return this.xMsHasImmutabilityPolicy;
     }
 
@@ -379,6 +496,10 @@ public final class ContainersGetPropertiesHeaders {
      * @return the xMsLeaseDuration value.
      */
     public LeaseDurationType getXMsLeaseDuration() {
+        if (!this.xMsLeaseDurationHasBeenDeserialized) {
+            this.xMsLeaseDuration = LeaseDurationType.fromString(rawHeaders.getValue("x-ms-lease-duration"));
+            this.xMsLeaseDurationHasBeenDeserialized = true;
+        }
         return this.xMsLeaseDuration;
     }
 
@@ -399,6 +520,10 @@ public final class ContainersGetPropertiesHeaders {
      * @return the xMsBlobPublicAccess value.
      */
     public PublicAccessType getXMsBlobPublicAccess() {
+        if (!this.xMsBlobPublicAccessHasBeenDeserialized) {
+            this.xMsBlobPublicAccess = PublicAccessType.fromString(rawHeaders.getValue("x-ms-blob-public-access"));
+            this.xMsBlobPublicAccessHasBeenDeserialized = true;
+        }
         return this.xMsBlobPublicAccess;
     }
 
@@ -419,6 +544,10 @@ public final class ContainersGetPropertiesHeaders {
      * @return the xMsRequestId value.
      */
     public String getXMsRequestId() {
+        if (!this.xMsRequestIdHasBeenDeserialized) {
+            this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
+            this.xMsRequestIdHasBeenDeserialized = true;
+        }
         return this.xMsRequestId;
     }
 
@@ -439,6 +568,10 @@ public final class ContainersGetPropertiesHeaders {
      * @return the xMsClientRequestId value.
      */
     public String getXMsClientRequestId() {
+        if (!this.xMsClientRequestIdHasBeenDeserialized) {
+            this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
+            this.xMsClientRequestIdHasBeenDeserialized = true;
+        }
         return this.xMsClientRequestId;
     }
 

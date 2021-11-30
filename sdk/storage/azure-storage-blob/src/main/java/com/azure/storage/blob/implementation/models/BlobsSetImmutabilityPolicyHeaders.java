@@ -5,6 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,11 +22,17 @@ public final class BlobsSetImmutabilityPolicyHeaders {
     @JsonProperty(value = "x-ms-immutability-policy-mode")
     private BlobImmutabilityPolicyMode xMsImmutabilityPolicyMode;
 
+    // Maintains deserialization status for xMsImmutabilityPolicyMode.
+    private boolean xMsImmutabilityPolicyModeHasBeenDeserialized;
+
     /*
      * The x-ms-version property.
      */
     @JsonProperty(value = "x-ms-version")
     private String xMsVersion;
+
+    // Maintains deserialization status for xMsVersion.
+    private boolean xMsVersionHasBeenDeserialized;
 
     /*
      * The x-ms-immutability-policy-until-date property.
@@ -33,11 +40,17 @@ public final class BlobsSetImmutabilityPolicyHeaders {
     @JsonProperty(value = "x-ms-immutability-policy-until-date")
     private DateTimeRfc1123 xMsImmutabilityPolicyUntilDate;
 
+    // Maintains deserialization status for xMsImmutabilityPolicyUntilDate.
+    private boolean xMsImmutabilityPolicyUntilDateHasBeenDeserialized;
+
     /*
      * The x-ms-request-id property.
      */
     @JsonProperty(value = "x-ms-request-id")
     private String xMsRequestId;
+
+    // Maintains deserialization status for xMsRequestId.
+    private boolean xMsRequestIdHasBeenDeserialized;
 
     /*
      * The x-ms-client-request-id property.
@@ -45,11 +58,25 @@ public final class BlobsSetImmutabilityPolicyHeaders {
     @JsonProperty(value = "x-ms-client-request-id")
     private String xMsClientRequestId;
 
+    // Maintains deserialization status for xMsClientRequestId.
+    private boolean xMsClientRequestIdHasBeenDeserialized;
+
     /*
      * The Date property.
      */
     @JsonProperty(value = "Date")
     private DateTimeRfc1123 dateProperty;
+
+    // Maintains deserialization status for dateProperty.
+    private boolean datePropertyHasBeenDeserialized;
+
+    // HttpHeaders containing the raw property values.
+    private final HttpHeaders rawHeaders;
+
+    /** Creates an instance of BlobsSetImmutabilityPolicyHeaders class. */
+    BlobsSetImmutabilityPolicyHeaders(HttpHeaders rawHeaders) {
+        this.rawHeaders = rawHeaders;
+    }
 
     /**
      * Get the xMsImmutabilityPolicyMode property: The x-ms-immutability-policy-mode property.
@@ -57,6 +84,11 @@ public final class BlobsSetImmutabilityPolicyHeaders {
      * @return the xMsImmutabilityPolicyMode value.
      */
     public BlobImmutabilityPolicyMode getXMsImmutabilityPolicyMode() {
+        if (!this.xMsImmutabilityPolicyModeHasBeenDeserialized) {
+            this.xMsImmutabilityPolicyMode =
+                    BlobImmutabilityPolicyMode.fromString(rawHeaders.getValue("x-ms-immutability-policy-mode"));
+            this.xMsImmutabilityPolicyModeHasBeenDeserialized = true;
+        }
         return this.xMsImmutabilityPolicyMode;
     }
 
@@ -78,6 +110,10 @@ public final class BlobsSetImmutabilityPolicyHeaders {
      * @return the xMsVersion value.
      */
     public String getXMsVersion() {
+        if (!this.xMsVersionHasBeenDeserialized) {
+            this.xMsVersion = rawHeaders.getValue("x-ms-version");
+            this.xMsVersionHasBeenDeserialized = true;
+        }
         return this.xMsVersion;
     }
 
@@ -98,6 +134,11 @@ public final class BlobsSetImmutabilityPolicyHeaders {
      * @return the xMsImmutabilityPolicyUntilDate value.
      */
     public OffsetDateTime getXMsImmutabilityPolicyUntilDate() {
+        if (!this.xMsImmutabilityPolicyUntilDateHasBeenDeserialized) {
+            this.xMsImmutabilityPolicyUntilDate =
+                    new DateTimeRfc1123(rawHeaders.getValue("x-ms-immutability-policy-until-date"));
+            this.xMsImmutabilityPolicyUntilDateHasBeenDeserialized = true;
+        }
         if (this.xMsImmutabilityPolicyUntilDate == null) {
             return null;
         }
@@ -126,6 +167,10 @@ public final class BlobsSetImmutabilityPolicyHeaders {
      * @return the xMsRequestId value.
      */
     public String getXMsRequestId() {
+        if (!this.xMsRequestIdHasBeenDeserialized) {
+            this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
+            this.xMsRequestIdHasBeenDeserialized = true;
+        }
         return this.xMsRequestId;
     }
 
@@ -146,6 +191,10 @@ public final class BlobsSetImmutabilityPolicyHeaders {
      * @return the xMsClientRequestId value.
      */
     public String getXMsClientRequestId() {
+        if (!this.xMsClientRequestIdHasBeenDeserialized) {
+            this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
+            this.xMsClientRequestIdHasBeenDeserialized = true;
+        }
         return this.xMsClientRequestId;
     }
 
@@ -166,6 +215,10 @@ public final class BlobsSetImmutabilityPolicyHeaders {
      * @return the dateProperty value.
      */
     public OffsetDateTime getDateProperty() {
+        if (!this.datePropertyHasBeenDeserialized) {
+            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+            this.datePropertyHasBeenDeserialized = true;
+        }
         if (this.dateProperty == null) {
             return null;
         }

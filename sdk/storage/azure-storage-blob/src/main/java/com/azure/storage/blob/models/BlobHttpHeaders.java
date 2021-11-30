@@ -10,8 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** Parameter group. */
+@JacksonXmlRootElement(localName = "BlobHttpHeaders")
 @Fluent
-@JacksonXmlRootElement(localName = "blob-http-headers")
 public final class BlobHttpHeaders {
     /*
      * Optional. Sets the blob's cache control. If specified, this property is

@@ -38,11 +38,9 @@ public class BlobStorageCustomization extends Customization {
 
         ClassCustomization blobContainerEncryptionScope = models.getClass("BlobContainerEncryptionScope");
         PropertyCustomization defaultEncryptionScope = blobContainerEncryptionScope.getProperty("defaultEncryptionScope");
-        defaultEncryptionScope.removeAnnotation("@JsonProperty(value = \"DefaultEncryptionScope\")")
-            .addAnnotation("@JsonProperty(value = \"defaultEncryptionScope\")");
+        defaultEncryptionScope.removeAnnotation("@JsonProperty").addAnnotation("@JsonProperty(value = \"defaultEncryptionScope\")");
         PropertyCustomization encryptionScopeOverridePrevented = blobContainerEncryptionScope.getProperty("encryptionScopeOverridePrevented");
-        encryptionScopeOverridePrevented.removeAnnotation("@JsonProperty(value = \"EncryptionScopeOverridePrevented\")")
-            .addAnnotation("@JsonProperty(value = \"encryptionScopeOverridePrevented\")");
+        encryptionScopeOverridePrevented.removeAnnotation("@JsonProperty").addAnnotation("@JsonProperty(value = \"encryptionScopeOverridePrevented\")");
         blobContainerEncryptionScope.getMethod("isEncryptionScopeOverridePrevented").setReturnType("boolean", "return Boolean.TRUE.equals(%s);", true);
 
         ClassCustomization blobContainerItemProperties = models.getClass("BlobContainerItemProperties");

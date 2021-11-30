@@ -6,6 +6,8 @@ package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.HeaderCollection;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
@@ -17,6 +19,8 @@ import com.azure.storage.blob.models.LeaseStatusType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
+import java.util.Base64;
+import java.util.HashMap;
 import java.util.Map;
 
 /** The BlobsGetPropertiesHeaders model. */
@@ -29,11 +33,17 @@ public final class BlobsGetPropertiesHeaders {
     @JsonProperty(value = "x-ms-is-current-version")
     private Boolean xMsIsCurrentVersion;
 
+    // Maintains deserialization status for xMsIsCurrentVersion.
+    private boolean xMsIsCurrentVersionHasBeenDeserialized;
+
     /*
      * The x-ms-lease-status property.
      */
     @JsonProperty(value = "x-ms-lease-status")
     private LeaseStatusType xMsLeaseStatus;
+
+    // Maintains deserialization status for xMsLeaseStatus.
+    private boolean xMsLeaseStatusHasBeenDeserialized;
 
     /*
      * The x-ms-copy-destination-snapshot property.
@@ -41,11 +51,17 @@ public final class BlobsGetPropertiesHeaders {
     @JsonProperty(value = "x-ms-copy-destination-snapshot")
     private String xMsCopyDestinationSnapshot;
 
+    // Maintains deserialization status for xMsCopyDestinationSnapshot.
+    private boolean xMsCopyDestinationSnapshotHasBeenDeserialized;
+
     /*
      * The x-ms-lease-state property.
      */
     @JsonProperty(value = "x-ms-lease-state")
     private LeaseStateType xMsLeaseState;
+
+    // Maintains deserialization status for xMsLeaseState.
+    private boolean xMsLeaseStateHasBeenDeserialized;
 
     /*
      * The x-ms-blob-sealed property.
@@ -53,11 +69,17 @@ public final class BlobsGetPropertiesHeaders {
     @JsonProperty(value = "x-ms-blob-sealed")
     private Boolean xMsBlobSealed;
 
+    // Maintains deserialization status for xMsBlobSealed.
+    private boolean xMsBlobSealedHasBeenDeserialized;
+
     /*
      * The x-ms-version-id property.
      */
     @JsonProperty(value = "x-ms-version-id")
     private String xMsVersionId;
+
+    // Maintains deserialization status for xMsVersionId.
+    private boolean xMsVersionIdHasBeenDeserialized;
 
     /*
      * The x-ms-encryption-key-sha256 property.
@@ -65,11 +87,17 @@ public final class BlobsGetPropertiesHeaders {
     @JsonProperty(value = "x-ms-encryption-key-sha256")
     private String xMsEncryptionKeySha256;
 
+    // Maintains deserialization status for xMsEncryptionKeySha256.
+    private boolean xMsEncryptionKeySha256HasBeenDeserialized;
+
     /*
      * The x-ms-access-tier-change-time property.
      */
     @JsonProperty(value = "x-ms-access-tier-change-time")
     private DateTimeRfc1123 xMsAccessTierChangeTime;
+
+    // Maintains deserialization status for xMsAccessTierChangeTime.
+    private boolean xMsAccessTierChangeTimeHasBeenDeserialized;
 
     /*
      * The x-ms-blob-type property.
@@ -77,11 +105,17 @@ public final class BlobsGetPropertiesHeaders {
     @JsonProperty(value = "x-ms-blob-type")
     private BlobType xMsBlobType;
 
+    // Maintains deserialization status for xMsBlobType.
+    private boolean xMsBlobTypeHasBeenDeserialized;
+
     /*
      * The Content-Encoding property.
      */
     @JsonProperty(value = "Content-Encoding")
     private String contentEncoding;
+
+    // Maintains deserialization status for contentEncoding.
+    private boolean contentEncodingHasBeenDeserialized;
 
     /*
      * The x-ms-creation-time property.
@@ -89,11 +123,17 @@ public final class BlobsGetPropertiesHeaders {
     @JsonProperty(value = "x-ms-creation-time")
     private DateTimeRfc1123 xMsCreationTime;
 
+    // Maintains deserialization status for xMsCreationTime.
+    private boolean xMsCreationTimeHasBeenDeserialized;
+
     /*
      * The x-ms-incremental-copy property.
      */
     @JsonProperty(value = "x-ms-incremental-copy")
     private Boolean xMsIncrementalCopy;
+
+    // Maintains deserialization status for xMsIncrementalCopy.
+    private boolean xMsIncrementalCopyHasBeenDeserialized;
 
     /*
      * The x-ms-lease-duration property.
@@ -101,11 +141,17 @@ public final class BlobsGetPropertiesHeaders {
     @JsonProperty(value = "x-ms-lease-duration")
     private LeaseDurationType xMsLeaseDuration;
 
+    // Maintains deserialization status for xMsLeaseDuration.
+    private boolean xMsLeaseDurationHasBeenDeserialized;
+
     /*
      * The x-ms-version property.
      */
     @JsonProperty(value = "x-ms-version")
     private String xMsVersion;
+
+    // Maintains deserialization status for xMsVersion.
+    private boolean xMsVersionHasBeenDeserialized;
 
     /*
      * The x-ms-copy-id property.
@@ -113,11 +159,17 @@ public final class BlobsGetPropertiesHeaders {
     @JsonProperty(value = "x-ms-copy-id")
     private String xMsCopyId;
 
+    // Maintains deserialization status for xMsCopyId.
+    private boolean xMsCopyIdHasBeenDeserialized;
+
     /*
      * The x-ms-immutability-policy-until-date property.
      */
     @JsonProperty(value = "x-ms-immutability-policy-until-date")
     private DateTimeRfc1123 xMsImmutabilityPolicyUntilDate;
+
+    // Maintains deserialization status for xMsImmutabilityPolicyUntilDate.
+    private boolean xMsImmutabilityPolicyUntilDateHasBeenDeserialized;
 
     /*
      * The x-ms-blob-sequence-number property.
@@ -125,11 +177,17 @@ public final class BlobsGetPropertiesHeaders {
     @JsonProperty(value = "x-ms-blob-sequence-number")
     private Long xMsBlobSequenceNumber;
 
+    // Maintains deserialization status for xMsBlobSequenceNumber.
+    private boolean xMsBlobSequenceNumberHasBeenDeserialized;
+
     /*
      * The x-ms-blob-committed-block-count property.
      */
     @JsonProperty(value = "x-ms-blob-committed-block-count")
     private Integer xMsBlobCommittedBlockCount;
+
+    // Maintains deserialization status for xMsBlobCommittedBlockCount.
+    private boolean xMsBlobCommittedBlockCountHasBeenDeserialized;
 
     /*
      * The x-ms-legal-hold property.
@@ -137,11 +195,17 @@ public final class BlobsGetPropertiesHeaders {
     @JsonProperty(value = "x-ms-legal-hold")
     private Boolean xMsLegalHold;
 
+    // Maintains deserialization status for xMsLegalHold.
+    private boolean xMsLegalHoldHasBeenDeserialized;
+
     /*
      * The Content-MD5 property.
      */
     @JsonProperty(value = "Content-MD5")
     private byte[] contentMD5;
+
+    // Maintains deserialization status for contentMD5.
+    private boolean contentMD5HasBeenDeserialized;
 
     /*
      * The x-ms-or-policy-id property.
@@ -149,11 +213,17 @@ public final class BlobsGetPropertiesHeaders {
     @JsonProperty(value = "x-ms-or-policy-id")
     private String xMsOrPolicyId;
 
+    // Maintains deserialization status for xMsOrPolicyId.
+    private boolean xMsOrPolicyIdHasBeenDeserialized;
+
     /*
      * The Cache-Control property.
      */
     @JsonProperty(value = "Cache-Control")
     private String cacheControl;
+
+    // Maintains deserialization status for cacheControl.
+    private boolean cacheControlHasBeenDeserialized;
 
     /*
      * The ETag property.
@@ -161,11 +231,17 @@ public final class BlobsGetPropertiesHeaders {
     @JsonProperty(value = "ETag")
     private String eTag;
 
+    // Maintains deserialization status for eTag.
+    private boolean eTagHasBeenDeserialized;
+
     /*
      * The Content-Disposition property.
      */
     @JsonProperty(value = "Content-Disposition")
     private String contentDisposition;
+
+    // Maintains deserialization status for contentDisposition.
+    private boolean contentDispositionHasBeenDeserialized;
 
     /*
      * The Content-Language property.
@@ -173,11 +249,17 @@ public final class BlobsGetPropertiesHeaders {
     @JsonProperty(value = "Content-Language")
     private String contentLanguage;
 
+    // Maintains deserialization status for contentLanguage.
+    private boolean contentLanguageHasBeenDeserialized;
+
     /*
      * The x-ms-client-request-id property.
      */
     @JsonProperty(value = "x-ms-client-request-id")
     private String xMsClientRequestId;
+
+    // Maintains deserialization status for xMsClientRequestId.
+    private boolean xMsClientRequestIdHasBeenDeserialized;
 
     /*
      * The x-ms-or- property.
@@ -185,11 +267,17 @@ public final class BlobsGetPropertiesHeaders {
     @HeaderCollection("x-ms-or-")
     private Map<String, String> xMsOr;
 
+    // Maintains deserialization status for xMsOr.
+    private boolean xMsOrHasBeenDeserialized;
+
     /*
      * The x-ms-encryption-scope property.
      */
     @JsonProperty(value = "x-ms-encryption-scope")
     private String xMsEncryptionScope;
+
+    // Maintains deserialization status for xMsEncryptionScope.
+    private boolean xMsEncryptionScopeHasBeenDeserialized;
 
     /*
      * The x-ms-tag-count property.
@@ -197,11 +285,17 @@ public final class BlobsGetPropertiesHeaders {
     @JsonProperty(value = "x-ms-tag-count")
     private Long xMsTagCount;
 
+    // Maintains deserialization status for xMsTagCount.
+    private boolean xMsTagCountHasBeenDeserialized;
+
     /*
      * The Last-Modified property.
      */
     @JsonProperty(value = "Last-Modified")
     private DateTimeRfc1123 lastModified;
+
+    // Maintains deserialization status for lastModified.
+    private boolean lastModifiedHasBeenDeserialized;
 
     /*
      * The x-ms-access-tier-inferred property.
@@ -209,11 +303,17 @@ public final class BlobsGetPropertiesHeaders {
     @JsonProperty(value = "x-ms-access-tier-inferred")
     private Boolean xMsAccessTierInferred;
 
+    // Maintains deserialization status for xMsAccessTierInferred.
+    private boolean xMsAccessTierInferredHasBeenDeserialized;
+
     /*
      * The x-ms-immutability-policy-mode property.
      */
     @JsonProperty(value = "x-ms-immutability-policy-mode")
     private BlobImmutabilityPolicyMode xMsImmutabilityPolicyMode;
+
+    // Maintains deserialization status for xMsImmutabilityPolicyMode.
+    private boolean xMsImmutabilityPolicyModeHasBeenDeserialized;
 
     /*
      * The x-ms-access-tier property.
@@ -221,11 +321,17 @@ public final class BlobsGetPropertiesHeaders {
     @JsonProperty(value = "x-ms-access-tier")
     private String xMsAccessTier;
 
+    // Maintains deserialization status for xMsAccessTier.
+    private boolean xMsAccessTierHasBeenDeserialized;
+
     /*
      * The x-ms-copy-status-description property.
      */
     @JsonProperty(value = "x-ms-copy-status-description")
     private String xMsCopyStatusDescription;
+
+    // Maintains deserialization status for xMsCopyStatusDescription.
+    private boolean xMsCopyStatusDescriptionHasBeenDeserialized;
 
     /*
      * The Content-Length property.
@@ -233,11 +339,17 @@ public final class BlobsGetPropertiesHeaders {
     @JsonProperty(value = "Content-Length")
     private Long contentLength;
 
+    // Maintains deserialization status for contentLength.
+    private boolean contentLengthHasBeenDeserialized;
+
     /*
      * The x-ms-request-id property.
      */
     @JsonProperty(value = "x-ms-request-id")
     private String xMsRequestId;
+
+    // Maintains deserialization status for xMsRequestId.
+    private boolean xMsRequestIdHasBeenDeserialized;
 
     /*
      * The Content-Type property.
@@ -245,11 +357,17 @@ public final class BlobsGetPropertiesHeaders {
     @JsonProperty(value = "Content-Type")
     private String contentType;
 
+    // Maintains deserialization status for contentType.
+    private boolean contentTypeHasBeenDeserialized;
+
     /*
      * The x-ms-last-access-time property.
      */
     @JsonProperty(value = "x-ms-last-access-time")
     private DateTimeRfc1123 xMsLastAccessTime;
+
+    // Maintains deserialization status for xMsLastAccessTime.
+    private boolean xMsLastAccessTimeHasBeenDeserialized;
 
     /*
      * The x-ms-copy-source property.
@@ -257,11 +375,17 @@ public final class BlobsGetPropertiesHeaders {
     @JsonProperty(value = "x-ms-copy-source")
     private String xMsCopySource;
 
+    // Maintains deserialization status for xMsCopySource.
+    private boolean xMsCopySourceHasBeenDeserialized;
+
     /*
      * The x-ms-copy-progress property.
      */
     @JsonProperty(value = "x-ms-copy-progress")
     private String xMsCopyProgress;
+
+    // Maintains deserialization status for xMsCopyProgress.
+    private boolean xMsCopyProgressHasBeenDeserialized;
 
     /*
      * The x-ms-meta- property.
@@ -269,11 +393,17 @@ public final class BlobsGetPropertiesHeaders {
     @HeaderCollection("x-ms-meta-")
     private Map<String, String> xMsMeta;
 
+    // Maintains deserialization status for xMsMeta.
+    private boolean xMsMetaHasBeenDeserialized;
+
     /*
      * The Date property.
      */
     @JsonProperty(value = "Date")
     private DateTimeRfc1123 dateProperty;
+
+    // Maintains deserialization status for dateProperty.
+    private boolean datePropertyHasBeenDeserialized;
 
     /*
      * The x-ms-expiry-time property.
@@ -281,11 +411,17 @@ public final class BlobsGetPropertiesHeaders {
     @JsonProperty(value = "x-ms-expiry-time")
     private DateTimeRfc1123 xMsExpiryTime;
 
+    // Maintains deserialization status for xMsExpiryTime.
+    private boolean xMsExpiryTimeHasBeenDeserialized;
+
     /*
      * The x-ms-copy-completion-time property.
      */
     @JsonProperty(value = "x-ms-copy-completion-time")
     private DateTimeRfc1123 xMsCopyCompletionTime;
+
+    // Maintains deserialization status for xMsCopyCompletionTime.
+    private boolean xMsCopyCompletionTimeHasBeenDeserialized;
 
     /*
      * The Accept-Ranges property.
@@ -293,11 +429,17 @@ public final class BlobsGetPropertiesHeaders {
     @JsonProperty(value = "Accept-Ranges")
     private String acceptRanges;
 
+    // Maintains deserialization status for acceptRanges.
+    private boolean acceptRangesHasBeenDeserialized;
+
     /*
      * The x-ms-server-encrypted property.
      */
     @JsonProperty(value = "x-ms-server-encrypted")
     private Boolean xMsServerEncrypted;
+
+    // Maintains deserialization status for xMsServerEncrypted.
+    private boolean xMsServerEncryptedHasBeenDeserialized;
 
     /*
      * The x-ms-rehydrate-priority property.
@@ -305,11 +447,17 @@ public final class BlobsGetPropertiesHeaders {
     @JsonProperty(value = "x-ms-rehydrate-priority")
     private String xMsRehydratePriority;
 
+    // Maintains deserialization status for xMsRehydratePriority.
+    private boolean xMsRehydratePriorityHasBeenDeserialized;
+
     /*
      * The x-ms-copy-status property.
      */
     @JsonProperty(value = "x-ms-copy-status")
     private CopyStatusType xMsCopyStatus;
+
+    // Maintains deserialization status for xMsCopyStatus.
+    private boolean xMsCopyStatusHasBeenDeserialized;
 
     /*
      * The x-ms-archive-status property.
@@ -317,12 +465,27 @@ public final class BlobsGetPropertiesHeaders {
     @JsonProperty(value = "x-ms-archive-status")
     private String xMsArchiveStatus;
 
+    // Maintains deserialization status for xMsArchiveStatus.
+    private boolean xMsArchiveStatusHasBeenDeserialized;
+
+    // HttpHeaders containing the raw property values.
+    private final HttpHeaders rawHeaders;
+
+    /** Creates an instance of BlobsGetPropertiesHeaders class. */
+    BlobsGetPropertiesHeaders(HttpHeaders rawHeaders) {
+        this.rawHeaders = rawHeaders;
+    }
+
     /**
      * Get the xMsIsCurrentVersion property: The x-ms-is-current-version property.
      *
      * @return the xMsIsCurrentVersion value.
      */
     public Boolean isXMsIsCurrentVersion() {
+        if (!this.xMsIsCurrentVersionHasBeenDeserialized) {
+            this.xMsIsCurrentVersion = Boolean.valueOf(rawHeaders.getValue("x-ms-is-current-version"));
+            this.xMsIsCurrentVersionHasBeenDeserialized = true;
+        }
         return this.xMsIsCurrentVersion;
     }
 
@@ -343,6 +506,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the xMsLeaseStatus value.
      */
     public LeaseStatusType getXMsLeaseStatus() {
+        if (!this.xMsLeaseStatusHasBeenDeserialized) {
+            this.xMsLeaseStatus = LeaseStatusType.fromString(rawHeaders.getValue("x-ms-lease-status"));
+            this.xMsLeaseStatusHasBeenDeserialized = true;
+        }
         return this.xMsLeaseStatus;
     }
 
@@ -363,6 +530,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the xMsCopyDestinationSnapshot value.
      */
     public String getXMsCopyDestinationSnapshot() {
+        if (!this.xMsCopyDestinationSnapshotHasBeenDeserialized) {
+            this.xMsCopyDestinationSnapshot = rawHeaders.getValue("x-ms-copy-destination-snapshot");
+            this.xMsCopyDestinationSnapshotHasBeenDeserialized = true;
+        }
         return this.xMsCopyDestinationSnapshot;
     }
 
@@ -383,6 +554,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the xMsLeaseState value.
      */
     public LeaseStateType getXMsLeaseState() {
+        if (!this.xMsLeaseStateHasBeenDeserialized) {
+            this.xMsLeaseState = LeaseStateType.fromString(rawHeaders.getValue("x-ms-lease-state"));
+            this.xMsLeaseStateHasBeenDeserialized = true;
+        }
         return this.xMsLeaseState;
     }
 
@@ -403,6 +578,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the xMsBlobSealed value.
      */
     public Boolean isXMsBlobSealed() {
+        if (!this.xMsBlobSealedHasBeenDeserialized) {
+            this.xMsBlobSealed = Boolean.valueOf(rawHeaders.getValue("x-ms-blob-sealed"));
+            this.xMsBlobSealedHasBeenDeserialized = true;
+        }
         return this.xMsBlobSealed;
     }
 
@@ -423,6 +602,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the xMsVersionId value.
      */
     public String getXMsVersionId() {
+        if (!this.xMsVersionIdHasBeenDeserialized) {
+            this.xMsVersionId = rawHeaders.getValue("x-ms-version-id");
+            this.xMsVersionIdHasBeenDeserialized = true;
+        }
         return this.xMsVersionId;
     }
 
@@ -443,6 +626,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the xMsEncryptionKeySha256 value.
      */
     public String getXMsEncryptionKeySha256() {
+        if (!this.xMsEncryptionKeySha256HasBeenDeserialized) {
+            this.xMsEncryptionKeySha256 = rawHeaders.getValue("x-ms-encryption-key-sha256");
+            this.xMsEncryptionKeySha256HasBeenDeserialized = true;
+        }
         return this.xMsEncryptionKeySha256;
     }
 
@@ -463,6 +650,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the xMsAccessTierChangeTime value.
      */
     public OffsetDateTime getXMsAccessTierChangeTime() {
+        if (!this.xMsAccessTierChangeTimeHasBeenDeserialized) {
+            this.xMsAccessTierChangeTime = new DateTimeRfc1123(rawHeaders.getValue("x-ms-access-tier-change-time"));
+            this.xMsAccessTierChangeTimeHasBeenDeserialized = true;
+        }
         if (this.xMsAccessTierChangeTime == null) {
             return null;
         }
@@ -490,6 +681,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the xMsBlobType value.
      */
     public BlobType getXMsBlobType() {
+        if (!this.xMsBlobTypeHasBeenDeserialized) {
+            this.xMsBlobType = BlobType.fromString(rawHeaders.getValue("x-ms-blob-type"));
+            this.xMsBlobTypeHasBeenDeserialized = true;
+        }
         return this.xMsBlobType;
     }
 
@@ -510,6 +705,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the contentEncoding value.
      */
     public String getContentEncoding() {
+        if (!this.contentEncodingHasBeenDeserialized) {
+            this.contentEncoding = rawHeaders.getValue("Content-Encoding");
+            this.contentEncodingHasBeenDeserialized = true;
+        }
         return this.contentEncoding;
     }
 
@@ -530,6 +729,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the xMsCreationTime value.
      */
     public OffsetDateTime getXMsCreationTime() {
+        if (!this.xMsCreationTimeHasBeenDeserialized) {
+            this.xMsCreationTime = new DateTimeRfc1123(rawHeaders.getValue("x-ms-creation-time"));
+            this.xMsCreationTimeHasBeenDeserialized = true;
+        }
         if (this.xMsCreationTime == null) {
             return null;
         }
@@ -557,6 +760,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the xMsIncrementalCopy value.
      */
     public Boolean isXMsIncrementalCopy() {
+        if (!this.xMsIncrementalCopyHasBeenDeserialized) {
+            this.xMsIncrementalCopy = Boolean.valueOf(rawHeaders.getValue("x-ms-incremental-copy"));
+            this.xMsIncrementalCopyHasBeenDeserialized = true;
+        }
         return this.xMsIncrementalCopy;
     }
 
@@ -577,6 +784,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the xMsLeaseDuration value.
      */
     public LeaseDurationType getXMsLeaseDuration() {
+        if (!this.xMsLeaseDurationHasBeenDeserialized) {
+            this.xMsLeaseDuration = LeaseDurationType.fromString(rawHeaders.getValue("x-ms-lease-duration"));
+            this.xMsLeaseDurationHasBeenDeserialized = true;
+        }
         return this.xMsLeaseDuration;
     }
 
@@ -597,6 +808,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the xMsVersion value.
      */
     public String getXMsVersion() {
+        if (!this.xMsVersionHasBeenDeserialized) {
+            this.xMsVersion = rawHeaders.getValue("x-ms-version");
+            this.xMsVersionHasBeenDeserialized = true;
+        }
         return this.xMsVersion;
     }
 
@@ -617,6 +832,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the xMsCopyId value.
      */
     public String getXMsCopyId() {
+        if (!this.xMsCopyIdHasBeenDeserialized) {
+            this.xMsCopyId = rawHeaders.getValue("x-ms-copy-id");
+            this.xMsCopyIdHasBeenDeserialized = true;
+        }
         return this.xMsCopyId;
     }
 
@@ -637,6 +856,11 @@ public final class BlobsGetPropertiesHeaders {
      * @return the xMsImmutabilityPolicyUntilDate value.
      */
     public OffsetDateTime getXMsImmutabilityPolicyUntilDate() {
+        if (!this.xMsImmutabilityPolicyUntilDateHasBeenDeserialized) {
+            this.xMsImmutabilityPolicyUntilDate =
+                    new DateTimeRfc1123(rawHeaders.getValue("x-ms-immutability-policy-until-date"));
+            this.xMsImmutabilityPolicyUntilDateHasBeenDeserialized = true;
+        }
         if (this.xMsImmutabilityPolicyUntilDate == null) {
             return null;
         }
@@ -664,6 +888,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the xMsBlobSequenceNumber value.
      */
     public Long getXMsBlobSequenceNumber() {
+        if (!this.xMsBlobSequenceNumberHasBeenDeserialized) {
+            this.xMsBlobSequenceNumber = Long.valueOf(rawHeaders.getValue("x-ms-blob-sequence-number"));
+            this.xMsBlobSequenceNumberHasBeenDeserialized = true;
+        }
         return this.xMsBlobSequenceNumber;
     }
 
@@ -684,6 +912,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the xMsBlobCommittedBlockCount value.
      */
     public Integer getXMsBlobCommittedBlockCount() {
+        if (!this.xMsBlobCommittedBlockCountHasBeenDeserialized) {
+            this.xMsBlobCommittedBlockCount = Integer.valueOf(rawHeaders.getValue("x-ms-blob-committed-block-count"));
+            this.xMsBlobCommittedBlockCountHasBeenDeserialized = true;
+        }
         return this.xMsBlobCommittedBlockCount;
     }
 
@@ -704,6 +936,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the xMsLegalHold value.
      */
     public Boolean isXMsLegalHold() {
+        if (!this.xMsLegalHoldHasBeenDeserialized) {
+            this.xMsLegalHold = Boolean.valueOf(rawHeaders.getValue("x-ms-legal-hold"));
+            this.xMsLegalHoldHasBeenDeserialized = true;
+        }
         return this.xMsLegalHold;
     }
 
@@ -724,6 +960,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the contentMD5 value.
      */
     public byte[] getContentMD5() {
+        if (!this.contentMD5HasBeenDeserialized) {
+            this.contentMD5 = Base64.getDecoder().decode(rawHeaders.getValue("Content-MD5"));
+            this.contentMD5HasBeenDeserialized = true;
+        }
         return CoreUtils.clone(this.contentMD5);
     }
 
@@ -744,6 +984,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the xMsOrPolicyId value.
      */
     public String getXMsOrPolicyId() {
+        if (!this.xMsOrPolicyIdHasBeenDeserialized) {
+            this.xMsOrPolicyId = rawHeaders.getValue("x-ms-or-policy-id");
+            this.xMsOrPolicyIdHasBeenDeserialized = true;
+        }
         return this.xMsOrPolicyId;
     }
 
@@ -764,6 +1008,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the cacheControl value.
      */
     public String getCacheControl() {
+        if (!this.cacheControlHasBeenDeserialized) {
+            this.cacheControl = rawHeaders.getValue("Cache-Control");
+            this.cacheControlHasBeenDeserialized = true;
+        }
         return this.cacheControl;
     }
 
@@ -784,6 +1032,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the eTag value.
      */
     public String getETag() {
+        if (!this.eTagHasBeenDeserialized) {
+            this.eTag = rawHeaders.getValue("ETag");
+            this.eTagHasBeenDeserialized = true;
+        }
         return this.eTag;
     }
 
@@ -804,6 +1056,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the contentDisposition value.
      */
     public String getContentDisposition() {
+        if (!this.contentDispositionHasBeenDeserialized) {
+            this.contentDisposition = rawHeaders.getValue("Content-Disposition");
+            this.contentDispositionHasBeenDeserialized = true;
+        }
         return this.contentDisposition;
     }
 
@@ -824,6 +1080,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the contentLanguage value.
      */
     public String getContentLanguage() {
+        if (!this.contentLanguageHasBeenDeserialized) {
+            this.contentLanguage = rawHeaders.getValue("Content-Language");
+            this.contentLanguageHasBeenDeserialized = true;
+        }
         return this.contentLanguage;
     }
 
@@ -844,6 +1104,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the xMsClientRequestId value.
      */
     public String getXMsClientRequestId() {
+        if (!this.xMsClientRequestIdHasBeenDeserialized) {
+            this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
+            this.xMsClientRequestIdHasBeenDeserialized = true;
+        }
         return this.xMsClientRequestId;
     }
 
@@ -864,6 +1128,18 @@ public final class BlobsGetPropertiesHeaders {
      * @return the xMsOr value.
      */
     public Map<String, String> getXMsOr() {
+        if (!this.xMsOrHasBeenDeserialized) {
+            Map<String, String> headerCollection = new HashMap<String, String>();
+
+            for (HttpHeader header : rawHeaders) {
+                if (!header.getName().startsWith("x-ms-or-")) {
+                    continue;
+                }
+                headerCollection.put(header.getName().substring(8), header.getValue());
+            }
+            this.xMsOr = headerCollection;
+            this.xMsOrHasBeenDeserialized = true;
+        }
         return this.xMsOr;
     }
 
@@ -884,6 +1160,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the xMsEncryptionScope value.
      */
     public String getXMsEncryptionScope() {
+        if (!this.xMsEncryptionScopeHasBeenDeserialized) {
+            this.xMsEncryptionScope = rawHeaders.getValue("x-ms-encryption-scope");
+            this.xMsEncryptionScopeHasBeenDeserialized = true;
+        }
         return this.xMsEncryptionScope;
     }
 
@@ -904,6 +1184,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the xMsTagCount value.
      */
     public Long getXMsTagCount() {
+        if (!this.xMsTagCountHasBeenDeserialized) {
+            this.xMsTagCount = Long.valueOf(rawHeaders.getValue("x-ms-tag-count"));
+            this.xMsTagCountHasBeenDeserialized = true;
+        }
         return this.xMsTagCount;
     }
 
@@ -924,6 +1208,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the lastModified value.
      */
     public OffsetDateTime getLastModified() {
+        if (!this.lastModifiedHasBeenDeserialized) {
+            this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
+            this.lastModifiedHasBeenDeserialized = true;
+        }
         if (this.lastModified == null) {
             return null;
         }
@@ -951,6 +1239,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the xMsAccessTierInferred value.
      */
     public Boolean isXMsAccessTierInferred() {
+        if (!this.xMsAccessTierInferredHasBeenDeserialized) {
+            this.xMsAccessTierInferred = Boolean.valueOf(rawHeaders.getValue("x-ms-access-tier-inferred"));
+            this.xMsAccessTierInferredHasBeenDeserialized = true;
+        }
         return this.xMsAccessTierInferred;
     }
 
@@ -971,6 +1263,11 @@ public final class BlobsGetPropertiesHeaders {
      * @return the xMsImmutabilityPolicyMode value.
      */
     public BlobImmutabilityPolicyMode getXMsImmutabilityPolicyMode() {
+        if (!this.xMsImmutabilityPolicyModeHasBeenDeserialized) {
+            this.xMsImmutabilityPolicyMode =
+                    BlobImmutabilityPolicyMode.fromString(rawHeaders.getValue("x-ms-immutability-policy-mode"));
+            this.xMsImmutabilityPolicyModeHasBeenDeserialized = true;
+        }
         return this.xMsImmutabilityPolicyMode;
     }
 
@@ -992,6 +1289,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the xMsAccessTier value.
      */
     public String getXMsAccessTier() {
+        if (!this.xMsAccessTierHasBeenDeserialized) {
+            this.xMsAccessTier = rawHeaders.getValue("x-ms-access-tier");
+            this.xMsAccessTierHasBeenDeserialized = true;
+        }
         return this.xMsAccessTier;
     }
 
@@ -1012,6 +1313,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the xMsCopyStatusDescription value.
      */
     public String getXMsCopyStatusDescription() {
+        if (!this.xMsCopyStatusDescriptionHasBeenDeserialized) {
+            this.xMsCopyStatusDescription = rawHeaders.getValue("x-ms-copy-status-description");
+            this.xMsCopyStatusDescriptionHasBeenDeserialized = true;
+        }
         return this.xMsCopyStatusDescription;
     }
 
@@ -1032,6 +1337,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the contentLength value.
      */
     public Long getContentLength() {
+        if (!this.contentLengthHasBeenDeserialized) {
+            this.contentLength = Long.valueOf(rawHeaders.getValue("Content-Length"));
+            this.contentLengthHasBeenDeserialized = true;
+        }
         return this.contentLength;
     }
 
@@ -1052,6 +1361,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the xMsRequestId value.
      */
     public String getXMsRequestId() {
+        if (!this.xMsRequestIdHasBeenDeserialized) {
+            this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
+            this.xMsRequestIdHasBeenDeserialized = true;
+        }
         return this.xMsRequestId;
     }
 
@@ -1072,6 +1385,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the contentType value.
      */
     public String getContentType() {
+        if (!this.contentTypeHasBeenDeserialized) {
+            this.contentType = rawHeaders.getValue("Content-Type");
+            this.contentTypeHasBeenDeserialized = true;
+        }
         return this.contentType;
     }
 
@@ -1092,6 +1409,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the xMsLastAccessTime value.
      */
     public OffsetDateTime getXMsLastAccessTime() {
+        if (!this.xMsLastAccessTimeHasBeenDeserialized) {
+            this.xMsLastAccessTime = new DateTimeRfc1123(rawHeaders.getValue("x-ms-last-access-time"));
+            this.xMsLastAccessTimeHasBeenDeserialized = true;
+        }
         if (this.xMsLastAccessTime == null) {
             return null;
         }
@@ -1119,6 +1440,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the xMsCopySource value.
      */
     public String getXMsCopySource() {
+        if (!this.xMsCopySourceHasBeenDeserialized) {
+            this.xMsCopySource = rawHeaders.getValue("x-ms-copy-source");
+            this.xMsCopySourceHasBeenDeserialized = true;
+        }
         return this.xMsCopySource;
     }
 
@@ -1139,6 +1464,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the xMsCopyProgress value.
      */
     public String getXMsCopyProgress() {
+        if (!this.xMsCopyProgressHasBeenDeserialized) {
+            this.xMsCopyProgress = rawHeaders.getValue("x-ms-copy-progress");
+            this.xMsCopyProgressHasBeenDeserialized = true;
+        }
         return this.xMsCopyProgress;
     }
 
@@ -1159,6 +1488,18 @@ public final class BlobsGetPropertiesHeaders {
      * @return the xMsMeta value.
      */
     public Map<String, String> getXMsMeta() {
+        if (!this.xMsMetaHasBeenDeserialized) {
+            Map<String, String> headerCollection = new HashMap<String, String>();
+
+            for (HttpHeader header : rawHeaders) {
+                if (!header.getName().startsWith("x-ms-meta-")) {
+                    continue;
+                }
+                headerCollection.put(header.getName().substring(10), header.getValue());
+            }
+            this.xMsMeta = headerCollection;
+            this.xMsMetaHasBeenDeserialized = true;
+        }
         return this.xMsMeta;
     }
 
@@ -1179,6 +1520,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the dateProperty value.
      */
     public OffsetDateTime getDateProperty() {
+        if (!this.datePropertyHasBeenDeserialized) {
+            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+            this.datePropertyHasBeenDeserialized = true;
+        }
         if (this.dateProperty == null) {
             return null;
         }
@@ -1206,6 +1551,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the xMsExpiryTime value.
      */
     public OffsetDateTime getXMsExpiryTime() {
+        if (!this.xMsExpiryTimeHasBeenDeserialized) {
+            this.xMsExpiryTime = new DateTimeRfc1123(rawHeaders.getValue("x-ms-expiry-time"));
+            this.xMsExpiryTimeHasBeenDeserialized = true;
+        }
         if (this.xMsExpiryTime == null) {
             return null;
         }
@@ -1233,6 +1582,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the xMsCopyCompletionTime value.
      */
     public OffsetDateTime getXMsCopyCompletionTime() {
+        if (!this.xMsCopyCompletionTimeHasBeenDeserialized) {
+            this.xMsCopyCompletionTime = new DateTimeRfc1123(rawHeaders.getValue("x-ms-copy-completion-time"));
+            this.xMsCopyCompletionTimeHasBeenDeserialized = true;
+        }
         if (this.xMsCopyCompletionTime == null) {
             return null;
         }
@@ -1260,6 +1613,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the acceptRanges value.
      */
     public String getAcceptRanges() {
+        if (!this.acceptRangesHasBeenDeserialized) {
+            this.acceptRanges = rawHeaders.getValue("Accept-Ranges");
+            this.acceptRangesHasBeenDeserialized = true;
+        }
         return this.acceptRanges;
     }
 
@@ -1280,6 +1637,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the xMsServerEncrypted value.
      */
     public Boolean isXMsServerEncrypted() {
+        if (!this.xMsServerEncryptedHasBeenDeserialized) {
+            this.xMsServerEncrypted = Boolean.valueOf(rawHeaders.getValue("x-ms-server-encrypted"));
+            this.xMsServerEncryptedHasBeenDeserialized = true;
+        }
         return this.xMsServerEncrypted;
     }
 
@@ -1300,6 +1661,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the xMsRehydratePriority value.
      */
     public String getXMsRehydratePriority() {
+        if (!this.xMsRehydratePriorityHasBeenDeserialized) {
+            this.xMsRehydratePriority = rawHeaders.getValue("x-ms-rehydrate-priority");
+            this.xMsRehydratePriorityHasBeenDeserialized = true;
+        }
         return this.xMsRehydratePriority;
     }
 
@@ -1320,6 +1685,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the xMsCopyStatus value.
      */
     public CopyStatusType getXMsCopyStatus() {
+        if (!this.xMsCopyStatusHasBeenDeserialized) {
+            this.xMsCopyStatus = CopyStatusType.fromString(rawHeaders.getValue("x-ms-copy-status"));
+            this.xMsCopyStatusHasBeenDeserialized = true;
+        }
         return this.xMsCopyStatus;
     }
 
@@ -1340,6 +1709,10 @@ public final class BlobsGetPropertiesHeaders {
      * @return the xMsArchiveStatus value.
      */
     public String getXMsArchiveStatus() {
+        if (!this.xMsArchiveStatusHasBeenDeserialized) {
+            this.xMsArchiveStatus = rawHeaders.getValue("x-ms-archive-status");
+            this.xMsArchiveStatusHasBeenDeserialized = true;
+        }
         return this.xMsArchiveStatus;
     }
 

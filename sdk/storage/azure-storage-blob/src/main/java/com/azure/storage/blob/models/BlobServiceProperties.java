@@ -64,7 +64,7 @@ public final class BlobServiceProperties {
      * the retention policy which determines how long the associated data
      * should persist
      */
-    @JsonProperty(value = "DeleteRetentionPolicy")
+    @JsonProperty(value = "RetentionPolicy")
     private BlobRetentionPolicy deleteRetentionPolicy;
 
     /*

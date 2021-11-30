@@ -5,6 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -20,11 +21,17 @@ public final class ContainersSetAccessPolicyHeaders {
     @JsonProperty(value = "x-ms-version")
     private String xMsVersion;
 
+    // Maintains deserialization status for xMsVersion.
+    private boolean xMsVersionHasBeenDeserialized;
+
     /*
      * The ETag property.
      */
     @JsonProperty(value = "ETag")
     private String eTag;
+
+    // Maintains deserialization status for eTag.
+    private boolean eTagHasBeenDeserialized;
 
     /*
      * The Last-Modified property.
@@ -32,11 +39,17 @@ public final class ContainersSetAccessPolicyHeaders {
     @JsonProperty(value = "Last-Modified")
     private DateTimeRfc1123 lastModified;
 
+    // Maintains deserialization status for lastModified.
+    private boolean lastModifiedHasBeenDeserialized;
+
     /*
      * The x-ms-request-id property.
      */
     @JsonProperty(value = "x-ms-request-id")
     private String xMsRequestId;
+
+    // Maintains deserialization status for xMsRequestId.
+    private boolean xMsRequestIdHasBeenDeserialized;
 
     /*
      * The x-ms-client-request-id property.
@@ -44,11 +57,25 @@ public final class ContainersSetAccessPolicyHeaders {
     @JsonProperty(value = "x-ms-client-request-id")
     private String xMsClientRequestId;
 
+    // Maintains deserialization status for xMsClientRequestId.
+    private boolean xMsClientRequestIdHasBeenDeserialized;
+
     /*
      * The Date property.
      */
     @JsonProperty(value = "Date")
     private DateTimeRfc1123 dateProperty;
+
+    // Maintains deserialization status for dateProperty.
+    private boolean datePropertyHasBeenDeserialized;
+
+    // HttpHeaders containing the raw property values.
+    private final HttpHeaders rawHeaders;
+
+    /** Creates an instance of ContainersSetAccessPolicyHeaders class. */
+    ContainersSetAccessPolicyHeaders(HttpHeaders rawHeaders) {
+        this.rawHeaders = rawHeaders;
+    }
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
@@ -56,6 +83,10 @@ public final class ContainersSetAccessPolicyHeaders {
      * @return the xMsVersion value.
      */
     public String getXMsVersion() {
+        if (!this.xMsVersionHasBeenDeserialized) {
+            this.xMsVersion = rawHeaders.getValue("x-ms-version");
+            this.xMsVersionHasBeenDeserialized = true;
+        }
         return this.xMsVersion;
     }
 
@@ -76,6 +107,10 @@ public final class ContainersSetAccessPolicyHeaders {
      * @return the eTag value.
      */
     public String getETag() {
+        if (!this.eTagHasBeenDeserialized) {
+            this.eTag = rawHeaders.getValue("ETag");
+            this.eTagHasBeenDeserialized = true;
+        }
         return this.eTag;
     }
 
@@ -96,6 +131,10 @@ public final class ContainersSetAccessPolicyHeaders {
      * @return the lastModified value.
      */
     public OffsetDateTime getLastModified() {
+        if (!this.lastModifiedHasBeenDeserialized) {
+            this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
+            this.lastModifiedHasBeenDeserialized = true;
+        }
         if (this.lastModified == null) {
             return null;
         }
@@ -123,6 +162,10 @@ public final class ContainersSetAccessPolicyHeaders {
      * @return the xMsRequestId value.
      */
     public String getXMsRequestId() {
+        if (!this.xMsRequestIdHasBeenDeserialized) {
+            this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
+            this.xMsRequestIdHasBeenDeserialized = true;
+        }
         return this.xMsRequestId;
     }
 
@@ -143,6 +186,10 @@ public final class ContainersSetAccessPolicyHeaders {
      * @return the xMsClientRequestId value.
      */
     public String getXMsClientRequestId() {
+        if (!this.xMsClientRequestIdHasBeenDeserialized) {
+            this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
+            this.xMsClientRequestIdHasBeenDeserialized = true;
+        }
         return this.xMsClientRequestId;
     }
 
@@ -163,6 +210,10 @@ public final class ContainersSetAccessPolicyHeaders {
      * @return the dateProperty value.
      */
     public OffsetDateTime getDateProperty() {
+        if (!this.datePropertyHasBeenDeserialized) {
+            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+            this.datePropertyHasBeenDeserialized = true;
+        }
         if (this.dateProperty == null) {
             return null;
         }

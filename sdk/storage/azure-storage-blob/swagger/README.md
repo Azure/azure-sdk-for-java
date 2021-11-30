@@ -370,7 +370,6 @@ directive:
     if (!$.BlobMetrics) {
       $.BlobMetrics = $.Metrics;
       delete $.Metrics;
-      $.BlobMetrics.xml = {"name": "Metrics"};
       $.BlobMetrics.properties.IncludeApis = $.BlobMetrics.properties.IncludeAPIs;
       delete $.BlobMetrics.properties.IncludeAPIs;
       $.BlobMetrics.properties.IncludeApis.xml = {"name": "IncludeAPIs"};

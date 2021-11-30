@@ -5,6 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -20,11 +21,17 @@ public final class BlobsCreateSnapshotHeaders {
     @JsonProperty(value = "x-ms-snapshot")
     private String xMsSnapshot;
 
+    // Maintains deserialization status for xMsSnapshot.
+    private boolean xMsSnapshotHasBeenDeserialized;
+
     /*
      * The x-ms-version property.
      */
     @JsonProperty(value = "x-ms-version")
     private String xMsVersion;
+
+    // Maintains deserialization status for xMsVersion.
+    private boolean xMsVersionHasBeenDeserialized;
 
     /*
      * The ETag property.
@@ -32,11 +39,17 @@ public final class BlobsCreateSnapshotHeaders {
     @JsonProperty(value = "ETag")
     private String eTag;
 
+    // Maintains deserialization status for eTag.
+    private boolean eTagHasBeenDeserialized;
+
     /*
      * The Last-Modified property.
      */
     @JsonProperty(value = "Last-Modified")
     private DateTimeRfc1123 lastModified;
+
+    // Maintains deserialization status for lastModified.
+    private boolean lastModifiedHasBeenDeserialized;
 
     /*
      * The x-ms-version-id property.
@@ -44,11 +57,17 @@ public final class BlobsCreateSnapshotHeaders {
     @JsonProperty(value = "x-ms-version-id")
     private String xMsVersionId;
 
+    // Maintains deserialization status for xMsVersionId.
+    private boolean xMsVersionIdHasBeenDeserialized;
+
     /*
      * The x-ms-request-id property.
      */
     @JsonProperty(value = "x-ms-request-id")
     private String xMsRequestId;
+
+    // Maintains deserialization status for xMsRequestId.
+    private boolean xMsRequestIdHasBeenDeserialized;
 
     /*
      * The x-ms-request-server-encrypted property.
@@ -56,11 +75,17 @@ public final class BlobsCreateSnapshotHeaders {
     @JsonProperty(value = "x-ms-request-server-encrypted")
     private Boolean xMsRequestServerEncrypted;
 
+    // Maintains deserialization status for xMsRequestServerEncrypted.
+    private boolean xMsRequestServerEncryptedHasBeenDeserialized;
+
     /*
      * The x-ms-client-request-id property.
      */
     @JsonProperty(value = "x-ms-client-request-id")
     private String xMsClientRequestId;
+
+    // Maintains deserialization status for xMsClientRequestId.
+    private boolean xMsClientRequestIdHasBeenDeserialized;
 
     /*
      * The Date property.
@@ -68,12 +93,27 @@ public final class BlobsCreateSnapshotHeaders {
     @JsonProperty(value = "Date")
     private DateTimeRfc1123 dateProperty;
 
+    // Maintains deserialization status for dateProperty.
+    private boolean datePropertyHasBeenDeserialized;
+
+    // HttpHeaders containing the raw property values.
+    private final HttpHeaders rawHeaders;
+
+    /** Creates an instance of BlobsCreateSnapshotHeaders class. */
+    BlobsCreateSnapshotHeaders(HttpHeaders rawHeaders) {
+        this.rawHeaders = rawHeaders;
+    }
+
     /**
      * Get the xMsSnapshot property: The x-ms-snapshot property.
      *
      * @return the xMsSnapshot value.
      */
     public String getXMsSnapshot() {
+        if (!this.xMsSnapshotHasBeenDeserialized) {
+            this.xMsSnapshot = rawHeaders.getValue("x-ms-snapshot");
+            this.xMsSnapshotHasBeenDeserialized = true;
+        }
         return this.xMsSnapshot;
     }
 
@@ -94,6 +134,10 @@ public final class BlobsCreateSnapshotHeaders {
      * @return the xMsVersion value.
      */
     public String getXMsVersion() {
+        if (!this.xMsVersionHasBeenDeserialized) {
+            this.xMsVersion = rawHeaders.getValue("x-ms-version");
+            this.xMsVersionHasBeenDeserialized = true;
+        }
         return this.xMsVersion;
     }
 
@@ -114,6 +158,10 @@ public final class BlobsCreateSnapshotHeaders {
      * @return the eTag value.
      */
     public String getETag() {
+        if (!this.eTagHasBeenDeserialized) {
+            this.eTag = rawHeaders.getValue("ETag");
+            this.eTagHasBeenDeserialized = true;
+        }
         return this.eTag;
     }
 
@@ -134,6 +182,10 @@ public final class BlobsCreateSnapshotHeaders {
      * @return the lastModified value.
      */
     public OffsetDateTime getLastModified() {
+        if (!this.lastModifiedHasBeenDeserialized) {
+            this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
+            this.lastModifiedHasBeenDeserialized = true;
+        }
         if (this.lastModified == null) {
             return null;
         }
@@ -161,6 +213,10 @@ public final class BlobsCreateSnapshotHeaders {
      * @return the xMsVersionId value.
      */
     public String getXMsVersionId() {
+        if (!this.xMsVersionIdHasBeenDeserialized) {
+            this.xMsVersionId = rawHeaders.getValue("x-ms-version-id");
+            this.xMsVersionIdHasBeenDeserialized = true;
+        }
         return this.xMsVersionId;
     }
 
@@ -181,6 +237,10 @@ public final class BlobsCreateSnapshotHeaders {
      * @return the xMsRequestId value.
      */
     public String getXMsRequestId() {
+        if (!this.xMsRequestIdHasBeenDeserialized) {
+            this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
+            this.xMsRequestIdHasBeenDeserialized = true;
+        }
         return this.xMsRequestId;
     }
 
@@ -201,6 +261,10 @@ public final class BlobsCreateSnapshotHeaders {
      * @return the xMsRequestServerEncrypted value.
      */
     public Boolean isXMsRequestServerEncrypted() {
+        if (!this.xMsRequestServerEncryptedHasBeenDeserialized) {
+            this.xMsRequestServerEncrypted = Boolean.valueOf(rawHeaders.getValue("x-ms-request-server-encrypted"));
+            this.xMsRequestServerEncryptedHasBeenDeserialized = true;
+        }
         return this.xMsRequestServerEncrypted;
     }
 
@@ -221,6 +285,10 @@ public final class BlobsCreateSnapshotHeaders {
      * @return the xMsClientRequestId value.
      */
     public String getXMsClientRequestId() {
+        if (!this.xMsClientRequestIdHasBeenDeserialized) {
+            this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
+            this.xMsClientRequestIdHasBeenDeserialized = true;
+        }
         return this.xMsClientRequestId;
     }
 
@@ -241,6 +309,10 @@ public final class BlobsCreateSnapshotHeaders {
      * @return the dateProperty value.
      */
     public OffsetDateTime getDateProperty() {
+        if (!this.datePropertyHasBeenDeserialized) {
+            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+            this.datePropertyHasBeenDeserialized = true;
+        }
         if (this.dateProperty == null) {
             return null;
         }

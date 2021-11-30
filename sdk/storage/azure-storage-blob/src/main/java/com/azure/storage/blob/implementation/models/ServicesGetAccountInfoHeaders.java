@@ -5,6 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.blob.models.AccountKind;
 import com.azure.storage.blob.models.SkuName;
@@ -22,11 +23,17 @@ public final class ServicesGetAccountInfoHeaders {
     @JsonProperty(value = "x-ms-version")
     private String xMsVersion;
 
+    // Maintains deserialization status for xMsVersion.
+    private boolean xMsVersionHasBeenDeserialized;
+
     /*
      * The x-ms-account-kind property.
      */
     @JsonProperty(value = "x-ms-account-kind")
     private AccountKind xMsAccountKind;
+
+    // Maintains deserialization status for xMsAccountKind.
+    private boolean xMsAccountKindHasBeenDeserialized;
 
     /*
      * The x-ms-is-hns-enabled property.
@@ -34,11 +41,17 @@ public final class ServicesGetAccountInfoHeaders {
     @JsonProperty(value = "x-ms-is-hns-enabled")
     private Boolean xMsIsHnsEnabled;
 
+    // Maintains deserialization status for xMsIsHnsEnabled.
+    private boolean xMsIsHnsEnabledHasBeenDeserialized;
+
     /*
      * The x-ms-sku-name property.
      */
     @JsonProperty(value = "x-ms-sku-name")
     private SkuName xMsSkuName;
+
+    // Maintains deserialization status for xMsSkuName.
+    private boolean xMsSkuNameHasBeenDeserialized;
 
     /*
      * The x-ms-request-id property.
@@ -46,11 +59,17 @@ public final class ServicesGetAccountInfoHeaders {
     @JsonProperty(value = "x-ms-request-id")
     private String xMsRequestId;
 
+    // Maintains deserialization status for xMsRequestId.
+    private boolean xMsRequestIdHasBeenDeserialized;
+
     /*
      * The x-ms-client-request-id property.
      */
     @JsonProperty(value = "x-ms-client-request-id")
     private String xMsClientRequestId;
+
+    // Maintains deserialization status for xMsClientRequestId.
+    private boolean xMsClientRequestIdHasBeenDeserialized;
 
     /*
      * The Date property.
@@ -58,12 +77,27 @@ public final class ServicesGetAccountInfoHeaders {
     @JsonProperty(value = "Date")
     private DateTimeRfc1123 dateProperty;
 
+    // Maintains deserialization status for dateProperty.
+    private boolean datePropertyHasBeenDeserialized;
+
+    // HttpHeaders containing the raw property values.
+    private final HttpHeaders rawHeaders;
+
+    /** Creates an instance of ServicesGetAccountInfoHeaders class. */
+    ServicesGetAccountInfoHeaders(HttpHeaders rawHeaders) {
+        this.rawHeaders = rawHeaders;
+    }
+
     /**
      * Get the xMsVersion property: The x-ms-version property.
      *
      * @return the xMsVersion value.
      */
     public String getXMsVersion() {
+        if (!this.xMsVersionHasBeenDeserialized) {
+            this.xMsVersion = rawHeaders.getValue("x-ms-version");
+            this.xMsVersionHasBeenDeserialized = true;
+        }
         return this.xMsVersion;
     }
 
@@ -84,6 +118,10 @@ public final class ServicesGetAccountInfoHeaders {
      * @return the xMsAccountKind value.
      */
     public AccountKind getXMsAccountKind() {
+        if (!this.xMsAccountKindHasBeenDeserialized) {
+            this.xMsAccountKind = AccountKind.fromString(rawHeaders.getValue("x-ms-account-kind"));
+            this.xMsAccountKindHasBeenDeserialized = true;
+        }
         return this.xMsAccountKind;
     }
 
@@ -104,6 +142,10 @@ public final class ServicesGetAccountInfoHeaders {
      * @return the xMsIsHnsEnabled value.
      */
     public Boolean isXMsIsHnsEnabled() {
+        if (!this.xMsIsHnsEnabledHasBeenDeserialized) {
+            this.xMsIsHnsEnabled = Boolean.valueOf(rawHeaders.getValue("x-ms-is-hns-enabled"));
+            this.xMsIsHnsEnabledHasBeenDeserialized = true;
+        }
         return this.xMsIsHnsEnabled;
     }
 
@@ -124,6 +166,10 @@ public final class ServicesGetAccountInfoHeaders {
      * @return the xMsSkuName value.
      */
     public SkuName getXMsSkuName() {
+        if (!this.xMsSkuNameHasBeenDeserialized) {
+            this.xMsSkuName = SkuName.fromString(rawHeaders.getValue("x-ms-sku-name"));
+            this.xMsSkuNameHasBeenDeserialized = true;
+        }
         return this.xMsSkuName;
     }
 
@@ -144,6 +190,10 @@ public final class ServicesGetAccountInfoHeaders {
      * @return the xMsRequestId value.
      */
     public String getXMsRequestId() {
+        if (!this.xMsRequestIdHasBeenDeserialized) {
+            this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
+            this.xMsRequestIdHasBeenDeserialized = true;
+        }
         return this.xMsRequestId;
     }
 
@@ -164,6 +214,10 @@ public final class ServicesGetAccountInfoHeaders {
      * @return the xMsClientRequestId value.
      */
     public String getXMsClientRequestId() {
+        if (!this.xMsClientRequestIdHasBeenDeserialized) {
+            this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
+            this.xMsClientRequestIdHasBeenDeserialized = true;
+        }
         return this.xMsClientRequestId;
     }
 
@@ -184,6 +238,10 @@ public final class ServicesGetAccountInfoHeaders {
      * @return the dateProperty value.
      */
     public OffsetDateTime getDateProperty() {
+        if (!this.datePropertyHasBeenDeserialized) {
+            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+            this.datePropertyHasBeenDeserialized = true;
+        }
         if (this.dateProperty == null) {
             return null;
         }
