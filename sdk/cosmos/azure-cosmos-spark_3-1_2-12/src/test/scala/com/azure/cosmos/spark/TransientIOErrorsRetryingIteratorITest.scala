@@ -10,6 +10,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicLong
 
+//scalastyle:off magic.number
+//scalastyle:off null
 class TransientIOErrorsRetryingIteratorITest
   extends IntegrationSpec
   with Spark
@@ -131,7 +133,9 @@ class TransientIOErrorsRetryingIteratorITest
     if (invocationCountSnapshot <= 2 || invocationCountSnapshot > 5) {
       func()
     } else {
+      //scalastyle:off null
       throw new ServiceUnavailableException("Dummy 503", null, null)
+      //scalastyle:on null
     }
   }
 
@@ -144,7 +148,11 @@ class TransientIOErrorsRetryingIteratorITest
     if (recordCount.get < 2 || invocationCountSnapshot > 17) {
       func()
     } else {
+      //scalastyle:off null
       throw new ServiceUnavailableException("Dummy 503", null, null)
+      //scalastyle:on null
     }
   }
 }
+//scalastyle:on magic.number
+//scalastyle:on null
