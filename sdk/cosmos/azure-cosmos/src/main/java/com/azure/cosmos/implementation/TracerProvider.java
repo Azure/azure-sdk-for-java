@@ -572,7 +572,7 @@ public class TracerProvider {
     }
 
     private static void subscribe(Tracer tracer, CoreSubscriber<? super Object> actual) {
-        Context context = actual.currentContext().getOrDefault(REACTOR_TRACING_CONTEXT_KEY, null);
+        Context context = getContextFromReactorOrNull(actual.currentContext());
         if (context != null) {
             AutoCloseable scope = tracer.makeSpanCurrent(context);
             try {
