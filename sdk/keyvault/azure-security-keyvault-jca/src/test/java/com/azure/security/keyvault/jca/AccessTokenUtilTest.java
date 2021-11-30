@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.jca;
 
+import com.azure.core.util.Configuration;
 import com.azure.security.keyvault.jca.implementation.model.AccessToken;
 import com.azure.security.keyvault.jca.implementation.utils.AccessTokenUtil;
 import org.junit.jupiter.api.Test;
@@ -25,12 +26,20 @@ public class AccessTokenUtilTest {
      */
     @Test
     public void testGetAuthorizationToken() throws Exception {
-        String tenantId = System.getenv("AZURE_KEYVAULT_TENANT_ID");
-        String clientId = System.getenv("AZURE_KEYVAULT_CLIENT_ID");
-        String clientSecret = System.getenv("AZURE_KEYVAULT_CLIENT_SECRET");
+        Configuration globalConfiguration = Configuration.getGlobalConfiguration();
+        String tenantId = globalConfiguration.get("AZURE_KEYVAULT_TENANT_ID");
+        String clientId = globalConfiguration.get("AZURE_KEYVAULT_CLIENT_ID");
+        String clientSecret = globalConfiguration.get("AZURE_KEYVAULT_CLIENT_SECRET");
+        String keyVaultEndPoint = globalConfiguration.get("KEY_VAULT_ENDPOINT_SUFFIX", ".vault.azure.net");
+        String resourceUrl = ".vault.azure.net".equals(keyVaultEndPoint)
+            ? "https://management.azure.com/" : ".vault.usgovcloudapi.net".equals(keyVaultEndPoint)
+            ? "https://management.usgovcloudapi.net/" : "https://management.chinacloudapi.cn/";
+        String aadAuthenticationUrl = ".vault.azure.net".equals(keyVaultEndPoint)
+            ? "https://login.microsoftonline.com/"  : ".vault.usgovcloudapi.net".equals(keyVaultEndPoint)
+            ? "https://login.microsoftonline.us/" : "https://login.partner.microsoftonline.cn/";
         AccessToken result = AccessTokenUtil.getAccessToken(
-            "https://management.azure.com/",
-            null,
+            resourceUrl,
+            aadAuthenticationUrl,
             tenantId,
             clientId,
             URLEncoder.encode(clientSecret, "UTF-8")

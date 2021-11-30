@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.jca;
 
+import com.azure.core.util.Configuration;
 import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -18,12 +19,13 @@ public class KeyVaultClientTest {
 
     @BeforeAll
     public static void setEnvironmentProperty() {
+        Configuration globalConfiguration = Configuration.getGlobalConfiguration();
         keyVaultClient = new KeyVaultClient(
-            System.getenv("AZURE_KEYVAULT_ENDPOINT"),
-            System.getenv("AZURE_KEYVAULT_TENANT_ID"),
-            System.getenv("AZURE_KEYVAULT_CLIENT_ID"),
-            System.getenv("AZURE_KEYVAULT_CLIENT_SECRET"));
-        certificateName = System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME");
+            globalConfiguration.get("AZURE_KEYVAULT_ENDPOINT"),
+            globalConfiguration.get("AZURE_KEYVAULT_TENANT_ID"),
+            globalConfiguration.get("AZURE_KEYVAULT_CLIENT_ID"),
+            globalConfiguration.get("AZURE_KEYVAULT_CLIENT_SECRET"));
+        certificateName = globalConfiguration.get("AZURE_KEYVAULT_CERTIFICATE_NAME");
     }
 
     @Test

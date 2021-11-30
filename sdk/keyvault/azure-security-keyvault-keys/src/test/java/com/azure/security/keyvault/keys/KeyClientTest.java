@@ -532,6 +532,9 @@ public class KeyClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void getKeyRotationPolicyOfNonExistentKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        if (!isPublicCloud() && interceptorManager.isLiveMode()) {
+            return;
+        }
         createKeyClient(httpClient, serviceVersion);
 
         String keyName = testResourceNamer.randomName("nonExistentKey", 20);
@@ -545,6 +548,9 @@ public class KeyClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void getKeyRotationPolicyWithNoPolicySet(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        if (!isPublicCloud() && interceptorManager.isLiveMode()) {
+            return;
+        }
         // Key Rotation is not yet enabled in Managed HSM.
         Assumptions.assumeTrue(!isHsmEnabled);
 
@@ -573,6 +579,9 @@ public class KeyClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void updateGetKeyRotationPolicyWithMinimumProperties(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        if (!isPublicCloud() && interceptorManager.isLiveMode()) {
+            return;
+        }
         // Key Rotation is not yet enabled in Managed HSM.
         Assumptions.assumeTrue(!isHsmEnabled);
 
@@ -594,6 +603,9 @@ public class KeyClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void updateGetKeyRotationPolicyWithAllProperties(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        if (!isPublicCloud() && interceptorManager.isLiveMode()) {
+            return;
+        }
         // Key Rotation is not yet enabled in Managed HSM.
         Assumptions.assumeTrue(!isHsmEnabled);
 
@@ -615,6 +627,9 @@ public class KeyClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void rotateKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        if (!isPublicCloud() && interceptorManager.isLiveMode()) {
+            return;
+        }
         // Key Rotation is not yet enabled in Managed HSM.
         Assumptions.assumeTrue(!isHsmEnabled);
 
