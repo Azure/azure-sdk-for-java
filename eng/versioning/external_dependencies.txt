@@ -100,22 +100,22 @@ org.slf4j:slf4j-nop;1.7.32
 org.slf4j:slf4j-simple;1.7.32
 
 ## Spring boot dependency versions
-org.springframework.boot:spring-boot-dependencies;2.6.0
-org.springframework.boot:spring-boot-actuator-autoconfigure;2.6.0
-org.springframework.boot:spring-boot-autoconfigure-processor;2.6.0
-org.springframework.boot:spring-boot-autoconfigure;2.6.0
-org.springframework.boot:spring-boot-configuration-processor;2.6.0
-org.springframework.boot:spring-boot-starter-actuator;2.6.0
-org.springframework.boot:spring-boot-starter-aop;2.6.0
-org.springframework.boot:spring-boot-starter-cache;2.6.0
-org.springframework.boot:spring-boot-starter-data-redis;2.6.0
-org.springframework.boot:spring-boot-starter-logging;2.6.0
-org.springframework.boot:spring-boot-starter-test;2.6.0
-org.springframework.boot:spring-boot-starter-validation;2.6.0
-org.springframework.boot:spring-boot-starter-web;2.6.0
-org.springframework.boot:spring-boot-starter-webflux;2.6.0
-org.springframework.boot:spring-boot-starter;2.6.0
-org.springframework.boot:spring-boot;2.6.0
+org.springframework.boot:spring-boot-dependencies;2.6.1
+org.springframework.boot:spring-boot-actuator-autoconfigure;2.6.1
+org.springframework.boot:spring-boot-autoconfigure-processor;2.6.1
+org.springframework.boot:spring-boot-autoconfigure;2.6.1
+org.springframework.boot:spring-boot-configuration-processor;2.6.1
+org.springframework.boot:spring-boot-starter-actuator;2.6.1
+org.springframework.boot:spring-boot-starter-aop;2.6.1
+org.springframework.boot:spring-boot-starter-cache;2.6.1
+org.springframework.boot:spring-boot-starter-data-redis;2.6.1
+org.springframework.boot:spring-boot-starter-logging;2.6.1
+org.springframework.boot:spring-boot-starter-test;2.6.1
+org.springframework.boot:spring-boot-starter-validation;2.6.1
+org.springframework.boot:spring-boot-starter-web;2.6.1
+org.springframework.boot:spring-boot-starter-webflux;2.6.1
+org.springframework.boot:spring-boot-starter;2.6.1
+org.springframework.boot:spring-boot;2.6.1
 org.springframework.data:spring-data-commons;2.6.0
 org.springframework.data:spring-data-mongodb;3.3.0
 org.springframework.data:spring-data-redis;2.6.0
@@ -141,7 +141,7 @@ org.springframework:spring-web;5.3.13
 org.springframework:spring-webmvc;5.3.13
 org.springframework:spring-webflux;5.3.13
 
-org.springframework.boot:spring-boot-starter-parent;2.6.0
+org.springframework.boot:spring-boot-starter-parent;2.6.1
 
 ## Spring cloud dependency versions
 org.springframework.cloud:spring-cloud-dependencies;2020.0.4
