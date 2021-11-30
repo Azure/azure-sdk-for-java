@@ -48,21 +48,13 @@ public class AmqpShutdownSignal {
         return isInitiatedByClient;
     }
 
-    public LoggingEventBuilder addContext(LoggingEventBuilder logBuilder) {
-        return logBuilder
-            .addKeyValue("isTransient", isTransient)
-            .addKeyValue("isInitiatedByClient", isInitiatedByClient)
-            .addKeyValue("shutdownMessage", message);
-    }
-
     /**
      * Returns String representing this {@code AmqpShutdownSignal} signal.
      *
-     * <strong>To write logs, please use {@link AmqpShutdownSignal#addContext} instead.</strong>
+     * <strong>To write logs, please use {@link com.azure.core.amqp.implementation.AmqpLoggingUtils#addShutdownSignal(LoggingEventBuilder, AmqpShutdownSignal)}.</strong>
      */
     @Override
     public String toString() {
-        return String.format(Locale.US, "%s, isTransient[%s], initiatedByClient[%s]", message, isTransient,
-            isInitiatedByClient);
+        return message;
     }
 }

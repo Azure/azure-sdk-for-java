@@ -1,5 +1,6 @@
 package com.azure.core.amqp.implementation;
 
+import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.util.logging.LoggingEventBuilder;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import reactor.core.publisher.SignalType;
@@ -28,6 +29,14 @@ public class AmqpLoggingUtils {
         return logBuilder
             .addKeyValue(ERROR_CONDITION_KEY, errorCondition.getCondition())
             .addKeyValue(ERROR_DESCRIPTION_KEY,  errorCondition.getDescription());
+    }
+
+    public static LoggingEventBuilder addShutdownSignal(LoggingEventBuilder logBuilder, AmqpShutdownSignal shutdownSignal) {
+        return logBuilder
+            .addKeyValue("isTransient", shutdownSignal.isTransient())
+            .addKeyValue("isInitiatedByClient", shutdownSignal.isInitiatedByClient())
+            // will call toString() if logging is enabled
+            .addKeyValue("shutdownMessage", shutdownSignal);
     }
 }
 

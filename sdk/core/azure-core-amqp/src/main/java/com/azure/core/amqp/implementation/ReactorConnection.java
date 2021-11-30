@@ -41,6 +41,7 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addShutdownSignal;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addSignalTypeAndResult;
 import static com.azure.core.amqp.implementation.ClientConstants.CONNECTION_ID_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.EMIT_RESULT_KEY;
@@ -423,12 +424,12 @@ public class ReactorConnection implements AmqpConnection {
     }
 
     Mono<Void> closeAsync(AmqpShutdownSignal shutdownSignal) {
-        shutdownSignal.addContext(logger.atInfo()).log("Disposing of ReactorConnection.");
+        addShutdownSignal(logger.atInfo(), shutdownSignal).log("Disposing of ReactorConnection.");
         final Sinks.EmitResult result = shutdownSignalSink.tryEmitValue(shutdownSignal);
 
         if (result.isFailure()) {
             // It's possible that another one was already emitted, so it's all good.
-            shutdownSignal.addContext(logger.atInfo())
+            addShutdownSignal(logger.atInfo(), shutdownSignal)
                 .addKeyValue(EMIT_RESULT_KEY, result)
                 .log("Unable to emit shutdown signal.");
         }
@@ -618,7 +619,7 @@ public class ReactorConnection implements AmqpConnection {
 
         @Override
         void onConnectionShutdown(AmqpShutdownSignal shutdownSignal) {
-            shutdownSignal.addContext(logger.atInfo())
+            addShutdownSignal(logger.atInfo(), shutdownSignal)
                 .addKeyValue(FULLY_QUALIFIED_NAMESPACE_KEY, getFullyQualifiedNamespace())
                 .log("onConnectionShutdown. Shutting down.");
 
