@@ -1,13 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.common.implementation
+package com.azure.storage.common.sas
 
 import com.azure.core.util.Context
+import com.azure.storage.common.implementation.AccountSasImplUtil
+import com.azure.storage.common.implementation.SasImplUtils
 import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
+import com.azure.storage.common.sas.CommonSasQueryParameters
 import com.azure.storage.common.sas.SasIpRange
 import com.azure.storage.common.sas.SasProtocol
 import spock.lang.Specification
@@ -258,5 +261,20 @@ class SasModelsTest extends Specification {
         then:
         def ex = thrown(NullPointerException)
         ex.getMessage().contains("storageSharedKeyCredential")
+    }
+
+    def "Sas date time round trip"() {
+        setup:
+        // These datetime values do not specify seconds, which is valid on azure, but our default is always to add seconds
+        def originalString = "st=2021-07-20T13%3A21Z&se=2021-07-20T13%3A21Z&skt=2021-07-20T13%3A21Z&ske=2021-07-20T13%3A21Z"
+        def splitOriginalParams = SasImplUtils.parseQueryString(originalString)
+
+        when:
+        def commonSasQueryParameters = new CommonSasQueryParameters(splitOriginalParams, false)
+        def encodedParams = commonSasQueryParameters.encode()
+        def splitEncodedParams = SasImplUtils.parseQueryString(encodedParams)
+
+        then:
+        splitOriginalParams == splitEncodedParams
     }
 }
