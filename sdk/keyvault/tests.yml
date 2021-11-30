@@ -4,7 +4,7 @@ stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: keyvault
-      TimeoutInMinutes: 240
+      TimeoutInMinutes: 90
       SupportedClouds: 'Public,UsGov,China'
       TestMode: 'LIVE'
       CloudConfig:
