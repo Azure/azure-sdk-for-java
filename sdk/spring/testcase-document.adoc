@@ -509,7 +509,7 @@ Cosmos, Data Plane
 * Azure Cosmos instance exists. +
 
 === Steps
-* Add `spring-cloud-azure-starter-data-cosmos` and `spring-cloud-azure-starter-actuator` dependencies. +
+* Add `spring-cloud-azure-starter-data-cosmos` dependency. +
 * Configure the below combinations for Cosmos properties. +
 
 [source, yaml]
@@ -662,7 +662,7 @@ Keyvault, Indicator, Env
 * Azure Keyvault instance exists. +
 
 === Steps
-* Add `spring-cloud-azure-starter-keyvault-secrets` and `spring-cloud-azure-starter-actuator` dependencies. +
+* Add `spring-cloud-azure-starter-keyvault-secrets` dependency. +
 * Configure the below combinations for Keyvault properties. +
 
 [source, yaml]
@@ -702,7 +702,397 @@ link:https://github.com/moarychan/spring-boot/blob/52ecc1e0dd31738472be7ac120017
 === Is UT enough?
 Yes
 
+Use mocking to add the property source, but mocking `SecretClient` is difficult. +
+
 === Current use cases
-link:https://github.com/Azure/azure-sdk-for-java/blob/e366d3c3d152761e0fb922b438e2582e77f7ec62/sdk/spring/azure-spring-boot-test-keyvault/src/test/java/com/azure/spring/test/keyvault/KeyVaultActuatorIT.java#L53[testSpringBootActuatorEnv]
 
+link:https://github.com/Azure/azure-sdk-for-java/blob/e366d3c3d152761e0fb922b438e2582e77f7ec62/sdk/spring/azure-spring-boot-test-keyvault/src/test/java/com/azure/spring/test/keyvault/KeyVaultActuatorIT.java#L53[testSpringBootActuatorEnv] +
+link:https://github.com/Azure/azure-sdk-for-java/blob/15dda6cdc3219e9128a4d5207cb66d891fd1baf8/sdk/spring/spring-cloud-azure-autoconfigure/src/test/java/com/azure/spring/cloud/autoconfigure/keyvault/env/InitializerTest.java#L26[testAzureKvPropertySourceNotInitialized] +
 
+== Test Spring Cloud Azure Keyvault as property source
+Use `spring-cloud-azure-starter-keyvault-secrets` dependency to start the application, the key value can be got from Keyvault property source.
+
+=== Tags
+Keyvault, Data Plane
+
+=== Test Prerequisites
+* Azure Keyvault instance exists. +
+
+=== Steps
+* Use `spring-cloud-azure-starter-keyvault-secrets` dependency. +
+* Configure the secert credential using Service Principal credential. +
+* Configure the below combinations for Keyvault properties. +
+
+[source, yaml]
+----
+spring:
+  cloud:
+    azure:
+      keyvault:
+        secret:
+          property-source-enabled: true
+          endpoint: xxx
+          credential:
+            client-id: xxx
+            client-secret: xxx
+          profile:
+            tenant-id: xxx
+----
+
+* Check the actual value of the key. +
+
+=== Expected Result
+* The actual value of the key should be returned when accessing the key. +
+
+=== How Spring test such case?
+link:https://github.com/moarychan/spring-boot/blob/663fd8ce5e4c0a33b5aad8126c30683244cf6871/spring-boot-project/spring-boot/src/test/java/org/springframework/boot/DefaultPropertiesPropertySourceTests.java#L60[createCreatesSource]
+
+=== Is UT enough?
+Yes
+
+=== Current use cases
+link:https://github.com/Azure/azure-sdk-for-java/blob/15dda6cdc3219e9128a4d5207cb66d891fd1baf8/sdk/spring/spring-cloud-azure-autoconfigure/src/test/java/com/azure/spring/cloud/autoconfigure/keyvault/env/KeyVaultPropertySourceUnitTest.java#L47[testGetPropertyNames] +
+link:https://github.com/Azure/azure-sdk-for-java/blob/15dda6cdc3219e9128a4d5207cb66d891fd1baf8/sdk/spring/spring-cloud-azure-autoconfigure/src/test/java/com/azure/spring/cloud/autoconfigure/keyvault/env/KeyVaultPropertySourceUnitTest.java#L55[testGetProperty] +
+link:https://github.com/Azure/azure-sdk-for-java/blob/ccfc66dc168da62f23994bec2813c7d2f0046a68/sdk/spring/azure-spring-boot-test-keyvault/src/test/java/com/azure/spring/test/keyvault/KeyVaultSecretValueIT.java#L75[keyVaultAsPropertySource]
+
+== Test Spring Cloud Azure Keyvault as property source with specific key
+Use `spring-cloud-azure-starter-keyvault-secrets` dependency to start the application, configure the special secert key, the key value can be got from Keyvault property source.
+
+=== Tags
+Keyvault, Data Plane
+
+=== Test Prerequisites
+* Azure Keyvault instance exists. +
+
+=== Steps
+* Use `spring-cloud-azure-starter-keyvault-secrets` dependency. +
+* Configure the secert credential using Service Principal credential. +
+* Configure the below combinations for Keyvault properties. +
+
+[source, yaml]
+----
+spring:
+  cloud:
+    azure:
+      keyvault:
+        secret:
+          property-source-enabled: true
+          endpoint: xxx
+          credential:
+            client-id: xxx
+            client-secret: xxx
+          profile:
+            tenant-id: xxx
+          property-sources:
+            -
+              secret-keys: xxx
+----
+
+* Check the actual value of the key. +
+
+=== Expected Result
+* The actual value of the special key should be returned when accessing the key. +
+
+=== How Spring test such case?
+link:https://github.com/moarychan/spring-boot/blob/663fd8ce5e4c0a33b5aad8126c30683244cf6871/spring-boot-project/spring-boot/src/test/java/org/springframework/boot/DefaultPropertiesPropertySourceTests.java#L60[createCreatesSource]
+
+=== Is UT enough?
+Yes
+
+=== Current use cases
+link:https://github.com/Azure/azure-sdk-for-java/blob/ccfc66dc168da62f23994bec2813c7d2f0046a68/sdk/spring/azure-spring-boot-test-keyvault/src/test/java/com/azure/spring/test/keyvault/KeyVaultSecretValueIT.java#L98[keyVaultAsPropertySourceWithSpecificKeys]
+
+== Test Spring Cloud Azure Keyvault as property source in App Service
+Use `spring-cloud-azure-starter-keyvault-secrets` dependency to develop an application and configure the managed identify, then deploy the application into App Service environment, the secert key value can be got from Keyvault property source.
+
+=== Tags
+Keyvault, Data Plane, App Service, Managed Identify
+
+=== Test Prerequisites
+* Azure Keyvault instance exists. +
+
+=== Steps
+* Use `spring-cloud-azure-starter-keyvault-secrets` dependency. +
+* Configure the secert credential using Service Principal credential. +
+* Configure the below combinations for Keyvault properties. +
+
+[source, yaml]
+----
+spring:
+  cloud:
+    azure:
+      keyvault:
+        secret:
+          property-source-enabled: true
+----
+
+* Package jar file +
+* Deploy the jar file to App Service +
+* Request the `/get` endpoint to get the actual value from App Service instance, the value is stored in Keyvault. +
+
+=== Expected Result
+* The actual value of the special key should be returned when accessing the `/get` endpoint. +
+
+=== How Spring test such case?
+N/A
+
+=== Is UT enough?
+No
+
+=== Current use cases
+link:https://github.com/Azure/azure-sdk-for-java/blob/a82bfc22702663f9fdb18879b9f43ade34b6fbed/sdk/spring/azure-spring-boot-test-application/src/main/java/com/azure/test/Application.java#L52[Get secert value from KeyVault]
+link:https://github.com/Azure/azure-sdk-for-java/blob/ccfc66dc168da62f23994bec2813c7d2f0046a68/sdk/spring/azure-spring-boot-test-keyvault/src/test/java/com/azure/spring/test/keyvault/KeyVaultSecretValueIT.java#L115[keyVaultWithAppServiceMSI]
+
+== Test Spring Cloud Azure Keyvault as property source in Virtual Machine
+Use `spring-cloud-azure-starter-keyvault-secrets` dependency to develop an application and configure the managed identify, then deploy the application into Virtual Machine environment, the secert key value can be got from Keyvault property source.
+
+NOTE: Currently, this test case will block the live test, so it's disabled.
+
+=== Tags
+Keyvault, Data Plane, Virtual Machine, Managed Identify
+
+=== Test Prerequisites
+* Azure Keyvault instance exists. +
+
+=== Steps
+* Use `spring-cloud-azure-starter-keyvault-secrets` dependency. +
+* Configure the secert credential using Service Principal credential. +
+* Configure the below combinations for Keyvault properties. +
+
+[source, yaml]
+----
+spring:
+  cloud:
+    azure:
+      keyvault:
+        secret:
+          property-source-enabled: true
+----
+
+* Package jar file +
+* Deploy the jar file to Virtual Machine +
+* Request the `/get` endpoint to get the actual value from App Service instance, the value is stored in Keyvault. +
+
+=== Expected Result
+* The actual value of the special key should be returned when accessing the `/get` endpoint. +
+
+=== How Spring test such case?
+N/A
+
+=== Is UT enough?
+No
+
+=== Current use cases
+link:https://github.com/Azure/azure-sdk-for-java/blob/a82bfc22702663f9fdb18879b9f43ade34b6fbed/sdk/spring/azure-spring-boot-test-application/src/main/java/com/azure/test/Application.java#L52[Get secert value from KeyVault]
+link:https://github.com/Azure/azure-sdk-for-java/blob/ccfc66dc168da62f23994bec2813c7d2f0046a68/sdk/spring/azure-spring-boot-test-keyvault/src/test/java/com/azure/spring/test/keyvault/KeyVaultSecretValueIT.java#L154[keyVaultWithVirtualMachineMSI]
+
+== Obtain the value of the key through the credentials of the Keyvault property source
+Use `spring-cloud-azure-starter-keyvault-secrets` dependency to start the application, configure the credentials in special property source, the key value can be obtained from Keyvault property source.
+
+=== Tags
+Keyvault, Data Plane, Multiple property source
+
+=== Test Prerequisites
+* 2 Azure Keyvault instances exists. +
+
+=== Steps
+* Use `spring-cloud-azure-starter-keyvault-secrets` dependency. +
+* Configure secert credential of the first property source using Service Principal credential. +
+* Configure the below combinations for Keyvault properties. +
+
+[source, yaml]
+----
+spring:
+  cloud:
+    azure:
+      keyvault:
+        secret:
+          property-sources:
+            -
+              name: xxx
+              endpoint: xxx
+              credential:
+                client-id: xxx
+                client-secret: xxx
+              profile:
+                tenant-id: xxx
+----
+
+* Check the actual value of the key. +
+
+=== Expected Result
+* The actual value of the key should be returned when accessing the key. +
+
+=== How Spring test such case?
+Same with link:testcase-document.adoc#test-spring-cloud-azure-keyvault-as-property-source[Test Spring Cloud Azure Keyvault as property source]
+
+=== Is UT enough?
+Yes
+
+=== Current use cases
+Keyvault 1 test link:https://github.com/Azure/azure-sdk-for-java/blob/996691145f2ade80b5fea71813c4a22e7ef18036/sdk/spring/azure-spring-boot-test-keyvault/src/test/java/com/azure/spring/test/keyvault/MultipleKeyVaultsIT.java#L40[testGetValueFromKeyVault1] +
+
+Keyvault 2 test link:https://github.com/Azure/azure-sdk-for-java/blob/996691145f2ade80b5fea71813c4a22e7ef18036/sdk/spring/azure-spring-boot-test-keyvault/src/test/java/com/azure/spring/test/keyvault/MultipleKeyVaultsIT.java#L56[testGetValueFromKeyVault2] +
+
+== Obtain the value of the same key from the multiple property source
+Use `spring-cloud-azure-starter-keyvault-secrets` dependency to start the application, configure each property source credentials, the key value can be obtained from the first property source.
+
+=== Tags
+Keyvault, Data Plane, Multiple property source
+
+=== Test Prerequisites
+* 2 Azure Keyvault instances exists. +
+
+=== Steps
+* Use `spring-cloud-azure-starter-keyvault-secrets` dependency. +
+* Configure each property source credential using Service Principal credential. +
+* Configure the below combinations for Keyvault properties. +
+
+[source, yaml]
+----
+spring:
+  cloud:
+    azure:
+    credential:
+        client-id: xxx
+        client-secret: xxx
+      profile:
+        tenant-id: xxx
+      keyvault:
+        secret:
+          property-sources:
+            -
+              name: xxx
+              endpoint: xxx
+              credential:
+                client-id: xxx
+                client-secret: xxx
+              profile:
+                tenant-id: xxx
+            -
+              name: xxx
+              endpoint: xxx
+              credential:
+                client-id: xxx
+                client-secret: xxx
+              profile:
+                tenant-id: xxx
+----
+
+* Check the actual value of the same key is from the first  Keyvault property source. +
+
+=== Expected Result
+* The actual value of the key should be returned when accessing the key. +
+
+=== How Spring test such case?
+Same with link:testcase-document.adoc#test-spring-cloud-azure-keyvault-as-property-source[Test Spring Cloud Azure Keyvault as property source]
+
+=== Is UT enough?
+Yes
+
+=== Current use cases
+link:https://github.com/Azure/azure-sdk-for-java/blob/996691145f2ade80b5fea71813c4a22e7ef18036/sdk/spring/azure-spring-boot-test-keyvault/src/test/java/com/azure/spring/test/keyvault/MultipleKeyVaultsIT.java#L73[testGetValueForDuplicateKey] +
+
+== Obtain the value of the key from the multiple property source
+Use `spring-cloud-azure-starter-keyvault-secrets` dependency to start the application, configure the global credentials, the key value can be obtained from multiple property source.
+
+=== Tags
+Keyvault, Data Plane, Multiple property source
+
+=== Test Prerequisites
+* 2 Azure Keyvault instances exists. +
+
+=== Steps
+* Use `spring-cloud-azure-starter-keyvault-secrets` dependency. +
+* Configure global credential using Service Principal credential. +
+* Configure the below combinations for Keyvault properties. +
+
+[source, yaml]
+----
+spring:
+  cloud:
+    azure:
+    credential:
+        client-id: xxx
+        client-secret: xxx
+      profile:
+        tenant-id: xxx
+      keyvault:
+        secret:
+            -
+              name: xxx
+              endpoint: xxx
+              credential:
+                client-id: xxx
+                client-secret: xxx
+              profile:
+                tenant-id: xxx
+            -
+              name: xxx
+              endpoint: xxx
+              credential:
+                client-id: xxx
+                client-secret: xxx
+              profile:
+                tenant-id: xxx
+----
+
+* Check the actual value of the key from Keyvault 1. +
+* Check the actual value of the key from Keyvault 2. +
+
+=== Expected Result
+* The actual value of the key should be returned when accessing the key. +
+
+=== How Spring test such case?
+Same with link:testcase-document.adoc#test-spring-cloud-azure-keyvault-as-property-source[Test Spring Cloud Azure Keyvault as property source]
+
+=== Is UT enough?
+Yes
+
+=== Current use cases
+link:https://github.com/Azure/azure-sdk-for-java/blob/996691145f2ade80b5fea71813c4a22e7ef18036/sdk/spring/azure-spring-boot-test-keyvault/src/test/java/com/azure/spring/test/keyvault/MultipleKeyVaultsIT.java#L96[testGetValueFromSingleVault] +
+
+== Test SSL connection through loading the key store form Keyvault
+Use `spring-cloud-azure-starter-keyvault-certificates` dependency to start an SSL enabled application, configure the keyvault credentials,
+the key store can be loaded from Keyvault, finally the application can respond the HTTPS request successfully.
+
+=== Tags
+Keyvault, Certificates, Data Plane
+
+=== Test Prerequisites
+* Azure Keyvault instance exists. +
+* Available Key Store in Azure Keyvault instance. +
+
+=== Steps
+* Use `spring-cloud-azure-starter-keyvault-certificates` dependency. +
+* Configure keyvault credential using Service Principal credential. +
+* Upload the Key Store file to Keyvault. +
+* Configure the below combinations for Keyvault properties. +
+
+[source, yaml]
+----
+azure:
+  keyvault:
+    uri: xxx
+    client-id: xxx
+    client-secret: xxx
+    tenant-id: xxx
+server:
+  ssl:
+    key-alias: xxx
+    key-store-type: xxx
+----
+
+* Make HTTPS requests to the application. +
+
+=== Expected Result
+* The application can respond to HTTPS requests. +
+
+=== How Spring test such case?
+link:https://github.com/moarychan/spring-boot/blob/25b7495d8e03eb2b06c11c35a1a83fa58bbbfca7/spring-boot-project/spring-boot/src/test/java/org/springframework/boot/web/server/SslConfigurationValidatorTests.java#L52[validateKeyAliasWhenAliasFoundShouldNotFail] in spring-boot +
+
+=== Is UT enough?
+Yes
+
+=== Current use cases
+link:https://github.com/Azure/azure-sdk-for-java/blob/c451201fe8818f97e98cd008f3525490b35d9ad1/sdk/spring/azure-spring-boot-test-keyvault-certificate/src/test/java/com/azure/spring/test/keyvault/KeyVaultCertificateIT.java#L117[testSpringBootWebApplication] +
