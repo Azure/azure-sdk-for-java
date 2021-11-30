@@ -66,7 +66,7 @@ public class EventHubsTemplate implements SendOperation, BatchSendOperation {
         });
     }
 
-    private CreateBatchOptions buildCreateBatchOptions(PartitionSupplier partitionSupplier) {
+    protected CreateBatchOptions buildCreateBatchOptions(PartitionSupplier partitionSupplier) {
         return new CreateBatchOptions()
             .setPartitionId(partitionSupplier != null ? partitionSupplier.getPartitionId() : null)
             .setPartitionKey(partitionSupplier != null ? partitionSupplier.getPartitionKey() : null);
@@ -74,5 +74,13 @@ public class EventHubsTemplate implements SendOperation, BatchSendOperation {
 
     public void setMessageConverter(EventHubsMessageConverter messageConverter) {
         this.messageConverter = messageConverter;
+    }
+
+    public EventHubsProducerFactory getProducerFactory() {
+        return producerFactory;
+    }
+
+    public EventHubsMessageConverter getMessageConverter() {
+        return messageConverter;
     }
 }
