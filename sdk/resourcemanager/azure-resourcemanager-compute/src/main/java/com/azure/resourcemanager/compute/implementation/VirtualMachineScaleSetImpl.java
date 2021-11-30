@@ -51,6 +51,8 @@ import com.azure.resourcemanager.compute.models.VirtualMachineScaleSet;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetDataDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetExtension;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetExtensionProfile;
+import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetFlexibleVMProfile;
+import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetFlexibleVMProfileImpl;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetIpConfiguration;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetManagedDiskParameters;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetNetworkConfiguration;
@@ -115,7 +117,16 @@ public class VirtualMachineScaleSetImpl
         VirtualMachineScaleSet.DefinitionStages.WithSystemAssignedIdentityBasedAccessOrCreate,
         VirtualMachineScaleSet.DefinitionStages.WithUserAssignedManagedServiceIdentity,
         VirtualMachineScaleSet.UpdateStages.WithSystemAssignedIdentityBasedAccessOrApply,
-        VirtualMachineScaleSet.UpdateStages.WithUserAssignedManagedServiceIdentity {
+        VirtualMachineScaleSet.UpdateStages.WithUserAssignedManagedServiceIdentity
+//        VirtualMachineScaleSetFlexibleVMProfile<VirtualMachineScaleSetImpl>,
+//        VirtualMachineScaleSetFlexibleVMProfile.DefinitionStages.DefinitionShared<VirtualMachineScaleSetImpl>,
+//        VirtualMachineScaleSetFlexibleVMProfile.DefinitionStages.DefinitionManagedOrUnmanaged<VirtualMachineScaleSetImpl>,
+//        VirtualMachineScaleSetFlexibleVMProfile.DefinitionStages.DefinitionManaged<VirtualMachineScaleSetImpl>,
+//        VirtualMachineScaleSetFlexibleVMProfile.DefinitionStages.DefinitionUnmanaged<VirtualMachineScaleSetImpl>,
+//        VirtualMachineScaleSetFlexibleVMProfile.DefinitionStages.WithSystemAssignedIdentityBasedAccessOrAttach<VirtualMachineScaleSetImpl>,
+//        VirtualMachineScaleSetFlexibleVMProfile.DefinitionStages.WithUserAssignedManagedServiceIdentity<VirtualMachineScaleSetImpl>,
+
+{
     // Clients
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
@@ -707,7 +718,6 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withExistingPrimaryInternetFacingLoadBalancer(LoadBalancer loadBalancer) {
-        initVMProfileIfNecessary();
         if (loadBalancer.publicIpAddressIds().isEmpty()) {
             throw logger
                 .logExceptionAsError(
@@ -726,7 +736,6 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withPrimaryInternetFacingLoadBalancerBackends(String... backendNames) {
-        initVMProfileIfNecessary();
         if (this.isInCreateMode()) {
             VirtualMachineScaleSetIpConfiguration defaultPrimaryIpConfig = this.primaryNicDefaultIpConfiguration();
             removeAllBackendAssociationFromIpConfiguration(
@@ -741,7 +750,6 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withPrimaryInternetFacingLoadBalancerInboundNatPools(String... natPoolNames) {
-        initVMProfileIfNecessary();
         if (this.isInCreateMode()) {
             VirtualMachineScaleSetIpConfiguration defaultPrimaryIpConfig = this.primaryNicDefaultIpConfiguration();
             removeAllInboundNatPoolAssociationFromIpConfiguration(
@@ -756,7 +764,6 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withExistingPrimaryInternalLoadBalancer(LoadBalancer loadBalancer) {
-        initVMProfileIfNecessary();
         if (!loadBalancer.publicIpAddressIds().isEmpty()) {
             throw logger
                 .logExceptionAsError(
@@ -2187,6 +2194,7 @@ public class VirtualMachineScaleSetImpl
     }
 
     private VirtualMachineScaleSetIpConfiguration primaryNicDefaultIpConfiguration() {
+        initVMProfileIfNecessary();
         List<VirtualMachineScaleSetNetworkConfiguration> nicConfigurations =
             this.innerModel().virtualMachineProfile().networkProfile().networkInterfaceConfigurations();
 
@@ -2852,6 +2860,11 @@ public class VirtualMachineScaleSetImpl
         this.innerModel().withPlan(new Plan());
         this.innerModel().plan().withPublisher(plan.publisher()).withProduct(plan.product()).withName(plan.name());
         return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetFlexibleVMProfileImpl defineFlexibleVirtualMachineProfile() {
+        return new VirtualMachineScaleSetFlexibleVMProfileImpl(this);
     }
 
     /**
