@@ -8,7 +8,7 @@ jobs:
       vmImage: ubuntu-20.04
     variables:
       DocRepoLocation: $(Pipeline.Workspace)/docs
-      DailyDocRepoLocation: $(Pipeline.Workspace)/dailyDocsFork 
+      DailyDocsRepoLocation: $(Pipeline.Workspace)/dailyDocsFork 
       DocRepoOwner: Azure
       DocRepoName: azure-docs-sdk-java
     steps:
@@ -51,13 +51,6 @@ jobs:
         parameters:
           DailyBranchVariableName: DailyDocsBranchName
       # Sync docs fork repo onboarding files/folders
-      - pwsh: |
-          $dailyDocsRepoLocation = "$(DocRepoLocation)/dailyDocs"
-          echo "##vso[task.setvariable variable=DailyDocsRepoLocation]$dailyDocsRepoLocation"
-          if (!(Test-Path $dailyDocsRepoLocation)) {
-            New-Item -Path $dailyDocsRepoLocation -ItemType "directory"
-          }
-        displayName: Create daily docs repo
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:
           SkipDefaultCheckout: true
