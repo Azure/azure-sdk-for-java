@@ -10,6 +10,7 @@
 
 ### Bugs Fixed
 - Fixed a bug in DataLakeFileClient.flush() in which the logic of the overwrite parameter was reversed.
+- Fixed a bug that would cause authenticating with a sas token to fail if the timestamps in the token were formatted differently.
 
 ### Other Changes
 

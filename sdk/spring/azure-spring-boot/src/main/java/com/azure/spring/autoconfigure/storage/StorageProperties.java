@@ -27,34 +27,74 @@ public class StorageProperties {
 
     private String accountKey;
 
+    /**
+     * Gets the account name.
+     *
+     * @return the account name
+     */
     public String getAccountName() {
         return accountName;
     }
 
+    /**
+     * Sets the account name.
+     *
+     * @param accountName the account name
+     */
     public void setAccountName(String accountName) {
         this.accountName = accountName;
     }
 
+    /**
+     * Gets the Blob endpoint.
+     *
+     * @return the Blob endpoint
+     */
     public String getBlobEndpoint() {
         return blobEndpoint;
     }
 
+    /**
+     * Sets the Blob endpoint.
+     *
+     * @param blobEndpoint the Blob endpoint
+     */
     public void setBlobEndpoint(String blobEndpoint) {
         this.blobEndpoint = blobEndpoint;
     }
 
+    /**
+     * Gets the File endpoint.
+     *
+     * @return the File endpoint
+     */
     public String getFileEndpoint() {
         return fileEndpoint;
     }
 
+    /**
+     * Sets the File endpoint.
+     *
+     * @param fileEndpoint the File endpoint
+     */
     public void setFileEndpoint(String fileEndpoint) {
         this.fileEndpoint = fileEndpoint;
     }
 
+    /**
+     * Gets the account key.
+     *
+     * @return the account key
+     */
     public String getAccountKey() {
         return accountKey;
     }
 
+    /**
+     * Sets the account key.
+     *
+     * @param accountKey the account key
+     */
     public void setAccountKey(String accountKey) {
         this.accountKey = accountKey;
     }

@@ -26,6 +26,7 @@ service-interface-as-public: true
 sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 context-client-method-parameter: true
+default-http-exception-type: com.azure.storage.queue.models.QueueStorageException
 models-subpackage: implementation.models
 custom-types: QueueErrorCode,QueueSignedIdentifier,SendMessageResult,QueueMessageItem,PeekedMessageItem,QueueItem,QueueServiceProperties,QueueServiceStatistics,QueueCorsRule,QueueAccessPolicy,QueueAnalyticsLogging,QueueMetrics,QueueRetentionPolicy,GeoReplicationStatus,GeoReplicationStatusType,GeoReplication
 custom-types-subpackage: models

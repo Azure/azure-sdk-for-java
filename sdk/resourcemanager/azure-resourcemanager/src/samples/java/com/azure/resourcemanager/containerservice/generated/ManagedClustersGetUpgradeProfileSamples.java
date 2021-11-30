@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ManagedClusters GetUpgradeProfile. */
 public final class ManagedClustersGetUpgradeProfileSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/ManagedClustersGetUpgradeProfile.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-10-01/examples/ManagedClustersGetUpgradeProfile.json
      */
     /**
      * Sample code: Get Upgrade Profile for Managed Cluster.

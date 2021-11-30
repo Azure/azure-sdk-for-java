@@ -18,6 +18,9 @@
 
   <properties>
     <src.dir>src/main/java</src.dir>
+    <codesnippet.skip>false</codesnippet.skip>
+    <javadocDoclet></javadocDoclet>
+    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <distributionManagement>
@@ -35,7 +38,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.22.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.23.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>

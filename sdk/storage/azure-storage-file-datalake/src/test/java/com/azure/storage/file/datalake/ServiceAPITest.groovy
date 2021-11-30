@@ -30,6 +30,7 @@ import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import spock.lang.IgnoreIf
 import spock.lang.ResourceLock
+import spock.lang.Retry
 
 import java.time.Duration
 import java.time.OffsetDateTime
@@ -74,6 +75,8 @@ class ServiceAPITest extends APISpec {
     }
 
     @ResourceLock("ServiceProperties")
+    // Service properties propogation lag
+    @Retry(count = 5, delay = 30, condition = { environment.testMode == TestMode.LIVE })
     def "Set get properties"() {
         when:
         def retentionPolicy = new DataLakeRetentionPolicy().setDays(5).setEnabled(true)
@@ -106,6 +109,9 @@ class ServiceAPITest extends APISpec {
         sleepIfRecord(30 * 1000)
 
         def receivedProperties = primaryDataLakeServiceClient.getProperties()
+
+        def sent = sentProperties
+        def received = receivedProperties
 
         then:
         headers.getValue("x-ms-request-id") != null

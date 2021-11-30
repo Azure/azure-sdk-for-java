@@ -12,8 +12,10 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed a bug that would cause authenticating with a sas token to fail if the timestamps in the token were formatted differently.
 
 ### Other Changes
+- Deprecated BlobClient.uploadWithResponse that does not return a response.
 
 ## 12.14.2 (2021-11-10)
 
