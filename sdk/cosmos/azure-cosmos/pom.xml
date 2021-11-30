@@ -53,6 +53,7 @@ Licensed under the MIT License.
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.throughputControl.controller.request=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.clienttelemetry=ALL-UNNAMED
       --add-reads io.netty.channel.epoll=ALL-UNNAMED
+      --add-reads io.netty.channel.epoll/io.netty.channel.epoll=ALL-UNNAMED
     </javaModulesSurefireArgLine>
     <codesnippet.skip>false</codesnippet.skip>
     <javadocDoclet></javadocDoclet>
