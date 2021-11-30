@@ -19,11 +19,9 @@ class TransientIOErrorsRetryingIteratorITest
   with AutoCleanableCosmosContainer
   with BasicLoggingTrait {
 
-  val invocationCount = new AtomicLong(0)
-  val recordCount = new AtomicLong(0)
-
   "transient failures" should "be retried" in {
-    reinitializeContainer
+    val invocationCount = new AtomicLong(0)
+    val recordCount = new AtomicLong(0)
     val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
 
     // assert that there is more than one range to ensure the test really is testing the parallelization of work
@@ -66,7 +64,9 @@ class TransientIOErrorsRetryingIteratorITest
 
     while (retryingIterator.executeWithRetry(
       "hasNext",
-      () => simulateExecutionWithTransientErrors(() => retryingIterator.hasNext))) {
+      () => simulateExecutionWithTransientErrors(
+        invocationCount,
+        () => retryingIterator.hasNext))) {
 
       retryingIterator.currentIterator.next
       recordCount.incrementAndGet()
@@ -76,7 +76,8 @@ class TransientIOErrorsRetryingIteratorITest
   }
 
   "non-transient failures" should "should be thrown after retries exceed" in {
-    reinitializeContainer
+    val invocationCount = new AtomicLong(0)
+    val recordCount = new AtomicLong(0)
     val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
 
     // assert that there is more than one range to ensure the test really is testing the parallelization of work
@@ -120,7 +121,10 @@ class TransientIOErrorsRetryingIteratorITest
     assertThrows[ServiceUnavailableException]({
       while (retryingIterator.executeWithRetry(
         "hasNext",
-        () => simulateExecutionWithNonTransientErrors(() => retryingIterator.hasNext))) {
+        () => simulateExecutionWithNonTransientErrors(
+          invocationCount,
+          recordCount,
+          () => retryingIterator.hasNext))) {
 
         retryingIterator.currentIterator.next
         recordCount.incrementAndGet()
@@ -130,7 +134,7 @@ class TransientIOErrorsRetryingIteratorITest
 
   // first 2 invocation succeed (draining one page) - then we inject 3 transient errors
   // before subsequent request retrieving new page succeeds
-  private def simulateExecutionWithTransientErrors[T](func: () => T): T = {
+  private def simulateExecutionWithTransientErrors[T](invocationCount: AtomicLong, func: () => T): T = {
     val invocationCountSnapshot = invocationCount.incrementAndGet()
     if (invocationCountSnapshot <= 2 || invocationCountSnapshot > 5) {
       func()
@@ -145,7 +149,10 @@ class TransientIOErrorsRetryingIteratorITest
   // trying to retrieve the next page - which exceeds the max allowed number
   // of retries (10) - so will be treated as non-transient and not further retried. Exception
   // bubbles up
-  private def simulateExecutionWithNonTransientErrors[T](func: () => T): T = {
+  private def simulateExecutionWithNonTransientErrors[T](
+                                                          invocationCount: AtomicLong,
+                                                          recordCount: AtomicLong,
+                                                          func: () => T): T = {
     val invocationCountSnapshot = invocationCount.incrementAndGet()
     if (recordCount.get < 2 || invocationCountSnapshot > 17) {
       func()
