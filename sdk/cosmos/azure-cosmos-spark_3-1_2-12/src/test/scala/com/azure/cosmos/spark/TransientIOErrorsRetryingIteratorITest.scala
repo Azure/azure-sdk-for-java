@@ -23,6 +23,7 @@ class TransientIOErrorsRetryingIteratorITest
   val recordCount = new AtomicLong(0)
 
   "transient failures" should "be retried" in {
+    reinitializeContainer
     val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
 
     // assert that there is more than one range to ensure the test really is testing the parallelization of work
@@ -75,6 +76,7 @@ class TransientIOErrorsRetryingIteratorITest
   }
 
   "non-transient failures" should "should be thrown after retries exceed" in {
+    reinitializeContainer
     val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
 
     // assert that there is more than one range to ensure the test really is testing the parallelization of work
