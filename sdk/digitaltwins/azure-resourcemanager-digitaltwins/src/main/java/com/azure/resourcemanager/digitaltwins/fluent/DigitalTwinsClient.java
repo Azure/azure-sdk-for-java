@@ -59,7 +59,7 @@ public interface DigitalTwinsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the description of the DigitalTwins service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, DigitalTwinsDescriptionInner digitalTwinsCreate);
 
@@ -77,7 +77,7 @@ public interface DigitalTwinsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the description of the DigitalTwins service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginCreateOrUpdate(
         String resourceGroupName,
         String resourceName,
@@ -133,7 +133,7 @@ public interface DigitalTwinsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the description of the DigitalTwins service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginUpdate(
         String resourceGroupName, String resourceName, DigitalTwinsPatchDescription digitalTwinsPatchDescription);
 
@@ -149,7 +149,7 @@ public interface DigitalTwinsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the description of the DigitalTwins service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginUpdate(
         String resourceGroupName,
         String resourceName,
@@ -200,7 +200,7 @@ public interface DigitalTwinsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the description of the DigitalTwins service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginDelete(
         String resourceGroupName, String resourceName);
 
@@ -215,7 +215,7 @@ public interface DigitalTwinsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the description of the DigitalTwins service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginDelete(
         String resourceGroupName, String resourceName, Context context);
 

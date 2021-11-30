@@ -85,7 +85,7 @@ public interface DigitalTwinsEndpointsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return digitalTwinsInstance endpoint resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DigitalTwinsEndpointResourceInner>, DigitalTwinsEndpointResourceInner> beginCreateOrUpdate(
         String resourceGroupName,
         String resourceName,
@@ -105,7 +105,7 @@ public interface DigitalTwinsEndpointsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return digitalTwinsInstance endpoint resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DigitalTwinsEndpointResourceInner>, DigitalTwinsEndpointResourceInner> beginCreateOrUpdate(
         String resourceGroupName,
         String resourceName,
@@ -164,7 +164,7 @@ public interface DigitalTwinsEndpointsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return digitalTwinsInstance endpoint resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DigitalTwinsEndpointResourceInner>, DigitalTwinsEndpointResourceInner> beginDelete(
         String resourceGroupName, String resourceName, String endpointName);
 
@@ -180,7 +180,7 @@ public interface DigitalTwinsEndpointsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return digitalTwinsInstance endpoint resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DigitalTwinsEndpointResourceInner>, DigitalTwinsEndpointResourceInner> beginDelete(
         String resourceGroupName, String resourceName, String endpointName, Context context);
 

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.digitaltwins.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.digitaltwins.models.ConnectionProperties;
+import com.azure.resourcemanager.digitaltwins.models.PrivateEndpointConnectionProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -17,27 +17,27 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionInner.class);
 
     /*
-     * The properties of a private endpoint connection.
+     * The properties property.
      */
     @JsonProperty(value = "properties", required = true)
-    private ConnectionProperties properties;
+    private PrivateEndpointConnectionProperties properties;
 
     /**
-     * Get the properties property: The properties of a private endpoint connection.
+     * Get the properties property: The properties property.
      *
      * @return the properties value.
      */
-    public ConnectionProperties properties() {
+    public PrivateEndpointConnectionProperties properties() {
         return this.properties;
     }
 
     /**
-     * Set the properties property: The properties of a private endpoint connection.
+     * Set the properties property: The properties property.
      *
      * @param properties the properties value to set.
      * @return the PrivateEndpointConnectionInner object itself.
      */
-    public PrivateEndpointConnectionInner withProperties(ConnectionProperties properties) {
+    public PrivateEndpointConnectionInner withProperties(PrivateEndpointConnectionProperties properties) {
         this.properties = properties;
         return this;
     }

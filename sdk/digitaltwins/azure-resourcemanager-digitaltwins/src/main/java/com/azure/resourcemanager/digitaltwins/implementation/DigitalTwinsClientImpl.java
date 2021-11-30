@@ -240,7 +240,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
                             resourceName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -399,7 +399,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
                             digitalTwinsCreate,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -474,7 +474,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the description of the DigitalTwins service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String resourceName, DigitalTwinsDescriptionInner digitalTwinsCreate) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -486,7 +486,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
                 this.client.getHttpPipeline(),
                 DigitalTwinsDescriptionInner.class,
                 DigitalTwinsDescriptionInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -503,7 +503,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the description of the DigitalTwins service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String resourceName,
@@ -535,7 +535,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the description of the DigitalTwins service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, DigitalTwinsDescriptionInner digitalTwinsCreate) {
         return beginCreateOrUpdateAsync(resourceGroupName, resourceName, digitalTwinsCreate).getSyncPoller();
@@ -555,7 +555,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the description of the DigitalTwins service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginCreateOrUpdate(
         String resourceGroupName,
         String resourceName,
@@ -707,7 +707,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
                             digitalTwinsPatchDescription,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -780,7 +780,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the description of the DigitalTwins service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginUpdateAsync(
         String resourceGroupName, String resourceName, DigitalTwinsPatchDescription digitalTwinsPatchDescription) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -792,7 +792,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
                 this.client.getHttpPipeline(),
                 DigitalTwinsDescriptionInner.class,
                 DigitalTwinsDescriptionInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -807,7 +807,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the description of the DigitalTwins service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginUpdateAsync(
         String resourceGroupName,
         String resourceName,
@@ -837,7 +837,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the description of the DigitalTwins service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginUpdate(
         String resourceGroupName, String resourceName, DigitalTwinsPatchDescription digitalTwinsPatchDescription) {
         return beginUpdateAsync(resourceGroupName, resourceName, digitalTwinsPatchDescription).getSyncPoller();
@@ -855,7 +855,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the description of the DigitalTwins service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginUpdate(
         String resourceGroupName,
         String resourceName,
@@ -988,7 +988,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
                             resourceName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1047,7 +1047,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the description of the DigitalTwins service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginDeleteAsync(
         String resourceGroupName, String resourceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName);
@@ -1058,7 +1058,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
                 this.client.getHttpPipeline(),
                 DigitalTwinsDescriptionInner.class,
                 DigitalTwinsDescriptionInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1072,7 +1072,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the description of the DigitalTwins service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginDeleteAsync(
         String resourceGroupName, String resourceName, Context context) {
         context = this.client.mergeContext(context);
@@ -1097,7 +1097,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the description of the DigitalTwins service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginDelete(
         String resourceGroupName, String resourceName) {
         return beginDeleteAsync(resourceGroupName, resourceName).getSyncPoller();
@@ -1114,7 +1114,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the description of the DigitalTwins service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginDelete(
         String resourceGroupName, String resourceName, Context context) {
         return beginDeleteAsync(resourceGroupName, resourceName, context).getSyncPoller();
@@ -1226,7 +1226,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1374,7 +1374,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1540,7 +1540,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
                             digitalTwinsInstanceCheckName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1685,7 +1685,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1758,7 +1758,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

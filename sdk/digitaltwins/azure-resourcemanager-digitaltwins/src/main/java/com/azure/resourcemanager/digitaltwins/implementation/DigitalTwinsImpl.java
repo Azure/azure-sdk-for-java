@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager;
 import com.azure.resourcemanager.digitaltwins.fluent.DigitalTwinsClient;
 import com.azure.resourcemanager.digitaltwins.fluent.models.CheckNameResultInner;
 import com.azure.resourcemanager.digitaltwins.fluent.models.DigitalTwinsDescriptionInner;
@@ -24,9 +23,11 @@ public final class DigitalTwinsImpl implements DigitalTwins {
 
     private final DigitalTwinsClient innerClient;
 
-    private final AzureDigitalTwinsManager serviceManager;
+    private final com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager serviceManager;
 
-    public DigitalTwinsImpl(DigitalTwinsClient innerClient, AzureDigitalTwinsManager serviceManager) {
+    public DigitalTwinsImpl(
+        DigitalTwinsClient innerClient,
+        com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -211,7 +212,7 @@ public final class DigitalTwinsImpl implements DigitalTwins {
         return this.innerClient;
     }
 
-    private AzureDigitalTwinsManager manager() {
+    private com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager manager() {
         return this.serviceManager;
     }
 

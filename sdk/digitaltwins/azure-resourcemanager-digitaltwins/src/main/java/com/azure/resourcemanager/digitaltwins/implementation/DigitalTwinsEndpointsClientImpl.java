@@ -197,7 +197,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -372,7 +372,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
                             endpointName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -546,7 +546,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
                             endpointDescription,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -624,7 +624,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return digitalTwinsInstance endpoint resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DigitalTwinsEndpointResourceInner>, DigitalTwinsEndpointResourceInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -640,7 +640,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
                 this.client.getHttpPipeline(),
                 DigitalTwinsEndpointResourceInner.class,
                 DigitalTwinsEndpointResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -656,7 +656,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return digitalTwinsInstance endpoint resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DigitalTwinsEndpointResourceInner>, DigitalTwinsEndpointResourceInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -690,7 +690,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return digitalTwinsInstance endpoint resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DigitalTwinsEndpointResourceInner>, DigitalTwinsEndpointResourceInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -714,7 +714,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return digitalTwinsInstance endpoint resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DigitalTwinsEndpointResourceInner>, DigitalTwinsEndpointResourceInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -868,7 +868,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
                             endpointName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -933,7 +933,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return digitalTwinsInstance endpoint resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DigitalTwinsEndpointResourceInner>, DigitalTwinsEndpointResourceInner>
         beginDeleteAsync(String resourceGroupName, String resourceName, String endpointName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName, endpointName);
@@ -944,7 +944,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
                 this.client.getHttpPipeline(),
                 DigitalTwinsEndpointResourceInner.class,
                 DigitalTwinsEndpointResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -959,7 +959,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return digitalTwinsInstance endpoint resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DigitalTwinsEndpointResourceInner>, DigitalTwinsEndpointResourceInner>
         beginDeleteAsync(String resourceGroupName, String resourceName, String endpointName, Context context) {
         context = this.client.mergeContext(context);
@@ -986,7 +986,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return digitalTwinsInstance endpoint resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DigitalTwinsEndpointResourceInner>, DigitalTwinsEndpointResourceInner> beginDelete(
         String resourceGroupName, String resourceName, String endpointName) {
         return beginDeleteAsync(resourceGroupName, resourceName, endpointName).getSyncPoller();
@@ -1004,7 +1004,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return digitalTwinsInstance endpoint resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DigitalTwinsEndpointResourceInner>, DigitalTwinsEndpointResourceInner> beginDelete(
         String resourceGroupName, String resourceName, String endpointName, Context context) {
         return beginDeleteAsync(resourceGroupName, resourceName, endpointName, context).getSyncPoller();
@@ -1116,7 +1116,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

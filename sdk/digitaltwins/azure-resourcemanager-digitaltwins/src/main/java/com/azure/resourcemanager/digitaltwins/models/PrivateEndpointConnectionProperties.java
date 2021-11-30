@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.digitaltwins.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 
 /** The PrivateEndpointConnectionProperties model. */
-@Immutable
+@Fluent
 public final class PrivateEndpointConnectionProperties extends ConnectionProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionProperties.class);
 
     /** {@inheritDoc} */
     @Override
-    public PrivateEndpointConnectionProperties withPrivateEndpoint(PrivateEndpoint privateEndpoint) {
+    public PrivateEndpointConnectionProperties withPrivateEndpoint(
+        ConnectionPropertiesPrivateEndpoint privateEndpoint) {
         super.withPrivateEndpoint(privateEndpoint);
         return this;
     }
@@ -31,7 +32,7 @@ public final class PrivateEndpointConnectionProperties extends ConnectionPropert
     /** {@inheritDoc} */
     @Override
     public PrivateEndpointConnectionProperties withPrivateLinkServiceConnectionState(
-        ConnectionState privateLinkServiceConnectionState) {
+        ConnectionPropertiesPrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         super.withPrivateLinkServiceConnectionState(privateLinkServiceConnectionState);
         return this;
     }

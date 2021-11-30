@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.digitaltwins.implementation;
 
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager;
 import com.azure.resourcemanager.digitaltwins.fluent.models.DigitalTwinsEndpointResourceInner;
 import com.azure.resourcemanager.digitaltwins.models.DigitalTwinsEndpointResource;
 import com.azure.resourcemanager.digitaltwins.models.DigitalTwinsEndpointResourceProperties;
@@ -16,7 +15,7 @@ public final class DigitalTwinsEndpointResourceImpl
         DigitalTwinsEndpointResource.Update {
     private DigitalTwinsEndpointResourceInner innerObject;
 
-    private final AzureDigitalTwinsManager serviceManager;
+    private final com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -38,7 +37,7 @@ public final class DigitalTwinsEndpointResourceImpl
         return this.innerObject;
     }
 
-    private AzureDigitalTwinsManager manager() {
+    private com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager manager() {
         return this.serviceManager;
     }
 
@@ -73,7 +72,8 @@ public final class DigitalTwinsEndpointResourceImpl
         return this;
     }
 
-    DigitalTwinsEndpointResourceImpl(String name, AzureDigitalTwinsManager serviceManager) {
+    DigitalTwinsEndpointResourceImpl(
+        String name, com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager serviceManager) {
         this.innerObject = new DigitalTwinsEndpointResourceInner();
         this.serviceManager = serviceManager;
         this.endpointName = name;
@@ -102,7 +102,8 @@ public final class DigitalTwinsEndpointResourceImpl
     }
 
     DigitalTwinsEndpointResourceImpl(
-        DigitalTwinsEndpointResourceInner innerObject, AzureDigitalTwinsManager serviceManager) {
+        DigitalTwinsEndpointResourceInner innerObject,
+        com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

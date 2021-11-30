@@ -31,11 +31,11 @@ public interface PrivateEndpointConnection {
     String type();
 
     /**
-     * Gets the properties property: The properties of a private endpoint connection.
+     * Gets the properties property: The properties property.
      *
      * @return the properties value.
      */
-    ConnectionProperties properties();
+    PrivateEndpointConnectionProperties properties();
 
     /**
      * Gets the inner com.azure.resourcemanager.digitaltwins.fluent.models.PrivateEndpointConnectionInner object.
@@ -70,12 +70,12 @@ public interface PrivateEndpointConnection {
         /** The stage of the PrivateEndpointConnection definition allowing to specify properties. */
         interface WithProperties {
             /**
-             * Specifies the properties property: The properties of a private endpoint connection..
+             * Specifies the properties property: The properties property..
              *
-             * @param properties The properties of a private endpoint connection.
+             * @param properties The properties property.
              * @return the next definition stage.
              */
-            WithCreate withProperties(ConnectionProperties properties);
+            WithCreate withProperties(PrivateEndpointConnectionProperties properties);
         }
         /**
          * The stage of the PrivateEndpointConnection definition which contains all the minimum required properties for
@@ -127,12 +127,12 @@ public interface PrivateEndpointConnection {
         /** The stage of the PrivateEndpointConnection update allowing to specify properties. */
         interface WithProperties {
             /**
-             * Specifies the properties property: The properties of a private endpoint connection..
+             * Specifies the properties property: The properties property..
              *
-             * @param properties The properties of a private endpoint connection.
+             * @param properties The properties property.
              * @return the next definition stage.
              */
-            Update withProperties(ConnectionProperties properties);
+            Update withProperties(PrivateEndpointConnectionProperties properties);
         }
     }
     /**

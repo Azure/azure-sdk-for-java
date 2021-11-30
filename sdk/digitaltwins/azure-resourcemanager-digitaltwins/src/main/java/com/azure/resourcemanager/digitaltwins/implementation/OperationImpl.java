@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.digitaltwins.implementation;
 
-import com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager;
 import com.azure.resourcemanager.digitaltwins.fluent.models.OperationInner;
 import com.azure.resourcemanager.digitaltwins.models.Operation;
 import com.azure.resourcemanager.digitaltwins.models.OperationDisplay;
@@ -12,9 +11,10 @@ import com.azure.resourcemanager.digitaltwins.models.OperationDisplay;
 public final class OperationImpl implements Operation {
     private OperationInner innerObject;
 
-    private final AzureDigitalTwinsManager serviceManager;
+    private final com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager serviceManager;
 
-    OperationImpl(OperationInner innerObject, AzureDigitalTwinsManager serviceManager) {
+    OperationImpl(
+        OperationInner innerObject, com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -39,7 +39,7 @@ public final class OperationImpl implements Operation {
         return this.innerObject;
     }
 
-    private AzureDigitalTwinsManager manager() {
+    private com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager manager() {
         return this.serviceManager;
     }
 }

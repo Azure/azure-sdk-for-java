@@ -9,7 +9,7 @@ import com.azure.resourcemanager.digitaltwins.fluent.models.GroupIdInformationIn
 /** An immutable client-side representation of GroupIdInformation. */
 public interface GroupIdInformation {
     /**
-     * Gets the properties property: The properties for a group information object.
+     * Gets the properties property: The properties property.
      *
      * @return the properties value.
      */
