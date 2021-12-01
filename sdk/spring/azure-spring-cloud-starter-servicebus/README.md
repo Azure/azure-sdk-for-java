@@ -59,7 +59,7 @@ ReplyToSessionId | com.azure.spring.integration.servicebus.converter.ServiceBusM
 This example demonstrates how to manually set the partition key for the message in the application.
 
 **Way 1:**
-This example requires that `spring.cloud.stream.default.producer.partitionKeyExpression` be set `"'partitionKey-' + headers[<message-header-key>]"`.
+This example requires that `spring.cloud.stream.default.producer.partitionKeyExpression` be set `"'partitionKey-' + headers[MESSAGE_HEADER_KEY]"`.
 ```yaml
 spring:
   cloud:
@@ -69,14 +69,14 @@ spring:
     stream:
       default:
         producer:
-          partitionKeyExpression:  "'partitionKey-' + headers[<message-header-key>]"
+          partitionKeyExpression:  "'partitionKey-' + headers[MESSAGE_HEADER_KEY]"
 ```
 ```java
 @PostMapping("/messages")
 public ResponseEntity<String> sendMessage(@RequestParam String message) {
     LOGGER.info("Going to add message {} to Sinks.Many.", message);
     many.emitNext(MessageBuilder.withPayload(message)
-                                .setHeader("<message-header-key>", "Customize partirion key")
+                                .setHeader(MESSAGE_HEADER_KEY, "Customize partirion key")
                                 .build(), Sinks.EmitFailureHandler.FAIL_FAST);
     return ResponseEntity.ok("Sent!");
 }
