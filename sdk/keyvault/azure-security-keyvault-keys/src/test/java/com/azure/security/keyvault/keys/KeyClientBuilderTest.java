@@ -9,6 +9,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.Header;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,8 @@ public class KeyClientBuilderTest {
 
     @BeforeEach
     public void setUp() {
-        vaultUrl = "https://key-vault-url.vault.azure.net/";
+        vaultUrl = Configuration.getGlobalConfiguration()
+            .get("AZURE_KEYVAULT_ENDPOINT", "https://key-vault-url.vault.azure.net/");
         keyName = "TestKey";
         serviceVersion = KeyServiceVersion.V7_2;
     }

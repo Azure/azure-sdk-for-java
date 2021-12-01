@@ -730,4 +730,9 @@ public abstract class KeyClientTestBase extends TestBase {
             }
         }
     }
+
+    protected boolean isPublicCloud() {
+        return ".vault.azure.net".equals(
+            Configuration.getGlobalConfiguration().get("KEY_VAULT_ENDPOINT_SUFFIX", ".vault.azure.net"));
+    }
 }

@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.jca;
 
+import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
@@ -55,7 +56,8 @@ public class KeyVaultCertificatesTest {
     public static void setEnvironmentProperty() {
         PropertyConvertorUtils.putEnvironmentPropertyToSystemPropertyForKeyVaultJca();
         PropertyConvertorUtils.addKeyVaultJcaProvider();
-        certificateName = System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME");
+        certificateName = Configuration.getGlobalConfiguration()
+            .get("AZURE_KEYVAULT_CERTIFICATE_NAME", System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME"));
     }
 
     @Test
