@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.Disposable;
+import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
@@ -23,19 +24,21 @@ class SynchronousReceiveWork {
     private static final Duration TIMEOUT_BETWEEN_MESSAGES = Duration.ofMillis(1000);
 
     private final ClientLogger logger = new ClientLogger(SynchronousReceiveWork.class);
+    private final AtomicBoolean isStarted = new AtomicBoolean();
+    private final Duration timeout;
+
     private final long id;
     private final AtomicInteger remaining;
     private final int numberToReceive;
-    private final Duration timeout;
 
     // Emits the messages downstream.
     private final Sinks.Many<ServiceBusReceivedMessage> downstreamEmitter;
 
-    // Subscribes to next message from upstream and implement short timeout between the messages.
-    private final Disposable nextMessageTimeoutSubscription;
+    // Composite subscriptions for both the overall timeout and timeout between messages.
+    private final Disposable.Composite timeoutSubscriptions;
 
     // Indicate state that timeout has occurred for this work.
-    private final AtomicBoolean isCompleted = new AtomicBoolean();
+    private final AtomicBoolean isTerminal = new AtomicBoolean();
 
     /**
      * Creates a new synchronous receive work.
@@ -52,12 +55,15 @@ class SynchronousReceiveWork {
         this.numberToReceive = numberToReceive;
         this.timeout = timeout;
         this.downstreamEmitter = emitter;
-        this.nextMessageTimeoutSubscription =
+
+        this.timeoutSubscriptions = Disposables.composite(
             Flux.switchOnNext(emitter.asFlux().map(messageContext -> Mono.delay(TIMEOUT_BETWEEN_MESSAGES)))
                 .subscribe(delayElapsed -> {
-                    logger.info("[{}]: Timeout between the messages occurred. Completing the work.", id);
-                    emitter.emitComplete(Sinks.EmitFailureHandler.FAIL_FAST);
-                });
+                    complete("Timeout between the messages occurred. Completing the work.");
+                }, error -> {
+                    complete("Error occurred while waiting for timeout between messages.", error);
+                })
+        );
     }
 
     /**
@@ -88,13 +94,36 @@ class SynchronousReceiveWork {
     }
 
     /**
+     * Gets the number of events left to receive.
+     *
+     * @return The number of events to receive.
+     */
+    int getRemainingEvents() {
+        return remaining.get();
+    }
+
+    /**
+     * Starts the timer for the work.
+     */
+    synchronized void start() {
+        if (isStarted.getAndSet(true)) {
+            return;
+        }
+
+        this.timeoutSubscriptions.add(
+            Mono.delay(timeout).subscribe(
+                index -> complete("Timeout elapsed for work."),
+                error -> complete("Error occurred while waiting for timeout.", error)));
+    }
+
+    /**
      * Gets whether or not the work item has reached a terminal state.
      *
      * @return {@code true} if all the events have been fetched, it has been cancelled, or an error occurred. {@code
      *     false} otherwise.
      */
-    boolean isTerminal() {
-        return isCompleted.get();
+    synchronized boolean isTerminal() {
+        return isTerminal.get();
     }
 
     /**
@@ -104,72 +133,66 @@ class SynchronousReceiveWork {
      *
      * @return true if the work could be emitted downstream. False if it could not be.
      */
-    boolean emitNext(ServiceBusReceivedMessage message) {
-        if (isCompleted.get()) {
+    synchronized boolean emitNext(ServiceBusReceivedMessage message) {
+        if (isTerminal.get()) {
             return false;
+        }
+
+        if (!isStarted.get()) {
+            start();
         }
 
         final int numberLeft = remaining.decrementAndGet();
 
         if (numberLeft < 0) {
-            logger.info("Number left {} < 0. Not emitting downstream.", numberLeft);
+            logger.info("workId[{}] Number left {} < 0. Not emitting downstream.", id, numberLeft);
             return false;
         }
 
         final Sinks.EmitResult result = downstreamEmitter.tryEmitNext(message);
         if (result != Sinks.EmitResult.OK) {
-            logger.info("Could not emit downstream. EmitResult: {}", result);
+            logger.info("workId[{}] Could not emit downstream. EmitResult: {}", id, result);
             return false;
         }
 
         // All events are emitted, so complete the synchronous work item. Next loop, it'll return false.
         if (numberLeft == 0) {
-            close(null);
+            complete(null);
         }
 
         return true;
     }
 
     /**
-     * Completes the publisher. If the publisher has encountered an error, or an error has occurred, it does nothing.
-     */
-    void complete() {
-        if (isCompleted.get()) {
-            return;
-        }
-
-        logger.info("[{}]: Upstream completed the receive work.", id);
-        close(null);
-    }
-
-    /**
-     * Completes the publisher and sets the state to timeout.
-     */
-    void timeout() {
-        if (isCompleted.get()) {
-            return;
-        }
-
-        logger.info("[{}]: Upstream operation timeout occurred. Completing the work.", id);
-        close(null);
-    }
-
-    /**
-     * Publishes an error downstream. This is a terminal step.
+     * Completes the publisher.
      *
-     * @param error Error to publish downstream.
+     * @param message Message to log.
      */
-    void error(Throwable error) {
-        close(error);
+    synchronized void complete(String message) {
+        complete(message, null);
     }
 
-    void close(Throwable error) {
-        if (isCompleted.getAndSet(true)) {
+    /**
+     * Completes the publisher. If the publisher has encountered an error, or an error has occurred, it does nothing.
+     *
+     * @param message Message to log. Null if there is no message to log.
+     * @param error Error if one occurred. Null otherwise.
+     */
+    synchronized void complete(String message, Throwable error) {
+        if (isTerminal.getAndSet(true)) {
             return;
         }
-        try {
-            nextMessageTimeoutSubscription.dispose();
 
+        if (message != null) {
+            if (error == null) {
+                logger.verbose("workId[{}] {}", id, message);
+            } else {
+                logger.warning("workId[{}] {}", id, message, error);
+            }
+        }
+
+        try {
+            timeoutSubscriptions.dispose();
         } finally {
             if (error == null) {
                 downstreamEmitter.emitComplete(Sinks.EmitFailureHandler.FAIL_FAST);
