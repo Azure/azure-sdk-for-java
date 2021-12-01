@@ -5,9 +5,7 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Subscription;
-import reactor.core.Disposable;
 import reactor.core.publisher.BaseSubscriber;
-import reactor.core.publisher.Mono;
 import reactor.core.publisher.Operators;
 
 import java.util.Objects;
@@ -29,7 +27,6 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
     private final ConcurrentLinkedDeque<ServiceBusReceivedMessage> bufferMessages = new ConcurrentLinkedDeque<>();
 
     private final Object currentWorkLock = new Object();
-    private volatile Disposable currentTimeoutOperation;
     private volatile SynchronousReceiveWork currentWork;
 
     /**
@@ -70,11 +67,17 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
      */
     @Override
     protected void hookOnSubscribe(Subscription subscription) {
-        if (Operators.setOnce(UPSTREAM, this, subscription)) {
-            subscription.request(REQUESTED.get(this));
-        } else {
-            logger.error("Already subscribed once.");
+        if (!Operators.setOnce(UPSTREAM, this, subscription)) {
+            logger.warning("This should only be subscribed to once. Ignoring subscription.");
+            return;
         }
+
+        final SynchronousReceiveWork currentWork = getOrUpdateCurrentWork();
+        if (currentWork != null) {
+            currentWork.start();
+        }
+
+        subscription.request(REQUESTED.get(this));
     }
 
     /**
@@ -95,12 +98,21 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
      * @param work to be queued.
      */
     void queueWork(SynchronousReceiveWork work) {
-        logger.info("[{}] Pending: {}, Scheduling receive timeout task '{}'.", work.getId(), work.getNumberOfEvents(),
-            work.getTimeout());
+        Objects.requireNonNull(work, "'work' cannot be null");
 
         workQueue.add(work);
 
-        // Do not drain if another thread want to queue the work before we have subscriber
+        if (workQueue.peek() == work) {
+            logger.verbose("workId[{}] numberOfEvents[{}] timeout[{}] First work in queue. Requesting upstream if "
+                    + "needed.", work.getId(), work.getNumberOfEvents(), work.getTimeout());
+
+            getOrUpdateCurrentWork();
+        } else {
+            logger.verbose("workId[{}] numberOfEvents[{}] timeout[{}] Queuing receive work.", work.getId(),
+                work.getNumberOfEvents(), work.getTimeout());
+
+        }
+
         if (UPSTREAM.get(this) != null) {
             drain();
         }
@@ -133,10 +145,10 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
         }
 
         // Consider the case we queue a new work item after some time.
-
         long numberRequested = REQUESTED.get(this);
         boolean isEmpty = bufferMessages.isEmpty();
-        SynchronousReceiveWork work = null;
+
+        SynchronousReceiveWork work;
         while (numberRequested != 0L && !isEmpty) {
             if (isTerminated()) {
                 break;
@@ -175,10 +187,6 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                 numberRequested = REQUESTED.addAndGet(this, -numberEmitted);
             }
         }
-
-        if (numberRequested > 0L && isEmpty) {
-            addCreditsToLink("Adding more credits in drain loop.");
-        }
     }
 
     /**
@@ -186,10 +194,11 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
      */
     @Override
     protected void hookOnError(Throwable throwable) {
-        logger.error("[{}] Errors occurred upstream", currentWork.getId(), throwable);
+        logger.error("workId[{}] Errors occurred upstream", currentWork.getId(), throwable);
         synchronized (currentWorkLock) {
-            currentWork.error(throwable);
+            currentWork.complete(null, throwable);
         }
+
         dispose();
     }
 
@@ -213,35 +222,46 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
      */
     private SynchronousReceiveWork getOrUpdateCurrentWork() {
         synchronized (currentWorkLock) {
+            // If the current work isn't terminal, then return it. Otherwise, poll for the next item.
             if (currentWork != null && !currentWork.isTerminal()) {
                 return currentWork;
             }
 
-            if (this.currentTimeoutOperation != null) {
-                this.currentTimeoutOperation.dispose();
-            }
-
             currentWork = workQueue.poll();
             while (currentWork != null) {
+                // For the terminal work, subtract the remaining number of messages from our current request
+                // count. This is so we don't keep adding credits for work that was expired but we never
+                // received messages for.
+                if (currentWork.isTerminal()) {
+                    REQUESTED.updateAndGet(this, currentRequest -> {
+                        final int remainingEvents = currentWork.getRemainingEvents();
 
-                // If the current work isn't terminal, then return it. Otherwise, poll for the next item.
-                if (!currentWork.isTerminal()) {
-                    final SynchronousReceiveWork work = currentWork;
-
-                    final long difference = REQUESTED.getAndUpdate(this, (existing) -> {
-                        if (existing > work.getNumberOfEvents()) {
-                            return existing;
-                        } else {
-
+                        if (remainingEvents < 1) {
+                            return currentRequest;
                         }
-                    });
-                    this.currentTimeoutOperation = Mono.delay(work.getTimeout()).thenReturn(work)
-                        .subscribe(timedOutWork -> timedOutWork.timeout());
 
-                    return currentWork;
-                } else {
+                        final long difference = currentRequest - remainingEvents;
+
+                        logger.verbose("Updating REQUESTED because current work item is terminal. currentRequested[{}]"
+                                + " currentWork.remainingEvents[{}] difference[{}]", currentRequest, remainingEvents,
+                            difference);
+
+                        return difference < 0 ? 0 : difference;
+                    });
+
+
                     currentWork = workQueue.poll();
+                    continue;
                 }
+
+                final SynchronousReceiveWork work = currentWork;
+                logger.verbose("workId[{}] numberOfEvents[{}] Current work updated.", work.getId(),
+                    work.getNumberOfEvents());
+
+                work.start();
+                requestUpstream(work.getNumberOfEvents());
+
+                return work;
             }
 
             return currentWork;
@@ -265,36 +285,34 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
             return;
         }
 
-        final long difference = requested - numberOfMessages;
+        final long currentRequested = REQUESTED.get(this);
+        final long difference = numberOfMessages - currentRequested;
+
+        logger.verbose("Requesting messages from upstream. currentRequested[{}] numberOfMessages[{}] difference[{}]",
+            currentRequested, numberOfMessages, difference);
+
         if (difference <= 0) {
             return;
         }
 
         Operators.addCap(REQUESTED, this, difference);
+
         subscription.request(difference);
     }
 
     @Override
     public void dispose() {
-
         super.dispose();
 
         if (isDisposed.getAndSet(true)) {
             return;
         }
 
-
         synchronized (currentWorkLock) {
             if (currentWork != null) {
-                currentWork.complete();
+                currentWork.complete("Upstream completed the receive work.");
             }
-            if (currentTimeoutOperation != null && !currentTimeoutOperation.isDisposed()) {
-                currentTimeoutOperation.dispose();
-            }
-
-            currentTimeoutOperation = null;
         }
-
     }
 
     int getWorkQueueSize() {
