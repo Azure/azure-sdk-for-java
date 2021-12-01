@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Where SynchronousMessageSubscriber would not receive additional messages if they were > 1 and the timeout had elapsed for the first receive call. https://github.com/Azure/azure-sdk-for-java/issues/25063
+
 ### Other Changes
 
 ## 7.5.0 (2021-11-16)
