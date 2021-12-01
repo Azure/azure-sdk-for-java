@@ -1,5 +1,21 @@
+:doctype: book
+:idprefix:
+:idseparator: -
+:toc: left
+:toclevels: 4
+:tabsize: 4
+:numbered:
+:sectanchors:
+:sectnums:
+:icons: font
+:hide-uri-scheme:
+:docinfo: shared,private
+
+:sc-ext: java
+:project-full-name: Spring Cloud Azure
+:all: {asterisk}{asterisk}
+
 = Spring Cloud Azure Test cases Scenarios
-:toc: right
 
 == Test blob health indicator returns the up state
 The Azure actuator starter should work well with storage blob indicator when using Azure storage blob starter, the storage blob status should be healthy.
