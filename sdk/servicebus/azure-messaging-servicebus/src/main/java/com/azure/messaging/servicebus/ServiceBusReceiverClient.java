@@ -712,14 +712,12 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         }
 
         final SynchronousMessageSubscriber newSubscriber = new SynchronousMessageSubscriber(work);
-        final SynchronousMessageSubscriber subscriber =
-            synchronousMessageSubscriber.compareAndExchange(null, newSubscriber);
 
-        if (newSubscriber == subscriber) {
+        if (synchronousMessageSubscriber.compareAndSet(null, newSubscriber)) {
             asyncClient.receiveMessagesNoBackPressure().subscribeWith(newSubscriber);
         } else {
             newSubscriber.dispose();
-            subscriber.queueWork(work);
+            synchronousMessageSubscriber.get().queueWork(work);
         }
 
         logger.verbose("[{}] Receive request queued up.", work.getId());
