@@ -136,7 +136,7 @@ class TransientIOErrorsRetryingIteratorITest
   // before subsequent request retrieving new page succeeds
   private def simulateExecutionWithTransientErrors[T](invocationCount: AtomicLong, func: () => T): T = {
     val invocationCountSnapshot = invocationCount.incrementAndGet()
-    if (invocationCountSnapshot <= 2 || invocationCountSnapshot > 5) {
+    if (invocationCountSnapshot != 3) {
       func()
     } else {
       //scalastyle:off null
