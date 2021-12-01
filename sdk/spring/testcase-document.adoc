@@ -17,8 +17,98 @@
 
 = Spring Cloud Azure Test cases Scenarios
 
+== Test storage blob health indicator auto-configuration enabled
+The blob auto-configuration of Spring Cloud Azure Actuator Starter should be enabled when using Azure storage blob starter.
+
+Tags::
+Storage blob, Indicator
+
+Test Prerequisites::
+* Azure Storage Blob instance exists. +
+
+Steps::
+* Add `spring-cloud-azure-starter-storage-blob` and `spring-cloud-azure-starter-actuator` dependencies. +
+* Configure the below combinations for storage blob properties. +
+[source, yaml]
+----
+# Resource location
+blob: azure-blob://test/test-blob
+spring:
+  cloud:
+    azure:
+      storage:
+        blob:
+          account-name: XXX
+          account-key: XXX
+          endpoint: XXX
+management:
+  endpoint:
+    health:
+      show-details: always
+----
+
+Expected Result::
+* The `BlobServiceAsyncClient` bean should be configured. +
+* The `StorageBlobHealthConfiguration` bean should be enabled. +
+* The `StorageBlobHealthIndicator` bean should be configured. +
+
+How Spring test such case?::
+* https://github.com/moarychan/spring-boot/blob/dac63fc3e52ecb36677965b97b96ebbf1a7871c8/spring-boot-project/spring-boot-actuator-autoconfigure/src/test/java/org/springframework/boot/actuate/autoconfigure/redis/RedisHealthContributorAutoConfigurationTests.java#L44[RedisHealthContributorAutoConfigurationTests] in spring-boot-actuator-autoconfigure +
+
+Is UT enough?::
+Yes
+
+Current use cases::
+N/A
+
+== Test storage blob health indicator auto-configuration disabled
+The blob auto-configuration of Spring Cloud Azure Actuator Starter can be disabled when using Azure storage blob starter.
+
+Tags::
+Storage blob, Indicator
+
+Test Prerequisites::
+N/A
+
+Steps::
+* Add `spring-cloud-azure-starter-storage-blob` and `spring-cloud-azure-starter-actuator` dependencies. +
+* Configure the below combinations for storage blob properties. +
+[source, yaml]
+----
+# Resource location
+blob: azure-blob://test/test-blob
+spring:
+  cloud:
+    azure:
+      storage:
+        blob:
+          account-name: XXX
+          account-key: XXX
+          endpoint: XXX
+management:
+  health:
+    azure-storage:
+      enabled: false
+  endpoint:
+    health:
+      show-details: always
+----
+
+Expected Result::
+* The condition of `StorageBlobHealthConfiguration` configuration should be not met. +
+
+How Spring test such case?::
+There are 2 UTs for reference:
+
+* https://github.com/moarychan/spring-boot/blob/dac63fc3e52ecb36677965b97b96ebbf1a7871c8/spring-boot-project/spring-boot-actuator-autoconfigure/src/test/java/org/springframework/boot/actuate/autoconfigure/redis/RedisHealthContributorAutoConfigurationTests.java#L50[runWhenDisabledShouldNotCreateIndicator] in spring-boot-actuator-autoconfigure +
+Is UT enough?::
+Yes
+
+Current use cases::
+N/A
+
 == Test blob health indicator returns the up state
-The Azure actuator starter should work well with storage blob indicator when using Azure storage blob starter, the storage blob status should be healthy.
+The Spring Cloud Azure Actuator Starter should work well with storage blob indicator when using Azure storage blob starter, the storage blob status should be healthy.
 
 Tags::
 Storage blob, Indicator
@@ -52,10 +142,6 @@ Expected Result::
 * The up status should be returned from the storage blob health endpoint. +
 
 How Spring test such case?::
-There are 2 UTs for reference:
-
-* https://github.com/moarychan/spring-boot/blob/dac63fc3e52ecb36677965b97b96ebbf1a7871c8/spring-boot-project/spring-boot-actuator-autoconfigure/src/test/java/org/springframework/boot/actuate/autoconfigure/redis/RedisHealthContributorAutoConfigurationTests.java#L44[RedisHealthContributorAutoConfigurationTests] in spring-boot-actuator-autoconfigure +
-Use `ApplicationContextRunner`  with Redis related auto-configuration to validate the bean creation. +
 * https://github.com/moarychan/spring-boot/blob/49baacbc1cb02a59efce1fe1698166de92d41d67/spring-boot-project/spring-boot-actuator/src/test/java/org/springframework/boot/actuate/redis/RedisHealthIndicatorTests.java#L50[RedisHealthIndicatorTests] in spring-boot-actuator +
 Mock `RedisConnection` and `RedisConnectionFactory` to make the redis connection's `info` method return pre-defined data, the status of the `Health` will be up.
 
@@ -66,7 +152,7 @@ Current use cases::
 https://github.com/Azure/azure-sdk-for-java/blob/8c6650a298b51cefe559c470b8f818bfa53a8992/sdk/spring/azure-spring-boot-test-storage/src/test/java/com/azure/spring/test/storage/StorageActuatorIT.java#L25[testBlobStorageActuatorHealth]
 
 == Test blob health indicator returns the down state
-The Azure actuator starter should work well with storage blob indicator when using Azure storage blob starter, the storage blob status should be down when blob service client does not respond data normally.
+The Spring Cloud Azure Actuator Starter should work well with storage blob indicator when using Azure storage blob starter, the storage blob status should be down when blob service client does not respond data normally.
 
 Tags::
 Storage blob, Indicator
@@ -116,7 +202,7 @@ Current use cases::
 N/A
 
 == Test fileshare health indicator returns the up state
-The Azure actuator starter should work well with storage fileshare indicator when using Azure storage fileshare starter, the storage fileshare status should be healthy.
+The Spring Cloud Azure Actuator Starter should work well with storage fileshare indicator when using Azure storage fileshare starter, the storage fileshare status should be healthy.
 
 Tags::
 Storage fileshare, Indicator
@@ -160,7 +246,7 @@ Current use cases::
 https://github.com/Azure/azure-sdk-for-java/blob/8c6650a298b51cefe559c470b8f818bfa53a8992/sdk/spring/azure-spring-boot-test-storage/src/test/java/com/azure/spring/test/storage/StorageActuatorIT.java#L54[testFileStorageActuatorHealth]
 
 == Test fileshare health indicator returns the down state
-The Azure actuator starter should work well with storage fileshare indicator when using Azure storage fileshare starter, the storage file status should be down when file service client does not respond data normally.
+The Spring Cloud Azure Actuator Starter should work well with storage fileshare indicator when using Azure storage fileshare starter, the storage file status should be down when file service client does not respond data normally.
 
 Tags::
 Storage fileshare, Indicator
@@ -430,7 +516,7 @@ Current use cases::
 link:https://github.com/Azure/azure-sdk-for-java/blob/66986d7ebf015fc013b8be994de2e1b574b54386/sdk/spring/azure-spring-boot-test-servicebus-jms/src/test/java/com/azure/spring/sample/servicebus/jms/premium/PremiumServiceBusJmsIT.java[integrationTestQueue, integrationTestTopic]
 
 == Test cosmos health indicator returns the up state
-The Azure actuator starter should work well with cosmos indicator when using Spring Cloud Azure Cosmos Starter, the Cosmos status should be healthy.
+The Spring Cloud Azure Actuator Starter should work well with cosmos indicator when using Spring Cloud Azure Cosmos Starter, the Cosmos status should be healthy.
 
 Tags::
 Cosmos, Indicator
@@ -472,7 +558,7 @@ Current use cases::
 link:https://github.com/Azure/azure-sdk-for-java/blob/996691145f2ade80b5fea71813c4a22e7ef18036/sdk/spring/azure-spring-boot-test-cosmos/src/test/java/com/azure/test/cosmos/CosmosActuatorIT.java#L19[testCosmosSpringBootActuatorHealth]
 
 == Test cosmos health indicator returns the down state
-The Azure actuator starter should work well with Cosmos indicator when using Spring Cloud Azure Cosmos Starter, the Cosmos status should be down when Cosmos service client does not respond data normally.
+The Spring Cloud Azure Actuator Starter should work well with Cosmos indicator when using Spring Cloud Azure Cosmos Starter, the Cosmos status should be down when Cosmos service client does not respond data normally.
 
 Tags::
 Cosmos, Indicator
@@ -571,7 +657,7 @@ link:https://github.com/Azure/azure-sdk-for-java/blob/15dda6cdc3219e9128a4d5207c
 link:https://github.com/Azure/azure-sdk-for-java/blob/15dda6cdc3219e9128a4d5207cb66d891fd1baf8/sdk/spring/spring-cloud-azure-autoconfigure/src/test/java/com/azure/spring/cloud/autoconfigure/data/cosmos/CosmosRepositoriesAutoConfigurationUnitTest.java#L32[CosmosRepositoriesAutoConfigurationUnitTest] +
 
 == Test Keyvault health indicator returns the up state
-The Azure actuator starter should work well with Key Vault indicator when using Spring Cloud Azure Keyvault Secert Starter, the Cosmos status should be healthy.
+The Spring Cloud Azure Actuator Starter should work well with Key Vault indicator when using Spring Cloud Azure Keyvault Secert Starter, the Cosmos status should be healthy.
 
 Tags::
 Keyvault, Indicator
@@ -617,7 +703,7 @@ Current use cases::
 link:https://github.com/Azure/azure-sdk-for-java/blob/e366d3c3d152761e0fb922b438e2582e77f7ec62/sdk/spring/azure-spring-boot-test-keyvault/src/test/java/com/azure/spring/test/keyvault/KeyVaultActuatorIT.java#L28[testSpringBootActuatorHealth]
 
 == Test Keyvault health indicator returns the down state
-The Azure actuator starter should work well with Keyvault indicator when using Spring Cloud Azure Cosmos Starter, the Keyvault status should be down when Keyvault service client does not respond data normally.
+The Spring Cloud Azure Actuator Starter should work well with Keyvault indicator when using Spring Cloud Azure Cosmos Starter, the Keyvault status should be down when Keyvault service client does not respond data normally.
 
 Tags::
 Keyvault, Indicator
