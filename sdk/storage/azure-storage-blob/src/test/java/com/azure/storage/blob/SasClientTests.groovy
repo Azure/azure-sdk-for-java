@@ -407,12 +407,64 @@ class SasClientTests extends APISpec {
         thrown(BlobStorageException)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_04_10")
     def "container sas filter blobs"() {
+        setup:
+        def permissions = new BlobContainerSasPermission()
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+            .setAddPermission(true)
+            .setListPermission(true)
+            .setDeleteVersionPermission(true)
+            .setTagsPermission(true)
+            .setFilterPermission(true)
 
+        def expiryTime = namer.getUtcNow().plusDays(1)
+        def sasValues = new BlobServiceSasSignatureValues(expiryTime, permissions)
+        def sas = cc.generateSas(sasValues)
+        def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName)
+
+        when:
+        def tags = new HashMap<String, String>()
+        tags.put("foo", "bar")
+        client.setTags(tags)
+
+        cc.findBlobsByTags("\"foo\"='bar'").iterator().hasNext()
+
+        then:
+        notThrown(BlobStorageException)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_04_10")
     def "container sas filter blobs fail"() {
+        setup:
+        def permissions = new BlobContainerSasPermission()
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+            .setAddPermission(true)
+            .setListPermission(true)
+            .setDeleteVersionPermission(true)
+            .setTagsPermission(true)
+            // no filter permission
 
+        def expiryTime = namer.getUtcNow().plusDays(1)
+        def sasValues = new BlobServiceSasSignatureValues(expiryTime, permissions)
+        def sas = cc.generateSas(sasValues)
+        def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName)
+
+        when:
+        def tags = new HashMap<String, String>()
+        tags.put("foo", "bar")
+        client.setTags(tags)
+
+        cc.findBlobsByTags("\"foo\"='bar'").iterator().hasNext()
+
+        then:
+        thrown(BlobStorageException)
     }
 
     // RBAC replication lag

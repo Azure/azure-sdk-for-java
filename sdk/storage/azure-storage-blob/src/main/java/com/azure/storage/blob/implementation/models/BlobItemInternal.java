@@ -65,7 +65,6 @@ public final class BlobItemInternal {
      * Dictionary of <string>
      */
     @JsonProperty(value = "OrMetadata")
-    @JsonProperty(value = "OrMetadata")
     private Map<String, String> objectReplicationMetadata;
 
     /*
