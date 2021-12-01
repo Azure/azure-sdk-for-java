@@ -65,12 +65,12 @@ jobs:
           }
           
           # git fetch on fork repo
-          Write-Host "git fetch $remoteName"
-          git fetch $remoteName $(DailyDocsBranchName)
+          Write-Host "git fetch $remoteName $(DailyDocsBranchName)"
+          git fetch $remoteName "$(DailyDocsBranchName)"
 
           # create a branch tracking fork repo daily branch
           Write-Host "git checkout -b $(DailyDocsBranchName) -t $remoteName/$(DailyDocsBranchName)"
-          git checkout -t -b "$remoteName/$(DailyDocsBranchName)"
+          git checkout -b $(DailyDocsBranchName) -t "$remoteName/$(DailyDocsBranchName)"
         displayName: Checkout fork repo daily branch
         workingDirectory: $(DocRepoLocation)
       # Docs daily updates is supposed to download packages from public feed repository, so we have to specify additional repositories in a POM or the profile.
