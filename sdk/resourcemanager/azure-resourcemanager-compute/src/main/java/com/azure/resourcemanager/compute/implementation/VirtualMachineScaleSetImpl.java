@@ -166,7 +166,7 @@ public class VirtualMachineScaleSetImpl
     private boolean removeOsProfile;
     private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetImpl.class);
     private boolean profileNotSet = true;
-    private boolean setProfileDefaultsBeforeInvoke = false;
+    private boolean flexibleVMProfileInitialized = false;
 
     VirtualMachineScaleSetImpl(
         String name,
@@ -1592,7 +1592,7 @@ public class VirtualMachineScaleSetImpl
                     .createOrUpdateAsync(resourceGroupName(), name(), innerModel()));
         }
 
-        if (isInCreateMode() || createFlexibleProfile()) {
+        if (this.shouldSetProfileDefaults()) {
             this.setOSProfileDefaults();
             this.setOSDiskDefault();
         }
@@ -1631,7 +1631,7 @@ public class VirtualMachineScaleSetImpl
     @Override
     public Mono<VirtualMachineScaleSet> updateResourceAsync() {
         setExtensions();
-        if (this.setProfileDefaultsBeforeInvoke) {
+        if (this.shouldSetProfileDefaults()) {
             this.setOSProfileDefaults();
             this.setOSDiskDefault();
         }
@@ -1727,7 +1727,7 @@ public class VirtualMachineScaleSetImpl
     private void initVMProfileIfNecessary() {
         if (this.innerModel().virtualMachineProfile() == null) {
             this.innerModel().withVirtualMachineProfile(initDefaultVMProfile());
-            this.setProfileDefaultsBeforeInvoke = true;
+            this.flexibleVMProfileInitialized = true;
         }
         this.profileNotSet = false;
     }
@@ -1820,9 +1820,16 @@ public class VirtualMachineScaleSetImpl
         }
     }
 
-    private boolean createFlexibleProfile() {
-        return this.orchestrationMode() == OrchestrationMode.FLEXIBLE
-            && !this.profileNotSet;
+    /*
+     * Profile defaults should be set when:
+     * 1. creating vmss
+     * 2. attaching a profile to existing flexible vmss
+     * @return
+     */
+    private boolean shouldSetProfileDefaults() {
+        return isInCreateMode()
+            || (this.orchestrationMode() == OrchestrationMode.FLEXIBLE && !this.profileNotSet)
+            || this.flexibleVMProfileInitialized;
     }
 
     private void setExtensions() {
@@ -2091,7 +2098,7 @@ public class VirtualMachineScaleSetImpl
         this.primaryInternetFacingLoadBalancer = null;
         this.primaryInternalLoadBalancer = null;
         this.profileNotSet = true;
-        this.setProfileDefaultsBeforeInvoke = false;
+        this.flexibleVMProfileInitialized = false;
     }
 
     private Mono<VirtualMachineScaleSetImpl> loadCurrentPrimaryLoadBalancersIfAvailableAsync() throws IOException {

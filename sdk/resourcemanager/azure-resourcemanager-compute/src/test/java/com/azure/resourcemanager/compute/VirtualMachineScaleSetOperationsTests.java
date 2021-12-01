@@ -1605,7 +1605,6 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withLocation(euapRegion);
 
         final String vmssName2 = generateRandomResourceName("vmss", 10);
-        // create resource through raw method
         VirtualMachineScaleSet vmss2 = this
             .computeManager
             .virtualMachineScaleSets()
