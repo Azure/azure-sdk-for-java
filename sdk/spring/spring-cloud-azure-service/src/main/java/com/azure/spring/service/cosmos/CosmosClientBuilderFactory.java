@@ -4,9 +4,14 @@
 package com.azure.spring.service.cosmos;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.GatewayConnectionConfig;
+import com.azure.cosmos.ThrottlingRetryOptions;
+import com.azure.spring.core.aware.ProxyAware;
+import com.azure.spring.core.aware.RetryAware;
 import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.KeyAuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor;
@@ -16,9 +21,12 @@ import com.azure.spring.core.properties.util.PropertyMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
+
+import static com.azure.spring.core.converter.AzureHttpProxyOptionsConverter.HTTP_PROXY_CONVERTER;
 
 /**
  * Cosmos client builder factory, it builds the {@link CosmosClientBuilder} according the configuration context and
@@ -29,6 +37,9 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosClientBuilderFactory.class);
 
     private final CosmosProperties cosmosProperties;
+
+    private ProxyOptions proxyOptions;
+    private ThrottlingRetryOptions throttlingRetryOptions;
 
     public CosmosClientBuilderFactory(CosmosProperties cosmosProperties) {
         this.cosmosProperties = cosmosProperties;
@@ -54,12 +65,23 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
 
     @Override
     protected void configureProxy(CosmosClientBuilder builder) {
-        LOGGER.debug("No configureProxy for CosmosClientBuilder.");
+        ProxyAware.Proxy proxy = this.cosmosProperties.getProxy();
+        this.proxyOptions = HTTP_PROXY_CONVERTER.convert(proxy);
+        if (this.proxyOptions == null) {
+            LOGGER.debug("No proxy properties available.");
+        }
     }
 
     @Override
     protected void configureRetry(CosmosClientBuilder builder) {
-        LOGGER.debug("No configureRetry for CosmosClientBuilder.");
+        RetryAware.Retry retry = this.cosmosProperties.getRetry();
+        if (isInvalidRetry(retry)) {
+            return;
+        }
+
+        this.throttlingRetryOptions = new ThrottlingRetryOptions();
+        this.throttlingRetryOptions.setMaxRetryWaitTime(retry.getTimeout());
+        this.throttlingRetryOptions.setMaxRetryAttemptsOnThrottledRequests(retry.getMaxAttempts());
     }
 
     @Override
@@ -76,16 +98,55 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
         map.from(this.cosmosProperties.getReadRequestsFallbackEnabled()).to(builder::readRequestsFallbackEnabled);
         map.from(this.cosmosProperties.getSessionCapturingOverrideEnabled()).to(builder::sessionCapturingOverrideEnabled);
         map.from(this.cosmosProperties.getPreferredRegions()).whenNot(List::isEmpty).to(builder::preferredRegions);
-        map.from(this.cosmosProperties.getThrottlingRetryOptions()).to(builder::throttlingRetryOptions);
+
+        ThrottlingRetryOptions retryOptions = this.cosmosProperties.getThrottlingRetryOptions();
+        if (this.throttlingRetryOptions != null && isDefaultThrottlingRetryOptions(retryOptions)) {
+            map.from(this.throttlingRetryOptions).to(builder::throttlingRetryOptions);
+            LOGGER.debug("The throttling retry options is not configured, "
+                + "then the Azure Spring Retry configuration will be applied to Cosmos service builder.");
+        } else {
+            map.from(retryOptions).to(builder::throttlingRetryOptions);
+        }
 
         // TODO (xiada): should we count this as authentication
         map.from(this.cosmosProperties.getResourceToken()).to(builder::resourceToken);
         map.from(this.cosmosProperties.getPermissions()).whenNot(List::isEmpty).to(builder::permissions);
-        if (ConnectionMode.DIRECT.equals(this.cosmosProperties.getConnectionMode())) {
-            builder.directMode(this.cosmosProperties.getDirectConnection(), this.cosmosProperties.getGatewayConnection());
-        } else if (ConnectionMode.GATEWAY.equals(this.cosmosProperties.getConnectionMode())) {
-            builder.gatewayMode(this.cosmosProperties.getGatewayConnection());
+        GatewayConnectionConfig gatewayConnection = this.cosmosProperties.getGatewayConnection();
+        if (proxyOptions != null && gatewayConnection.getProxy() == null) {
+            gatewayConnection.setProxy(proxyOptions);
+            LOGGER.debug("The proxy of the Gateway connection is not configured, "
+                + "then the Azure Spring Proxy configuration will be applied to Cosmos gateway connection.");
         }
+        if (ConnectionMode.DIRECT.equals(this.cosmosProperties.getConnectionMode())) {
+            builder.directMode(this.cosmosProperties.getDirectConnection(), gatewayConnection);
+        } else if (ConnectionMode.GATEWAY.equals(this.cosmosProperties.getConnectionMode())) {
+            builder.gatewayMode(gatewayConnection);
+        }
+    }
+
+    /**
+     * Check if the retry option is the default value, which is defined in azure-cosmos SDK.
+     * @param retryOptions retry options to be checked
+     * @return result
+     */
+    private boolean isDefaultThrottlingRetryOptions(ThrottlingRetryOptions retryOptions) {
+        if (retryOptions.getMaxRetryWaitTime().equals(Duration.ofSeconds(30))
+            && retryOptions.getMaxRetryAttemptsOnThrottledRequests() == 9) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Check if the properties of the retry is invalid value.
+     * @param retry retry options to be checked
+     * @return result
+     */
+    private boolean isInvalidRetry(RetryAware.Retry retry) {
+        if (retry.getMaxAttempts() == null || retry.getTimeout() == null) {
+            return true;
+        }
+        return false;
     }
 
     @Override

@@ -136,6 +136,9 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
                 LOGGER.error("Error occurred on entity {}. Error: {}",
                     errorContext.getEntityPath(),
                     errorContext.getException());
+                if (instrumentationManager == null) {
+                    return;
+                }
 
                 Instrumentation instrumentation = instrumentationManager.getHealthInstrumentation(instrumentationId);
                 if (instrumentation != null) {
