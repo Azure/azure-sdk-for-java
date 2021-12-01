@@ -10,7 +10,22 @@
 
   <name>Spring Cloud Azure Starter Data Cosmos DB</name>
   <description>Spring Cloud Azure Starter Data Cosmos DB</description>
-  <url>https://github.com/Azure/azure-sdk-for-java</url>
+  <url>https://microsoft.github.io/spring-cloud-azure</url>
+  <developers>
+    <developer>
+      <name>Spring Cloud Azure</name>
+      <email>SpringIntegSupport@microsoft.com</email>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com:Azure/azure-sdk-for-java.git</developerConnection>
+    <url>https://github.com/Azure/azure-sdk-for-java</url>
+  </scm>
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/Azure/azure-sdk-for-java/issues</url>
+  </issueManagement>
 
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -18,7 +33,6 @@
     <legal>
       <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <site.url>https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java</site.url>
-    <issues.url>https://github.com/Azure/azure-sdk-for-java/issues</issues.url>
   </properties>
 
   <licenses>
@@ -28,13 +42,6 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-
-  <developers>
-    <developer>
-      <id>microsoft</id>
-      <name>Microsoft Corporation</name>
-    </developer>
-  </developers>
 
   <!-- Repositories definitions -->
   <repositories>
@@ -76,18 +83,6 @@
       <url>${site.url}/site/</url>
     </site>
   </distributionManagement>
-
-  <issueManagement>
-    <system>GitHub</system>
-    <url>${issues.url}</url>
-  </issueManagement>
-
-  <scm>
-    <url>https://github.com/Azure/azure-sdk-for-java</url>
-    <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</connection>
-    <developerConnection/>
-    <tag>HEAD</tag>
-  </scm>
 
   <dependencies>
     <dependency>

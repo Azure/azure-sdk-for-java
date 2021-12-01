@@ -17,7 +17,22 @@
 
   <name>Spring Messaging Azure Service Bus</name>
   <description>Spring Messaging Azure Service Bus</description>
-  <url>https://github.com/Azure/azure-sdk-for-java</url>
+  <url>https://microsoft.github.io/spring-cloud-azure</url>
+  <developers>
+    <developer>
+      <name>Spring Cloud Azure</name>
+      <email>SpringIntegSupport@microsoft.com</email>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com:Azure/azure-sdk-for-java.git</developerConnection>
+    <url>https://github.com/Azure/azure-sdk-for-java</url>
+  </scm>
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/Azure/azure-sdk-for-java/issues</url>
+  </issueManagement>
 
   <properties>
     <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
