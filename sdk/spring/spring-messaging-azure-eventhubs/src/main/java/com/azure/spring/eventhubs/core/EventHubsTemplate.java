@@ -3,8 +3,8 @@
 
 package com.azure.spring.eventhubs.core;
 
-import com.azure.core.amqp.exception.AmqpException;
 import com.azure.messaging.eventhubs.EventData;
+import com.azure.messaging.eventhubs.EventDataBatch;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.spring.eventhubs.core.producer.EventHubsProducerFactory;
@@ -15,11 +15,14 @@ import com.azure.spring.messaging.core.SendOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.Message;
+import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 /**
@@ -54,19 +57,39 @@ public class EventHubsTemplate implements SendOperation, BatchSendOperation {
         EventHubProducerAsyncClient producer = producerFactory.createProducer(destination);
         CreateBatchOptions options = buildCreateBatchOptions(partitionSupplier);
 
-        return producer.createBatch(options).flatMap(batch -> {
-            for (EventData event : events) {
-                try {
-                    batch.tryAdd(event);
-                } catch (AmqpException e) {
-                    LOGGER.error("Event is larger than maximum allowed size. Exception: " + e);
-                }
-            }
-            return producer.send(batch);
-        });
+        AtomicReference<EventDataBatch> currentBatch = new AtomicReference<>(
+                producer.createBatch(options).block());
+
+        Flux.fromIterable(events).flatMap(event -> {
+                    final EventDataBatch batch = currentBatch.get();
+                    if (batch.tryAdd(event)) {
+                        return Mono.empty();
+                    }
+
+                    return Mono.when(
+                            producer.send(batch),
+                            producer.createBatch(options).map(newBatch -> {
+                                currentBatch.set(newBatch);
+                                // Add the event that did not fit in the previous batch.
+                                if (!newBatch.tryAdd(event)) {
+                                    throw Exceptions.propagate(new IllegalArgumentException(
+                                            "Event was too large to fit in an empty batch. Max size: " + newBatch.getMaxSizeInBytes()));
+                                }
+
+                                return newBatch;
+                            }));
+                }).then()
+                .doFinally(signal -> {
+                    final EventDataBatch batch = currentBatch.getAndSet(null);
+                    if (batch != null && batch.getCount() > 0) {
+                        producer.send(batch).block();
+                    }
+                }).subscribe();
+
+        return Mono.empty();
     }
 
-    protected CreateBatchOptions buildCreateBatchOptions(PartitionSupplier partitionSupplier) {
+    CreateBatchOptions buildCreateBatchOptions(PartitionSupplier partitionSupplier) {
         return new CreateBatchOptions()
             .setPartitionId(partitionSupplier != null ? partitionSupplier.getPartitionId() : null)
             .setPartitionKey(partitionSupplier != null ? partitionSupplier.getPartitionKey() : null);
@@ -76,11 +99,4 @@ public class EventHubsTemplate implements SendOperation, BatchSendOperation {
         this.messageConverter = messageConverter;
     }
 
-    public EventHubsProducerFactory getProducerFactory() {
-        return producerFactory;
-    }
-
-    public EventHubsMessageConverter getMessageConverter() {
-        return messageConverter;
-    }
 }
