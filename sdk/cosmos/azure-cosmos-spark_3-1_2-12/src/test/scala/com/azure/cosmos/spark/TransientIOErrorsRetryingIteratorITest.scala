@@ -5,6 +5,7 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.implementation.{ServiceUnavailableException, Strings, Utils}
 import com.azure.cosmos.models.{CosmosQueryRequestOptions, ModelBridgeInternal}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
+import com.azure.cosmos.util.CosmosPagedIterable
 import com.fasterxml.jackson.databind.node.ObjectNode
 
 import java.util.UUID
@@ -69,6 +70,41 @@ class TransientIOErrorsRetryingIteratorITest
         () => retryingIterator.hasNext))) {
 
       retryingIterator.currentIterator.next
+      recordCount.incrementAndGet()
+    }
+
+    recordCount.get shouldEqual 40
+  }
+
+  "without transient failures" should "be the baseline" in {
+    val invocationCount = new AtomicLong(0)
+    val recordCount = new AtomicLong(0)
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+
+    // assert that there is more than one range to ensure the test really is testing the parallelization of work
+    container.getFeedRanges.block().size() should be > 1
+
+    for (age <- 1 to 20) {
+      for (state <- Array(true, false)) {
+        val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
+        objectNode.put("name", "Shrodigner's cat")
+        objectNode.put("type", "cat")
+        objectNode.put("age", age)
+        objectNode.put("isAlive", state)
+        objectNode.put("id", UUID.randomUUID().toString)
+        container.createItem(objectNode).block()
+      }
+    }
+
+    val queryOptions = new CosmosQueryRequestOptions()
+    val iterator = new CosmosPagedIterable[ObjectNode](
+        container
+          .queryItems("SELECT * FROM c", queryOptions, classOf[ObjectNode])
+          .handle(r => invocationCount.set(0)),
+      2).iterator()
+
+    while (iterator.hasNext) {
+      iterator.next
       recordCount.incrementAndGet()
     }
 
