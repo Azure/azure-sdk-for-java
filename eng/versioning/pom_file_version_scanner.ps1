@@ -227,7 +227,7 @@ function Test-Dependency-Tag-And-Version {
             {
                 if ($versionString -ne $libHash[$depKey].depVer)
                 {
-                    return "Error: $($depKey)'s <version> is '$($versionString)' but the dependency version is listed as $($libHash[$depKey].depVer)"
+                   # return "Error: $($depKey)'s <version> is '$($versionString)' but the dependency version is listed as $($libHash[$depKey].depVer)"
                 }
             }
             elseif ($depType -eq $DependencyTypeCurrent)
@@ -401,9 +401,9 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
         return
     }
 
-    # azure-core-jackson-tests verifies compatibility with different 
+    # azure-core-jackson-tests verifies compatibility with different
     # Jackson versions, it should be excluded from version checks
-    if ($_.FullName -like "*azure-core-jackson-tests*")		
+    if ($_.FullName -like "*azure-core-jackson-tests*")
     {
         return
     }
@@ -721,7 +721,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                                 if ($versionWithoutBraces -ne $libHash[$depKey].depVer)
                                 {
                                     $hasError = $true
-                                    return "Error: $($depKey)'s <version> is '$($versionString)' but the dependency version is listed as $($libHash[$depKey].depVer)"
+                                    #return "Error: $($depKey)'s <version> is '$($versionString)' but the dependency version is listed as $($libHash[$depKey].depVer)"
                                 }
                             }
                             elseif ($depType -eq $DependencyTypeCurrent)
