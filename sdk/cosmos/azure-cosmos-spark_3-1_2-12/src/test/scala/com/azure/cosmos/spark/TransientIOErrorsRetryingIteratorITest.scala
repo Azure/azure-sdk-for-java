@@ -13,6 +13,7 @@ import java.util.concurrent.atomic.AtomicLong
 
 //scalastyle:off magic.number
 //scalastyle:off null
+//scalastyle:off multiple.string.literals
 class TransientIOErrorsRetryingIteratorITest
   extends IntegrationSpec
   with Spark
@@ -201,3 +202,4 @@ class TransientIOErrorsRetryingIteratorITest
 }
 //scalastyle:on magic.number
 //scalastyle:on null
+//scalastyle:on multiple.string.literals
