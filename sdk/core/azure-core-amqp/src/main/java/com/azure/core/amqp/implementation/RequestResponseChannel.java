@@ -47,7 +47,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static com.azure.core.amqp.implementation.ClientConstants.CONNECTION_ID_KEY;
+import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addSignalTypeAndResult;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -123,7 +123,11 @@ public class RequestResponseChannel implements AsyncCloseable {
         AmqpRetryOptions retryOptions, ReactorHandlerProvider handlerProvider, ReactorProvider provider,
         MessageSerializer messageSerializer, SenderSettleMode senderSettleMode,
         ReceiverSettleMode receiverSettleMode) {
-        this.logger = new ClientLogger(RequestResponseChannel.class, Map.of(CONNECTION_ID_KEY, connectionId, LINK_NAME_KEY, linkName));
+
+        Map<String, Object> loggingContext = createContextWithConnectionId(connectionId);
+        loggingContext.put(LINK_NAME_KEY, linkName);
+        this.logger = new ClientLogger(RequestResponseChannel.class, loggingContext);
+
         this.retryOptions = retryOptions;
         this.provider = provider;
         this.senderSettleMode = senderSettleMode;

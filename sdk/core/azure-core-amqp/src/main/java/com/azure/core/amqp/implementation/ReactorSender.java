@@ -58,7 +58,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.core.amqp.exception.AmqpErrorCondition.NOT_ALLOWED;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addErrorCondition;
-import static com.azure.core.amqp.implementation.ClientConstants.CONNECTION_ID_KEY;
+import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.MAX_AMQP_HEADER_SIZE_BYTES;
@@ -131,7 +131,12 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
 
         String connectionId = handler.getConnectionId() == null ? NOT_APPLICABLE : handler.getConnectionId();
         String linkName = getLinkName() == null ? NOT_APPLICABLE : getLinkName();
-        this.logger = new ClientLogger(ReactorSender.class, Map.of(CONNECTION_ID_KEY, connectionId, ENTITY_PATH_KEY, entityPath, LINK_NAME_KEY, linkName));
+
+        Map<String, Object> loggingContext = createContextWithConnectionId(connectionId);
+        loggingContext.put(LINK_NAME_KEY, linkName);
+        loggingContext.put(ENTITY_PATH_KEY, entityPath);
+        this.logger = new ClientLogger(ReactorSender.class, loggingContext);
+
         this.activeTimeoutMessage = String.format(
             "ReactorSender connectionId[%s] linkName[%s]: Waiting for send and receive handler to be ACTIVE",
             handler.getConnectionId(), handler.getLinkName());
@@ -338,7 +343,7 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
                     if (remoteMaxMessageSize != null) {
                         linkSize = remoteMaxMessageSize.intValue();
                     } else {
-                        logger.warning("Could not get the getRemoteMaxMessageSize. Returning current link size: {}",linkSize);
+                        logger.warning("Could not get the getRemoteMaxMessageSize. Returning current link size: {}", linkSize);
                     }
 
                     return linkSize;

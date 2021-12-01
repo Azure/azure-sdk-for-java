@@ -52,7 +52,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addSignalTypeAndResult;
-import static com.azure.core.amqp.implementation.ClientConstants.CONNECTION_ID_KEY;
+import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addErrorCondition;
@@ -128,7 +128,7 @@ public class ReactorSession implements AmqpSession {
             "ReactorSession connectionId[%s], session[%s]: Retries exhausted waiting for ACTIVE endpoint state.",
             sessionHandler.getConnectionId(), sessionName);
 
-        this.logger = new ClientLogger(ReactorSession.class, Map.of(CONNECTION_ID_KEY, this.sessionHandler.getConnectionId()));
+        this.logger = new ClientLogger(ReactorSession.class, createContextWithConnectionId(this.sessionHandler.getConnectionId()));
 
         this.endpointStates = sessionHandler.getEndpointStates()
             .map(state -> {

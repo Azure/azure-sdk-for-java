@@ -9,9 +9,7 @@ import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Transport;
 import org.apache.qpid.proton.reactor.impl.IOHandler;
 
-import java.util.Map;
-
-import static com.azure.core.amqp.implementation.ClientConstants.CONNECTION_ID_KEY;
+import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
 import static com.azure.core.amqp.implementation.ClientConstants.HOSTNAME_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.NOT_APPLICABLE;
 
@@ -19,7 +17,7 @@ public class CustomIOHandler extends IOHandler {
     private final ClientLogger logger;
 
     public CustomIOHandler(final String connectionId) {
-        this.logger = new ClientLogger(CustomIOHandler.class,  Map.of(CONNECTION_ID_KEY, connectionId));
+        this.logger = new ClientLogger(CustomIOHandler.class, createContextWithConnectionId(connectionId));
     }
 
     @Override

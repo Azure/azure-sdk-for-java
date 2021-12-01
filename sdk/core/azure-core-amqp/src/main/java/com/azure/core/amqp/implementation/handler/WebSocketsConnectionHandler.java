@@ -9,10 +9,7 @@ import com.microsoft.azure.proton.transport.ws.impl.WebSocketImpl;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.SslPeerDetails;
 import org.apache.qpid.proton.engine.impl.TransportInternal;
-
-import java.util.Map;
-
-import static com.azure.core.amqp.implementation.ClientConstants.CONNECTION_ID_KEY;
+import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
 import static com.azure.core.amqp.implementation.ClientConstants.HOSTNAME_KEY;
 
 /**
@@ -38,7 +35,7 @@ public class WebSocketsConnectionHandler extends ConnectionHandler {
     public WebSocketsConnectionHandler(String connectionId, ConnectionOptions connectionOptions,
         SslPeerDetails peerDetails) {
         super(connectionId, connectionOptions, peerDetails);
-        logger = new ClientLogger(WebSocketsConnectionHandler.class,  Map.of(CONNECTION_ID_KEY, connectionId));
+        logger = new ClientLogger(WebSocketsConnectionHandler.class, createContextWithConnectionId(connectionId));
     }
 
     /**

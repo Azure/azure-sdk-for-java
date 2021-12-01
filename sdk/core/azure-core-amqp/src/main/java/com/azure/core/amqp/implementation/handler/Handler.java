@@ -10,12 +10,11 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
 
 import java.io.Closeable;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addSignalTypeAndResult;
-import static com.azure.core.amqp.implementation.ClientConstants.CONNECTION_ID_KEY;
+import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
 
 /**
  * Base class for all proton-j handlers.
@@ -43,8 +42,7 @@ public abstract class Handler extends BaseHandler implements Closeable {
     Handler(final String connectionId, final String hostname, final String loggerName) {
         this.connectionId = Objects.requireNonNull(connectionId, "'connectionId' cannot be null.");
         this.hostname = Objects.requireNonNull(hostname, "'hostname' cannot be null.");
-        this.logger = new ClientLogger(Objects.requireNonNull(loggerName, "'loggerName' cannot be null."),
-            Map.of(CONNECTION_ID_KEY, connectionId));
+        this.logger = new ClientLogger(Objects.requireNonNull(loggerName, "'loggerName' cannot be null."), createContextWithConnectionId(connectionId));
     }
 
     /**

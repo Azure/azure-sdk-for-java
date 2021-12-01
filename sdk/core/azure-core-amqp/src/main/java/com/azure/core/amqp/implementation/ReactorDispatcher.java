@@ -6,7 +6,6 @@ package com.azure.core.amqp.implementation;
 import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.implementation.handler.DispatchHandler;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
@@ -19,13 +18,12 @@ import java.nio.ByteBuffer;
 import java.nio.channels.ClosedChannelException;
 import java.nio.channels.Pipe;
 import java.time.Duration;
-import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.azure.core.amqp.implementation.ClientConstants.CONNECTION_ID_KEY;
+import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
 
 /**
  * The following utility class is used to generate an event to hook into {@link Reactor}'s event delegation pattern. It
@@ -69,7 +67,7 @@ public final class ReactorDispatcher {
         this.workQueue = new ConcurrentLinkedQueue<>();
         this.onClose = new CloseHandler();
         this.workScheduler = new WorkScheduler();
-        this.logger = new ClientLogger(ReactorDispatcher.class , Map.of(CONNECTION_ID_KEY, connectionId));
+        this.logger = new ClientLogger(ReactorDispatcher.class, createContextWithConnectionId(connectionId));
         // The Proton-J reactor goes quiescent when there is no work to do, and it only wakes up when a Selectable (by
         // default, the network connection) signals that data is available.
         //

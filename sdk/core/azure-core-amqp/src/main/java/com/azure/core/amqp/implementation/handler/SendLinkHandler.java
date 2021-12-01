@@ -23,6 +23,7 @@ import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addSignalTypeA
 import static com.azure.core.amqp.implementation.ClientConstants.EMIT_RESULT_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
+import static com.azure.core.amqp.implementation.ClientConstants.NOT_APPLICABLE;
 
 /**
  * Handler that receives events from its corresponding {@link Sender}. Handlers must be associated to a {@link Sender}
@@ -107,14 +108,13 @@ public class SendLinkHandler extends LinkHandler {
             .addKeyValue(ENTITY_PATH_KEY, entityPath);
 
         if (link.getRemoteTarget() != null) {
-            // TODO escape
             logBuilder.addKeyValue("remoteTarget", link.getRemoteTarget());
 
             if (!isRemoteActive.getAndSet(true)) {
                 onNext(EndpointState.ACTIVE);
             }
         } else {
-            logBuilder.addKeyValue("remoteTarget", (String)null)
+            logBuilder.addKeyValue("remoteTarget", NOT_APPLICABLE)
                 .addKeyValue("action", "waitingForError");
         }
         logBuilder.log("onLinkRemoteOpen");

@@ -9,7 +9,6 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Processor;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
@@ -19,6 +18,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.Operators;
 
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedDeque;
@@ -60,9 +60,11 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
         this.endpointStatesFunction = Objects.requireNonNull(endpointStatesFunction,
             "'endpointStates' cannot be null.");
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
-        this.logger = new ClientLogger(loggerName, Map.of(
-            FULLY_QUALIFIED_NAMESPACE_KEY, Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null."),
-            ENTITY_PATH_KEY, Objects.requireNonNull(entityPath, "'entityPath' cannot be null.")));
+
+        Map<String, Object> loggingContext = new HashMap<>();
+        loggingContext.put(FULLY_QUALIFIED_NAMESPACE_KEY, Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null."));
+        loggingContext.put(ENTITY_PATH_KEY, Objects.requireNonNull(entityPath, "'entityPath' cannot be null."));
+        this.logger = new ClientLogger(loggerName, loggingContext);
         this.errorContext = new AmqpErrorContext(fullyQualifiedNamespace);
     }
 

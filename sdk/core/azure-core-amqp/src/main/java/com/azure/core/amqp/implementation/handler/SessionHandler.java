@@ -101,12 +101,11 @@ public class SessionHandler extends Handler {
     @Override
     public void onSessionRemoteClose(Event e) {
         final Session session = e.getSession();
+        final ErrorCondition condition = session != null ? session.getRemoteCondition() : null;
 
-        addErrorCondition(logger.atInfo(), session.getCondition())
+        addErrorCondition(logger.atInfo(), condition)
             .addKeyValue(SESSION_NAME_KEY, sessionName)
             .log("onSessionRemoteClose");
-
-        ErrorCondition condition = session != null ? session.getRemoteCondition() : null;
 
         if (session != null && session.getLocalState() != EndpointState.CLOSED) {
             addErrorCondition(logger.atInfo(), condition)

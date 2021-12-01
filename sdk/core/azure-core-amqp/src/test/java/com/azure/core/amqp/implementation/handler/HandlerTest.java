@@ -5,7 +5,6 @@ package com.azure.core.amqp.implementation.handler;
 
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

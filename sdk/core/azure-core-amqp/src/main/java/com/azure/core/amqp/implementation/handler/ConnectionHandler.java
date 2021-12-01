@@ -10,7 +10,6 @@ import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UserAgentUtil;
-import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
@@ -229,7 +228,7 @@ public class ConnectionHandler extends Handler {
         final ErrorCondition condition = transport.getCondition();
 
         addErrorCondition(logger.atWarning(), condition)
-            .addKeyValue(HOSTNAME_KEY, connection.getHostname())
+            .addKeyValue(HOSTNAME_KEY, connection != null ? connection.getHostname() : ClientConstants.NOT_APPLICABLE)
             .log("onTransportError");
 
         if (connection != null) {
@@ -247,7 +246,7 @@ public class ConnectionHandler extends Handler {
         final ErrorCondition condition = transport.getCondition();
 
         addErrorCondition(logger.atInfo(), condition)
-            .addKeyValue(HOSTNAME_KEY, connection.getHostname())
+            .addKeyValue(HOSTNAME_KEY, connection != null ? connection.getHostname() : ClientConstants.NOT_APPLICABLE)
             .log("onTransportClosed");
 
         if (connection != null) {

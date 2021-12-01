@@ -12,13 +12,12 @@ import com.azure.core.amqp.exception.SessionErrorContext;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.DeliveryOutcome;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.message.Message;
-import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SynchronousSink;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -42,7 +41,11 @@ public class ManagementChannel implements AmqpManagementNode {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
-        this.logger = new ClientLogger(ManagementChannel.class, Map.of(ENTITY_PATH_KEY, entityPath));
+
+        Map<String, Object> globalLoggingContext = new HashMap<>();
+        globalLoggingContext.put(ENTITY_PATH_KEY, entityPath);
+        this.logger = new ClientLogger(ManagementChannel.class, globalLoggingContext);
+
         this.tokenManager = Objects.requireNonNull(tokenManager, "'tokenManager' cannot be null.");
     }
 

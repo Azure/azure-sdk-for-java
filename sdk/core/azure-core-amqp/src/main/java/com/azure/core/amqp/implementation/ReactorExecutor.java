@@ -18,14 +18,13 @@ import reactor.core.scheduler.Scheduler;
 import java.nio.channels.UnresolvedAddressException;
 import java.time.Duration;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addSignalTypeAndResult;
-import static com.azure.core.amqp.implementation.ClientConstants.CONNECTION_ID_KEY;
+import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
 
 /**
  * Schedules the proton-j reactor to continuously run work.
@@ -50,7 +49,8 @@ class ReactorExecutor implements AsyncCloseable {
         this.timeout = Objects.requireNonNull(timeout, "'timeout' cannot be null.");
         this.exceptionHandler = Objects.requireNonNull(exceptionHandler, "'exceptionHandler' cannot be null.");
         this.hostname = Objects.requireNonNull(hostname, "'hostname' cannot be null.");
-        this.logger = new ClientLogger(ReactorExecutor.class, Map.of(CONNECTION_ID_KEY, Objects.requireNonNull(connectionId, "'connectionId' cannot be null.")));
+        Objects.requireNonNull(connectionId, "'connectionId' cannot be null.");
+        this.logger = new ClientLogger(ReactorExecutor.class, createContextWithConnectionId(connectionId));
     }
 
     /**

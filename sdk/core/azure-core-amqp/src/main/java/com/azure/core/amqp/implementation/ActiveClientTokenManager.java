@@ -19,7 +19,6 @@ import java.time.ZoneOffset;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addErrorCondition;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addSignalTypeAndResult;
 
 /**
@@ -176,29 +175,29 @@ public class ActiveClientTokenManager implements TokenManager {
                     return false;
                 });
             }, error -> {
-                    logger.atError()
-                        .addKeyValue("scopes", scopes)
-                        .addKeyValue("audience", tokenAudience)
-                        .log("Error occurred while refreshing token that is not retriable. Not scheduling"
+                logger.atError()
+                    .addKeyValue("scopes", scopes)
+                    .addKeyValue("audience", tokenAudience)
+                    .log("Error occurred while refreshing token that is not retriable. Not scheduling"
                         + " refresh task. Use ActiveClientTokenManager.authorize() to schedule task again.", error);
 
-                    // This hasn't been disposed yet.
-                    if (!hasDisposed.getAndSet(true)) {
-                        hasScheduled.set(false);
-                        durationSource.emitComplete((signalType, emitResult) -> {
-                            addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)
-                                .log("Could not close durationSource.");
+                // This hasn't been disposed yet.
+                if (!hasDisposed.getAndSet(true)) {
+                    hasScheduled.set(false);
+                    durationSource.emitComplete((signalType, emitResult) -> {
+                        addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)
+                            .log("Could not close durationSource.");
 
-                            return false;
-                        });
+                        return false;
+                    });
 
-                        authorizationResults.emitError(error, (signalType, emitResult) -> {
-                            addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)
+                    authorizationResults.emitError(error, (signalType, emitResult) -> {
+                        addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)
                             .log("Could not emit authorization error.", error);
 
-                            return false;
-                        });
-                    }
-                });
+                        return false;
+                    });
+                }
+            });
     }
 }

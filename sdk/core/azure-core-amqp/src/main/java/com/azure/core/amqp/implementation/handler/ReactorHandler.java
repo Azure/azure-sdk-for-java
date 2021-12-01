@@ -8,10 +8,9 @@ import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.reactor.Reactor;
 
-import java.util.Map;
 import java.util.Objects;
 
-import static com.azure.core.amqp.implementation.ClientConstants.CONNECTION_ID_KEY;
+import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
 
 /**
  * Handler that sets the timeout period for waiting for Selectables.
@@ -27,7 +26,7 @@ public class ReactorHandler extends BaseHandler {
 
     public ReactorHandler(final String connectionId) {
         Objects.requireNonNull(connectionId);
-        this.logger = new ClientLogger(ReactorHandler.class, Map.of(CONNECTION_ID_KEY, connectionId));
+        this.logger = new ClientLogger(ReactorHandler.class, createContextWithConnectionId(connectionId));
     }
 
     @Override

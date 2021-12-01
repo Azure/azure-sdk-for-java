@@ -5,8 +5,6 @@ package com.azure.core.amqp;
 
 import com.azure.core.util.logging.LoggingEventBuilder;
 
-import java.util.Locale;
-
 /**
  * Represents a signal that caused the AMQP connection to shutdown.
  */

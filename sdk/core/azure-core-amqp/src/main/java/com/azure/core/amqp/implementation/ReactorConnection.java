@@ -15,7 +15,6 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LoggingEventBuilder;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.BaseHandler;
@@ -43,12 +42,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addShutdownSignal;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addSignalTypeAndResult;
-import static com.azure.core.amqp.implementation.ClientConstants.CONNECTION_ID_KEY;
+import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
 import static com.azure.core.amqp.implementation.ClientConstants.EMIT_RESULT_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
+import static com.azure.core.amqp.implementation.ClientConstants.FULLY_QUALIFIED_NAMESPACE_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.HOSTNAME_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
-import static com.azure.core.amqp.implementation.ClientConstants.FULLY_QUALIFIED_NAMESPACE_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.SESSION_NAME_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.SIGNAL_TYPE_KEY;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -114,7 +113,7 @@ public class ReactorConnection implements AmqpConnection {
         this.connectionOptions = connectionOptions;
         this.reactorProvider = reactorProvider;
         this.connectionId = connectionId;
-        this.logger = new ClientLogger(ReactorConnection.class, Map.of(CONNECTION_ID_KEY, connectionId));
+        this.logger = new ClientLogger(ReactorConnection.class,  createContextWithConnectionId(connectionId));
         this.handlerProvider = handlerProvider;
         this.tokenManagerProvider = Objects.requireNonNull(tokenManagerProvider,
             "'tokenManagerProvider' cannot be null.");
@@ -484,7 +483,7 @@ public class ReactorConnection implements AmqpConnection {
     private synchronized void closeConnectionWork() {
         if (connection == null) {
             isClosedMono.emitEmpty((signalType, emitResult) -> {
-                    addSignalTypeAndResult(logger.atInfo(), signalType, emitResult)
+                addSignalTypeAndResult(logger.atInfo(), signalType, emitResult)
                     .log("Unable to complete closeMono.");
 
                 return false;

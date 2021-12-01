@@ -140,7 +140,7 @@ public class ReceiveLinkHandler extends LinkHandler {
                         .addKeyValue(ENTITY_PATH_KEY, entityPath)
                         .addKeyValue(LINK_NAME_KEY, linkName)
                         .addKeyValue("updatedLinkCredit", link.getCredit())
-                        .addKeyValue("remoteCredit",link.getRemoteCredit())
+                        .addKeyValue("remoteCredit", link.getRemoteCredit())
                         .addKeyValue("delivery.isSettled", delivery.isSettled())
                         .log("Was already settled.");
                 } else {

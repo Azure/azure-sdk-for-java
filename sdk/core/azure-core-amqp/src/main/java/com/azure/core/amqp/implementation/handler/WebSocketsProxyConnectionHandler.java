@@ -27,11 +27,10 @@ import java.net.ProxySelector;
 import java.net.URI;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static com.azure.core.amqp.implementation.ClientConstants.CONNECTION_ID_KEY;
+import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addErrorCondition;
 import static com.azure.core.amqp.implementation.ClientConstants.HOSTNAME_KEY;
 
@@ -65,7 +64,7 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
         this.proxyOptions = Objects.requireNonNull(proxyOptions, "'proxyConfiguration' cannot be null.");
         this.fullyQualifiedNamespace = connectionOptions.getFullyQualifiedNamespace();
         this.amqpBrokerHostname = connectionOptions.getFullyQualifiedNamespace() + ":" + connectionOptions.getPort();
-        this.logger = new ClientLogger(WebSocketsProxyConnectionHandler.class, Map.of(CONNECTION_ID_KEY, connectionId));
+        this.logger = new ClientLogger(WebSocketsProxyConnectionHandler.class, createContextWithConnectionId(connectionId));
         if (proxyOptions.isProxyAddressConfigured()) {
             this.connectionHostname = (InetSocketAddress) proxyOptions.getProxyAddress().address();
         } else {

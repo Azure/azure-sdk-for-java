@@ -6,11 +6,9 @@ package com.azure.core.amqp.implementation;
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.util.AsyncCloseable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LoggingEventBuilder;
 import org.apache.qpid.proton.Proton;
@@ -37,13 +35,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
+import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addErrorCondition;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addSignalTypeAndResult;
+import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
 import static com.azure.core.amqp.implementation.ClientConstants.CONNECTION_ID_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
-import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addErrorCondition;
-import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addErrorCondition;
-import static com.azure.core.amqp.implementation.ClientConstants.NOT_APPLICABLE;
 import static com.azure.core.util.FluxUtil.monoError;
 
 /**
@@ -73,7 +70,11 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
         this.handler = handler;
         this.tokenManager = tokenManager;
         this.dispatcher = dispatcher;
-        this.logger = new ClientLogger(ReactorReceiver.class, Map.of(CONNECTION_ID_KEY, handler.getConnectionId(), LINK_NAME_KEY, this.handler.getLinkName()));
+
+        Map<String, Object> loggingContext = createContextWithConnectionId(handler.getConnectionId());
+        loggingContext.put(LINK_NAME_KEY, this.handler.getLinkName());
+        this.logger = new ClientLogger(ReactorReceiver.class, loggingContext);
+
         // Delivered messages are not published on another scheduler because we want the settlement method that happens
         // in decodeDelivery to take place and since proton-j is not thread safe, it could end up with hundreds of
         // backed up deliveries waiting to be settled. (Which, consequently, ends up in a FAIL_OVERFLOW error from
@@ -160,12 +161,12 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                 }).subscribe(response ->
                     logger.atVerbose()
                         .addKeyValue("response", response)
-                        .log("Token refreshed.")
-                  , error -> {
-                    }, () -> {
-                    logger.atVerbose()
-                        .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                        .log("Authorization completed.");
+                        .log("Token refreshed."),
+                    error -> { },
+                    () -> {
+                        logger.atVerbose()
+                            .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                            .log("Authorization completed.");
 
                         closeAsync("Authorization completed. Disposing.", null).subscribe();
                     }),

@@ -5,7 +5,6 @@ package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.ClientLogger;
 
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addShutdownSignal;
 
