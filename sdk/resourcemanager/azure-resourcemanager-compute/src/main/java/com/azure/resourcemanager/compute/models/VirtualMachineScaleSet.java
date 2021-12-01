@@ -1797,7 +1797,7 @@ public interface VirtualMachineScaleSet
     interface UpdateStages {
 
         interface WithFlexibleVMProfile {
-            VirtualMachineScaleSetFlexibleVMProfile.UpdateAttachStages.Blank<WithApply> defineFlexibleVirtualMachineProfile();
+            VirtualMachineScaleSetFlexibleVMProfile.UpdateAttachStages.Blank defineFlexibleVirtualMachineProfile();
         }
 
         /**

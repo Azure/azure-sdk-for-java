@@ -51,7 +51,6 @@ import com.azure.resourcemanager.compute.models.VirtualMachineScaleSet;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetDataDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetExtension;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetExtensionProfile;
-import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetFlexibleVMProfile;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetFlexibleVMProfileImpl;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetIpConfiguration;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetManagedDiskParameters;
@@ -167,6 +166,7 @@ public class VirtualMachineScaleSetImpl
     private boolean removeOsProfile;
     private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetImpl.class);
     private boolean profileNotSet = true;
+    private boolean setProfileDefaultsBeforeInvoke = false;
 
     VirtualMachineScaleSetImpl(
         String name,
@@ -1631,6 +1631,10 @@ public class VirtualMachineScaleSetImpl
     @Override
     public Mono<VirtualMachineScaleSet> updateResourceAsync() {
         setExtensions();
+        if (this.setProfileDefaultsBeforeInvoke) {
+            this.setOSProfileDefaults();
+            this.setOSDiskDefault();
+        }
         this.setPrimaryIpConfigurationSubnet();
         final VirtualMachineScaleSetImpl self = this;
         return this
@@ -1723,6 +1727,7 @@ public class VirtualMachineScaleSetImpl
     private void initVMProfileIfNecessary() {
         if (this.innerModel().virtualMachineProfile() == null) {
             this.innerModel().withVirtualMachineProfile(initDefaultVMProfile());
+            this.setProfileDefaultsBeforeInvoke = true;
         }
         this.profileNotSet = false;
     }
@@ -1743,9 +1748,6 @@ public class VirtualMachineScaleSetImpl
     }
 
     private void setOSProfileDefaults() {
-        if (isInUpdateMode()) {
-            return;
-        }
         if (this.innerModel().sku().capacity() == null) {
             this.withCapacity(2);
         }
@@ -1780,9 +1782,6 @@ public class VirtualMachineScaleSetImpl
     }
 
     private void setOSDiskDefault() {
-        if (isInUpdateMode() || this.innerModel() == null || this.innerModel().virtualMachineProfile() == null) {
-            return;
-        }
         VirtualMachineScaleSetStorageProfile storageProfile =
             this.innerModel().virtualMachineProfile().storageProfile();
         VirtualMachineScaleSetOSDisk osDisk = storageProfile.osDisk();
@@ -2092,6 +2091,7 @@ public class VirtualMachineScaleSetImpl
         this.primaryInternetFacingLoadBalancer = null;
         this.primaryInternalLoadBalancer = null;
         this.profileNotSet = true;
+        this.setProfileDefaultsBeforeInvoke = false;
     }
 
     private Mono<VirtualMachineScaleSetImpl> loadCurrentPrimaryLoadBalancersIfAvailableAsync() throws IOException {

@@ -346,7 +346,7 @@ public class VirtualMachineScaleSetFlexibleVMProfileImpl implements
 
 //    @Override
 //    public VirtualMachineScaleSetExtension.DefinitionStages.Blank<DefinitionStages.WithAttach<ParentT>> defineNewExtension(String name) {
-//        // TODO (xiaofeicao, 2021-11-30 13:27)
+//        // TODO support extension
 //        throw new UnsupportedOperationException("method [defineNewExtension] not implemented in class [com.azure.resourcemanager.compute.models.VirtualMachineScaleSetFlexibleVMProfileImpl]");
 //    }
 
@@ -562,6 +562,7 @@ public class VirtualMachineScaleSetFlexibleVMProfileImpl implements
 
     @Override
     public VirtualMachineScaleSetImpl attach() {
+        //NO-OP for now
         return parent;
     }
 }

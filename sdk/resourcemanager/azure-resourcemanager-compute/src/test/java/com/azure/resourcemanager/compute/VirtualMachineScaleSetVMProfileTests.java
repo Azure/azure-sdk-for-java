@@ -98,6 +98,22 @@ public class VirtualMachineScaleSetVMProfileTests extends ComputeManagementTest 
                 .create();
         LoadBalancer publicLoadBalancer = createHttpLoadBalancers(Region.fromName(euapRegion), resourceGroup, "1", LoadBalancerSkuType.STANDARD, PublicIPSkuType.STANDARD, true);
 
+
+//        vmss = this.computeManager
+//            .virtualMachineScaleSets()
+//            .define(vmssName)
+//            .withRegion(euapRegion)
+//            .withExistingResourceGroup(resourceGroup)
+//            .withFlexibleOrchestrationMode()
+//            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+//            .withExistingPrimaryNetworkSubnet(network, "subnet1")
+//            .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
+//            .withoutPrimaryInternalLoadBalancer()
+//            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+//            .withRootUsername("jvuser")
+//            .withSsh(sshPublicKey())
+//            .withCapacity(1)
+//            .create();
         vmss.update()
             .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
             .defineFlexibleVirtualMachineProfile()
@@ -109,8 +125,7 @@ public class VirtualMachineScaleSetVMProfileTests extends ComputeManagementTest 
                 .withSsh(sshPublicKey())
                 .withCapacity(1)
                 .attach()
-        .apply()
-        ;
+        .apply();
         Assertions.assertNotNull(vmss.innerModel().virtualMachineProfile());
         Assertions.assertEquals(vmss.orchestrationMode(), OrchestrationMode.FLEXIBLE);
 
