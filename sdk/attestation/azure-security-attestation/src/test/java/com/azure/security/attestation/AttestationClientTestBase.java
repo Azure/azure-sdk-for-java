@@ -6,7 +6,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.EnvironmentCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.attestation.models.AttestationTokenValidationOptions;
 import com.azure.security.attestation.models.AttestationType;
 import com.nimbusds.jose.util.X509CertUtils;
@@ -84,31 +84,17 @@ public class AttestationClientTestBase extends TestBase {
     }
 
     /**
-     * Retrieve an authenticated attestationAdministrationClientBuilder for the specified HTTP
-     * client and client URI.
-     * @param httpClient - HTTP client ot be used for the attestation client.
-     * @param clientUri - Client base URI to access the service.
-     * @return Returns an attestation client builder corresponding to the httpClient and clientUri.
-     */
-    AttestationAdministrationClientBuilder getAuthenticatedAdministrationBuilder(HttpClient httpClient, String clientUri) {
-        AttestationAdministrationClientBuilder builder = getAttestationAdministrationBuilder(httpClient, clientUri);
-        if (!interceptorManager.isPlaybackMode()) {
-            builder.credential(new EnvironmentCredentialBuilder().httpClient(httpClient).build());
-        }
-        return builder;
-    }
-
-
-    /**
      * Retrieve an authenticated attestationClientBuilder for the specified HTTP client and client URI
      * @param httpClient - HTTP client ot be used for the attestation client.
      * @param clientUri - Client base URI to access the service.
      * @return Returns an attestation client builder corresponding to the httpClient and clientUri.
      */
-    AttestationAdministrationClientBuilder getAuthenticatedAttestationBuilder(HttpClient httpClient, String clientUri) {
-        AttestationAdministrationClientBuilder builder = getAttestationAdministrationBuilder(httpClient, clientUri);
+    AttestationClientBuilder getAuthenticatedAttestationBuilder(HttpClient httpClient, String clientUri) {
+        AttestationClientBuilder builder = getAttestationBuilder(httpClient, clientUri);
         if (!interceptorManager.isPlaybackMode()) {
-            builder.credential(new EnvironmentCredentialBuilder().httpClient(httpClient).build());
+            builder
+                .credential(new DefaultAzureCredentialBuilder()
+                .httpClient(httpClient).build());
         }
         return builder;
     }
@@ -142,7 +128,7 @@ public class AttestationClientTestBase extends TestBase {
      * @param clientUri - Client base URI to access the service.
      * @return Returns an attestation client builder corresponding to the httpClient and clientUri.
      */
-    private AttestationAdministrationClientBuilder getAttestationAdministrationBuilder(HttpClient httpClient, String clientUri) {
+    AttestationAdministrationClientBuilder getAttestationAdministrationBuilder(HttpClient httpClient, String clientUri) {
         AttestationAdministrationClientBuilder builder = new AttestationAdministrationClientBuilder()
             .endpoint(clientUri)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
@@ -158,7 +144,7 @@ public class AttestationClientTestBase extends TestBase {
             );
         }
         if (!interceptorManager.isPlaybackMode()) {
-            builder.credential(new EnvironmentCredentialBuilder().httpClient(httpClient).build());
+            builder.credential(new DefaultAzureCredentialBuilder().httpClient(httpClient).build());
         }
         return builder;
     }

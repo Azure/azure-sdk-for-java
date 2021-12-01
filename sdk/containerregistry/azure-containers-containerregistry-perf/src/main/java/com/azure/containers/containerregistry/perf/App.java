@@ -16,6 +16,11 @@ import com.azure.perf.test.core.PerfStressProgram;
  * Then run the App's main method via IDE.</p>
  */
 public class App {
+    /**
+     * Runs the Container Registry performance tests.
+     *
+     * @param args Performance test configurations.
+     */
     public static void main(String[] args) {
         PerfStressProgram.run(new Class<?>[]{
             GetManifestPropertiesTest.class,

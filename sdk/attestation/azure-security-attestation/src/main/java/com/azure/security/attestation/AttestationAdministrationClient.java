@@ -26,13 +26,14 @@ import java.util.List;
  *
  * The AttestationAdministrationClient provides access to the administrative policy APIs
  * implemented by the Attestation Service.
- *
+ * <p>
  * More information on attestation policies can be found <a href='https://docs.microsoft.com/azure/attestation/basic-concepts#attestation-policy'>here</a>
+ * </p>
  *
  * There are two main families of APIs available from the Administration client.
  * <ul>
  *     <li>Attestation Policy Management</li>
- *     <li>Attestation Policy Management Certificate Management</li>
+ *     <li>Policy Management Certificate Management</li>
  * </ul>
  *
  * Attestation service instances operate in three different modes:
@@ -45,11 +46,20 @@ import java.util.List;
  *     <li>Isolated - an attestation instance where the customer does *not* trust Azure Active Directory
  *     (and RBAC) to manage the security of their enclave </li>
  * </ul>
+ *
  *<p>
  * When an attestation instance is in Isolated mode, additional proof needs to be provided by the customer
- * to verify that they are authorized to perform the operation specified. This additional proof is
+ * to verify that they are authorized to perform the operation specified.
  *</p>
- */
+ * <p>
+ *     When an Isolated mode attestation instance is created, the creator provides an X.509 certificate
+ *     which forms the set of policy management certificates. Under the covers, each  {@link AttestationAdministrationAsyncClient#setAttestationPolicy(AttestationType, AttestationPolicySetOptions)}.
+ *     API call must be signed with the private key which is associated with one of the policy management
+ *     certificates. This signing operation allows the attestation service to verify that the caller is
+ *     in possession of a private key which has been authorized to add or reset policies, or to modify
+ *     the set of attestation policy certificates.
+ * </p>
+ * */
 @ServiceClient(builder = AttestationAdministrationClientBuilder.class)
 public final class AttestationAdministrationClient {
     private final AttestationAdministrationAsyncClient asyncClient;
@@ -58,7 +68,6 @@ public final class AttestationAdministrationClient {
         this.asyncClient = asyncClient;
     }
 
-    //region Get Attestation Policy
     /**
      * Retrieves the current policy for an attestation type.
      *
@@ -94,7 +103,7 @@ public final class AttestationAdministrationClient {
     /**
      * Retrieves the current policy for an attestation type.
      *  <p>
-     *      <b>NOTE:</b>
+     *      <strong>NOTE:</strong>
      *     The {@link AttestationAdministrationClient#getAttestationPolicy(AttestationType)} API returns the underlying
      *     attestation policy specified by the user. This is NOT the full attestation policy maintained by
      *     the attestation service. Specifically it does not include the signing certificates used to verify the attestation
@@ -108,7 +117,7 @@ public final class AttestationAdministrationClient {
      *         the value stored by the attestation service.
      *  </p>
      *
-     * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
+     * @param attestationType Specifies the trusted execution environment whose policy should be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -119,9 +128,6 @@ public final class AttestationAdministrationClient {
         return asyncClient.getAttestationPolicy(attestationType).block();
     }
 
-//endregion
-
-    //region Set Attestation Policy
     /**
      * Sets the attestation policy for the specified attestation type for an AAD mode attestation instance.
      *
@@ -129,6 +135,14 @@ public final class AttestationAdministrationClient {
      * no key signing certificate provided.
      *
      * More information about Attestation Policy can be found <a href='https://docs.microsoft.com/azure/attestation/basic-concepts#attestation-policy'>here.</a>
+     *
+     * <p>Set attestation policy to a constant value.</p>
+     * <!-- src_embed com.azure.security.attestation.AttestationAdministrationClient.setPolicySimple -->
+     * <pre>
+     * String policyToSet = &quot;version=1.0; authorizationrules&#123;=&gt; permit&#40;&#41;;&#125;; issuancerules&#123;&#125;;&quot;;
+     * PolicyResult result = client.setAttestationPolicy&#40;AttestationType.OPEN_ENCLAVE, policyToSet&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationAdministrationClient.setPolicySimple -->
      *
      * @param attestationType The {@link AttestationType} to be updated.
      * @param policyToSet Attestation Policy to set on the instance.
@@ -139,6 +153,32 @@ public final class AttestationAdministrationClient {
         return asyncClient.setAttestationPolicy(attestationType, policyToSet).block();
     }
 
+    /**
+     * Sets the attestation policy for the specified attestation type for an AAD mode attestation instance.
+     *
+     * Note that this function will only work on AAD mode attestation instances, because there is
+     * no key signing certificate provided.
+     *
+     * More information about Attestation Policy can be found <a href='https://docs.microsoft.com/azure/attestation/basic-concepts#attestation-policy'>here.</a>
+     *
+     * <p><strong>Set attestation policy to a minimal value.</strong></p>
+     * <!-- src_embed com.azure.security.attestation.AttestationAdministrationClient.setPolicySimpleWithResponse -->
+     * <pre>
+     * Response&lt;PolicyResult&gt; response = client.setAttestationPolicyWithResponse&#40;AttestationType.OPEN_ENCLAVE,
+     *     &quot;version=1.0; authorizationrules&#123;=&gt; permit&#40;&#41;;&#125;; issuancerules&#123;&#125;;&quot;, Context.NONE&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationAdministrationClient.setPolicySimpleWithResponse -->
+     *
+     * @param attestationType The {@link AttestationType} to be updated.
+     * @param policyToSet Attestation Policy to set on the instance.
+     * @param context Context for the operation.
+     * @return {@link PolicyResult} expressing the result of the attestation operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PolicyResult> setAttestationPolicyWithResponse(AttestationType attestationType, String policyToSet, Context context) {
+        return asyncClient.setAttestationPolicyWithResponse(attestationType,
+            new AttestationPolicySetOptions().setAttestationPolicy(policyToSet), context).block();
+    }
 
     /**
      * Sets the attestation policy for the specified attestation type, with policy and signing key.
@@ -187,15 +227,17 @@ public final class AttestationAdministrationClient {
      * which the customer specified.
      *
      * For an example of how to check the policy token hash:
-     * <!-- src_embed com.azure.security.attestation.AttestationAdministrationAsyncClient.checkPolicyTokenHash -->
+     * <!-- src_embed com.azure.security.attestation.AttestationAdministrationClient.checkPolicyTokenHash -->
      * <pre>
      * BinaryData expectedHash = client.calculatePolicyTokenHash&#40;policyToSet, null&#41;;
      * BinaryData actualHash = result.getPolicyTokenHash&#40;&#41;;
-     * if &#40;!expectedHash.equals&#40;actualHash&#41;&#41; &#123;
+     * String expectedString = Hex.toHexString&#40;expectedHash.toBytes&#40;&#41;&#41;;
+     * String actualString = Hex.toHexString&#40;actualHash.toBytes&#40;&#41;&#41;;
+     * if &#40;!expectedString.equals&#40;actualString&#41;&#41; &#123;
      *     throw new RuntimeException&#40;&quot;Policy was set but not received!!!&quot;&#41;;
      * &#125;
      * </pre>
-     * <!-- end com.azure.security.attestation.AttestationAdministrationAsyncClient.checkPolicyTokenHash -->
+     * <!-- end com.azure.security.attestation.AttestationAdministrationClient.checkPolicyTokenHash -->
      *
      * @param policy AttestationPolicy document use in the underlying JWT.
      * @param signer Optional signing key used to sign the underlying JWT.
@@ -205,9 +247,7 @@ public final class AttestationAdministrationClient {
     public BinaryData calculatePolicyTokenHash(String policy, AttestationSigningKey signer) {
         return asyncClient.calculatePolicyTokenHash(policy, signer);
     }
-    //endregion
 
-    //region Reset Attestation Policy
     /**
      * Resets the attestation policy for the specified attestation type to the default, using the specified options.
      *
@@ -252,8 +292,6 @@ public final class AttestationAdministrationClient {
     public Response<PolicyResult> resetAttestationPolicyWithResponse(AttestationType attestationType, AttestationPolicySetOptions options, Context context) {
         return asyncClient.resetAttestationPolicyWithResponse(attestationType, options, context).block();
     }
-
-//  endregion
 
     /**
      * Retrieves the current set of attestation policy signing certificates for this instance.

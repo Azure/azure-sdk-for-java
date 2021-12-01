@@ -95,8 +95,7 @@ public final class RelationshipAsyncClient {
      *
      * @param relationship The AtlasRelationship object containing the information for the relationship to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasRelationship.
      */
     @Generated
@@ -170,8 +169,7 @@ public final class RelationshipAsyncClient {
      *
      * @param relationship The AtlasRelationship object containing the information for the relationship to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasRelationship.
      */
     @Generated
@@ -280,8 +278,7 @@ public final class RelationshipAsyncClient {
      *
      * @param guid The globally unique identifier of the relationship.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return relationship information between entities by its GUID.
      */
     @Generated
@@ -295,8 +292,7 @@ public final class RelationshipAsyncClient {
      *
      * @param guid The globally unique identifier of the relationship.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @Generated

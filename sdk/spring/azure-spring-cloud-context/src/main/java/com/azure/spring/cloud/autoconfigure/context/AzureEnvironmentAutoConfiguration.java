@@ -19,6 +19,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AzureEnvironmentAutoConfiguration {
 
+    /**
+     * Create an {@link EnvironmentProvider} bean.
+     *
+     * @param azureProperties The azure properties.
+     * @return An EnvironmentProvider object.
+     */
     @Bean
     @ConditionalOnMissingBean
     public EnvironmentProvider environmentProvider(@Autowired(required = false) AzureProperties azureProperties) {

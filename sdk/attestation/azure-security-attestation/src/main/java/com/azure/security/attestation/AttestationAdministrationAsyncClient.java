@@ -54,7 +54,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- * The AttestationAdministrationClient provides access to the administrative policy APIs
+ * The AttestationAdministrationAsyncClient provides access to the administrative policy APIs
  * implemented by the Attestation Service.
  * <p>
  * More information on attestation policies can be found <a href='https://docs.microsoft.com/azure/attestation/basic-concepts#attestation-policy'>here</a>
@@ -133,6 +133,13 @@ public final class AttestationAdministrationAsyncClient {
      *         the value stored by the attestation service.
      *  </p>
      *
+     * <p><strong>Retrieve the current attestation policy for SGX enclaves.</strong></p>
+     * <!-- src_embed com.azure.security.attestation.AttestationAdministrationAsyncClient.getPolicyWithResponse -->
+     * <pre>
+     * Mono&lt;Response&lt;String&gt;&gt; responseMono = client.getAttestationPolicyWithResponse&#40;AttestationType.SGX_ENCLAVE, null&#41;;
+     * Response&lt;String&gt; response = responseMono.block&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationAdministrationAsyncClient.getPolicyWithResponse -->
      *
      * @param attestationType Specifies the trusted execution environment whose policy should be retrieved.
      * @param validationOptions Options used to validate the response returned by the attestation service.
@@ -150,7 +157,7 @@ public final class AttestationAdministrationAsyncClient {
      * Retrieves the current policy for an attestation type.
      *  <p>
      *      <b>NOTE:</b>
-     *     The {@link AttestationAdministrationAsyncClient#getAttestationPolicy(AttestationType)} API returns the underlying
+     *     The {@code getAttestationPolicy} API returns the underlying
      *     attestation policy specified by the user. This is NOT the full attestation policy maintained by
      *     the attestation service. Specifically it does not include the signing certificates used to verify the attestation
      *     policy.
@@ -163,6 +170,13 @@ public final class AttestationAdministrationAsyncClient {
      *         the value stored by the attestation service.
      *  </p>
      *
+     * <P><strong>Retrieve the current attestation policy for SGX enclaves.</strong></P>
+     * <!-- src_embed com.azure.security.attestation.AttestationAdministrationAsyncClient.getPolicy -->
+     * <pre>
+     * Mono&lt;String&gt; policyMono = client.getAttestationPolicy&#40;AttestationType.SGX_ENCLAVE&#41;;
+     * String policy = policyMono.block&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationAdministrationAsyncClient.getPolicy -->
      *
      * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -190,6 +204,7 @@ public final class AttestationAdministrationAsyncClient {
     Mono<Response<String>> getAttestationPolicyWithResponse(AttestationType attestationType, AttestationTokenValidationOptions validationOptions, Context context) {
         final AttestationTokenValidationOptions validationOptionsToUse = (validationOptions != null ? validationOptions : this.tokenValidationOptions);
         return this.policyImpl.getWithResponseAsync(attestationType, context)
+            .onErrorMap(Utilities::mapException)
             .flatMap(response -> {
                 Response<AttestationTokenImpl> token = Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken()));
                 return getCachedAttestationSigners()
@@ -216,6 +231,14 @@ public final class AttestationAdministrationAsyncClient {
      * <p>Note that this API will only work on AAD mode attestation instances, because it sets the policy
      * using an unsecured attestation token.</p>
      *
+     * <!-- src_embed com.azure.security.attestation.AttestationAdministrationAsyncClient.setPolicySimple -->
+     * <pre>
+     * String policyToSet = &quot;version=1.0; authorizationrules&#123;=&gt; permit&#40;&#41;;&#125;; issuancerules&#123;&#125;;&quot;;
+     * Mono&lt;PolicyResult&gt; resultMono = client.setAttestationPolicy&#40;AttestationType.OPEN_ENCLAVE, policyToSet&#41;;
+     * PolicyResult result = resultMono.block&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationAdministrationAsyncClient.setPolicySimple -->
+     *
      * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
      * @param newAttestationPolicy Specifies the policy to be set on the instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -232,7 +255,56 @@ public final class AttestationAdministrationAsyncClient {
     }
 
     /**
+     * Sets the current policy for an attestation type with an unsecured attestation policy.
+     *
+     * <p>Note that this API will only work on AAD mode attestation instances, because it sets the policy
+     * using an unsecured attestation token.</p>
+     *
+     * <!-- src_embed com.azure.security.attestation.AttestationAdministrationAsyncClient.setPolicyWithResponseSimple -->
+     * <pre>
+     * Mono&lt;Response&lt;PolicyResult&gt;&gt; resultWithResponseMono = client.setAttestationPolicyWithResponse&#40;
+     *     AttestationType.OPEN_ENCLAVE, &quot;version=1.0; authorizationrules&#123;=&gt; permit&#40;&#41;;&#125;; issuancerules&#123;&#125;;&quot;&#41;;
+     * Response&lt;PolicyResult&gt; response = resultWithResponseMono.block&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationAdministrationAsyncClient.setPolicyWithResponseSimple -->
+     *
+     * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
+     * @param newAttestationPolicy Specifies the policy to be set on the instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to an attestation policy operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PolicyResult>> setAttestationPolicyWithResponse(AttestationType attestationType, String newAttestationPolicy) {
+        AttestationPolicySetOptions options = new AttestationPolicySetOptions()
+            .setAttestationPolicy(newAttestationPolicy);
+        return withContext(context -> setAttestationPolicyWithResponse(attestationType, options, context));
+    }
+
+    /**
      * Sets the current policy for an attestation type.
+     *
+     * Setting the attestation requires that the caller provide an {@link AttestationPolicySetOptions} object
+     * which provides the options for setting the policy. There are two major components to a setPolicy
+     * request:
+     * <ul>
+     *     <li>The policy to set</li>
+     *     <li>A signing key used to sign the policy sent to the service (OPTIONAL)</li>
+     * </ul>
+     *
+     * On Isolated mode attestation instances, the signing key MUST include one of the configured policy signing
+     * certificates.
+     *
+     * <!-- src_embed com.azure.security.attestation.AttestationAdministrationAsyncClient.setPolicyWithResponse -->
+     * <pre>
+     * Mono&lt;Response&lt;PolicyResult&gt;&gt; resultWithResponseMono = client.setAttestationPolicyWithResponse&#40;AttestationType.OPEN_ENCLAVE,
+     *     new AttestationPolicySetOptions&#40;&#41;
+     *         .setAttestationPolicy&#40;policyToSet&#41;
+     *         .setAttestationSigner&#40;new AttestationSigningKey&#40;certificate, privateKey&#41;&#41;&#41;;
+     * Response&lt;PolicyResult&gt; response = resultWithResponseMono.block&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationAdministrationAsyncClient.setPolicyWithResponse -->
      *
      * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
      * @param options Options for the setPolicy operation.
@@ -248,6 +320,29 @@ public final class AttestationAdministrationAsyncClient {
 
     /**
      * Sets the current policy for an attestation type.
+     *
+     * Setting the attestation requires that the caller provide an {@link AttestationPolicySetOptions} object
+     * which provides the options for setting the policy. There are two major components to a setPolicy
+     * request:
+     * <ul>
+     *     <li>The policy to set</li>
+     *     <li>A signing key used to sign the policy sent to the service (OPTIONAL)</li>
+     * </ul>
+     *
+     * On Isolated mode attestation instances, the signing key MUST include one of the configured policy signing
+     * certificates.
+     *
+     * <!-- src_embed com.azure.security.attestation.AttestationAdministrationAsyncClient.setPolicy -->
+     * <pre>
+     * String policyToSet = &quot;version=1.0; authorizationrules&#123;=&gt; permit&#40;&#41;;&#125;; issuancerules&#123;&#125;;&quot;;
+     * Mono&lt;PolicyResult&gt; resultMono = client.setAttestationPolicy&#40;AttestationType.OPEN_ENCLAVE,
+     *     new AttestationPolicySetOptions&#40;&#41;
+     *         .setAttestationPolicy&#40;policyToSet&#41;
+     *         .setAttestationSigner&#40;new AttestationSigningKey&#40;certificate, privateKey&#41;&#41;&#41;;
+     * PolicyResult result = resultMono.block&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationAdministrationAsyncClient.setPolicy -->
+     *
      *
      * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
      * @param options Options for the setPolicy operation, including the new policy to be set.
@@ -287,6 +382,7 @@ public final class AttestationAdministrationAsyncClient {
         AttestationToken setToken = generatePolicySetToken(options.getAttestationPolicy(), options.getAttestationSigner());
 
         return this.policyImpl.setWithResponseAsync(attestationType, setToken.serialize(), context)
+            .onErrorMap(Utilities::mapException)
             .flatMap(response -> {
                 Response<AttestationTokenImpl> token = Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken()));
                 return getCachedAttestationSigners()
@@ -317,7 +413,9 @@ public final class AttestationAdministrationAsyncClient {
      * <pre>
      * BinaryData expectedHash = client.calculatePolicyTokenHash&#40;policyToSet, null&#41;;
      * BinaryData actualHash = result.getPolicyTokenHash&#40;&#41;;
-     * if &#40;!expectedHash.equals&#40;actualHash&#41;&#41; &#123;
+     * String expectedString = Hex.toHexString&#40;expectedHash.toBytes&#40;&#41;&#41;;
+     * String actualString = Hex.toHexString&#40;actualHash.toBytes&#40;&#41;&#41;;
+     * if &#40;!expectedString.equals&#40;actualString&#41;&#41; &#123;
      *     throw new RuntimeException&#40;&quot;Policy was set but not received!!!&quot;&#41;;
      * &#125;
      * </pre>
@@ -476,6 +574,7 @@ public final class AttestationAdministrationAsyncClient {
             setToken = AttestationTokenImpl.createSecuredToken(options.getAttestationSigner());
         }
         return this.policyImpl.resetWithResponseAsync(attestationType, setToken.serialize(), context)
+            .onErrorMap(Utilities::mapException)
             .flatMap(response -> {
                 Response<AttestationTokenImpl> token = Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken()));
                 return getCachedAttestationSigners()
@@ -563,6 +662,7 @@ public final class AttestationAdministrationAsyncClient {
     Mono<Response<List<AttestationSigner>>> listPolicyManagementCertificatesWithResponse(AttestationTokenValidationOptions validationOptions, Context context) {
         final AttestationTokenValidationOptions optionsToUse = (validationOptions != null ? validationOptions : this.tokenValidationOptions);
         return this.certificatesImpl.getWithResponseAsync(context)
+            .onErrorMap(Utilities::mapException)
             .flatMap(response -> {
                 Response<AttestationTokenImpl> responseWithToken = Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken()));
                 return getCachedAttestationSigners()
@@ -647,6 +747,7 @@ public final class AttestationAdministrationAsyncClient {
         }
 
         return this.certificatesImpl.addWithResponseAsync(addToken.serialize(), context)
+            .onErrorMap(Utilities::mapException)
             .flatMap(response -> {
                 Response<AttestationTokenImpl> token = Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken()));
                 return getCachedAttestationSigners()
@@ -730,6 +831,7 @@ public final class AttestationAdministrationAsyncClient {
         }
 
         return this.certificatesImpl.removeWithResponseAsync(addToken.serialize(), context)
+            .onErrorMap(Utilities::mapException)
             .flatMap(response -> {
                 Response<AttestationTokenImpl> token = Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken()));
                 return getCachedAttestationSigners()
