@@ -315,6 +315,11 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
         }
     }
 
+    /**
+     * package-private method to check queue size.
+     *
+     * @return The current number of items in the queue.
+     */
     int getWorkQueueSize() {
         return this.workQueue.size();
     }
