@@ -1324,7 +1324,7 @@ public final class BlobContainerAsyncClient {
         Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("options", options);
         return StorageImplUtils.applyOptionalTimeout(
-            this.azureBlobStorage.getContainers().filterBlobsWithResponseAsync(null, null, null,
+            this.azureBlobStorage.getContainers().filterBlobsWithResponseAsync(containerName, null, null,
                 options.getQuery(), marker, options.getMaxResultsPerPage(),
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE)), timeout)
             .map(response -> {

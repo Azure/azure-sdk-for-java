@@ -448,8 +448,7 @@ class SasClientTests extends APISpec {
             .setAddPermission(true)
             .setListPermission(true)
             .setDeleteVersionPermission(true)
-            .setTagsPermission(true)
-            // no filter permission
+            // no filter or tags permission
 
         def expiryTime = namer.getUtcNow().plusDays(1)
         def sasValues = new BlobServiceSasSignatureValues(expiryTime, permissions)
