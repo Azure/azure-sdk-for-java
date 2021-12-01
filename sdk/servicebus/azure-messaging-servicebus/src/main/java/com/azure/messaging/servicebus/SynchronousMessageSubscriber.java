@@ -102,6 +102,8 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
 
         workQueue.add(work);
 
+        // If previous work items were completed, the message queue is empty and currentWork == null. Update the
+        // current work and request items upstream if we need to.
         if (workQueue.peek() == work) {
             logger.verbose("workId[{}] numberOfEvents[{}] timeout[{}] First work in queue. Requesting upstream if "
                     + "needed.", work.getId(), work.getNumberOfEvents(), work.getTimeout());
@@ -144,7 +146,6 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
             return;
         }
 
-        // Consider the case we queue a new work item after some time.
         long numberRequested = REQUESTED.get(this);
         boolean isEmpty = bufferMessages.isEmpty();
 
@@ -282,6 +283,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
 
         final Subscription subscription = UPSTREAM.get(this);
         if (subscription == null) {
+            logger.info("There is no upstream to request messages from.");
             return;
         }
 
