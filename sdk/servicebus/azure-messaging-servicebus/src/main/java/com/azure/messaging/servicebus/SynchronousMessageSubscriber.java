@@ -72,10 +72,9 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
             return;
         }
 
-        final SynchronousReceiveWork currentWork = getOrUpdateCurrentWork();
-        if (currentWork != null) {
-            currentWork.start();
-        }
+        // Initialises or returns existing work. If existing work is returned, it's a no-op. Otherwise, it'll "start"
+        // the new current work.
+        getOrUpdateCurrentWork();
 
         subscription.request(REQUESTED.get(this));
     }
@@ -112,7 +111,6 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
         } else {
             logger.verbose("workId[{}] numberOfEvents[{}] timeout[{}] Queuing receive work.", work.getId(),
                 work.getNumberOfEvents(), work.getTimeout());
-
         }
 
         if (UPSTREAM.get(this) != null) {
