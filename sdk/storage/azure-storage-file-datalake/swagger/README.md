@@ -50,7 +50,6 @@ directive:
 - from: swagger-document
   where: $["x-ms-paths"]["/{filesystem}/{path}"]["head"]["responses"]["200"]
   transform: >
-      delete $.headers["x-ms-acl"]["x-ms-client-name"];
       $.headers["x-ms-acl"]["x-ms-client-name"] = "acl";
 ```
 
@@ -103,7 +102,7 @@ directive:
     }
 ```
 
-### Turn Path eTag into eta
+### Turn Path eTag into etag
 ``` yaml
 directive:
 - from: swagger-document
@@ -112,6 +111,15 @@ directive:
     $.properties.etag = $.properties.eTag;
     delete $.properties.eTag;
     $.properties.etag["x-ms-client-name"] = "eTag";
+```
+
+### Rename XML name
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.SetAccessControlRecursiveResponse
+  transform: >
+   $.properties.failedEntries.xml = {"name": "failedEntries"};
 ```
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-file-datalake%2Fswagger%2FREADME.png)
