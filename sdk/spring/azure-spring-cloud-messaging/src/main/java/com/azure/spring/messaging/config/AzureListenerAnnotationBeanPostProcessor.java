@@ -75,6 +75,10 @@ public class AzureListenerAnnotationBeanPostProcessor
      * The bean name of the default {@link ListenerContainerFactory}.
      */
     public static final String DEFAULT_AZURE_LISTENER_CONTAINER_FACTORY_BEAN_NAME = "azureListenerContainerFactory";
+
+    /**
+     * The default azure listener endpoint registry bean name.
+     */
     public static final String DEFAULT_AZURE_LISTENER_ENDPOINT_REGISTRY_BEAN_NAME = "azureListenerEndpointRegistry";
     private static final Logger LOG = LoggerFactory.getLogger(AzureListenerAnnotationBeanPostProcessor.class);
     private final MessageHandlerMethodFactoryAdapter messageHandlerMethodFactory =
@@ -91,6 +95,10 @@ public class AzureListenerAnnotationBeanPostProcessor
     @Nullable
     private StringValueResolver embeddedValueResolver;
 
+    /**
+     * Set container factory bean name
+     * @param containerFactoryBeanName The container factory bean name
+     */
     public void setContainerFactoryBeanName(String containerFactoryBeanName) {
         this.containerFactoryBeanName = containerFactoryBeanName;
     }

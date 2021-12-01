@@ -14,12 +14,28 @@ import org.springframework.context.SmartLifecycle;
  */
 public interface MessageListenerContainer extends SmartLifecycle {
 
+    /**
+     *
+     * @return The message handler
+     */
     AzureMessageHandler getMessageHandler();
 
+    /**
+     *
+     * @param messageHandler The message handler
+     */
     void setMessageHandler(AzureMessageHandler messageHandler);
 
+    /**
+     *
+     * @param destination The destination
+     */
     void setDestination(String destination);
 
+    /**
+     *
+     * @param group The group
+     */
     void setGroup(String group);
 
 }

@@ -12,10 +12,19 @@ import org.springframework.core.NestedRuntimeException;
  */
 public class EventHubRuntimeException extends NestedRuntimeException {
 
+    /**
+     *
+     * @param msg The message.
+     */
     public EventHubRuntimeException(String msg) {
         super(msg);
     }
 
+    /**
+     *
+     * @param msg The message.
+     * @param cause The cause of the throwable.
+     */
     public EventHubRuntimeException(String msg, Throwable cause) {
         super(msg, cause);
     }

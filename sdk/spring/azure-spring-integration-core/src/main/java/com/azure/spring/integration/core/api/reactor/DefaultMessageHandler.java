@@ -57,12 +57,20 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
     private MessageChannel sendFailureChannel;
     private String sendFailureChannelName;
 
+    /**
+     *
+     * @param destination The destination.
+     * @param sendOperation The sendOperation.
+     */
     public DefaultMessageHandler(String destination, @NonNull SendOperation sendOperation) {
         Assert.hasText(destination, "destination can't be null or empty");
         this.destination = destination;
         this.sendOperation = sendOperation;
     }
 
+    /**
+     * On init.
+     */
     @Override
     protected void onInit() {
         super.onInit();
@@ -70,6 +78,10 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
         LOGGER.info("Started DefaultMessageHandler with properties: {}", buildPropertiesMap());
     }
 
+    /**
+     *
+     * @param message The message.
+     */
     @Override
     protected void handleMessageInternal(Message<?> message) {
         PartitionSupplier partitionSupplier = toPartitionSupplier(message);
@@ -132,32 +144,56 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
         }
     }
 
+    /**
+     *
+     * @param sync The sync.
+     */
     public void setSync(boolean sync) {
         this.sync = sync;
         LOGGER.info("DefaultMessageHandler sync becomes: {}", sync);
     }
 
+    /**
+     *
+     * @param sendTimeout The sendTimeout value.
+     */
     public void setSendTimeout(long sendTimeout) {
         setSendTimeoutExpression(new ValueExpression<>(sendTimeout));
     }
 
+    /**
+     *
+     * @param partitionKey The partitionKey.
+     */
     public void setPartitionKey(String partitionKey) {
         setPartitionKeyExpression(new LiteralExpression(partitionKey));
     }
 
+    /**
+     *
+     * @param partitionKeyExpression The partitionKeyExpression.
+     */
     public void setPartitionKeyExpression(Expression partitionKeyExpression) {
         this.partitionKeyExpression = partitionKeyExpression;
     }
 
+    /**
+     *
+     * @param partitionIdExpression The partitionIdExpression.
+     */
     public void setPartitionIdExpression(Expression partitionIdExpression) {
         this.partitionIdExpression = partitionIdExpression;
     }
 
+    /**
+     *
+     * @param message The message.
+     * @return The destination.
+     */
     private String toDestination(Message<?> message) {
         if (message.getHeaders().containsKey(AzureHeaders.NAME)) {
             return message.getHeaders().get(AzureHeaders.NAME, String.class);
         }
-
         return this.destination;
     }
 
@@ -205,20 +241,36 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
         return properties;
     }
 
+    /**
+     *
+     * @param callback The callback.
+     */
     public void setSendCallback(ListenableFutureCallback<Void> callback) {
         this.sendCallback = callback;
     }
 
+    /**
+     *
+     * @return The sendTimeoutExpression.
+     */
     public Expression getSendTimeoutExpression() {
         return sendTimeoutExpression;
     }
 
+    /**
+     *
+     * @param sendTimeoutExpression The sendTimeoutExpression.
+     */
     public void setSendTimeoutExpression(Expression sendTimeoutExpression) {
         Assert.notNull(sendTimeoutExpression, "'sendTimeoutExpression' must not be null");
         this.sendTimeoutExpression = sendTimeoutExpression;
         LOGGER.info("DefaultMessageHandler syncTimeout becomes: {}", sendTimeoutExpression);
     }
 
+    /**
+     *
+     * @return The sendFailureChannel.
+     */
     protected MessageChannel getSendFailureChannel() {
         if (this.sendFailureChannel != null) {
             return this.sendFailureChannel;
@@ -230,18 +282,34 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
         return null;
     }
 
+    /**
+     *
+     * @param sendFailureChannel The sendFailureChannel.
+     */
     public void setSendFailureChannel(MessageChannel sendFailureChannel) {
         this.sendFailureChannel = sendFailureChannel;
     }
 
+    /**
+     *
+     * @param sendFailureChannelName The sendFailureChannelName.
+     */
     public void setSendFailureChannelName(String sendFailureChannelName) {
         this.sendFailureChannelName = sendFailureChannelName;
     }
 
+    /**
+     *
+     * @return The errorMessageStrategy.
+     */
     protected ErrorMessageStrategy getErrorMessageStrategy() {
         return this.errorMessageStrategy;
     }
 
+    /**
+     *
+     * @param errorMessageStrategy The errorMessageStrategy.
+     */
     public void setErrorMessageStrategy(ErrorMessageStrategy errorMessageStrategy) {
         Assert.notNull(errorMessageStrategy, "'errorMessageStrategy' must not be null");
         this.errorMessageStrategy = errorMessageStrategy;

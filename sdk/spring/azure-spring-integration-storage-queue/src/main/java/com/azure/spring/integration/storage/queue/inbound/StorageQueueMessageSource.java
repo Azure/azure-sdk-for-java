@@ -18,17 +18,30 @@ public class StorageQueueMessageSource extends AbstractMessageSource<Message<?>>
     private final StorageQueueOperation storageQueueOperation;
     private final String destination;
 
+    /**
+     *
+     * @param destination The destination.
+     * @param storageQueueOperation The storageQueueOperation
+     */
     public StorageQueueMessageSource(String destination, StorageQueueOperation storageQueueOperation) {
         Assert.hasText(destination, "destination can't be null or empty");
         this.storageQueueOperation = storageQueueOperation;
         this.destination = destination;
     }
 
+    /**
+     *
+     * @return The received object.
+     */
     @Override
     public Object doReceive() {
         return storageQueueOperation.receiveAsync(destination).block();
     }
 
+    /**
+     *
+     * @return The component type.
+     */
     @Override
     public String getComponentType() {
         return "storage-queue:message-source";

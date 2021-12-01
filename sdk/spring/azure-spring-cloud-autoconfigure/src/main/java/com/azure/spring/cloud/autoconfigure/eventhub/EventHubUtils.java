@@ -13,6 +13,11 @@ public class EventHubUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubUtils.class);
 
+    /**
+     *
+     * @param connectionString The connection string.
+     * @return The namespace.
+     */
     public static String getNamespace(String connectionString) {
         try {
             String prefix = "Endpoint=sb://";

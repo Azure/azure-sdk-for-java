@@ -20,12 +20,21 @@ import org.springframework.util.Assert;
 class RecordCheckpointManager extends CheckpointManager {
     private static final Logger LOG = LoggerFactory.getLogger(RecordCheckpointManager.class);
 
+    /**
+     *
+     * @param checkpointConfig The check point config.
+     */
     RecordCheckpointManager(CheckpointConfig checkpointConfig) {
         super(checkpointConfig);
         Assert.isTrue(this.checkpointConfig.getCheckpointMode() == CheckpointMode.RECORD,
             () -> "RecordCheckpointManager should have checkpointMode record");
     }
 
+    /**
+     *
+     * @param context The context.
+     * @param eventData The event data.
+     */
     public void onMessage(EventContext context, EventData eventData) {
         context.updateCheckpointAsync()
             .doOnError(t -> logCheckpointFail(context, eventData, t))
@@ -33,6 +42,10 @@ class RecordCheckpointManager extends CheckpointManager {
             .subscribe();
     }
 
+    /**
+     *
+     * @return The logger.
+     */
     @Override
     protected Logger getLogger() {
         return LOG;

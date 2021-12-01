@@ -38,6 +38,12 @@ import java.util.Optional;
 @EnableConfigurationProperties(AzureStorageProperties.class)
 public class AzureStorageQueueAutoConfiguration {
 
+    /**
+     *
+     * @param storageProperties The AzureStorageProperties.
+     * @param environmentProvider The EnvironmentProvider.
+     * @return The StorageQueueClientFactory.
+     */
     @Bean
     @ConditionalOnMissingBean({ StorageQueueClientFactory.class, StorageAccountManager.class })
     StorageQueueClientFactory storageQueueClientFactory(
@@ -58,6 +64,12 @@ public class AzureStorageQueueAutoConfiguration {
         return new DefaultStorageQueueClientFactory(connectionString);
     }
 
+    /**
+     *
+     * @param storageProperties The AzureStorageProperties.
+     * @param storageAccountManager The StorageAccountManager.
+     * @return The StorageQueueClientFactory.
+     */
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(StorageAccountManager.class)
@@ -72,6 +84,11 @@ public class AzureStorageQueueAutoConfiguration {
         return new DefaultStorageQueueClientFactory(connectionString);
     }
 
+    /**
+     *
+     * @param storageQueueClientFactory The StorageQueueClientFactory.
+     * @return The StorageQueueOperation.
+     */
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(StorageQueueClientFactory.class)

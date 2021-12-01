@@ -38,6 +38,11 @@ public class AzureServiceBusQueueAutoConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureServiceBusQueueAutoConfiguration.class);
 
+    /**
+     *
+     * @param azureProperties The AzureProperties.
+     * @return The ServiceBusQueueManager.
+     */
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(ServiceBusNamespaceManager.class)
@@ -45,6 +50,14 @@ public class AzureServiceBusQueueAutoConfiguration {
         return new ServiceBusQueueManager(azureProperties);
     }
 
+    /**
+     *
+     * @param connectionStringProvider The ServiceBusConnectionStringProvider
+     * @param namespaceManager The ServiceBusNamespaceManager.
+     * @param queueManager The ServiceBusQueueManager.
+     * @param properties The AzureServiceBusProperties.
+     * @return The ServiceBusQueueClientFactory.
+     */
     @Bean
     @ConditionalOnMissingBean
     public ServiceBusQueueClientFactory queueClientFactory(
@@ -71,12 +84,22 @@ public class AzureServiceBusQueueAutoConfiguration {
         return clientFactory;
     }
 
+    /**
+     *
+     * @return ServiceBusMessageConverter
+     */
     @Bean
     @ConditionalOnMissingBean
     public ServiceBusMessageConverter messageConverter() {
         return new ServiceBusMessageConverter();
     }
 
+    /**
+     *
+     * @param factory The ServiceBusQueueClientFactory.
+     * @param messageConverter The ServiceBusMessageConverter.
+     * @return The ServiceBusQueueOperation.
+     */
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(ServiceBusQueueClientFactory.class)

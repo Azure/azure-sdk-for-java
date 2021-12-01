@@ -16,6 +16,12 @@ public class EventHubInboundChannelAdapter extends AbstractInboundChannelAdapter
 
     private static final Logger LOG = LoggerFactory.getLogger(EventHubInboundChannelAdapter.class);
 
+    /**
+     *
+     * @param destination The destination.
+     * @param subscribeByGroupOperation Subscribe by group operation
+     * @param consumerGroup The consumer group.
+     */
     public EventHubInboundChannelAdapter(String destination, SubscribeByGroupOperation subscribeByGroupOperation,
                                          String consumerGroup) {
         super(destination);

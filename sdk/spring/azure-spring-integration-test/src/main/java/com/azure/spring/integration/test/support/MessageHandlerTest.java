@@ -26,69 +26,138 @@ import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.spy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+/**
+ *
+ * @param <O> The type that extends SendOperation.
+ */
 public abstract class MessageHandlerTest<O extends SendOperation> {
 
+    /**
+     * Send Operation
+     */
     @SuppressWarnings("unchecked")
     protected O sendOperation = null;
 
+    /**
+     * Default message handler.
+     */
     protected DefaultMessageHandler handler = null;
+
+    /**
+     * Destination.
+     */
     protected String destination = "dest";
+
+    /**
+     * Dynamic destination.
+     */
     protected String dynamicDestination = "dynamicName";
 
+    /**
+     * Future.
+     */
     @SuppressWarnings("unchecked")
     protected CompletableFuture<Void> future = new CompletableFuture<>();
     private Message<?> message;
     private String payload = "payload";
 
+    /**
+     * Set up.
+     */
     public abstract void setUp();
 
+    /**
+     *
+     * @return The sendOperation.
+     */
     protected O getSendOperation() {
         return sendOperation;
     }
 
+    /**
+     *
+     * @param sendOperation The sendOperation.
+     */
     protected void setSendOperation(O sendOperation) {
         this.sendOperation = sendOperation;
     }
 
+    /**
+     *
+     * @return The handler。
+     */
     protected DefaultMessageHandler getHandler() {
         return handler;
     }
 
+    /**
+     *
+     * @param handler The handler.
+     */
     protected void setHandler(DefaultMessageHandler handler) {
         this.handler = handler;
     }
 
+    /**
+     *
+     * @return The destination.
+     */
     protected String getDestination() {
         return destination;
     }
 
+    /**
+     *
+     * @param destination The destination.
+     */
     protected void setDestination(String destination) {
         this.destination = destination;
     }
 
+    /**
+     *
+     * @return The dynamicDestination.
+     */
     protected String getDynamicDestination() {
         return dynamicDestination;
     }
 
+    /**
+     *
+     * @param dynamicDestination The dynamicDestination.
+     */
     protected void setDynamicDestination(String dynamicDestination) {
         this.dynamicDestination = dynamicDestination;
     }
 
+    /**
+     *
+     * @return The future.
+     */
     protected CompletableFuture<Void> getFuture() {
         return future;
     }
 
+    /**
+     *
+     * @param future The future.
+     */
     protected void setFuture(CompletableFuture<Void> future) {
         this.future = future;
     }
 
-
+    /**
+     * Test message handler.
+     */
     public MessageHandlerTest() {
         Map<String, Object> valueMap = new HashMap<>(2);
         valueMap.put("key1", "value1");
         valueMap.put("key2", "value2");
         message = new GenericMessage<>("testPayload", valueMap);    }
 
+    /**
+     * Test send.
+     */
     @SuppressWarnings("unchecked")
     @Test
     public void testSend() {
@@ -97,6 +166,9 @@ public abstract class MessageHandlerTest<O extends SendOperation> {
             .sendAsync(eq(destination), isA(Message.class), isA(PartitionSupplier.class));
     }
 
+    /**
+     * Test send dynamic topic.
+     */
     @SuppressWarnings("unchecked")
     @Test
     public void testSendDynamicTopic() {
@@ -108,6 +180,9 @@ public abstract class MessageHandlerTest<O extends SendOperation> {
             .sendAsync(eq(dynamicDestination), isA(Message.class), isA(PartitionSupplier.class));
     }
 
+    /**
+     * Test send sync.
+     */
     @Test
     public void testSendSync() {
         this.handler.setSync(true);
@@ -118,6 +193,9 @@ public abstract class MessageHandlerTest<O extends SendOperation> {
         verify(timeout, times(1)).getValue(eq(null), eq(this.message), eq(Long.class));
     }
 
+    /**
+     * Test send timeout.
+     */
     @SuppressWarnings("unchecked")
     @Test
     public void testSendTimeout() {
@@ -128,6 +206,9 @@ public abstract class MessageHandlerTest<O extends SendOperation> {
         assertThrows(MessageTimeoutException.class, () -> this.handler.handleMessage(this.message));
     }
 
+    /**
+     * Test send callback.
+     */
     @Test
     public void testSendCallback() {
         ListenableFutureCallback<Void> callbackSpy = spy(new ListenableFutureCallback<Void>() {

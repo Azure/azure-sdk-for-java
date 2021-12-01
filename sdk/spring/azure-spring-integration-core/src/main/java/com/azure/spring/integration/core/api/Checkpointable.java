@@ -10,7 +10,15 @@ package com.azure.spring.integration.core.api;
  */
 public interface Checkpointable {
 
+    /**
+     *
+     * @return The CheckpointConfig.
+     */
     CheckpointConfig getCheckpointConfig();
 
+    /**
+     *
+     * @param checkpointConfig The CheckpointConfig.
+     */
     void setCheckpointConfig(CheckpointConfig checkpointConfig);
 }

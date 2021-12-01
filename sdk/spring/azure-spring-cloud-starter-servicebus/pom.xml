@@ -15,6 +15,13 @@
   <version>2.12.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-servicebus;current} -->
 
   <name>Azure Spring Cloud Starter Service Bus</name>
+
+  <properties>
+    <codesnippet.skip>true</codesnippet.skip> <!-- Skip this because there is no java code in this module -->
+    <javadocDoclet></javadocDoclet>
+    <javadocDocletOptions></javadocDocletOptions>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>

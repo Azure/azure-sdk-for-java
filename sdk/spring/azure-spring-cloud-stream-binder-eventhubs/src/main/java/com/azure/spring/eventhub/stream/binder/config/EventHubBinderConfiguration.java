@@ -42,6 +42,12 @@ import org.springframework.context.annotation.Import;
 @EnableConfigurationProperties({ AzureEventHubProperties.class, EventHubExtendedBindingProperties.class })
 public class EventHubBinderConfiguration {
 
+    /**
+     *
+     * @param azureResourceManager The AzureResourceManager.
+     * @param azureProperties The AzureProperties.
+     * @return The EventHubManager.
+     */
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(EventHubNamespaceManager.class)
@@ -49,6 +55,12 @@ public class EventHubBinderConfiguration {
         return new EventHubManager(azureResourceManager, azureProperties);
     }
 
+    /**
+     *
+     * @param azureResourceManager The AzureResourceManager.
+     * @param azureProperties The AzureProperties.
+     * @return The EventHubConsumerGroupManager.
+     */
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(EventHubNamespaceManager.class)
@@ -57,6 +69,15 @@ public class EventHubBinderConfiguration {
         return new EventHubConsumerGroupManager(azureResourceManager, azureProperties);
     }
 
+    /**
+     *
+     * @param eventHubConnectionStringProvider The EventHubConnectionStringProvider.
+     * @param eventHubProperties The AzureEventHubProperties.
+     * @param eventHubNamespaceManager The EventHubNamespaceManager.
+     * @param eventHubManager The EventHubManager.
+     * @param consumerGroupManager The EventHubConsumerGroupManager.
+     * @return The EventHubChannelProvisioner.
+     */
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(EventHubConnectionStringProvider.class)
@@ -89,6 +110,13 @@ public class EventHubBinderConfiguration {
         return new EventHubChannelProvisioner();
     }
 
+    /**
+     *
+     * @param eventHubChannelProvisioner The EventHubChannelProvisioner.
+     * @param eventHubOperation The EventHubOperation.
+     * @param bindingProperties The EventHubExtendedBindingProperties.
+     * @return The EventHubMessageChannelBinder.
+     */
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(EventHubConnectionStringProvider.class)

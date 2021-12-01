@@ -33,6 +33,12 @@ import java.util.Arrays;
 @EnableConfigurationProperties(AzureRedisProperties.class)
 public class AzureRedisAutoConfiguration {
 
+    /**
+     *
+     * @param azureResourceManager The azureResourceManager.
+     * @param azureProperties The azureProperties.
+     * @return The RedisCacheManager.
+     */
     @ConditionalOnMissingBean
     @Bean
     public RedisCacheManager redisCacheManager(AzureResourceManager azureResourceManager,
@@ -40,6 +46,12 @@ public class AzureRedisAutoConfiguration {
         return new RedisCacheManager(azureResourceManager, azureProperties);
     }
 
+    /**
+     *
+     * @param azureRedisProperties The azureRedisProperties.
+     * @param redisCacheManager The redisCacheManager.
+     * @return RedisProperties.
+     */
     @ConditionalOnMissingBean
     @Primary
     @Bean

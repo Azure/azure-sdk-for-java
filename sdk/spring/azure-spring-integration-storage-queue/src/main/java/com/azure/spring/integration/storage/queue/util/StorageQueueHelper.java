@@ -13,6 +13,11 @@ import java.util.Map;
  */
 public class StorageQueueHelper {
 
+    /**
+     *
+     * @param messageItem The message item.
+     * @return The string.
+     */
     public static String toString(QueueMessageItem messageItem) {
         Map<String, Object> map = new LinkedHashMap<>();
 

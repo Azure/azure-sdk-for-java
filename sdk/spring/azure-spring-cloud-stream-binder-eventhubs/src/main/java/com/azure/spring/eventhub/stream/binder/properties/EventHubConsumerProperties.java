@@ -65,50 +65,98 @@ public class EventHubConsumerProperties {
      */
     private Duration maxWaitTime = null;
 
+    /**
+     *
+     * @return The start position.
+     */
     public StartPosition getStartPosition() {
         return startPosition;
     }
 
+    /**
+     *
+     * @param startPosition The start position.
+     */
     public void setStartPosition(StartPosition startPosition) {
         this.startPosition = startPosition;
     }
 
+    /**
+     *
+     * @return The check point mode.
+     */
     public CheckpointMode getCheckpointMode() {
         return checkpointMode;
     }
 
+    /**
+     *
+     * @param checkpointMode The check point mode.
+     */
     public void setCheckpointMode(CheckpointMode checkpointMode) {
         this.checkpointMode = checkpointMode;
     }
 
+    /**
+     *
+     * @return The check point mode.
+     */
     public int getCheckpointCount() {
         return checkpointCount;
     }
 
+    /**
+     *
+     * @param checkpointCount The check point mode.
+     */
     public void setCheckpointCount(int checkpointCount) {
         this.checkpointCount = checkpointCount;
     }
 
+    /**
+     *
+     * @return The check point interval.
+     */
     public Duration getCheckpointInterval() {
         return checkpointInterval;
     }
 
+    /**
+     *
+     * @param checkpointInterval The check point interval.
+     */
     public void setCheckpointInterval(Duration checkpointInterval) {
         this.checkpointInterval = checkpointInterval;
     }
 
+    /**
+     *
+     * @return The max batch size.
+     */
     public int getMaxBatchSize() {
         return maxBatchSize;
     }
 
+    /**
+     *
+     * @param maxBatchSize The max batch size.
+     */
     public void setMaxBatchSize(int maxBatchSize) {
         this.maxBatchSize = maxBatchSize;
     }
 
+    /**
+     *
+     * @return The max wait time.
+     */
     public Duration getMaxWaitTime() {
         return maxWaitTime;
     }
 
+    /**
+     *
+     * @param maxWaitTime The max wait time.
+     */
     public void setMaxWaitTime(Duration maxWaitTime) {
         this.maxWaitTime = maxWaitTime;
     }

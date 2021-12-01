@@ -29,18 +29,34 @@ public class ServiceBusConsumerProperties {
 
     private CheckpointMode checkpointMode = CheckpointMode.RECORD;
 
+    /**
+     *
+     * @return The check point mode.
+     */
     public CheckpointMode getCheckpointMode() {
         return checkpointMode;
     }
 
+    /**
+     *
+     * @param checkpointMode The check point mode.
+     */
     public void setCheckpointMode(CheckpointMode checkpointMode) {
         this.checkpointMode = checkpointMode;
     }
 
+    /**
+     *
+     * @return True if enable auto complete.
+     */
     public boolean isEnableAutoComplete() {
         return enableAutoComplete;
     }
 
+    /**
+     *
+     * @param enableAutoComplete Whether auto complete is enabled.
+     */
     public void setEnableAutoComplete(boolean enableAutoComplete) {
         this.enableAutoComplete = enableAutoComplete;
     }
@@ -49,13 +65,16 @@ public class ServiceBusConsumerProperties {
      * Controls the max concurrent calls of service bus message handler and
      * the size of fixed thread pool that handles user's business logic
      *
-     * <p>
      * @return int, default : 1
      */
     public Integer getMaxConcurrentCalls() {
         return maxConcurrentCalls;
     }
 
+    /**
+     *
+     * @param maxConcurrentCalls The max concurrent calls.
+     */
     public void setMaxConcurrentCalls(int maxConcurrentCalls) {
         this.maxConcurrentCalls = maxConcurrentCalls;
     }
@@ -63,13 +82,16 @@ public class ServiceBusConsumerProperties {
     /**
      * Maximum number of concurrent sessions to process at any given time
      *
-     * <p>
      * @return int, default : 1
      */
     public Integer getMaxConcurrentSessions() {
         return maxConcurrentSessions;
     }
 
+    /**
+     *
+     * @param maxConcurrentSessions The max concurrent sessions.
+     */
     public void setMaxConcurrentSessions(int maxConcurrentSessions) {
         this.maxConcurrentSessions = maxConcurrentSessions;
     }
@@ -77,7 +99,6 @@ public class ServiceBusConsumerProperties {
     /**
      * Prefetch count of underlying service bus client.
      *
-     * <p>
      *
      * @return int, default : 1
      */
@@ -85,6 +106,10 @@ public class ServiceBusConsumerProperties {
         return prefetchCount;
     }
 
+    /**
+     *
+     * @param prefetchCount The prefetch count.
+     */
     public void setPrefetchCount(int prefetchCount) {
         this.prefetchCount = prefetchCount;
     }
@@ -93,7 +118,6 @@ public class ServiceBusConsumerProperties {
      * Controls the max concurrent calls of service bus message handler and
      * the size of fixed thread pool that handles user's business logic
      *
-     * <p>
      * @return int, default : 1
      * @deprecated Use maxConcurrentSessions and maxConcurrentCalls.
      */
@@ -103,6 +127,11 @@ public class ServiceBusConsumerProperties {
         return concurrency;
     }
 
+    /**
+     *
+     * @param concurrency The concurrency.
+     * @deprecated Use maxConcurrentSessions and maxConcurrentCalls.
+     */
     @Deprecated
     public void setConcurrency(int concurrency) {
         logger.warn("Set attribute concurrency, which has been deprecated");
@@ -112,13 +141,16 @@ public class ServiceBusConsumerProperties {
     /**
      * Controls if is session aware
      *
-     * <p>
      * @return boolean, default : false
      */
     public boolean isSessionsEnabled() {
         return sessionsEnabled;
     }
 
+    /**
+     *
+     * @param sessionsEnabled Whether sessions are enabled.
+     */
     public void setSessionsEnabled(boolean sessionsEnabled) {
         this.sessionsEnabled = sessionsEnabled;
     }
@@ -126,21 +158,32 @@ public class ServiceBusConsumerProperties {
     /**
      * Controls if the failed messages are routed to the DLQ
      *
-     * <p>
      * @return boolean, default : false
      */
     public boolean isRequeueRejected() {
         return requeueRejected;
     }
 
+    /**
+     *
+     * @param requeueRejected Whether requeue rejected.
+     */
     public void setRequeueRejected(boolean requeueRejected) {
         this.requeueRejected = requeueRejected;
     }
 
+    /**
+     *
+     * @return The Service Bus receive mode.
+     */
     public ServiceBusReceiveMode getServiceBusReceiveMode() {
         return serviceBusReceiveMode;
     }
 
+    /**
+     *
+     * @param serviceBusReceiveMode The Service Bus receive mode.
+     */
     public void setServiceBusReceiveMode(ServiceBusReceiveMode serviceBusReceiveMode) {
         this.serviceBusReceiveMode = serviceBusReceiveMode;
     }

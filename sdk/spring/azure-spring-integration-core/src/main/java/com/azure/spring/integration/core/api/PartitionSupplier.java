@@ -13,18 +13,34 @@ public class PartitionSupplier {
 
     private String partitionId;
 
+    /**
+     *
+     * @return The partition key.
+     */
     public String getPartitionKey() {
         return partitionKey;
     }
 
+    /**
+     *
+     * @param partitionKey The partitionKey.
+     */
     public void setPartitionKey(String partitionKey) {
         this.partitionKey = partitionKey;
     }
 
+    /**
+     *
+     * @return The partitionId.
+     */
     public String getPartitionId() {
         return partitionId;
     }
 
+    /**
+     *
+     * @param partitionId The partitionId.
+     */
     public void setPartitionId(String partitionId) {
         this.partitionId = partitionId;
     }

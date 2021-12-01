@@ -16,8 +16,16 @@ import com.azure.spring.integration.servicebus.health.InstrumentationManager;
  */
 public interface ServiceBusTopicOperation extends SendOperation, SubscribeByGroupOperation {
 
+    /**
+     *
+     * @return The InstrumentationManager.
+     */
     InstrumentationManager getInstrumentationManager();
 
+    /**
+     *
+     * @param clientConfig The config client.
+     */
     void setClientConfig(ServiceBusClientConfig clientConfig);
 
 }

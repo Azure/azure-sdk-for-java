@@ -16,21 +16,39 @@ public abstract class ServiceBusExtendedBindingProperties
         implements ExtendedBindingProperties<ServiceBusConsumerProperties, ServiceBusProducerProperties> {
     private final Map<String, ServiceBusBindingProperties> bindings = new ConcurrentHashMap<>();
 
+    /**
+     *
+     * @param channelName The channel mode.
+     * @return The ServiceBusConsumerProperties.
+     */
     @Override
     public ServiceBusConsumerProperties getExtendedConsumerProperties(String channelName) {
         return this.bindings.computeIfAbsent(channelName, key -> new ServiceBusBindingProperties()).getConsumer();
     }
 
+    /**
+     *
+     * @param channelName The channel mode.
+     * @return The ServiceBusProducerProperties.
+     */
     @Override
     public ServiceBusProducerProperties getExtendedProducerProperties(String channelName) {
         return this.bindings.computeIfAbsent(channelName, key -> new ServiceBusBindingProperties()).getProducer();
     }
 
+    /**
+     *
+     * @return ServiceBusBindingProperties.class.
+     */
     @Override
     public Class<? extends BinderSpecificPropertiesProvider> getExtendedPropertiesEntryClass() {
         return ServiceBusBindingProperties.class;
     }
 
+    /**
+     *
+     * @return The bindings mapping.
+     */
     public Map<String, ServiceBusBindingProperties> getBindings() {
         return bindings;
     }

@@ -21,19 +21,36 @@ public class BatchConsumerConfig {
      */
     private final Duration maxWaitTime;
 
+    /**
+     *
+     * @param maxBatchSize Max batch size.
+     * @param maxWaitTime Max wait time.
+     */
     public BatchConsumerConfig(int maxBatchSize, Duration maxWaitTime) {
         this.maxBatchSize = maxBatchSize;
         this.maxWaitTime = maxWaitTime;
     }
 
+    /**
+     *
+     * @return The max batch size.
+     */
     public int getMaxBatchSize() {
         return maxBatchSize;
     }
 
+    /**
+     *
+     * @return The max wait time.
+     */
     public Duration getMaxWaitTime() {
         return maxWaitTime;
     }
 
+    /**
+     *
+     * @return The BatchConsumerConfigBuilder.
+     */
     public static BatchConsumerConfigBuilder builder() {
         return new BatchConsumerConfigBuilder();
     }
@@ -46,16 +63,30 @@ public class BatchConsumerConfig {
 
         private Duration maxWaitTime;
 
+        /**
+         *
+         * @param batchSize The batch size.
+         * @return The BatchConsumerConfigBuilder.
+         */
         public BatchConsumerConfigBuilder batchSize(int batchSize) {
             this.maxBatchSize = batchSize;
             return this;
         }
 
+        /**
+         *
+         * @param maxWaitTime The max wait time.
+         * @return The BatchConsumerConfigBuilder.
+         */
         public BatchConsumerConfigBuilder maxWaitTime(Duration maxWaitTime) {
             this.maxWaitTime = maxWaitTime;
             return this;
         }
 
+        /**
+         *
+         * @return The BatchConsumerConfig.
+         */
         public BatchConsumerConfig build() {
             return new BatchConsumerConfig(this.maxBatchSize, this.maxWaitTime);
         }

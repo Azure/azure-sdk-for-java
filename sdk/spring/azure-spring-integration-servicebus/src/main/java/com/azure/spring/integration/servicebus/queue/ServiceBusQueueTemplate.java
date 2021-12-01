@@ -37,10 +37,19 @@ public class ServiceBusQueueTemplate extends ServiceBusTemplate<ServiceBusQueueC
 
     private final Set<String> subscribedQueues = ConcurrentHashMap.newKeySet();
 
+    /**
+     *
+     * @param clientFactory The client factory.
+     */
     public ServiceBusQueueTemplate(ServiceBusQueueClientFactory clientFactory) {
         super(clientFactory);
     }
 
+    /**
+     *
+     * @param clientFactory The client factory.
+     * @param messageConverter The message converter.
+     */
     public ServiceBusQueueTemplate(ServiceBusQueueClientFactory clientFactory,
                                    ServiceBusMessageConverter messageConverter) {
         super(clientFactory, messageConverter);
@@ -83,11 +92,23 @@ public class ServiceBusQueueTemplate extends ServiceBusTemplate<ServiceBusQueueC
         }
     }
 
+    /**
+     *
+     * @param clientConfig The client config.
+     */
     @Override
     public void setClientConfig(@NonNull ServiceBusClientConfig clientConfig) {
         this.clientConfig = clientConfig;
     }
 
+    /**
+     *
+     * @param destination destination
+     * @param message message
+     * @param deadLetterReason deadLetterReason
+     * @param deadLetterErrorDescription deadLetterErrorDescription
+     * @param <T> The message type.
+     */
     @Override
     public <T> void deadLetter(String destination,
                                Message<T> message,
@@ -105,6 +126,12 @@ public class ServiceBusQueueTemplate extends ServiceBusTemplate<ServiceBusQueueC
         }
     }
 
+    /**
+     *
+     * @param destination destination
+     * @param message message
+     * @param <T> The message type.
+     */
     @Override
     public <T> void abandon(String destination, Message<T> message) {
         Assert.hasText(destination, "destination can't be null or empty");
@@ -119,6 +146,13 @@ public class ServiceBusQueueTemplate extends ServiceBusTemplate<ServiceBusQueueC
         }
     }
 
+    /**
+     *
+     * @param destination destination
+     * @param consumer consumer
+     * @param targetPayloadClass The target payload class.
+     * @return true if subscribe success.
+     */
     @Override
     @SuppressWarnings("unchecked")
     public boolean subscribe(String destination,
@@ -137,6 +171,11 @@ public class ServiceBusQueueTemplate extends ServiceBusTemplate<ServiceBusQueueC
         return true;
     }
 
+    /**
+     *
+     * @param destination destination
+     * @return true of unsubscribe success.
+     */
     @Override
     public boolean unsubscribe(String destination) {
         // TODO: unregister message handler but service bus sdk unsupported

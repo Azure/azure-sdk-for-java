@@ -28,6 +28,10 @@ import java.lang.annotation.Documented;
 @Documented
 public @interface AzureMessageListeners {
 
+    /**
+     *
+     * @return The value
+     */
     AzureMessageListener[] value();
 
 }

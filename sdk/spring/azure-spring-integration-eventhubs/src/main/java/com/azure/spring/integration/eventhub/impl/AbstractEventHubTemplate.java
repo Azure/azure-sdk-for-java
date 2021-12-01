@@ -45,6 +45,9 @@ public class AbstractEventHubTemplate {
 
     private final EventHubClientFactory clientFactory;
 
+    /**
+     * The message converter.
+     */
     protected EventHubMessageConverter messageConverter = new EventHubMessageConverter();
 
     private StartPosition startPosition = StartPosition.LATEST;
@@ -54,6 +57,10 @@ public class AbstractEventHubTemplate {
 
     private BatchConsumerConfig batchConsumerConfig;
 
+    /**
+     *
+     * @param clientFactory The client factory.
+     */
     AbstractEventHubTemplate(EventHubClientFactory clientFactory) {
         this.clientFactory = clientFactory;
     }
@@ -62,11 +69,27 @@ public class AbstractEventHubTemplate {
         return StartPosition.EARLIEST.equals(startPosition) ? EventPosition.earliest() : EventPosition.latest();
     }
 
+    /**
+     *
+     * @param eventHubName The event hub name.
+     * @param message The message.
+     * @param partitionSupplier The partition supplier.
+     * @param <T> The type of message.
+     * @return The mono.
+     */
     public <T> Mono<Void> sendAsync(String eventHubName, @NonNull Message<T> message,
                                     PartitionSupplier partitionSupplier) {
         return sendAsync(eventHubName, Collections.singleton(message), partitionSupplier);
     }
 
+    /**
+     *
+     * @param eventHubName The event hub name.
+     * @param messages The messages.
+     * @param partitionSupplier The partition supplier.
+     * @param <T> The type of message.
+     * @return The mono.
+     */
     public <T> Mono<Void> sendAsync(String eventHubName, Collection<Message<T>> messages,
                                     PartitionSupplier partitionSupplier) {
         Assert.hasText(eventHubName, "eventHubName can't be null or empty");
@@ -100,15 +123,31 @@ public class AbstractEventHubTemplate {
             .setPartitionKey(partitionSupplier != null ? partitionSupplier.getPartitionKey() : null);
     }
 
+    /**
+     *
+     * @param name The name.
+     * @param consumerGroup The consumer group.
+     * @param eventHubProcessor The event hub processor.
+     */
     protected void createEventProcessorClient(String name, String consumerGroup, EventHubProcessor eventHubProcessor) {
         eventHubProcessor.setEventPosition(buildEventPosition(startPosition));
         this.clientFactory.createEventProcessorClient(name, consumerGroup, eventHubProcessor, batchConsumerConfig);
     }
 
+    /**
+     *
+     * @param name The name.
+     * @param consumerGroup The consumer group.
+     */
     protected void startEventProcessorClient(String name, String consumerGroup) {
         this.clientFactory.getEventProcessorClient(name, consumerGroup).ifPresent(EventProcessorClient::start);
     }
 
+    /**
+     *
+     * @param name The name.
+     * @param consumerGroup The consumer group.
+     */
     protected void stopEventProcessorClient(String name, String consumerGroup) {
         this.clientFactory.getEventProcessorClient(name, consumerGroup).ifPresent(eventProcessor -> {
             this.clientFactory.removeEventProcessorClient(name, consumerGroup);
@@ -116,6 +155,10 @@ public class AbstractEventHubTemplate {
         });
     }
 
+    /**
+     *
+     * @return The properties map.
+     */
     protected Map<String, Object> buildPropertiesMap() {
         Map<String, Object> properties = new HashMap<>();
         properties.put("startPosition", this.startPosition);
@@ -124,36 +167,68 @@ public class AbstractEventHubTemplate {
         return properties;
     }
 
+    /**
+     *
+     * @return The message converter.
+     */
     public EventHubMessageConverter getMessageConverter() {
         return messageConverter;
     }
 
+    /**
+     *
+     * @param messageConverter The message converter.
+     */
     public void setMessageConverter(EventHubMessageConverter messageConverter) {
         this.messageConverter = messageConverter;
     }
 
+    /**
+     *
+     * @return The start position.
+     */
     public StartPosition getStartPosition() {
         return startPosition;
     }
 
+    /**
+     *
+     * @param startPosition That start position.
+     */
     public void setStartPosition(StartPosition startPosition) {
         LOGGER.info("EventHubTemplate startPosition becomes: {}", startPosition);
         this.startPosition = startPosition;
     }
 
+    /**
+     *
+     * @return The check point config.
+     */
     public CheckpointConfig getCheckpointConfig() {
         return checkpointConfig;
     }
 
+    /**
+     *
+     * @param checkpointConfig The check point config.
+     */
     public void setCheckpointConfig(CheckpointConfig checkpointConfig) {
         LOGGER.info("EventHubTemplate checkpoint config becomes: {}", checkpointConfig);
         this.checkpointConfig = checkpointConfig;
     }
 
+    /**
+     *
+     * @return The batch consumer config.
+     */
     public BatchConsumerConfig getBatchConsumerConfig() {
         return batchConsumerConfig;
     }
 
+    /**
+     *
+     * @param batchConsumerConfig The batch consumer config.
+     */
     public void setBatchConsumerConfig(BatchConsumerConfig batchConsumerConfig) {
         this.batchConsumerConfig = batchConsumerConfig;
     }

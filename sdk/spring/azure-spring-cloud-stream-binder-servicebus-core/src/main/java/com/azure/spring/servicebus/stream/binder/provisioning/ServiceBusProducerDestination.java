@@ -12,15 +12,28 @@ public class ServiceBusProducerDestination implements ProducerDestination {
 
     private final String name;
 
+    /**
+     *
+     * @param name The name.
+     */
     public ServiceBusProducerDestination(String name) {
         this.name = name;
     }
 
+    /**
+     *
+     * @return The name.
+     */
     @Override
     public String getName() {
         return this.name;
     }
 
+    /**
+     *
+     * @param partition The partition.
+     * @return The name for partition.
+     */
     @Override
     public String getNameForPartition(int partition) {
         return this.name + "-" + partition;

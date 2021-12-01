@@ -14,6 +14,11 @@ import org.springframework.messaging.MessagingException;
  */
 public class AzureSendFailureException extends MessagingException {
 
+    /**
+     *
+     * @param message The message.
+     * @param cause The cause of this exception.
+     */
     public AzureSendFailureException(Message<?> message, Throwable cause) {
         super(message, cause);
     }

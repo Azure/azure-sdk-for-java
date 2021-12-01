@@ -34,12 +34,25 @@ public class EventHubTestOperation extends EventHubTemplate {
 
     private final Supplier<EventContext> eventContextSupplier;
 
+    /**
+     *
+     * @param clientFactory The client factory.
+     * @param eventContextSupplier The event context supplier.
+     */
     public EventHubTestOperation(EventHubClientFactory clientFactory,
                                  Supplier<EventContext> eventContextSupplier) {
         super(clientFactory);
         this.eventContextSupplier = eventContextSupplier;
     }
 
+    /**
+     *
+     * @param eventHubName The event hub name.
+     * @param message message
+     * @param partitionSupplier partition supplier
+     * @param <U> The type of message.
+     * @return The mono.
+     */
     @Override
     public <U> Mono<Void> sendAsync(String eventHubName,
                                     @NonNull Message<U> message,
@@ -62,6 +75,12 @@ public class EventHubTestOperation extends EventHubTemplate {
         return Mono.empty();
     }
 
+    /**
+     *
+     * @param name The name.
+     * @param consumerGroup The consumer group.
+     * @param eventHubProcessor The event hub processor.
+     */
     @Override
     protected synchronized void createEventProcessorClient(String name,
                                                            String consumerGroup,
@@ -71,6 +90,11 @@ public class EventHubTestOperation extends EventHubTemplate {
         processorsByNameAndGroup.get(name).putIfAbsent(consumerGroup, eventHubProcessor);
     }
 
+    /**
+     *
+     * @param name The name.
+     * @param consumerGroup The consumer group.
+     */
     @Override
     protected void startEventProcessorClient(String name, String consumerGroup) {
         if (getStartPosition() == StartPosition.EARLIEST) {
@@ -83,11 +107,22 @@ public class EventHubTestOperation extends EventHubTemplate {
         }
     }
 
+    /**
+     *
+     * @param name The name.
+     * @param consumerGroup The consumer group.
+     */
     @Override
     protected void stopEventProcessorClient(String name, String consumerGroup) {
         processorsByNameAndGroup.get(name).remove(consumerGroup);
     }
 
+    /**
+     *
+     * @param consumer The consumer
+     * @param messagePayloadType The message payload type.
+     * @return The EventHubProcessor
+     */
     @Override
     public EventHubProcessor createEventProcessor(Consumer<Message<?>> consumer, Class<?> messagePayloadType) {
         return new EventHubProcessorSupport(consumer, messagePayloadType, getCheckpointConfig(), getMessageConverter());

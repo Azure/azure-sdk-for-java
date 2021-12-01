@@ -26,25 +26,58 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+/**
+ *
+ * @param <O> The type that extends SendOperation.
+ */
 public abstract class MessageHandlerTest<O extends SendOperation> {
 
+    /**
+     * The destination.
+     */
     protected String destination = "dest";
+
+    /**
+     * The dynamic destination.
+     */
     protected String dynamicDestination = "dynamicName";
+
+    /**
+     * The message handler.
+     */
     protected DefaultMessageHandler handler;
+
+    /**
+     * The mono.
+     */
     protected Mono<Void> mono = Mono.empty();
+
+    /**
+     * The send operation.
+     */
     protected O sendOperation;
+
     private Message<?> message;
     private String payload = "payload";
 
-
+    /**
+     * Test message handler.
+     */
     public MessageHandlerTest() {
         Map<String, Object> valueMap = new HashMap<>(2);
         valueMap.put("key1", "value1");
         valueMap.put("key2", "value2");
         message = new GenericMessage<>("testPayload", valueMap);
     }
+
+    /**
+     * Set up.
+     */
     public abstract void setUp();
 
+    /**
+     * Test send.
+     */
     @Test
     @SuppressWarnings("unchecked")
     public void testSend() {
@@ -53,6 +86,9 @@ public abstract class MessageHandlerTest<O extends SendOperation> {
             isA(PartitionSupplier.class));
     }
 
+    /**
+     * Test send callback.
+     */
     @Test
     public void testSendCallback() {
         ListenableFutureCallback<Void> callbackSpy = spy(new ListenableFutureCallback<Void>() {
@@ -72,6 +108,9 @@ public abstract class MessageHandlerTest<O extends SendOperation> {
         verify(callbackSpy, times(1)).onSuccess(eq(null));
     }
 
+    /**
+     * Test send dynamic topic.
+     */
     @Test
     @SuppressWarnings("unchecked")
     public void testSendDynamicTopic() {
@@ -83,6 +122,9 @@ public abstract class MessageHandlerTest<O extends SendOperation> {
             isA(PartitionSupplier.class));
     }
 
+    /**
+     * Test send sync.
+     */
     @Test
     public void testSendSync() {
         this.handler.setSync(true);
@@ -93,6 +135,9 @@ public abstract class MessageHandlerTest<O extends SendOperation> {
         verify(timeout, times(1)).getValue(eq(null), eq(this.message), eq(Long.class));
     }
 
+    /**
+     * Test send timeout.
+     */
     @Test
     @SuppressWarnings("unchecked")
     public void testSendTimeout() {
@@ -104,26 +149,50 @@ public abstract class MessageHandlerTest<O extends SendOperation> {
         assertThrows(MessageTimeoutException.class, () -> this.handler.handleMessage(this.message));
     }
 
+    /**
+     *
+     * @return The mono.
+     */
     public Mono<Void> getMono() {
         return mono;
     }
 
+    /**
+     *
+     * @param mono The mono.
+     */
     public void setMono(Mono<Void> mono) {
         this.mono = mono;
     }
 
+    /**
+     *
+     * @return The handler.
+     */
     public DefaultMessageHandler getHandler() {
         return handler;
     }
 
+    /**
+     *
+     * @param handler The handler.
+     */
     public void setHandler(DefaultMessageHandler handler) {
         this.handler = handler;
     }
 
+    /**
+     *
+     * @return The sendOperation.
+     */
     public O getSendOperation() {
         return sendOperation;
     }
 
+    /**
+     *
+     * @param sendOperation The sendOperation.
+     */
     public void setSendOperation(O sendOperation) {
         this.sendOperation = sendOperation;
     }

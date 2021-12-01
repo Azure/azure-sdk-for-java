@@ -26,6 +26,11 @@ public class EventHubHealthIndicator implements HealthIndicator {
 
     private int timeout = DEFAULT_TIMEOUT;
 
+    /**
+     *
+     * @param binder The EventHubMessageChannelBinder.
+     * @param clientFactory The EventHubClientFactory.
+     */
     public EventHubHealthIndicator(EventHubMessageChannelBinder binder, EventHubClientFactory clientFactory) {
         this.binder = binder;
         this.clientFactory = clientFactory;
@@ -38,6 +43,10 @@ public class EventHubHealthIndicator implements HealthIndicator {
         }
     }
 
+    /**
+     *
+     * @return Health
+     */
     @Override
     public Health health() {
         if (binder.getEventHubsInUse().isEmpty()) {
@@ -59,6 +68,10 @@ public class EventHubHealthIndicator implements HealthIndicator {
         }
     }
 
+    /**
+     *
+     * @param timeout The timeout.
+     */
     public void setTimeout(int timeout) {
         this.timeout = timeout;
     }

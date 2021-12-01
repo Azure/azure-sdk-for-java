@@ -60,6 +60,12 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
     private final Function<String, EventHubProducerAsyncClient> producerClientCreator =
         Memoizer.memoize(producerClientMap, this::createProducerClient);
 
+    /**
+     *
+     * @param eventHubConnectionString The event hub connection string.
+     * @param checkpointConnectionString The check point connection string.
+     * @param checkpointStorageContainer The check point storage container.
+     */
     public DefaultEventHubClientFactory(@NonNull String eventHubConnectionString,
                                         String checkpointConnectionString,
                                         String checkpointStorageContainer) {
@@ -139,6 +145,9 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
         });
     }
 
+    /**
+     * Destroy.
+     */
     @Override
     public void destroy() {
         close(consumerClientMap, EventHubConsumerAsyncClient::close);
@@ -146,16 +155,35 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
         close(processorClientMap, EventProcessorClient::stop);
     }
 
+    /**
+     *
+     * @param eventHubName The event hub name.
+     * @param consumerGroup The consumer group.
+     * @return The EventHubConsumerAsyncClient.
+     */
     @Override
     public EventHubConsumerAsyncClient getOrCreateConsumerClient(String eventHubName, String consumerGroup) {
         return this.eventHubConsumerClientCreator.apply(eventHubName, consumerGroup);
     }
 
+    /**
+     *
+     * @param eventHubName The event hub name.
+     * @return The EventHubProducerAsyncClient.
+     */
     @Override
     public EventHubProducerAsyncClient getOrCreateProducerClient(String eventHubName) {
         return this.producerClientCreator.apply(eventHubName);
     }
 
+    /**
+     *
+     * @param eventHubName The event hub name.
+     * @param consumerGroup The consumer group.
+     * @param processor The processor.
+     * @param batchConsumerConfig The batch consumer config.
+     * @return The @returnEventProcessorClient.
+     */
     @Override
     public EventProcessorClient createEventProcessorClient(String eventHubName, String consumerGroup,
                                                            EventHubProcessor processor, BatchConsumerConfig batchConsumerConfig) {
@@ -163,11 +191,23 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
             createEventProcessorClientInternal(eventHubName, consumerGroup, processor, batchConsumerConfig));
     }
 
+    /**
+     *
+     * @param eventHubName The event hub name.
+     * @param consumerGroup The consumer group.
+     * @return The Optional of EventProcessorClient.
+     */
     @Override
     public Optional<EventProcessorClient> getEventProcessorClient(String eventHubName, String consumerGroup) {
         return Optional.ofNullable(this.processorClientMap.get(Tuple.of(eventHubName, consumerGroup)));
     }
 
+    /**
+     *
+     * @param eventHubName The event hub name.
+     * @param consumerGroup The consumer group.
+     * @return The EventProcessorClient.
+     */
     @Override
     public EventProcessorClient removeEventProcessorClient(String eventHubName, String consumerGroup) {
         return this.processorClientMap.remove(Tuple.of(eventHubName, consumerGroup));

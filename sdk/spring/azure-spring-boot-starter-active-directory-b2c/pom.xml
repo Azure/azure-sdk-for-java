@@ -18,6 +18,12 @@
   <name>Azure Spring Boot Starter for Azure AD B2C Spring Security Integration</name>
   <description>Spring Boot Starter for Azure AD B2C and Spring Security Integration</description>
 
+  <properties>
+    <codesnippet.skip>true</codesnippet.skip> <!-- Skip this because there is no java code in this module -->
+    <javadocDoclet></javadocDoclet>
+    <javadocDocletOptions></javadocDocletOptions>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>

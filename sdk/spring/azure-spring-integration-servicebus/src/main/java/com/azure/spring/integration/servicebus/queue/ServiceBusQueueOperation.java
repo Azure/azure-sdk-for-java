@@ -19,8 +19,16 @@ import org.springframework.messaging.Message;
  */
 public interface ServiceBusQueueOperation extends SendOperation, SubscribeOperation {
 
+    /**
+     *
+     * @return The InstrumentationManager.
+     */
     InstrumentationManager getInstrumentationManager();
 
+    /**
+     *
+     * @param clientConfig The client config.
+     */
     void setClientConfig(ServiceBusClientConfig clientConfig);
 
     /**

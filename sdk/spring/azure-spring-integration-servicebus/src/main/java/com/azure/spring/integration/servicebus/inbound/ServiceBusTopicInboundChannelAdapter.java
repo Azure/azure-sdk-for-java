@@ -13,6 +13,12 @@ import org.springframework.util.Assert;
  */
 public class ServiceBusTopicInboundChannelAdapter extends AbstractInboundChannelAdapter {
 
+    /**
+     *
+     * @param destination The destination.
+     * @param subscribeByGroupOperation The subscribeByGroupOperation.
+     * @param consumerGroup The consumerGroup.
+     */
     public ServiceBusTopicInboundChannelAdapter(String destination,
                                                 @NonNull SubscribeByGroupOperation subscribeByGroupOperation,
                                                 String consumerGroup) {

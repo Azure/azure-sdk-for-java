@@ -65,6 +65,11 @@ public class AzureCloudFoundryEnvironmentPostProcessor implements EnvironmentPos
         return properties;
     }
 
+    /**
+     *
+     * @param environment The ConfigurableEnvironment
+     * @param application The SpringApplication.
+     */
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
         if (!StringUtils.isEmpty(environment.getProperty(VCAP_SERVICES_ENVVAR))) {
@@ -81,6 +86,10 @@ public class AzureCloudFoundryEnvironmentPostProcessor implements EnvironmentPos
         }
     }
 
+    /**
+     *
+     * @return The order.
+     */
     @Override
     public int getOrder() {
         return ORDER;

@@ -12,10 +12,19 @@ import org.springframework.core.NestedRuntimeException;
  */
 public class ConversionException extends NestedRuntimeException {
 
+    /**
+     *
+     * @param msg The message.
+     */
     public ConversionException(String msg) {
         super(msg);
     }
 
+    /**
+     *
+     * @param msg The message.
+     * @param cause The cause of this exception.
+     */
     public ConversionException(String msg, Throwable cause) {
         super(msg, cause);
     }

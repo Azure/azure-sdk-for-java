@@ -18,16 +18,36 @@ import java.util.Map;
  */
 public abstract class AbstractInboundChannelAdapter extends MessageProducerSupport {
 
-    private final String destination;
+    /**
+     * The consumer group
+     */
     protected String consumerGroup = null;
+
+    /**
+     * Subscribe by group operation/
+     */
     protected SubscribeByGroupOperation subscribeByGroupOperation = null;
+
+    /**
+     * The subscribe operation.
+     */
     protected SubscribeOperation subscribeOperation = null;
 
+    private final String destination;
+
+    /**
+     *
+     * @param destination The destination.
+     */
     protected AbstractInboundChannelAdapter(String destination) {
         Assert.hasText(destination, "destination can't be null or empty");
         this.destination = destination;
     }
 
+    /**
+     *
+     * @return The properties map.
+     */
     protected Map<String, Object> buildPropertiesMap() {
         Map<String, Object> properties = new HashMap<>();
         properties.put("consumerGroup", consumerGroup);
@@ -36,6 +56,9 @@ public abstract class AbstractInboundChannelAdapter extends MessageProducerSuppo
         return properties;
     }
 
+    /**
+     * Do start.
+     */
     @Override
     public void doStart() {
         super.doStart();
@@ -46,6 +69,9 @@ public abstract class AbstractInboundChannelAdapter extends MessageProducerSuppo
         }
     }
 
+    /**
+     * Do stop.
+     */
     @Override
     protected void doStop() {
         if (useGroupOperation()) {
@@ -57,6 +83,10 @@ public abstract class AbstractInboundChannelAdapter extends MessageProducerSuppo
         super.doStop();
     }
 
+    /**
+     *
+     * @param message The message.
+     */
     public void receiveMessage(Message<?> message) {
         sendMessage(message);
     }

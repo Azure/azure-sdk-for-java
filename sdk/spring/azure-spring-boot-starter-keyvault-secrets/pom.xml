@@ -19,6 +19,12 @@
   <description>Spring Boot Starter supporting Azure Key Vault Secrets as PropertySource</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
+  <properties>
+    <codesnippet.skip>true</codesnippet.skip> <!-- Skip this because there is no java code in this module -->
+    <javadocDoclet></javadocDoclet>
+    <javadocDocletOptions></javadocDocletOptions>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>

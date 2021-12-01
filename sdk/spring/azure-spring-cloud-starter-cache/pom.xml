@@ -16,6 +16,12 @@
 
   <name>Azure Spring Cloud Starter Cache</name>
 
+  <properties>
+    <codesnippet.skip>true</codesnippet.skip> <!-- Skip this because there is no java code in this module -->
+    <javadocDoclet></javadocDoclet>
+    <javadocDocletOptions></javadocDocletOptions>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>

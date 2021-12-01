@@ -46,35 +46,66 @@ public class ServiceBusMessageConverter
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusMessageConverter.class);
     private final ObjectMapper objectMapper;
 
+    /**
+     * The constructor.
+     */
     public ServiceBusMessageConverter() {
         objectMapper = OBJECT_MAPPER;
     }
 
+    /**
+     *
+     * @param objectMapper The objectMapper.
+     */
     public ServiceBusMessageConverter(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 
+    /**
+     *
+     * @return The ObjectMapper.
+     */
     @Override
     protected ObjectMapper getObjectMapper() {
         return objectMapper;
     }
 
+    /**
+     *
+     * @param azureMessage The azure message
+     * @return The payload.
+     */
     @Override
     protected byte[] getPayload(ServiceBusReceivedMessage azureMessage) {
         final BinaryData body = azureMessage.getBody();
         return body == null ? null : body.toBytes();
     }
 
+    /**
+     *
+     * @param payload The payload.
+     * @return The ServiceBusMessage.
+     */
     @Override
     protected ServiceBusMessage fromString(String payload) {
         return new ServiceBusMessage(payload);
     }
 
+    /**
+     *
+     * @param payload The payload
+     * @return The ServiceBusMessage.
+     */
     @Override
     protected ServiceBusMessage fromByte(byte[] payload) {
         return new ServiceBusMessage(payload);
     }
 
+    /**
+     *
+     * @param headers The message headers.
+     * @param message The service bus message.
+     */
     @Override
     protected void setCustomHeaders(MessageHeaders headers, ServiceBusMessage message) {
 
@@ -135,6 +166,11 @@ public class ServiceBusMessageConverter
         });
     }
 
+    /**
+     *
+     * @param message The service bus message.
+     * @return The custom headers.
+     */
     @Override
     protected Map<String, Object> buildCustomHeaders(ServiceBusReceivedMessage message) {
         Map<String, Object> headers = new HashMap<>();

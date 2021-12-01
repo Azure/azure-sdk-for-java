@@ -14,11 +14,19 @@ import org.springframework.boot.actuate.health.Health;
 public class ServiceBusTopicHealthIndicator extends AbstractHealthIndicator {
     private final InstrumentationManager instrumentationManager;
 
+    /**
+     *
+     * @param serviceBusTopicOperation The ServiceBusTopicOperation.
+     */
     public ServiceBusTopicHealthIndicator(ServiceBusTopicOperation serviceBusTopicOperation) {
         super("Service bus health check failed");
         this.instrumentationManager = serviceBusTopicOperation.getInstrumentationManager();
     }
 
+    /**
+     *
+     * @param builder The Health.Builder.
+     */
     @Override
     protected void doHealthCheck(Health.Builder builder) {
         if (instrumentationManager == null || instrumentationManager.getHealthInstrumentations().isEmpty()) {

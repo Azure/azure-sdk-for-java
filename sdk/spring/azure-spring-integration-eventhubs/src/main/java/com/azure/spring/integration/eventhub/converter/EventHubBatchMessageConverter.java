@@ -29,16 +29,31 @@ public class EventHubBatchMessageConverter extends AbstractAzureMessageConverter
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubBatchMessageConverter.class);
 
+    /**
+     *
+     * @param payload The payload.
+     * @return The event data.
+     */
     @Override
     protected EventData fromString(String payload) {
         return new EventData(payload.getBytes(StandardCharsets.UTF_8));
     }
 
+    /**
+     *
+     * @param payload The payload
+     * @return Teh event data.
+     */
     @Override
     protected EventData fromByte(byte[] payload) {
         return new EventData(payload);
     }
 
+    /**
+     *
+     * @param headers The message headers.
+     * @param azureMessage The azure message.
+     */
     @Override
     protected void setCustomHeaders(MessageHeaders headers, EventData azureMessage) {
         super.setCustomHeaders(headers, azureMessage);
@@ -52,11 +67,24 @@ public class EventHubBatchMessageConverter extends AbstractAzureMessageConverter
         });
     }
 
+    /**
+     *
+     * @param azureMessage The azure message
+     * @return The payload.
+     */
     @Override
     protected Object getPayload(EventBatchContext azureMessage) {
         return azureMessage.getEvents().stream().map(EventData::getBody).collect(Collectors.toList());
     }
 
+    /**
+     *
+     * @param azureMessage The azure message
+     * @param headers The headers.
+     * @param targetPayloadClass The target payload class.
+     * @param <U> The payload class type.
+     * @return The Spring message.
+     */
     @Override
     @SuppressWarnings("unchecked")
     protected <U> Message<?> internalToMessage(EventBatchContext azureMessage, Map<String, Object> headers, Class<U> targetPayloadClass) {
@@ -80,6 +108,11 @@ public class EventHubBatchMessageConverter extends AbstractAzureMessageConverter
         return MessageBuilder.withPayload(payLoadList).copyHeaders(headers).build();
     }
 
+    /**
+     *
+     * @param azureMessage The azure message
+     * @return The custom headers.
+     */
     @Override
     protected Map<String, Object> buildCustomHeaders(EventBatchContext azureMessage) {
         Map<String, Object> headers = super.buildCustomHeaders(azureMessage);

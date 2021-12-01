@@ -30,6 +30,10 @@ public class EventHubRxTemplate extends AbstractEventHubTemplate implements Even
     private final ConcurrentHashMap<Tuple<String, String>, Observable<Message<?>>> subjectByNameAndGroup =
         new ConcurrentHashMap<>();
 
+    /**
+     *
+     * @param clientFactory The client factory.
+     */
     public EventHubRxTemplate(EventHubClientFactory clientFactory) {
         super(clientFactory);
     }
@@ -45,12 +49,26 @@ public class EventHubRxTemplate extends AbstractEventHubTemplate implements Even
         }));
     }
 
+    /**
+     *
+     * @param destination destination
+     * @param message message
+     * @param partitionSupplier partition supplier
+     * @param <T> The type of message.
+     * @return The Observable
+     */
     @Override
     public <T> Observable<Void> sendRx(String destination, Message<T> message, PartitionSupplier partitionSupplier) {
         return toObservable(sendAsync(destination, message, partitionSupplier));
     }
 
-
+    /**
+     *
+     * @param destination destination
+     * @param consumerGroup consumer group
+     * @param messagePayloadType message payload type
+     * @return The Observable.
+     */
     @Override
     public Observable<Message<?>> subscribe(String destination, String consumerGroup, Class<?> messagePayloadType) {
         Tuple<String, String> nameAndConsumerGroup = Tuple.of(destination, consumerGroup);

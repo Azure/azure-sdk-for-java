@@ -24,6 +24,12 @@ public interface SubscribeOperation extends Checkpointable {
      */
     boolean subscribe(String destination, Consumer<Message<?>> consumer, Class<?> messagePayloadType);
 
+    /**
+     *
+     * @param destination The destination
+     * @param consumer The consumer
+     * @return Whether subscribe success.
+     */
     default boolean subscribe(String destination, Consumer<Message<?>> consumer) {
         return this.subscribe(destination, consumer, byte[].class);
     }

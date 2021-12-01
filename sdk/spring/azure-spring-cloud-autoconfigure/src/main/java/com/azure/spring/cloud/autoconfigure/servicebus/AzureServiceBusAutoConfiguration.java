@@ -36,6 +36,12 @@ public class AzureServiceBusAutoConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureServiceBusAutoConfiguration.class);
 
+    /**
+     *
+     * @param azureResourceManager The AzureResourceManager.
+     * @param azureProperties The AzureProperties.
+     * @return The ServiceBusNamespaceManager.
+     */
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean({ AzureResourceManager.class, AzureProperties.class })

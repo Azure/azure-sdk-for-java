@@ -19,6 +19,13 @@ public class EventHubChannelProvisioner implements
         ProvisioningProvider<ExtendedConsumerProperties<EventHubConsumerProperties>,
                 ExtendedProducerProperties<EventHubProducerProperties>> {
 
+    /**
+     *
+     * @param name The name.
+     * @param properties The ExtendedProducerProperties.
+     * @return The ProducerDestination
+     * @throws ProvisioningException The ProvisioningException.
+     */
     @Override
     public ProducerDestination provisionProducerDestination(String name,
             ExtendedProducerProperties<EventHubProducerProperties> properties) throws ProvisioningException {
@@ -26,6 +33,14 @@ public class EventHubChannelProvisioner implements
         return new EventHubProducerDestination(name);
     }
 
+    /**
+     *
+     * @param name The name.
+     * @param group The group.
+     * @param properties The ExtendedConsumerProperties.
+     * @return ConsumerDestination
+     * @throws ProvisioningException The ProvisioningException.
+     */
     @Override
     public ConsumerDestination provisionConsumerDestination(String name, String group,
             ExtendedConsumerProperties<EventHubConsumerProperties> properties) throws ProvisioningException {
@@ -33,10 +48,19 @@ public class EventHubChannelProvisioner implements
         return new EventHubConsumerDestination(name);
     }
 
+    /**
+     *
+     * @param name The name.
+     * @param group The group.
+     */
     protected void validateOrCreateForConsumer(String name, String group) {
         // no-op
     }
 
+    /**
+     *
+     * @param name The name.
+     */
     protected void validateOrCreateForProducer(String name) {
         // no-op
     }

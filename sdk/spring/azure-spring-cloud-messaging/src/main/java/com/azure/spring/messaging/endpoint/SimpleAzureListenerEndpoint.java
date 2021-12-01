@@ -23,10 +23,18 @@ public class SimpleAzureListenerEndpoint extends AbstractAzureListenerEndpoint {
         return this.azureMessageHandler;
     }
 
+    /**
+     *
+     * @return The AzureMessageHandler.
+     */
     public AzureMessageHandler getAzureMessageHandler() {
         return azureMessageHandler;
     }
 
+    /**
+     *
+     * @param azureMessageHandler The AzureMessageHandler.
+     */
     public void setAzureMessageHandler(AzureMessageHandler azureMessageHandler) {
         this.azureMessageHandler = azureMessageHandler;
     }

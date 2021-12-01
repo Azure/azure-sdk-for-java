@@ -44,6 +44,12 @@ public class AzureEventHubAutoConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureEventHubAutoConfiguration.class);
 
+    /**
+     *
+     * @param azureResourceManager The AzureResourceManager.
+     * @param azureProperties The AzureProperties.
+     * @return The EventHubNamespaceManager.
+     */
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(AzureResourceManager.class)
@@ -52,6 +58,12 @@ public class AzureEventHubAutoConfiguration {
         return new EventHubNamespaceManager(azureResourceManager, azureProperties);
     }
 
+    /**
+     *
+     * @param azureResourceManager The AzureResourceManager.
+     * @param azureProperties The AzureProperties.
+     * @return The StorageAccountManager
+     */
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(AzureResourceManager.class)
@@ -91,6 +103,14 @@ public class AzureEventHubAutoConfiguration {
         return null;
     }
 
+    /**
+     *
+     * @param environmentProvider The EnvironmentProvider.
+     * @param storageAccountManager The StorageAccountManager.
+     * @param eventHubConnectionStringProvider The EventHubConnectionStringProvider.
+     * @param properties The AzureEventHubProperties.
+     * @return The EventHubClientFactory.
+     */
     @Bean
     @ConditionalOnMissingBean
     public EventHubClientFactory eventhubClientFactory(
@@ -113,6 +133,11 @@ public class AzureEventHubAutoConfiguration {
             properties.getCheckpointContainer());
     }
 
+    /**
+     *
+     * @param clientFactory The client factory
+     * @return The EventHubOperation.
+     */
     @Bean
     @ConditionalOnMissingBean
     public EventHubOperation eventHubOperation(EventHubClientFactory clientFactory) {

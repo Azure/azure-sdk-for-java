@@ -42,14 +42,48 @@ public class ServiceBusMessageHeaders extends AzureHeaders {
 
     private static final String PREFIX = AzureHeaders.PREFIX + "service_bus_";
 
+    /**
+     * The header of correlation id.
+     */
     public static final String CORRELATION_ID = PREFIX + "correlation_id";
+
+    /**
+     * The message id.
+     */
     public static final String MESSAGE_ID = PREFIX + "message_id";
+
+    /**
+     * The partition id.
+     */
     public static final String PARTITION_KEY = PREFIX + "partition_key";
+
+    /**
+     * The "to" header.
+     */
     public static final String TO = PREFIX + "to";
+
+    /**
+     * The "time_to_live" header.
+     */
     public static final String TIME_TO_LIVE = PREFIX + "time_to_live";
-    // expected type is Instant
+
+    /**
+     * The "scheduled_enqueue_time" header. Expected type is Instant.
+     */
     public static final String SCHEDULED_ENQUEUE_TIME = PREFIX + "scheduled_enqueue_time";
+
+    /**
+     * The "reply_to_session_id" header.
+     */
     public static final String REPLY_TO_SESSION_ID = PREFIX + "reply_to_session_id";
+
+    /**
+     * The "session_id" header.
+     */
     public static final String SESSION_ID = PREFIX + "session_id";
+
+    /**
+     * The "received_message_context" header.
+     */
     public static final String RECEIVED_MESSAGE_CONTEXT = PREFIX + "received_message_context";
 }

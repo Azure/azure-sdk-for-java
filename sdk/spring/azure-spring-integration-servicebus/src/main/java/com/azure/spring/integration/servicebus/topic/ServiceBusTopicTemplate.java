@@ -39,20 +39,41 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
 
     private final Set<Tuple<String, String>> nameAndConsumerGroups = ConcurrentHashMap.newKeySet();
 
+    /**
+     *
+     * @param clientFactory The client factory.
+     */
     public ServiceBusTopicTemplate(ServiceBusTopicClientFactory clientFactory) {
         super(clientFactory);
     }
 
+    /**
+     *
+     * @param clientFactory The client factory.
+     * @param messageConverter The message converter.
+     */
     public ServiceBusTopicTemplate(ServiceBusTopicClientFactory clientFactory,
                                    ServiceBusMessageConverter messageConverter) {
         super(clientFactory, messageConverter);
     }
 
+    /**
+     *
+     * @param clientConfig The config client.
+     */
     @Override
     public void setClientConfig(@NonNull ServiceBusClientConfig clientConfig) {
         this.clientConfig = clientConfig;
     }
 
+    /**
+     *
+     * @param destination destination
+     * @param consumerGroup consumer group name
+     * @param consumer consumer
+     * @param payloadType The payload type.
+     * @return true if subscribe successfully.
+     */
     @Override
     public boolean subscribe(String destination,
                              String consumerGroup,
@@ -72,6 +93,12 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
         return true;
     }
 
+    /**
+     *
+     * @param destination destination
+     * @param consumerGroup consumer group
+     * @return true if unsubscribe successfully.
+     */
     @Override
     public boolean unsubscribe(String destination, String consumerGroup) {
         // TODO: unregister message handler but service bus sdk unsupported

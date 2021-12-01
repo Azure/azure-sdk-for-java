@@ -27,11 +27,23 @@ public class EventHubTemplate extends AbstractEventHubTemplate implements EventH
     // Use this concurrent map as set since no concurrent set which has putIfAbsent
     private final ConcurrentMap<Tuple<String, String>, Boolean> subscribedNameAndGroup = new ConcurrentHashMap<>();
 
+    /**
+     *
+     * @param clientFactory The client factory.
+     */
     public EventHubTemplate(EventHubClientFactory clientFactory) {
         super(clientFactory);
         LOG.info("Started EventHubTemplate with properties: {}", buildPropertiesMap());
     }
 
+    /**
+     *
+     * @param destination destination
+     * @param consumerGroup consumer group name
+     * @param consumer consumer
+     * @param messagePayloadType message payload type
+     * @return true is subscribe success.
+     */
     @Override
     public boolean subscribe(String destination, String consumerGroup, Consumer<Message<?>> consumer,
                              Class<?> messagePayloadType) {
@@ -47,6 +59,12 @@ public class EventHubTemplate extends AbstractEventHubTemplate implements EventH
         return false;
     }
 
+    /**
+     *
+     * @param destination destination
+     * @param consumerGroup consumer group
+     * @return true if unsubscribe success.
+     */
     @Override
     public boolean unsubscribe(String destination, String consumerGroup) {
         if (subscribedNameAndGroup.remove(Tuple.of(destination, consumerGroup), true)) {
@@ -59,15 +77,29 @@ public class EventHubTemplate extends AbstractEventHubTemplate implements EventH
         return false;
     }
 
+    /**
+     *
+     * @param consumer The consumer group.
+     * @param messagePayloadType The message payload type.
+     * @return The EventHubProcessor.
+     */
     public EventHubProcessor createEventProcessor(Consumer<Message<?>> consumer, Class<?> messagePayloadType) {
         return new EventHubProcessor(consumer, messagePayloadType, getCheckpointConfig(), getMessageConverter());
     }
 
+    /**
+     *
+     * @return The messageConverter
+     */
     @Override
     public EventHubMessageConverter getMessageConverter() {
         return messageConverter;
     }
 
+    /**
+     *
+     * @param messageConverter The message converter.
+     */
     @Override
     public void setMessageConverter(EventHubMessageConverter messageConverter) {
         this.messageConverter = messageConverter;

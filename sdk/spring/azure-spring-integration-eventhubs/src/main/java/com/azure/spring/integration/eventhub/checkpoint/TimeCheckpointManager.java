@@ -25,12 +25,21 @@ class TimeCheckpointManager extends CheckpointManager {
     private static final Logger LOG = LoggerFactory.getLogger(TimeCheckpointManager.class);
     private final AtomicReference<LocalDateTime> lastCheckpointTime = new AtomicReference<>(LocalDateTime.now());
 
+    /**
+     *
+     * @param checkpointConfig The check point config.
+     */
     TimeCheckpointManager(CheckpointConfig checkpointConfig) {
         super(checkpointConfig);
         Assert.isTrue(this.checkpointConfig.getCheckpointMode() == CheckpointMode.TIME,
             () -> "TimeCheckpointManager should have checkpointMode time");
     }
 
+    /**
+     *
+     * @param context The context.
+     * @param eventData The event data.
+     */
     public void onMessage(EventContext context, EventData eventData) {
         LocalDateTime now = LocalDateTime.now();
         if (Duration.between(this.lastCheckpointTime.get(), now)
@@ -45,6 +54,10 @@ class TimeCheckpointManager extends CheckpointManager {
         }
     }
 
+    /**
+     *
+     * @return The logger.
+     */
     @Override
     protected Logger getLogger() {
         return LOG;

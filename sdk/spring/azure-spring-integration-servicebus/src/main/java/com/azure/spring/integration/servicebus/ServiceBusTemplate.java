@@ -37,22 +37,59 @@ public class ServiceBusTemplate<T extends ServiceBusSenderFactory> implements Se
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusTemplate.class);
     private static final CheckpointConfig CHECKPOINT_RECORD = CheckpointConfig.builder().checkpointMode(RECORD).build();
     private static final ServiceBusMessageConverter DEFAULT_CONVERTER = new ServiceBusMessageConverter();
+
+    /**
+     * The instrumentationManager.
+     */
     protected InstrumentationManager instrumentationManager = new InstrumentationManager();
+
+    /**
+     * The client factory.
+     */
     protected final T clientFactory;
+
+    /**
+     * The checkpoint config.
+     */
     protected CheckpointConfig checkpointConfig = CHECKPOINT_RECORD;
+
+    /**
+     * The service bus client config.
+     */
     protected ServiceBusClientConfig clientConfig = ServiceBusClientConfig.builder().build();
+
+    /**
+     * The service bus message converter.
+     */
     protected ServiceBusMessageConverter messageConverter;
 
+    /**
+     *
+     * @param senderFactory The sender factory.
+     */
     public ServiceBusTemplate(@NonNull T senderFactory) {
         this(senderFactory, DEFAULT_CONVERTER);
     }
 
+    /**
+     *
+     * @param senderFactory The sender factory.
+     * @param messageConverter The message converter.
+     */
     public ServiceBusTemplate(@NonNull T senderFactory, @NonNull ServiceBusMessageConverter messageConverter) {
         this.clientFactory = senderFactory;
         this.messageConverter = messageConverter;
         LOGGER.info("Started ServiceBusTemplate with properties: {}", checkpointConfig);
     }
 
+    /**
+     *
+     * @param destination destination
+     * @param message message
+     * @param partitionSupplier partition supplier
+     * @param <U> The type of message.
+     * @return The CompletableFuture
+     */
     @Override
     public <U> CompletableFuture<Void> sendAsync(String destination,
                                                  Message<U> message,
@@ -79,14 +116,26 @@ public class ServiceBusTemplate<T extends ServiceBusSenderFactory> implements Se
         return senderAsyncClient.sendMessage(serviceBusMessage).toFuture();
     }
 
+    /**
+     *
+     * @return The instrumentationManager.
+     */
     public InstrumentationManager getInstrumentationManager() {
         return instrumentationManager;
     }
 
+    /**
+     *
+     * @return The checkpointConfig.
+     */
     public CheckpointConfig getCheckpointConfig() {
         return checkpointConfig;
     }
 
+    /**
+     *
+     * @param checkpointConfig The checkpointConfig.
+     */
     public void setCheckpointConfig(CheckpointConfig checkpointConfig) {
         if (checkpointConfig == null) {
             return;
@@ -97,6 +146,10 @@ public class ServiceBusTemplate<T extends ServiceBusSenderFactory> implements Se
         LOGGER.info("ServiceBusTemplate checkpoint config becomes: {}", this.checkpointConfig);
     }
 
+    /**
+     *
+     * @return The messageConverter.
+     */
     public ServiceBusMessageConverter getMessageConverter() {
         return messageConverter;
     }

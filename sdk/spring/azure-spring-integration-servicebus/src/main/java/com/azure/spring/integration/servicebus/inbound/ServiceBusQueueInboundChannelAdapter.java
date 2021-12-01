@@ -12,6 +12,11 @@ import org.springframework.lang.NonNull;
  */
 public class ServiceBusQueueInboundChannelAdapter extends AbstractInboundChannelAdapter {
 
+    /**
+     *
+     * @param destination The destination.
+     * @param subscribeOperation The subscribeOperation.
+     */
     public ServiceBusQueueInboundChannelAdapter(String destination, @NonNull SubscribeOperation subscribeOperation) {
         super(destination);
         this.subscribeOperation = subscribeOperation;

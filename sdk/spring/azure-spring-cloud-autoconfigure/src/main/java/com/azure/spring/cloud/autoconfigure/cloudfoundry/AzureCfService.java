@@ -8,13 +8,35 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Azure CF Service
+ */
 enum AzureCfService {
 
+    /**
+     * Service Bus.
+     */
     SERVICEBUS("servicebus", "azure-servicebus", getImmutableMap("connectionString", "connection-string")),
+
+    /**
+     * Event Hub.
+     */
     EVENTHUB("eventhub", "azure-eventhubs", getImmutableMap("connectionString", "connection-string")),
+
+    /**
+     * Storage.
+     */
     STORAGE("storage", "azure-storage", getImmutableMap("storageAccountName", "account", "accessKey", "access-key")),
+
+    /**
+     * Storage Event Hub.
+     */
     STORAGE_EVENTHUB("eventhub", "azure-storage",
         getImmutableMap("storageAccountName", "checkpoint-storage-account", "accessKey", "checkpoint-access-key")),
+
+    /**
+     * Redis.
+     */
     REDIS("spring.redis", "azure-rediscache", getImmutableMap("host", "host", "password", "password", "port", "port"),
         false);
 
@@ -38,10 +60,23 @@ enum AzureCfService {
 
     private final boolean isAzureProperty;
 
+    /**
+     *
+     * @param azureServiceName The Azure service name.
+     * @param cfServiceName The CF Service name.
+     * @param cfToAzureProperties CF to Azure properties map.
+     */
     AzureCfService(String azureServiceName, String cfServiceName, Map<String, String> cfToAzureProperties) {
         this(azureServiceName, cfServiceName, cfToAzureProperties, true);
     }
 
+    /**
+     *
+     * @param azureServiceName The azure service name.
+     * @param cfServiceName The CF Service name.
+     * @param cfToAzureProperties The CF to Azure properties map.
+     * @param isAzureProperty Whether is an Azure property.
+     */
     AzureCfService(String azureServiceName, String cfServiceName, Map<String, String> cfToAzureProperties,
                    boolean isAzureProperty) {
         this.cfServiceName = cfServiceName;
@@ -50,14 +85,26 @@ enum AzureCfService {
         this.cfToAzureProperties = buildCfToAzureProperties(cfToAzureProperties);
     }
 
+    /**
+     *
+     * @return The CF Service name.
+     */
     public String getCfServiceName() {
         return this.cfServiceName;
     }
 
+    /**
+     * The CF to Azure properties map.
+     * @return The CF to Azure properties map.
+     */
     public Map<String, String> getCfToAzureProperties() {
         return this.cfToAzureProperties;
     }
 
+    /**
+     *
+     * @return The Azure Service name.
+     */
     public String getAzureServiceName() {
         return this.azureServiceName;
     }

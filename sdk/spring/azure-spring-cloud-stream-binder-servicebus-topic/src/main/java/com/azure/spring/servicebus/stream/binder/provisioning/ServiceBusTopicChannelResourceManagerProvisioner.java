@@ -23,6 +23,13 @@ public class ServiceBusTopicChannelResourceManagerProvisioner extends ServiceBus
     private final ServiceBusTopicSubscriptionManager serviceBusTopicSubscriptionManager;
     private final String namespace;
 
+    /**
+     *
+     * @param serviceBusNamespaceManager The ServiceBusNamespaceManager.
+     * @param serviceBusTopicManager The ServiceBusTopicManager.
+     * @param serviceBusTopicSubscriptionManager The ServiceBusTopicSubscriptionManager.
+     * @param namespace The namespace.
+     */
     public ServiceBusTopicChannelResourceManagerProvisioner(
             @NonNull ServiceBusNamespaceManager serviceBusNamespaceManager,
             @NonNull ServiceBusTopicManager serviceBusTopicManager,
@@ -34,6 +41,11 @@ public class ServiceBusTopicChannelResourceManagerProvisioner extends ServiceBus
         this.namespace = namespace;
     }
 
+    /**
+     *
+     * @param name The name.
+     * @param group The group.
+     */
     @Override
     protected void validateOrCreateForConsumer(String name, String group) {
         ServiceBusNamespace namespace = serviceBusNamespaceManager.getOrCreate(this.namespace);
@@ -46,6 +58,10 @@ public class ServiceBusTopicChannelResourceManagerProvisioner extends ServiceBus
         this.serviceBusTopicSubscriptionManager.getOrCreate(Tuple.of(topic, group));
     }
 
+    /**
+     *
+     * @param name The name.
+     */
     @Override
     protected void validateOrCreateForProducer(String name) {
         ServiceBusNamespace namespace = serviceBusNamespaceManager.getOrCreate(this.namespace);

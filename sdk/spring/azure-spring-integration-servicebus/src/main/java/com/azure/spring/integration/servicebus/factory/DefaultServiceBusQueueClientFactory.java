@@ -38,10 +38,19 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
     // TODO (xiada) whether will this reuse the underlying connection?
     private final ServiceBusClientBuilder serviceBusClientBuilder;
 
+    /**
+     *
+     * @param connectionString The connection string.
+     */
     public DefaultServiceBusQueueClientFactory(String connectionString) {
         this(connectionString, AmqpTransportType.AMQP);
     }
 
+    /**
+     *
+     * @param connectionString The connection string.
+     * @param amqpTransportType The amqp transport type.
+     */
     public DefaultServiceBusQueueClientFactory(String connectionString, AmqpTransportType amqpTransportType) {
         super(connectionString);
         this.serviceBusClientBuilder = new ServiceBusClientBuilder()
@@ -61,12 +70,22 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
         });
     }
 
+    /**
+     * Destroy.
+     */
     @Override
     public void destroy() {
         close(senderClientMap, ServiceBusSenderAsyncClient::close);
         close(processorClientMap, ServiceBusProcessorClient::close);
     }
 
+    /**
+     *
+     * @param name The queue name.
+     * @param clientConfig The queue client config.
+     * @param messageProcessor Callback processor to be registered on service bus processor client.
+     * @return The ServiceBusProcessorClient.
+     */
     @Override
     public ServiceBusProcessorClient getOrCreateProcessor(
         String name,
@@ -76,6 +95,11 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
                                                        n -> createProcessorClient(n, clientConfig, messageProcessor));
     }
 
+    /**
+     *
+     * @param name sender name
+     * @return The ServiceBusSenderAsyncClient.
+     */
     @Override
     public ServiceBusSenderAsyncClient getOrCreateSender(String name) {
         return this.senderClientMap.computeIfAbsent(name, this::createQueueSender);
@@ -124,6 +148,10 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
         return serviceBusClientBuilder.sender().queueName(name).buildAsyncClient();
     }
 
+    /**
+     *
+     * @param amqpRetryOptions The amqpRetryOptions.
+     */
     public void setRetryOptions(AmqpRetryOptions amqpRetryOptions) {
         serviceBusClientBuilder.retryOptions(amqpRetryOptions);
     }

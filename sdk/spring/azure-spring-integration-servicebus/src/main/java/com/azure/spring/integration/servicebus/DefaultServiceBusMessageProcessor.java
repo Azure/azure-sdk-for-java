@@ -38,6 +38,13 @@ public class DefaultServiceBusMessageProcessor
     private final Consumer<Message<?>> consumer;
     private final ServiceBusMessageConverter messageConverter;
 
+    /**
+     *
+     * @param checkpointConfig The checkpointConfig.
+     * @param payloadType The payloadType.
+     * @param consumer The consumer.
+     * @param messageConverter The messageConverter.
+     */
     public DefaultServiceBusMessageProcessor(CheckpointConfig checkpointConfig,
                                              Class<?> payloadType,
                                              Consumer<Message<?>> consumer,
@@ -48,6 +55,10 @@ public class DefaultServiceBusMessageProcessor
         this.messageConverter = messageConverter;
     }
 
+    /**
+     *
+     * @return The consumer.
+     */
     public Consumer<ServiceBusErrorContext> processError() {
         return serviceBusErrorContext -> {
             // TODO
@@ -93,10 +104,20 @@ public class DefaultServiceBusMessageProcessor
         }
     }
 
+    /**
+     *
+     * @param message The message.
+     * @return The check point fail message.
+     */
     protected String buildCheckpointFailMessage(Message<?> message) {
         return String.format(MSG_FAIL_CHECKPOINT, message);
     }
 
+    /**
+     *
+     * @param message The message.
+     * @return The build check point success message.
+     */
     protected String buildCheckpointSuccessMessage(Message<?> message) {
         return String.format(MSG_SUCCESS_CHECKPOINT, message, this.checkpointConfig.getCheckpointMode());
     }

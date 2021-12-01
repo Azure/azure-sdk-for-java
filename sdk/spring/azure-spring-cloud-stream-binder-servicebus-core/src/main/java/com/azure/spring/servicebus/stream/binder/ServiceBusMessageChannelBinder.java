@@ -38,16 +38,34 @@ public abstract class ServiceBusMessageChannelBinder<T extends ServiceBusExtende
     implements
     ExtendedPropertiesBinder<MessageChannel, ServiceBusConsumerProperties, ServiceBusProducerProperties> {
 
+    /**
+     * Binding properties.
+     */
     protected T bindingProperties;
 
     private static final DefaultErrorMessageStrategy DEFAULT_ERROR_MESSAGE_STRATEGY = new DefaultErrorMessageStrategy();
 
+    /**
+     * Exception message.
+     */
     protected static final String EXCEPTION_MESSAGE = "exception-message";
 
+    /**
+     *
+     * @param headersToEmbed Headers to embed.
+     * @param provisioningProvider Provisioning provider.
+     */
     public ServiceBusMessageChannelBinder(String[] headersToEmbed, ServiceBusChannelProvisioner provisioningProvider) {
         super(headersToEmbed, provisioningProvider);
     }
 
+    /**
+     *
+     * @param destination The destination.
+     * @param producerProperties The producer properties.
+     * @param errorChannel The error channel.
+     * @return The message handler.
+     */
     @Override
     protected MessageHandler createProducerMessageHandler(
         ProducerDestination destination,
@@ -69,35 +87,66 @@ public abstract class ServiceBusMessageChannelBinder<T extends ServiceBusExtende
         return handler;
     }
 
+    /**
+     *
+     * @param channelName The channel name.
+     * @return The ServiceBusConsumerProperties.
+     */
     @Override
     public ServiceBusConsumerProperties getExtendedConsumerProperties(String channelName) {
         return this.bindingProperties.getExtendedConsumerProperties(channelName);
     }
 
+    /**
+     *
+     * @param channelName The channel name.
+     * @return The ServiceBusProducerProperties.
+     */
     @Override
     public ServiceBusProducerProperties getExtendedProducerProperties(String channelName) {
         return this.bindingProperties.getExtendedProducerProperties(channelName);
     }
 
+    /**
+     *
+     * @return The defaults prefix.
+     */
     @Override
     public String getDefaultsPrefix() {
         return this.bindingProperties.getDefaultsPrefix();
     }
 
+    /**
+     *
+     * @return The extended properties entry class
+     */
     @Override
     public Class<? extends BinderSpecificPropertiesProvider> getExtendedPropertiesEntryClass() {
         return this.bindingProperties.getExtendedPropertiesEntryClass();
     }
 
+    /**
+     *
+     * @return The ErrorMessageStrategy.
+     */
     @Override
     protected ErrorMessageStrategy getErrorMessageStrategy() {
         return DEFAULT_ERROR_MESSAGE_STRATEGY;
     }
 
+    /**
+     *
+     * @param bindingProperties The binding properties.
+     */
     public void setBindingProperties(T bindingProperties) {
         this.bindingProperties = bindingProperties;
     }
 
+    /**
+     *
+     * @param properties The ExtendedConsumerProperties.
+     * @return The CheckpointConfig.
+     */
     protected CheckpointConfig buildCheckpointConfig(
         ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
 
@@ -106,6 +155,11 @@ public abstract class ServiceBusMessageChannelBinder<T extends ServiceBusExtende
                                .build();
     }
 
+    /**
+     *
+     * @param properties The ExtendedConsumerProperties.
+     * @return The ServiceBusClientConfig.
+     */
     protected ServiceBusClientConfig buildClientConfig(
         ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
 
@@ -127,6 +181,10 @@ public abstract class ServiceBusMessageChannelBinder<T extends ServiceBusExtende
                                      .build();
     }
 
+    /**
+     *
+     * @return The SendOperation.
+     */
     abstract SendOperation getSendOperation();
 
 }

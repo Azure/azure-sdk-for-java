@@ -21,16 +21,47 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+/**
+ *
+ * @param <O> The type that extends SendOperation.
+ */
 public abstract class SendOperationTest<O extends SendOperation> {
 
+    /**
+     * The destination.
+     */
     protected String destination = "event-hub";
+
+    /**
+     * The message.
+     */
     protected Message<?> message;
+
+    /**
+     * The mono.
+     */
     protected Mono<Void> mono = Mono.empty();
+
+    /**
+     * The partition key.
+     */
     protected String partitionKey = "key";
+
+    /**
+     * The payload.
+     */
     protected String payload = "payload";
+
+    /**
+     * The sendOperation.
+     */
     protected O sendOperation = null;
+
     private String partitionId = "1";
 
+    /**
+     * Constructor of SendOperationTest.
+     */
     public SendOperationTest() {
         Map<String, Object> valueMap = new HashMap<>(2);
         valueMap.put("key1", "value1");
@@ -38,8 +69,16 @@ public abstract class SendOperationTest<O extends SendOperation> {
         message = new GenericMessage<>("testPayload", valueMap);
     }
 
+    /**
+     *
+     * @param errorMessage The error message.
+     */
     protected abstract void setupError(String errorMessage);
 
+    /**
+     *
+     * @throws Throwable The Throwable.
+     */
     @Test
     public void testSendCreateSenderFailure() throws Throwable {
         whenSendWithException();
@@ -48,6 +87,9 @@ public abstract class SendOperationTest<O extends SendOperation> {
             () -> this.sendOperation.sendAsync(destination, this.message, null).get());
     }
 
+    /**
+     * Test send failure.
+     */
     @Test
     public void testSendFailure() {
         setupError("future failed.");
@@ -63,6 +105,11 @@ public abstract class SendOperationTest<O extends SendOperation> {
         }
     }
 
+    /**
+     *
+     * @throws ExecutionException The ExecutionException.
+     * @throws InterruptedException The InterruptedException.
+     */
     @Test
     public void testSendWithPartitionId() throws ExecutionException, InterruptedException {
         PartitionSupplier partitionSupplier = new PartitionSupplier();
@@ -74,6 +121,11 @@ public abstract class SendOperationTest<O extends SendOperation> {
         verifyPartitionSenderCalled(1);
     }
 
+    /**
+     *
+     * @throws ExecutionException The ExecutionException.
+     * @throws InterruptedException The InterruptedException.
+     */
     @Test
     public void testSendWithPartitionKey() throws ExecutionException, InterruptedException {
         PartitionSupplier partitionSupplier = new PartitionSupplier();
@@ -85,6 +137,11 @@ public abstract class SendOperationTest<O extends SendOperation> {
         verifyGetClientCreator(1);
     }
 
+    /**
+     *
+     * @throws ExecutionException The ExecutionException.
+     * @throws InterruptedException The InterruptedException.
+     */
     @Test
     public void testSendWithSessionId() throws ExecutionException, InterruptedException {
         Map<String, Object> valueMap = new HashMap<>();
@@ -98,6 +155,11 @@ public abstract class SendOperationTest<O extends SendOperation> {
         verifySendCalled(1);
     }
 
+    /**
+     *
+     * @throws ExecutionException The ExecutionException.
+     * @throws InterruptedException The InterruptedException.
+     */
     @Test
     public void testSendWithSessionIdAndPartitionKeyDifferent() throws ExecutionException, InterruptedException {
         Map<String, Object> valueMap = new HashMap<>();
@@ -112,6 +174,11 @@ public abstract class SendOperationTest<O extends SendOperation> {
         verifySendCalled(1);
     }
 
+    /**
+     *
+     * @throws ExecutionException The ExecutionException.
+     * @throws InterruptedException The InterruptedException.
+     */
     @Test
     public void testSendWithoutPartition() throws ExecutionException, InterruptedException {
         CompletableFuture<Void> future = this.sendOperation.sendAsync(destination, message, new PartitionSupplier());
@@ -120,6 +187,11 @@ public abstract class SendOperationTest<O extends SendOperation> {
         verifySendCalled(1);
     }
 
+    /**
+     *
+     * @throws ExecutionException The ExecutionException.
+     * @throws InterruptedException The InterruptedException.
+     */
     @Test
     public void testSendWithoutPartitionSupplier() throws ExecutionException, InterruptedException {
         CompletableFuture<Void> future = this.sendOperation.sendAsync(destination, message, null);
@@ -128,38 +200,85 @@ public abstract class SendOperationTest<O extends SendOperation> {
         verifySendCalled(1);
     }
 
+    /**
+     *
+     * @param times The times.
+     */
     protected abstract void verifyGetClientCreator(int times);
 
+    /**
+     *
+     * @param times The times.
+     */
     protected abstract void verifyPartitionSenderCalled(int times);
 
+    /**
+     *
+     * @param times The times.
+     */
     protected abstract void verifySendCalled(int times);
 
+    /**
+     *
+     * @param times The times.
+     */
     protected abstract void verifySendWithPartitionId(int times);
 
+    /**
+     *
+     * @param times The times.
+     */
     protected abstract void verifySendWithPartitionKey(int times);
 
+    /**
+     * When send with exception.
+     */
     protected abstract void whenSendWithException();
 
+    /**
+     *
+     * @return The mono.
+     */
     public Mono<Void> getMono() {
         return mono;
     }
 
+    /**
+     *
+     * @param mono The mono.
+     */
     public void setMono(Mono<Void> mono) {
         this.mono = mono;
     }
 
+    /**
+     *
+     * @return The payload.
+     */
     public String getPayload() {
         return payload;
     }
 
+    /**
+     *
+     * @param payload The payload.
+     */
     public void setPayload(String payload) {
         this.payload = payload;
     }
 
+    /**
+     *
+     * @return The sendOperation.
+     */
     public O getSendOperation() {
         return sendOperation;
     }
 
+    /**
+     *
+     * @param sendOperation The sendOperation.
+     */
     public void setSendOperation(O sendOperation) {
         this.sendOperation = sendOperation;
     }

@@ -20,38 +20,72 @@ public class EventHubExtendedBindingProperties
     private Map<String, EventHubBindingProperties> bindings = new ConcurrentHashMap<>();
     private String checkpointStorageAccount;
 
+    /**
+     *
+     * @param channelName The channel name.
+     * @return The EventHubConsumerProperties.
+     */
     @Override
     public EventHubConsumerProperties getExtendedConsumerProperties(String channelName) {
         return this.bindings.computeIfAbsent(channelName, key -> new EventHubBindingProperties()).getConsumer();
     }
 
+    /**
+     *
+     * @param channelName The channel name.
+     * @return The EventHubProducerProperties.
+     */
     @Override
     public EventHubProducerProperties getExtendedProducerProperties(String channelName) {
         return this.bindings.computeIfAbsent(channelName, key -> new EventHubBindingProperties()).getProducer();
     }
 
+    /**
+     *
+     * @return the defaults prefix.
+     */
     @Override
     public String getDefaultsPrefix() {
         return DEFAULTS_PREFIX;
     }
 
+    /**
+     *
+     * @return EventHubBindingProperties.class
+     */
     @Override
     public Class<? extends BinderSpecificPropertiesProvider> getExtendedPropertiesEntryClass() {
         return EventHubBindingProperties.class;
     }
 
+    /**
+     *
+     * @return The checkpoint storage account
+     */
     public String getCheckpointStorageAccount() {
         return checkpointStorageAccount;
     }
 
+    /**
+     *
+     * @param checkpointStorageAccount The checkpoint storage account
+     */
     public void setCheckpointStorageAccount(String checkpointStorageAccount) {
         this.checkpointStorageAccount = checkpointStorageAccount;
     }
 
+    /**
+     *
+     * @return The binding map.
+     */
     public Map<String, EventHubBindingProperties> getBindings() {
         return bindings;
     }
 
+    /**
+     *
+     * @param bindings The binding map.
+     */
     public void setBindings(Map<String, EventHubBindingProperties> bindings) {
         this.bindings = bindings;
     }

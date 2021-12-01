@@ -39,6 +39,14 @@ import org.springframework.context.annotation.Import;
 @EnableConfigurationProperties({ AzureServiceBusProperties.class, ServiceBusTopicExtendedBindingProperties.class })
 public class ServiceBusTopicBinderConfiguration {
 
+    /**
+     *
+     * @param serviceBusProperties The AzureServiceBusProperties.
+     * @param serviceBusNamespaceManager The ServiceBusNamespaceManager.
+     * @param serviceBusTopicManager The ServiceBusTopicManager.
+     * @param serviceBusTopicSubscriptionManager The ServiceBusTopicSubscriptionManager.
+     * @return The ServiceBusChannelProvisioner.
+     */
     @Bean
     @ConditionalOnMissingBean
     public ServiceBusChannelProvisioner serviceBusChannelProvisioner(
@@ -58,6 +66,13 @@ public class ServiceBusTopicBinderConfiguration {
         return new ServiceBusChannelProvisioner();
     }
 
+    /**
+     *
+     * @param topicChannelProvisioner The ServiceBusChannelProvisioner.
+     * @param serviceBusTopicOperation The ServiceBusTopicOperation.
+     * @param bindingProperties The ServiceBusTopicExtendedBindingProperties.
+     * @return The ServiceBusTopicMessageChannelBinder.
+     */
     @Bean
     public ServiceBusTopicMessageChannelBinder serviceBusTopicBinder(
         ServiceBusChannelProvisioner topicChannelProvisioner,

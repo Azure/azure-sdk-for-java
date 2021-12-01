@@ -20,15 +20,46 @@ import java.util.Optional;
  */
 public interface EventHubClientFactory {
 
+    /**
+     *
+     * @param eventHubName The event hub name.
+     * @param consumerGroup The consumer group.
+     * @return The EventHubConsumerAsyncClient.
+     */
     EventHubConsumerAsyncClient getOrCreateConsumerClient(String eventHubName, String consumerGroup);
 
+    /**
+     *
+     * @param eventHubName The event hub name.
+     * @return The EventHubProducerAsyncClient.
+     */
     EventHubProducerAsyncClient getOrCreateProducerClient(String eventHubName);
 
+    /**
+     *
+     * @param eventHubName The event hub name.
+     * @param consumerGroup The consumer group.
+     * @param eventHubProcessor The event hub processor.
+     * @param batchConsumerConfig The batch consumer config.
+     * @return The EventProcessorClient.
+     */
     EventProcessorClient createEventProcessorClient(String eventHubName, String consumerGroup,
                                                     EventHubProcessor eventHubProcessor, @Nullable BatchConsumerConfig batchConsumerConfig);
 
+    /**
+     *
+     * @param eventHubName The event hub name.
+     * @param consumerGroup The consumer group.
+     * @return The Optional of EventProcessorClient.
+     */
     Optional<EventProcessorClient> getEventProcessorClient(String eventHubName, String consumerGroup);
 
+    /**
+     *
+     * @param eventHubName The event hub name.
+     * @param consumerGroup The consumer group.
+     * @return The EventProcessorClient.
+     */
     EventProcessorClient removeEventProcessorClient(String eventHubName, String consumerGroup);
 
 }

@@ -19,6 +19,13 @@ public class ServiceBusChannelProvisioner implements
         ProvisioningProvider<ExtendedConsumerProperties<ServiceBusConsumerProperties>,
                 ExtendedProducerProperties<ServiceBusProducerProperties>> {
 
+    /**
+     *
+     * @param name The name.
+     * @param properties The ExtendedProducerProperties.
+     * @return The ProducerDestination.
+     * @throws ProvisioningException The ProvisioningException.
+     */
     @Override
     public ProducerDestination provisionProducerDestination(String name,
             ExtendedProducerProperties<ServiceBusProducerProperties> properties) throws ProvisioningException {
@@ -26,6 +33,14 @@ public class ServiceBusChannelProvisioner implements
         return new ServiceBusProducerDestination(name);
     }
 
+    /**
+     *
+     * @param name The name.
+     * @param group The group.
+     * @param properties The ExtendedConsumerProperties.
+     * @return The ConsumerDestination.
+     * @throws ProvisioningException The ProvisioningException.
+     */
     @Override
     public ConsumerDestination provisionConsumerDestination(String name, String group,
             ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) throws ProvisioningException {
@@ -33,10 +48,19 @@ public class ServiceBusChannelProvisioner implements
         return new ServiceBusConsumerDestination(name);
     }
 
+    /**
+     *
+     * @param name The name.
+     * @param group The group.
+     */
     protected void validateOrCreateForConsumer(String name, String group) {
         // no-op
     }
 
+    /**
+     *
+     * @param name The name.
+     */
     protected void validateOrCreateForProducer(String name) {
         // no-op
     }

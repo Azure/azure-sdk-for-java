@@ -24,12 +24,21 @@ class PartitionCountCheckpointManager extends CheckpointManager {
     private static final Logger LOG = LoggerFactory.getLogger(PartitionCountCheckpointManager.class);
     private final ConcurrentHashMap<String, AtomicInteger> countByPartition = new ConcurrentHashMap<>();
 
+    /**
+     *
+     * @param checkpointConfig The check point config.
+     */
     PartitionCountCheckpointManager(CheckpointConfig checkpointConfig) {
         super(checkpointConfig);
         Assert.isTrue(this.checkpointConfig.getCheckpointMode() == CheckpointMode.PARTITION_COUNT,
             () -> "PartitionCountCheckpointManager should have checkpointMode partition_count");
     }
 
+    /**
+     *
+     * @param context The context.
+     * @param eventData The event data.
+     */
     public void onMessage(EventContext context, EventData eventData) {
         String partitionId = context.getPartitionContext().getPartitionId();
         this.countByPartition.computeIfAbsent(partitionId, (k) -> new AtomicInteger(0));
@@ -45,6 +54,10 @@ class PartitionCountCheckpointManager extends CheckpointManager {
         }
     }
 
+    /**
+     *
+     * @return The logger.
+     */
     @Override
     protected Logger getLogger() {
         return LOG;

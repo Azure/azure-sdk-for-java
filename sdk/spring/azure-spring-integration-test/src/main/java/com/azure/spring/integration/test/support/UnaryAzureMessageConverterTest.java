@@ -16,33 +16,69 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+/**
+ *
+ * @param <T> The type of message.
+ */
 public abstract class UnaryAzureMessageConverterTest<T> {
 
+    /**
+     * The header properties.
+     */
     protected String headerProperties = "headerProperties";
+
+    /**
+     * The payload.
+     */
     protected String payload = "payload";
     private AzureMessageConverter<T, T> converter = null;
 
+    /**
+     *
+     * @return The converter.
+     */
     protected abstract AzureMessageConverter<T, T> getConverter();
 
+    /**
+     *
+     * @return The target class.
+     */
     protected abstract Class<T> getTargetClass();
 
+    /**
+     *
+     * @param azureMessage The Azure message.
+     * @param message The spring message.
+     */
     protected abstract void assertMessageHeadersEqual(T azureMessage, Message<?> message);
 
+    /**
+     * Set up.
+     */
     @BeforeEach
     public void setUp() {
         converter = getConverter();
     }
 
+    /**
+     * Test payload as byte.
+     */
     @Test
     public void payloadAsByte() {
         convertAndBack(payload.getBytes(StandardCharsets.UTF_8), byte[].class);
     }
 
+    /**
+     * Test payload as string.
+     */
     @Test
     public void payloadAsString() {
         convertAndBack(payload, String.class);
     }
 
+    /**
+     * Test payload as user class.
+     */
     @Test
     public void payloadAsUserClass() {
         convertAndBack(new User(payload), User.class);

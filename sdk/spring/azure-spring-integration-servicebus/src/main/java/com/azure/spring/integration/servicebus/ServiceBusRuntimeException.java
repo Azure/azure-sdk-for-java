@@ -12,10 +12,19 @@ import org.springframework.core.NestedRuntimeException;
  */
 public class ServiceBusRuntimeException extends NestedRuntimeException {
 
+    /**
+     *
+     * @param msg The message.
+     */
     public ServiceBusRuntimeException(String msg) {
         super(msg);
     }
 
+    /**
+     *
+     * @param msg The message.
+     * @param cause The cause of exception.
+     */
     public ServiceBusRuntimeException(String msg, Throwable cause) {
         super(msg, cause);
     }

@@ -19,8 +19,16 @@ public abstract class CheckpointManager {
     private static final String CHECKPOINT_FAIL_MSG = "Consumer group '%s' failed to checkpoint %s on partition %s";
     private static final String CHECKPOINT_SUCCESS_MSG =
         "Consumer group '%s' checkpointed %s on partition %s in %s " + "mode";
+
+    /**
+     * The check point config.
+     */
     final CheckpointConfig checkpointConfig;
 
+    /**
+     *
+     * @param checkpointConfig The check point config.
+     */
     CheckpointManager(CheckpointConfig checkpointConfig) {
         this.checkpointConfig = checkpointConfig;
     }
@@ -51,14 +59,29 @@ public abstract class CheckpointManager {
         throw new IllegalArgumentException("Illegal checkpoint mode when building CheckpointManager");
     }
 
+    /**
+     *
+     * @param context The context.
+     * @param eventData The event data.
+     */
     public void onMessage(EventContext context, EventData eventData) {
         // no-op
     }
 
+    /**
+     *
+     * @param context The context.
+     */
     public void completeBatch(EventContext context) {
         // no-op
     }
 
+    /**
+     *
+     * @param context The context.
+     * @param eventData The event data.
+     * @param t The throwable.
+     */
     void logCheckpointFail(EventContext context, EventData eventData, Throwable t) {
         if (getLogger().isWarnEnabled()) {
             getLogger().warn(String
@@ -68,6 +91,11 @@ public abstract class CheckpointManager {
         }
     }
 
+    /**
+     *
+     * @param context The context.
+     * @param eventData The event data.
+     */
     void logCheckpointSuccess(EventContext context, EventData eventData) {
         if (getLogger().isDebugEnabled()) {
             getLogger().debug(String
@@ -78,5 +106,9 @@ public abstract class CheckpointManager {
         }
     }
 
+    /**
+     *
+     * @return The logger.
+     */
     abstract Logger getLogger();
 }

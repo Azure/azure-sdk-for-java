@@ -23,10 +23,19 @@ public class DefaultStorageQueueClientFactory implements StorageQueueClientFacto
     private final String connectionString;
     private final Function<String, QueueAsyncClient> queueClientCreator = Memoizer.memoize(this::createQueueClient);
 
+    /**
+     *
+     * @param connectionString The connection string.
+     */
     public DefaultStorageQueueClientFactory(@NonNull String connectionString) {
         this.connectionString = connectionString;
     }
 
+    /**
+     *
+     * @param queueName The queue name.
+     * @return The QueueAsyncClient.
+     */
     @Override
     public QueueAsyncClient getOrCreateQueueClient(String queueName) {
         return this.queueClientCreator.apply(queueName);

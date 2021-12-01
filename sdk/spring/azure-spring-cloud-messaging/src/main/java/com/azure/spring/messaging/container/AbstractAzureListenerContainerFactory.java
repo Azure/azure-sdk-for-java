@@ -47,6 +47,10 @@ abstract class AbstractAzureListenerContainerFactory<C extends AbstractListenerC
     protected void initializeContainer(C instance) {
     }
 
+    /**
+     *
+     * @return The SubscribeByGroupOperation
+     */
     public SubscribeByGroupOperation getSubscribeOperation() {
         return subscribeOperation;
     }

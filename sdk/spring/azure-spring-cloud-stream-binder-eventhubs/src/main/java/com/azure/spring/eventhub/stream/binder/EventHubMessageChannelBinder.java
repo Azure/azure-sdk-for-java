@@ -50,12 +50,25 @@ public class EventHubMessageChannelBinder extends
 
     private final Map<String, EventHubInformation> eventHubsInUse = new ConcurrentHashMap<>();
 
+    /**
+     *
+     * @param headersToEmbed The headers to embed
+     * @param provisioningProvider The EventHubChannelProvisioner.
+     * @param eventHubOperation The EventHubOperation.
+     */
     public EventHubMessageChannelBinder(String[] headersToEmbed, EventHubChannelProvisioner provisioningProvider,
             EventHubOperation eventHubOperation) {
         super(headersToEmbed, provisioningProvider);
         this.eventHubOperation = eventHubOperation;
     }
 
+    /**
+     *
+     * @param destination The ProducerDestination.
+     * @param producerProperties The ExtendedProducerProperties.
+     * @param errorChannel The MessageChannel.
+     * @return The MessageHandler.
+     */
     @Override
     protected MessageHandler createProducerMessageHandler(ProducerDestination destination,
             ExtendedProducerProperties<EventHubProducerProperties> producerProperties, MessageChannel errorChannel) {
@@ -75,6 +88,13 @@ public class EventHubMessageChannelBinder extends
         return handler;
     }
 
+    /**
+     *
+     * @param destination The ConsumerDestination
+     * @param group The group.
+     * @param properties The ExtendedConsumerProperties.
+     * @return The MessageProducer.
+     */
     @Override
     protected MessageProducer createConsumerEndpoint(ConsumerDestination destination, String group,
             ExtendedConsumerProperties<EventHubConsumerProperties> properties) {
@@ -107,34 +127,63 @@ public class EventHubMessageChannelBinder extends
         return inboundAdapter;
     }
 
+    /**
+     *
+     * @param destination The destination.
+     * @return The EventHubConsumerProperties.
+     */
     @Override
     public EventHubConsumerProperties getExtendedConsumerProperties(String destination) {
         return this.bindingProperties.getExtendedConsumerProperties(destination);
     }
 
+    /**
+     *
+     * @param destination The destination.
+     * @return The EventHubProducerProperties.
+     */
     @Override
     public EventHubProducerProperties getExtendedProducerProperties(String destination) {
         return this.bindingProperties.getExtendedProducerProperties(destination);
     }
 
+    /**
+     *
+     * @return The defaults prefix.
+     */
     @Override
     public String getDefaultsPrefix() {
         return this.bindingProperties.getDefaultsPrefix();
     }
 
+    /**
+     *
+     * @return The extended properties' entry class.
+     */
     @Override
     public Class<? extends BinderSpecificPropertiesProvider> getExtendedPropertiesEntryClass() {
         return this.bindingProperties.getExtendedPropertiesEntryClass();
     }
 
+    /**
+     *
+     * @param bindingProperties The EventHubExtendedBindingProperties.
+     */
     public void setBindingProperties(EventHubExtendedBindingProperties bindingProperties) {
         this.bindingProperties = bindingProperties;
     }
 
+    /**
+     *
+     * @return The Event Hubs in use
+     */
     Map<String, EventHubInformation> getEventHubsInUse() {
         return eventHubsInUse;
     }
 
+    /**
+     * Event Hubs information.
+     */
     static class EventHubInformation {
 
         private final String consumerGroup;

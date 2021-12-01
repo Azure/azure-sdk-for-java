@@ -17,6 +17,11 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnEnabledHealthIndicator("binders")
 public class ServiceBusQueueBinderHealthIndicatorConfiguration {
 
+    /**
+     *
+     * @param serviceBusQueueOperation The ServiceBusQueueOperation.
+     * @return The ServiceBusQueueHealthIndicator.
+     */
     @Bean
     public ServiceBusQueueHealthIndicator serviceBusQueueHealthIndicator(ServiceBusQueueOperation serviceBusQueueOperation) {
         return new ServiceBusQueueHealthIndicator(serviceBusQueueOperation);

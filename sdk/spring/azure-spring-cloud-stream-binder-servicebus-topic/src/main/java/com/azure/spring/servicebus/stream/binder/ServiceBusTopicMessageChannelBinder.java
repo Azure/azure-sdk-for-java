@@ -25,6 +25,12 @@ public class ServiceBusTopicMessageChannelBinder extends
 
     private final ServiceBusTopicOperation serviceBusTopicOperation;
 
+    /**
+     *
+     * @param headersToEmbed The headers to embed.
+     * @param provisioningProvider The ServiceBusChannelProvisioner.
+     * @param serviceBusTopicOperation The ServiceBusTopicOperation.
+     */
     public ServiceBusTopicMessageChannelBinder(String[] headersToEmbed,
             @NonNull ServiceBusChannelProvisioner provisioningProvider,
             @NonNull ServiceBusTopicOperation serviceBusTopicOperation) {
@@ -33,6 +39,13 @@ public class ServiceBusTopicMessageChannelBinder extends
         this.bindingProperties = new ServiceBusTopicExtendedBindingProperties();
     }
 
+    /**
+     *
+     * @param destination The ConsumerDestination.
+     * @param group The group.
+     * @param properties The ExtendedConsumerProperties.
+     * @return The MessageProducer.
+     */
     @Override
     protected MessageProducer createConsumerEndpoint(ConsumerDestination destination, String group,
             ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
@@ -51,6 +64,10 @@ public class ServiceBusTopicMessageChannelBinder extends
         return inboundAdapter;
     }
 
+    /**
+     *
+     * @return The SendOperation.
+     */
     @Override
     SendOperation getSendOperation() {
         return this.serviceBusTopicOperation;

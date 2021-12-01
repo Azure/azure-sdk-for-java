@@ -10,5 +10,10 @@ import com.azure.storage.queue.QueueAsyncClient;
  */
 public interface StorageQueueClientFactory {
 
+    /**
+     *
+     * @param queueName The queue name.
+     * @return The QueueAsyncClient.
+     */
     QueueAsyncClient getOrCreateQueueClient(String queueName);
 }

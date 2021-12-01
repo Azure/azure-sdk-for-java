@@ -24,21 +24,41 @@ public class EventHubMessageConverter extends AbstractAzureMessageConverter<Even
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubMessageConverter.class);
 
+    /**
+     *
+     * @param azureMessage The azure message
+     * @return The payload.
+     */
     @Override
     protected Object getPayload(EventData azureMessage) {
         return azureMessage.getBody();
     }
 
+    /**
+     *
+     * @param payload The payload.
+     * @return The event data.
+     */
     @Override
     protected EventData fromString(String payload) {
         return new EventData(payload.getBytes(StandardCharsets.UTF_8));
     }
 
+    /**
+     *
+     * @param payload The payload
+     * @return The event data.
+     */
     @Override
     protected EventData fromByte(byte[] payload) {
         return new EventData(payload);
     }
 
+    /**
+     *
+     * @param headers The message headers.
+     * @param azureMessage The azure message.
+     */
     @Override
     protected void setCustomHeaders(MessageHeaders headers, EventData azureMessage) {
         super.setCustomHeaders(headers, azureMessage);
@@ -52,6 +72,11 @@ public class EventHubMessageConverter extends AbstractAzureMessageConverter<Even
         });
     }
 
+    /**
+     *
+     * @param azureMessage The azure message
+     * @return The custom headers.
+     */
     @Override
     protected Map<String, Object> buildCustomHeaders(EventData azureMessage) {
         Map<String, Object> headers = super.buildCustomHeaders(azureMessage);

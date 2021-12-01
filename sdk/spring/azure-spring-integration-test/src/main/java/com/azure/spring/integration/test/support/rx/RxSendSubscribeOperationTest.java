@@ -20,12 +20,32 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.IntStream;
 
+/**
+ *
+ * @param <T> The type that extends RxSendOperation.
+ */
 public abstract class RxSendSubscribeOperationTest<T extends RxSendOperation> {
 
+    /**
+     * The destination.
+     */
     protected String destination = "test";
+
+    /**
+     * The partition id.
+     */
     protected String partitionId = "1";
+
+    /**
+     * Send subscribe operation.
+     */
     protected T sendSubscribeOperation;
+
     private Map<String, Object> headers = new HashMap<>();
+
+    /**
+     * The messages.
+     */
     @SuppressWarnings("unchecked")
     protected Message<User>[] messages = IntStream.range(1, 5)
                                                   .mapToObj(String::valueOf)
@@ -36,15 +56,35 @@ public abstract class RxSendSubscribeOperationTest<T extends RxSendOperation> {
     private Message<byte[]> byteMessage = new GenericMessage<>(payload.getBytes(StandardCharsets.UTF_8), headers);
     private Message<String> stringMessage = new GenericMessage<>(payload, headers);
     private User user = new User(payload);
+
+    /**
+     * The userMessage.
+     */
     protected Message<User> userMessage = new GenericMessage<>(user, headers);
 
+    /**
+     *
+     * @param checkpointConfig The checkpointConfig.
+     */
     protected abstract void setCheckpointConfig(CheckpointConfig checkpointConfig);
 
+    /**
+     * Set up.
+     */
     @BeforeEach
     public abstract void setUp();
 
+    /**
+     *
+     * @param destination The destination.
+     * @param payloadType The payload type.
+     * @return The Observable.
+     */
     protected abstract Observable<Message<?>> subscribe(String destination, Class<?> payloadType);
 
+    /**
+     * Test send byte.
+     */
     @Test
     public void testSendByte() {
         AssertableSubscriber<String> subscriber = subscribe(destination, byte[].class).map(Message::getPayload)
@@ -55,6 +95,9 @@ public abstract class RxSendSubscribeOperationTest<T extends RxSendOperation> {
         subscriber.assertValue(payload).assertNoErrors();
     }
 
+    /**
+     * Test send receive with manual checkpoint mode.
+     */
     @Test
     public void testSendReceiveWithManualCheckpointMode() {
         setCheckpointConfig(CheckpointConfig.builder().checkpointMode(CheckpointMode.MANUAL).build());
@@ -66,6 +109,9 @@ public abstract class RxSendSubscribeOperationTest<T extends RxSendOperation> {
         verifyCheckpointSuccessCalled(0);
     }
 
+    /**
+     * Test send receive with record checkpoint mode.
+     */
     @Test
     public void testSendReceiveWithRecordCheckpointMode() {
         setCheckpointConfig(CheckpointConfig.builder().checkpointMode(CheckpointMode.RECORD).build());
@@ -77,6 +123,9 @@ public abstract class RxSendSubscribeOperationTest<T extends RxSendOperation> {
         verifyCheckpointSuccessCalled(messages.length);
     }
 
+    /**
+     * Test send string.
+     */
     @Test
     public void testSendString() {
         AssertableSubscriber<String> subscriber = subscribe(destination, String.class).map(Message::getPayload)
@@ -86,6 +135,9 @@ public abstract class RxSendSubscribeOperationTest<T extends RxSendOperation> {
         subscriber.assertValue(payload).assertNoErrors();
     }
 
+    /**
+     * Test send user.
+     */
     @Test
     public void testSendUser() {
         AssertableSubscriber<User> subscriber = subscribe(destination, User.class).map(Message::getPayload)
@@ -95,22 +147,46 @@ public abstract class RxSendSubscribeOperationTest<T extends RxSendOperation> {
         subscriber.assertValue(user).assertNoErrors();
     }
 
+    /**
+     *
+     * @param times The times.
+     */
     protected abstract void verifyCheckpointBatchSuccessCalled(int times);
 
+    /**
+     *
+     * @param times The times.
+     */
     protected abstract void verifyCheckpointSuccessCalled(int times);
 
+    /**
+     *
+     * @return The partition id.
+     */
     public String getPartitionId() {
         return partitionId;
     }
 
+    /**
+     *
+     * @param partitionId The partition id.
+     */
     public void setPartitionId(String partitionId) {
         this.partitionId = partitionId;
     }
 
+    /**
+     *
+     * @return The sendSubscribeOperation.
+     */
     public T getSendSubscribeOperation() {
         return sendSubscribeOperation;
     }
 
+    /**
+     *
+     * @param sendSubscribeOperation The sendSubscribeOperation.
+     */
     public void setSendSubscribeOperation(T sendSubscribeOperation) {
         this.sendSubscribeOperation = sendSubscribeOperation;
     }

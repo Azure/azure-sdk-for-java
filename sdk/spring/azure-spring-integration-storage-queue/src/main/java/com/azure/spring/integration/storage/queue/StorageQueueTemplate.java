@@ -36,6 +36,9 @@ public class StorageQueueTemplate implements StorageQueueOperation {
     private static final String MSG_SUCCESS_CHECKPOINT = "Checkpointed %s in storage queue '%s' in %s mode";
     private final StorageQueueClientFactory storageQueueClientFactory;
 
+    /**
+     * The StorageQueueMessageConverter.
+     */
     protected StorageQueueMessageConverter messageConverter = new StorageQueueMessageConverter();
 
     private int visibilityTimeoutInSeconds = DEFAULT_VISIBILITY_TIMEOUT_IN_SECONDS;
@@ -44,11 +47,23 @@ public class StorageQueueTemplate implements StorageQueueOperation {
 
     private CheckpointMode checkpointMode = CheckpointMode.RECORD;
 
+    /**
+     *
+     * @param storageQueueClientFactory The storageQueueClientFactory.
+     */
     public StorageQueueTemplate(@NonNull StorageQueueClientFactory storageQueueClientFactory) {
         this.storageQueueClientFactory = storageQueueClientFactory;
         LOG.info("StorageQueueTemplate started with properties {}", buildProperties());
     }
 
+    /**
+     *
+     * @param queueName The queue name.
+     * @param message message
+     * @param partitionSupplier partition supplier
+     * @param <T> The type of message.
+     * @return The mono.
+     */
     @Override
     public <T> Mono<Void> sendAsync(String queueName, @NonNull Message<T> message,
                                     PartitionSupplier partitionSupplier) {
@@ -59,6 +74,11 @@ public class StorageQueueTemplate implements StorageQueueOperation {
         return queueClient.sendMessage(queueMessageItem.getMessageText()).then();
     }
 
+    /**
+     *
+     * @param queueName The queue name.
+     * @return The mono.
+     */
     @Override
     public Mono<Message<?>> receiveAsync(String queueName) {
         return this.receiveAsync(queueName, visibilityTimeoutInSeconds);
@@ -121,6 +141,12 @@ public class StorageQueueTemplate implements StorageQueueOperation {
         return checkpointMode == CheckpointMode.MANUAL || checkpointMode == CheckpointMode.RECORD;
     }
 
+    /**
+     *
+     * @param message The message.
+     * @param queueName The queue name.
+     * @param t The throwable.
+     */
     public void checkpointHandler(QueueMessageItem message, String queueName, Throwable t) {
         if (t != null) {
             if (LOG.isWarnEnabled()) {
@@ -140,18 +166,34 @@ public class StorageQueueTemplate implements StorageQueueOperation {
             checkpointMode);
     }
 
+    /**
+     *
+     * @return The StorageQueueMessageConverter.
+     */
     public StorageQueueMessageConverter getMessageConverter() {
         return messageConverter;
     }
 
+    /**
+     *
+     * @param messageConverter The StorageQueueMessageConverter.
+     */
     public void setMessageConverter(StorageQueueMessageConverter messageConverter) {
         this.messageConverter = messageConverter;
     }
 
+    /**
+     *
+     * @return The visibility timeout in seconds
+     */
     public int getVisibilityTimeoutInSeconds() {
         return visibilityTimeoutInSeconds;
     }
 
+    /**
+     *
+     * @param timeout The timeout.
+     */
     @Override
     public void setVisibilityTimeoutInSeconds(int timeout) {
         Assert.state(timeout > 0, "VisibilityTimeoutInSeconds should be positive");
@@ -159,20 +201,36 @@ public class StorageQueueTemplate implements StorageQueueOperation {
         LOG.info("StorageQueueTemplate VisibilityTimeoutInSeconds becomes: {}", this.visibilityTimeoutInSeconds);
     }
 
+    /**
+     *
+     * @return The message payload type.
+     */
     public Class<?> getMessagePayloadType() {
         return messagePayloadType;
     }
 
+    /**
+     *
+     * @param payloadType The payload type.
+     */
     @Override
     public void setMessagePayloadType(Class<?> payloadType) {
         this.messagePayloadType = payloadType;
         LOG.info("StorageQueueTemplate messagePayloadType becomes: {}", this.messagePayloadType);
     }
 
+    /**
+     *
+     * @return The checkpoint mode.
+     */
     public CheckpointMode getCheckpointMode() {
         return checkpointMode;
     }
 
+    /**
+     *
+     * @param checkpointMode The checkpointMode.
+     */
     @Override
     public void setCheckpointMode(CheckpointMode checkpointMode) {
         Assert.state(isValidCheckpointMode(checkpointMode),

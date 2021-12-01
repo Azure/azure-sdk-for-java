@@ -9,8 +9,16 @@ package com.azure.spring.integration.core.api;
  */
 public interface Batchable {
 
+    /**
+     *
+     * @return The BatchConsumerConfig.
+     */
     BatchConsumerConfig getBatchConsumerConfig();
-    
+
+    /**
+     *
+     * @param batchConsumerConfig The batchConsumerConfig.
+     */
     void setBatchConsumerConfig(BatchConsumerConfig batchConsumerConfig);
     
 }

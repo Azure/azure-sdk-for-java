@@ -10,11 +10,25 @@ import org.springframework.messaging.Message;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ *
+ * @param <O> The type that extends SubscribeOperation.
+ */
 public abstract class SubscribeOperationTest<O extends SubscribeOperation> {
 
+    /**
+     * The subscribeOperation.
+     */
     protected O subscribeOperation;
+
+    /**
+     * The destination.
+     */
     protected String destination = "event-hub";
 
+    /**
+     * Test subscribe and unsubscribe.
+     */
     @Test
     public void testSubscribeAndUnsubscribe() {
         boolean succeed = this.subscribeOperation.subscribe(destination, this::handleMessage);
@@ -30,6 +44,9 @@ public abstract class SubscribeOperationTest<O extends SubscribeOperation> {
         verifySubscriberUnregistered(1);
     }
 
+    /**
+     * Test subscribe twice
+     */
     @Test
     public void testSubscribeTwice() {
         boolean onceSucceed = this.subscribeOperation.subscribe(destination, this::handleMessage);
@@ -46,6 +63,9 @@ public abstract class SubscribeOperationTest<O extends SubscribeOperation> {
         verifySubscriberUnregistered(0);
     }
 
+    /**
+     * test unsubscribe not subscribed.
+     */
     @Test
     public void testUnsubscribeNotSubscribed() {
         boolean unsubscribed = this.subscribeOperation.unsubscribe(destination);
@@ -59,18 +79,40 @@ public abstract class SubscribeOperationTest<O extends SubscribeOperation> {
     private void handleMessage(Message<?> message) {
     }
 
+    /**
+     * Verify subscriber creator called.
+     */
     protected abstract void verifySubscriberCreatorCalled();
 
+    /**
+     * Verify subscriber creator not called.
+     */
     protected abstract void verifySubscriberCreatorNotCalled();
 
+    /**
+     *
+     * @param times The times.
+     */
     protected abstract void verifySubscriberRegistered(int times);
 
+    /**
+     *
+     * @param times The times.
+     */
     protected abstract void verifySubscriberUnregistered(int times);
 
+    /**
+     *
+     * @return The subscribeOperation.
+     */
     public O getSubscribeOperation() {
         return subscribeOperation;
     }
 
+    /**
+     *
+     * @param subscribeOperation The subscribeOperation.
+     */
     public void setSubscribeOperation(O subscribeOperation) {
         this.subscribeOperation = subscribeOperation;
     }

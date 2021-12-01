@@ -16,11 +16,19 @@ public class ServiceBusQueueHealthIndicator extends AbstractHealthIndicator {
 
     private final InstrumentationManager instrumentationManager;
 
+    /**
+     *
+     * @param serviceBusQueueOperation The ServiceBusQueueOperation.
+     */
     public ServiceBusQueueHealthIndicator(ServiceBusQueueOperation serviceBusQueueOperation) {
         super("Service bus health check failed");
         this.instrumentationManager = serviceBusQueueOperation.getInstrumentationManager();
     }
 
+    /**
+     *
+     * @param builder The Health.Builder.
+     */
     @Override
     protected void doHealthCheck(Health.Builder builder) {
         if (instrumentationManager == null || instrumentationManager.getHealthInstrumentations().isEmpty()) {

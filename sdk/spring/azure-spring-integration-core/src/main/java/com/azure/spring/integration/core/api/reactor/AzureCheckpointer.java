@@ -16,21 +16,38 @@ public class AzureCheckpointer implements Checkpointer {
     private final Supplier<Mono<Void>> success;
     private final Supplier<Mono<Void>> fail;
 
+    /**
+     *
+     * @param success The success supplier.
+     */
     public AzureCheckpointer(@NonNull Supplier<Mono<Void>> success) {
         this(success, null);
     }
 
+    /**
+     *
+     * @param success The success supplier
+     * @param fail The fail supplier
+     */
     public AzureCheckpointer(@NonNull Supplier<Mono<Void>> success,
                              Supplier<Mono<Void>> fail) {
         this.success = success;
         this.fail = fail;
     }
 
+    /**
+     *
+     * @return The success mono.
+     */
     @Override
     public Mono<Void> success() {
         return this.success.get();
     }
 
+    /**
+     *
+     * @return The failure mono.
+     */
     @Override
     public Mono<Void> failure() {
         if (this.fail == null) {

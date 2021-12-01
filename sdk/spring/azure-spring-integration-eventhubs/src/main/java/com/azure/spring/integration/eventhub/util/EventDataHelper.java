@@ -13,6 +13,11 @@ import java.util.Map;
  */
 public class EventDataHelper {
 
+    /**
+     *
+     * @param eventData The event data.
+     * @return The String.
+     */
     public static String toString(EventData eventData) {
         Map<String, Object> map = new LinkedHashMap<>();
 

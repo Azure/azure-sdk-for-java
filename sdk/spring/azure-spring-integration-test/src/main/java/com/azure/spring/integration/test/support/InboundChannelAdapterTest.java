@@ -20,16 +20,36 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * In bound channel adapter test.
+ * @param <A> The Type that extends AbstractInboundChannelAdapter.
+ */
 public abstract class InboundChannelAdapterTest<A extends AbstractInboundChannelAdapter> {
 
+    /**
+     * The adapter.
+     */
     protected A adapter;
+
+    /**
+     * The consumer group.
+     */
     protected String consumerGroup = "group";
+
+    /**
+     * The destination.
+     */
     protected String destination = "dest";
+
     private String[] payloads = { "payload1", "payload2" };
     private List<Message<?>> messages = Arrays.stream(payloads)
                                               .map(p -> MessageBuilder.withPayload(p).build())
                                               .collect(Collectors.toList());
 
+    /**
+     *
+     * @throws InterruptedException The interruptedException
+     */
     @Test
     public void sendAndReceive() throws InterruptedException {
         DirectChannel channel = new DirectChannel();
@@ -56,29 +76,56 @@ public abstract class InboundChannelAdapterTest<A extends AbstractInboundChannel
         }
     }
 
+    /**
+     * Set up.
+     */
     @BeforeEach
     public abstract void setUp();
 
+    /**
+     *
+     * @return The adapter.
+     */
     public A getAdapter() {
         return adapter;
     }
 
+    /**
+     *
+     * @param adapter The adapter.
+     */
     public void setAdapter(A adapter) {
         this.adapter = adapter;
     }
 
+    /**
+     *
+     * @return The consumerGroup.
+     */
     public String getConsumerGroup() {
         return consumerGroup;
     }
 
+    /**
+     *
+     * @param consumerGroup The consumerGroup.
+     */
     public void setConsumerGroup(String consumerGroup) {
         this.consumerGroup = consumerGroup;
     }
 
+    /**
+     *
+     * @return The destination.
+     */
     public String getDestination() {
         return destination;
     }
 
+    /**
+     *
+     * @param destination The destination.
+     */
     public void setDestination(String destination) {
         this.destination = destination;
     }

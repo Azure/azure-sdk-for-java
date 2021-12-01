@@ -27,12 +27,24 @@ import java.util.function.Consumer;
  */
 public class EventHubProcessorSupport extends EventHubProcessor {
 
+    /**
+     *
+     * @param consumer The consumer.
+     * @param payloadType The payload type.
+     * @param checkpointConfig The check point config.
+     * @param messageConverter The message converter.
+     */
     public EventHubProcessorSupport(Consumer<Message<?>> consumer, Class<?> payloadType,
                                     CheckpointConfig checkpointConfig,
                                     EventHubMessageConverter messageConverter) {
         super(consumer, payloadType, checkpointConfig, messageConverter);
     }
 
+    /**
+     *
+     * @param context The context.
+     * @param eventData The event data.
+     */
     public void onEvent(EventContext context, EventData eventData) {
         PartitionContext partition = context.getPartitionContext();
 

@@ -16,10 +16,18 @@ public class EventHubConnectionStringProvider {
 
     private final String connectionString;
 
+    /**
+     *
+     * @param eventHubNamespace The event hub name space.
+     */
     public EventHubConnectionStringProvider(@NonNull EventHubNamespace eventHubNamespace) {
         this(toConnectionString(eventHubNamespace));
     }
 
+    /**
+     *
+     * @param connectionString The connection string.
+     */
     public EventHubConnectionStringProvider(@NonNull String connectionString) {
         this.connectionString = connectionString;
     }
@@ -36,6 +44,10 @@ public class EventHubConnectionStringProvider {
                                         eventHubNamespace.name()), null));
     }
 
+    /**
+     *
+     * @return The connection string.
+     */
     public String getConnectionString() {
         return this.connectionString;
     }

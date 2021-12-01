@@ -13,11 +13,21 @@ import java.nio.charset.StandardCharsets;
  */
 public class StorageQueueMessageConverter extends AbstractAzureMessageConverter<QueueMessageItem, QueueMessageItem> {
 
+    /**
+     *
+     * @param azureMessage The azure message
+     * @return The payload bytes.
+     */
     @Override
     protected byte[] getPayload(QueueMessageItem azureMessage) {
         return azureMessage.getMessageText().getBytes(StandardCharsets.UTF_8);
     }
 
+    /**
+     *
+     * @param payload The payload.
+     * @return The queue message item.
+     */
     @Override
     protected QueueMessageItem fromString(String payload) {
         final QueueMessageItem queueMessageItem = new QueueMessageItem();
@@ -25,6 +35,11 @@ public class StorageQueueMessageConverter extends AbstractAzureMessageConverter<
         return queueMessageItem;
     }
 
+    /**
+     *
+     * @param payload The payload
+     * @return The queue message item.
+     */
     @Override
     protected QueueMessageItem fromByte(byte[] payload) {
         final QueueMessageItem queueMessageItem = new QueueMessageItem();

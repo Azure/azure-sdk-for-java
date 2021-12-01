@@ -26,6 +26,13 @@ public interface SubscribeByGroupOperation extends Checkpointable, Batchable {
     boolean subscribe(String destination, String consumerGroup, Consumer<Message<?>> consumer,
                       Class<?> messagePayloadType);
 
+    /**
+     *
+     * @param destination The destination.
+     * @param consumerGroup The consumerGroup
+     * @param consumer The consumer.
+     * @return Whether subscribe success.
+     */
     default boolean subscribe(String destination, String consumerGroup, Consumer<Message<?>> consumer) {
         return this.subscribe(destination, consumerGroup, consumer, byte[].class);
     }
@@ -39,10 +46,18 @@ public interface SubscribeByGroupOperation extends Checkpointable, Batchable {
      */
     boolean unsubscribe(String destination, String consumerGroup);
 
+    /**
+     *
+     * @return The BatchConsumerConfig
+     */
     default BatchConsumerConfig getBatchConsumerConfig() {
         return null;
     }
 
+    /**
+     *
+     * @param batchConsumerConfig The batchConsumerConfig.
+     */
     default void setBatchConsumerConfig(BatchConsumerConfig batchConsumerConfig) {
         // no-op
     }

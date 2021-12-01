@@ -12,10 +12,18 @@ public class ServiceBusConsumerDestination implements ConsumerDestination {
 
     private final String name;
 
+    /**
+     *
+     * @param name The name.
+     */
     public ServiceBusConsumerDestination(String name) {
         this.name = name;
     }
 
+    /**
+     *
+     * @return The name.
+     */
     @Override
     public String getName() {
         return this.name;

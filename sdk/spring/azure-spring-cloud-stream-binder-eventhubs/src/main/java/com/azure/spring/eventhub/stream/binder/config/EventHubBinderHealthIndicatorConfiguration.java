@@ -11,11 +11,20 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Configure bean about EventHubHealthIndicator.
+ */
 @Configuration
 @ConditionalOnClass(name = "org.springframework.boot.actuate.health.HealthIndicator")
 @ConditionalOnEnabledHealthIndicator("binders")
 class EventHubBinderHealthIndicatorConfiguration {
 
+    /**
+     *
+     * @param binder The EventHubMessageChannelBinder.
+     * @param clientFactory The EventHubClientFactory.
+     * @return The EventHubHealthIndicator.
+     */
     @Bean
     EventHubHealthIndicator eventHubHealthIndicator(EventHubMessageChannelBinder binder,
                                                     EventHubClientFactory clientFactory) {

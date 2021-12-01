@@ -24,18 +24,34 @@ public class EventHubProducerProperties {
      */
     private long sendTimeout = 10000;
 
+    /**
+     *
+     * @return True if it is sync
+     */
     public boolean isSync() {
         return sync;
     }
 
+    /**
+     *
+     * @param sync The sync
+     */
     public void setSync(boolean sync) {
         this.sync = sync;
     }
 
+    /**
+     *
+     * @return Send time out.
+     */
     public long getSendTimeout() {
         return sendTimeout;
     }
 
+    /**
+     *
+     * @param sendTimeout Send time out.
+     */
     public void setSendTimeout(long sendTimeout) {
         this.sendTimeout = sendTimeout;
     }

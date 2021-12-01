@@ -39,6 +39,11 @@ public class AzureServiceBusTopicAutoConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureServiceBusTopicAutoConfiguration.class);
 
+    /**
+     *
+     * @param azureProperties The AzureProperties.
+     * @return The ServiceBusTopicManager.
+     */
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(ServiceBusNamespaceManager.class)
@@ -46,6 +51,11 @@ public class AzureServiceBusTopicAutoConfiguration {
         return new ServiceBusTopicManager(azureProperties);
     }
 
+    /**
+     *
+     * @param azureProperties The AzureProperties.
+     * @return The ServiceBusTopicSubscriptionManager.
+     */
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(ServiceBusTopicManager.class)
@@ -53,6 +63,15 @@ public class AzureServiceBusTopicAutoConfiguration {
         return new ServiceBusTopicSubscriptionManager(azureProperties);
     }
 
+    /**
+     *
+     * @param namespaceManager The ServiceBusNamespaceManager.
+     * @param topicManager The ServiceBusTopicManager.
+     * @param topicSubscriptionManager The ServiceBusTopicSubscriptionManager.
+     * @param connectionStringProvider The ServiceBusConnectionStringProvider.
+     * @param properties The AzureServiceBusProperties.
+     * @return The ServiceBusTopicClientFactory.
+     */
     @Bean
     @ConditionalOnMissingBean
     public ServiceBusTopicClientFactory topicClientFactory(
@@ -81,12 +100,22 @@ public class AzureServiceBusTopicAutoConfiguration {
         return clientFactory;
     }
 
+    /**
+     *
+     * @return The ServiceBusMessageConverter.
+     */
     @Bean
     @ConditionalOnMissingBean
     public ServiceBusMessageConverter messageConverter() {
         return new ServiceBusMessageConverter();
     }
 
+    /**
+     *
+     * @param factory The ServiceBusTopicClientFactory.
+     * @param messageConverter The ServiceBusMessageConverter.
+     * @return The ServiceBusTopicOperation.
+     */
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(ServiceBusTopicClientFactory.class)

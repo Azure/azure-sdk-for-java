@@ -14,6 +14,11 @@ public class ServiceBusUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusUtils.class);
     private static final String CONNECTION_STRING_PREFIX = "Endpoint=sb://";
 
+    /**
+     *
+     * @param connectionString The connection string.
+     * @return The namespace.
+     */
     public static String getNamespace(String connectionString) {
         try {
             int start = connectionString.indexOf(CONNECTION_STRING_PREFIX) + CONNECTION_STRING_PREFIX.length();

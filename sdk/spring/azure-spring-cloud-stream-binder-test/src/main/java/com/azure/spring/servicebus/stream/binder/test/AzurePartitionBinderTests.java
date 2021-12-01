@@ -37,40 +37,69 @@ public abstract class AzurePartitionBinderTests<B extends AbstractTestBinder<
         CP extends ConsumerProperties, PP extends ProducerProperties>
         extends PartitionCapableBinderTests<B, CP, PP> {
 
+    /**
+     * Enable tests.
+     */
     @BeforeClass
     public static void enableTests() {
     }
 
+    /**
+     * Use explicit routing.
+     * @return True if it uses explicit routing.
+     */
     @Override
     protected boolean usesExplicitRouting() {
         return false;
     }
 
+    /**
+     *
+     * @param name The name.
+     * @return Spy.
+     */
     @Override
     public Spy spyOn(String name) {
         return null;
     }
 
+    /**
+     *
+     * @throws Exception The exception.
+     */
     @Override
     public void testClean() throws Exception {
         // No-op
     }
 
+    /**
+     * Test partitioned module java.
+     */
     @Override
     public void testPartitionedModuleJava() {
         // Partitioned consumer mode unsupported yet
     }
 
+    /**
+     * Test partitioned module SpEL.
+     */
     @Override
     public void testPartitionedModuleSpEL() {
         // Partitioned consumer mode unsupported
     }
 
+    /**
+     * Test anonymous group.
+     */
     @Override
     public void testAnonymousGroup() {
         // azure binder not support anonymous group
     }
 
+    /**
+     * Test send and receive no original content type.
+     * @throws Exception The exception.
+     */
     // Same logic as super.testSendAndReceiveNoOriginalContentType() except one line commented below
     @Override
     @SuppressWarnings({"rawtypes", "unchecked"})

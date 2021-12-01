@@ -22,6 +22,13 @@ public class EventHubChannelResourceManagerProvisioner extends EventHubChannelPr
     private final EventHubManager eventHubManager;
     private final EventHubConsumerGroupManager eventHubConsumerGroupManager;
 
+    /**
+     *
+     * @param eventHubNamespaceManager The EventHubNamespaceManager.
+     * @param eventHubManager The EventHubManager.
+     * @param eventHubConsumerGroupManager The EventHubConsumerGroupManager.
+     * @param namespace The namespace.
+     */
     public EventHubChannelResourceManagerProvisioner(@NonNull EventHubNamespaceManager eventHubNamespaceManager,
                                                      @NonNull EventHubManager eventHubManager,
                                                      @NonNull EventHubConsumerGroupManager eventHubConsumerGroupManager,
@@ -33,6 +40,11 @@ public class EventHubChannelResourceManagerProvisioner extends EventHubChannelPr
         this.eventHubConsumerGroupManager = eventHubConsumerGroupManager;
     }
 
+    /**
+     *
+     * @param name The name.
+     * @param group The group.
+     */
     @Override
     protected void validateOrCreateForConsumer(String name, String group) {
         EventHubNamespace eventHubNamespace = eventHubNamespaceManager.getOrCreate(namespace);
@@ -48,6 +60,10 @@ public class EventHubChannelResourceManagerProvisioner extends EventHubChannelPr
         eventHubConsumerGroupManager.getOrCreate(Tuple.of(eventHub, group));
     }
 
+    /**
+     *
+     * @param name The name.
+     */
     @Override
     protected void validateOrCreateForProducer(String name) {
         EventHubNamespace eventHubNamespace = eventHubNamespaceManager.getOrCreate(namespace);

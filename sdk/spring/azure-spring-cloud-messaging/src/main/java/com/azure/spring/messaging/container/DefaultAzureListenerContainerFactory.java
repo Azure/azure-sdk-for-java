@@ -14,6 +14,10 @@ import com.azure.spring.integration.core.api.SubscribeByGroupOperation;
 public class DefaultAzureListenerContainerFactory
         extends AbstractAzureListenerContainerFactory<DefaultMessageListenerContainer> {
 
+    /**
+     *
+     * @param subscribeOperation The subscribe operation
+     */
     public DefaultAzureListenerContainerFactory(SubscribeByGroupOperation subscribeOperation) {
         super(subscribeOperation);
     }

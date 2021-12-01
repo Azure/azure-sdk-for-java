@@ -17,12 +17,20 @@ import org.springframework.util.Assert;
 public class ManualCheckpointManager extends CheckpointManager {
     private static final Logger LOG = LoggerFactory.getLogger(ManualCheckpointManager.class);
 
+    /**
+     *
+     * @param checkpointConfig The check point config.
+     */
     ManualCheckpointManager(CheckpointConfig checkpointConfig) {
         super(checkpointConfig);
         Assert.isTrue(this.checkpointConfig.getCheckpointMode() == CheckpointMode.MANUAL,
             () -> "ManualCheckpointManager should have checkpointMode manual");
     }
 
+    /**
+     *
+     * @return The logger.
+     */
     protected Logger getLogger() {
         return LOG;
     }

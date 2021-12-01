@@ -66,22 +66,42 @@ public class MethodAzureListenerEndpoint extends AbstractAzureListenerEndpoint i
                     .append(this.method).append("'");
     }
 
+    /**
+     *
+     * @return The bean.
+     */
     public Object getBean() {
         return bean;
     }
 
+    /**
+     *
+     * @param bean The bean.
+     */
     public void setBean(Object bean) {
         this.bean = bean;
     }
 
+    /**
+     *
+     * @return The method
+     */
     public Method getMethod() {
         return method;
     }
 
+    /**
+     *
+     * @param method The method.
+     */
     public void setMethod(Method method) {
         this.method = method;
     }
 
+    /**
+     *
+     * @param messageHandlerMethodFactory The messageHandlerMethodFactory.
+     */
     public void setMessageHandlerMethodFactory(MessageHandlerMethodFactory messageHandlerMethodFactory) {
         this.messageHandlerMethodFactory = messageHandlerMethodFactory;
     }

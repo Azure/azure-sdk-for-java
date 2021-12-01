@@ -30,6 +30,13 @@ public interface RxSubscribeOperation {
     @Deprecated
     Observable<Message<?>> subscribe(String destination, Class<?> messagePayloadType);
 
+    /**
+     *
+     * @param checkpointMode The checkpointMode
+     * @deprecated {@link rx} API will be dropped in version 4.0.0, please migrate to reactor API in
+     * {@link SubscribeOperation}. From version 4.0.0, the reactor API support will be moved to
+     * com.azure.spring.messaging.core.SubscribeOperation.
+     */
     @Deprecated
     void setCheckpointMode(CheckpointMode checkpointMode);
 }

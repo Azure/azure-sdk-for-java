@@ -12,15 +12,27 @@ public class EventHubConsumerDestination implements ConsumerDestination {
 
     private final String name;
 
+    /**
+     *
+     * @param name The name.
+     */
     public EventHubConsumerDestination(String name) {
         this.name = name;
     }
 
+    /**
+     *
+     * @return The name.
+     */
     @Override
     public String getName() {
         return this.name;
     }
 
+    /**
+     *
+     * @return The string.
+     */
     @Override
     public String toString() {
         return "EventHubConsumerDestination{" + "name='" + name + '\'' + '}';

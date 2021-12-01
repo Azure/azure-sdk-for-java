@@ -45,6 +45,13 @@ public interface AzureMessageConverter<I, O> {
     @Nullable
     <U> Message<U> toMessage(I azureMessage, Map<String, Object> headers, Class<U> targetPayloadClass);
 
+    /**
+     *
+     * @param azureMessage The azure message.
+     * @param targetPayloadClass The target payload class.
+     * @param <U> The target payload class type.
+     * @return The message.
+     */
     @Nullable
     default <U> Message<U> toMessage(I azureMessage, Class<U> targetPayloadClass) {
         return this.toMessage(azureMessage, new HashMap<>(), targetPayloadClass);

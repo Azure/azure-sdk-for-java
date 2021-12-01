@@ -17,44 +17,94 @@ import javax.annotation.Nullable;
  */
 abstract class AbstractServiceBusSenderFactory implements ServiceBusSenderFactory {
 
+    /**
+     * The connection string.
+     */
     protected final String connectionString;
 
+    /**
+     * The service bus name space manager.
+     */
     @Nullable
     protected ServiceBusNamespaceManager serviceBusNamespaceManager;
+
+    /**
+     * The service bus queue manager.
+     */
     @Nullable
     protected ServiceBusQueueManager serviceBusQueueManager;
+
+    /**
+     * The service bus topic manager.
+     */
     @Nullable
     protected ServiceBusTopicManager serviceBusTopicManager;
+
+    /**
+     * The service bus topic subscription manager.
+     */
     @Nullable
     protected ServiceBusTopicSubscriptionManager serviceBusTopicSubscriptionManager;
+
+    /**
+     * The namespace.
+     */
     @Nullable
     protected String namespace;
 
+    /**
+     *
+     * @param connectionString The connection string.
+     */
     AbstractServiceBusSenderFactory(String connectionString) {
         this.connectionString = connectionString;
     }
 
+    /**
+     *
+     * @param serviceBusNamespaceManager The serviceBusNamespaceManager.
+     */
     public void setServiceBusNamespaceManager(ServiceBusNamespaceManager serviceBusNamespaceManager) {
         this.serviceBusNamespaceManager = serviceBusNamespaceManager;
     }
 
+    /**
+     *
+     * @param serviceBusQueueManager The serviceBusQueueManager.
+     */
     public void setServiceBusQueueManager(ServiceBusQueueManager serviceBusQueueManager) {
         this.serviceBusQueueManager = serviceBusQueueManager;
     }
 
+    /**
+     *
+     * @param serviceBusTopicManager The serviceBusTopicManager.
+     */
     public void setServiceBusTopicManager(ServiceBusTopicManager serviceBusTopicManager) {
         this.serviceBusTopicManager = serviceBusTopicManager;
     }
 
+    /**
+     *
+     * @param serviceBusTopicSubscriptionManager The serviceBusTopicSubscriptionManager.
+     */
     public void setServiceBusTopicSubscriptionManager(
             ServiceBusTopicSubscriptionManager serviceBusTopicSubscriptionManager) {
         this.serviceBusTopicSubscriptionManager = serviceBusTopicSubscriptionManager;
     }
 
+    /**
+     *
+     * @param namespace The namespace.
+     */
     public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
 
+    /**
+     *
+     * @return The connection string.
+     */
     public String getConnectionString() {
         return connectionString;
     }

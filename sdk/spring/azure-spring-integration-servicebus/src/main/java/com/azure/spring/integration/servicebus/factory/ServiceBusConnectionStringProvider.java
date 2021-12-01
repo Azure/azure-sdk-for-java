@@ -16,14 +16,26 @@ public class ServiceBusConnectionStringProvider {
 
     private final String connectionString;
 
+    /**
+     *
+     * @param serviceBusNamespace The serviceBusNamespace.
+     */
     public ServiceBusConnectionStringProvider(@NonNull ServiceBusNamespace serviceBusNamespace) {
         this(buildConnectionString(serviceBusNamespace));
     }
 
+    /**
+     *
+     * @param connectionString The connectionString.
+     */
     public ServiceBusConnectionStringProvider(@NonNull String connectionString) {
         this.connectionString = connectionString;
     }
 
+    /**
+     *
+     * @return The connectionString.
+     */
     public String getConnectionString() {
         return this.connectionString;
     }

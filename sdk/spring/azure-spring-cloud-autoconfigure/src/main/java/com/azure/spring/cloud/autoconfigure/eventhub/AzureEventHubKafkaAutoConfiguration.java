@@ -47,6 +47,12 @@ public class AzureEventHubKafkaAutoConfiguration {
     private static final String SASL_MECHANISM_PLAIN = "PLAIN";
     private static final int PORT = 9093;
 
+    /**
+     *
+     * @param eventHubNamespaceManager The EventHubNamespaceManager.
+     * @param eventHubProperties The AzureEventHubProperties.
+     * @return The KafkaProperties.
+     */
     @SuppressWarnings("rawtypes")
     @Primary
     @Bean
@@ -67,6 +73,12 @@ public class AzureEventHubKafkaAutoConfiguration {
         return kafkaProperties;
     }
 
+    /**
+     *
+     * @param azureResourceManager The AzureResourceManager.
+     * @param azureProperties The AzureProperties.
+     * @return The EventHubNamespaceManager.
+     */
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(AzureResourceManager.class)

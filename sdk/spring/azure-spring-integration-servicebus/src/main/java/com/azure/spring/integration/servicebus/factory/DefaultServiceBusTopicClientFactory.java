@@ -37,10 +37,19 @@ public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSende
     private final Map<Tuple<String, String>, ServiceBusProcessorClient> topicProcessorMap = new ConcurrentHashMap<>();
     private final Map<String, ServiceBusSenderAsyncClient> topicSenderMap = new ConcurrentHashMap<>();
 
+    /**
+     *
+     * @param connectionString The connection string.
+     */
     public DefaultServiceBusTopicClientFactory(String connectionString) {
         this(connectionString, AmqpTransportType.AMQP);
     }
 
+    /**
+     *
+     * @param connectionString The connection string.
+     * @param amqpTransportType The amqp transport type.
+     */
     public DefaultServiceBusTopicClientFactory(String connectionString, AmqpTransportType amqpTransportType) {
         super(connectionString);
         this.serviceBusClientBuilder = new ServiceBusClientBuilder()
@@ -60,12 +69,23 @@ public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSende
         });
     }
 
+    /**
+     * Destroy
+     */
     @Override
     public void destroy() {
         close(topicSenderMap, ServiceBusSenderAsyncClient::close);
         close(topicProcessorMap, ServiceBusProcessorClient::close);
     }
 
+    /**
+     *
+     * @param topic The topic.
+     * @param subscription The subscription.
+     * @param clientConfig The topic client config.
+     * @param messageProcessor The callback processor to be registered on service bus processor client.
+     * @return The ServiceBusProcessorClient.
+     */
     @Override
     public ServiceBusProcessorClient getOrCreateProcessor(
         String topic,
@@ -79,11 +99,15 @@ public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSende
                                                                            messageProcessor));
     }
 
+    /**
+     *
+     * @param name sender name
+     * @return The ServiceBusSenderAsyncClient.
+     */
     @Override
     public ServiceBusSenderAsyncClient getOrCreateSender(String name) {
         return this.topicSenderMap.computeIfAbsent(name, this::createTopicSender);
     }
-
 
     private ServiceBusProcessorClient createProcessor(String topic,
                                                       String subscription,
@@ -131,6 +155,10 @@ public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSende
         return serviceBusClientBuilder.sender().topicName(name).buildAsyncClient();
     }
 
+    /**
+     *
+     * @param amqpRetryOptions The amqpRetryOptions.
+     */
     public void setRetryOptions(AmqpRetryOptions amqpRetryOptions) {
         serviceBusClientBuilder.retryOptions(amqpRetryOptions);
     }

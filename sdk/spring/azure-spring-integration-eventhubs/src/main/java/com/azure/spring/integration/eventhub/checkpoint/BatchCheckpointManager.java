@@ -30,17 +30,30 @@ public class BatchCheckpointManager extends CheckpointManager {
 
     private final ConcurrentHashMap<String, EventData> lastEventByPartition = new ConcurrentHashMap<>();
 
+    /**
+     *
+     * @param checkpointConfig The checkpointConfig.
+     */
     BatchCheckpointManager(CheckpointConfig checkpointConfig) {
         super(checkpointConfig);
         Assert.isTrue(this.checkpointConfig.getCheckpointMode() == CheckpointMode.BATCH,
             () -> "BatchCheckpointManager should have checkpointMode batch");
     }
 
+    /**
+     *
+     * @param context The context.
+     * @param eventData The event data.
+     */
     @Override
     public void onMessage(EventContext context, EventData eventData) {
         this.lastEventByPartition.put(context.getPartitionContext().getPartitionId(), eventData);
     }
 
+    /**
+     *
+     * @param context The context.
+     */
     @Override
     public void completeBatch(EventContext context) {
         EventData eventData = this.lastEventByPartition.get(context.getPartitionContext().getPartitionId());
@@ -51,6 +64,10 @@ public class BatchCheckpointManager extends CheckpointManager {
                .subscribe();
     }
 
+    /**
+     *
+     * @param context The context.
+     */
     public void onMessages(EventBatchContext context) {
         EventData lastEvent = getLastEventFromBatch(context);
         if (lastEvent == null) {
@@ -65,16 +82,33 @@ public class BatchCheckpointManager extends CheckpointManager {
             .subscribe();
     }
 
+    /**
+     *
+     * @return The log.
+     */
     @Override
     protected Logger getLogger() {
         return LOG;
     }
 
+    /**
+     *
+     * @param consumerGroup The consumer group.
+     * @param partitionId The partition id.
+     * @param offset The offset.
+     * @param t The throwable.
+     */
     void logCheckpointFail(String consumerGroup, String partitionId, Long offset, Throwable t) {
         getLogger().warn(String
             .format(CHECKPOINT_FAIL_MSG, consumerGroup, offset, partitionId), t);
     }
 
+    /**
+     *
+     * @param consumerGroup consumer group.
+     * @param partitionId partition id.
+     * @param offset The offset.
+     */
     void logCheckpointSuccess(String consumerGroup, String partitionId, Long offset) {
         if (getLogger().isDebugEnabled()) {
             getLogger().debug(String

@@ -53,6 +53,10 @@ public class DefaultAzureMessageHandler implements AzureMessageHandler {
         return parameterTypes[0];
     }
 
+    /**
+     *
+     * @return The InvocableHandlerMethod
+     */
     public InvocableHandlerMethod getHandlerMethod() {
         return handlerMethod;
     }

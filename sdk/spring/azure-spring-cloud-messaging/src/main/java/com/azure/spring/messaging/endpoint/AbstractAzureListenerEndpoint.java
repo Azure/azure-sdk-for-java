@@ -63,35 +63,67 @@ public abstract class AbstractAzureListenerEndpoint implements AzureListenerEndp
         return getEndpointDescription().toString();
     }
 
+    /**
+     *
+     * @return destination
+     */
     public String getDestination() {
         return destination;
     }
 
+    /**
+     * Set destination
+     * @param destination destination
+     */
     public void setDestination(String destination) {
         this.destination = destination;
     }
 
+    /**
+     *
+     * @return The group
+     */
     public String getGroup() {
         return group;
     }
 
+    /**
+     * Set group
+     * @param group group
+     */
     public void setGroup(String group) {
         this.group = group;
     }
 
+    /**
+     *
+     * @return id
+     */
     @Override
     public String getId() {
         return id;
     }
 
+    /**
+     *
+     * @param id The id.
+     */
     public void setId(String id) {
         this.id = id;
     }
 
+    /**
+     *
+     * @param concurrency The concurrency.
+     */
     public void setConcurrency(String concurrency) {
         this.concurrency = concurrency;
     }
 
+    /**
+     *
+     * @return concurrency
+     */
     public String getConcurrency() {
         return concurrency;
     }

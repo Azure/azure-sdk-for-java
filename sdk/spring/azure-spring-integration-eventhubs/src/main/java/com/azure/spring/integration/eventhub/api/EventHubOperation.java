@@ -15,5 +15,9 @@ import com.azure.spring.integration.core.api.reactor.SendOperation;
  */
 public interface EventHubOperation extends SendOperation, BatchSendOperation, SubscribeByGroupOperation {
 
+    /**
+     *
+     * @param startPosition The start position.
+     */
     void setStartPosition(StartPosition startPosition);
 }

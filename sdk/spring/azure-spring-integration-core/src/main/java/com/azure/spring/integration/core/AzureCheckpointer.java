@@ -21,21 +21,38 @@ public class AzureCheckpointer implements Checkpointer {
     private Supplier<CompletableFuture<Void>> success;
     private Supplier<CompletableFuture<Void>> fail;
 
+    /**
+     *
+     * @param success The success supplier.
+     */
     public AzureCheckpointer(@NonNull Supplier<CompletableFuture<Void>> success) {
         this(success, null);
     }
 
+    /**
+     *
+     * @param success The success supplier.
+     * @param fail The failure supplier.
+     */
     public AzureCheckpointer(@NonNull Supplier<CompletableFuture<Void>> success,
                              Supplier<CompletableFuture<Void>> fail) {
         this.success = success;
         this.fail = fail;
     }
 
+    /**
+     *
+     * @return The success.
+     */
     @Override
     public CompletableFuture<Void> success() {
         return this.success.get();
     }
 
+    /**
+     *
+     * @return The failure.
+     */
     @Override
     public CompletableFuture<Void> failure() {
         if (this.fail == null) {
@@ -44,18 +61,34 @@ public class AzureCheckpointer implements Checkpointer {
         return this.fail.get();
     }
 
+    /**
+     *
+     * @return The success supplier.
+     */
     public Supplier<CompletableFuture<Void>> getSuccess() {
         return success;
     }
 
+    /**
+     *
+     * @param success The success supplier.
+     */
     public void setSuccess(Supplier<CompletableFuture<Void>> success) {
         this.success = success;
     }
 
+    /**
+     *
+     * @return The fail supplier.
+     */
     public Supplier<CompletableFuture<Void>> getFail() {
         return fail;
     }
 
+    /**
+     *
+     * @param fail The fail supplier.
+     */
     public void setFail(Supplier<CompletableFuture<Void>> fail) {
         this.fail = fail;
     }
