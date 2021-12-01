@@ -31,7 +31,7 @@ models-subpackage: implementation.models
 custom-types: QueueErrorCode,QueueSignedIdentifier,SendMessageResult,QueueMessageItem,PeekedMessageItem,QueueItem,QueueServiceProperties,QueueServiceStatistics,QueueCorsRule,QueueAccessPolicy,QueueAnalyticsLogging,QueueMetrics,QueueRetentionPolicy,GeoReplicationStatus,GeoReplicationStatusType,GeoReplication
 custom-types-subpackage: models
 customization-jar-path: target/azure-storage-queue-customization-1.0.0-beta.1.jar
-customization-class: com.azure.storage.queue.customization.QueueStorageCustomization
+customization-class: src/main/java/QueueStorageCustomization.java
 ```
 
 ### Rename MessageItems

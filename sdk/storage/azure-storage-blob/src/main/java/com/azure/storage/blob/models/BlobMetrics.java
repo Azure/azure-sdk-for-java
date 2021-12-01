@@ -25,18 +25,18 @@ public final class BlobMetrics {
     private boolean enabled;
 
     /*
-     * the retention policy which determines how long the associated data
-     * should persist
-     */
-    @JsonProperty(value = "RetentionPolicy")
-    private BlobRetentionPolicy retentionPolicy;
-
-    /*
      * Indicates whether metrics should generate summary statistics for called
      * API operations.
      */
     @JsonProperty(value = "IncludeAPIs")
     private Boolean includeApis;
+
+    /*
+     * the retention policy which determines how long the associated data
+     * should persist
+     */
+    @JsonProperty(value = "RetentionPolicy")
+    private BlobRetentionPolicy retentionPolicy;
 
     /**
      * Get the version property: The version of Storage Analytics to configure.
@@ -79,28 +79,6 @@ public final class BlobMetrics {
     }
 
     /**
-     * Get the retentionPolicy property: the retention policy which determines how long the associated data should
-     * persist.
-     *
-     * @return the retentionPolicy value.
-     */
-    public BlobRetentionPolicy getRetentionPolicy() {
-        return this.retentionPolicy;
-    }
-
-    /**
-     * Set the retentionPolicy property: the retention policy which determines how long the associated data should
-     * persist.
-     *
-     * @param retentionPolicy the retentionPolicy value to set.
-     * @return the BlobMetrics object itself.
-     */
-    public BlobMetrics setRetentionPolicy(BlobRetentionPolicy retentionPolicy) {
-        this.retentionPolicy = retentionPolicy;
-        return this;
-    }
-
-    /**
      * Get the includeApis property: Indicates whether metrics should generate summary statistics for called API
      * operations.
      *
@@ -119,6 +97,28 @@ public final class BlobMetrics {
      */
     public BlobMetrics setIncludeApis(Boolean includeApis) {
         this.includeApis = includeApis;
+        return this;
+    }
+
+    /**
+     * Get the retentionPolicy property: the retention policy which determines how long the associated data should
+     * persist.
+     *
+     * @return the retentionPolicy value.
+     */
+    public BlobRetentionPolicy getRetentionPolicy() {
+        return this.retentionPolicy;
+    }
+
+    /**
+     * Set the retentionPolicy property: the retention policy which determines how long the associated data should
+     * persist.
+     *
+     * @param retentionPolicy the retentionPolicy value to set.
+     * @return the BlobMetrics object itself.
+     */
+    public BlobMetrics setRetentionPolicy(BlobRetentionPolicy retentionPolicy) {
+        this.retentionPolicy = retentionPolicy;
         return this;
     }
 }

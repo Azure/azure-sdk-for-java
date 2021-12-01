@@ -5,9 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,21 +14,11 @@ import java.util.List;
 @JacksonXmlRootElement(localName = "ArrowConfiguration")
 @Fluent
 public final class ArrowConfiguration {
-    private static final class SchemaWrapper {
-        @JacksonXmlProperty(localName = "Field")
-        private final List<ArrowField> items;
-
-        @JsonCreator
-        private SchemaWrapper(@JacksonXmlProperty(localName = "Field") List<ArrowField> items) {
-            this.items = items;
-        }
-    }
-
     /*
      * The Schema property.
      */
-    @JsonProperty(value = "Schema", required = true)
-    private SchemaWrapper schema;
+    @JacksonXmlElementWrapper(localName = "Schema")
+    private List<ArrowField> schema = new ArrayList<>();
 
     /**
      * Get the schema property: The Schema property.
@@ -38,10 +26,7 @@ public final class ArrowConfiguration {
      * @return the schema value.
      */
     public List<ArrowField> getSchema() {
-        if (this.schema == null) {
-            this.schema = new SchemaWrapper(new ArrayList<ArrowField>());
-        }
-        return this.schema.items;
+        return this.schema;
     }
 
     /**
@@ -51,7 +36,7 @@ public final class ArrowConfiguration {
      * @return the ArrowConfiguration object itself.
      */
     public ArrowConfiguration setSchema(List<ArrowField> schema) {
-        this.schema = new SchemaWrapper(schema);
+        this.schema = schema;
         return this;
     }
 }

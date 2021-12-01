@@ -5,9 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,21 +14,11 @@ import java.util.List;
 @JacksonXmlRootElement(localName = "Tags")
 @Fluent
 public final class BlobTags {
-    private static final class TagSetWrapper {
-        @JacksonXmlProperty(localName = "Tag")
-        private final List<BlobTag> items;
-
-        @JsonCreator
-        private TagSetWrapper(@JacksonXmlProperty(localName = "Tag") List<BlobTag> items) {
-            this.items = items;
-        }
-    }
-
     /*
      * The BlobTagSet property.
      */
-    @JsonProperty(value = "TagSet", required = true)
-    private TagSetWrapper blobTagSet;
+    @JacksonXmlElementWrapper(localName = "TagSet")
+    private List<BlobTag> blobTagSet = new ArrayList<>();
 
     /**
      * Get the blobTagSet property: The BlobTagSet property.
@@ -38,10 +26,7 @@ public final class BlobTags {
      * @return the blobTagSet value.
      */
     public List<BlobTag> getBlobTagSet() {
-        if (this.blobTagSet == null) {
-            this.blobTagSet = new TagSetWrapper(new ArrayList<BlobTag>());
-        }
-        return this.blobTagSet.items;
+        return this.blobTagSet;
     }
 
     /**
@@ -51,7 +36,7 @@ public final class BlobTags {
      * @return the BlobTags object itself.
      */
     public BlobTags setBlobTagSet(List<BlobTag> blobTagSet) {
-        this.blobTagSet = new TagSetWrapper(blobTagSet);
+        this.blobTagSet = blobTagSet;
         return this;
     }
 }

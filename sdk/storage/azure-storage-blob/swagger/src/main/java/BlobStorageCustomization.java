@@ -1,12 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.customization;
-
 import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
-import com.azure.autorest.customization.MethodCustomization;
 import com.azure.autorest.customization.PackageCustomization;
 import com.azure.autorest.customization.PropertyCustomization;
 import org.slf4j.Logger;
@@ -36,18 +33,23 @@ public class BlobStorageCustomization extends Customization {
             "the individual blocks were validated when each was uploaded. The value does not need to be base64 " +
             "encoded as the SDK will perform the encoding.");
 
+        ClassCustomization blobServiceProperties = models.getClass("BlobServiceProperties");
+        blobServiceProperties.getProperty("hourMetrics").removeAnnotation("@JsonProperty")
+            .addAnnotation("@JsonProperty(value = \"HourMetrics\")");
+        blobServiceProperties.getProperty("minuteMetrics").removeAnnotation("@JsonProperty")
+            .addAnnotation("@JsonProperty(value = \"MinuteMetrics\")");
+        blobServiceProperties.getProperty("deleteRetentionPolicy").removeAnnotation("@JsonProperty")
+            .addAnnotation("@JsonProperty(value = \"DeleteRetentionPolicy\")");
+
         ClassCustomization blobContainerEncryptionScope = models.getClass("BlobContainerEncryptionScope");
-        PropertyCustomization defaultEncryptionScope = blobContainerEncryptionScope.getProperty("defaultEncryptionScope");
-        defaultEncryptionScope.removeAnnotation("@JsonProperty(value = \"DefaultEncryptionScope\")")
-            .addAnnotation("@JsonProperty(value = \"defaultEncryptionScope\")");
-        PropertyCustomization encryptionScopeOverridePrevented = blobContainerEncryptionScope.getProperty("encryptionScopeOverridePrevented");
-        encryptionScopeOverridePrevented.removeAnnotation("@JsonProperty(value = \"EncryptionScopeOverridePrevented\")")
-            .addAnnotation("@JsonProperty(value = \"encryptionScopeOverridePrevented\")");
-        blobContainerEncryptionScope.getMethod("isEncryptionScopeOverridePrevented").setReturnType("boolean", "return Boolean.TRUE.equals(%s);", true);
+        blobContainerEncryptionScope.getMethod("isEncryptionScopeOverridePrevented")
+            .setReturnType("boolean", "return Boolean.TRUE.equals(%s);", true);
 
         ClassCustomization blobContainerItemProperties = models.getClass("BlobContainerItemProperties");
-        blobContainerItemProperties.getMethod("isEncryptionScopeOverridePrevented").setReturnType("boolean", "return Boolean.TRUE.equals(%s);", true);
-        blobContainerItemProperties.getMethod("setIsImmutableStorageWithVersioningEnabled").rename("setImmutableStorageWithVersioningEnabled");
+        blobContainerItemProperties.getMethod("isEncryptionScopeOverridePrevented")
+            .setReturnType("boolean", "return Boolean.TRUE.equals(%s);", true);
+        blobContainerItemProperties.getMethod("setIsImmutableStorageWithVersioningEnabled")
+            .rename("setImmutableStorageWithVersioningEnabled");
 
         // Block - Generator
         ClassCustomization block = models.getClass("Block");

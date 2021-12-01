@@ -31,8 +31,7 @@ default-http-exception-type: com.azure.storage.file.share.models.ShareStorageExc
 models-subpackage: implementation.models
 custom-types-subpackage: models
 custom-types: HandleItem,ShareFileHttpHeaders,ShareServiceProperties,ShareCorsRule,Range,FileRange,ClearRange,ShareFileRangeList,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders,LeaseDurationType,LeaseStateType,LeaseStatusType,PermissionCopyModeType,ShareAccessTier,ShareRootSquash,ShareRetentionPolicy,ShareProtocolSettings,ShareSmbSettings,SmbMultichannel
-customization-jar-path: target/azure-storage-file-share-customization-1.0.0-beta.1.jar
-customization-class: com.azure.storage.file.share.customization.ShareStorageCustomization
+customization-class: src/main/java/ShareStorageCustomization.java
 ```
 
 ### Query Parameters
