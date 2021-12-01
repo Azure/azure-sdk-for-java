@@ -18,6 +18,12 @@
 
   <name>Microsoft Azure client library for App Configuration performance tests</name>
 
+  <properties>
+    <codesnippet.skip>false</codesnippet.skip>
+    <javadocDoclet></javadocDoclet>
+    <javadocDocletOptions></javadocDocletOptions>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>

@@ -47,9 +47,10 @@
       --add-exports com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.fluentcore.model.implementation=ALL-UNNAMED
 
       --add-opens com.azure.resourcemanager.appplatform/com.azure.resourcemanager.appplatform=ALL-UNNAMED
-
-      --add-reads com.azure.resourcemanager.appplatform=java.xml.bind
     </javaModulesSurefireArgLine>
+    <codesnippet.skip>false</codesnippet.skip>
+    <javadocDoclet></javadocDoclet>
+    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <developers>
@@ -97,7 +98,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.11.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.11.3</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

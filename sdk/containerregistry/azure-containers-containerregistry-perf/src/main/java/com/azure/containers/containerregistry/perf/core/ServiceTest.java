@@ -44,10 +44,15 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
     final String subscriptionId;
     final TokenCredential tokenCredential;
 
+    /**
+     * The ContainerRegistryClient used in a performance test.
+     */
     protected ContainerRegistryClient containerRegistryClient;
+
+    /**
+     * The ContainerRegistryAsyncClient used in an asynchronous performance test.
+     */
     protected ContainerRegistryAsyncClient containerRegistryAsyncClient;
-
-
 
     /**
      * The base class for Azure Container Registry performance tests.
@@ -90,6 +95,13 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
         return configurationValue;
     }
 
+    /**
+     * Imports an image into a Container Registry.
+     *
+     * @param repositoryName The Container Registry repository name.
+     * @param tags Tags to associate with the image.
+     * @return An asynchronous response that only indicates completion.
+     */
     protected Mono<Void> importImageAsync(String repositoryName, List<String> tags) {
         tags = tags.stream().map(tag -> String.format("%1$s:%2$s", repositoryName, tag)).collect(Collectors.toList());
 

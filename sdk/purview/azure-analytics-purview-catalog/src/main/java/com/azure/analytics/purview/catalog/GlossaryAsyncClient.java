@@ -109,8 +109,7 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return all glossaries registered with Atlas.
      */
     @Generated
@@ -243,8 +242,7 @@ public final class GlossaryAsyncClient {
      * @param atlasGlossary Glossary definition, terms &amp;amp; categories can be anchored to a glossary. Using the
      *     anchor attribute when creating the Term/Category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossary.
      */
     @Generated
@@ -389,8 +387,7 @@ public final class GlossaryAsyncClient {
      *
      * @param glossaryCategory An array of glossary category definitions to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return an array of glossary category created successfully in bulk.
      */
     @Generated
@@ -532,8 +529,7 @@ public final class GlossaryAsyncClient {
      * @param glossaryCategory The glossary category definition. A category must be anchored to a Glossary when
      *     creating. Optionally, terms belonging to the category and the hierarchy can also be defined during creation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossaryCategory.
      */
     @Generated
@@ -611,8 +607,7 @@ public final class GlossaryAsyncClient {
      *
      * @param categoryGuid The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return specific glossary category by its GUID.
      */
     @Generated
@@ -754,8 +749,7 @@ public final class GlossaryAsyncClient {
      * @param categoryGuid The globally unique identifier of the category.
      * @param glossaryCategory The glossary category to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossaryCategory.
      */
     @Generated
@@ -771,8 +765,7 @@ public final class GlossaryAsyncClient {
      *
      * @param categoryGuid The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @Generated
@@ -859,8 +852,7 @@ public final class GlossaryAsyncClient {
      * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute values for
      *     partial update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossaryCategory.
      */
     @Generated
@@ -903,8 +895,7 @@ public final class GlossaryAsyncClient {
      *
      * @param categoryGuid The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return all related categories (parent and children).
      */
     @Generated
@@ -946,8 +937,7 @@ public final class GlossaryAsyncClient {
      *
      * @param categoryGuid The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return all terms associated with the specific category.
      */
     @Generated
@@ -1273,8 +1263,7 @@ public final class GlossaryAsyncClient {
      * @param glossaryTerm The glossary term definition. A term must be anchored to a Glossary at the time of creation.
      *     Optionally it can be categorized as well.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossaryTerm.
      */
     @Generated
@@ -1448,8 +1437,7 @@ public final class GlossaryAsyncClient {
      *
      * @param termGuid The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return a specific glossary term by its GUID.
      */
     @Generated
@@ -1766,8 +1754,7 @@ public final class GlossaryAsyncClient {
      * @param termGuid The globally unique identifier for glossary term.
      * @param glossaryTerm The glossary term to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossaryTerm.
      */
     @Generated
@@ -1782,8 +1769,7 @@ public final class GlossaryAsyncClient {
      *
      * @param termGuid The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @Generated
@@ -1966,8 +1952,7 @@ public final class GlossaryAsyncClient {
      * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute values to be
      *     updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossaryTerm.
      */
     @Generated
@@ -2296,8 +2281,7 @@ public final class GlossaryAsyncClient {
      *
      * @param glossaryTerm An array of glossary term definitions to be created in bulk.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return if bulk glossary terms creation was successful.
      */
     @Generated
@@ -2348,8 +2332,7 @@ public final class GlossaryAsyncClient {
      *
      * @param termGuid The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return all related objects assigned with the specified term.
      */
     @Generated
@@ -2391,8 +2374,7 @@ public final class GlossaryAsyncClient {
      * @param termGuid The globally unique identifier for glossary term.
      * @param relatedObjectIds An array of related object IDs to which the term has to be associated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @Generated
@@ -2434,8 +2416,7 @@ public final class GlossaryAsyncClient {
      * @param termGuid The globally unique identifier for glossary term.
      * @param relatedObjectIds An array of related object IDs from which the term has to be dissociated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @Generated
@@ -2478,8 +2459,7 @@ public final class GlossaryAsyncClient {
      * @param termGuid The globally unique identifier for glossary term.
      * @param relatedObjectIds An array of related object IDs from which the term has to be dissociated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @Generated
@@ -2525,8 +2505,7 @@ public final class GlossaryAsyncClient {
      *
      * @param termGuid The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return all related terms for a specific term by its GUID.
      */
     @Generated
@@ -2599,8 +2578,7 @@ public final class GlossaryAsyncClient {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return a specific Glossary by its GUID.
      */
     @Generated
@@ -2733,8 +2711,7 @@ public final class GlossaryAsyncClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param updatedGlossary The glossary definition to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossary.
      */
     @Generated
@@ -2749,8 +2726,7 @@ public final class GlossaryAsyncClient {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @Generated
@@ -2839,8 +2815,7 @@ public final class GlossaryAsyncClient {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the categories belonging to a specific glossary.
      */
     @Generated
@@ -2879,8 +2854,7 @@ public final class GlossaryAsyncClient {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the category headers belonging to a specific glossary.
      */
     @Generated
@@ -3102,8 +3076,7 @@ public final class GlossaryAsyncClient {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return a specific glossary with detailed information.
      */
     @Generated
@@ -3194,8 +3167,7 @@ public final class GlossaryAsyncClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute values.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossary.
      */
     @Generated
@@ -3374,8 +3346,7 @@ public final class GlossaryAsyncClient {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return terms belonging to a specific glossary.
      */
     @Generated
@@ -3417,8 +3388,7 @@ public final class GlossaryAsyncClient {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return term headers belonging to a specific glossary.
      */
     @Generated
@@ -3476,8 +3446,7 @@ public final class GlossaryAsyncClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param file The csv file to import glossary terms from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return status of import csv operation.
      */
     @Generated
@@ -3535,8 +3504,7 @@ public final class GlossaryAsyncClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param file The csv file to import glossary terms from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return status of import csv operation.
      */
     @Generated
@@ -3594,8 +3562,7 @@ public final class GlossaryAsyncClient {
      * @param glossaryName The name of the glossary.
      * @param file The csv file to import glossary terms from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return status of import csv operation.
      */
     @Generated
@@ -3654,8 +3621,7 @@ public final class GlossaryAsyncClient {
      * @param glossaryName The name of the glossary.
      * @param file The csv file to import glossary terms from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return status of import csv operation.
      */
     @Generated
@@ -3697,8 +3663,7 @@ public final class GlossaryAsyncClient {
      *
      * @param operationGuid The globally unique identifier for async operation/job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the status of import csv operation.
      */
     @Generated
@@ -3737,8 +3702,7 @@ public final class GlossaryAsyncClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param termGuids An array of term guids.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @Generated
@@ -3917,8 +3881,7 @@ public final class GlossaryAsyncClient {
      *
      * @param glossaryName The name of the glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return terms by glossary name.
      */
     @Generated

@@ -6,7 +6,6 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupResourceEncryptionConfigResourceInner;
 
 /** Resource collection API of BackupResourceEncryptionConfigs. */
 public interface BackupResourceEncryptionConfigs {
@@ -20,7 +19,7 @@ public interface BackupResourceEncryptionConfigs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    BackupResourceEncryptionConfigResource get(String vaultName, String resourceGroupName);
+    BackupResourceEncryptionConfigExtendedResource get(String vaultName, String resourceGroupName);
 
     /**
      * Fetches Vault Encryption config.
@@ -33,7 +32,7 @@ public interface BackupResourceEncryptionConfigs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    Response<BackupResourceEncryptionConfigResource> getWithResponse(
+    Response<BackupResourceEncryptionConfigExtendedResource> getWithResponse(
         String vaultName, String resourceGroupName, Context context);
 
     /**
@@ -46,7 +45,7 @@ public interface BackupResourceEncryptionConfigs {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void update(String vaultName, String resourceGroupName, BackupResourceEncryptionConfigResourceInner parameters);
+    void update(String vaultName, String resourceGroupName, BackupResourceEncryptionConfigResource parameters);
 
     /**
      * Updates Vault encryption config.
@@ -61,8 +60,5 @@ public interface BackupResourceEncryptionConfigs {
      * @return the response.
      */
     Response<Void> updateWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        BackupResourceEncryptionConfigResourceInner parameters,
-        Context context);
+        String vaultName, String resourceGroupName, BackupResourceEncryptionConfigResource parameters, Context context);
 }

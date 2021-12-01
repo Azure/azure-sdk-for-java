@@ -28,6 +28,7 @@ sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 context-client-method-parameter: true
 optional-constant-as-enum: true
+default-http-exception-type: com.azure.storage.blob.models.BlobStorageException
 models-subpackage: implementation.models
 custom-types: BlobAccessPolicy,AccessTier,AccountKind,ArchiveStatus,BlobHttpHeaders,BlobContainerItem,BlobContainerItemProperties,BlobContainerEncryptionScope,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,ClearRange,CopyStatusType,BlobCorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,BlobAnalyticsLogging,BlobMetrics,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,BlobRetentionPolicy,SequenceNumberActionType,BlobSignedIdentifier,SkuName,StaticWebsite,BlobErrorCode,BlobServiceStatistics,SyncCopyStatusType,UserDelegationKey,BlobQueryHeaders,GeoReplicationStatus,BlobImmutabilityPolicyMode
 custom-types-subpackage: models
@@ -543,13 +544,13 @@ directive:
     $.DenyEncryptionScopeOverride["x-ms-parameter-grouping"]["name"] = "blob-container-encryption-scope";
 ```
 
-### Rename cpk-scope-info to encryption-scope	
-``` yaml	
-directive:	
-- from: swagger-document	
-  where: $.parameters	
-  transform: >	
-    $.EncryptionScope["x-ms-parameter-grouping"]["name"] = "encryption-scope";	
+### Rename cpk-scope-info to encryption-scope
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters
+  transform: >
+    $.EncryptionScope["x-ms-parameter-grouping"]["name"] = "encryption-scope";
 ```
 
 ### Block size int to long transition

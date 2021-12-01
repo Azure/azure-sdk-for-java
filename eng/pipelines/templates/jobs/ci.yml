@@ -28,7 +28,13 @@ parameters:
   - name: MatrixReplace
     type: object
     default: []
-
+  - name: SkipAggregateReports
+    type: boolean
+    default: false
+  - name: PreBuildSteps
+    type: object
+    default: []
+    
 jobs:
   - job: 'Build'
 
@@ -68,6 +74,8 @@ jobs:
         displayName: 'Use Python 3.6'
         inputs:
           versionSpec: '3.6'
+
+      - ${{ parameters.PreBuildSteps }}
 
       # This step needs to run before we update to using dev versions otherwise dependency
       # check in the script will not fully work because the versions will mismatch
@@ -318,3 +326,5 @@ jobs:
         Artifacts: ${{ parameters.Artifacts }}
         AdditionalModules: ${{ parameters.AdditionalModules }}
         PreTestSteps: ${{ parameters.PreTestSteps }}
+        SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
+        PreBuildSteps: ${{ parameters.PreBuildSteps }}
