@@ -28,6 +28,12 @@ public final class LastUpdateStatus extends ExpandableStringEnum<LastUpdateStatu
     /** Static value Succeeded for LastUpdateStatus. */
     public static final LastUpdateStatus SUCCEEDED = fromString("Succeeded");
 
+    /** Static value Initialized for LastUpdateStatus. */
+    public static final LastUpdateStatus INITIALIZED = fromString("Initialized");
+
+    /** Static value FirstInitialization for LastUpdateStatus. */
+    public static final LastUpdateStatus FIRST_INITIALIZATION = fromString("FirstInitialization");
+
     /**
      * Creates or finds a LastUpdateStatus from its string representation.
      *

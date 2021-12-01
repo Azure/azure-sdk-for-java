@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -16,7 +16,7 @@ import java.util.Map;
 /** IaaS VM workload-specific backup item representing the Classic Compute VM. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "protectedItemType")
 @JsonTypeName("Microsoft.ClassicCompute/virtualMachines")
-@Immutable
+@Fluent
 public final class AzureIaaSClassicComputeVMProtectedItem extends AzureIaaSvmProtectedItem {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureIaaSClassicComputeVMProtectedItem.class);
 
@@ -194,6 +194,14 @@ public final class AzureIaaSClassicComputeVMProtectedItem extends AzureIaaSvmPro
     @Override
     public AzureIaaSClassicComputeVMProtectedItem withIsRehydrate(Boolean isRehydrate) {
         super.withIsRehydrate(isRehydrate);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureIaaSClassicComputeVMProtectedItem withResourceGuardOperationRequests(
+        List<String> resourceGuardOperationRequests) {
+        super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
         return this;
     }
 
