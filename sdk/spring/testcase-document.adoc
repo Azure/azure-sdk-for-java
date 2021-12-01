@@ -1,15 +1,16 @@
 = Spring Cloud Azure Test cases Scenarios
+:toc: right
 
 == Test blob health indicator returns the up state
 The Azure actuator starter should work well with storage blob indicator when using Azure storage blob starter, the storage blob status should be healthy.
 
-=== Tags
+Tags::
 Storage blob, Indicator
 
-=== Test Prerequisites
+Test Prerequisites::
 * Azure Storage Blob instance exists. +
 
-=== Steps
+Steps::
 * Add `spring-cloud-azure-starter-storage-blob` and `spring-cloud-azure-starter-actuator` dependencies. +
 * Configure the below combinations for storage blob properties. +
 [source, yaml]
@@ -30,11 +31,11 @@ management:
       show-details: always
 ----
 
-=== Expected Result
+Expected Result::
 * The blob health indicator bean should be configured. +
 * The up status should be returned from the storage blob health endpoint. +
 
-=== How Spring test such case?
+How Spring test such case?::
 There are 2 UTs for reference:
 
 * https://github.com/moarychan/spring-boot/blob/dac63fc3e52ecb36677965b97b96ebbf1a7871c8/spring-boot-project/spring-boot-actuator-autoconfigure/src/test/java/org/springframework/boot/actuate/autoconfigure/redis/RedisHealthContributorAutoConfigurationTests.java#L44[RedisHealthContributorAutoConfigurationTests] in spring-boot-actuator-autoconfigure +
@@ -42,22 +43,22 @@ Use `ApplicationContextRunner`  with Redis related auto-configuration to validat
 * https://github.com/moarychan/spring-boot/blob/49baacbc1cb02a59efce1fe1698166de92d41d67/spring-boot-project/spring-boot-actuator/src/test/java/org/springframework/boot/actuate/redis/RedisHealthIndicatorTests.java#L50[RedisHealthIndicatorTests] in spring-boot-actuator +
 Mock `RedisConnection` and `RedisConnectionFactory` to make the redis connection's `info` method return pre-defined data, the status of the `Health` will be up.
 
-=== Is UT enough?
+Is UT enough?::
 Yes
 
-=== Current use cases
+Current use cases::
 https://github.com/Azure/azure-sdk-for-java/blob/8c6650a298b51cefe559c470b8f818bfa53a8992/sdk/spring/azure-spring-boot-test-storage/src/test/java/com/azure/spring/test/storage/StorageActuatorIT.java#L25[testBlobStorageActuatorHealth]
 
 == Test blob health indicator returns the down state
 The Azure actuator starter should work well with storage blob indicator when using Azure storage blob starter, the storage blob status should be down when blob service client does not respond data normally.
 
-=== Tags
+Tags::
 Storage blob, Indicator
 
-=== Test Prerequisites
+Test Prerequisites::
 * Azure Storage Blob instance exists. +
 
-=== Steps
+Steps::
 * Add `spring-cloud-azure-starter-storage-blob` and `spring-cloud-azure-starter-actuator` dependencies. +
 * Configure the below combinations for storage blob properties. +
 
@@ -79,12 +80,12 @@ management:
       show-details: always
 ----
 
-=== Expected Result
+Expected Result::
 * The blob health indicator bean should be configured. +
 * The application should start up normally. +
 * The down status should be returned from the storage blob health endpoint. +
 
-=== How Spring test such case?
+How Spring test such case?::
 There are 2 UTs for reference:
 
 * https://github.com/moarychan/spring-boot/blob/dac63fc3e52ecb36677965b97b96ebbf1a7871c8/spring-boot-project/spring-boot-actuator-autoconfigure/src/test/java/org/springframework/boot/actuate/autoconfigure/redis/RedisHealthContributorAutoConfigurationTests.java#L44[RedisHealthContributorAutoConfigurationTests] in spring-boot-actuator-autoconfigure +
@@ -92,22 +93,22 @@ Use `ApplicationContextRunner`  with Redis related auto-configuration to validat
 * https://github.com/moarychan/spring-boot/blob/49baacbc1cb02a59efce1fe1698166de92d41d67/spring-boot-project/spring-boot-actuator/src/test/java/org/springframework/boot/actuate/redis/RedisHealthIndicatorTests.java#L62[RedisHealthIndicatorTests] in spring-boot-actuator +
 Mock `RedisConnection` and `RedisConnectionFactory` to make the redis connection's `info` method return pre-defined data, the status of the `Health` will be down.
 
-=== Is UT enough?
+Is UT enough?::
 Yes
 
-=== Current use cases
+Current use cases::
 N/A
 
 == Test fileshare health indicator returns the up state
 The Azure actuator starter should work well with storage fileshare indicator when using Azure storage fileshare starter, the storage fileshare status should be healthy.
 
-=== Tags
+Tags::
 Storage fileshare, Indicator
 
-=== Test Prerequisites
+Test Prerequisites::
 * Azure Storage File instance exists. +
 
-=== Steps
+Steps::
 * Add `spring-cloud-azure-starter-storage-fileshare` and `spring-cloud-azure-starter-actuator` dependencies. +
 * Configure the below combinations for storage fileshare properties. +
 
@@ -129,29 +130,29 @@ management:
       show-details: always
 ----
 
-=== Expected Result
+Expected Result::
 * The fileshare health indicator bean should be configured. +
 * The up status should be returned from the storage filesahre health endpoint. +
 
-=== How Spring test such case?
+How Spring test such case?::
 Same with link:testcase-document.adoc#test-fileshare-health-indicator-returns-the-up-state[Test blob health indicator returns the up state]
 
-=== Is UT enough?
+Is UT enough?::
 Yes
 
-=== Current use cases
+Current use cases::
 https://github.com/Azure/azure-sdk-for-java/blob/8c6650a298b51cefe559c470b8f818bfa53a8992/sdk/spring/azure-spring-boot-test-storage/src/test/java/com/azure/spring/test/storage/StorageActuatorIT.java#L54[testFileStorageActuatorHealth]
 
 == Test fileshare health indicator returns the down state
 The Azure actuator starter should work well with storage fileshare indicator when using Azure storage fileshare starter, the storage file status should be down when file service client does not respond data normally.
 
-=== Tags
+Tags::
 Storage fileshare, Indicator
 
-=== Test Prerequisites
+Test Prerequisites::
 * Azure Storage account instance exists. +
 
-=== Steps
+Steps::
 * Add `spring-cloud-azure-starter-storage-fileshare` and `spring-cloud-azure-starter-actuator` dependencies. +
 * Configure the below combinations for storage fileshare properties. +
 
@@ -173,30 +174,30 @@ management:
       show-details: always
 ----
 
-=== Expected Result
+Expected Result::
 * The fileshare health indicator bean should be configured. +
 * The application should start up normally. +
 * The down status should be returned from the storage fileshare health endpoint. +
 
-=== How Spring test such case?
+How Spring test such case?::
 Same with link:testcase-document.adoc#test-blob-health-indicator-returns-the-down-state[Test blob health indicator returns the down state]
 
-=== Is UT enough?
+Is UT enough?::
 Yes
 
-=== Current use cases
+Current use cases::
 N/A
 
 == Use storage blob starter dependency to write and read data
 Use Azure storage blob dependency to write, then read the testing data normally.
 
-=== Tags
+Tags::
 Storage Blob, Data Plane
 
-=== Test Prerequisites
+Test Prerequisites::
 * Azure Storage Blob instance exists. +
 
-=== Steps
+Steps::
 * Add `spring-cloud-azure-starter-storage-blob` dependency. +
 * Configure the below combinations for storage blob properties. +
 
@@ -208,12 +209,12 @@ spring.cloud.azure.storage.blob.endpoint=${AZURE_STORAGE_BLOB_ENDPOINT}
 my-blob=${AZURE_STORAGE_BLOB}
 ----
 
-=== Expected Result
+Expected Result::
 * The beans of storage blob resolver, builder factory, service client should be configured. +
 * The data for the testing resource should be written in Azure Storage Blob service successfully. +
 * The read data from Azure Storage Blob service should be the same with testing resources. +
 
-=== How Spring test such case?
+How Spring test such case?::
 There are 3 UTs for reference:
 
 * https://github.com/moarychan/spring-framework/blob/c8f430ee9188ad082bf76e5b05877d00bafe1a82/spring-core/src/test/java/org/springframework/core/io/support/PathMatchingResourcePatternResolverTests.java#L69[PathMatchingResourcePatternResolverTests] in spring-core +
@@ -222,22 +223,22 @@ Resolve the `azure-blob:xxx` resource using `AzureStorageBlobProtocolResolver`, 
 * https://github.com/moarychan/spring-boot/blob/4009acf025b3a6926c6eeedd38618d2fd67210cc/spring-boot-project/spring-boot-autoconfigure/src/test/java/org/springframework/boot/autoconfigure/cache/CacheAutoConfigurationTests.java#L274[CacheAutoConfigurationTests] in spring-boot-autoconfigure
 Configure necessary properties, and validate bean creations from `RedisCacheConfiguration`.
 
-=== Is UT enough?
+Is UT enough?::
 Yes
 
-=== Current use cases
+Current use cases::
 https://github.com/Azure/azure-sdk-for-java/blob/8c6650a298b51cefe559c470b8f818bfa53a8992/sdk/spring/azure-spring-boot-test-storage/src/test/java/com/azure/spring/test/storage/StorageWriteIT.java#L28[testWriteBlobStorage]
 
 == Use storage fileshare starter dependency to write and read data
 Use Azure file share starter dependency to write, then read the testing data normally.
 
-=== Tags
+Tags::
 Storage Fileshare, Data Plane
 
-=== Test Prerequisites
+Test Prerequisites::
 * Azure Storage File instance exists. +
 
-=== Steps
+Steps::
 * Add `spring-cloud-azure-starter-storage-fileshare` dependency. +
 * Configure the below combinations for storage fileshare properties. +
 
@@ -249,30 +250,30 @@ spring.cloud.azure.storage.fileshare.endpoint=${AZURE_STORAGE_FILE_ENDPOINT}
 my-file=${AZURE_STORAGE_FILE}
 ----
 
-=== Expected Result
+Expected Result::
 * The beans of storage fileshare resolver, builder factory, service client should be configured. +
 * The data for the testing resource should be written in Azure Storage file service successfully. +
 * The read data from Azure Storage File service should be the same with testing resources. +
 
-=== How Spring test such case?
+How Spring test such case?::
 Same with link:testcase-document.adoc#use-storage-blob-starter-dependency-to-write-and-read-data[Use storage blob starter dependency to write and read data]
 
-=== Is UT enough?
+Is UT enough?::
 Yes
 
-=== Current use cases
+Current use cases::
 https://github.com/Azure/azure-sdk-for-java/blob/8c6650a298b51cefe559c470b8f818bfa53a8992/sdk/spring/azure-spring-boot-test-storage/src/test/java/com/azure/spring/test/storage/StorageWriteIT.java#39[testWriteFileStorage]
 
 == Use service bus jms starter to send and receive message through topic in standard pricing tier
 Use service bus jms starter dependency to send message to standard service bus topic, and receive the same message from the topic.
 
-=== Tags
+Tags::
 Service Bus, JMS, Topic, Non-premium
 
-=== Test Prerequisites
+Test Prerequisites::
 Standard pricing Azure Service Bus topic exists.
 
-=== Steps
+Steps::
 * Add `azure-spring-boot-test-servicebus-jms` dependency. +
 * Configure the below combinations for standard service bus properties. +
 
@@ -285,35 +286,35 @@ spring.jms.servicebus.topic-client-id=${random.value}
 
 * Send test message to topic. +
 
-=== Expected Result
+Expected Result::
 * The non-premium `ConnectionFactory` bean should be configured. +
 * Send the test message to standard service bus topic. +
 * Receive the same test message from standard service bus topic. +
 
-=== How Spring test such case?
+How Spring test such case?::
 * Mock `ConnectionFactory`, `Connection`, etc. +
 
 link:https://github.com/moarychan/spring-framework/blob/d84ca2ba90d27a7c63d7b35a6259b5b9cf341118/spring-jms/src/test/java/org/springframework/jms/core/JmsTemplateTests.java#L311[testSendDefaultDestination] in spring-jms +
 
 link:https://github.com/moarychan/spring-framework/blob/d84ca2ba90d27a7c63d7b35a6259b5b9cf341118/spring-jms/src/test/java/org/springframework/jms/core/JmsTemplateTests.java#L459[testReceiveDestination] in spring-jms +
 
-=== Is UT enough?
+Is UT enough?::
 Yes
 
-=== Current use cases
+Current use cases::
 
 link:https://github.com/Azure/azure-sdk-for-java/blob/66986d7ebf015fc013b8be994de2e1b574b54386/sdk/spring/azure-spring-boot-test-servicebus-jms/src/test/java/com/azure/spring/sample/servicebus/jms/standard/StandardServiceBusJmsIT.java#L29[integrationTestTopic]
 
 == Use service bus jms starter to send and receive message through queue in standard pricing tier
 Use service bus jms starter dependency to send message to standard service bus queue, and receive the same message from the queue.
 
-=== Tags
+Tags::
 Service Bus, JMS, Queue, Non-premium
 
-=== Test Prerequisites
+Test Prerequisites::
 Standard pricing Azure Service Bus queue exists.
 
-=== Steps
+Steps::
 * Add `azure-spring-boot-test-servicebus-jms` dependency. +
 * Configure the below combinations for standard service bus properties. +
 
@@ -325,31 +326,31 @@ spring.jms.servicebus.topic-client-id=${random.value}
 ----
 * Send test message to the queue. +
 
-=== Expected Result
+Expected Result::
 * The non-premium `ConnectionFactory` bean should be configured. +
 * Send the test message to standard service bus queue. +
 * Receive the same test message from standard service bus queue. +
 
-=== How Spring test such case?
+How Spring test such case?::
 Same with link:testcase-document.adoc#use-service-bus-jms-starter-to-send-and-receive-message-through-topic-in-standard-pricing-tier[Use service bus jms starter to send and receive message through topic in standard pricing tier]
 
-=== Is UT enough?
+Is UT enough?::
 Yes
 
-=== Current use cases
+Current use cases::
 
 link:https://github.com/Azure/azure-sdk-for-java/blob/66986d7ebf015fc013b8be994de2e1b574b54386/sdk/spring/azure-spring-boot-test-servicebus-jms/src/test/java/com/azure/spring/sample/servicebus/jms/standard/StandardServiceBusJmsIT.java#L21[integrationTestQueue]
 
 == Use service bus jms starter to send and receive message through topic in premium pricing tier
 Use service bus jms starter dependency to send message to premium service bus topic, and receive the same message from the topic.
 
-=== Tags
+Tags::
 Service Bus, JMS, Topic, Premium
 
-=== Test Prerequisites
+Test Prerequisites::
 Premium pricing Azure Service Bus topic exists.
 
-=== Steps
+Steps::
 * Add `azure-spring-boot-test-servicebus-jms` dependency. +
 * Configure the below combinations for standard service bus properties. +
 
@@ -362,30 +363,30 @@ spring.jms.servicebus.topic-client-id=${random.value}
 
 * Send test message to topic. +
 
-=== Expected Result
+Expected Result::
 * The premium `ConnectionFactory` bean should be configured. +
 * Send the test message to premium service bus topic. +
 * Receive the same test message from premium service bus topic. +
 
-=== How Spring test such case?
+How Spring test such case?::
 Same with link:testcase-document.adoc#use-service-bus-jms-starter-to-send-and-receive-message-through-topic-in-standard-pricing-tier[Use service bus jms starter to send and receive message through topic in standard pricing tier]
 
-=== Is UT enough?
+Is UT enough?::
 Yes
 
-=== Current use cases
+Current use cases::
 link:https://github.com/Azure/azure-sdk-for-java/blob/66986d7ebf015fc013b8be994de2e1b574b54386/sdk/spring/azure-spring-boot-test-servicebus-jms/src/test/java/com/azure/spring/sample/servicebus/jms/premium/PremiumServiceBusJmsIT.java[integrationTestQueue, integrationTestTopic]
 
 == Use service bus jms starter to send and receive message through queue in premium pricing tier
 Use service bus jms starter dependency to send message to premium service bus queue, and receive the same message from the queue.
 
-=== Tags
+Tags::
 Service Bus, JMS, Queue
 
-=== Test Prerequisites
+Test Prerequisites::
 Premium pricing Azure Service Bus queue exists.
 
-=== Steps
+Steps::
 * Add `azure-spring-boot-test-servicebus-jms` dependency. +
 * Configure the below combinations for standard service bus properties. +
 
@@ -398,30 +399,30 @@ spring.jms.servicebus.topic-client-id=${random.value}
 
 * Send test message to queue. +
 
-=== Expected Result
+Expected Result::
 * The premium `ConnectionFactory` bean should be configured. +
 * Send the test message to premium service bus queue. +
 * Receive the same test message from premium service bus queue. +
 
-=== How Spring test such case?
+How Spring test such case?::
 Same with link:testcase-document.adoc#use-service-bus-jms-starter-to-send-and-receive-message-through-topic-in-standard-pricing-tier[Use service bus jms starter to send and receive message through topic in standard pricing tier]
 
-=== Is UT enough?
+Is UT enough?::
 Yes
 
-=== Current use cases
+Current use cases::
 link:https://github.com/Azure/azure-sdk-for-java/blob/66986d7ebf015fc013b8be994de2e1b574b54386/sdk/spring/azure-spring-boot-test-servicebus-jms/src/test/java/com/azure/spring/sample/servicebus/jms/premium/PremiumServiceBusJmsIT.java[integrationTestQueue, integrationTestTopic]
 
 == Test cosmos health indicator returns the up state
 The Azure actuator starter should work well with cosmos indicator when using Spring Cloud Azure Cosmos Starter, the Cosmos status should be healthy.
 
-=== Tags
+Tags::
 Cosmos, Indicator
 
-=== Test Prerequisites
+Test Prerequisites::
 * Azure Cosmos instance exists. +
 
-=== Steps
+Steps::
 * Add `spring-cloud-azure-starter-cosmos` and `spring-cloud-azure-starter-actuator` dependencies. +
 * Configure the below combinations for Cosmos properties. +
 
@@ -441,29 +442,29 @@ management:
       show-details: always
 ----
 
-=== Expected Result
+Expected Result::
 * The Cosmos health indicator bean should be configured. +
 * The up status should be returned from the Cosmos health endpoint. +
 
-=== How Spring test such case?
+How Spring test such case?::
 link:testcase-document.adoc#test-blob-health-indicator-returns-the-up-state[Test blob health indicator returns the up state]
 
-=== Is UT enough?
+Is UT enough?::
 Yes
 
-=== Current use cases
+Current use cases::
 link:https://github.com/Azure/azure-sdk-for-java/blob/996691145f2ade80b5fea71813c4a22e7ef18036/sdk/spring/azure-spring-boot-test-cosmos/src/test/java/com/azure/test/cosmos/CosmosActuatorIT.java#L19[testCosmosSpringBootActuatorHealth]
 
 == Test cosmos health indicator returns the down state
 The Azure actuator starter should work well with Cosmos indicator when using Spring Cloud Azure Cosmos Starter, the Cosmos status should be down when Cosmos service client does not respond data normally.
 
-=== Tags
+Tags::
 Cosmos, Indicator
 
-=== Test Prerequisites
+Test Prerequisites::
 * Azure Cosmos instance exists. +
 
-=== Steps
+Steps::
 * Add `spring-cloud-azure-starter-cosmos` and `spring-cloud-azure-starter-actuator` dependencies. +
 * Configure the below combinations for Cosmos properties. +
 
@@ -485,30 +486,30 @@ management:
 
 * Request the Cosmos health endpoint. +
 
-=== Expected Result
+Expected Result::
 * The Cosmos health indicator bean should be configured. +
 * The application should start up normally. +
 * The down status should be returned from the Cosmos health endpoint. +
 
-=== How Spring test such case?
+How Spring test such case?::
 link:testcase-document.adoc#test-blob-health-indicator-returns-the-down-state[Test blob health indicator returns the down state]
 
-=== Is UT enough?
+Is UT enough?::
 Yes
 
-=== Current use cases
+Current use cases::
 N/A
 
 == Test Spring Cloud Azure Cosmos database operation
 Use Spring Cloud Azure Cosmos Starter dependency, configure minimal properties to enable Cosmos auto-configuration, and operate the database data normally.
 
-=== Tags
+Tags::
 Cosmos, Data Plane
 
-=== Test Prerequisites
+Test Prerequisites::
 * Azure Cosmos instance exists. +
 
-=== Steps
+Steps::
 * Add `spring-cloud-azure-starter-data-cosmos` dependency. +
 * Configure the below combinations for Cosmos properties. +
 
@@ -530,13 +531,13 @@ management:
 
 * Do delete, insert, query action against the database. +
 
-=== Expected Result
+Expected Result::
 * The Cosmos auto-configuration should be configured. +
 * The Spring Data Cosmos auto-configuration should be configured. +
 * The application should start up normally. +
 * The data should change with the operation of the database. +
 
-=== How Spring test such case?
+How Spring test such case?::
 The following 2 aspects can complete the Spring Data Cosmos test: +
 
 * Verify Spring Data Cosmos auto-configuration beans +
@@ -545,10 +546,10 @@ link:https://github.com/moarychan/spring-boot/blob/ef2bcdd3ed9d92b110e86531b7aef
 * Verify repositories auto-configuration beans +
 link:https://github.com/moarychan/spring-boot/blob/c4daff72250a8f301ee602f4fbff558abdbc9629/spring-boot-project/spring-boot-autoconfigure/src/test/java/org/springframework/boot/autoconfigure/data/mongo/MongoRepositoriesAutoConfigurationTests.java#L53[testDefaultRepositoryConfiguration] in spring-boot +
 
-=== Is UT enough?
+Is UT enough?::
 Yes
 
-=== Current use cases
+Current use cases::
 Compared to the Mongo in spring-boot-autoconfigure module, perphaps more scenarios can be added. +
 link:https://github.com/Azure/azure-sdk-for-java/blob/15dda6cdc3219e9128a4d5207cb66d891fd1baf8/sdk/spring/spring-cloud-azure-autoconfigure/src/test/java/com/azure/spring/cloud/autoconfigure/data/cosmos/CosmosDataAutoConfigurationTest.java#L14[CosmosDataAutoConfigurationTest] +
 link:https://github.com/Azure/azure-sdk-for-java/blob/15dda6cdc3219e9128a4d5207cb66d891fd1baf8/sdk/spring/spring-cloud-azure-autoconfigure/src/test/java/com/azure/spring/cloud/autoconfigure/data/cosmos/CosmosRepositoriesAutoConfigurationUnitTest.java#L32[CosmosRepositoriesAutoConfigurationUnitTest] +
@@ -556,13 +557,13 @@ link:https://github.com/Azure/azure-sdk-for-java/blob/15dda6cdc3219e9128a4d5207c
 == Test Keyvault health indicator returns the up state
 The Azure actuator starter should work well with Key Vault indicator when using Spring Cloud Azure Keyvault Secert Starter, the Cosmos status should be healthy.
 
-=== Tags
+Tags::
 Keyvault, Indicator
 
-=== Test Prerequisites
+Test Prerequisites::
 * Azure Keyvault instance exists. +
 
-=== Steps
+Steps::
 * Add `spring-cloud-azure-starter-keyvault-secrets` and `spring-cloud-azure-starter-actuator` dependencies. +
 * Configure the below combinations for Keyvault properties. +
 
@@ -586,29 +587,29 @@ management:
       show-details: always
 ----
 
-=== Expected Result
+Expected Result::
 * The Keyvault health indicator bean should be configured. +
 * The up status should be returned from the Keyvault health endpoint. +
 
-=== How Spring test such case?
+How Spring test such case?::
 link:testcase-document.adoc#test-blob-health-indicator-returns-the-up-state[Test blob health indicator returns the up state]
 
-=== Is UT enough?
+Is UT enough?::
 Yes
 
-=== Current use cases
+Current use cases::
 link:https://github.com/Azure/azure-sdk-for-java/blob/e366d3c3d152761e0fb922b438e2582e77f7ec62/sdk/spring/azure-spring-boot-test-keyvault/src/test/java/com/azure/spring/test/keyvault/KeyVaultActuatorIT.java#L28[testSpringBootActuatorHealth]
 
 == Test Keyvault health indicator returns the down state
 The Azure actuator starter should work well with Keyvault indicator when using Spring Cloud Azure Cosmos Starter, the Keyvault status should be down when Keyvault service client does not respond data normally.
 
-=== Tags
+Tags::
 Keyvault, Indicator
 
-=== Test Prerequisites
+Test Prerequisites::
 * Azure Keyvault instance exists. +
 
-=== Steps
+Steps::
 * Add `spring-cloud-azure-starter-keyvault-secrets` and `spring-cloud-azure-starter-actuator` dependencies. +
 * Configure the below combinations for Keyvault properties. +
 
@@ -638,30 +639,30 @@ management:
 
 * Request the Keyvault health endpoint. +
 
-=== Expected Result
+Expected Result::
 * The Keyvault health indicator bean should be configured. +
 * The application should start up normally. +
 * The down status should be returned from the Keyvault health endpoint. +
 
-=== How Spring test such case?
+How Spring test such case?::
 link:testcase-document.adoc#test-blob-health-indicator-returns-the-down-state[Test blob health indicator returns the down state]
 
-=== Is UT enough?
+Is UT enough?::
 Yes
 
-=== Current use cases
+Current use cases::
 N/A
 
 == Test the default Azure Keyvault property source name that exists
 Use `spring-cloud-azure-starter-keyvault-secrets` dependency to start the application, then the default property source name `azurekv` should be in Spring environment.
 
-=== Tags
+Tags::
 Keyvault, Indicator, Env
 
-=== Test Prerequisites
+Test Prerequisites::
 * Azure Keyvault instance exists. +
 
-=== Steps
+Steps::
 * Add `spring-cloud-azure-starter-keyvault-secrets` dependency. +
 * Configure the below combinations for Keyvault properties. +
 
@@ -691,20 +692,20 @@ management:
 
 * Request the actuator env endpoint. +
 
-=== Expected Result
+Expected Result::
 * The Keyvault health indicator bean should be configured. +
 * The application should start up normally. +
 * The `true` should be returned when checking the property source name is in the Spring environment. +
 
-=== How Spring test such case?
+How Spring test such case?::
 link:https://github.com/moarychan/spring-boot/blob/52ecc1e0dd31738472be7ac120017c7a68ae12f8/spring-boot-project/spring-boot-actuator-autoconfigure/src/test/java/org/springframework/boot/actuate/autoconfigure/env/EnvironmentEndpointAutoConfigurationTests.java#L49[runShouldHaveEndpointBean]
 
-=== Is UT enough?
+Is UT enough?::
 Yes
 
 Use mocking to add the property source, but mocking `SecretClient` is difficult. +
 
-=== Current use cases
+Current use cases::
 
 link:https://github.com/Azure/azure-sdk-for-java/blob/e366d3c3d152761e0fb922b438e2582e77f7ec62/sdk/spring/azure-spring-boot-test-keyvault/src/test/java/com/azure/spring/test/keyvault/KeyVaultActuatorIT.java#L53[testSpringBootActuatorEnv] +
 link:https://github.com/Azure/azure-sdk-for-java/blob/15dda6cdc3219e9128a4d5207cb66d891fd1baf8/sdk/spring/spring-cloud-azure-autoconfigure/src/test/java/com/azure/spring/cloud/autoconfigure/keyvault/env/InitializerTest.java#L26[testAzureKvPropertySourceNotInitialized] +
@@ -712,13 +713,13 @@ link:https://github.com/Azure/azure-sdk-for-java/blob/15dda6cdc3219e9128a4d5207c
 == Test Spring Cloud Azure Keyvault as property source
 Use `spring-cloud-azure-starter-keyvault-secrets` dependency to start the application, the key value can be got from Keyvault property source.
 
-=== Tags
+Tags::
 Keyvault, Data Plane
 
-=== Test Prerequisites
+Test Prerequisites::
 * Azure Keyvault instance exists. +
 
-=== Steps
+Steps::
 * Use `spring-cloud-azure-starter-keyvault-secrets` dependency. +
 * Configure the secert credential using Service Principal credential. +
 * Configure the below combinations for Keyvault properties. +
@@ -741,16 +742,16 @@ spring:
 
 * Check the actual value of the key. +
 
-=== Expected Result
+Expected Result::
 * The actual value of the key should be returned when accessing the key. +
 
-=== How Spring test such case?
+How Spring test such case?::
 link:https://github.com/moarychan/spring-boot/blob/663fd8ce5e4c0a33b5aad8126c30683244cf6871/spring-boot-project/spring-boot/src/test/java/org/springframework/boot/DefaultPropertiesPropertySourceTests.java#L60[createCreatesSource]
 
-=== Is UT enough?
+Is UT enough?::
 Yes
 
-=== Current use cases
+Current use cases::
 link:https://github.com/Azure/azure-sdk-for-java/blob/15dda6cdc3219e9128a4d5207cb66d891fd1baf8/sdk/spring/spring-cloud-azure-autoconfigure/src/test/java/com/azure/spring/cloud/autoconfigure/keyvault/env/KeyVaultPropertySourceUnitTest.java#L47[testGetPropertyNames] +
 link:https://github.com/Azure/azure-sdk-for-java/blob/15dda6cdc3219e9128a4d5207cb66d891fd1baf8/sdk/spring/spring-cloud-azure-autoconfigure/src/test/java/com/azure/spring/cloud/autoconfigure/keyvault/env/KeyVaultPropertySourceUnitTest.java#L55[testGetProperty] +
 link:https://github.com/Azure/azure-sdk-for-java/blob/ccfc66dc168da62f23994bec2813c7d2f0046a68/sdk/spring/azure-spring-boot-test-keyvault/src/test/java/com/azure/spring/test/keyvault/KeyVaultSecretValueIT.java#L75[keyVaultAsPropertySource]
@@ -758,13 +759,13 @@ link:https://github.com/Azure/azure-sdk-for-java/blob/ccfc66dc168da62f23994bec28
 == Test Spring Cloud Azure Keyvault as property source with specific key
 Use `spring-cloud-azure-starter-keyvault-secrets` dependency to start the application, configure the special secert key, the key value can be got from Keyvault property source.
 
-=== Tags
+Tags::
 Keyvault, Data Plane
 
-=== Test Prerequisites
+Test Prerequisites::
 * Azure Keyvault instance exists. +
 
-=== Steps
+Steps::
 * Use `spring-cloud-azure-starter-keyvault-secrets` dependency. +
 * Configure the secert credential using Service Principal credential. +
 * Configure the below combinations for Keyvault properties. +
@@ -790,28 +791,28 @@ spring:
 
 * Check the actual value of the key. +
 
-=== Expected Result
+Expected Result::
 * The actual value of the special key should be returned when accessing the key. +
 
-=== How Spring test such case?
+How Spring test such case?::
 link:https://github.com/moarychan/spring-boot/blob/663fd8ce5e4c0a33b5aad8126c30683244cf6871/spring-boot-project/spring-boot/src/test/java/org/springframework/boot/DefaultPropertiesPropertySourceTests.java#L60[createCreatesSource]
 
-=== Is UT enough?
+Is UT enough?::
 Yes
 
-=== Current use cases
+Current use cases::
 link:https://github.com/Azure/azure-sdk-for-java/blob/ccfc66dc168da62f23994bec2813c7d2f0046a68/sdk/spring/azure-spring-boot-test-keyvault/src/test/java/com/azure/spring/test/keyvault/KeyVaultSecretValueIT.java#L98[keyVaultAsPropertySourceWithSpecificKeys]
 
 == Test Spring Cloud Azure Keyvault as property source in App Service
 Use `spring-cloud-azure-starter-keyvault-secrets` dependency to develop an application and configure the managed identify, then deploy the application into App Service environment, the secert key value can be got from Keyvault property source.
 
-=== Tags
+Tags::
 Keyvault, Data Plane, App Service, Managed Identify
 
-=== Test Prerequisites
+Test Prerequisites::
 * Azure Keyvault instance exists. +
 
-=== Steps
+Steps::
 * Use `spring-cloud-azure-starter-keyvault-secrets` dependency. +
 * Configure the secert credential using Service Principal credential. +
 * Configure the below combinations for Keyvault properties. +
@@ -830,16 +831,16 @@ spring:
 * Deploy the jar file to App Service +
 * Request the `/get` endpoint to get the actual value from App Service instance, the value is stored in Keyvault. +
 
-=== Expected Result
+Expected Result::
 * The actual value of the special key should be returned when accessing the `/get` endpoint. +
 
-=== How Spring test such case?
+How Spring test such case?::
 N/A
 
-=== Is UT enough?
+Is UT enough?::
 No, or we should only focus on how to apply MSI authentication.
 
-=== Current use cases
+Current use cases::
 link:https://github.com/Azure/azure-sdk-for-java/blob/a82bfc22702663f9fdb18879b9f43ade34b6fbed/sdk/spring/azure-spring-boot-test-application/src/main/java/com/azure/test/Application.java#L52[Get secert value from KeyVault]
 
 link:https://github.com/Azure/azure-sdk-for-java/blob/ccfc66dc168da62f23994bec2813c7d2f0046a68/sdk/spring/azure-spring-boot-test-keyvault/src/test/java/com/azure/spring/test/keyvault/KeyVaultSecretValueIT.java#L115[keyVaultWithAppServiceMSI]
@@ -849,13 +850,13 @@ Use `spring-cloud-azure-starter-keyvault-secrets` dependency to develop an appli
 
 NOTE: Currently, this test case will block the live test, so it's disabled.
 
-=== Tags
+Tags::
 Keyvault, Data Plane, Virtual Machine, Managed Identify
 
-=== Test Prerequisites
+Test Prerequisites::
 * Azure Keyvault instance exists. +
 
-=== Steps
+Steps::
 * Use `spring-cloud-azure-starter-keyvault-secrets` dependency. +
 * Configure the secert credential using Service Principal credential. +
 * Configure the below combinations for Keyvault properties. +
@@ -874,16 +875,16 @@ spring:
 * Deploy the jar file to Virtual Machine +
 * Request the `/get` endpoint to get the actual value from App Service instance, the value is stored in Keyvault. +
 
-=== Expected Result
+Expected Result::
 * The actual value of the special key should be returned when accessing the `/get` endpoint. +
 
-=== How Spring test such case?
+How Spring test such case?::
 N/A
 
-=== Is UT enough?
+Is UT enough?::
 No, or we should only focus on how to apply MSI authentication.
 
-=== Current use cases
+Current use cases::
 link:https://github.com/Azure/azure-sdk-for-java/blob/a82bfc22702663f9fdb18879b9f43ade34b6fbed/sdk/spring/azure-spring-boot-test-application/src/main/java/com/azure/test/Application.java#L52[Get secert value from KeyVault]
 
 link:https://github.com/Azure/azure-sdk-for-java/blob/ccfc66dc168da62f23994bec2813c7d2f0046a68/sdk/spring/azure-spring-boot-test-keyvault/src/test/java/com/azure/spring/test/keyvault/KeyVaultSecretValueIT.java#L154[keyVaultWithVirtualMachineMSI] +
@@ -891,13 +892,13 @@ link:https://github.com/Azure/azure-sdk-for-java/blob/ccfc66dc168da62f23994bec28
 == Obtain the value of the key through the credentials of the Keyvault property source
 Use `spring-cloud-azure-starter-keyvault-secrets` dependency to start the application, configure the credentials in special property source, the key value can be obtained from Keyvault property source.
 
-=== Tags
+Tags::
 Keyvault, Data Plane, Multiple property source
 
-=== Test Prerequisites
+Test Prerequisites::
 * 2 Azure Keyvault instances exists. +
 
-=== Steps
+Steps::
 * Use `spring-cloud-azure-starter-keyvault-secrets` dependency. +
 * Configure secert credential of the first property source using Service Principal credential. +
 * Configure the below combinations for Keyvault properties. +
@@ -922,16 +923,16 @@ spring:
 
 * Check the actual value of the key. +
 
-=== Expected Result
+Expected Result::
 * The actual value of the key should be returned when accessing the key. +
 
-=== How Spring test such case?
+How Spring test such case?::
 Same with link:testcase-document.adoc#test-spring-cloud-azure-keyvault-as-property-source[Test Spring Cloud Azure Keyvault as property source]
 
-=== Is UT enough?
+Is UT enough?::
 Yes
 
-=== Current use cases
+Current use cases::
 Keyvault 1 test link:https://github.com/Azure/azure-sdk-for-java/blob/996691145f2ade80b5fea71813c4a22e7ef18036/sdk/spring/azure-spring-boot-test-keyvault/src/test/java/com/azure/spring/test/keyvault/MultipleKeyVaultsIT.java#L40[testGetValueFromKeyVault1] +
 
 Keyvault 2 test link:https://github.com/Azure/azure-sdk-for-java/blob/996691145f2ade80b5fea71813c4a22e7ef18036/sdk/spring/azure-spring-boot-test-keyvault/src/test/java/com/azure/spring/test/keyvault/MultipleKeyVaultsIT.java#L56[testGetValueFromKeyVault2] +
@@ -939,13 +940,13 @@ Keyvault 2 test link:https://github.com/Azure/azure-sdk-for-java/blob/996691145f
 == Obtain the value of the same key from the multiple property source
 Use `spring-cloud-azure-starter-keyvault-secrets` dependency to start the application, configure each property source credentials, the key value can be obtained from the first property source.
 
-=== Tags
+Tags::
 Keyvault, Data Plane, Multiple property source
 
-=== Test Prerequisites
+Test Prerequisites::
 * 2 Azure Keyvault instances exists. +
 
-=== Steps
+Steps::
 * Use `spring-cloud-azure-starter-keyvault-secrets` dependency. +
 * Configure each property source credential using Service Principal credential. +
 * Configure the below combinations for Keyvault properties. +
@@ -983,28 +984,28 @@ spring:
 
 * Check the actual value of the same key is from the first  Keyvault property source. +
 
-=== Expected Result
+Expected Result::
 * The actual value of the key should be returned when accessing the key. +
 
-=== How Spring test such case?
+How Spring test such case?::
 Same with link:testcase-document.adoc#test-spring-cloud-azure-keyvault-as-property-source[Test Spring Cloud Azure Keyvault as property source]
 
-=== Is UT enough?
+Is UT enough?::
 Yes
 
-=== Current use cases
+Current use cases::
 link:https://github.com/Azure/azure-sdk-for-java/blob/996691145f2ade80b5fea71813c4a22e7ef18036/sdk/spring/azure-spring-boot-test-keyvault/src/test/java/com/azure/spring/test/keyvault/MultipleKeyVaultsIT.java#L73[testGetValueForDuplicateKey] +
 
 == Obtain the value of the key from the multiple property source
 Use `spring-cloud-azure-starter-keyvault-secrets` dependency to start the application, configure the global credentials, the key value can be obtained from multiple property source.
 
-=== Tags
+Tags::
 Keyvault, Data Plane, Multiple property source
 
-=== Test Prerequisites
+Test Prerequisites::
 * 2 Azure Keyvault instances exists. +
 
-=== Steps
+Steps::
 * Use `spring-cloud-azure-starter-keyvault-secrets` dependency. +
 * Configure global credential using Service Principal credential. +
 * Configure the below combinations for Keyvault properties. +
@@ -1042,30 +1043,30 @@ spring:
 * Check the actual value of the key from Keyvault 1. +
 * Check the actual value of the key from Keyvault 2. +
 
-=== Expected Result
+Expected Result::
 * The actual value of the key should be returned when accessing the key. +
 
-=== How Spring test such case?
+How Spring test such case?::
 Same with link:testcase-document.adoc#test-spring-cloud-azure-keyvault-as-property-source[Test Spring Cloud Azure Keyvault as property source]
 
-=== Is UT enough?
+Is UT enough?::
 Yes
 
-=== Current use cases
+Current use cases::
 link:https://github.com/Azure/azure-sdk-for-java/blob/996691145f2ade80b5fea71813c4a22e7ef18036/sdk/spring/azure-spring-boot-test-keyvault/src/test/java/com/azure/spring/test/keyvault/MultipleKeyVaultsIT.java#L96[testGetValueFromSingleVault] +
 
 == Test SSL connection through loading the key store form Keyvault
 Use `spring-cloud-azure-starter-keyvault-certificates` dependency to start an SSL enabled application, configure the keyvault credentials,
 the key store can be loaded from Keyvault, the server-side will verify the HTTP request based on the service-side certicate, finally the application can respond to the HTTPS request successfully.
 
-=== Tags
+Tags::
 Keyvault, Certificates, Data Plane
 
-=== Test Prerequisites
+Test Prerequisites::
 * Azure Keyvault instance exists. +
 * Available Key Store in Azure Keyvault instance. +
 
-=== Steps
+Steps::
 * Use `spring-cloud-azure-starter-keyvault-certificates` dependency. +
 * Configure keyvault credential using Service Principal credential. +
 * Upload the Key Store files to Keyvault, the certificate generation algorithm should include `RSA`, `EC256`, `EC384`, `EC521`. +
@@ -1087,16 +1088,16 @@ server:
 
 * Make HTTPS requests to the application. +
 
-=== Expected Result
+Expected Result::
 * The application can respond to HTTPS requests. +
 
-=== How Spring test such case?
+How Spring test such case?::
 link:https://github.com/moarychan/spring-boot/blob/25b7495d8e03eb2b06c11c35a1a83fa58bbbfca7/spring-boot-project/spring-boot/src/test/java/org/springframework/boot/web/server/SslConfigurationValidatorTests.java#L52[validateKeyAliasWhenAliasFoundShouldNotFail] in spring-boot +
 
-=== Is UT enough?
+Is UT enough?::
 Yes. We can only focus on `KeyVaultKeyStore` creation.
 
-=== Current use cases
+Current use cases::
 link:https://github.com/Azure/azure-sdk-for-java/blob/c451201fe8818f97e98cd008f3525490b35d9ad1/sdk/spring/azure-spring-boot-test-keyvault-certificate/src/test/java/com/azure/spring/test/keyvault/KeyVaultCertificateIT.java#L117[testSpringBootWebApplication] +
 link:https://github.com/Azure/azure-sdk-for-java/blob/c451201fe8818f97e98cd008f3525490b35d9ad1/sdk/spring/azure-spring-boot-test-keyvault-certificate/src/test/java/com/azure/spring/test/keyvault/KeyVaultCertificateIT.java#L125[testSpringBootWebApplicationWithRSAKeyLess] +
 link:https://github.com/Azure/azure-sdk-for-java/blob/c451201fe8818f97e98cd008f3525490b35d9ad1/sdk/spring/azure-spring-boot-test-keyvault-certificate/src/test/java/com/azure/spring/test/keyvault/KeyVaultCertificateIT.java#L133[testSpringBootWebApplicationWithEC256KeyLess] +
@@ -1108,14 +1109,14 @@ Use `spring-cloud-azure-starter-keyvault-certificates` dependency to start an SS
 the key store can be loaded from Keyvault, the server-side will verify the HTTP request based on the service-side certificate, and the client-side will verify the response from the server based on the client-side certificate,
 finally the application can respond to the HTTPS request successfully.
 
-=== Tags
+Tags::
 Keyvault, Certificates, Data Plane
 
-=== Test Prerequisites
+Test Prerequisites::
 * Azure Keyvault instance exists. +
 * Available Key Store in Azure Keyvault instance. +
 
-=== Steps
+Steps::
 * Use `spring-cloud-azure-starter-keyvault-certificates` dependency. +
 * Configure keyvault credential using Service Principal credential. +
 * Upload the Key Store files to Keyvault, the certificate generation algorithm should include `RSA`, `EC256`, `EC384`, `EC521`. +
@@ -1138,15 +1139,15 @@ server:
 
 * Make HTTPS requests to the application. +
 
-=== Expected Result
+Expected Result::
 * The application can respond to HTTPS requests. +
 
-=== How Spring test such case?
+How Spring test such case?::
 Same with link:testcase-document.adoc#test-ssl-connection-through-loading-the-key-store-form-keyvault[Test SSL connection through loading the key store form Keyvault]
 
-=== Is UT enough?
+Is UT enough?::
 Yes. We can only focus on `KeyVaultKeyStore` creation.
 
-=== Current use cases
+Current use cases::
 link:https://github.com/Azure/azure-sdk-for-java/blob/c451201fe8818f97e98cd008f3525490b35d9ad1/sdk/spring/azure-spring-boot-test-keyvault-certificate/src/test/java/com/azure/spring/test/keyvault/KeyVaultCertificateIT.java#L173[testSpringBootMTLSWebApplication] +
 link:https://github.com/Azure/azure-sdk-for-java/blob/c451201fe8818f97e98cd008f3525490b35d9ad1/sdk/spring/azure-spring-boot-test-keyvault-certificate/src/test/java/com/azure/spring/test/keyvault/KeyVaultCertificateIT.java#L183[testSpringBootMTLSWebApplicationWithKeyLess] +
