@@ -1796,10 +1796,6 @@ public interface VirtualMachineScaleSet
     /** Grouping of virtual machine scale set update stages. */
     interface UpdateStages {
 
-        interface WithFlexibleVMProfile {
-            VirtualMachineScaleSetFlexibleVMProfile.UpdateAttachStages.Blank defineFlexibleVirtualMachineProfile();
-        }
-
         /**
          * The stage of a virtual machine scale set update allowing to specify the virtual network subnet for the
          * primary network configuration.
@@ -2544,8 +2540,7 @@ public interface VirtualMachineScaleSet
                 UpdateStages.WithSinglePlacementGroup,
                 UpdateStages.WithApplicationGateway,
                 UpdateStages.WithApplicationSecurityGroup,
-                UpdateStages.WithNetworkSubnet,
-                UpdateStages.WithFlexibleVMProfile
+                UpdateStages.WithNetworkSubnet
         {
         }
     }

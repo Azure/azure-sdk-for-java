@@ -1500,6 +1500,10 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .create();
 
         Assertions.assertNotNull(vmss.innerModel().virtualMachineProfile());
+        Assertions.assertNotNull(vmss.getPrimaryInternetFacingLoadBalancer());
+        Assertions.assertNotNull(vmss.getPrimaryNetwork());
+        Assertions.assertEquals(vmss.orchestrationMode(), OrchestrationMode.FLEXIBLE);
+
     }
 
     @Test
@@ -1555,7 +1559,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         ;
         Assertions.assertNotNull(vmss.innerModel().virtualMachineProfile());
         Assertions.assertEquals(vmss.orchestrationMode(), OrchestrationMode.FLEXIBLE);
-
+        Assertions.assertNotNull(vmss.getPrimaryInternetFacingLoadBalancer());
+        Assertions.assertNotNull(vmss.getPrimaryNetwork());
     }
 
     @Test
@@ -1616,6 +1621,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         Assertions.assertNotNull(vmss2);
         Assertions.assertEquals(vmss2.orchestrationMode(), OrchestrationMode.FLEXIBLE);
+        Assertions.assertNull(vmss2.innerModel().virtualMachineProfile());
     }
 
 }
