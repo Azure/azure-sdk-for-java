@@ -55,7 +55,7 @@ jobs:
           $ErrorActionPreference = "Continue"
           # git remote on fork repo
           $GitUrl = "https://$(azuresdk-github-pat)@github.com/$(DailyDocsRepoOwner)/$(DocRepoName).git"
-          $remoteName = $(DailyDocsRepoOwner)
+          $remoteName = "$(DailyDocsRepoOwner)"
           Write-Host "git remote add $remoteName $GitUrl"
           git remote add $remoteName $GitUrl
           if ($LASTEXITCODE -ne 0)
@@ -66,12 +66,12 @@ jobs:
           
           # git fetch on fork repo
           Write-Host "git fetch $remoteName"
-          git fetch $remoteName
+          git fetch $remoteName $(DailyDocsBranchName)
 
           # create a branch tracking fork repo daily branch
           Write-Host "git checkout -b $(DailyDocsBranchName) -t $remoteName/$(DailyDocsBranchName)"
-          git checkout -b $(DailyDocsBranchName) -t "$remoteName/$(DailyDocsBranchName)"
-        displayName: Checkout fork repo daily branch if it exists
+          git checkout -t -b "$remoteName/$(DailyDocsBranchName)"
+        displayName: Checkout fork repo daily branch
         workingDirectory: $(DocRepoLocation)
       # Docs daily updates is supposed to download packages from public feed repository, so we have to specify additional repositories in a POM or the profile.
       # Here is maven documentation: https://maven.apache.org/guides/mini/guide-multiple-repositories.html
