@@ -18,12 +18,12 @@ import java.util.Map;
  */
 public class VirtualMachineScaleSetFlexibleVMProfileImpl implements
     VirtualMachineScaleSetFlexibleVMProfile,
-    VirtualMachineScaleSetFlexibleVMProfile.UpdateAttachStages.DefinitionShared<VirtualMachineScaleSetImpl>,
-    VirtualMachineScaleSetFlexibleVMProfile.UpdateAttachStages.DefinitionManagedOrUnmanaged<VirtualMachineScaleSetImpl>,
-    VirtualMachineScaleSetFlexibleVMProfile.UpdateAttachStages.DefinitionManaged<VirtualMachineScaleSetImpl>,
-    VirtualMachineScaleSetFlexibleVMProfile.UpdateAttachStages.DefinitionUnmanaged<VirtualMachineScaleSetImpl>,
-    VirtualMachineScaleSetFlexibleVMProfile.UpdateAttachStages.WithSystemAssignedIdentityBasedAccessOrAttach<VirtualMachineScaleSetImpl>,
-    VirtualMachineScaleSetFlexibleVMProfile.UpdateAttachStages.WithUserAssignedManagedServiceIdentity<VirtualMachineScaleSetImpl>
+    VirtualMachineScaleSetFlexibleVMProfile.UpdateAttachStages.DefinitionShared,
+    VirtualMachineScaleSetFlexibleVMProfile.UpdateAttachStages.DefinitionManagedOrUnmanaged,
+    VirtualMachineScaleSetFlexibleVMProfile.UpdateAttachStages.DefinitionManaged,
+    VirtualMachineScaleSetFlexibleVMProfile.UpdateAttachStages.DefinitionUnmanaged,
+    VirtualMachineScaleSetFlexibleVMProfile.UpdateAttachStages.WithSystemAssignedIdentityBasedAccessOrAttach,
+    VirtualMachineScaleSetFlexibleVMProfile.UpdateAttachStages.WithUserAssignedManagedServiceIdentity
 {
 
     private final VirtualMachineScaleSetImpl parent;

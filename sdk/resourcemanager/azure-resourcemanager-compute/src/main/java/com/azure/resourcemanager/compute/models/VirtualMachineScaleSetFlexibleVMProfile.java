@@ -22,13 +22,13 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
 
     interface UpdateAttachStages {
 
-        interface Blank<ParentT> extends WithNetworkSubnet<ParentT> {}
+        interface Blank extends WithNetworkSubnet {}
 
         /**
          * The stage of a virtual machine scale set definition allowing to specify the virtual network subnet for the
          * primary network configuration.
          */
-        interface WithNetworkSubnet<ParentT> {
+        interface WithNetworkSubnet {
             /**
              * Associate an existing virtual network subnet with the primary network interface of the virtual machines
              * in the scale set.
@@ -37,14 +37,14 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param subnetName the subnet name
              * @return the next stage of the definition
              */
-            WithPrimaryInternetFacingLoadBalancer<ParentT> withExistingPrimaryNetworkSubnet(Network network, String subnetName);
+            WithPrimaryInternetFacingLoadBalancer withExistingPrimaryNetworkSubnet(Network network, String subnetName);
         }
 
         /**
          * The stage of a virtual machine scale set definition allowing to specify an Internet-facing load balancer for
          * the primary network interface of the virtual machines in the scale set.
          */
-        interface WithPrimaryInternetFacingLoadBalancer<ParentT> {
+        interface WithPrimaryInternetFacingLoadBalancer {
             /**
              * Specifies an Internet-facing load balancer whose backends and/or NAT pools can be assigned to the primary
              * network interfaces of the virtual machines in the scale set.
@@ -57,7 +57,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param loadBalancer an existing Internet-facing load balancer
              * @return the next stage of the definition
              */
-            WithPrimaryInternetFacingLoadBalancerBackendOrNatPool<ParentT> withExistingPrimaryInternetFacingLoadBalancer(
+            WithPrimaryInternetFacingLoadBalancerBackendOrNatPool withExistingPrimaryInternetFacingLoadBalancer(
                 LoadBalancer loadBalancer);
 
             /**
@@ -65,7 +65,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              *
              * @return the next stage of the definition
              */
-            WithPrimaryInternalLoadBalancer<ParentT> withoutPrimaryInternetFacingLoadBalancer();
+            WithPrimaryInternalLoadBalancer withoutPrimaryInternetFacingLoadBalancer();
         }
 
         /**
@@ -73,8 +73,8 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
          * NAT pool of the selected Internet-facing load balancer with the primary network interface of the virtual
          * machines in the scale set.
          */
-        interface WithPrimaryInternetFacingLoadBalancerBackendOrNatPool<ParentT>
-            extends WithPrimaryInternetFacingLoadBalancerNatPool<ParentT> {
+        interface WithPrimaryInternetFacingLoadBalancerBackendOrNatPool
+            extends WithPrimaryInternetFacingLoadBalancerNatPool {
             /**
              * Associates the specified backends of the selected load balancer with the primary network interface of the
              * virtual machines in the scale set.
@@ -82,7 +82,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param backendNames the names of existing backends in the selected load balancer
              * @return the next stage of the definition
              */
-            WithPrimaryInternetFacingLoadBalancerNatPool<ParentT> withPrimaryInternetFacingLoadBalancerBackends(
+            WithPrimaryInternetFacingLoadBalancerNatPool withPrimaryInternetFacingLoadBalancerBackends(
                 String... backendNames);
         }
 
@@ -90,7 +90,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
          * The stage of a virtual machine scale set definition allowing to associate an inbound NAT pool of the selected
          * Internet-facing load balancer with the primary network interface of the virtual machines in the scale set.
          */
-        interface WithPrimaryInternetFacingLoadBalancerNatPool<ParentT> extends WithPrimaryInternalLoadBalancer<ParentT> {
+        interface WithPrimaryInternetFacingLoadBalancerNatPool extends WithPrimaryInternalLoadBalancer {
             /**
              * Associates the specified inbound NAT pools of the selected internal load balancer with the primary
              * network interface of the virtual machines in the scale set.
@@ -98,7 +98,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param natPoolNames inbound NAT pools names existing on the selected load balancer
              * @return the next stage of the definition
              */
-            WithPrimaryInternalLoadBalancer<ParentT> withPrimaryInternetFacingLoadBalancerInboundNatPools(
+            WithPrimaryInternalLoadBalancer withPrimaryInternetFacingLoadBalancerInboundNatPools(
                 String... natPoolNames);
         }
 
@@ -106,7 +106,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
          * The stage of a virtual machine scale set definition allowing to specify an internal load balancer for the
          * primary network interface of the virtual machines in the scale set.
          */
-        interface WithPrimaryInternalLoadBalancer<ParentT> {
+        interface WithPrimaryInternalLoadBalancer {
             /**
              * Specifies the internal load balancer whose backends and/or NAT pools can be assigned to the primary
              * network interface of the virtual machines in the scale set.
@@ -120,7 +120,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param loadBalancer an existing internal load balancer
              * @return the next stage of the definition
              */
-            WithInternalLoadBalancerBackendOrNatPool<ParentT> withExistingPrimaryInternalLoadBalancer(LoadBalancer loadBalancer);
+            WithInternalLoadBalancerBackendOrNatPool withExistingPrimaryInternalLoadBalancer(LoadBalancer loadBalancer);
 
             /**
              * Specifies that no internal load balancer should be associated with the primary network interfaces of the
@@ -128,7 +128,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              *
              * @return the next stage of the definition
              */
-            WithOS<ParentT> withoutPrimaryInternalLoadBalancer();
+            WithOS withoutPrimaryInternalLoadBalancer();
         }
 
         /**
@@ -136,7 +136,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
          * pools of the selected internal load balancer with the primary network interface of the virtual machines in
          * the scale set.
          */
-        interface WithInternalLoadBalancerBackendOrNatPool<ParentT> extends WithInternalInternalLoadBalancerNatPool<ParentT> {
+        interface WithInternalLoadBalancerBackendOrNatPool extends WithInternalInternalLoadBalancerNatPool {
             /**
              * Associates the specified backends of the selected load balancer with the primary network interface of the
              * virtual machines in the scale set.
@@ -144,14 +144,14 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param backendNames names of existing backends in the selected load balancer
              * @return the next stage of the definition
              */
-            WithInternalInternalLoadBalancerNatPool<ParentT> withPrimaryInternalLoadBalancerBackends(String... backendNames);
+            WithInternalInternalLoadBalancerNatPool withPrimaryInternalLoadBalancerBackends(String... backendNames);
         }
 
         /**
          * The stage of the virtual machine scale set definition allowing to associate inbound NAT pools of the selected
          * internal load balancer with the primary network interface of the virtual machines in the scale set.
          */
-        interface WithInternalInternalLoadBalancerNatPool<ParentT> extends WithOS<ParentT> {
+        interface WithInternalInternalLoadBalancerNatPool extends WithOS {
             /**
              * Associate internal load balancer inbound NAT pools with the the primary network interface of the scale
              * set virtual machine.
@@ -159,11 +159,11 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param natPoolNames inbound NAT pool names
              * @return the next stage of the definition
              */
-            WithOS<ParentT> withPrimaryInternalLoadBalancerInboundNatPools(String... natPoolNames);
+            WithOS withPrimaryInternalLoadBalancerInboundNatPools(String... natPoolNames);
         }
 
         /** The stage of the virtual machine scale set definition allowing to specify the operating system image. */
-        interface WithOS<ParentT> {
+        interface WithOS {
             /**
              * Specifies a known marketplace Windows image used as the operating system for the virtual machines in the
              * scale set.
@@ -171,7 +171,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param knownImage a known market-place image
              * @return the next stage of the definition
              */
-            WithWindowsAdminUsernameManagedOrUnmanaged<ParentT> withPopularWindowsImage(
+            WithWindowsAdminUsernameManagedOrUnmanaged withPopularWindowsImage(
                 KnownWindowsVirtualMachineImage knownImage);
 
             /**
@@ -182,7 +182,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param sku specifies the SKU of the image
              * @return the next stage of the definition
              */
-            WithWindowsAdminUsernameManagedOrUnmanaged<ParentT> withLatestWindowsImage(
+            WithWindowsAdminUsernameManagedOrUnmanaged withLatestWindowsImage(
                 String publisher, String offer, String sku);
 
             /**
@@ -191,7 +191,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param imageReference describes publisher, offer, SKU and version of the marketplace image
              * @return the next stage of the definition
              */
-            WithWindowsAdminUsernameManagedOrUnmanaged<ParentT> withSpecificWindowsImageVersion(ImageReference imageReference);
+            WithWindowsAdminUsernameManagedOrUnmanaged withSpecificWindowsImageVersion(ImageReference imageReference);
 
             /**
              * Specifies the ID of a generalized Windows custom image to be used.
@@ -199,7 +199,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param customImageId the resource ID of the custom image
              * @return the next stage of the definition
              */
-            WithWindowsAdminUsernameManaged<ParentT> withGeneralizedWindowsCustomImage(String customImageId);
+            WithWindowsAdminUsernameManaged withGeneralizedWindowsCustomImage(String customImageId);
 
             /**
              * Specifies the ID of a specialized Windows custom image to be used.
@@ -207,7 +207,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param customImageId the resource ID of the custom image
              * @return the next stage of the definition
              */
-            WithWindowsAttachManaged<ParentT> withSpecializedWindowsCustomImage(String customImageId);
+            WithWindowsAttachManaged withSpecializedWindowsCustomImage(String customImageId);
 
             /**
              * Specifies the user (custom) Windows image to be used as the operating system for the virtual machines in
@@ -216,7 +216,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param imageUrl the URL of the VHD
              * @return the next stage of the definition
              */
-            WithWindowsAdminUsernameUnmanaged<ParentT> withStoredWindowsImage(String imageUrl);
+            WithWindowsAdminUsernameUnmanaged withStoredWindowsImage(String imageUrl);
 
             /**
              * Specifies a known marketplace Linux image used as the virtual machine's operating system.
@@ -224,7 +224,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param knownImage a known market-place image
              * @return the next stage of the definition
              */
-            WithLinuxRootUsernameManagedOrUnmanaged<ParentT> withPopularLinuxImage(KnownLinuxVirtualMachineImage knownImage);
+            WithLinuxRootUsernameManagedOrUnmanaged withPopularLinuxImage(KnownLinuxVirtualMachineImage knownImage);
 
             /**
              * Specifies that the latest version of a marketplace Linux image should be used.
@@ -234,7 +234,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param sku the SKU of the image
              * @return the next stage of the definition
              */
-            WithLinuxRootUsernameManagedOrUnmanaged<ParentT> withLatestLinuxImage(String publisher, String offer, String sku);
+            WithLinuxRootUsernameManagedOrUnmanaged withLatestLinuxImage(String publisher, String offer, String sku);
 
             /**
              * Specifies the specific version of a market-place Linux image that should be used.
@@ -242,7 +242,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param imageReference describes the publisher, offer, SKU and version of the market-place image
              * @return the next stage of the definition
              */
-            WithLinuxRootUsernameManagedOrUnmanaged<ParentT> withSpecificLinuxImageVersion(ImageReference imageReference);
+            WithLinuxRootUsernameManagedOrUnmanaged withSpecificLinuxImageVersion(ImageReference imageReference);
 
             /**
              * Specifies the ID of a generalized Linux custom image to be used.
@@ -250,7 +250,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param customImageId the resource ID of the custom image
              * @return the next stage of the definition
              */
-            WithLinuxRootUsernameManaged<ParentT> withGeneralizedLinuxCustomImage(String customImageId);
+            WithLinuxRootUsernameManaged withGeneralizedLinuxCustomImage(String customImageId);
 
             /**
              * Specifies the ID of a specialized Linux custom image to be used.
@@ -258,7 +258,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param customImageId the resource ID of the custom image
              * @return the next stage of the definition
              */
-            WithLinuxAttachManaged<ParentT> withSpecializedLinuxCustomImage(String customImageId);
+            WithLinuxAttachManaged withSpecializedLinuxCustomImage(String customImageId);
 
             /**
              * Specifies the user (custom) Linux image used as the virtual machine's operating system.
@@ -266,56 +266,56 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param imageUrl the URL the the VHD
              * @return the next stage of the definition
              */
-            WithLinuxRootUsernameUnmanaged<ParentT> withStoredLinuxImage(String imageUrl);
+            WithLinuxRootUsernameUnmanaged withStoredLinuxImage(String imageUrl);
         }
 
 
 
         /** The stage of the Linux virtual machine scale set definition allowing to specify SSH root user name. */
-        interface WithLinuxRootUsernameManagedOrUnmanaged<ParentT> {
+        interface WithLinuxRootUsernameManagedOrUnmanaged {
             /**
              * Specifies the SSH root user name for the Linux virtual machine.
              *
              * @param rootUserName a root user name following the required naming convention for Linux user names
              * @return the next stage of the definition
              */
-            WithLinuxRootPasswordOrPublicKeyManagedOrUnmanaged<ParentT> withRootUsername(String rootUserName);
+            WithLinuxRootPasswordOrPublicKeyManagedOrUnmanaged withRootUsername(String rootUserName);
         }
 
         /** The stage of the Linux virtual machine scale set definition allowing to specify SSH root user name. */
-        interface WithLinuxRootUsernameManaged<ParentT> {
+        interface WithLinuxRootUsernameManaged {
             /**
              * Specifies the SSH root user name for the Linux virtual machine.
              *
              * @param rootUserName a root user name following the required naming conventions for Linux user names
              * @return the next stage of the definition
              */
-            WithLinuxRootPasswordOrPublicKeyManaged<ParentT> withRootUsername(String rootUserName);
+            WithLinuxRootPasswordOrPublicKeyManaged withRootUsername(String rootUserName);
         }
 
         /** The stage of the Linux virtual machine scale set definition allowing to specify SSH root user name. */
-        interface WithLinuxRootUsernameUnmanaged<ParentT> {
+        interface WithLinuxRootUsernameUnmanaged {
             /**
              * Specifies the SSH root user name for the Linux virtual machine.
              *
              * @param rootUserName a root user name following the required naming convention for Linux user names
              * @return the next stage of the definition
              */
-            WithLinuxRootPasswordOrPublicKeyUnmanaged<ParentT> withRootUsername(String rootUserName);
+            WithLinuxRootPasswordOrPublicKeyUnmanaged withRootUsername(String rootUserName);
         }
 
         /**
          * The stage of the Linux virtual machine scale set definition allowing to specify SSH root password or public
          * key.
          */
-        interface WithLinuxRootPasswordOrPublicKeyManagedOrUnmanaged<ParentT> {
+        interface WithLinuxRootPasswordOrPublicKeyManagedOrUnmanaged {
             /**
              * Specifies the SSH root password for the Linux virtual machine.
              *
              * @param rootPassword a password following the complexity criteria for Azure Linux VM passwords
              * @return the next stage of the definition
              */
-            WithLinuxAttachManagedOrUnmanaged<ParentT> withRootPassword(String rootPassword);
+            WithLinuxAttachManagedOrUnmanaged withRootPassword(String rootPassword);
 
             /**
              * Specifies the SSH public key.
@@ -325,21 +325,21 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param publicKey the SSH public key in PEM format.
              * @return the next stage of the definition
              */
-            WithLinuxAttachManagedOrUnmanaged<ParentT> withSsh(String publicKey);
+            WithLinuxAttachManagedOrUnmanaged withSsh(String publicKey);
         }
 
         /**
          * The stage of the Linux virtual machine scale set definition allowing to specify SSH root password or public
          * key.
          */
-        interface WithLinuxRootPasswordOrPublicKeyManaged<ParentT> {
+        interface WithLinuxRootPasswordOrPublicKeyManaged {
             /**
              * Specifies the SSH root password for the Linux virtual machine.
              *
              * @param rootPassword a password following the complexity criteria for Azure Linux VM passwords
              * @return the next stage of the definition
              */
-            WithLinuxAttachManaged<ParentT> withRootPassword(String rootPassword);
+            WithLinuxAttachManaged withRootPassword(String rootPassword);
 
             /**
              * Specifies the SSH public key.
@@ -349,21 +349,21 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param publicKey the SSH public key in PEM format.
              * @return the next stage of the definition
              */
-            WithLinuxAttachManaged<ParentT> withSsh(String publicKey);
+            WithLinuxAttachManaged withSsh(String publicKey);
         }
 
         /**
          * The stage of the Linux virtual machine scale set definition allowing to specify SSH root password or public
          * key.
          */
-        interface WithLinuxRootPasswordOrPublicKeyUnmanaged<ParentT> {
+        interface WithLinuxRootPasswordOrPublicKeyUnmanaged {
             /**
              * Specifies the SSH root password for the Linux virtual machine.
              *
              * @param rootPassword a password following the complexity criteria for Azure Linux VM passwords
              * @return the next stage of the definition
              */
-            WithLinuxAttachUnmanaged<ParentT> withRootPassword(String rootPassword);
+            WithLinuxAttachUnmanaged withRootPassword(String rootPassword);
 
             /**
              * Specifies the SSH public key.
@@ -373,7 +373,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param publicKey the SSH public key in PEM format.
              * @return the next stage of the definition
              */
-            WithLinuxAttachUnmanaged<ParentT> withSsh(String publicKey);
+            WithLinuxAttachUnmanaged withSsh(String publicKey);
         }
 
 
@@ -381,7 +381,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
          * The stage of a Linux virtual machine scale set definition which contains all the minimum required inputs for
          * the resource to be created, but also allows for any other optional settings to be specified.
          */
-        interface WithLinuxAttachManaged<ParentT> extends WithManagedAttach<ParentT> {
+        interface WithLinuxAttachManaged extends WithManagedAttach {
             /**
              * Specifies the SSH public key.
              *
@@ -390,14 +390,14 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param publicKey an SSH public key in the PEM format.
              * @return the next stage of the definition
              */
-            WithLinuxAttachManaged<ParentT> withSsh(String publicKey);
+            WithLinuxAttachManaged withSsh(String publicKey);
         }
 
         /**
          * The stage of a Linux virtual machine scale set definition which contains all the minimum required inputs for
          * the resource to be created, but also allows for any other optional settings to be specified.
          */
-        interface WithLinuxAttachUnmanaged<ParentT> extends WithUnmanagedAttach<ParentT> {
+        interface WithLinuxAttachUnmanaged extends WithUnmanagedAttach {
             /**
              * Specifies the SSH public key.
              *
@@ -406,14 +406,14 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param publicKey an SSH public key in the PEM format.
              * @return the next stage of the definition
              */
-            WithLinuxAttachUnmanaged<ParentT> withSsh(String publicKey);
+            WithLinuxAttachUnmanaged withSsh(String publicKey);
         }
 
         /**
          * The stage of a Linux virtual machine scale set definition which contains all the minimum required inputs for
          * the resource to be created, but also allows for any other optional settings to be specified.
          */
-        interface WithLinuxAttachManagedOrUnmanaged<ParentT> extends WithManagedAttach<ParentT> {
+        interface WithLinuxAttachManagedOrUnmanaged extends WithManagedAttach {
             /**
              * Specifies the SSH public key.
              *
@@ -422,16 +422,16 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param publicKey an SSH public key in the PEM format.
              * @return the next stage of the definition
              */
-            WithLinuxAttachManagedOrUnmanaged<ParentT> withSsh(String publicKey);
+            WithLinuxAttachManagedOrUnmanaged withSsh(String publicKey);
 
             /** @return the next stage of a unmanaged disk based virtual machine scale set definition */
-            WithUnmanagedAttach<ParentT> withUnmanagedDisks();
+            WithUnmanagedAttach withUnmanagedDisks();
         }
 
         /**
          * The stage of the Windows virtual machine scale set definition allowing to specify administrator user name.
          */
-        interface WithWindowsAdminUsernameUnmanaged<ParentT> {
+        interface WithWindowsAdminUsernameUnmanaged {
             /**
              * Specifies the administrator user name for the Windows virtual machine.
              *
@@ -439,13 +439,13 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              *     for Windows user name.
              * @return the next stage of the definition
              */
-            WithWindowsAdminPasswordUnmanaged<ParentT> withAdminUsername(String adminUserName);
+            WithWindowsAdminPasswordUnmanaged withAdminUsername(String adminUserName);
         }
 
         /**
          * The stage of the Windows virtual machine scale set definition allowing to specify administrator user name.
          */
-        interface WithWindowsAdminPasswordUnmanaged<ParentT> {
+        interface WithWindowsAdminPasswordUnmanaged {
             /**
              * Specifies the administrator password for the Windows virtual machine.
              *
@@ -453,13 +453,13 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              *     password.
              * @return the stage representing creatable Windows VM definition
              */
-            WithWindowsAttachUnmanaged<ParentT> withAdminPassword(String adminPassword);
+            WithWindowsAttachUnmanaged withAdminPassword(String adminPassword);
         }
 
         /**
          * The stage of the Windows virtual machine scale set definition allowing to specify administrator user name.
          */
-        interface WithWindowsAdminUsernameManagedOrUnmanaged<ParentT> {
+        interface WithWindowsAdminUsernameManagedOrUnmanaged {
             /**
              * Specifies the administrator user name for the Windows virtual machine.
              *
@@ -467,13 +467,13 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              *     for Windows user name.
              * @return the next stage of the definition
              */
-            WithWindowsAdminPasswordManagedOrUnmanaged<ParentT> withAdminUsername(String adminUserName);
+            WithWindowsAdminPasswordManagedOrUnmanaged withAdminUsername(String adminUserName);
         }
 
         /**
          * The stage of the Windows virtual machine scale set definition allowing to specify administrator user name.
          */
-        interface WithWindowsAdminPasswordManagedOrUnmanaged<ParentT> {
+        interface WithWindowsAdminPasswordManagedOrUnmanaged {
             /**
              * Specifies the administrator password for the Windows virtual machine.
              *
@@ -481,21 +481,21 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              *     password.
              * @return the stage representing creatable Windows VM definition
              */
-            WithWindowsAttachManagedOrUnmanaged<ParentT> withAdminPassword(String adminPassword);
+            WithWindowsAttachManagedOrUnmanaged withAdminPassword(String adminPassword);
         }
 
         /**
          * The stage of a Windows virtual machine scale set definition which contains all the minimum required inputs
          * for the resource to be created, but also allows for any other optional settings to be specified.
          */
-        interface WithWindowsAttachManagedOrUnmanaged<ParentT> extends WithWindowsAttachManaged<ParentT> {
-            WithWindowsAttachUnmanaged<ParentT> withUnmanagedDisks();
+        interface WithWindowsAttachManagedOrUnmanaged extends WithWindowsAttachManaged {
+            WithWindowsAttachUnmanaged withUnmanagedDisks();
         }
 
         /**
          * The stage of the Windows virtual machine scale set definition allowing to specify administrator user name.
          */
-        interface WithWindowsAdminUsernameManaged<ParentT> {
+        interface WithWindowsAdminUsernameManaged {
             /**
              * Specifies the administrator user name for the Windows virtual machine.
              *
@@ -503,13 +503,13 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              *     for Windows user name.
              * @return the next stage of the definition
              */
-            WithWindowsAdminPasswordManaged<ParentT> withAdminUsername(String adminUserName);
+            WithWindowsAdminPasswordManaged withAdminUsername(String adminUserName);
         }
 
         /**
          * The stage of the Windows virtual machine scale set definition allowing to specify administrator user name.
          */
-        interface WithWindowsAdminPasswordManaged<ParentT> {
+        interface WithWindowsAdminPasswordManaged {
             /**
              * Specifies the administrator password for the Windows virtual machine.
              *
@@ -517,41 +517,41 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              *     password.
              * @return the stage representing creatable Windows VM definition
              */
-            WithWindowsAttachManaged<ParentT> withAdminPassword(String adminPassword);
+            WithWindowsAttachManaged withAdminPassword(String adminPassword);
         }
 
         /**
          * The stage of a Windows virtual machine scale set definition which contains all the minimum required inputs
          * for the resource to be created, but also allows for any other optional settings to be specified.
          */
-        interface WithWindowsAttachUnmanaged<ParentT> extends WithUnmanagedAttach<ParentT> {
+        interface WithWindowsAttachUnmanaged extends WithUnmanagedAttach {
             /**
              * Enables the VM agent.
              *
              * @return the next stage of the definition
              */
-            WithWindowsAttachUnmanaged<ParentT> withVMAgent();
+            WithWindowsAttachUnmanaged withVMAgent();
 
             /**
              * Disables the VM agent.
              *
              * @return the next stage of the definition
              */
-            WithWindowsAttachUnmanaged<ParentT> withoutVMAgent();
+            WithWindowsAttachUnmanaged withoutVMAgent();
 
             /**
              * Enables automatic updates.
              *
              * @return the next stage of the definition
              */
-            WithWindowsAttachUnmanaged<ParentT> withAutoUpdate();
+            WithWindowsAttachUnmanaged withAutoUpdate();
 
             /**
              * Disables automatic updates.
              *
              * @return the next stage of the definition
              */
-            WithWindowsAttachUnmanaged<ParentT> withoutAutoUpdate();
+            WithWindowsAttachUnmanaged withoutAutoUpdate();
 
             /**
              * Specifies the time zone for the virtual machines to use.
@@ -559,7 +559,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param timeZone a time zone
              * @return the next stage of the definition
              */
-            WithWindowsAttachUnmanaged<ParentT> withTimeZone(String timeZone);
+            WithWindowsAttachUnmanaged withTimeZone(String timeZone);
 
             /**
              * Specifies the WinRM listener.
@@ -569,41 +569,41 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param listener a WinRM listener
              * @return the next stage of the definition
              */
-            WithWindowsAttachUnmanaged<ParentT> withWinRM(WinRMListener listener);
+            WithWindowsAttachUnmanaged withWinRM(WinRMListener listener);
         }
 
         /**
          * The stage of a Windows virtual machine scale set definition which contains all the minimum required inputs
          * for the resource to be created, but also allows for any other optional settings to be specified.
          */
-        interface WithWindowsAttachManaged<ParentT> extends WithManagedAttach<ParentT> {
+        interface WithWindowsAttachManaged extends WithManagedAttach {
             /**
              * Enables the VM agent.
              *
              * @return the next stage of the definition
              */
-            WithWindowsAttachManaged<ParentT> withVMAgent();
+            WithWindowsAttachManaged withVMAgent();
 
             /**
              * Disables the VM agent.
              *
              * @return the next stage of the definition
              */
-            WithWindowsAttachManaged<ParentT> withoutVMAgent();
+            WithWindowsAttachManaged withoutVMAgent();
 
             /**
              * Enables automatic updates.
              *
              * @return the next stage of the definition
              */
-            WithWindowsAttachManaged<ParentT> withAutoUpdate();
+            WithWindowsAttachManaged withAutoUpdate();
 
             /**
              * Disables automatic updates.
              *
              * @return the next stage of the definition
              */
-            WithWindowsAttachManaged<ParentT> withoutAutoUpdate();
+            WithWindowsAttachManaged withoutAutoUpdate();
 
             /**
              * Specifies the time zone for the virtual machines to use.
@@ -611,7 +611,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param timeZone a time zone
              * @return the next stage of the definition
              */
-            WithWindowsAttachManaged<ParentT> withTimeZone(String timeZone);
+            WithWindowsAttachManaged withTimeZone(String timeZone);
 
             /**
              * Specifies the WinRM listener.
@@ -621,19 +621,19 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param listener a WinRM listener
              * @return the next stage of the definition
              */
-            WithWindowsAttachManaged<ParentT> withWinRM(WinRMListener listener);
+            WithWindowsAttachManaged withWinRM(WinRMListener listener);
         }
 
 
         /** The stage of a virtual machine scale set definition allowing to specify managed data disks. */
-        interface WithManagedDataDisk<ParentT> {
+        interface WithManagedDataDisk {
             /**
              * Specifies that a managed disk needs to be created implicitly with the given size.
              *
              * @param sizeInGB the size of the managed disk
              * @return the next stage of virtual machine definition
              */
-            WithManagedAttach<ParentT> withNewDataDisk(int sizeInGB);
+            WithManagedAttach withNewDataDisk(int sizeInGB);
 
             /**
              * Specifies that a managed disk needs to be created implicitly with the given settings.
@@ -643,7 +643,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param cachingType the caching type
              * @return the next stage of virtual machine definition
              */
-            WithManagedAttach<ParentT> withNewDataDisk(int sizeInGB, int lun, CachingTypes cachingType);
+            WithManagedAttach withNewDataDisk(int sizeInGB, int lun, CachingTypes cachingType);
 
             /**
              * Specifies that a managed disk needs to be created implicitly with the given settings.
@@ -654,7 +654,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param storageAccountType the storage account type
              * @return the next stage of virtual machine definition
              */
-            WithManagedAttach<ParentT> withNewDataDisk(
+            WithManagedAttach withNewDataDisk(
                 int sizeInGB, int lun, CachingTypes cachingType, StorageAccountTypes storageAccountType);
 
             /**
@@ -663,7 +663,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param imageLun the LUN of the source data disk image
              * @return the next stage of virtual machine definition
              */
-            WithManagedAttach<ParentT> withNewDataDiskFromImage(int imageLun);
+            WithManagedAttach withNewDataDiskFromImage(int imageLun);
 
             /**
              * Specifies the data disk to be created from the data disk image in the virtual machine image.
@@ -673,7 +673,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param cachingType the caching type
              * @return the next stage of virtual machine definition
              */
-            WithManagedAttach<ParentT> withNewDataDiskFromImage(int imageLun, int newSizeInGB, CachingTypes cachingType);
+            WithManagedAttach withNewDataDiskFromImage(int imageLun, int newSizeInGB, CachingTypes cachingType);
 
             /**
              * Specifies the data disk to be created from the data disk image in the virtual machine image.
@@ -684,19 +684,19 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param storageAccountType the storage account type
              * @return the next stage of virtual machine definition
              */
-            WithManagedAttach<ParentT> withNewDataDiskFromImage(
+            WithManagedAttach withNewDataDiskFromImage(
                 int imageLun, int newSizeInGB, CachingTypes cachingType, StorageAccountTypes storageAccountType);
         }
 
         /** The optionals applicable only for managed disks. */
-        interface WithManagedDiskOptionals<ParentT> {
+        interface WithManagedDiskOptionals {
             /**
              * Specifies the storage account type for managed OS disk.
              *
              * @param accountType the storage account type
              * @return the stage representing creatable VM definition
              */
-            WithManagedAttach<ParentT> withOSDiskStorageAccountType(StorageAccountTypes accountType);
+            WithManagedAttach withOSDiskStorageAccountType(StorageAccountTypes accountType);
 
             /**
              * Specifies the default caching type for the managed data disks.
@@ -704,7 +704,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param cachingType the caching type
              * @return the stage representing creatable VM definition
              */
-            WithManagedAttach<ParentT> withDataDiskDefaultCachingType(CachingTypes cachingType);
+            WithManagedAttach withDataDiskDefaultCachingType(CachingTypes cachingType);
 
             /**
              * Specifies the default caching type for the managed data disks.
@@ -712,26 +712,26 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param storageAccountType the storage account type
              * @return the stage representing creatable VM definition
              */
-            WithManagedAttach<ParentT> withDataDiskDefaultStorageAccountType(StorageAccountTypes storageAccountType);
+            WithManagedAttach withDataDiskDefaultStorageAccountType(StorageAccountTypes storageAccountType);
         }
 
         /** The stage of the virtual machine scale set definition allowing to specify availability zone. */
-        interface WithAvailabilityZone<ParentT> {
+        interface WithAvailabilityZone {
             /**
              * Specifies the availability zone for the virtual machine scale set.
              *
              * @param zoneId the zone identifier.
              * @return the next stage of the definition
              */
-            WithManagedAttach<ParentT> withAvailabilityZone(AvailabilityZoneId zoneId);
+            WithManagedAttach withAvailabilityZone(AvailabilityZoneId zoneId);
         }
 
         /**
          * The stage of the definition which contains all the minimum required inputs for the VM scale set to be created
          * and optionally allow managed data disks specific settings to be specified.
          */
-        interface WithManagedAttach<ParentT>
-            extends WithManagedDataDisk<ParentT>, WithManagedDiskOptionals<ParentT>, WithAvailabilityZone<ParentT>, WithAttach<ParentT> {
+        interface WithManagedAttach
+            extends WithManagedDataDisk, WithManagedDiskOptionals, WithAvailabilityZone, WithAttach {
         }
 
         /** The stage of the virtual machine scale set definition allowing to specify unmanaged data disk. */
@@ -742,43 +742,43 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
          * The stage of the definition which contains all the minimum required inputs for the VM scale set to be created
          * and optionally allow unmanaged data disks specific settings to be specified.
          */
-        interface WithUnmanagedAttach<ParentT> extends WithUnmanagedDataDisk, WithAttach<ParentT> {
+        interface WithUnmanagedAttach extends WithUnmanagedDataDisk, WithAttach {
         }
 
         /** The stage of a virtual machine scale set definition allowing to specify the computer name prefix. */
-        interface WithComputerNamePrefix<ParentT> {
+        interface WithComputerNamePrefix {
             /**
              * Specifies the name prefix to use for auto-generating the names for the virtual machines in the scale set.
              *
              * @param namePrefix the prefix for the auto-generated names of the virtual machines in the scale set
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withComputerNamePrefix(String namePrefix);
+            WithAttach withComputerNamePrefix(String namePrefix);
         }
 
         /**
          * The stage of the virtual machine scale set definition allowing to specify number of virtual machines in the
          * scale set.
          */
-        interface WithCapacity<ParentT> {
+        interface WithCapacity {
             /**
              * Specifies the maximum number of virtual machines in the scale set.
              *
              * @param capacity number of virtual machines
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withCapacity(long capacity);
+            WithAttach withCapacity(long capacity);
         }
 
         /** The stage of a virtual machine scale set definition allowing to specify OS disk configurations. */
-        interface WithOSDiskSettings<ParentT> {
+        interface WithOSDiskSettings {
             /**
              * Specifies the caching type for the operating system disk.
              *
              * @param cachingType the caching type
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withOSDiskCaching(CachingTypes cachingType);
+            WithAttach withOSDiskCaching(CachingTypes cachingType);
 
             /**
              * Specifies the name for the OS disk.
@@ -786,18 +786,18 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param name the OS disk name
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withOSDiskName(String name);
+            WithAttach withOSDiskName(String name);
         }
 
         /** The stage of a virtual machine scale set definition allowing to specify the storage account. */
-        interface WithStorageAccount<ParentT> {
+        interface WithStorageAccount {
             /**
              * Specifies a new storage account for the OS and data disk VHDs of the virtual machines in the scale set.
              *
              * @param name the name of the storage account
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withNewStorageAccount(String name);
+            WithAttach withNewStorageAccount(String name);
 
             /**
              * Specifies a new storage account for the OS and data disk VHDs of the virtual machines in the scale set.
@@ -805,7 +805,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param creatable the storage account definition in a creatable stage
              * @return the next stage in the definition
              */
-            WithAttach<ParentT> withNewStorageAccount(Creatable<StorageAccount> creatable);
+            WithAttach withNewStorageAccount(Creatable<StorageAccount> creatable);
 
             /**
              * Specifies an existing storage account for the OS and data disk VHDs of the virtual machines in the scale
@@ -814,61 +814,61 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param storageAccount an existing storage account
              * @return the next stage in the definition
              */
-            WithAttach<ParentT> withExistingStorageAccount(StorageAccount storageAccount);
+            WithAttach withExistingStorageAccount(StorageAccount storageAccount);
         }
 
         /** The stage of the virtual machine scale set definition allowing to specify the custom data. */
-        interface WithCustomData<ParentT> {
+        interface WithCustomData {
             /**
              * Specifies the custom data for the virtual machine scale set.
              *
              * @param base64EncodedCustomData the base64 encoded custom data
              * @return the next stage in the definition
              */
-            WithAttach<ParentT> withCustomData(String base64EncodedCustomData);
+            WithAttach withCustomData(String base64EncodedCustomData);
         }
 
         /** The stage of the virtual machine scale set definition allowing to specify the secrets. */
-        interface WithSecrets<ParentT> {
+        interface WithSecrets {
             /**
              * Specifies set of certificates that should be installed onto the virtual machine.
              *
              * @param secrets the secrets value to set
              * @return the next stage in the definition he secrets value to set
              */
-            WithAttach<ParentT> withSecrets(List<VaultSecretGroup> secrets);
+            WithAttach withSecrets(List<VaultSecretGroup> secrets);
         }
 
 //        /** The stage of a virtual machine scale set definition allowing to specify extensions. */
-//        interface WithExtension<ParentT> {
+//        interface WithExtension {
 //            /**
 //             * Begins the definition of an extension reference to be attached to the virtual machines in the scale set.
 //             *
 //             * @param name the reference name for the extension
 //             * @return the first stage of the extension reference definition
 //             */
-//            VirtualMachineScaleSetExtension.DefinitionStages.Blank<WithAttach<ParentT>> defineNewExtension(String name);
+//            VirtualMachineScaleSetExtension.DefinitionStages.Blank<WithAttach> defineNewExtension(String name);
 //        }
 
         /**
          * The stage of the virtual machine scale set definition allowing to enable System Assigned (Local) Managed
          * Service Identity.
          */
-        interface WithSystemAssignedManagedServiceIdentity<ParentT> {
+        interface WithSystemAssignedManagedServiceIdentity {
             /**
              * Specifies that System Assigned (Local) Managed Service Identity needs to be enabled in the virtual
              * machine scale set.
              *
              * @return the next stage of the definition
              */
-            WithSystemAssignedIdentityBasedAccessOrAttach<ParentT> withSystemAssignedManagedServiceIdentity();
+            WithSystemAssignedIdentityBasedAccessOrAttach withSystemAssignedManagedServiceIdentity();
         }
 
         /**
          * The stage of the System Assigned (Local) Managed Service Identity enabled virtual machine scale set allowing
          * to set access for the identity.
          */
-        interface WithSystemAssignedIdentityBasedAccessOrAttach<ParentT> extends WithAttach<ParentT> {
+        interface WithSystemAssignedIdentityBasedAccessOrAttach extends WithAttach {
             /**
              * Specifies that virtual machine scale set's system assigned (local) identity should have the given access
              * (described by the role) on an ARM resource identified by the resource ID. Applications running on the
@@ -878,7 +878,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param role access role to assigned to the scale set local identity
              * @return the next stage of the definition
              */
-            WithSystemAssignedIdentityBasedAccessOrAttach<ParentT> withSystemAssignedIdentityBasedAccessTo(
+            WithSystemAssignedIdentityBasedAccessOrAttach withSystemAssignedIdentityBasedAccessTo(
                 String resourceId, BuiltInRole role);
 
             /**
@@ -889,7 +889,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param role access role to assigned to the scale set local identity
              * @return the next stage of the definition
              */
-            WithSystemAssignedIdentityBasedAccessOrAttach<ParentT> withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(
+            WithSystemAssignedIdentityBasedAccessOrAttach withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(
                 BuiltInRole role);
 
             /**
@@ -901,7 +901,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param roleDefinitionId access role definition to assigned to the scale set local identity
              * @return the next stage of the definition
              */
-            WithSystemAssignedIdentityBasedAccessOrAttach<ParentT> withSystemAssignedIdentityBasedAccessTo(
+            WithSystemAssignedIdentityBasedAccessOrAttach withSystemAssignedIdentityBasedAccessTo(
                 String resourceId, String roleDefinitionId);
 
             /**
@@ -912,7 +912,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param roleDefinitionId access role definition to assigned to the scale set local identity
              * @return the next stage of the definition
              */
-            WithSystemAssignedIdentityBasedAccessOrAttach<ParentT> withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(
+            WithSystemAssignedIdentityBasedAccessOrAttach withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(
                 String roleDefinitionId);
         }
 
@@ -920,7 +920,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
          * The stage of the virtual machine scale set definition allowing to specify User Assigned (External) Managed
          * Service Identities.
          */
-        interface WithUserAssignedManagedServiceIdentity<ParentT> {
+        interface WithUserAssignedManagedServiceIdentity {
             /**
              * Specifies the definition of a not-yet-created user assigned identity to be associated with the virtual
              * machine scale set.
@@ -928,7 +928,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param creatableIdentity a creatable identity definition
              * @return the next stage of the virtual machine scale set definition
              */
-            WithAttach<ParentT> withNewUserAssignedManagedServiceIdentity(Creatable<Identity> creatableIdentity);
+            WithAttach withNewUserAssignedManagedServiceIdentity(Creatable<Identity> creatableIdentity);
 
             /**
              * Specifies an existing user assigned identity to be associated with the virtual machine scale set.
@@ -936,25 +936,25 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param identity the identity
              * @return the next stage of the virtual machine scale set definition
              */
-            WithAttach<ParentT> withExistingUserAssignedManagedServiceIdentity(Identity identity);
+            WithAttach withExistingUserAssignedManagedServiceIdentity(Identity identity);
         }
 
         /** The stage of the virtual machine scale set definition allowing to enable boot diagnostics. */
-        interface WithBootDiagnostics<ParentT> {
+        interface WithBootDiagnostics {
             /**
              * Specifies that boot diagnostics needs to be enabled in the virtual machine.
              * Managed storage account is used.
              *
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withBootDiagnosticsOnManagedStorageAccount();
+            WithAttach withBootDiagnosticsOnManagedStorageAccount();
 
             /**
              * Specifies that boot diagnostics needs to be enabled in the virtual machine scale set.
              *
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withBootDiagnostics();
+            WithAttach withBootDiagnostics();
 
             /**
              * Specifies that boot diagnostics needs to be enabled in the virtual machine scale set.
@@ -962,7 +962,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param creatable the storage account to be created and used for store the boot diagnostics
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withBootDiagnostics(Creatable<StorageAccount> creatable);
+            WithAttach withBootDiagnostics(Creatable<StorageAccount> creatable);
 
             /**
              * Specifies that boot diagnostics needs to be enabled in the virtual machine scale set.
@@ -970,7 +970,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param storageAccount an existing storage account to be uses to store the boot diagnostics
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withBootDiagnostics(StorageAccount storageAccount);
+            WithAttach withBootDiagnostics(StorageAccount storageAccount);
 
             /**
              * Specifies that boot diagnostics needs to be enabled in the virtual machine scale set.
@@ -978,11 +978,11 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param storageAccountBlobEndpointUri a storage account blob endpoint to store the boot diagnostics
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withBootDiagnostics(String storageAccountBlobEndpointUri);
+            WithAttach withBootDiagnostics(String storageAccountBlobEndpointUri);
         }
 
         /** The stage of the virtual machine definition allowing to specify billing profile. */
-        interface WithBillingProfile<ParentT> {
+        interface WithBillingProfile {
 
             /**
              * Set the billing related details of the low priority virtual machines in the scale set. This price is in
@@ -991,27 +991,27 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param maxPrice the maxPrice value to set
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withMaxPrice(Double maxPrice);
+            WithAttach withMaxPrice(Double maxPrice);
         }
 
         /**
          * The stage of the virtual machine scale set definition allowing to specify priority for vms in the scale-set.
          */
-        interface WithVMPriority<ParentT> {
+        interface WithVMPriority {
             /**
              * Specifies the priority of the virtual machines in the scale set.
              *
              * @param priority the priority
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withVirtualMachinePriority(VirtualMachinePriorityTypes priority);
+            WithAttach withVirtualMachinePriority(VirtualMachinePriorityTypes priority);
 
             /**
              * Specify that virtual machines in the scale set should be low priority VMs.
              *
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withLowPriorityVirtualMachine();
+            WithAttach withLowPriorityVirtualMachine();
 
             /**
              * Specify that virtual machines in the scale set should be low priority VMs with provided eviction policy.
@@ -1019,14 +1019,14 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param policy eviction policy for the virtual machines in the scale set.
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withLowPriorityVirtualMachine(VirtualMachineEvictionPolicyTypes policy);
+            WithAttach withLowPriorityVirtualMachine(VirtualMachineEvictionPolicyTypes policy);
 
             /**
              * Specify that virtual machines in the scale set should be spot priority VMs.
              *
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withSpotPriorityVirtualMachine();
+            WithAttach withSpotPriorityVirtualMachine();
 
             /**
              * Specify that virtual machines in the scale set should be spot priority VMs with provided eviction policy.
@@ -1034,17 +1034,17 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param policy eviction policy for the virtual machines in the scale set.
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withSpotPriorityVirtualMachine(VirtualMachineEvictionPolicyTypes policy);
+            WithAttach withSpotPriorityVirtualMachine(VirtualMachineEvictionPolicyTypes policy);
         }
 
         /** The stage of the virtual machine scale set definition allowing to enable public ip for vm instances. */
-        interface WithVirtualMachinePublicIp<ParentT> {
+        interface WithVirtualMachinePublicIp {
             /**
              * Specify that virtual machines in the scale set should have public ip address.
              *
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withVirtualMachinePublicIp();
+            WithAttach withVirtualMachinePublicIp();
 
             /**
              * Specify that virtual machines in the scale set should have public ip address.
@@ -1052,7 +1052,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param leafDomainLabel the domain name label
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withVirtualMachinePublicIp(String leafDomainLabel);
+            WithAttach withVirtualMachinePublicIp(String leafDomainLabel);
 
             /**
              * Specify that virtual machines in the scale set should have public ip address.
@@ -1060,52 +1060,52 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param ipConfig the public ip address configuration
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withVirtualMachinePublicIp(VirtualMachineScaleSetPublicIpAddressConfiguration ipConfig);
+            WithAttach withVirtualMachinePublicIp(VirtualMachineScaleSetPublicIpAddressConfiguration ipConfig);
         }
 
         /** The stage of the virtual machine scale set definition allowing to configure accelerated networking. */
-        interface WithAcceleratedNetworking<ParentT> {
+        interface WithAcceleratedNetworking {
             /**
              * Specify that accelerated networking should be enabled for the virtual machine scale set.
              *
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withAcceleratedNetworking();
+            WithAttach withAcceleratedNetworking();
 
             /**
              * Specify that accelerated networking should be disabled for the virtual machine scale set.
              *
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withoutAcceleratedNetworking();
+            WithAttach withoutAcceleratedNetworking();
         }
 
         /** The stage of the virtual machine scale set definition allowing to configure ip forwarding. */
-        interface WithIpForwarding<ParentT> {
+        interface WithIpForwarding {
             /**
              * Specify that ip forwarding should be enabled for the virtual machine scale set.
              *
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withIpForwarding();
+            WithAttach withIpForwarding();
 
             /**
              * Specify that ip forwarding should be disabled for the virtual machine scale set.
              *
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withoutIpForwarding();
+            WithAttach withoutIpForwarding();
         }
 
         /** The stage of the virtual machine scale set definition allowing to configure network security group. */
-        interface WithNetworkSecurityGroup<ParentT> {
+        interface WithNetworkSecurityGroup {
             /**
              * Specifies the network security group for the virtual machine scale set.
              *
              * @param networkSecurityGroup the network security group to associate
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withExistingNetworkSecurityGroup(NetworkSecurityGroup networkSecurityGroup);
+            WithAttach withExistingNetworkSecurityGroup(NetworkSecurityGroup networkSecurityGroup);
 
             /**
              * Specifies the network security group for the virtual machine scale set.
@@ -1113,39 +1113,39 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param networkSecurityGroupId the network security group to associate
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withExistingNetworkSecurityGroupId(String networkSecurityGroupId);
+            WithAttach withExistingNetworkSecurityGroupId(String networkSecurityGroupId);
         }
 
         /** The stage of the virtual machine scale set definition allowing to configure single placement group. */
-        interface WithSinglePlacementGroup<ParentT> {
+        interface WithSinglePlacementGroup {
             /**
              * Specify that single placement group should be enabled for the virtual machine scale set.
              *
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withSinglePlacementGroup();
+            WithAttach withSinglePlacementGroup();
 
             /**
              * Specify that single placement group should be disabled for the virtual machine scale set.
              *
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withoutSinglePlacementGroup();
+            WithAttach withoutSinglePlacementGroup();
         }
 
         /** The stage of the virtual machine scale set definition allowing to configure application gateway. */
-        interface WithApplicationGateway<ParentT> {
+        interface WithApplicationGateway {
             /**
              * Specify that an application gateway backend pool should be associated with virtual machine scale set.
              *
              * @param backendPoolId an existing backend pool id of the gateway
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withExistingApplicationGatewayBackendPool(String backendPoolId);
+            WithAttach withExistingApplicationGatewayBackendPool(String backendPoolId);
         }
 
         /** The stage of the virtual machine scale set definition allowing to configure application security group. */
-        interface WithApplicationSecurityGroup<ParentT> {
+        interface WithApplicationSecurityGroup {
             /**
              * Specifies that provided application security group should be associated with the virtual machine scale
              * set.
@@ -1153,7 +1153,7 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param applicationSecurityGroup the application security group
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withExistingApplicationSecurityGroup(ApplicationSecurityGroup applicationSecurityGroup);
+            WithAttach withExistingApplicationSecurityGroup(ApplicationSecurityGroup applicationSecurityGroup);
 
             /**
              * Specifies that provided application security group should be associated with the virtual machine scale
@@ -1162,104 +1162,103 @@ public interface VirtualMachineScaleSetFlexibleVMProfile {
              * @param applicationSecurityGroupId the application security group id
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withExistingApplicationSecurityGroupId(String applicationSecurityGroupId);
+            WithAttach withExistingApplicationSecurityGroupId(String applicationSecurityGroupId);
         }
 
         /**
          * The stage of the virtual machine scale set definition allowing to configure a purchase plan.
          */
-        interface WithPlan<ParentT> {
+        interface WithPlan {
             /**
              * Specifies the purchase plan for the virtual machine scale set.
              *
              * @param plan a purchase plan
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withPlan(PurchasePlan plan);
+            WithAttach withPlan(PurchasePlan plan);
         }
 
         /**
          * The virtual machine scale set stages shared between managed and unmanaged based virtual machine scale set
          * definitions.
          */
-        interface DefinitionShared<ParentT>
-            extends UpdateAttachStages.Blank<ParentT>,
-//            DefinitionStages.Blank4UpdateStage<ParentT>,
-            UpdateAttachStages.WithNetworkSubnet<ParentT>,
-            UpdateAttachStages.WithPrimaryInternetFacingLoadBalancer<ParentT>,
-            UpdateAttachStages.WithPrimaryInternalLoadBalancer<ParentT>,
-            UpdateAttachStages.WithPrimaryInternetFacingLoadBalancerBackendOrNatPool<ParentT>,
-            UpdateAttachStages.WithInternalLoadBalancerBackendOrNatPool<ParentT>,
-            UpdateAttachStages.WithPrimaryInternetFacingLoadBalancerNatPool<ParentT>,
-            UpdateAttachStages.WithInternalInternalLoadBalancerNatPool<ParentT>,
-            UpdateAttachStages.WithOS<ParentT>,
-            UpdateAttachStages.WithAttach<ParentT>{
+        interface DefinitionShared
+            extends UpdateAttachStages.Blank,
+            UpdateAttachStages.WithNetworkSubnet,
+            UpdateAttachStages.WithPrimaryInternetFacingLoadBalancer,
+            UpdateAttachStages.WithPrimaryInternalLoadBalancer,
+            UpdateAttachStages.WithPrimaryInternetFacingLoadBalancerBackendOrNatPool,
+            UpdateAttachStages.WithInternalLoadBalancerBackendOrNatPool,
+            UpdateAttachStages.WithPrimaryInternetFacingLoadBalancerNatPool,
+            UpdateAttachStages.WithInternalInternalLoadBalancerNatPool,
+            UpdateAttachStages.WithOS,
+            UpdateAttachStages.WithAttach{
         }
 
         /** The entirety of the virtual machine scale set definition. */
-        interface DefinitionManagedOrUnmanaged<ParentT>
-            extends DefinitionShared<ParentT>,
-            UpdateAttachStages.WithLinuxRootUsernameManagedOrUnmanaged<ParentT>,
-            UpdateAttachStages.WithLinuxRootPasswordOrPublicKeyManagedOrUnmanaged<ParentT>,
-            UpdateAttachStages.WithWindowsAdminUsernameManagedOrUnmanaged<ParentT>,
-            UpdateAttachStages.WithWindowsAdminPasswordManagedOrUnmanaged<ParentT>,
-            UpdateAttachStages.WithLinuxAttachManagedOrUnmanaged<ParentT>,
-            UpdateAttachStages.WithWindowsAttachManagedOrUnmanaged<ParentT>,
-            UpdateAttachStages.WithManagedAttach<ParentT>,
-            UpdateAttachStages.WithUnmanagedAttach<ParentT> {
+        interface DefinitionManagedOrUnmanaged
+            extends DefinitionShared,
+            UpdateAttachStages.WithLinuxRootUsernameManagedOrUnmanaged,
+            UpdateAttachStages.WithLinuxRootPasswordOrPublicKeyManagedOrUnmanaged,
+            UpdateAttachStages.WithWindowsAdminUsernameManagedOrUnmanaged,
+            UpdateAttachStages.WithWindowsAdminPasswordManagedOrUnmanaged,
+            UpdateAttachStages.WithLinuxAttachManagedOrUnmanaged,
+            UpdateAttachStages.WithWindowsAttachManagedOrUnmanaged,
+            UpdateAttachStages.WithManagedAttach,
+            UpdateAttachStages.WithUnmanagedAttach {
         }
 
         /** The entirety of the managed disk based virtual machine scale set definition. */
-        interface DefinitionManaged<ParentT>
-            extends DefinitionShared<ParentT>,
-            UpdateAttachStages.WithLinuxRootUsernameManaged<ParentT>,
-            UpdateAttachStages.WithLinuxRootPasswordOrPublicKeyManaged<ParentT>,
-            UpdateAttachStages.WithWindowsAdminUsernameManaged<ParentT>,
-            UpdateAttachStages.WithWindowsAdminPasswordManaged<ParentT>,
-            UpdateAttachStages.WithLinuxAttachManaged<ParentT>,
-            UpdateAttachStages.WithWindowsAttachManaged<ParentT>,
-            UpdateAttachStages.WithManagedAttach<ParentT> {
+        interface DefinitionManaged
+            extends DefinitionShared,
+            UpdateAttachStages.WithLinuxRootUsernameManaged,
+            UpdateAttachStages.WithLinuxRootPasswordOrPublicKeyManaged,
+            UpdateAttachStages.WithWindowsAdminUsernameManaged,
+            UpdateAttachStages.WithWindowsAdminPasswordManaged,
+            UpdateAttachStages.WithLinuxAttachManaged,
+            UpdateAttachStages.WithWindowsAttachManaged,
+            UpdateAttachStages.WithManagedAttach {
         }
 
         /** The entirety of the unmanaged disk based virtual machine scale set definition. */
-        interface DefinitionUnmanaged<ParentT>
-            extends DefinitionShared<ParentT>,
-            UpdateAttachStages.WithLinuxRootUsernameUnmanaged<ParentT>,
-            UpdateAttachStages.WithLinuxRootPasswordOrPublicKeyUnmanaged<ParentT>,
-            UpdateAttachStages.WithWindowsAdminUsernameUnmanaged<ParentT>,
-            UpdateAttachStages.WithWindowsAdminPasswordUnmanaged<ParentT>,
-            UpdateAttachStages.WithLinuxAttachUnmanaged<ParentT>,
-            UpdateAttachStages.WithWindowsAttachUnmanaged<ParentT>,
-            UpdateAttachStages.WithUnmanagedAttach<ParentT> {
+        interface DefinitionUnmanaged
+            extends DefinitionShared,
+            UpdateAttachStages.WithLinuxRootUsernameUnmanaged,
+            UpdateAttachStages.WithLinuxRootPasswordOrPublicKeyUnmanaged,
+            UpdateAttachStages.WithWindowsAdminUsernameUnmanaged,
+            UpdateAttachStages.WithWindowsAdminPasswordUnmanaged,
+            UpdateAttachStages.WithLinuxAttachUnmanaged,
+            UpdateAttachStages.WithWindowsAttachUnmanaged,
+            UpdateAttachStages.WithUnmanagedAttach {
         }
 
         /**
          * The stage of a virtual machine scale set definition containing all the required inputs for the resource to be
          * created, but also allowing for any other optional settings to be specified.
          */
-        interface WithAttach<ParentT>
-            extends Attachable<ParentT>,
-            WithOSDiskSettings<ParentT>,
-            WithComputerNamePrefix<ParentT>,
-            WithCapacity<ParentT>,
-            WithStorageAccount<ParentT>,
-            WithCustomData<ParentT>,
-//            WithExtension<ParentT>,
-            WithSystemAssignedManagedServiceIdentity<ParentT>,
-            WithUserAssignedManagedServiceIdentity<ParentT>,
-            WithBootDiagnostics<ParentT>,
-            WithBillingProfile<ParentT>,
-            WithVMPriority<ParentT>,
-            WithVirtualMachinePublicIp<ParentT>,
-            WithAcceleratedNetworking<ParentT>,
-            WithIpForwarding<ParentT>,
-            WithNetworkSecurityGroup<ParentT>,
-            WithSinglePlacementGroup<ParentT>,
-            WithApplicationGateway<ParentT>,
-            WithApplicationSecurityGroup<ParentT>,
-            WithSecrets<ParentT>,
-            WithPlan<ParentT>,
-            Resource.DefinitionWithTags<WithAttach<ParentT>> {
+        interface WithAttach
+            extends Attachable<VirtualMachineScaleSet.UpdateStages.WithApply>,
+            WithOSDiskSettings,
+            WithComputerNamePrefix,
+            WithCapacity,
+            WithStorageAccount,
+            WithCustomData,
+//            WithExtension,
+            WithSystemAssignedManagedServiceIdentity,
+            WithUserAssignedManagedServiceIdentity,
+            WithBootDiagnostics,
+            WithBillingProfile,
+            WithVMPriority,
+            WithVirtualMachinePublicIp,
+            WithAcceleratedNetworking,
+            WithIpForwarding,
+            WithNetworkSecurityGroup,
+            WithSinglePlacementGroup,
+            WithApplicationGateway,
+            WithApplicationSecurityGroup,
+            WithSecrets,
+            WithPlan,
+            Resource.DefinitionWithTags<WithAttach> {
         }
 
     }

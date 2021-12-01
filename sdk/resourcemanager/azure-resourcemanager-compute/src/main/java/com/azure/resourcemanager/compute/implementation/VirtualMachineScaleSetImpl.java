@@ -118,14 +118,6 @@ public class VirtualMachineScaleSetImpl
         VirtualMachineScaleSet.DefinitionStages.WithUserAssignedManagedServiceIdentity,
         VirtualMachineScaleSet.UpdateStages.WithSystemAssignedIdentityBasedAccessOrApply,
         VirtualMachineScaleSet.UpdateStages.WithUserAssignedManagedServiceIdentity
-//        VirtualMachineScaleSetFlexibleVMProfile<VirtualMachineScaleSetImpl>,
-//        VirtualMachineScaleSetFlexibleVMProfile.DefinitionStages.DefinitionShared<VirtualMachineScaleSetImpl>,
-//        VirtualMachineScaleSetFlexibleVMProfile.DefinitionStages.DefinitionManagedOrUnmanaged<VirtualMachineScaleSetImpl>,
-//        VirtualMachineScaleSetFlexibleVMProfile.DefinitionStages.DefinitionManaged<VirtualMachineScaleSetImpl>,
-//        VirtualMachineScaleSetFlexibleVMProfile.DefinitionStages.DefinitionUnmanaged<VirtualMachineScaleSetImpl>,
-//        VirtualMachineScaleSetFlexibleVMProfile.DefinitionStages.WithSystemAssignedIdentityBasedAccessOrAttach<VirtualMachineScaleSetImpl>,
-//        VirtualMachineScaleSetFlexibleVMProfile.DefinitionStages.WithUserAssignedManagedServiceIdentity<VirtualMachineScaleSetImpl>,
-
 {
     // Clients
     private final StorageManager storageManager;

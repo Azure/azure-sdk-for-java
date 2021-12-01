@@ -151,16 +151,7 @@ public class VirtualMachineScaleSetVMProfileTests extends ComputeManagementTest 
             .define(vmssName)
             .withRegion(region)
             .withExistingResourceGroup(resourceGroup)
-            .defineFlexibleVirtualMachineProfile()
-                .withExistingPrimaryNetworkSubnet(network, "subnet1")
-                .withoutPrimaryInternetFacingLoadBalancer()
-                .withoutPrimaryInternalLoadBalancer()
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                .withRootUsername("jvuser")
-                .withSsh(sshPublicKey())
-                .withVirtualMachinePublicIp(vmssVmDnsLabel)
-                .withExistingApplicationSecurityGroup(asg)
-                .attach()
+            .withFlexibleOrchestrationMode()
             .create();
 
         // Create VMSS with instance public ip
