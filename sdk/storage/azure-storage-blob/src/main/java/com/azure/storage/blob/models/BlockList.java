@@ -18,13 +18,13 @@ public final class BlockList {
      * The CommittedBlocks property.
      */
     @JacksonXmlElementWrapper(localName = "CommittedBlocks")
-    private List<Block> committedBlocks = new ArrayList<>();
+    private List<Block> committedBlocks;
 
     /*
      * The UncommittedBlocks property.
      */
     @JacksonXmlElementWrapper(localName = "UncommittedBlocks")
-    private List<Block> uncommittedBlocks = new ArrayList<>();
+    private List<Block> uncommittedBlocks;
 
     /**
      * Get the committedBlocks property: The CommittedBlocks property.
@@ -32,6 +32,9 @@ public final class BlockList {
      * @return the committedBlocks value.
      */
     public List<Block> getCommittedBlocks() {
+        if (this.committedBlocks == null) {
+            this.committedBlocks = new ArrayList<Block>();
+        }
         return this.committedBlocks;
     }
 
@@ -52,6 +55,9 @@ public final class BlockList {
      * @return the uncommittedBlocks value.
      */
     public List<Block> getUncommittedBlocks() {
+        if (this.uncommittedBlocks == null) {
+            this.uncommittedBlocks = new ArrayList<Block>();
+        }
         return this.uncommittedBlocks;
     }
 

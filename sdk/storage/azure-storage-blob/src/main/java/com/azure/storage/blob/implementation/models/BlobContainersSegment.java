@@ -51,7 +51,7 @@ public final class BlobContainersSegment {
      * The BlobContainerItems property.
      */
     @JacksonXmlElementWrapper(localName = "Containers")
-    private List<BlobContainerItem> blobContainerItems = new ArrayList<>();
+    private List<BlobContainerItem> blobContainerItems;
 
     /**
      * Get the serviceEndpoint property: The ServiceEndpoint property.
@@ -159,6 +159,9 @@ public final class BlobContainersSegment {
      * @return the blobContainerItems value.
      */
     public List<BlobContainerItem> getBlobContainerItems() {
+        if (this.blobContainerItems == null) {
+            this.blobContainerItems = new ArrayList<BlobContainerItem>();
+        }
         return this.blobContainerItems;
     }
 

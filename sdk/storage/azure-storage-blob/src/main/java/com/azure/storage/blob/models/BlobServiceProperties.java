@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** Storage Service Properties. */
-@JacksonXmlRootElement(localName = "StorageServiceProperties")
 @Fluent
+@JacksonXmlRootElement(localName = "StorageServiceProperties")
 public final class BlobServiceProperties {
 
     /*
@@ -39,7 +39,7 @@ public final class BlobServiceProperties {
      * The set of CORS rules.
      */
     @JacksonXmlElementWrapper(localName = "Cors")
-    private List<BlobCorsRule> cors = new ArrayList<>();
+    private List<BlobCorsRule> cors;
 
     /*
      * The default version to use for requests to the Blob service if an
@@ -132,6 +132,9 @@ public final class BlobServiceProperties {
      * @return the cors value.
      */
     public List<BlobCorsRule> getCors() {
+        if (this.cors == null) {
+            this.cors = new ArrayList<BlobCorsRule>();
+        }
         return this.cors;
     }
 

@@ -18,7 +18,7 @@ public final class ArrowConfiguration {
      * The Schema property.
      */
     @JacksonXmlElementWrapper(localName = "Schema")
-    private List<ArrowField> schema = new ArrayList<>();
+    private List<ArrowField> schema;
 
     /**
      * Get the schema property: The Schema property.
@@ -26,6 +26,9 @@ public final class ArrowConfiguration {
      * @return the schema value.
      */
     public List<ArrowField> getSchema() {
+        if (this.schema == null) {
+            this.schema = new ArrayList<ArrowField>();
+        }
         return this.schema;
     }
 

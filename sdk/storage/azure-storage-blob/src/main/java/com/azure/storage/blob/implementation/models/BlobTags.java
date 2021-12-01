@@ -18,7 +18,7 @@ public final class BlobTags {
      * The BlobTagSet property.
      */
     @JacksonXmlElementWrapper(localName = "TagSet")
-    private List<BlobTag> blobTagSet = new ArrayList<>();
+    private List<BlobTag> blobTagSet;
 
     /**
      * Get the blobTagSet property: The BlobTagSet property.
@@ -26,6 +26,9 @@ public final class BlobTags {
      * @return the blobTagSet value.
      */
     public List<BlobTag> getBlobTagSet() {
+        if (this.blobTagSet == null) {
+            this.blobTagSet = new ArrayList<BlobTag>();
+        }
         return this.blobTagSet;
     }
 

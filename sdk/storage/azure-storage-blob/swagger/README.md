@@ -348,6 +348,15 @@ directive:
     $["x-ms-enum"].name = "BlobErrorCode";
 ```
 
+### Typo Fixed in ErrorCode Removed Enum Value
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.ErrorCode
+  transform: >
+    $.enum.push("SnaphotOperationRateExceeded");
+```
+
 ### BlobServiceProperties, BlobAnalyticsLogging, BlobMetrics, BlobCorsRule, and BlobRetentionPolicy
 ``` yaml
 directive:
@@ -370,12 +379,6 @@ directive:
 - from: swagger-document
   where: $.definitions
   transform: >
-    $.BlobAnalyticsLogging.xml = {"name": "Logging"};
-    $.BlobMetrics.xml = {"name": "Metrics"};
-    $.BlobCorsRule.xml = {"name": "CorsRule"};
-    $.BlobRetentionPolicy.xml = {"name": "RetentionPolicy"};
-    $.BlobServiceProperties.xml = {"name": "StorageServiceProperties"};
-    
     $.BlobMetrics.properties.IncludeAPIs["x-ms-client-name"] = "IncludeApis";
     delete $.BlobRetentionPolicy.properties.AllowPermanentDelete;
     
@@ -388,22 +391,9 @@ directive:
 ### BlobServiceStatistics
 ``` yaml
 directive:
-- from: swagger-document
-  where: $.definitions
-  transform: >
-    if (!$.BlobServiceStatistics) {
-        $.BlobServiceStatistics = $.StorageServiceStats;
-        delete $.StorageServiceStats;
-        $.BlobServiceStatistics.xml = { "name": "StorageServiceStats" }
-        $.BlobServiceStatistics.description = "Statistics for the storage service.";
-    }
-- from: swagger-document
-  where: $["x-ms-paths"]["/?restype=service&comp=stats"].get.responses["200"]
-  transform: >
-    if ($.schema && $.schema.$ref && $.schema.$ref.endsWith("StorageServiceStats")) {
-        const path = $.schema.$ref.replace(/[#].*$/, "#/definitions/BlobServiceStatistics");
-        $.schema = { "$ref": path };
-    }
+- rename-model:
+    from: StorageServiceStats
+    to: BlobServiceStatistics
 ```
 
 ### BlobAccessPolicy and BlobSignedIdentifier
@@ -418,9 +408,6 @@ directive:
 - from: swagger-document
   where: $.definitions
   transform: >
-    $.BlobSignedIdentifier.xml = {"name": "SignedIdentifier"};
-    $.BlobAccessPolicy.xml = {"name": "AccessPolicy"};
-    
     $.BlobAccessPolicy.properties.Start["x-ms-client-name"] = "StartsOn";
     $.BlobAccessPolicy.properties.Expiry["x-ms-client-name"] = "ExpiresOn";
     $.BlobAccessPolicy.properties.Permission["x-ms-client-name"] = "Permissions";

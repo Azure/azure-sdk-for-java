@@ -32,7 +32,7 @@ public final class FilterBlobSegment {
      * The Blobs property.
      */
     @JacksonXmlElementWrapper(localName = "Blobs")
-    private List<FilterBlobItem> blobs = new ArrayList<>();
+    private List<FilterBlobItem> blobs;
 
     /*
      * The NextMarker property.
@@ -86,6 +86,9 @@ public final class FilterBlobSegment {
      * @return the blobs value.
      */
     public List<FilterBlobItem> getBlobs() {
+        if (this.blobs == null) {
+            this.blobs = new ArrayList<FilterBlobItem>();
+        }
         return this.blobs;
     }
 

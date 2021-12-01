@@ -113,14 +113,5 @@ directive:
     $.properties.etag["x-ms-client-name"] = "eTag";
 ```
 
-### Rename XML name
-``` yaml
-directive:
-- from: swagger-document
-  where: $.definitions.SetAccessControlRecursiveResponse
-  transform: >
-   $.properties.failedEntries.xml = {"name": "failedEntries"};
-```
-
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-file-datalake%2Fswagger%2FREADME.png)
 
