@@ -150,7 +150,15 @@ public class CosmosException extends AzureException {
     protected CosmosException(int statusCode, String message, Map<String, String> responseHeaders, Throwable cause) {
         super(message, cause);
         this.statusCode = statusCode;
-        this.responseHeaders = responseHeaders == null ? new ConcurrentHashMap<>() : new ConcurrentHashMap<>(responseHeaders);
+        this.responseHeaders = new ConcurrentHashMap<>();
+
+        if (responseHeaders != null) {
+            for (Map.Entry<String, String> entry: responseHeaders.entrySet()) {
+                if (entry.getKey() != null && entry.getValue() != null) {
+                    this.responseHeaders.put(entry.getKey(), entry.getValue());
+                }
+            }
+        }
     }
 
     /**
