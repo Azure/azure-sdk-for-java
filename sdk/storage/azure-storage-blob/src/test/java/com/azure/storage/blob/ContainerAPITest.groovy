@@ -1624,7 +1624,7 @@ class ContainerAPITest extends APISpec {
         sleepIfRecord(10 * 1000) // To allow tags to index
 
         when:
-        def results = cc.findBlobsByTags(String.format("@container='%s' AND \"bar\"='foo'",
+        def results = cc.findBlobsByTags(String.format("\"bar\"='foo'",
             cc.getBlobContainerName()))
 
         then:

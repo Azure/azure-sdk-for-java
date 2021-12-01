@@ -79,6 +79,7 @@ public class BlobStorageCustomization extends Customization {
         modifyUnexpectedResponseExceptionType(containersImpl.getMethod("changeLease"));
         modifyUnexpectedResponseExceptionType(containersImpl.getMethod("listBlobFlatSegment"));
         modifyUnexpectedResponseExceptionType(containersImpl.getMethod("listBlobHierarchySegment"));
+        modifyUnexpectedResponseExceptionType(containersImpl.getMethod("filterBlobs"));
         modifyUnexpectedResponseExceptionType(containersImpl.getMethod("getAccountInfo"));
 
         ClassCustomization pageBlobsImpl = impl.getClass("PageBlobsImpl");
@@ -106,10 +107,6 @@ public class BlobStorageCustomization extends Customization {
 
         implementationModels.getClass("BlobHierarchyListSegment").addAnnotation("@JsonDeserialize(using = com.azure.storage.blob.implementation.util.CustomHierarchicalListingDeserializer.class)");
 
-        ClassCustomization blobItemInternal = implementationModels.getClass("BlobItemInternal");
-        PropertyCustomization objectReplicationMetadata = blobItemInternal.getProperty("objectReplicationMetadata");
-        objectReplicationMetadata.removeAnnotation("@JsonProperty(value = \"ObjectReplicationMetadata\")")
-            .addAnnotation("@JsonProperty(value = \"OrMetadata\")");
 
         ClassCustomization blobPrefix = implementationModels.getClass("BlobPrefix");
         blobPrefix.rename("BlobPrefixInternal");

@@ -229,7 +229,7 @@ public final class ContainersImpl {
 
         @Get("/{containerName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ContainersFilterBlobsResponse> filterBlobs(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
