@@ -72,7 +72,7 @@ public class SynchronousMessageSubscriberTest {
 
         // Assert
         Assertions.assertEquals(1, syncSubscriber.getWorkQueueSize());
-        Assertions.assertEquals(100, syncSubscriber.getRequested());
+        Assertions.assertEquals(100, syncSubscriber.getMessagesRequested());
     }
 
     /**
@@ -86,7 +86,7 @@ public class SynchronousMessageSubscriberTest {
 
         // Assert
         Assertions.assertEquals(1, syncSubscriber.getWorkQueueSize());
-        Assertions.assertEquals(3, syncSubscriber.getRequested());
+        Assertions.assertEquals(3, syncSubscriber.getMessagesRequested());
 
     }
 
@@ -103,7 +103,7 @@ public class SynchronousMessageSubscriberTest {
 
         // Assert
         Assertions.assertEquals(2, syncSubscriber.getWorkQueueSize());
-        Assertions.assertEquals(1, syncSubscriber.getRequested());
+        Assertions.assertEquals(1, syncSubscriber.getMessagesRequested());
 
     }
 
@@ -124,7 +124,7 @@ public class SynchronousMessageSubscriberTest {
         // Assert
         Assertions.assertTrue(syncSubscriber.isSubscriberInitialized());
         Assertions.assertEquals(0, syncSubscriber.getWorkQueueSize());
-        Assertions.assertEquals(1, syncSubscriber.getRequested());
+        Assertions.assertEquals(1, syncSubscriber.getMessagesRequested());
 
     }
 }

@@ -10,12 +10,12 @@ import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Operators;
 
-import java.time.Duration;
-import java.util.Queue;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
@@ -25,40 +25,53 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
     private final ClientLogger logger = new ClientLogger(SynchronousMessageSubscriber.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final AtomicInteger wip = new AtomicInteger();
-    private final Queue<SynchronousReceiveWork> workQueue = new ConcurrentLinkedQueue<>();
-    private final Queue<ServiceBusReceivedMessage> bufferMessages = new ConcurrentLinkedQueue<>();
-    private final AtomicLong remaining = new AtomicLong();
+    private final ConcurrentLinkedQueue<SynchronousReceiveWork> workQueue = new ConcurrentLinkedQueue<>();
+    private final ConcurrentLinkedDeque<ServiceBusReceivedMessage> bufferMessages = new ConcurrentLinkedDeque<>();
 
-    private final long requested;
     private final Object currentWorkLock = new Object();
+    private volatile Disposable currentTimeoutOperation;
+    private volatile SynchronousReceiveWork currentWork;
 
-    private Disposable currentTimeoutOperation;
-    private SynchronousReceiveWork currentWork;
-    private boolean subscriberInitialized;
+    /**
+     * The number of requested messages.
+     */
+    private volatile long requested;
+    private static final AtomicLongFieldUpdater<SynchronousMessageSubscriber> REQUESTED =
+        AtomicLongFieldUpdater.newUpdater(SynchronousMessageSubscriber.class, "requested");
 
-    private volatile Subscription subscription;
-
+    private volatile Subscription upstream;
     private static final AtomicReferenceFieldUpdater<SynchronousMessageSubscriber, Subscription> UPSTREAM =
         AtomicReferenceFieldUpdater.newUpdater(SynchronousMessageSubscriber.class, Subscription.class,
-            "subscription");
+            "upstream");
 
+    /**
+     * Creates a synchronous subscriber with some initial work to queue.
+     *
+     * @param initialWork Initial work to queue.
+     *
+     * @throws NullPointerException if {@code initialWork} is null.
+     * @throws IllegalArgumentException if {@code initialWork.getNumberOfEvents()} is less than 1.
+     */
+    SynchronousMessageSubscriber(SynchronousReceiveWork initialWork) {
+        this.workQueue.add(Objects.requireNonNull(initialWork, "'initialWork' cannot be null."));
 
-    SynchronousMessageSubscriber(long prefetch, SynchronousReceiveWork initialWork) {
-        this.workQueue.add(initialWork);
-        requested = initialWork.getNumberOfEvents() > prefetch ? initialWork.getNumberOfEvents() : prefetch;
+        if (initialWork.getNumberOfEvents() < 1) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "'numberOfEvents' cannot be less than 1. Actual: " + initialWork.getNumberOfEvents()));
+        }
+
+        Operators.addCap(REQUESTED, this, initialWork.getNumberOfEvents());
     }
 
     /**
      * On an initial subscription, will take the first work item, and request that amount of work for it.
+     *
      * @param subscription Subscription for upstream.
      */
     @Override
     protected void hookOnSubscribe(Subscription subscription) {
-
         if (Operators.setOnce(UPSTREAM, this, subscription)) {
-            this.subscription = subscription;
-            subscriberInitialized = true;
-            drain();
+            subscription.request(REQUESTED.get(this));
         } else {
             logger.error("Already subscribed once.");
         }
@@ -67,6 +80,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
     /**
      * Publishes the event to the current {@link SynchronousReceiveWork}. If that work item is complete, will dispose of
      * the subscriber.
+     *
      * @param message Event to publish.
      */
     @Override
@@ -77,16 +91,17 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
 
     /**
      * Queue the work to be picked up by drain loop.
+     *
      * @param work to be queued.
      */
     void queueWork(SynchronousReceiveWork work) {
-
         logger.info("[{}] Pending: {}, Scheduling receive timeout task '{}'.", work.getId(), work.getNumberOfEvents(),
             work.getTimeout());
+
         workQueue.add(work);
 
         // Do not drain if another thread want to queue the work before we have subscriber
-        if (subscriberInitialized) {
+        if (UPSTREAM.get(this) != null) {
             drain();
         }
     }
@@ -95,17 +110,16 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
      * Drain the work, only one thread can be in this loop at a time.
      */
     private void drain() {
-        // If someone is already in this loop, then we are already clearing the queue.
-        if (!wip.compareAndSet(0, 1)) {
+        if (wip.getAndIncrement() != 0) {
             return;
         }
 
-        try {
-            drainQueue();
-        } finally {
-            final int decremented = wip.decrementAndGet();
-            if (decremented != 0) {
-                logger.warning("There should be 0, but was: {}", decremented);
+        int missed = 1;
+        while (missed != 0) {
+            try {
+                drainQueue();
+            } finally {
+                missed = wip.addAndGet(-missed);
             }
         }
     }
@@ -118,82 +132,53 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
             return;
         }
 
-        // Acquiring the lock
-        synchronized (currentWorkLock) {
+        // Consider the case we queue a new work item after some time.
 
-            // Making sure current work not become terminal since last drain queue cycle
-            if (currentWork != null && currentWork.isTerminal()) {
-                workQueue.remove(currentWork);
-                if (currentTimeoutOperation != null && !currentTimeoutOperation.isDisposed()) {
-                    currentTimeoutOperation.dispose();
-                }
-                currentTimeoutOperation = null;
+        long numberRequested = REQUESTED.get(this);
+        boolean isEmpty = bufferMessages.isEmpty();
+        SynchronousReceiveWork work = null;
+        while (numberRequested != 0L && !isEmpty) {
+            if (isTerminated()) {
+                break;
             }
 
-            // We should process a work when
-            // 1. it is first time getting picked up
-            // 2. or more messages have arrived while we were in drain loop.
-            // We might not have all the message in bufferMessages needed for workQueue, Thus we will only remove work
-            // from queue when we have delivered all the messages to currentWork.
+            long numberEmitted = 0L;
+            while (numberRequested != numberEmitted) {
+                if (isEmpty || isTerminated()) {
+                    break;
+                }
 
-            while ((currentWork = workQueue.peek()) != null
-                && (!currentWork.isProcessingStarted() || bufferMessages.size() > 0)) {
-                // Additional check for safety, but normally this work should never be terminal
-                if (currentWork.isTerminal()) {
-                    // This work already finished by either timeout or no more messages to send, process next work.
-                    workQueue.remove(currentWork);
-                    if (currentTimeoutOperation != null && !currentTimeoutOperation.isDisposed()) {
-                        currentTimeoutOperation.dispose();
+                final ServiceBusReceivedMessage message = bufferMessages.poll();
+                boolean isEmitted = false;
+                while (!isEmitted) {
+                    work = getOrUpdateCurrentWork();
+                    if (work == null) {
+                        break;
                     }
-                    continue;
+
+                    isEmitted = work.emitNext(message);
                 }
 
-                if (!currentWork.isProcessingStarted()) {
-                    // timer to complete the currentWork in case of timeout trigger
-                    currentTimeoutOperation = getTimeoutOperation(currentWork);
-                    currentWork.startedProcessing();
-                    final long calculatedRequest = currentWork.getNumberOfEvents() - remaining.get();
-                    remaining.addAndGet(calculatedRequest);
-                    subscription.request(calculatedRequest);
+                // We could not emit the last message that we polled because there were no work items.
+                // Push this back to the head of the work queue.
+                if (!isEmitted) {
+                    bufferMessages.addFirst(message);
+                    break;
                 }
 
-                // Send messages to currentWork from buffer
-                while (bufferMessages.size() > 0 && !currentWork.isTerminal()) {
-                    currentWork.next(bufferMessages.poll());
-                    remaining.decrementAndGet();
-                }
+                numberEmitted++;
+                isEmpty = bufferMessages.isEmpty();
+            }
 
-                // if  we have delivered all the messages to currentWork, we will complete it.
-                if (currentWork.isTerminal()) {
-                    if (currentWork.getError() == null) {
-                        currentWork.complete();
-                    }
-                    // Now remove from queue since it is complete
-                    workQueue.remove(currentWork);
-                    if (currentTimeoutOperation != null && !currentTimeoutOperation.isDisposed()) {
-                        currentTimeoutOperation.dispose();
-                    }
-                    logger.verbose("The work [{}] is complete.", currentWork.getId());
-                }
+            final long requestedMessages = REQUESTED.get(this);
+            if (requestedMessages != Long.MAX_VALUE) {
+                numberRequested = REQUESTED.addAndGet(this, -numberEmitted);
             }
         }
-    }
 
-    /**
-     * @param work on which timeout thread need to start.
-     *
-     * @return {@link Disposable} for the timeout operation.
-     */
-    private Disposable getTimeoutOperation(SynchronousReceiveWork work) {
-        Duration timeout = work.getTimeout();
-        return Mono.delay(timeout).thenReturn(work)
-            .subscribe(l -> {
-                synchronized (currentWorkLock) {
-                    if (currentWork == work) {
-                        work.timeout();
-                    }
-                }
-            });
+        if (numberRequested > 0L && isEmpty) {
+            addCreditsToLink("Adding more credits in drain loop.");
+        }
     }
 
     /**
@@ -210,9 +195,94 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
 
     @Override
     protected void hookOnCancel() {
+        this.dispose();
+    }
+
+    private boolean isTerminated() {
+        if (UPSTREAM.get(this) == Operators.cancelledSubscription()) {
+            return true;
+        }
+
+        return isDisposed.get();
+    }
+
+    /**
+     * Gets the current work item if it is not terminal and cleans up any existing timeout operations.
+     *
+     * @return Gets or sets the next work item. Null if there are no work items currently.
+     */
+    private SynchronousReceiveWork getOrUpdateCurrentWork() {
+        synchronized (currentWorkLock) {
+            if (currentWork != null && !currentWork.isTerminal()) {
+                return currentWork;
+            }
+
+            if (this.currentTimeoutOperation != null) {
+                this.currentTimeoutOperation.dispose();
+            }
+
+            currentWork = workQueue.poll();
+            while (currentWork != null) {
+
+                // If the current work isn't terminal, then return it. Otherwise, poll for the next item.
+                if (!currentWork.isTerminal()) {
+                    final SynchronousReceiveWork work = currentWork;
+
+                    final long difference = REQUESTED.getAndUpdate(this, (existing) -> {
+                        if (existing > work.getNumberOfEvents()) {
+                            return existing;
+                        } else {
+
+                        }
+                    });
+                    this.currentTimeoutOperation = Mono.delay(work.getTimeout()).thenReturn(work)
+                        .subscribe(timedOutWork -> timedOutWork.timeout());
+
+                    return currentWork;
+                } else {
+                    currentWork = workQueue.poll();
+                }
+            }
+
+            return currentWork;
+        }
+    }
+
+    /**
+     * Adds additional credits upstream if {@code numberOfMessages} is greater than the number of {@code REQUESTED}
+     * items.
+     *
+     * @param numberOfMessages Number of messages required downstream.
+     */
+    private void requestUpstream(long numberOfMessages) {
+        if (isTerminated()) {
+            logger.info("Cannot request more messages upstream. Subscriber is terminated.");
+            return;
+        }
+
+        final Subscription subscription = UPSTREAM.get(this);
+        if (subscription == null) {
+            return;
+        }
+
+        final long difference = requested - numberOfMessages;
+        if (difference <= 0) {
+            return;
+        }
+
+        Operators.addCap(REQUESTED, this, difference);
+        subscription.request(difference);
+    }
+
+    @Override
+    public void dispose() {
+
+        super.dispose();
+
         if (isDisposed.getAndSet(true)) {
             return;
         }
+
 
         synchronized (currentWorkLock) {
             if (currentWork != null) {
@@ -221,25 +291,14 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
             if (currentTimeoutOperation != null && !currentTimeoutOperation.isDisposed()) {
                 currentTimeoutOperation.dispose();
             }
+
             currentTimeoutOperation = null;
         }
 
-        subscription.cancel();
-    }
-
-    private boolean isTerminated() {
-        return isDisposed.get();
     }
 
     int getWorkQueueSize() {
         return this.workQueue.size();
     }
-
-    long getRequested() {
-        return this.requested;
-    }
-
-    boolean isSubscriberInitialized() {
-        return this.subscriberInitialized;
-    }
 }
+
