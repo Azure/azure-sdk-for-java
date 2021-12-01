@@ -2062,7 +2062,7 @@ public final class ManagedClustersClientImpl
                 this.client.getHttpPipeline(),
                 ManagedClusterInner.class,
                 ManagedClusterInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2331,7 +2331,7 @@ public final class ManagedClustersClientImpl
                 this.client.getHttpPipeline(),
                 ManagedClusterInner.class,
                 ManagedClusterInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2576,7 +2576,7 @@ public final class ManagedClustersClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2825,7 +2825,7 @@ public final class ManagedClustersClientImpl
             resetServicePrincipalProfileWithResponseAsync(resourceGroupName, resourceName, parameters);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -3099,7 +3099,7 @@ public final class ManagedClustersClientImpl
             resetAadProfileWithResponseAsync(resourceGroupName, resourceName, parameters);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -3347,7 +3347,7 @@ public final class ManagedClustersClientImpl
             rotateClusterCertificatesWithResponseAsync(resourceGroupName, resourceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -3595,7 +3595,7 @@ public final class ManagedClustersClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = stopWithResponseAsync(resourceGroupName, resourceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -3847,7 +3847,7 @@ public final class ManagedClustersClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, resourceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -4108,7 +4108,7 @@ public final class ManagedClustersClientImpl
                 this.client.getHttpPipeline(),
                 RunCommandResultInner.class,
                 RunCommandResultInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

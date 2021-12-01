@@ -772,7 +772,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
         return this
             .client
             .<EndpointInner, EndpointInner>getLroResult(
-                mono, this.client.getHttpPipeline(), EndpointInner.class, EndpointInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), EndpointInner.class, EndpointInner.class, this.client.getContext());
     }
 
     /**
@@ -1093,7 +1093,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
         return this
             .client
             .<EndpointInner, EndpointInner>getLroResult(
-                mono, this.client.getHttpPipeline(), EndpointInner.class, EndpointInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), EndpointInner.class, EndpointInner.class, this.client.getContext());
     }
 
     /**
@@ -1414,7 +1414,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, profileName, endpointName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1675,7 +1675,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
         return this
             .client
             .<EndpointInner, EndpointInner>getLroResult(
-                mono, this.client.getHttpPipeline(), EndpointInner.class, EndpointInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), EndpointInner.class, EndpointInner.class, this.client.getContext());
     }
 
     /**
@@ -1940,7 +1940,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
         return this
             .client
             .<EndpointInner, EndpointInner>getLroResult(
-                mono, this.client.getHttpPipeline(), EndpointInner.class, EndpointInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), EndpointInner.class, EndpointInner.class, this.client.getContext());
     }
 
     /**
@@ -2217,7 +2217,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             purgeContentWithResponseAsync(resourceGroupName, profileName, endpointName, contentPaths);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2495,7 +2495,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             loadContentWithResponseAsync(resourceGroupName, profileName, endpointName, contentPaths);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

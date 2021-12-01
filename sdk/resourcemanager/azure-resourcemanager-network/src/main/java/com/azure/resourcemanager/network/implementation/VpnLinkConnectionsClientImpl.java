@@ -268,7 +268,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             resetConnectionWithResponseAsync(resourceGroupName, gatewayName, connectionName, linkConnectionName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -569,7 +569,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
         return this
             .client
             .<String, String>getLroResult(
-                mono, this.client.getHttpPipeline(), String.class, String.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), String.class, String.class, this.client.getContext());
     }
 
     /**

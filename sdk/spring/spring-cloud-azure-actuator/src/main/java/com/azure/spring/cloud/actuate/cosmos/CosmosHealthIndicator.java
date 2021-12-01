@@ -29,6 +29,12 @@ public class CosmosHealthIndicator extends AbstractHealthIndicator {
     private final String endpoint;
     private Duration timeout = DEFAULT_HEALTH_CHECK_TIMEOUT;
 
+    /**
+     * Creates a new instance of {@link CosmosHealthIndicator}.
+     * @param cosmosAsyncClient the cosmosAsyncClient
+     * @param database database name
+     * @param endpoint cosmos endpoint
+     */
     public CosmosHealthIndicator(CosmosAsyncClient cosmosAsyncClient, String database, String endpoint) {
         super("Cosmos health check failed");
         Assert.notNull(cosmosAsyncClient, "CosmosClient must not be null");

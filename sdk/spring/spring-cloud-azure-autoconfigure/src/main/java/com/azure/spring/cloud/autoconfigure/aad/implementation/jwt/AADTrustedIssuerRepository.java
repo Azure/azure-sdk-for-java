@@ -45,8 +45,16 @@ public class AADTrustedIssuerRepository {
      */
     private final Map<String, String> specialOidcIssuerLocationMap = new HashMap<>();
 
+    /**
+     * The tenant ID
+     */
     protected String tenantId;
 
+    /**
+     * Creates a new instance of {@link AADTrustedIssuerRepository}.
+     *
+     * @param tenantId the tenant ID
+     */
     public AADTrustedIssuerRepository(String tenantId) {
         this.tenantId = tenantId;
         trustedIssuers.addAll(buildAADIssuers(PATH_DELIMITER));
@@ -59,31 +67,73 @@ public class AADTrustedIssuerRepository {
                      .collect(Collectors.toList());
     }
 
+    /**
+     * Gets the set of trusted issuers.
+     *
+     * @return the set of trusted issuers
+     */
     public Set<String> getTrustedIssuers() {
         return Collections.unmodifiableSet(trustedIssuers);
     }
 
+    /**
+     * Adds trusted issuers.
+     *
+     * @param issuers the issuers
+     * @return whether the issuers were added
+     */
     public boolean addTrustedIssuer(String... issuers) {
         return trustedIssuers.addAll(Arrays.asList(issuers));
     }
 
+    /**
+     * Adds a trusted issuer.
+     *
+     * @param issuer the issuer
+     * @param oidcIssuerLocation the OIDC issuer location
+     * @return whether the issuer was added
+     */
     public boolean addTrustedIssuer(String issuer, String oidcIssuerLocation) {
         specialOidcIssuerLocationMap.put(issuer, oidcIssuerLocation);
         return trustedIssuers.add(issuer);
     }
 
+    /**
+     * Whether the issuer is trusted.
+     *
+     * @param issuer the issuer
+     * @return whether the issuer is trusted
+     */
     public boolean isTrusted(String issuer) {
         return this.trustedIssuers.contains(issuer);
     }
 
+    /**
+     * Whether the issuer has a special OIDC issuer location.
+     *
+     * @param issuer the issuer
+     * @return whether the issuer has a special OIDC issuer location
+     */
     public boolean hasSpecialOidcIssuerLocation(String issuer) {
         return this.specialOidcIssuerLocationMap.containsKey(issuer);
     }
 
+    /**
+     * Gets the issuer's special OIDC issuer location.
+     *
+     * @param issuer the issuer
+     * @return the issuer's special OIDC issuer location
+     */
     public String getSpecialOidcIssuerLocation(String issuer) {
         return this.specialOidcIssuerLocationMap.get(issuer);
     }
 
+    /**
+     * Adds a B2C issuer.
+     *
+     * @param baseUri the base URI
+     * @deprecated deprecated
+     */
     @Deprecated
     public void addB2CIssuer(String baseUri) {
         Assert.notNull(baseUri, "baseUri cannot be null.");

@@ -133,9 +133,6 @@ public final class AttestationOptions {
      * <p><strong>Retrieve the RunTimeData value.</strong></p>
      * <!-- src_embed com.azure.security.attestation.models.AttestationOptions.getRunTimeData -->
      * <pre>
-     * AttestationOptions attestationOptions = new AttestationOptions&#40;openEnclaveReport&#41;
-     *     .setRunTimeData&#40;new AttestationData&#40;runtimeData, AttestationDataInterpretation.JSON&#41;&#41;;
-     *
      * AttestationData existingRuntimeData = attestationOptions.getRunTimeData&#40;&#41;;
      * </pre>
      * <!-- end com.azure.security.attestation.models.AttestationOptions.getRunTimeData -->
