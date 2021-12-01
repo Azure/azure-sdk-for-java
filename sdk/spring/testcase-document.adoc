@@ -837,10 +837,11 @@ spring:
 N/A
 
 === Is UT enough?
-No
+No, or we should only focus on how to apply MSI authentication.
 
 === Current use cases
 link:https://github.com/Azure/azure-sdk-for-java/blob/a82bfc22702663f9fdb18879b9f43ade34b6fbed/sdk/spring/azure-spring-boot-test-application/src/main/java/com/azure/test/Application.java#L52[Get secert value from KeyVault]
+
 link:https://github.com/Azure/azure-sdk-for-java/blob/ccfc66dc168da62f23994bec2813c7d2f0046a68/sdk/spring/azure-spring-boot-test-keyvault/src/test/java/com/azure/spring/test/keyvault/KeyVaultSecretValueIT.java#L115[keyVaultWithAppServiceMSI]
 
 == Test Spring Cloud Azure Keyvault as property source in Virtual Machine
@@ -880,11 +881,12 @@ spring:
 N/A
 
 === Is UT enough?
-No
+No, or we should only focus on how to apply MSI authentication.
 
 === Current use cases
 link:https://github.com/Azure/azure-sdk-for-java/blob/a82bfc22702663f9fdb18879b9f43ade34b6fbed/sdk/spring/azure-spring-boot-test-application/src/main/java/com/azure/test/Application.java#L52[Get secert value from KeyVault]
-link:https://github.com/Azure/azure-sdk-for-java/blob/ccfc66dc168da62f23994bec2813c7d2f0046a68/sdk/spring/azure-spring-boot-test-keyvault/src/test/java/com/azure/spring/test/keyvault/KeyVaultSecretValueIT.java#L154[keyVaultWithVirtualMachineMSI]
+
+link:https://github.com/Azure/azure-sdk-for-java/blob/ccfc66dc168da62f23994bec2813c7d2f0046a68/sdk/spring/azure-spring-boot-test-keyvault/src/test/java/com/azure/spring/test/keyvault/KeyVaultSecretValueIT.java#L154[keyVaultWithVirtualMachineMSI] +
 
 == Obtain the value of the key through the credentials of the Keyvault property source
 Use `spring-cloud-azure-starter-keyvault-secrets` dependency to start the application, configure the credentials in special property source, the key value can be obtained from Keyvault property source.
@@ -1054,7 +1056,7 @@ link:https://github.com/Azure/azure-sdk-for-java/blob/996691145f2ade80b5fea71813
 
 == Test SSL connection through loading the key store form Keyvault
 Use `spring-cloud-azure-starter-keyvault-certificates` dependency to start an SSL enabled application, configure the keyvault credentials,
-the key store can be loaded from Keyvault, finally the application can respond the HTTPS request successfully.
+the key store can be loaded from Keyvault, the server-side will verify the HTTP request based on the service-side certicate, finally the application can respond to the HTTPS request successfully.
 
 === Tags
 Keyvault, Certificates, Data Plane
@@ -1066,7 +1068,7 @@ Keyvault, Certificates, Data Plane
 === Steps
 * Use `spring-cloud-azure-starter-keyvault-certificates` dependency. +
 * Configure keyvault credential using Service Principal credential. +
-* Upload the Key Store file to Keyvault. +
+* Upload the Key Store files to Keyvault, the certificate generation algorithm should include `RSA`, `EC256`, `EC384`, `EC521`. +
 * Configure the below combinations for Keyvault properties. +
 
 [source, yaml]
@@ -1092,7 +1094,59 @@ server:
 link:https://github.com/moarychan/spring-boot/blob/25b7495d8e03eb2b06c11c35a1a83fa58bbbfca7/spring-boot-project/spring-boot/src/test/java/org/springframework/boot/web/server/SslConfigurationValidatorTests.java#L52[validateKeyAliasWhenAliasFoundShouldNotFail] in spring-boot +
 
 === Is UT enough?
-Yes
+Yes. We can only focus on `KeyVaultKeyStore` creation.
 
 === Current use cases
 link:https://github.com/Azure/azure-sdk-for-java/blob/c451201fe8818f97e98cd008f3525490b35d9ad1/sdk/spring/azure-spring-boot-test-keyvault-certificate/src/test/java/com/azure/spring/test/keyvault/KeyVaultCertificateIT.java#L117[testSpringBootWebApplication] +
+link:https://github.com/Azure/azure-sdk-for-java/blob/c451201fe8818f97e98cd008f3525490b35d9ad1/sdk/spring/azure-spring-boot-test-keyvault-certificate/src/test/java/com/azure/spring/test/keyvault/KeyVaultCertificateIT.java#L125[testSpringBootWebApplicationWithRSAKeyLess] +
+link:https://github.com/Azure/azure-sdk-for-java/blob/c451201fe8818f97e98cd008f3525490b35d9ad1/sdk/spring/azure-spring-boot-test-keyvault-certificate/src/test/java/com/azure/spring/test/keyvault/KeyVaultCertificateIT.java#L133[testSpringBootWebApplicationWithEC256KeyLess] +
+link:https://github.com/Azure/azure-sdk-for-java/blob/c451201fe8818f97e98cd008f3525490b35d9ad1/sdk/spring/azure-spring-boot-test-keyvault-certificate/src/test/java/com/azure/spring/test/keyvault/KeyVaultCertificateIT.java#L141[testSpringBootWebApplicationWithEC384KeyLess] +
+link:https://github.com/Azure/azure-sdk-for-java/blob/c451201fe8818f97e98cd008f3525490b35d9ad1/sdk/spring/azure-spring-boot-test-keyvault-certificate/src/test/java/com/azure/spring/test/keyvault/KeyVaultCertificateIT.java#L149[testSpringBootWebApplicationWithEC521KeyLess] +
+
+== Test mutual SSL connection through loading the key store form Keyvault
+Use `spring-cloud-azure-starter-keyvault-certificates` dependency to start an SSL enabled application, configure the keyvault credentials,
+the key store can be loaded from Keyvault, the server-side will verify the HTTP request based on the service-side certificate, and the client-side will verify the response from the server based on the client-side certificate,
+finally the application can respond to the HTTPS request successfully.
+
+=== Tags
+Keyvault, Certificates, Data Plane
+
+=== Test Prerequisites
+* Azure Keyvault instance exists. +
+* Available Key Store in Azure Keyvault instance. +
+
+=== Steps
+* Use `spring-cloud-azure-starter-keyvault-certificates` dependency. +
+* Configure keyvault credential using Service Principal credential. +
+* Upload the Key Store files to Keyvault, the certificate generation algorithm should include `RSA`, `EC256`, `EC384`, `EC521`. +
+* Configure the below combinations for Keyvault properties. +
+
+[source, yaml]
+----
+azure:
+  keyvault:
+    uri: xxx
+    client-id: xxx
+    client-secret: xxx
+    tenant-id: xxx
+server:
+  ssl:
+    key-alias: xxx
+    key-store-type: xxx
+    client-auth: need
+----
+
+* Make HTTPS requests to the application. +
+
+=== Expected Result
+* The application can respond to HTTPS requests. +
+
+=== How Spring test such case?
+Same with link:testcase-document.adoc#test-ssl-connection-through-loading-the-key-store-form-keyvault[Test SSL connection through loading the key store form Keyvault]
+
+=== Is UT enough?
+Yes. We can only focus on `KeyVaultKeyStore` creation.
+
+=== Current use cases
+link:https://github.com/Azure/azure-sdk-for-java/blob/c451201fe8818f97e98cd008f3525490b35d9ad1/sdk/spring/azure-spring-boot-test-keyvault-certificate/src/test/java/com/azure/spring/test/keyvault/KeyVaultCertificateIT.java#L173[testSpringBootMTLSWebApplication] +
+link:https://github.com/Azure/azure-sdk-for-java/blob/c451201fe8818f97e98cd008f3525490b35d9ad1/sdk/spring/azure-spring-boot-test-keyvault-certificate/src/test/java/com/azure/spring/test/keyvault/KeyVaultCertificateIT.java#L183[testSpringBootMTLSWebApplicationWithKeyLess] +
