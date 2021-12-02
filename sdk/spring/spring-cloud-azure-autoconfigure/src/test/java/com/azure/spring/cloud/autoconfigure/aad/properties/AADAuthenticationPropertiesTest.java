@@ -5,13 +5,12 @@ package com.azure.spring.cloud.autoconfigure.aad.properties;
 
 import com.azure.spring.cloud.autoconfigure.aad.core.AADApplicationType;
 import org.junit.jupiter.api.Test;
-import org.springframework.util.StringUtils;
 
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils.oauthClientRunner;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils.resourceServerContextRunner;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils.resourceServerWithOboContextRunner;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils.webApplicationContextRunner;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class AADAuthenticationPropertiesTest {
@@ -282,30 +281,32 @@ class AADAuthenticationPropertiesTest {
 
     @Test
     void setDefaultValueFromAzureGlobalPropertiesTest() {
-        webApplicationContextRunner()
+        oauthClientRunner()
             .withPropertyValues(
-                "spring.cloud.azure.active-directory.credential.client-id = ",
-                "spring.cloud.azure.active-directory.credential.client-secret = ",
-                "spring.cloud.azure.active-directory.profile.tenant-id = "
+                "spring.cloud.azure.active-directory.enabled = true",
+                "spring.cloud.azure.credential.client-id = global-client-id",
+                "spring.cloud.azure.credential.client-secret = global-client-secret",
+                "spring.cloud.azure.profile.tenant-id = global-tenant-id",
+                "spring.cloud.azure.active-directory.credential.client-id = aad-client-id",
+                "spring.cloud.azure.active-directory.credential.client-secret = aad-client-secret",
+                "spring.cloud.azure.active-directory.profile.tenant-id = aad-tenant-id"
             )
             .run(context -> {
                 AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
-                assertFalse(StringUtils.hasText(properties.getCredential().getClientId()));
-                assertFalse(StringUtils.hasText(properties.getCredential().getClientSecret()));
-                assertEquals("common", properties.getProfile().getTenantId());
+                assertEquals("aad-client-id", properties.getCredential().getClientId());
+                assertEquals("aad-client-secret", properties.getCredential().getClientSecret());
+                assertEquals("aad-tenant-id", properties.getProfile().getTenantId());
             });
-        webApplicationContextRunner()
+        oauthClientRunner()
             .withPropertyValues(
-                "spring.cloud.azure.active-directory.credential.client-id = aad-client-id",
-                "spring.cloud.azure.active-directory.credential.client-secret = ",
-                "spring.cloud.azure.active-directory.profile.tenant-id = ",
-                "spring.cloud.azure.credential.client-id = aad-client-id",
+                "spring.cloud.azure.active-directory.enabled = true",
+                "spring.cloud.azure.credential.client-id = global-client-id",
                 "spring.cloud.azure.credential.client-secret = global-client-secret",
                 "spring.cloud.azure.profile.tenant-id = global-tenant-id"
             )
             .run(context -> {
                 AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
-                assertEquals("aad-client-id", properties.getCredential().getClientId());
+                assertEquals("global-client-id", properties.getCredential().getClientId());
                 assertEquals("global-client-secret", properties.getCredential().getClientSecret());
                 assertEquals("global-tenant-id", properties.getProfile().getTenantId());
             });

@@ -7,15 +7,12 @@ import com.azure.spring.cloud.autoconfigure.aad.core.AADApplicationType;
 import com.azure.spring.cloud.autoconfigure.aad.core.AADAuthorizationGrantType;
 import com.azure.spring.cloud.autoconfigure.aad.filter.AADAppRoleStatelessAuthenticationFilter;
 import com.azure.spring.cloud.autoconfigure.aad.filter.AADAuthenticationFilter;
-import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.util.StringUtils;
@@ -39,7 +36,6 @@ import static com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.AAD
 /**
  * Configuration properties for Azure Active Directory Authentication.
  */
-@ConfigurationProperties(prefix = AADAuthenticationProperties.PREFIX)
 public class AADAuthenticationProperties implements InitializingBean {
 
     public static final String PREFIX = "spring.cloud.azure.active-directory";
@@ -47,9 +43,6 @@ public class AADAuthenticationProperties implements InitializingBean {
     private static final Logger LOGGER = LoggerFactory.getLogger(AADAuthenticationProperties.class);
     private static final long DEFAULT_JWK_SET_CACHE_LIFESPAN = TimeUnit.MINUTES.toMillis(5);
     private static final long DEFAULT_JWK_SET_CACHE_REFRESH_TIME = DEFAULT_JWK_SET_CACHE_LIFESPAN;
-
-    @Autowired
-    private AzureGlobalProperties globalProperties;
 
     /**
      * Profile of Azure cloud environment.
@@ -617,33 +610,8 @@ public class AADAuthenticationProperties implements InitializingBean {
                        .contains(group);
     }
 
-    private void setDefaultValueFromAzureGlobalProperties(AzureGlobalProperties global) {
-        if (!StringUtils.hasText(this.getCredential().getClientId())) {
-            this.getCredential().setClientId(global.getCredential().getClientId());
-        }
-        if (!StringUtils.hasText(this.getCredential().getClientSecret())) {
-            this.getCredential().setClientSecret(global.getCredential().getClientSecret());
-        }
-        if (!StringUtils.hasText(this.getProfile().getTenantId())) {
-            this.getProfile().setTenantId(global.getProfile().getTenantId());
-        }
-        if (this.getProfile().getCloud() == null) {
-            this.getProfile().setCloud(global.getProfile().getCloud());
-        }
-        if (!StringUtils.hasText(this.getProfile().getEnvironment().getActiveDirectoryEndpoint())) {
-            this.getProfile().getEnvironment().setActiveDirectoryEndpoint(
-                global.getProfile().getEnvironment().getActiveDirectoryEndpoint());
-        }
-        if (!StringUtils.hasText(this.getProfile().getEnvironment().getMicrosoftGraphEndpoint())) {
-            this.getProfile().getEnvironment().setMicrosoftGraphEndpoint(
-                global.getProfile().getEnvironment().getMicrosoftGraphEndpoint());
-        }
-        validateProperties();
-    }
-
     @Override
     public void afterPropertiesSet() {
-        setDefaultValueFromAzureGlobalProperties(globalProperties);
         if (!StringUtils.hasText(getProfile().getTenantId())) {
             this.getProfile().setTenantId("common");
         }
