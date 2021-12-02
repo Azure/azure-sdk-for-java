@@ -1555,8 +1555,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withRootUsername("jvuser")
             .withSsh(sshPublicKey())
             .withCapacity(1)
-            .create()
-        ;
+            .create();
         Assertions.assertNotNull(vmss.innerModel().virtualMachineProfile());
         Assertions.assertEquals(vmss.orchestrationMode(), OrchestrationMode.FLEXIBLE);
         Assertions.assertNotNull(vmss.getPrimaryInternetFacingLoadBalancer());
