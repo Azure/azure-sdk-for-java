@@ -41,7 +41,7 @@ class SASTest extends APISpec {
         sasClient = getFileClient(environment.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
         sasClient.create()
         sasClient.append(data.defaultInputStream, 0, data.defaultDataSize)
-        sasClient.flush(data.defaultDataSize)
+        sasClient.flush(data.defaultDataSize, true)
     }
 
     DataLakeServiceSasSignatureValues generateValues(PathSasPermission permission) {
