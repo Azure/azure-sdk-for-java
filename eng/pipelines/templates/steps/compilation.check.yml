@@ -35,6 +35,7 @@ steps:
       }
       mvn --no-transfer-progress -f $pomf compile
       mvn asdfasdf
+      sleep 1
       exit $LASTEXITCODE
 
     workingDirectory: ${{parameters.ArtifactDirectory}}
