@@ -29,8 +29,8 @@ import com.azure.storage.file.share.implementation.models.ServicesListSharesSegm
 import com.azure.storage.file.share.implementation.models.ServicesListSharesSegmentResponse;
 import com.azure.storage.file.share.implementation.models.ServicesSetPropertiesResponse;
 import com.azure.storage.file.share.implementation.models.ShareItemInternal;
-import com.azure.storage.file.share.implementation.models.StorageErrorException;
 import com.azure.storage.file.share.models.ShareServiceProperties;
+import com.azure.storage.file.share.models.ShareStorageException;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
@@ -61,7 +61,7 @@ public final class ServicesImpl {
     public interface ServicesService {
         @Put("/")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<ServicesSetPropertiesResponse> setProperties(
                 @HostParam("url") String url,
                 @QueryParam("restype") String restype,
@@ -74,7 +74,7 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<ServicesGetPropertiesResponse> getProperties(
                 @HostParam("url") String url,
                 @QueryParam("restype") String restype,
@@ -86,7 +86,7 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<ServicesListSharesSegmentResponse> listSharesSegment(
                 @HostParam("url") String url,
                 @QueryParam("comp") String comp,
@@ -101,7 +101,7 @@ public final class ServicesImpl {
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<ServicesListSharesSegmentNextResponse> listSharesSegmentNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("url") String url,
@@ -114,13 +114,13 @@ public final class ServicesImpl {
      * Sets properties for a storage account's File service endpoint, including properties for Storage Analytics metrics
      * and CORS (Cross-Origin Resource Sharing) rules.
      *
-     * @param shareServiceProperties The FileStorage properties.
+     * @param shareServiceProperties The StorageService properties.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      *     Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -150,7 +150,7 @@ public final class ServicesImpl {
      *     Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a storage account's File service, including properties for Storage Analytics metrics
      *     and CORS (Cross-Origin Resource Sharing) rules.
@@ -180,7 +180,7 @@ public final class ServicesImpl {
      *     Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of shares.
      */
@@ -224,7 +224,7 @@ public final class ServicesImpl {
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of shares.
      */
