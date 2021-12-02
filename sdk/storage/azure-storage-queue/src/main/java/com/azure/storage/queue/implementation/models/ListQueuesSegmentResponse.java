@@ -6,8 +6,8 @@ package com.azure.storage.queue.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.queue.models.QueueItem;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
@@ -41,11 +41,21 @@ public final class ListQueuesSegmentResponse {
     @JsonProperty(value = "MaxResults", required = true)
     private int maxResults;
 
+    private static final class QueuesWrapper {
+        @JacksonXmlProperty(localName = "Queue")
+        private final List<QueueItem> items;
+
+        @JsonCreator
+        private QueuesWrapper(@JacksonXmlProperty(localName = "Queue") List<QueueItem> items) {
+            this.items = items;
+        }
+    }
+
     /*
      * The QueueItems property.
      */
-    @JacksonXmlElementWrapper(localName = "Queues")
-    private List<QueueItem> queueItems;
+    @JsonProperty(value = "Queues")
+    private QueuesWrapper queueItems;
 
     /*
      * The NextMarker property.
@@ -140,9 +150,9 @@ public final class ListQueuesSegmentResponse {
      */
     public List<QueueItem> getQueueItems() {
         if (this.queueItems == null) {
-            this.queueItems = new ArrayList<QueueItem>();
+            this.queueItems = new QueuesWrapper(new ArrayList<QueueItem>());
         }
-        return this.queueItems;
+        return this.queueItems.items;
     }
 
     /**
@@ -152,7 +162,7 @@ public final class ListQueuesSegmentResponse {
      * @return the ListQueuesSegmentResponse object itself.
      */
     public ListQueuesSegmentResponse setQueueItems(List<QueueItem> queueItems) {
-        this.queueItems = queueItems;
+        this.queueItems = new QueuesWrapper(queueItems);
         return this;
     }
 

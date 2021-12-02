@@ -4,15 +4,15 @@
 package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
 /** Storage service properties. */
 @Fluent
-@JacksonXmlRootElement(localName = "StorageServiceProperties")
 public final class ShareServiceProperties {
 
     /*
@@ -29,11 +29,23 @@ public final class ShareServiceProperties {
     @JsonProperty(value = "MinuteMetrics")
     private ShareMetrics minuteMetrics;
 
+    @JacksonXmlRootElement(localName = "StorageServiceProperties")
+    private static final class CorsWrapper {
+
+        @JacksonXmlProperty(localName = "ShareCorsRule")
+        private final List<ShareCorsRule> items;
+
+        @JsonCreator
+        private CorsWrapper(@JacksonXmlProperty(localName = "ShareCorsRule") List<ShareCorsRule> items) {
+            this.items = items;
+        }
+    }
+
     /*
      * The set of CORS rules.
      */
-    @JacksonXmlElementWrapper(localName = "Cors")
-    private List<ShareCorsRule> cors;
+    @JsonProperty(value = "Cors")
+    private CorsWrapper cors;
 
     /*
      * Protocol settings
@@ -88,9 +100,9 @@ public final class ShareServiceProperties {
      */
     public List<ShareCorsRule> getCors() {
         if (this.cors == null) {
-            this.cors = new ArrayList<ShareCorsRule>();
+            this.cors = new CorsWrapper(new ArrayList<ShareCorsRule>());
         }
-        return this.cors;
+        return this.cors.items;
     }
 
     /**
@@ -100,7 +112,7 @@ public final class ShareServiceProperties {
      * @return the ShareServiceProperties object itself.
      */
     public ShareServiceProperties setCors(List<ShareCorsRule> cors) {
-        this.cors = cors;
+        this.cors = new CorsWrapper(cors);
         return this;
     }
 

@@ -6,8 +6,9 @@ package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.file.share.models.HandleItem;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +17,21 @@ import java.util.List;
 @JacksonXmlRootElement(localName = "EnumerationResults")
 @Fluent
 public final class ListHandlesResponse {
+    private static final class EntriesWrapper {
+        @JacksonXmlProperty(localName = "Handle")
+        private final List<HandleItem> items;
+
+        @JsonCreator
+        private EntriesWrapper(@JacksonXmlProperty(localName = "Handle") List<HandleItem> items) {
+            this.items = items;
+        }
+    }
+
     /*
      * The HandleList property.
      */
-    @JacksonXmlElementWrapper(localName = "Entries")
-    private List<HandleItem> handleList;
+    @JsonProperty(value = "Entries")
+    private EntriesWrapper handleList;
 
     /*
      * The NextMarker property.
@@ -35,9 +46,9 @@ public final class ListHandlesResponse {
      */
     public List<HandleItem> getHandleList() {
         if (this.handleList == null) {
-            this.handleList = new ArrayList<HandleItem>();
+            this.handleList = new EntriesWrapper(new ArrayList<HandleItem>());
         }
-        return this.handleList;
+        return this.handleList.items;
     }
 
     /**
@@ -47,7 +58,7 @@ public final class ListHandlesResponse {
      * @return the ListHandlesResponse object itself.
      */
     public ListHandlesResponse setHandleList(List<HandleItem> handleList) {
-        this.handleList = handleList;
+        this.handleList = new EntriesWrapper(handleList);
         return this;
     }
 

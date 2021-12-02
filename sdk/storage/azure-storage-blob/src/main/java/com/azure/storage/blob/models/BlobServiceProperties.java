@@ -4,15 +4,15 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
 /** Storage Service Properties. */
 @Fluent
-@JacksonXmlRootElement(localName = "StorageServiceProperties")
 public final class BlobServiceProperties {
 
     /*
@@ -35,11 +35,23 @@ public final class BlobServiceProperties {
     @JsonProperty(value = "MinuteMetrics")
     private BlobMetrics minuteMetrics;
 
+    @JacksonXmlRootElement(localName = "StorageServiceProperties")
+    private static final class CorsWrapper {
+
+        @JacksonXmlProperty(localName = "BlobCorsRule")
+        private final List<BlobCorsRule> items;
+
+        @JsonCreator
+        private CorsWrapper(@JacksonXmlProperty(localName = "BlobCorsRule") List<BlobCorsRule> items) {
+            this.items = items;
+        }
+    }
+
     /*
      * The set of CORS rules.
      */
-    @JacksonXmlElementWrapper(localName = "Cors")
-    private List<BlobCorsRule> cors;
+    @JsonProperty(value = "Cors")
+    private CorsWrapper cors;
 
     /*
      * The default version to use for requests to the Blob service if an
@@ -133,9 +145,9 @@ public final class BlobServiceProperties {
      */
     public List<BlobCorsRule> getCors() {
         if (this.cors == null) {
-            this.cors = new ArrayList<BlobCorsRule>();
+            this.cors = new CorsWrapper(new ArrayList<BlobCorsRule>());
         }
-        return this.cors;
+        return this.cors.items;
     }
 
     /**
@@ -145,7 +157,7 @@ public final class BlobServiceProperties {
      * @return the BlobServiceProperties object itself.
      */
     public BlobServiceProperties setCors(List<BlobCorsRule> cors) {
-        this.cors = cors;
+        this.cors = new CorsWrapper(cors);
         return this;
     }
 

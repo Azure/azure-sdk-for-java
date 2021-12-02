@@ -5,8 +5,8 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
@@ -28,11 +28,21 @@ public final class FilterBlobSegment {
     @JsonProperty(value = "Where", required = true)
     private String where;
 
+    private static final class BlobsWrapper {
+        @JacksonXmlProperty(localName = "Blob")
+        private final List<FilterBlobItem> items;
+
+        @JsonCreator
+        private BlobsWrapper(@JacksonXmlProperty(localName = "Blob") List<FilterBlobItem> items) {
+            this.items = items;
+        }
+    }
+
     /*
      * The Blobs property.
      */
-    @JacksonXmlElementWrapper(localName = "Blobs")
-    private List<FilterBlobItem> blobs;
+    @JsonProperty(value = "Blobs", required = true)
+    private BlobsWrapper blobs;
 
     /*
      * The NextMarker property.
@@ -87,9 +97,9 @@ public final class FilterBlobSegment {
      */
     public List<FilterBlobItem> getBlobs() {
         if (this.blobs == null) {
-            this.blobs = new ArrayList<FilterBlobItem>();
+            this.blobs = new BlobsWrapper(new ArrayList<FilterBlobItem>());
         }
-        return this.blobs;
+        return this.blobs.items;
     }
 
     /**
@@ -99,7 +109,7 @@ public final class FilterBlobSegment {
      * @return the FilterBlobSegment object itself.
      */
     public FilterBlobSegment setBlobs(List<FilterBlobItem> blobs) {
-        this.blobs = blobs;
+        this.blobs = new BlobsWrapper(blobs);
         return this;
     }
 

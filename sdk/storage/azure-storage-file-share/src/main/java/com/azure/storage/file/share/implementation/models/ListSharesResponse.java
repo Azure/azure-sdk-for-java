@@ -5,8 +5,8 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
@@ -40,11 +40,21 @@ public final class ListSharesResponse {
     @JsonProperty(value = "MaxResults")
     private Integer maxResults;
 
+    private static final class SharesWrapper {
+        @JacksonXmlProperty(localName = "Share")
+        private final List<ShareItemInternal> items;
+
+        @JsonCreator
+        private SharesWrapper(@JacksonXmlProperty(localName = "Share") List<ShareItemInternal> items) {
+            this.items = items;
+        }
+    }
+
     /*
      * The ShareItems property.
      */
-    @JacksonXmlElementWrapper(localName = "Shares")
-    private List<ShareItemInternal> shareItems;
+    @JsonProperty(value = "Shares")
+    private SharesWrapper shareItems;
 
     /*
      * The NextMarker property.
@@ -139,9 +149,9 @@ public final class ListSharesResponse {
      */
     public List<ShareItemInternal> getShareItems() {
         if (this.shareItems == null) {
-            this.shareItems = new ArrayList<ShareItemInternal>();
+            this.shareItems = new SharesWrapper(new ArrayList<ShareItemInternal>());
         }
-        return this.shareItems;
+        return this.shareItems.items;
     }
 
     /**
@@ -151,7 +161,7 @@ public final class ListSharesResponse {
      * @return the ListSharesResponse object itself.
      */
     public ListSharesResponse setShareItems(List<ShareItemInternal> shareItems) {
-        this.shareItems = shareItems;
+        this.shareItems = new SharesWrapper(shareItems);
         return this;
     }
 

@@ -6,8 +6,8 @@ package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.models.BlobContainerItem;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
@@ -47,11 +47,21 @@ public final class BlobContainersSegment {
     @JsonProperty(value = "NextMarker", required = true)
     private String nextMarker;
 
+    private static final class ContainersWrapper {
+        @JacksonXmlProperty(localName = "Container")
+        private final List<BlobContainerItem> items;
+
+        @JsonCreator
+        private ContainersWrapper(@JacksonXmlProperty(localName = "Container") List<BlobContainerItem> items) {
+            this.items = items;
+        }
+    }
+
     /*
      * The BlobContainerItems property.
      */
-    @JacksonXmlElementWrapper(localName = "Containers")
-    private List<BlobContainerItem> blobContainerItems;
+    @JsonProperty(value = "Containers")
+    private ContainersWrapper blobContainerItems;
 
     /**
      * Get the serviceEndpoint property: The ServiceEndpoint property.
@@ -160,9 +170,9 @@ public final class BlobContainersSegment {
      */
     public List<BlobContainerItem> getBlobContainerItems() {
         if (this.blobContainerItems == null) {
-            this.blobContainerItems = new ArrayList<BlobContainerItem>();
+            this.blobContainerItems = new ContainersWrapper(new ArrayList<BlobContainerItem>());
         }
-        return this.blobContainerItems;
+        return this.blobContainerItems.items;
     }
 
     /**
@@ -172,7 +182,7 @@ public final class BlobContainersSegment {
      * @return the BlobContainersSegment object itself.
      */
     public BlobContainersSegment setBlobContainerItems(List<BlobContainerItem> blobContainerItems) {
-        this.blobContainerItems = blobContainerItems;
+        this.blobContainerItems = new ContainersWrapper(blobContainerItems);
         return this;
     }
 }

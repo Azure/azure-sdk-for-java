@@ -4,15 +4,15 @@
 package com.azure.storage.queue.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
 /** Storage Service Properties. */
 @Fluent
-@JacksonXmlRootElement(localName = "StorageServiceProperties")
 public final class QueueServiceProperties {
 
     /*
@@ -35,11 +35,23 @@ public final class QueueServiceProperties {
     @JsonProperty(value = "MinuteMetrics")
     private QueueMetrics minuteMetrics;
 
+    @JacksonXmlRootElement(localName = "StorageServiceProperties")
+    private static final class CorsWrapper {
+
+        @JacksonXmlProperty(localName = "QueueCorsRule")
+        private final List<QueueCorsRule> items;
+
+        @JsonCreator
+        private CorsWrapper(@JacksonXmlProperty(localName = "QueueCorsRule") List<QueueCorsRule> items) {
+            this.items = items;
+        }
+    }
+
     /*
      * The set of CORS rules.
      */
-    @JacksonXmlElementWrapper(localName = "Cors")
-    private List<QueueCorsRule> cors;
+    @JsonProperty(value = "Cors")
+    private CorsWrapper cors;
 
     /**
      * Get the analyticsLogging property: Azure Analytics Logging settings.
@@ -108,9 +120,9 @@ public final class QueueServiceProperties {
      */
     public List<QueueCorsRule> getCors() {
         if (this.cors == null) {
-            this.cors = new ArrayList<QueueCorsRule>();
+            this.cors = new CorsWrapper(new ArrayList<QueueCorsRule>());
         }
-        return this.cors;
+        return this.cors.items;
     }
 
     /**
@@ -120,7 +132,7 @@ public final class QueueServiceProperties {
      * @return the QueueServiceProperties object itself.
      */
     public QueueServiceProperties setCors(List<QueueCorsRule> cors) {
-        this.cors = cors;
+        this.cors = new CorsWrapper(cors);
         return this;
     }
 }
