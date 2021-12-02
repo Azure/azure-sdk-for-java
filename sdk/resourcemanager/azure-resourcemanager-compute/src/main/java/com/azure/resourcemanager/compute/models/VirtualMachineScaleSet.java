@@ -410,7 +410,7 @@ public interface VirtualMachineScaleSet
     interface DefinitionShared
         extends DefinitionStages.Blank,
             DefinitionStages.WithGroup,
-            DefinitionStages.WithSku,
+            DefinitionStages.WithSkuOrFlexibleOrchestrationMode,
             DefinitionStages.WithProximityPlacementGroup,
             DefinitionStages.WithNetworkSubnet,
             DefinitionStages.WithPrimaryInternetFacingLoadBalancer,
@@ -468,7 +468,13 @@ public interface VirtualMachineScaleSet
         }
 
         /** The stage of a virtual machine scale set definition allowing to specify the resource group. */
-        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithSku> {
+        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithSkuOrFlexibleOrchestrationMode> {
+        }
+
+        /**
+         * The stage of a virtual machine scale set definition allowing to specify SKU or orchestration mode of a virtual machine scale set.
+         */
+        interface WithSkuOrFlexibleOrchestrationMode extends WithSku, WithOrchestrationMode {
         }
 
         /**
@@ -495,7 +501,7 @@ public interface VirtualMachineScaleSet
         }
 
         /** The stage of a virtual machine scale set definition allowing to specify SKU for the virtual machines. */
-        interface WithSku extends WithOrchestrationMode {
+        interface WithSku {
             /**
              * Specifies the SKU for the virtual machines in the scale set.
              *
