@@ -357,7 +357,6 @@ storage_com.microsoft.azure:azure-storage;8.4.0
 
 # sdk\spring\azure-spring-boot\pom.xml
 spring_com.microsoft.azure:azure;1.34.0
-spring_org.springframework.kafka:spring-kafka;2.6.6
 
 # sdk\appconfiguration\azure-spring-cloud-appconfiguration-config\pom.xml
 # sdk\appconfiguration\azure-spring-cloud-feature-management\pom.xml
