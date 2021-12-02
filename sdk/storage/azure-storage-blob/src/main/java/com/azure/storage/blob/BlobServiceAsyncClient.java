@@ -51,7 +51,6 @@ import java.net.URI;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
@@ -482,9 +481,7 @@ public final class BlobServiceAsyncClient {
                 options.getQuery(), marker, options.getMaxResultsPerPage(),
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE)), timeout)
             .map(response -> {
-                List<TaggedBlobItem> value = response.getValue().getBlobs() == null
-                    ? Collections.emptyList()
-                    : response.getValue().getBlobs().stream()
+                List<TaggedBlobItem> value = response.getValue().getBlobs().stream()
                     .map(ModelHelper::populateTaggedBlobItem)
                     .collect(Collectors.toList());
 
@@ -715,13 +712,9 @@ public final class BlobServiceAsyncClient {
             }
 
             // CORS
-            if (properties.getCors() != null) {
-                List<BlobCorsRule> corsRules = new ArrayList<>();
-                for (BlobCorsRule rule : properties.getCors()) {
-                    corsRules.add(validatedCorsRule(rule));
-                }
-                finalProperties.setCors(corsRules);
-            }
+            finalProperties.setCors(properties.getCors().stream()
+                .map(this::validatedCorsRule)
+                .collect(Collectors.toList()));
 
             // Default Service Version
             finalProperties.setDefaultServiceVersion(properties.getDefaultServiceVersion());

@@ -39,5 +39,12 @@ public class ShareStorageCustomization extends Customization {
 
         models.getClass("ShareAccessPolicy").removeAnnotation("@JacksonXmlRootElement")
             .addAnnotation("@JacksonXmlRootElement(localName = \"AccessPolicy\")");
+
+        // Replace JacksonXmlRootElement annotations that are causing a semantic breaking change.
+        models.getClass("ShareFileHttpHeaders").removeAnnotation("@JacksonXmlRootElement")
+            .addAnnotation("@JacksonXmlRootElement(localName = \"share-file-http-headers\")");
+
+        models.getClass("SourceModifiedAccessConditions").removeAnnotation("@JacksonXmlRootElement")
+            .addAnnotation("@JacksonXmlRootElement(localName = \"source-modified-access-conditions\")");
     }
 }
