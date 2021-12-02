@@ -6,8 +6,6 @@ package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -46,8 +44,7 @@ public final class ListSharesResponse {
      * The ShareItems property.
      */
     @JacksonXmlElementWrapper(localName = "Shares")
-    @JsonSetter(nulls = Nulls.AS_EMPTY)
-    private List<ShareItemInternal> shareItems = new ArrayList<>();
+    private List<ShareItemInternal> shareItems;
 
     /*
      * The NextMarker property.
@@ -141,6 +138,9 @@ public final class ListSharesResponse {
      * @return the shareItems value.
      */
     public List<ShareItemInternal> getShareItems() {
+        if (this.shareItems == null) {
+            this.shareItems = new ArrayList<ShareItemInternal>();
+        }
         return this.shareItems;
     }
 

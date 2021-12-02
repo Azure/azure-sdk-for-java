@@ -21,11 +21,23 @@ public class ShareStorageCustomization extends Customization {
         PackageCustomization models = customization.getPackage("com.azure.storage.file.share.models");
         models.getClass("ShareFileRangeList").addAnnotation("@JsonDeserialize(using = ShareFileRangeListDeserializer.class)");
 
-        // Update incorrect JsonProperty of Metrics
-        ClassCustomization shareServiceProperties = models.getClass("ShareServiceProperties");
-        shareServiceProperties.getProperty("hourMetrics").removeAnnotation("@JsonProperty")
-            .addAnnotation("@JsonProperty(value = \"HourMetrics\")");
-        shareServiceProperties.getProperty("minuteMetrics").removeAnnotation("@JsonProperty")
-            .addAnnotation("@JsonProperty(value = \"MinuteMetrics\")");
+        // Changes to JacksonXmlRootElement for classes that have been renamed.
+        models.getClass("ShareServiceProperties").removeAnnotation("@JacksonXmlRootElement")
+            .addAnnotation("@JacksonXmlRootElement(localName = \"StorageServiceProperties\")");
+
+        models.getClass("ShareMetrics").removeAnnotation("@JacksonXmlRootElement")
+            .addAnnotation("@JacksonXmlRootElement(localName = \"Metrics\")");
+
+        models.getClass("ShareCorsRule").removeAnnotation("@JacksonXmlRootElement")
+            .addAnnotation("@JacksonXmlRootElement(localName = \"CorsRule\")");
+
+        models.getClass("ShareRetentionPolicy").removeAnnotation("@JacksonXmlRootElement")
+            .addAnnotation("@JacksonXmlRootElement(localName = \"RetentionPolicy\")");
+
+        models.getClass("ShareSignedIdentifier").removeAnnotation("@JacksonXmlRootElement")
+            .addAnnotation("@JacksonXmlRootElement(localName = \"SignedIdentifier\")");
+
+        models.getClass("ShareAccessPolicy").removeAnnotation("@JacksonXmlRootElement")
+            .addAnnotation("@JacksonXmlRootElement(localName = \"AccessPolicy\")");
     }
 }

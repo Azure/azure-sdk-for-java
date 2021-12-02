@@ -114,7 +114,7 @@ public final class ServicesImpl {
      * Sets properties for a storage account's File service endpoint, including properties for Storage Analytics metrics
      * and CORS (Cross-Origin Resource Sharing) rules.
      *
-     * @param shareServiceProperties The FileStorage properties.
+     * @param shareServiceProperties The StorageService properties.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      *     Timeouts for File Service Operations.&lt;/a&gt;.

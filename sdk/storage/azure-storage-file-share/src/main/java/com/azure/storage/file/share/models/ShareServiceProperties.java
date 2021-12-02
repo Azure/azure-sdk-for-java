@@ -5,16 +5,14 @@ package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
 /** Storage service properties. */
-@JacksonXmlRootElement(localName = "StorageServiceProperties")
 @Fluent
+@JacksonXmlRootElement(localName = "StorageServiceProperties")
 public final class ShareServiceProperties {
 
     /*
@@ -35,8 +33,7 @@ public final class ShareServiceProperties {
      * The set of CORS rules.
      */
     @JacksonXmlElementWrapper(localName = "Cors")
-    @JsonSetter(nulls = Nulls.AS_EMPTY)
-    private List<ShareCorsRule> cors = new ArrayList<>();
+    private List<ShareCorsRule> cors;
 
     /*
      * Protocol settings
@@ -90,6 +87,9 @@ public final class ShareServiceProperties {
      * @return the cors value.
      */
     public List<ShareCorsRule> getCors() {
+        if (this.cors == null) {
+            this.cors = new ArrayList<ShareCorsRule>();
+        }
         return this.cors;
     }
 

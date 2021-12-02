@@ -7,8 +7,6 @@ package com.azure.storage.file.share.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.file.share.models.HandleItem;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
@@ -22,8 +20,7 @@ public final class ListHandlesResponse {
      * The HandleList property.
      */
     @JacksonXmlElementWrapper(localName = "Entries")
-    @JsonSetter(nulls = Nulls.AS_EMPTY)
-    private List<HandleItem> handleList = new ArrayList<>();
+    private List<HandleItem> handleList;
 
     /*
      * The NextMarker property.
@@ -37,6 +34,9 @@ public final class ListHandlesResponse {
      * @return the handleList value.
      */
     public List<HandleItem> getHandleList() {
+        if (this.handleList == null) {
+            this.handleList = new ArrayList<HandleItem>();
+        }
         return this.handleList;
     }
 
