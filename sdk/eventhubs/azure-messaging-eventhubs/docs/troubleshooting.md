@@ -2,7 +2,10 @@
 
 ## Logging
 
-Logging expedites debugging failures in the Azure Event Hubs client library.  [Configure logging in the Azure SDK for Java][logging] shows how to enable logging in the SDK. In addition to enabling logging, setting `AZURE_LOG_LEVEL` to `VERBOSE` provides insights to the state of the library.  We have an Event Hubs specific logging configuration that filters out log messages. Below are examples for Log4J2 and logback.
+Logging expedites diagnosing failures in the Azure Event Hubs client library.  [Configure logging in the Azure SDK for
+Java][logging] shows how to enable logging in the SDK. In addition to enabling logging, setting the log level to
+`VERBOSE` provides insights into the library's state.  Below are log4j2 and logback configurations to reduce excessive
+log messages when verbose logging is enabled.
 
 ### Configuring Log4J 2
 
@@ -31,7 +34,6 @@ Logging expedites debugging failures in the Azure Event Hubs client library.  [C
     </dependency>
     ```
 2. Add [log4j2.xml][log4j2] to your `src/main/resources`.
-3. Add `AZURE_LOG_LEVEL=1` to enable VERBOSE logging for the Azure SDK.
 
 ### Configuring logback
 
@@ -49,7 +51,6 @@ Logging expedites debugging failures in the Azure Event Hubs client library.  [C
     </dependency>
     ```
 1. Add [logback.xml][logback] to your `src/main/resources`.
-1. Add `AZURE_LOG_LEVEL=1` to enable logging for the Azure SDK.
 
 <!-- Links --->
 [logging]: https://docs.microsoft.com/azure/developer/java/sdk/logging-overview
