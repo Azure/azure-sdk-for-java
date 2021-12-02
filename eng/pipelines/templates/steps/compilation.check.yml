@@ -36,7 +36,7 @@ steps:
         Write-Host "Install failed, retrying in 1 minute..."
         Start-Sleep -s 1
       }
-      mvn --no-transfer-progress -f $pomf compile
+      # mvn --no-transfer-progress -f $pomf compile
       exit $LASTEXITCODE
 
     workingDirectory: ${{parameters.ArtifactDirectory}}
