@@ -135,4 +135,31 @@ public class SynchronousReceiveWorkTest {
 
         assertFalse(work.emitNext(message1), "Should not have been able to emit a message after it is terminal.");
     }
+
+    /**
+     * Ensure that completes when it is started but it timeout before any work is received.
+     */
+    @Test
+    public void emitsTimeout() {
+        // Arrange
+        int numberToReceive = 2;
+
+        final long id = 12;
+        final Duration timeout = Duration.ofSeconds(2);
+
+        final ServiceBusReceivedMessage message1 = mock(ServiceBusReceivedMessage.class);
+        final SynchronousReceiveWork work = new SynchronousReceiveWork(id, numberToReceive, timeout, messageSink);
+
+        // Act
+        StepVerifier.create(messageSink.asFlux())
+            .then(() -> work.start())
+            .thenAwait(timeout)
+            .expectComplete()
+            .verify();
+
+        assertEquals(numberToReceive, work.getRemainingEvents());
+        assertTrue(work.isTerminal());
+
+        assertFalse(work.emitNext(message1), "Should not have been able to emit a message after it is terminal.");
+    }
 }
