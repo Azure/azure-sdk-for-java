@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * GraalVM configuration classes.
+ * GraalVM features for client libraries.
  */
-package com.azure.aot.graalvm.support.implementation;
+package com.azure.aot.graalvm.support.implementation.features;
