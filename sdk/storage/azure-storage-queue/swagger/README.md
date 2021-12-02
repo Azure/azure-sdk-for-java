@@ -98,6 +98,8 @@ directive:
   transform: >
     $.QueueServiceProperties.properties.Logging["x-ms-client-name"] = "analyticsLogging";
     $.QueueMetrics.properties.IncludeAPIs["x-ms-client-name"] = "IncludeApis";
+    $.QueueServiceProperties.xml = {"name": "StorageServiceProperties"};
+    $.QueueCorsRule.xml = {"name": "CorsRule"};
 
 - from: swagger-document
   where: $.parameters

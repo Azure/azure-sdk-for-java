@@ -277,6 +277,8 @@ directive:
   where: $.definitions
   transform: >
     $.ShareMetrics.properties.IncludeAPIs["x-ms-client-name"] = "IncludeApis";
+    $.ShareServiceProperties.xml = {"name": "StorageServiceProperties"};
+    $.ShareCorsRule.xml = {"name": "CorsRule"};
 - from: swagger-document
   where: $.parameters
   transform: >

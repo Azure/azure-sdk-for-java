@@ -381,6 +381,8 @@ directive:
   transform: >
     $.BlobMetrics.properties.IncludeAPIs["x-ms-client-name"] = "IncludeApis";
     delete $.BlobRetentionPolicy.properties.AllowPermanentDelete;
+    $.BlobServiceProperties.xml = {"name": "StorageServiceProperties"};
+    $.BlobCorsRule.xml = {"name": "CorsRule"};
     
 - from: swagger-document
   where: $.parameters

@@ -55,14 +55,8 @@ public class BlobStorageCustomization extends Customization {
         models.getClass("BlobAnalyticsLogging").removeAnnotation("@JacksonXmlRootElement")
             .addAnnotation("@JacksonXmlRootElement(localName = \"Logging\")");
 
-        models.getClass("BlobCorsRule").removeAnnotation("@JacksonXmlRootElement")
-            .addAnnotation("@JacksonXmlRootElement(localName = \"CorsRule\")");
-
         models.getClass("BlobRetentionPolicy").removeAnnotation("@JacksonXmlRootElement")
             .addAnnotation("@JacksonXmlRootElement(localName = \"RetentionPolicy\")");
-
-        models.getClass("BlobServiceProperties").removeAnnotation("@JacksonXmlRootElement")
-            .addAnnotation("@JacksonXmlRootElement(localName = \"StorageServiceProperties\")");
 
         models.getClass("BlobServiceStatistics").removeAnnotation("@JacksonXmlRootElement")
             .addAnnotation("@JacksonXmlRootElement(localName = \"StorageServiceStats\")");

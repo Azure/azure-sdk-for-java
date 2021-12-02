@@ -21,14 +21,8 @@ public class QueueStorageCustomization extends Customization {
         models.getClass("QueueMetrics").removeAnnotation("@JacksonXmlRootElement")
             .addAnnotation("@JacksonXmlRootElement(localName = \"Metrics\")");
 
-        models.getClass("QueueCorsRule").removeAnnotation("@JacksonXmlRootElement")
-            .addAnnotation("@JacksonXmlRootElement(localName = \"CorsRule\")");
-
         models.getClass("QueueRetentionPolicy").removeAnnotation("@JacksonXmlRootElement")
             .addAnnotation("@JacksonXmlRootElement(localName = \"RetentionPolicy\")");
-
-        models.getClass("QueueServiceProperties").removeAnnotation("@JacksonXmlRootElement")
-            .addAnnotation("@JacksonXmlRootElement(localName = \"StorageServiceProperties\")");
 
         models.getClass("QueueServiceStatistics").removeAnnotation("@JacksonXmlRootElement")
             .addAnnotation("@JacksonXmlRootElement(localName = \"StorageServiceStats\")");

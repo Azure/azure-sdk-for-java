@@ -22,14 +22,8 @@ public class ShareStorageCustomization extends Customization {
         models.getClass("ShareFileRangeList").addAnnotation("@JsonDeserialize(using = ShareFileRangeListDeserializer.class)");
 
         // Changes to JacksonXmlRootElement for classes that have been renamed.
-        models.getClass("ShareServiceProperties").removeAnnotation("@JacksonXmlRootElement")
-            .addAnnotation("@JacksonXmlRootElement(localName = \"StorageServiceProperties\")");
-
         models.getClass("ShareMetrics").removeAnnotation("@JacksonXmlRootElement")
             .addAnnotation("@JacksonXmlRootElement(localName = \"Metrics\")");
-
-        models.getClass("ShareCorsRule").removeAnnotation("@JacksonXmlRootElement")
-            .addAnnotation("@JacksonXmlRootElement(localName = \"CorsRule\")");
 
         models.getClass("ShareRetentionPolicy").removeAnnotation("@JacksonXmlRootElement")
             .addAnnotation("@JacksonXmlRootElement(localName = \"RetentionPolicy\")");
