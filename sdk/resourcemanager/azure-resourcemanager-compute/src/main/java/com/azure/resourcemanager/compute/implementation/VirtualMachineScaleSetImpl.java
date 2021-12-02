@@ -115,8 +115,7 @@ public class VirtualMachineScaleSetImpl
         VirtualMachineScaleSet.DefinitionStages.WithSystemAssignedIdentityBasedAccessOrCreate,
         VirtualMachineScaleSet.DefinitionStages.WithUserAssignedManagedServiceIdentity,
         VirtualMachineScaleSet.UpdateStages.WithSystemAssignedIdentityBasedAccessOrApply,
-        VirtualMachineScaleSet.UpdateStages.WithUserAssignedManagedServiceIdentity
-{
+        VirtualMachineScaleSet.UpdateStages.WithUserAssignedManagedServiceIdentity {
     // Clients
     private final StorageManager storageManager;
     private final NetworkManager networkManager;

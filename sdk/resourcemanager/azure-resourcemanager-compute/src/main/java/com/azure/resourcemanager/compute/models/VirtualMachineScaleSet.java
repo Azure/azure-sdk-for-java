@@ -2540,8 +2540,7 @@ public interface VirtualMachineScaleSet
                 UpdateStages.WithSinglePlacementGroup,
                 UpdateStages.WithApplicationGateway,
                 UpdateStages.WithApplicationSecurityGroup,
-                UpdateStages.WithNetworkSubnet
-        {
+                UpdateStages.WithNetworkSubnet {
         }
     }
 
