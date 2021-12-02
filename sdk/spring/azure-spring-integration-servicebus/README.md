@@ -93,7 +93,7 @@ Manually add the partition Key in the message header by code.
 *Recommended:* Use `ServiceBusMessageHeaders.PARTITION_KEY` as the key of the header.
 ```java
 @PostMapping("/messages")
-public ResponseEntity<String> sendMessage(@RequestParam String message) {
+public ResponseEntity sendMessage(@RequestParam String message) {
     LOGGER.info("Going to add message {} to Sinks.Many.", message);
     many.emitNext(MessageBuilder.withPayload(message)
                                 .setHeader(ServiceBusMessageHeaders.PARTITION_KEY, "Customize partirion key")
@@ -105,7 +105,7 @@ public ResponseEntity<String> sendMessage(@RequestParam String message) {
 *Not recommended but currently supported:* `AzureHeaders.PARTITION_KEY` as the key of the header.
 ```java
 @PostMapping("/messages")
-public ResponseEntity<String> sendMessage(@RequestParam String message) {
+public ResponseEntity sendMessage(@RequestParam String message) {
     LOGGER.info("Going to add message {} to Sinks.Many.", message);
     many.emitNext(MessageBuilder.withPayload(message)
                                 .setHeader(AzureHeaders.PARTITION_KEY, "Customize partirion key")
@@ -122,7 +122,7 @@ This example demonstrates how to manually set the session id of a message in the
 
 ```java
 @PostMapping("/messages")
-public ResponseEntity<String> sendMessage(@RequestParam String message) {
+public ResponseEntity sendMessage(@RequestParam String message) {
     LOGGER.info("Going to add message {} to Sinks.Many.", message);
     many.emitNext(MessageBuilder.withPayload(message)
                                 .setHeader(ServiceBusMessageHeaders.SESSION_ID, "Customize session id")
