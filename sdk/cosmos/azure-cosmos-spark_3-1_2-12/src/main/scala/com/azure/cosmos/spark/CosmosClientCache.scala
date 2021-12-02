@@ -4,7 +4,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, CosmosDaemonThreadFactory, SparkBridgeImplementationInternal}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
-import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, ThrottlingRetryOptions}
+import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, DirectConnectionConfig, ThrottlingRetryOptions}
 import org.apache.spark.TaskContext
 import org.apache.spark.broadcast.Broadcast
 
@@ -110,6 +110,11 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
 
         if (cosmosClientConfiguration.useGatewayMode){
           builder = builder.gatewayMode()
+        } else {
+          val directConfig = new DirectConnectionConfig()
+            .setConnectTimeout(Duration.ofSeconds(CosmosConstants.defaultDirectRequestTimeoutInSeconds))
+            .setNetworkRequestTimeout(Duration.ofSeconds(CosmosConstants.defaultDirectRequestTimeoutInSeconds))
+          builder = builder.directMode(directConfig)
         }
 
         if (cosmosClientConfiguration.preferredRegionsList.isDefined) {
