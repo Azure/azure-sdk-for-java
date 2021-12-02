@@ -53,5 +53,5 @@ Logging expedites debugging failures in the Azure Event Hubs client library.  [C
 
 <!-- Links --->
 [logging]: https://docs.microsoft.com/azure/developer/java/sdk/logging-overview
-[log4j2]: ./log4j2.xml
-[logback]: ./logback.xml
+[log4j2]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventhubs/azure-messaging-eventhubs/docs/log4j2.xml
+[logback]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventhubs/azure-messaging-eventhubs/docs/logback.xml

@@ -329,7 +329,7 @@ their resolution. The logs produced will capture the flow of an application befo
 locate the root issue.
 
 View the [Configure logging in the Azure SDK for Java][logging] article for guidance about enabling logging. In
-addition, [TROUBLESHOOTING.md](./docs/troubleshooting.md) has instructions to enable VERBOSE logging that helps the
+addition, [TROUBLESHOOTING.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventhubs/azure-messaging-eventhubs/docs/troubleshooting.md) has instructions to enable VERBOSE logging that helps the
 Azure SDK team diagnose Event Hubs specific problems.
 
 ### Enable AMQP transport logging
