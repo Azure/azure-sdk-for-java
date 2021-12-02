@@ -119,13 +119,12 @@ ms.technology: azure
 ms.devlang: $Language
 ms.service: $service
 ---
-
 "@
 
   return "$header`n$ReadmeContent"
 }
 
-function UpdateDocsMsMetadataForPackage($packageInfoJsonLocation) { 
+function GetPackageInfoJson ($packageInfoJsonLocation) {
   if (!(Test-Path $packageInfoJsonLocation)) {
     LogWarning "Package metadata not found for $packageInfoJsonLocation"
     return
@@ -133,7 +132,6 @@ function UpdateDocsMsMetadataForPackage($packageInfoJsonLocation) {
   
   $packageInfoJson = Get-Content $packageInfoJsonLocation -Raw
   $packageInfo = ConvertFrom-Json $packageInfoJson
-  $originalVersion = [AzureEngSemanticVersion]::ParseVersionString($packageInfo.Version)
   if ($packageInfo.DevVersion) {
     # If the package is of a dev version there may be language-specific needs to 
     # specify the appropriate version. For example, in the case of JS, the dev 
@@ -146,6 +144,11 @@ function UpdateDocsMsMetadataForPackage($packageInfoJsonLocation) {
       $packageInfo.Version = $packageInfo.DevVersion
     }
   }
+  return $packageInfo
+}
+
+function UpdateDocsMsMetadataForPackage($packageInfoJsonLocation, $packageInfo) { 
+  $originalVersion = [AzureEngSemanticVersion]::ParseVersionString($packageInfo.Version)
 
   $packageMetadataArray = (Get-CSVMetadata).Where({ $_.Package -eq $packageInfo.Name -and $_.GroupId -eq $packageInfo.Group -and $_.Hide -ne 'true' -and $_.New -eq 'true' })
   if ($packageMetadataArray.Count -eq 0) { 
@@ -191,14 +194,18 @@ function UpdateDocsMsMetadataForPackage($packageInfoJsonLocation) {
     -Value $packageInfoJson
 }
 
-foreach ($packageInfo in $PackageInfoJsonLocations) {
+foreach ($packageInfoLocation in $PackageInfoJsonLocations) {
   Write-Host "Updating metadata for package: $packageInfo"
+
+  # Convert package metadata json file to metadata json property.
+  $packageInfo = GetPackageInfoJson $packageInfoLocation
   # Add validation step for daily update and release
   if ($ValidateDocsMsPackagesFn -and (Test-Path "Function:$ValidateDocsMsPackagesFn")) {
-    &$ValidateDocsMsPackagesFn -PackageInfo $packageInfo 
+    &$ValidateDocsMsPackagesFn -PackageInfo $packageInfo $PackageSourceOverride $DocValidationImageId
     if ($LASTEXITCODE -ne 0) {
       LogError "The package failed Doc.Ms validation. Please fixed the doc and republish to Doc.Ms."
+      exit 1
     }
   }
-  UpdateDocsMsMetadataForPackage $packageInfo
+  UpdateDocsMsMetadataForPackage $packageInfoLocation $packageInfo
 }
