@@ -127,7 +127,7 @@ public final class ReactorDispatcher {
         final RejectedExecutionException rejectedException = this.reactor.attachments()
             .get(RejectedExecutionException.class, RejectedExecutionException.class);
         if (rejectedException != null) {
-            throw logger.atWarning().log(new RejectedExecutionException(
+            throw logger.logExceptionAsWarning(new RejectedExecutionException(
                 "Underlying Reactor was already disposed. Should not continue dispatching work to this. "
                     + rejectedException.getMessage(), rejectedException));
         }
@@ -135,7 +135,7 @@ public final class ReactorDispatcher {
         // throw when the pipe is in closed state - in which case,
         // signalling the new event-dispatch will fail
         if (!this.ioSignal.sink().isOpen()) {
-            throw logger.atWarning().log(new RejectedExecutionException(
+            throw logger.logExceptionAsWarning(new RejectedExecutionException(
                 "ReactorDispatcher instance is closed. Should not continue dispatching work to this reactor."));
         }
     }
@@ -148,8 +148,7 @@ public final class ReactorDispatcher {
             }
         } catch (ClosedChannelException ignorePipeClosedDuringReactorShutdown) {
             if (!isClosed.get()) {
-                logger.atWarning()
-                    .log("signalWorkQueue failed before reactor closed.", ignorePipeClosedDuringReactorShutdown);
+                logger.warning("signalWorkQueue failed before reactor closed.", ignorePipeClosedDuringReactorShutdown);
                 shutdownSignal.emitError(new RuntimeException(String.format(
                     "connectionId[%s] IO Sink was interrupted before reactor closed.", connectionId),
                     ignorePipeClosedDuringReactorShutdown), Sinks.EmitFailureHandler.FAIL_FAST);
@@ -180,19 +179,17 @@ public final class ReactorDispatcher {
                     }
                 } catch (ClosedChannelException ignorePipeClosedDuringReactorShutdown) {
                     if (!isClosed.get()) {
-                        logger.atWarning()
-                            .log("WorkScheduler.run() failed before reactor was closed.", ignorePipeClosedDuringReactorShutdown);
+                        logger.warning("WorkScheduler.run() failed before reactor was closed.", ignorePipeClosedDuringReactorShutdown);
                         shutdownSignal.emitError(new RuntimeException(String.format(
                             "connectionId[%s] IO Source was interrupted before reactor closed.", connectionId),
                             ignorePipeClosedDuringReactorShutdown), Sinks.EmitFailureHandler.FAIL_FAST);
                     } else {
-                        logger.atVerbose()
-                            .log("WorkScheduler.run() failed with an error. Can be ignored.", ignorePipeClosedDuringReactorShutdown);
+                        logger.verbose("WorkScheduler.run() failed with an error. Can be ignored.", ignorePipeClosedDuringReactorShutdown);
                     }
 
                     break;
                 } catch (IOException ioException) {
-                    shutdownSignal.emitError(logger.atError().log(new RuntimeException(
+                    shutdownSignal.emitError(logger.logExceptionAsError(new RuntimeException(
                         "WorkScheduler.run() failed with an error.", ioException)), Sinks.EmitFailureHandler.FAIL_FAST);
                     break;
                 }
@@ -232,7 +229,7 @@ public final class ReactorDispatcher {
                     ioSignal.sink().close();
                 }
             } catch (IOException ioException) {
-                logger.atError().log("CloseHandler.sink().close() failed with an error.", ioException);
+                logger.error("CloseHandler.sink().close() failed with an error.", ioException);
             }
 
             workScheduler.run(null);
@@ -242,7 +239,7 @@ public final class ReactorDispatcher {
                     ioSignal.source().close();
                 }
             } catch (IOException ioException) {
-                logger.atError().log("CloseHandler.source().close() failed with an error.", ioException);
+                logger.error("CloseHandler.source().close() failed with an error.", ioException);
             }
         }
     }

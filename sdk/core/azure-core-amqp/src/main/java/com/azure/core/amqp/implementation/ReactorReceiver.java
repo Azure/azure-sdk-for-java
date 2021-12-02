@@ -10,7 +10,6 @@ import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LoggingEventBuilder;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
@@ -20,7 +19,6 @@ import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
@@ -38,7 +36,6 @@ import java.util.function.Supplier;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addErrorCondition;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addSignalTypeAndResult;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
-import static com.azure.core.amqp.implementation.ClientConstants.CONNECTION_ID_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -172,8 +169,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                     }),
 
             amqpConnection.getShutdownSignals().flatMap(signal -> {
-                logger.atVerbose()
-                    .log("Shutdown signal received.");
+                logger.verbose("Shutdown signal received.");
                 return closeAsync("Connection shutdown.", null);
             }).subscribe());
         //@formatter:on
@@ -192,7 +188,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
     @Override
     public Mono<Void> addCredits(int credits) {
         if (isDisposed()) {
-            return monoError(logger, Exceptions.propagate(new IllegalStateException("Cannot add credits to closed link: " + getLinkName())));
+            return monoError(logger, new IllegalStateException("Cannot add credits to closed link: " + getLinkName()));
         }
 
         return Mono.create(sink -> {
@@ -299,15 +295,13 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
             try {
                 dispatcher.invoke(closeReceiver);
             } catch (IOException e) {
-                logger.atWarning()
-                    .log("IO sink was closed when scheduling work. Manually invoking and completing close.", e);
+                logger.warning("IO sink was closed when scheduling work. Manually invoking and completing close.", e);
 
                 closeReceiver.run();
                 completeClose();
             } catch (RejectedExecutionException e) {
                 // Not logging error here again because we have to log the exception when we throw it.
-                logger.atInfo()
-                    .log("RejectedExecutionException when scheduling on ReactorDispatcher. Manually invoking and completing close.");
+                logger.info("RejectedExecutionException when scheduling on ReactorDispatcher. Manually invoking and completing close.");
 
                 closeReceiver.run();
                 completeClose();
@@ -322,7 +316,6 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
 
         isClosedMono.emitEmpty((signalType, result) -> {
             addSignalTypeAndResult(logger.atWarning(), signalType, result)
-                .addKeyValue(ENTITY_PATH_KEY, entityPath)
                 .log("Unable to emit shutdown signal.");
             return false;
         });
@@ -337,18 +330,6 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
         receiver.free();
     }
 
-    public LoggingEventBuilder addContext(LoggingEventBuilder logBuilder) {
-        return logBuilder
-            .addKeyValue(CONNECTION_ID_KEY, receiver.getName())
-            .addKeyValue(ENTITY_PATH_KEY, entityPath)
-            .addKeyValue(LINK_NAME_KEY, getLinkName());
-    }
-
-    /**
-     * Returns String representing this {@code ReactorReceiver} signal.
-     *
-     * <strong>To write logs, please use {@link ReactorReceiver#addContext} instead.</strong>
-     */
     @Override
     public String toString() {
         return String.format("connectionId: [%s] entity path: [%s] linkName: [%s]", receiver.getName(), entityPath,

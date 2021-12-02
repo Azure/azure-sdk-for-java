@@ -148,7 +148,7 @@ public class ActiveClientTokenManager implements TokenManager {
                     durationSource.emitNext(lastRefresh, (signalType, emitResult) -> {
                         addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)
                             .addKeyValue("lastRefresh", lastRefresh)
-                            .log("Could not emit.");
+                            .log("Could not emit lastRefresh.");
 
                         return false;
                     });

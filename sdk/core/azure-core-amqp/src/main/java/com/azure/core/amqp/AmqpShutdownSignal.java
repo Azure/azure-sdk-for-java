@@ -47,7 +47,7 @@ public class AmqpShutdownSignal {
     }
 
     /**
-     * Returns String representing this {@code AmqpShutdownSignal} signal.
+     * Returns String representing the message of this {@code AmqpShutdownSignal} signal.
      *
      * <strong>To write logs, please use {@link com.azure.core.amqp.implementation.AmqpLoggingUtils#addShutdownSignal(LoggingEventBuilder, AmqpShutdownSignal)}.</strong>
      */

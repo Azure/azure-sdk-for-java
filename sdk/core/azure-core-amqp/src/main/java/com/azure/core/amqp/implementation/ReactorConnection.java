@@ -137,8 +137,7 @@ public class ReactorConnection implements AmqpConnection {
             })
             .doOnError(error -> {
                 if (isDisposed.getAndSet(true)) {
-                    logger.atVerbose()
-                        .log("Connection was already disposed: Error occurred while connection was starting.", error);
+                    logger.verbose("Connection was already disposed: Error occurred while connection was starting.", error);
                 } else {
                     closeAsync(new AmqpShutdownSignal(false, false, String.format(
                         "Error occurred while connection was starting. Error: %s", error))).subscribe();
@@ -207,7 +206,7 @@ public class ReactorConnection implements AmqpConnection {
 
             return tokenManager.authorize().thenReturn(managementNodes.compute(entityPath, (key, current) -> {
                 if (current != null) {
-                    logger.atInfo().addKeyValue(ENTITY_PATH_KEY, entityPath).log("A management node exists already, returning it.");
+                    logger.info("A management node exists already, returning it.");
 
                     // Close the token manager we had created during this because it is unneeded now.
                     tokenManager.close();
@@ -302,7 +301,7 @@ public class ReactorConnection implements AmqpConnection {
 
                         logger.atVerbose()
                             .addKeyValue(SESSION_NAME_KEY, sessionName)
-                            .log("connectionId[{}] sessionName[{}]: Complete. Removing and disposing session.");
+                            .log("Complete. Removing and disposing session.");
                         removeSession(key);
                     });
 

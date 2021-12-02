@@ -71,7 +71,7 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
             final URI serviceUri = createURI(connectionOptions.getHostname(), connectionOptions.getPort());
             final ProxySelector proxySelector = ProxySelector.getDefault();
             if (proxySelector == null) {
-                throw logger.atError().log(new IllegalStateException("ProxySelector should not be null."));
+                throw logger.logExceptionAsError(new IllegalStateException("ProxySelector should not be null."));
             }
 
             final List<Proxy> proxies = proxySelector.select(serviceUri);
@@ -79,7 +79,7 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
                 final String formatted = String.format("No proxy address found for: '%s'. Available: %s.",
                     serviceUri, proxies.stream().map(Proxy::toString).collect(Collectors.joining(", ")));
 
-                throw logger.atError().log(new IllegalStateException(formatted));
+                throw logger.logExceptionAsError(new IllegalStateException(formatted));
             }
 
             final Proxy proxy = proxies.get(0);
@@ -231,7 +231,7 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
             case NONE:
                 return com.microsoft.azure.proton.transport.proxy.ProxyAuthenticationType.NONE;
             default:
-                throw logger.atError().log(new IllegalArgumentException(String.format("This authentication type is unknown: %s", type.name())));
+                throw logger.logExceptionAsError(new IllegalArgumentException(String.format("This authentication type is unknown: %s", type.name())));
         }
     }
 

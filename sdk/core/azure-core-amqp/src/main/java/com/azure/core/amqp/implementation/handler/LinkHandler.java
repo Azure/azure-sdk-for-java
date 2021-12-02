@@ -101,7 +101,8 @@ abstract class LinkHandler extends Handler {
         if (link.getLocalState() != EndpointState.CLOSED) {
             logger.atInfo()
                 .addKeyValue(LINK_NAME_KEY, link.getName())
-                .addKeyValue("state", link.getLocalState());
+                .addKeyValue("state", link.getLocalState())
+                .log("Local link state is not closed.");
 
             link.setCondition(condition);
             link.close();

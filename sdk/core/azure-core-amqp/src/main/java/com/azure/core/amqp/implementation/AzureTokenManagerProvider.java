@@ -66,7 +66,7 @@ public class AzureTokenManagerProvider implements TokenManagerProvider {
         } else if (CbsAuthorizationType.SHARED_ACCESS_SIGNATURE.equals(authorizationType)) {
             return String.format(Locale.US, TOKEN_AUDIENCE_FORMAT, fullyQualifiedNamespace, resource);
         } else {
-            throw logger.atError().log(new IllegalArgumentException(String.format(Locale.US,
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
                 "'%s' is not supported authorization type for token audience.", authorizationType)));
         }
     }

@@ -58,6 +58,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.core.amqp.exception.AmqpErrorCondition.NOT_ALLOWED;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addErrorCondition;
+import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addSignalTypeAndResult;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
@@ -569,7 +570,7 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
         if (workItem == null) {
             logger.atVerbose()
                 .addKeyValue(DELIVERY_TAG_KEY, deliveryTag)
-                .log("Mismatch (or send timed out.");
+                .log("Mismatch (or send timed out).");
 
             return;
         } else if (workItem.isDeliveryStateProvided()) {
@@ -655,7 +656,7 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
 
     private void completeClose() {
         isClosedMono.emitEmpty((signalType, result) -> {
-            logger.warning("Unable to emit shutdown signal.");
+            addSignalTypeAndResult(logger.atWarning(), signalType, result).log("Unable to emit shutdown signal.");
             return false;
         });
 

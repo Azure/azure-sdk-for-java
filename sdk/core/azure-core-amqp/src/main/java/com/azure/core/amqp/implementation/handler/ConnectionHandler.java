@@ -133,7 +133,7 @@ public class ConnectionHandler extends Handler {
             try {
                 defaultSslContext = SSLContext.getDefault();
             } catch (NoSuchAlgorithmException e) {
-                throw logger.atError().log(new RuntimeException("Default SSL algorithm not found in JRE. Please check your JRE setup.", e));
+                throw logger.logExceptionAsError(new RuntimeException("Default SSL algorithm not found in JRE. Please check your JRE setup.", e));
             }
         }
 
@@ -154,7 +154,7 @@ public class ConnectionHandler extends Handler {
             logger.warning("'{}' is not secure.", verifyMode);
             sslDomain.setPeerAuthentication(SslDomain.VerifyMode.ANONYMOUS_PEER);
         } else {
-            throw logger.atError().log(new UnsupportedOperationException(
+            throw logger.logExceptionAsError(new UnsupportedOperationException(
                 "verifyMode is not supported: " + verifyMode));
         }
 
@@ -209,7 +209,7 @@ public class ConnectionHandler extends Handler {
         final Connection connection = event.getConnection();
         logger.atInfo()
             .addKeyValue(HOSTNAME_KEY, connection.getHostname())
-            .addKeyValue("localState", connection.getLocalState())
+            .addKeyValue("state", connection.getLocalState())
             .addKeyValue("remoteState", connection.getRemoteState())
             .log("onConnectionUnbound");
 
@@ -325,7 +325,7 @@ public class ConnectionHandler extends Handler {
         }
 
         if (condition == null) {
-            throw logger.atError().log(new IllegalStateException("notifyErrorContext does not have an ErrorCondition."));
+            throw logger.logExceptionAsError(new IllegalStateException("notifyErrorContext does not have an ErrorCondition."));
         }
 
         // if the remote-peer abruptly closes the connection without issuing close frame issue one

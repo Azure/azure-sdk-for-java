@@ -218,7 +218,7 @@ public class RequestResponseChannel implements AsyncCloseable {
                 this.receiveLink.open();
             });
         } catch (IOException | RejectedExecutionException e) {
-            throw logger.atError().log(new RuntimeException("Unable to open send and receive link.", e));
+            throw logger.logExceptionAsError(new RuntimeException("Unable to open send and receive link.", e));
         }
     }
 
@@ -422,8 +422,7 @@ public class RequestResponseChannel implements AsyncCloseable {
         }
 
         final int remaining = pendingLinkTerminations.decrementAndGet();
-        logger.atVerbose()
-            .log("{} disposed. Remaining: {}", handlerName, remaining);
+        logger.verbose("{} disposed. Remaining: {}", handlerName, remaining);
 
         if (remaining == 0) {
             subscriptions.dispose();
@@ -467,8 +466,7 @@ public class RequestResponseChannel implements AsyncCloseable {
 
     // Terminate the unconfirmed MonoSinks by notifying the given error.
     private void terminateUnconfirmedSends(Throwable error) {
-        logger.atVerbose()
-            .log("Terminating {} unconfirmed sends (reason: {}).", unconfirmedSends.size(), error.getMessage());
+        logger.verbose("Terminating {} unconfirmed sends (reason: {}).", unconfirmedSends.size(), error.getMessage());
         Map.Entry<UnsignedLong, MonoSink<Message>> next;
         int count = 0;
         while ((next = unconfirmedSends.pollFirstEntry()) != null) {

@@ -266,13 +266,13 @@ public class ReactorSession implements AmqpSession {
 
         addErrorCondition(logger.atVerbose(), errorCondition)
             .addKeyValue(SESSION_NAME_KEY, sessionName)
-            .log("Disposing session. {}", message != null ? message : "");
+            .log("Setting error condition and disposing session. {}", message);
 
         return Mono.fromRunnable(() -> {
             try {
                 provider.getReactorDispatcher().invoke(() -> disposeWork(errorCondition, disposeLinks));
             } catch (IOException e) {
-                addErrorCondition(logger.atInfo(), errorCondition)
+                logger.atInfo()
                     .addKeyValue(SESSION_NAME_KEY, sessionName)
                     .log("Error while scheduling work. Manually disposing.", e);
 

@@ -25,6 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addErrorCondition;
+import static com.azure.core.amqp.implementation.ClientConstants.EMIT_RESULT_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
 
@@ -142,12 +143,12 @@ public class ReceiveLinkHandler extends LinkHandler {
                         .addKeyValue("updatedLinkCredit", link.getCredit())
                         .addKeyValue("remoteCredit", link.getRemoteCredit())
                         .addKeyValue("delivery.isSettled", delivery.isSettled())
-                        .log("Was already settled.");
+                        .log("onDelivery. Was already settled.");
                 } else {
                     logger.atWarning()
                         .addKeyValue(ENTITY_PATH_KEY, entityPath)
                         .addKeyValue("delivery.isSettled", delivery.isSettled())
-                        .log("Settled delivery with no delivery");
+                        .log("Settled delivery with no link.");
                 }
             } else {
                 if (link.getLocalState() == EndpointState.CLOSED) {
@@ -164,7 +165,7 @@ public class ReceiveLinkHandler extends LinkHandler {
                         logger.atWarning()
                             .addKeyValue(ENTITY_PATH_KEY, entityPath)
                             .addKeyValue(LINK_NAME_KEY, linkName)
-                            .addKeyValue("emitResult", emitResult)
+                            .addKeyValue(EMIT_RESULT_KEY, emitResult)
                             .log("Could not emit delivery. {}", delivery);
 
                         if (emitResult == Sinks.EmitResult.FAIL_OVERFLOW

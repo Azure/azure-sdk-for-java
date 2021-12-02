@@ -42,7 +42,7 @@ public class CustomIOHandler extends IOHandler {
         try {
             super.onUnhandled(event);
         } catch (NullPointerException e) {
-            logger.atError().log("Exception occurred when handling event in super.", e);
+            logger.error("Exception occurred when handling event in super.", e);
         }
     }
 }
