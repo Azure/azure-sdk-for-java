@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aad.b2c.implementation;
 
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
@@ -30,7 +31,7 @@ class AADB2CAutoConfigurationTest extends AbstractAADB2COAuth2ClientTestConfigur
     @Override
     WebApplicationContextRunner getDefaultContextRunner() {
         return new WebApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(WebOAuth2ClientApp.class, AADB2CAutoConfiguration.class))
+            .withConfiguration(AutoConfigurations.of(AzureGlobalPropertiesAutoConfiguration.class, WebOAuth2ClientApp.class, AADB2CAutoConfiguration.class))
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
             .withPropertyValues(getWebappCommonPropertyValues());
     }

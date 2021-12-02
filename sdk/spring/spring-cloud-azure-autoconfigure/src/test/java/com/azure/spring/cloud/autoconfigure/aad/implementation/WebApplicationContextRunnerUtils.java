@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.aad.implementation;
 
 import com.azure.spring.cloud.autoconfigure.aad.AADAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener;
 import org.springframework.boot.logging.LogLevel;
 import org.springframework.boot.test.context.FilteredClassLoader;
@@ -20,7 +21,7 @@ public class WebApplicationContextRunnerUtils {
 
     public static WebApplicationContextRunner oauthClientAndResourceServerRunner() {
         return new WebApplicationContextRunner()
-            .withUserConfiguration(AADAutoConfiguration.class)
+            .withUserConfiguration(AzureGlobalPropertiesAutoConfiguration.class, AADAutoConfiguration.class)
             .withInitializer(new ConditionEvaluationReportLoggingListener(LogLevel.INFO));
     }
 

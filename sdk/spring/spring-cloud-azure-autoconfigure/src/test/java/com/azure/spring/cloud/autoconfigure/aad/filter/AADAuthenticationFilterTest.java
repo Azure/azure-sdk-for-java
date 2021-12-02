@@ -7,6 +7,7 @@ import com.azure.spring.cloud.autoconfigure.aad.core.AADAuthorizationServerEndpo
 import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthenticationProperties;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AADCredentialProperties;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AADProfileProperties;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.proc.BadJOSEException;
 import org.junit.jupiter.api.Disabled;
@@ -37,7 +38,7 @@ import static org.mockito.Mockito.when;
 public class AADAuthenticationFilterTest {
     private static final String TOKEN = "dummy-token";
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(AADAuthenticationFilterAutoConfiguration.class));
+            .withConfiguration(AutoConfigurations.of(AzureGlobalPropertiesAutoConfiguration.class, AADAuthenticationFilterAutoConfiguration.class));
     private final UserPrincipalManager userPrincipalManager;
     private final HttpServletRequest request;
     private final HttpServletResponse response;
