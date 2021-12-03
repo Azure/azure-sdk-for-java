@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Supported `WithOrchestrationMode` in `VirtualMachineScaleSet` for `createOrUpdate` use case.
+
 ### Breaking Changes
 
 ### Bugs Fixed
