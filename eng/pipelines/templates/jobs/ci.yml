@@ -250,7 +250,7 @@ jobs:
         inputs:
           pwsh: true
           workingDirectory: $(Agent.BuildDirectory)
-          filePath: eng/scripts/Verify-Readme.ps1
+          filePath: eng/common/scripts/Verify-Readme.ps1
           arguments: >
             -DocWardenVersion $(DocWardenVersion)
             -ScanPath ${{ parameters.ServiceDirectory }}
