@@ -8,8 +8,10 @@ import org.springframework.core.env.EnumerablePropertySource;
 
 /**
  * A key vault implementation of {@link EnumerablePropertySource} to enumerate all property pairs in Key Vault.
+ *
+ * @since 4.0.0
  */
-public class KeyVaultPropertySource extends EnumerablePropertySource<KeyVaultOperation> {
+public final class KeyVaultPropertySource extends EnumerablePropertySource<KeyVaultOperation> {
 
     private final KeyVaultOperation operations;
     public static final String DEFAULT_AZURE_KEYVAULT_PROPERTYSOURCE_NAME = "azurekv";

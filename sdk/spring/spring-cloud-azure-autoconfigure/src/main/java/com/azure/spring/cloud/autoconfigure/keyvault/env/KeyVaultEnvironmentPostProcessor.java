@@ -29,13 +29,19 @@ import static org.springframework.core.env.StandardEnvironment.SYSTEM_ENVIRONMEN
 
 /**
  * Leverage {@link EnvironmentPostProcessor} to add Key Vault secrets as a property source.
+ *
+ * @since 4.0.0
  */
-public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcessor, Ordered {
+public final class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcessor, Ordered {
 
     public static final int ORDER = ConfigDataEnvironmentPostProcessor.ORDER + 1;
 
     private final Log logger;
 
+    /**
+     *
+     * @param logger The logger used in this class.
+     */
     public KeyVaultEnvironmentPostProcessor(Log logger) {
         this.logger = logger;
     }
@@ -106,7 +112,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
 
 
     /**
-     * Add a key vault property source.
+     * Add a Key Vault property source.
      *
      * <p>
      * The normalizedName is used to target a specific key vault (note if the name is the empty string it works as
@@ -182,6 +188,10 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
                                     KeyVaultEnvironmentPostProcessor.class.getClassLoader());
     }
 
+    /**
+     *
+     * @return The order value.
+     */
     @Override
     public int getOrder() {
         return ORDER;

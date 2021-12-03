@@ -12,9 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Properties for Azure Key Vault Secrets.
+ * Azure Key Vault Secrets properties.
+ *
+ * @since 4.0.0
  */
-public class AzureKeyVaultSecretProperties extends AzureKeyVaultProperties implements KeyVaultSecretProperties {
+public final class AzureKeyVaultSecretProperties extends AzureKeyVaultProperties implements KeyVaultSecretProperties {
 
     public static final String PREFIX = "spring.cloud.azure.keyvault.secret";
 
