@@ -18,6 +18,9 @@
             "reactor\\.netty\\..+",
             "reactor\\.util\\..+",
             "io\\.netty\\..+",
+            "kotlin(\\..+)?",
+            "okhttp3(\\..+)?",
+            "okio(\\..+)?",
             "com\\.nimbusds(\\..+)?",
             "com\\.microsoft\\.azure\\..+",
             "javax\\.jms(\\..+)?",
@@ -181,6 +184,11 @@
         "code": "java\\.class\\.externalClassExposedInAPI",
         "new": "(interface|class|enum) io\\.opentelemetry.*",
         "justification": "Azure Monitor Exporter is allowed to use OpenTelemetry types in public APIs as it implements interfaces defined by OpenTelemetry"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface com.google.gson.ToNumberStrategy",
+        "justification": "This occurs because we check transitive dependencies, so it checks gson jars."
       },
       {
         "code": "java.annotation.added",
@@ -411,6 +419,26 @@
         "code": "java.method.added",
         "new": "method java.lang.String com.azure.storage.common.StorageSharedKeyCredential::generateAuthorizationHeader(java.net.URL, java.lang.String, com.azure.core.http.HttpHeaders, boolean)",
         "justification": "New method added to SharedKeyCredential in common not intended for use by customers. Only public for access by other packages."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method <T, U> com.azure.core.util.polling.PollerFlux<T, U> com.azure.core.util.polling.PollerFlux<T, U>::create(java.time.Duration, java.util.function.Supplier<reactor.core.publisher.Mono<? extends com.azure.core.http.rest.Response<?>>>, com.azure.core.util.polling.PollingStrategy<T, U>, com.azure.core.util.serializer.TypeReference<T>, com.azure.core.util.serializer.TypeReference<U>)",
+        "justification": "New method added to PollerFlux in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method java.lang.Class<T> com.azure.core.util.serializer.TypeReference<T>::getJavaClass()",
+        "justification": "New method added to TypeReference in azure-core."
+      },
+      {
+        "code": "java.method.visibilityReduced",
+        "new": "method com.azure.core.http.rest.RequestOptions com.azure.core.http.rest.RequestOptions::setErrorOptions(java.util.EnumSet<com.azure.core.http.rest.ErrorOptions>)",
+        "justification": "The use case for ErrorOptions is not yet clear. It will be added later if there are enough data points to suggest this is needed."
+      },
+      {
+        "code": "java.class.visibilityReduced",
+        "new": "enum com.azure.core.http.rest.ErrorOptions",
+        "justification": "The use case for ErrorOptions is not yet clear. It will be added later if there are enough data points to suggest this is needed."
       }
     ]
   }

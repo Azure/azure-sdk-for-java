@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -73,7 +74,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
     @Host("{$host}")
     @ServiceInterface(name = "ContainerRegistryMan")
     private interface WebhooksService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
                 + "/registries/{registryName}/webhooks/{webhookName}")
@@ -86,9 +87,10 @@ public final class WebhooksClientImpl implements WebhooksClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @PathParam("webhookName") String webhookName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
                 + "/registries/{registryName}/webhooks/{webhookName}")
@@ -102,6 +104,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
             @PathParam("registryName") String registryName,
             @PathParam("webhookName") String webhookName,
             @BodyParam("application/json") WebhookCreateParameters webhookCreateParameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
@@ -119,7 +122,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
             @PathParam("webhookName") String webhookName,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
                 + "/registries/{registryName}/webhooks/{webhookName}")
@@ -133,9 +136,10 @@ public final class WebhooksClientImpl implements WebhooksClient {
             @PathParam("registryName") String registryName,
             @PathParam("webhookName") String webhookName,
             @BodyParam("application/json") WebhookUpdateParameters webhookUpdateParameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
                 + "/registries/{registryName}/webhooks")
@@ -147,9 +151,10 @@ public final class WebhooksClientImpl implements WebhooksClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
                 + "/registries/{registryName}/webhooks/{webhookName}/ping")
@@ -162,9 +167,10 @@ public final class WebhooksClientImpl implements WebhooksClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @PathParam("webhookName") String webhookName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
                 + "/registries/{registryName}/webhooks/{webhookName}/getCallbackConfig")
@@ -177,9 +183,10 @@ public final class WebhooksClientImpl implements WebhooksClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @PathParam("webhookName") String webhookName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
                 + "/registries/{registryName}/webhooks/{webhookName}/listEvents")
@@ -192,24 +199,27 @@ public final class WebhooksClientImpl implements WebhooksClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @PathParam("webhookName") String webhookName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WebhookListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventListResult>> listEventsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -249,7 +259,8 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (webhookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
         }
-        final String apiVersion = "2019-05-01";
+        final String apiVersion = "2019-12-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -261,8 +272,9 @@ public final class WebhooksClientImpl implements WebhooksClient {
                             resourceGroupName,
                             registryName,
                             webhookName,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -302,7 +314,8 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (webhookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
         }
-        final String apiVersion = "2019-05-01";
+        final String apiVersion = "2019-12-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -312,6 +325,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
                 resourceGroupName,
                 registryName,
                 webhookName,
+                accept,
                 context);
     }
 
@@ -420,7 +434,8 @@ public final class WebhooksClientImpl implements WebhooksClient {
         } else {
             webhookCreateParameters.validate();
         }
-        final String apiVersion = "2019-05-01";
+        final String apiVersion = "2019-12-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -433,8 +448,9 @@ public final class WebhooksClientImpl implements WebhooksClient {
                             registryName,
                             webhookName,
                             webhookCreateParameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -486,7 +502,8 @@ public final class WebhooksClientImpl implements WebhooksClient {
         } else {
             webhookCreateParameters.validate();
         }
-        final String apiVersion = "2019-05-01";
+        final String apiVersion = "2019-12-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .create(
@@ -497,6 +514,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
                 registryName,
                 webhookName,
                 webhookCreateParameters,
+                accept,
                 context);
     }
 
@@ -512,7 +530,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a webhook for a container registry.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<WebhookInner>, WebhookInner> beginCreateAsync(
         String resourceGroupName,
         String registryName,
@@ -523,7 +541,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         return this
             .client
             .<WebhookInner, WebhookInner>getLroResult(
-                mono, this.client.getHttpPipeline(), WebhookInner.class, WebhookInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), WebhookInner.class, WebhookInner.class, this.client.getContext());
     }
 
     /**
@@ -539,7 +557,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a webhook for a container registry.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WebhookInner>, WebhookInner> beginCreateAsync(
         String resourceGroupName,
         String registryName,
@@ -567,7 +585,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a webhook for a container registry.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WebhookInner>, WebhookInner> beginCreate(
         String resourceGroupName,
         String registryName,
@@ -589,7 +607,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a webhook for a container registry.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WebhookInner>, WebhookInner> beginCreate(
         String resourceGroupName,
         String registryName,
@@ -728,7 +746,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (webhookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
         }
-        final String apiVersion = "2019-05-01";
+        final String apiVersion = "2019-12-01-preview";
         return FluxUtil
             .withContext(
                 context ->
@@ -741,7 +759,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
                             registryName,
                             webhookName,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -781,7 +799,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (webhookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
         }
-        final String apiVersion = "2019-05-01";
+        final String apiVersion = "2019-12-01-preview";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -805,13 +823,13 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String registryName, String webhookName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, registryName, webhookName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -826,7 +844,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String registryName, String webhookName, Context context) {
         context = this.client.mergeContext(context);
@@ -848,7 +866,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String registryName, String webhookName) {
         return beginDeleteAsync(resourceGroupName, registryName, webhookName).getSyncPoller();
@@ -866,7 +884,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String registryName, String webhookName, Context context) {
         return beginDeleteAsync(resourceGroupName, registryName, webhookName, context).getSyncPoller();
@@ -987,7 +1005,8 @@ public final class WebhooksClientImpl implements WebhooksClient {
         } else {
             webhookUpdateParameters.validate();
         }
-        final String apiVersion = "2019-05-01";
+        final String apiVersion = "2019-12-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1000,8 +1019,9 @@ public final class WebhooksClientImpl implements WebhooksClient {
                             registryName,
                             webhookName,
                             webhookUpdateParameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1053,7 +1073,8 @@ public final class WebhooksClientImpl implements WebhooksClient {
         } else {
             webhookUpdateParameters.validate();
         }
-        final String apiVersion = "2019-05-01";
+        final String apiVersion = "2019-12-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -1064,6 +1085,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
                 registryName,
                 webhookName,
                 webhookUpdateParameters,
+                accept,
                 context);
     }
 
@@ -1079,7 +1101,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a webhook for a container registry.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<WebhookInner>, WebhookInner> beginUpdateAsync(
         String resourceGroupName,
         String registryName,
@@ -1090,7 +1112,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         return this
             .client
             .<WebhookInner, WebhookInner>getLroResult(
-                mono, this.client.getHttpPipeline(), WebhookInner.class, WebhookInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), WebhookInner.class, WebhookInner.class, this.client.getContext());
     }
 
     /**
@@ -1106,7 +1128,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a webhook for a container registry.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WebhookInner>, WebhookInner> beginUpdateAsync(
         String resourceGroupName,
         String registryName,
@@ -1134,7 +1156,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a webhook for a container registry.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WebhookInner>, WebhookInner> beginUpdate(
         String resourceGroupName,
         String registryName,
@@ -1156,7 +1178,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a webhook for a container registry.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WebhookInner>, WebhookInner> beginUpdate(
         String resourceGroupName,
         String registryName,
@@ -1290,7 +1312,8 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2019-05-01";
+        final String apiVersion = "2019-12-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1301,6 +1324,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             registryName,
+                            accept,
                             context))
             .<PagedResponse<WebhookInner>>map(
                 res ->
@@ -1311,7 +1335,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1347,7 +1371,8 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2019-05-01";
+        final String apiVersion = "2019-12-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -1356,6 +1381,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 registryName,
+                accept,
                 context)
             .map(
                 res ->
@@ -1469,7 +1495,8 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (webhookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
         }
-        final String apiVersion = "2019-05-01";
+        final String apiVersion = "2019-12-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1481,8 +1508,9 @@ public final class WebhooksClientImpl implements WebhooksClient {
                             resourceGroupName,
                             registryName,
                             webhookName,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1522,7 +1550,8 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (webhookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
         }
-        final String apiVersion = "2019-05-01";
+        final String apiVersion = "2019-12-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .ping(
@@ -1532,6 +1561,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
                 resourceGroupName,
                 registryName,
                 webhookName,
+                accept,
                 context);
     }
 
@@ -1629,7 +1659,8 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (webhookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
         }
-        final String apiVersion = "2019-05-01";
+        final String apiVersion = "2019-12-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1641,8 +1672,9 @@ public final class WebhooksClientImpl implements WebhooksClient {
                             resourceGroupName,
                             registryName,
                             webhookName,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1682,7 +1714,8 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (webhookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
         }
-        final String apiVersion = "2019-05-01";
+        final String apiVersion = "2019-12-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getCallbackConfig(
@@ -1692,6 +1725,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
                 resourceGroupName,
                 registryName,
                 webhookName,
+                accept,
                 context);
     }
 
@@ -1790,7 +1824,8 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (webhookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
         }
-        final String apiVersion = "2019-05-01";
+        final String apiVersion = "2019-12-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1802,6 +1837,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
                             resourceGroupName,
                             registryName,
                             webhookName,
+                            accept,
                             context))
             .<PagedResponse<EventInner>>map(
                 res ->
@@ -1812,7 +1848,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1852,7 +1888,8 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (webhookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
         }
-        final String apiVersion = "2019-05-01";
+        final String apiVersion = "2019-12-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listEvents(
@@ -1862,6 +1899,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
                 resourceGroupName,
                 registryName,
                 webhookName,
+                accept,
                 context)
             .map(
                 res ->
@@ -1966,8 +2004,9 @@ public final class WebhooksClientImpl implements WebhooksClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<WebhookInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1977,7 +2016,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2001,9 +2040,10 @@ public final class WebhooksClientImpl implements WebhooksClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, this.client.getEndpoint(), context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -2035,8 +2075,9 @@ public final class WebhooksClientImpl implements WebhooksClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listEventsNext(nextLink, this.client.getEndpoint(), context))
+            .withContext(context -> service.listEventsNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<EventInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -2046,7 +2087,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2070,9 +2111,10 @@ public final class WebhooksClientImpl implements WebhooksClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listEventsNext(nextLink, this.client.getEndpoint(), context)
+            .listEventsNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

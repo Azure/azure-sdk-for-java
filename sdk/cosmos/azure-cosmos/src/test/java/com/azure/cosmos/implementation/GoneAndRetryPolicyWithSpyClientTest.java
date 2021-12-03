@@ -59,7 +59,7 @@ public class GoneAndRetryPolicyWithSpyClientTest extends TestSuiteBase {
     static Builder createDCBuilder(Protocol protocol) {
 
         ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
-        connectionPolicy.setRequestTimeout(Duration.ofSeconds(5));
+        connectionPolicy.setTcpNetworkRequestTimeout(Duration.ofSeconds(5));
         Configs configs = spy(new Configs());
         doAnswer((Answer<Protocol>) invocation -> protocol).when(configs).getProtocol();
 

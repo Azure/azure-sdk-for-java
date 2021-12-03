@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.scanning;
 
 import com.azure.analytics.purview.scanning.implementation.TriggersImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -17,13 +18,14 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewScanningClient type. */
 @ServiceClient(builder = PurviewScanningClientBuilder.class, isAsync = true)
 public final class TriggersAsyncClient {
-    private final TriggersImpl serviceClient;
+    @Generated private final TriggersImpl serviceClient;
 
     /**
      * Initializes an instance of Triggers client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     TriggersAsyncClient(TriggersImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -92,10 +94,10 @@ public final class TriggersAsyncClient {
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return trigger information.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTriggerWithResponse(
             String dataSourceName, String scanName, RequestOptions requestOptions) {
@@ -217,10 +219,10 @@ public final class TriggersAsyncClient {
      * @param scanName The scanName parameter.
      * @param body The body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createTriggerWithResponse(
             String dataSourceName, String scanName, BinaryData body, RequestOptions requestOptions) {
@@ -291,10 +293,10 @@ public final class TriggersAsyncClient {
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteTriggerWithResponse(
             String dataSourceName, String scanName, RequestOptions requestOptions) {

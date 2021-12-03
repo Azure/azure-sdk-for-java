@@ -2408,7 +2408,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return integration runtime status response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IntegrationRuntimeStatusResponseInner>, IntegrationRuntimeStatusResponseInner>
         beginStartAsync(String resourceGroupName, String factoryName, String integrationRuntimeName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -2420,7 +2420,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
                 this.client.getHttpPipeline(),
                 IntegrationRuntimeStatusResponseInner.class,
                 IntegrationRuntimeStatusResponseInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2435,7 +2435,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return integration runtime status response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IntegrationRuntimeStatusResponseInner>, IntegrationRuntimeStatusResponseInner>
         beginStartAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, Context context) {
         context = this.client.mergeContext(context);
@@ -2462,7 +2462,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return integration runtime status response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IntegrationRuntimeStatusResponseInner>, IntegrationRuntimeStatusResponseInner>
         beginStart(String resourceGroupName, String factoryName, String integrationRuntimeName) {
         return beginStartAsync(resourceGroupName, factoryName, integrationRuntimeName).getSyncPoller();
@@ -2480,7 +2480,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return integration runtime status response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IntegrationRuntimeStatusResponseInner>, IntegrationRuntimeStatusResponseInner>
         beginStart(String resourceGroupName, String factoryName, String integrationRuntimeName, Context context) {
         return beginStartAsync(resourceGroupName, factoryName, integrationRuntimeName, context).getSyncPoller();
@@ -2679,14 +2679,15 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStopAsync(
         String resourceGroupName, String factoryName, String integrationRuntimeName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             stopWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2701,7 +2702,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStopAsync(
         String resourceGroupName, String factoryName, String integrationRuntimeName, Context context) {
         context = this.client.mergeContext(context);
@@ -2723,7 +2724,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String factoryName, String integrationRuntimeName) {
         return beginStopAsync(resourceGroupName, factoryName, integrationRuntimeName).getSyncPoller();
@@ -2741,7 +2742,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String factoryName, String integrationRuntimeName, Context context) {
         return beginStopAsync(resourceGroupName, factoryName, integrationRuntimeName, context).getSyncPoller();

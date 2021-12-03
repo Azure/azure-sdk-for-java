@@ -54,17 +54,51 @@ import java.util.Objects;
  * {@link #sasToken(String) SAS token} that authorizes the client.</p>
  *
  * <p><strong>Instantiating a synchronous File Client with SAS token</strong></p>
- * {@codesnippet com.azure.storage.file.share.ShareFileClient.instantiation.sastoken}
+ * <!-- src_embed com.azure.storage.file.share.ShareFileClient.instantiation.sastoken -->
+ * <pre>
+ * ShareFileClient fileClient = new ShareFileClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;https:&#47;&#47;$&#123;accountName&#125;.file.core.windows.net?$&#123;SASToken&#125;&quot;&#41;
+ *     .shareName&#40;&quot;myshare&quot;&#41;
+ *     .resourcePath&#40;&quot;myfilepath&quot;&#41;
+ *     .buildFileClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.storage.file.share.ShareFileClient.instantiation.sastoken -->
  *
  * <p><strong>Instantiating an Asynchronous File Client with SAS token</strong></p>
- * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.instantiation.sastoken}
+ * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.instantiation.sastoken -->
+ * <pre>
+ * ShareDirectoryClient shareDirectoryClient = new ShareFileClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;https:&#47;&#47;$&#123;accountName&#125;.file.core.windows.net?$&#123;SASToken&#125;&quot;&#41;
+ *     .shareName&#40;&quot;myshare&quot;&#41;
+ *     .resourcePath&#40;&quot;mydirectory&quot;&#41;
+ *     .buildDirectoryClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.storage.file.share.ShareDirectoryClient.instantiation.sastoken -->
  *
  * <p>If the {@code endpoint} doesn't contain the query parameters to construct a SAS token it may be set using
  * {@link #sasToken(String) sasToken}.</p>
  *
- * {@codesnippet com.azure.storage.file.share.ShareFileClient.instantiation.credential}
+ * <!-- src_embed com.azure.storage.file.share.ShareFileClient.instantiation.credential -->
+ * <pre>
+ * ShareFileClient fileClient = new ShareFileClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;https:&#47;&#47;$&#123;accountName&#125;.file.core.windows.net&quot;&#41;
+ *     .sasToken&#40;&quot;$&#123;SASTokenQueryParams&#125;&quot;&#41;
+ *     .shareName&#40;&quot;myshare&quot;&#41;
+ *     .resourcePath&#40;&quot;myfilepath&quot;&#41;
+ *     .buildFileClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.storage.file.share.ShareFileClient.instantiation.credential -->
  *
- * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.instantiation.credential}
+ * <!-- src_embed com.azure.storage.file.share.ShareFileAsyncClient.instantiation.credential -->
+ * <pre>
+ * ShareFileAsyncClient shareFileAsyncClient = new ShareFileClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;https:&#47;&#47;&#123;accountName&#125;.file.core.windows.net&quot;&#41;
+ *     .sasToken&#40;&quot;$&#123;SASTokenQueryParams&#125;&quot;&#41;
+ *     .shareName&#40;&quot;myshare&quot;&#41;
+ *     .resourcePath&#40;&quot;myfilepath&quot;&#41;
+ *     .buildFileAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.storage.file.share.ShareFileAsyncClient.instantiation.credential -->
  *
  * <p>Another way to authenticate the client is using a {@link StorageSharedKeyCredential}. To create a
  * StorageSharedKeyCredential a connection string from the Storage File service must be used.
@@ -73,10 +107,28 @@ import java.util.Objects;
  * when authorizing requests sent to the service.</p>
  *
  * <p><strong>Instantiating a synchronous File Client with connection string.</strong></p>
- * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.instantiation.connectionstring}
+ * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.instantiation.connectionstring -->
+ * <pre>
+ * String connectionString = &quot;DefaultEndpointsProtocol=https;AccountName=&#123;name&#125;;AccountKey=&#123;key&#125;&quot;
+ *     + &quot;;EndpointSuffix=&#123;core.windows.net&#125;&quot;;
+ * ShareDirectoryClient shareDirectoryClient = new ShareFileClientBuilder&#40;&#41;
+ *     .connectionString&#40;connectionString&#41;
+ *     .shareName&#40;&quot;myshare&quot;&#41;
+ *     .resourcePath&#40;&quot;mydirectory&quot;&#41;
+ *     .buildDirectoryClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.storage.file.share.ShareDirectoryClient.instantiation.connectionstring -->
  *
  * <p><strong>Instantiating an Asynchronous File Client with connection string.</strong></p>
- * {@codesnippet com.azure.storage.file.share.ShareDirectoryAsyncClient.instantiation.connectionstring}
+ * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.instantiation.connectionstring -->
+ * <pre>
+ * String connectionString = &quot;DefaultEndpointsProtocol=https;AccountName=&#123;name&#125;;AccountKey=&#123;key&#125;;&quot;
+ *     + &quot;EndpointSuffix=&#123;core.windows.net&#125;&quot;;
+ * ShareDirectoryAsyncClient shareDirectoryAsyncClient = new ShareFileClientBuilder&#40;&#41;
+ *     .connectionString&#40;connectionString&#41;.shareName&#40;&quot;myshare&quot;&#41;.resourcePath&#40;&quot;mydirectory&quot;&#41;
+ *     .buildDirectoryAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.instantiation.connectionstring -->
  *
  * @see ShareFileClient
  * @see ShareFileAsyncClient

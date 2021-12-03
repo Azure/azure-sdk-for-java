@@ -188,7 +188,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -245,7 +245,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -278,7 +278,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
             deleteWithResponseAsync(resourceGroupName, applicationGatewayName, connectionName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -456,7 +456,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -524,7 +524,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -571,7 +571,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
                     this.client.getHttpPipeline(),
                     ApplicationGatewayPrivateEndpointConnectionInner.class,
                     ApplicationGatewayPrivateEndpointConnectionInner.class,
-                    Context.NONE);
+                    this.client.getContext());
     }
 
     /**
@@ -792,7 +792,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -849,7 +849,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -958,7 +958,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1019,7 +1019,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

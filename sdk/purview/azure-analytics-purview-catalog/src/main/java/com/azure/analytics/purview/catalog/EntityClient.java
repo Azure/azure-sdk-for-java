@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.catalog;
 
 import com.azure.analytics.purview.catalog.implementation.EntitiesImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -12,18 +13,18 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Context;
 
 /** Initializes a new instance of the synchronous PurviewCatalogClient type. */
 @ServiceClient(builder = PurviewCatalogClientBuilder.class)
 public final class EntityClient {
-    private final EntitiesImpl serviceClient;
+    @Generated private final EntitiesImpl serviceClient;
 
     /**
      * Initializes an instance of Entities client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     EntityClient(EntitiesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -184,15 +185,13 @@ public final class EntityClient {
      *
      * @param entity Atlas entity with extended information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return entityMutationResponse.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> upsertWithResponse(
-            BinaryData entity, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.upsertWithResponse(entity, requestOptions, context);
+    public Response<BinaryData> createOrUpdateWithResponse(BinaryData entity, RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateWithResponse(entity, requestOptions);
     }
 
     /**
@@ -291,14 +290,13 @@ public final class EntityClient {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasEntitiesWithExtInfo.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listByGuidsWithResponse(RequestOptions requestOptions, Context context) {
-        return this.serviceClient.listByGuidsWithResponse(requestOptions, context);
+    public Response<BinaryData> listByGuidsWithResponse(RequestOptions requestOptions) {
+        return this.serviceClient.listByGuidsWithResponse(requestOptions);
     }
 
     /**
@@ -459,15 +457,13 @@ public final class EntityClient {
      *
      * @param entities An array of entities to create or update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return entityMutationResponse.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> upsertEntitiesWithResponse(
-            BinaryData entities, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.upsertEntitiesWithResponse(entities, requestOptions, context);
+    public Response<BinaryData> createOrUpdateEntitiesWithResponse(BinaryData entities, RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateEntitiesWithResponse(entities, requestOptions);
     }
 
     /**
@@ -552,14 +548,13 @@ public final class EntityClient {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return entityMutationResponse.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteByGuidsWithResponse(RequestOptions requestOptions, Context context) {
-        return this.serviceClient.deleteByGuidsWithResponse(requestOptions, context);
+    public Response<BinaryData> deleteByGuidsWithResponse(RequestOptions requestOptions) {
+        return this.serviceClient.deleteByGuidsWithResponse(requestOptions);
     }
 
     /**
@@ -598,15 +593,13 @@ public final class EntityClient {
      *
      * @param request The request to associate a classification to multiple entities.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> addClassificationWithResponse(
-            BinaryData request, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.addClassificationWithResponse(request, requestOptions, context);
+    public Response<Void> addClassificationWithResponse(BinaryData request, RequestOptions requestOptions) {
+        return this.serviceClient.addClassificationWithResponse(request, requestOptions);
     }
 
     /**
@@ -702,14 +695,13 @@ public final class EntityClient {
      *
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return complete definition of an entity given its GUID.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getByGuidWithResponse(String guid, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getByGuidWithResponse(guid, requestOptions, context);
+    public Response<BinaryData> getByGuidWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.getByGuidWithResponse(guid, requestOptions);
     }
 
     /**
@@ -804,15 +796,14 @@ public final class EntityClient {
      * @param guid The globally unique identifier of the entity.
      * @param body The value of the attribute.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return entityMutationResponse.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> partialUpdateEntityAttributeByGuidWithResponse(
-            String guid, BinaryData body, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.partialUpdateEntityAttributeByGuidWithResponse(guid, body, requestOptions, context);
+            String guid, BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.partialUpdateEntityAttributeByGuidWithResponse(guid, body, requestOptions);
     }
 
     /**
@@ -890,14 +881,13 @@ public final class EntityClient {
      *
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return entityMutationResponse.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteByGuidWithResponse(String guid, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.deleteByGuidWithResponse(guid, requestOptions, context);
+    public Response<BinaryData> deleteByGuidWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.deleteByGuidWithResponse(guid, requestOptions);
     }
 
     /**
@@ -932,15 +922,14 @@ public final class EntityClient {
      * @param guid The globally unique identifier of the entity.
      * @param classificationName The name of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasClassification.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getClassificationWithResponse(
-            String guid, String classificationName, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getClassificationWithResponse(guid, classificationName, requestOptions, context);
+            String guid, String classificationName, RequestOptions requestOptions) {
+        return this.serviceClient.getClassificationWithResponse(guid, classificationName, requestOptions);
     }
 
     /**
@@ -949,15 +938,14 @@ public final class EntityClient {
      * @param guid The globally unique identifier of the entity.
      * @param classificationName The name of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteClassificationWithResponse(
-            String guid, String classificationName, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.deleteClassificationWithResponse(guid, classificationName, requestOptions, context);
+            String guid, String classificationName, RequestOptions requestOptions) {
+        return this.serviceClient.deleteClassificationWithResponse(guid, classificationName, requestOptions);
     }
 
     /**
@@ -980,15 +968,13 @@ public final class EntityClient {
      *
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasClassifications.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getClassificationsWithResponse(
-            String guid, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getClassificationsWithResponse(guid, requestOptions, context);
+    public Response<BinaryData> getClassificationsWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.getClassificationsWithResponse(guid, requestOptions);
     }
 
     /**
@@ -1025,15 +1011,14 @@ public final class EntityClient {
      * @param guid The globally unique identifier of the entity.
      * @param classifications An array of classifications to be added.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> addClassificationsWithResponse(
-            String guid, BinaryData classifications, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.addClassificationsWithResponse(guid, classifications, requestOptions, context);
+            String guid, BinaryData classifications, RequestOptions requestOptions) {
+        return this.serviceClient.addClassificationsWithResponse(guid, classifications, requestOptions);
     }
 
     /**
@@ -1070,15 +1055,14 @@ public final class EntityClient {
      * @param guid The globally unique identifier of the entity.
      * @param classifications An array of classifications to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateClassificationsWithResponse(
-            String guid, BinaryData classifications, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.updateClassificationsWithResponse(guid, classifications, requestOptions, context);
+            String guid, BinaryData classifications, RequestOptions requestOptions) {
+        return this.serviceClient.updateClassificationsWithResponse(guid, classifications, requestOptions);
     }
 
     /**
@@ -1179,17 +1163,15 @@ public final class EntityClient {
      *
      * @param typeName The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return complete definition of an entity given its type and unique attribute. In addition to the typeName path
      *     parameter, attribute key-value pair(s) can be provided in the following format:
      *     attr:\&lt;attrName&gt;=&lt;attrValue&gt;.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getByUniqueAttributesWithResponse(
-            String typeName, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getByUniqueAttributesWithResponse(typeName, requestOptions, context);
+    public Response<BinaryData> getByUniqueAttributesWithResponse(String typeName, RequestOptions requestOptions) {
+        return this.serviceClient.getByUniqueAttributesWithResponse(typeName, requestOptions);
     }
 
     /**
@@ -1360,16 +1342,15 @@ public final class EntityClient {
      * @param typeName The name of the type.
      * @param atlasEntityWithExtInfo Atlas entity with extended information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return entityMutationResponse.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> partialUpdateEntityByUniqueAttributesWithResponse(
-            String typeName, BinaryData atlasEntityWithExtInfo, RequestOptions requestOptions, Context context) {
+            String typeName, BinaryData atlasEntityWithExtInfo, RequestOptions requestOptions) {
         return this.serviceClient.partialUpdateEntityByUniqueAttributesWithResponse(
-                typeName, atlasEntityWithExtInfo, requestOptions, context);
+                typeName, atlasEntityWithExtInfo, requestOptions);
     }
 
     /**
@@ -1458,15 +1439,13 @@ public final class EntityClient {
      *
      * @param typeName The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return entityMutationResponse.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteByUniqueAttributeWithResponse(
-            String typeName, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.deleteByUniqueAttributeWithResponse(typeName, requestOptions, context);
+    public Response<BinaryData> deleteByUniqueAttributeWithResponse(String typeName, RequestOptions requestOptions) {
+        return this.serviceClient.deleteByUniqueAttributeWithResponse(typeName, requestOptions);
     }
 
     /**
@@ -1483,16 +1462,15 @@ public final class EntityClient {
      * @param typeName The name of the type.
      * @param classificationName The name of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteClassificationByUniqueAttributeWithResponse(
-            String typeName, String classificationName, RequestOptions requestOptions, Context context) {
+            String typeName, String classificationName, RequestOptions requestOptions) {
         return this.serviceClient.deleteClassificationByUniqueAttributeWithResponse(
-                typeName, classificationName, requestOptions, context);
+                typeName, classificationName, requestOptions);
     }
 
     /**
@@ -1537,16 +1515,15 @@ public final class EntityClient {
      * @param typeName The name of the type.
      * @param atlasClassificationArray An array of classification to be added.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> addClassificationsByUniqueAttributeWithResponse(
-            String typeName, BinaryData atlasClassificationArray, RequestOptions requestOptions, Context context) {
+            String typeName, BinaryData atlasClassificationArray, RequestOptions requestOptions) {
         return this.serviceClient.addClassificationsByUniqueAttributeWithResponse(
-                typeName, atlasClassificationArray, requestOptions, context);
+                typeName, atlasClassificationArray, requestOptions);
     }
 
     /**
@@ -1591,16 +1568,15 @@ public final class EntityClient {
      * @param typeName The name of the type.
      * @param atlasClassificationArray An array of classification to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateClassificationsByUniqueAttributeWithResponse(
-            String typeName, BinaryData atlasClassificationArray, RequestOptions requestOptions, Context context) {
+            String typeName, BinaryData atlasClassificationArray, RequestOptions requestOptions) {
         return this.serviceClient.updateClassificationsByUniqueAttributeWithResponse(
-                typeName, atlasClassificationArray, requestOptions, context);
+                typeName, atlasClassificationArray, requestOptions);
     }
 
     /**
@@ -1678,15 +1654,14 @@ public final class EntityClient {
      *
      * @param entityHeaders Atlas entity headers.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return response that indicates each classification mutation result.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> setClassificationsWithResponse(
-            BinaryData entityHeaders, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.setClassificationsWithResponse(entityHeaders, requestOptions, context);
+            BinaryData entityHeaders, RequestOptions requestOptions) {
+        return this.serviceClient.setClassificationsWithResponse(entityHeaders, requestOptions);
     }
 
     /**
@@ -1797,15 +1772,14 @@ public final class EntityClient {
      *
      * @param typeName The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasEntitiesWithExtInfo.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEntitiesByUniqueAttributesWithResponse(
-            String typeName, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getEntitiesByUniqueAttributesWithResponse(typeName, requestOptions, context);
+            String typeName, RequestOptions requestOptions) {
+        return this.serviceClient.getEntitiesByUniqueAttributesWithResponse(typeName, requestOptions);
     }
 
     /**
@@ -1871,13 +1845,12 @@ public final class EntityClient {
      *
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return entity header given its GUID.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getHeaderWithResponse(String guid, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getHeaderWithResponse(guid, requestOptions, context);
+    public Response<BinaryData> getHeaderWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.getHeaderWithResponse(guid, requestOptions);
     }
 }

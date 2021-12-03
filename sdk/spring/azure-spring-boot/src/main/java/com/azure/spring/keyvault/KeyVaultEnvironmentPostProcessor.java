@@ -14,6 +14,10 @@ import org.springframework.util.ClassUtils;
  * Leverage {@link EnvironmentPostProcessor} to add Key Vault secrets as a property source.
  */
 public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcessor, Ordered {
+
+    /**
+     * The default order
+     */
     public static final int DEFAULT_ORDER = ConfigFileApplicationListener.DEFAULT_ORDER + 1;
     private int order = DEFAULT_ORDER;
 
@@ -84,7 +88,10 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
         return order;
     }
 
-
+    /**
+     * Sets the order
+     * @param order the order
+     */
     public void setOrder(int order) {
         this.order = order;
     }

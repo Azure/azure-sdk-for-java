@@ -45,6 +45,9 @@ public class CosmosEncryptionAsyncClient {
         this.containerPropertiesCacheByContainerId = new AsyncCache<>();
     }
 
+    /**
+     * @return the encryption key store provider
+     */
     public EncryptionKeyStoreProvider getEncryptionKeyStoreProvider() {
         return encryptionKeyStoreProvider;
     }

@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.scanning.implementation;
 
+import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -48,6 +49,7 @@ public final class FiltersImpl {
     @ServiceInterface(name = "PurviewScanningClien")
     private interface FiltersService {
         @Get("/datasources/{dataSourceName}/scans/{scanName}/filters/custom")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> get(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("dataSourceName") String dataSourceName,
@@ -57,6 +59,7 @@ public final class FiltersImpl {
                 Context context);
 
         @Put("/datasources/{dataSourceName}/scans/{scanName}/filters/custom")
+        @ExpectedResponses({200, 201})
         Mono<Response<BinaryData>> createOrUpdate(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("dataSourceName") String dataSourceName,
@@ -97,8 +100,7 @@ public final class FiltersImpl {
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return a filter.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -147,8 +149,7 @@ public final class FiltersImpl {
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return a filter.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -194,15 +195,12 @@ public final class FiltersImpl {
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return a filter.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(
-            String dataSourceName, String scanName, RequestOptions requestOptions, Context context) {
-        return getWithResponseAsync(dataSourceName, scanName, requestOptions, context).block();
+    public Response<BinaryData> getWithResponse(String dataSourceName, String scanName, RequestOptions requestOptions) {
+        return getWithResponseAsync(dataSourceName, scanName, requestOptions).block();
     }
 
     /**
@@ -253,12 +251,11 @@ public final class FiltersImpl {
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> upsertWithResponseAsync(
+    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
             String dataSourceName, String scanName, RequestOptions requestOptions) {
         return FluxUtil.withContext(
                 context ->
@@ -320,12 +317,11 @@ public final class FiltersImpl {
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> upsertWithResponseAsync(
+    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
             String dataSourceName, String scanName, RequestOptions requestOptions, Context context) {
         return service.createOrUpdate(
                 this.client.getEndpoint(),
@@ -384,14 +380,12 @@ public final class FiltersImpl {
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> upsertWithResponse(
-            String dataSourceName, String scanName, RequestOptions requestOptions, Context context) {
-        return upsertWithResponseAsync(dataSourceName, scanName, requestOptions, context).block();
+    public Response<BinaryData> createOrUpdateWithResponse(
+            String dataSourceName, String scanName, RequestOptions requestOptions) {
+        return createOrUpdateWithResponseAsync(dataSourceName, scanName, requestOptions).block();
     }
 }

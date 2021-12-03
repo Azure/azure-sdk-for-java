@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.scanning;
 
 import com.azure.analytics.purview.scanning.implementation.ScanResultsImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -13,18 +14,18 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Context;
 
 /** Initializes a new instance of the synchronous PurviewScanningClient type. */
 @ServiceClient(builder = PurviewScanningClientBuilder.class)
 public final class ScanResultClient {
-    private final ScanResultsImpl serviceClient;
+    @Generated private final ScanResultsImpl serviceClient;
 
     /**
      * Initializes an instance of ScanResults client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     ScanResultClient(ScanResultsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -71,15 +72,14 @@ public final class ScanResultClient {
      * @param scanName The scanName parameter.
      * @param runId The runId parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> runScanWithResponse(
-            String dataSourceName, String scanName, String runId, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.runScanWithResponse(dataSourceName, scanName, runId, requestOptions, context);
+            String dataSourceName, String scanName, String runId, RequestOptions requestOptions) {
+        return this.serviceClient.runScanWithResponse(dataSourceName, scanName, runId, requestOptions);
     }
 
     /**
@@ -123,15 +123,14 @@ public final class ScanResultClient {
      * @param scanName The scanName parameter.
      * @param runId The runId parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> cancelScanWithResponse(
-            String dataSourceName, String scanName, String runId, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.cancelScanWithResponse(dataSourceName, scanName, runId, requestOptions, context);
+            String dataSourceName, String scanName, String runId, RequestOptions requestOptions) {
+        return this.serviceClient.cancelScanWithResponse(dataSourceName, scanName, runId, requestOptions);
     }
 
     /**
@@ -203,14 +202,13 @@ public final class ScanResultClient {
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listScanHistory(
-            String dataSourceName, String scanName, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.listScanHistory(dataSourceName, scanName, requestOptions, context);
+            String dataSourceName, String scanName, RequestOptions requestOptions) {
+        return this.serviceClient.listScanHistory(dataSourceName, scanName, requestOptions);
     }
 }

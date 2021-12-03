@@ -36,6 +36,19 @@ public class RunRequest {
     @JsonProperty(value = "isArchiveEnabled")
     private Boolean isArchiveEnabled;
 
+    /*
+     * The dedicated agent pool for the run.
+     */
+    @JsonProperty(value = "agentPoolName")
+    private String agentPoolName;
+
+    /*
+     * The template that describes the repository and tag information for run
+     * log artifact.
+     */
+    @JsonProperty(value = "logTemplate")
+    private String logTemplate;
+
     /**
      * Get the isArchiveEnabled property: The value that indicates whether archiving is enabled for the run or not.
      *
@@ -53,6 +66,48 @@ public class RunRequest {
      */
     public RunRequest withIsArchiveEnabled(Boolean isArchiveEnabled) {
         this.isArchiveEnabled = isArchiveEnabled;
+        return this;
+    }
+
+    /**
+     * Get the agentPoolName property: The dedicated agent pool for the run.
+     *
+     * @return the agentPoolName value.
+     */
+    public String agentPoolName() {
+        return this.agentPoolName;
+    }
+
+    /**
+     * Set the agentPoolName property: The dedicated agent pool for the run.
+     *
+     * @param agentPoolName the agentPoolName value to set.
+     * @return the RunRequest object itself.
+     */
+    public RunRequest withAgentPoolName(String agentPoolName) {
+        this.agentPoolName = agentPoolName;
+        return this;
+    }
+
+    /**
+     * Get the logTemplate property: The template that describes the repository and tag information for run log
+     * artifact.
+     *
+     * @return the logTemplate value.
+     */
+    public String logTemplate() {
+        return this.logTemplate;
+    }
+
+    /**
+     * Set the logTemplate property: The template that describes the repository and tag information for run log
+     * artifact.
+     *
+     * @param logTemplate the logTemplate value to set.
+     * @return the RunRequest object itself.
+     */
+    public RunRequest withLogTemplate(String logTemplate) {
+        this.logTemplate = logTemplate;
         return this;
     }
 

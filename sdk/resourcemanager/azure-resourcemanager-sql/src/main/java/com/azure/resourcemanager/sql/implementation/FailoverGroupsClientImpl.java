@@ -495,7 +495,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
         return this
             .client
             .<FailoverGroupInner, FailoverGroupInner>getLroResult(
-                mono, this.client.getHttpPipeline(), FailoverGroupInner.class, FailoverGroupInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), FailoverGroupInner.class, FailoverGroupInner.class, this.client.getContext());
     }
 
     /**
@@ -787,7 +787,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
             deleteWithResponseAsync(resourceGroupName, serverName, failoverGroupName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1069,7 +1069,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
         return this
             .client
             .<FailoverGroupInner, FailoverGroupInner>getLroResult(
-                mono, this.client.getHttpPipeline(), FailoverGroupInner.class, FailoverGroupInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), FailoverGroupInner.class, FailoverGroupInner.class, this.client.getContext());
     }
 
     /**
@@ -1545,7 +1545,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
         return this
             .client
             .<FailoverGroupInner, FailoverGroupInner>getLroResult(
-                mono, this.client.getHttpPipeline(), FailoverGroupInner.class, FailoverGroupInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), FailoverGroupInner.class, FailoverGroupInner.class, this.client.getContext());
     }
 
     /**
@@ -1813,7 +1813,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
         return this
             .client
             .<FailoverGroupInner, FailoverGroupInner>getLroResult(
-                mono, this.client.getHttpPipeline(), FailoverGroupInner.class, FailoverGroupInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), FailoverGroupInner.class, FailoverGroupInner.class, this.client.getContext());
     }
 
     /**

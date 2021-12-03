@@ -1,6 +1,32 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0 (2021-11-23)
+
+### Breaking Changes
+
+- `setErrorOptions` is removed from `RequestOptions` in `azure-core`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.23.0`.
+
+## 1.0.0-beta.6 (2021-11-11)
+
+### Breaking Changes
+
+- Merged the `Context` parameter into the `RequestOptions` parameter in methods of `WebPubSubServiceClient`.
 
 ### Other Changes
 

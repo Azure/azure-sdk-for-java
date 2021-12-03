@@ -18,7 +18,6 @@ import com.azure.search.documents.indexes.models.SoftDeleteColumnDeletionDetecti
 import com.azure.search.documents.indexes.models.SqlIntegratedChangeTrackingPolicy;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -134,17 +133,13 @@ public class DataSourceSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void canUpdateDataSource() throws Exception {
+    public void canUpdateDataSource() {
         SearchIndexerDataSourceConnection initial = createTestSqlDataSourceObject();
 
         // Create the data source
         client.createOrUpdateDataSourceConnection(initial);
         dataSourcesToDelete.add(initial.getName());
-        SearchIndexerDataSourceConnection updatedExpected = createTestSqlDataSourceObject();
-        Field updatedDataSource = updatedExpected.getClass().getDeclaredField("name");
-        updatedDataSource.setAccessible(true);
-        updatedDataSource.set(updatedExpected, initial.getName());
-        updatedExpected = createTestSqlDataSourceObject()
+        SearchIndexerDataSourceConnection updatedExpected = createTestSqlDataSourceObject(initial.getName(), null, null)
             .setContainer(new SearchIndexerDataContainer("somethingdifferent"))
             .setDescription("somethingdifferent")
             .setDataChangeDetectionPolicy(new HighWaterMarkChangeDetectionPolicy("rowversion"))

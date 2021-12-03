@@ -29,6 +29,11 @@ public class CosmosHealthIndicator extends AbstractHealthIndicator {
 
     private final CosmosAsyncClient cosmosAsyncClient;
 
+    /**
+     * Creates a new instance of {@link CosmosHealthIndicator}.
+     *
+     * @param cosmosAsyncClient the CosmosAsyncClient
+     */
     public CosmosHealthIndicator(CosmosAsyncClient cosmosAsyncClient) {
         super("Cosmos health check failed");
         Assert.notNull(cosmosAsyncClient, "CosmosClient must not be null");

@@ -22,14 +22,44 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Objects;
 
-/** A builder for creating a new instance of the AttestationClient type. */
+/** This class provides a fluent builder API to help add in the configuration and instantiation of the
+ * {@link AttestationClient} and {@link AttestationAsyncClient} classes calling the
+ * {@link AttestationClientBuilder#buildClient()} or {@link AttestationClientBuilder#buildAsyncClient()}.
+ *
+ * <p>The minimal configuration option required by {@link AttestationClientBuilder} is {@code String endpoint}.
+ *
+ * For the {@link AttestationClient#attestTpm(String)} API, the client also requires that a {@link TokenCredential} object
+ * be configured.
+ *
+ * <p><strong>Instantiate a synchronous Attestation Client</strong></p>
+ * <!-- src_embed com.azure.security.attestation.AttestationClientBuilder.buildClient -->
+ * <pre>
+ * AttestationClient client = new AttestationClientBuilder&#40;&#41;
+ *     .endpoint&#40;endpoint&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.attestation.AttestationClientBuilder.buildClient -->
+ * <!-- src_embed com.azure.security.attestation.AttestationClientBuilder.buildAsyncClient -->
+ * <pre>
+ * AttestationAsyncClient asyncClient = new AttestationClientBuilder&#40;&#41;
+ *     .endpoint&#40;endpoint&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.attestation.AttestationClientBuilder.buildAsyncClient -->
+ *     <p><strong>Build a attestation client for use with the {@link AttestationClient#attestTpm(String)} API</strong></p>
+ *     <!-- src_embed com.azure.security.attestation.AttestationClientBuilder.buildAsyncClientForTpm -->
+ * <pre>
+ * AttestationAsyncClient asyncClientForTpm = new AttestationClientBuilder&#40;&#41;
+ *     .endpoint&#40;endpoint&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ *     <!-- end com.azure.security.attestation.AttestationClientBuilder.buildAsyncClientForTpm -->
+ */
 @ServiceClientBuilder(
         serviceClients = {
-            PolicyClient.class,
-            PolicyCertificatesClient.class,
             AttestationClient.class,
-            PolicyAsyncClient.class,
-            PolicyCertificatesAsyncClient.class,
+            AttestationAsyncClient.class,
         })
 public final class AttestationClientBuilder {
     private static final String SDK_NAME = "name";
@@ -55,14 +85,8 @@ public final class AttestationClientBuilder {
         tokenValidationOptions = new AttestationTokenValidationOptions();
     }
 
-    /*
-     * The attestation instance base URI, for example
-     * https://mytenant.attest.azure.net.
-     */
-    private String endpoint;
-
     /**
-     * Sets The attestation endpoint URI, for example https://mytenant.attest.azure.net.
+     * Sets The attestation endpoint URI, for example https://myinstance.attest.azure.net.
      *
      * @param endpoint The endpoint to connect to.
      * @return the AttestationClientBuilder.
@@ -90,6 +114,8 @@ public final class AttestationClientBuilder {
     }
     /**
      * Sets the credential to be used for communicating with the service.
+     * <p>Note that this property is only required for the {@link AttestationClient#attestTpm(String)} and
+     * {@link AttestationAsyncClient#attestTpm(String)} APIs - other attestation APIs can be anonymous.</p>
      * @param credential Specifies the credential to be used for authentication.
      * @return the AttestationClientBuilder.
      */
@@ -178,7 +204,28 @@ public final class AttestationClientBuilder {
 
     /**
      * Sets {@link com.azure.security.attestation.models.AttestationToken} validation options for clients created from this builder.
-     * @param tokenValidationOptions - Validation options to use on APIs which interact with the attestation service.
+     * <p>Because attestation service clients need to have the ability to validate that the data returned by the attestation
+     * service actually originated from within the service, most Attestation Service APIs embed their response in a
+     * <a href=https://datatracker.ietf.org/doc/html/rfc7519>RFC 7519 JSON Web Token</a>.</p>
+     * <p>The {@link AttestationTokenValidationOptions} provides a mechanism for a client to customize the validation
+     * of responses sent by the attestation service.</p>
+     * <p>The {@code tokenValidationOptions} property sets the default validation options used by the {@link AttestationClient}
+     * or {@link AttestationAsyncClient} returned from this builder.</p>
+     * <p>Note: most APIs allow this value to be overridden on a per-api basis if that flexibility is needed.</p>
+     *
+     * <!-- src_embed com.azure.security.attestation.AttestationClientBuilder.buildClientWithValidation -->
+     * <pre>
+     * AttestationClient validatedClient = new AttestationClientBuilder&#40;&#41;
+     *     .endpoint&#40;endpoint&#41;
+     *     .tokenValidationOptions&#40;new AttestationTokenValidationOptions&#40;&#41;
+     *         .setValidationSlack&#40;Duration.ofSeconds&#40;10&#41;&#41; &#47;&#47; Allow 10 seconds of clock drift between attestation service and client.
+     *         .setValidationCallback&#40;&#40;token, signer&#41; -&gt; &#123; &#47;&#47; Perform custom validation steps.
+     *             System.out.printf&#40;&quot;Validate token signed by signer %s&quot;, signer.getCertificates&#40;&#41;.get&#40;0&#41;.getSubjectDN&#40;&#41;.toString&#40;&#41;&#41;;
+     *         &#125;&#41;&#41;
+     *     .buildClient&#40;&#41;;
+     * </pre>
+     *     <!-- end com.azure.security.attestation.AttestationClientBuilder.buildClientWithValidation -->
+     * @param tokenValidationOptions - Validation options used when validating JSON Web Tokens returned by the attestation service.
      * @return this {@link AttestationClientBuilder}
      */
     public AttestationClientBuilder tokenValidationOptions(AttestationTokenValidationOptions tokenValidationOptions) {
@@ -191,7 +238,13 @@ public final class AttestationClientBuilder {
      *
      * Instantiating a synchronous Attestation client:
      * <br>
-     * {@codesnippet com.azure.security.attestation.AttestationClientBuilder.buildClient}
+     * <!-- src_embed com.azure.security.attestation.AttestationClientBuilder.buildClient -->
+     * <pre>
+     * AttestationClient client = new AttestationClientBuilder&#40;&#41;
+     *     .endpoint&#40;endpoint&#41;
+     *     .buildClient&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationClientBuilder.buildClient -->
      * @return an instance of {@link AttestationClient}.
      */
     public AttestationClient buildClient() {
@@ -203,17 +256,18 @@ public final class AttestationClientBuilder {
      *
      * Instantiating a synchronous Attestation client:
      * <br>
-     * {@codesnippet com.azure.security.attestation.AttestationClientBuilder.buildAsyncClient}
+     * <!-- src_embed com.azure.security.attestation.AttestationClientBuilder.buildAsyncClient -->
+     * <pre>
+     * AttestationAsyncClient asyncClient = new AttestationClientBuilder&#40;&#41;
+     *     .endpoint&#40;endpoint&#41;
+     *     .buildAsyncClient&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationClientBuilder.buildAsyncClient -->
      * @return an instance of {@link AttestationClient}.
      */
     public AttestationAsyncClient buildAsyncClient() {
         return new AttestationAsyncClient(buildInnerClient(), this.tokenValidationOptions);
     }
-
-    /**
-     * Legacy API surface which will be removed shortly.
-     */
-
 
     /**
      * Builds an instance of AttestationClientImpl with the provided parameters.
@@ -228,41 +282,4 @@ public final class AttestationClientBuilder {
         }
         return clientImplBuilder.buildClient();
     }
-
-    /**
-     * Builds an instance of PolicyAsyncClient async client.
-     *
-     * @return an instance of PolicyAsyncClient.
-     */
-    public PolicyAsyncClient buildPolicyAsyncClient() {
-        return new PolicyAsyncClient(buildInnerClient().getPolicies());
-    }
-
-    /**
-     * Builds an instance of PolicyCertificatesAsyncClient async client.
-     *
-     * @return an instance of PolicyCertificatesAsyncClient.
-     */
-    public PolicyCertificatesAsyncClient buildPolicyCertificatesAsyncClient() {
-        return new PolicyCertificatesAsyncClient(buildInnerClient().getPolicyCertificates());
-    }
-
-    /**
-     * Builds an instance of PolicyClient sync client.
-     *
-     * @return an instance of PolicyClient.
-     */
-    public PolicyClient buildPolicyClient() {
-        return new PolicyClient(buildInnerClient().getPolicies());
-    }
-
-    /**
-     * Builds an instance of PolicyCertificatesClient sync client.
-     *
-     * @return an instance of PolicyCertificatesClient.
-     */
-    public PolicyCertificatesClient buildPolicyCertificatesClient() {
-        return new PolicyCertificatesClient(buildInnerClient().getPolicyCertificates());
-    }
-
 }

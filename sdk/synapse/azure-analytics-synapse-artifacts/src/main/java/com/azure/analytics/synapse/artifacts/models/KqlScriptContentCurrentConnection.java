@@ -17,6 +17,18 @@ public final class KqlScriptContentCurrentConnection {
     private String name;
 
     /*
+     * The poolName property.
+     */
+    @JsonProperty(value = "poolName")
+    private String poolName;
+
+    /*
+     * The databaseName property.
+     */
+    @JsonProperty(value = "databaseName")
+    private String databaseName;
+
+    /*
      * The type property.
      */
     @JsonProperty(value = "type")
@@ -39,6 +51,46 @@ public final class KqlScriptContentCurrentConnection {
      */
     public KqlScriptContentCurrentConnection setName(String name) {
         this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the poolName property: The poolName property.
+     *
+     * @return the poolName value.
+     */
+    public String getPoolName() {
+        return this.poolName;
+    }
+
+    /**
+     * Set the poolName property: The poolName property.
+     *
+     * @param poolName the poolName value to set.
+     * @return the KqlScriptContentCurrentConnection object itself.
+     */
+    public KqlScriptContentCurrentConnection setPoolName(String poolName) {
+        this.poolName = poolName;
+        return this;
+    }
+
+    /**
+     * Get the databaseName property: The databaseName property.
+     *
+     * @return the databaseName value.
+     */
+    public String getDatabaseName() {
+        return this.databaseName;
+    }
+
+    /**
+     * Set the databaseName property: The databaseName property.
+     *
+     * @param databaseName the databaseName value to set.
+     * @return the KqlScriptContentCurrentConnection object itself.
+     */
+    public KqlScriptContentCurrentConnection setDatabaseName(String databaseName) {
+        this.databaseName = databaseName;
         return this;
     }
 

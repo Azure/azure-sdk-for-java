@@ -3,21 +3,20 @@
 
 package com.azure.resourcemanager.compute;
 
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.management.SubResource;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetInner;
+import com.azure.resourcemanager.compute.models.ImageReference;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
+import com.azure.resourcemanager.compute.models.OrchestrationMode;
 import com.azure.resourcemanager.compute.models.PowerState;
+import com.azure.resourcemanager.compute.models.PurchasePlan;
 import com.azure.resourcemanager.compute.models.ResourceIdentityType;
 import com.azure.resourcemanager.compute.models.Sku;
 import com.azure.resourcemanager.compute.models.UpgradeMode;
@@ -57,7 +56,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -82,6 +80,60 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         if (rgName != null) {
             resourceManager.resourceGroups().beginDeleteByName(rgName);
         }
+    }
+
+    @Test
+    public void canCreateVMSSWithPlan() {
+        final String vmssName = generateRandomResourceName("vmss", 10);
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
+        final String uname = "jvuser";
+
+        Network network =
+            this
+                .networkManager
+                .networks()
+                .define(generateRandomResourceName("vmssvnet", 15))
+                .withRegion(region)
+                .withExistingResourceGroup(resourceGroup)
+                .withAddressSpace("10.0.0.0/28")
+                .withSubnet("subnet1", "10.0.0.0/28")
+                .create();
+
+        PurchasePlan plan = new PurchasePlan()
+            .withName("access_server_byol")
+            .withPublisher("openvpn")
+            .withProduct("openvpnas");
+
+        ImageReference imageReference = new ImageReference()
+            .withPublisher("openvpn")
+            .withOffer("openvpnas")
+            .withSku("access_server_byol")
+            .withVersion("latest");
+
+        VirtualMachineScaleSet virtualMachineScaleSet =
+            this
+                .computeManager
+                .virtualMachineScaleSets()
+                .define(vmssName)
+                .withRegion(region)
+                .withExistingResourceGroup(resourceGroup)
+                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+                .withExistingPrimaryNetworkSubnet(network, "subnet1")
+                .withoutPrimaryInternetFacingLoadBalancer()
+                .withoutPrimaryInternalLoadBalancer()
+                .withSpecificLinuxImageVersion(imageReference)
+                .withRootUsername(uname)
+                .withSsh(sshPublicKey())
+                .withNewDataDisk(1)
+                .withPlan(plan)
+                .create();
+
+        VirtualMachineScaleSet currentVirtualMachineScaleSet = this.computeManager.virtualMachineScaleSets().getByResourceGroup(rgName, vmssName);
+        // assertion for purchase plan
+        Assertions.assertEquals("access_server_byol", currentVirtualMachineScaleSet.plan().name());
+        Assertions.assertEquals("openvpn", currentVirtualMachineScaleSet.plan().publisher());
+        Assertions.assertEquals("openvpnas", currentVirtualMachineScaleSet.plan().product());
+
     }
 
     @Test
@@ -236,13 +288,14 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         PublicIpAddress publicIPAddress = this.networkManager.publicIpAddresses().getById(publicIPAddressIds.get(0));
 
         String fqdn = publicIPAddress.fqdn();
-        // Assert public load balancing connection
-        if (!isPlaybackMode()) {
-            HttpClient client = new NettyAsyncHttpClientBuilder().build();
-            HttpRequest request = new HttpRequest(HttpMethod.GET, "http://" + fqdn);
-            HttpResponse response = client.send(request).block();
-            Assertions.assertEquals(response.getStatusCode(), 200);
-        }
+        Assertions.assertNotNull(fqdn);
+//        // Assert public load balancing connection
+//        if (!isPlaybackMode()) {
+//            HttpClient client = HttpClient.createDefault();
+//            HttpRequest request = new HttpRequest(HttpMethod.GET, "http://" + fqdn);
+//            HttpResponse response = client.send(request).block();
+//            Assertions.assertEquals(response.getStatusCode(), 200);
+//        }
 
         // Check SSH to VM instances via Nat rule
         //
@@ -263,8 +316,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             }
             Assertions.assertNotNull(sshFrontendPort);
 
-            this.sleep(1000 * 60); // Wait some time for VM to be available
-            this.ensureCanDoSsh(fqdn, sshFrontendPort, uname, password);
+//            this.sleep(1000 * 60); // Wait some time for VM to be available
+//            this.ensureCanDoSsh(fqdn, sshFrontendPort, uname, password);
         }
     }
 
@@ -1318,7 +1371,9 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 vmScaleSet.getNetworkInterfaceByInstanceId(vm.instanceId(), nic.name());
             Assertions.assertNotNull(nicA);
             VirtualMachineScaleSetNetworkInterface nicB = vm.getNetworkInterface(nic.name());
+            String nicIdB = vm.getNetworkInterfaceAsync(nic.name()).map(n -> nic.primaryIPConfiguration().networkId()).block();
             Assertions.assertNotNull(nicB);
+            Assertions.assertNotNull(nicIdB);
         }
     }
 
@@ -1400,4 +1455,72 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         // force delete next 1 instance
         computeManager.virtualMachineScaleSets().deleteInstances(rgName, vmssName, Collections.singleton(vmss.virtualMachines().list().stream().findFirst().get().instanceId()), false);
     }
+
+    @Test
+    public void canGetOrchestrationType() {
+
+        //create vmss with uniform orchestration type
+        String euapRegion = "eastus2euap";
+
+        final String vmssName = generateRandomResourceName("vmss", 10);
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName)
+            .withRegion(euapRegion)
+            .create();
+
+        Network network =
+            this
+                .networkManager
+                .networks()
+                .define("vmssvnet")
+                .withRegion(euapRegion)
+                .withExistingResourceGroup(resourceGroup)
+                .withAddressSpace("10.0.0.0/28")
+                .withSubnet("subnet1", "10.0.0.0/28")
+                .create();
+
+        VirtualMachineScaleSet vmss = this
+            .computeManager
+            .virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(euapRegion)
+            .withExistingResourceGroup(resourceGroup)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+            .withExistingPrimaryNetworkSubnet(network, "subnet1")
+            .withoutPrimaryInternetFacingLoadBalancer()
+            .withoutPrimaryInternalLoadBalancer()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
+            .withCapacity(4)    // 4 instances
+            .create();
+
+        Assertions.assertEquals(vmss.orchestrationMode(), OrchestrationMode.UNIFORM);
+
+        // create vmss with flexible orchestration type
+        VirtualMachineScaleSetInner options = new VirtualMachineScaleSetInner();
+        options.withOrchestrationMode(OrchestrationMode.FLEXIBLE)
+            .withPlatformFaultDomainCount(1)
+            .withLocation(euapRegion);
+
+        final String vmssName2 = generateRandomResourceName("vmss", 10);
+        // create resource through raw method
+        VirtualMachineScaleSetInner result = this
+            .computeManager
+            .virtualMachineScaleSets()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .createOrUpdate(
+                rgName, vmssName2, options
+            );
+
+        VirtualMachineScaleSet vmss2 = this
+            .computeManager
+            .virtualMachineScaleSets()
+            .getById(result.id());
+
+        Assertions.assertNotNull(vmss2);
+        Assertions.assertEquals(vmss2.orchestrationMode(), OrchestrationMode.FLEXIBLE);
+    }
+
 }

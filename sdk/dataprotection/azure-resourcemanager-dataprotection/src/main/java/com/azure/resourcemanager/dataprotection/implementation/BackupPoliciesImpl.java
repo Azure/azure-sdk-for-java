@@ -151,7 +151,7 @@ public final class BackupPoliciesImpl implements BackupPolicies {
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'backupPolicies'.", id)));
         }
-        this.deleteWithResponse(vaultName, resourceGroupName, backupPolicyName, Context.NONE).getValue();
+        this.deleteWithResponse(vaultName, resourceGroupName, backupPolicyName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {

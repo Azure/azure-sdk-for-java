@@ -12,6 +12,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.security.keyvault.certificates.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.certificates.models.CertificateContact;
 import com.azure.security.keyvault.certificates.models.CertificateIssuer;
 import com.azure.security.keyvault.certificates.models.CertificateContentType;
@@ -35,6 +36,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Arrays;
 import java.util.HashSet;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -52,7 +54,12 @@ public class CertificateClientTest extends CertificateClientTestBase {
     }
 
     private void createCertificateClient(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
-        HttpPipeline httpPipeline = getHttpPipeline(httpClient);
+        createCertificateClient(httpClient, serviceVersion, null);
+    }
+
+    private void createCertificateClient(HttpClient httpClient, CertificateServiceVersion serviceVersion,
+                                         String testTenantId) {
+        HttpPipeline httpPipeline = getHttpPipeline(httpClient, testTenantId);
         CertificateAsyncClient asyncClient = spy(new CertificateClientBuilder()
             .vaultUrl(getEndpoint())
             .pipeline(httpPipeline)
@@ -74,6 +81,31 @@ public class CertificateClientTest extends CertificateClientTestBase {
             String certName = generateResourceId("testCer");
             SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = client.beginCreateCertificate(certName,
                 policy);
+            certPoller.waitForCompletion();
+            KeyVaultCertificateWithPolicy expected = certPoller.getFinalResult();
+            assertEquals(certName, expected.getName());
+            assertNotNull(expected.getProperties().getCreatedOn());
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void createCertificateWithMultipleTenants(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
+        createCertificateClient(httpClient, serviceVersion, testResourceNamer.randomUuid());
+        createCertificateRunner((policy) -> {
+            String certName = generateResourceId("testCer");
+            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
+                client.beginCreateCertificate(certName, policy);
+            certPoller.waitForCompletion();
+            KeyVaultCertificateWithPolicy expected = certPoller.getFinalResult();
+            assertEquals(certName, expected.getName());
+            assertNotNull(expected.getProperties().getCreatedOn());
+        });
+        KeyVaultCredentialPolicy.clearCache(); // Ensure we don't have anything cached and try again.
+        createCertificateRunner((policy) -> {
+            String certName = generateResourceId("testCer2");
+            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
+                client.beginCreateCertificate(certName, policy);
             certPoller.waitForCompletion();
             KeyVaultCertificateWithPolicy expected = certPoller.getFinalResult();
             assertEquals(certName, expected.getName());

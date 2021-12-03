@@ -256,8 +256,10 @@ public class BlobClient extends BlobClientBase {
      * @param requestConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @deprecated See {@link #uploadWithResponse(BlobParallelUploadOptions, Duration, Context)} instead
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    @Deprecated
     public void uploadWithResponse(InputStream data, long length, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions,
         Duration timeout, Context context) {
@@ -311,7 +313,16 @@ public class BlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.uploadFromFile#String}
+     * <!-- src_embed com.azure.storage.blob.BlobClient.uploadFromFile#String -->
+     * <pre>
+     * try &#123;
+     *     client.uploadFromFile&#40;filePath&#41;;
+     *     System.out.println&#40;&quot;Upload from file succeeded&quot;&#41;;
+     * &#125; catch &#40;UncheckedIOException ex&#41; &#123;
+     *     System.err.printf&#40;&quot;Failed to upload from file %s%n&quot;, ex.getMessage&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobClient.uploadFromFile#String -->
      *
      * @param filePath Path of the file to upload
      * @throws UncheckedIOException If an I/O error occurs
@@ -326,7 +337,17 @@ public class BlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.uploadFromFile#String-boolean}
+     * <!-- src_embed com.azure.storage.blob.BlobClient.uploadFromFile#String-boolean -->
+     * <pre>
+     * try &#123;
+     *     boolean overwrite = false;
+     *     client.uploadFromFile&#40;filePath, overwrite&#41;;
+     *     System.out.println&#40;&quot;Upload from file succeeded&quot;&#41;;
+     * &#125; catch &#40;UncheckedIOException ex&#41; &#123;
+     *     System.err.printf&#40;&quot;Failed to upload from file %s%n&quot;, ex.getMessage&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobClient.uploadFromFile#String-boolean -->
      *
      * @param filePath Path of the file to upload
      * @param overwrite Whether or not to overwrite, should the blob already exist
@@ -354,7 +375,29 @@ public class BlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions-Duration}
+     * <!-- src_embed com.azure.storage.blob.BlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions-Duration -->
+     * <pre>
+     * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
+     *     .setContentMd5&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     *
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     * Long blockSize = 100L * 1024L * 1024L; &#47;&#47; 100 MB;
+     * ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions&#40;&#41;.setBlockSizeLong&#40;blockSize&#41;;
+     *
+     * try &#123;
+     *     client.uploadFromFile&#40;filePath, parallelTransferOptions, headers, metadata,
+     *         AccessTier.HOT, requestConditions, timeout&#41;;
+     *     System.out.println&#40;&quot;Upload from file succeeded&quot;&#41;;
+     * &#125; catch &#40;UncheckedIOException ex&#41; &#123;
+     *     System.err.printf&#40;&quot;Failed to upload from file %s%n&quot;, ex.getMessage&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions-Duration -->
      *
      * @param filePath Path of the file to upload
      * @param parallelTransferOptions {@link ParallelTransferOptions} to use to upload from file. Number of parallel
@@ -383,7 +426,32 @@ public class BlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.uploadFromFileWithResponse#BlobUploadFromFileOptions-Duration-Context}
+     * <!-- src_embed com.azure.storage.blob.BlobClient.uploadFromFileWithResponse#BlobUploadFromFileOptions-Duration-Context -->
+     * <pre>
+     * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
+     *     .setContentMd5&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     *
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * Map&lt;String, String&gt; tags = Collections.singletonMap&#40;&quot;tag&quot;, &quot;value&quot;&#41;;
+     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     * Long blockSize = 100 * 1024 * 1024L; &#47;&#47; 100 MB;
+     * ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions&#40;&#41;.setBlockSizeLong&#40;blockSize&#41;;
+     *
+     * try &#123;
+     *     client.uploadFromFileWithResponse&#40;new BlobUploadFromFileOptions&#40;filePath&#41;
+     *         .setParallelTransferOptions&#40;parallelTransferOptions&#41;.setHeaders&#40;headers&#41;.setMetadata&#40;metadata&#41;
+     *         .setTags&#40;tags&#41;.setTier&#40;AccessTier.HOT&#41;.setRequestConditions&#40;requestConditions&#41;, timeout,
+     *         new Context&#40;key2, value2&#41;&#41;;
+     *     System.out.println&#40;&quot;Upload from file succeeded&quot;&#41;;
+     * &#125; catch &#40;UncheckedIOException ex&#41; &#123;
+     *     System.err.printf&#40;&quot;Failed to upload from file %s%n&quot;, ex.getMessage&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobClient.uploadFromFileWithResponse#BlobUploadFromFileOptions-Duration-Context -->
      *
      * @param options {@link BlobUploadFromFileOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.

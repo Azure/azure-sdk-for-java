@@ -12,6 +12,12 @@ public class PrefixedSpringCredentialBuilder extends SpringCredentialBuilderBase
 
     private String prefix;
 
+    /**
+     * Configures the prefix.
+     *
+     * @param prefix the prefix
+     * @return the updated PrefixedSpringCredentialBuilder object
+     */
     public PrefixedSpringCredentialBuilder prefix(String prefix) {
         this.prefix = prefix;
         return this;

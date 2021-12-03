@@ -11,6 +11,7 @@ import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.DhcpOptions;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualNetworkBgpCommunities;
+import com.azure.resourcemanager.network.models.VirtualNetworkEncryption;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -91,6 +92,13 @@ public final class VirtualNetworkPropertiesFormat {
      */
     @JsonProperty(value = "bgpCommunities")
     private VirtualNetworkBgpCommunities bgpCommunities;
+
+    /*
+     * Indicates if encryption is enabled on virtual network and if VM without
+     * encryption is allowed in encrypted VNet.
+     */
+    @JsonProperty(value = "encryption")
+    private VirtualNetworkEncryption encryption;
 
     /*
      * Array of IpAllocation which reference this VNET.
@@ -308,6 +316,28 @@ public final class VirtualNetworkPropertiesFormat {
     }
 
     /**
+     * Get the encryption property: Indicates if encryption is enabled on virtual network and if VM without encryption
+     * is allowed in encrypted VNet.
+     *
+     * @return the encryption value.
+     */
+    public VirtualNetworkEncryption encryption() {
+        return this.encryption;
+    }
+
+    /**
+     * Set the encryption property: Indicates if encryption is enabled on virtual network and if VM without encryption
+     * is allowed in encrypted VNet.
+     *
+     * @param encryption the encryption value to set.
+     * @return the VirtualNetworkPropertiesFormat object itself.
+     */
+    public VirtualNetworkPropertiesFormat withEncryption(VirtualNetworkEncryption encryption) {
+        this.encryption = encryption;
+        return this;
+    }
+
+    /**
      * Get the ipAllocations property: Array of IpAllocation which reference this VNET.
      *
      * @return the ipAllocations value.
@@ -347,6 +377,9 @@ public final class VirtualNetworkPropertiesFormat {
         }
         if (bgpCommunities() != null) {
             bgpCommunities().validate();
+        }
+        if (encryption() != null) {
+            encryption().validate();
         }
     }
 }

@@ -464,7 +464,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
                 this.client.getHttpPipeline(),
                 CertificateResourceInner.class,
                 CertificateResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -802,7 +802,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
             deleteWithResponseAsync(resourceGroupName, serviceName, certificateName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

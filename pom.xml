@@ -719,7 +719,6 @@
         <module>sdk/appconfiguration</module>
         <module>sdk/applicationinsights</module>
         <module>sdk/attestation</module>
-        <module>sdk/authorization</module>
         <module>sdk/automation</module>
         <module>sdk/avs</module>
         <module>sdk/azurearcdata</module>
@@ -754,6 +753,7 @@
         <module>sdk/dataprotection</module>
         <module>sdk/delegatednetwork</module>
         <module>sdk/deploymentmanager</module>
+        <module>sdk/desktopvirtualization</module>
         <module>sdk/deviceprovisioningservices</module>
         <module>sdk/deviceupdate</module>
         <module>sdk/devspaces</module>
@@ -836,6 +836,7 @@
         <module>sdk/template</module>
         <module>sdk/textanalytics</module>
         <module>sdk/timeseriesinsights</module>
+        <module>sdk/tools</module>
         <module>sdk/translation</module>
         <module>sdk/videoanalyzer</module>
         <module>sdk/vmwarecloudsimple</module>

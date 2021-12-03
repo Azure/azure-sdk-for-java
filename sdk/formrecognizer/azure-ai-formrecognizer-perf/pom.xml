@@ -21,6 +21,9 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
+    <codesnippet.skip>false</codesnippet.skip>
+    <javadocDoclet></javadocDoclet>
+    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <dependencies>
@@ -32,7 +35,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-ai-formrecognizer</artifactId>
-      <version>4.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;current} -->
+      <version>4.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;current} -->
     </dependency>
   </dependencies>
 
