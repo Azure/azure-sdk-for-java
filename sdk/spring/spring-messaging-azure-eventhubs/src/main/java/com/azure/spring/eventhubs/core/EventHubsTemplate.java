@@ -3,6 +3,7 @@
 
 package com.azure.spring.eventhubs.core;
 
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventDataBatch;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
@@ -15,7 +16,6 @@ import com.azure.spring.messaging.core.SendOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.Message;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -43,8 +43,8 @@ public class EventHubsTemplate implements SendOperation, BatchSendOperation {
     public <T> Mono<Void> sendAsync(String destination, Collection<Message<T>> messages,
                                     PartitionSupplier partitionSupplier) {
         List<EventData> eventData = messages.stream()
-            .map(m -> messageConverter.fromMessage(m, EventData.class))
-            .collect(Collectors.toList());
+                .map(m -> messageConverter.fromMessage(m, EventData.class))
+                .collect(Collectors.toList());
         return doSend(destination, eventData, partitionSupplier);
     }
 
@@ -62,7 +62,15 @@ public class EventHubsTemplate implements SendOperation, BatchSendOperation {
 
         Flux.fromIterable(events).flatMap(event -> {
                     final EventDataBatch batch = currentBatch.get();
-                    if (batch.tryAdd(event)) {
+                    try {
+                        if (batch.tryAdd(event)) {
+                            return Mono.empty();
+                        } else {
+                            LOGGER.warn("EventDataBatch is full in the collect process or the first event is " +
+                                    "too large to fit in an empty batch! Max size: {}", batch.getMaxSizeInBytes());
+                        }
+                    } catch (AmqpException e) {
+                        LOGGER.error("Event is larger than maximum allowed size.", e);
                         return Mono.empty();
                     }
 
@@ -71,28 +79,31 @@ public class EventHubsTemplate implements SendOperation, BatchSendOperation {
                             producer.createBatch(options).map(newBatch -> {
                                 currentBatch.set(newBatch);
                                 // Add the event that did not fit in the previous batch.
-                                if (!newBatch.tryAdd(event)) {
-                                    throw Exceptions.propagate(new IllegalArgumentException(
-                                            "Event was too large to fit in an empty batch. Max size: " + newBatch.getMaxSizeInBytes()));
+                                try {
+                                    if (!newBatch.tryAdd(event)) {
+                                        LOGGER.error(
+                                                "Event was too large to fit in an empty batch. Max size:{} ",
+                                                newBatch.getMaxSizeInBytes());
+                                    }
+                                } catch (AmqpException e) {
+                                    LOGGER.error("Event was too large to fit in an empty batch. Max size:{}",
+                                            newBatch.getMaxSizeInBytes(), e);
                                 }
 
                                 return newBatch;
                             }));
-                }).then()
-                .doFinally(signal -> {
-                    final EventDataBatch batch = currentBatch.getAndSet(null);
-                    if (batch != null && batch.getCount() > 0) {
-                        producer.send(batch).block();
-                    }
-                }).subscribe();
+                })
+                .then()
+                .block();
 
-        return Mono.empty();
+        final EventDataBatch batch = currentBatch.getAndSet(null);
+        return producer.send(batch);
     }
 
     CreateBatchOptions buildCreateBatchOptions(PartitionSupplier partitionSupplier) {
         return new CreateBatchOptions()
-            .setPartitionId(partitionSupplier != null ? partitionSupplier.getPartitionId() : null)
-            .setPartitionKey(partitionSupplier != null ? partitionSupplier.getPartitionKey() : null);
+                .setPartitionId(partitionSupplier != null ? partitionSupplier.getPartitionId() : null)
+                .setPartitionKey(partitionSupplier != null ? partitionSupplier.getPartitionKey() : null);
     }
 
     public void setMessageConverter(EventHubsMessageConverter messageConverter) {
