@@ -225,7 +225,7 @@ public class AttestationTest extends AttestationClientTestBase {
         AttestationResponse<AttestationResult> attestResponse = (AttestationResponse<AttestationResult>) response;
 
         // When a draft policy is specified, the token is unsecured.
-        assertTrue(attestResponse.getToken().getAlgorithm() == "none");
+        assertTrue(attestResponse.getToken().getAlgorithm().equals("none"));
 
         verifyAttestationResult(clientUri, response.getValue(), decodedRuntimeData, true);
     }
@@ -352,7 +352,7 @@ public class AttestationTest extends AttestationClientTestBase {
     @MethodSource("getAttestationClients")
     void testTpmAttestation(HttpClient httpClient, String clientUri) {
         ClientTypes clientType = classifyClient(clientUri);
-        // TPM attestation requires that we have an attestation policy set and we can't set attestation policy on the shared client, so just exit early.
+        // TPM attestation requires that we have an attestation policy set, and we can't set attestation policy on the shared client, so just exit early.
         assumeTrue(clientType != ClientTypes.SHARED, "This test does not work on shared instances.");
 
         // Set the TPM attestation policy to a default value.
@@ -398,7 +398,7 @@ public class AttestationTest extends AttestationClientTestBase {
     @MethodSource("getAttestationClients")
     void testTpmAttestationWithResult(HttpClient httpClient, String clientUri) {
         ClientTypes clientType = classifyClient(clientUri);
-        // TPM attestation requires that we have an attestation policy set and we can't set attestation policy on the shared client, so just exit early.
+        // TPM attestation requires that we have an attestation policy set, and we can't set attestation policy on the shared client, so just exit early.
         assumeTrue(clientType != ClientTypes.SHARED, "This test does not work on shared instances.");
 
         // Set the TPM attestation policy to a default value.
@@ -575,7 +575,7 @@ public class AttestationTest extends AttestationClientTestBase {
         AttestationResponse<AttestationResult> attestResponse = (AttestationResponse<AttestationResult>) response;
 
         // When a draft policy is specified, the token is unsecured.
-        assertTrue(attestResponse.getToken().getAlgorithm() == "none");
+        assertTrue(attestResponse.getToken().getAlgorithm().equals("none"));
 
         verifyAttestationResult(clientUri, response.getValue(), decodedRuntimeData, true);
     }

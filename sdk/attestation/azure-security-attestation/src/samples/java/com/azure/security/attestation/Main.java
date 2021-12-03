@@ -7,7 +7,7 @@ package com.azure.security.attestation;
  * Entry point for running samples.
  */
 public class Main {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         PolicySamples.resetAllPolicies();
 
         // Readme samples.

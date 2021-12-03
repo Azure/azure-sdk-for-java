@@ -56,7 +56,7 @@ public final class PolicyManagementCertificateOptions {
     }
 
     /**
-     * Gets the attestation policy which will be used to generate an policy set request.
+     * Gets the attestation policy which will be used to generate a policy set request.
      * @return Attestation Policy Token associated with this request.
      */
     public X509Certificate getCertificate() {

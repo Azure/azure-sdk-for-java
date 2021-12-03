@@ -50,7 +50,7 @@ public final class AttestationTokenValidationOptions {
     /**
      * Sets whether the token is to be validated at all. If the validateToken parameter is set to false,
      * then no validations will be performed (default: true)
-     * @param validateToken - indicates whether or not the token should be validated.
+     * @param validateToken - indicates if the token should be validated.
      * @return this AttestationTokenValidationOptions object.
      */
     public AttestationTokenValidationOptions setValidateToken(boolean validateToken) {

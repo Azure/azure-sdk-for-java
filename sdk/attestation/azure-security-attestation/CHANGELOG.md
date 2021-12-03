@@ -39,8 +39,7 @@ AttestOpenEnclaveOptions options = AttestOpenEnclaveOptions
  * `attestSgxEnclave` and `attestOpenEnclave` return an `AttestationResponse` type instead of
 a `Response` type to get access to the `AttestationToken` returned from the attestation service.
  * Converted the `AttestationToken` and `AttestationSigner` types to interfaces since there are no scenarios where customers
-will instantiate them directly (`AttestationToken` will be instantiated via the `AttestationPolicyToken` class which will 
-be introduced later.)
+will instantiate them directly.
  * Renamed `buildAttestationClient` to `buildClient` and `buildAsyncAttestationClient` to `buildAsyncClient` to match API
 design guidelines.
  * Removed `buildPolicyClient`, `buildPolicyAsyncClient`, `buildPolicyCertificatesClient` and `buildPolicyCertificatesAsyncClient` methods 
