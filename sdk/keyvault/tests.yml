@@ -11,7 +11,7 @@ stages:
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
         Canary:
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-          Location: 'eastus2euap'
+          Location: 'eastus2'
           # Managed HSM test resources are expensive and provisioning has not been reliable.
           # Given test coverage of non-canary regions we probably don't need to test in canary.
           MatrixFilters:
