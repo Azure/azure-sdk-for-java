@@ -46,7 +46,6 @@
       <artifactId>opentelemetry-api</artifactId>
       <version>1.0.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
     </dependency>
-
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
@@ -150,7 +149,6 @@
                 <include>io.opentelemetry:opentelemetry-sdk:[1.0.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-exporter-logging:[1.0.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-exporter-logging;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-exporter-jaeger:[1.0.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-exporter-jaeger;external_dependency} -->
-                <include>io.opentelemetry.instrumentation:opentelemetry-instrumentation-api:[1.9.0-alpha]</include>
               </includes>
             </bannedDependencies>
           </rules>

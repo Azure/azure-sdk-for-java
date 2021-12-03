@@ -20,7 +20,6 @@ import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.api.trace.propagation.W3CTraceContextPropagator;
 import io.opentelemetry.context.Context;
-import io.opentelemetry.context.Scope;
 import io.opentelemetry.context.propagation.TextMapPropagator;
 import io.opentelemetry.context.propagation.TextMapSetter;
 import reactor.core.CoreSubscriber;
@@ -227,7 +226,6 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
      *
      * OpenTelemetry reactor auto-instrumentation will take care of the cold path.
      */
-    @SuppressWarnings("try")
     static final class ScalarPropagatingMono extends Mono<Object> {
         public static final Mono<Object> INSTANCE = new ScalarPropagatingMono();
 
@@ -240,8 +238,12 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
         public void subscribe(CoreSubscriber<? super Object> actual) {
             Context traceContext = actual.currentContext().getOrDefault(REACTOR_PARENT_TRACE_CONTEXT_KEY, null);
             if (traceContext != null) {
-                try (Scope s = OpenTelemetrySpanSuppressionHelper.registerClientSpan(traceContext).makeCurrent()) {
-                    actual.onSubscribe(Operators.scalarSubscription(actual, value));
+                Object agentContext = OpenTelemetrySpanSuppressionHelper.registerClientSpan(traceContext);
+                AutoCloseable closeable = OpenTelemetrySpanSuppressionHelper.makeCurrent(agentContext, traceContext);
+                actual.onSubscribe(Operators.scalarSubscription(actual, value));
+                try {
+                    closeable.close();
+                } catch (Throwable ignored) {
                 }
             } else {
                 actual.onSubscribe(Operators.scalarSubscription(actual, value));
