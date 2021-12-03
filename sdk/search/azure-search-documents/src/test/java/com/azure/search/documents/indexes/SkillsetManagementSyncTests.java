@@ -37,7 +37,6 @@ import com.azure.search.documents.indexes.models.WebApiSkill;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -393,7 +392,7 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
 
     @Test
     public void createOrUpdateCreatesWhenSkillsetDoesNotExist() {
-        SearchIndexerSkillset expected = createTestOcrSkillSet(1);
+        SearchIndexerSkillset expected = createTestOcrSkillset();
         SearchIndexerSkillset actual = client.createOrUpdateSkillset(expected);
         skillsetsToDelete.add(actual.getName());
 
@@ -402,7 +401,7 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
 
     @Test
     public void createOrUpdateCreatesWhenSkillsetDoesNotExistWithResponse() {
-        SearchIndexerSkillset expected = createTestOcrSkillSet(1);
+        SearchIndexerSkillset expected = createTestOcrSkillset();
         Response<SearchIndexerSkillset> createOrUpdateResponse = client.createOrUpdateSkillsetWithResponse(expected,
             false, Context.NONE);
         skillsetsToDelete.add(createOrUpdateResponse.getValue().getName());
@@ -411,17 +410,14 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void createOrUpdateUpdatesWhenSkillsetExists() throws Exception {
-        SearchIndexerSkillset skillset = createTestOcrSkillSet(1);
+    public void createOrUpdateUpdatesWhenSkillsetExists() {
+        SearchIndexerSkillset skillset = createTestOcrSkillset();
         Response<SearchIndexerSkillset> createOrUpdateResponse = client.createOrUpdateSkillsetWithResponse(skillset, false,
             Context.NONE);
         skillsetsToDelete.add(createOrUpdateResponse.getValue().getName());
         assertEquals(HttpURLConnection.HTTP_CREATED, createOrUpdateResponse.getStatusCode());
-        SearchIndexerSkillset updatedSkillset = createTestOcrSkillSet(2);
-        Field skillsetName = updatedSkillset.getClass().getDeclaredField("name");
-        skillsetName.setAccessible(true);
-        skillsetName.set(updatedSkillset, skillset.getName());
-        createOrUpdateResponse = client.createOrUpdateSkillsetWithResponse(skillset, false, Context.NONE);
+        SearchIndexerSkillset updatedSkillset = createTestOcrSkillset(2, skillset.getName());
+        createOrUpdateResponse = client.createOrUpdateSkillsetWithResponse(updatedSkillset, false, Context.NONE);
         assertEquals(HttpURLConnection.HTTP_OK, createOrUpdateResponse.getStatusCode());
     }
 
@@ -862,7 +858,11 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
             skills).setDescription("Skillset for testing");
     }
 
-    SearchIndexerSkillset createTestOcrSkillSet(int repeat) {
+    SearchIndexerSkillset createTestOcrSkillset() {
+        return createTestOcrSkillset(1, testResourceNamer.randomName("testskillset", 48));
+    }
+
+    SearchIndexerSkillset createTestOcrSkillset(int repeat, String name) {
         List<SearchIndexerSkill> skills = new ArrayList<>();
 
         List<InputFieldMappingEntry> inputs = Arrays.asList(
@@ -881,7 +881,7 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
                 .setContext(CONTEXT_VALUE));
         }
 
-        return new SearchIndexerSkillset(testResourceNamer.randomName("testskillset", 48), skills)
+        return new SearchIndexerSkillset(name, skills)
             .setDescription("Skillset for testing OCR");
     }
 

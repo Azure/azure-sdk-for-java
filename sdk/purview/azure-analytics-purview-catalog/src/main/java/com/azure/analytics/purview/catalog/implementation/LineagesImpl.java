@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.catalog.implementation;
 
+import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -47,6 +48,7 @@ public final class LineagesImpl {
     @ServiceInterface(name = "PurviewCatalogClient")
     private interface LineagesService {
         @Get("/atlas/v2/lineage/{guid}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> getLineageGraph(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
@@ -54,6 +56,7 @@ public final class LineagesImpl {
                 Context context);
 
         @Get("/lineage/{guid}/next/")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> nextPageLineage(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
@@ -166,8 +169,7 @@ public final class LineagesImpl {
      *
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return lineage info of the entity specified by GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -281,8 +283,7 @@ public final class LineagesImpl {
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return lineage info of the entity specified by GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -395,8 +396,7 @@ public final class LineagesImpl {
      *
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return lineage info of the entity specified by GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -508,8 +508,7 @@ public final class LineagesImpl {
      *
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasLineageInfo.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -629,8 +628,7 @@ public final class LineagesImpl {
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasLineageInfo.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -744,8 +742,7 @@ public final class LineagesImpl {
      *
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasLineageInfo.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

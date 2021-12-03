@@ -4,7 +4,6 @@ package com.azure.spring.cloud.config;
 
 import static com.azure.spring.cloud.config.TestConstants.CONN_STRING_PROP;
 import static com.azure.spring.cloud.config.TestConstants.CONN_STRING_PROP_NEW;
-import static com.azure.spring.cloud.config.TestConstants.DEFAULT_CONTEXT_PROP;
 import static com.azure.spring.cloud.config.TestConstants.FAIL_FAST_PROP;
 import static com.azure.spring.cloud.config.TestConstants.KEY_PROP;
 import static com.azure.spring.cloud.config.TestConstants.LABEL_PROP;
@@ -94,15 +93,6 @@ public class AppConfigurationPropertiesTest {
         this.contextRunner
             .withPropertyValues(propPair(CONN_STRING_PROP, connString))
             .run(context -> assertThat(context).getFailure().hasStackTraceContaining(ENDPOINT_ERR_MSG));
-    }
-
-    @Test
-    public void defaultContextShouldNotBeEmpty() {
-        this.contextRunner
-            .withPropertyValues(
-                propPair(CONN_STRING_PROP, TEST_CONN_STRING),
-                propPair(DEFAULT_CONTEXT_PROP, ""))
-            .run(context -> assertInvalidField(context, "defaultContext"));
     }
 
     @Test

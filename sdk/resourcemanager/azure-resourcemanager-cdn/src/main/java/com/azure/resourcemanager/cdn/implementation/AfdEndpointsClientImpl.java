@@ -724,7 +724,7 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
         return this
             .client
             .<AfdEndpointInner, AfdEndpointInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AfdEndpointInner.class, AfdEndpointInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), AfdEndpointInner.class, AfdEndpointInner.class, this.client.getContext());
     }
 
     /**
@@ -1045,7 +1045,7 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
         return this
             .client
             .<AfdEndpointInner, AfdEndpointInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AfdEndpointInner.class, AfdEndpointInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), AfdEndpointInner.class, AfdEndpointInner.class, this.client.getContext());
     }
 
     /**
@@ -1366,7 +1366,7 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, profileName, endpointName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1657,7 +1657,7 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
             purgeContentWithResponseAsync(resourceGroupName, profileName, endpointName, contentPaths, domains);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

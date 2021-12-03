@@ -14,9 +14,6 @@ parameters:
   - name: ArtifactName
     type: string
     default: 'not-specified'
-  - name: TargetDocRepoOwner
-    type: string
-    default: ''
   - name: TargetDocRepoName
     type: string
     default: ''
@@ -216,13 +213,14 @@ stages:
                           SkipDefaultCheckout: true
                           Paths:
                             - sdk/**/*.md
+                            - .github/CODEOWNERS
                       - download: current
                       - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
                         parameters:
                           PackageInfoLocations:
                             - $(Pipeline.Workspace)/${{parameters.ArtifactName}}/PackageInfo/${{artifact.name}}.json
                           WorkingDirectory: $(System.DefaultWorkingDirectory)
-                          TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
+                          TargetDocRepoOwner: 'Azure'
                           TargetDocRepoName: ${{parameters.TargetDocRepoName}}
                           Language: 'java'
                           SparseCheckoutPaths:
@@ -374,6 +372,7 @@ stages:
               SkipDefaultCheckout: true 
               Paths:
                 - sdk/**/*.md
+                - .github/CODEOWNERS
           - download: current
           - pwsh: |
               Get-ChildItem -Recurse $(Pipeline.Workspace)/${{parameters.ArtifactName}}/
@@ -386,7 +385,7 @@ stages:
                   - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
                     - $(Pipeline.Workspace)/${{parameters.ArtifactName}}/PackageInfo/${{artifact.name}}.json
               WorkingDirectory: $(System.DefaultWorkingDirectory)
-              TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
+              TargetDocRepoOwner: "azure-sdk"
               TargetDocRepoName: ${{parameters.TargetDocRepoName}}
               Language: 'java'
               DailyDocsBuild: true

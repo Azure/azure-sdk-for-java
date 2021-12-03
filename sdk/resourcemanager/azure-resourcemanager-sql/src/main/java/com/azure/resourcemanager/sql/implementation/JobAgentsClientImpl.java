@@ -639,7 +639,7 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
         return this
             .client
             .<JobAgentInner, JobAgentInner>getLroResult(
-                mono, this.client.getHttpPipeline(), JobAgentInner.class, JobAgentInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), JobAgentInner.class, JobAgentInner.class, this.client.getContext());
     }
 
     /**
@@ -912,7 +912,7 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, serverName, jobAgentName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1181,7 +1181,7 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
         return this
             .client
             .<JobAgentInner, JobAgentInner>getLroResult(
-                mono, this.client.getHttpPipeline(), JobAgentInner.class, JobAgentInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), JobAgentInner.class, JobAgentInner.class, this.client.getContext());
     }
 
     /**

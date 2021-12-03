@@ -44,7 +44,7 @@
 
   <!-- Fields tenantId, clientId and clientSecret are not set in all constructors. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.security.keyvault.jca.implementation.KeyVaultClient"/>
-  
+
   <!-- Fields defaultTrustManager and keyStore might be set more than once. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.security.keyvault.jca.KeyVaultTrustManager"/>
 
@@ -242,7 +242,8 @@ the main ServiceBusClientBuilder. -->
   <!-- Logger class suppression -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="ClientLogger.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="DefaultLogger.java"/>
-
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="LoggingEventBuilder.java"/>
+  
   <!-- Requires static access to logger to report errors while loading i18n messages (from within a static initializer )-->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="Messages.java"/>
 
@@ -621,4 +622,10 @@ the main ServiceBusClientBuilder. -->
   <!-- Suppress VisibilityModifier in MemberConverterImplTests.-->
   <suppress checks="VisibilityModifier"
             files="com.azure.core.implementation.jackson.MemberNameConverterImplTests.java"/>
+
+  <!-- Code generation doesn't add a space between '{' and '}' when the class is empty. -->
+  <suppress checks="WhitespaceAround" files="com.azure.search.documents.indexes.models.DataChangeDetectionPolicy"/>
+  <suppress checks="WhitespaceAround" files="com.azure.search.documents.indexes.models.DataDeletionDetectionPolicy"/>
+  <suppress checks="WhitespaceAround" files="com.azure.search.documents.indexes.models.SearchIndexerDataIdentity"/>
+  <suppress checks="WhitespaceAround" files="com.azure.search.documents.indexes.models.SimilarityAlgorithm"/>
 </suppressions>

@@ -58,13 +58,18 @@ class RxGatewayStoreModel implements RxStoreModel {
             QueryCompatibilityMode queryCompatibilityMode,
             UserAgentContainer userAgentContainer,
             GlobalEndpointManager globalEndpointManager,
-            HttpClient httpClient) {
+            HttpClient httpClient,
+            ApiType apiType) {
         this.clientContext = clientContext;
         this.defaultHeaders = new HashMap<>();
         this.defaultHeaders.put(HttpConstants.HttpHeaders.CACHE_CONTROL,
                 "no-cache");
         this.defaultHeaders.put(HttpConstants.HttpHeaders.VERSION,
                 HttpConstants.Versions.CURRENT_VERSION);
+
+        if (apiType != null){
+            this.defaultHeaders.put(HttpConstants.HttpHeaders.API_TYPE, apiType.toString());
+        }
 
         if (userAgentContainer == null) {
             userAgentContainer = new UserAgentContainer();

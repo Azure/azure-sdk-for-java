@@ -10,9 +10,24 @@ import com.azure.core.management.AzureEnvironment;
  */
 public enum AzureEnvironments {
 
+    /**
+     * Public Azure.
+     */
     Azure(AzureEnvironment.AZURE),
+
+    /**
+     * Azure China.
+     */
     AzureChina(AzureEnvironment.AZURE_CHINA),
+
+    /**
+     * Azure US Government.
+     */
     AzureUSGovernment(AzureEnvironment.AZURE_US_GOVERNMENT),
+
+    /**
+     * Azure Germany.
+     */
     AZURE_GERMANY(AzureEnvironment.AZURE_GERMANY);
 
     private final AzureEnvironment azureEnvironment;
@@ -21,6 +36,11 @@ public enum AzureEnvironments {
         this.azureEnvironment = environment;
     }
 
+    /**
+     * Gets the AzureEnvironment representation for this enum.
+     *
+     * @return The AzureEnvironment representation for this enum.
+     */
     public AzureEnvironment getAzureEnvironment() {
         return azureEnvironment;
     }

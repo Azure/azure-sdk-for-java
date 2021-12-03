@@ -15,6 +15,11 @@ public class KeyVaultHealthIndicator implements HealthIndicator {
 
     private final ConfigurableEnvironment environment;
 
+    /**
+     * Creates a new instance of {@link KeyVaultHealthIndicator}.
+     *
+     * @param environment the environment
+     */
     public KeyVaultHealthIndicator(ConfigurableEnvironment environment) {
         this.environment = environment;
     }
