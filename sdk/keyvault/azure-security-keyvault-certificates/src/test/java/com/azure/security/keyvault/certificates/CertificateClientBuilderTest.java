@@ -11,7 +11,6 @@ import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.ClientOptions;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.Header;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,7 +30,7 @@ public class CertificateClientBuilderTest {
 
     @BeforeEach
     public void setUp() {
-        vaultUrl = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ENDPOINT");
+        vaultUrl = "https://key-vault-url.vault.azure.net/";
         certificateName = "TestCertificate";
         serviceVersion = CertificateServiceVersion.V7_3;
     }

@@ -4,9 +4,8 @@ stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: keyvault
-      TimeoutInMinutes: 90
-      SupportedClouds: 'Public,UsGov,China'
-      TestMode: 'LIVE'
+      TimeoutInMinutes: 240
+      SupportedClouds: 'Public,UsGov,China,Canary'
       CloudConfig:
         Public:
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
