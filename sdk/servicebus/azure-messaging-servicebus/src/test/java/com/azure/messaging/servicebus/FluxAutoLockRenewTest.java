@@ -63,6 +63,7 @@ public class FluxAutoLockRenewTest {
     private Function<String, Mono<OffsetDateTime>> renewalFunction;
 
     private OffsetDateTime lockedUntil;
+    private AutoCloseable mocksCloseable;
     private ReceiverOptions defaultReceiverOptions;
 
     @Captor
@@ -71,33 +72,36 @@ public class FluxAutoLockRenewTest {
     private ArgumentCaptor<OffsetDateTime> lockedUntilCapture;
     @Captor
     private ArgumentCaptor<LockRenewalOperation> lockRenewalOperationCapture;
+
     @Mock
-    LockContainer<LockRenewalOperation> messageLockContainer;
+    private TestContainer messageLockContainer;
 
     @BeforeAll
-    static void beforeAll() {
+    public static void beforeAll() {
         StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
     }
 
     @AfterAll
-    static void afterAll() {
+    public static void afterAll() {
         StepVerifier.resetDefaultTimeout();
     }
 
     @BeforeEach
-    void setup() {
-        MockitoAnnotations.initMocks(this);
+    public void setup() {
+        mocksCloseable = MockitoAnnotations.openMocks(this);
         lockedUntil = OffsetDateTime.now().plusSeconds(2);
         receivedMessage.setLockToken(LOCK_TOKEN_UUID);
         receivedMessage.setLockedUntil(lockedUntil);
         renewalFunction = (lockToken) -> Mono.just(OffsetDateTime.now().plusSeconds(10));
         defaultReceiverOptions = new ReceiverOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, 1,
             MAX_AUTO_LOCK_RENEW_DURATION, true);
-
     }
 
     @AfterEach
-    void teardown() {
+    public void teardown() throws Exception {
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
         Mockito.framework().clearInlineMock(this);
     }
 
@@ -105,7 +109,7 @@ public class FluxAutoLockRenewTest {
      * Test that the user can cancel the receive function.
      */
     @Test
-    void canCancel() {
+    public void canCancel() {
         // Arrange
         final ServiceBusReceivedMessage receivedMessage2 = new ServiceBusReceivedMessage(BinaryData.fromString("data"));
         final ServiceBusMessageContext message2 = new ServiceBusMessageContext(receivedMessage2);
@@ -138,7 +142,7 @@ public class FluxAutoLockRenewTest {
      * Check that illegal values are not allowed in constructor.
      */
     @Test
-    void illegalValueConstructor() {
+    public void illegalValueConstructor() {
         // Arrange, Act & Assert
         assertThrows(NullPointerException.class, () -> new FluxAutoLockRenew(null,
             defaultReceiverOptions, messageLockContainer, renewalFunction));
@@ -162,7 +166,7 @@ public class FluxAutoLockRenewTest {
      * 2. The updated new lockedUntil is reflected on ServiceBusReceivedMessage object.
      */
     @Test
-    void lockRenewedMultipleTimes() {
+    public void lockRenewedMultipleTimes() {
         // Arrange
         final int renewedForAtLeast = 3;
         final int totalProcessingTimeSeconds = 5;
@@ -193,10 +197,11 @@ public class FluxAutoLockRenewTest {
             })
             .verifyComplete();
 
-        verify(messageLockContainer, times(1)).addOrUpdate(eq(LOCK_TOKEN_STRING), any(OffsetDateTime.class), any(LockRenewalOperation.class));
+        verify(messageLockContainer, times(1))
+            .addOrUpdate(eq(LOCK_TOKEN_STRING), any(OffsetDateTime.class), any(LockRenewalOperation.class));
+
         assertTrue(actualTokenRenewCalledTimes.get() >= renewedForAtLeast);
     }
-
 
     /**
      * Test if we have error in
@@ -500,5 +505,14 @@ public class FluxAutoLockRenewTest {
         // ensure that we do not remove lockToken from 'messageLockContainer' because user can do it at their will since
         // enableAutoComplete = false
         verify(messageLockContainer, never()).remove(LOCK_TOKEN_STRING);
+    }
+
+    /**
+     * Exists so that Mockito doesn't fall over with not a mock exception.
+     */
+    private static class TestContainer extends LockContainer<LockRenewalOperation> {
+        public TestContainer() {
+            super(Duration.ofSeconds(60));
+        }
     }
 }
