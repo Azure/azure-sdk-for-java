@@ -131,6 +131,10 @@ stages:
               runOnce:
                 deploy:
                   steps:
+                    - download: none
+                    - download: current
+                      artifact: ${{parameters.ArtifactName}}-signed
+                      patterns: ${{artifact.groupId}}/${{artifact.name}}/**
                     - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                     - template: /eng/common/pipelines/templates/steps/retain-run.yml
                     - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
@@ -154,6 +158,10 @@ stages:
                 runOnce:
                   deploy:
                     steps:
+                      - download: none
+                      - download: current
+                        artifact: ${{parameters.ArtifactName}}-signed
+                        patterns: ${{artifact.groupId}}/${{artifact.name}}/**
                       - checkout: azure-sdk-build-tools
                         path: azure-sdk-build-tools
                       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
@@ -214,7 +222,9 @@ stages:
                           Paths:
                             - sdk/**/*.md
                             - .github/CODEOWNERS
+                      - download: none
                       - download: current
+                        artifact: ${{parameters.ArtifactName}}
                       - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
                         parameters:
                           PackageInfoLocations:
@@ -243,6 +253,10 @@ stages:
                   deploy:
                     steps:
                       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+                      - download: none
+                      - download: current
+                        artifact: ${{parameters.ArtifactName}}-signed
+                        patterns: ${{artifact.groupId}}/${{artifact.name}}/**
                       - pwsh: |
                           Get-ChildItem -Recurse $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
                         workingDirectory: $(Pipeline.Workspace)
@@ -272,6 +286,8 @@ stages:
                 runOnce:
                   deploy:
                     steps:
+                      - download: none
+                      
                       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                         parameters:
                           Paths:
@@ -374,6 +390,7 @@ stages:
                 - sdk/**/*.md
                 - .github/CODEOWNERS
           - download: current
+            artifact: ${{parameters.ArtifactName}}
           - pwsh: |
               Get-ChildItem -Recurse $(Pipeline.Workspace)/${{parameters.ArtifactName}}/
             displayName: Show visible artifacts
