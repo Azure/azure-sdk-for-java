@@ -7,6 +7,7 @@ import com.azure.cosmos.models.{CosmosQueryRequestOptions, ModelBridgeInternal}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.util.CosmosPagedIterable
 import com.fasterxml.jackson.databind.node.ObjectNode
+import org.scalatest.Ignore
 
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicLong
@@ -14,6 +15,7 @@ import java.util.concurrent.atomic.AtomicLong
 //scalastyle:off magic.number
 //scalastyle:off null
 //scalastyle:off multiple.string.literals
+@Ignore
 class TransientIOErrorsRetryingIteratorITest
   extends IntegrationSpec
   with Spark
