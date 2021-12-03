@@ -2100,6 +2100,11 @@ class FileAPITest extends APISpec {
         when:
         fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
         fc.flush(data.defaultDataSize, true)
+
+        then:
+        notThrown(DataLakeStorageException)
+
+        when:
         fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
         // Attempt to write data without overwrite enabled
         fc.flush(data.defaultDataSize, false)
