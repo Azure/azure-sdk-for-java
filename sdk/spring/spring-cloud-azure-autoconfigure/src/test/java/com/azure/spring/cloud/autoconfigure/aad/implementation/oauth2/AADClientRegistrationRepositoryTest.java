@@ -20,10 +20,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils.oauthClientRunner;
-import static com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils.webApplicationContextRunner;
 import static com.azure.spring.cloud.autoconfigure.aad.core.AADAuthorizationGrantType.AUTHORIZATION_CODE;
 import static com.azure.spring.cloud.autoconfigure.aad.core.AADAuthorizationGrantType.AZURE_DELEGATED;
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils.oauthClientRunner;
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils.webApplicationContextRunner;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.AADClientRegistrationRepository.AZURE_CLIENT_REGISTRATION_ID;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.AADClientRegistrationRepository.resourceServerCount;
 import static org.assertj.core.api.Assertions.assertThat;

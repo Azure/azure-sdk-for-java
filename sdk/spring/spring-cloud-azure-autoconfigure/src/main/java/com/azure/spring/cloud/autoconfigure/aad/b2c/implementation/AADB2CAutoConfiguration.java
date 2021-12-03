@@ -5,40 +5,21 @@ package com.azure.spring.cloud.autoconfigure.aad.b2c.implementation;
 import com.azure.spring.cloud.autoconfigure.aad.b2c.AADB2COidcLoginConfigurer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.lang.NonNull;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 
 /**
- * When the configuration matches the {@link AADB2CConditions.CommonCondition.WebAppMode} condition,
- * configure the necessary beans for AAD B2C authentication and authorization,
+ * Configure the necessary beans for AAD B2C authentication and authorization,
  * and import {@link AADB2COAuth2ClientConfiguration} class for AAD B2C OAuth2 client support.
  */
 @Configuration
 @ConditionalOnProperty(value = "spring.cloud.azure.active-directory.b2c.enabled", havingValue = "true")
-@Conditional({ AADB2CConditions.CommonCondition.class, AADB2CConditions.UserFlowCondition.class })
-@EnableConfigurationProperties(AADB2CProperties.class)
-@Import(AADB2COAuth2ClientConfiguration.class)
+@Conditional(AADB2CConditions.UserFlowCondition.class)
+@Import({AADB2CPropertiesConfiguration.class, AADB2COAuth2ClientConfiguration.class})
 public class AADB2CAutoConfiguration {
-
-    private final ClientRegistrationRepository repository;
-    private final AADB2CProperties properties;
-
-    /**
-     * Creates a new instance of {@link AADB2CAutoConfiguration}.
-     *
-     * @param repository the client registration repository
-     * @param properties the AAD B2C properties
-     */
-    public AADB2CAutoConfiguration(@NonNull ClientRegistrationRepository repository,
-                                   @NonNull AADB2CProperties properties) {
-        this.repository = repository;
-        this.properties = properties;
-    }
 
     /**
      * Declare AADB2CAuthorizationRequestResolver bean.
@@ -47,7 +28,8 @@ public class AADB2CAutoConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean
-    public AADB2CAuthorizationRequestResolver b2cOAuth2AuthorizationRequestResolver() {
+    public AADB2CAuthorizationRequestResolver b2cOAuth2AuthorizationRequestResolver(
+        ClientRegistrationRepository repository, AADB2CProperties properties) {
         return new AADB2CAuthorizationRequestResolver(repository, properties);
     }
 
@@ -58,7 +40,7 @@ public class AADB2CAutoConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean
-    public AADB2CLogoutSuccessHandler b2cLogoutSuccessHandler() {
+    public AADB2CLogoutSuccessHandler b2cLogoutSuccessHandler(AADB2CProperties properties) {
         return new AADB2CLogoutSuccessHandler(properties);
     }
 

@@ -111,7 +111,7 @@
       "deprecation": {
         "level": "error",
         "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
-        "replacement": "spring.cloud.azure.active-directory.b2c.client-id"
+        "replacement": "spring.cloud.azure.active-directory.b2c.credential.client-id"
       }
     },
     {
@@ -121,7 +121,7 @@
       "deprecation": {
         "level": "error",
         "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
-        "replacement": "spring.cloud.azure.active-directory.b2c.client-secret"
+        "replacement": "spring.cloud.azure.active-directory.b2c.credential.client-secret"
       }
     },
     {

@@ -5,13 +5,11 @@ package com.azure.spring.cloud.autoconfigure.aad.b2c.implementation;
 import com.azure.spring.core.util.URLValidator;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.NotBlank;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -24,7 +22,6 @@ import static com.azure.spring.cloud.autoconfigure.aad.core.AADAuthorizationGran
  * Configuration properties for Azure Active Directory B2C.
  */
 @Validated
-@ConfigurationProperties(prefix = AADB2CProperties.PREFIX)
 public class AADB2CProperties implements InitializingBean {
 
     /**
@@ -57,12 +54,17 @@ public class AADB2CProperties implements InitializingBean {
     private String tenant;
 
     /**
-     * The name of the b2c tenant id.
+     * AAD B2C profile information.
      */
-    private String tenantId;
+    private AADB2CProfileProperties profile = new AADB2CProfileProperties();
 
     /**
-     * App ID URI which might be used in the <code>"aud"</code> claim of an token.
+     * AAD B2C credential information.
+     */
+    private AADB2CCredentialProperties credential = new AADB2CCredentialProperties();
+
+    /**
+     * App ID URI which might be used in the "aud" claim of a token.
      */
     private String appIdUri;
 
@@ -80,17 +82,6 @@ public class AADB2CProperties implements InitializingBean {
      * Size limit in Bytes of the JWKSet Remote URL call.
      */
     private int jwtSizeLimit = RemoteJWKSet.DEFAULT_HTTP_SIZE_LIMIT; /* bytes */
-
-    /**
-     * The application ID that registered under b2c tenant.
-     */
-    @NotBlank(message = "client ID should not be blank")
-    private String clientId;
-
-    /**
-     * The application secret that registered under b2c tenant.
-     */
-    private String clientSecret;
 
     private String logoutSuccessUrl = DEFAULT_LOGOUT_SUCCESS_URL;
 
@@ -156,7 +147,7 @@ public class AADB2CProperties implements InitializingBean {
                                                    .map(authClient -> authClient.getAuthorizationGrantType())
                                                    .filter(client -> CLIENT_CREDENTIALS == client)
                                                    .count();
-        if (credentialCount > 0 && !StringUtils.hasText(tenantId)) {
+        if (credentialCount > 0 && !StringUtils.hasText(profile.getTenantId())) {
             throw new AADB2CConfigurationException("'tenant-id' must be configured "
                 + "when using client credential flow.");
         }
@@ -276,39 +267,21 @@ public class AADB2CProperties implements InitializingBean {
     }
 
     /**
-     * Gets the client ID.
+     * Gets the credential.
      *
-     * @return the client ID
+     * @return the credential.
      */
-    public String getClientId() {
-        return clientId;
+    public AADB2CCredentialProperties getCredential() {
+        return credential;
     }
 
     /**
-     * Sets the client ID.
+     * Sets the credential.
      *
-     * @param clientId the client ID
+     * @param credential the credential.
      */
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
-    }
-
-    /**
-     * Gets the client secret.
-     *
-     * @return the client secret
-     */
-    public String getClientSecret() {
-        return clientSecret;
-    }
-
-    /**
-     * Sets the client secret.
-     *
-     * @param clientSecret the client secret
-     */
-    public void setClientSecret(String clientSecret) {
-        this.clientSecret = clientSecret;
+    public void setCredential(AADB2CCredentialProperties credential) {
+        this.credential = credential;
     }
 
     /**
@@ -478,21 +451,21 @@ public class AADB2CProperties implements InitializingBean {
     }
 
     /**
-     * Gets the tenant ID.
+     * Gets the profile.
      *
-     * @return the tenant ID
+     * @return the profile
      */
-    public String getTenantId() {
-        return tenantId;
+    public AADB2CProfileProperties getProfile() {
+        return profile;
     }
 
     /**
-     * Sets the tenant ID.
+     * Sets the profile.
      *
-     * @param tenantId the tenant ID
+     * @param profile the profile
      */
-    public void setTenantId(String tenantId) {
-        this.tenantId = tenantId;
+    public void setProfile(AADB2CProfileProperties profile) {
+        this.profile = profile;
     }
 
     /**
