@@ -8,7 +8,6 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.validation.annotation.Validated;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +20,6 @@ import static com.azure.spring.cloud.autoconfigure.aad.core.AADAuthorizationGran
 /**
  * Configuration properties for Azure Active Directory B2C.
  */
-@Validated
 public class AADB2CProperties implements InitializingBean {
 
     /**

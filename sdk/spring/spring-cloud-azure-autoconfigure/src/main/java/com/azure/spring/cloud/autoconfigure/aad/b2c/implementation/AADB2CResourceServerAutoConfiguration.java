@@ -17,7 +17,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.lang.NonNull;
 import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -47,7 +46,7 @@ public class AADB2CResourceServerAutoConfiguration {
      *
      * @param properties the AAD B2C properties
      */
-    public AADB2CResourceServerAutoConfiguration(@NonNull AADB2CProperties properties) {
+    public AADB2CResourceServerAutoConfiguration(AADB2CProperties properties) {
         this.properties = properties;
     }
 
