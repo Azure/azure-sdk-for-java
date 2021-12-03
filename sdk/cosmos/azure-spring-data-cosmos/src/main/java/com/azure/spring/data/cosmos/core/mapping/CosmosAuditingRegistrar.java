@@ -75,41 +75,4 @@ class CosmosAuditingRegistrar extends AuditingBeanDefinitionRegistrarSupport {
         // IsNewAwareAuditingHandler directly - this would require integrating CosmosTemplate with
         // the spring eventing system which would be a chunk of work beyond the scope of this PR
     }
-
-    static class CosmosMappingContextLookup implements
-        FactoryBean<MappingContext<? extends CosmosPersistentEntity<?>, CosmosPersistentProperty>> {
-
-        private final MappingCosmosConverter converter;
-
-        CosmosMappingContextLookup(MappingCosmosConverter converter) {
-            this.converter = converter;
-        }
-
-        /*
-         * (non-Javadoc)
-         * @see org.springframework.beans.factory.FactoryBean#getObject()
-         */
-        @Override
-        public MappingContext<? extends CosmosPersistentEntity<?>, CosmosPersistentProperty> getObject() {
-            return this.converter.getMappingContext();
-        }
-
-        /*
-         * (non-Javadoc)
-         * @see org.springframework.beans.factory.FactoryBean#getObjectType()
-         */
-        @Override
-        public Class<?> getObjectType() {
-            return MappingContext.class;
-        }
-
-        /*
-         * (non-Javadoc)
-         * @see org.springframework.beans.factory.FactoryBean#isSingleton()
-         */
-        @Override
-        public boolean isSingleton() {
-            return true;
-        }
-    }
 }
