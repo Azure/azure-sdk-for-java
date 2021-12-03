@@ -163,7 +163,8 @@ public class VirtualMachineScaleSetImpl
     // To manage OS profile
     private boolean removeOsProfile;
     private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetImpl.class);
-    // To track vm profile transition from null to non-null
+    // A transition indicator. Only if the profile is set from null to non-null will this indicator change from false to true.
+    // Currently, it's only used in checking if the vm profile defaults has to be set.
     private boolean profileAttached = false;
 
     VirtualMachineScaleSetImpl(
