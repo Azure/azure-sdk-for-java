@@ -18,6 +18,10 @@ import java.util.stream.Stream;
 
 /**
  * The Azure Key Vault security provider.
+ *
+ * @author RujunChen
+ * @since 4.0
+ * @see Provider
  */
 public final class KeyVaultJcaProvider extends Provider {
 

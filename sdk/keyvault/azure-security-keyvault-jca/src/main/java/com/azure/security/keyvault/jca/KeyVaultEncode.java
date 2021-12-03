@@ -7,7 +7,10 @@ import java.math.BigInteger;
 
 /**
  * encode signature
- * Ref: https://docs.microsoft.com/windows/win32/seccertenroll/about-der-encoding-of-asn-1-types
+ *
+ * @author RujunChen
+ * @since 4.0
+ * @see  <a href="https://docs.microsoft.com/windows/win32/seccertenroll/about-der-encoding-of-asn-1-types">reference doc</a>
  */
 public class KeyVaultEncode {
 
@@ -27,6 +30,13 @@ public class KeyVaultEncode {
         return concatBytes(resultLengthBytes, leftResult, rightResult);
     }
 
+    /**
+     * Sign the code
+     * @param bytes signature obtained
+     * @param offset the offset in the byte array
+     * @param length the number of bytes to convert
+     * @return decoded signatures
+     */
     static byte[] toBigIntegerBytesWithLengthPrefix(byte[] bytes, int offset, int length) {
         byte[] magnitude = new byte[length];
         System.arraycopy(bytes, offset, magnitude, 0, length);
@@ -35,6 +45,12 @@ public class KeyVaultEncode {
         return concatBytes(buildLengthBytes(TAG_INTEGER, bigIntegerArray.length), bigIntegerArray);
     }
 
+    /**
+     * Complement integer values
+     * @param bytes1 integer value
+     * @param bytes2 Complement array
+     * @return decoded signatures
+     */
     static byte[] concatBytes(byte[] bytes1, byte[] bytes2) {
         byte[] result = new byte[bytes1.length + bytes2.length];
         System.arraycopy(bytes1, 0, result, 0, bytes1.length);
@@ -42,6 +58,13 @@ public class KeyVaultEncode {
         return result;
     }
 
+    /**
+     * Integrate integer values
+     * @param bytes1 integer value1
+     * @param bytes2 integer value2
+     * @param bytes3 integer value3
+     * @return decoded signatures
+     */
     static byte[] concatBytes(byte[] bytes1, byte[] bytes2, byte[] bytes3) {
         byte[] result = new byte[bytes1.length + bytes2.length + bytes3.length];
         System.arraycopy(bytes1, 0, result, 0, bytes1.length);
@@ -50,6 +73,12 @@ public class KeyVaultEncode {
         return result;
     }
 
+    /**
+     * Get the result integer value
+     * @param tag tag value
+     * @param len the content length
+     * @return integer value
+     */
     static byte[] buildLengthBytes(byte tag, int len) {
         if (len < 128) {
             return new byte[] {tag, ((byte) len)};

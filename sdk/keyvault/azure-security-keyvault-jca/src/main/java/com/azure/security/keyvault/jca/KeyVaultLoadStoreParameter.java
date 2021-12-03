@@ -7,6 +7,10 @@ import java.security.KeyStore;
 
 /**
  * The Azure Key Vault LoadStoreParameter of the KeyStoreSpi.
+ *
+ * @author RujunChen
+ * @since 4.0
+ * @see KeyStore.LoadStoreParameter
  */
 public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParameter {
 

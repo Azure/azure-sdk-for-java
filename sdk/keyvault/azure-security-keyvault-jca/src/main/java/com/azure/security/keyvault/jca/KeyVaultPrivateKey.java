@@ -11,6 +11,11 @@ import java.security.PrivateKey;
  *
  * @deprecated Should not use this class outside of azure-security-keyvault-jca.jar.
  * Move this class to implementation package.
+ *
+ * @author RujunChen
+ * @since 4.0
+ * @see PrivateKey
+ * @see SecretKey
  */
 @Deprecated
 public class KeyVaultPrivateKey implements PrivateKey, SecretKey {
@@ -64,16 +69,28 @@ public class KeyVaultPrivateKey implements PrivateKey, SecretKey {
         this.algorithm = algorithm;
     }
 
+    /**
+     * Get the algorithm
+     * @return the algorithm
+     */
     @Override
     public String getAlgorithm() {
         return algorithm;
     }
 
+    /**
+     * Get the format
+     * @return the format
+     */
     @Override
     public String getFormat() {
         return "RAW";
     }
 
+    /**
+     * Get the encoded
+     * @return the encoded
+     */
     @Override
     public byte[] getEncoded() {
         return new byte[2048];

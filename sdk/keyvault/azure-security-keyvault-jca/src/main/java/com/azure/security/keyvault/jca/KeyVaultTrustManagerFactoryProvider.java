@@ -8,6 +8,10 @@ import java.security.Provider;
 
 /**
  * The Azure Key Vault TrustManagerFactory provider.
+ *
+ * @author RujunChen
+ * @since 4.0
+ * @see Provider
  */
 public final class KeyVaultTrustManagerFactoryProvider extends Provider {
 
