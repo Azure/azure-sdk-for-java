@@ -67,6 +67,12 @@ public interface VirtualMachineCustomImage
          * not added will be hyperV gen 1.
          */
         interface WithHyperVGeneration extends WithOSDiskImageSourceAltVirtualMachineSource {
+            /**
+             * Specifies the Hyper-V generation.
+             *
+             * @param hyperVGeneration the Hyper-V generation
+             * @return the next stage of the definition
+             */
             WithOSDiskImageSourceAltVirtualMachineSource withHyperVGeneration(HyperVGenerationTypes hyperVGeneration);
         }
 
