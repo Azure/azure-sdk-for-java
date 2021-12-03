@@ -84,7 +84,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.23.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.24.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -96,7 +96,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.11.3</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.12.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>
