@@ -5,8 +5,6 @@ package com.azure.spring.cloud.autoconfigure.aad.properties;
 
 import com.azure.spring.cloud.autoconfigure.aad.core.AADApplicationType;
 import com.azure.spring.cloud.autoconfigure.aad.core.AADAuthorizationGrantType;
-import com.azure.spring.cloud.autoconfigure.aad.filter.AADAppRoleStatelessAuthenticationFilter;
-import com.azure.spring.cloud.autoconfigure.aad.filter.AADAuthenticationFilter;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
