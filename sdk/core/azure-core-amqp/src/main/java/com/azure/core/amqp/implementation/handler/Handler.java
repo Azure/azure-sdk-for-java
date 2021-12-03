@@ -14,7 +14,6 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addSignalTypeAndResult;
-import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
 
 /**
  * Base class for all proton-j handlers.
@@ -35,14 +34,14 @@ public abstract class Handler extends BaseHandler implements Closeable {
      * @param hostname Hostname of the connection. This could be the DNS hostname or the IP address of the
      *     connection. Usually of the form {@literal "<your-namespace>.service.windows.net"} but can change if the
      *     messages are brokered through an intermediary.
-     * @param loggerName loggerName to use.
+     * @param logger Logger to use for messages.
      *
      * @throws NullPointerException if {@code connectionId}, {@code hostname}, or {@code logger} is null.
      */
-    Handler(final String connectionId, final String hostname, final String loggerName) {
+    Handler(final String connectionId, final String hostname, final ClientLogger logger) {
         this.connectionId = Objects.requireNonNull(connectionId, "'connectionId' cannot be null.");
         this.hostname = Objects.requireNonNull(hostname, "'hostname' cannot be null.");
-        this.logger = new ClientLogger(Objects.requireNonNull(loggerName, "'loggerName' cannot be null."), createContextWithConnectionId(connectionId));
+        this.logger = Objects.requireNonNull(logger, "'logger' cannot be null.");
     }
 
     /**

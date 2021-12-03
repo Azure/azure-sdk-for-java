@@ -10,6 +10,7 @@ import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UserAgentUtil;
+import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
@@ -29,6 +30,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addErrorCondition;
+import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
 import static com.azure.core.amqp.implementation.ClientConstants.FULLY_QUALIFIED_NAMESPACE_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.HOSTNAME_KEY;
 
@@ -60,7 +62,8 @@ public class ConnectionHandler extends Handler {
     public ConnectionHandler(final String connectionId, final ConnectionOptions connectionOptions,
         SslPeerDetails peerDetails) {
         super(connectionId,
-            Objects.requireNonNull(connectionOptions, "'connectionOptions' cannot be null.").getHostname(), ConnectionHandler.class.getName());
+            Objects.requireNonNull(connectionOptions, "'connectionOptions' cannot be null.").getHostname(),
+            new ClientLogger(ConnectionHandler.class, createContextWithConnectionId(connectionId)));
         add(new Handshaker());
 
         this.connectionOptions = connectionOptions;

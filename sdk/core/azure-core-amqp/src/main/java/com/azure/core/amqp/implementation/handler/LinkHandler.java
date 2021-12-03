@@ -6,6 +6,7 @@ package com.azure.core.amqp.implementation.handler;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.LinkErrorContext;
 import com.azure.core.amqp.implementation.ExceptionUtil;
+import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
@@ -35,13 +36,13 @@ abstract class LinkHandler extends Handler {
      *     connection. Usually of the form {@literal "<your-namespace>.service.windows.net"} but can change if the
      *     messages are brokered through an intermediary.
      * @param entityPath The address within the message broker for this link.
-     * @param loggerName Logger name to use for messages.
+     * @param logger Logger to use for messages.
      *
      * @throws NullPointerException if {@code connectionId}, {@code hostname}, {@code entityPath}, or {@code logger} is
      * null.
      */
-    LinkHandler(String connectionId, String hostname, String entityPath, String loggerName) {
-        super(connectionId, hostname, loggerName);
+    LinkHandler(String connectionId, String hostname, String entityPath, ClientLogger logger) {
+        super(connectionId, hostname, logger);
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
     }
 

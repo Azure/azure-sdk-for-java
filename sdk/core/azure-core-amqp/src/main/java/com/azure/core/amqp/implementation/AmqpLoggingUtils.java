@@ -11,6 +11,7 @@ import reactor.core.publisher.Sinks;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.azure.core.amqp.implementation.ClientConstants.CONNECTION_ID_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.EMIT_RESULT_KEY;
@@ -28,6 +29,7 @@ public class AmqpLoggingUtils {
      * Creates logging context with connectionId.
      */
     public static Map<String, Object> createContextWithConnectionId(String connectionId) {
+        Objects.requireNonNull(connectionId, "'connectionId' cannot be null.");
         Map<String, Object> globalLoggingContext = new HashMap<>();
         globalLoggingContext.put(CONNECTION_ID_KEY, connectionId);
 

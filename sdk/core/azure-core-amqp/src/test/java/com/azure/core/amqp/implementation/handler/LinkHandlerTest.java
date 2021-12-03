@@ -7,6 +7,7 @@ import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.LinkErrorContext;
+import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.EndpointState;
@@ -58,11 +59,11 @@ public class LinkHandlerTest {
     @Mock
     private Session session;
 
-    private final String loggerName = LinkHandlerTest.class.getName();
     private final AmqpErrorCondition linkStolen = LINK_STOLEN;
     private final Symbol symbol = Symbol.getSymbol(linkStolen.getErrorCondition());
     private final String description = "test-description";
-    private final LinkHandler handler = new MockLinkHandler(CONNECTION_ID, HOSTNAME, ENTITY_PATH, loggerName);
+    private final ClientLogger logger = new ClientLogger(LinkHandlerTest.class);
+    private final LinkHandler handler = new MockLinkHandler(CONNECTION_ID, HOSTNAME, ENTITY_PATH, logger);
     private AutoCloseable mocksCloseable;
 
     @BeforeEach
@@ -332,11 +333,11 @@ public class LinkHandlerTest {
     public void constructor() {
         // Act
         assertThrows(NullPointerException.class,
-            () -> new MockLinkHandler(null, HOSTNAME, ENTITY_PATH, loggerName));
+            () -> new MockLinkHandler(null, HOSTNAME, ENTITY_PATH, logger));
         assertThrows(NullPointerException.class,
-            () -> new MockLinkHandler(CONNECTION_ID, null, ENTITY_PATH, loggerName));
+            () -> new MockLinkHandler(CONNECTION_ID, null, ENTITY_PATH, logger));
         assertThrows(NullPointerException.class,
-            () -> new MockLinkHandler(CONNECTION_ID, HOSTNAME, null, loggerName));
+            () -> new MockLinkHandler(CONNECTION_ID, HOSTNAME, null, logger));
         assertThrows(NullPointerException.class,
             () -> new MockLinkHandler(CONNECTION_ID, HOSTNAME, ENTITY_PATH, null));
     }
@@ -408,8 +409,8 @@ public class LinkHandlerTest {
     }
 
     private static final class MockLinkHandler extends LinkHandler {
-        MockLinkHandler(String connectionId, String hostname, String entityPath, String loggerName) {
-            super(connectionId, hostname, entityPath, loggerName);
+        MockLinkHandler(String connectionId, String hostname, String entityPath, ClientLogger logger) {
+            super(connectionId, hostname, entityPath, logger);
         }
     }
 }

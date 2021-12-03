@@ -3,6 +3,7 @@
 
 package com.azure.core.amqp.implementation.handler;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LoggingEventBuilder;
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Delivery;
@@ -20,6 +21,7 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addSignalTypeAndResult;
+import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
 import static com.azure.core.amqp.implementation.ClientConstants.EMIT_RESULT_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
@@ -45,7 +47,7 @@ public class SendLinkHandler extends LinkHandler {
     private final Sinks.Many<Delivery> deliveryProcessor = Sinks.many().multicast().onBackpressureBuffer();
 
     public SendLinkHandler(String connectionId, String hostname, String linkName, String entityPath) {
-        super(connectionId, hostname, entityPath, SendLinkHandler.class.getName());
+        super(connectionId, hostname, entityPath, new ClientLogger(SendLinkHandler.class, createContextWithConnectionId(connectionId)));
         this.linkName = Objects.requireNonNull(linkName, "'linkName' cannot be null.");
         this.entityPath = entityPath;
     }
