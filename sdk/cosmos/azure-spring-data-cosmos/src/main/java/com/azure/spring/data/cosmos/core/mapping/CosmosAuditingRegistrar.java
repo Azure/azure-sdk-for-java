@@ -55,7 +55,7 @@ class CosmosAuditingRegistrar extends AuditingBeanDefinitionRegistrarSupport {
             BeanDefinitionBuilder.rootBeanDefinition(IsNewAwareAuditingHandler.class);
 
         final BeanDefinitionBuilder definition =
-            BeanDefinitionBuilder.genericBeanDefinition(CosmosMappingContextLookup.class);
+            BeanDefinitionBuilder.genericBeanDefinition(CosmosMappingContext.class);
         definition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_CONSTRUCTOR);
 
         builder.addConstructorArgValue(definition.getBeanDefinition());
@@ -79,10 +79,10 @@ class CosmosAuditingRegistrar extends AuditingBeanDefinitionRegistrarSupport {
     static class CosmosMappingContextLookup implements
         FactoryBean<MappingContext<? extends CosmosPersistentEntity<?>, CosmosPersistentProperty>> {
 
-        private final MappingContext<? extends CosmosPersistentEntity<?>, CosmosPersistentProperty> mappingContext;
+        private final MappingCosmosConverter converter;
 
-        CosmosMappingContextLookup() {
-            this.mappingContext = new CosmosMappingContext();
+        CosmosMappingContextLookup(MappingCosmosConverter converter) {
+            this.converter = converter;
         }
 
         /*
@@ -91,7 +91,7 @@ class CosmosAuditingRegistrar extends AuditingBeanDefinitionRegistrarSupport {
          */
         @Override
         public MappingContext<? extends CosmosPersistentEntity<?>, CosmosPersistentProperty> getObject() {
-            return this.mappingContext;
+            return this.converter.getMappingContext();
         }
 
         /*
