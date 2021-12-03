@@ -11,7 +11,6 @@ import org.springframework.boot.autoconfigure.condition.SpringBootCondition;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.annotation.ConditionContext;
 import org.springframework.core.type.AnnotatedTypeMetadata;
-import org.springframework.util.StringUtils;
 
 import java.util.Optional;
 
@@ -32,10 +31,6 @@ public final class WebApplicationCondition extends SpringBootCondition {
                   .orElse(null);
         if (properties == null) {
             return ConditionOutcome.noMatch(message.notAvailable("aad authorization properties"));
-        }
-
-        if (!StringUtils.hasText(properties.getClientId())) {
-            return ConditionOutcome.noMatch(message.didNotFind("client-id").atAll());
         }
 
         // Bind properties will not execute AADAuthenticationProperties#afterPropertiesSet()

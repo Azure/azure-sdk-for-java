@@ -110,8 +110,8 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
                                    UserPrincipalManager userPrincipalManager) {
         this.userPrincipalManager = userPrincipalManager;
         this.azureADGraphClient = new AzureADGraphClient(
-            aadAuthenticationProperties.getClientId(),
-            aadAuthenticationProperties.getClientSecret(),
+            aadAuthenticationProperties.getCredential().getClientId(),
+            aadAuthenticationProperties.getCredential().getClientSecret(),
             aadAuthenticationProperties,
             endpoints
         );

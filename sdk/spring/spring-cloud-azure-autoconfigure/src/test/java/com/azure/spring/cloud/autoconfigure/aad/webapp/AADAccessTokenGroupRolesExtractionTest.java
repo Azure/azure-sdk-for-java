@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aad.webapp;
 
-import com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils;
 import com.azure.spring.cloud.autoconfigure.aad.graph.GraphClient;
 import com.azure.spring.cloud.autoconfigure.aad.graph.GroupInformation;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthenticationProperties;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -65,7 +65,6 @@ class AADAccessTokenGroupRolesExtractionTest {
         AADAuthenticationProperties.UserGroupProperties userGroup =
             new AADAuthenticationProperties.UserGroupProperties();
         properties.setUserGroup(userGroup);
-        properties.setGraphMembershipUri("https://graph.microsoft.com/v1.0/me/memberOf");
         return properties;
     }
 
