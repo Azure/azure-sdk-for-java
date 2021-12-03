@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Supported `WithOrchestrationMode` in `VirtualMachineScaleSet` for `createOrUpdate` use case.
+- Supported Flexible orchestration mode for `VirtualMachineScaleSet` during create.
 
 ### Breaking Changes
 
