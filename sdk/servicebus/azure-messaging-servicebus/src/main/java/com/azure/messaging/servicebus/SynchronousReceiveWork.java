@@ -55,15 +55,7 @@ class SynchronousReceiveWork {
         this.numberToReceive = numberToReceive;
         this.timeout = timeout;
         this.downstreamEmitter = emitter;
-
-        this.timeoutSubscriptions = Disposables.composite(
-            Flux.switchOnNext(emitter.asFlux().map(messageContext -> Mono.delay(TIMEOUT_BETWEEN_MESSAGES)))
-                .subscribe(delayElapsed -> {
-                    complete("Timeout between the messages occurred. Completing the work.");
-                }, error -> {
-                    complete("Error occurred while waiting for timeout between messages.", error);
-                })
-        );
+        this.timeoutSubscriptions = Disposables.composite();
     }
 
     /**
@@ -114,6 +106,13 @@ class SynchronousReceiveWork {
             Mono.delay(timeout).subscribe(
                 index -> complete("Timeout elapsed for work."),
                 error -> complete("Error occurred while waiting for timeout.", error)));
+        this.timeoutSubscriptions.add(
+            Flux.switchOnNext(downstreamEmitter.asFlux().map(messageContext -> Mono.delay(TIMEOUT_BETWEEN_MESSAGES)))
+                .subscribe(delayElapsed -> {
+                    complete("Timeout between the messages occurred. Completing the work.");
+                }, error -> {
+                    complete("Error occurred while waiting for timeout between messages.", error);
+                }));
     }
 
     /**

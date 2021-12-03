@@ -447,7 +447,10 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
                 new IllegalArgumentException("'maxWaitTime' cannot be zero or less. maxWaitTime: " + maxWaitTime));
         }
 
-        final Sinks.Many<ServiceBusReceivedMessage> emitter = Sinks.many().multicast().onBackpressureBuffer();
+        // There are two subscribers to this emitter. One is the timeout between messages subscription in
+        // SynchronousReceiverWork.start() and the other is the IterableStream(emitter.asFlux());
+        // Since the subscriptions may happen at different times, we want to replay results to downstream subscribers.
+        final Sinks.Many<ServiceBusReceivedMessage> emitter = Sinks.many().replay().all();
         queueWork(maxMessages, maxWaitTime, emitter);
 
         return new IterableStream<>(emitter.asFlux());
