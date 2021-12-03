@@ -183,7 +183,9 @@ public final class BlobsCreateSnapshotHeaders {
      */
     public OffsetDateTime getLastModified() {
         if (!this.lastModifiedHasBeenDeserialized) {
-            this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
+            if (rawHeaders.getValue("Last-Modified") != null) {
+                this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
+            }
             this.lastModifiedHasBeenDeserialized = true;
         }
         if (this.lastModified == null) {
@@ -262,7 +264,9 @@ public final class BlobsCreateSnapshotHeaders {
      */
     public Boolean isXMsRequestServerEncrypted() {
         if (!this.xMsRequestServerEncryptedHasBeenDeserialized) {
-            this.xMsRequestServerEncrypted = Boolean.valueOf(rawHeaders.getValue("x-ms-request-server-encrypted"));
+            if (rawHeaders.getValue("x-ms-request-server-encrypted") != null) {
+                this.xMsRequestServerEncrypted = Boolean.valueOf(rawHeaders.getValue("x-ms-request-server-encrypted"));
+            }
             this.xMsRequestServerEncryptedHasBeenDeserialized = true;
         }
         return this.xMsRequestServerEncrypted;
@@ -310,7 +314,9 @@ public final class BlobsCreateSnapshotHeaders {
      */
     public OffsetDateTime getDateProperty() {
         if (!this.datePropertyHasBeenDeserialized) {
-            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+            if (rawHeaders.getValue("Date") != null) {
+                this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+            }
             this.datePropertyHasBeenDeserialized = true;
         }
         if (this.dateProperty == null) {

@@ -428,7 +428,9 @@ public final class BlobsDownloadHeaders {
      */
     public Boolean isXMsIsCurrentVersion() {
         if (!this.xMsIsCurrentVersionHasBeenDeserialized) {
-            this.xMsIsCurrentVersion = Boolean.valueOf(rawHeaders.getValue("x-ms-is-current-version"));
+            if (rawHeaders.getValue("x-ms-is-current-version") != null) {
+                this.xMsIsCurrentVersion = Boolean.valueOf(rawHeaders.getValue("x-ms-is-current-version"));
+            }
             this.xMsIsCurrentVersionHasBeenDeserialized = true;
         }
         return this.xMsIsCurrentVersion;
@@ -452,7 +454,9 @@ public final class BlobsDownloadHeaders {
      */
     public LeaseStatusType getXMsLeaseStatus() {
         if (!this.xMsLeaseStatusHasBeenDeserialized) {
-            this.xMsLeaseStatus = LeaseStatusType.fromString(rawHeaders.getValue("x-ms-lease-status"));
+            if (rawHeaders.getValue("x-ms-lease-status") != null) {
+                this.xMsLeaseStatus = LeaseStatusType.fromString(rawHeaders.getValue("x-ms-lease-status"));
+            }
             this.xMsLeaseStatusHasBeenDeserialized = true;
         }
         return this.xMsLeaseStatus;
@@ -476,7 +480,9 @@ public final class BlobsDownloadHeaders {
      */
     public Long getXMsTagCount() {
         if (!this.xMsTagCountHasBeenDeserialized) {
-            this.xMsTagCount = Long.valueOf(rawHeaders.getValue("x-ms-tag-count"));
+            if (rawHeaders.getValue("x-ms-tag-count") != null) {
+                this.xMsTagCount = Long.valueOf(rawHeaders.getValue("x-ms-tag-count"));
+            }
             this.xMsTagCountHasBeenDeserialized = true;
         }
         return this.xMsTagCount;
@@ -524,7 +530,9 @@ public final class BlobsDownloadHeaders {
      */
     public LeaseStateType getXMsLeaseState() {
         if (!this.xMsLeaseStateHasBeenDeserialized) {
-            this.xMsLeaseState = LeaseStateType.fromString(rawHeaders.getValue("x-ms-lease-state"));
+            if (rawHeaders.getValue("x-ms-lease-state") != null) {
+                this.xMsLeaseState = LeaseStateType.fromString(rawHeaders.getValue("x-ms-lease-state"));
+            }
             this.xMsLeaseStateHasBeenDeserialized = true;
         }
         return this.xMsLeaseState;
@@ -548,7 +556,9 @@ public final class BlobsDownloadHeaders {
      */
     public Boolean isXMsBlobSealed() {
         if (!this.xMsBlobSealedHasBeenDeserialized) {
-            this.xMsBlobSealed = Boolean.valueOf(rawHeaders.getValue("x-ms-blob-sealed"));
+            if (rawHeaders.getValue("x-ms-blob-sealed") != null) {
+                this.xMsBlobSealed = Boolean.valueOf(rawHeaders.getValue("x-ms-blob-sealed"));
+            }
             this.xMsBlobSealedHasBeenDeserialized = true;
         }
         return this.xMsBlobSealed;
@@ -572,7 +582,9 @@ public final class BlobsDownloadHeaders {
      */
     public OffsetDateTime getLastModified() {
         if (!this.lastModifiedHasBeenDeserialized) {
-            this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
+            if (rawHeaders.getValue("Last-Modified") != null) {
+                this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
+            }
             this.lastModifiedHasBeenDeserialized = true;
         }
         if (this.lastModified == null) {
@@ -651,7 +663,9 @@ public final class BlobsDownloadHeaders {
      */
     public BlobType getXMsBlobType() {
         if (!this.xMsBlobTypeHasBeenDeserialized) {
-            this.xMsBlobType = BlobType.fromString(rawHeaders.getValue("x-ms-blob-type"));
+            if (rawHeaders.getValue("x-ms-blob-type") != null) {
+                this.xMsBlobType = BlobType.fromString(rawHeaders.getValue("x-ms-blob-type"));
+            }
             this.xMsBlobTypeHasBeenDeserialized = true;
         }
         return this.xMsBlobType;
@@ -747,7 +761,9 @@ public final class BlobsDownloadHeaders {
      */
     public LeaseDurationType getXMsLeaseDuration() {
         if (!this.xMsLeaseDurationHasBeenDeserialized) {
-            this.xMsLeaseDuration = LeaseDurationType.fromString(rawHeaders.getValue("x-ms-lease-duration"));
+            if (rawHeaders.getValue("x-ms-lease-duration") != null) {
+                this.xMsLeaseDuration = LeaseDurationType.fromString(rawHeaders.getValue("x-ms-lease-duration"));
+            }
             this.xMsLeaseDurationHasBeenDeserialized = true;
         }
         return this.xMsLeaseDuration;
@@ -771,7 +787,9 @@ public final class BlobsDownloadHeaders {
      */
     public Long getContentLength() {
         if (!this.contentLengthHasBeenDeserialized) {
-            this.contentLength = Long.valueOf(rawHeaders.getValue("Content-Length"));
+            if (rawHeaders.getValue("Content-Length") != null) {
+                this.contentLength = Long.valueOf(rawHeaders.getValue("Content-Length"));
+            }
             this.contentLengthHasBeenDeserialized = true;
         }
         return this.contentLength;
@@ -843,7 +861,9 @@ public final class BlobsDownloadHeaders {
      */
     public OffsetDateTime getXMsLastAccessTime() {
         if (!this.xMsLastAccessTimeHasBeenDeserialized) {
-            this.xMsLastAccessTime = new DateTimeRfc1123(rawHeaders.getValue("x-ms-last-access-time"));
+            if (rawHeaders.getValue("x-ms-last-access-time") != null) {
+                this.xMsLastAccessTime = new DateTimeRfc1123(rawHeaders.getValue("x-ms-last-access-time"));
+            }
             this.xMsLastAccessTimeHasBeenDeserialized = true;
         }
         if (this.xMsLastAccessTime == null) {
@@ -946,8 +966,10 @@ public final class BlobsDownloadHeaders {
      */
     public OffsetDateTime getXMsImmutabilityPolicyUntilDate() {
         if (!this.xMsImmutabilityPolicyUntilDateHasBeenDeserialized) {
-            this.xMsImmutabilityPolicyUntilDate =
-                    new DateTimeRfc1123(rawHeaders.getValue("x-ms-immutability-policy-until-date"));
+            if (rawHeaders.getValue("x-ms-immutability-policy-until-date") != null) {
+                this.xMsImmutabilityPolicyUntilDate =
+                        new DateTimeRfc1123(rawHeaders.getValue("x-ms-immutability-policy-until-date"));
+            }
             this.xMsImmutabilityPolicyUntilDateHasBeenDeserialized = true;
         }
         if (this.xMsImmutabilityPolicyUntilDate == null) {
@@ -978,7 +1000,9 @@ public final class BlobsDownloadHeaders {
      */
     public byte[] getXMsContentCrc64() {
         if (!this.xMsContentCrc64HasBeenDeserialized) {
-            this.xMsContentCrc64 = Base64.getDecoder().decode(rawHeaders.getValue("x-ms-content-crc64"));
+            if (rawHeaders.getValue("x-ms-content-crc64") != null) {
+                this.xMsContentCrc64 = Base64.getDecoder().decode(rawHeaders.getValue("x-ms-content-crc64"));
+            }
             this.xMsContentCrc64HasBeenDeserialized = true;
         }
         return CoreUtils.clone(this.xMsContentCrc64);
@@ -1002,7 +1026,9 @@ public final class BlobsDownloadHeaders {
      */
     public Long getXMsBlobSequenceNumber() {
         if (!this.xMsBlobSequenceNumberHasBeenDeserialized) {
-            this.xMsBlobSequenceNumber = Long.valueOf(rawHeaders.getValue("x-ms-blob-sequence-number"));
+            if (rawHeaders.getValue("x-ms-blob-sequence-number") != null) {
+                this.xMsBlobSequenceNumber = Long.valueOf(rawHeaders.getValue("x-ms-blob-sequence-number"));
+            }
             this.xMsBlobSequenceNumberHasBeenDeserialized = true;
         }
         return this.xMsBlobSequenceNumber;
@@ -1050,7 +1076,10 @@ public final class BlobsDownloadHeaders {
      */
     public Integer getXMsBlobCommittedBlockCount() {
         if (!this.xMsBlobCommittedBlockCountHasBeenDeserialized) {
-            this.xMsBlobCommittedBlockCount = Integer.valueOf(rawHeaders.getValue("x-ms-blob-committed-block-count"));
+            if (rawHeaders.getValue("x-ms-blob-committed-block-count") != null) {
+                this.xMsBlobCommittedBlockCount =
+                        Integer.valueOf(rawHeaders.getValue("x-ms-blob-committed-block-count"));
+            }
             this.xMsBlobCommittedBlockCountHasBeenDeserialized = true;
         }
         return this.xMsBlobCommittedBlockCount;
@@ -1074,7 +1103,9 @@ public final class BlobsDownloadHeaders {
      */
     public byte[] getXMsBlobContentMd5() {
         if (!this.xMsBlobContentMd5HasBeenDeserialized) {
-            this.xMsBlobContentMd5 = Base64.getDecoder().decode(rawHeaders.getValue("x-ms-blob-content-md5"));
+            if (rawHeaders.getValue("x-ms-blob-content-md5") != null) {
+                this.xMsBlobContentMd5 = Base64.getDecoder().decode(rawHeaders.getValue("x-ms-blob-content-md5"));
+            }
             this.xMsBlobContentMd5HasBeenDeserialized = true;
         }
         return CoreUtils.clone(this.xMsBlobContentMd5);
@@ -1130,7 +1161,9 @@ public final class BlobsDownloadHeaders {
      */
     public Boolean isXMsLegalHold() {
         if (!this.xMsLegalHoldHasBeenDeserialized) {
-            this.xMsLegalHold = Boolean.valueOf(rawHeaders.getValue("x-ms-legal-hold"));
+            if (rawHeaders.getValue("x-ms-legal-hold") != null) {
+                this.xMsLegalHold = Boolean.valueOf(rawHeaders.getValue("x-ms-legal-hold"));
+            }
             this.xMsLegalHoldHasBeenDeserialized = true;
         }
         return this.xMsLegalHold;
@@ -1154,7 +1187,9 @@ public final class BlobsDownloadHeaders {
      */
     public OffsetDateTime getDateProperty() {
         if (!this.datePropertyHasBeenDeserialized) {
-            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+            if (rawHeaders.getValue("Date") != null) {
+                this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+            }
             this.datePropertyHasBeenDeserialized = true;
         }
         if (this.dateProperty == null) {
@@ -1185,7 +1220,9 @@ public final class BlobsDownloadHeaders {
      */
     public byte[] getContentMD5() {
         if (!this.contentMD5HasBeenDeserialized) {
-            this.contentMD5 = Base64.getDecoder().decode(rawHeaders.getValue("Content-MD5"));
+            if (rawHeaders.getValue("Content-MD5") != null) {
+                this.contentMD5 = Base64.getDecoder().decode(rawHeaders.getValue("Content-MD5"));
+            }
             this.contentMD5HasBeenDeserialized = true;
         }
         return CoreUtils.clone(this.contentMD5);
@@ -1209,7 +1246,9 @@ public final class BlobsDownloadHeaders {
      */
     public OffsetDateTime getXMsCopyCompletionTime() {
         if (!this.xMsCopyCompletionTimeHasBeenDeserialized) {
-            this.xMsCopyCompletionTime = new DateTimeRfc1123(rawHeaders.getValue("x-ms-copy-completion-time"));
+            if (rawHeaders.getValue("x-ms-copy-completion-time") != null) {
+                this.xMsCopyCompletionTime = new DateTimeRfc1123(rawHeaders.getValue("x-ms-copy-completion-time"));
+            }
             this.xMsCopyCompletionTimeHasBeenDeserialized = true;
         }
         if (this.xMsCopyCompletionTime == null) {
@@ -1264,7 +1303,9 @@ public final class BlobsDownloadHeaders {
      */
     public Boolean isXMsServerEncrypted() {
         if (!this.xMsServerEncryptedHasBeenDeserialized) {
-            this.xMsServerEncrypted = Boolean.valueOf(rawHeaders.getValue("x-ms-server-encrypted"));
+            if (rawHeaders.getValue("x-ms-server-encrypted") != null) {
+                this.xMsServerEncrypted = Boolean.valueOf(rawHeaders.getValue("x-ms-server-encrypted"));
+            }
             this.xMsServerEncryptedHasBeenDeserialized = true;
         }
         return this.xMsServerEncrypted;
@@ -1384,7 +1425,9 @@ public final class BlobsDownloadHeaders {
      */
     public CopyStatusType getXMsCopyStatus() {
         if (!this.xMsCopyStatusHasBeenDeserialized) {
-            this.xMsCopyStatus = CopyStatusType.fromString(rawHeaders.getValue("x-ms-copy-status"));
+            if (rawHeaders.getValue("x-ms-copy-status") != null) {
+                this.xMsCopyStatus = CopyStatusType.fromString(rawHeaders.getValue("x-ms-copy-status"));
+            }
             this.xMsCopyStatusHasBeenDeserialized = true;
         }
         return this.xMsCopyStatus;

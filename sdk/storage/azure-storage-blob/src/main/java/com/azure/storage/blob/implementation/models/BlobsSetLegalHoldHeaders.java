@@ -123,7 +123,9 @@ public final class BlobsSetLegalHoldHeaders {
      */
     public Boolean isXMsLegalHold() {
         if (!this.xMsLegalHoldHasBeenDeserialized) {
-            this.xMsLegalHold = Boolean.valueOf(rawHeaders.getValue("x-ms-legal-hold"));
+            if (rawHeaders.getValue("x-ms-legal-hold") != null) {
+                this.xMsLegalHold = Boolean.valueOf(rawHeaders.getValue("x-ms-legal-hold"));
+            }
             this.xMsLegalHoldHasBeenDeserialized = true;
         }
         return this.xMsLegalHold;
@@ -171,7 +173,9 @@ public final class BlobsSetLegalHoldHeaders {
      */
     public OffsetDateTime getDateProperty() {
         if (!this.datePropertyHasBeenDeserialized) {
-            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+            if (rawHeaders.getValue("Date") != null) {
+                this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+            }
             this.datePropertyHasBeenDeserialized = true;
         }
         if (this.dateProperty == null) {

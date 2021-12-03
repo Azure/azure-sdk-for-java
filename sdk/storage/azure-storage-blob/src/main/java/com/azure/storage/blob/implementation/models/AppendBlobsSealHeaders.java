@@ -141,7 +141,9 @@ public final class AppendBlobsSealHeaders {
      */
     public Boolean isXMsBlobSealed() {
         if (!this.xMsBlobSealedHasBeenDeserialized) {
-            this.xMsBlobSealed = Boolean.valueOf(rawHeaders.getValue("x-ms-blob-sealed"));
+            if (rawHeaders.getValue("x-ms-blob-sealed") != null) {
+                this.xMsBlobSealed = Boolean.valueOf(rawHeaders.getValue("x-ms-blob-sealed"));
+            }
             this.xMsBlobSealedHasBeenDeserialized = true;
         }
         return this.xMsBlobSealed;
@@ -165,7 +167,9 @@ public final class AppendBlobsSealHeaders {
      */
     public OffsetDateTime getLastModified() {
         if (!this.lastModifiedHasBeenDeserialized) {
-            this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
+            if (rawHeaders.getValue("Last-Modified") != null) {
+                this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
+            }
             this.lastModifiedHasBeenDeserialized = true;
         }
         if (this.lastModified == null) {
@@ -244,7 +248,9 @@ public final class AppendBlobsSealHeaders {
      */
     public OffsetDateTime getDateProperty() {
         if (!this.datePropertyHasBeenDeserialized) {
-            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+            if (rawHeaders.getValue("Date") != null) {
+                this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+            }
             this.datePropertyHasBeenDeserialized = true;
         }
         if (this.dateProperty == null) {

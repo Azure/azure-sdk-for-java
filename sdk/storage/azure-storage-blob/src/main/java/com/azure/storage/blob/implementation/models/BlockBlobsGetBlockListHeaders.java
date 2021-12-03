@@ -126,7 +126,9 @@ public final class BlockBlobsGetBlockListHeaders {
      */
     public Long getXMsBlobContentLength() {
         if (!this.xMsBlobContentLengthHasBeenDeserialized) {
-            this.xMsBlobContentLength = Long.valueOf(rawHeaders.getValue("x-ms-blob-content-length"));
+            if (rawHeaders.getValue("x-ms-blob-content-length") != null) {
+                this.xMsBlobContentLength = Long.valueOf(rawHeaders.getValue("x-ms-blob-content-length"));
+            }
             this.xMsBlobContentLengthHasBeenDeserialized = true;
         }
         return this.xMsBlobContentLength;
@@ -174,7 +176,9 @@ public final class BlockBlobsGetBlockListHeaders {
      */
     public OffsetDateTime getLastModified() {
         if (!this.lastModifiedHasBeenDeserialized) {
-            this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
+            if (rawHeaders.getValue("Last-Modified") != null) {
+                this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
+            }
             this.lastModifiedHasBeenDeserialized = true;
         }
         if (this.lastModified == null) {
@@ -253,7 +257,9 @@ public final class BlockBlobsGetBlockListHeaders {
      */
     public OffsetDateTime getDateProperty() {
         if (!this.datePropertyHasBeenDeserialized) {
-            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+            if (rawHeaders.getValue("Date") != null) {
+                this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+            }
             this.datePropertyHasBeenDeserialized = true;
         }
         if (this.dateProperty == null) {

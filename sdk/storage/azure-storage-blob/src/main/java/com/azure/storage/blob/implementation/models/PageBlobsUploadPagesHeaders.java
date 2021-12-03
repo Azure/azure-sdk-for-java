@@ -188,7 +188,9 @@ public final class PageBlobsUploadPagesHeaders {
      */
     public byte[] getXMsContentCrc64() {
         if (!this.xMsContentCrc64HasBeenDeserialized) {
-            this.xMsContentCrc64 = Base64.getDecoder().decode(rawHeaders.getValue("x-ms-content-crc64"));
+            if (rawHeaders.getValue("x-ms-content-crc64") != null) {
+                this.xMsContentCrc64 = Base64.getDecoder().decode(rawHeaders.getValue("x-ms-content-crc64"));
+            }
             this.xMsContentCrc64HasBeenDeserialized = true;
         }
         return CoreUtils.clone(this.xMsContentCrc64);
@@ -212,7 +214,9 @@ public final class PageBlobsUploadPagesHeaders {
      */
     public Long getXMsBlobSequenceNumber() {
         if (!this.xMsBlobSequenceNumberHasBeenDeserialized) {
-            this.xMsBlobSequenceNumber = Long.valueOf(rawHeaders.getValue("x-ms-blob-sequence-number"));
+            if (rawHeaders.getValue("x-ms-blob-sequence-number") != null) {
+                this.xMsBlobSequenceNumber = Long.valueOf(rawHeaders.getValue("x-ms-blob-sequence-number"));
+            }
             this.xMsBlobSequenceNumberHasBeenDeserialized = true;
         }
         return this.xMsBlobSequenceNumber;
@@ -236,7 +240,9 @@ public final class PageBlobsUploadPagesHeaders {
      */
     public OffsetDateTime getLastModified() {
         if (!this.lastModifiedHasBeenDeserialized) {
-            this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
+            if (rawHeaders.getValue("Last-Modified") != null) {
+                this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
+            }
             this.lastModifiedHasBeenDeserialized = true;
         }
         if (this.lastModified == null) {
@@ -315,7 +321,9 @@ public final class PageBlobsUploadPagesHeaders {
      */
     public Boolean isXMsRequestServerEncrypted() {
         if (!this.xMsRequestServerEncryptedHasBeenDeserialized) {
-            this.xMsRequestServerEncrypted = Boolean.valueOf(rawHeaders.getValue("x-ms-request-server-encrypted"));
+            if (rawHeaders.getValue("x-ms-request-server-encrypted") != null) {
+                this.xMsRequestServerEncrypted = Boolean.valueOf(rawHeaders.getValue("x-ms-request-server-encrypted"));
+            }
             this.xMsRequestServerEncryptedHasBeenDeserialized = true;
         }
         return this.xMsRequestServerEncrypted;
@@ -363,7 +371,9 @@ public final class PageBlobsUploadPagesHeaders {
      */
     public OffsetDateTime getDateProperty() {
         if (!this.datePropertyHasBeenDeserialized) {
-            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+            if (rawHeaders.getValue("Date") != null) {
+                this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+            }
             this.datePropertyHasBeenDeserialized = true;
         }
         if (this.dateProperty == null) {
@@ -394,7 +404,9 @@ public final class PageBlobsUploadPagesHeaders {
      */
     public byte[] getContentMD5() {
         if (!this.contentMD5HasBeenDeserialized) {
-            this.contentMD5 = Base64.getDecoder().decode(rawHeaders.getValue("Content-MD5"));
+            if (rawHeaders.getValue("Content-MD5") != null) {
+                this.contentMD5 = Base64.getDecoder().decode(rawHeaders.getValue("Content-MD5"));
+            }
             this.contentMD5HasBeenDeserialized = true;
         }
         return CoreUtils.clone(this.contentMD5);

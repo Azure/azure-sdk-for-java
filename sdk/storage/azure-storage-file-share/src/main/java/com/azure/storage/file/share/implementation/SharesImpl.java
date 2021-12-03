@@ -39,10 +39,10 @@ import com.azure.storage.file.share.implementation.models.SharesRestoreResponse;
 import com.azure.storage.file.share.implementation.models.SharesSetAccessPolicyResponse;
 import com.azure.storage.file.share.implementation.models.SharesSetMetadataResponse;
 import com.azure.storage.file.share.implementation.models.SharesSetPropertiesResponse;
-import com.azure.storage.file.share.implementation.models.StorageErrorException;
 import com.azure.storage.file.share.models.ShareAccessTier;
 import com.azure.storage.file.share.models.ShareRootSquash;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
+import com.azure.storage.file.share.models.ShareStorageException;
 import java.util.List;
 import java.util.Map;
 import reactor.core.publisher.Mono;
@@ -74,7 +74,7 @@ public final class SharesImpl {
     public interface SharesService {
         @Put("/{shareName}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<SharesCreateResponse> create(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -91,7 +91,7 @@ public final class SharesImpl {
 
         @Get("/{shareName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<SharesGetPropertiesResponse> getProperties(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -105,7 +105,7 @@ public final class SharesImpl {
 
         @Delete("/{shareName}")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<SharesDeleteResponse> delete(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -120,7 +120,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<SharesAcquireLeaseResponse> acquireLease(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -138,7 +138,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<SharesReleaseLeaseResponse> releaseLease(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -155,7 +155,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<SharesChangeLeaseResponse> changeLease(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -173,7 +173,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<SharesRenewLeaseResponse> renewLease(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -190,7 +190,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<SharesBreakLeaseResponse> breakLease(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -208,7 +208,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<SharesCreateSnapshotResponse> createSnapshot(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -222,7 +222,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<SharesCreatePermissionResponse> createPermission(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -236,7 +236,7 @@ public final class SharesImpl {
 
         @Get("/{shareName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<SharesGetPermissionResponse> getPermission(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -250,7 +250,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<SharesSetPropertiesResponse> setProperties(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -267,7 +267,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<SharesSetMetadataResponse> setMetadata(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -282,7 +282,7 @@ public final class SharesImpl {
 
         @Get("/{shareName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<SharesGetAccessPolicyResponse> getAccessPolicy(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -296,7 +296,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<SharesSetAccessPolicyResponse> setAccessPolicy(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -311,7 +311,7 @@ public final class SharesImpl {
 
         @Get("/{shareName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<SharesGetStatisticsResponse> getStatistics(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -325,7 +325,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<SharesRestoreResponse> restore(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -355,7 +355,7 @@ public final class SharesImpl {
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -399,7 +399,7 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -434,7 +434,7 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -481,7 +481,7 @@ public final class SharesImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -529,7 +529,7 @@ public final class SharesImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -578,7 +578,7 @@ public final class SharesImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -626,7 +626,7 @@ public final class SharesImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -678,7 +678,7 @@ public final class SharesImpl {
      *     snapshot to query.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -721,7 +721,7 @@ public final class SharesImpl {
      * @param metadata A name-value pair to associate with a file storage object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -753,7 +753,7 @@ public final class SharesImpl {
      *     Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -785,7 +785,7 @@ public final class SharesImpl {
      *     Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a permission (a security descriptor) at the share level.
      */
@@ -820,7 +820,7 @@ public final class SharesImpl {
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -862,7 +862,7 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -895,7 +895,7 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of signed identifiers.
      */
@@ -928,7 +928,7 @@ public final class SharesImpl {
      * @param shareAcl The ACL for the share.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -962,7 +962,7 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return stats for the share.
      */
@@ -997,7 +997,7 @@ public final class SharesImpl {
      * @param deletedShareVersion Specifies the version of the previously-deleted share.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */

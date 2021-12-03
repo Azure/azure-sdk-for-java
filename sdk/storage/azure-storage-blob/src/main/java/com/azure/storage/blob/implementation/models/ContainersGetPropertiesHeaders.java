@@ -182,7 +182,9 @@ public final class ContainersGetPropertiesHeaders {
      */
     public LeaseStatusType getXMsLeaseStatus() {
         if (!this.xMsLeaseStatusHasBeenDeserialized) {
-            this.xMsLeaseStatus = LeaseStatusType.fromString(rawHeaders.getValue("x-ms-lease-status"));
+            if (rawHeaders.getValue("x-ms-lease-status") != null) {
+                this.xMsLeaseStatus = LeaseStatusType.fromString(rawHeaders.getValue("x-ms-lease-status"));
+            }
             this.xMsLeaseStatusHasBeenDeserialized = true;
         }
         return this.xMsLeaseStatus;
@@ -231,8 +233,10 @@ public final class ContainersGetPropertiesHeaders {
      */
     public Boolean isXMsImmutableStorageWithVersioningEnabled() {
         if (!this.xMsImmutableStorageWithVersioningEnabledHasBeenDeserialized) {
-            this.xMsImmutableStorageWithVersioningEnabled =
-                    Boolean.valueOf(rawHeaders.getValue("x-ms-immutable-storage-with-versioning-enabled"));
+            if (rawHeaders.getValue("x-ms-immutable-storage-with-versioning-enabled") != null) {
+                this.xMsImmutableStorageWithVersioningEnabled =
+                        Boolean.valueOf(rawHeaders.getValue("x-ms-immutable-storage-with-versioning-enabled"));
+            }
             this.xMsImmutableStorageWithVersioningEnabledHasBeenDeserialized = true;
         }
         return this.xMsImmutableStorageWithVersioningEnabled;
@@ -258,7 +262,9 @@ public final class ContainersGetPropertiesHeaders {
      */
     public LeaseStateType getXMsLeaseState() {
         if (!this.xMsLeaseStateHasBeenDeserialized) {
-            this.xMsLeaseState = LeaseStateType.fromString(rawHeaders.getValue("x-ms-lease-state"));
+            if (rawHeaders.getValue("x-ms-lease-state") != null) {
+                this.xMsLeaseState = LeaseStateType.fromString(rawHeaders.getValue("x-ms-lease-state"));
+            }
             this.xMsLeaseStateHasBeenDeserialized = true;
         }
         return this.xMsLeaseState;
@@ -282,8 +288,10 @@ public final class ContainersGetPropertiesHeaders {
      */
     public Boolean isXMsDenyEncryptionScopeOverride() {
         if (!this.xMsDenyEncryptionScopeOverrideHasBeenDeserialized) {
-            this.xMsDenyEncryptionScopeOverride =
-                    Boolean.valueOf(rawHeaders.getValue("x-ms-deny-encryption-scope-override"));
+            if (rawHeaders.getValue("x-ms-deny-encryption-scope-override") != null) {
+                this.xMsDenyEncryptionScopeOverride =
+                        Boolean.valueOf(rawHeaders.getValue("x-ms-deny-encryption-scope-override"));
+            }
             this.xMsDenyEncryptionScopeOverrideHasBeenDeserialized = true;
         }
         return this.xMsDenyEncryptionScopeOverride;
@@ -307,7 +315,9 @@ public final class ContainersGetPropertiesHeaders {
      */
     public OffsetDateTime getLastModified() {
         if (!this.lastModifiedHasBeenDeserialized) {
-            this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
+            if (rawHeaders.getValue("Last-Modified") != null) {
+                this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
+            }
             this.lastModifiedHasBeenDeserialized = true;
         }
         if (this.lastModified == null) {
@@ -370,7 +380,9 @@ public final class ContainersGetPropertiesHeaders {
      */
     public OffsetDateTime getDateProperty() {
         if (!this.datePropertyHasBeenDeserialized) {
-            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+            if (rawHeaders.getValue("Date") != null) {
+                this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+            }
             this.datePropertyHasBeenDeserialized = true;
         }
         if (this.dateProperty == null) {
@@ -401,7 +413,9 @@ public final class ContainersGetPropertiesHeaders {
      */
     public Boolean isXMsHasLegalHold() {
         if (!this.xMsHasLegalHoldHasBeenDeserialized) {
-            this.xMsHasLegalHold = Boolean.valueOf(rawHeaders.getValue("x-ms-has-legal-hold"));
+            if (rawHeaders.getValue("x-ms-has-legal-hold") != null) {
+                this.xMsHasLegalHold = Boolean.valueOf(rawHeaders.getValue("x-ms-has-legal-hold"));
+            }
             this.xMsHasLegalHoldHasBeenDeserialized = true;
         }
         return this.xMsHasLegalHold;
@@ -473,7 +487,9 @@ public final class ContainersGetPropertiesHeaders {
      */
     public Boolean isXMsHasImmutabilityPolicy() {
         if (!this.xMsHasImmutabilityPolicyHasBeenDeserialized) {
-            this.xMsHasImmutabilityPolicy = Boolean.valueOf(rawHeaders.getValue("x-ms-has-immutability-policy"));
+            if (rawHeaders.getValue("x-ms-has-immutability-policy") != null) {
+                this.xMsHasImmutabilityPolicy = Boolean.valueOf(rawHeaders.getValue("x-ms-has-immutability-policy"));
+            }
             this.xMsHasImmutabilityPolicyHasBeenDeserialized = true;
         }
         return this.xMsHasImmutabilityPolicy;
@@ -497,7 +513,9 @@ public final class ContainersGetPropertiesHeaders {
      */
     public LeaseDurationType getXMsLeaseDuration() {
         if (!this.xMsLeaseDurationHasBeenDeserialized) {
-            this.xMsLeaseDuration = LeaseDurationType.fromString(rawHeaders.getValue("x-ms-lease-duration"));
+            if (rawHeaders.getValue("x-ms-lease-duration") != null) {
+                this.xMsLeaseDuration = LeaseDurationType.fromString(rawHeaders.getValue("x-ms-lease-duration"));
+            }
             this.xMsLeaseDurationHasBeenDeserialized = true;
         }
         return this.xMsLeaseDuration;
@@ -521,7 +539,9 @@ public final class ContainersGetPropertiesHeaders {
      */
     public PublicAccessType getXMsBlobPublicAccess() {
         if (!this.xMsBlobPublicAccessHasBeenDeserialized) {
-            this.xMsBlobPublicAccess = PublicAccessType.fromString(rawHeaders.getValue("x-ms-blob-public-access"));
+            if (rawHeaders.getValue("x-ms-blob-public-access") != null) {
+                this.xMsBlobPublicAccess = PublicAccessType.fromString(rawHeaders.getValue("x-ms-blob-public-access"));
+            }
             this.xMsBlobPublicAccessHasBeenDeserialized = true;
         }
         return this.xMsBlobPublicAccess;

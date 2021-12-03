@@ -119,7 +119,9 @@ public final class ServicesGetAccountInfoHeaders {
      */
     public AccountKind getXMsAccountKind() {
         if (!this.xMsAccountKindHasBeenDeserialized) {
-            this.xMsAccountKind = AccountKind.fromString(rawHeaders.getValue("x-ms-account-kind"));
+            if (rawHeaders.getValue("x-ms-account-kind") != null) {
+                this.xMsAccountKind = AccountKind.fromString(rawHeaders.getValue("x-ms-account-kind"));
+            }
             this.xMsAccountKindHasBeenDeserialized = true;
         }
         return this.xMsAccountKind;
@@ -143,7 +145,9 @@ public final class ServicesGetAccountInfoHeaders {
      */
     public Boolean isXMsIsHnsEnabled() {
         if (!this.xMsIsHnsEnabledHasBeenDeserialized) {
-            this.xMsIsHnsEnabled = Boolean.valueOf(rawHeaders.getValue("x-ms-is-hns-enabled"));
+            if (rawHeaders.getValue("x-ms-is-hns-enabled") != null) {
+                this.xMsIsHnsEnabled = Boolean.valueOf(rawHeaders.getValue("x-ms-is-hns-enabled"));
+            }
             this.xMsIsHnsEnabledHasBeenDeserialized = true;
         }
         return this.xMsIsHnsEnabled;
@@ -167,7 +171,9 @@ public final class ServicesGetAccountInfoHeaders {
      */
     public SkuName getXMsSkuName() {
         if (!this.xMsSkuNameHasBeenDeserialized) {
-            this.xMsSkuName = SkuName.fromString(rawHeaders.getValue("x-ms-sku-name"));
+            if (rawHeaders.getValue("x-ms-sku-name") != null) {
+                this.xMsSkuName = SkuName.fromString(rawHeaders.getValue("x-ms-sku-name"));
+            }
             this.xMsSkuNameHasBeenDeserialized = true;
         }
         return this.xMsSkuName;
@@ -239,7 +245,9 @@ public final class ServicesGetAccountInfoHeaders {
      */
     public OffsetDateTime getDateProperty() {
         if (!this.datePropertyHasBeenDeserialized) {
-            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+            if (rawHeaders.getValue("Date") != null) {
+                this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+            }
             this.datePropertyHasBeenDeserialized = true;
         }
         if (this.dateProperty == null) {

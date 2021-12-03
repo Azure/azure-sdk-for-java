@@ -369,6 +369,9 @@ public final class BlobErrorCode extends ExpandableStringEnum<BlobErrorCode> {
     public static final BlobErrorCode AUTHORIZATION_RESOURCE_TYPE_MISMATCH =
             fromString("AuthorizationResourceTypeMismatch");
 
+    /** Static value SnaphotOperationRateExceeded for BlobErrorCode. */
+    public static final BlobErrorCode SNAPHOT_OPERATION_RATE_EXCEEDED = fromString("SnaphotOperationRateExceeded");
+
     /**
      * Creates or finds a BlobErrorCode from its string representation.
      *

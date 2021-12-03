@@ -264,7 +264,7 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return statistics for the storage service.
+     * @return stats for the storage service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesGetStatisticsResponse> getStatisticsWithResponseAsync(

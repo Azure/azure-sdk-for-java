@@ -142,7 +142,9 @@ public final class ContainersGetAccessPolicyHeaders {
      */
     public OffsetDateTime getLastModified() {
         if (!this.lastModifiedHasBeenDeserialized) {
-            this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
+            if (rawHeaders.getValue("Last-Modified") != null) {
+                this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
+            }
             this.lastModifiedHasBeenDeserialized = true;
         }
         if (this.lastModified == null) {
@@ -173,7 +175,9 @@ public final class ContainersGetAccessPolicyHeaders {
      */
     public PublicAccessType getXMsBlobPublicAccess() {
         if (!this.xMsBlobPublicAccessHasBeenDeserialized) {
-            this.xMsBlobPublicAccess = PublicAccessType.fromString(rawHeaders.getValue("x-ms-blob-public-access"));
+            if (rawHeaders.getValue("x-ms-blob-public-access") != null) {
+                this.xMsBlobPublicAccess = PublicAccessType.fromString(rawHeaders.getValue("x-ms-blob-public-access"));
+            }
             this.xMsBlobPublicAccessHasBeenDeserialized = true;
         }
         return this.xMsBlobPublicAccess;
@@ -245,7 +249,9 @@ public final class ContainersGetAccessPolicyHeaders {
      */
     public OffsetDateTime getDateProperty() {
         if (!this.datePropertyHasBeenDeserialized) {
-            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+            if (rawHeaders.getValue("Date") != null) {
+                this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+            }
             this.datePropertyHasBeenDeserialized = true;
         }
         if (this.dateProperty == null) {

@@ -137,7 +137,9 @@ public final class BlockBlobsStageBlockFromURLHeaders {
      */
     public byte[] getXMsContentCrc64() {
         if (!this.xMsContentCrc64HasBeenDeserialized) {
-            this.xMsContentCrc64 = Base64.getDecoder().decode(rawHeaders.getValue("x-ms-content-crc64"));
+            if (rawHeaders.getValue("x-ms-content-crc64") != null) {
+                this.xMsContentCrc64 = Base64.getDecoder().decode(rawHeaders.getValue("x-ms-content-crc64"));
+            }
             this.xMsContentCrc64HasBeenDeserialized = true;
         }
         return CoreUtils.clone(this.xMsContentCrc64);
@@ -209,7 +211,9 @@ public final class BlockBlobsStageBlockFromURLHeaders {
      */
     public Boolean isXMsRequestServerEncrypted() {
         if (!this.xMsRequestServerEncryptedHasBeenDeserialized) {
-            this.xMsRequestServerEncrypted = Boolean.valueOf(rawHeaders.getValue("x-ms-request-server-encrypted"));
+            if (rawHeaders.getValue("x-ms-request-server-encrypted") != null) {
+                this.xMsRequestServerEncrypted = Boolean.valueOf(rawHeaders.getValue("x-ms-request-server-encrypted"));
+            }
             this.xMsRequestServerEncryptedHasBeenDeserialized = true;
         }
         return this.xMsRequestServerEncrypted;
@@ -257,7 +261,9 @@ public final class BlockBlobsStageBlockFromURLHeaders {
      */
     public OffsetDateTime getDateProperty() {
         if (!this.datePropertyHasBeenDeserialized) {
-            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+            if (rawHeaders.getValue("Date") != null) {
+                this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+            }
             this.datePropertyHasBeenDeserialized = true;
         }
         if (this.dateProperty == null) {
@@ -288,7 +294,9 @@ public final class BlockBlobsStageBlockFromURLHeaders {
      */
     public byte[] getContentMD5() {
         if (!this.contentMD5HasBeenDeserialized) {
-            this.contentMD5 = Base64.getDecoder().decode(rawHeaders.getValue("Content-MD5"));
+            if (rawHeaders.getValue("Content-MD5") != null) {
+                this.contentMD5 = Base64.getDecoder().decode(rawHeaders.getValue("Content-MD5"));
+            }
             this.contentMD5HasBeenDeserialized = true;
         }
         return CoreUtils.clone(this.contentMD5);

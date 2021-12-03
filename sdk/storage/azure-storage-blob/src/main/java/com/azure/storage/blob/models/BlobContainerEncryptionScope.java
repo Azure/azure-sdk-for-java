@@ -8,15 +8,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** Parameter group. */
-@JacksonXmlRootElement(localName = "BlobContainerEncryptionScope")
 @Fluent
+@JacksonXmlRootElement(localName = "blob-container-encryption-scope")
 public final class BlobContainerEncryptionScope {
 
     /*
      * Optional.  Version 2019-07-07 and later.  Specifies the default
      * encryption scope to set on the container and use for all future writes.
      */
-    @JsonProperty(value = "defaultEncryptionScope")
+    @JsonProperty(value = "DefaultEncryptionScope")
     private String defaultEncryptionScope;
 
     /*
@@ -24,7 +24,7 @@ public final class BlobContainerEncryptionScope {
      * from specifying a different encryption scope than the scope set on the
      * container.
      */
-    @JsonProperty(value = "encryptionScopeOverridePrevented")
+    @JsonProperty(value = "EncryptionScopeOverridePrevented")
     private Boolean encryptionScopeOverridePrevented;
 
     /**

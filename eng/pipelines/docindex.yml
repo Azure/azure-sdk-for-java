@@ -10,6 +10,7 @@ jobs:
       DocRepoLocation: $(Pipeline.Workspace)/docs
       DocRepoOwner: Azure
       DocRepoName: azure-docs-sdk-java
+      DailyDocsRepoOwner: azure-sdk
     steps:
       # Sync docs repo onboarding files/folders
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
@@ -49,14 +50,29 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/set-daily-docs-branch-name.yml
         parameters:
           DailyBranchVariableName: DailyDocsBranchName
+      # Create a branch to track docs fork repo onboarding files/folders
       - pwsh: |
           $ErrorActionPreference = "Continue"
-          git checkout "origin/$(DailyDocsBranchName)" 2>&1 | Out-Null
-          $LASTEXITCODE = 0 # This ignores any error from git checkout
-          git status
-        displayName: Checkout daily branch if it exists
+          # git remote on fork repo
+          $GitUrl = "https://$(azuresdk-github-pat)@github.com/$(DailyDocsRepoOwner)/$(DocRepoName).git"
+          $remoteName = "$(DailyDocsRepoOwner)"
+          Write-Host "git remote add $remoteName $GitUrl"
+          git remote add $remoteName $GitUrl
+          if ($LASTEXITCODE -ne 0)
+          {
+            Write-Error "Unable to add remote LASTEXITCODE=$($LASTEXITCODE), see command output above."
+            exit $LASTEXITCODE
+          }
+          
+          # git fetch on fork repo
+          Write-Host "git fetch $remoteName $(DailyDocsBranchName)"
+          git fetch $remoteName "$(DailyDocsBranchName)"
+
+          # create a branch tracking fork repo daily branch
+          Write-Host "git checkout -b $(DailyDocsBranchName) -t $remoteName/$(DailyDocsBranchName)"
+          git checkout -b $(DailyDocsBranchName) -t "$remoteName/$(DailyDocsBranchName)"
+        displayName: Checkout fork repo daily branch
         workingDirectory: $(DocRepoLocation)
-        
       # Docs daily updates is supposed to download packages from public feed repository, so we have to specify additional repositories in a POM or the profile.
       # Here is maven documentation: https://maven.apache.org/guides/mini/guide-multiple-repositories.html
       - powershell: |
@@ -76,7 +92,7 @@ jobs:
         inputs:
           pwsh: true
           filePath: eng/common/scripts/Update-DocsMsPackages.ps1
-          arguments: -DocRepoLocation $(DocRepoLocation)
+          arguments: -DocRepoLocation "$(DocRepoLocation)"
         displayName: Update Docs Onboarding for Daily branch
       - template: /eng/common/pipelines/templates/steps/git-push-changes.yml
         parameters:

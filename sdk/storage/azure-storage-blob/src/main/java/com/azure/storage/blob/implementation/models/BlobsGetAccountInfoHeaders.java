@@ -110,7 +110,9 @@ public final class BlobsGetAccountInfoHeaders {
      */
     public AccountKind getXMsAccountKind() {
         if (!this.xMsAccountKindHasBeenDeserialized) {
-            this.xMsAccountKind = AccountKind.fromString(rawHeaders.getValue("x-ms-account-kind"));
+            if (rawHeaders.getValue("x-ms-account-kind") != null) {
+                this.xMsAccountKind = AccountKind.fromString(rawHeaders.getValue("x-ms-account-kind"));
+            }
             this.xMsAccountKindHasBeenDeserialized = true;
         }
         return this.xMsAccountKind;
@@ -134,7 +136,9 @@ public final class BlobsGetAccountInfoHeaders {
      */
     public SkuName getXMsSkuName() {
         if (!this.xMsSkuNameHasBeenDeserialized) {
-            this.xMsSkuName = SkuName.fromString(rawHeaders.getValue("x-ms-sku-name"));
+            if (rawHeaders.getValue("x-ms-sku-name") != null) {
+                this.xMsSkuName = SkuName.fromString(rawHeaders.getValue("x-ms-sku-name"));
+            }
             this.xMsSkuNameHasBeenDeserialized = true;
         }
         return this.xMsSkuName;
@@ -206,7 +210,9 @@ public final class BlobsGetAccountInfoHeaders {
      */
     public OffsetDateTime getDateProperty() {
         if (!this.datePropertyHasBeenDeserialized) {
-            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+            if (rawHeaders.getValue("Date") != null) {
+                this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+            }
             this.datePropertyHasBeenDeserialized = true;
         }
         if (this.dateProperty == null) {

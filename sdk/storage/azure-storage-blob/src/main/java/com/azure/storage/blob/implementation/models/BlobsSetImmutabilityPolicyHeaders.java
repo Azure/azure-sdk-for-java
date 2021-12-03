@@ -85,8 +85,10 @@ public final class BlobsSetImmutabilityPolicyHeaders {
      */
     public BlobImmutabilityPolicyMode getXMsImmutabilityPolicyMode() {
         if (!this.xMsImmutabilityPolicyModeHasBeenDeserialized) {
-            this.xMsImmutabilityPolicyMode =
-                    BlobImmutabilityPolicyMode.fromString(rawHeaders.getValue("x-ms-immutability-policy-mode"));
+            if (rawHeaders.getValue("x-ms-immutability-policy-mode") != null) {
+                this.xMsImmutabilityPolicyMode =
+                        BlobImmutabilityPolicyMode.fromString(rawHeaders.getValue("x-ms-immutability-policy-mode"));
+            }
             this.xMsImmutabilityPolicyModeHasBeenDeserialized = true;
         }
         return this.xMsImmutabilityPolicyMode;
@@ -135,8 +137,10 @@ public final class BlobsSetImmutabilityPolicyHeaders {
      */
     public OffsetDateTime getXMsImmutabilityPolicyUntilDate() {
         if (!this.xMsImmutabilityPolicyUntilDateHasBeenDeserialized) {
-            this.xMsImmutabilityPolicyUntilDate =
-                    new DateTimeRfc1123(rawHeaders.getValue("x-ms-immutability-policy-until-date"));
+            if (rawHeaders.getValue("x-ms-immutability-policy-until-date") != null) {
+                this.xMsImmutabilityPolicyUntilDate =
+                        new DateTimeRfc1123(rawHeaders.getValue("x-ms-immutability-policy-until-date"));
+            }
             this.xMsImmutabilityPolicyUntilDateHasBeenDeserialized = true;
         }
         if (this.xMsImmutabilityPolicyUntilDate == null) {
@@ -216,7 +220,9 @@ public final class BlobsSetImmutabilityPolicyHeaders {
      */
     public OffsetDateTime getDateProperty() {
         if (!this.datePropertyHasBeenDeserialized) {
-            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+            if (rawHeaders.getValue("Date") != null) {
+                this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+            }
             this.datePropertyHasBeenDeserialized = true;
         }
         if (this.dateProperty == null) {
