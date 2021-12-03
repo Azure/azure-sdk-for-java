@@ -1729,21 +1729,17 @@ public class VirtualMachineScaleSetImpl
 
     private Mono<VirtualMachineScaleSetInner> createInnerNoProfile() {
         this.innerModel().withVirtualMachineProfile(null);
-        return Mono.just(this)
-            .flatMap(virtualMachineScaleSet -> this
-                .manager()
+        return manager()
                 .serviceClient()
                 .getVirtualMachineScaleSets()
-                .createOrUpdateAsync(resourceGroupName(), name(), innerModel()));
+                .createOrUpdateAsync(resourceGroupName(), name(), innerModel());
     }
 
     private Mono<VirtualMachineScaleSet> updateResourceAsyncNoProfile(VirtualMachineScaleSetImpl self) {
-        return Mono.just(this)
-            .flatMap(virtualMachineScaleSet -> this
-                .manager()
-                .serviceClient()
-                .getVirtualMachineScaleSets()
-                .updateAsync(resourceGroupName(), name(), VMSSPatchPayload.preparePatchPayload(this)))
+        return manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .updateAsync(resourceGroupName(), name(), VMSSPatchPayload.preparePatchPayload(this))
             .map(
                 vmssInner -> {
                     setInner(vmssInner);
