@@ -21,7 +21,6 @@ import com.azure.spring.core.properties.util.PropertyMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -98,16 +97,17 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
         map.from(this.cosmosProperties.getReadRequestsFallbackEnabled()).to(builder::readRequestsFallbackEnabled);
         map.from(this.cosmosProperties.getSessionCapturingOverrideEnabled()).to(builder::sessionCapturingOverrideEnabled);
         map.from(this.cosmosProperties.getPreferredRegions()).whenNot(List::isEmpty).to(builder::preferredRegions);
+        configureThrottlingRetryOptions(builder, map);
+        configureConnection(builder, map);
+    }
 
-        ThrottlingRetryOptions retryOptions = this.cosmosProperties.getThrottlingRetryOptions();
-        if (this.throttlingRetryOptions != null && isDefaultThrottlingRetryOptions(retryOptions)) {
-            map.from(this.throttlingRetryOptions).to(builder::throttlingRetryOptions);
-            LOGGER.debug("The throttling retry options is not configured, "
-                + "then the Azure Spring Retry configuration will be applied to Cosmos service builder.");
-        } else {
-            map.from(retryOptions).to(builder::throttlingRetryOptions);
-        }
-
+    /**
+     * Configure Cosmos connection.
+     * If not configured the proxy of gateway connection, then will try to use the root proxy of Cosmos properties.
+     * @param builder Cosmos client builder
+     * @param map Property mapper
+     */
+    private void configureConnection(CosmosClientBuilder builder, PropertyMapper map) {
         // TODO (xiada): should we count this as authentication
         map.from(this.cosmosProperties.getResourceToken()).to(builder::resourceToken);
         map.from(this.cosmosProperties.getPermissions()).whenNot(List::isEmpty).to(builder::permissions);
@@ -125,16 +125,31 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
     }
 
     /**
+     * Configure ThrottlingRetryOptions.
+     * If not configured the retry options of ThrottlingRetryOptions, then will try to use the root retry options of Cosmos properties.
+     * @param builder Cosmos client builder
+     * @param map Property mapper
+     */
+    private void configureThrottlingRetryOptions(CosmosClientBuilder builder, PropertyMapper map) {
+        ThrottlingRetryOptions retryOptions = this.cosmosProperties.getThrottlingRetryOptions();
+        if (this.throttlingRetryOptions != null && isDefaultThrottlingRetryOptions(retryOptions)) {
+            map.from(this.throttlingRetryOptions).to(builder::throttlingRetryOptions);
+            LOGGER.debug("The throttling retry options is not configured, "
+                + "then the Azure Spring Retry configuration will be applied to Cosmos service builder.");
+        } else {
+            map.from(retryOptions).to(builder::throttlingRetryOptions);
+        }
+    }
+
+    /**
      * Check if the retry option is the default value, which is defined in azure-cosmos SDK.
      * @param retryOptions retry options to be checked
      * @return result
      */
     private boolean isDefaultThrottlingRetryOptions(ThrottlingRetryOptions retryOptions) {
-        if (retryOptions.getMaxRetryWaitTime().equals(Duration.ofSeconds(30))
-            && retryOptions.getMaxRetryAttemptsOnThrottledRequests() == 9) {
-            return true;
-        }
-        return false;
+        ThrottlingRetryOptions defaultOptions = new ThrottlingRetryOptions();
+        return defaultOptions.getMaxRetryAttemptsOnThrottledRequests() == retryOptions.getMaxRetryAttemptsOnThrottledRequests()
+            && defaultOptions.getMaxRetryWaitTime().equals(retryOptions.getMaxRetryWaitTime());
     }
 
     /**
@@ -143,10 +158,7 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
      * @return result
      */
     private boolean isInvalidRetry(RetryAware.Retry retry) {
-        if (retry.getMaxAttempts() == null || retry.getTimeout() == null) {
-            return true;
-        }
-        return false;
+        return retry.getMaxAttempts() == null || retry.getTimeout() == null;
     }
 
     @Override

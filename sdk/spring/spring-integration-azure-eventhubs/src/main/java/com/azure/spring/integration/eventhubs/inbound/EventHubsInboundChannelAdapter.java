@@ -132,10 +132,6 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
         default void updateInstrumentation(ErrorContext errorContext,
                                            InstrumentationManager instrumentationManager,
                                            String instrumentationId) {
-            if (instrumentationManager == null) {
-                return;
-            }
-
             Instrumentation instrumentation = instrumentationManager.getHealthInstrumentation(instrumentationId);
             if (instrumentation != null) {
                 if (instrumentation instanceof EventHusProcessorInstrumentation) {
