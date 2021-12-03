@@ -32,8 +32,7 @@ default-http-exception-type: com.azure.storage.file.datalake.models.DataLakeStor
 models-subpackage: implementation.models
 custom-types: FileSystemInfo,FileSystemItem,FileSystemProperties,PathInfo,PathItem,PathProperties,ListFileSystemsOptions,PathHttpHeaders
 custom-types-subpackage: models
-customization-jar-path: target/azure-storage-file-datalake-customization-1.0.0-beta.1.jar
-customization-class: com.azure.storage.file.datalake.customization.DataLakeStorageCustomization
+customization-class: src/main/java/DataLakeStorageCustomization.java
 ```
 
 ### Make the body of append octet-stream /{filesystem}/{path}?action=append
@@ -51,7 +50,6 @@ directive:
 - from: swagger-document
   where: $["x-ms-paths"]["/{filesystem}/{path}"]["head"]["responses"]["200"]
   transform: >
-      delete $.headers["x-ms-acl"]["x-ms-client-name"];
       $.headers["x-ms-acl"]["x-ms-client-name"] = "acl";
 ```
 
@@ -104,7 +102,7 @@ directive:
     }
 ```
 
-### Turn Path eTag into eta
+### Turn Path eTag into etag
 ``` yaml
 directive:
 - from: swagger-document

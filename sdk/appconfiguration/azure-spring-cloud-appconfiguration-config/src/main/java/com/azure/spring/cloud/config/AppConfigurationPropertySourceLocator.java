@@ -9,8 +9,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.slf4j.Logger;
@@ -20,9 +18,7 @@ import org.springframework.core.env.CompositePropertySource;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertySource;
-import org.springframework.lang.NonNull;
 import org.springframework.util.ReflectionUtils;
-import org.springframework.util.StringUtils;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -42,19 +38,13 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationPropertySourceLocator.class);
 
-    private static final String SPRING_APP_NAME_PROP = "spring.application.name";
-
     private static final String PROPERTY_SOURCE_NAME = "azure-config-store";
 
     private static final String REFRESH_ARGS_PROPERTY_SOURCE = "refreshArgs";
 
-    private static final String PATH_SPLITTER = "/";
-
     private final AppConfigurationProperties properties;
 
     private final List<ConfigStore> configStores;
-
-    private final Map<String, List<String>> storeContextsMap = new ConcurrentHashMap<>();
 
     private final AppConfigurationProviderProperties appProperties;
 
@@ -94,11 +84,6 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
             return null;
         }
 
-        String applicationName = this.properties.getName();
-        if (!StringUtils.hasText(applicationName)) {
-            applicationName = env.getProperty(SPRING_APP_NAME_PROP);
-        }
-
         List<String> profiles = Arrays.asList(env.getActiveProfiles());
 
         CompositePropertySource composite = new CompositePropertySource(PROPERTY_SOURCE_NAME);
@@ -112,8 +97,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
             Boolean loadNewPropertySources = startup.get() || StateHolder.getLoadState(configStore.getEndpoint());
 
             if (configStore.isEnabled() && loadNewPropertySources) {
-                addPropertySource(composite, configStore, applicationName, profiles, storeContextsMap,
-                    !configStoreIterator.hasNext());
+                addPropertySource(composite, configStore, profiles, !configStoreIterator.hasNext());
             } else if (!configStore.isEnabled() && loadNewPropertySources) {
                 LOGGER.info("Not loading configurations from {} as it is not enabled.", configStore.getEndpoint());
             } else {
@@ -123,10 +107,6 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         configloaded.set(true);
         startup.set(false);
         return composite;
-    }
-
-    public Map<String, List<String>> getStoreContextsMap() {
-        return this.storeContextsMap;
     }
 
     /**
@@ -140,12 +120,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
      * @param initFeatures determines if Feature Management is set in the PropertySource. When generating more than one
      * it needs to be in the last one.
      */
-    private void addPropertySource(CompositePropertySource composite, ConfigStore store, String applicationName,
-        List<String> profiles, Map<String, List<String>> storeContextsMap, boolean initFeatures) {
-
-        List<String> contexts = new ArrayList<>();
-        contexts.addAll(generateContexts(this.properties.getDefaultContext(), store));
-        contexts.addAll(generateContexts(applicationName, store));
+    private void addPropertySource(CompositePropertySource composite, ConfigStore store, List<String> profiles,
+        boolean initFeatures) {
 
         // There is only one Feature Set for all AppConfigurationPropertySources
         FeatureSet featureSet = new FeatureSet();
@@ -154,42 +130,27 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
 
         // Reverse in order to add Profile specific properties earlier, and last profile
         // comes first
-        Collections.reverse(contexts);
-        for (String sourceContext : contexts) {
-            try {
-                sourceList.addAll(create(sourceContext, store, storeContextsMap, profiles, initFeatures, featureSet));
 
-                LOGGER.debug("PropertySource context [{}] is added.", sourceContext);
-            } catch (Exception e) {
-                if (store.isFailFast() || !startup.get()) {
-                    LOGGER.error(
-                        "Fail fast is set and there was an error reading configuration from Azure App "
-                            + "Configuration store " + store.getEndpoint()
-                            + ". The configuration starting with " + sourceContext + " failed to load.");
-                    ReflectionUtils.rethrowRuntimeException(e);
-                } else {
-                    LOGGER.warn(
-                        "Unable to load configuration from Azure AppConfiguration store " + store.getEndpoint()
-                            + ". The configurations starting with " + sourceContext + "failed to load.",
-                        e);
-                    StateHolder.setLoadState(store.getEndpoint(), false);
-                }
-                // If anything breaks we skip out on loading the rest of the store.
-                return;
+        try {
+            sourceList.addAll(create(store, profiles, initFeatures, featureSet));
+
+            LOGGER.debug("PropertySource context.");
+        } catch (Exception e) {
+            if (store.isFailFast() || !startup.get()) {
+                LOGGER.error(
+                    "Fail fast is set and there was an error reading configuration from Azure App "
+                        + "Configuration store " + store.getEndpoint() + ".");
+                ReflectionUtils.rethrowRuntimeException(e);
+            } else {
+                LOGGER.warn(
+                    "Unable to load configuration from Azure AppConfiguration store " + store.getEndpoint() + ".",
+                    e);
+                StateHolder.setLoadState(store.getEndpoint(), false);
             }
+            // If anything breaks we skip out on loading the rest of the store.
+            return;
         }
         sourceList.forEach(composite::addPropertySource);
-    }
-
-    private List<String> generateContexts(String applicationName, ConfigStore configStore) {
-        List<String> result = new ArrayList<>();
-        if (!StringUtils.hasText(applicationName)) {
-            return result; // Ignore null or empty application name
-        }
-
-        result.add(PATH_SPLITTER + applicationName + PATH_SPLITTER);
-
-        return result;
     }
 
     /**
@@ -202,8 +163,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
      * it needs to be in the last one.
      * @return a list of AppConfigurationPropertySources
      */
-    private List<AppConfigurationPropertySource> create(String context, ConfigStore store,
-        Map<String, List<String>> storeContextsMap, List<String> profiles, boolean initFeatures, FeatureSet featureSet)
+    private List<AppConfigurationPropertySource> create(ConfigStore store, List<String> profiles, boolean initFeatures, FeatureSet featureSet)
         throws Exception {
         List<AppConfigurationPropertySource> sourceList = new ArrayList<>();
 
@@ -211,9 +171,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
             List<AppConfigurationStoreSelects> selects = store.getSelects();
 
             for (AppConfigurationStoreSelects selectedKeys : selects) {
-                putStoreContext(store.getEndpoint(), context, storeContextsMap);
-                AppConfigurationPropertySource propertySource = new AppConfigurationPropertySource(context, store,
-                    selectedKeys, profiles, properties, clients, appProperties, keyVaultCredentialProvider,
+                AppConfigurationPropertySource propertySource = new AppConfigurationPropertySource(store, selectedKeys,
+                    profiles, properties, clients, appProperties, keyVaultCredentialProvider,
                     keyVaultClientProvider, keyVaultSecretProvider);
 
                 propertySource.initProperties(featureSet);
@@ -265,28 +224,6 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         }
 
         return sourceList;
-    }
-
-    /**
-     * Put certain context to the store contexts map
-     *
-     * @param storeName the name of the configuration store
-     * @param context the context text for the PropertySource, e.g., "/application"
-     * @param storeContextsMap the Map storing the storeName -> List of contexts map
-     */
-    private void putStoreContext(String storeName, String context,
-        @NonNull Map<String, List<String>> storeContextsMap) {
-        if (!StringUtils.hasText(context) || !StringUtils.hasText(storeName)) {
-            return;
-        }
-
-        List<String> contexts = storeContextsMap.get(storeName);
-        if (contexts == null) {
-            contexts = new ArrayList<String>();
-        }
-        contexts.add(context);
-
-        storeContextsMap.put(storeName, contexts);
     }
 
     private void delayException() {

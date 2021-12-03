@@ -467,6 +467,51 @@ class SparkE2EQueryITest
     fieldNames.contains(CosmosTableSchemaInferrer.AttachmentsAttributeName) shouldBe false
   }
 
+  "spark query" can "use schema inference with varying schema across partitions" in {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+    for (index <- 1 to 20) {
+      val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
+      objectNode.put("name", "Shrodigner's frog")
+      objectNode.put("type", "frog")
+      objectNode.put("age", 20)
+      objectNode.put(s"Property${index.toString}", index.toString)
+      objectNode.put("id", UUID.randomUUID().toString)
+      container.createItem(objectNode).block()
+    }
+
+    val cfgWithInference = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainer,
+      "spark.cosmos.read.inferSchema.enabled" -> "true",
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
+    )
+
+    // Not passing schema, letting inference work
+    val dfWithInference = spark.read.format("cosmos.oltp").options(cfgWithInference).load()
+    val rowsArrayWithInference = dfWithInference.where("type = 'frog'").collect()
+    rowsArrayWithInference should have size 20
+
+    val rowWithInference = rowsArrayWithInference(0)
+    rowWithInference.getAs[String]("name") shouldEqual "Shrodigner's frog"
+    rowWithInference.getAs[String]("type") shouldEqual "frog"
+    rowWithInference.getAs[Integer]("age") shouldEqual 20
+
+    val fieldNames = rowWithInference.schema.fields.map(field => field.name)
+    fieldNames.contains(CosmosTableSchemaInferrer.SelfAttributeName) shouldBe false
+    fieldNames.contains(CosmosTableSchemaInferrer.TimestampAttributeName) shouldBe false
+    fieldNames.contains(CosmosTableSchemaInferrer.ResourceIdAttributeName) shouldBe false
+    fieldNames.contains(CosmosTableSchemaInferrer.ETagAttributeName) shouldBe false
+    fieldNames.contains(CosmosTableSchemaInferrer.AttachmentsAttributeName) shouldBe false
+    for (index <- 1 to 20) {
+      logInfo(s"Property${index.toString}")
+      fieldNames.contains(s"Property${index.toString}") shouldBe true
+    }
+  }
+
   "spark query" can "use schema inference with custom query" in {
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
@@ -601,6 +646,7 @@ class SparkE2EQueryITest
     }
     catch {
       case inner: Exception =>
+        logInfo(inner.toString)
         inner.toString.contains("The 1th field 'B' of input row cannot be null") shouldBe true
     }
   }

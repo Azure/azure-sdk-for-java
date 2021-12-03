@@ -555,8 +555,6 @@ public interface VirtualMachineScaleSet
              * <p>By default, all the backends and inbound NAT pools of the load balancer will be associated with the
              * primary network interface of the scale set virtual machines.
              *
-             * <p>
-             *
              * @param loadBalancer an existing Internet-facing load balancer
              * @return the next stage of the definition
              */
@@ -583,8 +581,6 @@ public interface VirtualMachineScaleSet
              * <p>By default all the backends and inbound NAT pools of the load balancer will be associated with the
              * primary network interface of the virtual machines in the scale set, unless subset of them is selected in
              * the next stages.
-             *
-             * <p>
              *
              * @param loadBalancer an existing internal load balancer
              * @return the next stage of the definition
@@ -1017,6 +1013,11 @@ public interface VirtualMachineScaleSet
          * for the resource to be created, but also allows for any other optional settings to be specified.
          */
         interface WithWindowsCreateManagedOrUnmanaged extends WithWindowsCreateManaged {
+            /**
+             * Enables unmanaged disks.
+             *
+             * @return the next stage of the definition
+             */
             WithWindowsCreateUnmanaged withUnmanagedDisks();
         }
 
