@@ -1896,7 +1896,12 @@
     <Method name="subscribe"/>
     <Bug pattern="DE_MIGHT_IGNORE"/>
   </Match>
-
+  <Match>
+    <Class name="com.azure.cosmos.implementation.TracerProvider"/>
+    <Method name="subscribe"/>
+    <Bug pattern="DE_MIGHT_IGNORE"/>
+  </Match>
+  
   <!-- Exception is ignored by design which indicate that non-parsable id -->
   <Match>
     <Class name="com.azure.cosmos.implementation.ResourceId"/>

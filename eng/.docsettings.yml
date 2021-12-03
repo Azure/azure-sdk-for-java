@@ -3,6 +3,7 @@ omitted_paths:
   - profiles/*
   - loganalytics/data-plane/samples/*
   - sdk/*/azure-*/samples/*
+  - sdk/authorization/microsoft-azure-authentication-msi-token-provider/*
   - sdk/*/azure-monitor-opentelemetry-exporter/*/samples/*
   - sdk/applicationinsights/microsoft-azure-applicationinsights-query/samples/*
   - sdk/spring/azure-spring-boot-samples/*

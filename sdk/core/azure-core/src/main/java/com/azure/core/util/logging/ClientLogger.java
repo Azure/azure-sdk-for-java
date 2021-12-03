@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.helpers.NOPLogger;
 
+import java.util.Collections;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
 
@@ -37,10 +39,14 @@ import static com.azure.core.implementation.logging.LoggingUtils.removeThrowable
  * <li>{@link ClientLogger#verbose(String, Object...) Verbose}</li>
  * </ol>
  *
+ * <p>The logger is capable of producing json-formatted messages enriched with key value pairs.
+ * Context can be provided in the constructor and populated on every message or added per each log record.</p>
  * @see Configuration
  */
 public class ClientLogger {
     private final Logger logger;
+    private final String globalContextSerialized;
+    private final boolean hasGlobalContext;
 
     /**
      * Retrieves a logger for the passed class using the {@link LoggerFactory}.
@@ -55,11 +61,47 @@ public class ClientLogger {
      * Retrieves a logger for the passed class name using the {@link LoggerFactory}.
      *
      * @param className Class name creating the logger.
-     * @throws RuntimeException it is an error.
+     * @throws RuntimeException when logging configuration is invalid depending on SLF4J implementation.
      */
     public ClientLogger(String className) {
+        this(className, Collections.emptyMap());
+    }
+
+    /**
+     * Retrieves a logger for the passed class using the {@link LoggerFactory}.
+     *
+     * @param clazz Class creating the logger.
+     * @param context Context to be populated on every log record written with this logger.
+     *                Objects are serialized with {@code toString()} method.
+     */
+    public ClientLogger(Class<?> clazz, Map<String, Object> context) {
+        this(clazz.getName(), context);
+    }
+
+    /**
+     * Retrieves a logger for the passed class name using the {@link LoggerFactory} with
+     * context that will be populated on all log records produced with this logger.
+     *
+     * <!-- src_embed com.azure.core.util.logging.clientlogger#globalcontext -->
+     * <pre>
+     * Map&lt;String, Object&gt; context = new HashMap&lt;&gt;&#40;&#41;;
+     * context.put&#40;&quot;connectionId&quot;, &quot;95a47cf&quot;&#41;;
+     *
+     * ClientLogger loggerWithContext = new ClientLogger&#40;ClientLoggerJavaDocCodeSnippets.class, context&#41;;
+     * loggerWithContext.info&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.logging.clientlogger#globalcontext -->
+     *
+     * @param className Class name creating the logger.
+     * @param context Context to be populated on every log record written with this logger.
+     *                Objects are serialized with {@code toString()} method.
+     * @throws RuntimeException when logging configuration is invalid depending on SLF4J implementation.
+     */
+    public ClientLogger(String className, Map<String, Object> context) {
         Logger initLogger = LoggerFactory.getLogger(className);
         logger = initLogger instanceof NOPLogger ? new DefaultLogger(className) : initLogger;
+        globalContextSerialized = LoggingEventBuilder.writeJsonFragment(context);
+        hasGlobalContext = !CoreUtils.isNullOrEmpty(globalContextSerialized);
     }
 
     /**
@@ -126,7 +168,11 @@ public class ClientLogger {
      */
     public void verbose(String message) {
         if (logger.isDebugEnabled()) {
-            logger.debug(removeNewLinesFromLogMessage(message));
+            if (hasGlobalContext) {
+                atVerbose().log(message);
+            } else {
+                logger.debug(removeNewLinesFromLogMessage(message));
+            }
         }
     }
 
@@ -170,7 +216,11 @@ public class ClientLogger {
      */
     public void info(String message) {
         if (logger.isInfoEnabled()) {
-            logger.info(removeNewLinesFromLogMessage(message));
+            if (hasGlobalContext) {
+                atInfo().log(message);
+            } else {
+                logger.info(removeNewLinesFromLogMessage(message));
+            }
         }
     }
 
@@ -215,7 +265,11 @@ public class ClientLogger {
      */
     public void warning(String message) {
         if (logger.isWarnEnabled()) {
-            logger.warn(removeNewLinesFromLogMessage(message));
+            if (hasGlobalContext) {
+                atWarning().log(message);
+            } else {
+                logger.warn(removeNewLinesFromLogMessage(message));
+            }
         }
     }
 
@@ -264,7 +318,11 @@ public class ClientLogger {
      */
     public void error(String message) {
         if (logger.isErrorEnabled()) {
-            logger.error(removeNewLinesFromLogMessage(message));
+            if (hasGlobalContext) {
+                atError().log(message);
+            } else {
+                logger.error(removeNewLinesFromLogMessage(message));
+            }
         }
     }
 
@@ -392,12 +450,18 @@ public class ClientLogger {
     }
 
     /*
-     * Performs the logging.
+     * Performs the logging. Call only if logging at this level is enabled.
      *
      * @param format format-able message.
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
     private void performLogging(LogLevel logLevel, boolean isExceptionLogging, String format, Object... args) {
+        if (hasGlobalContext) {
+            LoggingEventBuilder.create(logger, logLevel, globalContextSerialized, true)
+                .log(format, args);
+            return;
+        }
+
         // If the logging level is less granular than verbose remove the potential throwable from the args.
         String throwableMessage = "";
         if (doesArgsHaveThrowable(args)) {
@@ -448,12 +512,21 @@ public class ClientLogger {
     }
 
     /*
-     * Performs deferred logging.
+     * Performs deferred logging. Call only if logging at this level is enabled.
      *
      * @param logLevel sets the logging level
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
     private void performDeferredLogging(LogLevel logLevel, Supplier<String> messageSupplier, Throwable throwable) {
+
+        if (hasGlobalContext) {
+            // LoggingEventBuilder writes log messages as json and performs all necessary escaping, i.e. no
+            // sanitization needed
+            LoggingEventBuilder.create(logger, logLevel, globalContextSerialized, true)
+                .log(messageSupplier, throwable);
+            return;
+        }
+
         String message = removeNewLinesFromLogMessage(messageSupplier.get());
         String throwableMessage = (throwable != null) ? throwable.getMessage() : "";
 
@@ -548,7 +621,7 @@ public class ClientLogger {
      * @return instance of {@link LoggingEventBuilder}  or no-op if error logging is disabled.
      */
     public LoggingEventBuilder atError() {
-        return LoggingEventBuilder.create(logger, LogLevel.ERROR, canLogAtLevel(LogLevel.ERROR));
+        return LoggingEventBuilder.create(logger, LogLevel.ERROR, globalContextSerialized, canLogAtLevel(LogLevel.ERROR));
     }
 
     /**
@@ -570,7 +643,7 @@ public class ClientLogger {
      * @return instance of {@link LoggingEventBuilder} or no-op if warn logging is disabled.
      */
     public LoggingEventBuilder atWarning() {
-        return LoggingEventBuilder.create(logger, LogLevel.WARNING, canLogAtLevel(LogLevel.WARNING));
+        return LoggingEventBuilder.create(logger, LogLevel.WARNING, globalContextSerialized, canLogAtLevel(LogLevel.WARNING));
     }
 
     /**
@@ -592,7 +665,7 @@ public class ClientLogger {
      * @return instance of {@link LoggingEventBuilder} or no-op if info logging is disabled.
      */
     public LoggingEventBuilder atInfo() {
-        return LoggingEventBuilder.create(logger, LogLevel.INFORMATIONAL, canLogAtLevel(LogLevel.INFORMATIONAL));
+        return LoggingEventBuilder.create(logger, LogLevel.INFORMATIONAL, globalContextSerialized, canLogAtLevel(LogLevel.INFORMATIONAL));
     }
 
     /**
@@ -613,6 +686,6 @@ public class ClientLogger {
      * @return instance of {@link LoggingEventBuilder} or no-op if verbose logging is disabled.
      */
     public LoggingEventBuilder atVerbose() {
-        return LoggingEventBuilder.create(logger, LogLevel.VERBOSE, canLogAtLevel(LogLevel.VERBOSE));
+        return LoggingEventBuilder.create(logger, LogLevel.VERBOSE, globalContextSerialized, canLogAtLevel(LogLevel.VERBOSE));
     }
 }

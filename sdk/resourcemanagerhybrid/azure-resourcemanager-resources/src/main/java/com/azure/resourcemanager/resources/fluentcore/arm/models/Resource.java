@@ -16,6 +16,9 @@ public interface Resource extends
         HasId,
         HasName {
 
+    /**
+     * A dummy resource that does nothing.
+     */
     Resource DUMMY = new Resource() {
         @Override
         public String type() {
