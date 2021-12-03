@@ -35,7 +35,7 @@ import java.util.Collections;
 @ConditionalOnClass(KafkaTemplate.class)
 @ConditionalOnProperty(value = "spring.cloud.azure.eventhubs.kafka.enabled", havingValue = "true", matchIfMissing = true)
 @AutoConfigureAfter({ AzureEventHubsAutoConfiguration.class, AzureEventHubsResourceManagerAutoConfiguration.class })
-public class AzureEventHubsKafkaAutoConfiguration {
+public final class AzureEventHubsKafkaAutoConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureEventHubsKafkaAutoConfiguration.class);
     private static final String SASL_CONFIG_VALUE = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"%s\";%s";

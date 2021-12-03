@@ -13,7 +13,7 @@ import java.util.Map;
  * @author Warren Zhu
  */
 @ConfigurationProperties("spring.cloud.stream.servicebus")
-public class ServiceBusExtendedBindingProperties
+public final class ServiceBusExtendedBindingProperties
     extends AbstractExtendedBindingProperties<ServiceBusConsumerProperties, ServiceBusProducerProperties, ServiceBusBindingProperties> {
 
     private static final String DEFAULTS_PREFIX = "spring.cloud.stream.servicebus.default";

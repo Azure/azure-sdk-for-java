@@ -39,7 +39,7 @@ import org.springframework.context.annotation.Import;
     EventHubsBinderHealthIndicatorConfiguration.class
 })
 @EnableConfigurationProperties(EventHubsExtendedBindingProperties.class)
-public class EventHubsBinderConfiguration {
+public final class EventHubsBinderConfiguration {
 
 
     @Bean

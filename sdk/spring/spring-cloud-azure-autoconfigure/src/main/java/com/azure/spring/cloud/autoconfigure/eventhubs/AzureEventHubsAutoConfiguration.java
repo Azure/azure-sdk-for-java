@@ -30,7 +30,7 @@ import org.springframework.context.annotation.Import;
     AzureBlobCheckpointStoreConfiguration.class,
     AzureEventHubsProcessorClientConfiguration.class
 })
-public class AzureEventHubsAutoConfiguration extends AzureServiceConfigurationBase {
+public final class AzureEventHubsAutoConfiguration extends AzureServiceConfigurationBase {
 
     public AzureEventHubsAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
         super(azureGlobalProperties);

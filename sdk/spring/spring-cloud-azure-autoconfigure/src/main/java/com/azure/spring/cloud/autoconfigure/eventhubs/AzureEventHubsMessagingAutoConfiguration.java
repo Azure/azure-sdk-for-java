@@ -45,7 +45,7 @@ import static com.azure.spring.core.properties.util.AzurePropertiesUtils.copyAzu
     AzureEventHubsMessagingAutoConfiguration.EventHubsTemplateConfiguration.class,
     AzureEventHubsMessagingAutoConfiguration.ProcessorContainerConfiguration.class
 })
-public class AzureEventHubsMessagingAutoConfiguration {
+public final class AzureEventHubsMessagingAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean

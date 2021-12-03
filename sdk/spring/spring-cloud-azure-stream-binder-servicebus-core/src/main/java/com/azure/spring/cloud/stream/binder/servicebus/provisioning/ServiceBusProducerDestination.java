@@ -8,7 +8,7 @@ import org.springframework.cloud.stream.provisioning.ProducerDestination;
 /**
  *
  */
-public class ServiceBusProducerDestination implements ProducerDestination {
+public final class ServiceBusProducerDestination implements ProducerDestination {
 
     private final String name;
 

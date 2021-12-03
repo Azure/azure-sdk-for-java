@@ -11,7 +11,7 @@ import org.springframework.boot.actuate.health.Health;
  * Implementation of a {@link AbstractHealthIndicator} returning status information for
  * service bus queue.
  */
-public class ServiceBusHealthIndicator extends AbstractHealthIndicator {
+public final class ServiceBusHealthIndicator extends AbstractHealthIndicator {
 
     private final InstrumentationManager instrumentationManager;
 

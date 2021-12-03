@@ -13,7 +13,7 @@ import reactor.util.function.Tuples;
 /**
  * Default implementation to provision resources in Azure Event Hubs.
  */
-public class DefaultEventHubsProvisioner implements EventHubsProvisioner {
+public final class DefaultEventHubsProvisioner implements EventHubsProvisioner {
 
     private final EventHubNamespaceCrud namespaceCrud;
     private final EventHubsCrud eventHubsCrud;

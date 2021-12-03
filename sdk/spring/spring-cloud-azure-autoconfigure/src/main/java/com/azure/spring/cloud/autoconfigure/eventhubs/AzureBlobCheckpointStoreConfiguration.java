@@ -33,7 +33,7 @@ import static com.azure.spring.core.properties.util.AzurePropertiesUtils.mergeAz
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass({ BlobCheckpointStore.class, EventHubClientBuilder.class})
 @ConditionalOnProperty(prefix = "spring.cloud.azure.eventhubs.processor.checkpoint-store", name = { "container-name", "account-name" })
-public class AzureBlobCheckpointStoreConfiguration {
+public final class AzureBlobCheckpointStoreConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureBlobCheckpointStoreConfiguration.class);
 

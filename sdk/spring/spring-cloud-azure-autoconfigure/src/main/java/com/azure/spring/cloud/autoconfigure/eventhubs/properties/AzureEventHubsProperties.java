@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  * Azure Event Hubs related properties.
  */
-public class AzureEventHubsProperties extends AzureEventHubsCommonProperties implements EventHubsNamespaceDescriptor {
+public final class AzureEventHubsProperties extends AzureEventHubsCommonProperties implements EventHubsNamespaceDescriptor {
 
     public static final String PREFIX = "spring.cloud.azure.eventhubs";
 

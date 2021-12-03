@@ -13,7 +13,7 @@ import static com.azure.spring.service.servicebus.properties.ServiceBusEntityTyp
 /**
  *
  */
-public class ServiceBusChannelResourceManagerProvisioner extends ServiceBusChannelProvisioner {
+public final class ServiceBusChannelResourceManagerProvisioner extends ServiceBusChannelProvisioner {
 
     private final String namespace;
     private final ServiceBusProvisioner serviceBusProvisioner;

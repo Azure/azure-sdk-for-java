@@ -8,7 +8,7 @@ import org.springframework.cloud.stream.binder.BinderSpecificPropertiesProvider;
 /**
  *
  */
-public class EventHubsBindingProperties implements BinderSpecificPropertiesProvider {
+public final class EventHubsBindingProperties implements BinderSpecificPropertiesProvider {
 
     private EventHubsConsumerProperties consumer = new EventHubsConsumerProperties();
     private EventHubsProducerProperties producer = new EventHubsProducerProperties();

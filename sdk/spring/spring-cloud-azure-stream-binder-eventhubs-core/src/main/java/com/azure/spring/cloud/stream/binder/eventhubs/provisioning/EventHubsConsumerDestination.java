@@ -8,7 +8,7 @@ import org.springframework.cloud.stream.provisioning.ConsumerDestination;
 /**
  *
  */
-public class EventHubsConsumerDestination implements ConsumerDestination {
+public final class EventHubsConsumerDestination implements ConsumerDestination {
 
     private final String name;
 

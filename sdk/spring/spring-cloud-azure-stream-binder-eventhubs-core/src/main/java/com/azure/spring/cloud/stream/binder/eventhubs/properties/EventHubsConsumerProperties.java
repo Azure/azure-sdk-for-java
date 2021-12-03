@@ -9,7 +9,7 @@ import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 /**
  *
  */
-public class EventHubsConsumerProperties extends ProcessorProperties {
+public final class EventHubsConsumerProperties extends ProcessorProperties {
 
     // TODO (xiada): should we support this for the entire binding, but we should figure out how to iterate partitions
     // first

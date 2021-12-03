@@ -58,7 +58,7 @@ import static com.azure.spring.integration.instrumentation.Instrumentation.Type.
 /**
  *
  */
-public class EventHubsMessageChannelBinder extends
+public final class EventHubsMessageChannelBinder extends
     // @formatter:off
     AbstractMessageChannelBinder<ExtendedConsumerProperties<EventHubsConsumerProperties>, ExtendedProducerProperties<EventHubsProducerProperties>, EventHubsChannelProvisioner>
     // @formatter:on

@@ -11,7 +11,7 @@ import org.springframework.boot.actuate.health.Health;
 /**
  * Health indicator for Event Hubs.
  */
-public class EventHubsHealthIndicator extends AbstractHealthIndicator {
+public final class EventHubsHealthIndicator extends AbstractHealthIndicator {
 
     private final InstrumentationManager instrumentationManager;
 

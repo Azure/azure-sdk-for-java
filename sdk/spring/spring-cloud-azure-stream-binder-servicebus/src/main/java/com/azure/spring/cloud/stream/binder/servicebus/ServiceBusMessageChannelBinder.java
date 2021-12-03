@@ -60,7 +60,7 @@ import static com.azure.spring.servicebus.core.processor.DefaultServiceBusNamesp
 /**
  *
  */
-public class ServiceBusMessageChannelBinder extends
+public final class ServiceBusMessageChannelBinder extends
     AbstractMessageChannelBinder<ExtendedConsumerProperties<ServiceBusConsumerProperties>,
             ExtendedProducerProperties<ServiceBusProducerProperties>,
             ServiceBusChannelProvisioner>

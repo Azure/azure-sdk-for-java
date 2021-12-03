@@ -10,7 +10,7 @@ import org.springframework.util.Assert;
 /**
  *
  */
-public class EventHubsChannelResourceManagerProvisioner extends EventHubsChannelProvisioner {
+public final class EventHubsChannelResourceManagerProvisioner extends EventHubsChannelProvisioner {
 
     private final String namespace;
     private final EventHubsProvisioner eventHubsProvisioner;

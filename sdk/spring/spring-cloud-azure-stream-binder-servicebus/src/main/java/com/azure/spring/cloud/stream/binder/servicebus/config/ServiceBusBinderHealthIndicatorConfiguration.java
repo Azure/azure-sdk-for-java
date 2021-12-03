@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConditionalOnClass(name = "org.springframework.boot.actuate.health.HealthIndicator")
 @ConditionalOnEnabledHealthIndicator("binders")
-public class ServiceBusBinderHealthIndicatorConfiguration {
+public final class ServiceBusBinderHealthIndicatorConfiguration {
 
     @Bean
     public ServiceBusHealthIndicator serviceBusHealthIndicator(ServiceBusMessageChannelBinder binder) {

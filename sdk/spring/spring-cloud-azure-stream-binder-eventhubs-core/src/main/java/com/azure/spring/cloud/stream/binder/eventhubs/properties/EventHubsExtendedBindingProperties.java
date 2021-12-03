@@ -13,7 +13,7 @@ import java.util.Map;
  *
  */
 @ConfigurationProperties(EventHubsExtendedBindingProperties.PREFIX)
-public class EventHubsExtendedBindingProperties
+public final class EventHubsExtendedBindingProperties
         extends AbstractExtendedBindingProperties<EventHubsConsumerProperties, EventHubsProducerProperties, EventHubsBindingProperties> {
 
     public static final String PREFIX = "spring.cloud.stream.eventhubs";

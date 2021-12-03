@@ -40,7 +40,7 @@ import org.springframework.lang.Nullable;
     ServiceBusBinderHealthIndicatorConfiguration.class
 })
 @EnableConfigurationProperties(ServiceBusExtendedBindingProperties.class)
-public class ServiceBusBinderConfiguration {
+public final class ServiceBusBinderConfiguration {
 
     @Bean
     @ConditionalOnMissingBean

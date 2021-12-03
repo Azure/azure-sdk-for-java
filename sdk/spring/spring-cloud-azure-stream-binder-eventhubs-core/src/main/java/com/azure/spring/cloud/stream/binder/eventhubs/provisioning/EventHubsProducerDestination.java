@@ -8,7 +8,7 @@ import org.springframework.cloud.stream.provisioning.ProducerDestination;
 /**
  *
  */
-public class EventHubsProducerDestination implements ProducerDestination {
+public final class EventHubsProducerDestination implements ProducerDestination {
 
     private final String name;
 
