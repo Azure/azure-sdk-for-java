@@ -21,6 +21,9 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
 /**
  * Configure the necessary beans used for aad authentication and authorization.
+ *
+ * @author RujunChen
+ * @since 4.0
  */
 @Configuration(proxyBeanMethods = false)
 @Conditional(WebApplicationCondition.class)
@@ -51,6 +54,12 @@ public class AADWebApplicationConfiguration {
     @ConditionalOnExpression("!'${spring.cloud.azure.active-directory.application-type}'.equalsIgnoreCase('web_application_and_resource_server')")
     public static class DefaultAADWebSecurityConfigurerAdapter extends AADWebSecurityConfigurerAdapter {
 
+        /**
+         * configure
+         * @param http the {@link HttpSecurity} to use
+         * @throws Exception Configuration failed
+         *
+         */
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             super.configure(http);

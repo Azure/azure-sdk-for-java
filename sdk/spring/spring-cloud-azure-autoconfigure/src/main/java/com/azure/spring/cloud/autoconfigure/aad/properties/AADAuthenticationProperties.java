@@ -36,6 +36,10 @@ import static com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.AAD
 
 /**
  * Configuration properties for Azure Active Directory Authentication.
+ *
+ * @author RujunChen
+ * @since 4.0
+ * @see InitializingBean
  */
 @Validated
 @ConfigurationProperties("spring.cloud.azure.active-directory")
@@ -695,6 +699,9 @@ public class AADAuthenticationProperties implements InitializingBean {
                        .contains(group);
     }
 
+    /**
+     * Set after properties.
+     */
     @Override
     public void afterPropertiesSet() {
 

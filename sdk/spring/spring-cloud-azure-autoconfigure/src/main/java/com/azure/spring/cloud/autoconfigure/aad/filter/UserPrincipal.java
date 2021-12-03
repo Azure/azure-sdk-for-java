@@ -14,6 +14,9 @@ import java.util.Set;
 
 /**
  * entity class of UserPrincipal
+ *
+ * @author RujunChen
+ * @since 4.0
  */
 public class UserPrincipal implements Serializable {
     private static final long serialVersionUID = -3725690847771476854L;

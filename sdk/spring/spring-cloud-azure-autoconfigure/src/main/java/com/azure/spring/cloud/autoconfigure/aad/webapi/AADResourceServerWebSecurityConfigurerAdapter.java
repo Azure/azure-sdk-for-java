@@ -10,12 +10,22 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 /**
  * Abstract configuration class, used to make JwtConfigurer and AADJwtBearerTokenAuthenticationConverter take effect.
+ *
+ * @author RujunChen
+ * @since 4.0
+ * @see WebSecurityConfigurerAdapter
  */
 public abstract class AADResourceServerWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
     @Autowired
     AADResourceServerProperties properties;
 
+    /**
+     * configure
+     * @param http the {@link HttpSecurity} to use
+     * @throws Exception Configuration failed
+     *
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // @formatter:off

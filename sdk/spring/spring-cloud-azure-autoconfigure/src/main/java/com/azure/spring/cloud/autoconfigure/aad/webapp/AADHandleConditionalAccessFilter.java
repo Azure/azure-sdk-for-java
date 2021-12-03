@@ -29,10 +29,23 @@ import java.util.stream.Stream;
  * token in On-Behalf-Of flow.), it can sent a 403 with information in the WWW-Authenticate header to web client ,web
  * client will throw {@link WebClientResponseException}, web-application can handle this exception to challenge the
  * user.
+ *
+ * @author RujunChen
+ * @since 4.0
+ * @see OncePerRequestFilter
  */
 public class AADHandleConditionalAccessFilter extends OncePerRequestFilter {
 
-
+    /**
+     * Provides HttpServletRequest and HttpServletResponse arguments instead of the
+     * default ServletRequest and ServletResponse ones.
+     * @param request the HttpServletRequest
+     * @param response the HttpServletResponse
+     * @param filterChain the FilterChain
+     * @throws IOException if an I/O related error has occurred during the processing
+     * @throws ServletException if an exception has occurred that interferes with the
+     *                          filterChain's normal operation
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws IOException, ServletException {

@@ -42,6 +42,9 @@ import static com.azure.spring.cloud.autoconfigure.aad.implementation.constants.
  * could be accepted, e.g. access token issued for Microsoft Graph could not be processed by users' application.
  *
  * @deprecated See the <a href="https://github.com/Azure/azure-sdk-for-java/issues/17860">Alternative method</a>.
+ * @author RujunChen
+ * @since 4.0
+ * @see OncePerRequestFilter
  */
 @Deprecated
 public class AADAuthenticationFilter extends OncePerRequestFilter {
@@ -117,6 +120,13 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
         );
     }
 
+    /**
+     * Set internal filter.
+     *
+     * @param httpServletRequest the http servlet request
+     * @param httpServletResponse the http servlet responce
+     * @param filterChain the filter chain
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest,
                                     HttpServletResponse httpServletResponse,

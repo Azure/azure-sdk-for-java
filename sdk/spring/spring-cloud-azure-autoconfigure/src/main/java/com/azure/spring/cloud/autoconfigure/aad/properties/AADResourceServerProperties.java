@@ -15,6 +15,10 @@ import java.util.Map;
 
 /**
  * Configuration properties for Azure Active Directory B2C.
+ *
+ * @author RujunChen
+ * @since 4.0
+ * @see InitializingBean
  */
 @ConfigurationProperties("spring.cloud.azure.active-directory.resource-server")
 public class AADResourceServerProperties implements InitializingBean {
@@ -92,6 +96,9 @@ public class AADResourceServerProperties implements InitializingBean {
         this.claimToAuthorityPrefixMap = claimToAuthorityPrefixMap;
     }
 
+    /**
+     * Set after properties.
+     */
     @Override
     public void afterPropertiesSet() {
         if (!StringUtils.hasText(principalClaimName)) {

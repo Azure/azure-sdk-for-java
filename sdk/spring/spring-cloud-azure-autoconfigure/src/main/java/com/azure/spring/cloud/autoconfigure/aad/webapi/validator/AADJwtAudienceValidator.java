@@ -12,6 +12,10 @@ import java.util.List;
 
 /**
  * Validates the "aud" claim in a {@link Jwt}, that is matches a configured value
+ *
+ * @author RujunChen
+ * @since 4.0
+ * @see OAuth2TokenValidator
  */
 public class AADJwtAudienceValidator implements OAuth2TokenValidator<Jwt> {
 
@@ -28,7 +32,9 @@ public class AADJwtAudienceValidator implements OAuth2TokenValidator<Jwt> {
     }
 
     /**
-     * {@inheritDoc}
+     * Verify the validity and/or constraints of the provided OAuth 2.0 Token.
+     * @param token an OAuth 2.0 token
+     * @return OAuth2TokenValidationResult the success or failure detail of the validation
      */
     @Override
     public OAuth2TokenValidatorResult validate(Jwt token) {

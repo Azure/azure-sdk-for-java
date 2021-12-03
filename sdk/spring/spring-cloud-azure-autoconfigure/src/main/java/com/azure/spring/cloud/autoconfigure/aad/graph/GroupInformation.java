@@ -8,6 +8,9 @@ import java.util.Set;
 
 /**
  * Contains information about the group.
+ *
+ * @author RujunChen
+ * @since 4.0
  */
 public class GroupInformation {
 

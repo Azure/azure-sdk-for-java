@@ -18,6 +18,10 @@ import static com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.AAD
 
 /**
  * Used to set "scope" parameter when use "auth-code" to get "access_token".
+ *
+ * @author RujunChen
+ * @since 4.0
+ * @see AbstractOAuth2AuthorizationCodeGrantRequestEntityConverter
  */
 public class AADOAuth2AuthorizationCodeGrantRequestEntityConverter
     extends AbstractOAuth2AuthorizationCodeGrantRequestEntityConverter {
@@ -33,11 +37,20 @@ public class AADOAuth2AuthorizationCodeGrantRequestEntityConverter
         this.azureClientAccessTokenScopes = azureClientAccessTokenScopes;
     }
 
+
+    /**
+     * Get application id.
+     * @return  application id
+     */
     @Override
     protected String getApplicationId() {
         return AzureSpringIdentifier.AZURE_SPRING_AAD;
     }
 
+    /**
+     * Get http body.
+     * @return  http body
+     */
     @Override
     public MultiValueMap<String, String> getHttpBody(OAuth2AuthorizationCodeGrantRequest request) {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();

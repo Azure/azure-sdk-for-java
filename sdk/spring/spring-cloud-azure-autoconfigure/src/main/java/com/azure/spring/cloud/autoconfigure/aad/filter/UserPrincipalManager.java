@@ -40,6 +40,9 @@ import java.util.stream.Stream;
 
 /**
  * A user principal manager to load user info from JWT.
+ *
+ * @author RujunChen
+ * @since 4.0
  */
 public class UserPrincipalManager {
 

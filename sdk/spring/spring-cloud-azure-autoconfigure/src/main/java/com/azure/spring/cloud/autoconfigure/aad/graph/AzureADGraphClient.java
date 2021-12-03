@@ -44,6 +44,9 @@ import static com.azure.spring.cloud.autoconfigure.aad.implementation.constants.
 
 /**
  * Microsoft Graph client encapsulation.
+ *
+ * @author RujunChen
+ * @since 4.0
  */
 public class AzureADGraphClient {
 

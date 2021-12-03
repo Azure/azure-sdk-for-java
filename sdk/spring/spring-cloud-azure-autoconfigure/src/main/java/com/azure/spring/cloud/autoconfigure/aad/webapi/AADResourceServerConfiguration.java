@@ -14,6 +14,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -35,6 +36,9 @@ import java.util.List;
  * The configuration will not be activated if no {@link BearerTokenAuthenticationToken} class provided.
  * </p>
  * By default, creating a JwtDecoder through JwkKeySetUri will be auto-configured.
+ *
+ * @author RujunChen
+ * @since 4.0
  */
 @Configuration(proxyBeanMethods = false)
 @Conditional(ResourceServerCondition.class)
@@ -94,6 +98,12 @@ public class AADResourceServerConfiguration {
     public static class DefaultAADResourceServerWebSecurityConfigurerAdapter extends
         AADResourceServerWebSecurityConfigurerAdapter {
 
+        /**
+         * configure
+         * @param http the {@link HttpSecurity} to use
+         * @throws Exception Configuration failed
+         *
+         */
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             super.configure(http);

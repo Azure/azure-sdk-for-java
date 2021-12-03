@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.aad.b2c;
 import com.azure.spring.cloud.autoconfigure.aad.b2c.implementation.AADB2CAuthorizationRequestResolver;
 import com.azure.spring.cloud.autoconfigure.aad.b2c.implementation.AADB2CLogoutSuccessHandler;
 import com.azure.spring.cloud.autoconfigure.aad.b2c.implementation.AADB2COAuth2AuthorizationCodeGrantRequestEntityConverter;
+import org.springframework.security.config.annotation.SecurityBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationCodeTokenResponseClient;
@@ -13,6 +14,10 @@ import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCo
 
 /**
  * Configure B2C OAUTH2 login properties.
+ *
+ * @author RujunChen
+ * @since 4.0
+ * @see AbstractHttpConfigurer
  */
 public class AADB2COidcLoginConfigurer extends AbstractHttpConfigurer<AADB2COidcLoginConfigurer, HttpSecurity> {
 
@@ -31,6 +36,12 @@ public class AADB2COidcLoginConfigurer extends AbstractHttpConfigurer<AADB2COidc
         this.resolver = resolver;
     }
 
+    /**
+     * Initialize the SecurityBuilder.
+     *
+     * @param http the http
+     * @throws Exception failed to initialize SecurityBuilder
+     */
     @Override
     public void init(HttpSecurity http) throws Exception {
         // @formatter:off

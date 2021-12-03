@@ -14,6 +14,9 @@ import org.springframework.util.ClassUtils;
  * |                      No                       |                          Yes                           |  'resource_server'                                                                                     |       'resource_server'     |
  * |                      Yes                      |                          Yes                           |  'web_application','resource_server','resource_server_with_obo', 'web_application_and_resource_server' | 'resource_server_with_obo'  |
  * </pre>
+ *
+ * @author RujunChen
+ * @since 4.0
  */
 public enum AADApplicationType {
     /**

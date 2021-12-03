@@ -10,6 +10,9 @@ import java.util.List;
 
 /**
  * Properties for an oauth2 client.
+ *
+ * @author RujunChen
+ * @since 4.0
  */
 public class AuthorizationClientProperties {
 

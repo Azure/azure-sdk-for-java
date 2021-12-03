@@ -25,6 +25,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -44,6 +45,11 @@ import static com.azure.spring.cloud.autoconfigure.aad.implementation.constants.
 /**
  * This implementation will retrieve group info of user from Microsoft Graph. Then map group to {@link
  * GrantedAuthority}.
+ *
+ * @author RujunChen
+ * @since 4.0
+ * @see OidcUserService
+ * @see OAuth2UserService
  */
 public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, OidcUser> {
 
@@ -89,6 +95,14 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
         this.graphClient = graphClient;
     }
 
+    /**
+     * Returns an {@link OAuth2User} after obtaining the user attributes of the End-User
+     * from the UserInfo Endpoint.
+     * @param userRequest the user request
+     * @return an {@link OAuth2User}
+     * @throws OAuth2AuthenticationException if an error occurs while attempting to obtain
+     * the user attributes from the UserInfo Endpoint
+     */
     @Override
     public OidcUser loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException {
         // Delegate to the default implementation for loading a user
