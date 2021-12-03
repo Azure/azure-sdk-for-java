@@ -6,6 +6,8 @@ package com.azure.communication.callingserver;
 import static com.azure.communication.callingserver.CallingServerResponseMocker.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -180,7 +182,7 @@ public class CallConnectionUnitTests {
         CallConnection callConnection = getCallConnection(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(generateCreateCallResult(CALL_CONNECTION_ID), 201),
-                new SimpleEntry<String, Integer>(generateAddParticipantResult(NEW_PARTICIPANT_ID), 202)
+                new SimpleEntry<String, Integer>(generateAddParticipantResult(), 202)
             )));
 
         CommunicationUserIdentifier user = new CommunicationUserIdentifier(NEW_PARTICIPANT_ID);
@@ -189,7 +191,10 @@ public class CallConnectionUnitTests {
             "alternateCallerId",
             OPERATION_CONTEXT
         );
-        assertEquals(user.getId(), addParticipantResult.getParticipantId());
+        assertNotNull(addParticipantResult.getOperationId());
+        assertFalse(addParticipantResult.getOperationId().isEmpty());
+        assertNotNull(addParticipantResult.getStatus());
+        assertSame(addParticipantResult.getStatus(), CallingOperationStatus.RUNNING);
     }
 
     @Test
@@ -197,7 +202,7 @@ public class CallConnectionUnitTests {
         CallConnection callConnection = getCallConnection(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(generateCreateCallResult(CALL_CONNECTION_ID), 201),
-                new SimpleEntry<String, Integer>(generateAddParticipantResult(NEW_PARTICIPANT_ID), 202)
+                new SimpleEntry<String, Integer>(generateAddParticipantResult(), 202)
             )));
 
         CommunicationUserIdentifier user = new CommunicationUserIdentifier(NEW_PARTICIPANT_ID);
@@ -209,7 +214,10 @@ public class CallConnectionUnitTests {
         );
         assertEquals(202, addParticipantResultResponse.getStatusCode());
         AddParticipantResult addParticipantResult = addParticipantResultResponse.getValue();
-        assertEquals(user.getId(), addParticipantResult.getParticipantId());
+        assertNotNull(addParticipantResult.getOperationId());
+        assertFalse(addParticipantResult.getOperationId().isEmpty());
+        assertNotNull(addParticipantResult.getStatus());
+        assertSame(addParticipantResult.getStatus(), CallingOperationStatus.RUNNING);
     }
 
     @Test
