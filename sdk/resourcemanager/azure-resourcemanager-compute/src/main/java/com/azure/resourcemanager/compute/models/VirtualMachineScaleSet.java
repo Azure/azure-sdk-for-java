@@ -1795,23 +1795,6 @@ public interface VirtualMachineScaleSet
 
     /** Grouping of virtual machine scale set update stages. */
     interface UpdateStages {
-
-        /**
-         * The stage of a virtual machine scale set update allowing to specify the virtual network subnet for the
-         * primary network configuration.
-         */
-        interface WithNetworkSubnet {
-            /**
-             * Associate an existing virtual network subnet with the primary network interface of the virtual machines
-             * in the scale set.
-             *
-             * @param network an existing virtual network
-             * @param subnetName the subnet name
-             * @return the next stage of the definition
-             */
-            WithPrimaryLoadBalancer withExistingPrimaryNetworkSubnet(Network network, String subnetName);
-        }
-
         /**
          * The stage of a virtual machine scale set update allowing to specify load balancers for the primary network
          * interface of the scale set virtual machines.
@@ -2539,8 +2522,7 @@ public interface VirtualMachineScaleSet
                 UpdateStages.WithNetworkSecurityGroup,
                 UpdateStages.WithSinglePlacementGroup,
                 UpdateStages.WithApplicationGateway,
-                UpdateStages.WithApplicationSecurityGroup,
-                UpdateStages.WithNetworkSubnet {
+                UpdateStages.WithApplicationSecurityGroup {
         }
     }
 

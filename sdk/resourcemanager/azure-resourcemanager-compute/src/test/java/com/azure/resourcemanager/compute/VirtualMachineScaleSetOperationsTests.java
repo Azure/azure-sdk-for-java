@@ -1482,7 +1482,6 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         final String vmssName = generateRandomResourceName("vmss", 10);
         LoadBalancer publicLoadBalancer = createHttpLoadBalancers(region, resourceGroup, "1", LoadBalancerSkuType.STANDARD, PublicIPSkuType.STANDARD, true);
 
-        // create resource through raw method
         VirtualMachineScaleSet vmss = this
             .computeManager
             .virtualMachineScaleSets()
@@ -1526,7 +1525,15 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .create();
 
         Assertions.assertEquals(vmss.orchestrationMode(), OrchestrationMode.FLEXIBLE);
+        Assertions.assertNull(vmss.innerModel().virtualMachineProfile());
 
+        // update tag on vmss flex with no profile
+        vmss.update()
+            .withTag("tag1", "value1")
+            .apply();
+
+        Assertions.assertNotNull(vmss.tags());
+        Assertions.assertEquals(vmss.tags().get("tag1"), "value1");
 
         Network network =
             this
@@ -1540,7 +1547,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .create();
         LoadBalancer publicLoadBalancer = createHttpLoadBalancers(Region.fromName(euapRegion), resourceGroup, "1", LoadBalancerSkuType.STANDARD, PublicIPSkuType.STANDARD, true);
 
-        // update vmss, add profile
+        // update vmss, attach profile
         vmss = this.computeManager
             .virtualMachineScaleSets()
             .define(vmssName)
@@ -1560,6 +1567,19 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         Assertions.assertEquals(vmss.orchestrationMode(), OrchestrationMode.FLEXIBLE);
         Assertions.assertNotNull(vmss.getPrimaryInternetFacingLoadBalancer());
         Assertions.assertNotNull(vmss.getPrimaryNetwork());
+
+        // update tag on vmss flex with profile
+        vmss = this.computeManager
+            .virtualMachineScaleSets()
+            .getById(vmss.id());
+        Assertions.assertNotNull(vmss);
+        vmss.update()
+            .withTag("tag1", "value2")
+            .apply();
+        Assertions.assertNotNull(vmss.innerModel().virtualMachineProfile());
+        Assertions.assertNotNull(vmss.tags());
+        Assertions.assertEquals(vmss.tags().get("tag1"), "value2");
+
     }
 
     @Test

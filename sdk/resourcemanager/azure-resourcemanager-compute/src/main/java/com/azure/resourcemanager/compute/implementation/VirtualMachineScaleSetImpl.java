@@ -163,7 +163,8 @@ public class VirtualMachineScaleSetImpl
     // To manage OS profile
     private boolean removeOsProfile;
     private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetImpl.class);
-    private boolean profileNotSet = true;
+    // To track vm profile transition from null to non-null
+    private boolean profileAttached = false;
 
     VirtualMachineScaleSetImpl(
         String name,
@@ -1579,16 +1580,11 @@ public class VirtualMachineScaleSetImpl
     @Override
     protected Mono<VirtualMachineScaleSetInner> createInner() {
         // support flexible vmss with no profile
-        if (this.orchestrationMode() == OrchestrationMode.FLEXIBLE && this.profileNotSet) {
-            this.innerModel().withVirtualMachineProfile(null);
-            return Mono.just(this)
-                .flatMap(virtualMachineScaleSet -> this
-                    .manager()
-                    .serviceClient()
-                    .getVirtualMachineScaleSets()
-                    .createOrUpdateAsync(resourceGroupName(), name(), innerModel()));
+        if (this.orchestrationMode() == OrchestrationMode.FLEXIBLE
+            // presence of sku indicates that the vm profile is not null, otherwise, vm profile is null.
+            && this.innerModel().sku() == null) {
+            return createInnerNoProfile();
         }
-
         if (this.shouldSetProfileDefaults()) {
             this.setOSProfileDefaults();
             this.setOSDiskDefault();
@@ -1627,13 +1623,18 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public Mono<VirtualMachineScaleSet> updateResourceAsync() {
+        final VirtualMachineScaleSetImpl self = this;
+        // support flexible vmss with no profile
+        if (this.orchestrationMode() == OrchestrationMode.FLEXIBLE
+            && this.innerModel().virtualMachineProfile() == null) {
+            return updateResourceAsyncNoProfile(self);
+        }
         setExtensions();
         if (this.shouldSetProfileDefaults()) {
             this.setOSProfileDefaults();
             this.setOSDiskDefault();
         }
         this.setPrimaryIpConfigurationSubnet();
-        final VirtualMachineScaleSetImpl self = this;
         return this
             .setPrimaryIpConfigurationBackendsAndInboundNatPoolsAsync()
             .map(
@@ -1698,6 +1699,7 @@ public class VirtualMachineScaleSetImpl
 
     // Helpers
     //
+
     private void adjustProfileForFlexibleMode() {
         if (this.orchestrationMode() == OrchestrationMode.FLEXIBLE) {
             if (this.innerModel().virtualMachineProfile().networkProfile().networkInterfaceConfigurations() != null) {
@@ -1705,9 +1707,7 @@ public class VirtualMachineScaleSetImpl
                     if (virtualMachineScaleSetNetworkConfiguration.ipConfigurations() != null) {
                         virtualMachineScaleSetNetworkConfiguration.ipConfigurations().forEach(virtualMachineScaleSetIpConfiguration -> {
                             // this property is not allowed to appear when creating vmss in flexible mode, though it's defined in the swagger file
-//                            if (CoreUtils.isNullOrEmpty(virtualMachineScaleSetIpConfiguration.loadBalancerInboundNatPools())) {
                             virtualMachineScaleSetIpConfiguration.withLoadBalancerInboundNatPools(null);
-//                            }
                         });
                     }
                 });
@@ -1720,12 +1720,38 @@ public class VirtualMachineScaleSetImpl
                 .withNetworkApiVersion(NetworkApiVersion.TWO_ZERO_TWO_ZERO_ONE_ONE_ZERO_ONE);
         }
     }
-
     private void initVMProfileIfNecessary() {
         if (this.innerModel().virtualMachineProfile() == null) {
             this.innerModel().withVirtualMachineProfile(initDefaultVMProfile());
+            this.profileAttached = true;
         }
-        this.profileNotSet = false;
+    }
+
+    private Mono<VirtualMachineScaleSetInner> createInnerNoProfile() {
+        this.innerModel().withVirtualMachineProfile(null);
+        return Mono.just(this)
+            .flatMap(virtualMachineScaleSet -> this
+                .manager()
+                .serviceClient()
+                .getVirtualMachineScaleSets()
+                .createOrUpdateAsync(resourceGroupName(), name(), innerModel()));
+    }
+
+    private Mono<VirtualMachineScaleSet> updateResourceAsyncNoProfile(VirtualMachineScaleSetImpl self) {
+        return Mono.just(this)
+            .flatMap(virtualMachineScaleSet -> this
+                .manager()
+                .serviceClient()
+                .getVirtualMachineScaleSets()
+                .updateAsync(resourceGroupName(), name(), VMSSPatchPayload.preparePatchPayload(this)))
+            .map(
+                vmssInner -> {
+                    setInner(vmssInner);
+                    self.clearCachedProperties();
+                    self.initializeChildrenFromInner();
+                    self.virtualMachineScaleSetMsiHandler.clear();
+                    return self;
+                });
     }
 
     private VirtualMachineScaleSetVMProfile initDefaultVMProfile() {
@@ -1733,8 +1759,11 @@ public class VirtualMachineScaleSetImpl
             .virtualMachineScaleSets()
             .define(this.name());
         if (this.orchestrationMode() == OrchestrationMode.FLEXIBLE) {
-            // orchestration mode is flexible and profile is null, so fault domain count must have been set
-            impl.withFlexibleOrchestrationMode(this.innerModel().platformFaultDomainCount());
+            if (this.innerModel().platformFaultDomainCount() != null) {
+                impl.withFlexibleOrchestrationMode(this.innerModel().platformFaultDomainCount());
+            } else {
+                impl.withFlexibleOrchestrationMode();
+            }
         }
         return impl.innerModel().virtualMachineProfile();
     }
@@ -1824,7 +1853,7 @@ public class VirtualMachineScaleSetImpl
      */
     private boolean shouldSetProfileDefaults() {
         return isInCreateMode()
-            || (this.orchestrationMode() == OrchestrationMode.FLEXIBLE && !this.profileNotSet);
+            || (this.orchestrationMode() == OrchestrationMode.FLEXIBLE && this.profileAttached);
     }
 
     private void setExtensions() {
@@ -1849,7 +1878,7 @@ public class VirtualMachineScaleSetImpl
     }
 
     protected void prepareOSDiskContainers() {
-        if (isManagedDiskEnabled() || this.innerModel() == null || this.innerModel().virtualMachineProfile() == null) {
+        if (this.innerModel() == null || this.innerModel().virtualMachineProfile() == null || isManagedDiskEnabled()) {
             return;
         }
         final VirtualMachineScaleSetStorageProfile storageProfile =
@@ -2092,7 +2121,7 @@ public class VirtualMachineScaleSetImpl
     private void clearCachedProperties() {
         this.primaryInternetFacingLoadBalancer = null;
         this.primaryInternalLoadBalancer = null;
-        this.profileNotSet = true;
+        this.profileAttached = false;
     }
 
     private Mono<VirtualMachineScaleSetImpl> loadCurrentPrimaryLoadBalancersIfAvailableAsync() throws IOException {
