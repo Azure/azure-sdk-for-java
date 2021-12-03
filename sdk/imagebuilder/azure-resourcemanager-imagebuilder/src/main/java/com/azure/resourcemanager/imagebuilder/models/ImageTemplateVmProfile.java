@@ -16,7 +16,8 @@ public final class ImageTemplateVmProfile {
 
     /*
      * Size of the virtual machine used to build, customize and capture images.
-     * Omit or specify empty string to use the default (Standard_D1_v2).
+     * Omit or specify empty string to use the default (Standard_D1_v2 for Gen1
+     * images and Standard_D2ds_v4 for Gen2 images).
      */
     @JsonProperty(value = "vmSize")
     private String vmSize;
@@ -38,7 +39,7 @@ public final class ImageTemplateVmProfile {
 
     /**
      * Get the vmSize property: Size of the virtual machine used to build, customize and capture images. Omit or specify
-     * empty string to use the default (Standard_D1_v2).
+     * empty string to use the default (Standard_D1_v2 for Gen1 images and Standard_D2ds_v4 for Gen2 images).
      *
      * @return the vmSize value.
      */
@@ -48,7 +49,7 @@ public final class ImageTemplateVmProfile {
 
     /**
      * Set the vmSize property: Size of the virtual machine used to build, customize and capture images. Omit or specify
-     * empty string to use the default (Standard_D1_v2).
+     * empty string to use the default (Standard_D1_v2 for Gen1 images and Standard_D2ds_v4 for Gen2 images).
      *
      * @param vmSize the vmSize value to set.
      * @return the ImageTemplateVmProfile object itself.
