@@ -8,11 +8,11 @@
 
 ### Include the package
 
-[//]: # ({x-version-update-start;com.azure:azure-aot-graalvm-netty-support;current})
+[//]: # ({x-version-update-start;com.azure:azure-aot-graalvm-support-netty;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-aot-graalvm-netty-support</artifactId>
+    <artifactId>azure-aot-graalvm-support-netty</artifactId>
     <version>1.0.0-beta.1</version>
 </dependency>
 ```
@@ -46,4 +46,4 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [azure_subscription]: https://azure.microsoft.com/free
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Faot%2Fazure-aot-graalvm-netty-support%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Faot%2Fazure-aot-graalvm-support-netty%2FREADME.png)

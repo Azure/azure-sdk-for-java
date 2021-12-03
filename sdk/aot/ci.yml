@@ -12,7 +12,7 @@ trigger:
     exclude:
       - sdk/aot/pom.xml
       - sdk/aot/azure-aot-graalvm-support/pom.xml
-      - sdk/aot/azure-aot-graalvm-netty-support/pom.xml
+      - sdk/aot/azure-aot-graalvm-support-netty/pom.xml
 
 pr:
   branches:
@@ -27,7 +27,7 @@ pr:
     exclude:
       - sdk/aot/pom.xml
       - sdk/aot/azure-aot-graalvm-support/pom.xml
-      - sdk/aot/azure-aot-graalvm-netty-support/pom.xml
+      - sdk/aot/azure-aot-graalvm-support-netty/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -37,7 +37,7 @@ extends:
       - name: azure-aot-graalvm-support
         groupId: com.azure
         safeName: azureaotgraalvmsupport
-      - name: azure-aot-graalvm-netty-support
+      - name: azure-aot-graalvm-support-netty
         groupId: com.azure
-        safeName: azureaotgraalvmnettysupport
+        safeName: azureaotgraalvmsupportnetty
 

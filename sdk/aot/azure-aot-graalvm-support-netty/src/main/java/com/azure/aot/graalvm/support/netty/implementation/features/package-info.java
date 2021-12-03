@@ -4,4 +4,4 @@
 /**
  * GraalVM Netty-specific configuration.
  */
-package com.azure.aot.graalvm.netty.support.implementation.features;
+package com.azure.aot.graalvm.support.netty.implementation.features;

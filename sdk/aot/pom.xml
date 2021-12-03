@@ -13,19 +13,19 @@
     <profile>
       <id>coverage</id>
       <modules>
-        <module>azure-aot-graalvm-netty-support</module>
         <module>azure-aot-graalvm-support</module>
+        <module>azure-aot-graalvm-support-netty</module>
       </modules>
       <dependencies>
         <dependency>
           <groupId>com.azure</groupId>
-          <artifactId>azure-aot-graalvm-netty-support</artifactId>
-          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-netty-support;current} -->
+          <artifactId>azure-aot-graalvm-support</artifactId>
+          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
-          <artifactId>azure-aot-graalvm-support</artifactId>
-          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support;current} -->
+          <artifactId>azure-aot-graalvm-support-netty</artifactId>
+          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support-netty;current} -->
         </dependency>
       </dependencies>
       <build>
@@ -57,8 +57,8 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
-        <module>azure-aot-graalvm-netty-support</module>
         <module>azure-aot-graalvm-support</module>
+        <module>azure-aot-graalvm-support-netty</module>
       </modules>
     </profile>
   </profiles>

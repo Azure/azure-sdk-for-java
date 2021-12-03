@@ -15,7 +15,7 @@
 /*
  * Portions Copyright (c) Microsoft Corporation
  */
-package com.azure.aot.graalvm.netty.support.implementation.features;
+package com.azure.aot.graalvm.support.netty.implementation.features;
 
 import com.oracle.svm.core.annotate.Alias;
 import com.oracle.svm.core.annotate.RecomputeFieldValue;
