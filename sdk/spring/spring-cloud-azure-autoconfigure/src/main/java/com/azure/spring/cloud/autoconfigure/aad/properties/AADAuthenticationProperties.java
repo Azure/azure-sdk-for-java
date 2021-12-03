@@ -115,7 +115,7 @@ public class AADAuthenticationProperties implements InitializingBean {
 
     /**
      * If true activates the stateless auth filter AADAppRoleStatelessAuthenticationFilter. The
-     * default is false which activates  AADAuthenticationFilter.
+     * default is false which activates AADAuthenticationFilter.
      */
     private Boolean sessionStateless = false;
 
