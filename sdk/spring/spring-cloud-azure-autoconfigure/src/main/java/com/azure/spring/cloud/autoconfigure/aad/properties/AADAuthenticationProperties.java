@@ -116,8 +116,8 @@ public class AADAuthenticationProperties implements InitializingBean {
     private boolean allowTelemetry = true;
 
     /**
-     * If true activates the stateless auth filter {@link AADAppRoleStatelessAuthenticationFilter}. The
-     * default is false which activates {@link AADAuthenticationFilter}.
+     * If true activates the stateless auth filter AADAppRoleStatelessAuthenticationFilter. The
+     * default is false which activates  AADAuthenticationFilter.
      */
     private Boolean sessionStateless = false;
 
