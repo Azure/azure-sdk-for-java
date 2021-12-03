@@ -20,8 +20,14 @@ import org.springframework.util.StringUtils;
  */
 public final class AppConfigurationStoreSelects {
 
+    /**
+     * Label for requesting all configurations with (No Label)
+     */
     private static final String[] EMPTY_LABEL_ARRAY = { EMPTY_LABEL };
 
+    /**
+     * Separator for multiple labels
+     */
     public static final String LABEL_SEPARATOR = ",";
 
     @NotNull
@@ -72,6 +78,11 @@ public final class AppConfigurationStoreSelects {
         return labels.toArray(t);
     }
 
+    /**
+     * Get all labels as a single String
+     * @param profiles current user profiles
+     * @return comma separated list of labels
+     */
     public String getLabelFilterText(List<String> profiles) {
         return String.join(",", getLabelFilter(profiles));
     }
@@ -94,6 +105,9 @@ public final class AppConfigurationStoreSelects {
         return this;
     }
 
+    /**
+     * Validates key-filter and label-filter are valid.
+     */
     @PostConstruct
     public void validateAndInit() {
         Assert.isTrue(!keyFilter.contains("*"), "KeyFilter must not contain asterisk(*)");
