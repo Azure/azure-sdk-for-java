@@ -716,6 +716,11 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
 
         final SynchronousMessageSubscriber newSubscriber = new SynchronousMessageSubscriber(work);
 
+        // NOTE: We asynchronously send the credit to the service as soon as receiveMessage() API is called (for first
+        // time).
+        // This means that there may be messages internally buffered before users start iterating the IterableStream.
+        // If users do not iterate through the stream and their lock duration expires, it is possible that the
+        // Service Bus message's delivery count will be incremented.
         if (synchronousMessageSubscriber.compareAndSet(null, newSubscriber)) {
             asyncClient.receiveMessagesNoBackPressure().subscribeWith(newSubscriber);
         } else {
