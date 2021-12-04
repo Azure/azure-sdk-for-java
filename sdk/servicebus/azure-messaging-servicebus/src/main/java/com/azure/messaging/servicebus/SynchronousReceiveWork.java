@@ -167,7 +167,7 @@ class SynchronousReceiveWork {
      *
      * @param message Message to log.
      */
-    synchronized void complete(String message) {
+    void complete(String message) {
         complete(message, null);
     }
 
@@ -177,7 +177,7 @@ class SynchronousReceiveWork {
      * @param message Message to log. Null if there is no message to log.
      * @param error Error if one occurred. Null otherwise.
      */
-    synchronized void complete(String message, Throwable error) {
+    void complete(String message, Throwable error) {
         if (isTerminal.getAndSet(true)) {
             return;
         }
