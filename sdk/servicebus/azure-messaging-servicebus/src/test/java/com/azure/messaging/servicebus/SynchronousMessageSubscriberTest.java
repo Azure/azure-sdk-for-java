@@ -3,6 +3,8 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.amqp.exception.AmqpErrorContext;
+import com.azure.core.amqp.exception.AmqpException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,6 +24,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -196,12 +200,40 @@ public class SynchronousMessageSubscriberTest {
         when(work1.getRemainingEvents()).thenReturn(NUMBER_OF_WORK_ITEMS);
         when(work2.getRemainingEvents()).thenReturn(NUMBER_OF_WORK_ITEMS_2);
 
+        syncSubscriber.queueWork(work2);
+
         // Act
         syncSubscriber.hookOnSubscribe(subscription);
         syncSubscriber.hookOnCancel();
 
         // Assert
-        verify(work1).complete(any(String.class));
+        verify(work1).complete(any(String.class), isNull());
+        verify(work2).complete(any(String.class), isNull());
+
+        // The current work has been polled, so this should be empty.
+        assertEquals(0, syncSubscriber.getWorkQueueSize());
+    }
+
+    /**
+     * Verifies that all work items are completed if the subscriber encounters an error.
+     */
+    @Test
+    public void completesWorkOnError() {
+        // Arrange
+        final Throwable error = new AmqpException(false, "Test-error", new AmqpErrorContext("foo.com"));
+
+        when(work1.getRemainingEvents()).thenReturn(NUMBER_OF_WORK_ITEMS);
+        when(work2.getRemainingEvents()).thenReturn(NUMBER_OF_WORK_ITEMS_2);
+
+        syncSubscriber.queueWork(work2);
+
+        // Act
+        syncSubscriber.hookOnSubscribe(subscription);
+        syncSubscriber.hookOnError(error);
+
+        // Assert
+        verify(work1).complete(any(String.class), eq(error));
+        verify(work2).complete(any(String.class), eq(error));
 
         // The current work has been polled, so this should be empty.
         assertEquals(0, syncSubscriber.getWorkQueueSize());
