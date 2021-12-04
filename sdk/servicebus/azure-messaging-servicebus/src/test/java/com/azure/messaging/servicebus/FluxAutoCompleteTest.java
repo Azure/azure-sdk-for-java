@@ -190,18 +190,19 @@ class FluxAutoCompleteTest {
         final ServiceBusMessageContext context2 = new ServiceBusMessageContext(message2);
 
         final Throwable testError = new IllegalArgumentException("Dummy error");
-        final Function<ServiceBusMessageContext, Mono<Void>> onCompleteErrorFunction = new Function<>() {
-            private final AtomicInteger iteration = new AtomicInteger();
+        final Function<ServiceBusMessageContext, Mono<Void>> onCompleteErrorFunction =
+            new Function<ServiceBusMessageContext, Mono<Void>>() {
+                private final AtomicInteger iteration = new AtomicInteger();
 
-            @Override
-            public Mono<Void> apply(ServiceBusMessageContext messageContext) {
-                if (iteration.getAndIncrement() == 1) {
-                    return Mono.error(testError);
-                } else {
-                    return Mono.empty();
+                @Override
+                public Mono<Void> apply(ServiceBusMessageContext messageContext) {
+                    if (iteration.getAndIncrement() == 1) {
+                        return Mono.error(testError);
+                    } else {
+                        return Mono.empty();
+                    }
                 }
-            }
-        };
+            };
 
         final FluxAutoComplete autoComplete = new FluxAutoComplete(testPublisher.flux(), completionLock,
             onCompleteErrorFunction, this::onAbandon);
@@ -262,15 +263,16 @@ class FluxAutoCompleteTest {
 
         final CloneNotSupportedException testError = new CloneNotSupportedException("TEST error");
 
-        final Function<ServiceBusMessageContext, Mono<Void>> errorOnComplete = new Function<>() {
-            private final AtomicBoolean isFirst = new AtomicBoolean(true);
+        final Function<ServiceBusMessageContext, Mono<Void>> errorOnComplete =
+            new Function<ServiceBusMessageContext, Mono<Void>>() {
+                private final AtomicBoolean isFirst = new AtomicBoolean(true);
 
-            @Override
-            public Mono<Void> apply(ServiceBusMessageContext messageContext) {
-                onCompleteInvocations.add(messageContext);
-                return isFirst.getAndSet(false) ? Mono.error(testError) : Mono.empty();
-            }
-        };
+                @Override
+                public Mono<Void> apply(ServiceBusMessageContext messageContext) {
+                    onCompleteInvocations.add(messageContext);
+                    return isFirst.getAndSet(false) ? Mono.error(testError) : Mono.empty();
+                }
+            };
 
         final FluxAutoComplete autoComplete = new FluxAutoComplete(testPublisher.flux(), completionLock,
             errorOnComplete, this::onAbandon);
