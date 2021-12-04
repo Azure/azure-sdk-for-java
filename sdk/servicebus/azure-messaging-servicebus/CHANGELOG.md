@@ -8,7 +8,7 @@
 
 ### Bugs Fixed
 
-- Where SynchronousMessageSubscriber would not receive additional messages if they were > 1 and the timeout had elapsed for the first receive call. https://github.com/Azure/azure-sdk-for-java/issues/25063
+- Fixed a bug where Synchronous Receiver client stops receiving messages if MaxMessages is greater than 1. Issue [25063]
 
 ### Other Changes
 
