@@ -406,9 +406,12 @@ public class ReactorConnection implements AmqpConnection {
             })
             .repeat();
 
+        Map<String, Object> loggingContext = createContextWithConnectionId(connectionId);
+        loggingContext.put(ENTITY_PATH_KEY, Objects.requireNonNull(entityPath, "'entityPath' cannot be null."));
+
         return createChannel
             .subscribeWith(new AmqpChannelProcessor<>(connectionId, entityPath,
-                channel -> channel.getEndpointStates(), retryPolicy, RequestResponseChannel.class.getName()));
+                channel -> channel.getEndpointStates(), retryPolicy, new ClientLogger(RequestResponseChannel.class, loggingContext)));
     }
 
     @Override
