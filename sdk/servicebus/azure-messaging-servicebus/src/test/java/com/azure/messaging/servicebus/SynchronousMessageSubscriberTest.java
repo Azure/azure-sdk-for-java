@@ -186,4 +186,24 @@ public class SynchronousMessageSubscriberTest {
         assertEquals(expected.size(), allRequests.size());
         allRequests.forEach(r -> assertTrue(expected.contains(r)));
     }
+
+    /**
+     * Verifies that all work items are completed if the subscriber is disposed.
+     */
+    @Test
+    public void completesWorkOnCancel() {
+        // Arrange
+        when(work1.getRemainingEvents()).thenReturn(NUMBER_OF_WORK_ITEMS);
+        when(work2.getRemainingEvents()).thenReturn(NUMBER_OF_WORK_ITEMS_2);
+
+        // Act
+        syncSubscriber.hookOnSubscribe(subscription);
+        syncSubscriber.hookOnCancel();
+
+        // Assert
+        verify(work1).complete(any(String.class));
+
+        // The current work has been polled, so this should be empty.
+        assertEquals(0, syncSubscriber.getWorkQueueSize());
+    }
 }
