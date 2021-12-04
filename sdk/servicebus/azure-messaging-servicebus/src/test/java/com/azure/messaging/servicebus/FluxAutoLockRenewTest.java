@@ -15,7 +15,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.Disposable;
@@ -531,7 +530,7 @@ public class FluxAutoLockRenewTest {
      * Exists so that Mockito doesn't fall over with not a mock exception.
      */
     private static class TestContainer extends LockContainer<LockRenewalOperation> {
-        public TestContainer() {
+        TestContainer() {
             super(Duration.ofSeconds(60));
         }
     }

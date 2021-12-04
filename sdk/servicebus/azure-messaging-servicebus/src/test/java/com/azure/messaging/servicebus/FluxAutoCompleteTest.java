@@ -318,7 +318,7 @@ class FluxAutoCompleteTest {
     }
 
     /**
-     * Mockito fails with org.mockito.exceptions.misusing.NotAMockException if you try to mock CoreSubscriber<T>
+     * Mockito fails with org.mockito.exceptions.misusing.NotAMockException if you try to mock CoreSubscriberT
      * periodically.
      */
     private static class TestCoreSubscriber implements CoreSubscriber<ServiceBusMessageContext> {
