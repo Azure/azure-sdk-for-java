@@ -348,7 +348,7 @@ class FluxAutoCompleteTest {
             onNextInvocations.add(messageContext);
 
             current = current + 1;
-            if (current == 2) {
+            if (current == errorIndex) {
                 throw new IllegalArgumentException("Dummy message.");
             }
         }
