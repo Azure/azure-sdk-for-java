@@ -193,12 +193,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
      */
     @Override
     protected void hookOnError(Throwable throwable) {
-        logger.error("workId[{}] Errors occurred upstream", currentWork.getId(), throwable);
-        synchronized (currentWorkLock) {
-            currentWork.complete(null, throwable);
-        }
-
-        dispose();
+        dispose("Errors occurred upstream", throwable);
     }
 
     @Override
@@ -304,13 +299,26 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
     public void dispose() {
         super.dispose();
 
+        dispose("Upstream completed the receive work.", null);
+    }
+
+    private void dispose(String message, Throwable throwable) {
+        super.dispose();
+
         if (isDisposed.getAndSet(true)) {
             return;
         }
 
         synchronized (currentWorkLock) {
             if (currentWork != null) {
-                currentWork.complete("Upstream completed the receive work.");
+                currentWork.complete(message, throwable);
+                currentWork = null;
+            }
+
+            SynchronousReceiveWork w = workQueue.poll();
+            while (w != null) {
+                w.complete(message, throwable);
+                w = workQueue.poll();
             }
         }
     }
