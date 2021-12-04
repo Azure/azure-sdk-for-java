@@ -145,7 +145,7 @@ class FluxAutoCompleteTest {
         assertEquals(1, downstream.onErrorInvocations.size());
         assertEquals(testError, downstream.onErrorInvocations.get(0));
 
-        verifyLists(onCompleteInvocations, context, context2);
+        verifyLists(onCompleteInvocations, context);
     }
 
     @Test
