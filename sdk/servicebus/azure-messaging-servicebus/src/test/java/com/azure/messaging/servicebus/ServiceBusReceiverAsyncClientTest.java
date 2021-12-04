@@ -118,6 +118,7 @@ class ServiceBusReceiverAsyncClientTest {
     private ServiceBusConnectionProcessor connectionProcessor;
     private ServiceBusReceiverAsyncClient receiver;
     private ServiceBusReceiverAsyncClient sessionReceiver;
+    private AutoCloseable mocksCloseable;
 
     @Mock
     private ServiceBusReactorReceiver amqpReceiveLink;
@@ -154,7 +155,7 @@ class ServiceBusReceiverAsyncClientTest {
     void setup(TestInfo testInfo) {
         logger.info("[{}] Setting up.", testInfo.getDisplayName());
 
-        MockitoAnnotations.initMocks(this);
+        mocksCloseable = MockitoAnnotations.openMocks(this);
 
         // Forcing us to publish the messages we receive on the AMQP link on single. Similar to how it is done
         // in ReactorExecutor.
@@ -198,10 +199,11 @@ class ServiceBusReceiverAsyncClientTest {
     }
 
     @AfterEach
-    void teardown(TestInfo testInfo) {
+    void teardown(TestInfo testInfo) throws Exception {
         logger.info("[{}] Tearing down.", testInfo.getDisplayName());
 
         receiver.close();
+        mocksCloseable.close();
         Mockito.framework().clearInlineMock(this);
     }
 
