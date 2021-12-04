@@ -7,7 +7,7 @@ package com.azure.communication.callingserver.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The request payload for unmuting any participant. */
+/** The request payload to unmute a participant. */
 @Fluent
 public final class UnmuteParticipantRequest {
     /*

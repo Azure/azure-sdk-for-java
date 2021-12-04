@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 import com.azure.communication.callingserver.implementation.AzureCommunicationCallingServerServiceImpl;
 import com.azure.communication.callingserver.implementation.CallConnectionsImpl;
 import com.azure.communication.callingserver.implementation.ServerCallsImpl;
+import com.azure.communication.callingserver.implementation.converters.AddParticipantResultConverter;
 import com.azure.communication.callingserver.implementation.converters.AnswerCallRequestConverter;
 import com.azure.communication.callingserver.implementation.converters.CallConnectionRequestConverter;
 import com.azure.communication.callingserver.implementation.converters.CallLocatorConverter;
@@ -466,7 +467,7 @@ public final class CallingServerAsyncClient {
 
             return serverCallInternal.addParticipantAsync(requestWithCallLocator, Context.NONE)
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
-                .flatMap(result -> Mono.just(new AddParticipantResult(result.getParticipantId())));
+                .flatMap(result -> Mono.just(AddParticipantResultConverter.convert(result)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -522,7 +523,7 @@ public final class CallingServerAsyncClient {
                     .addParticipantWithResponseAsync(requestWithCallLocator, contextValue)
                     .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                     .map(response ->
-                        new SimpleResponse<>(response, new AddParticipantResult(response.getValue().getParticipantId())));
+                        new SimpleResponse<>(response, AddParticipantResultConverter.convert(response.getValue())));
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

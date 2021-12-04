@@ -61,10 +61,13 @@ public class CallingServerResponseMocker {
         return serializeObject(result);
     }
 
-    public static String generateAddParticipantResult(String participantId) {
+    public static String generateAddParticipantResult() {
 
         AddParticipantResultInternal result = new AddParticipantResultInternal()
-            .setParticipantId(participantId);
+        .setOperationContext(OPERATION_CONTEXT)
+        .setOperationId(OPERATION_ID)
+        .setStatus(CallingOperationStatus.RUNNING)
+        .setResultDetails(new CallingOperationResultDetailsInternal().setCode(202).setSubcode(0).setMessage("message"));
 
         return serializeObject(result);
     }

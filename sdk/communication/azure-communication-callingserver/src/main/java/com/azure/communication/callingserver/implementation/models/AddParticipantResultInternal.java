@@ -4,6 +4,7 @@
 
 package com.azure.communication.callingserver.implementation.models;
 
+import com.azure.communication.callingserver.models.CallingOperationStatus;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -11,28 +12,106 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AddParticipantResultInternal {
     /*
-     * The id of the added participant.
+     * The operation id.
      */
-    @JsonProperty(value = "participantId")
-    private String participantId;
+    @JsonProperty(value = "operationId")
+    private String operationId;
+
+    /*
+     * The status of the operation
+     */
+    @JsonProperty(value = "status", required = true)
+    private CallingOperationStatus status;
+
+    /*
+     * The operation context provided by client.
+     */
+    @JsonProperty(value = "operationContext")
+    private String operationContext;
+
+    /*
+     * The result info for the operation.
+     */
+    @JsonProperty(value = "resultDetails")
+    private CallingOperationResultDetailsInternal resultDetails;
 
     /**
-     * Get the participantId property: The id of the added participant.
+     * Get the operationId property: The operation id.
      *
-     * @return the participantId value.
+     * @return the operationId value.
      */
-    public String getParticipantId() {
-        return this.participantId;
+    public String getOperationId() {
+        return this.operationId;
     }
 
     /**
-     * Set the participantId property: The id of the added participant.
+     * Set the operationId property: The operation id.
      *
-     * @param participantId the participantId value to set.
+     * @param operationId the operationId value to set.
      * @return the AddParticipantResultInternal object itself.
      */
-    public AddParticipantResultInternal setParticipantId(String participantId) {
-        this.participantId = participantId;
+    public AddParticipantResultInternal setOperationId(String operationId) {
+        this.operationId = operationId;
+        return this;
+    }
+
+    /**
+     * Get the status property: The status of the operation.
+     *
+     * @return the status value.
+     */
+    public CallingOperationStatus getStatus() {
+        return this.status;
+    }
+
+    /**
+     * Set the status property: The status of the operation.
+     *
+     * @param status the status value to set.
+     * @return the AddParticipantResultInternal object itself.
+     */
+    public AddParticipantResultInternal setStatus(CallingOperationStatus status) {
+        this.status = status;
+        return this;
+    }
+
+    /**
+     * Get the operationContext property: The operation context provided by client.
+     *
+     * @return the operationContext value.
+     */
+    public String getOperationContext() {
+        return this.operationContext;
+    }
+
+    /**
+     * Set the operationContext property: The operation context provided by client.
+     *
+     * @param operationContext the operationContext value to set.
+     * @return the AddParticipantResultInternal object itself.
+     */
+    public AddParticipantResultInternal setOperationContext(String operationContext) {
+        this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Get the resultDetails property: The result info for the operation.
+     *
+     * @return the resultDetails value.
+     */
+    public CallingOperationResultDetailsInternal getResultDetails() {
+        return this.resultDetails;
+    }
+
+    /**
+     * Set the resultDetails property: The result info for the operation.
+     *
+     * @param resultDetails the resultDetails value to set.
+     * @return the AddParticipantResultInternal object itself.
+     */
+    public AddParticipantResultInternal setResultDetails(CallingOperationResultDetailsInternal resultDetails) {
+        this.resultDetails = resultDetails;
         return this;
     }
 }

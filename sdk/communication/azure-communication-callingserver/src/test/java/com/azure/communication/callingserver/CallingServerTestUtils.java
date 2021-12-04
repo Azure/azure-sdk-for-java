@@ -84,7 +84,9 @@ public class CallingServerTestUtils {
 
     protected static void validateAddParticipantResult(AddParticipantResult result) {
         assertNotNull(result);
-        assertNotNull(result.getParticipantId());
-        assertFalse(result.getParticipantId().isEmpty());
+        assertNotNull(result.getOperationId());
+        assertFalse(result.getOperationId().isEmpty());
+        assertNotNull(result.getStatus());
+        assertSame(result.getStatus(), CallingOperationStatus.RUNNING);
     }
 }
