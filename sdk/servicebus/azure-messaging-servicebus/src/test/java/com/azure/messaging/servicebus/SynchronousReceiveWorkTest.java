@@ -78,7 +78,7 @@ public class SynchronousReceiveWorkTest {
     }
 
     /**
-     * Ensure that completes when an item is emitted and
+     * Ensure that completes when an item is emitted and then completes when timeout has elapsed.
      */
     @Test
     public void emitsWorkItemsThenTimeout() {
@@ -100,6 +100,38 @@ public class SynchronousReceiveWorkTest {
             })
             .expectNext(message1)
             .verifyComplete();
+
+        assertEquals(1, work.getRemainingEvents());
+        assertTrue(work.isTerminal());
+
+        assertFalse(work.emitNext(message2), "Should not have been able to emit a message after it is terminal.");
+    }
+
+    /**
+     * Ensure that completes when a message is emitted and then the 1s timeout between messages elapses.
+     */
+    @Test
+    public void emitsWorkItemsAndEmitsCompleteWhenTimeoutBetweenMessagesElapses() {
+        // Arrange
+        int numberToReceive = 2;
+
+        final long id = 12;
+        final Duration timeout = Duration.ofMinutes(5);
+        final Duration verifyTimeout = Duration.ofSeconds(10);
+
+        final ServiceBusReceivedMessage message1 = mock(ServiceBusReceivedMessage.class);
+        final ServiceBusReceivedMessage message2 = mock(ServiceBusReceivedMessage.class);
+
+        final SynchronousReceiveWork work = new SynchronousReceiveWork(id, numberToReceive, timeout, messageSink);
+
+        // Act
+        StepVerifier.create(messageSink.asFlux())
+            .then(() -> {
+                assertTrue(work.emitNext(message1), "Could not emit the first message.");
+            })
+            .expectNext(message1)
+            .expectComplete()
+            .verify(verifyTimeout);
 
         assertEquals(1, work.getRemainingEvents());
         assertTrue(work.isTerminal());
