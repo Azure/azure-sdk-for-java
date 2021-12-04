@@ -38,6 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -72,9 +73,6 @@ public class FluxAutoLockRenewTest {
     private ArgumentCaptor<OffsetDateTime> lockedUntilCapture;
     @Captor
     private ArgumentCaptor<LockRenewalOperation> lockRenewalOperationCapture;
-
-    @Mock
-    private TestContainer messageLockContainer;
 
     @BeforeAll
     public static void beforeAll() {
@@ -111,6 +109,8 @@ public class FluxAutoLockRenewTest {
     @Test
     public void canCancel() {
         // Arrange
+        final TestContainer messageLockContainer = mock(TestContainer.class);
+
         final ServiceBusReceivedMessage receivedMessage2 = new ServiceBusReceivedMessage(BinaryData.fromString("data"));
         final ServiceBusMessageContext message2 = new ServiceBusMessageContext(receivedMessage2);
         receivedMessage2.setLockToken(UUID.randomUUID());
@@ -143,7 +143,10 @@ public class FluxAutoLockRenewTest {
      */
     @Test
     public void illegalValueConstructor() {
-        // Arrange, Act & Assert
+        // Arrange
+        final TestContainer messageLockContainer = mock(TestContainer.class);
+
+        // Act & Assert
         assertThrows(NullPointerException.class, () -> new FluxAutoLockRenew(null,
             defaultReceiverOptions, messageLockContainer, renewalFunction));
 
@@ -175,6 +178,7 @@ public class FluxAutoLockRenewTest {
             actualTokenRenewCalledTimes.getAndIncrement();
             return Mono.just(OffsetDateTime.now().plusSeconds(1));
         };
+        final TestContainer messageLockContainer = mock(TestContainer.class);
 
         final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource,
             defaultReceiverOptions, messageLockContainer, lockTokenRenewFunction);
@@ -197,7 +201,7 @@ public class FluxAutoLockRenewTest {
             })
             .verifyComplete();
 
-        verify(messageLockContainer, times(1))
+        verify(messageLockContainer)
             .addOrUpdate(eq(LOCK_TOKEN_STRING), any(OffsetDateTime.class), any(LockRenewalOperation.class));
 
         assertTrue(actualTokenRenewCalledTimes.get() >= renewedForAtLeast);
@@ -209,6 +213,7 @@ public class FluxAutoLockRenewTest {
     @Test
     void lockRenewedError() {
         // Arrange
+        final TestContainer messageLockContainer = mock(TestContainer.class);
         final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource,
             defaultReceiverOptions, messageLockContainer, renewalFunction);
 
@@ -232,6 +237,7 @@ public class FluxAutoLockRenewTest {
     @Test
     void messageWithError() {
         // Arrange
+        final TestContainer messageLockContainer = mock(TestContainer.class);
         final String expectedSessionId = "1";
         final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource,
             defaultReceiverOptions, messageLockContainer, renewalFunction);
@@ -248,8 +254,8 @@ public class FluxAutoLockRenewTest {
             .verify();
 
         verify(messageLockContainer, never()).addOrUpdate(anyString(), any(OffsetDateTime.class), any(LockRenewalOperation.class));
-
     }
+
     /**
      * Test when user code throw Exception, onError handler is called.
      */
@@ -259,6 +265,7 @@ public class FluxAutoLockRenewTest {
         final int waitForSubscriberSeconds = 6;
         final AtomicBoolean onErrorCalled = new AtomicBoolean(false);
         final AtomicBoolean onCompleteCalled = new AtomicBoolean(false);
+        final TestContainer messageLockContainer = mock(TestContainer.class);
 
         final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource,
             defaultReceiverOptions, messageLockContainer, renewalFunction);
@@ -285,6 +292,7 @@ public class FluxAutoLockRenewTest {
     public void mapperReturnNullValue() {
         // Arrange
         final String expectedMappedValue = null;
+        final TestContainer messageLockContainer = mock(TestContainer.class);
         final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource,
             defaultReceiverOptions, messageLockContainer, renewalFunction);
 
@@ -299,6 +307,7 @@ public class FluxAutoLockRenewTest {
     @Test
     public void nullMapperTest() {
         // Arrange
+        final TestContainer messageLockContainer = mock(TestContainer.class);
         final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource,
             defaultReceiverOptions, messageLockContainer, renewalFunction);
 
@@ -312,6 +321,7 @@ public class FluxAutoLockRenewTest {
     @Test
     void renewCanBeSubscribedMultipleTimes() {
         // Arrange
+        final TestContainer messageLockContainer = mock(TestContainer.class);
         final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource,
             defaultReceiverOptions, messageLockContainer, renewalFunction);
 
@@ -339,6 +349,8 @@ public class FluxAutoLockRenewTest {
     @Test
     public void simpleFilterAndBackpressured() {
         // Arrange
+        final TestContainer messageLockContainer = mock(TestContainer.class);
+
         final ServiceBusReceivedMessage receivedMessage2 = new ServiceBusReceivedMessage(BinaryData.fromString("data"));
         receivedMessage2.setEnqueuedSequenceNumber(2);
         receivedMessage2.setLockToken(UUID.randomUUID());
@@ -379,6 +391,8 @@ public class FluxAutoLockRenewTest {
     @Test
     public void simpleMappingBackpressured() {
         // Arrange
+        final TestContainer messageLockContainer = mock(TestContainer.class);
+
         final ServiceBusReceivedMessage receivedMessage2 = new ServiceBusReceivedMessage(BinaryData.fromString("data"));
         receivedMessage2.setLockToken(UUID.randomUUID());
         receivedMessage2.setLockedUntil(OffsetDateTime.now().plusSeconds(2));
@@ -414,6 +428,8 @@ public class FluxAutoLockRenewTest {
     @Test
     public void simpleMappingAndFilter() {
         // Arrange
+        final TestContainer messageLockContainer = mock(TestContainer.class);
+
         final Long expectedEnqueuedSequenceNumber = 2L;
         final OffsetDateTime lockedUntil = OffsetDateTime.now().plusSeconds(1);
         final ServiceBusReceivedMessage receivedMessage2 = new ServiceBusReceivedMessage(BinaryData.fromString("data"));
@@ -445,6 +461,8 @@ public class FluxAutoLockRenewTest {
     @Test
     public void contextPropagationTest() {
         // Arrange
+        final TestContainer messageLockContainer = mock(TestContainer.class);
+
         final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource,
             defaultReceiverOptions, messageLockContainer, renewalFunction);
 
@@ -468,6 +486,8 @@ public class FluxAutoLockRenewTest {
     @Test
     void autoCompleteDisabledLockRenewNotClosed() {
         // Arrange
+        final TestContainer messageLockContainer = mock(TestContainer.class);
+
         final boolean enableAutoComplete = false;
         final int totalProcessingTimeSeconds = 2;
         final int renewedForAtLeast = 3;
