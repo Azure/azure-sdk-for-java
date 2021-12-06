@@ -24,7 +24,7 @@ public class SynchronousReceiveWorkTest {
 
     @AfterEach
     public void teardown() {
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
     }
 
     @Test
