@@ -88,6 +88,7 @@ public class Membership implements Serializable {
 
     /**
      * Determines whether the specified object is equal to the current object.
+     *
      * @param o the current object
      * @return true if the specified object is equal to the current object; otherwise, false.
      */
@@ -107,6 +108,7 @@ public class Membership implements Serializable {
 
     /**
      * Get hashCode value
+     *
      * @return hashCode value
      */
     @Override

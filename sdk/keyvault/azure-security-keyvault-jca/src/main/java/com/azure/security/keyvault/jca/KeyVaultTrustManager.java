@@ -85,6 +85,7 @@ public final class KeyVaultTrustManager extends X509ExtendedTrustManager {
 
     /**
      * Check if the client is trusted.
+     *
      * @param chain the chain
      * @param authType the authType
      * @throws CertificateException if any of the certificates in the
@@ -123,6 +124,7 @@ public final class KeyVaultTrustManager extends X509ExtendedTrustManager {
 
     /**
      * Check if the server is trusted.
+     *
      * @param chain the chain
      * @param authType the authType
      * @throws CertificateException if any of the certificates in the
@@ -161,6 +163,7 @@ public final class KeyVaultTrustManager extends X509ExtendedTrustManager {
 
     /**
      * Get accepted issuers.
+     *
      * @return X509Certificate the X509Certificate
      */
     @Override
@@ -170,6 +173,7 @@ public final class KeyVaultTrustManager extends X509ExtendedTrustManager {
 
     /**
      * Check if the client is trusted.
+     *
      * @param chain the chain
      * @param authType the authType
      * @param socket the socket
@@ -183,6 +187,7 @@ public final class KeyVaultTrustManager extends X509ExtendedTrustManager {
 
     /**
      * Check if the server is trusted.
+     *
      * @param chain the chain
      * @param authType the authType
      * @param socket the socket
@@ -196,6 +201,7 @@ public final class KeyVaultTrustManager extends X509ExtendedTrustManager {
 
     /**
      * Check if the client is trusted.
+     *
      * @param chain the chain
      * @param authType the authType
      * @param engine the engine
@@ -209,6 +215,7 @@ public final class KeyVaultTrustManager extends X509ExtendedTrustManager {
 
     /**
      * Check if the server is trusted.
+     *
      * @param chain the chain
      * @param authType the authType
      * @param engine the engine

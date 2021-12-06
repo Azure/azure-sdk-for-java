@@ -59,6 +59,7 @@ public class Memberships {
 
     /**
      * Determines whether the specified object is equal to the current object.
+     *
      * @param o the current object
      * @return true if the specified object is equal to the current object; otherwise, false.
      */
@@ -77,6 +78,7 @@ public class Memberships {
 
     /**
      * Get hashCode value
+     *
      * @return hashCode value
      */
     @Override

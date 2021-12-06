@@ -98,6 +98,7 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
     /**
      * Returns an {@link OAuth2User} after obtaining the user attributes of the End-User
      * from the UserInfo Endpoint.
+     *
      * @param userRequest the user request
      * @return an {@link OAuth2User}
      * @throws OAuth2AuthenticationException if an error occurs while attempting to obtain
@@ -143,6 +144,11 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
         return defaultOidcUser;
     }
 
+    /**
+     * Extract roles from idToken.
+     *
+     * @return roles the roles
+     */
     Set<String> extractRolesFromIdToken(OidcIdToken idToken) {
         return Optional.ofNullable(idToken)
                        .map(token -> (Collection<?>) token.getClaim(ROLES))
@@ -154,6 +160,11 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
                        .collect(Collectors.toSet());
     }
 
+    /**
+     * Extract group roles from accessToken.
+     *
+     * @return roles the group roles
+     */
     Set<String> extractGroupRolesFromAccessToken(OAuth2AccessToken accessToken) {
         if (allowedGroupNames.isEmpty() && allowedGroupIds.isEmpty()) {
             return Collections.emptySet();

@@ -48,8 +48,8 @@ public final class KeyVaultKeyManager extends X509ExtendedKeyManager {
     /**
      * Constructor.
      *
-     * @param keystore the keystore.
-     * @param password the password.
+     * @param keystore the keystore
+     * @param password the password
      */
     public KeyVaultKeyManager(KeyStore keystore, char[] password) {
         LOGGER.entering("KeyVaultKeyManager", "<init>", new Object[] { keystore, password });
@@ -64,9 +64,10 @@ public final class KeyVaultKeyManager extends X509ExtendedKeyManager {
 
     /**
      * Choose client alias.
-     * @param keyType the keyType.
-     * @param issuers the issuers.
-     * @param socket the socket.
+     *
+     * @param keyType the keyType
+     * @param issuers the issuers
+     * @param socket the socket
      * @return alias the client alias
      */
     @Override
@@ -95,9 +96,10 @@ public final class KeyVaultKeyManager extends X509ExtendedKeyManager {
 
     /**
      * Choose server alias.
-     * @param keyType the keyType.
-     * @param issuers the issuers.
-     * @param socket the socket.
+     *
+     * @param keyType the keyType
+     * @param issuers the issuers
+     * @param socket the socket
      * @return alias the server alias
      */
     @Override
@@ -126,8 +128,9 @@ public final class KeyVaultKeyManager extends X509ExtendedKeyManager {
 
     /**
      * Get client alias.
-     * @param keyType the keyType.
-     * @param issuers the issuers.
+     *
+     * @param keyType the keyType
+     * @param issuers the issuers
      * @return alias the client alias
      */
     @Override
@@ -146,7 +149,8 @@ public final class KeyVaultKeyManager extends X509ExtendedKeyManager {
 
     /**
      * Get certificate chain.
-     * @param alias the alias.
+     *
+     * @param alias the alias
      * @return chain the certificate chain
      */
     @Override
@@ -173,7 +177,8 @@ public final class KeyVaultKeyManager extends X509ExtendedKeyManager {
 
     /**
      * Get private key.
-     * @param alias the alias.
+     *
+     * @param alias the alias
      * @return privateKey the private key
      */
     @Override
@@ -191,8 +196,9 @@ public final class KeyVaultKeyManager extends X509ExtendedKeyManager {
 
     /**
      * Get server alias.
-     * @param keyType the keyType.
-     * @param issuers the issuers.
+     *
+     * @param keyType the keyType
+     * @param issuers the issuers
      * @return alias the server alias
      */
     @Override

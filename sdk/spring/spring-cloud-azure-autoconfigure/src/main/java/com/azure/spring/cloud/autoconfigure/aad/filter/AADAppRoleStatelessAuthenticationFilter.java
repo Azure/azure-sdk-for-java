@@ -61,7 +61,8 @@ public class AADAppRoleStatelessAuthenticationFilter extends OncePerRequestFilte
     }
 
     /**
-     * Set internal filter
+     * Set internal filter.
+     *
      * @param httpServletRequest the httpServletRequest
      * @param httpServletResponse the httpServletResponse
      * @param filterChain the filterChain

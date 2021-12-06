@@ -5,7 +5,6 @@ package com.azure.spring.cloud.autoconfigure.aad.b2c;
 import com.azure.spring.cloud.autoconfigure.aad.b2c.implementation.AADB2CAuthorizationRequestResolver;
 import com.azure.spring.cloud.autoconfigure.aad.b2c.implementation.AADB2CLogoutSuccessHandler;
 import com.azure.spring.cloud.autoconfigure.aad.b2c.implementation.AADB2COAuth2AuthorizationCodeGrantRequestEntityConverter;
-import org.springframework.security.config.annotation.SecurityBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationCodeTokenResponseClient;

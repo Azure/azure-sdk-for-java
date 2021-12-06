@@ -177,6 +177,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     /**
      * Lists all the alias names of this keystore.
+     *
      * @return enumeration of the alias names
      */
     @Override
@@ -186,6 +187,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     /**
      * Checks if the given alias exists in this keystore.
+     *
      * @param alias the alias name
      * @return true if the alias exists, false otherwise
      */
@@ -196,6 +198,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     /**
      * Deletes the entry identified by the given alias from this keystore.
+     *
      * @param alias the alias name
      */
     @Override
@@ -207,6 +210,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      * Determines if the keystore {@code Entry} for the specified
      * {@code alias} is an instance or subclass of the specified
      * {@code entryClass}.
+     *
      * @param alias the alias name
      * @param entryClass the entry class
      * @return true if the keystore {@code Entry} for the specified
@@ -220,6 +224,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     /**
      * Get the certificate associated with the given alias.
+     *
      * @param alias the alias name
      * @return the certificate, or null if the given alias does not exist or
      * does not contain a certificate
@@ -242,6 +247,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     /**
      * Get the (alias) name of the first keystore entry whose certificate matches the given certificate.
+     *
      * @param cert the certificate to match with.
      * @return the alias name of the first entry with matching certificate,
      * or null if no such entry exists in this keystore
@@ -268,6 +274,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     /**
      * Get the certificate chain associated with the given alias.
+     *
      * @param alias the alias name
      * @return the certificate chain (ordered with the user's certificate first
      * and the root certificate authority last), or null if the given alias
@@ -286,6 +293,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     /**
      * Get the creation date of the entry identified by the given alias.
+     *
      * @param alias the alias name
      * @return the creation date of this entry, or null if the given alias does not exist
      */
@@ -296,6 +304,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     /**
      * Gets a {@code KeyStore.Entry} for the specified alias with the specified protection parameter.
+     *
      * @param alias the alias name
      * @param protParam the protParam
      * @return the {@code KeyStore.Entry} for the specified alias,or {@code null} if there is no such entry
@@ -310,6 +319,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     /**
      * Get key associated with the given alias.
+     *
      * @param alias the alias name
      * @param password the password for recovering the key
      * @return the requested key, or null if the given alias does not exist or does not identify a key-related entry
@@ -326,6 +336,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     /**
      * Get the entry identified by the given alias.
+     *
      * @param alias the alias name
      * @return true if the entry identified by the given alias contains a trusted certificate, false otherwise
      */
@@ -336,6 +347,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     /**
      * Get the entry identified by the given alias.
+     *
      * @param alias the alias for the keystore entry to be checked
      * @return true if the entry identified by the given alias is a key-related, false otherwise
      */
@@ -346,6 +358,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     /**
      * Loads the keystore using the given {@code KeyStore.LoadStoreParameter}.
+     *
      * @param param the {@code KeyStore.LoadStoreParameter}
      *          that specifies how to load the keystore,
      *          which may be {@code null}
@@ -362,6 +375,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     /**
      * Loads the keystore from the given input stream.
+     *
      * @param stream the input stream from which the keystore is loaded,or {@code null}
      * @param password the password
      */
@@ -390,6 +404,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     /**
      * Assigns the given certificate to the given alias.
+     *
      * @param alias the alias name
      * @param certificate the certificate
      */
@@ -406,7 +421,8 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      * Saves a {@code KeyStore.Entry} under the specified alias.
      * The specified protection parameter is used to protect the
      * {@code Entry}.
-     * @param alias the alias
+     *
+     * @param alias the alias name
      * @param entry the entry
      * @param protParam the protParam
      * @throws KeyStoreException if this operation fails
@@ -418,6 +434,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     /**
      * Assigns the given key to the given alias, protecting it with the given password.
+     *
      * @param alias the alias name
      * @param key the key to be associated with the alias
      * @param password the password to protect the key
@@ -429,6 +446,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     /**
      * Assigns the given key (that has already been protected) to the given alias.
+     *
      * @param alias the alias name
      * @param key the key
      * @param chain the certificate chain
@@ -439,6 +457,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     /**
      * Retrieves the number of entries in this keystore.
+     *
      * @return the number of entries in this keystore
      */
     @Override
@@ -448,6 +467,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     /**
      * Stores this keystore to the given output stream, and protects its integrity with the given password.
+     *
      * @param stream the output stream to which this keystore is written
      * @param password the password to generate the keystore integrity check
      */
@@ -457,6 +477,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     /**
      * Stores this keystore using the given.
+     *
      * @param param the param
      */
     @Override

@@ -44,6 +44,7 @@ public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigu
 
     /**
      * configure
+     *
      * @param http the {@link HttpSecurity} to use
      * @throws Exception Configuration failed
      *

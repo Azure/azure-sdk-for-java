@@ -46,6 +46,7 @@ public class AADOAuth2AuthorizationRequestResolver implements OAuth2Authorizatio
     /**
      * Returns the {@link OAuth2AuthorizationRequest} resolved from the provided
      * {@code HttpServletRequest} or {@code null} if not available.
+     *
      * @param request the {@code HttpServletRequest}
      * @return the resolved {@link OAuth2AuthorizationRequest} or {@code null} if not
      * available
@@ -58,6 +59,7 @@ public class AADOAuth2AuthorizationRequestResolver implements OAuth2Authorizatio
     /**
      * Returns the {@link OAuth2AuthorizationRequest} resolved from the provided
      * {@code HttpServletRequest} or {@code null} if not available.
+     *
      * @param request the {@code HttpServletRequest}
      * @param clientRegistrationId the clientRegistrationId to use
      * @return the resolved {@link OAuth2AuthorizationRequest} or {@code null} if not

@@ -66,6 +66,7 @@ public class AADOBOOAuth2AuthorizedClientProvider implements OAuth2AuthorizedCli
      * for the specified client, e.g. the provider doesn't support the
      * {@link ClientRegistration#getAuthorizationGrantType() authorization grant} type
      * configured for the client.
+     *
      * @param context the context that holds authorization-specific state for the client
      * @return the {@link OAuth2AuthorizedClient} or {@code null} if authorization is not
      * supported for the specified client
@@ -156,6 +157,7 @@ public class AADOBOOAuth2AuthorizedClientProvider implements OAuth2AuthorizedCli
 
     /**
      * Create App
+     *
      * @param clientRegistration clients that need to be registered
      * @return the {@link ConfidentialClientApplication} or {@code null}
      */

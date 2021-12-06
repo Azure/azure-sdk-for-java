@@ -40,7 +40,8 @@ public class AADOAuth2AuthorizationCodeGrantRequestEntityConverter
 
     /**
      * Get application id.
-     * @return  application id
+     *
+     * @return application id
      */
     @Override
     protected String getApplicationId() {
@@ -49,7 +50,8 @@ public class AADOAuth2AuthorizationCodeGrantRequestEntityConverter
 
     /**
      * Get http body.
-     * @return  http body
+     *
+     * @return http body
      */
     @Override
     public MultiValueMap<String, String> getHttpBody(OAuth2AuthorizationCodeGrantRequest request) {

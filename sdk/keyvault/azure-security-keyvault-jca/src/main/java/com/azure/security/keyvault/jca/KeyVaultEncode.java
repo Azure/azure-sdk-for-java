@@ -19,6 +19,7 @@ public class KeyVaultEncode {
 
     /**
      * Decode signatures imitating ECUtil
+     *
      * @param signature signature get by keyvault
      * @return decoded signatures
      */
@@ -31,7 +32,8 @@ public class KeyVaultEncode {
     }
 
     /**
-     * Sign the code
+     * Sign the code.
+     *
      * @param bytes signature obtained
      * @param offset the offset in the byte array
      * @param length the number of bytes to convert
@@ -46,7 +48,8 @@ public class KeyVaultEncode {
     }
 
     /**
-     * Complement integer values
+     * Complement integer values.
+     *
      * @param bytes1 integer value
      * @param bytes2 Complement array
      * @return decoded signatures
@@ -59,7 +62,8 @@ public class KeyVaultEncode {
     }
 
     /**
-     * Integrate integer values
+     * Integrate integer values.
+     *
      * @param bytes1 integer value1
      * @param bytes2 integer value2
      * @param bytes3 integer value3
@@ -74,7 +78,8 @@ public class KeyVaultEncode {
     }
 
     /**
-     * Get the result integer value
+     * Get the result integer value.
+     *
      * @param tag tag value
      * @param len the content length
      * @return integer value

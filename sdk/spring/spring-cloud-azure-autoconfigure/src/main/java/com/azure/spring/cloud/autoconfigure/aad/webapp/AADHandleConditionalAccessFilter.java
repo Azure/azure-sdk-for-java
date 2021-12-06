@@ -39,6 +39,7 @@ public class AADHandleConditionalAccessFilter extends OncePerRequestFilter {
     /**
      * Provides HttpServletRequest and HttpServletResponse arguments instead of the
      * default ServletRequest and ServletResponse ones.
+     *
      * @param request the HttpServletRequest
      * @param response the HttpServletResponse
      * @param filterChain the FilterChain

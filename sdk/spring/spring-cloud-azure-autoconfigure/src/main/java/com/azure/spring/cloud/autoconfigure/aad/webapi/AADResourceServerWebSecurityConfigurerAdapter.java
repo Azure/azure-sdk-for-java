@@ -22,6 +22,7 @@ public abstract class AADResourceServerWebSecurityConfigurerAdapter extends WebS
 
     /**
      * configure
+     *
      * @param http the {@link HttpSecurity} to use
      * @throws Exception Configuration failed
      *

@@ -12,7 +12,6 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
-import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthentication;
 import org.springframework.util.Assert;
@@ -76,6 +75,7 @@ public class AADJwtBearerTokenAuthenticationConverter implements Converter<Jwt, 
 
     /**
      * Convert the source object of type {@code Jwt} to target type {@code AbstractAuthenticationToken}.
+     *
      * @param jwt the source object to convert, which must be an instance of {@code Jwt} (never {@code null})
      * @return the converted object
      */
