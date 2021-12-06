@@ -16,7 +16,7 @@ import java.util.List;
  *
  * @since 4.0.0
  */
-public final class AzureKeyVaultSecretProperties extends AzureKeyVaultProperties implements KeyVaultSecretProperties {
+public class AzureKeyVaultSecretProperties extends AzureKeyVaultProperties implements KeyVaultSecretProperties {
 
     public static final String PREFIX = "spring.cloud.azure.keyvault.secret";
 

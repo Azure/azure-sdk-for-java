@@ -32,7 +32,7 @@ import java.util.stream.StreamSupport;
  *
  * @since 4.0.0
  */
-public final class KeyVaultOperation {
+public class KeyVaultOperation {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KeyVaultOperation.class);
 

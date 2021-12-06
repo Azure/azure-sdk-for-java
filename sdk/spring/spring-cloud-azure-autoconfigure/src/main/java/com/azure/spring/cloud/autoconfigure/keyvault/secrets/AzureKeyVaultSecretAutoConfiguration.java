@@ -28,7 +28,7 @@ import org.springframework.context.annotation.Bean;
 @ConditionalOnClass(SecretClientBuilder.class)
 @ConditionalOnProperty(value = "spring.cloud.azure.keyvault.secret.enabled", havingValue = "true", matchIfMissing = true)
 @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.keyvault.secret", name = "endpoint")
-public final class AzureKeyVaultSecretAutoConfiguration extends AzureServiceConfigurationBase {
+public class AzureKeyVaultSecretAutoConfiguration extends AzureServiceConfigurationBase {
 
 
     public AzureKeyVaultSecretAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {

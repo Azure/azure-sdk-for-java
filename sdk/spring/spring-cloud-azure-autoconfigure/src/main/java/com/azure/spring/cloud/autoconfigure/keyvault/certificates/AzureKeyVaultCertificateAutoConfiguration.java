@@ -29,7 +29,7 @@ import org.springframework.context.annotation.Bean;
 @ConditionalOnClass(CertificateClientBuilder.class)
 @ConditionalOnExpression("${spring.cloud.azure.keyvault.certificate.enabled:true}")
 @ConditionalOnProperty("spring.cloud.azure.keyvault.certificate.endpoint")
-public final class AzureKeyVaultCertificateAutoConfiguration extends AzureServiceConfigurationBase {
+public class AzureKeyVaultCertificateAutoConfiguration extends AzureServiceConfigurationBase {
 
     public AzureKeyVaultCertificateAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
         super(azureGlobalProperties);

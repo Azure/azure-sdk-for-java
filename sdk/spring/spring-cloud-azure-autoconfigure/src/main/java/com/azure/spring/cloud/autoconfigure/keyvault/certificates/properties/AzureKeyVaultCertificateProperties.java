@@ -12,7 +12,7 @@ import com.azure.spring.service.keyvault.certificates.KeyVaultCertificatePropert
  *
  * @since 4.0.0
  */
-public final class AzureKeyVaultCertificateProperties extends AzureKeyVaultProperties implements KeyVaultCertificateProperties {
+public class AzureKeyVaultCertificateProperties extends AzureKeyVaultProperties implements KeyVaultCertificateProperties {
 
     public static final String PREFIX = "spring.cloud.azure.keyvault.certificate";
 

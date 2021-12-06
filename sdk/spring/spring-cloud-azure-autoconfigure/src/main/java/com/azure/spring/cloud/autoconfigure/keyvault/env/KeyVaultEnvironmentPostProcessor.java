@@ -32,7 +32,7 @@ import static org.springframework.core.env.StandardEnvironment.SYSTEM_ENVIRONMEN
  *
  * @since 4.0.0
  */
-public final class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcessor, Ordered {
+public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcessor, Ordered {
 
     public static final int ORDER = ConfigDataEnvironmentPostProcessor.ORDER + 1;
 

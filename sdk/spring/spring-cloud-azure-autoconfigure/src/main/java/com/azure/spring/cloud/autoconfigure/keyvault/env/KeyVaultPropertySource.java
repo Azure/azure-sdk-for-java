@@ -11,7 +11,7 @@ import org.springframework.core.env.EnumerablePropertySource;
  *
  * @since 4.0.0
  */
-public final class KeyVaultPropertySource extends EnumerablePropertySource<KeyVaultOperation> {
+public class KeyVaultPropertySource extends EnumerablePropertySource<KeyVaultOperation> {
 
     private final KeyVaultOperation operations;
     public static final String DEFAULT_AZURE_KEYVAULT_PROPERTYSOURCE_NAME = "azurekv";
