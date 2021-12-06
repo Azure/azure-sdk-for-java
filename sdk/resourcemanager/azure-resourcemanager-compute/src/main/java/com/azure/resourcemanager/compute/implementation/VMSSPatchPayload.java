@@ -91,7 +91,7 @@ class VMSSPatchPayload {
                 // -- --
                 VirtualMachineScaleSetUpdateNetworkProfile networkProfile =
                     new VirtualMachineScaleSetUpdateNetworkProfile();
-
+                networkProfile.withNetworkApiVersion(scaleSet.innerModel().virtualMachineProfile().networkProfile().networkApiVersion());
                 if (scaleSet.innerModel().virtualMachineProfile().networkProfile().networkInterfaceConfigurations()
                     != null) {
                     networkProfile
