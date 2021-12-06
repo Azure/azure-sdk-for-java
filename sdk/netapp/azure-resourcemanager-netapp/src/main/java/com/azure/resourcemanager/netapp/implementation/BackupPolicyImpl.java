@@ -48,10 +48,6 @@ public final class BackupPolicyImpl implements BackupPolicy, BackupPolicy.Defini
         return this.innerModel().etag();
     }
 
-    public String namePropertiesName() {
-        return this.innerModel().namePropertiesName();
-    }
-
     public String backupPolicyId() {
         return this.innerModel().backupPolicyId();
     }
