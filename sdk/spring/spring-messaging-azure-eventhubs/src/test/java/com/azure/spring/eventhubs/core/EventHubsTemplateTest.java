@@ -172,8 +172,7 @@ class EventHubsTemplateTest {
 
         when(this.mockProducerClient.createBatch(any(CreateBatchOptions.class)))
             .thenReturn(Mono.just(eventDataBatch));
-        when(eventDataBatch.tryAdd(any(EventData.class))).thenReturn(true, false, false).thenReturn(true, true, true)
-        ;
+        when(eventDataBatch.tryAdd(any(EventData.class))).thenReturn(true, false, false).thenReturn(true, true, true);
         when(eventDataBatch.getCount()).thenReturn(5);
         List<String> messagesList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
