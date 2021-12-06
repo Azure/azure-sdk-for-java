@@ -57,6 +57,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -1527,6 +1528,28 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         Assertions.assertEquals(vmss.orchestrationMode(), OrchestrationMode.FLEXIBLE);
         Assertions.assertNull(vmss.innerModel().virtualMachineProfile());
 
+        Assertions.assertNull(vmss.getPrimaryNetwork());
+        Assertions.assertNull(vmss.storageProfile());
+        Assertions.assertNull(vmss.networkProfile());
+        Assertions.assertNull(vmss.virtualMachinePublicIpConfig());
+        Assertions.assertEquals(vmss.applicationGatewayBackendAddressPoolsIds().size(), 0);
+        Assertions.assertEquals(vmss.applicationSecurityGroupIds().size(), 0);
+        Assertions.assertNull(vmss.billingProfile());
+        Assertions.assertNull(vmss.bootDiagnosticsStorageUri());
+        Assertions.assertNull(vmss.getPrimaryInternalLoadBalancer());
+        Assertions.assertEquals(vmss.vhdContainers().size(), 0);
+
+        Assertions.assertEquals(vmss.listPrimaryInternalLoadBalancerBackends().size(), 0);
+        Assertions.assertEquals(vmss.listPrimaryInternalLoadBalancerInboundNatPools().size(), 0);
+        Assertions.assertEquals(vmss.listPrimaryInternetFacingLoadBalancerBackends().size(), 0);
+        Assertions.assertEquals(vmss.listPrimaryInternetFacingLoadBalancerInboundNatPools().size(), 0);
+        Assertions.assertEquals(vmss.primaryPublicIpAddressIds().size(), 0);
+
+        Assertions.assertFalse(vmss.isAcceleratedNetworkingEnabled());
+        Assertions.assertFalse(vmss.isBootDiagnosticsEnabled());
+        Assertions.assertFalse(vmss.isIpForwardingEnabled());
+        Assertions.assertFalse(vmss.isManagedDiskEnabled());
+
         // update tag on vmss flex with no profile
         vmss.update()
             .withTag("tag1", "value1")
@@ -1546,6 +1569,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withSubnet("subnet1", "10.0.0.0/28")
                 .create();
         LoadBalancer publicLoadBalancer = createHttpLoadBalancers(Region.fromName(euapRegion), resourceGroup, "1", LoadBalancerSkuType.STANDARD, PublicIPSkuType.STANDARD, true);
+        final String vmssVmDnsLabel = generateRandomResourceName("pip", 10);
 
         // update vmss, attach profile
         vmss = this.computeManager
@@ -1562,6 +1586,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withRootUsername("jvuser")
             .withSsh(sshPublicKey())
             .withCapacity(1)
+            .withVirtualMachinePublicIp(vmssVmDnsLabel)
             .create();
         Assertions.assertNotNull(vmss.innerModel().virtualMachineProfile());
         Assertions.assertEquals(vmss.orchestrationMode(), OrchestrationMode.FLEXIBLE);
@@ -1580,10 +1605,23 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         Assertions.assertNotNull(vmss.tags());
         Assertions.assertEquals(vmss.tags().get("tag1"), "value2");
 
+        Assertions.assertNotNull(vmss.getPrimaryNetwork());
+        Assertions.assertNotNull(vmss.storageProfile());
+        Assertions.assertNotNull(vmss.networkProfile());
+        Assertions.assertNotNull(vmss.virtualMachinePublicIpConfig());
+        Assertions.assertNotEquals(vmss.applicationGatewayBackendAddressPoolsIds().size(), 0);
+
+        Assertions.assertNotEquals((int) vmss.listNetworkInterfaces().stream().count(), 0);
+        Assertions.assertEquals(vmss.listPrimaryInternalLoadBalancerBackends().size(), 0);
+        Assertions.assertEquals(vmss.listPrimaryInternalLoadBalancerInboundNatPools().size(), 0);
+        Assertions.assertNotEquals(vmss.listPrimaryInternetFacingLoadBalancerBackends().size(), 0);
+        Assertions.assertEquals(vmss.listPrimaryInternetFacingLoadBalancerInboundNatPools().size(), 0);
+        Assertions.assertNotEquals(vmss.primaryPublicIpAddressIds().size(), 0);
+
     }
 
     @Test
-    public void canGetOrchestrationType() {
+    public void canGetOrchestrationType() throws IOException {
 
         //create vmss with uniform orchestration type
         String euapRegion = "eastus2euap";
@@ -1617,17 +1655,12 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
             .withRootUsername("jvuser")
             .withSsh(sshPublicKey())
-            .withCapacity(4)    // 4 instances
+            .withCapacity(1)    // 1 instances
             .create();
 
         Assertions.assertEquals(vmss.orchestrationMode(), OrchestrationMode.UNIFORM);
 
         // create vmss with flexible orchestration type
-        VirtualMachineScaleSetInner options = new VirtualMachineScaleSetInner();
-        options.withOrchestrationMode(OrchestrationMode.FLEXIBLE)
-            .withPlatformFaultDomainCount(1)
-            .withLocation(euapRegion);
-
         final String vmssName2 = generateRandomResourceName("vmss", 10);
         VirtualMachineScaleSet vmss2 = this
             .computeManager
@@ -1640,7 +1673,6 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         Assertions.assertNotNull(vmss2);
         Assertions.assertEquals(vmss2.orchestrationMode(), OrchestrationMode.FLEXIBLE);
-        Assertions.assertNull(vmss2.innerModel().virtualMachineProfile());
     }
 
 }
