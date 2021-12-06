@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.communication.azure.com/phoneNumbers/+REDACTED?api-version=2021-03-07",
+    "Uri" : "https://REDACTED.communication.azure.com/phoneNumbers/+REDACTED?api-version=2022-01-11-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
       "x-ms-client-request-id" : "e114bb2d-deb3-40d4-bebb-55c3b16b568f"
