@@ -4,7 +4,7 @@
 package com.azure.spring.core.connectionstring;
 
 /**
- * List all the name of segments that could included in an Azure Service connection string.
+ * List all the name of segments that could be included in an Azure Service connection string.
  */
 public final class ConnectionStringSegments {
 
@@ -21,7 +21,7 @@ public final class ConnectionStringSegments {
     public static final String SECRET = "Secret";
 
     // Storage
-    public static final String DEFAULT_DEDPOINTS_PROTOCOL = "DefaultEndpointsProtocol";
+    public static final String DEFAULT_ENDPOINTS_PROTOCOL = "DefaultEndpointsProtocol";
     public static final String ACCOUNT_NAME = "AccountName";
     public static final String ACCOUNT_KEY = "AccountKey";
     public static final String ENDPOINT_SUFFIX = "EndpointSuffix";

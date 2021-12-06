@@ -1,17 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.context.core;
+package com.azure.spring.core.util;
 
-import com.azure.spring.core.util.Memoizer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import reactor.util.function.Tuple2;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import reactor.util.function.Tuple2;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;

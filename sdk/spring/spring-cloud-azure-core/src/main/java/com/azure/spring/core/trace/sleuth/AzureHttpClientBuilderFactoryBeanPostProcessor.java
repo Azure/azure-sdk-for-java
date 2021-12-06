@@ -16,8 +16,7 @@ import org.springframework.core.Ordered;
 /**
  * Apply the http pipeline policy to service client builder based on HTTP protocol.
  */
-public class AzureHttpClientBuilderFactoryBeanPostProcessor
-        implements BeanPostProcessor, Ordered, BeanFactoryAware {
+public class AzureHttpClientBuilderFactoryBeanPostProcessor implements BeanPostProcessor, Ordered, BeanFactoryAware {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureHttpClientBuilderFactoryBeanPostProcessor.class);
     public static final String DEFAULT_SLEUTH_HTTP_POLICY_BEAN_NAME = "sleuthHttpPolicy";

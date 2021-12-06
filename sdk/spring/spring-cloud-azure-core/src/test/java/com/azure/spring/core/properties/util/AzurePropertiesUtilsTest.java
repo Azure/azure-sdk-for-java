@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.core.properties;
+package com.azure.spring.core.properties.util;
 
 import com.azure.core.management.AzureEnvironment;
 import com.azure.spring.core.properties.AzureProperties;
@@ -10,7 +10,6 @@ import com.azure.spring.core.properties.client.ClientProperties;
 import com.azure.spring.core.properties.profile.AzureProfile;
 import com.azure.spring.core.properties.proxy.ProxyProperties;
 import com.azure.spring.core.properties.retry.RetryProperties;
-import com.azure.spring.core.properties.util.AzurePropertiesUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

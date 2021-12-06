@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import static com.azure.spring.core.connectionstring.ConnectionStringSegments.ACCOUNT_KEY;
 import static com.azure.spring.core.connectionstring.ConnectionStringSegments.ACCOUNT_NAME;
-import static com.azure.spring.core.connectionstring.ConnectionStringSegments.DEFAULT_DEDPOINTS_PROTOCOL;
+import static com.azure.spring.core.connectionstring.ConnectionStringSegments.DEFAULT_ENDPOINTS_PROTOCOL;
 import static com.azure.spring.core.connectionstring.ConnectionStringSegments.ENDPOINT;
 import static com.azure.spring.core.connectionstring.ConnectionStringSegments.ENDPOINT_SUFFIX;
 import static com.azure.spring.core.connectionstring.ConnectionStringSegments.ENTITY_PATH;
@@ -103,7 +103,7 @@ class ConnectionStringTest {
 
         ConnectionString connectionString = new ConnectionString(str, ConnectionStringType.STORAGE);
 
-        Assertions.assertEquals("https", connectionString.getSegment(DEFAULT_DEDPOINTS_PROTOCOL));
+        Assertions.assertEquals("https", connectionString.getSegment(DEFAULT_ENDPOINTS_PROTOCOL));
         Assertions.assertEquals("core.windows.net", connectionString.getSegment(ENDPOINT_SUFFIX));
         Assertions.assertEquals("an", connectionString.getSegment(ACCOUNT_NAME));
         Assertions.assertEquals("ak==", connectionString.getSegment(ACCOUNT_KEY));

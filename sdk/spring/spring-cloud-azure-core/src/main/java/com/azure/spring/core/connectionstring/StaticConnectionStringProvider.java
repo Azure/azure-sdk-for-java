@@ -6,7 +6,7 @@ package com.azure.spring.core.connectionstring;
 /**
  *
  */
-public class StaticConnectionStringProvider<T> implements ConnectionStringProvider<T> {
+public final class StaticConnectionStringProvider<T> implements ConnectionStringProvider<T> {
 
     private final String connectionString;
     private final T serviceType;
