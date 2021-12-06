@@ -220,7 +220,7 @@ public final class AttestationClientBuilder {
      *     .tokenValidationOptions&#40;new AttestationTokenValidationOptions&#40;&#41;
      *         .setValidationSlack&#40;Duration.ofSeconds&#40;10&#41;&#41; &#47;&#47; Allow 10 seconds of clock drift between attestation service and client.
      *         .setValidationCallback&#40;&#40;token, signer&#41; -&gt; &#123; &#47;&#47; Perform custom validation steps.
-     *             System.out.printf&#40;&quot;Validate token signed by signer %s&quot;, signer.getCertificates&#40;&#41;.get&#40;0&#41;.getSubjectDN&#40;&#41;.toString&#40;&#41;&#41;;
+     *             System.out.printf&#40;&quot;Validate token signed by signer %s&#92;n&quot;, signer.getCertificates&#40;&#41;.get&#40;0&#41;.getSubjectDN&#40;&#41;.toString&#40;&#41;&#41;;
      *         &#125;&#41;&#41;
      *     .buildClient&#40;&#41;;
      * </pre>

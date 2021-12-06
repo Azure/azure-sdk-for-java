@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.7 (Unreleased)
+## 1.0.0-beta.8 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,71 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.7 (2021-12-06)
+
+- Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package tag package-netapp-2021-08-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.BackupPolicyPatch` was modified
+
+* `namePropertiesName()` was removed
+
+#### `models.BackupPolicy` was modified
+
+* `namePropertiesName()` was removed
+
+#### `models.SubscriptionQuotaItem` was modified
+
+* `namePropertiesName()` was removed
+
+### Features Added
+
+* `models.VolumeGroupDetails$Definition` was added
+
+* `models.PlacementKeyValuePairs` was added
+
+* `models.VolumeGroupMetadata` was added
+
+* `models.VolumeGroupDetails` was added
+
+* `models.VolumeGroupList` was added
+
+* `models.VolumeGroups` was added
+
+* `models.VolumeGroupVolumeProperties` was added
+
+* `models.VolumeGroup` was added
+
+* `models.VolumeGroupDetails$DefinitionStages` was added
+
+* `models.ApplicationType` was added
+
+#### `models.Volume` was modified
+
+* `proximityPlacementGroup()` was added
+* `capacityPoolResourceId()` was added
+* `placementRules()` was added
+* `volumeSpecName()` was added
+* `volumeGroupName()` was added
+* `t2Network()` was added
+
+#### `models.ActiveDirectory` was modified
+
+* `encryptDCConnections()` was added
+* `withEncryptDCConnections(java.lang.Boolean)` was added
+
+#### `NetAppFilesManager` was modified
+
+* `volumeGroups()` was added
+
+#### `models.Volume$Definition` was modified
+
+* `withVolumeSpecName(java.lang.String)` was added
+* `withCapacityPoolResourceId(java.lang.String)` was added
+* `withPlacementRules(java.util.List)` was added
+* `withProximityPlacementGroup(java.lang.String)` was added
 
 ## 1.0.0-beta.6 (2021-09-22)
 

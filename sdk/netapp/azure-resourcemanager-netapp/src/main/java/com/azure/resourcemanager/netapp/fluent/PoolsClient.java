@@ -85,7 +85,7 @@ public interface PoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return capacity pool resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CapacityPoolInner>, CapacityPoolInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, String poolName, CapacityPoolInner body);
 
@@ -102,7 +102,7 @@ public interface PoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return capacity pool resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CapacityPoolInner>, CapacityPoolInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, String poolName, CapacityPoolInner body, Context context);
 
@@ -151,7 +151,7 @@ public interface PoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return capacity pool resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CapacityPoolInner>, CapacityPoolInner> beginUpdate(
         String resourceGroupName, String accountName, String poolName, CapacityPoolPatch body);
 
@@ -168,7 +168,7 @@ public interface PoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return capacity pool resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CapacityPoolInner>, CapacityPoolInner> beginUpdate(
         String resourceGroupName, String accountName, String poolName, CapacityPoolPatch body, Context context);
 
@@ -215,7 +215,7 @@ public interface PoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String poolName);
 
     /**
@@ -230,7 +230,7 @@ public interface PoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String poolName, Context context);
 

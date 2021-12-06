@@ -746,14 +746,18 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return netApp account resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NetAppAccountInner>, NetAppAccountInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String accountName, NetAppAccountInner body) {
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, accountName, body);
         return this
             .client
             .<NetAppAccountInner, NetAppAccountInner>getLroResult(
-                mono, this.client.getHttpPipeline(), NetAppAccountInner.class, NetAppAccountInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                NetAppAccountInner.class,
+                NetAppAccountInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -768,7 +772,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return netApp account resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NetAppAccountInner>, NetAppAccountInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String accountName, NetAppAccountInner body, Context context) {
         context = this.client.mergeContext(context);
@@ -791,7 +795,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return netApp account resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetAppAccountInner>, NetAppAccountInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, NetAppAccountInner body) {
         return beginCreateOrUpdateAsync(resourceGroupName, accountName, body).getSyncPoller();
@@ -809,7 +813,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return netApp account resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetAppAccountInner>, NetAppAccountInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, NetAppAccountInner body, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, accountName, body, context).getSyncPoller();
@@ -987,12 +991,13 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, accountName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1006,7 +1011,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String accountName, Context context) {
         context = this.client.mergeContext(context);
@@ -1026,7 +1031,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName) {
         return beginDeleteAsync(resourceGroupName, accountName).getSyncPoller();
     }
@@ -1042,7 +1047,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, Context context) {
         return beginDeleteAsync(resourceGroupName, accountName, context).getSyncPoller();
@@ -1229,14 +1234,18 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return netApp account resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NetAppAccountInner>, NetAppAccountInner> beginUpdateAsync(
         String resourceGroupName, String accountName, NetAppAccountPatch body) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, accountName, body);
         return this
             .client
             .<NetAppAccountInner, NetAppAccountInner>getLroResult(
-                mono, this.client.getHttpPipeline(), NetAppAccountInner.class, NetAppAccountInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                NetAppAccountInner.class,
+                NetAppAccountInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1251,7 +1260,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return netApp account resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NetAppAccountInner>, NetAppAccountInner> beginUpdateAsync(
         String resourceGroupName, String accountName, NetAppAccountPatch body, Context context) {
         context = this.client.mergeContext(context);
@@ -1273,7 +1282,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return netApp account resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetAppAccountInner>, NetAppAccountInner> beginUpdate(
         String resourceGroupName, String accountName, NetAppAccountPatch body) {
         return beginUpdateAsync(resourceGroupName, accountName, body).getSyncPoller();
@@ -1291,7 +1300,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return netApp account resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetAppAccountInner>, NetAppAccountInner> beginUpdate(
         String resourceGroupName, String accountName, NetAppAccountPatch body, Context context) {
         return beginUpdateAsync(resourceGroupName, accountName, body, context).getSyncPoller();

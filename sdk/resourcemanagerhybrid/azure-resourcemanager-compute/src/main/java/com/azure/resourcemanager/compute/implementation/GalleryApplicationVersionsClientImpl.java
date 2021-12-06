@@ -1495,7 +1495,8 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
                 resourceGroupName, galleryName, galleryApplicationName, galleryApplicationVersionName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
