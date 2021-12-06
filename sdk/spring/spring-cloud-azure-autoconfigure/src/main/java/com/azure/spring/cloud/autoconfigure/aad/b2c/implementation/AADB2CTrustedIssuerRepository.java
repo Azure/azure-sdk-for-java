@@ -26,7 +26,7 @@ public class AADB2CTrustedIssuerRepository extends AADTrustedIssuerRepository {
      * @param aadb2CProperties the AAD B2C properties
      */
     public AADB2CTrustedIssuerRepository(AADB2CProperties aadb2CProperties) {
-        super(aadb2CProperties.getTenantId());
+        super(aadb2CProperties.getProfile().getTenantId());
         this.aadb2CProperties = aadb2CProperties;
         this.resolvedBaseUri = resolveBaseUri(aadb2CProperties.getBaseUri());
         this.userFlows = aadb2CProperties.getUserFlows();

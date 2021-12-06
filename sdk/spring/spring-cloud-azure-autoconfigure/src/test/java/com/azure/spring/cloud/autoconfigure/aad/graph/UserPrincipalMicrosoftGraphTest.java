@@ -77,8 +77,8 @@ class UserPrincipalMicrosoftGraphTest {
     void setup() {
         accessToken = MicrosoftGraphConstants.BEARER_TOKEN;
         properties = new AADAuthenticationProperties();
-        properties.setGraphMembershipUri("http://localhost:8080/memberOf");
-        endpoints = new AADAuthorizationServerEndpoints(properties.getBaseUri(), properties.getTenantId());
+        properties.getProfile().getEnvironment().setMicrosoftGraphEndpoint("http://localhost:8080/");
+        endpoints = new AADAuthorizationServerEndpoints(properties.getProfile().getEnvironment().getActiveDirectoryEndpoint(), properties.getProfile().getTenantId());
         clientId = "client";
         clientSecret = "pass";
         wireMockRule = new WireMockRule(8080);
@@ -94,10 +94,10 @@ class UserPrincipalMicrosoftGraphTest {
 
     @Test
     void getGroups() throws Exception {
-        properties.getUserGroup().setAllowedGroups(Arrays.asList("group1", "group2", "group3"));
+        properties.getUserGroup().setAllowedGroupNames(Arrays.asList("group1", "group2", "group3"));
         AzureADGraphClient graphClientMock = new AzureADGraphClient(clientId, clientSecret, properties,
             endpoints);
-        stubFor(get(urlEqualTo("/memberOf"))
+        stubFor(get(urlEqualTo("/v1.0/me/memberOf"))
             .withHeader(ACCEPT, equalTo(APPLICATION_JSON_VALUE))
             .willReturn(aResponse()
                 .withStatus(200)
@@ -109,7 +109,7 @@ class UserPrincipalMicrosoftGraphTest {
             .isNotEmpty()
             .containsExactlyInAnyOrder("group1", "group2", "group3");
 
-        verify(getRequestedFor(urlMatching("/memberOf"))
+        verify(getRequestedFor(urlMatching("/v1.0/me/memberOf"))
             .withHeader(AUTHORIZATION, equalTo(String.format("Bearer %s", accessToken)))
             .withHeader(ACCEPT, equalTo(APPLICATION_JSON_VALUE)));
     }

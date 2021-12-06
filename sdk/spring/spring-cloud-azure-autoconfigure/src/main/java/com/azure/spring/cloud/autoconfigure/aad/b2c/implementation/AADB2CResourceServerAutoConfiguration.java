@@ -14,12 +14,9 @@ import com.nimbusds.jwt.proc.JWTProcessor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.lang.NonNull;
 import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -33,16 +30,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * When the configuration matches the {@link AADB2CConditions.CommonCondition.WebApiMode} condition, configure the
- * necessary beans for AAD B2C resource server beans, and import {@link AADB2COAuth2ClientConfiguration} class for AAD
+ * Configure necessary beans for AAD B2C resource server beans, and import {@link AADB2COAuth2ClientConfiguration} class for AAD
  * B2C OAuth2 client support.
  */
 @Configuration
 @ConditionalOnProperty(value = "spring.cloud.azure.active-directory.b2c.enabled", havingValue = "true")
-@Conditional(AADB2CConditions.CommonCondition.class)
 @ConditionalOnClass(BearerTokenAuthenticationToken.class)
-@EnableConfigurationProperties(AADB2CProperties.class)
-@Import(AADB2COAuth2ClientConfiguration.class)
+@Import({AADB2CPropertiesConfiguration.class, AADB2COAuth2ClientConfiguration.class})
 public class AADB2CResourceServerAutoConfiguration {
 
     private final AADB2CProperties properties;
@@ -52,7 +46,7 @@ public class AADB2CResourceServerAutoConfiguration {
      *
      * @param properties the AAD B2C properties
      */
-    public AADB2CResourceServerAutoConfiguration(@NonNull AADB2CProperties properties) {
+    public AADB2CResourceServerAutoConfiguration(AADB2CProperties properties) {
         this.properties = properties;
     }
 
@@ -113,8 +107,8 @@ public class AADB2CResourceServerAutoConfiguration {
         if (StringUtils.hasText(properties.getAppIdUri())) {
             validAudiences.add(properties.getAppIdUri());
         }
-        if (StringUtils.hasText(properties.getClientId())) {
-            validAudiences.add(properties.getClientId());
+        if (StringUtils.hasText(properties.getCredential().getClientId())) {
+            validAudiences.add(properties.getCredential().getClientId());
         }
         if (!validAudiences.isEmpty()) {
             validators.add(new AADJwtAudienceValidator(validAudiences));

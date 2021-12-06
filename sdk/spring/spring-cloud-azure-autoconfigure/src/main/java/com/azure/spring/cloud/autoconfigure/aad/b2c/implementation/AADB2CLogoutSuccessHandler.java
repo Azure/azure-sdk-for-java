@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aad.b2c.implementation;
 
-import org.springframework.lang.NonNull;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 
@@ -23,7 +22,7 @@ public class AADB2CLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
      *
      * @param properties the AAD B2C properties
      */
-    public AADB2CLogoutSuccessHandler(@NonNull AADB2CProperties properties) {
+    public AADB2CLogoutSuccessHandler(AADB2CProperties properties) {
         this.properties = properties;
 
         super.setDefaultTargetUrl(getAADB2CEndSessionUrl());

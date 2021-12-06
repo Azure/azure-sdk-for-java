@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.aad.filter;
 
 import com.azure.spring.cloud.autoconfigure.aad.core.AADAuthorizationServerEndpoints;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthenticationProperties;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AADPropertiesConfiguration;
 import com.nimbusds.jose.jwk.source.DefaultJWKSetCache;
 import com.nimbusds.jose.jwk.source.JWKSetCache;
 import com.nimbusds.jose.util.DefaultResourceRetriever;
@@ -17,16 +18,16 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 import java.util.concurrent.TimeUnit;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Azure Active Authentication filters.
  * <p>
- * The configuration will not be activated if no {@literal spring.cloud.azure.active-directory.client-id} property provided.
+ * The configuration will not be activated if no {@literal spring.cloud.azure.active-directory.credential.client-id} property provided.
  * <p>
  * A stateless filter {@link AADAppRoleStatelessAuthenticationFilter} will be auto-configured by specifying {@literal
  * spring.cloud.azure.active-directory.session-stateless=true}. Otherwise, {@link AADAuthenticationFilter} will be configured.
@@ -38,8 +39,8 @@ import java.util.concurrent.TimeUnit;
 @ConditionalOnWebApplication
 @ConditionalOnExpression("${spring.cloud.azure.active-directory.enabled:false}")
 @ConditionalOnMissingClass({ "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken" })
-@ConditionalOnProperty(prefix = AADAuthenticationFilterAutoConfiguration.PROPERTY_PREFIX, value = { "client-id" })
-@EnableConfigurationProperties({ AADAuthenticationProperties.class })
+@ConditionalOnProperty(prefix = AADAuthenticationFilterAutoConfiguration.PROPERTY_PREFIX, value = { "credential.client-id" })
+@Import(AADPropertiesConfiguration.class)
 public class AADAuthenticationFilterAutoConfiguration {
     /**
      * The property prefix
@@ -58,7 +59,8 @@ public class AADAuthenticationFilterAutoConfiguration {
      */
     public AADAuthenticationFilterAutoConfiguration(AADAuthenticationProperties properties) {
         this.properties = properties;
-        this.endpoints = new AADAuthorizationServerEndpoints(properties.getBaseUri(), properties.getTenantId());
+        this.endpoints = new AADAuthorizationServerEndpoints(properties.getProfile().getEnvironment().getActiveDirectoryEndpoint(),
+            properties.getProfile().getTenantId());
     }
 
     /**
