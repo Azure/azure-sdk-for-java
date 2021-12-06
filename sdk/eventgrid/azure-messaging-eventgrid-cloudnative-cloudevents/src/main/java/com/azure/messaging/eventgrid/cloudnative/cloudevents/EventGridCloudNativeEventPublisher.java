@@ -165,7 +165,6 @@ public final class EventGridCloudNativeEventPublisher {
         }
 
         cloudEvent.setId(event.getId()); // required
-        // SpecVersion is internally set by Azure CloudEvent to 1.0
 
         // optional: extensionNames
         event.getExtensionNames()
