@@ -16,6 +16,9 @@ public class AzureKeyVaultCertificateProperties extends AzureKeyVaultProperties 
 
     public static final String PREFIX = "spring.cloud.azure.keyvault.certificate";
 
+    /**
+     * The version of Azure Key Vault Certificate Service.
+     */
     private CertificateServiceVersion serviceVersion;
 
     /**
