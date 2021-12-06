@@ -86,7 +86,7 @@ public class TokenCredentialProperties implements TokenCredentialAware.TokenCred
     }
 
     public String getManagedIdentityClientId() {
-        return managedIdentityClientId;
+        return managedIdentityClientId != null ? managedIdentityClientId : clientId;
     }
 
     public void setManagedIdentityClientId(String managedIdentityClientId) {

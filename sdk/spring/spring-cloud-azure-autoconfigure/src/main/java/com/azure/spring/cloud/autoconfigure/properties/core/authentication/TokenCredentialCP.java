@@ -95,7 +95,7 @@ public class TokenCredentialCP implements TokenCredentialAware.TokenCredential {
     }
 
     public String getManagedIdentityClientId() {
-        return managedIdentityClientId;
+        return managedIdentityClientId != null ? managedIdentityClientId : clientId;
     }
 
     public void setManagedIdentityClientId(String managedIdentityClientId) {
