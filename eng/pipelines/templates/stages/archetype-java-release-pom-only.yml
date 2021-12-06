@@ -27,6 +27,7 @@ stages:
                 - checkout: none
 
                 - download: current
+                  displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
                   artifact: ${{parameters.ArtifactName}}
 
                 - template: tools/java-esrp-signing/java-esrp-signing.yml@azure-sdk-build-tools
@@ -64,6 +65,7 @@ stages:
                 deploy:
                   steps:
                     - download: current
+                      displayName: 'Download Artifact: ${{parameters.ArtifactName}}-signed'
                       artifact: ${{parameters.ArtifactName}}-signed
                       patterns: ${{artifact.groupId}}/${{artifact.name}}/**
                     - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
@@ -90,6 +92,7 @@ stages:
                   deploy:
                     steps:
                       - download: current
+                        displayName: 'Download Artifact: ${{parameters.ArtifactName}}-signed'
                         artifact: ${{parameters.ArtifactName}}-signed
                         patterns: ${{artifact.groupId}}/${{artifact.name}}/**
                       - checkout: azure-sdk-build-tools
