@@ -53,11 +53,11 @@ class AADB2CConstants {
 
     static final String USER_NAME_ATTRIBUTE_NAME = String.format("%s.%s", PREFIX, "user-name-attribute-name");
 
-    static final String CLIENT_ID = String.format("%s.%s", PREFIX, "client-id");
+    static final String CLIENT_ID = String.format("%s.%s", PREFIX, "credential.client-id");
 
-    static final String TENANT_ID = String.format("%s.%s", PREFIX, "tenant-id");
+    static final String TENANT_ID = String.format("%s.%s", PREFIX, "profile.tenant-id");
 
-    static final String CLIENT_SECRET = String.format("%s.%s", PREFIX, "client-secret");
+    static final String CLIENT_SECRET = String.format("%s.%s", PREFIX, "credential.client-secret");
     static final String APP_ID_URI = String.format("%s.%s", PREFIX, "app-id-uri");
 
     static final String LOGOUT_SUCCESS_URL = String.format("%s.%s", PREFIX, "logout-success-url");

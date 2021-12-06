@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aad.b2c.implementation;
 
-import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
@@ -51,20 +49,20 @@ public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
      * @param repository the client registration repository
      * @param properties the AAD B2C properties
      */
-    public AADB2CAuthorizationRequestResolver(@NonNull ClientRegistrationRepository repository,
-                                              @NonNull AADB2CProperties properties) {
+    public AADB2CAuthorizationRequestResolver(ClientRegistrationRepository repository,
+                                              AADB2CProperties properties) {
         this.properties = properties;
         this.passwordResetUserFlow = this.properties.getPasswordReset();
         this.defaultResolver = new DefaultOAuth2AuthorizationRequestResolver(repository, REQUEST_BASE_URI);
     }
 
     @Override
-    public OAuth2AuthorizationRequest resolve(@NonNull HttpServletRequest request) {
+    public OAuth2AuthorizationRequest resolve(HttpServletRequest request) {
         return resolve(request, getRegistrationId(request));
     }
 
     @Override
-    public OAuth2AuthorizationRequest resolve(@NonNull HttpServletRequest request, String registrationId) {
+    public OAuth2AuthorizationRequest resolve(HttpServletRequest request, String registrationId) {
         if (StringUtils.hasText(passwordResetUserFlow) && isForgotPasswordAuthorizationRequest(request)) {
             final OAuth2AuthorizationRequest authRequest = defaultResolver.resolve(request, passwordResetUserFlow);
             return getB2CAuthorizationRequest(authRequest, passwordResetUserFlow);
@@ -79,7 +77,7 @@ public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
         return null;
     }
 
-    private OAuth2AuthorizationRequest getB2CAuthorizationRequest(@Nullable OAuth2AuthorizationRequest request,
+    private OAuth2AuthorizationRequest getB2CAuthorizationRequest(OAuth2AuthorizationRequest request,
                                                                   String userFlow) {
         Assert.hasText(userFlow, "User flow should contain text.");
 
@@ -111,7 +109,7 @@ public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
 
     // Handle the forgot password of sign-up-or-in page cannot redirect user to password-reset page.
     // The B2C service will enhance that, and then related code will be removed.
-    private boolean isForgotPasswordAuthorizationRequest(@NonNull HttpServletRequest request) {
+    private boolean isForgotPasswordAuthorizationRequest(HttpServletRequest request) {
         final String error = request.getParameter("error");
         final String description = request.getParameter("error_description");
 

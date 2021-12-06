@@ -52,7 +52,7 @@ public class AADResourceServerConfiguration {
     @ConditionalOnMissingBean(JwtDecoder.class)
     public JwtDecoder jwtDecoder() {
         AADAuthorizationServerEndpoints identityEndpoints = new AADAuthorizationServerEndpoints(
-            aadAuthenticationProperties.getBaseUri(), aadAuthenticationProperties.getTenantId());
+            aadAuthenticationProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint(), aadAuthenticationProperties.getProfile().getTenantId());
         NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder
             .withJwkSetUri(identityEndpoints.jwkSetEndpoint()).build();
         List<OAuth2TokenValidator<Jwt>> validators = createDefaultValidator();
@@ -71,8 +71,8 @@ public class AADResourceServerConfiguration {
         if (StringUtils.hasText(aadAuthenticationProperties.getAppIdUri())) {
             validAudiences.add(aadAuthenticationProperties.getAppIdUri());
         }
-        if (StringUtils.hasText(aadAuthenticationProperties.getClientId())) {
-            validAudiences.add(aadAuthenticationProperties.getClientId());
+        if (StringUtils.hasText(aadAuthenticationProperties.getCredential().getClientId())) {
+            validAudiences.add(aadAuthenticationProperties.getCredential().getClientId());
         }
         if (!validAudiences.isEmpty()) {
             validators.add(new AADJwtAudienceValidator(validAudiences));

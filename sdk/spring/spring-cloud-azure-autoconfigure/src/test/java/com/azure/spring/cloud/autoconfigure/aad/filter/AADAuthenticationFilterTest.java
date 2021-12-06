@@ -5,6 +5,9 @@ package com.azure.spring.cloud.autoconfigure.aad.filter;
 
 import com.azure.spring.cloud.autoconfigure.aad.core.AADAuthorizationServerEndpoints;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthenticationProperties;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AADCredentialProperties;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AADProfileProperties;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.proc.BadJOSEException;
 import org.junit.jupiter.api.Disabled;
@@ -35,7 +38,7 @@ import static org.mockito.Mockito.when;
 public class AADAuthenticationFilterTest {
     private static final String TOKEN = "dummy-token";
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(AADAuthenticationFilterAutoConfiguration.class));
+            .withConfiguration(AutoConfigurations.of(AzureGlobalPropertiesAutoConfiguration.class, AADAuthenticationFilterAutoConfiguration.class));
     private final UserPrincipalManager userPrincipalManager;
     private final HttpServletRequest request;
     private final HttpServletResponse response;
@@ -45,8 +48,11 @@ public class AADAuthenticationFilterTest {
         userPrincipalManager = mock(UserPrincipalManager.class);
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
+        AADAuthenticationProperties properties = mock(AADAuthenticationProperties.class);
+        when(properties.getCredential()).thenReturn(new AADCredentialProperties());
+        when(properties.getProfile()).thenReturn(new AADProfileProperties());
         filter = new AADAuthenticationFilter(
-            mock(AADAuthenticationProperties.class),
+            properties,
             mock(AADAuthorizationServerEndpoints.class),
             userPrincipalManager
         );
@@ -56,9 +62,9 @@ public class AADAuthenticationFilterTest {
     @Test
     @Disabled
     public void doFilterInternal() {
-        this.contextRunner.withPropertyValues("spring.cloud.azure.active-directory.client-id", TestConstants.CLIENT_ID)
-                .withPropertyValues("spring.cloud.azure.active-directory.client-secret", TestConstants.CLIENT_SECRET)
-                .withPropertyValues("spring.cloud.azure.active-directory.client-secret",
+        this.contextRunner.withPropertyValues("spring.cloud.azure.active-directory.credential.client-id", TestConstants.CLIENT_ID)
+                .withPropertyValues("spring.cloud.azure.active-directory.credential.client-secret", TestConstants.CLIENT_SECRET)
+                .withPropertyValues("spring.cloud.azure.active-directory.credential.client-secret",
                         TestConstants.TARGETED_GROUPS.toString()
                                                      .replace("[", "").replace("]", ""));
 

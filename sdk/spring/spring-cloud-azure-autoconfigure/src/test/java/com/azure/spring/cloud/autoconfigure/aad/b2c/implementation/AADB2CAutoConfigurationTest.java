@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aad.b2c.implementation;
 
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
@@ -17,6 +18,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
@@ -30,16 +32,20 @@ class AADB2CAutoConfigurationTest extends AbstractAADB2COAuth2ClientTestConfigur
     @Override
     WebApplicationContextRunner getDefaultContextRunner() {
         return new WebApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(WebOAuth2ClientApp.class, AADB2CAutoConfiguration.class))
+            .withConfiguration(AutoConfigurations.of(AzureGlobalPropertiesAutoConfiguration.class, WebOAuth2ClientApp.class, AADB2CAutoConfiguration.class))
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-            .withPropertyValues(getWebappCommonPropertyValues());
+            .withPropertyValues(getWebappCommonPropertyValuesWithOutGlobalConfigurableItems())
+            .withPropertyValues(getGlobalConfigurableItems());
     }
 
-    private String[] getWebappCommonPropertyValues() {
-        return new String[] { String.format("%s=%s", AADB2CConstants.BASE_URI, AADB2CConstants.TEST_BASE_URI),
-            String.format("%s=%s", AADB2CConstants.TENANT_ID, AADB2CConstants.TEST_TENANT_ID),
+    private String[] getGlobalConfigurableItems() {
+        return new String[] { String.format("%s=%s", AADB2CConstants.TENANT_ID, AADB2CConstants.TEST_TENANT_ID),
             String.format("%s=%s", AADB2CConstants.CLIENT_ID, AADB2CConstants.TEST_CLIENT_ID),
-            String.format("%s=%s", AADB2CConstants.CLIENT_SECRET, AADB2CConstants.TEST_CLIENT_SECRET),
+            String.format("%s=%s", AADB2CConstants.CLIENT_SECRET, AADB2CConstants.TEST_CLIENT_SECRET) };
+    }
+
+    private String[] getWebappCommonPropertyValuesWithOutGlobalConfigurableItems() {
+        return new String[] { String.format("%s=%s", AADB2CConstants.BASE_URI, AADB2CConstants.TEST_BASE_URI),
             String.format("%s=%s", AADB2CConstants.LOGOUT_SUCCESS_URL, AADB2CConstants.TEST_LOGOUT_SUCCESS_URL),
             String.format("%s=%s", AADB2CConstants.LOGIN_FLOW, AADB2CConstants.TEST_KEY_SIGN_UP_OR_IN),
             String.format("%s.%s=%s", AADB2CConstants.USER_FLOWS,
@@ -71,8 +77,8 @@ class AADB2CAutoConfigurationTest extends AbstractAADB2COAuth2ClientTestConfigur
                 final AADB2CProperties properties = c.getBean(AADB2CProperties.class);
 
                 Assertions.assertNotNull(properties);
-                Assertions.assertEquals(properties.getClientId(), AADB2CConstants.TEST_CLIENT_ID);
-                Assertions.assertEquals(properties.getClientSecret(), AADB2CConstants.TEST_CLIENT_SECRET);
+                Assertions.assertEquals(properties.getCredential().getClientId(), AADB2CConstants.TEST_CLIENT_ID);
+                Assertions.assertEquals(properties.getCredential().getClientSecret(), AADB2CConstants.TEST_CLIENT_SECRET);
                 Assertions.assertEquals(properties.getUserNameAttributeName(), AADB2CConstants.TEST_ATTRIBUTE_NAME);
 
                 Map<String, String> userFlows = properties.getUserFlows();
@@ -87,6 +93,45 @@ class AADB2CAutoConfigurationTest extends AbstractAADB2COAuth2ClientTestConfigur
                 }
                 Assertions.assertEquals(prompt, AADB2CConstants.TEST_PROMPT);
                 Assertions.assertEquals(loginHint, AADB2CConstants.TEST_LOGIN_HINT);
+            });
+    }
+
+    @Test
+    void setDefaultValueFromAzureGlobalPropertiesTest() {
+        new WebApplicationContextRunner()
+            .withConfiguration(AutoConfigurations.of(AzureGlobalPropertiesAutoConfiguration.class, WebOAuth2ClientApp.class, AADB2CAutoConfiguration.class))
+            .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
+            .withPropertyValues(getWebappCommonPropertyValuesWithOutGlobalConfigurableItems())
+            .withPropertyValues(
+                "spring.cloud.azure.active-directory.b2c.enabled = true",
+                "spring.cloud.azure.credential.client-id = global-client-id",
+                "spring.cloud.azure.credential.client-secret = global-client-secret",
+                "spring.cloud.azure.profile.tenant-id = global-tenant-id",
+                "spring.cloud.azure.active-directory.b2c.credential.client-id = aad-client-id",
+                "spring.cloud.azure.active-directory.b2c.credential.client-secret = aad-client-secret",
+                "spring.cloud.azure.active-directory.b2c.profile.tenant-id = aad-tenant-id"
+            )
+            .run(context -> {
+                AADB2CProperties properties = context.getBean(AADB2CProperties.class);
+                assertEquals("aad-client-id", properties.getCredential().getClientId());
+                assertEquals("aad-client-secret", properties.getCredential().getClientSecret());
+                assertEquals("aad-tenant-id", properties.getProfile().getTenantId());
+            });
+        new WebApplicationContextRunner()
+            .withConfiguration(AutoConfigurations.of(AzureGlobalPropertiesAutoConfiguration.class, WebOAuth2ClientApp.class, AADB2CAutoConfiguration.class))
+            .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
+            .withPropertyValues(getWebappCommonPropertyValuesWithOutGlobalConfigurableItems())
+            .withPropertyValues(
+                "spring.cloud.azure.active-directory.b2c.enabled = true",
+                "spring.cloud.azure.credential.client-id = global-client-id",
+                "spring.cloud.azure.credential.client-secret = global-client-secret",
+                "spring.cloud.azure.profile.tenant-id = global-tenant-id"
+            )
+            .run(context -> {
+                AADB2CProperties properties = context.getBean(AADB2CProperties.class);
+                assertEquals("global-client-id", properties.getCredential().getClientId());
+                assertEquals("global-client-secret", properties.getCredential().getClientSecret());
+                assertEquals("global-tenant-id", properties.getProfile().getTenantId());
             });
     }
 
@@ -142,7 +187,8 @@ class AADB2CAutoConfigurationTest extends AbstractAADB2COAuth2ClientTestConfigur
             new WebApplicationContextRunner()
                 .withConfiguration(AutoConfigurations.of(WebResourceServerApp.class,
                     AADB2CResourceServerAutoConfiguration.class))
-                .withPropertyValues(getWebappCommonPropertyValues())
+                .withPropertyValues(getWebappCommonPropertyValuesWithOutGlobalConfigurableItems())
+                .withPropertyValues(getGlobalConfigurableItems())
                 .run(c -> {
                     verify(userFlowCondition, never()).getMatchOutcome(any(), any());
                     verify(clientRegistrationCondition, never()).getMatchOutcome(any(), any());
