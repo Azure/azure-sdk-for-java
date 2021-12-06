@@ -1548,6 +1548,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         Assertions.assertFalse(vmss.isAcceleratedNetworkingEnabled());
         Assertions.assertFalse(vmss.isBootDiagnosticsEnabled());
         Assertions.assertFalse(vmss.isIpForwardingEnabled());
+        Assertions.assertNull(vmss.networkSecurityGroupId());
         Assertions.assertFalse(vmss.isManagedDiskEnabled());
 
         // update tag on vmss flex with no profile
@@ -1609,11 +1610,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         Assertions.assertNotNull(vmss.storageProfile());
         Assertions.assertNotNull(vmss.networkProfile());
         Assertions.assertNotNull(vmss.virtualMachinePublicIpConfig());
-        Assertions.assertNotEquals(vmss.applicationGatewayBackendAddressPoolsIds().size(), 0);
 
-        Assertions.assertNotEquals((int) vmss.listNetworkInterfaces().stream().count(), 0);
-        Assertions.assertEquals(vmss.listPrimaryInternalLoadBalancerBackends().size(), 0);
-        Assertions.assertEquals(vmss.listPrimaryInternalLoadBalancerInboundNatPools().size(), 0);
         Assertions.assertNotEquals(vmss.listPrimaryInternetFacingLoadBalancerBackends().size(), 0);
         Assertions.assertEquals(vmss.listPrimaryInternetFacingLoadBalancerInboundNatPools().size(), 0);
         Assertions.assertNotEquals(vmss.primaryPublicIpAddressIds().size(), 0);

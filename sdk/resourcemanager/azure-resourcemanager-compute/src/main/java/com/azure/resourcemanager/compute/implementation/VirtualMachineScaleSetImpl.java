@@ -563,7 +563,7 @@ public class VirtualMachineScaleSetImpl
     @Override
     public String networkSecurityGroupId() {
         VirtualMachineScaleSetNetworkConfiguration nicConfig = primaryNicConfiguration();
-        if (nicConfig.networkSecurityGroup() != null) {
+        if (nicConfig != null && nicConfig.networkSecurityGroup() != null) {
             return nicConfig.networkSecurityGroup().id();
         } else {
             return null;
@@ -2267,7 +2267,7 @@ public class VirtualMachineScaleSetImpl
     }
 
     private VirtualMachineScaleSetNetworkConfiguration primaryNicConfiguration() {
-        if (this.innerModel().virtualMachineProfile() == null) {
+        if (this.innerModel() == null || this.innerModel().virtualMachineProfile() == null) {
             return null;
         }
         List<VirtualMachineScaleSetNetworkConfiguration> nicConfigurations =
