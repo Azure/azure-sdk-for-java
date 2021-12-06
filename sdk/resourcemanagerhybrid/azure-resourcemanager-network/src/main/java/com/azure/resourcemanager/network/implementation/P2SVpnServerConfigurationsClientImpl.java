@@ -824,7 +824,8 @@ public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerC
             deleteWithResponseAsync(resourceGroupName, virtualWanName, p2SVpnServerConfigurationName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

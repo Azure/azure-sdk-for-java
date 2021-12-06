@@ -85,7 +85,7 @@ public interface BackupPoliciesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return backup policy information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BackupPolicyInner>, BackupPolicyInner> beginCreate(
         String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyInner body);
 
@@ -102,7 +102,7 @@ public interface BackupPoliciesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return backup policy information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BackupPolicyInner>, BackupPolicyInner> beginCreate(
         String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyInner body, Context context);
 
@@ -151,7 +151,7 @@ public interface BackupPoliciesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return backup policy information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BackupPolicyInner>, BackupPolicyInner> beginUpdate(
         String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyPatch body);
 
@@ -168,7 +168,7 @@ public interface BackupPoliciesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return backup policy information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BackupPolicyInner>, BackupPolicyInner> beginUpdate(
         String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyPatch body, Context context);
 
@@ -216,7 +216,7 @@ public interface BackupPoliciesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String backupPolicyName);
 
@@ -232,7 +232,7 @@ public interface BackupPoliciesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String backupPolicyName, Context context);
 

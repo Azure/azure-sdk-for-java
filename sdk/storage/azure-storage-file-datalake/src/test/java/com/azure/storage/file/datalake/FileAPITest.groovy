@@ -733,7 +733,7 @@ class FileAPITest extends APISpec {
     def "Set HTTP headers headers"() {
         setup:
         fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
-        fc.flush(data.defaultDataSize)
+        fc.flush(data.defaultDataSize, true)
         def putHeaders = new PathHttpHeaders()
             .setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
@@ -918,7 +918,7 @@ class FileAPITest extends APISpec {
     def "Read all null"() {
         setup:
         fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
-        fc.flush(data.defaultDataSize)
+        fc.flush(data.defaultDataSize, true)
 
         when:
         def stream = new ByteArrayOutputStream()
@@ -985,7 +985,7 @@ class FileAPITest extends APISpec {
         def fileClient = getFileClient(environment.dataLakeAccount.credential, fc.getPathUrl(), new MockRetryRangeResponsePolicy("bytes=2-6"))
 
         fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
-        fc.flush(data.defaultDataSize)
+        fc.flush(data.defaultDataSize, true)
 
         when:
         def range = new FileRange(2, 5L)
@@ -1004,7 +1004,7 @@ class FileAPITest extends APISpec {
     def "Read min"() {
         setup:
         fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
-        fc.flush(data.defaultDataSize)
+        fc.flush(data.defaultDataSize, true)
 
         when:
         def outStream = new ByteArrayOutputStream()
@@ -1020,7 +1020,7 @@ class FileAPITest extends APISpec {
         setup:
         def range = (count == null) ? new FileRange(offset) : new FileRange(offset, count)
         fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
-        fc.flush(data.defaultDataSize)
+        fc.flush(data.defaultDataSize, true)
 
 
         when:
@@ -1095,7 +1095,7 @@ class FileAPITest extends APISpec {
     def "Read md5"() {
         setup:
         fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
-        fc.flush(data.defaultDataSize)
+        fc.flush(data.defaultDataSize, true)
 
         when:
         def response = fc.readWithResponse(new ByteArrayOutputStream(), new FileRange(0, 3), null, null, true, null, null)
@@ -1108,7 +1108,7 @@ class FileAPITest extends APISpec {
     def "Read retry default"() {
         setup:
         fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
-        fc.flush(data.defaultDataSize)
+        fc.flush(data.defaultDataSize, true)
         def failureFileClient = getFileClient(environment.dataLakeAccount.credential, fc.getFileUrl(), new MockFailureResponsePolicy(5))
 
         when:
@@ -1138,7 +1138,7 @@ class FileAPITest extends APISpec {
             assert testFile.createNewFile()
         }
         fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
-        fc.flush(data.defaultDataSize)
+        fc.flush(data.defaultDataSize, true)
 
         when:
         // Default overwrite is false so this should fail
@@ -1159,7 +1159,7 @@ class FileAPITest extends APISpec {
             assert testFile.createNewFile()
         }
         fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
-        fc.flush(data.defaultDataSize)
+        fc.flush(data.defaultDataSize, true)
 
         when:
         fc.readToFile(testFile.getPath(), true)
@@ -1178,7 +1178,7 @@ class FileAPITest extends APISpec {
             assert testFile.delete()
         }
         fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
-        fc.flush(data.defaultDataSize)
+        fc.flush(data.defaultDataSize, true)
 
         when:
         fc.readToFile(testFile.getPath())
@@ -1197,7 +1197,7 @@ class FileAPITest extends APISpec {
             assert testFile.delete()
         }
         fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
-        fc.flush(data.defaultDataSize)
+        fc.flush(data.defaultDataSize, true)
 
         when:
         Set<OpenOption> openOptions = new HashSet<>()
@@ -1220,7 +1220,7 @@ class FileAPITest extends APISpec {
             assert testFile.createNewFile()
         }
         fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
-        fc.flush(data.defaultDataSize)
+        fc.flush(data.defaultDataSize, true)
 
         when:
         Set<OpenOption> openOptions = new HashSet<>()
@@ -1947,7 +1947,7 @@ class FileAPITest extends APISpec {
 
         when:
         clientWithFailure.append(data.defaultInputStream, 0, data.defaultDataSize)
-        fc.flush(data.defaultDataSize)
+        fc.flush(data.defaultDataSize, true)
 
         then:
         def os = new ByteArrayOutputStream()
@@ -1958,7 +1958,7 @@ class FileAPITest extends APISpec {
     def "Flush data min"() {
         when:
         fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
-        fc.flush(data.defaultDataSize)
+        fc.flush(data.defaultDataSize, true)
 
         then:
         notThrown(DataLakeStorageException)
@@ -2090,7 +2090,7 @@ class FileAPITest extends APISpec {
         fc = fsc.getFileClient(generatePathName())
 
         when:
-        fc.flush(1)
+        fc.flush(1, true)
 
         then:
         thrown(DataLakeStorageException)
@@ -2099,7 +2099,12 @@ class FileAPITest extends APISpec {
     def "Flush data overwrite"() {
         when:
         fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
-        fc.flush(data.defaultDataSize)
+        fc.flush(data.defaultDataSize, true)
+
+        then:
+        notThrown(DataLakeStorageException)
+
+        when:
         fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
         // Attempt to write data without overwrite enabled
         fc.flush(data.defaultDataSize, false)
@@ -3004,7 +3009,7 @@ class FileAPITest extends APISpec {
 
         fc.create(true)
         fc.append(inputStream, 0, data.length)
-        fc.flush(data.length)
+        fc.flush(data.length, true)
     }
 
     def uploadSmallJson(int numCopies) {
@@ -3019,7 +3024,7 @@ class FileAPITest extends APISpec {
 
         fc.create(true)
         fc.append(inputStream, 0, b.length())
-        fc.flush(b.length())
+        fc.flush(b.length(), true)
     }
 
     byte[] readFromInputStream(InputStream stream, int numBytesToRead) {
