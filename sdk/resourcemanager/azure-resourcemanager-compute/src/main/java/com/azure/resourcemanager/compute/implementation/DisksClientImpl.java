@@ -344,7 +344,7 @@ public final class DisksClientImpl
         return this
             .client
             .<DiskInner, DiskInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DiskInner.class, DiskInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), DiskInner.class, DiskInner.class, this.client.getContext());
     }
 
     /**
@@ -625,7 +625,7 @@ public final class DisksClientImpl
         return this
             .client
             .<DiskInner, DiskInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DiskInner.class, DiskInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), DiskInner.class, DiskInner.class, this.client.getContext());
     }
 
     /**
@@ -1042,7 +1042,8 @@ public final class DisksClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, diskName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1607,7 +1608,11 @@ public final class DisksClientImpl
         return this
             .client
             .<AccessUriInner, AccessUriInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AccessUriInner.class, AccessUriInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                AccessUriInner.class,
+                AccessUriInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1868,7 +1873,8 @@ public final class DisksClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = revokeAccessWithResponseAsync(resourceGroupName, diskName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

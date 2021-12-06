@@ -4,30 +4,40 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants;
-import com.azure.cosmos.util.Beta;
 
 /**
  * Depicts type of Cosmos Item Operation
  */
-@Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public enum CosmosItemOperationType {
 
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    /**
+     * Create operation type.
+     */
     CREATE(BatchRequestResponseConstants.OPERATION_CREATE),
 
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    /**
+     * Delete operation type.
+     */
     DELETE(BatchRequestResponseConstants.OPERATION_DELETE),
 
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    /**
+     * Read operation type.
+     */
     READ(BatchRequestResponseConstants.OPERATION_READ),
 
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    /**
+     * Replace operation type.
+     */
     REPLACE(BatchRequestResponseConstants.OPERATION_REPLACE),
 
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    /**
+     * Upsert operation type.
+     */
     UPSERT(BatchRequestResponseConstants.OPERATION_UPSERT),
 
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    /**
+     * Patch operation type.
+     */
     PATCH(BatchRequestResponseConstants.OPERATION_PATCH);
 
     CosmosItemOperationType(String operationValue) {

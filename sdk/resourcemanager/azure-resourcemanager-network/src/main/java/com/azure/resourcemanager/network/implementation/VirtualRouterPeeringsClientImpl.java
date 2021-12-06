@@ -180,7 +180,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -236,7 +236,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -269,7 +269,8 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
             deleteWithResponseAsync(resourceGroupName, virtualRouterName, peeringName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -436,7 +437,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -492,7 +493,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -609,7 +610,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -676,7 +677,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -716,7 +717,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
                 this.client.getHttpPipeline(),
                 VirtualRouterPeeringInner.class,
                 VirtualRouterPeeringInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -913,7 +914,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -973,7 +974,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

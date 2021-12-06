@@ -42,19 +42,45 @@ import java.util.function.Function;
  * the builder the a SAS token that authorizes the client.</p>
  *
  * <p><strong>Instantiating a synchronous Queue Service Client with SAS token</strong></p>
- * {@codesnippet com.azure.storage.queue.queueServiceClient.instantiation.sastoken}
+ * <!-- src_embed com.azure.storage.queue.queueServiceClient.instantiation.sastoken -->
+ * <pre>
+ * QueueServiceClient client = new QueueServiceClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;https:&#47;&#47;$&#123;accountName&#125;.queue.core.windows.net?$&#123;SASToken&#125;&quot;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.storage.queue.queueServiceClient.instantiation.sastoken -->
  *
  * <p><strong>Instantiating an Asynchronous Queue Service Client with SAS token</strong></p>
- * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.instantiation.sastoken}
+ * <!-- src_embed com.azure.storage.queue.queueServiceAsyncClient.instantiation.sastoken -->
+ * <pre>
+ * QueueServiceAsyncClient client = new QueueServiceClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;https:&#47;&#47;&#123;accountName&#125;.queue.core.windows.net?&#123;SASToken&#125;&quot;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.storage.queue.queueServiceAsyncClient.instantiation.sastoken -->
  *
  * <p>If the {@code endpoint} doesn't contain the query parameters to construct a SAS token they may be set using
  * {@link #sasToken(String) sasToken} together with endpoint.</p>
  *
  * <p><strong>Instantiating a synchronous Queue Service Client with SAS token</strong></p>
- * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.instantiation.credential}
+ * <!-- src_embed com.azure.storage.queue.queueServiceAsyncClient.instantiation.credential -->
+ * <pre>
+ * QueueServiceAsyncClient client = new QueueServiceClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;https:&#47;&#47;&#123;accountName&#125;.queue.core.windows.net&quot;&#41;
+ *     .sasToken&#40;&quot;&#123;SASTokenQueryParams&#125;&quot;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.storage.queue.queueServiceAsyncClient.instantiation.credential -->
  *
  * <p><strong>Instantiating an Asynchronous Queue Service Client with SAS token</strong></p>
- * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.instantiation.credential}
+ * <!-- src_embed com.azure.storage.queue.queueServiceAsyncClient.instantiation.credential -->
+ * <pre>
+ * QueueServiceAsyncClient client = new QueueServiceClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;https:&#47;&#47;&#123;accountName&#125;.queue.core.windows.net&quot;&#41;
+ *     .sasToken&#40;&quot;&#123;SASTokenQueryParams&#125;&quot;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.storage.queue.queueServiceAsyncClient.instantiation.credential -->
  *
  * <p>Another way to authenticate the client is using a {@link StorageSharedKeyCredential}. To create a
  * StorageSharedKeyCredential a connection string from the Storage Queue service must be used.
@@ -63,10 +89,26 @@ import java.util.function.Function;
  * when authorizing requests sent to the service.</p>
  *
  * <p><strong>Instantiating a synchronous Queue Service Client with connection string.</strong></p>
- * {@codesnippet com.azure.storage.queue.queueServiceClient.instantiation.connectionstring}
+ * <!-- src_embed com.azure.storage.queue.queueServiceClient.instantiation.connectionstring -->
+ * <pre>
+ * String connectionString = &quot;DefaultEndpointsProtocol=https;AccountName=&#123;name&#125;;&quot;
+ *     + &quot;AccountKey=&#123;key&#125;;EndpointSuffix=&#123;core.windows.net&#125;&quot;;
+ * QueueServiceClient client = new QueueServiceClientBuilder&#40;&#41;
+ *     .connectionString&#40;connectionString&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.storage.queue.queueServiceClient.instantiation.connectionstring -->
  *
  * <p><strong>Instantiating an Asynchronous Queue Service Client with connection string.</strong></p>
- * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.instantiation.connectionstring}
+ * <!-- src_embed com.azure.storage.queue.queueServiceAsyncClient.instantiation.connectionstring -->
+ * <pre>
+ * String connectionString = &quot;DefaultEndpointsProtocol=https;AccountName=&#123;name&#125;;&quot;
+ *     + &quot;AccountKey=&#123;key&#125;;EndpointSuffix=&#123;core.windows.net&#125;&quot;;
+ * QueueServiceAsyncClient client = new QueueServiceClientBuilder&#40;&#41;
+ *     .connectionString&#40;connectionString&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.storage.queue.queueServiceAsyncClient.instantiation.connectionstring -->
  *
  * @see QueueServiceClient
  * @see QueueServiceAsyncClient
@@ -416,7 +458,38 @@ public final class QueueServiceClientBuilder {
      * {@link QueueServiceAsyncClient} built by this builder.
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.queue.QueueServiceClientBuilder#processMessageDecodingErrorAsyncHandler}
+     * <!-- src_embed com.azure.storage.queue.QueueServiceClientBuilder#processMessageDecodingErrorAsyncHandler -->
+     * <pre>
+     * String connectionString = &quot;DefaultEndpointsProtocol=https;AccountName=&#123;name&#125;;&quot;
+     *     + &quot;AccountKey=&#123;key&#125;;EndpointSuffix=&#123;core.windows.net&#125;&quot;;
+     *
+     * Function&lt;QueueMessageDecodingError, Mono&lt;Void&gt;&gt; processMessageDecodingErrorHandler =
+     *     &#40;queueMessageDecodingFailure&#41; -&gt; &#123;
+     *         QueueMessageItem queueMessageItem = queueMessageDecodingFailure.getQueueMessageItem&#40;&#41;;
+     *         PeekedMessageItem peekedMessageItem = queueMessageDecodingFailure.getPeekedMessageItem&#40;&#41;;
+     *         if &#40;queueMessageItem != null&#41; &#123;
+     *             System.out.printf&#40;&quot;Received badly encoded message, messageId=%s, messageBody=%s&quot;,
+     *                 queueMessageItem.getMessageId&#40;&#41;,
+     *                 queueMessageItem.getBody&#40;&#41;.toString&#40;&#41;&#41;;
+     *             return queueMessageDecodingFailure
+     *                 .getQueueAsyncClient&#40;&#41;
+     *                 .deleteMessage&#40;queueMessageItem.getMessageId&#40;&#41;, queueMessageItem.getPopReceipt&#40;&#41;&#41;;
+     *         &#125; else if &#40;peekedMessageItem != null&#41; &#123;
+     *             System.out.printf&#40;&quot;Peeked badly encoded message, messageId=%s, messageBody=%s&quot;,
+     *                 peekedMessageItem.getMessageId&#40;&#41;,
+     *                 peekedMessageItem.getBody&#40;&#41;.toString&#40;&#41;&#41;;
+     *             return Mono.empty&#40;&#41;;
+     *         &#125; else &#123;
+     *             return Mono.empty&#40;&#41;;
+     *         &#125;
+     *     &#125;;
+     *
+     * QueueServiceClient client = new QueueServiceClientBuilder&#40;&#41;
+     *     .connectionString&#40;connectionString&#41;
+     *     .processMessageDecodingErrorAsync&#40;processMessageDecodingErrorHandler&#41;
+     *     .buildClient&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.QueueServiceClientBuilder#processMessageDecodingErrorAsyncHandler -->
      *
      * @param processMessageDecodingErrorAsyncHandler the handler.
      * @return the updated QueueServiceClientBuilder object
@@ -447,7 +520,35 @@ public final class QueueServiceClientBuilder {
      * {@link QueueServiceAsyncClient} built by this builder.
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.queue.QueueServiceClientBuilder#processMessageDecodingErrorHandler}
+     * <!-- src_embed com.azure.storage.queue.QueueServiceClientBuilder#processMessageDecodingErrorHandler -->
+     * <pre>
+     * String connectionString = &quot;DefaultEndpointsProtocol=https;AccountName=&#123;name&#125;;&quot;
+     *     + &quot;AccountKey=&#123;key&#125;;EndpointSuffix=&#123;core.windows.net&#125;&quot;;
+     *
+     * Consumer&lt;QueueMessageDecodingError&gt; processMessageDecodingErrorHandler =
+     *     &#40;queueMessageDecodingFailure&#41; -&gt; &#123;
+     *         QueueMessageItem queueMessageItem = queueMessageDecodingFailure.getQueueMessageItem&#40;&#41;;
+     *         PeekedMessageItem peekedMessageItem = queueMessageDecodingFailure.getPeekedMessageItem&#40;&#41;;
+     *         if &#40;queueMessageItem != null&#41; &#123;
+     *             System.out.printf&#40;&quot;Received badly encoded message, messageId=%s, messageBody=%s&quot;,
+     *                 queueMessageItem.getMessageId&#40;&#41;,
+     *                 queueMessageItem.getBody&#40;&#41;.toString&#40;&#41;&#41;;
+     *             queueMessageDecodingFailure
+     *                 .getQueueClient&#40;&#41;
+     *                 .deleteMessage&#40;queueMessageItem.getMessageId&#40;&#41;, queueMessageItem.getPopReceipt&#40;&#41;&#41;;
+     *         &#125; else if &#40;peekedMessageItem != null&#41; &#123;
+     *             System.out.printf&#40;&quot;Peeked badly encoded message, messageId=%s, messageBody=%s&quot;,
+     *                 peekedMessageItem.getMessageId&#40;&#41;,
+     *                 peekedMessageItem.getBody&#40;&#41;.toString&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;;
+     *
+     * QueueServiceClient client = new QueueServiceClientBuilder&#40;&#41;
+     *     .connectionString&#40;connectionString&#41;
+     *     .processMessageDecodingError&#40;processMessageDecodingErrorHandler&#41;
+     *     .buildClient&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.QueueServiceClientBuilder#processMessageDecodingErrorHandler -->
      *
      * @param processMessageDecodingErrorHandler the handler.
      * @return the updated QueueServiceClientBuilder object

@@ -4,6 +4,7 @@
 package com.azure.spring.autoconfigure.jms;
 
 import org.apache.qpid.jms.JmsConnectionFactory;
+import org.apache.qpid.jms.policy.JmsDefaultPrefetchPolicy;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -28,16 +29,30 @@ public class NonPremiumServiceBusJMSAutoConfiguration extends AbstractServiceBus
 
     private static final String AMQP_URI_FORMAT = "amqps://%s?amqp.idleTimeout=%d";
 
+    /**
+     * Creates a new instance of {@link NonPremiumServiceBusJMSAutoConfiguration}.
+     *
+     * @param azureServiceBusJMSProperties the Azure ServiceBus JMS properties
+     */
     public NonPremiumServiceBusJMSAutoConfiguration(AzureServiceBusJMSProperties azureServiceBusJMSProperties) {
         super(azureServiceBusJMSProperties);
     }
 
+    /**
+     * Declare JMS ConnectionFactory bean.
+     *
+     * @return JMS ConnectionFactory bean
+     */
     @Bean
     @ConditionalOnMissingBean
     public ConnectionFactory jmsConnectionFactory() {
         String connectionString = azureServiceBusJMSProperties.getConnectionString();
         String clientId = azureServiceBusJMSProperties.getTopicClientId();
         int idleTimeout = azureServiceBusJMSProperties.getIdleTimeout();
+        int durableTopicPrefetch = azureServiceBusJMSProperties.getPrefetchPolicy().getDurableTopicPrefetch();
+        int queueBrowserPrefetch = azureServiceBusJMSProperties.getPrefetchPolicy().getQueueBrowserPrefetch();
+        int queuePrefetch = azureServiceBusJMSProperties.getPrefetchPolicy().getQueuePrefetch();
+        int topicPrefetch = azureServiceBusJMSProperties.getPrefetchPolicy().getTopicPrefetch();
 
         ServiceBusKey serviceBusKey = ConnectionStringResolver.getServiceBusKey(connectionString);
         String host = serviceBusKey.getHost();
@@ -50,6 +65,14 @@ public class NonPremiumServiceBusJMSAutoConfiguration extends AbstractServiceBus
         jmsConnectionFactory.setClientID(clientId);
         jmsConnectionFactory.setUsername(sasKeyName);
         jmsConnectionFactory.setPassword(sasKey);
+
+        JmsDefaultPrefetchPolicy prefetchPolicy = (JmsDefaultPrefetchPolicy) jmsConnectionFactory.getPrefetchPolicy();
+        prefetchPolicy.setDurableTopicPrefetch(durableTopicPrefetch);
+        prefetchPolicy.setQueueBrowserPrefetch(queueBrowserPrefetch);
+        prefetchPolicy.setQueuePrefetch(queuePrefetch);
+        prefetchPolicy.setTopicPrefetch(topicPrefetch);
+        jmsConnectionFactory.setPrefetchPolicy(prefetchPolicy);
+
         return jmsConnectionFactory;
     }
 

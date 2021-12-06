@@ -1,7 +1,93 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.4 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.3 (2021-11-17)
+
+- Azure Resource Manager CognitiveServices client library for Java. This package contains Microsoft Azure SDK for CognitiveServices Management SDK. Cognitive Services Management Client. Package tag package-2021-10. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.DeploymentProvisioningState` was added
+
+* `models.CommitmentPlan$UpdateStages` was added
+
+* `models.DeploymentModel` was added
+
+* `models.CommitmentTiers` was added
+
+* `models.Deployment` was added
+
+* `models.Deployment$UpdateStages` was added
+
+* `models.CommitmentCost` was added
+
+* `models.CommitmentTier` was added
+
+* `models.DeploymentProperties` was added
+
+* `models.Deployments` was added
+
+* `models.DeploymentScaleSettings` was added
+
+* `models.CommitmentPlanListResult` was added
+
+* `models.Deployment$DefinitionStages` was added
+
+* `models.CommitmentPlan$DefinitionStages` was added
+
+* `models.CommitmentPlan` was added
+
+* `models.CommitmentPlan$Update` was added
+
+* `models.CommitmentPlanProperties` was added
+
+* `models.CommitmentPlans` was added
+
+* `models.CommitmentQuota` was added
+
+* `models.HostingModel` was added
+
+* `models.CommitmentTierListResult` was added
+
+* `models.Deployment$Definition` was added
+
+* `models.DeploymentScaleType` was added
+
+* `models.Deployment$Update` was added
+
+* `models.CommitmentPeriod` was added
+
+* `models.DeploymentListResult` was added
+
+* `models.CommitmentPlan$Definition` was added
+
+#### `CognitiveServicesManager` was modified
+
+* `deployments()` was added
+* `commitmentTiers()` was added
+* `commitmentPlans()` was added
+
+#### `models.CheckDomainAvailabilityParameter` was modified
+
+* `kind()` was added
+* `withKind(java.lang.String)` was added
+
+#### `models.DomainAvailability` was modified
+
+* `kind()` was added
+
+#### `CognitiveServicesManager$Configurable` was modified
+
+* `withScope(java.lang.String)` was added
 
 ## 1.0.0-beta.2 (2021-05-24)
 

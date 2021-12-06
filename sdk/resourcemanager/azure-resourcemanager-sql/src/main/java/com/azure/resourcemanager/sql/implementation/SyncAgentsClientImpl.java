@@ -473,7 +473,11 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
         return this
             .client
             .<SyncAgentInner, SyncAgentInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SyncAgentInner.class, SyncAgentInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                SyncAgentInner.class,
+                SyncAgentInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -784,7 +788,8 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, serverName, syncAgentName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

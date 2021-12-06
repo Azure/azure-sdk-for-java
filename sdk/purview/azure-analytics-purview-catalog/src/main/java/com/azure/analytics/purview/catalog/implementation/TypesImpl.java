@@ -6,6 +6,7 @@ package com.azure.analytics.purview.catalog.implementation;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
+import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -51,6 +52,7 @@ public final class TypesImpl {
     @ServiceInterface(name = "PurviewCatalogClient")
     private interface TypesService {
         @Get("/atlas/v2/types/classificationdef/guid/{guid}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> getClassificationDefByGuid(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
@@ -58,6 +60,7 @@ public final class TypesImpl {
                 Context context);
 
         @Get("/atlas/v2/types/classificationdef/name/{name}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> getClassificationDefByName(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("name") String name,
@@ -65,6 +68,7 @@ public final class TypesImpl {
                 Context context);
 
         @Get("/atlas/v2/types/entitydef/guid/{guid}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> getEntityDefinitionByGuid(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
@@ -72,6 +76,7 @@ public final class TypesImpl {
                 Context context);
 
         @Get("/atlas/v2/types/entitydef/name/{name}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> getEntityDefinitionByName(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("name") String name,
@@ -79,6 +84,7 @@ public final class TypesImpl {
                 Context context);
 
         @Get("/atlas/v2/types/enumdef/guid/{guid}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> getEnumDefByGuid(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
@@ -86,6 +92,7 @@ public final class TypesImpl {
                 Context context);
 
         @Get("/atlas/v2/types/enumdef/name/{name}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> getEnumDefByName(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("name") String name,
@@ -93,6 +100,7 @@ public final class TypesImpl {
                 Context context);
 
         @Get("/atlas/v2/types/relationshipdef/guid/{guid}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> getRelationshipDefByGuid(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
@@ -100,6 +108,7 @@ public final class TypesImpl {
                 Context context);
 
         @Get("/atlas/v2/types/relationshipdef/name/{name}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> getRelationshipDefByName(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("name") String name,
@@ -107,6 +116,7 @@ public final class TypesImpl {
                 Context context);
 
         @Get("/atlas/v2/types/structdef/guid/{guid}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> getStructDefByGuid(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
@@ -114,6 +124,7 @@ public final class TypesImpl {
                 Context context);
 
         @Get("/atlas/v2/types/structdef/name/{name}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> getStructDefByName(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("name") String name,
@@ -121,6 +132,7 @@ public final class TypesImpl {
                 Context context);
 
         @Get("/atlas/v2/types/typedef/guid/{guid}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> getTypeDefinitionByGuid(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
@@ -128,6 +140,7 @@ public final class TypesImpl {
                 Context context);
 
         @Get("/atlas/v2/types/typedef/name/{name}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> getTypeDefinitionByName(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("name") String name,
@@ -135,6 +148,7 @@ public final class TypesImpl {
                 Context context);
 
         @Delete("/atlas/v2/types/typedef/name/{name}")
+        @ExpectedResponses({204})
         Mono<Response<Void>> deleteTypeByName(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("name") String name,
@@ -142,10 +156,12 @@ public final class TypesImpl {
                 Context context);
 
         @Get("/atlas/v2/types/typedefs")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> getAllTypeDefinitions(
                 @HostParam("Endpoint") String endpoint, RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/types/typedefs")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> createTypeDefinitions(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData typesDef,
@@ -153,6 +169,7 @@ public final class TypesImpl {
                 Context context);
 
         @Put("/atlas/v2/types/typedefs")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> updateAtlasTypeDefinitions(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData typesDef,
@@ -160,6 +177,7 @@ public final class TypesImpl {
                 Context context);
 
         @Delete("/atlas/v2/types/typedefs")
+        @ExpectedResponses({204})
         Mono<Response<Void>> deleteTypeDefinitions(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData typesDef,
@@ -167,10 +185,12 @@ public final class TypesImpl {
                 Context context);
 
         @Get("/atlas/v2/types/typedefs/headers")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> listTypeDefinitionHeaders(
                 @HostParam("Endpoint") String endpoint, RequestOptions requestOptions, Context context);
 
         @Get("/types/termtemplatedef/guid/{guid}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> getTermTemplateDefByGuid(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
@@ -179,6 +199,7 @@ public final class TypesImpl {
                 Context context);
 
         @Get("/types/termtemplatedef/name/{name}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> getTermTemplateDefByName(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("name") String name,
@@ -288,8 +309,7 @@ public final class TypesImpl {
      *
      * @param guid The globally unique identifier of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the classification definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -402,8 +422,7 @@ public final class TypesImpl {
      * @param guid The globally unique identifier of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the classification definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -513,15 +532,12 @@ public final class TypesImpl {
      *
      * @param guid The globally unique identifier of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the classification definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getClassificationDefByGuidWithResponse(
-            String guid, RequestOptions requestOptions, Context context) {
-        return getClassificationDefByGuidWithResponseAsync(guid, requestOptions, context).block();
+    public Response<BinaryData> getClassificationDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
+        return getClassificationDefByGuidWithResponseAsync(guid, requestOptions).block();
     }
 
     /**
@@ -625,8 +641,7 @@ public final class TypesImpl {
      *
      * @param name The name of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the classification definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -739,8 +754,7 @@ public final class TypesImpl {
      * @param name The name of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the classification definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -850,15 +864,12 @@ public final class TypesImpl {
      *
      * @param name The name of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the classification definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getClassificationDefByNameWithResponse(
-            String name, RequestOptions requestOptions, Context context) {
-        return getClassificationDefByNameWithResponseAsync(name, requestOptions, context).block();
+    public Response<BinaryData> getClassificationDefByNameWithResponse(String name, RequestOptions requestOptions) {
+        return getClassificationDefByNameWithResponseAsync(name, requestOptions).block();
     }
 
     /**
@@ -982,8 +993,7 @@ public final class TypesImpl {
      *
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the Entity definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1115,8 +1125,7 @@ public final class TypesImpl {
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the Entity definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1246,15 +1255,12 @@ public final class TypesImpl {
      *
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the Entity definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getEntityDefinitionByGuidWithResponse(
-            String guid, RequestOptions requestOptions, Context context) {
-        return getEntityDefinitionByGuidWithResponseAsync(guid, requestOptions, context).block();
+    public Response<BinaryData> getEntityDefinitionByGuidWithResponse(String guid, RequestOptions requestOptions) {
+        return getEntityDefinitionByGuidWithResponseAsync(guid, requestOptions).block();
     }
 
     /**
@@ -1378,8 +1384,7 @@ public final class TypesImpl {
      *
      * @param name The name of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the entity definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1511,8 +1516,7 @@ public final class TypesImpl {
      * @param name The name of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the entity definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1642,15 +1646,12 @@ public final class TypesImpl {
      *
      * @param name The name of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the entity definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getEntityDefinitionByNameWithResponse(
-            String name, RequestOptions requestOptions, Context context) {
-        return getEntityDefinitionByNameWithResponseAsync(name, requestOptions, context).block();
+    public Response<BinaryData> getEntityDefinitionByNameWithResponse(String name, RequestOptions requestOptions) {
+        return getEntityDefinitionByNameWithResponseAsync(name, requestOptions).block();
     }
 
     /**
@@ -1727,8 +1728,7 @@ public final class TypesImpl {
      *
      * @param guid The globally unique identifier of the enum.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the enum definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1812,8 +1812,7 @@ public final class TypesImpl {
      * @param guid The globally unique identifier of the enum.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the enum definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1896,15 +1895,12 @@ public final class TypesImpl {
      *
      * @param guid The globally unique identifier of the enum.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the enum definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getEnumDefByGuidWithResponse(
-            String guid, RequestOptions requestOptions, Context context) {
-        return getEnumDefByGuidWithResponseAsync(guid, requestOptions, context).block();
+    public Response<BinaryData> getEnumDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
+        return getEnumDefByGuidWithResponseAsync(guid, requestOptions).block();
     }
 
     /**
@@ -1981,8 +1977,7 @@ public final class TypesImpl {
      *
      * @param name The name of the enum.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the enum definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2066,8 +2061,7 @@ public final class TypesImpl {
      * @param name The name of the enum.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the enum definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2150,15 +2144,12 @@ public final class TypesImpl {
      *
      * @param name The name of the enum.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the enum definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getEnumDefByNameWithResponse(
-            String name, RequestOptions requestOptions, Context context) {
-        return getEnumDefByNameWithResponseAsync(name, requestOptions, context).block();
+    public Response<BinaryData> getEnumDefByNameWithResponse(String name, RequestOptions requestOptions) {
+        return getEnumDefByNameWithResponseAsync(name, requestOptions).block();
     }
 
     /**
@@ -2264,8 +2255,7 @@ public final class TypesImpl {
      *
      * @param guid The globally unique identifier of the relationship.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the relationship definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2379,8 +2369,7 @@ public final class TypesImpl {
      * @param guid The globally unique identifier of the relationship.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the relationship definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2492,15 +2481,12 @@ public final class TypesImpl {
      *
      * @param guid The globally unique identifier of the relationship.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the relationship definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getRelationshipDefByGuidWithResponse(
-            String guid, RequestOptions requestOptions, Context context) {
-        return getRelationshipDefByGuidWithResponseAsync(guid, requestOptions, context).block();
+    public Response<BinaryData> getRelationshipDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
+        return getRelationshipDefByGuidWithResponseAsync(guid, requestOptions).block();
     }
 
     /**
@@ -2606,8 +2592,7 @@ public final class TypesImpl {
      *
      * @param name The name of the relationship.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the relationship definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2721,8 +2706,7 @@ public final class TypesImpl {
      * @param name The name of the relationship.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the relationship definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2834,15 +2818,12 @@ public final class TypesImpl {
      *
      * @param name The name of the relationship.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the relationship definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getRelationshipDefByNameWithResponse(
-            String name, RequestOptions requestOptions, Context context) {
-        return getRelationshipDefByNameWithResponseAsync(name, requestOptions, context).block();
+    public Response<BinaryData> getRelationshipDefByNameWithResponse(String name, RequestOptions requestOptions) {
+        return getRelationshipDefByNameWithResponseAsync(name, requestOptions).block();
     }
 
     /**
@@ -2937,8 +2918,7 @@ public final class TypesImpl {
      *
      * @param guid The globally unique identifier of the struct.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the struct definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3040,8 +3020,7 @@ public final class TypesImpl {
      * @param guid The globally unique identifier of the struct.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the struct definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3142,15 +3121,12 @@ public final class TypesImpl {
      *
      * @param guid The globally unique identifier of the struct.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the struct definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getStructDefByGuidWithResponse(
-            String guid, RequestOptions requestOptions, Context context) {
-        return getStructDefByGuidWithResponseAsync(guid, requestOptions, context).block();
+    public Response<BinaryData> getStructDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
+        return getStructDefByGuidWithResponseAsync(guid, requestOptions).block();
     }
 
     /**
@@ -3245,8 +3221,7 @@ public final class TypesImpl {
      *
      * @param name The name of the struct.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the struct definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3348,8 +3323,7 @@ public final class TypesImpl {
      * @param name The name of the struct.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the struct definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3450,15 +3424,12 @@ public final class TypesImpl {
      *
      * @param name The name of the struct.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the struct definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getStructDefByNameWithResponse(
-            String name, RequestOptions requestOptions, Context context) {
-        return getStructDefByNameWithResponseAsync(name, requestOptions, context).block();
+    public Response<BinaryData> getStructDefByNameWithResponse(String name, RequestOptions requestOptions) {
+        return getStructDefByNameWithResponseAsync(name, requestOptions).block();
     }
 
     /**
@@ -3604,8 +3575,7 @@ public final class TypesImpl {
      *
      * @param guid The globally unique identifier of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the type definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3759,8 +3729,7 @@ public final class TypesImpl {
      * @param guid The globally unique identifier of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the type definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3912,15 +3881,12 @@ public final class TypesImpl {
      *
      * @param guid The globally unique identifier of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the type definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getTypeDefinitionByGuidWithResponse(
-            String guid, RequestOptions requestOptions, Context context) {
-        return getTypeDefinitionByGuidWithResponseAsync(guid, requestOptions, context).block();
+    public Response<BinaryData> getTypeDefinitionByGuidWithResponse(String guid, RequestOptions requestOptions) {
+        return getTypeDefinitionByGuidWithResponseAsync(guid, requestOptions).block();
     }
 
     /**
@@ -4066,8 +4032,7 @@ public final class TypesImpl {
      *
      * @param name The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the type definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4221,8 +4186,7 @@ public final class TypesImpl {
      * @param name The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the type definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4374,15 +4338,12 @@ public final class TypesImpl {
      *
      * @param name The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the type definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getTypeDefinitionByNameWithResponse(
-            String name, RequestOptions requestOptions, Context context) {
-        return getTypeDefinitionByNameWithResponseAsync(name, requestOptions, context).block();
+    public Response<BinaryData> getTypeDefinitionByNameWithResponse(String name, RequestOptions requestOptions) {
+        return getTypeDefinitionByNameWithResponseAsync(name, requestOptions).block();
     }
 
     /**
@@ -4390,8 +4351,7 @@ public final class TypesImpl {
      *
      * @param name The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4406,8 +4366,7 @@ public final class TypesImpl {
      * @param name The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4421,14 +4380,12 @@ public final class TypesImpl {
      *
      * @param name The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteTypeByNameWithResponse(String name, RequestOptions requestOptions, Context context) {
-        return deleteTypeByNameWithResponseAsync(name, requestOptions, context).block();
+    public Response<Void> deleteTypeByNameWithResponse(String name, RequestOptions requestOptions) {
+        return deleteTypeByNameWithResponseAsync(name, requestOptions).block();
     }
 
     /**
@@ -4705,8 +4662,7 @@ public final class TypesImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return all type definitions in Atlas in bulk.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4990,8 +4946,7 @@ public final class TypesImpl {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return all type definitions in Atlas in bulk.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5274,14 +5229,12 @@ public final class TypesImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return all type definitions in Atlas in bulk.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAllTypeDefinitionsWithResponse(RequestOptions requestOptions, Context context) {
-        return getAllTypeDefinitionsWithResponseAsync(requestOptions, context).block();
+    public Response<BinaryData> getAllTypeDefinitionsWithResponse(RequestOptions requestOptions) {
+        return getAllTypeDefinitionsWithResponseAsync(requestOptions).block();
     }
 
     /**
@@ -5810,8 +5763,7 @@ public final class TypesImpl {
      *
      * @param typesDef A composite wrapper object with corresponding lists of the type definition.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasTypesDef.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -6348,8 +6300,7 @@ public final class TypesImpl {
      * @param typesDef A composite wrapper object with corresponding lists of the type definition.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasTypesDef.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -6884,15 +6835,12 @@ public final class TypesImpl {
      *
      * @param typesDef A composite wrapper object with corresponding lists of the type definition.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasTypesDef.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createTypeDefinitionsWithResponse(
-            BinaryData typesDef, RequestOptions requestOptions, Context context) {
-        return createTypeDefinitionsWithResponseAsync(typesDef, requestOptions, context).block();
+    public Response<BinaryData> createTypeDefinitionsWithResponse(BinaryData typesDef, RequestOptions requestOptions) {
+        return createTypeDefinitionsWithResponseAsync(typesDef, requestOptions).block();
     }
 
     /**
@@ -7420,8 +7368,7 @@ public final class TypesImpl {
      *
      * @param typesDef A composite object that captures all type definition changes.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasTypesDef.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -7959,8 +7906,7 @@ public final class TypesImpl {
      * @param typesDef A composite object that captures all type definition changes.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasTypesDef.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -8494,15 +8440,13 @@ public final class TypesImpl {
      *
      * @param typesDef A composite object that captures all type definition changes.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasTypesDef.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateAtlasTypeDefinitionsWithResponse(
-            BinaryData typesDef, RequestOptions requestOptions, Context context) {
-        return updateAtlasTypeDefinitionsWithResponseAsync(typesDef, requestOptions, context).block();
+            BinaryData typesDef, RequestOptions requestOptions) {
+        return updateAtlasTypeDefinitionsWithResponseAsync(typesDef, requestOptions).block();
     }
 
     /**
@@ -8770,8 +8714,7 @@ public final class TypesImpl {
      *
      * @param typesDef A composite object that captures all types to be deleted.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -9047,8 +8990,7 @@ public final class TypesImpl {
      * @param typesDef A composite object that captures all types to be deleted.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -9322,15 +9264,12 @@ public final class TypesImpl {
      *
      * @param typesDef A composite object that captures all types to be deleted.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteTypeDefinitionsWithResponse(
-            BinaryData typesDef, RequestOptions requestOptions, Context context) {
-        return deleteTypeDefinitionsWithResponseAsync(typesDef, requestOptions, context).block();
+    public Response<Void> deleteTypeDefinitionsWithResponse(BinaryData typesDef, RequestOptions requestOptions) {
+        return deleteTypeDefinitionsWithResponseAsync(typesDef, requestOptions).block();
     }
 
     /**
@@ -9359,8 +9298,7 @@ public final class TypesImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return an array of AtlasTypeDefHeader matching the search criteria or an empty list if no match.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -9396,8 +9334,7 @@ public final class TypesImpl {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return an array of AtlasTypeDefHeader matching the search criteria or an empty list if no match.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -9432,14 +9369,12 @@ public final class TypesImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return an array of AtlasTypeDefHeader matching the search criteria or an empty list if no match.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listTypeDefinitionHeadersWithResponse(RequestOptions requestOptions, Context context) {
-        return listTypeDefinitionHeadersWithResponseAsync(requestOptions, context).block();
+    public Response<BinaryData> listTypeDefinitionHeadersWithResponse(RequestOptions requestOptions) {
+        return listTypeDefinitionHeadersWithResponseAsync(requestOptions).block();
     }
 
     /**
@@ -9542,8 +9477,7 @@ public final class TypesImpl {
      *
      * @param guid The globally unique identifier of the term template.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the term template definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -9660,8 +9594,7 @@ public final class TypesImpl {
      * @param guid The globally unique identifier of the term template.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the term template definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -9771,15 +9704,12 @@ public final class TypesImpl {
      *
      * @param guid The globally unique identifier of the term template.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the term template definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getTermTemplateDefByGuidWithResponse(
-            String guid, RequestOptions requestOptions, Context context) {
-        return getTermTemplateDefByGuidWithResponseAsync(guid, requestOptions, context).block();
+    public Response<BinaryData> getTermTemplateDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
+        return getTermTemplateDefByGuidWithResponseAsync(guid, requestOptions).block();
     }
 
     /**
@@ -9882,8 +9812,7 @@ public final class TypesImpl {
      *
      * @param name The name of the term template.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the term template definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -10000,8 +9929,7 @@ public final class TypesImpl {
      * @param name The name of the term template.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the term template definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -10111,14 +10039,11 @@ public final class TypesImpl {
      *
      * @param name The name of the term template.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the term template definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getTermTemplateDefByNameWithResponse(
-            String name, RequestOptions requestOptions, Context context) {
-        return getTermTemplateDefByNameWithResponseAsync(name, requestOptions, context).block();
+    public Response<BinaryData> getTermTemplateDefByNameWithResponse(String name, RequestOptions requestOptions) {
+        return getTermTemplateDefByNameWithResponseAsync(name, requestOptions).block();
     }
 }

@@ -1078,6 +1078,7 @@ public final class SearchAsyncClient {
             .setQueryType(options.getQueryType())
             .setScoringParameters(scoringParameters)
             .setScoringProfile(options.getScoringProfile())
+            .setSemanticConfiguration(options.getSemanticConfigurationName())
             .setSearchFields(nullSafeStringJoin(options.getSearchFields()))
             .setQueryLanguage(options.getQueryLanguage())
             .setSpeller(options.getSpeller())

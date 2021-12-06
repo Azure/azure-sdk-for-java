@@ -627,7 +627,7 @@ public final class PoolsClientImpl implements PoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return capacity pool resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CapacityPoolInner>, CapacityPoolInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String accountName, String poolName, CapacityPoolInner body) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -635,7 +635,11 @@ public final class PoolsClientImpl implements PoolsClient {
         return this
             .client
             .<CapacityPoolInner, CapacityPoolInner>getLroResult(
-                mono, this.client.getHttpPipeline(), CapacityPoolInner.class, CapacityPoolInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                CapacityPoolInner.class,
+                CapacityPoolInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -651,7 +655,7 @@ public final class PoolsClientImpl implements PoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return capacity pool resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CapacityPoolInner>, CapacityPoolInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String accountName, String poolName, CapacityPoolInner body, Context context) {
         context = this.client.mergeContext(context);
@@ -675,7 +679,7 @@ public final class PoolsClientImpl implements PoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return capacity pool resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CapacityPoolInner>, CapacityPoolInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, String poolName, CapacityPoolInner body) {
         return beginCreateOrUpdateAsync(resourceGroupName, accountName, poolName, body).getSyncPoller();
@@ -694,7 +698,7 @@ public final class PoolsClientImpl implements PoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return capacity pool resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CapacityPoolInner>, CapacityPoolInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, String poolName, CapacityPoolInner body, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, accountName, poolName, body, context).getSyncPoller();
@@ -908,14 +912,18 @@ public final class PoolsClientImpl implements PoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return capacity pool resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CapacityPoolInner>, CapacityPoolInner> beginUpdateAsync(
         String resourceGroupName, String accountName, String poolName, CapacityPoolPatch body) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, accountName, poolName, body);
         return this
             .client
             .<CapacityPoolInner, CapacityPoolInner>getLroResult(
-                mono, this.client.getHttpPipeline(), CapacityPoolInner.class, CapacityPoolInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                CapacityPoolInner.class,
+                CapacityPoolInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -931,7 +939,7 @@ public final class PoolsClientImpl implements PoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return capacity pool resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CapacityPoolInner>, CapacityPoolInner> beginUpdateAsync(
         String resourceGroupName, String accountName, String poolName, CapacityPoolPatch body, Context context) {
         context = this.client.mergeContext(context);
@@ -955,7 +963,7 @@ public final class PoolsClientImpl implements PoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return capacity pool resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CapacityPoolInner>, CapacityPoolInner> beginUpdate(
         String resourceGroupName, String accountName, String poolName, CapacityPoolPatch body) {
         return beginUpdateAsync(resourceGroupName, accountName, poolName, body).getSyncPoller();
@@ -974,7 +982,7 @@ public final class PoolsClientImpl implements PoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return capacity pool resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CapacityPoolInner>, CapacityPoolInner> beginUpdate(
         String resourceGroupName, String accountName, String poolName, CapacityPoolPatch body, Context context) {
         return beginUpdateAsync(resourceGroupName, accountName, poolName, body, context).getSyncPoller();
@@ -1169,13 +1177,14 @@ public final class PoolsClientImpl implements PoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String accountName, String poolName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, accountName, poolName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1190,7 +1199,7 @@ public final class PoolsClientImpl implements PoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String accountName, String poolName, Context context) {
         context = this.client.mergeContext(context);
@@ -1212,7 +1221,7 @@ public final class PoolsClientImpl implements PoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String poolName) {
         return beginDeleteAsync(resourceGroupName, accountName, poolName).getSyncPoller();
@@ -1230,7 +1239,7 @@ public final class PoolsClientImpl implements PoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String poolName, Context context) {
         return beginDeleteAsync(resourceGroupName, accountName, poolName, context).getSyncPoller();

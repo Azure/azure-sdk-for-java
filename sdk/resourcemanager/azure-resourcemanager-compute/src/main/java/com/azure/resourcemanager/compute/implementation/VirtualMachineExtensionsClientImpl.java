@@ -307,7 +307,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
                 this.client.getHttpPipeline(),
                 VirtualMachineExtensionInner.class,
                 VirtualMachineExtensionInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -639,7 +639,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
                 this.client.getHttpPipeline(),
                 VirtualMachineExtensionInner.class,
                 VirtualMachineExtensionInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -933,7 +933,8 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, vmName, vmExtensionName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

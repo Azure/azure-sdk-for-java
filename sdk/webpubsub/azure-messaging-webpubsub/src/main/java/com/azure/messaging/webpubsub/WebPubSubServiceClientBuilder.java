@@ -25,7 +25,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.webpubsub.implementation.AzureWebPubSubServiceRestAPIImpl;
+import com.azure.messaging.webpubsub.implementation.AzureWebPubSubServiceRestApiImpl;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -50,17 +50,36 @@ import java.util.Objects;
  *
  * <p><strong>Code Samples</strong></p>
  *
- * {@codesnippet com.azure.messaging.webpubsub.webpubsubclientbuilder.connectionstring.async}
+ * <!-- src_embed com.azure.messaging.webpubsub.webpubsubclientbuilder.connectionstring.async -->
+ * <pre>
+ * WebPubSubServiceAsyncClient client = new WebPubSubServiceClientBuilder&#40;&#41;
+ *     .connectionString&#40;&quot;&lt;Insert connection string from Azure Portal&gt;&quot;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.webpubsub.webpubsubclientbuilder.connectionstring.async -->
  *
  * <p>This demonstrates using the connection string provided by the Azure Portal. Another approach is to use the
  * combination of credential and endpoint details, as shown below:</p>
  *
- * {@codesnippet com.azure.messaging.webpubsub.webpubsubclientbuilder.credential.endpoint.async}
+ * <!-- src_embed com.azure.messaging.webpubsub.webpubsubclientbuilder.credential.endpoint.async -->
+ * <pre>
+ * WebPubSubServiceAsyncClient client = new WebPubSubServiceClientBuilder&#40;&#41;
+ *     .credential&#40;new AzureKeyCredential&#40;&quot;&lt;Insert key from Azure Portal&gt;&quot;&#41;&#41;
+ *     .endpoint&#40;&quot;&lt;Insert endpoint from Azure Portal&gt;&quot;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.webpubsub.webpubsubclientbuilder.credential.endpoint.async -->
  *
  * <p>Of course, synchronous clients may also be instantiated, by calling {@link #buildClient() buildClient} rather than
  * {@link #buildAsyncClient() buildAsyncClient}.</p>
  *
- * {@codesnippet com.azure.messaging.webpubsub.webpubsubclientbuilder.connectionstring.sync}
+ * <!-- src_embed com.azure.messaging.webpubsub.webpubsubclientbuilder.connectionstring.sync -->
+ * <pre>
+ * WebPubSubServiceClient client = new WebPubSubServiceClientBuilder&#40;&#41;
+ *     .connectionString&#40;&quot;&lt;Insert connection string from Azure Portal&gt;&quot;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.webpubsub.webpubsubclientbuilder.connectionstring.sync -->
  *
  * @see WebPubSubServiceAsyncClient
  * @see WebPubSubServiceClient
@@ -303,7 +322,7 @@ public final class WebPubSubServiceClientBuilder {
     }
 
 
-    private AzureWebPubSubServiceRestAPIImpl buildInnerClient() {
+    private AzureWebPubSubServiceRestApiImpl buildInnerClient() {
         if (hub == null || hub.isEmpty()) {
             logger.logThrowableAsError(
                     new IllegalStateException("hub is not valid - it must be non-null and non-empty."));
@@ -346,7 +365,7 @@ public final class WebPubSubServiceClientBuilder {
 
 
         if (pipeline != null) {
-            return new AzureWebPubSubServiceRestAPIImpl(pipeline, endpoint, serviceVersion);
+            return new AzureWebPubSubServiceRestApiImpl(pipeline, endpoint, serviceVersion);
         }
 
         // Global Env configuration store
@@ -396,7 +415,7 @@ public final class WebPubSubServiceClientBuilder {
                 .policies(policies.toArray(new HttpPipelinePolicy[0]))
                 .httpClient(httpClient)
                 .build();
-        return new AzureWebPubSubServiceRestAPIImpl(buildPipeline, endpoint, serviceVersion);
+        return new AzureWebPubSubServiceRestApiImpl(buildPipeline, endpoint, serviceVersion);
     }
 
 

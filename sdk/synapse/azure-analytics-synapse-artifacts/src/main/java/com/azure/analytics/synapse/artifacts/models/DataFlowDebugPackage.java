@@ -29,6 +29,12 @@ public final class DataFlowDebugPackage {
     private DataFlowDebugResource dataFlow;
 
     /*
+     * List of Data flows
+     */
+    @JsonProperty(value = "dataFlows")
+    private List<DataFlowDebugResource> dataFlows;
+
+    /*
      * List of datasets.
      */
     @JsonProperty(value = "datasets")
@@ -94,6 +100,26 @@ public final class DataFlowDebugPackage {
      */
     public DataFlowDebugPackage setDataFlow(DataFlowDebugResource dataFlow) {
         this.dataFlow = dataFlow;
+        return this;
+    }
+
+    /**
+     * Get the dataFlows property: List of Data flows.
+     *
+     * @return the dataFlows value.
+     */
+    public List<DataFlowDebugResource> getDataFlows() {
+        return this.dataFlows;
+    }
+
+    /**
+     * Set the dataFlows property: List of Data flows.
+     *
+     * @param dataFlows the dataFlows value to set.
+     * @return the DataFlowDebugPackage object itself.
+     */
+    public DataFlowDebugPackage setDataFlows(List<DataFlowDebugResource> dataFlows) {
+        this.dataFlows = dataFlows;
         return this;
     }
 

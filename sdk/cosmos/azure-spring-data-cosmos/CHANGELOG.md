@@ -1,6 +1,6 @@
 ## Release History
 
-### 3.14.0-beta.1 (Unreleased)
+### 3.15.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,20 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 3.14.0 (2021-11-12)
+#### Features Added
+* Updated `azure-cosmos` to version `4.21.0`.
+
+#### Key Bug Fixes
+* Fixed issue with spring onLoad event not firing for paged queries.
+* Exceptions thrown from spring application event listeners for onLoad events will now propagate up the call stack.
+
+### 3.13.1 (2021-10-27)
+#### Key Bug Fixes
+* Fixed support for slice query in annotated `@Query` queries.
+* Fixed issue with preserving priority for closed queries.
+* Updated `azure-cosmos` to version `4.20.1`.
 
 ### 3.13.0 (2021-10-14)
 #### New Features

@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.catalog.implementation;
 
 import com.azure.core.annotation.BodyParam;
+import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Post;
@@ -48,6 +49,7 @@ public final class DiscoveriesImpl {
     @ServiceInterface(name = "PurviewCatalogClient")
     private interface DiscoveriesService {
         @Post("/search/query")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> query(
                 @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
@@ -56,6 +58,7 @@ public final class DiscoveriesImpl {
                 Context context);
 
         @Post("/search/suggest")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> suggest(
                 @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
@@ -64,6 +67,7 @@ public final class DiscoveriesImpl {
                 Context context);
 
         @Post("/browse")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> browse(
                 @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
@@ -72,6 +76,7 @@ public final class DiscoveriesImpl {
                 Context context);
 
         @Post("/search/autocomplete")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> autoComplete(
                 @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
@@ -203,8 +208,7 @@ public final class DiscoveriesImpl {
      *
      * @param searchRequest An object specifying the search criteria.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return data using search.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -343,8 +347,7 @@ public final class DiscoveriesImpl {
      * @param searchRequest An object specifying the search criteria.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return data using search.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -481,15 +484,12 @@ public final class DiscoveriesImpl {
      *
      * @param searchRequest An object specifying the search criteria.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return data using search.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> queryWithResponse(
-            BinaryData searchRequest, RequestOptions requestOptions, Context context) {
-        return queryWithResponseAsync(searchRequest, requestOptions, context).block();
+    public Response<BinaryData> queryWithResponse(BinaryData searchRequest, RequestOptions requestOptions) {
+        return queryWithResponseAsync(searchRequest, requestOptions).block();
     }
 
     /**
@@ -557,8 +557,7 @@ public final class DiscoveriesImpl {
      *
      * @param suggestRequest An object specifying the suggest criteria.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return search suggestions by query criteria.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -640,8 +639,7 @@ public final class DiscoveriesImpl {
      * @param suggestRequest An object specifying the suggest criteria.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return search suggestions by query criteria.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -720,15 +718,12 @@ public final class DiscoveriesImpl {
      *
      * @param suggestRequest An object specifying the suggest criteria.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return search suggestions by query criteria.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> suggestWithResponse(
-            BinaryData suggestRequest, RequestOptions requestOptions, Context context) {
-        return suggestWithResponseAsync(suggestRequest, requestOptions, context).block();
+    public Response<BinaryData> suggestWithResponse(BinaryData suggestRequest, RequestOptions requestOptions) {
+        return suggestWithResponseAsync(suggestRequest, requestOptions).block();
     }
 
     /**
@@ -781,8 +776,7 @@ public final class DiscoveriesImpl {
      *
      * @param browseRequest An object specifying the browse criteria.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return browseResult.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -848,8 +842,7 @@ public final class DiscoveriesImpl {
      * @param browseRequest An object specifying the browse criteria.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return browseResult.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -913,15 +906,12 @@ public final class DiscoveriesImpl {
      *
      * @param browseRequest An object specifying the browse criteria.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return browseResult.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> browseWithResponse(
-            BinaryData browseRequest, RequestOptions requestOptions, Context context) {
-        return browseWithResponseAsync(browseRequest, requestOptions, context).block();
+    public Response<BinaryData> browseWithResponse(BinaryData browseRequest, RequestOptions requestOptions) {
+        return browseWithResponseAsync(browseRequest, requestOptions).block();
     }
 
     /**
@@ -960,8 +950,7 @@ public final class DiscoveriesImpl {
      *
      * @param autoCompleteRequest An object specifying the autocomplete criteria.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return auto complete options.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1014,8 +1003,7 @@ public final class DiscoveriesImpl {
      * @param autoCompleteRequest An object specifying the autocomplete criteria.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return auto complete options.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1065,14 +1053,12 @@ public final class DiscoveriesImpl {
      *
      * @param autoCompleteRequest An object specifying the autocomplete criteria.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return auto complete options.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> autoCompleteWithResponse(
-            BinaryData autoCompleteRequest, RequestOptions requestOptions, Context context) {
-        return autoCompleteWithResponseAsync(autoCompleteRequest, requestOptions, context).block();
+            BinaryData autoCompleteRequest, RequestOptions requestOptions) {
+        return autoCompleteWithResponseAsync(autoCompleteRequest, requestOptions).block();
     }
 }

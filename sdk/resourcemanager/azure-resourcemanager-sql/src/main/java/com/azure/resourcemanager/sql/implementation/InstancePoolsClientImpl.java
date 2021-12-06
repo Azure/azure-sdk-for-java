@@ -454,7 +454,11 @@ public final class InstancePoolsClientImpl
         return this
             .client
             .<InstancePoolInner, InstancePoolInner>getLroResult(
-                mono, this.client.getHttpPipeline(), InstancePoolInner.class, InstancePoolInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                InstancePoolInner.class,
+                InstancePoolInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -708,7 +712,8 @@ public final class InstancePoolsClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, instancePoolName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -958,7 +963,11 @@ public final class InstancePoolsClientImpl
         return this
             .client
             .<InstancePoolInner, InstancePoolInner>getLroResult(
-                mono, this.client.getHttpPipeline(), InstancePoolInner.class, InstancePoolInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                InstancePoolInner.class,
+                InstancePoolInner.class,
+                this.client.getContext());
     }
 
     /**

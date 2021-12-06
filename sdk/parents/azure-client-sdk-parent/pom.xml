@@ -105,7 +105,7 @@
     <build.context>azure-client-sdk-parent</build.context>
     <jacoco.min.linecoverage>0.40</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.30</jacoco.min.branchcoverage>
-    <jacoco.skip.coverage.check>false</jacoco.skip.coverage.check>
+    <jacoco.skip>false</jacoco.skip>
 
     <!-- This property determines the relative path from a pom.xml to the eng/ folder. -->
     <relative.path.to.eng.folder>../../..</relative.path.to.eng.folder>
@@ -136,11 +136,17 @@
     <additionalSurefireArgLine>
     </additionalSurefireArgLine>
 
-    <!-- This property configures whether tests are ran in parallel. Defaults to true when running in PLAYBACK mode. -->
+    <!-- This property configures whether PLAYBACK tests are ran in parallel. Default is true. -->
     <parallelizeTests>true</parallelizeTests>
 
+    <!-- This property configures whether LIVE or RECORD tests are ran in parallel. Default is false. -->
+    <parallelizeLiveTests>false</parallelizeLiveTests>
+
     <!-- This property configures whether the codesnippet-maven-plugin should be used. -->
-    <skipNewCodesnippetTooling>true</skipNewCodesnippetTooling>
+    <codesnippet.skip>true</codesnippet.skip>
+
+    <!-- This property configures whether Spotbugs analysis is ran on samples and tests. Default is false. -->
+    <spotbugs.includeTests>false</spotbugs.includeTests>
 
     <!-- These properties exist for libraries using the new codesnippet-maven-plugin can easily disable the old doclet. -->
     <javadocDoclet>org.apidesign.javadoc.codesnippet.Doclet</javadocDoclet>
@@ -214,7 +220,7 @@
         <artifactId>codesnippet-maven-plugin</artifactId>
         <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
         <configuration>
-          <skip>${skipNewCodesnippetTooling}</skip>
+          <skip>${codesnippet.skip}</skip>
         </configuration>
         <executions>
           <execution>
@@ -338,7 +344,7 @@
               <goal>check</goal>
             </goals>
             <configuration>
-              <skip>${jacoco.skip.coverage.check}</skip>
+              <skip>${jacoco.skip}</skip>
               <rules>
                 <rule>
                   <element>BUNDLE</element>
@@ -556,7 +562,7 @@
             <fork>true</fork>
             <failOnError>true</failOnError>
             <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
-            <includeTests>false</includeTests>
+            <includeTests>${spotbugs.includeTests}</includeTests>
 
             <!-- Enable this plugin when issues documented are fixed -->
             <!--          <plugins>-->
@@ -597,6 +603,8 @@
               <sourceFileExclude>com/azure/cosmos/*BridgeInternal.java</sourceFileExclude>
               <sourceFileExclude>com/azure/cosmos/models/*BridgeInternal.java</sourceFileExclude>
               <sourceFileExclude>com/azure/cosmos/util/*BridgeInternal.java</sourceFileExclude>
+              <sourceFileExclude>com/azure/cosmos/encryption/*BridgeInternal.java</sourceFileExclude>
+              <sourceFileExclude>com/azure/cosmos/encryption/models/*BridgeInternal.java</sourceFileExclude>
               <sourceFileExclude>module-info.java</sourceFileExclude>
             </sourceFileExcludes>
             <links combine.children="append">
@@ -1001,50 +1009,6 @@
       </build>
     </profile>
 
-    <!-- Skip codesnippet injection unless -Dinject-codesnippets is passed as an argument.
-      This is specifically done to prevent requiring python as a pre-requisite since
-      this is only needed by the build system. This is also necessary due to limitations in consumption
-      from docs side.
-       -->
-    <profile>
-      <id>replace-codesnippet-references</id>
-      <activation>
-        <property>
-          <name>inject-codesnippets</name>
-        </property>
-        <file>
-          <exists>${basedir}/${relative.path.to.eng.folder}/eng/pipelines/scripts/inject_codesnippets.py</exists>
-        </file>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>1.2.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
-            <executions>
-              <execution>
-                <id>replace-codesnippet-references</id>
-                <phase>prepare-package</phase>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-                <configuration>
-                  <executable>python</executable>
-                  <workingDirectory>${project.basedir}</workingDirectory>
-                  <arguments>
-                    <argument>${project.basedir}/${relative.path.to.eng.folder}/eng/pipelines/scripts/inject_codesnippets.py</argument>
-                    <argument>--project-dir</argument>
-                    <argument>${project.basedir}</argument>
-                  </arguments>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
     <!-- Profiles for updating README file using embedme tool to inject code snippets from compilable Java source files.
      Activate the profile below to update README files when corresponding Java files are updated. -->
     <profile>
@@ -1311,7 +1275,7 @@
         </property>
       </activation>
       <properties>
-        <parallelizeTests>false</parallelizeTests>
+        <parallelizeTests>${parallelizeLiveTests}</parallelizeTests>
       </properties>
     </profile>
 
@@ -1324,7 +1288,7 @@
         </property>
       </activation>
       <properties>
-        <parallelizeTests>false</parallelizeTests>
+        <parallelizeTests>${parallelizeLiveTests}</parallelizeTests>
       </properties>
     </profile>
 
@@ -1337,7 +1301,7 @@
         </property>
       </activation>
       <properties>
-        <parallelizeTests>false</parallelizeTests>
+        <parallelizeTests>${parallelizeLiveTests}</parallelizeTests>
       </properties>
     </profile>
 
@@ -1350,7 +1314,7 @@
         </property>
       </activation>
       <properties>
-        <parallelizeTests>false</parallelizeTests>
+        <parallelizeTests>${parallelizeLiveTests}</parallelizeTests>
       </properties>
     </profile>
 

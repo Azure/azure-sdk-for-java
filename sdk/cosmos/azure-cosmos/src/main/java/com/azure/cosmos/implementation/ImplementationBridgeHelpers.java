@@ -62,7 +62,7 @@ public class ImplementationBridgeHelpers {
             accessor = newAccessor;
         }
 
-        static CosmosClientBuilderAccessor getCosmosClientBuilderAccessor() {
+        public static CosmosClientBuilderAccessor getCosmosClientBuilderAccessor() {
             if (accessor == null) {
                 throw new IllegalStateException("CosmosClientBuilder accessor is not initialized yet!");
             }
@@ -73,8 +73,12 @@ public class ImplementationBridgeHelpers {
         public interface CosmosClientBuilderAccessor {
             void setCosmosClientMetadataCachesSnapshot(CosmosClientBuilder builder,
                                                        CosmosClientMetadataCachesSnapshot metadataCache);
+
             CosmosClientMetadataCachesSnapshot getCosmosClientMetadataCachesSnapshot(CosmosClientBuilder builder);
 
+            void setCosmosClientApiType(CosmosClientBuilder builder, ApiType apiType);
+
+            ApiType getCosmosClientApiType(CosmosClientBuilder builder);
         }
     }
 
@@ -136,6 +140,8 @@ public class ImplementationBridgeHelpers {
             OperationContextAndListenerTuple getOperationContext(CosmosQueryRequestOptions queryRequestOptions);
             CosmosQueryRequestOptions setHeader(CosmosQueryRequestOptions queryRequestOptions, String name, String value);
             Map<String, String> getHeader(CosmosQueryRequestOptions queryRequestOptions);
+            boolean isQueryPlanRetrievalDisallowed(CosmosQueryRequestOptions queryRequestOptions);
+            CosmosQueryRequestOptions disallowQueryPlanRetrieval(CosmosQueryRequestOptions queryRequestOptions);
         }
     }
 
@@ -681,29 +687,6 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosBulkItemResponseAccessor {
             ObjectNode getResourceObject(CosmosBulkItemResponse cosmosBulkItemResponse);
-        }
-    }
-
-    public static final class DeprecatedCosmosBulkItemResponseHelper {
-        private static DeprecatedCosmosBulkItemResponseAccessor accessor;
-
-        private DeprecatedCosmosBulkItemResponseHelper() {
-        }
-
-        static {
-            ensureClassLoaded(com.azure.cosmos.CosmosBulkItemResponse.class);
-        }
-
-        public static DeprecatedCosmosBulkItemResponseAccessor getCosmosBulkItemResponseAccessor() {
-            return accessor;
-        }
-
-        public static void setCosmosBulkItemResponseAccessor(DeprecatedCosmosBulkItemResponseAccessor accessor) {
-            DeprecatedCosmosBulkItemResponseHelper.accessor = accessor;
-        }
-
-        public interface DeprecatedCosmosBulkItemResponseAccessor {
-            ObjectNode getResourceObject(com.azure.cosmos.CosmosBulkItemResponse cosmosBulkItemResponse);
         }
     }
 

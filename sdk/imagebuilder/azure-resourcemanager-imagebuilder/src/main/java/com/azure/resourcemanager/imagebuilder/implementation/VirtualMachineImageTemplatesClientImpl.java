@@ -565,7 +565,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return image template is an ARM resource managed by Microsoft.
+     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -622,7 +622,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return image template is an ARM resource managed by Microsoft.
+     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -675,9 +675,9 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return image template is an ARM resource managed by Microsoft.
+     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ImageTemplateInner>, ImageTemplateInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String imageTemplateName, ImageTemplateInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -685,7 +685,11 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
         return this
             .client
             .<ImageTemplateInner, ImageTemplateInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ImageTemplateInner.class, ImageTemplateInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                ImageTemplateInner.class,
+                ImageTemplateInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -698,9 +702,9 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return image template is an ARM resource managed by Microsoft.
+     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ImageTemplateInner>, ImageTemplateInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String imageTemplateName, ImageTemplateInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -721,9 +725,9 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return image template is an ARM resource managed by Microsoft.
+     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImageTemplateInner>, ImageTemplateInner> beginCreateOrUpdate(
         String resourceGroupName, String imageTemplateName, ImageTemplateInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, imageTemplateName, parameters).getSyncPoller();
@@ -739,9 +743,9 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return image template is an ARM resource managed by Microsoft.
+     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImageTemplateInner>, ImageTemplateInner> beginCreateOrUpdate(
         String resourceGroupName, String imageTemplateName, ImageTemplateInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, imageTemplateName, parameters, context).getSyncPoller();
@@ -756,7 +760,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return image template is an ARM resource managed by Microsoft.
+     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ImageTemplateInner> createOrUpdateAsync(
@@ -776,7 +780,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return image template is an ARM resource managed by Microsoft.
+     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ImageTemplateInner> createOrUpdateAsync(
@@ -795,7 +799,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return image template is an ARM resource managed by Microsoft.
+     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImageTemplateInner createOrUpdate(
@@ -813,7 +817,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return image template is an ARM resource managed by Microsoft.
+     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImageTemplateInner createOrUpdate(
@@ -830,7 +834,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return image template is an ARM resource managed by Microsoft.
+     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -887,7 +891,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return image template is an ARM resource managed by Microsoft.
+     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -940,9 +944,9 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return image template is an ARM resource managed by Microsoft.
+     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ImageTemplateInner>, ImageTemplateInner> beginUpdateAsync(
         String resourceGroupName, String imageTemplateName, ImageTemplateUpdateParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -950,7 +954,11 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
         return this
             .client
             .<ImageTemplateInner, ImageTemplateInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ImageTemplateInner.class, ImageTemplateInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                ImageTemplateInner.class,
+                ImageTemplateInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -963,9 +971,9 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return image template is an ARM resource managed by Microsoft.
+     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ImageTemplateInner>, ImageTemplateInner> beginUpdateAsync(
         String resourceGroupName, String imageTemplateName, ImageTemplateUpdateParameters parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -986,9 +994,9 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return image template is an ARM resource managed by Microsoft.
+     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImageTemplateInner>, ImageTemplateInner> beginUpdate(
         String resourceGroupName, String imageTemplateName, ImageTemplateUpdateParameters parameters) {
         return beginUpdateAsync(resourceGroupName, imageTemplateName, parameters).getSyncPoller();
@@ -1004,9 +1012,9 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return image template is an ARM resource managed by Microsoft.
+     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImageTemplateInner>, ImageTemplateInner> beginUpdate(
         String resourceGroupName, String imageTemplateName, ImageTemplateUpdateParameters parameters, Context context) {
         return beginUpdateAsync(resourceGroupName, imageTemplateName, parameters, context).getSyncPoller();
@@ -1021,7 +1029,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return image template is an ARM resource managed by Microsoft.
+     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ImageTemplateInner> updateAsync(
@@ -1041,7 +1049,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return image template is an ARM resource managed by Microsoft.
+     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ImageTemplateInner> updateAsync(
@@ -1060,7 +1068,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return image template is an ARM resource managed by Microsoft.
+     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImageTemplateInner update(
@@ -1078,7 +1086,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return image template is an ARM resource managed by Microsoft.
+     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImageTemplateInner update(
@@ -1343,12 +1351,13 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String imageTemplateName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, imageTemplateName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1362,7 +1371,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String imageTemplateName, Context context) {
         context = this.client.mergeContext(context);
@@ -1382,7 +1391,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String imageTemplateName) {
         return beginDeleteAsync(resourceGroupName, imageTemplateName).getSyncPoller();
     }
@@ -1398,7 +1407,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String imageTemplateName, Context context) {
         return beginDeleteAsync(resourceGroupName, imageTemplateName, context).getSyncPoller();
@@ -1573,12 +1582,13 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRunAsync(String resourceGroupName, String imageTemplateName) {
         Mono<Response<Flux<ByteBuffer>>> mono = runWithResponseAsync(resourceGroupName, imageTemplateName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1592,7 +1602,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRunAsync(
         String resourceGroupName, String imageTemplateName, Context context) {
         context = this.client.mergeContext(context);
@@ -1612,7 +1622,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRun(String resourceGroupName, String imageTemplateName) {
         return beginRunAsync(resourceGroupName, imageTemplateName).getSyncPoller();
     }
@@ -1628,7 +1638,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRun(
         String resourceGroupName, String imageTemplateName, Context context) {
         return beginRunAsync(resourceGroupName, imageTemplateName, context).getSyncPoller();
@@ -1804,12 +1814,13 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginCancelAsync(String resourceGroupName, String imageTemplateName) {
         Mono<Response<Flux<ByteBuffer>>> mono = cancelWithResponseAsync(resourceGroupName, imageTemplateName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1823,7 +1834,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginCancelAsync(
         String resourceGroupName, String imageTemplateName, Context context) {
         context = this.client.mergeContext(context);
@@ -1843,7 +1854,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String imageTemplateName) {
         return beginCancelAsync(resourceGroupName, imageTemplateName).getSyncPoller();
     }
@@ -1859,7 +1870,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCancel(
         String resourceGroupName, String imageTemplateName, Context context) {
         return beginCancelAsync(resourceGroupName, imageTemplateName, context).getSyncPoller();

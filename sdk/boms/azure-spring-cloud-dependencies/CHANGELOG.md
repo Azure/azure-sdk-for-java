@@ -1,6 +1,30 @@
 # Release History
 
-## 2.9.0-beta.1 (Unreleased)
+## 2.11.0 (2021-11-26)
+This release is compatible with Spring Boot 2.5.0 - 2.5.4 and Spring Cloud 2020.0.3.
+
+### Dependency Upgrades
+- Upgrade Azure SDK bom version to 1.0.6.
+- Upgrade Azure Spring versions to 2.11.0.
+- Upgrade Spring Cloud App Configuration version to 2.2.0.
+- Upgrade Spring Cloud App Configuration Feature Management version to 2.1.0.
+
+## 2.10.2 (2021-11-19)
+This release is compatible with Spring Boot 2.5.0 - 2.5.4.
+
+### Bugs Fixed
+Fix bug: the Spring Cloud Azure related dependencies in `azure-spring-cloud-dependencies:2.10.1` are not released.
+
+## 2.10.1 (2021-11-18)
+This release is compatible with Spring Boot 2.5.0 - 2.5.4.
+
+### Bugs Fixed
+Fix azure-sdk-bom's version error: It should be 1.0.5 instead of 1.0.4.
+
+## 2.10.0 (2021-11-03)
+This release is compatible with Spring Boot 2.5.0 - 2.5.4 and Spring Cloud 2020.0.3.
+
+## 2.9.0 (2021-09-26)
 This release is compatible with Spring Boot 2.5.0 - 2.5.4 and Spring Cloud 2020.0.3.
 ### Dependency Upgrades
 - Upgrade to [spring-boot-dependencies:2.5.4](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.4/spring-boot-dependencies-2.5.4.pom).

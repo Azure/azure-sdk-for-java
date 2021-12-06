@@ -180,7 +180,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
         if (ipConfigName == null) {
             return Mono.error(new IllegalArgumentException("Parameter ipConfigName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -235,7 +235,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
         if (ipConfigName == null) {
             return Mono.error(new IllegalArgumentException("Parameter ipConfigName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -352,7 +352,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -419,7 +419,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -460,7 +460,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
                 this.client.getHttpPipeline(),
                 HubIpConfigurationInner.class,
                 HubIpConfigurationInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -667,7 +667,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
         if (ipConfigName == null) {
             return Mono.error(new IllegalArgumentException("Parameter ipConfigName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -722,7 +722,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
         if (ipConfigName == null) {
             return Mono.error(new IllegalArgumentException("Parameter ipConfigName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -755,7 +755,8 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
             deleteWithResponseAsync(resourceGroupName, virtualHubName, ipConfigName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -917,7 +918,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -976,7 +977,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

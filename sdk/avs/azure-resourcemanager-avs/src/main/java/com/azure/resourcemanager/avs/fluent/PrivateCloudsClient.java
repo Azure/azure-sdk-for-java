@@ -103,7 +103,7 @@ public interface PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private cloud resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateCloudInner>, PrivateCloudInner> beginCreateOrUpdate(
         String resourceGroupName, String privateCloudName, PrivateCloudInner privateCloud);
 
@@ -119,7 +119,7 @@ public interface PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private cloud resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateCloudInner>, PrivateCloudInner> beginCreateOrUpdate(
         String resourceGroupName, String privateCloudName, PrivateCloudInner privateCloud, Context context);
 
@@ -164,7 +164,7 @@ public interface PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private cloud resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateCloudInner>, PrivateCloudInner> beginUpdate(
         String resourceGroupName, String privateCloudName, PrivateCloudUpdate privateCloudUpdate);
 
@@ -180,7 +180,7 @@ public interface PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private cloud resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateCloudInner>, PrivateCloudInner> beginUpdate(
         String resourceGroupName, String privateCloudName, PrivateCloudUpdate privateCloudUpdate, Context context);
 
@@ -224,7 +224,7 @@ public interface PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateCloudName);
 
     /**
@@ -238,7 +238,7 @@ public interface PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateCloudName, Context context);
 
     /**
@@ -276,7 +276,7 @@ public interface PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRotateVcenterPassword(String resourceGroupName, String privateCloudName);
 
     /**
@@ -290,7 +290,7 @@ public interface PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRotateVcenterPassword(
         String resourceGroupName, String privateCloudName, Context context);
 
@@ -329,7 +329,7 @@ public interface PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRotateNsxtPassword(String resourceGroupName, String privateCloudName);
 
     /**
@@ -343,7 +343,7 @@ public interface PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRotateNsxtPassword(
         String resourceGroupName, String privateCloudName, Context context);
 

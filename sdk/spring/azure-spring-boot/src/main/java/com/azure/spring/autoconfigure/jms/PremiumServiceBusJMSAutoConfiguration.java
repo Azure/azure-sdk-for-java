@@ -5,6 +5,7 @@ package com.azure.spring.autoconfigure.jms;
 
 import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactorySettings;
+import java.util.LinkedHashMap;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -29,20 +30,47 @@ import static com.azure.spring.utils.ApplicationId.AZURE_SPRING_SERVICE_BUS;
 @EnableConfigurationProperties(AzureServiceBusJMSProperties.class)
 public class PremiumServiceBusJMSAutoConfiguration extends AbstractServiceBusJMSAutoConfiguration {
 
+    /**
+     * Creates a new instance of {@link PremiumServiceBusJMSAutoConfiguration}.
+     *
+     * @param azureServiceBusJMSProperties the Azure ServiceBus JMS properties
+     */
     public PremiumServiceBusJMSAutoConfiguration(AzureServiceBusJMSProperties azureServiceBusJMSProperties) {
         super(azureServiceBusJMSProperties);
     }
 
+    /**
+     * Declare JMS ConnectionFactory bean.
+     *
+     * @return JMS ConnectionFactory bean
+     */
     @Bean
     @ConditionalOnMissingBean
     public ConnectionFactory jmsConnectionFactory() {
         String connectionString = azureServiceBusJMSProperties.getConnectionString();
         String clientId = azureServiceBusJMSProperties.getTopicClientId();
         int idleTimeout = azureServiceBusJMSProperties.getIdleTimeout();
+        int prefetchPolicyAll = azureServiceBusJMSProperties.getPrefetchPolicy().getAll();
+        int durableTopicPrefetch = azureServiceBusJMSProperties.getPrefetchPolicy().getDurableTopicPrefetch();
+        int queueBrowserPrefetch = azureServiceBusJMSProperties.getPrefetchPolicy().getQueueBrowserPrefetch();
+        int queuePrefetch = azureServiceBusJMSProperties.getPrefetchPolicy().getQueuePrefetch();
+        int topicPrefetch = azureServiceBusJMSProperties.getPrefetchPolicy().getTopicPrefetch();
 
         ServiceBusJmsConnectionFactorySettings settings =
-            new ServiceBusJmsConnectionFactorySettings(idleTimeout, false);
+            new ServiceBusJmsConnectionFactorySettings(new LinkedHashMap<>());
+        settings.setConnectionIdleTimeoutMS(idleTimeout);
+        settings.setTraceFrames(false);
         settings.setShouldReconnect(false);
+        settings.getConfigurationOptions()
+            .put("jms.prefetchPolicy.all", String.valueOf(prefetchPolicyAll));
+        settings.getConfigurationOptions()
+            .put("jms.prefetchPolicy.durableTopicPrefetch", String.valueOf(durableTopicPrefetch));
+        settings.getConfigurationOptions()
+            .put("jms.prefetchPolicy.queueBrowserPrefetch", String.valueOf(queueBrowserPrefetch));
+        settings.getConfigurationOptions()
+            .put("jms.prefetchPolicy.queuePrefetch", String.valueOf(queuePrefetch));
+        settings.getConfigurationOptions()
+            .put("jms.prefetchPolicy.topicPrefetch", String.valueOf(topicPrefetch));
         SpringServiceBusJmsConnectionFactory springServiceBusJmsConnectionFactory =
             new SpringServiceBusJmsConnectionFactory(connectionString, settings);
         springServiceBusJmsConnectionFactory.setClientId(clientId);

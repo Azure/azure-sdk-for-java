@@ -280,4 +280,8 @@ public class GlobalEndpointManager implements AutoCloseable {
     public boolean isClosed() {
         return this.isClosed;
     }
+
+    public String getRegionName(URI locationEndpoint, OperationType operationType) {
+        return this.locationCache.getRegionName(locationEndpoint, operationType);
+    }
 }

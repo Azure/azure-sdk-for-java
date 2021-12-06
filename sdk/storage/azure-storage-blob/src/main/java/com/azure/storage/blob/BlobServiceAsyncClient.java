@@ -141,7 +141,11 @@ public final class BlobServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.getBlobContainerAsyncClient#String}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.getBlobContainerAsyncClient#String -->
+     * <pre>
+     * BlobContainerAsyncClient blobContainerAsyncClient = client.getBlobContainerAsyncClient&#40;&quot;containerName&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.getBlobContainerAsyncClient#String -->
      *
      * @param containerName The name of the container to point to. A value of null or empty string will be interpreted
      *                      as pointing to the root container and will be replaced by "$root".
@@ -181,7 +185,12 @@ public final class BlobServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainer#String}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainer#String -->
+     * <pre>
+     * BlobContainerAsyncClient blobContainerAsyncClient =
+     *     client.createBlobContainer&#40;&quot;containerName&quot;&#41;.block&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainer#String -->
      *
      * @param containerName Name of the container to create
      * @return A {@link Mono} containing a {@link BlobContainerAsyncClient} used to interact with the container created.
@@ -202,7 +211,14 @@ public final class BlobServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerWithResponse#String-Map-PublicAccessType}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerWithResponse#String-Map-PublicAccessType -->
+     * <pre>
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     *
+     * BlobContainerAsyncClient containerClient = client
+     *     .createBlobContainerWithResponse&#40;&quot;containerName&quot;, metadata, PublicAccessType.CONTAINER&#41;.block&#40;&#41;.getValue&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerWithResponse#String-Map-PublicAccessType -->
      *
      * @param containerName Name of the container to create
      * @param metadata Metadata to associate with the container. If there is leading or trailing whitespace in any
@@ -238,7 +254,13 @@ public final class BlobServiceAsyncClient {
      * Docs</a>.
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainer#String}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainer#String -->
+     * <pre>
+     * client.deleteBlobContainer&#40;&quot;containerName&quot;&#41;.subscribe&#40;
+     *     response -&gt; System.out.printf&#40;&quot;Delete container completed%n&quot;&#41;,
+     *     error -&gt; System.out.printf&#40;&quot;Delete container failed: %s%n&quot;, error&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainer#String -->
      *
      * @param containerName Name of the container to delete
      * @return A {@link Mono} containing containing status code and HTTP headers
@@ -259,7 +281,13 @@ public final class BlobServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerWithResponse#String-Context}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerWithResponse#String-Context -->
+     * <pre>
+     * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
+     * client.deleteBlobContainerWithResponse&#40;&quot;containerName&quot;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Delete container completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerWithResponse#String-Context -->
      *
      * @param containerName Name of the container to delete
      * @return A {@link Mono} containing containing status code and HTTP headers
@@ -293,7 +321,11 @@ public final class BlobServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.listBlobContainers}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.listBlobContainers -->
+     * <pre>
+     * client.listBlobContainers&#40;&#41;.subscribe&#40;container -&gt; System.out.printf&#40;&quot;Name: %s%n&quot;, container.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.listBlobContainers -->
      *
      * @return A reactive response emitting the list of containers.
      */
@@ -312,7 +344,15 @@ public final class BlobServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.listBlobContainers#ListBlobContainersOptions}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.listBlobContainers#ListBlobContainersOptions -->
+     * <pre>
+     * ListBlobContainersOptions options = new ListBlobContainersOptions&#40;&#41;
+     *     .setPrefix&#40;&quot;containerNamePrefixToMatch&quot;&#41;
+     *     .setDetails&#40;new BlobContainerListDetails&#40;&#41;.setRetrieveMetadata&#40;true&#41;&#41;;
+     *
+     * client.listBlobContainers&#40;options&#41;.subscribe&#40;container -&gt; System.out.printf&#40;&quot;Name: %s%n&quot;, container.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.listBlobContainers#ListBlobContainersOptions -->
      *
      * @param options A {@link ListBlobContainersOptions} which specifies what data should be returned by the service.
      * @return A reactive response emitting the list of containers.
@@ -367,7 +407,11 @@ public final class BlobServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.findBlobsByTag#String}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.findBlobsByTag#String -->
+     * <pre>
+     * client.findBlobsByTags&#40;&quot;where=tag=value&quot;&#41;.subscribe&#40;blob -&gt; System.out.printf&#40;&quot;Name: %s%n&quot;, blob.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.findBlobsByTag#String -->
      *
      * @param query Filters the results to return only blobs whose tags match the specified expression.
      * @return A reactive response emitting the list of blobs.
@@ -383,7 +427,12 @@ public final class BlobServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncServiceClient.findBlobsByTag#FindBlobsOptions}
+     * <!-- src_embed com.azure.storage.blob.BlobAsyncServiceClient.findBlobsByTag#FindBlobsOptions -->
+     * <pre>
+     * client.findBlobsByTags&#40;new FindBlobsOptions&#40;&quot;where=tag=value&quot;&#41;.setMaxResultsPerPage&#40;10&#41;&#41;
+     *     .subscribe&#40;blob -&gt; System.out.printf&#40;&quot;Name: %s%n&quot;, blob.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobAsyncServiceClient.findBlobsByTag#FindBlobsOptions -->
      *
      * @param options {@link FindBlobsOptions}
      * @return A reactive response emitting the list of blobs.
@@ -458,7 +507,9 @@ public final class BlobServiceAsyncClient {
      */
     private List<ListBlobContainersIncludeType> toIncludeTypes(BlobContainerListDetails blobContainerListDetails) {
         boolean hasDetails = blobContainerListDetails != null
-            && (blobContainerListDetails.getRetrieveMetadata() || blobContainerListDetails.getRetrieveDeleted());
+            && (blobContainerListDetails.getRetrieveMetadata()
+            || blobContainerListDetails.getRetrieveDeleted()
+            || blobContainerListDetails.getRetrieveSystemContainers());
         if (hasDetails) {
             List<ListBlobContainersIncludeType> flags = new ArrayList<>(2);
             if (blobContainerListDetails.getRetrieveDeleted()) {
@@ -466,6 +517,9 @@ public final class BlobServiceAsyncClient {
             }
             if (blobContainerListDetails.getRetrieveMetadata()) {
                 flags.add(ListBlobContainersIncludeType.METADATA);
+            }
+            if (blobContainerListDetails.getRetrieveSystemContainers()) {
+                flags.add(ListBlobContainersIncludeType.SYSTEM);
             }
             return flags;
         } else {
@@ -479,7 +533,14 @@ public final class BlobServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.getProperties}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.getProperties -->
+     * <pre>
+     * client.getProperties&#40;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Hour metrics enabled: %b, Minute metrics enabled: %b%n&quot;,
+     *         response.getHourMetrics&#40;&#41;.isEnabled&#40;&#41;,
+     *         response.getMinuteMetrics&#40;&#41;.isEnabled&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.getProperties -->
      *
      * @return A reactive response containing the storage account properties.
      */
@@ -498,7 +559,14 @@ public final class BlobServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.getPropertiesWithResponse}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.getPropertiesWithResponse -->
+     * <pre>
+     * client.getPropertiesWithResponse&#40;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Hour metrics enabled: %b, Minute metrics enabled: %b%n&quot;,
+     *         response.getValue&#40;&#41;.getHourMetrics&#40;&#41;.isEnabled&#40;&#41;,
+     *         response.getValue&#40;&#41;.getMinuteMetrics&#40;&#41;.isEnabled&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.getPropertiesWithResponse -->
      *
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the storage
      * account properties.
@@ -530,7 +598,28 @@ public final class BlobServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.setProperties#BlobServiceProperties}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.setProperties#BlobServiceProperties -->
+     * <pre>
+     * BlobRetentionPolicy loggingRetentionPolicy = new BlobRetentionPolicy&#40;&#41;.setEnabled&#40;true&#41;.setDays&#40;3&#41;;
+     * BlobRetentionPolicy metricsRetentionPolicy = new BlobRetentionPolicy&#40;&#41;.setEnabled&#40;true&#41;.setDays&#40;1&#41;;
+     *
+     * BlobServiceProperties properties = new BlobServiceProperties&#40;&#41;
+     *     .setLogging&#40;new BlobAnalyticsLogging&#40;&#41;
+     *         .setWrite&#40;true&#41;
+     *         .setDelete&#40;true&#41;
+     *         .setRetentionPolicy&#40;loggingRetentionPolicy&#41;&#41;
+     *     .setHourMetrics&#40;new BlobMetrics&#40;&#41;
+     *         .setEnabled&#40;true&#41;
+     *         .setRetentionPolicy&#40;metricsRetentionPolicy&#41;&#41;
+     *     .setMinuteMetrics&#40;new BlobMetrics&#40;&#41;
+     *         .setEnabled&#40;true&#41;
+     *         .setRetentionPolicy&#40;metricsRetentionPolicy&#41;&#41;;
+     *
+     * client.setProperties&#40;properties&#41;.subscribe&#40;
+     *     response -&gt; System.out.printf&#40;&quot;Setting properties completed%n&quot;&#41;,
+     *     error -&gt; System.out.printf&#40;&quot;Setting properties failed: %s%n&quot;, error&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.setProperties#BlobServiceProperties -->
      *
      * @param properties Configures the service.
      * @return A {@link Mono} containing the storage account properties.
@@ -553,7 +642,27 @@ public final class BlobServiceAsyncClient {
      * If CORS policies are set, CORS parameters that are not set default to the empty string.</p>
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.setPropertiesWithResponse#BlobServiceProperties}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.setPropertiesWithResponse#BlobServiceProperties -->
+     * <pre>
+     * BlobRetentionPolicy loggingRetentionPolicy = new BlobRetentionPolicy&#40;&#41;.setEnabled&#40;true&#41;.setDays&#40;3&#41;;
+     * BlobRetentionPolicy metricsRetentionPolicy = new BlobRetentionPolicy&#40;&#41;.setEnabled&#40;true&#41;.setDays&#40;1&#41;;
+     *
+     * BlobServiceProperties properties = new BlobServiceProperties&#40;&#41;
+     *     .setLogging&#40;new BlobAnalyticsLogging&#40;&#41;
+     *         .setWrite&#40;true&#41;
+     *         .setDelete&#40;true&#41;
+     *         .setRetentionPolicy&#40;loggingRetentionPolicy&#41;&#41;
+     *     .setHourMetrics&#40;new BlobMetrics&#40;&#41;
+     *         .setEnabled&#40;true&#41;
+     *         .setRetentionPolicy&#40;metricsRetentionPolicy&#41;&#41;
+     *     .setMinuteMetrics&#40;new BlobMetrics&#40;&#41;
+     *         .setEnabled&#40;true&#41;
+     *         .setRetentionPolicy&#40;metricsRetentionPolicy&#41;&#41;;
+     *
+     * client.setPropertiesWithResponse&#40;properties&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Setting properties completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.setPropertiesWithResponse#BlobServiceProperties -->
      *
      * @param properties Configures the service.
      * @return A {@link Mono} containing the storage account properties.
@@ -670,7 +779,12 @@ public final class BlobServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.getUserDelegationKey#OffsetDateTime-OffsetDateTime}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.getUserDelegationKey#OffsetDateTime-OffsetDateTime -->
+     * <pre>
+     * client.getUserDelegationKey&#40;delegationKeyStartTime, delegationKeyExpiryTime&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;User delegation key: %s%n&quot;, response.getValue&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.getUserDelegationKey#OffsetDateTime-OffsetDateTime -->
      *
      * @param start Start time for the key's validity. Null indicates immediate start.
      * @param expiry Expiration of the key's validity.
@@ -694,7 +808,12 @@ public final class BlobServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.getUserDelegationKeyWithResponse#OffsetDateTime-OffsetDateTime}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.getUserDelegationKeyWithResponse#OffsetDateTime-OffsetDateTime -->
+     * <pre>
+     * client.getUserDelegationKeyWithResponse&#40;delegationKeyStartTime, delegationKeyExpiryTime&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;User delegation key: %s%n&quot;, response.getValue&#40;&#41;.getValue&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.getUserDelegationKeyWithResponse#OffsetDateTime-OffsetDateTime -->
      *
      * @param start Start time for the key's validity. Null indicates immediate start.
      * @param expiry Expiration of the key's validity.
@@ -739,7 +858,12 @@ public final class BlobServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.getStatistics}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.getStatistics -->
+     * <pre>
+     * client.getStatistics&#40;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Geo-replication status: %s%n&quot;, response.getGeoReplication&#40;&#41;.getStatus&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.getStatistics -->
      *
      * @return A {@link Mono} containing the storage account statistics.
      */
@@ -760,7 +884,12 @@ public final class BlobServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.getStatisticsWithResponse}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.getStatisticsWithResponse -->
+     * <pre>
+     * client.getStatisticsWithResponse&#40;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Geo-replication status: %s%n&quot;, response.getValue&#40;&#41;.getGeoReplication&#40;&#41;.getStatus&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.getStatisticsWithResponse -->
      *
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} containing the
      * storage account statistics.
@@ -788,7 +917,12 @@ public final class BlobServiceAsyncClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-account-information">Azure Docs</a>.
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.getAccountInfo}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.getAccountInfo -->
+     * <pre>
+     * client.getAccountInfo&#40;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Account kind: %s, SKU: %s%n&quot;, response.getAccountKind&#40;&#41;, response.getSkuName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.getAccountInfo -->
      *
      * @return A {@link Mono} containing containing the storage account info.
      */
@@ -807,7 +941,13 @@ public final class BlobServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.getAccountInfoWithResponse}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.getAccountInfoWithResponse -->
+     * <pre>
+     * client.getAccountInfoWithResponse&#40;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Account kind: %s, SKU: %s%n&quot;, response.getValue&#40;&#41;.getAccountKind&#40;&#41;,
+     *         response.getValue&#40;&#41;.getSkuName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.getAccountInfoWithResponse -->
      *
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} the storage account
      * info.
@@ -846,7 +986,22 @@ public final class BlobServiceAsyncClient {
      *
      * <p>The snippet below generates a SAS that lasts for two days and gives the user read and list access to blob
      * containers and file shares.</p>
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.generateAccountSas#AccountSasSignatureValues}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.generateAccountSas#AccountSasSignatureValues -->
+     * <pre>
+     * AccountSasPermission permissions = new AccountSasPermission&#40;&#41;
+     *     .setListPermission&#40;true&#41;
+     *     .setReadPermission&#40;true&#41;;
+     * AccountSasResourceType resourceTypes = new AccountSasResourceType&#40;&#41;.setContainer&#40;true&#41;;
+     * AccountSasService services = new AccountSasService&#40;&#41;.setBlobAccess&#40;true&#41;.setFileAccess&#40;true&#41;;
+     * OffsetDateTime expiryTime = OffsetDateTime.now&#40;&#41;.plus&#40;Duration.ofDays&#40;2&#41;&#41;;
+     *
+     * AccountSasSignatureValues sasValues =
+     *     new AccountSasSignatureValues&#40;expiryTime, permissions, services, resourceTypes&#41;;
+     *
+     * &#47;&#47; Client must be authenticated via StorageSharedKeyCredential
+     * String sas = client.generateAccountSas&#40;sasValues&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.generateAccountSas#AccountSasSignatureValues -->
      *
      * @param accountSasSignatureValues {@link AccountSasSignatureValues}
      *
@@ -863,7 +1018,22 @@ public final class BlobServiceAsyncClient {
      *
      * <p>The snippet below generates a SAS that lasts for two days and gives the user read and list access to blob
      * containers and file shares.</p>
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.generateAccountSas#AccountSasSignatureValues-Context}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.generateAccountSas#AccountSasSignatureValues-Context -->
+     * <pre>
+     * AccountSasPermission permissions = new AccountSasPermission&#40;&#41;
+     *     .setListPermission&#40;true&#41;
+     *     .setReadPermission&#40;true&#41;;
+     * AccountSasResourceType resourceTypes = new AccountSasResourceType&#40;&#41;.setContainer&#40;true&#41;;
+     * AccountSasService services = new AccountSasService&#40;&#41;.setBlobAccess&#40;true&#41;.setFileAccess&#40;true&#41;;
+     * OffsetDateTime expiryTime = OffsetDateTime.now&#40;&#41;.plus&#40;Duration.ofDays&#40;2&#41;&#41;;
+     *
+     * AccountSasSignatureValues sasValues =
+     *     new AccountSasSignatureValues&#40;expiryTime, permissions, services, resourceTypes&#41;;
+     *
+     * &#47;&#47; Client must be authenticated via StorageSharedKeyCredential
+     * String sas = client.generateAccountSas&#40;sasValues, new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.generateAccountSas#AccountSasSignatureValues-Context -->
      *
      * @param accountSasSignatureValues {@link AccountSasSignatureValues}
      * @param context Additional context that is passed through the code when generating a SAS.
@@ -896,7 +1066,19 @@ public final class BlobServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.undeleteBlobContainer#String-String}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.undeleteBlobContainer#String-String -->
+     * <pre>
+     * ListBlobContainersOptions listBlobContainersOptions = new ListBlobContainersOptions&#40;&#41;;
+     * listBlobContainersOptions.getDetails&#40;&#41;.setRetrieveDeleted&#40;true&#41;;
+     * client.listBlobContainers&#40;listBlobContainersOptions&#41;.flatMap&#40;
+     *     deletedContainer -&gt; &#123;
+     *         Mono&lt;BlobContainerAsyncClient&gt; blobContainerClient = client.undeleteBlobContainer&#40;
+     *             deletedContainer.getName&#40;&#41;, deletedContainer.getVersion&#40;&#41;&#41;;
+     *         return blobContainerClient;
+     *     &#125;
+     * &#41;.then&#40;&#41;.block&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.undeleteBlobContainer#String-String -->
      *
      * @param deletedContainerName The name of the previously deleted container.
      * @param deletedContainerVersion The version of the previously deleted container.
@@ -922,7 +1104,20 @@ public final class BlobServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.undeleteBlobContainerWithResponse#UndeleteBlobContainerOptions}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.undeleteBlobContainerWithResponse#UndeleteBlobContainerOptions -->
+     * <pre>
+     * ListBlobContainersOptions listBlobContainersOptions = new ListBlobContainersOptions&#40;&#41;;
+     * listBlobContainersOptions.getDetails&#40;&#41;.setRetrieveDeleted&#40;true&#41;;
+     * client.listBlobContainers&#40;listBlobContainersOptions&#41;.flatMap&#40;
+     *     deletedContainer -&gt; &#123;
+     *         Mono&lt;BlobContainerAsyncClient&gt; blobContainerClient = client.undeleteBlobContainerWithResponse&#40;
+     *             new UndeleteBlobContainerOptions&#40;deletedContainer.getName&#40;&#41;, deletedContainer.getVersion&#40;&#41;&#41;&#41;
+     *             .map&#40;Response::getValue&#41;;
+     *         return blobContainerClient;
+     *     &#125;
+     * &#41;.then&#40;&#41;.block&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.undeleteBlobContainerWithResponse#UndeleteBlobContainerOptions -->
      *
      * @param options {@link UndeleteBlobContainerOptions}.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
@@ -958,7 +1153,8 @@ public final class BlobServiceAsyncClient {
 //     *
 //     * <p><strong>Code Samples</strong></p>
 //     *
-//     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.renameBlobContainer#String-String}
+//     * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.renameBlobContainer#String-String -->
+//     * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.renameBlobContainer#String-String -->
 //     *
 //     * @param sourceContainerName The current name of the container.
 //     * @param destinationContainerName The new name of the container.
@@ -976,7 +1172,8 @@ public final class BlobServiceAsyncClient {
 //     *
 //     * <p><strong>Code Samples</strong></p>
 //     *
-//     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.renameBlobContainerWithResponse#String-BlobContainerRenameOptions}
+//     * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.renameBlobContainerWithResponse#String-BlobContainerRenameOptions -->
+//     * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.renameBlobContainerWithResponse#String-BlobContainerRenameOptions -->
 //     *
 //     * @param sourceContainerName The current name of the container.
 //     * @param options {@link BlobContainerRenameOptions}

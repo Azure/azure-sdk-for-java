@@ -1,6 +1,6 @@
 # Release History
 
-## 7.5.0-beta.1 (Unreleased)
+## 7.6.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -10,12 +10,17 @@
 
 ### Other Changes
 
-## 7.4.2 (2021-10-15)
-
-### Other Changes
+## 7.5.0 (2021-11-16)
+### Features Added
+- Moved to service API version `2021-05`
+- Added support for specifying the `MaxMessageSizeInKilobytes` for entities in Premium namespaces.
 
 #### Dependency Updates
+- Upgraded `azure-core` from `1.21.0` to `1.22.0`.
+- Upgraded `azure-core-amqp` from `2.3.3` to `2.3.4`.
 
+## 7.4.2 (2021-10-15)
+#### Dependency Updates
 - Upgraded `azure-core` from `1.20.0` to `1.21.0`.
 - Upgraded `azure-core-amqp` from `2.3.2` to `2.3.3`.
 

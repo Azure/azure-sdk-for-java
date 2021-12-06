@@ -38,11 +38,11 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import com.azure.resourcemanager.servicebus.fluent.NamespacesClient;
+import com.azure.resourcemanager.servicebus.fluent.models.AccessKeysInner;
 import com.azure.resourcemanager.servicebus.fluent.models.CheckNameAvailabilityResultInner;
 import com.azure.resourcemanager.servicebus.fluent.models.NetworkRuleSetInner;
 import com.azure.resourcemanager.servicebus.fluent.models.SBAuthorizationRuleInner;
 import com.azure.resourcemanager.servicebus.fluent.models.SBNamespaceInner;
-import com.azure.resourcemanager.servicebus.fluent.models.AccessKeysInner;
 import com.azure.resourcemanager.servicebus.models.AccessRights;
 import com.azure.resourcemanager.servicebus.models.CheckNameAvailability;
 import com.azure.resourcemanager.servicebus.models.NameSpaceType;
@@ -2213,7 +2213,11 @@ public final class NamespacesClientImpl
         return this
             .client
             .<SBNamespaceInner, SBNamespaceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SBNamespaceInner.class, SBNamespaceInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                SBNamespaceInner.class,
+                SBNamespaceInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -2464,7 +2468,8 @@ public final class NamespacesClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, namespaceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

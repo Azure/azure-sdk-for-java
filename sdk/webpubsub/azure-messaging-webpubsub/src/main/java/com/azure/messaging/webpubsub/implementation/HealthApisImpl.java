@@ -4,6 +4,7 @@
 
 package com.azure.messaging.webpubsub.implementation;
 
+import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Head;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -25,27 +26,28 @@ public final class HealthApisImpl {
     private final HealthApisService service;
 
     /** The service client containing this operation class. */
-    private final AzureWebPubSubServiceRestAPIImpl client;
+    private final AzureWebPubSubServiceRestApiImpl client;
 
     /**
      * Initializes an instance of HealthApisImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    HealthApisImpl(AzureWebPubSubServiceRestAPIImpl client) {
+    HealthApisImpl(AzureWebPubSubServiceRestApiImpl client) {
         this.service =
                 RestProxy.create(HealthApisService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureWebPubSubServiceRestAPIHealthApis to be used by the proxy
+     * The interface defining all the services for AzureWebPubSubServiceRestApiHealthApis to be used by the proxy
      * service to perform REST calls.
      */
     @Host("{Endpoint}")
     @ServiceInterface(name = "AzureWebPubSubServic")
     public interface HealthApisService {
         @Head("/api/health")
+        @ExpectedResponses({200})
         Mono<Response<Void>> getServiceStatus(
                 @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
@@ -65,8 +67,7 @@ public final class HealthApisImpl {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return service health status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -93,8 +94,7 @@ public final class HealthApisImpl {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return service health status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -115,13 +115,11 @@ public final class HealthApisImpl {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return service health status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getServiceStatusWithResponse(RequestOptions requestOptions, Context context) {
-        return getServiceStatusWithResponseAsync(requestOptions, context).block();
+    public Response<Void> getServiceStatusWithResponse(RequestOptions requestOptions) {
+        return getServiceStatusWithResponseAsync(requestOptions).block();
     }
 }
