@@ -41,11 +41,16 @@ jobs:
 
       - template: /eng/common/pipelines/templates/steps/daily-dev-build-variable.yml
 
-      - script: |
-          pip install setuptools wheel
-          pip install doc-warden==$(DocWardenVersion)
-          ward scan -d $(Build.SourcesDirectory) -c $(Build.SourcesDirectory)/eng/.docsettings.yml
+      - task: PowerShell@2
         displayName: 'Verify Readmes'
+        inputs:
+          pwsh: true
+          workingDirectory: $(Agent.BuildDirectory)
+          filePath: eng/common/scripts/Verify-Readme.ps1
+          arguments: >
+            -DocWardenVersion $(DocWardenVersion)
+            -ScanPath ${{ parameters.ServiceDirectory }}
+            -SettingsPath $(Build.SourcesDirectory)/eng/.docsettings.yml
 
       - template: ../steps/cache-maven-repository.yml
         parameters:

@@ -661,7 +661,7 @@ public final class RunsClientImpl implements RunsClient {
         return this
             .client
             .<RunInner, RunInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RunInner.class, RunInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), RunInner.class, RunInner.class, this.client.getContext());
     }
 
     /**
@@ -1118,7 +1118,8 @@ public final class RunsClientImpl implements RunsClient {
         Mono<Response<Flux<ByteBuffer>>> mono = cancelWithResponseAsync(resourceGroupName, registryName, runId);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

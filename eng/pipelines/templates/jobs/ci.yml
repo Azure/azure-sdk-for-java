@@ -34,7 +34,7 @@ parameters:
   - name: PreBuildSteps
     type: object
     default: []
-    
+
 jobs:
   - job: 'Build'
 
@@ -245,11 +245,16 @@ jobs:
           ServiceDirectory: "template"
           TestPipeline: ${{ parameters.TestPipeline }}
 
-      - script: |
-          pip install setuptools wheel
-          pip install doc-warden==$(DocWardenVersion)
-          ward scan -d $(Build.SourcesDirectory) -c $(Build.SourcesDirectory)/eng/.docsettings.yml
+      - task: PowerShell@2
         displayName: 'Verify Readmes'
+        inputs:
+          pwsh: true
+          workingDirectory: $(Agent.BuildDirectory)
+          filePath: eng/common/scripts/Verify-Readme.ps1
+          arguments: >
+            -DocWardenVersion $(DocWardenVersion)
+            -ScanPath ${{ parameters.ServiceDirectory }}
+            -SettingsPath $(Build.SourcesDirectory)/eng/.docsettings.yml
 
       - template: /eng/common/pipelines/templates/steps/verify-links.yml
         parameters:

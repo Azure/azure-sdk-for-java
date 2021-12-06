@@ -471,8 +471,31 @@ public interface VirtualMachineScaleSet
         interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithSku> {
         }
 
+        /**
+         * The stage of a virtual machine scale set definition allowing to specify orchestration mode for the virtual machine scale set.
+         *
+         */
+        interface WithOrchestrationMode {
+            /**
+             * Specifies the virtual machine scale set's orchestration mode to be Flexible and fault domain count to default 1.
+             * Virtual machine scale sets with Flexible orchestration allows you to combine the scalability of virtual
+             * machine scale sets in Uniform orchestration mode with the regional availability guarantees of availability sets.
+             * @return The next stage of the definition
+             */
+            DefinitionShared withFlexibleOrchestrationMode();
+
+            /**
+             * Specifies the virtual machine scale set's orchestration mode to be Flexible.
+             * Virtual machine scale sets with Flexible orchestration allows you to combine the scalability of virtual
+             * machine scale sets in Uniform orchestration mode with the regional availability guarantees of availability sets.
+             * @param faultDomainCount By default, when you add a VM to a Flexible scale set, Azure evenly spreads instances across fault domains.
+             * @return The next stage of the definition
+             */
+            DefinitionShared withFlexibleOrchestrationMode(int faultDomainCount);
+        }
+
         /** The stage of a virtual machine scale set definition allowing to specify SKU for the virtual machines. */
-        interface WithSku {
+        interface WithSku extends WithOrchestrationMode {
             /**
              * Specifies the SKU for the virtual machines in the scale set.
              *
@@ -547,6 +570,7 @@ public interface VirtualMachineScaleSet
              */
             WithNetworkSubnet withAdditionalCapabilities(AdditionalCapabilities additionalCapabilities);
         }
+
 
         /**
          * The stage of a virtual machine scale set definition allowing to specify the virtual network subnet for the

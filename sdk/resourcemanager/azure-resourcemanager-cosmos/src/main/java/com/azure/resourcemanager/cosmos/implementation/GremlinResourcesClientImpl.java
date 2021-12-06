@@ -1141,7 +1141,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
             deleteGremlinDatabaseWithResponseAsync(resourceGroupName, accountName, databaseName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -3213,7 +3214,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
             deleteGremlinGraphWithResponseAsync(resourceGroupName, accountName, databaseName, graphName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
