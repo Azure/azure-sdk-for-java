@@ -11,4 +11,9 @@ module com.azure.resourcemanager {
     requires transitive com.azure.resourcemanager.monitor;
 
     exports com.azure.resourcemanager;
+
+    // open packages specifically for azure core and jackson
+    opens com.azure.resourcemanager to
+        com.azure.core,
+        com.fasterxml.jackson.databind;
 }

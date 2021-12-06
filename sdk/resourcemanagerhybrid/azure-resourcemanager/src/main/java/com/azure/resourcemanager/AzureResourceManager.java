@@ -4,8 +4,15 @@
 package com.azure.resourcemanager;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrders;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificates;
@@ -99,6 +106,10 @@ import com.azure.resourcemanager.storage.models.StorageAccounts;
 import com.azure.resourcemanager.storage.models.StorageSkus;
 import com.azure.resourcemanager.storage.models.Usages;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /** The entry point for accessing resource management APIs in Azure. */
@@ -311,6 +322,57 @@ public final class AzureResourceManager {
             return new AzureResourceManager(
                 httpPipeline, new AzureProfile(tenantId, subscriptionId, environment), this);
         }
+    }
+
+    /**
+     * Gets AzureEnvironment from ARM endpoint.
+     *
+     * @param armEndpoint the URL of ARM endpoint.
+     * @param httpClient the HTTP client for requests.
+     * @return the AzureEnvironment
+     */
+    public static AzureEnvironment getAzureEnvironmentFromArmEndpoint(String armEndpoint, HttpClient httpClient) {
+        HttpRequest request = new HttpRequest(HttpMethod.GET,
+            String.format("%s/metadata/endpoints?api-version=1.0", armEndpoint))
+            .setHeader("accept", "application/json");
+
+        HttpResponse response = httpClient.send(request).block();
+        if (response.getStatusCode() != 200) {
+            throw new HttpResponseException("Failed : HTTP error code : " + response.getStatusCode(), response);
+        }
+        String body = response.getBodyAsString().block();
+        try {
+            ArmMetadata metadata = JacksonAdapter.createDefaultSerializerAdapter()
+                .deserialize(body, ArmMetadata.class, SerializerEncoding.JSON);
+
+            AzureEnvironment azureEnvironment = new AzureEnvironment(new HashMap<>() {
+                private static final long serialVersionUID = 1L;
+                {
+                    put("managementEndpointUrl", metadata.authentication.audiences.get(0));
+                    put("resourceManagerEndpointUrl", armEndpoint);
+                    put("galleryEndpointUrl", metadata.galleryEndpoint);
+                    put("activeDirectoryEndpointUrl", metadata.authentication.loginEndpoint);
+                    put("activeDirectoryResourceId", metadata.authentication.audiences.get(0));
+                    put("activeDirectoryGraphResourceId", metadata.graphEndpoint);
+                    put("storageEndpointSuffix", armEndpoint.substring(armEndpoint.indexOf('.')));
+                    put("keyVaultDnsSuffix", ".vault" + armEndpoint.substring(armEndpoint.indexOf('.')));
+                }
+            });
+            return azureEnvironment;
+        } catch (IOException e) {
+            throw new HttpResponseException("Failed to parse metadata : " + body, response);
+        }
+    }
+
+    private static class ArmMetadata {
+        private String galleryEndpoint;
+        private String graphEndpoint;
+        private ArmMetadataAuthentication authentication;
+    }
+
+    private static class ArmMetadataAuthentication {
+        private String loginEndpoint;
+        private List<String> audiences;
     }
 
     private AzureResourceManager(HttpPipeline httpPipeline, AzureProfile profile) {
