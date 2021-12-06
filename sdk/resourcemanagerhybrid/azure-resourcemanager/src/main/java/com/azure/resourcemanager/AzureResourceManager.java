@@ -345,7 +345,7 @@ public final class AzureResourceManager {
             ArmMetadata metadata = JacksonAdapter.createDefaultSerializerAdapter()
                 .deserialize(body, ArmMetadata.class, SerializerEncoding.JSON);
 
-            AzureEnvironment azureEnvironment = new AzureEnvironment(new HashMap<>() {
+            AzureEnvironment azureEnvironment = new AzureEnvironment(new HashMap<String, String>() {
                 private static final long serialVersionUID = 1L;
                 {
                     put("managementEndpointUrl", metadata.authentication.audiences.get(0));
