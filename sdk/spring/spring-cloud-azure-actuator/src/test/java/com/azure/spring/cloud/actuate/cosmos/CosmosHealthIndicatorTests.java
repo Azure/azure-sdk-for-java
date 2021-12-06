@@ -41,7 +41,7 @@ class CosmosHealthIndicatorTests {
     }
 
     @Test
-    void storageBlobIsDownWhenReadReturnNull() {
+    void cosmosIsDownWhenReadReturnNull() {
         CosmosAsyncClient mockAsyncClient = mock(CosmosAsyncClient.class);
         ResourceResponse<Database> response = mock(ResourceResponse.class);
         CosmosAsyncDatabase databaseResponse = mock(CosmosAsyncDatabase.class);
@@ -55,7 +55,7 @@ class CosmosHealthIndicatorTests {
     }
 
     @Test
-    void storageBlobIsDownWhenReadException() {
+    void cosmosIsDownWhenReadException() {
         CosmosAsyncClient mockAsyncClient = mock(CosmosAsyncClient.class);
         ResourceResponse<Database> response = mock(ResourceResponse.class);
         CosmosAsyncDatabase databaseResponse = mock(CosmosAsyncDatabase.class);
