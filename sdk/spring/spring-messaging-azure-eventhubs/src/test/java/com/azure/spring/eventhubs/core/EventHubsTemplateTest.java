@@ -15,8 +15,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -35,7 +35,7 @@ class EventHubsTemplateTest {
 
     private EventHubProducerAsyncClient mockProducerClient;
     protected String destination = "event-hub";
-    protected Mono<Void> mono = Mono.empty();
+    protected Mono<Void> empty = Mono.empty();
     private EventHubsTemplate eventHubsTemplate;
 
     @BeforeEach
@@ -47,7 +47,7 @@ class EventHubsTemplateTest {
 
         //spy EventHusTemplate just to mock partial method
         this.eventHubsTemplate = spy(new EventHubsTemplate(producerFactory));
-        when(this.mockProducerClient.send(any(EventDataBatch.class))).thenReturn(this.mono);
+        when(this.mockProducerClient.send(any(EventDataBatch.class))).thenReturn(this.empty);
     }
 
 
@@ -70,7 +70,9 @@ class EventHubsTemplateTest {
         List<Message<String>> messages =
             messagesList.stream().map((Function<String, GenericMessage<String>>) GenericMessage::new).collect(Collectors.toList());
 
-        this.eventHubsTemplate.sendAsync(this.destination, messages, null).block();
+        Mono<Void> mono = this.eventHubsTemplate.sendAsync(this.destination, messages, null);
+        StepVerifier.create(mono)
+                    .verifyComplete();
         verify(this.mockProducerClient, times(3)).send(any(EventDataBatch.class));
     }
 
@@ -92,9 +94,12 @@ class EventHubsTemplateTest {
         List<Message<String>> messages =
             messagesList.stream().map((Function<String, GenericMessage<String>>) GenericMessage::new).collect(Collectors.toList());
 
-        this.eventHubsTemplate.sendAsync(this.destination, messages, null).doOnSuccess(t -> {
+        Mono<Void> mono = this.eventHubsTemplate.sendAsync(this.destination, messages, null).doOnSuccess(t -> {
             System.out.println("do on success:" + t);
-        }).block();
+        });
+
+        StepVerifier.create(mono)
+                    .verifyComplete();
         verify(this.mockProducerClient, times(1)).send(any(EventDataBatch.class));
     }
 
@@ -121,12 +126,14 @@ class EventHubsTemplateTest {
         List<Message<String>> messages =
             messagesList.stream().map((Function<String, GenericMessage<String>>) GenericMessage::new).collect(Collectors.toList());
 
-        this.eventHubsTemplate.sendAsync(this.destination, messages, null).doOnError(ex -> {
+        Mono<Void> mono = this.eventHubsTemplate.sendAsync(this.destination, messages, null).doOnError(ex -> {
             System.out.println("do on Error");
             ex.printStackTrace();
         }).doOnSuccess(t -> {
             System.out.println("do on success:" + t);
-        }).block(Duration.ofSeconds(10));
+        });
+        StepVerifier.create(mono)
+                    .verifyComplete();
         verify(this.mockProducerClient, times(1)).send(any(EventDataBatch.class));
     }
 
@@ -154,12 +161,14 @@ class EventHubsTemplateTest {
         List<Message<String>> messages =
             messagesList.stream().map((Function<String, GenericMessage<String>>) GenericMessage::new).collect(Collectors.toList());
 
-        this.eventHubsTemplate.sendAsync(this.destination, messages, null).doOnError(ex -> {
+        Mono<Void> mono = this.eventHubsTemplate.sendAsync(this.destination, messages, null).doOnError(ex -> {
             System.out.println("do on Error");
             ex.printStackTrace();
         }).doOnSuccess(t -> {
             System.out.println("do on success:" + t);
-        }).block(Duration.ofSeconds(10));
+        });
+        StepVerifier.create(mono)
+                    .verifyComplete();
         verify(this.mockProducerClient, times(2)).send(any(EventDataBatch.class));
     }
 
@@ -181,12 +190,14 @@ class EventHubsTemplateTest {
         List<Message<String>> messages =
             messagesList.stream().map((Function<String, GenericMessage<String>>) GenericMessage::new).collect(Collectors.toList());
 
-        this.eventHubsTemplate.sendAsync(this.destination, messages, null).doOnError(ex -> {
+        Mono<Void> mono = this.eventHubsTemplate.sendAsync(this.destination, messages, null).doOnError(ex -> {
             System.out.println("do on Error" + ex.getMessage());
             ex.printStackTrace();
         }).doOnSuccess(t -> {
             System.out.println("do on success:" + t);
-        }).block(Duration.ofSeconds(10));
+        });
+        StepVerifier.create(mono)
+                    .verifyComplete();
         verify(this.mockProducerClient, times(2)).send(any(EventDataBatch.class));
     }
 }
