@@ -78,9 +78,9 @@ public interface VirtualMachineImageTemplatesClient {
      * @throws com.azure.resourcemanager.imagebuilder.models.ApiErrorException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return image template is an ARM resource managed by Microsoft.
+     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ImageTemplateInner>, ImageTemplateInner> beginCreateOrUpdate(
         String resourceGroupName, String imageTemplateName, ImageTemplateInner parameters);
 
@@ -95,9 +95,9 @@ public interface VirtualMachineImageTemplatesClient {
      * @throws com.azure.resourcemanager.imagebuilder.models.ApiErrorException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return image template is an ARM resource managed by Microsoft.
+     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ImageTemplateInner>, ImageTemplateInner> beginCreateOrUpdate(
         String resourceGroupName, String imageTemplateName, ImageTemplateInner parameters, Context context);
 
@@ -111,7 +111,7 @@ public interface VirtualMachineImageTemplatesClient {
      * @throws com.azure.resourcemanager.imagebuilder.models.ApiErrorException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return image template is an ARM resource managed by Microsoft.
+     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ImageTemplateInner createOrUpdate(
@@ -128,7 +128,7 @@ public interface VirtualMachineImageTemplatesClient {
      * @throws com.azure.resourcemanager.imagebuilder.models.ApiErrorException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return image template is an ARM resource managed by Microsoft.
+     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ImageTemplateInner createOrUpdate(
@@ -144,9 +144,9 @@ public interface VirtualMachineImageTemplatesClient {
      * @throws com.azure.resourcemanager.imagebuilder.models.ApiErrorException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return image template is an ARM resource managed by Microsoft.
+     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ImageTemplateInner>, ImageTemplateInner> beginUpdate(
         String resourceGroupName, String imageTemplateName, ImageTemplateUpdateParameters parameters);
 
@@ -161,9 +161,9 @@ public interface VirtualMachineImageTemplatesClient {
      * @throws com.azure.resourcemanager.imagebuilder.models.ApiErrorException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return image template is an ARM resource managed by Microsoft.
+     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ImageTemplateInner>, ImageTemplateInner> beginUpdate(
         String resourceGroupName, String imageTemplateName, ImageTemplateUpdateParameters parameters, Context context);
 
@@ -177,7 +177,7 @@ public interface VirtualMachineImageTemplatesClient {
      * @throws com.azure.resourcemanager.imagebuilder.models.ApiErrorException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return image template is an ARM resource managed by Microsoft.
+     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ImageTemplateInner update(
@@ -194,7 +194,7 @@ public interface VirtualMachineImageTemplatesClient {
      * @throws com.azure.resourcemanager.imagebuilder.models.ApiErrorException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return image template is an ARM resource managed by Microsoft.
+     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ImageTemplateInner update(
@@ -241,7 +241,7 @@ public interface VirtualMachineImageTemplatesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String imageTemplateName);
 
     /**
@@ -256,7 +256,7 @@ public interface VirtualMachineImageTemplatesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String imageTemplateName, Context context);
 
     /**
@@ -297,7 +297,7 @@ public interface VirtualMachineImageTemplatesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRun(String resourceGroupName, String imageTemplateName);
 
     /**
@@ -312,7 +312,7 @@ public interface VirtualMachineImageTemplatesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRun(String resourceGroupName, String imageTemplateName, Context context);
 
     /**
@@ -353,7 +353,7 @@ public interface VirtualMachineImageTemplatesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String imageTemplateName);
 
     /**
@@ -368,7 +368,7 @@ public interface VirtualMachineImageTemplatesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String imageTemplateName, Context context);
 
     /**

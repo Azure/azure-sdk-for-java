@@ -270,7 +270,8 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
             deleteWithResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

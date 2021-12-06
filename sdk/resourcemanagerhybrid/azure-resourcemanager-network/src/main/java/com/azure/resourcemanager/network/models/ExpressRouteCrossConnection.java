@@ -59,11 +59,23 @@ public interface ExpressRouteCrossConnection
          * The stage of express route cross connection update allowing to specify service provider provisioning state.
          */
         interface WithServiceProviderProviosioningState {
+            /**
+             * Specifies the service provider provisioning state for the express route cross connection.
+             *
+             * @param state the service provider provisioning state
+             * @return next stage of update
+             */
             Update withServiceProviderProvisioningState(ServiceProviderProvisioningState state);
         }
 
         /** The stage of express route cross connection update allowing to specify service provider notes. */
         interface WithServiceProviderNotes {
+            /**
+             * Specifies the service provider notes for the express route cross connection.
+             *
+             * @param notes the service provider notes
+             * @return next stage of update
+             */
             Update withServiceProviderNotes(String notes);
         }
     }

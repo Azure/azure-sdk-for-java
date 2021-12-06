@@ -1,14 +1,13 @@
 ## Release History
 
-### 4.22.0-beta.1 (Unreleased)
-
+### 4.22.0 (2021-12-03)
 #### Features Added
+* Added Beta API `getContactedRegionNames` in `CosmosDiagnostics`.
 
-#### Breaking Changes
-
-#### Bugs Fixed
-
-#### Other Changes
+#### Key Bug Fixes
+* Fixed `IllegalStateException` for `getFeedRanges` when container recreated with same name.
+* Made Cosmos spans CLIENT which will allow Azure Monitor to show HTTP calls nested under Cosmos spans.
+* Fixed `ConcurrentModificationException` when getting `NotFoundException` with session consistency.
 
 ### 4.21.1 (2021-11-13)
 #### Key Bug Fixes
