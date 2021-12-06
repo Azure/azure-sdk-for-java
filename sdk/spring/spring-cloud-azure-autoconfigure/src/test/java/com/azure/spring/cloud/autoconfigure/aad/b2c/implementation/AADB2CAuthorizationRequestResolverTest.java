@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aad.b2c.implementation;
 
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -21,7 +22,9 @@ class AADB2CAuthorizationRequestResolverTest {
     private WebApplicationContextRunner getContextRunner() {
         return new WebApplicationContextRunner()
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-            .withConfiguration(AutoConfigurations.of(AbstractAADB2COAuth2ClientTestConfiguration.WebOAuth2ClientApp.class,
+            .withConfiguration(AutoConfigurations.of(
+                AzureGlobalPropertiesAutoConfiguration.class,
+                AbstractAADB2COAuth2ClientTestConfiguration.WebOAuth2ClientApp.class,
                 AADB2CAutoConfiguration.class))
             .withPropertyValues(
                 String.format("%s=%s", AADB2CConstants.TENANT_ID, AADB2CConstants.TEST_TENANT_ID),

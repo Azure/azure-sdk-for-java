@@ -47,7 +47,9 @@ class AADB2CResourceServerAutoConfigurationTest extends AbstractAADB2COAuth2Clie
     @Override
     WebApplicationContextRunner getDefaultContextRunner() {
         return new WebApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(WebOAuth2ClientApp.class,
+            .withConfiguration(AutoConfigurations.of(
+                WebOAuth2ClientApp.class,
+                AzureGlobalPropertiesAutoConfiguration.class,
                 AADB2CResourceServerAutoConfiguration.class))
             .withPropertyValues(getB2CResourceServerProperties());
     }
@@ -77,8 +79,8 @@ class AADB2CResourceServerAutoConfigurationTest extends AbstractAADB2COAuth2Clie
             final AADB2CProperties properties = c.getBean(AADB2CProperties.class);
 
             Assertions.assertNotNull(properties);
-            Assertions.assertEquals(properties.getTenantId(), AADB2CConstants.TEST_TENANT_ID);
-            Assertions.assertEquals(properties.getClientId(), AADB2CConstants.TEST_CLIENT_ID);
+            Assertions.assertEquals(properties.getProfile().getTenantId(), AADB2CConstants.TEST_TENANT_ID);
+            Assertions.assertEquals(properties.getCredential().getClientId(), AADB2CConstants.TEST_CLIENT_ID);
             Assertions.assertEquals(properties.getAppIdUri(), AADB2CConstants.TEST_APP_ID_URI);
         };
     }
