@@ -66,8 +66,8 @@ public class EventHubsTemplate implements SendOperation, BatchSendOperation {
                 if (batch.tryAdd(event)) {
                     return Mono.empty();
                 } else {
-                    LOGGER.warn("EventDataBatch is full in the collect process or the first event is " +
-                        "too large to fit in an empty batch! Max size: {}", batch.getMaxSizeInBytes());
+                    LOGGER.warn("EventDataBatch is full in the collect process or the first event is "
+                        + "too large to fit in an empty batch! Max size: {}", batch.getMaxSizeInBytes());
                 }
             } catch (AmqpException e) {
                 LOGGER.error("Event is larger than maximum allowed size.", e);
