@@ -15,6 +15,7 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
@@ -1063,18 +1064,21 @@ class ServiceBusReceiverAsyncClientTest {
         // Arrange
         final Duration maxDuration = Duration.ofSeconds(8);
         final Duration renewalPeriod = Duration.ofSeconds(3);
-        final String lockToken = "some-token";
+
+        final UUID lockTokenUUID = UUID.randomUUID();
+        final String lockToken = lockTokenUUID.toString();
+        final ServiceBusReceivedMessage message = new ServiceBusReceivedMessage(BinaryData.fromString("foo"));
+        message.setLockToken(lockTokenUUID);
 
         // At most 4 times because we renew the lock before it expires (by some seconds).
         final int atMost = 5;
         final Duration totalSleepPeriod = maxDuration.plusMillis(500);
 
-        when(receivedMessage.getLockToken()).thenReturn(lockToken);
         when(managementNode.renewMessageLock(lockToken, null))
             .thenReturn(Mono.fromCallable(() -> OffsetDateTime.now().plus(renewalPeriod)));
 
         // Act & Assert
-        StepVerifier.create(receiver.renewMessageLock(receivedMessage, maxDuration))
+        StepVerifier.create(receiver.renewMessageLock(message, maxDuration))
             .thenAwait(totalSleepPeriod)
             .then(() -> logger.info("Finished renewals for first sleep."))
             .expectComplete()
