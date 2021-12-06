@@ -30,6 +30,11 @@ public class AADPropertiesConfiguration {
         this.global = global;
     }
 
+    /**
+     * AAD Authentication Properties.
+     *
+     * @return AAd Authentication Properties Bean
+     */
     @Bean
     @ConfigurationProperties(AADAuthenticationProperties.PREFIX)
     @ConditionalOnMissingBean
@@ -46,6 +51,12 @@ public class AADPropertiesConfiguration {
         return aad;
     }
 
+
+    /**
+     * AAD Resource Server Properties.
+     *
+     * @return AAd Resource Server Properties Bean
+     */
     @Bean
     @ConfigurationProperties(AADResourceServerProperties.PREFIX)
     @ConditionalOnMissingBean

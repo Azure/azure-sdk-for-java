@@ -156,7 +156,7 @@ public class AADOBOOAuth2AuthorizedClientProvider implements OAuth2AuthorizedCli
     }
 
     /**
-     * Create App
+     * Create Application
      *
      * @param clientRegistration clients that need to be registered
      * @return the {@link ConfidentialClientApplication} or {@code null}
