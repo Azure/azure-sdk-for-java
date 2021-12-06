@@ -24,7 +24,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
 /**
- * Auto-configuration for a {@link ConfigurationClientBuilder} and Azure App Configuration clients.
+ * Autoconfiguration for a {@link ConfigurationClientBuilder} and Azure App Configuration clients.
  */
 @ConditionalOnClass(ConfigurationClientBuilder.class)
 @ConditionalOnProperty(value = "spring.cloud.azure.appconfiguration.enabled", havingValue = "true", matchIfMissing = true)

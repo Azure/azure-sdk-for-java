@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.properties.core.client;
 
 import com.azure.spring.core.aware.ClientAware;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import java.time.Duration;
 
@@ -12,12 +13,32 @@ import java.time.Duration;
  */
 public class HttpClientCP extends ClientCP implements ClientAware.HttpClient {
 
+    /**
+     * Amount of time each request being sent over the wire.
+     */
     private Duration writeTimeout;
+    /**
+     * Amount of time used when waiting for a server to reply.
+     */
     private Duration responseTimeout;
+    /**
+     * Amount of time used when reading the server response.
+     */
     private Duration readTimeout;
+    /**
+     * Amount of time the request attempts to connect to the remote host and the connection is resolved.
+     */
     private Duration connectTimeout;
+    /**
+     * Maximum connection pool size used by the underlying HTTP client.
+     */
     private Integer maximumConnectionPoolSize;
+    /**
+     * Amount of time before an idle connection.
+     */
     private Duration connectionIdleTimeout;
+
+    @NestedConfigurationProperty
     private final HttpLoggingCP logging = new HttpLoggingCP();
 
     @Override
