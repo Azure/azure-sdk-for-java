@@ -29,6 +29,7 @@ Test Prerequisites::
 Steps::
 * Add `spring-cloud-azure-starter-storage-blob` and `spring-cloud-azure-starter-actuator` dependencies. +
 * Configure the below combinations for storage blob properties. +
+
 [source, yaml]
 ----
 # Resource location
@@ -73,6 +74,7 @@ N/A
 Steps::
 * Add `spring-cloud-azure-starter-storage-blob` and `spring-cloud-azure-starter-actuator` dependencies. +
 * Configure the below combinations for storage blob properties. +
+
 [source, yaml]
 ----
 # Resource location
@@ -118,6 +120,7 @@ Test Prerequisites::
 Steps::
 * Add `spring-cloud-azure-starter-storage-blob` and `spring-cloud-azure-starter-actuator` dependencies. +
 * Configure the below combinations for storage blob properties. +
+
 [source, yaml]
 ----
 # Resource location
@@ -376,7 +379,7 @@ Standard pricing Azure Service Bus topic exists.
 
 Steps::
 * Add `azure-spring-boot-test-servicebus-jms` dependency. +
-* Configure the below combinations for standard service bus properties. +
+* Configure the below combinations for standard service bus properties, then send test message to topic. +
 
 [source,properties]
 ----
@@ -384,8 +387,6 @@ spring.jms.servicebus.connection-string=${SPRING_JMS_STANDARD_SERVICEBUS_CONNECT
 spring.jms.servicebus.pricing-tier=standard
 spring.jms.servicebus.topic-client-id=${random.value}
 ----
-
-* Send test message to topic. +
 
 Expected Result::
 * The non-premium `ConnectionFactory` bean should be configured. +
@@ -417,7 +418,7 @@ Standard pricing Azure Service Bus queue exists.
 
 Steps::
 * Add `azure-spring-boot-test-servicebus-jms` dependency. +
-* Configure the below combinations for standard service bus properties. +
+* Configure the below combinations for standard service bus properties, then send test message to the queue.  +
 
 [source,properties]
 ----
@@ -425,7 +426,6 @@ spring.jms.servicebus.connection-string=${SPRING_JMS_STANDARD_SERVICEBUS_CONNECT
 spring.jms.servicebus.pricing-tier=standard
 spring.jms.servicebus.topic-client-id=${random.value}
 ----
-* Send test message to the queue. +
 
 Expected Result::
 * The non-premium `ConnectionFactory` bean should be configured. +
@@ -453,7 +453,7 @@ Premium pricing Azure Service Bus topic exists.
 
 Steps::
 * Add `azure-spring-boot-test-servicebus-jms` dependency. +
-* Configure the below combinations for standard service bus properties. +
+* Configure the below combinations for standard service bus properties, then send test message to topic. +
 
 [source,properties]
 ----
@@ -461,8 +461,6 @@ spring.jms.servicebus.connection-string=${SPRING_JMS_STANDARD_SERVICEBUS_CONNECT
 spring.jms.servicebus.pricing-tier=premium
 spring.jms.servicebus.topic-client-id=${random.value}
 ----
-
-* Send test message to topic. +
 
 Expected Result::
 * The premium `ConnectionFactory` bean should be configured. +
@@ -489,7 +487,7 @@ Premium pricing Azure Service Bus queue exists.
 
 Steps::
 * Add `azure-spring-boot-test-servicebus-jms` dependency. +
-* Configure the below combinations for standard service bus properties. +
+* Configure the below combinations for standard service bus properties, then send test message to queue. +
 
 [source,properties]
 ----
@@ -497,8 +495,6 @@ spring.jms.servicebus.connection-string=${SPRING_JMS_STANDARD_SERVICEBUS_CONNECT
 spring.jms.servicebus.pricing-tier=premium
 spring.jms.servicebus.topic-client-id=${random.value}
 ----
-
-* Send test message to queue. +
 
 Expected Result::
 * The premium `ConnectionFactory` bean should be configured. +
@@ -567,7 +563,7 @@ Test Prerequisites::
 
 Steps::
 * Add `spring-cloud-azure-starter-cosmos` and `spring-cloud-azure-starter-actuator` dependencies. +
-* Configure the below combinations for Cosmos properties. +
+* Configure the below combinations for Cosmos properties, then request the Cosmos health endpoint. +
 
 [source, yaml]
 ----
@@ -584,8 +580,6 @@ management:
     health:
       show-details: always
 ----
-
-* Request the Cosmos health endpoint. +
 
 Expected Result::
 * The Cosmos health indicator bean should be configured. +
@@ -612,7 +606,7 @@ Test Prerequisites::
 
 Steps::
 * Add `spring-cloud-azure-starter-data-cosmos` dependency. +
-* Configure the below combinations for Cosmos properties. +
+* Configure the below combinations for Cosmos properties, then do delete, insert, query action against the database. +
 
 [source, yaml]
 ----
@@ -629,8 +623,6 @@ management:
     health:
       show-details: always
 ----
-
-* Do delete, insert, query action against the database. +
 
 Expected Result::
 * The Cosmos auto-configuration should be configured. +
@@ -712,7 +704,7 @@ Test Prerequisites::
 
 Steps::
 * Add `spring-cloud-azure-starter-keyvault-secrets` and `spring-cloud-azure-starter-actuator` dependencies. +
-* Configure the below combinations for Keyvault properties. +
+* Configure the below combinations for Keyvault properties, then request the Keyvault health endpoint. +
 
 [source, yaml]
 ----
@@ -737,8 +729,6 @@ management:
         include: *
         exclude: env,beans
 ----
-
-* Request the Keyvault health endpoint. +
 
 Expected Result::
 * The Keyvault health indicator bean should be configured. +
@@ -765,7 +755,7 @@ Test Prerequisites::
 
 Steps::
 * Add `spring-cloud-azure-starter-keyvault-secrets` dependency. +
-* Configure the below combinations for Keyvault properties. +
+* Configure the below combinations for Keyvault properties, then request the actuator env endpoint. +
 
 [source, yaml]
 ----
@@ -790,8 +780,6 @@ management:
         include: *
         exclude: env,beans
 ----
-
-* Request the actuator env endpoint. +
 
 Expected Result::
 * The Keyvault health indicator bean should be configured. +
@@ -823,7 +811,7 @@ Test Prerequisites::
 Steps::
 * Use `spring-cloud-azure-starter-keyvault-secrets` dependency. +
 * Configure the secert credential using Service Principal credential. +
-* Configure the below combinations for Keyvault properties. +
+* Configure the below combinations for Keyvault properties, then check the actual value of the key. +
 
 [source, yaml]
 ----
@@ -840,8 +828,6 @@ spring:
           profile:
             tenant-id: xxx
 ----
-
-* Check the actual value of the key. +
 
 Expected Result::
 * The actual value of the key should be returned when accessing the key. +
@@ -869,7 +855,7 @@ Test Prerequisites::
 Steps::
 * Use `spring-cloud-azure-starter-keyvault-secrets` dependency. +
 * Configure the secert credential using Service Principal credential. +
-* Configure the below combinations for Keyvault properties. +
+* Configure the below combinations for Keyvault properties, then check the actual value of the key. +
 
 [source, yaml]
 ----
@@ -889,8 +875,6 @@ spring:
             -
               secret-keys: xxx
 ----
-
-* Check the actual value of the key. +
 
 Expected Result::
 * The actual value of the special key should be returned when accessing the key. +
@@ -917,6 +901,9 @@ Steps::
 * Use `spring-cloud-azure-starter-keyvault-secrets` dependency. +
 * Configure the secert credential using Service Principal credential. +
 * Configure the below combinations for Keyvault properties. +
+* Package jar file +
+* Deploy the jar file to App Service +
+* Request the `/get` endpoint to get the actual value from App Service instance, the value is stored in Keyvault. +
 
 [source, yaml]
 ----
@@ -927,10 +914,6 @@ spring:
         secret:
           property-source-enabled: true
 ----
-
-* Package jar file +
-* Deploy the jar file to App Service +
-* Request the `/get` endpoint to get the actual value from App Service instance, the value is stored in Keyvault. +
 
 Expected Result::
 * The actual value of the special key should be returned when accessing the `/get` endpoint. +
@@ -961,7 +944,9 @@ Steps::
 * Use `spring-cloud-azure-starter-keyvault-secrets` dependency. +
 * Configure the secert credential using Service Principal credential. +
 * Configure the below combinations for Keyvault properties. +
-
+* Package jar file +
+* Deploy the jar file to Virtual Machine +
+* Request the `/get` endpoint to get the actual value from App Service instance, the value is stored in Keyvault. +
 [source, yaml]
 ----
 spring:
@@ -971,10 +956,6 @@ spring:
         secret:
           property-source-enabled: true
 ----
-
-* Package jar file +
-* Deploy the jar file to Virtual Machine +
-* Request the `/get` endpoint to get the actual value from App Service instance, the value is stored in Keyvault. +
 
 Expected Result::
 * The actual value of the special key should be returned when accessing the `/get` endpoint. +
@@ -1002,7 +983,7 @@ Test Prerequisites::
 Steps::
 * Use `spring-cloud-azure-starter-keyvault-secrets` dependency. +
 * Configure secert credential of the first property source using Service Principal credential. +
-* Configure the below combinations for Keyvault properties. +
+* Configure the below combinations for Keyvault properties, then check the actual value of the key. +
 
 [source, yaml]
 ----
@@ -1021,8 +1002,6 @@ spring:
               profile:
                 tenant-id: xxx
 ----
-
-* Check the actual value of the key. +
 
 Expected Result::
 * The actual value of the key should be returned when accessing the key. +
@@ -1051,6 +1030,7 @@ Steps::
 * Use `spring-cloud-azure-starter-keyvault-secrets` dependency. +
 * Configure each property source credential using Service Principal credential. +
 * Configure the below combinations for Keyvault properties. +
+* Check the actual value of the same key is from the first Keyvault property source. +
 
 [source, yaml]
 ----
@@ -1083,8 +1063,6 @@ spring:
                 tenant-id: xxx
 ----
 
-* Check the actual value of the same key is from the first  Keyvault property source. +
-
 Expected Result::
 * The actual value of the key should be returned when accessing the key. +
 
@@ -1110,6 +1088,8 @@ Steps::
 * Use `spring-cloud-azure-starter-keyvault-secrets` dependency. +
 * Configure global credential using Service Principal credential. +
 * Configure the below combinations for Keyvault properties. +
+* Check the actual value of the key from Keyvault 1. +
+* Check the actual value of the key from Keyvault 2. +
 
 [source, yaml]
 ----
@@ -1140,9 +1120,6 @@ spring:
               profile:
                 tenant-id: xxx
 ----
-
-* Check the actual value of the key from Keyvault 1. +
-* Check the actual value of the key from Keyvault 2. +
 
 Expected Result::
 * The actual value of the key should be returned when accessing the key. +
@@ -1172,6 +1149,7 @@ Steps::
 * Configure keyvault credential using Service Principal credential. +
 * Upload the Key Store files to Keyvault, the certificate generation algorithm should include `RSA`, `EC256`, `EC384`, `EC521`. +
 * Configure the below combinations for Keyvault properties. +
+* Make HTTPS requests to the application. +
 
 [source, yaml]
 ----
@@ -1187,7 +1165,6 @@ server:
     key-store-type: xxx
 ----
 
-* Make HTTPS requests to the application. +
 
 Expected Result::
 * The application can respond to HTTPS requests. +
@@ -1222,6 +1199,7 @@ Steps::
 * Configure keyvault credential using Service Principal credential. +
 * Upload the Key Store files to Keyvault, the certificate generation algorithm should include `RSA`, `EC256`, `EC384`, `EC521`. +
 * Configure the below combinations for Keyvault properties. +
+* Make HTTPS requests to the application. +
 
 [source, yaml]
 ----
@@ -1237,8 +1215,6 @@ server:
     key-store-type: xxx
     client-auth: need
 ----
-
-* Make HTTPS requests to the application. +
 
 Expected Result::
 * The application can respond to HTTPS requests. +
