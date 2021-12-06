@@ -24,7 +24,11 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 
 class EventHubsTemplateTest {
@@ -55,16 +59,16 @@ class EventHubsTemplateTest {
         EventDataBatch eventDataBatch = mock(EventDataBatch.class);
 
         when(this.mockProducerClient.createBatch(any(CreateBatchOptions.class)))
-                .thenReturn(Mono.just(eventDataBatch));
+            .thenReturn(Mono.just(eventDataBatch));
         when(eventDataBatch.tryAdd(any(EventData.class))).thenReturn(true, true, false, true, true,
-                false, true);
+            false, true);
         when(eventDataBatch.getCount()).thenReturn(2, 2, 1);
         List<String> messagesList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             messagesList.add("abcde");
         }
         List<Message<String>> messages =
-                messagesList.stream().map((Function<String, GenericMessage<String>>) GenericMessage::new).collect(Collectors.toList());
+            messagesList.stream().map((Function<String, GenericMessage<String>>) GenericMessage::new).collect(Collectors.toList());
 
         this.eventHubsTemplate.sendAsync(this.destination, messages, null).block();
         verify(this.mockProducerClient, times(3)).send(any(EventDataBatch.class));
@@ -78,7 +82,7 @@ class EventHubsTemplateTest {
         EventDataBatch eventDataBatch = mock(EventDataBatch.class);
 
         when(this.mockProducerClient.createBatch(any(CreateBatchOptions.class)))
-                .thenReturn(Mono.just(eventDataBatch));
+            .thenReturn(Mono.just(eventDataBatch));
         when(eventDataBatch.tryAdd(any(EventData.class))).thenReturn(true, true, true, true, true);
         when(eventDataBatch.getCount()).thenReturn(5);
         List<String> messagesList = new ArrayList<>();
@@ -86,7 +90,7 @@ class EventHubsTemplateTest {
             messagesList.add("abcde");
         }
         List<Message<String>> messages =
-                messagesList.stream().map((Function<String, GenericMessage<String>>) GenericMessage::new).collect(Collectors.toList());
+            messagesList.stream().map((Function<String, GenericMessage<String>>) GenericMessage::new).collect(Collectors.toList());
 
         this.eventHubsTemplate.sendAsync(this.destination, messages, null).doOnSuccess(t -> {
             System.out.println("do on success:" + t);
@@ -103,18 +107,19 @@ class EventHubsTemplateTest {
         EventDataBatch eventDataBatch = mock(EventDataBatch.class);
 
         when(this.mockProducerClient.createBatch(any(CreateBatchOptions.class)))
-                .thenReturn(Mono.just(eventDataBatch));
-        when(eventDataBatch.tryAdd(any(EventData.class))).thenThrow(new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
-                String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb",
-                        1024*1024 / 1024),
-                null)).thenReturn(true, true, true, true);
+            .thenReturn(Mono.just(eventDataBatch));
+        when(eventDataBatch.tryAdd(any(EventData.class))).thenThrow(new AmqpException(false,
+            AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
+            String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb",
+                1024 * 1024 / 1024),
+            null)).thenReturn(true, true, true, true);
         when(eventDataBatch.getCount()).thenReturn(5);
         List<String> messagesList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             messagesList.add("abcde");
         }
         List<Message<String>> messages =
-                messagesList.stream().map((Function<String, GenericMessage<String>>) GenericMessage::new).collect(Collectors.toList());
+            messagesList.stream().map((Function<String, GenericMessage<String>>) GenericMessage::new).collect(Collectors.toList());
 
         this.eventHubsTemplate.sendAsync(this.destination, messages, null).doOnError(ex -> {
             System.out.println("do on Error");
@@ -133,20 +138,21 @@ class EventHubsTemplateTest {
         EventDataBatch eventDataBatch = mock(EventDataBatch.class);
 
         when(this.mockProducerClient.createBatch(any(CreateBatchOptions.class)))
-                .thenReturn(Mono.just(eventDataBatch));
+            .thenReturn(Mono.just(eventDataBatch));
         when(eventDataBatch.tryAdd(any(EventData.class))).thenReturn(true, false, true).
-                thenThrow(new AmqpException(false,
-                AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
-                String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb",
-                        1024*1024 / 1024),
-                null)).thenReturn(true, true);
+                                                         thenThrow(new AmqpException(false,
+                                                             AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
+                                                             String.format(Locale.US, "Size of the payload exceeded "
+                                                                     + "maximum message size: %s kb",
+                                                                 1024 * 1024 / 1024),
+                                                             null)).thenReturn(true, true);
         when(eventDataBatch.getCount()).thenReturn(5);
         List<String> messagesList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             messagesList.add("abcde");
         }
         List<Message<String>> messages =
-                messagesList.stream().map((Function<String, GenericMessage<String>>) GenericMessage::new).collect(Collectors.toList());
+            messagesList.stream().map((Function<String, GenericMessage<String>>) GenericMessage::new).collect(Collectors.toList());
 
         this.eventHubsTemplate.sendAsync(this.destination, messages, null).doOnError(ex -> {
             System.out.println("do on Error");
@@ -165,16 +171,16 @@ class EventHubsTemplateTest {
         EventDataBatch eventDataBatch = mock(EventDataBatch.class);
 
         when(this.mockProducerClient.createBatch(any(CreateBatchOptions.class)))
-                .thenReturn(Mono.just(eventDataBatch));
+            .thenReturn(Mono.just(eventDataBatch));
         when(eventDataBatch.tryAdd(any(EventData.class))).thenReturn(true, false, false).thenReturn(true, true, true)
-                 ;
+        ;
         when(eventDataBatch.getCount()).thenReturn(5);
         List<String> messagesList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             messagesList.add("abcde");
         }
         List<Message<String>> messages =
-                messagesList.stream().map((Function<String, GenericMessage<String>>) GenericMessage::new).collect(Collectors.toList());
+            messagesList.stream().map((Function<String, GenericMessage<String>>) GenericMessage::new).collect(Collectors.toList());
 
         this.eventHubsTemplate.sendAsync(this.destination, messages, null).doOnError(ex -> {
             System.out.println("do on Error" + ex.getMessage());
