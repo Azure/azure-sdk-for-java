@@ -1142,7 +1142,8 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
             deleteCassandraKeyspaceWithResponseAsync(resourceGroupName, accountName, keyspaceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -3217,7 +3218,8 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
             deleteCassandraTableWithResponseAsync(resourceGroupName, accountName, keyspaceName, tableName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

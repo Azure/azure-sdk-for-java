@@ -954,7 +954,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             deleteWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2054,7 +2055,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             startWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2335,7 +2337,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             stopWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2616,7 +2619,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             restartWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

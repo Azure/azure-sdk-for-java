@@ -412,7 +412,11 @@ public final class DiskAccessesClientImpl
         return this
             .client
             .<DiskAccessInner, DiskAccessInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DiskAccessInner.class, DiskAccessInner.class, this.client.getContext());
+                mono,
+                this.client.getHttpPipeline(),
+                DiskAccessInner.class,
+                DiskAccessInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -695,7 +699,11 @@ public final class DiskAccessesClientImpl
         return this
             .client
             .<DiskAccessInner, DiskAccessInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DiskAccessInner.class, DiskAccessInner.class, this.client.getContext());
+                mono,
+                this.client.getHttpPipeline(),
+                DiskAccessInner.class,
+                DiskAccessInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1121,7 +1129,8 @@ public final class DiskAccessesClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, diskAccessName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2431,7 +2440,8 @@ public final class DiskAccessesClientImpl
                 resourceGroupName, diskAccessName, privateEndpointConnectionName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
