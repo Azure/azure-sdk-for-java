@@ -248,7 +248,7 @@ public final class AttestationsImpl implements Attestations {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'attestations'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, attestationName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, attestationName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
