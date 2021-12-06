@@ -19,6 +19,7 @@
   <name>Microsoft Azure client library for Logs and Metrics query performance tests</name>
 
   <properties>
+    <checkstyle.skip>true</checkstyle.skip>
     <codesnippet.skip>false</codesnippet.skip>
     <javadocDoclet></javadocDoclet>
     <javadocDocletOptions></javadocDocletOptions>
