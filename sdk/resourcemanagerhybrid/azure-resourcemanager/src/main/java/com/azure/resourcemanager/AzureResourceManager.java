@@ -330,6 +330,8 @@ public final class AzureResourceManager {
      * @param armEndpoint the URL of ARM endpoint.
      * @param httpClient the HTTP client for requests.
      * @return the AzureEnvironment
+     * @throws HttpResponseException thrown if the request is rejected by server, or failed to parse metadata.
+     * @throws RuntimeException thrown if ARM endpoint is invalid, or other errors.
      */
     public static AzureEnvironment getAzureEnvironmentFromArmEndpoint(String armEndpoint, HttpClient httpClient) {
         HttpRequest request = new HttpRequest(HttpMethod.GET,
