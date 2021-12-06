@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed a bug where Synchronous Receiver client stops receiving messages if MaxMessages is greater than 1. Issue [25063]
+
 ### Other Changes
 
 ## 7.5.0 (2021-11-16)
