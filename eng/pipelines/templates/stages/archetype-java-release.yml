@@ -131,7 +131,6 @@ stages:
               runOnce:
                 deploy:
                   steps:
-                    - download: none
                     - download: current
                       artifact: ${{parameters.ArtifactName}}-signed
                       patterns: ${{artifact.groupId}}/${{artifact.name}}/**
@@ -158,7 +157,6 @@ stages:
                 runOnce:
                   deploy:
                     steps:
-                      - download: none
                       - download: current
                         artifact: ${{parameters.ArtifactName}}-signed
                         patterns: ${{artifact.groupId}}/${{artifact.name}}/**
@@ -222,7 +220,6 @@ stages:
                           Paths:
                             - sdk/**/*.md
                             - .github/CODEOWNERS
-                      - download: none
                       - download: current
                         artifact: ${{parameters.ArtifactName}}
                       - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
@@ -253,7 +250,6 @@ stages:
                   deploy:
                     steps:
                       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-                      - download: none
                       - download: current
                         artifact: ${{parameters.ArtifactName}}-signed
                         patterns: ${{artifact.groupId}}/${{artifact.name}}/**

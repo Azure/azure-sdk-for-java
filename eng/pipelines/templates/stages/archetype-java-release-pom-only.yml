@@ -63,7 +63,6 @@ stages:
               runOnce:
                 deploy:
                   steps:
-                    - download: none
                     - download: current
                       artifact: ${{parameters.ArtifactName}}-signed
                       patterns: ${{artifact.groupId}}/${{artifact.name}}/**
@@ -90,7 +89,6 @@ stages:
                 runOnce:
                   deploy:
                     steps:
-                      - download: none
                       - download: current
                         artifact: ${{parameters.ArtifactName}}-signed
                         patterns: ${{artifact.groupId}}/${{artifact.name}}/**
