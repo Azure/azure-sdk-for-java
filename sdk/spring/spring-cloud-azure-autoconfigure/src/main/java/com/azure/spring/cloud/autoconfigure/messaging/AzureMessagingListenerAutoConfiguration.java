@@ -12,6 +12,7 @@ import com.azure.spring.messaging.container.ListenerContainerFactory;
 import com.azure.spring.messaging.container.MessageListenerContainer;
 import com.azure.spring.messaging.core.SubscribeByGroupOperation;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -19,7 +20,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
+ * {@link EnableAutoConfiguration Auto-configuration} for AzureMessagingListener.
  *
+ * @since 4.0
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(EnableAzureMessaging.class)
