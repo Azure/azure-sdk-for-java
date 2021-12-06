@@ -255,8 +255,8 @@ public class FluxAutoLockRenewTest {
         // Act
         Disposable disposable = renewOperator
             .subscribe(serviceBusReceivedMessage -> {
-                    throw new RuntimeException("fake user generated exception.");
-                },
+                throw new RuntimeException("fake user generated exception.");
+            },
                 (throwable) -> onErrorCalled.set(true),
                 () -> onCompleteCalled.set(true));
 
