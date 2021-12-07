@@ -33,7 +33,7 @@ final class MemberNameConverterImpl implements MemberNameConverter {
 
     private static final String ACCESSOR_NAMING_STRATEGY =
         "com.fasterxml.jackson.databind.introspect.AccessorNamingStrategy";
-    private static final String ACCESSOR_NAMING_STRATEGY_PROVIDER = ACCESSOR_NAMING_STRATEGY + ".Provider";
+    private static final String ACCESSOR_NAMING_STRATEGY_PROVIDER = ACCESSOR_NAMING_STRATEGY + "$Provider";
     private static final MethodHandle GET_ACCESSOR_NAMING;
     private static final MethodHandle FOR_POJO;
     private static final MethodHandle FIND_NAME_FOR_IS_GETTER;
