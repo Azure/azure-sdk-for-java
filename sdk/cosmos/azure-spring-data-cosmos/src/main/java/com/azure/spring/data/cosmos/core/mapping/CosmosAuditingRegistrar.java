@@ -4,8 +4,6 @@
 package com.azure.spring.data.cosmos.core.mapping;
 
 import com.azure.spring.data.cosmos.Constants;
-import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
-import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
@@ -13,7 +11,6 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.data.auditing.IsNewAwareAuditingHandler;
 import org.springframework.data.auditing.config.AuditingBeanDefinitionRegistrarSupport;
 import org.springframework.data.auditing.config.AuditingConfiguration;
-import org.springframework.data.mapping.context.MappingContext;
 import org.springframework.util.Assert;
 
 import java.lang.annotation.Annotation;
