@@ -43,6 +43,7 @@ public class CallingServerResponseMocker {
     public static final CommunicationUserIdentifier COMMUNICATION_USER_1 = new CommunicationUserIdentifier(USER_ID_1);
     public static final URI CALLBACK_URI = URI.create("https://callBackUri.local");
     public static final ServerCallLocator SERVERCALL_LOCATOR = new ServerCallLocator("aHR0cHM6Ly9jb252LXVzd2UtMDguY29udi5za3lwZS5jb20vY29udi8tby1FWjVpMHJrS3RFTDBNd0FST1J3P2k9ODgmZT02Mzc1Nzc0MTY4MDc4MjQyOTM");
+    public static final String Alternate_Caller_Id = "+15551234567";
 
     public static String generateCreateCallResult(String callConnectionId) {
 

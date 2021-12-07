@@ -8,6 +8,7 @@ import static com.azure.communication.callingserver.CallingServerResponseMocker.
 import com.azure.communication.callingserver.models.*;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.rest.Response;
 import org.junit.jupiter.api.Test;
 
@@ -162,7 +163,7 @@ public class CallingServerAsyncUnitTests {
             SERVERCALL_LOCATOR,
             COMMUNICATION_USER,
             CALLBACK_URI,
-            "alternateCallerId",
+            new PhoneNumberIdentifier("alternateCallerId"),
             "operationContext"
         ).block();
         assertNotNull(addParticipantResult.getOperationId());
@@ -183,7 +184,7 @@ public class CallingServerAsyncUnitTests {
             SERVERCALL_LOCATOR,
             COMMUNICATION_USER,
             CALLBACK_URI,
-            "alternateCallerId",
+            new PhoneNumberIdentifier("alternateCallerId"),
             "operationContext"
         ).block();
         assertEquals(202, addParticipantResultResponse.getStatusCode());

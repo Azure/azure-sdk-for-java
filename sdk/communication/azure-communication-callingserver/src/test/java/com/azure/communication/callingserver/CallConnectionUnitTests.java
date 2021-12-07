@@ -19,6 +19,7 @@ import java.util.AbstractMap.SimpleEntry;
 import com.azure.communication.callingserver.models.*;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
@@ -188,7 +189,7 @@ public class CallConnectionUnitTests {
         CommunicationUserIdentifier user = new CommunicationUserIdentifier(NEW_PARTICIPANT_ID);
         AddParticipantResult addParticipantResult = callConnection.addParticipant(
             user,
-            "alternateCallerId",
+            new PhoneNumberIdentifier(Alternate_Caller_Id),
             OPERATION_CONTEXT
         );
         assertNotNull(addParticipantResult.getOperationId());
@@ -208,7 +209,7 @@ public class CallConnectionUnitTests {
         CommunicationUserIdentifier user = new CommunicationUserIdentifier(NEW_PARTICIPANT_ID);
         Response<AddParticipantResult> addParticipantResultResponse = callConnection.addParticipantWithResponse(
             user,
-            "alternateCallerId",
+            new PhoneNumberIdentifier(Alternate_Caller_Id),
             OPERATION_CONTEXT,
             Context.NONE
         );
@@ -256,7 +257,7 @@ public class CallConnectionUnitTests {
 
         TransferCallResult transferCallResult = callConnection.transferToParticipant(
             new CommunicationUserIdentifier(NEW_PARTICIPANT_ID),
-            "",
+            new PhoneNumberIdentifier(Alternate_Caller_Id),
             "",
             ""
         );
@@ -274,7 +275,7 @@ public class CallConnectionUnitTests {
 
         Response<TransferCallResult> transferCallResponse = callConnection.transferToParticipantWithResponse(
             new CommunicationUserIdentifier(NEW_PARTICIPANT_ID),
-            "",
+            new PhoneNumberIdentifier(Alternate_Caller_Id),
             "",
             "",
             Context.NONE

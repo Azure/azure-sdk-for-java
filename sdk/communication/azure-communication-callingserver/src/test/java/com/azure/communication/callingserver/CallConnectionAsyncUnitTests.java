@@ -20,6 +20,7 @@ import java.util.AbstractMap.SimpleEntry;
 import com.azure.communication.callingserver.models.*;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.rest.Response;
 
 import org.junit.jupiter.api.Test;
@@ -189,7 +190,7 @@ public class CallConnectionAsyncUnitTests {
         CommunicationUserIdentifier user = new CommunicationUserIdentifier(NEW_PARTICIPANT_ID);
         AddParticipantResult addParticipantResult = callConnectionAsync.addParticipant(
             user,
-            "alternateCallerId",
+            new PhoneNumberIdentifier(Alternate_Caller_Id),
             OPERATION_CONTEXT
         ).block();
         assertNotNull(addParticipantResult.getOperationId());
@@ -209,7 +210,7 @@ public class CallConnectionAsyncUnitTests {
         CommunicationUserIdentifier user = new CommunicationUserIdentifier(NEW_PARTICIPANT_ID);
         Response<AddParticipantResult> addParticipantResultResponse = callConnectionAsync.addParticipantWithResponse(
             user,
-            "alternateCallerId",
+            new PhoneNumberIdentifier(Alternate_Caller_Id),
             OPERATION_CONTEXT
         ).block();
         assertEquals(202, addParticipantResultResponse.getStatusCode());
@@ -255,7 +256,7 @@ public class CallConnectionAsyncUnitTests {
 
         TransferCallResult transferCallResult = callConnectionAsync.transferToParticipant(
             new CommunicationUserIdentifier(NEW_PARTICIPANT_ID),
-            "",
+            new PhoneNumberIdentifier(Alternate_Caller_Id),
             "",
             ""
         ).block();
@@ -273,7 +274,7 @@ public class CallConnectionAsyncUnitTests {
 
         Response<TransferCallResult> transferCallResponse = callConnectionAsync.transferToParticipantWithResponse(
             new CommunicationUserIdentifier(NEW_PARTICIPANT_ID),
-            "",
+            new PhoneNumberIdentifier(Alternate_Caller_Id),
             "",
             ""
         ).block();
