@@ -3,5 +3,9 @@
 
 module com.azure.aot.graalvm.support.netty {
     requires com.azure.aot.graalvm.support;
-    requires io.netty.all;
+    requires io.netty.transport;
+    requires io.netty.codec;
+    requires io.netty.buffer;
+    requires io.netty.handler;
+    requires io.netty.codec.http;
 }

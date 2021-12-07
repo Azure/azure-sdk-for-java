@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 module com.azure.aot.graalvm.support {
-    requires org.graalvm.sdk;
-    requires svm;
+    requires transitive org.graalvm.sdk;
+    requires transitive svm;
 }
 
