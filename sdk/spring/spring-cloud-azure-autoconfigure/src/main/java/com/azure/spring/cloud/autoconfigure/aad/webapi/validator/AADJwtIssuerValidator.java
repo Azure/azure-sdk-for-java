@@ -3,7 +3,7 @@
 package com.azure.spring.cloud.autoconfigure.aad.webapi.validator;
 
 import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AADTokenClaim;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.AADTrustedIssuerRepository;
+import com.azure.spring.cloud.autoconfigure.aad.AADTrustedIssuerRepository;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
 import org.springframework.security.oauth2.jwt.Jwt;
