@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
 
 class StorageBlobHealthIndicatorTests {
 
-    private static final String MOCK_URL = "https://example.org/bigly_fake_url";
+    private static final String MOCK_URL = "https://test.blob.core.windows.net/";
 
     @Test
     void storageBlobIsUp() {
