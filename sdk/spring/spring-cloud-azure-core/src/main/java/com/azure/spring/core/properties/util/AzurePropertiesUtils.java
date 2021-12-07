@@ -21,16 +21,15 @@ import java.util.function.Predicate;
 public final class AzurePropertiesUtils {
 
     /**
-     *
-     * @param source The source AzureProperties object.
-     * @param target The target AzureProperties object.
-     * @param <T> The type of AzureProperties.
+     * Copy common properties from source {@link AzureProperties} object to target {@link T} object.
+     * @param source The source {@link AzureProperties} object.
+     * @param target The target object.
+     * @param <T> The type of the target that extends AzureProperties.
      */
     public static <T extends AzureProperties> void copyAzureCommonProperties(AzureProperties source, T target) {
         // call explicitly for these fields could be defined as final
         BeanUtils.copyProperties(source.getClient(), target.getClient());
-
-        copyHttpLoggingProperties(source, target);
+        copyHttpLoggingProperties(source, target, false);
 
         BeanUtils.copyProperties(source.getProxy(), target.getProxy());
         BeanUtils.copyProperties(source.getRetry(), target.getRetry());
@@ -40,29 +39,18 @@ public final class AzurePropertiesUtils {
         BeanUtils.copyProperties(source.getCredential(), target.getCredential());
     }
 
-    private static <T extends AzureProperties> void copyHttpLoggingProperties(AzureProperties source, T target) {
-        if (source.getClient() instanceof ClientAware.HttpClient
-            && target.getClient() instanceof ClientAware.HttpClient) {
-            ClientAware.HttpClient sourceClient = (ClientAware.HttpClient) source.getClient();
-            ClientAware.HttpClient targetClient = (ClientAware.HttpClient) target.getClient();
-            BeanUtils.copyProperties(sourceClient.getLogging(), targetClient.getLogging());
-            targetClient.getLogging().getAllowedHeaderNames().addAll(sourceClient.getLogging().getAllowedHeaderNames());
-            targetClient.getLogging().getAllowedQueryParamNames().addAll(sourceClient.getLogging().getAllowedQueryParamNames());
-        }
-    }
-
     // TODO (xiada): add tests for this
+    /**
+     * Copy common properties from source {@link AzureProperties} object to target {@link T} object. Ignore the source
+     * value if it is null.
+     *
+     * @param source The source {@link AzureProperties} object.
+     * @param target The target object.
+     * @param <T> The type of the target that extends AzureProperties.
+     */
     public static <T extends AzureProperties> void copyAzureCommonPropertiesIgnoreNull(AzureProperties source, T target) {
         copyPropertiesIgnoreNull(source.getClient(), target.getClient());
-
-        if (source.getClient() instanceof ClientAware.HttpClient
-            && target.getClient() instanceof ClientAware.HttpClient) {
-            ClientAware.HttpClient sourceClient = (ClientAware.HttpClient) source.getClient();
-            ClientAware.HttpClient targetClient = (ClientAware.HttpClient) target.getClient();
-            copyPropertiesIgnoreNull(sourceClient.getLogging(), targetClient.getLogging());
-            targetClient.getLogging().getAllowedHeaderNames().addAll(sourceClient.getLogging().getAllowedHeaderNames());
-            targetClient.getLogging().getAllowedQueryParamNames().addAll(sourceClient.getLogging().getAllowedQueryParamNames());
-        }
+        copyHttpLoggingProperties(source, target, true);
 
         copyPropertiesIgnoreNull(source.getProxy(), target.getProxy());
         copyPropertiesIgnoreNull(source.getRetry(), target.getRetry());
@@ -72,6 +60,15 @@ public final class AzurePropertiesUtils {
         copyPropertiesIgnoreNull(source.getCredential(), target.getCredential());
     }
 
+    /**
+     * Merge properties from two {@link AzureProperties} objects. If a same property appears in both two objects, the
+     * value from the latter will take precedence.
+     * @param defaultProperties The default properties, the merge result will take value from this property as default.
+     * @param properties The overridden properties, the merge result will take value from this if a same property
+     *                   appears in two property objects.
+     * @param target The merge result.
+     * @param <T> The type of the merge result.
+     */
     public static <T extends AzureProperties> void mergeAzureCommonProperties(AzureProperties defaultProperties,
                                                                               AzureProperties properties,
                                                                               T target) {
@@ -79,12 +76,32 @@ public final class AzurePropertiesUtils {
         copyAzureCommonPropertiesIgnoreNull(properties, target);
     }
 
-    public static <T> void copyPropertiesWhenTargetIsNull(T source, T target) {
-        BeanUtils.copyProperties(source, target, findNonNullPropertyNames(target));
-    }
-
+    /**
+     * Copy common properties from source object to target object. Ignore the source value if it is null.
+     *
+     * @param source The source object.
+     * @param target The target object.
+     */
     public static void copyPropertiesIgnoreNull(Object source, Object target) {
         BeanUtils.copyProperties(source, target, findNullPropertyNames(source));
+    }
+
+    private static <T extends AzureProperties> void copyHttpLoggingProperties(AzureProperties source,
+                                                                              T target,
+                                                                              boolean ignoreNull) {
+        if (source.getClient() instanceof ClientAware.HttpClient
+            && target.getClient() instanceof ClientAware.HttpClient) {
+
+            ClientAware.HttpClient sourceClient = (ClientAware.HttpClient) source.getClient();
+            ClientAware.HttpClient targetClient = (ClientAware.HttpClient) target.getClient();
+            if (ignoreNull) {
+                copyPropertiesIgnoreNull(sourceClient.getLogging(), targetClient.getLogging());
+            } else {
+                BeanUtils.copyProperties(sourceClient.getLogging(), targetClient.getLogging());
+            }
+            targetClient.getLogging().getAllowedHeaderNames().addAll(sourceClient.getLogging().getAllowedHeaderNames());
+            targetClient.getLogging().getAllowedQueryParamNames().addAll(sourceClient.getLogging().getAllowedQueryParamNames());
+        }
     }
 
     private static String[] findPropertyNames(Object source, Predicate<Object> predicate) {

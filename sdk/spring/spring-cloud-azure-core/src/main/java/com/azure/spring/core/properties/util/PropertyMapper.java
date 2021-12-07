@@ -17,14 +17,28 @@ public final class PropertyMapper {
 
     private final boolean alwaysApplyNonNull;
 
+    /**
+     * Creates a new instance that applies {@link Source#whenNonNull() whenNonNull} to every source by default.
+     */
     public PropertyMapper() {
         this(true);
     }
 
+    /**
+     * Create a new instance with flag indicating whether to apply {@link Source#whenNonNull() whenNonNull} to every
+     * source.
+     */
     public PropertyMapper(boolean alwaysApplyNonNull) {
         this.alwaysApplyNonNull = alwaysApplyNonNull;
     }
 
+    /**
+     * Return a new {@link Source} from the specified value supplier that can be used to
+     * perform the mapping.
+     * @param <T> the source type
+     * @param supplier the value supplier
+     * @return a {@link Source} that can be used to complete the mapping
+     */
     public <T> Source<T> from(Supplier<T> supplier) {
         Assert.notNull(supplier, "Supplier must not be null");
         Source<T> source = new Source<>(supplier, (t) -> true);
@@ -34,6 +48,13 @@ public final class PropertyMapper {
         return source;
     }
 
+    /**
+     * Return a new {@link Source} from the specified value that can be used to perform
+     * the mapping.
+     * @param <T> the source type
+     * @param val the value
+     * @return a {@link Source} that can be used to complete the mapping
+     */
     public <T> Source<T> from(T val) {
         return from(() -> val);
     }
