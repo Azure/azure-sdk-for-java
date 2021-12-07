@@ -14,19 +14,23 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
+import com.azure.storage.file.share.implementation.models.DestinationLeaseAccessConditions;
 import com.azure.storage.file.share.implementation.models.DirectoriesCreateResponse;
 import com.azure.storage.file.share.implementation.models.DirectoriesGetPropertiesResponse;
 import com.azure.storage.file.share.implementation.models.DirectoriesListFilesAndDirectoriesSegmentResponse;
 import com.azure.storage.file.share.implementation.models.DirectoriesSetMetadataResponse;
 import com.azure.storage.file.share.implementation.models.DirectoriesSetPropertiesResponse;
 import com.azure.storage.file.share.implementation.models.ListFilesIncludeType;
+import com.azure.storage.file.share.implementation.models.SourceLeaseAccessConditions;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
@@ -40,6 +44,7 @@ import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileItem;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.options.ShareFileRenameOptions;
 import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
@@ -976,6 +981,51 @@ public class ShareDirectoryAsyncClient {
                     response.getDeserializedHeaders()));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
+    }
+
+    Mono<Response<ShareDirectoryAsyncClient>> renameWithResponse(ShareFileRenameOptions options, Context context) {
+        StorageImplUtils.assertNotNull("options", options);
+
+        ShareRequestConditions sourceRequestConditions = options.getSourceRequestConditions() == null
+            ? new ShareRequestConditions() : options.getSourceRequestConditions();
+        ShareRequestConditions destinationRequestConditions = options.getDestinationRequestConditions() == null
+            ? new ShareRequestConditions() : options.getDestinationRequestConditions();
+
+        // We want to hide the SourceAccessConditions type from the user for consistency's sake, so we convert here.
+        SourceLeaseAccessConditions sourceConditions = new SourceLeaseAccessConditions()
+            .setSourceLeaseId(sourceRequestConditions.getLeaseId());
+        DestinationLeaseAccessConditions destinationConditions = new DestinationLeaseAccessConditions()
+            .setDestinationLeaseId(destinationRequestConditions.getLeaseId());
+
+        ShareDirectoryAsyncClient destinationDirectoryClient =
+            getDirectoryAsyncClient(options.getDestinationPath());
+
+        String renameSource = "/" + this.getShareName() + "/" + Utility.urlEncode(this.getDirectoryPath());
+        // TODO when support added to core
+//        String sasToken = this.extractSasToken();
+//        renameSource = sasToken == null ? renameSource : renameSource + sasToken;
+
+        return destinationDirectoryClient.azureFileStorageClient.getDirectories().renameWithResponseAsync(
+            destinationDirectoryClient.getShareName(), destinationDirectoryClient.getDirectoryPath(), renameSource,
+            null /* timeout */, options.getReplaceIfExists(), options.getIgnoreReadOnly(),
+            options.getFilePermission(), options.getFilePermissionKey(),
+            sourceConditions, destinationConditions, options.getSmbInfo(),
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            .map(response -> new SimpleResponse<>(response, destinationDirectoryClient));
+    }
+
+    /**
+     * Takes in a destination and creates a ShareFileAsyncClient with a new path
+     * @param destinationPath The destination path
+     * @return A DataLakePathAsyncClient
+     */
+    ShareDirectoryAsyncClient getDirectoryAsyncClient(String destinationPath) {
+        if (CoreUtils.isNullOrEmpty(destinationPath)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'destinationPath' can not be set to null"));
+        }
+
+        return new ShareDirectoryAsyncClient(this.azureFileStorageClient, getShareName(), destinationPath, null,
+            this.getAccountName(), this.getServiceVersion());
     }
 
     /**

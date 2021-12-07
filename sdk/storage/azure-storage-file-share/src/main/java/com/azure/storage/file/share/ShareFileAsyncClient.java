@@ -6,9 +6,11 @@ package com.azure.storage.file.share;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.AzureSasCredentialPolicy;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
@@ -34,6 +36,7 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
+import com.azure.storage.file.share.implementation.models.DestinationLeaseAccessConditions;
 import com.azure.storage.file.share.implementation.models.FilesCreateResponse;
 import com.azure.storage.file.share.implementation.models.FilesGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetPropertiesResponse;
@@ -45,6 +48,7 @@ import com.azure.storage.file.share.implementation.models.FilesUploadRangeFromUR
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeHeaders;
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeResponse;
 import com.azure.storage.file.share.implementation.models.ShareFileRangeWriteType;
+import com.azure.storage.file.share.implementation.models.SourceLeaseAccessConditions;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
@@ -73,8 +77,10 @@ import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.models.SourceModifiedAccessConditions;
 import com.azure.storage.file.share.options.ShareFileDownloadOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
+import com.azure.storage.file.share.options.ShareFileRenameOptions;
 import com.azure.storage.file.share.options.ShareFileUploadRangeFromUrlOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.Exceptions;
@@ -175,6 +181,12 @@ public class ShareFileAsyncClient {
         this.azureFileStorageClient = azureFileStorageClient;
         this.accountName = accountName;
         this.serviceVersion = serviceVersion;
+    }
+
+    ShareFileAsyncClient(ShareFileAsyncClient fileAsyncClient) {
+        this(fileAsyncClient.azureFileStorageClient, fileAsyncClient.shareName,
+            Utility.urlEncode(fileAsyncClient.filePath), fileAsyncClient.snapshot, fileAsyncClient.accountName,
+            fileAsyncClient.serviceVersion);
     }
 
     /**
@@ -2842,6 +2854,115 @@ public class ShareFileAsyncClient {
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
+
+    /**
+     * Moves the file to another location within the share.
+     * For more information see the
+     * <a href="TODO">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareFileAsyncClient.rename#String -->
+     * <pre>
+     * DataLakeFileAsyncClient renamedClient = client.rename&#40;destinationPath&#41;.block&#40;&#41;;
+     * System.out.println&#40;&quot;Directory Client has been renamed&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareAsyncClient.rename#String -->
+     *
+     * @param destinationPath Relative path from the share to rename the directory to.
+     * @return A {@link Mono} containing a {@link ShareFileAsyncClient} used to interact with the new file created.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ShareFileAsyncClient> rename(String destinationPath) {
+        try {
+            return renameWithResponse(new ShareFileRenameOptions(destinationPath)).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Moves the file to another location within the share.
+     * For more information see the
+     * <a href="TODO">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareFileAsyncClient.renameWithResponse#ShareFileRenameOptions -->
+     * <pre>
+     * TODO
+     * <!-- end com.azure.storage.file.share.ShareFileAsyncClient.renameWithResponse#ShareFileRenameOptions -->
+     *
+     * @param options {@link ShareFileRenameOptions}
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
+     * ShareFileAsyncClient} used to interact with the file created.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ShareFileAsyncClient>> renameWithResponse(ShareFileRenameOptions options) {
+        try {
+            return withContext(context -> renameWithResponse(options, context))
+                .map(response -> new SimpleResponse<>(response,
+                    new ShareFileAsyncClient(response.getValue())));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<ShareFileAsyncClient>> renameWithResponse(ShareFileRenameOptions options, Context context) {
+        StorageImplUtils.assertNotNull("options", options);
+
+        ShareRequestConditions sourceRequestConditions = options.getSourceRequestConditions() == null
+            ? new ShareRequestConditions() : options.getSourceRequestConditions();
+        ShareRequestConditions destinationRequestConditions = options.getDestinationRequestConditions() == null
+            ? new ShareRequestConditions() : options.getDestinationRequestConditions();
+
+        // We want to hide the SourceAccessConditions type from the user for consistency's sake, so we convert here.
+        SourceLeaseAccessConditions sourceConditions = new SourceLeaseAccessConditions()
+            .setSourceLeaseId(sourceRequestConditions.getLeaseId());
+        DestinationLeaseAccessConditions destinationConditions = new DestinationLeaseAccessConditions()
+            .setDestinationLeaseId(destinationRequestConditions.getLeaseId());
+
+        ShareFileAsyncClient destinationFileClient = getFileAsyncClient(options.getDestinationPath());
+
+        String renameSource = "/" + this.getShareName() + "/" + Utility.urlEncode(this.getFilePath());
+        // TODO when support added to core
+//        String sasToken = this.extractSasToken();
+//        renameSource = sasToken == null ? renameSource : renameSource + sasToken;
+
+        return destinationFileClient.azureFileStorageClient.getFiles().renameWithResponseAsync(
+            destinationFileClient.getShareName(), destinationFileClient.getFilePath(), renameSource,
+            null /* timeout */, options.getReplaceIfExists(), options.getIgnoreReadOnly(),
+            options.getFilePermission(), options.getFilePermissionKey(),
+            sourceConditions, destinationConditions, options.getSmbInfo(), options.getHttpHeaders(),
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            .map(response -> new SimpleResponse<>(response, destinationFileClient));
+    }
+
+    /**
+     * Takes in a destination and creates a ShareFileAsyncClient with a new path
+     * @param destinationPath The destination path
+     * @return A DataLakePathAsyncClient
+     */
+    ShareFileAsyncClient getFileAsyncClient(String destinationPath) {
+        if (CoreUtils.isNullOrEmpty(destinationPath)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'destinationPath' can not be set to null"));
+        }
+
+        return new ShareFileAsyncClient(this.azureFileStorageClient, getShareName(), destinationPath, null,
+            this.getAccountName(), this.getServiceVersion());
+    }
+
+//    private String extractSasToken() {
+//        for (int i = 0; i < this.getHttpPipeline().getPolicyCount(); i++) {
+//            if (this.getHttpPipeline().getPolicy(i) instanceof AzureSasCredentialPolicy) {
+//                AzureSasCredentialPolicy policy = (AzureSasCredentialPolicy) this.getHttpPipeline().getPolicy(i);
+//                return policy.getCredential().getSignature();
+//            }
+//        }
+//        return null;
+//    }
 
     /**
      * Get snapshot id which attached to {@link ShareFileAsyncClient}. Return {@code null} if no snapshot id attached.
