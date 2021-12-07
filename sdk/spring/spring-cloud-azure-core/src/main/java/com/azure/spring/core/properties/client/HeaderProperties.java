@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Describing a header such as a http header.
  */
-public class HeaderProperties {
+public final class HeaderProperties {
 
     private String name;
 

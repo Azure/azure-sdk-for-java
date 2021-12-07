@@ -18,7 +18,7 @@ import java.util.function.Predicate;
 /**
  *
  */
-public class AzurePropertiesUtils {
+public final class AzurePropertiesUtils {
 
     /**
      *

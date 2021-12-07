@@ -10,7 +10,7 @@ import static com.azure.spring.core.aware.AzureProfileAware.CloudType.AZURE;
 /**
  * The AzureProfile defines the properties related to an Azure subscription.
  */
-public class AzureProfile extends AzureProfileAdapter {
+public final class AzureProfile extends AzureProfileAdapter {
 
     private String tenantId;
     private String subscriptionId;

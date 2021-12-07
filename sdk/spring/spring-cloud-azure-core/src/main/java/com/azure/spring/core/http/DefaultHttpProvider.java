@@ -10,7 +10,7 @@ import com.azure.core.util.HttpClientOptions;
 /**
  * A default http client provider.
  */
-public class DefaultHttpProvider implements HttpClientProvider {
+public final class DefaultHttpProvider implements HttpClientProvider {
 
     @Override
     public HttpClient createInstance() {

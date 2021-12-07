@@ -10,7 +10,7 @@ import java.time.Duration;
 /**
  * Backoff properties when a retry fails.
  */
-public class BackoffProperties implements RetryAware.Backoff {
+public final class BackoffProperties implements RetryAware.Backoff {
 
     private Duration delay;
     private Duration maxDelay;

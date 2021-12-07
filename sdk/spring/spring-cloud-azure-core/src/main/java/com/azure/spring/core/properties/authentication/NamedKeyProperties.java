@@ -6,7 +6,7 @@ package com.azure.spring.core.properties.authentication;
 /**
  * Represents a pojo containing the key and the name of the key.
  */
-public class NamedKeyProperties {
+public final class NamedKeyProperties {
     private String name;
     private String key;
 

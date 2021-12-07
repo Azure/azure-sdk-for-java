@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 /**
  * This is a simple version of PropertyMapper in Spring Boot project.
  */
-public class PropertyMapper {
+public final class PropertyMapper {
 
     private final boolean alwaysApplyNonNull;
 

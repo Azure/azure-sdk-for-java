@@ -15,7 +15,7 @@ import java.util.function.Function;
  * Memorize function execution result
  *
  */
-public class Memoizer {
+public final class Memoizer {
     /**
      * Memoizes a function.
      *
