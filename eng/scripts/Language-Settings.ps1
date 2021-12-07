@@ -336,7 +336,10 @@ function PackageDependenciesResolve($artifactNamePrefix, $packageDirectory) {
   return $true
 }
 
-function ValidatePackage($groupId, $artifactId, $version, $workingDirectory) {
+function ValidatePackage($groupId, $artifactId, $version) {
+  $workingDirectory = Join-Path ([System.IO.Path]::GetTempPath()) ([System.IO.Path]::GetRandomFileName())
+  New-Item -ItemType Directory -Force -Path $workingDirectory | Out-Null
+
   $artifactNamePrefix = "${groupId}:${artifactId}:${version}"
 
   $packageDirectory = Join-Path `
@@ -371,9 +374,6 @@ function Update-java-DocsMsPackages($DocsRepoLocation, $DocsMetadata, $PackageSo
 
 function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
   $packageConfig = Get-Content $DocConfigFile -Raw | ConvertFrom-Json
-
-  $workingDirectory = Join-Path ([System.IO.Path]::GetTempPath()) ([System.IO.Path]::GetRandomFileName())
-  New-Item -ItemType Directory -Force -Path $workingDirectory | Out-Null
 
   $packageOutputPath = 'docs-ref-autogen'
   if ($Mode -eq 'preview') {
@@ -439,7 +439,7 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
     # If upgrading the package, run basic sanity checks against the package
     if ($package.packageVersion -ne $packageVersion) {
       Write-Host "Validating new version detected for $packageName ($packageVersion)"
-      $validatePackageResult = ValidatePackage $package.packageGroupId $package.packageArtifactId $packageVersion $workingDirectory
+      $validatePackageResult = ValidatePackage $package.packageGroupId $package.packageArtifactId $packageVersion 
 
       if (!$validatePackageResult) {
         LogWarning "Package is not valid: $packageName. Keeping old version."
@@ -480,7 +480,7 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
     }
 
     Write-Host "Validating new package $($packageGroupId):$($packageName):$($packageVersion)"
-    $validatePackageResult = ValidatePackage $packageGroupId $packageName $packageVersion $workingDirectory
+    $validatePackageResult = ValidatePackage $packageGroupId $packageName $packageVersion 
     if (!$validatePackageResult) {
       LogWarning "Package is not valid: ${packageGroupId}:$packageName. Cannot onboard."
       continue
@@ -610,4 +610,19 @@ function Get-java-DocsMsMetadataForPackage($PackageInfo) {
     PreviewReadMeLocation = 'docs-ref-services/preview'
     Suffix = ''
   }
+}
+
+function Validate-java-DocMsPackages { 
+  Param(
+    [Parameter(Mandatory = $true)]
+    [PSCustomObject]$PackageInfo,
+    [Parameter(Mandatory = $false)]
+    [string]$PackageSourceOverride,
+    [Parameter(Mandatory = $false)]
+    [string]$DocValidationImageId
+  ) 
+  $packageGroupId = $PackageInfo.Name
+  $packageVersion= $PackageInfo.Version
+  $p
+  ValidatePackage $packageGroupId $packageName $packageVersion 
 }
