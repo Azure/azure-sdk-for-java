@@ -46,7 +46,6 @@ io.github.bonigarcia:webdrivermanager;4.3.1
 io.micrometer:micrometer-core;1.8.0
 io.micrometer:micrometer-registry-azure-monitor;1.8.0
 io.micrometer:micrometer-registry-graphite;1.8.0
-io.netty:netty-all;4.1.70.Final
 io.netty:netty-buffer;4.1.70.Final
 io.netty:netty-common;4.1.70.Final
 io.netty:netty-codec-http;4.1.70.Final
