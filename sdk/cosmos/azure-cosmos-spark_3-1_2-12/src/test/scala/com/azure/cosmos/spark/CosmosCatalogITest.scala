@@ -2,7 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.{TestConfigurations, Utils}
+import com.azure.cosmos.CosmosException
+import com.azure.cosmos.implementation.{BadRequestException, TestConfigurations, Utils}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.apache.commons.lang3.RandomStringUtils
 import org.apache.spark.sql.SparkSession
@@ -89,6 +90,132 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
     // validate throughput
     val throughput = cosmosClient.getDatabase(databaseName).getContainer(containerName).readThroughput().block().getProperties
     throughput.getManualThroughput shouldEqual 400
+
+    val tblProperties = getTblProperties(spark, databaseName, containerName)
+
+    tblProperties should have size 8
+
+    tblProperties("AnalyticalStorageTtlInSecondsSnapshot") shouldEqual "null"
+    tblProperties("ChangeFeedPolicySnapshot") shouldEqual "{\"retentionDuration\":0}"
+    tblProperties("CosmosPartitionCountSnapshot") shouldEqual "1"
+    tblProperties("CosmosPartitionKeyDefinition") shouldEqual "{\"paths\":[\"/id\"],\"kind\":\"Hash\"}"
+    tblProperties("DefaultTtlInSecondsSnapshot") shouldEqual "null"
+    tblProperties("IndexingPolicySnapshot") shouldEqual
+      "{\"indexingMode\":\"consistent\",\"automatic\":true,\"includedPaths\":[{\"path\":\"/*\"}]," +
+        "\"excludedPaths\":[{\"path\":\"/\\\"_etag\\\"/?\"}]}"
+
+    // would look like Manual|RUProvisioned|LastOfferModification
+    // - last modified as iso datetime like 2021-12-07T10:33:44Z
+    tblProperties("ProvisionedThroughputSnapshot").startsWith("Manual|400|") shouldEqual true
+    tblProperties("ProvisionedThroughputSnapshot").size shouldEqual 31
+
+    // last modified as iso datetime like 2021-12-07T10:33:44Z
+    tblProperties("LastModifiedSnapshot").size shouldEqual 20
+  }
+
+  it can "create a table with shared throughput and Hash V2" in {
+    val databaseName = getAutoCleanableDatabaseName()
+    val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
+    cleanupDatabaseLater(databaseName)
+
+    spark.sql(s"CREATE DATABASE testCatalog.$databaseName WITH DBPROPERTIES ('manualThroughput' = '1000');")
+    spark.sql(
+      s"CREATE TABLE testCatalog.$databaseName.$containerName (word STRING, number INT) using cosmos.oltp " +
+        // TODO @fabianm Emulator doesn't seem to support analytical store - needs to be tested separately
+        // s"TBLPROPERTIES(partitionKeyVersion = 'V2', analyticalStorageTtlInSeconds = '3000000')")
+        s"TBLPROPERTIES(partitionKeyVersion = 'V2')")
+
+    val containerProperties = cosmosClient.getDatabase(databaseName).getContainer(containerName).read().block().getProperties
+
+    // verify default partition key path is used
+    containerProperties.getPartitionKeyDefinition.getPaths.asScala.toArray should equal(Array("/id"))
+
+    try {
+      // validate that container uses shared database throughput as default
+      cosmosClient.getDatabase(databaseName).getContainer(containerName).readThroughput().block().getProperties
+
+      fail("Expected CosmosException not thrown")
+    }
+    catch {
+      case expectedError: CosmosException => {
+        expectedError.getStatusCode shouldEqual 400
+        logInfo(s"Expected CosmosException: $expectedError")
+        succeed
+      }
+    }
+
+    val tblProperties = getTblProperties(spark, databaseName, containerName)
+
+    tblProperties should have size 8
+
+    // tblProperties("AnalyticalStorageTtlInSecondsSnapshot") shouldEqual "3000000"
+    tblProperties("AnalyticalStorageTtlInSecondsSnapshot") shouldEqual "null"
+    tblProperties("ChangeFeedPolicySnapshot") shouldEqual "{\"retentionDuration\":0}"
+    tblProperties("CosmosPartitionCountSnapshot") shouldEqual "1"
+    tblProperties("CosmosPartitionKeyDefinition") shouldEqual "{\"paths\":[\"/id\"],\"kind\":\"Hash\",\"version\":2}"
+    tblProperties("DefaultTtlInSecondsSnapshot") shouldEqual "null"
+    tblProperties("IndexingPolicySnapshot") shouldEqual
+      "{\"indexingMode\":\"consistent\",\"automatic\":true,\"includedPaths\":[{\"path\":\"/*\"}]," +
+        "\"excludedPaths\":[{\"path\":\"/\\\"_etag\\\"/?\"}]}"
+
+    // would look like Manual|RUProvisioned|LastOfferModification
+    // - last modified as iso datetime like 2021-12-07T10:33:44Z
+    logInfo(s"ProvisionedThroughputSnapshot: ${tblProperties("ProvisionedThroughputSnapshot")}")
+    tblProperties("ProvisionedThroughputSnapshot").startsWith("Shared.Manual|1000|") shouldEqual true
+    tblProperties("ProvisionedThroughputSnapshot").size shouldEqual 39
+
+    // last modified as iso datetime like 2021-12-07T10:33:44Z
+    tblProperties("LastModifiedSnapshot").size shouldEqual 20
+  }
+
+  it can "create a table with defaults but shared autoscale throughput" in {
+    val databaseName = getAutoCleanableDatabaseName()
+    val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
+    cleanupDatabaseLater(databaseName)
+
+    spark.sql(s"CREATE DATABASE testCatalog.$databaseName WITH DBPROPERTIES ('autoScaleMaxThroughput' = '16000');")
+    spark.sql(s"CREATE TABLE testCatalog.$databaseName.$containerName (word STRING, number INT) using cosmos.oltp;")
+
+    val containerProperties = cosmosClient.getDatabase(databaseName).getContainer(containerName).read().block().getProperties
+
+    // verify default partition key path is used
+    containerProperties.getPartitionKeyDefinition.getPaths.asScala.toArray should equal(Array("/id"))
+
+    try {
+      // validate that container uses shared database throughput as default
+      cosmosClient.getDatabase(databaseName).getContainer(containerName).readThroughput().block().getProperties
+
+      fail("Expected CosmosException not thrown")
+    }
+    catch {
+      case expectedError: CosmosException => {
+        expectedError.getStatusCode shouldEqual 400
+        logInfo(s"Expected CosmosException: $expectedError")
+        succeed
+      }
+    }
+
+    val tblProperties = getTblProperties(spark, databaseName, containerName)
+
+    tblProperties should have size 8
+
+    tblProperties("AnalyticalStorageTtlInSecondsSnapshot") shouldEqual "null"
+    tblProperties("ChangeFeedPolicySnapshot") shouldEqual "{\"retentionDuration\":0}"
+    tblProperties("CosmosPartitionCountSnapshot") shouldEqual "2"
+    tblProperties("CosmosPartitionKeyDefinition") shouldEqual "{\"paths\":[\"/id\"],\"kind\":\"Hash\"}"
+    tblProperties("DefaultTtlInSecondsSnapshot") shouldEqual "null"
+    tblProperties("IndexingPolicySnapshot") shouldEqual
+      "{\"indexingMode\":\"consistent\",\"automatic\":true,\"includedPaths\":[{\"path\":\"/*\"}]," +
+        "\"excludedPaths\":[{\"path\":\"/\\\"_etag\\\"/?\"}]}"
+
+    // would look like Manual|RUProvisioned|LastOfferModification
+    // - last modified as iso datetime like 2021-12-07T10:33:44Z
+    logInfo(s"ProvisionedThroughputSnapshot: ${tblProperties("ProvisionedThroughputSnapshot")}")
+    tblProperties("ProvisionedThroughputSnapshot").startsWith("Shared.AutoScale|1600|16000|") shouldEqual true
+    tblProperties("ProvisionedThroughputSnapshot").size shouldEqual 48
+
+    // last modified as iso datetime like 2021-12-07T10:33:44Z
+    tblProperties("LastModifiedSnapshot").size shouldEqual 20
   }
 
   it can "create a table with customized properties" in {
@@ -194,6 +321,30 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
     // validate throughput
     val throughput = cosmosClient.getDatabase(databaseName).getContainer(containerName).readThroughput().block().getProperties
     throughput.getManualThroughput shouldEqual 1100
+
+    val tblProperties = getTblProperties(spark, databaseName, containerName)
+
+    tblProperties should have size 8
+
+    tblProperties("AnalyticalStorageTtlInSecondsSnapshot") shouldEqual "null"
+    tblProperties("ChangeFeedPolicySnapshot") shouldEqual "{\"retentionDuration\":0}"
+    tblProperties("CosmosPartitionCountSnapshot") shouldEqual "1"
+    tblProperties("CosmosPartitionKeyDefinition") shouldEqual "{\"paths\":[\"/mypk\"],\"kind\":\"Hash\"}"
+    tblProperties("DefaultTtlInSecondsSnapshot") shouldEqual "null"
+
+    // indexPolicyJson will be normalized by teh backend - so not be the same as the input json
+    // for the purpose of this test I just want to make sure that the custom indexing options
+    // are included - correctness of json serialization of indexing policy is tested elsewhere
+    tblProperties("IndexingPolicySnapshot").contains("helloWorld") shouldEqual true
+    tblProperties("IndexingPolicySnapshot").contains("mypk") shouldEqual true
+
+    // would look like Manual|RUProvisioned|LastOfferModification
+    // - last modified as iso datetime like 2021-12-07T10:33:44Z
+    tblProperties("ProvisionedThroughputSnapshot").startsWith("Manual|1100|") shouldEqual true
+    tblProperties("ProvisionedThroughputSnapshot").size shouldEqual 32
+
+    // last modified as iso datetime like 2021-12-07T10:33:44Z
+    tblProperties("LastModifiedSnapshot").size shouldEqual 20
   }
 
   it can "create a table with TTL -1" in {
@@ -207,6 +358,9 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
     val containerProperties = cosmosClient.getDatabase(databaseName).getContainer(containerName).read().block().getProperties
     containerProperties.getPartitionKeyDefinition.getPaths.asScala.toArray should equal(Array("/mypk"))
     containerProperties.getDefaultTimeToLiveInSeconds shouldEqual -1
+
+    val tblProperties = getTblProperties(spark, databaseName, containerName)
+    tblProperties("DefaultTtlInSecondsSnapshot") shouldEqual "-1"
   }
 
   it can "create a table with positive TTL" in {
@@ -220,6 +374,9 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
     val containerProperties = cosmosClient.getDatabase(databaseName).getContainer(containerName).read().block().getProperties
     containerProperties.getPartitionKeyDefinition.getPaths.asScala.toArray should equal(Array("/mypk"))
     containerProperties.getDefaultTimeToLiveInSeconds shouldEqual 5
+
+    val tblProperties = getTblProperties(spark, databaseName, containerName)
+    tblProperties("DefaultTtlInSecondsSnapshot") shouldEqual "5"
   }
 
   it can "select from a catalog table with default TBLPROPERTIES" in {
@@ -552,6 +709,31 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
         succeed
       }
     }
+  }
+
+  private def getTblProperties(spark: SparkSession, databaseName: String, containerName: String) = {
+    val descriptionDf = spark.sql(s"DESCRIBE TABLE EXTENDED testCatalog.$databaseName.$containerName;")
+    val tblPropertiesRowsArray = descriptionDf
+      .where("col_name = 'Table Properties'")
+      .collect()
+
+    for (row <- tblPropertiesRowsArray) {
+      logInfo(row.mkString)
+    }
+    tblPropertiesRowsArray should have size 1
+
+    // Output will look something like this
+    // [key1='value1',key2='value2',...]
+    val tblPropertiesText = tblPropertiesRowsArray(0).getAs[String]("data_type")
+    // parsing this into dictionary
+
+    val keyValuePairs = tblPropertiesText.substring(1, tblPropertiesText.length - 2).split("',")
+    keyValuePairs
+      .map(kvp => {
+        val columns = kvp.split("='")
+        (columns(0), (columns(1)))
+      })
+      .toMap
   }
 
   private def createDatabase(spark: SparkSession, databaseName: String) = {
