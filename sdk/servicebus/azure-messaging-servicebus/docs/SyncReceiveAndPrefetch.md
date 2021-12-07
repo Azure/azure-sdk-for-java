@@ -57,7 +57,7 @@ Given the prefetch-queue is shared, the messages will get asynchronously buffere
 
 Any messages from a previous `receiveMessages` call that its Iterable couldn't read from the buffer (prefetch-queue) will be read and delivered by the Iterable from the next `receiveMessages` call on the same Client. 
 
-Let's take the previous example, say within `maxTimeout` of 5 sec, the service returned only 7 messages out of 10; in this case, the `messagesIterable` will complete after returning those 7 messages and exit the for loop. The remaining 3 messages can get buffered in the background. If the application again calls `receiveMessages(5, ..)`, then SDK initiates a request for 5 messages. The new Iterable read and deliver 5 messages from the buffer (starting with the first three messages buffered by initial `revceiveMessages` call).
+Let's take the previous example, say within `maxTimeout` of 5 sec, the service returned only 7 messages out of 10; the `messagesIterable` will complete after returning those 7 messages and exits the for-loop. The remaining 3 messages can get buffered in the background. If the application then calls `receiveMessages(5, ..)`, then SDK initiates a request for 5 messages. The new Iterable read and deliver 5 messages from the buffer (starting with the first three messages buffered by the initial `receiveMessages` call).
 
 <img width="897" alt="PrefetchQueueSharing" src="https://user-images.githubusercontent.com/1471612/144946661-17155943-60a1-47e4-b772-2dafe53d379a.png">
 
@@ -65,7 +65,7 @@ If the application decide not to do anything with the messages in the buffer, th
 
 #### Timers in receiveMessages API:
 
-An invocation of `receiveMessages(int maxMessages, Duration maxWaitTime)` users two timers. 
+An invocation of `receiveMessages(int maxMessages, Duration maxWaitTime)` uses two timers. 
 
 The first one enables `maxWaitTime` support, controlling the maximum duration client should wait for entire batch of `maxMessages` messages to arrive. If `maxWaitTime` elapses before `maxMessages` messages arrive, Iterable returns whatever messages it received and completes.
 
