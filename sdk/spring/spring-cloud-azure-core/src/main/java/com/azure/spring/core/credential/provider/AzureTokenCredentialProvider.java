@@ -13,6 +13,10 @@ public final class AzureTokenCredentialProvider implements AzureCredentialProvid
 
     private final TokenCredential tokenCredential;
 
+    /**
+     * Create a {@link AzureTokenCredentialProvider} of with the token credential.
+     * @param tokenCredential The token credential.
+     */
     public AzureTokenCredentialProvider(TokenCredential tokenCredential) {
         this.tokenCredential = tokenCredential;
     }

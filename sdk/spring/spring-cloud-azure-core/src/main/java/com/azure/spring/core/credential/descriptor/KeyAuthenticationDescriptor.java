@@ -17,6 +17,10 @@ public final class KeyAuthenticationDescriptor implements AuthenticationDescript
 
     private final Consumer<AzureKeyCredentialProvider> consumer;
 
+    /**
+     * Create a {@link KeyAuthenticationDescriptor} instance with the consumer to consume the resolved credential.
+     * @param consumer The consumer to consume the resolved credential.
+     */
     public KeyAuthenticationDescriptor(Consumer<AzureKeyCredentialProvider> consumer) {
         this.consumer = consumer;
     }

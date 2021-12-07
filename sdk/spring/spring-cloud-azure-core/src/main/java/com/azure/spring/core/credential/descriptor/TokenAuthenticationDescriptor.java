@@ -3,9 +3,9 @@
 
 package com.azure.spring.core.credential.descriptor;
 
+import com.azure.spring.core.credential.AzureCredentialResolver;
 import com.azure.spring.core.credential.AzureCredentialType;
 import com.azure.spring.core.credential.provider.AzureTokenCredentialProvider;
-import com.azure.spring.core.credential.AzureCredentialResolver;
 import com.azure.spring.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 
 import java.util.function.Consumer;
@@ -17,6 +17,10 @@ public final class TokenAuthenticationDescriptor implements AuthenticationDescri
 
     private final Consumer<AzureTokenCredentialProvider> consumer;
 
+    /**
+     * Create a {@link TokenAuthenticationDescriptor} instance with the consumer to consume the resolved credential.
+     * @param consumer The consumer to consume the resolved credential.
+     */
     public TokenAuthenticationDescriptor(Consumer<AzureTokenCredentialProvider> consumer) {
         this.consumer = consumer;
     }

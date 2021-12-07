@@ -3,9 +3,9 @@
 
 package com.azure.spring.core.credential.descriptor;
 
+import com.azure.spring.core.credential.AzureCredentialResolver;
 import com.azure.spring.core.credential.AzureCredentialType;
 import com.azure.spring.core.credential.provider.AzureSasCredentialProvider;
-import com.azure.spring.core.credential.AzureCredentialResolver;
 import com.azure.spring.core.implementation.credential.resolver.AzureSasCredentialResolver;
 
 import java.util.function.Consumer;
@@ -17,6 +17,10 @@ public final class SasAuthenticationDescriptor implements AuthenticationDescript
 
     private final Consumer<AzureSasCredentialProvider> consumer;
 
+    /**
+     * Create a {@link SasAuthenticationDescriptor} instance with the consumer to consume the resolved credential.
+     * @param consumer The consumer to consume the resolved credential.
+     */
     public SasAuthenticationDescriptor(Consumer<AzureSasCredentialProvider> consumer) {
         this.consumer = consumer;
     }

@@ -20,11 +20,19 @@ public final class AzureCredentialType {
 
     private final String type;
 
+    /**
+     * Create an {@link AzureCredentialType} with the type name.
+     * @param type The name of the Azure credential type.
+     */
     public AzureCredentialType(String type) {
         Assert.hasText(type, "type cannot be empty");
         this.type = type;
     }
 
+    /**
+     * Get name of the Azure credential type.
+     * @return The name of the Azure credential type.
+     */
     public String getType() {
         return this.type;
     }

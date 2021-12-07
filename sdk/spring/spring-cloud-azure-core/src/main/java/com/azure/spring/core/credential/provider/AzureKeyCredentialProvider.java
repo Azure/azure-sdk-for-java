@@ -13,6 +13,10 @@ public final class AzureKeyCredentialProvider implements AzureCredentialProvider
 
     private final String key;
 
+    /**
+     * Create a {@link AzureNamedKeyCredentialProvider} instance with the Key Credential of value {@code key}.
+     * @param key The key Credential.
+     */
     public AzureKeyCredentialProvider(String key) {
         this.key = key;
     }

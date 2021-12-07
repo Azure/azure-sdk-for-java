@@ -42,14 +42,35 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
     private HttpClientProvider httpClientProvider = new DefaultHttpProvider();
     private final List<HttpPipelinePolicy> httpPipelinePolicies = new ArrayList<>();
     private HttpPipeline httpPipeline;
+
+    /**
+     * Return a {@link BiConsumer} of how the {@link T} builder consume a {@link HttpClient}.
+     * @return The consumer of how the {@link T} builder consume a {@link HttpClient}.
+     */
     protected abstract BiConsumer<T, HttpClient> consumeHttpClient();
 
+    /**
+     * Return a {@link BiConsumer} of how the {@link T} builder consume a {@link HttpPipelinePolicy}.
+     * @return The consumer of how the {@link T} builder consume a {@link HttpPipelinePolicy}.
+     */
     protected abstract BiConsumer<T, HttpPipelinePolicy> consumeHttpPipelinePolicy();
 
+    /**
+     * Return a {@link BiConsumer} of how the {@link T} builder consume a {@link HttpPipeline}.
+     * @return The consumer of how the {@link T} builder consume a {@link HttpPipeline}.
+     */
     protected abstract BiConsumer<T, HttpPipeline> consumeHttpPipeline();
 
+    /**
+     * Return a {@link BiConsumer} of how the {@link T} builder consume a {@link HttpLogOptions}.
+     * @return The consumer of how the {@link T} builder consume a {@link HttpLogOptions}.
+     */
     protected abstract BiConsumer<T, HttpLogOptions> consumeHttpLogOptions();
 
+    /**
+     * Return a {@link BiConsumer} of how the {@link T} builder consume a {@link RetryPolicy}.
+     * @return The consumer of how the {@link T} builder consume a {@link RetryPolicy}.
+     */
     protected abstract BiConsumer<T, RetryPolicy> consumeRetryPolicy();
 
     @Override
@@ -59,6 +80,13 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
         configureHttpLogOptions(builder);
     }
 
+    /**
+     * Configure the {@link HttpClient} to the {@link T} builder. If a {@link HttpPipeline} is provided to the factory,
+     * the pipeline will be set to the builder. Otherwise, a {@link HttpClient} will be created and together with the
+     * {@link HttpPipelinePolicy} set to the factory will be configured to the builder.
+     *
+     * @param builder The builder of the HTTP-based service client.
+     */
     protected void configureHttpClient(T builder) {
         if (this.httpPipeline != null) {
             consumeHttpPipeline().accept(builder, this.httpPipeline);
@@ -91,10 +119,20 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
         return (builder, id) -> this.httpClientOptions.setApplicationId(id);
     }
 
+    /**
+     * Configure the {@link Header} that will be sent with the HTTP requests made of the HTTP-based sdk client.
+     *
+     * @param builder The builder of the HTTP-based service client.
+     */
     protected void configureHttpHeaders(T builder) {
         this.httpClientOptions.setHeaders(getHeaders());
     }
 
+    /**
+     * Configure the {@link HttpLogOptions} to the builder.
+     *
+     * @param builder The builder of the HTTP-based service client.
+     */
     protected void configureHttpLogOptions(T builder) {
         ClientAware.Client client = getAzureProperties().getClient();
 
@@ -108,6 +146,11 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
 
     }
 
+    /**
+     * Configure the HTTP transport properties to the builder.
+     *
+     * @param builder The builder of the HTTP-based service client.
+     */
     protected void configureHttpTransportProperties(T builder) {
         final ClientAware.Client client = getAzureProperties().getClient();
         if (client == null) {
@@ -140,12 +183,21 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
         }
     }
 
+    /**
+     * Configure the set of {@link HttpPipelinePolicy} added via this factory to the builder.
+     *
+     * @param builder The builder of the HTTP-based service client.
+     */
     protected void configureHttpPipelinePolicies(T builder) {
         for (HttpPipelinePolicy policy : this.httpPipelinePolicies) {
             consumeHttpPipelinePolicy().accept(builder, policy);
         }
     }
 
+    /**
+     * Extract the HTTP headers from the {@link com.azure.spring.core.properties.AzureProperties}.
+     * @return The list of HTTP headers will be sent with the HTTP requests made of the HTTP-based sdk client.
+     */
     protected List<Header> getHeaders() {
         final ClientAware.Client client = getAzureProperties().getClient();
         if (client == null || client.getHeaders() == null) {
@@ -157,26 +209,50 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
                      .collect(Collectors.toList());
     }
 
+    /**
+     * Get a set of {@link HttpPipelinePolicy} configured via this factory.
+     *
+     * @return The list of the http pipeline policy.
+     */
+    protected List<HttpPipelinePolicy> getHttpPipelinePolicies() {
+        return Collections.unmodifiableList(this.httpPipelinePolicies);
+    }
+
+    /**
+     * Adds a {@link HttpPipelinePolicy} to the set of existing policies.
+     *
+     *  @param policy The {@link HttpPipelinePolicy policy} to be added.
+     */
+    public void addHttpPipelinePolicy(HttpPipelinePolicy policy) {
+        this.httpPipelinePolicies.add(policy);
+    }
+
+    /**
+     * Set the {@link HttpPipeline}.
+     *
+     * @param httpPipeline The http pipeline.
+     */
+    public void setHttpPipeline(HttpPipeline httpPipeline) {
+        this.httpPipeline = httpPipeline;
+    }
+
+    /**
+     * Get the {@link HttpClientProvider}.
+     *
+     * @return The http client provider.
+     */
+    protected HttpClientProvider getHttpClientProvider() {
+        return this.httpClientProvider;
+    }
+
+    /**
+     * Set the {@link HttpClientProvider}.
+     *
+     * @param httpClientProvider The http client provider.
+     */
     public void setHttpClientProvider(HttpClientProvider httpClientProvider) {
         if (httpClientProvider != null) {
             this.httpClientProvider = httpClientProvider;
         }
     }
-
-    protected List<HttpPipelinePolicy> getHttpPipelinePolicies() {
-        return Collections.unmodifiableList(this.httpPipelinePolicies);
-    }
-
-    public void addHttpPipelinePolicy(HttpPipelinePolicy policy) {
-        this.httpPipelinePolicies.add(policy);
-    }
-
-    public void setHttpPipeline(HttpPipeline httpPipeline) {
-        this.httpPipeline = httpPipeline;
-    }
-
-    protected HttpClientProvider getHttpClientProvider() {
-        return this.httpClientProvider;
-    }
-
 }

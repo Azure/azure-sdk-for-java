@@ -3,9 +3,9 @@
 
 package com.azure.spring.core.credential.descriptor;
 
+import com.azure.spring.core.credential.AzureCredentialResolver;
 import com.azure.spring.core.credential.AzureCredentialType;
 import com.azure.spring.core.credential.provider.AzureNamedKeyCredentialProvider;
-import com.azure.spring.core.credential.AzureCredentialResolver;
 import com.azure.spring.core.implementation.credential.resolver.AzureNamedKeyCredentialResolver;
 
 import java.util.function.Consumer;
@@ -17,6 +17,10 @@ public final class NamedKeyAuthenticationDescriptor implements AuthenticationDes
 
     private final Consumer<AzureNamedKeyCredentialProvider> consumer;
 
+    /**
+     * Create a {@link NamedKeyAuthenticationDescriptor} instance with the consumer to consume the resolved credential.
+     * @param consumer The consumer to consume the resolved credential.
+     */
     public NamedKeyAuthenticationDescriptor(Consumer<AzureNamedKeyCredentialProvider> consumer) {
         this.consumer = consumer;
     }

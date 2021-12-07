@@ -13,6 +13,10 @@ public final class AzureSasCredentialProvider implements AzureCredentialProvider
 
     private final String sasToken;
 
+    /**
+     * Create a {@link AzureSasCredentialProvider} with the {@code sasToken}.
+     * @param sasToken The sas token.
+     */
     public AzureSasCredentialProvider(String sasToken) {
         this.sasToken = sasToken;
     }
