@@ -42,7 +42,7 @@ for (ServiceBusReceivedMessage message : messagesIterable) {
 
 Here is the state of the prefetch-queue after two passes of iteration: 
 
-<img width="889" alt="PrefetchQueueReading" src="https://user-images.githubusercontent.com/1471612/144946540-41845294-1c0b-4037-82c0-44482327c8f3.png">
+<img width="892" alt="PrefetchQueueReading" src="https://user-images.githubusercontent.com/1471612/144964587-a3ceb0e6-3157-4e29-968b-5f1243eeefd3.png">
 
 #### The shared nature of prefetch-queue:
 
@@ -67,7 +67,7 @@ If the application decide not to do anything with the messages in the buffer, th
 
 An invocation of `receiveMessages(int maxMessages, Duration maxWaitTime)` users two timers. 
 
-The first one enables `maxWaitTime` support, controlling the maximum duration client should wait for the messages. If `maxWaitTime` elapses before `maxMessages` messages arrive, Iterable returns whatever messages it received and completes.
+The first one enables `maxWaitTime` support, controlling the maximum duration client should wait for entire batch of `maxMessages` messages to arrive. If `maxWaitTime` elapses before `maxMessages` messages arrive, Iterable returns whatever messages it received and completes.
 
 The second timer controls the timeout between messages, i.e., the maximum duration the client should wait for the next message since the arrival of the last message. The Iterable completes if no message arrives within this duration. Currently, this duration is set to 1 second and cannot be changed.
 
@@ -75,8 +75,9 @@ The second timer controls the timeout between messages, i.e., the maximum durati
 
 Another important point is that messages may expire while in the prefetch-queue, which means the iterator may return expired messages.
 
-Refer to [this][prefetchtradeoff] document for the tradeoff when enabling prefetch (or maxMessages > 1).
+The lock timeout configured on the service bus entity and `maxMessages` needs to be balanced such that the lock timeout  is at least exceeds the cumulative expected message processing time for the'maxMessages`, plus one message. At the same time, the lock timeout shouldn't be so long that messages can exceed their maximum time to live when they're accidentally dropped, and so requiring their lock to expire before being redelivered.
 
+Refer to [this][prefetchtradeoff] document for the tradeoff when enabling prefetch (or maxMessages > 1).
 
 
 <!-- Links --->
