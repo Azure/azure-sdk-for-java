@@ -116,8 +116,6 @@ public class AADWebAppAndWebApiInOneAppIT {
     @ImportAutoConfiguration(AADWebApplicationAndResourceServerITConfig.class)
     public static class DumbApp {
 
-        @Autowired
-        private WebClient webClient;
 
         @Bean
         public WebClient webClient(OAuth2AuthorizedClientManager authorizedClientManager) {
@@ -141,6 +139,9 @@ public class AADWebAppAndWebApiInOneAppIT {
         @RestController
         @RequestMapping("/api")
         class ResourceServerController {
+
+            @Autowired
+            private WebClient webClient;
 
             /**
              * Call the graph resource only with annotation, return user information

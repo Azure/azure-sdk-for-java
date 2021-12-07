@@ -44,12 +44,11 @@ private object CosmosConstants {
 
   object TableProperties {
     val PartitionKeyDefinition = "CosmosPartitionKeyDefinition"
-    val PartitionCountSnapshot = "CosmosPartitionCountSnapshot"
-    val LastModified = "LastModifiedSnapshot"
-    val ProvisionedThroughputSnapshot = "ProvisionedThroughputSnapshot"
-    val IndexingPolicySnapshot = "IndexingPolicySnapshot"
-    val DefaultTtlInSecondsSnapshot = "DefaultTtlInSecondsSnapshot"
-    val AnalyticalStorageTtlInSecondsSnapshot = "AnalyticalStorageTtlInSecondsSnapshot"
-    val ChangeFeedPolicySnapshot = "ChangeFeedPolicySnapshot"
+    val PartitionCount = "CosmosPartitionCount"
+    val LastModified = "LastModified"
+    val ProvisionedThroughput = "ProvisionedThroughput"
+    val IndexingPolicy = "IndexingPolicy"
+    val DefaultTtlInSeconds = "DefaultTtlInSeconds"
+    val AnalyticalStoreTtlInSeconds = "AnalyticalStoreTtlInSeconds"
   }
 }

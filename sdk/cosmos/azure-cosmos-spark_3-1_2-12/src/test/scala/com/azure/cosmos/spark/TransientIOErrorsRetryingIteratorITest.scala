@@ -235,11 +235,10 @@ class TransientIOErrorsRetryingIteratorITest
     // pages - and the retry logic depends on this assertion
     // so the test here will only ever inject an error after retrieving the
     // last document of one page (and before retrieving teh next one)
-    if (!idSnapshot.equals("") &&
-      idSnapshot.equals(lastIdOfPage.get()) &&
-      idsWithRetries.computeIfAbsent(idSnapshot, id => 0) <= maxRetryCountPerIOOperation * 10 &&
+    if (
+      idsWithRetries.computeIfAbsent(idSnapshot, id => 0) <= maxRetryCountPerIOOperation * 100 &&
       idsWithRetries.computeIfPresent(
-        idSnapshot, (id, currentRetryCount) => currentRetryCount + 1) <= maxRetryCountPerIOOperation * 10) {
+        idSnapshot, (id, currentRetryCount) => currentRetryCount + 1) <= maxRetryCountPerIOOperation * 100) {
 
       //scalastyle:off null
       throw new ServiceUnavailableException("Dummy 503", null, null)

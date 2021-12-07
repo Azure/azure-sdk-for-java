@@ -176,9 +176,9 @@ It provides methods to create and manage asset conversions and rendering session
 - [Convert a more complex asset](#convert-a-more-complex-asset)
 - [Get the output when an asset conversion has finished](#get-the-output-when-an-asset-conversion-has-finished)
 - [List conversions](#list-conversions)
-- [Create a session](#create-a-session)
+- [Create a session](#create-a-rendering-session)
 - [Extend the lease time of a session](#extend-the-lease-time-of-a-session)
-- [List sessions](#list-sessions)
+- [List sessions](#list-rendering-sessions)
 - [Stop a session](#stop-a-session)
 
 ### Convert a simple asset

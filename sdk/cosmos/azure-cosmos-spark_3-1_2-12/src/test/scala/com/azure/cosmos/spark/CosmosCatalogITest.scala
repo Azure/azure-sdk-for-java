@@ -93,24 +93,23 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
 
     val tblProperties = getTblProperties(spark, databaseName, containerName)
 
-    tblProperties should have size 8
+    tblProperties should have size 7
 
-    tblProperties("AnalyticalStorageTtlInSecondsSnapshot") shouldEqual "null"
-    tblProperties("ChangeFeedPolicySnapshot") shouldEqual "{\"retentionDuration\":0}"
-    tblProperties("CosmosPartitionCountSnapshot") shouldEqual "1"
+    tblProperties("AnalyticalStoreTtlInSeconds") shouldEqual "null"
+    tblProperties("CosmosPartitionCount") shouldEqual "1"
     tblProperties("CosmosPartitionKeyDefinition") shouldEqual "{\"paths\":[\"/id\"],\"kind\":\"Hash\"}"
-    tblProperties("DefaultTtlInSecondsSnapshot") shouldEqual "null"
-    tblProperties("IndexingPolicySnapshot") shouldEqual
+    tblProperties("DefaultTtlInSeconds") shouldEqual "null"
+    tblProperties("IndexingPolicy") shouldEqual
       "{\"indexingMode\":\"consistent\",\"automatic\":true,\"includedPaths\":[{\"path\":\"/*\"}]," +
         "\"excludedPaths\":[{\"path\":\"/\\\"_etag\\\"/?\"}]}"
 
     // would look like Manual|RUProvisioned|LastOfferModification
     // - last modified as iso datetime like 2021-12-07T10:33:44Z
-    tblProperties("ProvisionedThroughputSnapshot").startsWith("Manual|400|") shouldEqual true
-    tblProperties("ProvisionedThroughputSnapshot").size shouldEqual 31
+    tblProperties("ProvisionedThroughput").startsWith("Manual|400|") shouldEqual true
+    tblProperties("ProvisionedThroughput").size shouldEqual 31
 
     // last modified as iso datetime like 2021-12-07T10:33:44Z
-    tblProperties("LastModifiedSnapshot").size shouldEqual 20
+    tblProperties("LastModified").size shouldEqual 20
   }
 
   it can "create a table with shared throughput and Hash V2" in {
@@ -122,7 +121,7 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
     spark.sql(
       s"CREATE TABLE testCatalog.$databaseName.$containerName (word STRING, number INT) using cosmos.oltp " +
         // TODO @fabianm Emulator doesn't seem to support analytical store - needs to be tested separately
-        // s"TBLPROPERTIES(partitionKeyVersion = 'V2', analyticalStorageTtlInSeconds = '3000000')")
+        // s"TBLPROPERTIES(partitionKeyVersion = 'V2', analyticalStoreTtlInSeconds = '3000000')")
         s"TBLPROPERTIES(partitionKeyVersion = 'V2')")
 
     val containerProperties = cosmosClient.getDatabase(databaseName).getContainer(containerName).read().block().getProperties
@@ -146,26 +145,25 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
 
     val tblProperties = getTblProperties(spark, databaseName, containerName)
 
-    tblProperties should have size 8
+    tblProperties should have size 7
 
-    // tblProperties("AnalyticalStorageTtlInSecondsSnapshot") shouldEqual "3000000"
-    tblProperties("AnalyticalStorageTtlInSecondsSnapshot") shouldEqual "null"
-    tblProperties("ChangeFeedPolicySnapshot") shouldEqual "{\"retentionDuration\":0}"
-    tblProperties("CosmosPartitionCountSnapshot") shouldEqual "1"
+    // tblProperties("AnalyticalStoreTtlInSeconds") shouldEqual "3000000"
+    tblProperties("AnalyticalStoreTtlInSeconds") shouldEqual "null"
+    tblProperties("CosmosPartitionCount") shouldEqual "1"
     tblProperties("CosmosPartitionKeyDefinition") shouldEqual "{\"paths\":[\"/id\"],\"kind\":\"Hash\",\"version\":2}"
-    tblProperties("DefaultTtlInSecondsSnapshot") shouldEqual "null"
-    tblProperties("IndexingPolicySnapshot") shouldEqual
+    tblProperties("DefaultTtlInSeconds") shouldEqual "null"
+    tblProperties("IndexingPolicy") shouldEqual
       "{\"indexingMode\":\"consistent\",\"automatic\":true,\"includedPaths\":[{\"path\":\"/*\"}]," +
         "\"excludedPaths\":[{\"path\":\"/\\\"_etag\\\"/?\"}]}"
 
     // would look like Manual|RUProvisioned|LastOfferModification
     // - last modified as iso datetime like 2021-12-07T10:33:44Z
-    logInfo(s"ProvisionedThroughputSnapshot: ${tblProperties("ProvisionedThroughputSnapshot")}")
-    tblProperties("ProvisionedThroughputSnapshot").startsWith("Shared.Manual|1000|") shouldEqual true
-    tblProperties("ProvisionedThroughputSnapshot").size shouldEqual 39
+    logInfo(s"ProvisionedThroughput: ${tblProperties("ProvisionedThroughput")}")
+    tblProperties("ProvisionedThroughput").startsWith("Shared.Manual|1000|") shouldEqual true
+    tblProperties("ProvisionedThroughput").size shouldEqual 39
 
     // last modified as iso datetime like 2021-12-07T10:33:44Z
-    tblProperties("LastModifiedSnapshot").size shouldEqual 20
+    tblProperties("LastModified").size shouldEqual 20
   }
 
   it can "create a table with defaults but shared autoscale throughput" in {
@@ -197,25 +195,24 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
 
     val tblProperties = getTblProperties(spark, databaseName, containerName)
 
-    tblProperties should have size 8
+    tblProperties should have size 7
 
-    tblProperties("AnalyticalStorageTtlInSecondsSnapshot") shouldEqual "null"
-    tblProperties("ChangeFeedPolicySnapshot") shouldEqual "{\"retentionDuration\":0}"
-    tblProperties("CosmosPartitionCountSnapshot") shouldEqual "2"
+    tblProperties("AnalyticalStoreTtlInSeconds") shouldEqual "null"
+    tblProperties("CosmosPartitionCount") shouldEqual "2"
     tblProperties("CosmosPartitionKeyDefinition") shouldEqual "{\"paths\":[\"/id\"],\"kind\":\"Hash\"}"
-    tblProperties("DefaultTtlInSecondsSnapshot") shouldEqual "null"
-    tblProperties("IndexingPolicySnapshot") shouldEqual
+    tblProperties("DefaultTtlInSeconds") shouldEqual "null"
+    tblProperties("IndexingPolicy") shouldEqual
       "{\"indexingMode\":\"consistent\",\"automatic\":true,\"includedPaths\":[{\"path\":\"/*\"}]," +
         "\"excludedPaths\":[{\"path\":\"/\\\"_etag\\\"/?\"}]}"
 
     // would look like Manual|RUProvisioned|LastOfferModification
     // - last modified as iso datetime like 2021-12-07T10:33:44Z
-    logInfo(s"ProvisionedThroughputSnapshot: ${tblProperties("ProvisionedThroughputSnapshot")}")
-    tblProperties("ProvisionedThroughputSnapshot").startsWith("Shared.AutoScale|1600|16000|") shouldEqual true
-    tblProperties("ProvisionedThroughputSnapshot").size shouldEqual 48
+    logInfo(s"ProvisionedThroughput: ${tblProperties("ProvisionedThroughput")}")
+    tblProperties("ProvisionedThroughput").startsWith("Shared.AutoScale|1600|16000|") shouldEqual true
+    tblProperties("ProvisionedThroughput").size shouldEqual 48
 
     // last modified as iso datetime like 2021-12-07T10:33:44Z
-    tblProperties("LastModifiedSnapshot").size shouldEqual 20
+    tblProperties("LastModified").size shouldEqual 20
   }
 
   it can "create a table with customized properties" in {
@@ -324,27 +321,26 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
 
     val tblProperties = getTblProperties(spark, databaseName, containerName)
 
-    tblProperties should have size 8
+    tblProperties should have size 7
 
-    tblProperties("AnalyticalStorageTtlInSecondsSnapshot") shouldEqual "null"
-    tblProperties("ChangeFeedPolicySnapshot") shouldEqual "{\"retentionDuration\":0}"
-    tblProperties("CosmosPartitionCountSnapshot") shouldEqual "1"
+    tblProperties("AnalyticalStoreTtlInSeconds") shouldEqual "null"
+    tblProperties("CosmosPartitionCount") shouldEqual "1"
     tblProperties("CosmosPartitionKeyDefinition") shouldEqual "{\"paths\":[\"/mypk\"],\"kind\":\"Hash\"}"
-    tblProperties("DefaultTtlInSecondsSnapshot") shouldEqual "null"
+    tblProperties("DefaultTtlInSeconds") shouldEqual "null"
 
     // indexPolicyJson will be normalized by teh backend - so not be the same as the input json
     // for the purpose of this test I just want to make sure that the custom indexing options
     // are included - correctness of json serialization of indexing policy is tested elsewhere
-    tblProperties("IndexingPolicySnapshot").contains("helloWorld") shouldEqual true
-    tblProperties("IndexingPolicySnapshot").contains("mypk") shouldEqual true
+    tblProperties("IndexingPolicy").contains("helloWorld") shouldEqual true
+    tblProperties("IndexingPolicy").contains("mypk") shouldEqual true
 
     // would look like Manual|RUProvisioned|LastOfferModification
     // - last modified as iso datetime like 2021-12-07T10:33:44Z
-    tblProperties("ProvisionedThroughputSnapshot").startsWith("Manual|1100|") shouldEqual true
-    tblProperties("ProvisionedThroughputSnapshot").size shouldEqual 32
+    tblProperties("ProvisionedThroughput").startsWith("Manual|1100|") shouldEqual true
+    tblProperties("ProvisionedThroughput").size shouldEqual 32
 
     // last modified as iso datetime like 2021-12-07T10:33:44Z
-    tblProperties("LastModifiedSnapshot").size shouldEqual 20
+    tblProperties("LastModified").size shouldEqual 20
   }
 
   it can "create a table with TTL -1" in {
@@ -360,7 +356,7 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
     containerProperties.getDefaultTimeToLiveInSeconds shouldEqual -1
 
     val tblProperties = getTblProperties(spark, databaseName, containerName)
-    tblProperties("DefaultTtlInSecondsSnapshot") shouldEqual "-1"
+    tblProperties("DefaultTtlInSeconds") shouldEqual "-1"
   }
 
   it can "create a table with positive TTL" in {
@@ -376,7 +372,7 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
     containerProperties.getDefaultTimeToLiveInSeconds shouldEqual 5
 
     val tblProperties = getTblProperties(spark, databaseName, containerName)
-    tblProperties("DefaultTtlInSecondsSnapshot") shouldEqual "5"
+    tblProperties("DefaultTtlInSeconds") shouldEqual "5"
   }
 
   it can "select from a catalog table with default TBLPROPERTIES" in {
