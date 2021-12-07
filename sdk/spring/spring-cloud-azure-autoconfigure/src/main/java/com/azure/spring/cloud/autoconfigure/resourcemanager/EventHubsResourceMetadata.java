@@ -17,18 +17,12 @@ public class EventHubsResourceMetadata extends AzureResourceMetadata {
     @Value("${spring.cloud.azure.eventhubs.namespace:}")
     private String name;
 
-    /**
-     * Get EventHubsResourceMetadata name
-     * @return name
-     */
+
     public String getName() {
         return name;
     }
 
-    /**
-     * Set EventHubsResourceMetadata name
-     * @param name name
-     */
+
     public void setName(String name) {
         this.name = name;
     }
