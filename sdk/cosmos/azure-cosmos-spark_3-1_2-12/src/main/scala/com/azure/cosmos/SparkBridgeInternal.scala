@@ -33,6 +33,11 @@ private[cosmos] object SparkBridgeInternal {
     new Range[String](range.min, range.max, true, false)
   }
 
+  private[cosmos] def getCacheKeyForContainer(container: CosmosAsyncContainer): String = {
+    val database = container.getDatabase
+    s"${database.getClient.getServiceEndpoint}|${database.getId}|${container.getId}"
+  }
+
   private[cosmos] def getNormalizedEffectiveRange
   (
     container: CosmosAsyncContainer,
