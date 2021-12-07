@@ -763,12 +763,12 @@ class CosmosCatalog
     )
 
     tableProperties.put(
-      CosmosConstants.TableProperties.PartitionCountSnapshot,
+      CosmosConstants.TableProperties.PartitionCount,
       s"'${feedRanges.size.toString}'"
     )
 
     tableProperties.put(
-      CosmosConstants.TableProperties.ProvisionedThroughputSnapshot,
+      CosmosConstants.TableProperties.ProvisionedThroughput,
       s"'$provisionedThroughputSnapshot'"
     )
     tableProperties.put(
@@ -776,15 +776,15 @@ class CosmosCatalog
       s"'$lastModifiedSnapshot'"
     )
     tableProperties.put(
-      CosmosConstants.TableProperties.DefaultTtlInSecondsSnapshot,
+      CosmosConstants.TableProperties.DefaultTtlInSeconds,
       s"'$defaultTimeToLiveInSecondsSnapshot'"
     )
     tableProperties.put(
-      CosmosConstants.TableProperties.AnalyticalStoreTtlInSecondsSnapshot,
+      CosmosConstants.TableProperties.AnalyticalStoreTtlInSeconds,
       s"'$analyticalStoreTimeToLiveInSecondsSnapshot'"
     )
     tableProperties.put(
-      CosmosConstants.TableProperties.IndexingPolicySnapshot,
+      CosmosConstants.TableProperties.IndexingPolicy,
       s"'$indexingPolicySnapshotJson'"
     )
 
