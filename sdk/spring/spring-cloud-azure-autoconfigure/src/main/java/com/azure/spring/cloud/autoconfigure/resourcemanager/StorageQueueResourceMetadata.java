@@ -17,10 +17,18 @@ public class StorageQueueResourceMetadata extends AzureResourceMetadata {
     @Value("${spring.cloud.azure.storage.queue.accountName:}")
     private String name;
 
+    /**
+     * Get StorageQueueResourceMetadata name
+     * @return name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Set StorageQueueResourceMetadata name
+     * @param name name
+     */
     public void setName(String name) {
         this.name = name;
     }

@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 
 
 /**
- *
+ * An auto-configuration for Azure
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(AzureResourceManager.class)
@@ -26,10 +26,20 @@ public class AzureResourceManagerAutoConfiguration {
 
     private final AzureGlobalProperties globalProperties;
 
+    /**
+     * Azure Resource Manager AutoConfiguration
+     * @param globalProperties global Properties
+     */
     public AzureResourceManagerAutoConfiguration(AzureGlobalProperties globalProperties) {
         this.globalProperties = globalProperties;
     }
 
+    /**
+     *  Azure Resource Manager Bean
+     * @param tokenCredential token Credential
+     * @param azureProfile azure Profile
+     * @return AzureResourceManager Bean
+     */
     @Bean
     @ConditionalOnMissingBean
     public AzureResourceManager azureResourceManager(TokenCredential tokenCredential, AzureProfile azureProfile) {
@@ -38,6 +48,10 @@ public class AzureResourceManagerAutoConfiguration {
         return AzureResourceManager.configure().authenticate(tokenCredential, azureProfile).withDefaultSubscription();
     }
 
+    /**
+     * Azure Profile Bean
+     * @return AzureProfile Bean
+     */
     @Bean
     @ConditionalOnMissingBean
     public AzureProfile azureProfile() {

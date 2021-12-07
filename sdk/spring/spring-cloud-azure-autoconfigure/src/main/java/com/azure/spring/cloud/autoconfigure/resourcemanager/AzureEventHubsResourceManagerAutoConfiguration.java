@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
 
 /**
- *
+ * An auto-configuration for EventHubs
  */
 @ConditionalOnProperty(prefix = AzureEventHubsProperties.PREFIX, value = "enabled", havingValue = "true", matchIfMissing = true)
 @ConditionalOnBean(AzureResourceManager.class)
@@ -28,12 +28,21 @@ public class AzureEventHubsResourceManagerAutoConfiguration extends AzureService
 
     private final EventHubsResourceMetadata resourceMetadata;
 
+    /**
+     * Azure EventHubs Resource Manager AutoConfiguration
+     * @param azureResourceManager azure ResourceManager
+     * @param resourceMetadata resource Metadata
+     */
     public AzureEventHubsResourceManagerAutoConfiguration(AzureResourceManager azureResourceManager,
                                                           EventHubsResourceMetadata resourceMetadata) {
         super(azureResourceManager);
         this.resourceMetadata = resourceMetadata;
     }
 
+    /**
+     * EventHubs Arm ConnectionString Provider Bean
+     * @return EventHubsArmConnectionStringProvider Bean
+     */
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = AzureEventHubsProperties.PREFIX, value = "namespace")
@@ -45,6 +54,10 @@ public class AzureEventHubsResourceManagerAutoConfiguration extends AzureService
             resourceMetadata.getName());
     }
 
+    /**
+     * EventHubs Provisioner Bean
+     * @return EventHubsProvisioner Bean
+     */
     @Bean
     @ConditionalOnMissingBean
     public EventHubsProvisioner eventHubsProvisioner() {

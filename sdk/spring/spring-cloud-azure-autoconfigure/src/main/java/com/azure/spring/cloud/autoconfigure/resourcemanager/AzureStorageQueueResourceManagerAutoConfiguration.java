@@ -26,12 +26,21 @@ public class AzureStorageQueueResourceManagerAutoConfiguration extends AzureServ
 
     private final StorageQueueResourceMetadata resourceMetadata;
 
+    /**
+     * Azure Storage Queue Resource Manager Auto Configuration
+     * @param azureResourceManager azure Resource Manager
+     * @param resourceMetadata resource Metadata
+     */
     public AzureStorageQueueResourceManagerAutoConfiguration(AzureResourceManager azureResourceManager,
                                                              StorageQueueResourceMetadata resourceMetadata) {
         super(azureResourceManager);
         this.resourceMetadata = resourceMetadata;
     }
 
+    /**
+     * Storage Queue Arm Connection String Provider Bean
+     * @return StorageQueueArmConnectionStringProvider Bean
+     */
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = AzureStorageQueueProperties.PREFIX, value = "account-name")
