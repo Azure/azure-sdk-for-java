@@ -10,7 +10,15 @@ package com.azure.spring.autoconfigure.storage.resource;
  * @see <a href="https://docs.microsoft.com/en-us/azure/storage/common/storage-account-overview">StorageAccount</a>
  */
 public enum StorageType {
-    BLOB("blob"), FILE("file");
+    /**
+     * Blob
+     */
+    BLOB("blob"),
+
+    /**
+     * File
+     */
+    FILE("file");
 
     private final String type;
 
@@ -18,6 +26,11 @@ public enum StorageType {
         this.type = type;
     }
 
+    /**
+     * Gets the string representation of the enum.
+     *
+     * @return the string representation of the enum
+     */
     public String getType() {
         return type;
     }

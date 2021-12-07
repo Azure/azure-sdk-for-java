@@ -509,7 +509,7 @@ public final class BlobServiceAsyncClient {
         boolean hasDetails = blobContainerListDetails != null
             && (blobContainerListDetails.getRetrieveMetadata()
             || blobContainerListDetails.getRetrieveDeleted()
-            || blobContainerListDetails.getRetrieveSystem());
+            || blobContainerListDetails.getRetrieveSystemContainers());
         if (hasDetails) {
             List<ListBlobContainersIncludeType> flags = new ArrayList<>(2);
             if (blobContainerListDetails.getRetrieveDeleted()) {
@@ -518,7 +518,7 @@ public final class BlobServiceAsyncClient {
             if (blobContainerListDetails.getRetrieveMetadata()) {
                 flags.add(ListBlobContainersIncludeType.METADATA);
             }
-            if (blobContainerListDetails.getRetrieveSystem()) {
+            if (blobContainerListDetails.getRetrieveSystemContainers()) {
                 flags.add(ListBlobContainersIncludeType.SYSTEM);
             }
             return flags;

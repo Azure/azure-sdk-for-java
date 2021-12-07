@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.scanning;
 
 import com.azure.analytics.purview.scanning.implementation.ScansImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -13,18 +14,18 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Context;
 
 /** Initializes a new instance of the synchronous PurviewScanningClient type. */
 @ServiceClient(builder = PurviewScanningClientBuilder.class)
 public final class ScansClient {
-    private final ScansImpl serviceClient;
+    @Generated private final ScansImpl serviceClient;
 
     /**
      * Initializes an instance of Scans client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     ScansClient(ScansImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -154,15 +155,14 @@ public final class ScansClient {
      * @param scanName The scanName parameter.
      * @param body The body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> upsertWithResponse(
-            String dataSourceName, String scanName, BinaryData body, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.upsertWithResponse(dataSourceName, scanName, body, requestOptions, context);
+    public Response<BinaryData> createOrUpdateWithResponse(
+            String dataSourceName, String scanName, BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateWithResponse(dataSourceName, scanName, body, requestOptions);
     }
 
     /**
@@ -234,15 +234,13 @@ public final class ScansClient {
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return a scan information.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(
-            String dataSourceName, String scanName, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getWithResponse(dataSourceName, scanName, requestOptions, context);
+    public Response<BinaryData> getWithResponse(String dataSourceName, String scanName, RequestOptions requestOptions) {
+        return this.serviceClient.getWithResponse(dataSourceName, scanName, requestOptions);
     }
 
     /**
@@ -314,15 +312,14 @@ public final class ScansClient {
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> deleteWithResponse(
-            String dataSourceName, String scanName, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.deleteWithResponse(dataSourceName, scanName, requestOptions, context);
+            String dataSourceName, String scanName, RequestOptions requestOptions) {
+        return this.serviceClient.deleteWithResponse(dataSourceName, scanName, requestOptions);
     }
 
     /**
@@ -399,14 +396,12 @@ public final class ScansClient {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listByDataSource(
-            String dataSourceName, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.listByDataSource(dataSourceName, requestOptions, context);
+    public PagedIterable<BinaryData> listByDataSource(String dataSourceName, RequestOptions requestOptions) {
+        return this.serviceClient.listByDataSource(dataSourceName, requestOptions);
     }
 }

@@ -352,7 +352,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
                 this.client.getHttpPipeline(),
                 GalleryImageVersionInner.class,
                 GalleryImageVersionInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -751,7 +751,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
                 this.client.getHttpPipeline(),
                 GalleryImageVersionInner.class,
                 GalleryImageVersionInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1351,7 +1351,8 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
             deleteWithResponseAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

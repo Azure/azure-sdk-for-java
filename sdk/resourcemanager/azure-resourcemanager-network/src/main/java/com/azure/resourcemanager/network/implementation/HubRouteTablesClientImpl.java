@@ -294,7 +294,11 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
         return this
             .client
             .<HubRouteTableInner, HubRouteTableInner>getLroResult(
-                mono, this.client.getHttpPipeline(), HubRouteTableInner.class, HubRouteTableInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                HubRouteTableInner.class,
+                HubRouteTableInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -756,7 +760,8 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
             deleteWithResponseAsync(resourceGroupName, virtualHubName, routeTableName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

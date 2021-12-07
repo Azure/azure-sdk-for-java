@@ -7,7 +7,10 @@
 ### Breaking Changes
 
 ### Bugs Fixed
-## 1.1.2 (2021-11-16)
+
+### Other Changes
+
+## 1.1.2 (2021-11-17)
 
 ### Other Changes
 

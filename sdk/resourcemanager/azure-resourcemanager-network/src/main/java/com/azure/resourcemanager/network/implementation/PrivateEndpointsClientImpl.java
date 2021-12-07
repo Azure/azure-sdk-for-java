@@ -280,7 +280,8 @@ public final class PrivateEndpointsClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, privateEndpointName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -721,7 +722,7 @@ public final class PrivateEndpointsClientImpl
                 this.client.getHttpPipeline(),
                 PrivateEndpointInner.class,
                 PrivateEndpointInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

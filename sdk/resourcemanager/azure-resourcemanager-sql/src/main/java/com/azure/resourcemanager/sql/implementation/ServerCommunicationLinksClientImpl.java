@@ -598,7 +598,7 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
                 this.client.getHttpPipeline(),
                 ServerCommunicationLinkInner.class,
                 ServerCommunicationLinkInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

@@ -276,7 +276,8 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
             deleteWithResponseAsync(resourceGroupName, networkInterfaceName, tapConfigurationName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -743,7 +744,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
                 this.client.getHttpPipeline(),
                 NetworkInterfaceTapConfigurationInner.class,
                 NetworkInterfaceTapConfigurationInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

@@ -300,7 +300,8 @@ public final class DdosProtectionPlansClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, ddosProtectionPlanName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -714,7 +715,7 @@ public final class DdosProtectionPlansClientImpl
                 this.client.getHttpPipeline(),
                 DdosProtectionPlanInner.class,
                 DdosProtectionPlanInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

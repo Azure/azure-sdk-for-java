@@ -11,6 +11,7 @@ import com.azure.spring.integration.core.api.CheckpointMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,9 +24,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class BatchCheckpointManager extends CheckpointManager {
     private static final Logger LOG = LoggerFactory.getLogger(BatchCheckpointManager.class);
     private static final String CHECKPOINT_FAIL_MSG = "Consumer group '%s' failed to checkpoint offset %s of message "
-        + "%s on partition %s, last checkpointed message is %s";
+        + "on partition %s in batch mode";
     private static final String CHECKPOINT_SUCCESS_MSG =
-        "Consumer group '%s' checkpointed offset %s of message %s on partition %s in %s " + "mode";
+        "Consumer group '%s' succeed to checkpoint offset %s of message on partition %s in batch mode";
 
     private final ConcurrentHashMap<String, EventData> lastEventByPartition = new ConcurrentHashMap<>();
 
@@ -51,15 +52,16 @@ public class BatchCheckpointManager extends CheckpointManager {
     }
 
     public void onMessages(EventBatchContext context) {
-        EventData lastEvent = getLastEnqueuedEvent(context);
+        EventData lastEvent = getLastEventFromBatch(context);
+        if (lastEvent == null) {
+            return;
+        }
         Long offset = lastEvent.getOffset();
+        String partitionId = context.getPartitionContext().getPartitionId();
+        String consumerGroup = context.getPartitionContext().getConsumerGroup();
         context.updateCheckpointAsync()
-            .doOnError(t -> logCheckpointFail(context, offset, lastEvent,
-                lastEventByPartition.get(context.getPartitionContext().getPartitionId()), t))
-            .doOnSuccess(v -> {
-                this.lastEventByPartition.put(context.getPartitionContext().getPartitionId(), lastEvent);
-                logCheckpointSuccess(context, offset, lastEvent);
-            })
+            .doOnError(t -> logCheckpointFail(consumerGroup, partitionId, offset, t))
+            .doOnSuccess(v -> logCheckpointSuccess(consumerGroup, partitionId, offset))
             .subscribe();
     }
 
@@ -68,27 +70,25 @@ public class BatchCheckpointManager extends CheckpointManager {
         return LOG;
     }
 
-    void logCheckpointFail(EventBatchContext context, Long offset, EventData lastEnqueuedEvent,
-                           EventData lastCheckpointedEvent, Throwable t) {
-        if (getLogger().isWarnEnabled()) {
-            getLogger().warn(String
-                .format(CHECKPOINT_FAIL_MSG, context.getPartitionContext().getConsumerGroup(), offset,
-                    lastEnqueuedEvent, lastCheckpointedEvent, context.getPartitionContext().getPartitionId()), t);
-        }
+    void logCheckpointFail(String consumerGroup, String partitionId, Long offset, Throwable t) {
+        getLogger().warn(String
+            .format(CHECKPOINT_FAIL_MSG, consumerGroup, offset, partitionId), t);
     }
 
-    void logCheckpointSuccess(EventBatchContext context, Long offset, EventData lastEnqueuedEvent) {
+    void logCheckpointSuccess(String consumerGroup, String partitionId, Long offset) {
         if (getLogger().isDebugEnabled()) {
             getLogger().debug(String
-                .format(CHECKPOINT_SUCCESS_MSG, context.getPartitionContext().getConsumerGroup(), offset,
-                    lastEnqueuedEvent, context.getPartitionContext().getPartitionId(),
-                    this.checkpointConfig.getCheckpointMode()));
+                .format(CHECKPOINT_SUCCESS_MSG, consumerGroup, offset, partitionId));
         }
     }
 
-    EventData getLastEnqueuedEvent(EventBatchContext context) {
+    private EventData getLastEventFromBatch(EventBatchContext context) {
         List<EventData> events = context.getEvents();
-        return events.get(events.size() - 1);
+        if (CollectionUtils.isEmpty(events)) {
+            return null;
+        }
+        EventData lastEvent = events.get(events.size() - 1);
+        return lastEvent;
 
     }
 }

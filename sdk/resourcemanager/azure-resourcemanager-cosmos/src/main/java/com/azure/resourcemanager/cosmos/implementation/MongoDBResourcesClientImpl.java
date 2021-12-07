@@ -859,7 +859,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                 this.client.getHttpPipeline(),
                 MongoDBDatabaseGetResultsInner.class,
                 MongoDBDatabaseGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1163,7 +1163,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             deleteMongoDBDatabaseWithResponseAsync(resourceGroupName, accountName, databaseName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1632,7 +1633,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                 this.client.getHttpPipeline(),
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1952,7 +1953,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                 this.client.getHttpPipeline(),
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2224,7 +2225,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                 this.client.getHttpPipeline(),
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2908,7 +2909,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                 this.client.getHttpPipeline(),
                 MongoDBCollectionGetResultsInner.class,
                 MongoDBCollectionGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -3257,7 +3258,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             deleteMongoDBCollectionWithResponseAsync(resourceGroupName, accountName, databaseName, collectionName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -3768,7 +3770,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                 this.client.getHttpPipeline(),
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -4115,7 +4117,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                 this.client.getHttpPipeline(),
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -4415,7 +4417,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                 this.client.getHttpPipeline(),
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -4744,7 +4746,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                 this.client.getHttpPipeline(),
                 BackupInformationInner.class,
                 BackupInformationInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

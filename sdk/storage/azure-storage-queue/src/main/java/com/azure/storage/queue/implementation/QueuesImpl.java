@@ -26,8 +26,8 @@ import com.azure.storage.queue.implementation.models.QueuesGetAccessPolicyRespon
 import com.azure.storage.queue.implementation.models.QueuesGetPropertiesResponse;
 import com.azure.storage.queue.implementation.models.QueuesSetAccessPolicyResponse;
 import com.azure.storage.queue.implementation.models.QueuesSetMetadataResponse;
-import com.azure.storage.queue.implementation.models.StorageErrorException;
 import com.azure.storage.queue.models.QueueSignedIdentifier;
+import com.azure.storage.queue.models.QueueStorageException;
 import java.util.List;
 import java.util.Map;
 import reactor.core.publisher.Mono;
@@ -59,7 +59,7 @@ public final class QueuesImpl {
     public interface QueuesService {
         @Put("/{queueName}")
         @ExpectedResponses({201, 204})
-        @UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         Mono<QueuesCreateResponse> create(
                 @HostParam("url") String url,
                 @PathParam("queueName") String queueName,
@@ -72,7 +72,7 @@ public final class QueuesImpl {
 
         @Delete("/{queueName}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         Mono<QueuesDeleteResponse> delete(
                 @HostParam("url") String url,
                 @PathParam("queueName") String queueName,
@@ -84,7 +84,7 @@ public final class QueuesImpl {
 
         @Get("/{queueName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         Mono<QueuesGetPropertiesResponse> getProperties(
                 @HostParam("url") String url,
                 @PathParam("queueName") String queueName,
@@ -97,7 +97,7 @@ public final class QueuesImpl {
 
         @Put("/{queueName}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         Mono<QueuesSetMetadataResponse> setMetadata(
                 @HostParam("url") String url,
                 @PathParam("queueName") String queueName,
@@ -111,7 +111,7 @@ public final class QueuesImpl {
 
         @Get("/{queueName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         Mono<QueuesGetAccessPolicyResponse> getAccessPolicy(
                 @HostParam("url") String url,
                 @PathParam("queueName") String queueName,
@@ -124,7 +124,7 @@ public final class QueuesImpl {
 
         @Put("/{queueName}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         Mono<QueuesSetAccessPolicyResponse> setAccessPolicy(
                 @HostParam("url") String url,
                 @PathParam("queueName") String queueName,
@@ -152,7 +152,7 @@ public final class QueuesImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -182,7 +182,7 @@ public final class QueuesImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -206,7 +206,7 @@ public final class QueuesImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -234,7 +234,7 @@ public final class QueuesImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -267,7 +267,7 @@ public final class QueuesImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of signed identifiers.
      */
@@ -292,7 +292,7 @@ public final class QueuesImpl {
      * @param queueAcl the acls for the queue.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */

@@ -471,7 +471,7 @@ public final class ExportPipelinesClientImpl implements ExportPipelinesClient {
                 this.client.getHttpPipeline(),
                 ExportPipelineInner.class,
                 ExportPipelineInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -767,7 +767,8 @@ public final class ExportPipelinesClientImpl implements ExportPipelinesClient {
             deleteWithResponseAsync(resourceGroupName, registryName, exportPipelineName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.catalog;
 
 import com.azure.analytics.purview.catalog.implementation.LineagesImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -12,18 +13,18 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Context;
 
 /** Initializes a new instance of the synchronous PurviewCatalogClient type. */
 @ServiceClient(builder = PurviewCatalogClientBuilder.class)
 public final class LineageClient {
-    private final LineagesImpl serviceClient;
+    @Generated private final LineagesImpl serviceClient;
 
     /**
      * Initializes an instance of Lineages client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     LineageClient(LineagesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -132,15 +133,13 @@ public final class LineageClient {
      *
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return lineage info of the entity specified by GUID.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getLineageGraphWithResponse(
-            String guid, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getLineageGraphWithResponse(guid, requestOptions, context);
+    public Response<BinaryData> getLineageGraphWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.getLineageGraphWithResponse(guid, requestOptions);
     }
 
     /**
@@ -247,14 +246,12 @@ public final class LineageClient {
      *
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasLineageInfo.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> nextPageLineageWithResponse(
-            String guid, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.nextPageLineageWithResponse(guid, requestOptions, context);
+    public Response<BinaryData> nextPageLineageWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.nextPageLineageWithResponse(guid, requestOptions);
     }
 }

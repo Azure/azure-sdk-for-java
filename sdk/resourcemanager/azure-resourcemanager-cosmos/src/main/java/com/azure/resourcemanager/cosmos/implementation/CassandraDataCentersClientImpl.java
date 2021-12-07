@@ -599,7 +599,8 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, clusterName, dataCenterName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -878,7 +879,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
                 this.client.getHttpPipeline(),
                 DataCenterResourceInner.class,
                 DataCenterResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1194,7 +1195,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
                 this.client.getHttpPipeline(),
                 DataCenterResourceInner.class,
                 DataCenterResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

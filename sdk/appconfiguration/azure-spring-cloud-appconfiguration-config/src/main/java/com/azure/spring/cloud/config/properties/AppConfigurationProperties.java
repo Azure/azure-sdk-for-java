@@ -6,12 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.validation.constraints.NotEmpty;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.context.annotation.Import;
-import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
@@ -33,14 +31,7 @@ public final class AppConfigurationProperties {
     private boolean enabled = true;
 
     private List<ConfigStore> stores = new ArrayList<>();
-
-    @NotEmpty
-    private String defaultContext = "application";
-
-    // Alternative to Spring application name, if not configured, fallback to default
-    // Spring application name
-    private String name;
-
+    
     @NestedConfigurationProperty
     private AppConfigManagedIdentityProperties managedIdentity;
 
@@ -60,23 +51,6 @@ public final class AppConfigurationProperties {
 
     public void setStores(List<ConfigStore> stores) {
         this.stores = stores;
-    }
-
-    public String getDefaultContext() {
-        return defaultContext;
-    }
-
-    public void setDefaultContext(String defaultContext) {
-        this.defaultContext = defaultContext;
-    }
-
-    @Nullable
-    public String getName() {
-        return name;
-    }
-
-    public void setName(@Nullable String name) {
-        this.name = name;
     }
 
     public AppConfigManagedIdentityProperties getManagedIdentity() {

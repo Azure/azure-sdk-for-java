@@ -541,7 +541,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         return this
             .client
             .<WebhookInner, WebhookInner>getLroResult(
-                mono, this.client.getHttpPipeline(), WebhookInner.class, WebhookInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), WebhookInner.class, WebhookInner.class, this.client.getContext());
     }
 
     /**
@@ -829,7 +829,8 @@ public final class WebhooksClientImpl implements WebhooksClient {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, registryName, webhookName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1112,7 +1113,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         return this
             .client
             .<WebhookInner, WebhookInner>getLroResult(
-                mono, this.client.getHttpPipeline(), WebhookInner.class, WebhookInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), WebhookInner.class, WebhookInner.class, this.client.getContext());
     }
 
     /**

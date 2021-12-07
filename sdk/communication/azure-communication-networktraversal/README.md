@@ -22,7 +22,7 @@ It will provide TURN credentials to a user.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-networktraversal</artifactId>
-  <version>1.0.0-beta.1</version>
+  <version>1.0.0-beta.3</version>
 </dependency>
 ```
 
@@ -80,10 +80,32 @@ CommunicationRelayClient communicationRelayClient = new CommunicationRelayClient
 ## Examples
 
 ### Getting a new Relay Configuration
+
+<!-- embedme ./src/samples/java/com/azure/communication/networktraversal/ReadmeSamples.java#L124-L135 -->
+```java
+CommunicationRelayClient communicationRelayClient = createCommunicationNetworkTraversalClient();
+CommunicationRelayConfiguration config = communicationRelayClient.getRelayConfiguration();
+
+System.out.println("Expires on:" + config.getExpiresOn());
+List<CommunicationIceServer> iceServers = config.getIceServers();
+
+for (CommunicationIceServer iceS : iceServers) {
+    System.out.println("URLS: " + iceS.getUrls());
+    System.out.println("Username: " + iceS.getUsername());
+    System.out.println("Credential: " + iceS.getCredential());
+    System.out.println("RouteType: " + iceS.getRouteType());
+}
+```
+
+### Getting a new Relay Configuration providing a user
+
 Use the `createUser` function to create a new user from CommunicationIdentityClient
 Use the `getRelayConfiguration` function to get a Relay Configuration
 
-```java readme-sample-getRelayConfiguration
+<!-- embedme ./src/samples/java/com/azure/communication/networktraversal/ReadmeSamples.java#L97-L113 -->
+```java
+CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
+
 CommunicationUserIdentifier user = communicationIdentityClient.createUser();
 System.out.println("User id: " + user.getId());
 
@@ -97,6 +119,25 @@ for (CommunicationIceServer iceS : iceServers) {
     System.out.println("URLS: " + iceS.getUrls());
     System.out.println("Username: " + iceS.getUsername());
     System.out.println("Credential: " + iceS.getCredential());
+    System.out.println("RouteType: " + iceS.getRouteType());
+}
+```
+
+### Getting a new Relay Configuration providing a Route Type
+
+<!-- embedme ./src/samples/java/com/azure/communication/networktraversal/ReadmeSamples.java#L137-L47 -->
+```java
+CommunicationRelayClient communicationRelayClient = createCommunicationNetworkTraversalClient();
+CommunicationRelayConfiguration config = communicationRelayClient.getRelayConfiguration(RouteType.ANY);
+
+System.out.println("Expires on:" + config.getExpiresOn());
+List<CommunicationIceServer> iceServers = config.getIceServers();
+
+for (CommunicationIceServer iceS : iceServers) {
+    System.out.println("URLS: " + iceS.getUrls());
+    System.out.println("Username: " + iceS.getUsername());
+    System.out.println("Credential: " + iceS.getCredential());
+    System.out.println("RouteType: " + iceS.getRouteType());
 }
 ```
 

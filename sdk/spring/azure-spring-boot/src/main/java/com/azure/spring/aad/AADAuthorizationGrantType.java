@@ -9,9 +9,24 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType;
  */
 public enum AADAuthorizationGrantType {
 
+    /**
+     * Client credentials
+     */
     CLIENT_CREDENTIALS("client_credentials"),
+
+    /**
+     * Authorization code
+     */
     AUTHORIZATION_CODE("authorization_code"),
+
+    /**
+     * On behalf of
+     */
     ON_BEHALF_OF("on_behalf_of"),
+
+    /**
+     * Azure delegated
+     */
     AZURE_DELEGATED("azure_delegated");
 
     private final String authorizationGrantType;
@@ -25,10 +40,21 @@ public enum AADAuthorizationGrantType {
         }
     }
 
+    /**
+     * Gets the string representation of the enum.
+     *
+     * @return the string representation of the enum
+     */
     public String getValue() {
         return authorizationGrantType;
     }
 
+    /**
+     * Whether the other grant type is the same as the AAD grant type.
+     *
+     * @param grantType the other grant type
+     * @return whether the other grant type is the same as the AAD grant type
+     */
     public boolean isSameGrantType(AuthorizationGrantType grantType) {
         return this.authorizationGrantType.equals(grantType.getValue());
     }

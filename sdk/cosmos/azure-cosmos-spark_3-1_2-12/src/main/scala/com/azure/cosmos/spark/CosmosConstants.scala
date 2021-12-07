@@ -14,6 +14,9 @@ private object CosmosConstants {
   val currentName: String =
     CoreUtils.getProperties(propertiesFileName).get("name")
   val userAgentSuffix = s"SparkConnector/$currentName/$currentVersion"
+  val maxRetryIntervalForTransientFailuresInMs = 5000
+  val maxRetryCountForTransientFailures = 100
+  val defaultDirectRequestTimeoutInSeconds = 10L
 
   object Names {
     val ItemsDataSourceShortName = "cosmos.oltp"
@@ -36,5 +39,15 @@ private object CosmosConstants {
 
   object SystemProperties {
     val LineSeparator = System.getProperty("line.separator")
+  }
+
+  object TableProperties {
+    val PartitionKeyDefinition = "CosmosPartitionKeyDefinition"
+    val PartitionCount = "CosmosPartitionCount"
+    val LastModified = "LastModified"
+    val ProvisionedThroughput = "ProvisionedThroughput"
+    val IndexingPolicy = "IndexingPolicy"
+    val DefaultTtlInSeconds = "DefaultTtlInSeconds"
+    val AnalyticalStoreTtlInSeconds = "AnalyticalStoreTtlInSeconds"
   }
 }

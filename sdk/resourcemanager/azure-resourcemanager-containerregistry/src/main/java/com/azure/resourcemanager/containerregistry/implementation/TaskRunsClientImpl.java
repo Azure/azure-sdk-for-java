@@ -481,7 +481,7 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
         return this
             .client
             .<TaskRunInner, TaskRunInner>getLroResult(
-                mono, this.client.getHttpPipeline(), TaskRunInner.class, TaskRunInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), TaskRunInner.class, TaskRunInner.class, this.client.getContext());
     }
 
     /**
@@ -747,7 +747,8 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, registryName, taskRunName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1022,7 +1023,7 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
         return this
             .client
             .<TaskRunInner, TaskRunInner>getLroResult(
-                mono, this.client.getHttpPipeline(), TaskRunInner.class, TaskRunInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), TaskRunInner.class, TaskRunInner.class, this.client.getContext());
     }
 
     /**

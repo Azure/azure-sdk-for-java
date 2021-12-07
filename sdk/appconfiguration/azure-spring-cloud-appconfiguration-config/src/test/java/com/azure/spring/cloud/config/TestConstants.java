@@ -17,7 +17,6 @@ public final class TestConstants {
     public static final String LABEL_PROP = "spring.cloud.azure.appconfiguration.stores[0].selects[0].label-filter";
     public static final String WATCHED_KEY_PROP = "spring.cloud.azure.appconfiguration.stores[0].watched-key";
     public static final String CLIENT_ID = "spring.cloud.azure.appconfiguration.managed-identity.client-id";
-    public static final String DEFAULT_CONTEXT_PROP = "spring.cloud.azure.appconfiguration.default-context";
     public static final String CONFIG_ENABLED_PROP = "spring.cloud.azure.appconfiguration.enabled";
     public static final String REFRESH_INTERVAL_PROP = "spring.cloud.azure.appconfiguration.refresh-interval";
     public static final String FAIL_FAST_PROP = "spring.cloud.azure.appconfiguration.failFast";
@@ -40,8 +39,6 @@ public final class TestConstants {
     public static final String TEST_ACCESS_TOKEN = "fake_token";
     // from
     // fake-conn-secret
-    public static final String TEST_DEFAULT_CONTEXT = "/application/";
-    public static final String TEST_CONTEXT = "/foo/";
     public static final String TEST_KEY_1 = "test_key_1";
     public static final String TEST_VALUE_1 = "test_value_1";
     public static final String TEST_LABEL_1 = "test_label_1";
@@ -71,7 +68,7 @@ public final class TestConstants {
     public static final String FEATURE_LABEL = "";
     public static final String LIST_KEY_1 = "test.list[0].key";
     public static final String LIST_KEY_2 = "test.list[1].key";
-    public static final String TEST_SLASH_KEY = "test/slash/key";
+    public static final String TEST_SLASH_KEY = "slash/key";
     public static final String TEST_SLASH_VALUE = "prop value for slashed key name";
     public static final String TEST_SUBSCRIPTION_1 = "fake-subscription-id-1";
     public static final String TEST_SUBSCRIPTION_2 = "fake-subscription-id-2";

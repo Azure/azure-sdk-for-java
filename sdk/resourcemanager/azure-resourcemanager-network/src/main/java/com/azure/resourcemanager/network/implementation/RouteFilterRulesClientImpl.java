@@ -267,7 +267,8 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, routeFilterName, ruleName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -724,7 +725,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
                 this.client.getHttpPipeline(),
                 RouteFilterRuleInner.class,
                 RouteFilterRuleInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

@@ -18,12 +18,34 @@ import java.util.Objects;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Membership implements Serializable {
     private static final long serialVersionUID = 9064197572478554735L;
+
+    /**
+     * The object typ group
+     */
     public static final String OBJECT_TYPE_GROUP = "#microsoft.graph.group";
 
+    /**
+     * The object ID
+     */
     private final String objectID;
+
+    /**
+     * The object type
+     */
     private final String objectType;
+
+    /**
+     * The display name
+     */
     private final String displayName;
 
+    /**
+     * Creates a new instance of {@link Membership}.
+     *
+     * @param objectID the object ID
+     * @param objectType the object type
+     * @param displayName the display name
+     */
     @JsonCreator
     public Membership(
         @JsonProperty("objectId") @JsonAlias("id") String objectID,
@@ -34,14 +56,29 @@ public class Membership implements Serializable {
         this.displayName = displayName;
     }
 
+    /**
+     * Gets the display name.
+     *
+     * @return the display name
+     */
     public String getDisplayName() {
         return displayName;
     }
 
+    /**
+     * Gets the object type.
+     *
+     * @return the object type
+     */
     public String getObjectType() {
         return objectType;
     }
 
+    /**
+     * Gets the object ID.
+     *
+     * @return the object ID
+     */
     public String getObjectID() {
         return objectID;
     }

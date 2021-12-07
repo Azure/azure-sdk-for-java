@@ -695,7 +695,8 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
         Mono<Response<Flux<ByteBuffer>>> mono = moveResourcesWithResponseAsync(sourceResourceGroupName, parameters);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -961,7 +962,8 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
             validateMoveResourcesWithResponseAsync(sourceResourceGroupName, parameters);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1819,7 +1821,8 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                 apiVersion);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2276,7 +2279,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                 this.client.getHttpPipeline(),
                 GenericResourceInner.class,
                 GenericResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2750,7 +2753,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                 this.client.getHttpPipeline(),
                 GenericResourceInner.class,
                 GenericResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -3494,7 +3497,8 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
         Mono<Response<Flux<ByteBuffer>>> mono = deleteByIdWithResponseAsync(resourceId, apiVersion);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -3732,7 +3736,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                 this.client.getHttpPipeline(),
                 GenericResourceInner.class,
                 GenericResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -3986,7 +3990,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                 this.client.getHttpPipeline(),
                 GenericResourceInner.class,
                 GenericResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <appender name="RollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>logs/debug.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+      <!-- rollover daily -->
+      <fileNamePattern>logs/debug-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+      <!-- each file should be at most 25MB, keep 60 days worth of history, but at most 10GB -->
+      <maxFileSize>25MB</maxFileSize>
+      <maxHistory>60</maxHistory>
+      <totalSizeCap>10GB</totalSizeCap>
+    </rollingPolicy>
+
+    <encoder>
+      <pattern>%d{HH:mm:ss} [%t] %.-1level %-20logger{20} - %msg%n</pattern>
+    </encoder>
+
+    <!-- FILTERS: Evaluators default to JaninoEventEvaluator -->
+
+    <!-- OPTIONAL SUPPRESSION. If we know it is not a link credit or propagation issue, we can suppress this. -->
+    <!-- Log only the 'On next' messages so we know messages are being propagated downstream. -->
+    <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+      <evaluator>
+        <expression>return level &lt; WARN &amp;&amp;
+        logger.equals(&quot;com.azure.messaging.eventhubs.PartitionPumpManager&quot;) &amp;&amp;
+        !message.startsWith(&quot;On next&quot;);</expression>
+      </evaluator>
+      <OnMismatch>NEUTRAL</OnMismatch>
+      <OnMatch>DENY</OnMatch>
+    </filter>
+
+    <!-- Log everything from ReceiveLinkHandler except the 'onDelivery' messages. -->
+    <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+      <evaluator>
+        <expression>return level &lt; WARN &amp;&amp;
+        logger.equals(&quot;com.azure.core.amqp.implementation.handler.ReceiveLinkHandler&quot;) &amp;&amp;
+        message.startsWith(&quot;onDelivery&quot;);</expression>
+      </evaluator>
+      <OnMismatch>NEUTRAL</OnMismatch>
+      <OnMatch>DENY</OnMatch>
+    </filter>
+
+    <!-- OPTIONAL: Log everything from SendLinkHandler except the 'onLinkFlow' messages. -->
+    <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+      <evaluator>
+        <expression>return logger.equals(&quot;com.azure.core.amqp.implementation.handler.SendLinkHandler&quot;)
+        &amp;&amp;message.startsWith(&quot;onLinkFlow&quot;);</expression>
+      </evaluator>
+      <OnMismatch>NEUTRAL</OnMismatch>
+      <OnMatch>DENY</OnMatch>
+    </filter>
+
+    <!-- Log messages in ReactorSender that are not 'On next' or 'process delivered message'. -->
+    <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+      <evaluator>
+        <expression>return logger.equals(&quot;com.azure.core.amqp.implementation.ReactorSender&quot;)
+        &amp;&amp;(message.contains(&quot;On next&quot;) || message.contains(&quot;process delivered message&quot;));</expression>
+      </evaluator>
+      <OnMismatch>NEUTRAL</OnMismatch>
+      <OnMatch>DENY</OnMatch>
+    </filter>
+  </appender>
+
+  <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <Pattern>%d{HH:mm:ss} [%t] %highlight(%.-1level) %green(%logger{20}) - %msg%n</Pattern>
+    </encoder>
+
+    <!-- FILTERS: Evaluators default to JaninoEventEvaluator -->
+
+    <!-- OPTIONAL SUPPRESSION. If we know it is not a link credit or propagation issue, we can suppress this. -->
+    <!-- Log only the 'On next' messages so we know messages are being propagated downstream. -->
+    <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+      <evaluator>
+        <expression>return level &lt; WARN &amp;&amp;
+          logger.equals(&quot;com.azure.messaging.eventhubs.PartitionPumpManager&quot;) &amp;&amp;
+          !message.startsWith(&quot;On next&quot;);</expression>
+      </evaluator>
+      <OnMismatch>NEUTRAL</OnMismatch>
+      <OnMatch>DENY</OnMatch>
+    </filter>
+
+    <!-- Log everything from ReceiveLinkHandler except the 'onDelivery' messages. -->
+    <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+      <evaluator>
+        <expression>return level &lt; WARN &amp;&amp;
+          logger.equals(&quot;com.azure.core.amqp.implementation.handler.ReceiveLinkHandler&quot;) &amp;&amp;
+          message.startsWith(&quot;onDelivery&quot;);</expression>
+      </evaluator>
+      <OnMismatch>NEUTRAL</OnMismatch>
+      <OnMatch>DENY</OnMatch>
+    </filter>
+
+    <!-- OPTIONAL: Log everything from SendLinkHandler except the 'onLinkFlow' messages. -->
+    <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+      <evaluator>
+        <expression>return logger.equals(&quot;com.azure.core.amqp.implementation.handler.SendLinkHandler&quot;)
+          &amp;&amp;message.startsWith(&quot;onLinkFlow&quot;);</expression>
+      </evaluator>
+      <OnMismatch>NEUTRAL</OnMismatch>
+      <OnMatch>DENY</OnMatch>
+    </filter>
+
+    <!-- Log messages in ReactorSender that are not 'On next' or 'process delivered message'. -->
+    <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+      <evaluator>
+        <expression>return logger.equals(&quot;com.azure.core.amqp.implementation.ReactorSender&quot;)
+          &amp;&amp;(message.contains(&quot;On next&quot;) || message.contains(&quot;process delivered message&quot;));</expression>
+      </evaluator>
+      <OnMismatch>NEUTRAL</OnMismatch>
+      <OnMatch>DENY</OnMatch>
+    </filter>
+  </appender>
+
+  <logger name="com.azure.messaging.eventhubs.checkpointstore.blob" level="WARN">
+  </logger>
+
+  <logger name="com.azure.messaging.eventhubs.PartitionBasedLoadBalancer" level="WARN">
+  </logger>
+
+  <logger name="com.azure.core.amqp.implementation" level="DEBUG">
+  </logger>
+
+  <logger name="com.azure.messaging.eventhubs" level="DEBUG">
+  </logger>
+
+  <root level="WARN">
+    <appender-ref ref="Console"/>
+    <appender-ref ref="RollingFile"/>
+  </root>
+</configuration>

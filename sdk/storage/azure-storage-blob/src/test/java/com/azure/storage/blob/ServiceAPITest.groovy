@@ -349,7 +349,7 @@ class ServiceAPITest extends APISpec {
 
         when:
         def containers = primaryBlobServiceClient.listBlobContainers(
-            new ListBlobContainersOptions().setDetails(new BlobContainerListDetails().setRetrieveSystem(true)), null)
+            new ListBlobContainersOptions().setDetails(new BlobContainerListDetails().setRetrieveSystemContainers(true)), null)
 
         then:
         containers.any {item -> return item.getName() == BlobContainerClient.LOG_CONTAINER_NAME }

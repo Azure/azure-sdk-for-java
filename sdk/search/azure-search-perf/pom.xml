@@ -21,6 +21,9 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
+    <codesnippet.skip>false</codesnippet.skip>
+    <javadocDoclet></javadocDoclet>
+    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <dependencies>
@@ -32,7 +35,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-search-documents</artifactId>
-      <version>11.5.0-beta.5</version> <!-- {x-version-update;com.azure:azure-search-documents;current} -->
+      <version>11.5.0-beta.6</version> <!-- {x-version-update;com.azure:azure-search-documents;current} -->
     </dependency>
   </dependencies>
 

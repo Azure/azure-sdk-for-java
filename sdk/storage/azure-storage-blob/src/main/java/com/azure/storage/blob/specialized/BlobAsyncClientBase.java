@@ -132,14 +132,38 @@ public class BlobAsyncClientBase {
     private final ClientLogger logger = new ClientLogger(BlobAsyncClientBase.class);
     private static final Duration TIMEOUT_VALUE = Duration.ofSeconds(60);
 
+    /**
+     * Backing REST client for the blob client.
+     */
     protected final AzureBlobStorageImpl azureBlobStorage;
+
     private final String snapshot;
     private final String versionId;
     private final CpkInfo customerProvidedKey;
+
+    /**
+     * Encryption scope of the blob.
+     */
     protected final EncryptionScope encryptionScope;
+
+    /**
+     * Storage account name that contains the blob.
+     */
     protected final String accountName;
+
+    /**
+     * Container name that contains the blob.
+     */
     protected final String containerName;
+
+    /**
+     * Name of the blob.
+     */
     protected final String blobName;
+
+    /**
+     * Storage REST API version used in requests to the Storage service.
+     */
     protected final BlobServiceVersion serviceVersion;
 
     /**
@@ -1272,7 +1296,7 @@ public class BlobAsyncClientBase {
                 */
                 long finalCount;
                 if (finalRange.getCount() == null) {
-                    long blobLength = BlobAsyncClientBase.getBlobLength(blobDownloadHeaders);
+                    long blobLength = ModelHelper.getBlobLength(blobDownloadHeaders);
                     finalCount = blobLength - finalRange.getOffset();
                 } else {
                     finalCount = finalRange.getCount();
@@ -1590,7 +1614,7 @@ public class BlobAsyncClientBase {
                             progressLock, totalProgress).flux()), finalParallelTransferOptions.getMaxConcurrency())
 
                     // Only the first download call returns a value.
-                    .then(Mono.just(buildBlobPropertiesResponse(initialResponse)));
+                    .then(Mono.just(ModelHelper.buildBlobPropertiesResponse(initialResponse)));
             });
     }
 
@@ -1608,28 +1632,6 @@ public class BlobAsyncClientBase {
 
         // Write to the file.
         return FluxUtil.writeFile(data, file, chunkNum * finalParallelTransferOptions.getBlockSizeLong());
-    }
-
-    private static Response<BlobProperties> buildBlobPropertiesResponse(BlobDownloadAsyncResponse response) {
-        // blobSize determination - contentLength only returns blobSize if the download is not chunked.
-        BlobDownloadHeaders hd = response.getDeserializedHeaders();
-        long blobSize = getBlobLength(hd);
-        BlobProperties properties = new BlobProperties(null, hd.getLastModified(), hd.getETag(), blobSize,
-            hd.getContentType(), hd.getContentMd5(), hd.getContentEncoding(), hd.getContentDisposition(),
-            hd.getContentLanguage(), hd.getCacheControl(), hd.getBlobSequenceNumber(), hd.getBlobType(),
-            hd.getLeaseStatus(), hd.getLeaseState(), hd.getLeaseDuration(), hd.getCopyId(), hd.getCopyStatus(),
-            hd.getCopySource(), hd.getCopyProgress(), hd.getCopyCompletionTime(), hd.getCopyStatusDescription(),
-            hd.isServerEncrypted(), null, null, null, null, null,
-            hd.getEncryptionKeySha256(), hd.getEncryptionScope(), null, hd.getMetadata(),
-            hd.getBlobCommittedBlockCount(), hd.getTagCount(), hd.getVersionId(), null,
-            hd.getObjectReplicationSourcePolicies(), hd.getObjectReplicationDestinationPolicyId(), null,
-            hd.isSealed(), hd.getLastAccessedTime(), null, hd.getImmutabilityPolicy(), hd.hasLegalHold());
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), properties);
-    }
-
-    static long getBlobLength(BlobDownloadHeaders headers) {
-        return headers.getContentRange() == null ? headers.getContentLength()
-            : ChunkedDownloadUtils.extractTotalBlobLength(headers.getContentRange());
     }
 
     private void downloadToFileCleanup(AsynchronousFileChannel channel, String filePath, SignalType signalType) {

@@ -45,6 +45,12 @@ public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
 
     private final AADB2CProperties properties;
 
+    /**
+     * Creates a new instance of {@link AADB2CAuthorizationRequestResolver}.
+     *
+     * @param repository the client registration repository
+     * @param properties the AAD B2C properties
+     */
     public AADB2CAuthorizationRequestResolver(@NonNull ClientRegistrationRepository repository,
                                               @NonNull AADB2CProperties properties) {
         this.properties = properties;

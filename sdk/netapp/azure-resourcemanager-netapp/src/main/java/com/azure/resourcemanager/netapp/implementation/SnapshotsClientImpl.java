@@ -724,7 +724,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return snapshot of a Volume.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SnapshotInner>, SnapshotInner> beginCreateAsync(
         String resourceGroupName,
         String accountName,
@@ -737,7 +737,11 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
         return this
             .client
             .<SnapshotInner, SnapshotInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SnapshotInner.class, SnapshotInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                SnapshotInner.class,
+                SnapshotInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -755,7 +759,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return snapshot of a Volume.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SnapshotInner>, SnapshotInner> beginCreateAsync(
         String resourceGroupName,
         String accountName,
@@ -787,7 +791,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return snapshot of a Volume.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginCreate(
         String resourceGroupName,
         String accountName,
@@ -814,7 +818,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return snapshot of a Volume.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginCreate(
         String resourceGroupName,
         String accountName,
@@ -1094,7 +1098,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return snapshot of a Volume.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SnapshotInner>, SnapshotInner> beginUpdateAsync(
         String resourceGroupName,
         String accountName,
@@ -1107,7 +1111,11 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
         return this
             .client
             .<SnapshotInner, SnapshotInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SnapshotInner.class, SnapshotInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                SnapshotInner.class,
+                SnapshotInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1125,7 +1133,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return snapshot of a Volume.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SnapshotInner>, SnapshotInner> beginUpdateAsync(
         String resourceGroupName,
         String accountName,
@@ -1157,7 +1165,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return snapshot of a Volume.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginUpdate(
         String resourceGroupName,
         String accountName,
@@ -1184,7 +1192,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return snapshot of a Volume.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginUpdate(
         String resourceGroupName,
         String accountName,
@@ -1443,14 +1451,15 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String accountName, String poolName, String volumeName, String snapshotName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, snapshotName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1467,7 +1476,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName,
         String accountName,
@@ -1496,7 +1505,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String poolName, String volumeName, String snapshotName) {
         return beginDeleteAsync(resourceGroupName, accountName, poolName, volumeName, snapshotName).getSyncPoller();
@@ -1516,7 +1525,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName,
         String accountName,

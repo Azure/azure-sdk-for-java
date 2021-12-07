@@ -367,7 +367,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
      *     and SKU.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AccountInner>, AccountInner> beginCreateAsync(
         String resourceGroupName, String accountName, AccountInner account) {
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, accountName, account);
@@ -391,7 +391,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
      *     and SKU.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AccountInner>, AccountInner> beginCreateAsync(
         String resourceGroupName, String accountName, AccountInner account, Context context) {
         context = this.client.mergeContext(context);
@@ -416,7 +416,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
      *     and SKU.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AccountInner>, AccountInner> beginCreate(
         String resourceGroupName, String accountName, AccountInner account) {
         return beginCreateAsync(resourceGroupName, accountName, account).getSyncPoller();
@@ -436,7 +436,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
      *     and SKU.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AccountInner>, AccountInner> beginCreate(
         String resourceGroupName, String accountName, AccountInner account, Context context) {
         return beginCreateAsync(resourceGroupName, accountName, account, context).getSyncPoller();
@@ -643,7 +643,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
      *     and SKU.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AccountInner>, AccountInner> beginUpdateAsync(
         String resourceGroupName, String accountName, AccountInner account) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, accountName, account);
@@ -666,7 +666,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
      *     and SKU.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AccountInner>, AccountInner> beginUpdateAsync(
         String resourceGroupName, String accountName, AccountInner account, Context context) {
         context = this.client.mergeContext(context);
@@ -690,7 +690,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
      *     and SKU.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AccountInner>, AccountInner> beginUpdate(
         String resourceGroupName, String accountName, AccountInner account) {
         return beginUpdateAsync(resourceGroupName, accountName, account).getSyncPoller();
@@ -709,7 +709,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
      *     and SKU.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AccountInner>, AccountInner> beginUpdate(
         String resourceGroupName, String accountName, AccountInner account, Context context) {
         return beginUpdateAsync(resourceGroupName, accountName, account, context).getSyncPoller();
@@ -893,7 +893,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, accountName);
         return this
@@ -912,7 +912,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String accountName, Context context) {
         context = this.client.mergeContext(context);
@@ -932,7 +932,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName) {
         return beginDeleteAsync(resourceGroupName, accountName).getSyncPoller();
     }
@@ -948,7 +948,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, Context context) {
         return beginDeleteAsync(resourceGroupName, accountName, context).getSyncPoller();

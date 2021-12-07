@@ -285,7 +285,8 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
             deleteWithResponseAsync(resourceGroupName, circuitName, peeringName, connectionName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -782,7 +783,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
                 this.client.getHttpPipeline(),
                 ExpressRouteCircuitConnectionInner.class,
                 ExpressRouteCircuitConnectionInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
