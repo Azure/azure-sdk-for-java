@@ -4,8 +4,10 @@
 package com.azure.cosmos
 
 import com.azure.cosmos.implementation.SparkBridgeImplementationInternal
+import com.azure.cosmos.implementation.SparkBridgeImplementationInternal.rangeToNormalizedRange
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl
 import com.azure.cosmos.implementation.routing.Range
+import com.azure.cosmos.models.FeedRange
 import com.azure.cosmos.spark.NormalizedRange
 
 // scalastyle:off underscore.import
@@ -29,5 +31,16 @@ private[cosmos] object SparkBridgeInternal {
 
   private[this] def toCosmosRange(range: NormalizedRange): Range[String] = {
     new Range[String](range.min, range.max, true, false)
+  }
+
+  private[cosmos] def getNormalizedEffectiveRange
+  (
+    container: CosmosAsyncContainer,
+    feedRange: FeedRange
+  ) : NormalizedRange = {
+
+    SparkBridgeImplementationInternal
+      .rangeToNormalizedRange(
+        container.getNormalizedEffectiveRange(feedRange).block)
   }
 }
