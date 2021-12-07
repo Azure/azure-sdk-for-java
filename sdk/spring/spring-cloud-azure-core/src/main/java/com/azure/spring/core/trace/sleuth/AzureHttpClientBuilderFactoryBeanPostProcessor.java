@@ -38,10 +38,15 @@ public class AzureHttpClientBuilderFactoryBeanPostProcessor
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         if (bean instanceof AbstractAzureHttpClientBuilderFactory) {
-            HttpPipelinePolicy policy = beanFactory.getBean(DEFAULT_SLEUTH_HTTP_POLICY_BEAN_NAME, HttpPipelinePolicy.class);
-            AbstractAzureHttpClientBuilderFactory builderFactory = (AbstractAzureHttpClientBuilderFactory) bean;
-            builderFactory.addHttpPipelinePolicy(policy);
-            LOGGER.debug("Added the Sleuth http pipeline policy to {} builder.", bean.getClass());
+            try {
+                HttpPipelinePolicy policy = beanFactory.getBean(DEFAULT_SLEUTH_HTTP_POLICY_BEAN_NAME,
+                    HttpPipelinePolicy.class);
+                AbstractAzureHttpClientBuilderFactory builderFactory = (AbstractAzureHttpClientBuilderFactory) bean;
+                builderFactory.addHttpPipelinePolicy(policy);
+                LOGGER.debug("Added the Sleuth http pipeline policy to {} builder.", bean.getClass());
+            } catch (BeansException exception) {
+                LOGGER.warn("Not found the Sleuth http pipeline policy for {} builder.", bean.getClass());
+            }
         }
         return bean;
     }
