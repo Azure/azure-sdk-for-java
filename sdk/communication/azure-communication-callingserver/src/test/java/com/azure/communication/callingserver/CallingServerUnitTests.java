@@ -17,7 +17,6 @@ import java.util.List;
 import com.azure.communication.callingserver.models.*;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
-import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
@@ -174,7 +173,7 @@ public class CallingServerUnitTests {
             SERVERCALL_LOCATOR,
             COMMUNICATION_USER,
             CALLBACK_URI,
-            new PhoneNumberIdentifier(Alternate_Caller_Id),
+            ALTERNATE_CALLER_ID,
             "operationContext"
         );
 
@@ -196,7 +195,7 @@ public class CallingServerUnitTests {
             SERVERCALL_LOCATOR,
             COMMUNICATION_USER,
             CALLBACK_URI,
-            new PhoneNumberIdentifier(Alternate_Caller_Id),
+            ALTERNATE_CALLER_ID,
             "operationContext",
             Context.NONE
         );
