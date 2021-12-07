@@ -2,7 +2,7 @@
 
 The documentation [here][prefetchgeneral] describes the Service Bus SDK prefetch feature in general. It also states that setting the prefetch-count property in the builder to zero disables prefetch.
 
-Even after the application disables prefetch in the builder, the `receiveMessages` API in `ServiceBusReceiverClient` can re-enable prefetch implicitly, which may not be obvious. This document outlines how this API impacts prefetch (covers minimal internals to ease the understanding), helping developers to learn about the API behavior and account for it in the application design.
+Even after the application disables prefetch in the builder, the `receiveMessages` API in `ServiceBusReceiverClient` can re-enable prefetch implicitly, which may not be obvious. This document outlines how this API impacts prefetch (covers minimal internals to ease the understanding), helping developers to learn about the API behaviors and account for it in the application design.
 
 #### The receiveMessages API signature:
 
@@ -48,7 +48,7 @@ Here is the state of the prefetch-queue after two passes of iteration:
 
 The prefetch-queue is scoped to the Client and shared across all `receiveMessages` calls.
 
-Given the prefetch-queue is shared, the messages will get asynchronously buffered irrespective of:
+Given the prefetch-queue is shared, the messages will get asynchronously buffered even if:
 1. the application ignores the Iterable returned from `receiveMessages` calls.
 2. the application stops iteration in the middle.
 3. the `maxTimeout` elapses before receiving `maxMessages`.
