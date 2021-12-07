@@ -49,7 +49,7 @@ public class AADProfileProperties {
 
     /**
      *
-     * @param cloud The clout type.
+     * @param cloud The cloud type.
      */
     public void setCloud(AzureProfileAware.CloudType cloud) {
         this.cloud = cloud;
