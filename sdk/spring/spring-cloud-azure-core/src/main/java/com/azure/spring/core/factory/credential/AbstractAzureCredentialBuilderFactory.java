@@ -42,6 +42,10 @@ public abstract class AbstractAzureCredentialBuilderFactory<T extends Credential
 
     private final AzureProperties azureProperties;
 
+    /**
+     * To create a {@link AbstractAzureCredentialBuilderFactory} instance with {@link AzureProperties}.
+     * @param azureProperties The Azure properties.
+     */
     public AbstractAzureCredentialBuilderFactory(AzureProperties azureProperties) {
         this.azureProperties = azureProperties;
     }

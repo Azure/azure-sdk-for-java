@@ -15,10 +15,18 @@ public final class HttpProxyProperties extends ProxyProperties implements ProxyA
      */
     private String nonProxyHosts;
 
+    /**
+     * Get the non-proxy hosts.
+     * @return The non-proxy hosts.
+     */
     public String getNonProxyHosts() {
         return nonProxyHosts;
     }
 
+    /**
+     * Set the non-proxy hosts.
+     * @param nonProxyHosts The non-proxy hosts.
+     */
     public void setNonProxyHosts(String nonProxyHosts) {
         this.nonProxyHosts = nonProxyHosts;
     }

@@ -32,26 +32,50 @@ public final class HttpLoggingProperties implements HttpLoggingAware.HttpLogging
      */
     private Boolean prettyPrintBody;
 
+    /**
+     * Get the logging detail level.
+     * @return The logging detail level.
+     */
     public HttpLogDetailLevel getLevel() {
         return level;
     }
 
+    /**
+     * Set the logging detail level.
+     * @param level The logging detail level.
+     */
     public void setLevel(HttpLogDetailLevel level) {
         this.level = level;
     }
 
+    /**
+     * Get allowed http header names.
+     * @return The allowed http header names.
+     */
     public Set<String> getAllowedHeaderNames() {
         return allowedHeaderNames;
     }
 
+    /**
+     * Get allowed http query parameter names.
+     * @return The allowed http query parameter names.
+     */
     public Set<String> getAllowedQueryParamNames() {
         return allowedQueryParamNames;
     }
 
+    /**
+     * Get whether to pretty print body.
+     * @return Whether to pretty print body.
+     */
     public Boolean getPrettyPrintBody() {
         return prettyPrintBody;
     }
 
+    /**
+     * Set whether to pretty print body.
+     * @param prettyPrintBody Whether to pretty print body.
+     */
     public void setPrettyPrintBody(Boolean prettyPrintBody) {
         this.prettyPrintBody = prettyPrintBody;
     }
