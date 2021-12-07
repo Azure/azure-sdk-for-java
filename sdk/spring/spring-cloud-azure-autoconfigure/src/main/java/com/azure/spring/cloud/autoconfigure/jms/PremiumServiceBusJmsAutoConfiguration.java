@@ -40,12 +40,6 @@ public class PremiumServiceBusJmsAutoConfiguration extends AbstractServiceBusJms
         super(azureServiceBusJMSProperties);
     }
 
-    /**
-     * Declare JMS ConnectionFactory bean.
-     *
-     * @param serviceBusJMSProperties the ServiceBus JMS properties
-     * @return JMS ConnectionFactory bean
-     */
     @Bean
     @ConditionalOnMissingBean
     public ConnectionFactory jmsConnectionFactory(AzureServiceBusJmsProperties serviceBusJMSProperties) {
