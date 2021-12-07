@@ -12,7 +12,7 @@ import org.springframework.util.StringUtils;
 /**
  * Resolve the named key credential according to the azure properties.
  */
-public class AzureNamedKeyCredentialResolver implements AzureCredentialResolver<AzureNamedKeyCredentialProvider> {
+public final class AzureNamedKeyCredentialResolver implements AzureCredentialResolver<AzureNamedKeyCredentialProvider> {
 
     @Override
     public AzureNamedKeyCredentialProvider resolve(AzureProperties properties) {

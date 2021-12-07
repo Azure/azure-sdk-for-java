@@ -13,7 +13,7 @@ import java.util.function.Consumer;
 /**
  * A descriptor describes the named key authentication.
  */
-public class NamedKeyAuthenticationDescriptor implements AuthenticationDescriptor<AzureNamedKeyCredentialProvider> {
+public final class NamedKeyAuthenticationDescriptor implements AuthenticationDescriptor<AzureNamedKeyCredentialProvider> {
 
     private final Consumer<AzureNamedKeyCredentialProvider> consumer;
 
@@ -22,17 +22,17 @@ public class NamedKeyAuthenticationDescriptor implements AuthenticationDescripto
     }
 
     @Override
-    public AzureCredentialType azureCredentialType() {
+    public AzureCredentialType getAzureCredentialType() {
         return AzureCredentialType.NAMED_KEY_CREDENTIAL;
     }
 
     @Override
-    public AzureCredentialResolver<AzureNamedKeyCredentialProvider> azureCredentialResolver() {
+    public AzureCredentialResolver<AzureNamedKeyCredentialProvider> getAzureCredentialResolver() {
         return new AzureNamedKeyCredentialResolver();
     }
 
     @Override
-    public Consumer<AzureNamedKeyCredentialProvider> consumer() {
+    public Consumer<AzureNamedKeyCredentialProvider> getConsumer() {
         return consumer;
     }
 }

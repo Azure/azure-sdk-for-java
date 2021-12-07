@@ -5,10 +5,10 @@ package com.azure.spring.core.connectionstring.implementation;
 
 import java.net.URI;
 
-import static com.azure.spring.core.connectionstring.ConnectionStringSegments.ENDPOINT;
-import static com.azure.spring.core.connectionstring.ConnectionStringSegments.ENTITY_PATH;
-import static com.azure.spring.core.connectionstring.ConnectionStringSegments.SHARED_ACCESS_KEY;
-import static com.azure.spring.core.connectionstring.ConnectionStringSegments.SHARED_ACCESS_KEY_NAME;
+import static com.azure.spring.core.connectionstring.implementation.ConnectionStringSegments.ENDPOINT;
+import static com.azure.spring.core.connectionstring.implementation.ConnectionStringSegments.ENTITY_PATH;
+import static com.azure.spring.core.connectionstring.implementation.ConnectionStringSegments.SHARED_ACCESS_KEY;
+import static com.azure.spring.core.connectionstring.implementation.ConnectionStringSegments.SHARED_ACCESS_KEY_NAME;
 
 
 public class EventHubsConnectionString {

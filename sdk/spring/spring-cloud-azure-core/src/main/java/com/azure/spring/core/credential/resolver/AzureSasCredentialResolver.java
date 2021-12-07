@@ -11,7 +11,7 @@ import org.springframework.util.StringUtils;
 /**
  * Resolve the sas token credential according to the azure properties.
  */
-public class AzureSasCredentialResolver implements AzureCredentialResolver<AzureSasCredentialProvider> {
+public final class AzureSasCredentialResolver implements AzureCredentialResolver<AzureSasCredentialProvider> {
 
     @Override
     public AzureSasCredentialProvider resolve(AzureProperties properties) {

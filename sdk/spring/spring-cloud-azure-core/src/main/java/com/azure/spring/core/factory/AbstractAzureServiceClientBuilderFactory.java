@@ -121,8 +121,8 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
         }
 
         final Consumer consumer = descriptors.stream()
-                                             .filter(d -> d.azureCredentialType() == azureCredentialProvider.getType())
-                                             .map(AuthenticationDescriptor::consumer)
+                                             .filter(d -> d.getAzureCredentialType() == azureCredentialProvider.getType())
+                                             .map(AuthenticationDescriptor::getConsumer)
                                              .findFirst()
                                              .orElseThrow(
                                                  () -> new IllegalArgumentException("Consumer should not be null"));
@@ -179,7 +179,7 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
     private AzureCredentialProvider<?> resolveAzureCredential(AzureProperties azureProperties,
                                                               List<AuthenticationDescriptor<?>> descriptors) {
         List<AzureCredentialResolver<?>> resolvers = descriptors.stream()
-                                                                .map(AuthenticationDescriptor::azureCredentialResolver)
+                                                                .map(AuthenticationDescriptor::getAzureCredentialResolver)
                                                                 .collect(Collectors.toList());
         AzureCredentialResolvers credentialResolvers = new AzureCredentialResolvers(resolvers);
         return credentialResolvers.resolve(azureProperties);

@@ -23,17 +23,17 @@ public class StorageSharedKeyAuthenticationDescriptor implements AuthenticationD
     }
 
     @Override
-    public AzureCredentialType azureCredentialType() {
+    public AzureCredentialType getAzureCredentialType() {
         return STORAGE_SHARED_KEY;
     }
 
     @Override
-    public AzureCredentialResolver<StorageSharedKeyCredentialProvider> azureCredentialResolver() {
+    public AzureCredentialResolver<StorageSharedKeyCredentialProvider> getAzureCredentialResolver() {
         return new StorageSharedKeyCredentialResolver();
     }
 
     @Override
-    public Consumer<StorageSharedKeyCredentialProvider> consumer() {
+    public Consumer<StorageSharedKeyCredentialProvider> getConsumer() {
         return consumer;
     }
 }

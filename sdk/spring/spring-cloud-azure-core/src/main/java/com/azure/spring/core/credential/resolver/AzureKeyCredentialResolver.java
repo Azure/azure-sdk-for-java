@@ -11,7 +11,7 @@ import org.springframework.util.StringUtils;
 /**
  * Resolve the token credential according to the azure properties.
  */
-public class AzureKeyCredentialResolver implements AzureCredentialResolver<AzureKeyCredentialProvider> {
+public final class AzureKeyCredentialResolver implements AzureCredentialResolver<AzureKeyCredentialProvider> {
 
     @Override
     public AzureKeyCredentialProvider resolve(AzureProperties properties) {

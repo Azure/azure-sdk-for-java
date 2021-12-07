@@ -9,7 +9,7 @@ import com.azure.spring.core.credential.AzureCredentialType;
 /**
  * Provide the azure named key credential.
  */
-public class AzureNamedKeyCredentialProvider implements AzureCredentialProvider<AzureNamedKeyCredential> {
+public final class AzureNamedKeyCredentialProvider implements AzureCredentialProvider<AzureNamedKeyCredential> {
 
     private final String name;
     private final String key;

@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.azure.spring.core.connectionstring.ConnectionStringSegments.ENDPOINT;
+import static com.azure.spring.core.connectionstring.implementation.ConnectionStringSegments.ENDPOINT;
 
 
 class ConnectionString {

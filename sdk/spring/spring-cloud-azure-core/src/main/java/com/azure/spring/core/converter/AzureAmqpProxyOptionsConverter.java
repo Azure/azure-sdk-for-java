@@ -22,6 +22,10 @@ public final class AzureAmqpProxyOptionsConverter implements Converter<ProxyAwar
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureAmqpProxyOptionsConverter.class);
     public static final AzureAmqpProxyOptionsConverter AMQP_PROXY_CONVERTER = new AzureAmqpProxyOptionsConverter();
 
+    private AzureAmqpProxyOptionsConverter() {
+
+    }
+
     @Override
     public ProxyOptions convert(ProxyAware.Proxy proxy) {
         if (!StringUtils.hasText(proxy.getHostname()) || proxy.getPort() == null) {

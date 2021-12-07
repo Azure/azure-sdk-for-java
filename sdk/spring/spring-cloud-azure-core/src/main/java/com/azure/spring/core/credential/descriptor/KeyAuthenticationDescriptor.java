@@ -13,7 +13,7 @@ import java.util.function.Consumer;
 /**
  * A descriptor describes the key authentication.
  */
-public class KeyAuthenticationDescriptor implements AuthenticationDescriptor<AzureKeyCredentialProvider> {
+public final class KeyAuthenticationDescriptor implements AuthenticationDescriptor<AzureKeyCredentialProvider> {
 
     private final Consumer<AzureKeyCredentialProvider> consumer;
 
@@ -22,17 +22,17 @@ public class KeyAuthenticationDescriptor implements AuthenticationDescriptor<Azu
     }
 
     @Override
-    public AzureCredentialType azureCredentialType() {
+    public AzureCredentialType getAzureCredentialType() {
         return AzureCredentialType.KEY_CREDENTIAL;
     }
 
     @Override
-    public AzureCredentialResolver<AzureKeyCredentialProvider> azureCredentialResolver() {
+    public AzureCredentialResolver<AzureKeyCredentialProvider> getAzureCredentialResolver() {
         return new AzureKeyCredentialResolver();
     }
 
     @Override
-    public Consumer<AzureKeyCredentialProvider> consumer() {
+    public Consumer<AzureKeyCredentialProvider> getConsumer() {
         return consumer;
     }
 }

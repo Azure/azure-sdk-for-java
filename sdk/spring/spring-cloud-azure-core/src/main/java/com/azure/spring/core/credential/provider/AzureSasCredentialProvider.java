@@ -9,7 +9,7 @@ import com.azure.spring.core.credential.AzureCredentialType;
 /**
  * Provide the azure sas credential.
  */
-public class AzureSasCredentialProvider implements AzureCredentialProvider<AzureSasCredential> {
+public final class AzureSasCredentialProvider implements AzureCredentialProvider<AzureSasCredential> {
 
     private final String sasToken;
 

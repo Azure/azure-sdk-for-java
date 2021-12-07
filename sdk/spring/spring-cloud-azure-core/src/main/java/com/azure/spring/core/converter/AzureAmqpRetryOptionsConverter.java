@@ -16,6 +16,10 @@ public final class AzureAmqpRetryOptionsConverter implements Converter<RetryAwar
 
     public static final AzureAmqpRetryOptionsConverter AMQP_RETRY_CONVERTER = new AzureAmqpRetryOptionsConverter();
 
+    private AzureAmqpRetryOptionsConverter() {
+
+    }
+
     @Override
     public AmqpRetryOptions convert(RetryAware.Retry retry) {
         AmqpRetryOptions retryOptions = new AmqpRetryOptions();

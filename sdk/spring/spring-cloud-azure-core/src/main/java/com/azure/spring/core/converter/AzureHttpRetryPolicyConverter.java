@@ -18,6 +18,10 @@ public final class AzureHttpRetryPolicyConverter implements Converter<RetryAware
 
     public static final AzureHttpRetryPolicyConverter HTTP_RETRY_CONVERTER = new AzureHttpRetryPolicyConverter();
 
+    private AzureHttpRetryPolicyConverter() {
+
+    }
+
     @Override
     public RetryPolicy convert(@NonNull RetryAware.HttpRetry httpRetry) {
         Integer maxAttempts = httpRetry.getMaxAttempts();

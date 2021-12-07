@@ -9,7 +9,7 @@ import com.azure.spring.core.credential.AzureCredentialType;
 /**
  * Provide the azure token credential.
  */
-public class AzureTokenCredentialProvider implements AzureCredentialProvider<TokenCredential> {
+public final class AzureTokenCredentialProvider implements AzureCredentialProvider<TokenCredential> {
 
     private final TokenCredential tokenCredential;
 

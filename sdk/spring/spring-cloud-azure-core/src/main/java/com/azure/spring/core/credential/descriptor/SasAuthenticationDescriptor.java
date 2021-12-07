@@ -13,7 +13,7 @@ import java.util.function.Consumer;
 /**
  * A descriptor describes the SAS authentication.
  */
-public class SasAuthenticationDescriptor implements AuthenticationDescriptor<AzureSasCredentialProvider> {
+public final class SasAuthenticationDescriptor implements AuthenticationDescriptor<AzureSasCredentialProvider> {
 
     private final Consumer<AzureSasCredentialProvider> consumer;
 
@@ -22,17 +22,17 @@ public class SasAuthenticationDescriptor implements AuthenticationDescriptor<Azu
     }
 
     @Override
-    public AzureCredentialType azureCredentialType() {
+    public AzureCredentialType getAzureCredentialType() {
         return AzureCredentialType.SAS_CREDENTIAL;
     }
 
     @Override
-    public AzureCredentialResolver<AzureSasCredentialProvider> azureCredentialResolver() {
+    public AzureCredentialResolver<AzureSasCredentialProvider> getAzureCredentialResolver() {
         return new AzureSasCredentialResolver();
     }
 
     @Override
-    public Consumer<AzureSasCredentialProvider> consumer() {
+    public Consumer<AzureSasCredentialProvider> getConsumer() {
         return consumer;
     }
 }

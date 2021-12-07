@@ -14,7 +14,7 @@ import java.util.Properties;
 /**
  * Util class for AzureSpringIdentifier
  */
-public class AzureSpringIdentifier {
+public final class AzureSpringIdentifier {
     //    There is 24 char limitation about the app id. So some abbreviation needs to be applied:
     //    az: for Azure
     //    sp: for Spring

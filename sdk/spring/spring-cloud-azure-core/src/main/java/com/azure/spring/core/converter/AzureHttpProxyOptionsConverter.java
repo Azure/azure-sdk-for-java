@@ -20,6 +20,10 @@ public final class AzureHttpProxyOptionsConverter implements Converter<ProxyAwar
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureHttpProxyOptionsConverter.class);
     public static final AzureHttpProxyOptionsConverter HTTP_PROXY_CONVERTER = new AzureHttpProxyOptionsConverter();
 
+    private AzureHttpProxyOptionsConverter() {
+
+    }
+
     @Override
     public ProxyOptions convert(ProxyAware.Proxy proxy) {
         if (!StringUtils.hasText(proxy.getHostname()) || proxy.getPort() == null) {

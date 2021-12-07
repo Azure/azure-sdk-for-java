@@ -3,8 +3,8 @@
 
 package com.azure.spring.core.properties.util;
 
-import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.aware.ClientAware;
+import com.azure.spring.core.properties.AzureProperties;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
@@ -30,6 +30,17 @@ public class AzurePropertiesUtils {
         // call explicitly for these fields could be defined as final
         BeanUtils.copyProperties(source.getClient(), target.getClient());
 
+        copyHttpLoggingProperties(source, target);
+
+        BeanUtils.copyProperties(source.getProxy(), target.getProxy());
+        BeanUtils.copyProperties(source.getRetry(), target.getRetry());
+        BeanUtils.copyProperties(source.getRetry().getBackoff(), target.getRetry().getBackoff());
+        BeanUtils.copyProperties(source.getProfile(), target.getProfile());
+        BeanUtils.copyProperties(source.getProfile().getEnvironment(), target.getProfile().getEnvironment());
+        BeanUtils.copyProperties(source.getCredential(), target.getCredential());
+    }
+
+    private static <T extends AzureProperties> void copyHttpLoggingProperties(AzureProperties source, T target) {
         if (source.getClient() instanceof ClientAware.HttpClient
             && target.getClient() instanceof ClientAware.HttpClient) {
             ClientAware.HttpClient sourceClient = (ClientAware.HttpClient) source.getClient();
@@ -38,13 +49,6 @@ public class AzurePropertiesUtils {
             targetClient.getLogging().getAllowedHeaderNames().addAll(sourceClient.getLogging().getAllowedHeaderNames());
             targetClient.getLogging().getAllowedQueryParamNames().addAll(sourceClient.getLogging().getAllowedQueryParamNames());
         }
-
-        BeanUtils.copyProperties(source.getProxy(), target.getProxy());
-        BeanUtils.copyProperties(source.getRetry(), target.getRetry());
-        BeanUtils.copyProperties(source.getRetry().getBackoff(), target.getRetry().getBackoff());
-        BeanUtils.copyProperties(source.getProfile(), target.getProfile());
-        BeanUtils.copyProperties(source.getProfile().getEnvironment(), target.getProfile().getEnvironment());
-        BeanUtils.copyProperties(source.getCredential(), target.getCredential());
     }
 
     // TODO (xiada): add tests for this

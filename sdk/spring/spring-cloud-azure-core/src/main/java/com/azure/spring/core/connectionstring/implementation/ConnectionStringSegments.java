@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.core.connectionstring;
+package com.azure.spring.core.connectionstring.implementation;
 
 /**
  * List all the name of segments that could be included in an Azure Service connection string.
  */
-public final class ConnectionStringSegments {
+final class ConnectionStringSegments {
 
     public static final String ENDPOINT = "Endpoint";
 

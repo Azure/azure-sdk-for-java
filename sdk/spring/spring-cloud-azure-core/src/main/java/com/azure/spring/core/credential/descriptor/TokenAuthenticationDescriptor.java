@@ -13,7 +13,7 @@ import java.util.function.Consumer;
 /**
  * A descriptor describes the token authentication.
  */
-public class TokenAuthenticationDescriptor implements AuthenticationDescriptor<AzureTokenCredentialProvider> {
+public final class TokenAuthenticationDescriptor implements AuthenticationDescriptor<AzureTokenCredentialProvider> {
 
     private final Consumer<AzureTokenCredentialProvider> consumer;
 
@@ -22,17 +22,17 @@ public class TokenAuthenticationDescriptor implements AuthenticationDescriptor<A
     }
 
     @Override
-    public AzureCredentialType azureCredentialType() {
+    public AzureCredentialType getAzureCredentialType() {
         return AzureCredentialType.TOKEN_CREDENTIAL;
     }
 
     @Override
-    public AzureCredentialResolver<AzureTokenCredentialProvider> azureCredentialResolver() {
+    public AzureCredentialResolver<AzureTokenCredentialProvider> getAzureCredentialResolver() {
         return new AzureTokenCredentialResolver();
     }
 
     @Override
-    public Consumer<AzureTokenCredentialProvider> consumer() {
+    public Consumer<AzureTokenCredentialProvider> getConsumer() {
         return consumer;
     }
 }

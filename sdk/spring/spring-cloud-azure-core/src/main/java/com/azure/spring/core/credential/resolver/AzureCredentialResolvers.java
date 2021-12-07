@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Resolve the Azure credential resolver.
  */
-public class AzureCredentialResolvers {
+public final class AzureCredentialResolvers {
 
     private final List<AzureCredentialResolver<?>> resolvers;
 

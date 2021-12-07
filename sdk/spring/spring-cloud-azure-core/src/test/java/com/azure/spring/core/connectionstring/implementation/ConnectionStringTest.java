@@ -6,17 +6,18 @@ package com.azure.spring.core.connectionstring.implementation;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static com.azure.spring.core.connectionstring.ConnectionStringSegments.ACCOUNT_KEY;
-import static com.azure.spring.core.connectionstring.ConnectionStringSegments.ACCOUNT_NAME;
-import static com.azure.spring.core.connectionstring.ConnectionStringSegments.DEFAULT_ENDPOINTS_PROTOCOL;
-import static com.azure.spring.core.connectionstring.ConnectionStringSegments.ENDPOINT;
-import static com.azure.spring.core.connectionstring.ConnectionStringSegments.ENDPOINT_SUFFIX;
-import static com.azure.spring.core.connectionstring.ConnectionStringSegments.ENTITY_PATH;
-import static com.azure.spring.core.connectionstring.ConnectionStringSegments.ID;
-import static com.azure.spring.core.connectionstring.ConnectionStringSegments.SECRET;
-import static com.azure.spring.core.connectionstring.ConnectionStringSegments.SHARED_ACCESS_KEY;
-import static com.azure.spring.core.connectionstring.ConnectionStringSegments.SHARED_ACCESS_KEY_NAME;
-import static com.azure.spring.core.connectionstring.ConnectionStringSegments.SHARED_ACCESS_SIGNATURE;
+import static com.azure.spring.core.connectionstring.implementation.ConnectionStringSegments.ACCOUNT_KEY;
+import static com.azure.spring.core.connectionstring.implementation.ConnectionStringSegments.ACCOUNT_NAME;
+import static com.azure.spring.core.connectionstring.implementation.ConnectionStringSegments.DEFAULT_ENDPOINTS_PROTOCOL;
+import static com.azure.spring.core.connectionstring.implementation.ConnectionStringSegments.ENDPOINT;
+import static com.azure.spring.core.connectionstring.implementation.ConnectionStringSegments.ENDPOINT_SUFFIX;
+import static com.azure.spring.core.connectionstring.implementation.ConnectionStringSegments.ENTITY_PATH;
+import static com.azure.spring.core.connectionstring.implementation.ConnectionStringSegments.ID;
+import static com.azure.spring.core.connectionstring.implementation.ConnectionStringSegments.SECRET;
+import static com.azure.spring.core.connectionstring.implementation.ConnectionStringSegments.SHARED_ACCESS_KEY;
+import static com.azure.spring.core.connectionstring.implementation.ConnectionStringSegments.SHARED_ACCESS_KEY_NAME;
+import static com.azure.spring.core.connectionstring.implementation.ConnectionStringSegments.SHARED_ACCESS_SIGNATURE;
+
 
 class ConnectionStringTest {
 

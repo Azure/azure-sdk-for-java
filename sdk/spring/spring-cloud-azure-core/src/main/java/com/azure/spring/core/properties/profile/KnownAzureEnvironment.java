@@ -6,6 +6,9 @@ package com.azure.spring.core.properties.profile;
 import com.azure.spring.core.aware.AzureProfileAware;
 import org.springframework.util.Assert;
 
+import static com.azure.spring.core.aware.AzureProfileAware.CloudType.AZURE_CHINA;
+import static com.azure.spring.core.aware.AzureProfileAware.CloudType.AZURE_GERMANY;
+import static com.azure.spring.core.aware.AzureProfileAware.CloudType.AZURE_US_GOVERNMENT;
 import static com.azure.spring.core.aware.AzureProfileAware.CloudType.OTHER;
 
 /**
