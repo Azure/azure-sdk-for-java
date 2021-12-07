@@ -31,6 +31,11 @@ import static com.azure.spring.core.AzureSpringIdentifier.VERSION;
 @EnableConfigurationProperties(AzureServiceBusJmsProperties.class)
 public class PremiumServiceBusJmsAutoConfiguration extends AbstractServiceBusJmsAutoConfiguration {
 
+    /**
+     * Creates a new instance of {@link PremiumServiceBusJmsAutoConfiguration}.
+     *
+     * @param azureServiceBusJMSProperties the Azure ServiceBus JMS properties
+     */
     public PremiumServiceBusJmsAutoConfiguration(AzureServiceBusJmsProperties azureServiceBusJMSProperties) {
         super(azureServiceBusJMSProperties);
     }

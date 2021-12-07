@@ -31,12 +31,6 @@ public abstract class AbstractServiceBusJmsAutoConfiguration {
         this.azureServiceBusJMSProperties = azureServiceBusJMSProperties;
     }
 
-    /**
-     * Declare {@link JmsListenerContainerFactory} bean for Azure Service Bus Queue.
-     * @param configurer configure {@link DefaultJmsListenerContainerFactory} with sensible defaults
-     * @param connectionFactory configure {@link ConnectionFactory} for {@link JmsListenerContainerFactory}
-     * @return {@link JmsListenerContainerFactory} bean
-     */
     @Bean
     @ConditionalOnMissingBean
     public JmsListenerContainerFactory<?> jmsListenerContainerFactory(
@@ -48,12 +42,6 @@ public abstract class AbstractServiceBusJmsAutoConfiguration {
         return jmsListenerContainerFactory;
     }
 
-    /**
-     * Declare {@link JmsListenerContainerFactory} bean for Azure Service Bus Topic.
-     * @param configurer configure {@link DefaultJmsListenerContainerFactory} with sensible defaults
-     * @param connectionFactory configure {@link ConnectionFactory} for {@link JmsListenerContainerFactory}
-     * @return {@link JmsListenerContainerFactory} bean
-     */
     @Bean
     @ConditionalOnMissingBean(name = "topicJmsListenerContainerFactory")
     public JmsListenerContainerFactory<?> topicJmsListenerContainerFactory(
