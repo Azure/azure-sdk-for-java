@@ -333,7 +333,8 @@ public final class LoadBalancersClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, loadBalancerName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -769,7 +770,11 @@ public final class LoadBalancersClientImpl
         return this
             .client
             .<LoadBalancerInner, LoadBalancerInner>getLroResult(
-                mono, this.client.getHttpPipeline(), LoadBalancerInner.class, LoadBalancerInner.class, this.client.getContext());
+                mono,
+                this.client.getHttpPipeline(),
+                LoadBalancerInner.class,
+                LoadBalancerInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1486,7 +1491,8 @@ public final class LoadBalancersClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = swapPublicIpAddressesWithResponseAsync(location, parameters);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

@@ -26,6 +26,7 @@ import com.azure.resourcemanager.compute.models.ImageReference;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.KnownWindowsVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.LinuxConfiguration;
+import com.azure.resourcemanager.compute.models.NetworkApiVersion;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.OrchestrationMode;
 import com.azure.resourcemanager.compute.models.Plan;
@@ -62,6 +63,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetSku;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetSkuTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetStorageProfile;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetUpdate;
+import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMProfile;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMs;
 import com.azure.resourcemanager.compute.models.WinRMConfiguration;
 import com.azure.resourcemanager.compute.models.WinRMListener;
@@ -161,6 +163,9 @@ public class VirtualMachineScaleSetImpl
     // To manage OS profile
     private boolean removeOsProfile;
     private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetImpl.class);
+    // A transition indicator. Only if the profile is set from null to non-null will this indicator change from false to true.
+    // Currently, it's only used in checking if the vm profile defaults has to be set.
+    private boolean profileAttached = false;
 
     VirtualMachineScaleSetImpl(
         String name,
@@ -674,6 +679,19 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetImpl withSku(VirtualMachineScaleSetSkuTypes skuType) {
         this.innerModel().withSku(skuType.sku());
+        initVMProfileIfNecessary();
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withFlexibleOrchestrationMode() {
+        return withFlexibleOrchestrationMode(1);
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withFlexibleOrchestrationMode(int faultDomainCount) {
+        this.innerModel().withOrchestrationMode(OrchestrationMode.FLEXIBLE);
+        this.innerModel().withPlatformFaultDomainCount(faultDomainCount);
         return this;
     }
 
@@ -684,6 +702,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withExistingPrimaryNetworkSubnet(Network network, String subnetName) {
+        initVMProfileIfNecessary();
         this.existingPrimaryNetworkSubnetNameToAssociate = mergePath(network.id(), "subnets", subnetName);
         return this;
     }
@@ -794,6 +813,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withPrimaryInternalLoadBalancerBackends(String... backendNames) {
+        initVMProfileIfNecessary();
         if (this.isInCreateMode()) {
             VirtualMachineScaleSetIpConfiguration defaultPrimaryIpConfig = primaryNicDefaultIpConfiguration();
             removeAllBackendAssociationFromIpConfiguration(this.primaryInternalLoadBalancer, defaultPrimaryIpConfig);
@@ -807,6 +827,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withPrimaryInternalLoadBalancerInboundNatPools(String... natPoolNames) {
+        initVMProfileIfNecessary();
         if (this.isInCreateMode()) {
             VirtualMachineScaleSetIpConfiguration defaultPrimaryIpConfig = this.primaryNicDefaultIpConfiguration();
             removeAllInboundNatPoolAssociationFromIpConfiguration(
@@ -873,9 +894,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withSpecificWindowsImageVersion(ImageReference imageReference) {
-        if (this.innerModel() == null || this.innerModel().virtualMachineProfile() == null) {
-            return this;
-        }
+        initVMProfileIfNecessary();
         this
             .innerModel()
             .virtualMachineProfile()
@@ -892,9 +911,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withGeneralizedWindowsCustomImage(String customImageId) {
-        if (this.innerModel() == null || this.innerModel().virtualMachineProfile() == null) {
-            return this;
-        }
+        initVMProfileIfNecessary();
         ImageReference imageReferenceInner = new ImageReference();
         imageReferenceInner.withId(customImageId);
         this
@@ -920,9 +937,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withStoredWindowsImage(String imageUrl) {
-        if (this.innerModel() == null || this.innerModel().virtualMachineProfile() == null) {
-            return this;
-        }
+        initVMProfileIfNecessary();
         VirtualHardDisk userImageVhd = new VirtualHardDisk();
         userImageVhd.withUri(imageUrl);
         this
@@ -955,9 +970,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withSpecificLinuxImageVersion(ImageReference imageReference) {
-        if (this.innerModel() == null || this.innerModel().virtualMachineProfile() == null) {
-            return this;
-        }
+        initVMProfileIfNecessary();
         this
             .innerModel()
             .virtualMachineProfile()
@@ -972,9 +985,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withGeneralizedLinuxCustomImage(String customImageId) {
-        if (this.innerModel() == null || this.innerModel().virtualMachineProfile() == null) {
-            return this;
-        }
+        initVMProfileIfNecessary();
         ImageReference imageReferenceInner = new ImageReference();
         imageReferenceInner.withId(customImageId);
         this
@@ -998,9 +1009,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withStoredLinuxImage(String imageUrl) {
-        if (this.innerModel() == null || this.innerModel().virtualMachineProfile() == null) {
-            return this;
-        }
+        initVMProfileIfNecessary();
         VirtualHardDisk userImageVhd = new VirtualHardDisk();
         userImageVhd.withUri(imageUrl);
         this
@@ -1018,41 +1027,35 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withAdminUsername(String adminUserName) {
-        if (this.innerModel() != null && this.innerModel().virtualMachineProfile() != null) {
-            this.innerModel().virtualMachineProfile().osProfile().withAdminUsername(adminUserName);
-        }
+        initVMProfileIfNecessary();
+        this.innerModel().virtualMachineProfile().osProfile().withAdminUsername(adminUserName);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withRootUsername(String adminUserName) {
-        if (this.innerModel() != null && this.innerModel().virtualMachineProfile() != null) {
-            this.innerModel().virtualMachineProfile().osProfile().withAdminUsername(adminUserName);
-        }
+        initVMProfileIfNecessary();
+        this.innerModel().virtualMachineProfile().osProfile().withAdminUsername(adminUserName);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withAdminPassword(String password) {
-        if (this.innerModel() != null && this.innerModel().virtualMachineProfile() != null) {
-            this.innerModel().virtualMachineProfile().osProfile().withAdminPassword(password);
-        }
+        initVMProfileIfNecessary();
+        this.innerModel().virtualMachineProfile().osProfile().withAdminPassword(password);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withRootPassword(String password) {
-        if (this.innerModel() != null && this.innerModel().virtualMachineProfile() != null) {
-            this.innerModel().virtualMachineProfile().osProfile().withAdminPassword(password);
-        }
+        initVMProfileIfNecessary();
+        this.innerModel().virtualMachineProfile().osProfile().withAdminPassword(password);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withSsh(String publicKeyData) {
-        if (this.innerModel() == null || this.innerModel().virtualMachineProfile() == null) {
-            return this;
-        }
+        initVMProfileIfNecessary();
         VirtualMachineScaleSetOSProfile osProfile = this.innerModel().virtualMachineProfile().osProfile();
         if (osProfile.linuxConfiguration().ssh() == null) {
             SshConfiguration sshConfiguration = new SshConfiguration();
@@ -1068,49 +1071,42 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withVMAgent() {
-        if (this.innerModel() != null && this.innerModel().virtualMachineProfile() != null) {
-            this.innerModel().virtualMachineProfile().osProfile().windowsConfiguration().withProvisionVMAgent(true);
-        }
+        initVMProfileIfNecessary();
+        this.innerModel().virtualMachineProfile().osProfile().windowsConfiguration().withProvisionVMAgent(true);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withoutVMAgent() {
-        if (this.innerModel() != null && this.innerModel().virtualMachineProfile() != null) {
-            this.innerModel().virtualMachineProfile().osProfile().windowsConfiguration().withProvisionVMAgent(false);
-        }
+        initVMProfileIfNecessary();
+        this.innerModel().virtualMachineProfile().osProfile().windowsConfiguration().withProvisionVMAgent(false);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withAutoUpdate() {
-        if (this.innerModel() != null && this.innerModel().virtualMachineProfile() != null) {
-            this.innerModel().virtualMachineProfile().osProfile().windowsConfiguration().withEnableAutomaticUpdates(true);
-        }
+        initVMProfileIfNecessary();
+        this.innerModel().virtualMachineProfile().osProfile().windowsConfiguration().withEnableAutomaticUpdates(true);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withoutAutoUpdate() {
-        if (this.innerModel() != null && this.innerModel().virtualMachineProfile() != null) {
-            this.innerModel().virtualMachineProfile().osProfile().windowsConfiguration().withEnableAutomaticUpdates(false);
-        }
+        initVMProfileIfNecessary();
+        this.innerModel().virtualMachineProfile().osProfile().windowsConfiguration().withEnableAutomaticUpdates(false);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withTimeZone(String timeZone) {
-        if (this.innerModel() != null && this.innerModel().virtualMachineProfile() != null) {
-            this.innerModel().virtualMachineProfile().osProfile().windowsConfiguration().withTimeZone(timeZone);
-        }
+        initVMProfileIfNecessary();
+        this.innerModel().virtualMachineProfile().osProfile().windowsConfiguration().withTimeZone(timeZone);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withWinRM(WinRMListener listener) {
-        if (this.innerModel() == null || this.innerModel().virtualMachineProfile() == null) {
-            return this;
-        }
+        initVMProfileIfNecessary();
         if (this.innerModel().virtualMachineProfile().osProfile().windowsConfiguration().winRM() == null) {
             WinRMConfiguration winRMConfiguration = new WinRMConfiguration();
             this.innerModel().virtualMachineProfile().osProfile().windowsConfiguration().withWinRM(winRMConfiguration);
@@ -1121,25 +1117,22 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withOSDiskCaching(CachingTypes cachingType) {
-        if (this.innerModel() != null && this.innerModel().virtualMachineProfile() != null) {
-            this.innerModel().virtualMachineProfile().storageProfile().osDisk().withCaching(cachingType);
-        }
+        initVMProfileIfNecessary();
+        this.innerModel().virtualMachineProfile().storageProfile().osDisk().withCaching(cachingType);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withOSDiskName(String name) {
-        if (this.innerModel() != null && this.innerModel().virtualMachineProfile() != null) {
-            this.innerModel().virtualMachineProfile().storageProfile().osDisk().withName(name);
-        }
+        initVMProfileIfNecessary();
+        this.innerModel().virtualMachineProfile().storageProfile().osDisk().withName(name);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withComputerNamePrefix(String namePrefix) {
-        if (this.innerModel() != null && this.innerModel().virtualMachineProfile() != null) {
-            this.innerModel().virtualMachineProfile().osProfile().withComputerNamePrefix(namePrefix);
-        }
+        initVMProfileIfNecessary();
+        this.innerModel().virtualMachineProfile().osProfile().withComputerNamePrefix(namePrefix);
         return this;
     }
 
@@ -1201,25 +1194,22 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withCustomData(String base64EncodedCustomData) {
-        if (this.innerModel() != null && this.innerModel().virtualMachineProfile() != null) {
-            this.innerModel().virtualMachineProfile().osProfile().withCustomData(base64EncodedCustomData);
-        }
+        initVMProfileIfNecessary();
+        this.innerModel().virtualMachineProfile().osProfile().withCustomData(base64EncodedCustomData);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withSecrets(List<VaultSecretGroup> secrets) {
-        if (this.innerModel() != null && this.innerModel().virtualMachineProfile() != null) {
-            this.innerModel().virtualMachineProfile().osProfile().withSecrets(secrets);
-        }
+        initVMProfileIfNecessary();
+        this.innerModel().virtualMachineProfile().osProfile().withSecrets(secrets);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withoutSecrets() {
-        if (this.innerModel() != null && this.innerModel().virtualMachineProfile() != null) {
-            this.innerModel().virtualMachineProfile().osProfile().withSecrets(new ArrayList<VaultSecretGroup>());
-        }
+        initVMProfileIfNecessary();
+        this.innerModel().virtualMachineProfile().osProfile().withSecrets(new ArrayList<VaultSecretGroup>());
         return this;
     }
 
@@ -1503,9 +1493,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withOSDiskStorageAccountType(StorageAccountTypes accountType) {
-        if (this.innerModel() == null || this.innerModel().virtualMachineProfile() == null) {
-            return this;
-        }
+        initVMProfileIfNecessary();
         // withers is limited to VMSS based on ManagedDisk.
         this
             .innerModel()
@@ -1587,21 +1575,18 @@ public class VirtualMachineScaleSetImpl
     //
     @Override
     protected void beforeCreating() {
-        if (this.extensions.size() > 0
-            && this.innerModel() != null
-            && this.innerModel().virtualMachineProfile() != null) {
-            this
-                .innerModel()
-                .virtualMachineProfile()
-                .withExtensionProfile(new VirtualMachineScaleSetExtensionProfile())
-                .extensionProfile()
-                .withExtensions(innersFromWrappers(this.extensions.values()));
-        }
+        setExtensions();
     }
 
     @Override
     protected Mono<VirtualMachineScaleSetInner> createInner() {
-        if (isInCreateMode()) {
+        // support flexible vmss with no profile
+        if (this.orchestrationMode() == OrchestrationMode.FLEXIBLE
+            // presence of sku indicates that the vm profile is not null, otherwise, vm profile is null.
+            && this.innerModel().sku() == null) {
+            return createInnerNoProfile();
+        }
+        if (this.shouldSetProfileDefaults()) {
             this.setOSProfileDefaults();
             this.setOSDiskDefault();
         }
@@ -1612,7 +1597,7 @@ public class VirtualMachineScaleSetImpl
                 virtualMachineScaleSet -> {
                     if (isManagedDiskEnabled()) {
                         this.managedDataDisks.setDataDisksDefaults();
-                    } else if (this.innerModel() != null && this.innerModel().virtualMachineProfile() != null) {
+                    } else {
                         List<VirtualMachineScaleSetDataDisk> dataDisks =
                             this.innerModel().virtualMachineProfile().storageProfile().dataDisks();
                         VirtualMachineScaleSetUnmanagedDataDiskImpl.setDataDisksDefaults(dataDisks, this.name());
@@ -1622,6 +1607,7 @@ public class VirtualMachineScaleSetImpl
                     this.virtualMachineScaleSetMsiHandler.processCreatedExternalIdentities();
                     this.virtualMachineScaleSetMsiHandler.handleExternalIdentities();
                     this.createNewProximityPlacementGroup();
+                    this.adjustProfileForFlexibleMode();
                     return this
                         .manager()
                         .serviceClient()
@@ -1638,17 +1624,18 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public Mono<VirtualMachineScaleSet> updateResourceAsync() {
-        if (this.extensions.size() > 0
-            && this.innerModel() != null && this.innerModel().virtualMachineProfile() != null) {
-            this
-                .innerModel()
-                .virtualMachineProfile()
-                .withExtensionProfile(new VirtualMachineScaleSetExtensionProfile())
-                .extensionProfile()
-                .withExtensions(innersFromWrappers(this.extensions.values()));
+        final VirtualMachineScaleSetImpl self = this;
+        // support flexible vmss with no profile
+        if (this.orchestrationMode() == OrchestrationMode.FLEXIBLE
+            && this.innerModel().virtualMachineProfile() == null) {
+            return updateResourceAsyncNoProfile(self);
+        }
+        setExtensions();
+        if (this.shouldSetProfileDefaults()) {
+            this.setOSProfileDefaults();
+            this.setOSDiskDefault();
         }
         this.setPrimaryIpConfigurationSubnet();
-        final VirtualMachineScaleSetImpl self = this;
         return this
             .setPrimaryIpConfigurationBackendsAndInboundNatPoolsAsync()
             .map(
@@ -1664,6 +1651,7 @@ public class VirtualMachineScaleSetImpl
                     this.handleUnManagedOSDiskContainers();
                     this.bootDiagnosticsHandler.handleDiagnosticsSettings();
                     this.virtualMachineScaleSetMsiHandler.processCreatedExternalIdentities();
+                    this.adjustProfileForFlexibleMode();
                     //
                     VirtualMachineScaleSetUpdate updateParameter = VMSSPatchPayload.preparePatchPayload(this);
                     //
@@ -1709,25 +1697,84 @@ public class VirtualMachineScaleSetImpl
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
+
     // Helpers
     //
+
+    private void adjustProfileForFlexibleMode() {
+        if (this.orchestrationMode() == OrchestrationMode.FLEXIBLE) {
+            if (this.innerModel().virtualMachineProfile().networkProfile().networkInterfaceConfigurations() != null) {
+                this.innerModel().virtualMachineProfile().networkProfile().networkInterfaceConfigurations().forEach(virtualMachineScaleSetNetworkConfiguration -> {
+                    if (virtualMachineScaleSetNetworkConfiguration.ipConfigurations() != null) {
+                        virtualMachineScaleSetNetworkConfiguration.ipConfigurations().forEach(virtualMachineScaleSetIpConfiguration -> {
+                            // this property is not allowed to appear when creating vmss in flexible mode, though it's defined in the swagger file
+                            virtualMachineScaleSetIpConfiguration.withLoadBalancerInboundNatPools(null);
+                        });
+                    }
+                });
+            }
+            this.innerModel()
+                // upgradePolicy is not supported in flexible vmss
+                .withUpgradePolicy(null)
+                .virtualMachineProfile().networkProfile()
+                // NetworkApiVersion must be specified when creating in flexible mode
+                .withNetworkApiVersion(NetworkApiVersion.TWO_ZERO_TWO_ZERO_ONE_ONE_ZERO_ONE);
+        }
+    }
+    private void initVMProfileIfNecessary() {
+        if (this.innerModel().virtualMachineProfile() == null) {
+            this.innerModel().withVirtualMachineProfile(initDefaultVMProfile());
+            this.profileAttached = true;
+        }
+    }
+
+    private Mono<VirtualMachineScaleSetInner> createInnerNoProfile() {
+        this.innerModel().withVirtualMachineProfile(null);
+        return manager()
+                .serviceClient()
+                .getVirtualMachineScaleSets()
+                .createOrUpdateAsync(resourceGroupName(), name(), innerModel());
+    }
+
+    private Mono<VirtualMachineScaleSet> updateResourceAsyncNoProfile(VirtualMachineScaleSetImpl self) {
+        return manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .updateAsync(resourceGroupName(), name(), VMSSPatchPayload.preparePatchPayload(this))
+            .map(
+                vmssInner -> {
+                    setInner(vmssInner);
+                    self.clearCachedProperties();
+                    self.initializeChildrenFromInner();
+                    self.virtualMachineScaleSetMsiHandler.clear();
+                    return self;
+                });
+    }
+
+    private VirtualMachineScaleSetVMProfile initDefaultVMProfile() {
+        VirtualMachineScaleSetImpl impl = (VirtualMachineScaleSetImpl) this.manager()
+            .virtualMachineScaleSets()
+            .define(this.name());
+        if (this.orchestrationMode() == OrchestrationMode.FLEXIBLE) {
+            if (this.innerModel().platformFaultDomainCount() != null) {
+                impl.withFlexibleOrchestrationMode(this.innerModel().platformFaultDomainCount());
+            } else {
+                impl.withFlexibleOrchestrationMode();
+            }
+        }
+        return impl.innerModel().virtualMachineProfile();
+    }
 
     private boolean isInUpdateMode() {
         return !this.isInCreateMode();
     }
 
     private void setOSProfileDefaults() {
-        if (isInUpdateMode()) {
-            return;
-        }
         if (this.innerModel().sku().capacity() == null) {
             this.withCapacity(2);
         }
         if (this.innerModel().upgradePolicy() == null || this.innerModel().upgradePolicy().mode() == null) {
             this.innerModel().withUpgradePolicy(new UpgradePolicy().withMode(UpgradeMode.AUTOMATIC));
-        }
-        if (this.innerModel() == null || this.innerModel().virtualMachineProfile() == null) {
-            return;
         }
         VirtualMachineScaleSetOSProfile osProfile = this.innerModel().virtualMachineProfile().osProfile();
         VirtualMachineScaleSetOSDisk osDisk = this.innerModel().virtualMachineProfile().storageProfile().osDisk();
@@ -1757,9 +1804,6 @@ public class VirtualMachineScaleSetImpl
     }
 
     private void setOSDiskDefault() {
-        if (isInUpdateMode() || this.innerModel() == null || this.innerModel().virtualMachineProfile() == null) {
-            return;
-        }
         VirtualMachineScaleSetStorageProfile storageProfile =
             this.innerModel().virtualMachineProfile().storageProfile();
         VirtualMachineScaleSetOSDisk osDisk = storageProfile.osDisk();
@@ -1798,6 +1842,30 @@ public class VirtualMachineScaleSetImpl
         }
     }
 
+    /*
+     * Profile defaults should be set when:
+     * 1. creating vmss
+     * 2. attaching a profile to existing flexible vmss
+     * @return
+     */
+    private boolean shouldSetProfileDefaults() {
+        return isInCreateMode()
+            || (this.orchestrationMode() == OrchestrationMode.FLEXIBLE && this.profileAttached);
+    }
+
+    private void setExtensions() {
+        if (this.extensions.size() > 0
+            && this.innerModel() != null
+            && this.innerModel().virtualMachineProfile() != null) {
+            this
+                .innerModel()
+                .virtualMachineProfile()
+                .withExtensionProfile(new VirtualMachineScaleSetExtensionProfile())
+                .extensionProfile()
+                .withExtensions(innersFromWrappers(this.extensions.values()));
+        }
+    }
+
     @Override
     public void beforeGroupCreateOrUpdate() {
         // Adding delayed storage account dependency if needed
@@ -1807,7 +1875,7 @@ public class VirtualMachineScaleSetImpl
     }
 
     protected void prepareOSDiskContainers() {
-        if (isManagedDiskEnabled() || this.innerModel() == null || this.innerModel().virtualMachineProfile() == null) {
+        if (this.innerModel() == null || this.innerModel().virtualMachineProfile() == null || isManagedDiskEnabled()) {
             return;
         }
         final VirtualMachineScaleSetStorageProfile storageProfile =
@@ -2050,6 +2118,7 @@ public class VirtualMachineScaleSetImpl
     private void clearCachedProperties() {
         this.primaryInternetFacingLoadBalancer = null;
         this.primaryInternalLoadBalancer = null;
+        this.profileAttached = false;
     }
 
     private Mono<VirtualMachineScaleSetImpl> loadCurrentPrimaryLoadBalancersIfAvailableAsync() throws IOException {
@@ -2144,6 +2213,7 @@ public class VirtualMachineScaleSetImpl
     }
 
     private VirtualMachineScaleSetIpConfiguration primaryNicDefaultIpConfiguration() {
+        initVMProfileIfNecessary();
         List<VirtualMachineScaleSetNetworkConfiguration> nicConfigurations =
             this.innerModel().virtualMachineProfile().networkProfile().networkInterfaceConfigurations();
 
@@ -2401,9 +2471,7 @@ public class VirtualMachineScaleSetImpl
 
     protected VirtualMachineScaleSetImpl withUnmanagedDataDisk(
         VirtualMachineScaleSetUnmanagedDataDiskImpl unmanagedDisk) {
-        if (this.innerModel() == null || this.innerModel().virtualMachineProfile() == null) {
-            return this;
-        }
+        initVMProfileIfNecessary();
         if (this.innerModel().virtualMachineProfile().storageProfile().dataDisks() == null) {
             this
                 .innerModel()

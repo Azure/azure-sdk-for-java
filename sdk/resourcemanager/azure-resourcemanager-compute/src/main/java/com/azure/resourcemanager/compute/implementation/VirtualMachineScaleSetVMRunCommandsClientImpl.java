@@ -1027,7 +1027,8 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
             deleteWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

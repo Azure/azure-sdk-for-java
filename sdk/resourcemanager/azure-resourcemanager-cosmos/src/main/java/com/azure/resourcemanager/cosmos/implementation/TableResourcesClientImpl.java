@@ -978,7 +978,8 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteTableWithResponseAsync(resourceGroupName, accountName, tableName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

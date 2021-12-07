@@ -413,7 +413,7 @@ public class ClientRetryPolicyTest {
                 .shouldRetry(false)
                 .build());
 
-        Mockito.verifyZeroInteractions(endpointManager);
+        Mockito.verifyNoInteractions(endpointManager);
     }
 
     public static void validateSuccess(Mono<ShouldRetryResult> single,
