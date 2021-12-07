@@ -11,8 +11,11 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.core.util.serializer.TypeReference;
 import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrders;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificates;
@@ -109,11 +112,13 @@ import com.azure.resourcemanager.storage.models.Usages;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /** The entry point for accessing resource management APIs in Azure. */
 public final class AzureResourceManager {
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureResourceManager.class);
+
     private final ResourceManager resourceManager;
     private final StorageManager storageManager;
     private final ComputeManager computeManager;
@@ -327,6 +332,8 @@ public final class AzureResourceManager {
     /**
      * Gets AzureEnvironment from ARM endpoint.
      *
+     * If multiple ARM metadata is available, it uses the first one.
+     *
      * @param armEndpoint the URL of ARM endpoint.
      * @param httpClient the HTTP client for requests.
      * @return the AzureEnvironment
@@ -335,46 +342,65 @@ public final class AzureResourceManager {
      */
     public static AzureEnvironment getAzureEnvironmentFromArmEndpoint(String armEndpoint, HttpClient httpClient) {
         HttpRequest request = new HttpRequest(HttpMethod.GET,
-            String.format("%s/metadata/endpoints?api-version=1.0", armEndpoint))
+            String.format("%s/metadata/endpoints?api-version=2019-10-01", armEndpoint))
             .setHeader("accept", "application/json");
 
         HttpResponse response = httpClient.send(request).block();
         if (response.getStatusCode() != 200) {
-            throw new HttpResponseException("Failed : HTTP error code : " + response.getStatusCode(), response);
+            throw LOGGER.logExceptionAsError(
+                new HttpResponseException("Failed : HTTP error code : " + response.getStatusCode(), response));
         }
         String body = response.getBodyAsString().block();
         try {
-            ArmMetadata metadata = JacksonAdapter.createDefaultSerializerAdapter()
-                .deserialize(body, ArmMetadata.class, SerializerEncoding.JSON);
+            List<ArmMetadata> metadataArray = JacksonAdapter.createDefaultSerializerAdapter()
+                .deserialize(body, ARM_METADATA_ARRAY_TYPE_REFERENCE.getJavaType(), SerializerEncoding.JSON);
 
+            if (metadataArray == null || CoreUtils.isNullOrEmpty(metadataArray)) {
+                throw LOGGER.logExceptionAsError(
+                    new HttpResponseException("Failed to find metadata : " + body, response));
+            }
+
+            ArmMetadata metadata = metadataArray.iterator().next();
             AzureEnvironment azureEnvironment = new AzureEnvironment(new HashMap<String, String>() {
-                private static final long serialVersionUID = 1L;
                 {
                     put("managementEndpointUrl", metadata.authentication.audiences.get(0));
                     put("resourceManagerEndpointUrl", armEndpoint);
-                    put("galleryEndpointUrl", metadata.galleryEndpoint);
+                    put("galleryEndpointUrl", metadata.gallery);
                     put("activeDirectoryEndpointUrl", metadata.authentication.loginEndpoint);
                     put("activeDirectoryResourceId", metadata.authentication.audiences.get(0));
-                    put("activeDirectoryGraphResourceId", metadata.graphEndpoint);
-                    put("storageEndpointSuffix", armEndpoint.substring(armEndpoint.indexOf('.')));
-                    put("keyVaultDnsSuffix", ".vault" + armEndpoint.substring(armEndpoint.indexOf('.')));
+                    put("activeDirectoryGraphResourceId", metadata.graph);
+                    put("storageEndpointSuffix", "." + metadata.suffixes.storage);
+                    put("keyVaultDnsSuffix", "." + metadata.suffixes.keyVaultDns);
                 }
             });
             return azureEnvironment;
         } catch (IOException e) {
-            throw new HttpResponseException("Failed to parse metadata : " + body, response);
+            throw LOGGER.logExceptionAsError(
+                new HttpResponseException("Failed to parse metadata : " + body, response, e));
         }
     }
 
+    private static final TypeReference<List<ArmMetadata>> ARM_METADATA_ARRAY_TYPE_REFERENCE =
+        new TypeReference<List<ArmMetadata>>() {
+        };
+
     private static class ArmMetadata {
-        private String galleryEndpoint;
-        private String graphEndpoint;
+        private String name;
+        private String gallery;
+        private String graph;
+        private String graphAudience;
         private ArmMetadataAuthentication authentication;
+        private ArmMetadataSuffixes suffixes;
     }
 
     private static class ArmMetadataAuthentication {
         private String loginEndpoint;
         private List<String> audiences;
+    }
+
+    private static class ArmMetadataSuffixes {
+        private String keyVaultDns;
+        private String storage;
     }
 
     private AzureResourceManager(HttpPipeline httpPipeline, AzureProfile profile) {
