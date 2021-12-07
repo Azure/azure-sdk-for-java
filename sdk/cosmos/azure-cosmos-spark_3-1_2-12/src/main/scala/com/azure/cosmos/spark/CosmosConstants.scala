@@ -48,7 +48,6 @@ private object CosmosConstants {
     val ProvisionedThroughputSnapshot = "ProvisionedThroughputSnapshot"
     val IndexingPolicySnapshot = "IndexingPolicySnapshot"
     val DefaultTtlInSecondsSnapshot = "DefaultTtlInSecondsSnapshot"
-    val AnalyticalStorageTtlInSecondsSnapshot = "AnalyticalStorageTtlInSecondsSnapshot"
-    val ChangeFeedPolicySnapshot = "ChangeFeedPolicySnapshot"
+    val AnalyticalStoreTtlInSecondsSnapshot = "AnalyticalStoreTtlInSecondsSnapshot"
   }
 }

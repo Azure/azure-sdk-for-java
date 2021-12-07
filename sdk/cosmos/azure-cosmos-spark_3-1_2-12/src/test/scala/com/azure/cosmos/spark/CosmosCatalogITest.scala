@@ -93,10 +93,9 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
 
     val tblProperties = getTblProperties(spark, databaseName, containerName)
 
-    tblProperties should have size 8
+    tblProperties should have size 7
 
-    tblProperties("AnalyticalStorageTtlInSecondsSnapshot") shouldEqual "null"
-    tblProperties("ChangeFeedPolicySnapshot") shouldEqual "{\"retentionDuration\":0}"
+    tblProperties("AnalyticalStoreTtlInSecondsSnapshot") shouldEqual "null"
     tblProperties("CosmosPartitionCountSnapshot") shouldEqual "1"
     tblProperties("CosmosPartitionKeyDefinition") shouldEqual "{\"paths\":[\"/id\"],\"kind\":\"Hash\"}"
     tblProperties("DefaultTtlInSecondsSnapshot") shouldEqual "null"
@@ -122,7 +121,7 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
     spark.sql(
       s"CREATE TABLE testCatalog.$databaseName.$containerName (word STRING, number INT) using cosmos.oltp " +
         // TODO @fabianm Emulator doesn't seem to support analytical store - needs to be tested separately
-        // s"TBLPROPERTIES(partitionKeyVersion = 'V2', analyticalStorageTtlInSeconds = '3000000')")
+        // s"TBLPROPERTIES(partitionKeyVersion = 'V2', analyticalStoreTtlInSeconds = '3000000')")
         s"TBLPROPERTIES(partitionKeyVersion = 'V2')")
 
     val containerProperties = cosmosClient.getDatabase(databaseName).getContainer(containerName).read().block().getProperties
@@ -146,11 +145,10 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
 
     val tblProperties = getTblProperties(spark, databaseName, containerName)
 
-    tblProperties should have size 8
+    tblProperties should have size 7
 
-    // tblProperties("AnalyticalStorageTtlInSecondsSnapshot") shouldEqual "3000000"
-    tblProperties("AnalyticalStorageTtlInSecondsSnapshot") shouldEqual "null"
-    tblProperties("ChangeFeedPolicySnapshot") shouldEqual "{\"retentionDuration\":0}"
+    // tblProperties("AnalyticalStoreTtlInSecondsSnapshot") shouldEqual "3000000"
+    tblProperties("AnalyticalStoreTtlInSecondsSnapshot") shouldEqual "null"
     tblProperties("CosmosPartitionCountSnapshot") shouldEqual "1"
     tblProperties("CosmosPartitionKeyDefinition") shouldEqual "{\"paths\":[\"/id\"],\"kind\":\"Hash\",\"version\":2}"
     tblProperties("DefaultTtlInSecondsSnapshot") shouldEqual "null"
@@ -197,10 +195,9 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
 
     val tblProperties = getTblProperties(spark, databaseName, containerName)
 
-    tblProperties should have size 8
+    tblProperties should have size 7
 
-    tblProperties("AnalyticalStorageTtlInSecondsSnapshot") shouldEqual "null"
-    tblProperties("ChangeFeedPolicySnapshot") shouldEqual "{\"retentionDuration\":0}"
+    tblProperties("AnalyticalStoreTtlInSecondsSnapshot") shouldEqual "null"
     tblProperties("CosmosPartitionCountSnapshot") shouldEqual "2"
     tblProperties("CosmosPartitionKeyDefinition") shouldEqual "{\"paths\":[\"/id\"],\"kind\":\"Hash\"}"
     tblProperties("DefaultTtlInSecondsSnapshot") shouldEqual "null"
@@ -324,10 +321,9 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
 
     val tblProperties = getTblProperties(spark, databaseName, containerName)
 
-    tblProperties should have size 8
+    tblProperties should have size 7
 
-    tblProperties("AnalyticalStorageTtlInSecondsSnapshot") shouldEqual "null"
-    tblProperties("ChangeFeedPolicySnapshot") shouldEqual "{\"retentionDuration\":0}"
+    tblProperties("AnalyticalStoreTtlInSecondsSnapshot") shouldEqual "null"
     tblProperties("CosmosPartitionCountSnapshot") shouldEqual "1"
     tblProperties("CosmosPartitionKeyDefinition") shouldEqual "{\"paths\":[\"/mypk\"],\"kind\":\"Hash\"}"
     tblProperties("DefaultTtlInSecondsSnapshot") shouldEqual "null"

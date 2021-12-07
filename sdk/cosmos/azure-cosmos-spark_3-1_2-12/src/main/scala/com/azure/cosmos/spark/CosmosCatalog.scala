@@ -396,7 +396,7 @@ class CosmosCatalog
       case None =>
     }
 
-    CosmosContainerProperties.getAnalyticalStorageTtlInSeconds(containerProperties) match {
+    CosmosContainerProperties.getAnalyticalStoreTtlInSeconds(containerProperties) match {
       case Some(ttl) => cosmosContainerProperties.setAnalyticalStoreTimeToLiveInSeconds(ttl)
       case None =>
     }
@@ -713,18 +713,13 @@ class CosmosCatalog
       case None => "null"
     }
 
-    val changeFeedPolicyPolicySnapshotJson = Option.apply(containerProperties.getChangeFeedPolicy) match {
-      case Some(p) => ModelBridgeInternal.getJsonSerializable(p).toJson
-      case None => "null"
-    }
-
     val defaultTimeToLiveInSecondsSnapshot = Option.apply(containerProperties.getDefaultTimeToLiveInSeconds) match {
       case Some(defaultTtl) => defaultTtl.toString
       case None => "null"
     }
 
-    val analyticalStorageTimeToLiveInSecondsSnapshot = Option.apply(containerProperties.getAnalyticalStoreTimeToLiveInSeconds) match {
-      case Some(analyticalStorageTtl) => analyticalStorageTtl.toString
+    val analyticalStoreTimeToLiveInSecondsSnapshot = Option.apply(containerProperties.getAnalyticalStoreTimeToLiveInSeconds) match {
+      case Some(analyticalStoreTtl) => analyticalStoreTtl.toString
       case None => "null"
     }
 
@@ -785,16 +780,12 @@ class CosmosCatalog
       s"'$defaultTimeToLiveInSecondsSnapshot'"
     )
     tableProperties.put(
-      CosmosConstants.TableProperties.AnalyticalStorageTtlInSecondsSnapshot,
-      s"'$analyticalStorageTimeToLiveInSecondsSnapshot'"
+      CosmosConstants.TableProperties.AnalyticalStoreTtlInSecondsSnapshot,
+      s"'$analyticalStoreTimeToLiveInSecondsSnapshot'"
     )
     tableProperties.put(
       CosmosConstants.TableProperties.IndexingPolicySnapshot,
       s"'$indexingPolicySnapshotJson'"
-    )
-    tableProperties.put(
-      CosmosConstants.TableProperties.ChangeFeedPolicySnapshot,
-      s"'$changeFeedPolicyPolicySnapshotJson'"
     )
 
     tableProperties
@@ -810,7 +801,7 @@ class CosmosCatalog
     private val partitionKeyVersion = "partitionKeyVersion"
     private val indexingPolicy = "indexingPolicy"
     private val defaultTtlPropertyName = "defaultTtlInSeconds"
-    private val analyticalStorageTtlPropertyName = "analyticalStorageTtlInSeconds"
+    private val analyticalStoreTtlPropertyName = "analyticalStoreTtlInSeconds"
     private val defaultPartitionKeyPath = "/id"
     private val defaultIndexingPolicy = AllPropertiesIndexingPolicyName
 
@@ -857,9 +848,9 @@ class CosmosCatalog
       }
     }
 
-    def getAnalyticalStorageTtlInSeconds(properties: Map[String, String]): Option[Int] = {
-      if (properties.contains(analyticalStorageTtlPropertyName)) {
-        Some(properties(analyticalStorageTtlPropertyName).toInt)
+    def getAnalyticalStoreTtlInSeconds(properties: Map[String, String]): Option[Int] = {
+      if (properties.contains(analyticalStoreTtlPropertyName)) {
+        Some(properties(analyticalStoreTtlPropertyName).toInt)
       } else {
         None
       }
