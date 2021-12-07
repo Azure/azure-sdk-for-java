@@ -1,10 +1,10 @@
-### The Sync receiveMessages API and implicit Prefetch:
+# The Sync receiveMessages API and implicit Prefetch
 
 The documentation [here][prefetchgeneral] describes the Service Bus SDK prefetch feature in general. It also states that setting the prefetch-count property in the builder to zero disables prefetch.
 
 Even after the application disables prefetch in the builder, the `receiveMessages` API in `ServiceBusReceiverClient` can re-enable prefetch implicitly, which may not be obvious. This document outlines how this API impacts prefetch (covers minimal internals to ease the understanding), helping developers to learn about the API behaviors and account for it in the application design.
 
-#### The receiveMessages API signature:
+## The receiveMessages API signature
 
 ```java
 IterableStream<ServiceBusReceivedMessage> receiveMessages(int maxMessages, Duration maxWaitTime)
@@ -14,11 +14,11 @@ where `maxMessages` is the maximum number of messages to receive and `maxWaitTim
 
 *Note*: the overload `receiveMessages(int maxMessages)` is based on the above method, with `maxWaitTime` computed from `RetryConfig` set in builder.
 
-#### The receiveMessages API interaction with prefetch-queue:
+## The receiveMessages API interaction with prefetch-queue
 
 Once the application obtains the `ServiceBusReceiverClient` object, an unbounded prefetch-queue object is assigned to this client object (though in reality, the creation of prefetch-queue is lazy).
 
-<img width="428" alt="EmptyPrefetchQueue" src="https://user-images.githubusercontent.com/1471612/144946242-ccdde0e4-236d-4cd3-81b8-090b06cd6c5f.png">
+<img src="./EmptyPrefetchQueue.png" alt="EmptyPrefetchQueue" width="528">
 
 ```java
 IterableStream<ServiceBusReceivedMessage> messagesIterable = client.receiveMessages(10, Duration.ofSeconds(5));
@@ -26,7 +26,7 @@ IterableStream<ServiceBusReceivedMessage> messagesIterable = client.receiveMessa
 
 Once the `receiveMessages` method is called, the Client immediately requests the service bus to return `maxMessages` messages, which asynchronously starts buffering the messages to the prefetch-queue.
 
-<img width="715" alt="PrefetchQueueBuffering" src="https://user-images.githubusercontent.com/1471612/144946373-9e773d46-df30-45c4-8981-b34f4e5993b0.png">
+<img src="./PrefetchQueueBuffering.png" alt="PrefetchQueueBuffering" width="528">
 
 This is an important point to note, i.e., the prefetch-queue can already have some messages before the application starts iterating the `messagesIterable`. It also means the delivery count on the server side will be incremented due to the API invocation.
 
@@ -42,9 +42,9 @@ for (ServiceBusReceivedMessage message : messagesIterable) {
 
 Here is the state of the prefetch-queue after two passes of iteration: 
 
-<img width="892" alt="PrefetchQueueReading" src="https://user-images.githubusercontent.com/1471612/144964587-a3ceb0e6-3157-4e29-968b-5f1243eeefd3.png">
+<img src="./PrefetchQueueReading.png" alt="PrefetchQueueReading" width="528">
 
-#### The shared nature of prefetch-queue:
+## The shared nature of prefetch-queue
 
 The prefetch-queue is scoped to the Client and shared across all `receiveMessages` calls.
 
@@ -59,11 +59,11 @@ Any messages from a previous `receiveMessages` call that its Iterable couldn't r
 
 Let's take the previous example, say within `maxTimeout` of 5 sec, the service returned only 7 messages out of 10; the `messagesIterable` will complete after returning those 7 messages and exits the for-loop. The remaining 3 messages can get buffered in the background. If the application then calls `receiveMessages(5, ..)`, then SDK initiates a request for 5 messages. The new Iterable read and deliver 5 messages from the buffer (starting with the first three messages buffered by the initial `receiveMessages` call).
 
-<img width="897" alt="PrefetchQueueSharing" src="https://user-images.githubusercontent.com/1471612/144946661-17155943-60a1-47e4-b772-2dafe53d379a.png">
+<img src="./PrefetchQueueSharing.png" alt="PrefetchQueueSharing" width="528">
 
 If the application decide not to do anything with the messages in the buffer, those are eventually GC-ed. If such messages were requested with PEEK_LOCK mode, then, after the server-side lock duration elapses, a later `receiveMessages` call on another `ServiceBusReceiverClient` object returns the same messages.
 
-#### Timers in receiveMessages API:
+## Timers in receiveMessages API
 
 An invocation of `receiveMessages(int maxMessages, Duration maxWaitTime)` uses two timers. 
 
@@ -71,11 +71,11 @@ The first one enables `maxWaitTime` support, controlling the maximum duration cl
 
 The second timer controls the timeout between messages, i.e., the maximum duration the client should wait for the next message since the arrival of the last message. The Iterable completes if no message arrives within this duration. Currently, this duration is set to 1 second and cannot be changed.
 
-#### Messages in the prefetch-queue can expire:
+## Messages in the prefetch-queue can expire
 
 Another important point is that messages may expire while in the prefetch-queue, which means the iterator may return expired messages.
 
-The lock timeout configured on the service bus entity and `maxMessages` needs to be balanced such that the lock timeout  is at least exceeds the cumulative expected message processing time for the'maxMessages`, plus one message. At the same time, the lock timeout shouldn't be so long that messages can exceed their maximum time to live when they're accidentally dropped, and so requiring their lock to expire before being redelivered.
+The lock timeout configured on the service bus entity and `maxMessages` needs to be balanced such that the lock timeout  is at least exceeds the cumulative expected message processing time for the `maxMessages`, plus one message. At the same time, the lock timeout shouldn't be so long that messages can exceed their maximum time to live when they're accidentally dropped, and so requiring their lock to expire before being redelivered.
 
 Refer to [this][prefetchtradeoff] document for the tradeoff when enabling prefetch (or maxMessages > 1).
 
