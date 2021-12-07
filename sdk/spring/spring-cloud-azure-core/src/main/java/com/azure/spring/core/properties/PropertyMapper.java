@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.core.properties.util;
+package com.azure.spring.core.properties;
 
 import org.springframework.util.Assert;
 

@@ -16,6 +16,10 @@ import java.util.function.Function;
  *
  */
 public final class Memoizer {
+
+    private Memoizer() {
+
+    }
     /**
      * Memoizes a function.
      *

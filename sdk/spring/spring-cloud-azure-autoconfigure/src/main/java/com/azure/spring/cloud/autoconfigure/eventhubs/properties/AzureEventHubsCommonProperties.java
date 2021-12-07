@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.eventhubs.properties;
 
 import com.azure.spring.cloud.autoconfigure.properties.core.AbstractAzureAmqpCP;
-import com.azure.spring.core.connectionstring.implementation.EventHubsConnectionString;
+import com.azure.spring.core.implementation.connectionstring.EventHubsConnectionString;
 
 /**
  * Azure Event Hubs related properties.

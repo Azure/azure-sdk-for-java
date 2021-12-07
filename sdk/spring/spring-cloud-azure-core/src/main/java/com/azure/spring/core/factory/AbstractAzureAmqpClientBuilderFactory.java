@@ -15,8 +15,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.function.BiConsumer;
 
-import static com.azure.spring.core.converter.AzureAmqpProxyOptionsConverter.AMQP_PROXY_CONVERTER;
-import static com.azure.spring.core.converter.AzureAmqpRetryOptionsConverter.AMQP_RETRY_CONVERTER;
+import static com.azure.spring.core.implementation.converter.AzureAmqpProxyOptionsConverter.AMQP_PROXY_CONVERTER;
+import static com.azure.spring.core.implementation.converter.AzureAmqpRetryOptionsConverter.AMQP_RETRY_CONVERTER;
 
 /**
  * Abstract factory of an AMQP client builder.

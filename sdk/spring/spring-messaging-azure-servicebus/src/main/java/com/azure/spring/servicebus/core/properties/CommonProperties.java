@@ -3,7 +3,7 @@
 
 package com.azure.spring.servicebus.core.properties;
 
-import com.azure.spring.core.connectionstring.implementation.ServiceBusConnectionString;
+import com.azure.spring.core.implementation.connectionstring.ServiceBusConnectionString;
 import com.azure.spring.core.properties.AbstractAzureAmqpSdkProperties;
 import com.azure.spring.service.servicebus.properties.ServiceBusCommonDescriptor;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;

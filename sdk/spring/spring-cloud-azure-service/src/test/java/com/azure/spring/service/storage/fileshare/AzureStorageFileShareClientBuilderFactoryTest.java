@@ -7,7 +7,7 @@ import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
 import com.azure.core.util.HttpClientOptions;
-import com.azure.spring.core.http.DefaultHttpProvider;
+import com.azure.spring.core.implementation.http.DefaultHttpProvider;
 import com.azure.spring.core.properties.proxy.ProxyProperties;
 import com.azure.spring.service.AzureServiceClientBuilderFactoryTestBase;
 import com.azure.spring.service.core.http.TestHttpClient;

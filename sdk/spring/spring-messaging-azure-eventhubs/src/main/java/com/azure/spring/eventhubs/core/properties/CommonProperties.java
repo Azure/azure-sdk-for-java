@@ -4,7 +4,7 @@
 package com.azure.spring.eventhubs.core.properties;
 
 import com.azure.spring.core.aware.authentication.ConnectionStringAware;
-import com.azure.spring.core.connectionstring.implementation.EventHubsConnectionString;
+import com.azure.spring.core.implementation.connectionstring.EventHubsConnectionString;
 import com.azure.spring.core.properties.AbstractAzureAmqpSdkProperties;
 import com.azure.spring.service.eventhubs.properties.EventHubsCommonDescriptor;
 

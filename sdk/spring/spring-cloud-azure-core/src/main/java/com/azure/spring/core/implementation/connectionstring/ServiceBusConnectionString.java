@@ -1,15 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.core.connectionstring.implementation;
+package com.azure.spring.core.implementation.connectionstring;
 
 import java.net.URI;
 
-import static com.azure.spring.core.connectionstring.implementation.ConnectionStringSegments.ENDPOINT;
-import static com.azure.spring.core.connectionstring.implementation.ConnectionStringSegments.ENTITY_PATH;
-import static com.azure.spring.core.connectionstring.implementation.ConnectionStringSegments.SHARED_ACCESS_KEY;
-import static com.azure.spring.core.connectionstring.implementation.ConnectionStringSegments.SHARED_ACCESS_KEY_NAME;
-import static com.azure.spring.core.connectionstring.implementation.ConnectionStringSegments.SHARED_ACCESS_SIGNATURE;
+import static com.azure.spring.core.implementation.connectionstring.ConnectionStringSegments.ENDPOINT;
+import static com.azure.spring.core.implementation.connectionstring.ConnectionStringSegments.ENTITY_PATH;
+import static com.azure.spring.core.implementation.connectionstring.ConnectionStringSegments.SHARED_ACCESS_KEY;
+import static com.azure.spring.core.implementation.connectionstring.ConnectionStringSegments.SHARED_ACCESS_KEY_NAME;
+import static com.azure.spring.core.implementation.connectionstring.ConnectionStringSegments.SHARED_ACCESS_SIGNATURE;
 
 public class ServiceBusConnectionString {
 

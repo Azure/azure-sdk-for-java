@@ -15,7 +15,7 @@ import com.azure.core.util.HttpClientOptions;
 import com.azure.spring.core.aware.ClientAware;
 import com.azure.spring.core.aware.ProxyAware;
 import com.azure.spring.core.aware.RetryAware;
-import com.azure.spring.core.http.DefaultHttpProvider;
+import com.azure.spring.core.implementation.http.DefaultHttpProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,9 +25,9 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
-import static com.azure.spring.core.converter.AzureHttpLogOptionsConverter.HTTP_LOG_OPTIONS_CONVERTER;
-import static com.azure.spring.core.converter.AzureHttpProxyOptionsConverter.HTTP_PROXY_CONVERTER;
-import static com.azure.spring.core.converter.AzureHttpRetryPolicyConverter.HTTP_RETRY_CONVERTER;
+import static com.azure.spring.core.implementation.converter.AzureHttpLogOptionsConverter.HTTP_LOG_OPTIONS_CONVERTER;
+import static com.azure.spring.core.implementation.converter.AzureHttpProxyOptionsConverter.HTTP_PROXY_CONVERTER;
+import static com.azure.spring.core.implementation.converter.AzureHttpRetryPolicyConverter.HTTP_RETRY_CONVERTER;
 
 /**
  * Abstract factory of the http client builder.

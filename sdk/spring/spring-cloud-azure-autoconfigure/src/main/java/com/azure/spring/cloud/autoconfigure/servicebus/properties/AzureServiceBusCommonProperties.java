@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.servicebus.properties;
 
 import com.azure.spring.cloud.autoconfigure.properties.core.AbstractAzureAmqpCP;
-import com.azure.spring.core.connectionstring.implementation.ServiceBusConnectionString;
+import com.azure.spring.core.implementation.connectionstring.ServiceBusConnectionString;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 
 /**

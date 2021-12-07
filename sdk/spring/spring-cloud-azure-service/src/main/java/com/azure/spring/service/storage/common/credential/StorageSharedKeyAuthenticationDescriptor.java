@@ -5,7 +5,7 @@ package com.azure.spring.service.storage.common.credential;
 
 import com.azure.spring.core.credential.AzureCredentialType;
 import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
-import com.azure.spring.core.credential.resolver.AzureCredentialResolver;
+import com.azure.spring.core.credential.AzureCredentialResolver;
 
 import java.util.function.Consumer;
 

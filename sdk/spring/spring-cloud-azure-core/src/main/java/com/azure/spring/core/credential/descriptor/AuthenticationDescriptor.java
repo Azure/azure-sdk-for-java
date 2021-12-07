@@ -3,9 +3,9 @@
 
 package com.azure.spring.core.credential.descriptor;
 
-import com.azure.spring.core.credential.AzureCredentialType;
 import com.azure.spring.core.credential.provider.AzureCredentialProvider;
-import com.azure.spring.core.credential.resolver.AzureCredentialResolver;
+import com.azure.spring.core.credential.AzureCredentialResolver;
+import com.azure.spring.core.credential.AzureCredentialType;
 
 import java.util.function.Consumer;
 

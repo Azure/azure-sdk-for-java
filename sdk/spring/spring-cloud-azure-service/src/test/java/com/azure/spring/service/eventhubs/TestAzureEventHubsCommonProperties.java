@@ -3,7 +3,7 @@
 
 package com.azure.spring.service.eventhubs;
 
-import com.azure.spring.core.connectionstring.implementation.EventHubsConnectionString;
+import com.azure.spring.core.implementation.connectionstring.EventHubsConnectionString;
 import com.azure.spring.service.core.properties.AbstractAmqpProperties;
 
 /**

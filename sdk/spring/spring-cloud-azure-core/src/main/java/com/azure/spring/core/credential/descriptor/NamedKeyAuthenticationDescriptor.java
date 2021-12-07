@@ -5,8 +5,8 @@ package com.azure.spring.core.credential.descriptor;
 
 import com.azure.spring.core.credential.AzureCredentialType;
 import com.azure.spring.core.credential.provider.AzureNamedKeyCredentialProvider;
-import com.azure.spring.core.credential.resolver.AzureCredentialResolver;
-import com.azure.spring.core.credential.resolver.AzureNamedKeyCredentialResolver;
+import com.azure.spring.core.credential.AzureCredentialResolver;
+import com.azure.spring.core.implementation.credential.resolver.AzureNamedKeyCredentialResolver;
 
 import java.util.function.Consumer;
 

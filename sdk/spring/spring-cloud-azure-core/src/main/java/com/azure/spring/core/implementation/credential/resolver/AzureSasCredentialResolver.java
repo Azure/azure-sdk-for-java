@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.core.credential.resolver;
+package com.azure.spring.core.implementation.credential.resolver;
 
 import com.azure.spring.core.aware.authentication.SasTokenAware;
+import com.azure.spring.core.credential.AzureCredentialResolver;
 import com.azure.spring.core.credential.provider.AzureSasCredentialProvider;
 import com.azure.spring.core.properties.AzureProperties;
 import org.springframework.util.StringUtils;

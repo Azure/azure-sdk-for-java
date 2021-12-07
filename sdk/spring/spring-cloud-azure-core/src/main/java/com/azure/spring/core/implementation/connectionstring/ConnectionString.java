@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.core.connectionstring.implementation;
+package com.azure.spring.core.implementation.connectionstring;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.azure.spring.core.connectionstring.implementation.ConnectionStringSegments.ENDPOINT;
+import static com.azure.spring.core.implementation.connectionstring.ConnectionStringSegments.ENDPOINT;
 
 
 class ConnectionString {

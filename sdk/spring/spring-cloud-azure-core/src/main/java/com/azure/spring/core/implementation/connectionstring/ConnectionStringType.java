@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.core.connectionstring.implementation;
+package com.azure.spring.core.implementation.connectionstring;
 
 enum ConnectionStringType {
 

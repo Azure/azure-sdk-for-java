@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.servicebus.properties;
 
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
-import com.azure.spring.core.properties.util.AzurePropertiesUtils;
+import com.azure.spring.core.util.AzurePropertiesUtils;
 import com.azure.spring.service.servicebus.properties.ServiceBusConsumerDescriptor;
 import com.azure.spring.service.servicebus.properties.ServiceBusNamespaceDescriptor;
 import com.azure.spring.service.servicebus.properties.ServiceBusProcessorDescriptor;

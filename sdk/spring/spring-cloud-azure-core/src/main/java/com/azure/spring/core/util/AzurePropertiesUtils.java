@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.core.properties.util;
+package com.azure.spring.core.util;
 
 import com.azure.spring.core.aware.ClientAware;
 import com.azure.spring.core.properties.AzureProperties;
@@ -19,6 +19,10 @@ import java.util.function.Predicate;
  *
  */
 public final class AzurePropertiesUtils {
+
+    private AzurePropertiesUtils() {
+
+    }
 
     /**
      * Copy common properties from source {@link AzureProperties} object to target {@link T} object.
