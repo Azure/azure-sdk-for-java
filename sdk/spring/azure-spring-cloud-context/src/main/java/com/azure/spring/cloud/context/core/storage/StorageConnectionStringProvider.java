@@ -14,10 +14,22 @@ public class StorageConnectionStringProvider {
 
     private final String connectionString;
 
+    /**
+     * Creates a new instance of {@link StorageConnectionStringProvider}.
+     *
+     * @param storageAccount The Storage account.
+     */
     public StorageConnectionStringProvider(StorageAccount storageAccount) {
         this.connectionString = buildConnectionString(storageAccount);
     }
 
+    /**
+     * Creates a new instance of {@link StorageConnectionStringProvider}.
+     *
+     * @param accountName The Storage account name.
+     * @param accountKey The Storage account key.
+     * @param environment The Azure environment.
+     */
     public StorageConnectionStringProvider(String accountName, String accountKey, AzureEnvironment environment) {
         this.connectionString = ResourceManagerUtils.getStorageConnectionString(accountName, accountKey, environment);
     }
@@ -32,6 +44,11 @@ public class StorageConnectionStringProvider {
                              .orElseThrow(() -> new RuntimeException("Storage account key is empty."));
     }
 
+    /**
+     * Gets the connection string.
+     *
+     * @return The connection string.
+     */
     public String getConnectionString() {
         return connectionString;
     }

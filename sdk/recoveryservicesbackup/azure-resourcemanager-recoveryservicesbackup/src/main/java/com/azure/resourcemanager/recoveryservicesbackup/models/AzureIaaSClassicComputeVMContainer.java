@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /** IaaS VM workload-specific backup item representing a classic virtual machine. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "containerType")
 @JsonTypeName("Microsoft.ClassicCompute/virtualMachines")
-@Immutable
+@Fluent
 public final class AzureIaaSClassicComputeVMContainer extends IaaSvmContainer {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureIaaSClassicComputeVMContainer.class);
 

@@ -41,9 +41,9 @@ import com.azure.storage.file.share.implementation.models.FilesStartCopyResponse
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeFromURLResponse;
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeResponse;
 import com.azure.storage.file.share.implementation.models.ShareFileRangeWriteType;
-import com.azure.storage.file.share.implementation.models.StorageErrorException;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
+import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.SourceModifiedAccessConditions;
 import java.nio.ByteBuffer;
 import java.util.Map;
@@ -77,7 +77,7 @@ public final class FilesImpl {
     public interface FilesService {
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<FilesCreateResponse> create(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -104,7 +104,7 @@ public final class FilesImpl {
 
         @Get("/{shareName}/{fileName}")
         @ExpectedResponses({200, 206})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<StreamResponse> download(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -119,7 +119,7 @@ public final class FilesImpl {
 
         @Head("/{shareName}/{fileName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<FilesGetPropertiesResponse> getProperties(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -133,7 +133,7 @@ public final class FilesImpl {
 
         @Delete("/{shareName}/{fileName}")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<FilesDeleteResponse> delete(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -146,7 +146,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<FilesSetHttpHeadersResponse> setHttpHeaders(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -172,7 +172,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<FilesUploadRangeResponse> uploadRange(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -191,7 +191,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<FilesSetMetadataResponse> setMetadata(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -206,7 +206,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<FilesAcquireLeaseResponse> acquireLease(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -223,7 +223,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<FilesReleaseLeaseResponse> releaseLease(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -239,7 +239,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<FilesChangeLeaseResponse> changeLease(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -256,7 +256,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<FilesBreakLeaseResponse> breakLease(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -272,7 +272,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<FilesUploadRangeFromURLResponse> uploadRangeFromURL(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -295,7 +295,7 @@ public final class FilesImpl {
 
         @Get("/{shareName}/{fileName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<FilesGetRangeListResponse> getRangeList(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -312,7 +312,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<FilesStartCopyResponse> startCopy(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -335,7 +335,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<FilesAbortCopyResponse> abortCopy(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -351,7 +351,7 @@ public final class FilesImpl {
 
         @Get("/{shareName}/{fileName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<FilesListHandlesResponse> listHandles(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -367,7 +367,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<FilesForceCloseHandlesResponse> forceCloseHandles(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -406,7 +406,7 @@ public final class FilesImpl {
      * @param shareFileHttpHeaders Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -497,7 +497,7 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -538,7 +538,7 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -569,7 +569,7 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -605,7 +605,7 @@ public final class FilesImpl {
      * @param shareFileHttpHeaders Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -707,7 +707,7 @@ public final class FilesImpl {
      * @param optionalbody Initial data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -755,7 +755,7 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -800,7 +800,7 @@ public final class FilesImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -844,7 +844,7 @@ public final class FilesImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -884,7 +884,7 @@ public final class FilesImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -928,7 +928,7 @@ public final class FilesImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -978,7 +978,7 @@ public final class FilesImpl {
      * @param sourceModifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1049,7 +1049,7 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of file ranges.
      */
@@ -1105,7 +1105,7 @@ public final class FilesImpl {
      * @param copyFileSmbInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1185,7 +1185,7 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1227,7 +1227,7 @@ public final class FilesImpl {
      *     snapshot to query.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of handles.
      */
@@ -1274,7 +1274,7 @@ public final class FilesImpl {
      *     snapshot to query.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */

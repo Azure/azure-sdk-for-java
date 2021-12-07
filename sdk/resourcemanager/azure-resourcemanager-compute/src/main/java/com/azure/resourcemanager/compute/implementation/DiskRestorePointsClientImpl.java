@@ -752,7 +752,11 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
         return this
             .client
             .<AccessUriInner, AccessUriInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AccessUriInner.class, AccessUriInner.class, this.client.getContext());
+                mono,
+                this.client.getHttpPipeline(),
+                AccessUriInner.class,
+                AccessUriInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1133,7 +1137,8 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
                 resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

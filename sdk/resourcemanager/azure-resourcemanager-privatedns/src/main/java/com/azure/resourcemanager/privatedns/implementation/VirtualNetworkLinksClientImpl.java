@@ -1182,7 +1182,8 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
             deleteWithResponseAsync(resourceGroupName, privateZoneName, virtualNetworkLinkName, ifMatch);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

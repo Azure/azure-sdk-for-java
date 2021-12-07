@@ -1896,7 +1896,12 @@
     <Method name="subscribe"/>
     <Bug pattern="DE_MIGHT_IGNORE"/>
   </Match>
-
+  <Match>
+    <Class name="com.azure.cosmos.implementation.TracerProvider"/>
+    <Method name="subscribe"/>
+    <Bug pattern="DE_MIGHT_IGNORE"/>
+  </Match>
+  
   <!-- Exception is ignored by design which indicate that non-parsable id -->
   <Match>
     <Class name="com.azure.cosmos.implementation.ResourceId"/>
@@ -2402,6 +2407,10 @@
   <!-- This Issue has been resolved as per spotbugs's recommended solution but the static checker still flags it, its a known issue with this rule. -->
   <Match>
     <Class name="com.azure.core.util.logging.ClientLogger"/>
+    <Bug pattern="CRLF_INJECTION_LOGS"/>
+  </Match>
+  <Match>
+    <Class name="com.azure.core.util.logging.LoggingEventBuilder"/>
     <Bug pattern="CRLF_INJECTION_LOGS"/>
   </Match>
 

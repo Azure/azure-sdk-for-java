@@ -27,24 +27,47 @@ public class AADB2CAutoConfiguration {
     private final ClientRegistrationRepository repository;
     private final AADB2CProperties properties;
 
+    /**
+     * Creates a new instance of {@link AADB2CAutoConfiguration}.
+     *
+     * @param repository the client registration repository
+     * @param properties the AAD B2C properties
+     */
     public AADB2CAutoConfiguration(@NonNull ClientRegistrationRepository repository,
                                    @NonNull AADB2CProperties properties) {
         this.repository = repository;
         this.properties = properties;
     }
 
+    /**
+     * Declare AADB2CAuthorizationRequestResolver bean.
+     *
+     * @return AADB2CAuthorizationRequestResolver bean
+     */
     @Bean
     @ConditionalOnMissingBean
     public AADB2CAuthorizationRequestResolver b2cOAuth2AuthorizationRequestResolver() {
         return new AADB2CAuthorizationRequestResolver(repository, properties);
     }
 
+    /**
+     * Declare AADB2CLogoutSuccessHandler bean.
+     *
+     * @return AADB2CLogoutSuccessHandler bean
+     */
     @Bean
     @ConditionalOnMissingBean
     public AADB2CLogoutSuccessHandler b2cLogoutSuccessHandler() {
         return new AADB2CLogoutSuccessHandler(properties);
     }
 
+    /**
+     * Declare AADB2COidcLoginConfigurer bean.
+     *
+     * @param handler the AAD B2C logout success handler
+     * @param resolver the AAD B2C authorization request resolver
+     * @return AADB2COidcLoginConfigurer bean
+     */
     @Bean
     @ConditionalOnMissingBean
     public AADB2COidcLoginConfigurer b2cLoginConfigurer(AADB2CLogoutSuccessHandler handler,
