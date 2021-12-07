@@ -27,6 +27,7 @@ public final class PropertyMapper {
     /**
      * Create a new instance with flag indicating whether to apply {@link Source#whenNonNull() whenNonNull} to every
      * source.
+     * @param alwaysApplyNonNull Whether to apply {@link Source#whenNonNull() whenNonNull} to every source.
      */
     public PropertyMapper(boolean alwaysApplyNonNull) {
         this.alwaysApplyNonNull = alwaysApplyNonNull;

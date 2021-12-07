@@ -6,7 +6,7 @@ package com.azure.spring.core.properties.resource;
 /**
  * Metadata defining an Azure resource.
  */
-public final class AzureResourceMetadata {
+public class AzureResourceMetadata {
 
     private String resourceGroup;
     private String resourceId;

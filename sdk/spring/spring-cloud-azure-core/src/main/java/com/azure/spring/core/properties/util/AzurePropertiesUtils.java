@@ -119,10 +119,6 @@ public final class AzurePropertiesUtils {
         return emptyNames.toArray(new String[0]);
     }
 
-    private static String[] findNonNullPropertyNames(Object source) {
-        return findPropertyNames(source, Objects::nonNull);
-    }
-
     private static String[] findNullPropertyNames(Object source) {
         return findPropertyNames(source, Objects::isNull);
     }
