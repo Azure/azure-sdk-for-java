@@ -35,9 +35,6 @@ import java.util.List;
  * The configuration will not be activated if no {@link BearerTokenAuthenticationToken} class provided.
  * </p>
  * By default, creating a JwtDecoder through JwkKeySetUri will be auto-configured.
- *
- * @author RujunChen
- * @since 4.0
  */
 @Configuration(proxyBeanMethods = false)
 @Conditional(ResourceServerCondition.class)

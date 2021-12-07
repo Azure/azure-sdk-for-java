@@ -7,9 +7,6 @@ import com.nimbusds.oauth2.sdk.util.StringUtils;
 
 /**
  * Used to get endpoints for Microsoft Identity authorization server.
- *
- * @author RujunChen
- * @since 4.0
  */
 public class AADAuthorizationServerEndpoints {
 

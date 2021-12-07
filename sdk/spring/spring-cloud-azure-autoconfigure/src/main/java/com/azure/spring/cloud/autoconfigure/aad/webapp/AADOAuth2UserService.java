@@ -46,8 +46,6 @@ import static com.azure.spring.cloud.autoconfigure.aad.implementation.constants.
  * This implementation will retrieve group info of user from Microsoft Graph. Then map group to {@link
  * GrantedAuthority}.
  *
- * @author RujunChen
- * @since 4.0
  * @see OidcUserService
  * @see OAuth2UserService
  */

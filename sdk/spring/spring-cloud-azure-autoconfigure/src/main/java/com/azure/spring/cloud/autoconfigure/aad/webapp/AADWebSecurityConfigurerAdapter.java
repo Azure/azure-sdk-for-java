@@ -25,8 +25,6 @@ import org.springframework.util.StringUtils;
  * Abstract configuration class, used to make AzureClientRegistrationRepository and AuthzCodeGrantRequestEntityConverter
  * take effect.
  *
- * @author RujunChen
- * @since 4.0
  * @see WebSecurityConfigurerAdapter
  */
 public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {

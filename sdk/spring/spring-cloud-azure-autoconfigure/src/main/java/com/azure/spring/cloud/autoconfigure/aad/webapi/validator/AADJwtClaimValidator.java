@@ -20,8 +20,6 @@ import java.util.function.Predicate;
  * Spring Boot 2.2.x version. Once support version is more than 2.2.X, then we can use
  * "org.springframework.security.oauth2.jwt.JwtClaimValidator" instead.
  *
- * @author RujunChen
- * @since 4.0
  * @see OAuth2TokenValidator
  */
 public final class AADJwtClaimValidator<T> implements OAuth2TokenValidator<Jwt> {

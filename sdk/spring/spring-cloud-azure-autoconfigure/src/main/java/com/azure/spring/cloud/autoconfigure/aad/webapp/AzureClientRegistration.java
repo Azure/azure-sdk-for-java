@@ -12,9 +12,6 @@ import java.util.Set;
  * It has 2 kind of scopes:
  * 1. AzureClientRegistration.client.scopes: used to authorize.
  * 2. AzureClientRegistration.accessTokenScopes: used to get access_token.
- *
- * @author RujunChen
- * @since 4.0
  */
 public class AzureClientRegistration {
 

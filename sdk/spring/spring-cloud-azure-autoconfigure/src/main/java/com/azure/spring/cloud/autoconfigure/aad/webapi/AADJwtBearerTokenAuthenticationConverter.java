@@ -23,9 +23,6 @@ import java.util.Map;
 
 /**
  * A {@link Converter} that takes a {@link Jwt} and converts it into a {@link BearerTokenAuthentication}.
- *
- * @author RujunChen
- * @since 4.0
  */
 public class AADJwtBearerTokenAuthenticationConverter implements Converter<Jwt, AbstractAuthenticationToken> {
 

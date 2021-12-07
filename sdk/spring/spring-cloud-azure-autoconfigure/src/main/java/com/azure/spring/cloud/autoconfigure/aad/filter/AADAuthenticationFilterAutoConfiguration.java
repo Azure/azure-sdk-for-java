@@ -31,9 +31,6 @@ import java.util.concurrent.TimeUnit;
  * <p>
  * A stateless filter {@link AADAppRoleStatelessAuthenticationFilter} will be auto-configured by specifying {@literal
  * spring.cloud.azure.active-directory.session-stateless=true}. Otherwise, {@link AADAuthenticationFilter} will be configured.
- *
- * @author RujunChen
- * @since 4.0
  */
 @Configuration
 @ConditionalOnWebApplication

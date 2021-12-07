@@ -30,8 +30,6 @@ import java.util.stream.Stream;
  * client will throw {@link WebClientResponseException}, web-application can handle this exception to challenge the
  * user.
  *
- * @author RujunChen
- * @since 4.0
  * @see OncePerRequestFilter
  */
 public class AADHandleConditionalAccessFilter extends OncePerRequestFilter {

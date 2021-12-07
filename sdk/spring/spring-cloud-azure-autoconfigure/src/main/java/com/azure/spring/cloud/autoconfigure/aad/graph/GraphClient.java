@@ -23,9 +23,6 @@ import java.util.Optional;
 
 /**
  * GraphClient is used to access graph server. Mainly used to get groups information of a user.
- *
- * @author RujunChen
- * @since 4.0
  */
 public class GraphClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(GraphClient.class);

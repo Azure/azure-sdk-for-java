@@ -15,8 +15,6 @@ import java.util.Map;
 /**
  * Configuration properties for Azure Active Directory B2C.
  *
- * @author RujunChen
- * @since 4.0
  * @see InitializingBean
  */
 public class AADResourceServerProperties implements InitializingBean {

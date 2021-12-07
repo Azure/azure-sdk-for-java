@@ -21,9 +21,6 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
 /**
  * Configure the necessary beans used for aad authentication and authorization.
- *
- * @author RujunChen
- * @since 4.0
  */
 @Configuration(proxyBeanMethods = false)
 @Conditional(WebApplicationCondition.class)

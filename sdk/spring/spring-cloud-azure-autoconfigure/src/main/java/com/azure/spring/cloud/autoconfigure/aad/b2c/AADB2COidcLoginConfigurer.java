@@ -14,8 +14,6 @@ import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCo
 /**
  * Configure B2C OAUTH2 login properties.
  *
- * @author RujunChen
- * @since 4.0
  * @see AbstractHttpConfigurer
  */
 public class AADB2COidcLoginConfigurer extends AbstractHttpConfigurer<AADB2COidcLoginConfigurer, HttpSecurity> {

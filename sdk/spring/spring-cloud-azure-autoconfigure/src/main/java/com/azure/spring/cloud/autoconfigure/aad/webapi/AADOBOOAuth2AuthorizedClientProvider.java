@@ -46,8 +46,10 @@ import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 /**
- * @author RujunChen
- * @since 4.0
+ * A strategy for authorizing (or re-authorizing) an OAuth 2.0 Client. This implementations implement {@link
+ * AADAuthorizationGrantType "on_behalf_of" authorization grant type}.
+ *
+ * @see AADAuthorizationGrantType
  * @see OAuth2AuthorizedClientProvider
  */
 public class AADOBOOAuth2AuthorizedClientProvider implements OAuth2AuthorizedClientProvider {

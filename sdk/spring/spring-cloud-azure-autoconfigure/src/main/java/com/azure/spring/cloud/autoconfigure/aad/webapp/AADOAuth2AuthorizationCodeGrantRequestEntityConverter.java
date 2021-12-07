@@ -19,8 +19,6 @@ import static com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.AAD
 /**
  * Used to set "scope" parameter when use "auth-code" to get "access_token".
  *
- * @author RujunChen
- * @since 4.0
  * @see AbstractOAuth2AuthorizationCodeGrantRequestEntityConverter
  */
 public class AADOAuth2AuthorizationCodeGrantRequestEntityConverter

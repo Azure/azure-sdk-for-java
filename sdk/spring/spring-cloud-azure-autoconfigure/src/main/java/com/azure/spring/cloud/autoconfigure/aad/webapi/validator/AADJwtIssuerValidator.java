@@ -14,8 +14,6 @@ import java.util.function.Predicate;
 /**
  * Validates the "iss" claim in a {@link Jwt}, that is matches a configured value
  *
- * @author RujunChen
- * @since 4.0
  * @see OAuth2TokenValidator
  */
 public class AADJwtIssuerValidator implements OAuth2TokenValidator<Jwt> {

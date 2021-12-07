@@ -19,8 +19,6 @@ import java.util.Map;
 /**
  * To add conditional policy claims to authorization URL.
  *
- * @author RujunChen
- * @since 4.0
  * @see OAuth2AuthorizationRequestResolver
  */
 public class AADOAuth2AuthorizationRequestResolver implements OAuth2AuthorizationRequestResolver {

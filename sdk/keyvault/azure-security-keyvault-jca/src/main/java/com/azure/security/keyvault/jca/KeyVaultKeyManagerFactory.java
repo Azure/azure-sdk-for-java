@@ -14,8 +14,6 @@ import java.util.logging.Logger;
 /**
  * The Azure Key Vault variant of the KeyManagerFactory.
  *
- * @author RujunChen
- * @since 4.0
  * @see KeyManagerFactorySpi
  */
 public final class KeyVaultKeyManagerFactory extends KeyManagerFactorySpi {

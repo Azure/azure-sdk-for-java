@@ -42,8 +42,6 @@ import static com.azure.spring.cloud.autoconfigure.aad.implementation.constants.
  * could be accepted, e.g. access token issued for Microsoft Graph could not be processed by users' application.
  *
  * @deprecated See the <a href="https://github.com/Azure/azure-sdk-for-java/issues/17860">Alternative method</a>.
- * @author RujunChen
- * @since 4.0
  * @see OncePerRequestFilter
  */
 @Deprecated

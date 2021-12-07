@@ -12,8 +12,6 @@ import java.security.PrivateKey;
  * @deprecated Should not use this class outside of azure-security-keyvault-jca.jar.
  * Move this class to implementation package.
  *
- * @author RujunChen
- * @since 4.0
  * @see PrivateKey
  * @see SecretKey
  */

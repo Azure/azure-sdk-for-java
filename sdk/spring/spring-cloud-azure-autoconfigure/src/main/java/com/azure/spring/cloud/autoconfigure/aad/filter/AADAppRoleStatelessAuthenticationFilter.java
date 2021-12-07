@@ -40,8 +40,6 @@ import static com.azure.spring.cloud.autoconfigure.aad.implementation.constants.
  * Microsoft Graph to retrieve users' groups.
  *
  * @deprecated See the <a href="https://github.com/Azure/azure-sdk-for-java/issues/17860">Alternative method</a>.
- * @author RujunChen
- * @since 4.0
  * @see OncePerRequestFilter
  */
 @Deprecated

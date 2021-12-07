@@ -14,8 +14,6 @@ import java.util.Objects;
 /**
  * This class is used to deserialize json to object.
  *
- * @author RujunChen
- * @since 4.0
  * @see <a href="https://docs.microsoft.com/en-us/previous-versions/azure/ad/graph/api/api-catalog">reference doc</a>
  */
 @JsonIgnoreProperties(ignoreUnknown = true)

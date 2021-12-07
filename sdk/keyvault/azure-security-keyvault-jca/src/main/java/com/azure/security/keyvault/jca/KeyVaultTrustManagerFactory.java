@@ -14,8 +14,6 @@ import java.util.logging.Logger;
 /**
  * The Azure Key Vault variant of the TrustManagerFactory.
  *
- * @author RujunChen
- * @since 4.0
  * @see TrustManagerFactorySpi
  */
 public final class KeyVaultTrustManagerFactory extends TrustManagerFactorySpi {

@@ -6,9 +6,6 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType;
 
 /**
  * Defines grant types: client_credentials, authorization_code, on_behalf_of, azure_delegated.
- *
- * @author RujunChen
- * @since 4.0
  */
 public enum AADAuthorizationGrantType {
 
