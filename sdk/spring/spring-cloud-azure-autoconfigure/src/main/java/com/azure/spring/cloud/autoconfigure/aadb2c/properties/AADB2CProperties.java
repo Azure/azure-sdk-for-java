@@ -16,7 +16,7 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.azure.spring.cloud.autoconfigure.aad.core.AADAuthorizationGrantType.CLIENT_CREDENTIALS;
+import static com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthorizationGrantType.CLIENT_CREDENTIALS;
 
 /**
  * Configuration properties for Azure Active Directory B2C.

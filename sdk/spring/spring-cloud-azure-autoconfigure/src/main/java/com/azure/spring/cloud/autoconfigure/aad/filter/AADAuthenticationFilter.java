@@ -3,10 +3,10 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.filter;
 
-import com.azure.spring.cloud.autoconfigure.aad.core.AADAuthorizationServerEndpoints;
-import com.azure.spring.cloud.autoconfigure.aad.graph.AzureADGraphClient;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AADTokenClaim;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.graph.AzureADGraphClient;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthenticationProperties;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthorizationServerEndpoints;
 import com.microsoft.aad.msal4j.MsalServiceException;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.jwk.source.JWKSetCache;

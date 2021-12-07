@@ -3,7 +3,6 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.properties;
 
-import com.azure.spring.cloud.autoconfigure.aad.core.AADApplicationType;
 import org.junit.jupiter.api.Test;
 
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils.oauthClientRunner;

@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aadb2c;
 
-import com.azure.spring.cloud.autoconfigure.aad.webapi.AADJwtBearerTokenAuthenticationConverter;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.AADJwtBearerTokenAuthenticationConverter;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthentication;

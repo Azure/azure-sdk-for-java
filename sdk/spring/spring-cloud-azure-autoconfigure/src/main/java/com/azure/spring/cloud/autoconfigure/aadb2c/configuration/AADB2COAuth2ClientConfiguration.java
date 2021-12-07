@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aadb2c.configuration;
 
-import com.azure.spring.cloud.autoconfigure.aad.core.AADAuthorizationGrantType;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthorizationGrantType;
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AADB2CClientRegistrationRepository;
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AADB2CConditions;
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AADB2CURL;

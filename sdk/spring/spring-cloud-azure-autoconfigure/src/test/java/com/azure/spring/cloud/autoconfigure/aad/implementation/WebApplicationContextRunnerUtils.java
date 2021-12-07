@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.implementation;
 
-import com.azure.spring.cloud.autoconfigure.aad.AADAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.aad.configuration.auto.AADAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener;
 import org.springframework.boot.logging.LogLevel;

@@ -23,27 +23,51 @@ public class AADProfileProperties {
      */
     private AADProfileEnvironmentProperties environment = new AADProfileEnvironmentProperties();
 
+    /**
+     *
+     * @return The tenant id.
+     */
     public String getTenantId() {
         return tenantId;
     }
 
+    /**
+     *
+     * @param tenantId The tenant id.
+     */
     public void setTenantId(String tenantId) {
         this.tenantId = tenantId;
     }
 
+    /**
+     *
+     * @return The clout type.
+     */
     public AzureProfileAware.CloudType getCloud() {
         return cloud;
     }
 
+    /**
+     *
+     * @param cloud The clout type.
+     */
     public void setCloud(AzureProfileAware.CloudType cloud) {
         this.cloud = cloud;
         environment.updatePropertiesByCloudType(cloud);
     }
 
+    /**
+     *
+     * @return The AADProfileEnvironmentProperties.
+     */
     public AADProfileEnvironmentProperties getEnvironment() {
         return environment;
     }
 
+    /**
+     *
+     * @param environment The AADProfileEnvironmentProperties.
+     */
     public void setEnvironment(AADProfileEnvironmentProperties environment) {
         this.environment = environment;
     }

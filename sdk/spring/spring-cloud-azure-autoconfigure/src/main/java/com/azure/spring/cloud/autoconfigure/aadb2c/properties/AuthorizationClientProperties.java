@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.aadb2c.properties;
 
-import com.azure.spring.cloud.autoconfigure.aad.core.AADAuthorizationGrantType;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthorizationGrantType;
 
 import java.util.List;
 

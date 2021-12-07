@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.aadb2c.implementation;
 import com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AADB2COAuth2ClientConfiguration;
 import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AADB2CProperties;
 import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AuthorizationClientProperties;
-import com.azure.spring.cloud.autoconfigure.aad.core.AADAuthorizationGrantType;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthorizationGrantType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.security.oauth2.client.servlet.OAuth2ClientAutoConfiguration;

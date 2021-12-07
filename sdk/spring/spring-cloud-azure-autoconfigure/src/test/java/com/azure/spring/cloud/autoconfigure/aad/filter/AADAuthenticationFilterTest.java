@@ -3,7 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.filter;
 
-import com.azure.spring.cloud.autoconfigure.aad.core.AADAuthorizationServerEndpoints;
+import com.azure.spring.cloud.autoconfigure.aad.configuration.auto.AADAuthenticationFilterAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthorizationServerEndpoints;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthenticationProperties;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AADCredentialProperties;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AADProfileProperties;

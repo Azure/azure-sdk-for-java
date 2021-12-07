@@ -18,18 +18,34 @@ public class AADB2CCredentialProperties {
      */
     private String clientSecret;
 
+    /**
+     *
+     * @return The client id.
+     */
     public String getClientId() {
         return clientId;
     }
 
+    /**
+     *
+     * @param clientId The client id.
+     */
     public void setClientId(String clientId) {
         this.clientId = clientId;
     }
 
+    /**
+     *
+     * @return The client secret.
+     */
     public String getClientSecret() {
         return clientSecret;
     }
 
+    /**
+     *
+     * @param clientSecret The client secret.
+     */
     public void setClientSecret(String clientSecret) {
         this.clientSecret = clientSecret;
     }
