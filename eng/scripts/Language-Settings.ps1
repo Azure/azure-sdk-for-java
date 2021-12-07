@@ -348,7 +348,7 @@ function ValidatePackage($groupId, $artifactId, $version, $workingDirectory) {
     -and (PackageDependenciesResolve $artifactNamePrefix $packageDirectory)
 }
 
-function Update-java-DocsMsPackages($DocsRepoLocation, $DocsMetadata) {
+function Update-java-DocsMsPackages($DocsRepoLocation, $DocsMetadata, $PackageSourceOverride, $DocValidationImageId) {
   Write-Host "Excluded packages:"
   foreach ($excludedPackage in $PackageExclusions.Keys) {
     Write-Host "  $excludedPackage - $($PackageExclusions[$excludedPackage])"
