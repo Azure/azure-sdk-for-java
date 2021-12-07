@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.azure.communication.callingserver.implementation.CallConnectionsImpl;
+import com.azure.communication.callingserver.implementation.converters.AddParticipantResultConverter;
 import com.azure.communication.callingserver.implementation.converters.AudioRoutingGroupResultConverter;
 import com.azure.communication.callingserver.implementation.converters.CallingServerErrorConverter;
 import com.azure.communication.callingserver.implementation.converters.CallParticipantConverter;
@@ -325,7 +326,7 @@ public final class CallConnectionAsync {
                 );
             return callConnectionInternal.addParticipantAsync(callConnectionId, request)
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
-                .flatMap(result -> Mono.just(new AddParticipantResult(result.getParticipantId())));
+                .flatMap(result -> Mono.just(AddParticipantResultConverter.convert(result)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -365,7 +366,7 @@ public final class CallConnectionAsync {
                     .addParticipantWithResponseAsync(callConnectionId, request, contextValue)
                     .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                     .map(response ->
-                        new SimpleResponse<>(response, new AddParticipantResult(response.getValue().getParticipantId())));
+                        new SimpleResponse<>(response, AddParticipantResultConverter.convert(response.getValue())));
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

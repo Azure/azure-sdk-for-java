@@ -5,7 +5,6 @@ package com.azure.communication.callingserver;
 
 import static com.azure.communication.callingserver.CallingServerResponseMocker.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.net.URI;
 import java.security.InvalidParameterException;
@@ -166,7 +165,7 @@ public class CallingServerUnitTests {
     public void addParticipant() {
         CallingServerClient callingServerClient = getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
-                new SimpleEntry<String, Integer>(generateAddParticipantResult(COMMUNICATION_USER.getId()), 202)
+                new SimpleEntry<String, Integer>(generateAddParticipantResult(), 202)
             ))
         );
 
@@ -178,14 +177,17 @@ public class CallingServerUnitTests {
             "operationContext"
         );
 
-        assertEquals(COMMUNICATION_USER.getId(), addParticipantResult.getParticipantId());
+        assertNotNull(addParticipantResult.getOperationId());
+        assertFalse(addParticipantResult.getOperationId().isEmpty());
+        assertNotNull(addParticipantResult.getStatus());
+        assertSame(addParticipantResult.getStatus(), CallingOperationStatus.RUNNING);
     }
 
     @Test
     public void addParticipantWithResponse() {
         CallingServerClient callingServerClient = getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
-                new SimpleEntry<String, Integer>(generateAddParticipantResult(COMMUNICATION_USER.getId()), 202)
+                new SimpleEntry<String, Integer>(generateAddParticipantResult(), 202)
             ))
         );
 
@@ -200,7 +202,10 @@ public class CallingServerUnitTests {
 
         assertEquals(202, addParticipantResultResponse.getStatusCode());
         AddParticipantResult addParticipantResult = addParticipantResultResponse.getValue();
-        assertEquals(COMMUNICATION_USER.getId(), addParticipantResult.getParticipantId());
+        assertNotNull(addParticipantResult.getOperationId());
+        assertFalse(addParticipantResult.getOperationId().isEmpty());
+        assertNotNull(addParticipantResult.getStatus());
+        assertSame(addParticipantResult.getStatus(), CallingOperationStatus.RUNNING);
     }
 
     @Test

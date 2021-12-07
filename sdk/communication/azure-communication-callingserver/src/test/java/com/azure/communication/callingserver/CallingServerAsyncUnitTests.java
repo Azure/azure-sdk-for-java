@@ -154,7 +154,7 @@ public class CallingServerAsyncUnitTests {
     public void addParticipantAsync() {
         CallingServerAsyncClient callingServerAsyncClient = getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
-                new SimpleEntry<String, Integer>(generateAddParticipantResult(COMMUNICATION_USER.getId()), 202)
+                new SimpleEntry<String, Integer>(generateAddParticipantResult(), 202)
             ))
         );
 
@@ -165,14 +165,17 @@ public class CallingServerAsyncUnitTests {
             "alternateCallerId",
             "operationContext"
         ).block();
-        assertEquals(COMMUNICATION_USER.getId(), addParticipantResult.getParticipantId());
+        assertNotNull(addParticipantResult.getOperationId());
+        assertFalse(addParticipantResult.getOperationId().isEmpty());
+        assertNotNull(addParticipantResult.getStatus());
+        assertSame(addParticipantResult.getStatus(), CallingOperationStatus.RUNNING);
     }
 
     @Test
     public void addParticipantAsyncWithResponse() {
         CallingServerAsyncClient callingServerAsyncClient = getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
-                new SimpleEntry<String, Integer>(generateAddParticipantResult(COMMUNICATION_USER.getId()), 202)
+                new SimpleEntry<String, Integer>(generateAddParticipantResult(), 202)
             ))
         );
 
@@ -185,7 +188,10 @@ public class CallingServerAsyncUnitTests {
         ).block();
         assertEquals(202, addParticipantResultResponse.getStatusCode());
         AddParticipantResult addParticipantResult = addParticipantResultResponse.getValue();
-        assertEquals(COMMUNICATION_USER.getId(), addParticipantResult.getParticipantId());
+        assertNotNull(addParticipantResult.getOperationId());
+        assertFalse(addParticipantResult.getOperationId().isEmpty());
+        assertNotNull(addParticipantResult.getStatus());
+        assertSame(addParticipantResult.getStatus(), CallingOperationStatus.RUNNING);
     }
 
     @Test
