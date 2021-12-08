@@ -67,7 +67,7 @@ public abstract class AbstractAzureStorageProtocolResolverTest {
                 resources.add(resource);
             }
         }
-        return resources.toArray(WritableResource[]::new);
+        return resources.toArray(new Resource[0]);
     }
 
     @Test
