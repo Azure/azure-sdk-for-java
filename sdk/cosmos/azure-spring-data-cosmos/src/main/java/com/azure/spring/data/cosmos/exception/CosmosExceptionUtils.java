@@ -46,6 +46,7 @@ public class CosmosExceptionUtils {
      * @param responseDiagnosticsProcessor Response Diagnostics Processor
      * @param <T> type class of Mono
      * @return Mono instance
+     * @throws CosmosAccessException for operations on cosmos db
      */
     public static <T> Mono<T> findAPIExceptionHandler(String message, Throwable throwable,
                                                       ResponseDiagnosticsProcessor responseDiagnosticsProcessor) {
