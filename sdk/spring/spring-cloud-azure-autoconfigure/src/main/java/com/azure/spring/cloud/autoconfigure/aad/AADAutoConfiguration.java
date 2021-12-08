@@ -3,10 +3,10 @@
 package com.azure.spring.cloud.autoconfigure.aad;
 
 
-import com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.AADOAuth2ClientConfiguration;
-import com.azure.spring.cloud.autoconfigure.aad.properties.AADPropertiesConfiguration;
-import com.azure.spring.cloud.autoconfigure.aad.webapi.AADResourceServerConfiguration;
-import com.azure.spring.cloud.autoconfigure.aad.webapp.AADWebApplicationConfiguration;
+import com.azure.spring.cloud.autoconfigure.aad.configuration.AADOAuth2ClientConfiguration;
+import com.azure.spring.cloud.autoconfigure.aad.configuration.AADPropertiesConfiguration;
+import com.azure.spring.cloud.autoconfigure.aad.configuration.AADResourceServerConfiguration;
+import com.azure.spring.cloud.autoconfigure.aad.configuration.AADWebApplicationConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;

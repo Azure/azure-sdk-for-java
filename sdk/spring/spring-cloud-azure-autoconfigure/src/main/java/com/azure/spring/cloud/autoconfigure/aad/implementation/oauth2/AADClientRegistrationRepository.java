@@ -3,9 +3,9 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2;
 
-import com.azure.spring.cloud.autoconfigure.aad.core.AADAuthorizationGrantType;
-import com.azure.spring.cloud.autoconfigure.aad.core.AADAuthorizationServerEndpoints;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthenticationProperties;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthorizationGrantType;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthorizationServerEndpoints;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AuthorizationClientProperties;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -21,8 +21,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.azure.spring.cloud.autoconfigure.aad.core.AADAuthorizationGrantType.AUTHORIZATION_CODE;
-import static com.azure.spring.cloud.autoconfigure.aad.core.AADAuthorizationGrantType.AZURE_DELEGATED;
+import static com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthorizationGrantType.AUTHORIZATION_CODE;
+import static com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthorizationGrantType.AZURE_DELEGATED;
 
 
 /**
