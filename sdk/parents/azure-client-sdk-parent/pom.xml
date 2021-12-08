@@ -145,6 +145,14 @@
     <!-- This property configures whether the codesnippet-maven-plugin should be used. -->
     <codesnippet.skip>true</codesnippet.skip>
 
+    <!-- The following properties configure the maven-checkstyle-plugin. -->
+    <!-- This property configures whether the maven-checkstyle-plugin should be used. -->
+    <checkstyle.skip>false</checkstyle.skip>
+
+    <!-- The following properties configure the spotbugs-maven-plugin. -->
+    <!-- This property configures whether the spotbugs-maven-plugin should be used. -->
+    <spotbugs.skip>false</spotbugs.skip>
+
     <!-- This property configures whether Spotbugs analysis is ran on samples and tests. Default is false. -->
     <spotbugs.includeTests>false</spotbugs.includeTests>
 
@@ -519,10 +527,11 @@
             <dependency>
               <groupId>com.puppycrawl.tools</groupId>
               <artifactId>checkstyle</artifactId>
-              <version>8.42</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
+              <version>9.2</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
             </dependency>
           </dependencies>
           <configuration>
+            <skip>${checkstyle.skip}</skip>
             <configLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
             <suppressionsLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
             <headerLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
@@ -554,6 +563,7 @@
             </dependency>
           </dependencies>
           <configuration>
+            <skip>${spotbugs.skip}</skip>
             <effort>max</effort>
             <threshold>Low</threshold>
             <xmlOutput>true</xmlOutput>
