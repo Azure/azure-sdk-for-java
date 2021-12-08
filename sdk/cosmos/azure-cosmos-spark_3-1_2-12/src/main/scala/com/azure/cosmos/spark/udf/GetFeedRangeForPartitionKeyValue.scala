@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark.udf
 
-import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal}
+import com.azure.cosmos.implementation.SparkBridgeImplementationInternal
 import com.azure.cosmos.spark.CosmosPredicates.requireNotNullOrEmpty
 import org.apache.spark.sql.api.java.UDF2
 

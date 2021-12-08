@@ -4,12 +4,11 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.{CosmosAsyncContainer, SparkBridgeInternal}
 import com.azure.cosmos.models.FeedRange
-import reactor.core.publisher.Mono
 import reactor.core.scala.publisher.SMono
 import reactor.core.scala.publisher.SMono.PimpJMono
 
-import java.time.{Instant, Period}
-import java.time.temporal.{ChronoUnit, TemporalAmount, TemporalUnit}
+import java.time.Instant
+import java.time.temporal.ChronoUnit
 import scala.collection.concurrent.TrieMap
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
