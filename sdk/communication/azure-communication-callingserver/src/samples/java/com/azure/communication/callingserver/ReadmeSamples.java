@@ -8,6 +8,7 @@ import com.azure.communication.callingserver.models.CallingEventSubscriptionType
 import com.azure.communication.callingserver.models.CreateCallOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
@@ -99,7 +100,7 @@ public class ReadmeSamples {
         // BEGIN: readme-sample-addParticipant
         CommunicationIdentifier thirdCallee = new CommunicationUserIdentifier("<acs-user-identity-3>");
         String callbackUri = "<callback-uri-for-notification>";
-        callConnection.addParticipant(thirdCallee, "ACS User 3", "<string-for-tracing-responses>");
+        callConnection.addParticipant(thirdCallee, new PhoneNumberIdentifier("<acs-phone-number"), "<string-for-tracing-responses>");
         // END: readme-sample-addParticipant
     }
 

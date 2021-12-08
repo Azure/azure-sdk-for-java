@@ -173,7 +173,7 @@ public class CallingServerUnitTests {
             SERVERCALL_LOCATOR,
             COMMUNICATION_USER,
             CALLBACK_URI,
-            "alternateCallerId",
+            ALTERNATE_CALLER_ID,
             "operationContext"
         );
 
@@ -195,7 +195,7 @@ public class CallingServerUnitTests {
             SERVERCALL_LOCATOR,
             COMMUNICATION_USER,
             CALLBACK_URI,
-            "alternateCallerId",
+            ALTERNATE_CALLER_ID,
             "operationContext",
             Context.NONE
         );

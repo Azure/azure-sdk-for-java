@@ -17,6 +17,7 @@ import com.azure.communication.callingserver.models.PlayAudioOptions;
 import com.azure.communication.callingserver.models.PlayAudioResult;
 import com.azure.communication.callingserver.models.TransferCallResult;
 import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
@@ -158,7 +159,7 @@ public final class CallConnection {
      * Add a participant to the call.
      *
      * @param participant Added participant.
-     * @param alternateCallerId Phone number to use when adding a phone number participant.
+     * @param alternateCallerId Phone number identifier to use when adding a phone number participant.
      * @param operationContext Value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -168,7 +169,7 @@ public final class CallConnection {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AddParticipantResult addParticipant(
         CommunicationIdentifier participant,
-        String alternateCallerId,
+        PhoneNumberIdentifier alternateCallerId,
         String operationContext) {
         return callConnectionAsync.addParticipant(participant, alternateCallerId, operationContext).block();
     }
@@ -177,7 +178,7 @@ public final class CallConnection {
      * Add a participant to the call.
      *
      * @param participant Added participant.
-     * @param alternateCallerId Phone number to use when adding a phone number participant.
+     * @param alternateCallerId Phone number identifier to use when adding a phone number participant.
      * @param operationContext Value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
      * @param context {@link Context} representing the request context.
@@ -188,7 +189,7 @@ public final class CallConnection {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AddParticipantResult> addParticipantWithResponse(
         CommunicationIdentifier participant,
-        String alternateCallerId,
+        PhoneNumberIdentifier alternateCallerId,
         String operationContext,
         Context context) {
         return callConnectionAsync
@@ -225,7 +226,7 @@ public final class CallConnection {
      * Transfer the call to a participant.
      *
      * @param targetParticipant The identifier of the participant.
-     * @param alternateCallerId The phone number to use when transferring to a pstn participant.
+     * @param alternateCallerId The phone number identifier to use when transferring to a pstn participant.
      * @param userToUserInformation The user to user information.
      * @param operationContext The operation context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -233,7 +234,7 @@ public final class CallConnection {
      * @return Response for a successful transfer to participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TransferCallResult transferToParticipant(CommunicationIdentifier targetParticipant, String alternateCallerId, String userToUserInformation, String operationContext) {
+    public TransferCallResult transferToParticipant(CommunicationIdentifier targetParticipant, PhoneNumberIdentifier alternateCallerId, String userToUserInformation, String operationContext) {
         return callConnectionAsync.transferToParticipant(targetParticipant, alternateCallerId, userToUserInformation, operationContext).block();
     }
 
@@ -241,7 +242,7 @@ public final class CallConnection {
      * Transfer the call to a participant.
      *
      * @param targetParticipant The identifier of the participant.
-     * @param alternateCallerId The phone number to use when transferring to a pstn participant.
+     * @param alternateCallerId The phone number identifier to use when transferring to a pstn participant.
      * @param userToUserInformation The user to user information.
      * @param operationContext The operation context.
      * @param context {@link Context} representing the request context.
@@ -250,7 +251,7 @@ public final class CallConnection {
      * @return Response for a successful transfer to participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TransferCallResult> transferToParticipantWithResponse(CommunicationIdentifier targetParticipant, String alternateCallerId, String userToUserInformation, String operationContext, Context context) {
+    public Response<TransferCallResult> transferToParticipantWithResponse(CommunicationIdentifier targetParticipant, PhoneNumberIdentifier alternateCallerId, String userToUserInformation, String operationContext, Context context) {
         return callConnectionAsync.transferToParticipantWithResponse(targetParticipant,  alternateCallerId, userToUserInformation, operationContext, context).block();
     }
 

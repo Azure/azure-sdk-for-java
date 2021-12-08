@@ -188,7 +188,7 @@ public class CallConnectionUnitTests {
         CommunicationUserIdentifier user = new CommunicationUserIdentifier(NEW_PARTICIPANT_ID);
         AddParticipantResult addParticipantResult = callConnection.addParticipant(
             user,
-            "alternateCallerId",
+            ALTERNATE_CALLER_ID,
             OPERATION_CONTEXT
         );
         assertNotNull(addParticipantResult.getOperationId());
@@ -208,7 +208,7 @@ public class CallConnectionUnitTests {
         CommunicationUserIdentifier user = new CommunicationUserIdentifier(NEW_PARTICIPANT_ID);
         Response<AddParticipantResult> addParticipantResultResponse = callConnection.addParticipantWithResponse(
             user,
-            "alternateCallerId",
+            ALTERNATE_CALLER_ID,
             OPERATION_CONTEXT,
             Context.NONE
         );
@@ -256,7 +256,7 @@ public class CallConnectionUnitTests {
 
         TransferCallResult transferCallResult = callConnection.transferToParticipant(
             new CommunicationUserIdentifier(NEW_PARTICIPANT_ID),
-            "",
+            ALTERNATE_CALLER_ID,
             "",
             ""
         );
@@ -274,7 +274,7 @@ public class CallConnectionUnitTests {
 
         Response<TransferCallResult> transferCallResponse = callConnection.transferToParticipantWithResponse(
             new CommunicationUserIdentifier(NEW_PARTICIPANT_ID),
-            "",
+            ALTERNATE_CALLER_ID,
             "",
             "",
             Context.NONE

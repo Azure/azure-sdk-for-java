@@ -6,6 +6,7 @@ package com.azure.communication.callingserver.implementation.converters;
 import com.azure.communication.callingserver.implementation.models.PhoneNumberIdentifierModel;
 import com.azure.communication.callingserver.implementation.models.TransferToParticipantRequest;
 import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.communication.common.PhoneNumberIdentifier;
 
 /**
  * A converter for {@link TransferToParticipantRequest}
@@ -17,7 +18,7 @@ public final class TransferToParticipantRequestConverter {
      */
     public static TransferToParticipantRequest convert(
         CommunicationIdentifier targetParticipant,
-        String alternateCallerId,
+        PhoneNumberIdentifier alternateCallerId,
         String userToUserInformation,
         String operationContext) {
 
@@ -26,9 +27,9 @@ public final class TransferToParticipantRequestConverter {
         }
 
         PhoneNumberIdentifierModel alternateIdentity = null;
-        if (alternateCallerId != null && !alternateCallerId.isEmpty()) {
+        if (alternateCallerId != null && !alternateCallerId.getPhoneNumber().isEmpty()) {
             alternateIdentity = new PhoneNumberIdentifierModel()
-                .setValue(alternateCallerId);
+                .setValue(alternateCallerId.getPhoneNumber());
         }
 
         return new TransferToParticipantRequest()

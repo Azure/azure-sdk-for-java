@@ -62,6 +62,7 @@ import com.azure.communication.callingserver.models.PlayAudioResult;
 import com.azure.communication.callingserver.models.StartRecordingOptions;
 import com.azure.communication.callingserver.models.StartCallRecordingResult;
 import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -443,7 +444,7 @@ public final class CallingServerAsyncClient {
      * @param callLocator the call locator.
      * @param participant The identifier of the participant.
      * @param callBackUri callBackUri to get notifications.
-     * @param alternateCallerId Phone number to use when adding a phone number participant.
+     * @param alternateCallerId Phone number identifier to use when adding a phone number participant.
      * @param operationContext Value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -455,7 +456,7 @@ public final class CallingServerAsyncClient {
         CallLocator callLocator,
         CommunicationIdentifier participant,
         URI callBackUri,
-        String alternateCallerId,
+        PhoneNumberIdentifier alternateCallerId,
         String operationContext) {
         try {
             AddParticipantWithCallLocatorRequest requestWithCallLocator = new AddParticipantWithCallLocatorRequest()
@@ -479,7 +480,7 @@ public final class CallingServerAsyncClient {
      * @param callLocator the call locator.
      * @param participant The identifier of the participant.
      * @param callBackUri callBackUri to get notifications.
-     * @param alternateCallerId Phone number to use when adding a phone number participant.
+     * @param alternateCallerId Phone number identifier to use when adding a phone number participant.
      * @param operationContext Value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -491,7 +492,7 @@ public final class CallingServerAsyncClient {
         CallLocator callLocator,
         CommunicationIdentifier participant,
         URI callBackUri,
-        String alternateCallerId,
+        PhoneNumberIdentifier alternateCallerId,
         String operationContext) {
         return addParticipantWithResponse(
             callLocator,
@@ -506,7 +507,7 @@ public final class CallingServerAsyncClient {
         CallLocator callLocator,
         CommunicationIdentifier participant,
         URI callBackUri,
-        String alternateCallerId,
+        PhoneNumberIdentifier alternateCallerId,
         String operationContext,
         Context context) {
         try {

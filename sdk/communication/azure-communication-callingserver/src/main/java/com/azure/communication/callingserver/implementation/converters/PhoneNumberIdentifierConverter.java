@@ -14,12 +14,12 @@ public final class PhoneNumberIdentifierConverter {
     /**
      * Converts to {@link PhoneNumberIdentifierModel}.
      */
-    public static PhoneNumberIdentifierModel convert(String phoneNumber) {
+    public static PhoneNumberIdentifierModel convert(PhoneNumberIdentifier phoneNumberIdentifier) {
 
         PhoneNumberIdentifierModel phoneNumberIdentifierModel =
-            (phoneNumber == null || phoneNumber.isEmpty()) ? null
+            (phoneNumberIdentifier == null || phoneNumberIdentifier.getPhoneNumber().isEmpty()) ? null
                 : CommunicationIdentifierConverter
-                    .convert(new PhoneNumberIdentifier(phoneNumber)).getPhoneNumber();
+                    .convert(new PhoneNumberIdentifier(phoneNumberIdentifier.getPhoneNumber())).getPhoneNumber();
         return phoneNumberIdentifierModel;
     }
 

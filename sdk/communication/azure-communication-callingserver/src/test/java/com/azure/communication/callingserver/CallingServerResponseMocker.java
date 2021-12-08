@@ -17,6 +17,7 @@ import com.azure.communication.callingserver.implementation.models.*;
 import com.azure.communication.callingserver.models.*;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
@@ -43,6 +44,7 @@ public class CallingServerResponseMocker {
     public static final CommunicationUserIdentifier COMMUNICATION_USER_1 = new CommunicationUserIdentifier(USER_ID_1);
     public static final URI CALLBACK_URI = URI.create("https://callBackUri.local");
     public static final ServerCallLocator SERVERCALL_LOCATOR = new ServerCallLocator("aHR0cHM6Ly9jb252LXVzd2UtMDguY29udi5za3lwZS5jb20vY29udi8tby1FWjVpMHJrS3RFTDBNd0FST1J3P2k9ODgmZT02Mzc1Nzc0MTY4MDc4MjQyOTM");
+    public static final PhoneNumberIdentifier ALTERNATE_CALLER_ID = new PhoneNumberIdentifier("+15551234567");
 
     public static String generateCreateCallResult(String callConnectionId) {
 
@@ -64,10 +66,10 @@ public class CallingServerResponseMocker {
     public static String generateAddParticipantResult() {
 
         AddParticipantResultInternal result = new AddParticipantResultInternal()
-        .setOperationContext(OPERATION_CONTEXT)
-        .setOperationId(OPERATION_ID)
-        .setStatus(CallingOperationStatus.RUNNING)
-        .setResultDetails(new CallingOperationResultDetailsInternal().setCode(202).setSubcode(0).setMessage("message"));
+            .setOperationContext(OPERATION_CONTEXT)
+            .setOperationId(OPERATION_ID)
+            .setStatus(CallingOperationStatus.RUNNING)
+            .setResultDetails(new CallingOperationResultDetailsInternal().setCode(202).setSubcode(0).setMessage("message"));
 
         return serializeObject(result);
     }

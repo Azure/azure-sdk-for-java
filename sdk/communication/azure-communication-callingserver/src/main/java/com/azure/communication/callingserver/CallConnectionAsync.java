@@ -48,6 +48,7 @@ import com.azure.communication.callingserver.models.PlayAudioOptions;
 import com.azure.communication.callingserver.models.PlayAudioResult;
 import com.azure.communication.callingserver.models.TransferCallResult;
 import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
@@ -307,7 +308,7 @@ public final class CallConnectionAsync {
      * Add a participant to the call.
      *
      * @param participant The identifier of the participant.
-     * @param alternateCallerId The phone number to use when adding a phone number participant.
+     * @param alternateCallerId The phone number identifier to use when adding a phone number participant.
      * @param operationContext The value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -317,7 +318,7 @@ public final class CallConnectionAsync {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AddParticipantResult> addParticipant(
         CommunicationIdentifier participant,
-        String alternateCallerId,
+        PhoneNumberIdentifier alternateCallerId,
         String operationContext) {
         try {
             AddParticipantRequest request = getAddParticipantRequest(participant,
@@ -336,7 +337,7 @@ public final class CallConnectionAsync {
      * Add a participant to the call.
      *
      * @param participant The identifier of the participant.
-     * @param alternateCallerId The phone number to use when adding a phone number participant.
+     * @param alternateCallerId The phone number identifier to use when adding a phone number participant.
      * @param operationContext The value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -346,14 +347,14 @@ public final class CallConnectionAsync {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AddParticipantResult>> addParticipantWithResponse(
         CommunicationIdentifier participant,
-        String alternateCallerId,
+        PhoneNumberIdentifier alternateCallerId,
         String operationContext) {
         return addParticipantWithResponse(participant, alternateCallerId, operationContext, Context.NONE);
     }
 
     Mono<Response<AddParticipantResult>> addParticipantWithResponse(
         CommunicationIdentifier participant,
-        String alternateCallerId,
+        PhoneNumberIdentifier alternateCallerId,
         String operationContext,
         Context context) {
         try {
@@ -422,7 +423,7 @@ public final class CallConnectionAsync {
      * Transfer the call to a participant.
      *
      * @param targetParticipant The identifier of the participant.
-     * @param alternateCallerId The phone number to use when transferring to a pstn participant.
+     * @param alternateCallerId The phone number identifier to use when transferring to a pstn participant.
      * @param userToUserInformation The user to user information.
      * @param operationContext The operation context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -430,7 +431,7 @@ public final class CallConnectionAsync {
      * @return Response payload for a successful transfer to participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TransferCallResult> transferToParticipant(CommunicationIdentifier targetParticipant, String alternateCallerId, String userToUserInformation, String operationContext) {
+    public Mono<TransferCallResult> transferToParticipant(CommunicationIdentifier targetParticipant, PhoneNumberIdentifier alternateCallerId, String userToUserInformation, String operationContext) {
         try {
             TransferToParticipantRequest request = TransferToParticipantRequestConverter.convert(targetParticipant, alternateCallerId, userToUserInformation, operationContext);
             return callConnectionInternal.transferToParticipantAsync(callConnectionId, request)
@@ -445,7 +446,7 @@ public final class CallConnectionAsync {
      * Transfer the call to a participant.
      *
      * @param participant The identifier of the participant.
-     * @param alternateCallerId The phone number to use when transferring to a pstn participant.
+     * @param alternateCallerId The phone number identifier to use when transferring to a pstn participant.
      * @param userToUserInformation The user to user information.
      * @param operationContext The operation context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -453,11 +454,11 @@ public final class CallConnectionAsync {
      * @return Response payload for a successful transfer to participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TransferCallResult>> transferToParticipantWithResponse(CommunicationIdentifier participant, String alternateCallerId, String userToUserInformation, String operationContext) {
+    public Mono<Response<TransferCallResult>> transferToParticipantWithResponse(CommunicationIdentifier participant, PhoneNumberIdentifier alternateCallerId, String userToUserInformation, String operationContext) {
         return transferToParticipantWithResponse(participant, alternateCallerId, userToUserInformation, operationContext, Context.NONE);
     }
 
-    Mono<Response<TransferCallResult>> transferToParticipantWithResponse(CommunicationIdentifier targetParticipant, String alternateCallerId, String userToUserInformation, String operationContext, Context context) {
+    Mono<Response<TransferCallResult>> transferToParticipantWithResponse(CommunicationIdentifier targetParticipant, PhoneNumberIdentifier alternateCallerId, String userToUserInformation, String operationContext, Context context) {
         try {
             TransferToParticipantRequest request = TransferToParticipantRequestConverter.convert(targetParticipant, alternateCallerId, userToUserInformation, operationContext);
             return withContext(contextValue -> {
@@ -1293,7 +1294,7 @@ public final class CallConnectionAsync {
 
     private AddParticipantRequest getAddParticipantRequest(
         CommunicationIdentifier participant,
-        String alternateCallerId,
+        PhoneNumberIdentifier alternateCallerId,
         String operationContext) {
         AddParticipantRequest request = new AddParticipantRequest()
             .setParticipant(CommunicationIdentifierConverter.convert(participant))
