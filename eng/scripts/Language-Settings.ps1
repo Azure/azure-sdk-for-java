@@ -616,5 +616,5 @@ function Get-java-DocsMsMetadataForPackage($PackageInfo) {
 
 function Validate-java-DocMsPackages ($PackageInfo, $DocValidationImageId) 
 {
-  ValidatePackage $PackageInfo.GroupId $PackageInfo.Name  $PackageInfo.Version
+  ValidatePackage $PackageInfo.GroupId $PackageInfo.Name $PackageInfo.Version | Out-Null
 }
