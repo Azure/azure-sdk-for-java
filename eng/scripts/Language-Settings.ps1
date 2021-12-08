@@ -614,12 +614,7 @@ function Get-java-DocsMsMetadataForPackage($PackageInfo) {
   }
 }
 
-function Validate-java-DocMsPackages { 
-  Param(
-    [Parameter(Mandatory = $true)]
-    [PSCustomObject]$PackageInfo,
-    [Parameter(Mandatory = $false)]
-    [string]$DocValidationImageId
-  ) 
+function Validate-java-DocMsPackages ($PackageInfo, $DocValidationImageId) 
+{
   ValidatePackage $PackageInfo.GroupId $PackageInfo.Name  $PackageInfo.Version
 }
