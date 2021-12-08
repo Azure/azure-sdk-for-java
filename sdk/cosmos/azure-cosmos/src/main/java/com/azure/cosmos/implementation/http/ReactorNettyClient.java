@@ -390,10 +390,10 @@ public class ReactorNettyClient implements HttpClient {
         Logger logger = LoggerFactory.getLogger(REACTOR_NETWORK_LOG_CATEGORY);
         if (logger.isTraceEnabled()) {
             this.httpClient = this.httpClient.wiretap(REACTOR_NETWORK_LOG_CATEGORY, LogLevel.TRACE);
-        } else if (logger.isInfoEnabled()) {
-            this.httpClient = this.httpClient.wiretap(REACTOR_NETWORK_LOG_CATEGORY, LogLevel.INFO);
         } else if (logger.isDebugEnabled()) {
             this.httpClient = this.httpClient.wiretap(REACTOR_NETWORK_LOG_CATEGORY, LogLevel.DEBUG);
+        } else if (logger.isInfoEnabled()) {
+            this.httpClient = this.httpClient.wiretap(REACTOR_NETWORK_LOG_CATEGORY, LogLevel.INFO);
         } else if (logger.isWarnEnabled()) {
             this.httpClient = this.httpClient.wiretap(REACTOR_NETWORK_LOG_CATEGORY, LogLevel.WARN);
         } else if (logger.isErrorEnabled()) {

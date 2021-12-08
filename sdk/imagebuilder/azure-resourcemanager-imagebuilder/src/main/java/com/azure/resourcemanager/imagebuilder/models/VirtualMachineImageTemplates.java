@@ -13,8 +13,7 @@ public interface VirtualMachineImageTemplates {
     /**
      * Gets information about the VM image templates associated with the subscription.
      *
-     * @throws com.azure.resourcemanager.imagebuilder.models.ApiErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the VM image templates associated with the subscription.
      */
@@ -25,8 +24,7 @@ public interface VirtualMachineImageTemplates {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.imagebuilder.models.ApiErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the VM image templates associated with the subscription.
      */
@@ -37,8 +35,7 @@ public interface VirtualMachineImageTemplates {
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.imagebuilder.models.ApiErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the VM image templates associated with the specified resource group.
      */
@@ -50,8 +47,7 @@ public interface VirtualMachineImageTemplates {
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.imagebuilder.models.ApiErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the VM image templates associated with the specified resource group.
      */
@@ -63,8 +59,7 @@ public interface VirtualMachineImageTemplates {
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.imagebuilder.models.ApiErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a virtual machine image template.
      */
@@ -77,8 +72,7 @@ public interface VirtualMachineImageTemplates {
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.imagebuilder.models.ApiErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a virtual machine image template.
      */
@@ -91,8 +85,7 @@ public interface VirtualMachineImageTemplates {
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.imagebuilder.models.ApiErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void deleteByResourceGroup(String resourceGroupName, String imageTemplateName);
@@ -104,8 +97,7 @@ public interface VirtualMachineImageTemplates {
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.imagebuilder.models.ApiErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void delete(String resourceGroupName, String imageTemplateName, Context context);
@@ -116,8 +108,7 @@ public interface VirtualMachineImageTemplates {
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.imagebuilder.models.ApiErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void run(String resourceGroupName, String imageTemplateName);
@@ -129,8 +120,7 @@ public interface VirtualMachineImageTemplates {
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.imagebuilder.models.ApiErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void run(String resourceGroupName, String imageTemplateName, Context context);
@@ -141,8 +131,7 @@ public interface VirtualMachineImageTemplates {
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.imagebuilder.models.ApiErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void cancel(String resourceGroupName, String imageTemplateName);
@@ -154,8 +143,7 @@ public interface VirtualMachineImageTemplates {
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.imagebuilder.models.ApiErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void cancel(String resourceGroupName, String imageTemplateName, Context context);
@@ -166,8 +154,7 @@ public interface VirtualMachineImageTemplates {
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.imagebuilder.models.ApiErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of List run outputs operation.
      */
@@ -180,8 +167,7 @@ public interface VirtualMachineImageTemplates {
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.imagebuilder.models.ApiErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of List run outputs operation.
      */
@@ -194,8 +180,7 @@ public interface VirtualMachineImageTemplates {
      * @param imageTemplateName The name of the image Template.
      * @param runOutputName The name of the run output.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.imagebuilder.models.ApiErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified run output for the specified image template resource.
      */
@@ -209,8 +194,7 @@ public interface VirtualMachineImageTemplates {
      * @param runOutputName The name of the run output.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.imagebuilder.models.ApiErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified run output for the specified image template resource.
      */
@@ -222,8 +206,7 @@ public interface VirtualMachineImageTemplates {
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.imagebuilder.models.ApiErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a virtual machine image template.
      */
@@ -235,8 +218,7 @@ public interface VirtualMachineImageTemplates {
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.imagebuilder.models.ApiErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a virtual machine image template.
      */
@@ -247,8 +229,7 @@ public interface VirtualMachineImageTemplates {
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.imagebuilder.models.ApiErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void deleteById(String id);
@@ -259,8 +240,7 @@ public interface VirtualMachineImageTemplates {
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.imagebuilder.models.ApiErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void deleteByIdWithResponse(String id, Context context);

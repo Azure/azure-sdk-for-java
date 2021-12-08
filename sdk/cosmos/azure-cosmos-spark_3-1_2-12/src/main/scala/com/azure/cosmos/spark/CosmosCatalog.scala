@@ -5,6 +5,8 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 
+import java.time.format.DateTimeFormatter
+import java.time.{ZoneOffset, ZonedDateTime}
 import java.util
 import scala.collection.immutable.Map
 import scala.collection.mutable.ArrayBuffer
@@ -40,8 +42,9 @@ import scala.collection.JavaConverters._
 // All Hive keywords are case-insensitive, including the names of Hive operators and functions.
 // scalastyle:off multiple.string.literals
 // scalastyle:off number.of.methods
+// scalastyle:off file.size.limit
 class CosmosCatalog
-    extends CatalogPlugin
+  extends CatalogPlugin
     with SupportsNamespaces
     with TableCatalog
     with BasicLoggingTrait {
@@ -291,14 +294,17 @@ class CosmosCatalog
     logInfo(s"loadTable DB:$databaseName, Container: $containerName")
 
     this.tryGetContainerMetadata(databaseName, containerName) match {
-      case Some(_) =>
+      case Some(metadata) =>
+        val tableProperties: util.HashMap[String, String] = generateTblProperties(metadata)
+
         new ItemsTable(
           sparkSession,
           Array[Transform](),
           Some(databaseName),
           Some(containerName),
           tableOptions.asJava,
-          None)
+          None,
+          tableProperties)
       case None =>
         this.tryGetViewDefinition(databaseName, containerName) match {
           case Some(viewDefinition) =>
@@ -363,19 +369,35 @@ class CosmosCatalog
                                   schema: StructType,
                                   partitions: Array[Transform],
                                   containerProperties: Map[String, String]): Table = {
+     logInfo(s"createPhysicalTable DB:$databaseName, Container: $containerName")
+
     val throughputPropertiesOpt = CosmosThroughputProperties
       .tryGetThroughputProperties(containerProperties)
 
     val partitionKeyPath =
       CosmosContainerProperties.getPartitionKeyPath(containerProperties)
-    logInfo(s"createPhysicalTable DB:$databaseName, Container: $containerName")
+
+    val partitionKeyDef = new PartitionKeyDefinition
+    val paths = new util.ArrayList[String]
+    paths.add(partitionKeyPath)
+    partitionKeyDef.setPaths(paths)
+
+    CosmosContainerProperties.getPartitionKeyVersion(containerProperties) match {
+      case Some(pkVersion) => partitionKeyDef.setVersion(pkVersion)
+      case None =>
+    }
 
     val indexingPolicy = CosmosContainerProperties.getIndexingPolicy(containerProperties)
-    val cosmosContainerProperties = new CosmosContainerProperties(containerName, partitionKeyPath)
+    val cosmosContainerProperties = new CosmosContainerProperties(containerName, partitionKeyDef)
     cosmosContainerProperties.setIndexingPolicy(indexingPolicy)
 
     CosmosContainerProperties.getDefaultTtlInSeconds(containerProperties) match {
       case Some(ttl) => cosmosContainerProperties.setDefaultTimeToLiveInSeconds(ttl)
+      case None =>
+    }
+
+    CosmosContainerProperties.getAnalyticalStoreTtlInSeconds(containerProperties) match {
+      case Some(ttl) => cosmosContainerProperties.setAnalyticalStoreTimeToLiveInSeconds(ttl)
       case None =>
     }
 
@@ -524,11 +546,12 @@ class CosmosCatalog
     }
   }
 
+  //scalastyle:off method.length
   private def tryGetContainerMetadata
   (
     databaseName: String,
     containerName: String
-  ): Option[CosmosContainerProperties] = {
+  ): Option[(CosmosContainerProperties, List[FeedRange], Option[(ThroughputProperties, Boolean)])] = {
 
     try {
       Some(
@@ -536,20 +559,67 @@ class CosmosCatalog
           CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
           None,
           s"CosmosCatalog(name $catalogName).tryGetContainerMetadata($databaseName, $containerName)"))
-          .to(cosmosClientCacheItem =>
-            cosmosClientCacheItem
+          .to(cosmosClientCacheItem => {
+
+            val container = cosmosClientCacheItem
               .client
               .getDatabase(databaseName)
               .getContainer(containerName)
-              .read()
-              .block()
-              .getProperties
-        ))
+
+            (
+              container
+                .read()
+                .block()
+                .getProperties,
+
+              ContainerFeedRangesCache
+                .getFeedRanges(container)
+                .block(),
+
+              try {
+                Some(
+                  (
+                    container
+                      .readThroughput()
+                      .block()
+                      .getProperties,
+                    false
+                  ))
+              } catch {
+                case error: CosmosException => {
+                  if (error.getStatusCode != 400) {
+                    throw error
+                  }
+
+                  try {
+                    Some(
+                      (
+                        container
+                          .getDatabase
+                          .readThroughput()
+                          .block()
+                          .getProperties,
+                        true
+                      )
+                    )
+                  } catch {
+                    case error: CosmosException => {
+                      if (error.getStatusCode != 400) {
+                        throw error
+                      }
+                      None
+                    }
+                  }
+                }
+              }
+            )
+          }))
     } catch {
       case e: CosmosException if isNotFound(e) =>
         None
     }
   }
+  //scalastyle:on method.length
 
   private def tryGetViewDefinition(databaseName: String,
                                    containerName: String): Option[ViewDefinition] = {
@@ -621,18 +691,125 @@ class CosmosCatalog
     options.asCaseSensitiveMap().asScala.toMap
   }
 
+  // scalastyle:off cyclomatic.complexity
+  // scalastyle:off method.length
+  private def generateTblProperties
+  (
+    metadata: (CosmosContainerProperties, List[FeedRange], Option[(ThroughputProperties, Boolean)])
+  ): util.HashMap[String, String] = {
+
+    val containerProperties: CosmosContainerProperties = metadata._1
+    val feedRanges: List[FeedRange] = metadata._2
+    val throughputPropertiesOption: Option[(ThroughputProperties, Boolean)] = metadata._3
+
+    val indexingPolicySnapshotJson =  Option.apply(containerProperties.getIndexingPolicy) match {
+      case Some(p) => ModelBridgeInternal.getJsonSerializable(p).toJson
+      case None => "null"
+    }
+
+    val defaultTimeToLiveInSecondsSnapshot = Option.apply(containerProperties.getDefaultTimeToLiveInSeconds) match {
+      case Some(defaultTtl) => defaultTtl.toString
+      case None => "null"
+    }
+
+    val analyticalStoreTimeToLiveInSecondsSnapshot = Option.apply(containerProperties.getAnalyticalStoreTimeToLiveInSeconds) match {
+      case Some(analyticalStoreTtl) => analyticalStoreTtl.toString
+      case None => "null"
+    }
+
+    val lastModifiedSnapshot = ZonedDateTime
+      .ofInstant(containerProperties.getTimestamp, ZoneOffset.UTC)
+      .format(DateTimeFormatter.ISO_INSTANT)
+
+    val provisionedThroughputSnapshot = throughputPropertiesOption match {
+      case Some(throughputPropertiesTuple) =>
+        val throughputProperties = throughputPropertiesTuple._1
+        val isSharedThroughput = throughputPropertiesTuple._2
+        val prefix = if (isSharedThroughput) {
+          "Shared."
+        } else {
+          ""
+        }
+        val throughputLastModified = ZonedDateTime
+          .ofInstant(throughputProperties.getTimestamp, ZoneOffset.UTC)
+          .format(DateTimeFormatter.ISO_INSTANT)
+        if (throughputProperties.getAutoscaleMaxThroughput == 0) {
+          s"${prefix}Manual|${throughputProperties.getManualThroughput}|$throughputLastModified"
+        } else {
+          // AutoScale|CurrentRU|MaxRU
+          s"${prefix}AutoScale|${throughputProperties.getManualThroughput}|" +
+            s"${throughputProperties.getAutoscaleMaxThroughput}|" +
+            s"$throughputLastModified"
+        }
+      case None => s"Unknown" // Right now should be serverless  - but because serverless isn't GA
+        // yet keeping the contract vague here
+    }
+
+    val pkDefinitionJson = ModelBridgeInternal
+      .getJsonSerializable(
+        containerProperties.getPartitionKeyDefinition)
+      .toJson
+
+    val tableProperties = new util.HashMap[String, String]()
+    tableProperties.put(
+      CosmosConstants.TableProperties.PartitionKeyDefinition,
+      s"'$pkDefinitionJson'"
+    )
+
+    tableProperties.put(
+      CosmosConstants.TableProperties.PartitionCount,
+      s"'${feedRanges.size.toString}'"
+    )
+
+    tableProperties.put(
+      CosmosConstants.TableProperties.ProvisionedThroughput,
+      s"'$provisionedThroughputSnapshot'"
+    )
+    tableProperties.put(
+      CosmosConstants.TableProperties.LastModified,
+      s"'$lastModifiedSnapshot'"
+    )
+    tableProperties.put(
+      CosmosConstants.TableProperties.DefaultTtlInSeconds,
+      s"'$defaultTimeToLiveInSecondsSnapshot'"
+    )
+    tableProperties.put(
+      CosmosConstants.TableProperties.AnalyticalStoreTtlInSeconds,
+      s"'$analyticalStoreTimeToLiveInSecondsSnapshot'"
+    )
+    tableProperties.put(
+      CosmosConstants.TableProperties.IndexingPolicy,
+      s"'$indexingPolicySnapshotJson'"
+    )
+
+    tableProperties
+  }
+  // scalastyle:on cyclomatic.complexity
+  // scalastyle:on method.length
+
   private object CosmosContainerProperties {
     val OnlySystemPropertiesIndexingPolicyName: String = "OnlySystemProperties"
     val AllPropertiesIndexingPolicyName: String = "AllProperties"
 
     private val partitionKeyPath = "partitionKeyPath"
+    private val partitionKeyVersion = "partitionKeyVersion"
     private val indexingPolicy = "indexingPolicy"
     private val defaultTtlPropertyName = "defaultTtlInSeconds"
+    private val analyticalStoreTtlPropertyName = "analyticalStoreTtlInSeconds"
     private val defaultPartitionKeyPath = "/id"
     private val defaultIndexingPolicy = AllPropertiesIndexingPolicyName
 
     def getPartitionKeyPath(properties: Map[String, String]): String = {
       properties.getOrElse(partitionKeyPath, defaultPartitionKeyPath)
+    }
+
+    def getPartitionKeyVersion(properties: Map[String, String]): Option[PartitionKeyDefinitionVersion] = {
+      if (properties.contains(partitionKeyVersion)) {
+        val pkVersion = properties(partitionKeyVersion).toUpperCase
+        Some(PartitionKeyDefinitionVersion.valueOf(pkVersion))
+      } else {
+        None
+      }
     }
 
     def getIndexingPolicy(properties: Map[String, String]): IndexingPolicy = {
@@ -660,6 +837,14 @@ class CosmosCatalog
     def getDefaultTtlInSeconds(properties: Map[String, String]): Option[Int] = {
       if (properties.contains(defaultTtlPropertyName)) {
         Some(properties(defaultTtlPropertyName).toInt)
+      } else {
+        None
+      }
+    }
+
+    def getAnalyticalStoreTtlInSeconds(properties: Map[String, String]): Option[Int] = {
+      if (properties.contains(analyticalStoreTtlPropertyName)) {
+        Some(properties(analyticalStoreTtlPropertyName).toInt)
       } else {
         None
       }
@@ -714,3 +899,4 @@ class CosmosCatalog
 }
 // scalastyle:on multiple.string.literals
 // scalastyle:on number.of.methods
+// scalastyle:on file.size.limit

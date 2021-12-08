@@ -629,6 +629,9 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="WhitespaceAround" files="com.azure.search.documents.indexes.models.SearchIndexerDataIdentity"/>
   <suppress checks="WhitespaceAround" files="com.azure.search.documents.indexes.models.SimilarityAlgorithm"/>
 
+  <!-- Suppression for bug https://github.com/checkstyle/checkstyle/issues/11001 -->
+  <suppress checks="ParenPad" files="com.azure.ai.textanalytics.TextAnalyticsClientTestBase" lines="1020,1024"/>
+
   <!-- Suppress CloudEvent in MemberConverterImplTests.-->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.messaging.eventgrid.cloudnative.cloudevents.EventGridCloudNativeEventPublisher"/>
