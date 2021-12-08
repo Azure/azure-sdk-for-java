@@ -11,6 +11,8 @@ import org.apache.spark.sql.connector.write.{LogicalWriteInfo, WriteBuilder}
 import org.apache.spark.sql.types.{LongType, StringType, StructField, StructType}
 import org.apache.spark.sql.util.CaseInsensitiveStringMap
 
+import java.util.Collections
+
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
@@ -35,8 +37,11 @@ private class ItemsTable(override val sparkSession: SparkSession,
                          override val databaseName: Option[String],
                          override val containerName: Option[String],
                          override val userConfig: util.Map[String, String],
-                         override val userProvidedSchema: Option[StructType] = None)
-  extends ItemsReadOnlyTable(sparkSession, transforms, databaseName, containerName, userConfig, userProvidedSchema)
+                         override val userProvidedSchema: Option[StructType] = None,
+                         override val tableProperties: util.Map[String, String] =
+                          Collections.emptyMap[String, String])
+  extends ItemsReadOnlyTable(
+    sparkSession, transforms, databaseName, containerName, userConfig, userProvidedSchema, tableProperties)
   with SupportsWrite {
 
   override def capabilities(): util.Set[TableCapability] = Set(
