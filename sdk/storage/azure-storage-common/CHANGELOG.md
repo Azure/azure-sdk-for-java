@@ -1,15 +1,12 @@
 # Release History
 
-## 12.15.0-beta.2 (Unreleased)
+## 12.15.0-beta.2 (2021-12-07)
 
 ### Features Added
-
-### Breaking Changes
+- Added support for 2021-02-12 service version.
 
 ### Bugs Fixed
 - Fixed a bug that would cause authenticating with a sas token to fail if the timestamps in the token were formatted differently.
-
-### Other Changes
 
 ## 12.14.1 (2021-11-10)
 

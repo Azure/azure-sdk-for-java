@@ -30,6 +30,13 @@ public interface ResourceProviderOperation {
     Boolean isDataAction();
 
     /**
+     * Gets the origin property: Origin of the operation.
+     *
+     * @return the origin value.
+     */
+    String origin();
+
+    /**
      * Gets the inner com.azure.resourcemanager.kubernetesconfiguration.fluent.models.ResourceProviderOperationInner
      * object.
      *
