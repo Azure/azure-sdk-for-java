@@ -19,6 +19,11 @@ public class DefaultServiceBusProvisioner implements ServiceBusProvisioner {
     private final ServiceBusTopicCrud topicCrud;
     private final ServiceBusTopicSubscriptionCrud subscriptionCrud;
 
+    /**
+     * Creates a new instance of {@link DefaultServiceBusProvisioner}.
+     * @param azureResourceManager the azureResourceManager
+     * @param azureResourceMetadata the azureResourceMetadata
+     */
     public DefaultServiceBusProvisioner(AzureResourceManager azureResourceManager,
                                         AzureResourceMetadata azureResourceMetadata) {
         this.queueCrud = new ServiceBusQueueCrud(azureResourceManager, azureResourceMetadata);
