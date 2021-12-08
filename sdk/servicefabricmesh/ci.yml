@@ -1,0 +1,39 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/servicefabricmesh/ci.yml
+      - sdk/servicefabricmesh/azure-resourcemanager-servicefabricmesh/
+    exclude:
+      - sdk/servicefabricmesh/pom.xml
+      - sdk/servicefabricmesh/azure-resourcemanager-servicefabricmesh/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/servicefabricmesh/ci.yml
+      - sdk/servicefabricmesh/azure-resourcemanager-servicefabricmesh/
+    exclude:
+      - sdk/servicefabricmesh/pom.xml
+      - sdk/servicefabricmesh/azure-resourcemanager-servicefabricmesh/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: servicefabricmesh
+    Artifacts:
+      - name: azure-resourcemanager-servicefabricmesh
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerservicefabricmesh
