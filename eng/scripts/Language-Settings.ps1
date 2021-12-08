@@ -619,8 +619,6 @@ function Validate-java-DocMsPackages {
     [Parameter(Mandatory = $true)]
     [PSCustomObject]$PackageInfo,
     [Parameter(Mandatory = $false)]
-    [string]$PackageSourceOverride,
-    [Parameter(Mandatory = $false)]
     [string]$DocValidationImageId
   ) 
   ValidatePackage $PackageInfo.GroupId $PackageInfo.Name  $PackageInfo.Version
