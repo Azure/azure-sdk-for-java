@@ -39,6 +39,7 @@ public class AzureEventHubsResourceManagerAutoConfiguration extends AzureService
         this.resourceMetadata = resourceMetadata;
     }
 
+
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = AzureEventHubsProperties.PREFIX, value = "namespace")
