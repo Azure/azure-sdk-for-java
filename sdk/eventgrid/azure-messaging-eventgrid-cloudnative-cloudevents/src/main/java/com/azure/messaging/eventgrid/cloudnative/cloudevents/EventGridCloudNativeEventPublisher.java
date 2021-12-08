@@ -20,12 +20,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * EventGrid Cloud Native Event Publisher
+ * EventGrid cloud native event publisher sends the Cloud Native Computing Foundation(CNCF) CloudEvents by using
+ * Azure EventGrid publisher client, see {@link EventGridPublisherClient}.
  */
 public final class EventGridCloudNativeEventPublisher {
     private static final Pattern PATTERN;
     static {
-        PATTERN = Pattern.compile("[*/|*/*+]json", Pattern.MULTILINE);
+        PATTERN = Pattern.compile("[*/|*/*+]json");
     }
 
     /**
@@ -115,15 +116,18 @@ public final class EventGridCloudNativeEventPublisher {
         CloudEventDataFormat dataFormat;
         final String dataContentType = event.getDataContentType();
         if (dataContentType == null) {
+            // https://github.com/cloudevents/spec/blob/main/cloudevents/formats/json-format.md#311-payload-serialization
+            // "If the datacontenttype is unspecified, processing SHOULD proceed as if the datacontenttype had been
+            // specified explicitly as application/json."
             dataFormat = CloudEventDataFormat.JSON;
         } else {
-            // Future version:
+            // Future version of spec after CloudEvents Spec v1.0.1:
             // https://github.com/cloudevents/spec/blob/main/cloudevents/formats/json-format.md#311-payload-serialization
-            // That is, a datacontenttype declares JSON-formatted content if its media type, when stripped of parameters,
-            // has the form */json or */*+json. If the datacontenttype is unspecified, processing SHOULD proceed as if
-            // the datacontenttype had been specified explicitly as application/json.
+            // "A datacontenttype declares JSON-formatted content if its media type, when stripped of parameters,
+            // has the form */json or */*+json."
 
-            // Current version: https://github.com/cloudevents/sdk-java/blob/ff07dd83150deeb5eca5405cb80760b71e7b470c/
+            // CloudEvents Spec v1.0.1:
+            // https://github.com/cloudevents/sdk-java/blob/ff07dd83150deeb5eca5405cb80760b71e7b470c/
             // formats/json-jackson/src/main/java/io/cloudevents/jackson/JsonFormat.java#L146-L149
             final Matcher matcher = PATTERN.matcher(dataContentType);
             if (matcher.find()) {
@@ -166,7 +170,9 @@ public final class EventGridCloudNativeEventPublisher {
 
         cloudEvent.setId(event.getId()); // required
 
-        // optional: extensionNames
+        // optional: Extension attributes have no defined meaning in this specification, they allow external systems
+        // to attach metadata to an event, much like HTTP custom headers.
+        // https://github.com/cloudevents/spec/blob/main/cloudevents/primer.md#json-extensions
         event.getExtensionNames()
             .stream()
             .forEach(name -> cloudEvent.addExtensionAttribute(name, event.getAttribute(name)));

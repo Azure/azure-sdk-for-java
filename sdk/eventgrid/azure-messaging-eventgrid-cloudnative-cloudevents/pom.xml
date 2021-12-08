@@ -9,7 +9,7 @@
   <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventgrid-cloudnative-cloudevents;current} -->
 
   <packaging>jar</packaging>
-  <name>Microsoft Azure SDK for eventgrid cloud native events</name>
+  <name>Microsoft Azure SDK for Event Grid cloud native cloud events</name>
   <description>This package contains Microsoft Azure EventGrid Cloud Native Events SDK.</description>
 
   <parent>
@@ -102,7 +102,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.7.3</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.7.4</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
