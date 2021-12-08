@@ -317,11 +317,15 @@ function CheckLink ([System.Uri]$linkUri, $allowRetry=$true)
 }
 
 function ReplaceGithubLink([string]$originLink) {
+  Write-Host "The source commit: $branchReplacementName"
+  Write-Host "The regex: $branchReplaceRegex"
   if (!$branchReplacementName -or !$branchReplaceRegex) {
     return $originLink
   }
   $ReplacementPattern = "`${1}$branchReplacementName`$2"
-  return $originLink -replace $branchReplaceRegex, $ReplacementPattern
+  $a = $originLink -replace $branchReplaceRegex, $ReplacementPattern
+  Write-Host "The new link: $a"
+  return $a
 }
 
 function GetLinks([System.Uri]$pageUri)

@@ -207,54 +207,54 @@ jobs:
             - '!sdk/**/test-recordings'
             - '!sdk/**/session-records'
 
-      - template: /eng/common/pipelines/templates/steps/check-spelling.yml
-        parameters:
-          CspellConfigPath: .vscode/cspell.json
+      # - template: /eng/common/pipelines/templates/steps/check-spelling.yml
+      #   parameters:
+      #     CspellConfigPath: .vscode/cspell.json
 
-      - task: PowerShell@2
-        displayName: 'Verify versions in POM files'
-        inputs:
-          pwsh: true
-          workingDirectory: $(Agent.BuildDirectory)
-          filePath: eng/versioning/pom_file_version_scanner.ps1
-          arguments: -Debug:$$(IsDebug)
+      # - task: PowerShell@2
+      #   displayName: 'Verify versions in POM files'
+      #   inputs:
+      #     pwsh: true
+      #     workingDirectory: $(Agent.BuildDirectory)
+      #     filePath: eng/versioning/pom_file_version_scanner.ps1
+      #     arguments: -Debug:$$(IsDebug)
 
-      - template: ../steps/generate-project-list.yml
-        parameters:
-          Artifacts: ${{ parameters.Artifacts }}
-          AdditionalModules: ${{ parameters.AdditionalModules }}
-          JobType: 'Analyze'
-          SDKType: ${{parameters.SDKType}}
-          ServiceDirectory: ${{parameters.ServiceDirectory}}
+      # - template: ../steps/generate-project-list.yml
+      #   parameters:
+      #     Artifacts: ${{ parameters.Artifacts }}
+      #     AdditionalModules: ${{ parameters.AdditionalModules }}
+      #     JobType: 'Analyze'
+      #     SDKType: ${{parameters.SDKType}}
+      #     ServiceDirectory: ${{parameters.ServiceDirectory}}
 
-      - task: PythonScript@0
-        displayName: 'Generate directories variable for sparse checkout'
-        inputs:
-          scriptPath: 'eng/scripts/generate_from_source_pom.py'
-          arguments: '--set-pipeline-variable CheckoutDirectories --project-list $(ProjectList)'
-          workingDirectory: '$(System.DefaultWorkingDirectory)'
+      # - task: PythonScript@0
+      #   displayName: 'Generate directories variable for sparse checkout'
+      #   inputs:
+      #     scriptPath: 'eng/scripts/generate_from_source_pom.py'
+      #     arguments: '--set-pipeline-variable CheckoutDirectories --project-list $(ProjectList)'
+      #     workingDirectory: '$(System.DefaultWorkingDirectory)'
 
-      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-        parameters:
-          Paths: $(CheckoutDirectories)
-          SkipDefaultCheckout: true
+      # - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+      #   parameters:
+      #     Paths: $(CheckoutDirectories)
+      #     SkipDefaultCheckout: true
 
-      - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
-        parameters:
-          PackageName: "azure-sdk-template"
-          ServiceDirectory: "template"
-          TestPipeline: ${{ parameters.TestPipeline }}
+      # - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+      #   parameters:
+      #     PackageName: "azure-sdk-template"
+      #     ServiceDirectory: "template"
+      #     TestPipeline: ${{ parameters.TestPipeline }}
 
-      - task: PowerShell@2
-        displayName: 'Verify Readmes'
-        inputs:
-          pwsh: true
-          workingDirectory: $(Agent.BuildDirectory)
-          filePath: eng/common/scripts/Verify-Readme.ps1
-          arguments: >
-            -DocWardenVersion $(DocWardenVersion)
-            -ScanPath ${{ parameters.ServiceDirectory }}
-            -SettingsPath $(Build.SourcesDirectory)/eng/.docsettings.yml
+      # - task: PowerShell@2
+      #   displayName: 'Verify Readmes'
+      #   inputs:
+      #     pwsh: true
+      #     workingDirectory: $(Agent.BuildDirectory)
+      #     filePath: eng/common/scripts/Verify-Readme.ps1
+      #     arguments: >
+      #       -DocWardenVersion $(DocWardenVersion)
+      #       -ScanPath ${{ parameters.ServiceDirectory }}
+      #       -SettingsPath $(Build.SourcesDirectory)/eng/.docsettings.yml
 
       - template: /eng/common/pipelines/templates/steps/verify-links.yml
         parameters:
