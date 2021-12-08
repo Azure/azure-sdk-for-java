@@ -41,7 +41,7 @@ If it's the first time you try to build the project or you pull new commits from
 1. Execute `git clone https://github.com/Azure/azure-sdk-for-java.git`
 1. Traverse to the root directory
 1. Build the whole product by executing the following command which may take several minutes:
-    * `mvn clean install -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -Djacoco.skip=true -DskipTests -Dparallel-test-playback`
+    * `mvn clean install -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -Djacoco.skip=true -DskipTests -Dparallel-test-playback`
 
 After executing the above steps, you can build the spring project only for the developing purpose:
 1. Traverse to spring directory:
