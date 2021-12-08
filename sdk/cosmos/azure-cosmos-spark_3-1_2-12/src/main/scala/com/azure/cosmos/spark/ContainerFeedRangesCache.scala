@@ -29,7 +29,7 @@ private[spark] object ContainerFeedRangesCache {
       case Some(cached) =>
         if (cached
           .retrievedAt
-          .compareTo(Instant.now.minus(CosmosConstants.feedRangesCacheInterval, ChronoUnit.MINUTES)) >= 0) {
+          .compareTo(Instant.now.minus(CosmosConstants.feedRangesCacheIntervalInMinutes, ChronoUnit.MINUTES)) >= 0) {
 
           SMono.just(cached.feedRanges)
         } else {
