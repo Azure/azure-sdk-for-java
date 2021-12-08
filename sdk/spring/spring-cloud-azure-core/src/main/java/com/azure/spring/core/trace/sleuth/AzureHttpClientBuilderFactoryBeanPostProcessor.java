@@ -20,7 +20,7 @@ public class AzureHttpClientBuilderFactoryBeanPostProcessor
         implements BeanPostProcessor, Ordered, BeanFactoryAware {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureHttpClientBuilderFactoryBeanPostProcessor.class);
-    public static final String DEFAULT_SLEUTH_HTTP_POLICY_BEAN_NAME = "sleuthHttpPolicy";
+    public static final String DEFAULT_SLEUTH_HTTP_POLICY_BEAN_NAME = "AzureSleuthHttpPolicy";
 
     private BeanFactory beanFactory;
 
@@ -46,8 +46,6 @@ public class AzureHttpClientBuilderFactoryBeanPostProcessor
             AbstractAzureHttpClientBuilderFactory builderFactory = (AbstractAzureHttpClientBuilderFactory) bean;
             builderFactory.addHttpPipelinePolicy(policy);
             LOGGER.debug("Added the Sleuth http pipeline policy to {} builder.", bean.getClass());
-        } else {
-            LOGGER.warn("Not found the Sleuth http pipeline policy for {} builder.", bean.getClass());
         }
         return bean;
     }
