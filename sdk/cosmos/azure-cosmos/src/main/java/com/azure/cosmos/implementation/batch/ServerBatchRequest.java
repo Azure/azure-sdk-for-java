@@ -121,10 +121,4 @@ public abstract class ServerBatchRequest {
     void setShouldContinueOnError(boolean shouldContinueOnError) {
         this.shouldContinueOnError = shouldContinueOnError;
     }
-
-    private int getOperationSerializedLength(JsonSerializable operationSerializable) {
-        String serializedValue = operationSerializable.toString();
-
-        return serializedValue.codePointCount(0, serializedValue.length());
-    }
 }
