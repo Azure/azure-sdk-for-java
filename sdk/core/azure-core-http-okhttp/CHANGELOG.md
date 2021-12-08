@@ -12,6 +12,13 @@
 
 #### Dependency Updates
 
+## 1.7.6 (2021-12-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.22.0` to `1.23.1`.
 - Upgraded OkHttp from `4.8.1` to `4.9.2`.
 
 ## 1.7.5 (2021-11-05)
