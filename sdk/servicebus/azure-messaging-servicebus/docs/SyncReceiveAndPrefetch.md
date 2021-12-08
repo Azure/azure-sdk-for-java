@@ -10,7 +10,7 @@ Even after the application disables prefetch in the builder, the `receiveMessage
 IterableStream<ServiceBusReceivedMessage> receiveMessages(int maxMessages, Duration maxWaitTime)
 ```
 
-where `maxMessages` is the maximum number of messages to receive and `maxWaitTime` is the overall duration the SDK should wait for the entire `maxMessages` to arrive.
+where `maxMessages` is the maximum number of messages to receive and `maxWaitTime` is the maximum duration client should wait for entire batch of `maxMessages` messages to arrive.
 
 *Note*: the overload `receiveMessages(int maxMessages)` is based on the above method, with `maxWaitTime` computed from `RetryConfig` set in builder.
 
@@ -69,13 +69,13 @@ It is possible to have more than one Iterables to co-exist. For example, 3 Itera
 
 Regardless of the number of co-existing Iterables, there can be only one "active" Iterable, i.e., the application can iterate only one Iterable at a time. The currently "active" Iterable needs to complete ("terminated") for another Iterable to be "active". The Iterable transitions from "active" to "terminated" in the FIFO order they were allocated.
 
-Hence it is recommended to complete the iteration on Iterable from a `receiveMessages` call before invoking `receiveMessages` again to another Iterable. There is no actual use of many "in-active" Iterables to co-exists; it just consumes Heap, making it hard to reason the app code.  
+Hence it is recommended to complete the iteration on Iterable from a `receiveMessages` call before invoking `receiveMessages` again to obtain another Iterable. There is no actual use of many "in-active" Iterables to co-exists; it just consumes Heap, possibly making it hard to reason the application code.  
 
 ## Timers in receiveMessages API
 
 An invocation of `receiveMessages(int maxMessages, Duration maxWaitTime)` uses two timers. 
 
-The first one enables `maxWaitTime` support, controlling the maximum duration client should wait for entire batch of `maxMessages` messages to arrive. If `maxWaitTime` elapses before `maxMessages` messages arrive, Iterable returns whatever messages it received and completes.
+The first timer enables `maxWaitTime` support, controlling the maximum duration client should wait for entire batch of `maxMessages` messages to arrive. If `maxWaitTime` elapses before `maxMessages` messages arrive, Iterable completes immediately after returning the messages received within this duration.
 
 The second timer controls the timeout between messages, i.e., the maximum duration the client should wait for the next message since the arrival of the last message. The Iterable completes if no message arrives within this duration. Currently, this duration is set to 1 second and cannot be changed.
 
