@@ -150,6 +150,4 @@ public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOper
     void setRetryPolicy(BulkOperationRetryPolicy bulkOperationRetryPolicy) {
         this.bulkOperationRetryPolicy = bulkOperationRetryPolicy;
     }
-
-
 }

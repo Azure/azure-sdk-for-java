@@ -111,6 +111,8 @@ public final class CosmosBulkExecutionOptions {
      * By increasing this value, more concurrent requests will be allowed to be sent to the server,
      * in which case may cause 429 or request timed out due to saturate local resources, which could degrade the performance.
      *
+     * @param maxMicroBatchConcurrency the micro batch concurrency.
+     *
      * @return the bulk processing options.
      */
     public CosmosBulkExecutionOptions setMaxMicroBatchConcurrency(int maxMicroBatchConcurrency) {
