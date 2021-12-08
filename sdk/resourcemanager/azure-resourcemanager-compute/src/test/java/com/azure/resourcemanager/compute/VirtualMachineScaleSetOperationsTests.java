@@ -1618,7 +1618,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
     }
 
     @Test
-    public void canGetOrchestrationType() throws IOException {
+    public void canGetOrchestrationType() {
 
         //create vmss with uniform orchestration type
         String euapRegion = "eastus2euap";

@@ -583,7 +583,7 @@ public class VirtualMachineScaleSetImpl
     public List<String> applicationGatewayBackendAddressPoolsIds() {
         VirtualMachineScaleSetIpConfiguration nicIpConfig = this.primaryNicDefaultIpConfiguration();
         if (nicIpConfig == null) {
-            return new ArrayList<>();
+            return Collections.emptyList();
         }
         List<SubResource> backendPools = nicIpConfig.applicationGatewayBackendAddressPools();
         List<String> result = new ArrayList<>();
@@ -599,7 +599,7 @@ public class VirtualMachineScaleSetImpl
     public List<String> applicationSecurityGroupIds() {
         VirtualMachineScaleSetIpConfiguration nicIpConfig = this.primaryNicDefaultIpConfiguration();
         if (nicIpConfig == null) {
-            return new ArrayList<>();
+            return Collections.emptyList();
         }
         List<String> asgIds = new ArrayList<>();
         if (nicIpConfig.applicationSecurityGroups() != null) {
