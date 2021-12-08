@@ -79,6 +79,15 @@ The lock timeout configured on the service bus entity and `maxMessages` needs to
 
 Refer to [this][prefetchtradeoff] document for the tradeoff when enabling prefetch (or maxMessages > 1).
 
+## The exception/faulted state in ServiceBusReceiverClient
+
+_The exception topic is not directly related to prefetching, but adding this section given exception/faulted state is also scoped in client object-level (like prefetch-queue) and impacts the behavior of Iterables from `receiveMessages` calls._
+
+The Client types in Service Bus SDK have built-in retry to recover from retriable errors. A `ServiceBusReceiverClient` object can reach a faulted terminal state if it exhausts the maximum retry or encounters a non-retriable error.
+
+Once a `ServiceBusReceiverClient` object runs into such faulted state, an iteration on Iterable returned by `receiveMessages` will throw the relevant exception; this is also expected behavior from any future Iterable objects that the application may obtain from a faulted client object.
+
+If the application finds that a `ServiceBusReceiverClient` object is in a faulted state while iterating, the application should create a new client object and dispose the current one.
 
 <!-- Links --->
 [prefetchgeneral]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-prefetch?tabs=java
