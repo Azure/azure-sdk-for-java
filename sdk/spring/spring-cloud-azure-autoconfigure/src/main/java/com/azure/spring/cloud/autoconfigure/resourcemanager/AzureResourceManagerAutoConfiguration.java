@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 
 
 /**
- * An auto-configuration for Azure
+ * Auto-configuration for Azure ResourceManager.
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(AzureResourceManager.class)
@@ -28,12 +28,11 @@ public class AzureResourceManagerAutoConfiguration {
 
     /**
      * Create AzureResourceManagerAutoConfiguration instance
-     * @param globalProperties {@link AzureGlobalProperties}
+     * @param globalProperties the azure globalProperties
      */
     public AzureResourceManagerAutoConfiguration(AzureGlobalProperties globalProperties) {
         this.globalProperties = globalProperties;
     }
-
 
     @Bean
     @ConditionalOnMissingBean
@@ -42,7 +41,6 @@ public class AzureResourceManagerAutoConfiguration {
         // TODO (xiada) configure the http client of arm client
         return AzureResourceManager.configure().authenticate(tokenCredential, azureProfile).withDefaultSubscription();
     }
-
 
     @Bean
     @ConditionalOnMissingBean

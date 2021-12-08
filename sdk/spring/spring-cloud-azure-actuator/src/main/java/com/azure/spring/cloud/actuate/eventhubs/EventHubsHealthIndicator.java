@@ -24,8 +24,8 @@ public class EventHubsHealthIndicator implements HealthIndicator {
 
     /**
      * Creates a new instance of {@link EventHubsHealthIndicator}.
-     * @param producerAsyncClient the producerAsyncClient
-     * @param consumerAsyncClient the consumerAsyncClient
+     * @param producerAsyncClient the producer client
+     * @param consumerAsyncClient the consumer client
      */
     public EventHubsHealthIndicator(EventHubProducerAsyncClient producerAsyncClient,
                                     EventHubConsumerAsyncClient consumerAsyncClient) {

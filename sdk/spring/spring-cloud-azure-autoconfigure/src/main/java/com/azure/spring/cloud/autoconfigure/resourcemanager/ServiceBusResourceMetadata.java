@@ -17,11 +17,9 @@ public class ServiceBusResourceMetadata extends AzureResourceMetadata {
     @Value("${spring.cloud.azure.servicebus.namespace:}")
     private String name;
 
-
     public String getName() {
         return name;
     }
-
 
     public void setName(String name) {
         this.name = name;

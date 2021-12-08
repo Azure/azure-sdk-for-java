@@ -22,7 +22,7 @@ public class AppConfigurationHealthIndicator extends AbstractHealthIndicator {
 
     /**
      * Creates a new instance of {@link AppConfigurationHealthIndicator}.
-     * @param configurationAsyncClient the configurationAsyncClient
+     * @param configurationAsyncClient the configuration client
      */
     public AppConfigurationHealthIndicator(ConfigurationAsyncClient configurationAsyncClient) {
         this.configurationAsyncClient = configurationAsyncClient;

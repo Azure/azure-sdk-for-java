@@ -20,8 +20,8 @@ public class EventHubsArmConnectionStringProvider extends AbstractArmConnectionS
 
     /**
      * Creates a new instance of {@link EventHubsArmConnectionStringProvider}.
-     * @param resourceManager the resourceManager
-     * @param resourceMetadata the resourceMetadata
+     * @param resourceManager the azure resourceManager
+     * @param resourceMetadata the azure resourceMetadata
      * @param namespace the namespace
      */
     public EventHubsArmConnectionStringProvider(AzureResourceManager resourceManager,

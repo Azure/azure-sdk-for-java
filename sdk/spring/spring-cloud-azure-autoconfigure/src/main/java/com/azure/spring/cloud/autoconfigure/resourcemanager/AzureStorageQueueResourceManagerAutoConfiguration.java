@@ -28,15 +28,14 @@ public class AzureStorageQueueResourceManagerAutoConfiguration extends AzureServ
 
     /**
      * Create AzureStorageQueueResourceManagerAutoConfiguration instance
-     * @param azureResourceManager {@link AzureResourceManager}
-     * @param resourceMetadata {@link StorageQueueResourceMetadata}
+     * @param azureResourceManager the azure resourceManager
+     * @param resourceMetadata the storage queue resourceMetadata
      */
     public AzureStorageQueueResourceManagerAutoConfiguration(AzureResourceManager azureResourceManager,
                                                              StorageQueueResourceMetadata resourceMetadata) {
         super(azureResourceManager);
         this.resourceMetadata = resourceMetadata;
     }
-
 
     @Bean
     @ConditionalOnMissingBean

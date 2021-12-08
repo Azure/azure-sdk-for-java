@@ -31,8 +31,8 @@ public class AzureServiceBusResourceManagerAutoConfiguration extends AzureServic
 
     /**
      * Create AzureServiceBusResourceManagerAutoConfiguration instance
-     * @param azureResourceManager {@link AzureResourceManager}
-     * @param resourceMetadata {@link ServiceBusResourceMetadata}
+     * @param azureResourceManager the azure resourceManager
+     * @param resourceMetadata the serviceBus resourceMetadata}
      */
     public AzureServiceBusResourceManagerAutoConfiguration(AzureResourceManager azureResourceManager,
                                                            ServiceBusResourceMetadata resourceMetadata) {
@@ -40,13 +40,11 @@ public class AzureServiceBusResourceManagerAutoConfiguration extends AzureServic
         this.resourceMetadata = resourceMetadata;
     }
 
-
     @Bean
     @ConditionalOnMissingBean
     public ServiceBusProvisioner serviceBusProvisioner() {
         return new DefaultServiceBusProvisioner(this.azureResourceManager, this.resourceMetadata);
     }
-
 
     @Bean
     @ConditionalOnMissingBean
