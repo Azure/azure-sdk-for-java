@@ -2,9 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aadb2c;
 
-import com.azure.spring.cloud.autoconfigure.aadb2c.AADB2CAuthorizationRequestResolver;
-import com.azure.spring.cloud.autoconfigure.aadb2c.AADB2CLogoutSuccessHandler;
-import com.azure.spring.cloud.autoconfigure.aadb2c.AADB2COidcLoginConfigurer;
 import com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AADB2COAuth2ClientConfiguration;
 import com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AADB2CPropertiesConfiguration;
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AADB2CConditions;
