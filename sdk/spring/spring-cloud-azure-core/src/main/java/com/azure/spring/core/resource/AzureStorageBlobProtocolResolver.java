@@ -37,6 +37,9 @@ public class AzureStorageBlobProtocolResolver extends AbstractAzureStorageProtoc
         RETRIEVE_NOTHING_CONTAINER_DETAILS.setRetrieveDeleted(false);
     }
 
+    /**
+     * The default constructor of AzureStorageBlobProtocolResolver
+     */
     public AzureStorageBlobProtocolResolver() {
     }
 
