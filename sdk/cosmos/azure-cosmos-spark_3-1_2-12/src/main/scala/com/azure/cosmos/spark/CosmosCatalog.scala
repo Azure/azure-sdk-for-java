@@ -4,6 +4,8 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
+import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
+import com.fasterxml.jackson.databind.node.ArrayNode
 
 import java.time.format.DateTimeFormatter
 import java.time.{ZoneOffset, ZonedDateTime}
@@ -57,7 +59,7 @@ class CosmosCatalog
   private var config: Map[String, String] = _
   private var readConfig: CosmosReadConfig = _
   private var tableOptions: Map[String, String] = _
-  private var viewRepository: Option[HDFSMetadataLog[Array[ViewDefinition]]] = None
+  private var viewRepository: Option[HDFSMetadataLog[String]] = None
 
   /**
    * Called to initialize configuration.
@@ -80,7 +82,7 @@ class CosmosCatalog
 
     val viewRepositoryConfig = CosmosViewRepositoryConfig.parseCosmosViewRepositoryConfig(config)
     if (viewRepositoryConfig.metaDataPath.isDefined) {
-      this.viewRepository = Some(new HDFSMetadataLog[Array[ViewDefinition]](
+      this.viewRepository = Some(new HDFSMetadataLog[String](
         this.sparkSession,
         viewRepositoryConfig.metaDataPath.get))
     }
@@ -453,12 +455,13 @@ class CosmosCatalog
         } else {
           None
         }
-        val viewDefinition = ViewDefinition(databaseName, viewName, userProvidedSchema, containerProperties)
+        val viewDefinition = ViewDefinition(
+          databaseName, viewName, userProvidedSchema, redactAuthInfo(containerProperties))
         var lastBatchId = 0L
         val newViewDefinitionsSnapshot = viewRepositorySnapshot.getLatest() match {
-          case Some(viewDefinitionsSnapshot) =>
-            lastBatchId = viewDefinitionsSnapshot._1
-            val alreadyExistingViews = viewDefinitionsSnapshot._2
+          case Some(viewDefinitionsEnvelopeSnapshot) =>
+            lastBatchId = viewDefinitionsEnvelopeSnapshot._1
+            val alreadyExistingViews = ViewDefinitionEnvelopeSerializer.fromJson(viewDefinitionsEnvelopeSnapshot._2)
 
             if (alreadyExistingViews.exists(v => v.databaseName.equals(databaseName) &&
               v.viewName.equals(viewName))) {
@@ -470,7 +473,10 @@ class CosmosCatalog
           case None => Array(viewDefinition)
         }
 
-        if (viewRepositorySnapshot.add(lastBatchId + 1, newViewDefinitionsSnapshot)) {
+        if (viewRepositorySnapshot.add(
+          lastBatchId + 1,
+          ViewDefinitionEnvelopeSerializer.toJson(newViewDefinitionsSnapshot))) {
+
           logInfo(s"LatestBatchId: ${viewRepositorySnapshot.getLatestBatchId().getOrElse(-1)}")
           viewRepositorySnapshot.purge(lastBatchId)
           logInfo(s"LatestBatchId: ${viewRepositorySnapshot.getLatestBatchId().getOrElse(-1)}")
@@ -521,9 +527,9 @@ class CosmosCatalog
     this.viewRepository match {
       case Some(viewRepositorySnapshot) =>
         viewRepositorySnapshot.getLatest() match {
-          case Some(viewDefinitionsSnapshot) =>
-            val lastBatchId = viewDefinitionsSnapshot._1
-            val viewDefinitions = viewDefinitionsSnapshot._2
+          case Some(viewDefinitionsEnvelopeSnapshot) =>
+            val lastBatchId = viewDefinitionsEnvelopeSnapshot._1
+            val viewDefinitions = ViewDefinitionEnvelopeSerializer.fromJson(viewDefinitionsEnvelopeSnapshot._2)
 
             viewDefinitions.find(v => v.databaseName.equals(databaseName) &&
               v.viewName.equals(viewName)) match {
@@ -531,7 +537,10 @@ class CosmosCatalog
                 val updatedViewDefinitionsSnapshot: Array[ViewDefinition] =
                   (ArrayBuffer(viewDefinitions: _*) - existingView).toArray
 
-                if (viewRepositorySnapshot.add(lastBatchId + 1, updatedViewDefinitionsSnapshot)) {
+                if (viewRepositorySnapshot.add(
+                  lastBatchId + 1,
+                  ViewDefinitionEnvelopeSerializer.toJson(updatedViewDefinitionsSnapshot))) {
+
                   viewRepositorySnapshot.purge(lastBatchId)
                   true
                 } else {
@@ -638,7 +647,8 @@ class CosmosCatalog
       case Some(viewRepositorySnapshot) =>
         viewRepositorySnapshot.getLatest() match {
           case Some(latestMetadataSnapshot) =>
-            val viewDefinitions = latestMetadataSnapshot._2.filter(v => databaseName.equals(v.databaseName))
+            val viewDefinitions = ViewDefinitionEnvelopeSerializer.fromJson(latestMetadataSnapshot._2)
+              .filter(v => databaseName.equals(v.databaseName))
             if (viewDefinitions.length > 0) {
               Some(viewDefinitions)
             } else {
@@ -787,6 +797,12 @@ class CosmosCatalog
   // scalastyle:on cyclomatic.complexity
   // scalastyle:on method.length
 
+  private def redactAuthInfo(cfg: Map[String, String]): Map[String, String] = {
+    cfg.filter((kvp) => !CosmosConfigNames.AccountEndpoint.equalsIgnoreCase(kvp._1) &&
+      !CosmosConfigNames.AccountKey.equalsIgnoreCase(kvp._1)
+    )
+  }
+
   private object CosmosContainerProperties {
     val OnlySystemPropertiesIndexingPolicyName: String = "OnlySystemProperties"
     val AllPropertiesIndexingPolicyName: String = "AllProperties"
@@ -886,6 +902,97 @@ class CosmosCatalog
         props.put(autoScaleMaxThroughputName, autoScaleMaxThroughput.toString)
       }
       props.asScala.toMap
+    }
+  }
+
+  private object ViewDefinitionEnvelopeSerializer {
+    private val idPropertyName: String = "id"
+    private val viewsPropertyName: String = "views"
+    private val keyPropertyName: String = "k"
+    private val valuePropertyName: String = "v"
+    private val databasePropertyName: String = "database"
+    private val viewPropertyName: String = "name"
+    private val customSchemaPropertyName: String = "customSchema"
+    private val optionsPropertyName: String = "options"
+    val V1Identifier: String = "spark.cosmos.catalog.viewDefinitions.v1"
+    private val objectMapper = new ObjectMapper()
+
+    def fromJson(json: String): Array[ViewDefinition] = {
+      val parsedNode = objectMapper.readTree(json)
+      if (isValidJson(parsedNode)) {
+        val viewArrayNode = parsedNode.get(viewsPropertyName).asInstanceOf[ArrayNode]
+
+        val views = new scala.collection.mutable.ArrayBuffer[ViewDefinition]()
+        for (i <- 0 until viewArrayNode.size()) {
+          val viewNode = viewArrayNode.get(i)
+          val databaseName = viewNode.get(databasePropertyName).asText()
+          val name = viewNode.get(viewPropertyName).asText()
+          val customSchema: Option[StructType] = if (viewNode.has(customSchemaPropertyName)) {
+            Some(StructType.fromDDL(viewNode.get(customSchemaPropertyName).asText))
+          } else {
+            None
+          }
+          val options = if (viewNode.has(optionsPropertyName)) {
+            val optionsArrayNode = viewNode.get(optionsPropertyName).asInstanceOf[ArrayNode]
+            val temp = new scala.collection.mutable.HashMap[String, String]
+            for (i <- 0 until optionsArrayNode.size) {
+              val kvpNode = optionsArrayNode.get(i)
+              temp += (kvpNode.get(keyPropertyName).asText -> kvpNode.get(valuePropertyName).asText)
+            }
+
+            temp.toMap
+          } else {
+            Map.empty[String, String]
+          }
+
+          views += ViewDefinition(databaseName, name, customSchema, options)
+        }
+        views.toArray
+      } else {
+        val message = s"Unable to deserialize view definitions '$json'."
+        throw new IllegalArgumentException(message)
+      }
+    }
+
+    def toJson(viewDefinitions: Array[ViewDefinition]): String = {
+      val root = objectMapper.createObjectNode()
+      root.put(idPropertyName, V1Identifier)
+      val viewsArray: ArrayNode = root.putArray(viewsPropertyName)
+
+      for (viewDefinition <- viewDefinitions) {
+
+        val view = objectMapper.createObjectNode()
+        view.put(databasePropertyName, viewDefinition.databaseName)
+        view.put(viewPropertyName, viewDefinition.viewName)
+
+        viewDefinition.userProvidedSchema match {
+          case Some(schema) => view.put(customSchemaPropertyName, schema.toDDL)
+          case None =>
+        }
+
+        if (viewDefinition.options.size > 0) {
+          val options = view.putArray(optionsPropertyName)
+          viewDefinition.options.foreach((kvp) => {
+            val option = objectMapper.createObjectNode()
+            option.put(keyPropertyName, kvp._1)
+            option.put(valuePropertyName, kvp._2)
+            options.add(option)
+          })
+        }
+
+        viewsArray.add(view)
+      }
+
+      objectMapper.writeValueAsString(root)
+    }
+
+    private[this] def isValidJson(parsedNode: JsonNode): Boolean = {
+      parsedNode != null &&
+        parsedNode.isObject &&
+        parsedNode.get(idPropertyName) != null &&
+        parsedNode.get(idPropertyName).asText("") == V1Identifier &&
+        parsedNode.get(viewsPropertyName) != null &&
+        parsedNode.get(viewsPropertyName).isArray
     }
   }
 
