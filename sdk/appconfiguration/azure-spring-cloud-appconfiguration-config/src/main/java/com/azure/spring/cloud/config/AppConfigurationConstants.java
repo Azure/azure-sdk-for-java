@@ -58,5 +58,8 @@ public class AppConfigurationConstants {
      */
     public static final String CORRELATION_CONTEXT = "Correlation-Context";
     
+    /**
+     * Configuration Label for loading configurations with no label.
+     */
     public static final String EMPTY_LABEL = "\0";
 }
