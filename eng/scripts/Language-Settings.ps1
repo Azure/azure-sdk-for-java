@@ -624,5 +624,5 @@ function Validate-java-DocMsPackages {
   $packageGroupId = $PackageInfo.Name
   $packageVersion= $PackageInfo.Version
   $p
-  ValidatePackage $packageGroupId $packageName $packageVersion 
+  ValidatePackage $PackageInfo.GroupId $PackageInfo.Name  $PackageInfo.Version
 }
