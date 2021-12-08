@@ -3,7 +3,7 @@
 package com.azure.spring.cloud.autoconfigure.aadb2c.implementation;
 
 import com.azure.spring.cloud.autoconfigure.aadb2c.AADB2CAuthorizationRequestResolver;
-import com.azure.spring.cloud.autoconfigure.aadb2c.configuration.auto.AADB2CAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.aadb2c.AADB2CAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

@@ -4,7 +4,7 @@ package com.azure.spring.cloud.autoconfigure.aadb2c.implementation;
 
 import com.azure.spring.cloud.autoconfigure.aadb2c.AADB2CTrustedIssuerRepository;
 import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AADB2CProperties;
-import com.azure.spring.cloud.autoconfigure.aadb2c.configuration.auto.AADB2CResourceServerAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.aadb2c.AADB2CResourceServerAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.AADIssuerJWSKeySelector;
 import com.azure.spring.cloud.autoconfigure.aad.AADTrustedIssuerRepository;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;

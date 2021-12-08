@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.filter;
 
-import com.azure.spring.cloud.autoconfigure.aad.configuration.auto.AADAuthenticationFilterAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.aad.AADAuthenticationFilterAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import com.nimbusds.jose.util.DefaultResourceRetriever;
