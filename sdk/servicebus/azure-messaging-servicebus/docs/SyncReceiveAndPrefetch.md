@@ -63,6 +63,14 @@ Let's take the previous example, say within `maxTimeout` of 5 sec, the service r
 
 If the application decide not to do anything with the messages in the buffer, those are eventually GC-ed. If such messages were requested with PEEK_LOCK mode, then, after the server-side lock duration elapses, a later `receiveMessages` call on another `ServiceBusReceiverClient` object returns the same messages.
 
+## Only one Iterable can be "active"
+
+It is possible to have more than one Iterables to co-exist. For example, 3 Iterable will be allocated and co-exists if the application simply calls `receiveMessages` 3 times in a row. 
+
+Regardless of the number of co-existing Iterables, there can be only one "active" Iterable, i.e., the application can iterate only one Iterable at a time. The currently "active" Iterable needs to complete ("terminated") for another Iterable to be "active". The Iterable transitions from "active" to "terminated" in the FIFO order they were allocated.
+
+Hence it is recommended to complete the iteration on Iterable from a `receiveMessages` call before invoking `receiveMessages` again to another Iterable. There is no actual use of many "in-active" Iterables to co-exists; it just consumes Heap, making it hard to reason the app code.  
+
 ## Timers in receiveMessages API
 
 An invocation of `receiveMessages(int maxMessages, Duration maxWaitTime)` uses two timers. 
