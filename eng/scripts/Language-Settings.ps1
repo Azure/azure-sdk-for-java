@@ -337,8 +337,10 @@ function PackageDependenciesResolve($artifactNamePrefix, $packageDirectory) {
 }
 
 function ValidatePackage($groupId, $artifactId, $version) {
-  $workingDirectory = Join-Path ([System.IO.Path]::GetTempPath()) ([System.IO.Path]::GetRandomFileName())
-  New-Item -ItemType Directory -Force -Path $workingDirectory | Out-Null
+  $workingDirectory = Join-Path ([System.IO.Path]::GetTempPath()) "validation"
+  if (!(Test-Path $workingDirectory)) {
+    New-Item -ItemType Directory -Force -Path $workingDirectory | Out-Null
+  }
 
   $artifactNamePrefix = "${groupId}:${artifactId}:${version}"
 
@@ -621,8 +623,5 @@ function Validate-java-DocMsPackages {
     [Parameter(Mandatory = $false)]
     [string]$DocValidationImageId
   ) 
-  $packageGroupId = $PackageInfo.Name
-  $packageVersion= $PackageInfo.Version
-  $p
   ValidatePackage $PackageInfo.GroupId $PackageInfo.Name  $PackageInfo.Version
 }
