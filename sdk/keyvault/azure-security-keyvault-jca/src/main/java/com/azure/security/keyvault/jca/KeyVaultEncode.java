@@ -35,7 +35,7 @@ public class KeyVaultEncode {
      * @param bytes signature obtained
      * @param offset the offset in the byte array
      * @param length the number of bytes to convert
-     * @return decoded signatures
+     * @return the byte array which holds the big integer.
      */
     static byte[] toBigIntegerBytesWithLengthPrefix(byte[] bytes, int offset, int length) {
         byte[] magnitude = new byte[length];

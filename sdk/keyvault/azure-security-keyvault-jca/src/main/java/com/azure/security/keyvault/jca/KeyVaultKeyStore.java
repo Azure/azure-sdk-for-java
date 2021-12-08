@@ -333,7 +333,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     }
 
     /**
-     * Get the entry identified by the given alias.
+     * Check whether the entry identified by the given alias contains a trusted certificate.
      *
      * @param alias the alias name
      * @return true if the entry identified by the given alias contains a trusted certificate, false otherwise
@@ -344,7 +344,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     }
 
     /**
-     * Get the entry identified by the given alias.
+     * Check whether the entry identified by the given alias is a key-related.
      *
      * @param alias the alias for the keystore entry to be checked
      * @return true if the entry identified by the given alias is a key-related, false otherwise
