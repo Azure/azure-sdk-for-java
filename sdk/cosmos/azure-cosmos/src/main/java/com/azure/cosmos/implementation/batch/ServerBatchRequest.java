@@ -60,16 +60,14 @@ public abstract class ServerBatchRequest {
 
         for(CosmosItemOperation operation : operations) {
             JsonSerializable operationJsonSerializable;
+            int operationSerializedLength;
 
-            if (operation instanceof ItemBatchOperation<?>) {
-                operationJsonSerializable = ((ItemBatchOperation<?>) operation).serializeOperation();
-            } else if (operation instanceof ItemBulkOperation<?, ?>) {
-                operationJsonSerializable = ((ItemBulkOperation<?, ?>) operation).serializeOperation();
+            if (operation instanceof CosmosItemOperationBase) {
+                operationJsonSerializable = ((CosmosItemOperationBase) operation).getSerializedOperation();
+                operationSerializedLength = ((CosmosItemOperationBase) operation).getSerializedLength();
             } else {
                 throw new UnsupportedOperationException("Unknown CosmosItemOperation.");
             }
-
-            int operationSerializedLength = getOperationSerializedLength(operationJsonSerializable);
 
             if (totalOperationCount != 0 &&
                 (totalSerializedLength + operationSerializedLength > this.maxBodyLength || totalOperationCount + 1 > this.maxOperationCount)) {
