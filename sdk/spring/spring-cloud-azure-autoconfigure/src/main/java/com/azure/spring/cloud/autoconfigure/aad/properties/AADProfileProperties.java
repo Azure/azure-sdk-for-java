@@ -24,36 +24,32 @@ public class AADProfileProperties {
     private AADProfileEnvironmentProperties environment = new AADProfileEnvironmentProperties();
 
     /**
-     * Get tenant id.
      *
-     * @return tenantId the tenant id
+     * @return The tenant id.
      */
     public String getTenantId() {
         return tenantId;
     }
 
     /**
-     * Set tenant id.
      *
-     * @param tenantId the tenant id
+     * @param tenantId The tenant id.
      */
     public void setTenantId(String tenantId) {
         this.tenantId = tenantId;
     }
 
     /**
-     * Get cloud.
      *
-     * @return cloud the cloud
+     * @return The clout type.
      */
     public AzureProfileAware.CloudType getCloud() {
         return cloud;
     }
 
     /**
-     * Set tenant id.
      *
-     * @param cloud the cloud
+     * @param cloud The cloud type.
      */
     public void setCloud(AzureProfileAware.CloudType cloud) {
         this.cloud = cloud;
@@ -61,18 +57,16 @@ public class AADProfileProperties {
     }
 
     /**
-     * Get environment.
      *
-     * @return environment the environment
+     * @return The AADProfileEnvironmentProperties.
      */
     public AADProfileEnvironmentProperties getEnvironment() {
         return environment;
     }
 
     /**
-     * Set environment.
      *
-     * @param environment the environment
+     * @param environment The AADProfileEnvironmentProperties.
      */
     public void setEnvironment(AADProfileEnvironmentProperties environment) {
         this.environment = environment;

@@ -3,6 +3,7 @@
 package com.azure.spring.cloud.autoconfigure.aad.implementation.jwt;
 
 
+import com.azure.spring.cloud.autoconfigure.aad.AADTrustedIssuerRepository;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AADTokenClaim;
 import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.KeySourceException;

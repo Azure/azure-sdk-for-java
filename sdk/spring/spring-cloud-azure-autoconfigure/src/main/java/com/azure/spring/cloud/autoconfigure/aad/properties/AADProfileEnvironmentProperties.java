@@ -21,45 +21,40 @@ public class AADProfileEnvironmentProperties {
     private String microsoftGraphEndpoint;
 
     /**
-     * Get active directory endpoint.
      *
-     * @return activeDirectoryEndpoint the active directory endpoint
+     * @return The Active Directory Endpoint.
      */
     public String getActiveDirectoryEndpoint() {
         return activeDirectoryEndpoint;
     }
 
     /**
-     * Set active directory endpoint.
      *
-     * @param activeDirectoryEndpoint the active directory endpoint
+     * @param activeDirectoryEndpoint The Active Directory Endpoint.
      */
     public void setActiveDirectoryEndpoint(String activeDirectoryEndpoint) {
         this.activeDirectoryEndpoint = addSlash(activeDirectoryEndpoint);
     }
 
     /**
-     * Get microsoft graph endpoint.
      *
-     * @return microsoftGraphEndpoint microsoft graph endpoint
+     * @return The Microsoft Graph endpoint.
      */
     public String getMicrosoftGraphEndpoint() {
         return microsoftGraphEndpoint;
     }
 
     /**
-     * set microsoft graph endpoint.
      *
-     * @param  microsoftGraphEndpoint microsoft graph endpoint
+     * @param microsoftGraphEndpoint The Microsoft Graph endpoint.
      */
     public void setMicrosoftGraphEndpoint(String microsoftGraphEndpoint) {
         this.microsoftGraphEndpoint = addSlash(microsoftGraphEndpoint);
     }
 
     /**
-     * Update properties by cloud type
      *
-     * @param cloudType the cloud type
+     * @param cloudType The cloud type.
      */
     public void updatePropertiesByCloudType(AzureProfileAware.CloudType cloudType) {
         KnownAzureEnvironment knownAzureEnvironment = new KnownAzureEnvironment(cloudType);

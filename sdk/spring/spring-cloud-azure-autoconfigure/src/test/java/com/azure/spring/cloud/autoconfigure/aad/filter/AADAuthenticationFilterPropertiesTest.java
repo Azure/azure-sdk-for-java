@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.aad.filter;
 
 import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthenticationProperties;
-import com.azure.spring.cloud.autoconfigure.aad.properties.AADPropertiesConfiguration;
+import com.azure.spring.cloud.autoconfigure.aad.configuration.AADPropertiesConfiguration;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

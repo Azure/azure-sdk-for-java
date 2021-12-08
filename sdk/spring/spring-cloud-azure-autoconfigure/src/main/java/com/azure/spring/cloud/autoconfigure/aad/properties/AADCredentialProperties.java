@@ -19,36 +19,32 @@ public class AADCredentialProperties {
     private String clientSecret;
 
     /**
-     * Get client id.
      *
-     * @return clientId the client id
+     * @return The client id.
      */
     public String getClientId() {
         return clientId;
     }
 
     /**
-     * Set client id.
      *
-     * @param clientId the client id
+     * @param clientId The client id.
      */
     public void setClientId(String clientId) {
         this.clientId = clientId;
     }
 
     /**
-     * Get client secret.
      *
-     * @return clientSecret the client secret
+     * @return The client secret.
      */
     public String getClientSecret() {
         return clientSecret;
     }
 
     /**
-     * Set client secret.
      *
-     * @param clientSecret the client secret
+     * @param clientSecret The client secret.
      */
     public void setClientSecret(String clientSecret) {
         this.clientSecret = clientSecret;
