@@ -388,7 +388,6 @@ public final class AzureResourceManager {
         private String name;
         private String gallery;
         private String graph;
-        private String graphAudience;
         private ArmMetadataAuthentication authentication;
         private ArmMetadataSuffixes suffixes;
     }
