@@ -16,10 +16,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.invoke.LambdaMetafactory;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodType;
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.ParameterizedType;
@@ -46,7 +44,7 @@ public final class ObjectMapperShim {
     private static final int CACHE_SIZE_LIMIT = 10000;
 
     private static final Map<Type, JavaType> TYPE_TO_JAVA_TYPE_CACHE = new ConcurrentHashMap<>();
-    private static final Map<Type, Function<HttpHeaders, ?>> HTTP_HEADERS_CONSTRUCTORS_CACHE =
+    private static final Map<Type, MethodHandle> HTTP_HEADERS_CONSTRUCTORS_CACHE =
         new ConcurrentHashMap<>();
 
     /**
@@ -299,22 +297,19 @@ public final class ObjectMapperShim {
 
         try {
             Class<?> headersClass = TypeUtil.getRawClass(deserializedHeadersType);
-            MethodHandles.Lookup lookup = ReflectionUtilsApi.INSTANCE.getLookupToUse(headersClass);
-            MethodHandle handle = lookup.unreflectConstructor(headersClass.getDeclaredConstructor(HttpHeaders.class));
-            Function<HttpHeaders, ?> constructor = getFromCache(HTTP_HEADERS_CONSTRUCTORS_CACHE,
+
+            MethodHandle constructor = getFromCache(HTTP_HEADERS_CONSTRUCTORS_CACHE,
                 deserializedHeadersType, type -> {
                     try {
-                        return (Function<HttpHeaders, ?>) LambdaMetafactory.metafactory(lookup, "apply",
-                                MethodType.methodType(Function.class), handle.type().generic(), handle, handle.type())
-                            .getTarget()
-                            .invokeExact();
-                    } catch (Throwable e) {
+                        MethodHandles.Lookup lookup = ReflectionUtilsApi.INSTANCE.getLookupToUse(headersClass);
+                        return lookup.unreflectConstructor(headersClass.getDeclaredConstructor(HttpHeaders.class));
+                    } catch (Throwable throwable) {
                         return null;
                     }
                 });
 
             if (constructor != null) {
-                return (T) constructor.apply(headers);
+                return (T) constructor.invokeWithArguments(headers);
             }
         } catch (Throwable throwable) {
             LOGGER.verbose("Failed to find or use MethodHandle Constructor that accepts HttpHeaders for "
