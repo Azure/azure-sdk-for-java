@@ -43,6 +43,10 @@ public class AzureStorageBlobProtocolResolver extends AbstractAzureStorageProtoc
     public AzureStorageBlobProtocolResolver() {
     }
 
+    /**
+     * The storageType of current protocolResolver
+     * @return StorageType.BLOB;
+     */
     @Override
     protected StorageType getStorageType() {
         return StorageType.BLOB;

@@ -24,6 +24,10 @@ public class AzureStorageFileProtocolResolver extends AbstractAzureStorageProtoc
     public AzureStorageFileProtocolResolver() {
     }
 
+    /**
+     * The storageType of current protocolResolver
+     * @return StorageType.FILE;
+     */
     @Override
     protected StorageType getStorageType() {
         return StorageType.FILE;

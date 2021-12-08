@@ -34,8 +34,6 @@ public abstract class AbstractAzureStorageProtocolResolver implements ProtocolRe
 
     /**
      * The storageType of ProtocolResolver
-     * For AzureStorageBlobProtocolResolver, getStorageType() will return StorageType.BLOB;
-     * For AzureStorageFileProtocolResolver, getStorageType() will return StorageType.FILE;
      * @return
      */
     protected abstract StorageType getStorageType();
