@@ -62,11 +62,25 @@ add the direct dependency to your project as follows.
 
 ### Sending CNCF CloudEvents To Event Grid Topics
 ```java readme-sample-sendCNCFCloudEvents
-// Make sure that the event grid topic or domain you're sending to is able to accept the EventGridEvent schema.
-List<EventGridEvent> events = new ArrayList<>();
-User user = new User("John", "James");
-events.add(new EventGridEvent("exampleSubject", "Com.Example.ExampleEventType", BinaryData.fromObject(user), "0.1"));
-eventGridEventClient.sendEvents(events);
+// Prepare Event Grid client
+EventGridPublisherClient<CloudEvent> egClient =
+    new EventGridPublisherClientBuilder()
+        .endpoint(System.getenv("AZURE_EVENTGRID_CLOUDEVENT_ENDPOINT"))
+        .credential(new AzureKeyCredential(System.getenv("AZURE_EVENTGRID_CLOUDEVENT_KEY")))
+        .buildCloudEventPublisherClient();
+
+// Prepare a native cloud event input, the cloud event input should be replace with your own.
+io.cloudevents.CloudEvent cloudEvent =
+    CloudEventBuilder.v1()
+        .withData("{\"name\": \"joe\"}".getBytes(StandardCharsets.UTF_8)) // Replace it
+        .withId(UUID.randomUUID().toString()) // Replace it
+        .withType("User.Created.Text") // Replace it
+        .withSource(URI.create("http://localHost")) // Replace it
+        .withDataContentType("application/json") // Replace it
+        .build();
+
+// Publishing a single event
+EventGridCloudNativeEventPublisher.sendEvent(egClient, cloudEvent);
 ```
 
 ## Troubleshooting
