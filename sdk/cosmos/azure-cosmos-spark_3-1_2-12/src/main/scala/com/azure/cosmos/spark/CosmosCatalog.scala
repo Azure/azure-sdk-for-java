@@ -559,32 +559,27 @@ class CosmosCatalog
           CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
           None,
           s"CosmosCatalog(name $catalogName).tryGetContainerMetadata($databaseName, $containerName)"))
-          .to(cosmosClientCacheItem =>
+          .to(cosmosClientCacheItem => {
+
+            val container = cosmosClientCacheItem
+              .client
+              .getDatabase(databaseName)
+              .getContainer(containerName)
+
             (
-              cosmosClientCacheItem
-                .client
-                .getDatabase(databaseName)
-                .getContainer(containerName)
+              container
                 .read()
                 .block()
                 .getProperties,
 
-              cosmosClientCacheItem
-                .client
-                .getDatabase(databaseName)
-                .getContainer(containerName)
-                .getFeedRanges
-                .block()
-                .asScala
-                .toList,
+              ContainerFeedRangesCache
+                .getFeedRanges(container)
+                .block(),
 
               try {
                 Some(
                   (
-                    cosmosClientCacheItem
-                      .client
-                      .getDatabase(databaseName)
-                      .getContainer(containerName)
+                    container
                       .readThroughput()
                       .block()
                       .getProperties,
@@ -599,9 +594,8 @@ class CosmosCatalog
                   try {
                     Some(
                       (
-                        cosmosClientCacheItem
-                          .client
-                          .getDatabase(databaseName)
+                        container
+                          .getDatabase
                           .readThroughput()
                           .block()
                           .getProperties,
@@ -619,7 +613,7 @@ class CosmosCatalog
                 }
               }
             )
-          ))
+          }))
     } catch {
       case e: CosmosException if isNotFound(e) =>
         None
