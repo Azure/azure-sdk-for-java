@@ -16,7 +16,7 @@ cd azure-sdk-for-java/sdk/cosmos
 - Run the following maven command to build:
 
 ```bash
-mvn -e -Dgpg.skip -DskipTests -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl ,com.azure:azure-cosmos clean install
+mvn -e -Dgpg.skip -DskipTests -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl ,com.azure:azure-cosmos clean install
 ```
 
 ## Running Tests from Command Line
