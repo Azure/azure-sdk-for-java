@@ -205,6 +205,19 @@
         "code": "java.class.visibilityReduced",
         "new": "enum com.azure.core.http.rest.ErrorOptions",
         "justification": "The use case for ErrorOptions is not yet clear. It will be added later if there are enough data points to suggest this is needed."
+      },
+      {
+        "regex": true,
+        "code": "java\\.annotation\\.(added|attributeValueChanged|attributeAdded)",
+        "new": "(class|method void|parameter void) com\\.azure\\.search\\.documents\\.indexes\\.models\\..*",
+        "justification": "Generated classes were moved into public API, these annotations were already being used in implementation used during serialization and deserialization."
+      },
+      {
+        "regex": true,
+        "code": "java\\.annotation\\.added",
+        "old": ".*",
+        "annotationType": "com\\.azure\\.core\\.annotation\\.Service(Method|Client)",
+        "justification": "These are SDK metadata annotations and don't affect runtime behavior."
       }
     ]
   }
