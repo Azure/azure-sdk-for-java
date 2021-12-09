@@ -5,7 +5,6 @@ package com.azure.spring.cloud.autoconfigure.aadb2c;
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AADB2CURL;
 import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AADB2CProperties;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 
 import javax.servlet.ServletException;
