@@ -125,6 +125,12 @@ public class ShareDirectoryAsyncClient {
         this.serviceVersion = serviceVersion;
     }
 
+    ShareDirectoryAsyncClient(ShareDirectoryAsyncClient directoryAsyncClient) {
+        this(directoryAsyncClient.azureFileStorageClient, directoryAsyncClient.shareName,
+            Utility.urlEncode(directoryAsyncClient.directoryPath), directoryAsyncClient.snapshot,
+            directoryAsyncClient.accountName, directoryAsyncClient.serviceVersion);
+    }
+
     /**
      * Get the url of the storage directory client.
      *
@@ -981,6 +987,60 @@ public class ShareDirectoryAsyncClient {
                     response.getDeserializedHeaders()));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
+    }
+
+    /**
+     * Moves the directory to another location within the share.
+     * For more information see the
+     * <a href="TODO">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.rename#String -->
+     * <pre>
+     * TODO
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.rename#String -->
+     *
+     * @param destinationPath Relative path from the share to rename the directory to.
+     * @return A {@link Mono} containing a {@link ShareDirectoryAsyncClient} used to interact with the new file created.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ShareDirectoryAsyncClient> rename(String destinationPath) {
+        try {
+            return renameWithResponse(new ShareFileRenameOptions(destinationPath)).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Moves the directory to another location within the share.
+     * For more information see the
+     * <a href="TODO">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.renameWithResponse#ShareFileRenameOptions -->
+     * <pre>
+     * TODO
+     * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.renameWithResponse#ShareFileRenameOptions -->
+     *
+     * @param options {@link ShareFileRenameOptions}
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
+     * ShareDirectoryAsyncClient} used to interact with the directory created.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ShareDirectoryAsyncClient>> renameWithResponse(ShareFileRenameOptions options) {
+        try {
+            return withContext(context -> renameWithResponse(options, context))
+                .map(response -> new SimpleResponse<>(response,
+                    new ShareDirectoryAsyncClient(response.getValue())));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<ShareDirectoryAsyncClient>> renameWithResponse(ShareFileRenameOptions options, Context context) {

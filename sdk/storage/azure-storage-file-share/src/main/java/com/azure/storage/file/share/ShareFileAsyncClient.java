@@ -2868,9 +2868,9 @@ public class ShareFileAsyncClient {
      * DataLakeFileAsyncClient renamedClient = client.rename&#40;destinationPath&#41;.block&#40;&#41;;
      * System.out.println&#40;&quot;Directory Client has been renamed&quot;&#41;;
      * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.rename#String -->
+     * <!-- end com.azure.storage.file.share.ShareFileAsyncClient.rename#String -->
      *
-     * @param destinationPath Relative path from the share to rename the directory to.
+     * @param destinationPath Relative path from the share to rename the file to.
      * @return A {@link Mono} containing a {@link ShareFileAsyncClient} used to interact with the new file created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
