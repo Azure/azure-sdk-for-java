@@ -18,9 +18,16 @@ public class AzureStorageFileProtocolResolver extends AbstractAzureStorageProtoc
 
     private ShareServiceClient shareServiceClient;
 
+    /**
+     * The default constructor of AzureStorageFileProtocolResolver
+     */
     public AzureStorageFileProtocolResolver() {
     }
 
+    /**
+     * The storageType of current protocolResolver
+     * @return StorageType.FILE;
+     */
     @Override
     protected StorageType getStorageType() {
         return StorageType.FILE;
