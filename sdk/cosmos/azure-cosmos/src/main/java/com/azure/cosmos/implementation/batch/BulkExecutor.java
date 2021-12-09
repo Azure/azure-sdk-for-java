@@ -579,10 +579,10 @@ public final class BulkExecutor<TContext> {
         logger.debug("All group sinks completed, Context: {}", this.operationContextText);
 
         try {
-            this.scheduledFutureForFlush.cancel(true);
-            logger.debug("Cancelled all future scheduled tasks");
+            this.executorService.shutdown();
+            logger.debug("Shutting down the executor service");
         } catch (Exception e) {
-            logger.warn("Failed to cancel scheduled tasks", e);
+            logger.warn("Failed to shut down the executor service", e);
         }
     }
 
