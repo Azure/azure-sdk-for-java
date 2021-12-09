@@ -12,21 +12,26 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class HmacAuthenticationPolicyTest extends PerfStressTest<PerfStressOptions> {
 
     public class CustomPair {
         String signature;
-        int count;
+        private AtomicInteger count;
 
         public CustomPair(String signature){
             this.signature = signature;
-            this.count = 1;
+            this.count = new AtomicInteger(1);
+        }
+
+        public int incrementCount(){
+            return this.count.incrementAndGet();
         }
 
         @Override
         public String toString() {
-            return  "signature='" + signature + "\ncount=" + count;
+            return  "signature='" + signature + "\ncount=" + count.get();
         }
     }
 
@@ -79,7 +84,7 @@ public class HmacAuthenticationPolicyTest extends PerfStressTest<PerfStressOptio
                 + "\nExpected:" + dateToSignature.get(date);
             throw new IllegalStateException(warning);
         }else{
-            dateToSignature.get(date).count++;
+            dateToSignature.get(date).incrementCount();
         }
     }
 
