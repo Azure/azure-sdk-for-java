@@ -34,15 +34,15 @@ public abstract class AbstractAzureStorageProtocolResolver implements ProtocolRe
 
     /**
      * The storageType of ProtocolResolver
-     * @return
+     * @return the storage type.
      */
     protected abstract StorageType getStorageType();
 
     /**
      * Get Resource from resource location.
      * @param location The specified resource location.
-     * @param autoCreate Whether to autocreate the resource if the resource is not exist.
-     * @return
+     * @param autoCreate Whether to auto-create the resource if the resource is not exist.
+     * @return the storage {@link Resource}.
      */
     protected abstract Resource getStorageResource(String location, Boolean autoCreate);
 
@@ -66,7 +66,7 @@ public abstract class AbstractAzureStorageProtocolResolver implements ProtocolRe
     /**
      *  Get StorageContainerClient with specified container name.
      * @param name Container name
-     * @return
+     * @return the storage container client.
      */
     protected abstract StorageContainerClient getStorageContainerClient(String name);
 
@@ -201,7 +201,7 @@ public abstract class AbstractAzureStorageProtocolResolver implements ProtocolRe
      * List all resources with specified container pattern and item pattern.
      * @param containerPattern An ant style string which represent containers.
      * @param itemPattern An ant style string which represent storage items.
-     * @return
+     * @return All resources matching the provided patterns.
      */
     protected Resource[] resolveResources(String containerPattern, String itemPattern) {
         return getMatchedContainers(containerPattern)
@@ -232,7 +232,7 @@ public abstract class AbstractAzureStorageProtocolResolver implements ProtocolRe
      * List all storage items with specified container and item pattern.
      * @param containerClient The specified container where to get storage items.
      * @param itemPattern An ant style string represents StorageItems.
-     * @return
+     * @return All matching items.
      */
     protected Stream<StorageItem> getMatchedItems(StorageContainerClient containerClient, String itemPattern) {
         if (matcher.isPattern(itemPattern)) {

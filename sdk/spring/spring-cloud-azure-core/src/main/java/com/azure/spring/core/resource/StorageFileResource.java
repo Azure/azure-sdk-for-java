@@ -82,7 +82,7 @@ public class StorageFileResource extends AzureStorageResource {
      * if the file is not existed, and autoCreateFiles==true,
      * it will create the file on Azure Storage.
      * @return A {@link StorageFileOutputStream} object used to write data to the file.
-     * @throws IOException
+     * @throws IOException when fail to open the output stream.
      */
     @Override
     public OutputStream getOutputStream() throws IOException {
