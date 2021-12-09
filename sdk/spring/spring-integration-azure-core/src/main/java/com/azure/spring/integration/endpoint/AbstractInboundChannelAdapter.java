@@ -25,6 +25,8 @@ public abstract class AbstractInboundChannelAdapter extends MessageProducerSuppo
 
     /**
      * Configure the abstract inbound channel adapter destination.
+     *
+     * @param destination the destination
      */
     protected AbstractInboundChannelAdapter(String destination) {
         Assert.hasText(destination, "destination can't be null or empty");

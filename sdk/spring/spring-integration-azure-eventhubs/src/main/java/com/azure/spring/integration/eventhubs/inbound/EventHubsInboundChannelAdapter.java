@@ -56,12 +56,29 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
     private InstrumentationEventProcessingListener listener;
     private EventCheckpointManager checkpointManager;
 
+    /**
+     * Constructor.
+     *
+     * @param processorContainer the processor Container
+     * @param eventHubName the eventHub Name
+     * @param consumerGroup the consumer Group
+     * @param checkpointConfig the checkpoint Config
+     */
     public EventHubsInboundChannelAdapter(EventHubsProcessorContainer processorContainer,
                                           String eventHubName, String consumerGroup,
                                           CheckpointConfig checkpointConfig) {
         this(processorContainer, eventHubName, consumerGroup, ListenerMode.RECORD, checkpointConfig);
     }
 
+    /**
+     * Constructor.
+     *
+     * @param eventProcessorsContainer the event Processors Container
+     * @param eventHubName the eventHub Name
+     * @param consumerGroup the consumer Group
+     * @param listenerMode the listener Mode
+     * @param checkpointConfig the checkpoint Config
+     */
     public EventHubsInboundChannelAdapter(EventHubsProcessorContainer eventProcessorsContainer,
                                           String eventHubName, String consumerGroup,
                                           ListenerMode listenerMode,
@@ -99,14 +116,29 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
         this.processorContainer.stop();
     }
 
+    /**
+     * Set message Converter.
+     *
+     * @param messageConverter the message Converter
+     */
     public void setMessageConverter(EventHubsMessageConverter messageConverter) {
         this.recordEventProcessor.setMessageConverter(messageConverter);
     }
 
+    /**
+     * Set payload Type.
+     *
+     * @param payloadType the payload Type
+     */
     public void setPayloadType(Class<?> payloadType) {
         this.recordEventProcessor.setPayloadType(payloadType);
     }
 
+    /**
+     * Set instrumentation Manager.
+     *
+     * @param instrumentationManager the instrumentation Manager
+     */
     public void setInstrumentationManager(InstrumentationManager instrumentationManager) {
         if (ListenerMode.BATCH.equals(this.listenerMode)) {
             this.batchEventProcessor.setInstrumentationManager(instrumentationManager);
@@ -115,6 +147,11 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
         }
     }
 
+    /**
+     * Set instrumentation Id.
+     *
+     * @param instrumentationId the instrumentation Id
+     */
     public void setInstrumentationId(String instrumentationId) {
         if (ListenerMode.BATCH.equals(this.listenerMode)) {
             this.batchEventProcessor.setInstrumentationId(instrumentationId);
@@ -195,10 +232,20 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
                 initializationContext.getPartitionContext().getPartitionId());
         }
 
+        /**
+         * Set message Converter.
+         *
+         * @param converter the Converter
+         */
         public void setMessageConverter(EventHubsMessageConverter converter) {
             this.messageConverter = converter;
         }
 
+        /**
+         * Set payload Type.
+         *
+         * @param payloadType the payload Type
+         */
         public void setPayloadType(Class<?> payloadType) {
             this.payloadType = payloadType;
         }
@@ -244,10 +291,20 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
                 initializationContext.getPartitionContext().getPartitionId());
         }
 
+        /**
+         * Set message Converter.
+         *
+         * @param converter the Converter
+         */
         public void setMessageConverter(EventHubBatchMessageConverter converter) {
             this.messageConverter = converter;
         }
 
+        /**
+         * Set payload Type.
+         *
+         * @param payloadType the payload Type
+         */
         public void setPayloadType(Class<?> payloadType) {
             this.payloadType = payloadType;
         }
