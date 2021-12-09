@@ -18,8 +18,8 @@ public abstract class AbstractArmConnectionStringProvider<T> implements Connecti
 
     /**
      * Creates a new instance of {@link AbstractArmConnectionStringProvider}.
-     * @param resourceManager the azure resourceManager
-     * @param resourceMetadata the azure resourceMetadata
+     * @param resourceManager the azure resource manager
+     * @param resourceMetadata the azure resource metadata
      */
     public AbstractArmConnectionStringProvider(AzureResourceManager resourceManager,
                                                AzureResourceMetadata resourceMetadata) {

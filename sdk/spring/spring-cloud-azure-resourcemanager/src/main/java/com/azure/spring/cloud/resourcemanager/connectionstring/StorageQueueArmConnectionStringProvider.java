@@ -19,8 +19,8 @@ public class StorageQueueArmConnectionStringProvider extends AbstractArmConnecti
 
     /**
      * Creates a new instance of {@link StorageQueueArmConnectionStringProvider}.
-     * @param resourceManager the azure resourceManager
-     * @param resourceMetadata the azure resourceMetadata
+     * @param resourceManager the azure resource manager
+     * @param resourceMetadata the azure resource metadata
      * @param accountName the accountName
      */
     public StorageQueueArmConnectionStringProvider(AzureResourceManager resourceManager,

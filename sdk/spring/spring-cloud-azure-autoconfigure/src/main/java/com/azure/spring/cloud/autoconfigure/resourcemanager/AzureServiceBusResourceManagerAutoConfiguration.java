@@ -31,8 +31,8 @@ public class AzureServiceBusResourceManagerAutoConfiguration extends AzureServic
 
     /**
      * Create AzureServiceBusResourceManagerAutoConfiguration instance
-     * @param azureResourceManager the azure resourceManager
-     * @param resourceMetadata the serviceBus resourceMetadata}
+     * @param azureResourceManager the azure resource manager
+     * @param resourceMetadata the Service Bus resource metadata
      */
     public AzureServiceBusResourceManagerAutoConfiguration(AzureResourceManager azureResourceManager,
                                                            ServiceBusResourceMetadata resourceMetadata) {

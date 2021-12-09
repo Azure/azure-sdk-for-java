@@ -25,7 +25,7 @@ public class StorageBlobHealthIndicator implements HealthIndicator {
 
     /**
      * Creates a new instance of {@link StorageBlobHealthIndicator}.
-     * @param blobServiceAsyncClient the blobServiceAsyncClient
+     * @param blobServiceAsyncClient the blob service client
      */
     public StorageBlobHealthIndicator(BlobServiceAsyncClient blobServiceAsyncClient) {
         this.blobServiceAsyncClient = blobServiceAsyncClient;

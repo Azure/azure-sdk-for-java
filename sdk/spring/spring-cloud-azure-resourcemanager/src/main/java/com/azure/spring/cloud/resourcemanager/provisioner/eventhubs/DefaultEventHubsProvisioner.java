@@ -21,8 +21,8 @@ public class DefaultEventHubsProvisioner implements EventHubsProvisioner {
 
     /**
      * Creates a new instance of {@link DefaultEventHubsProvisioner}.
-     * @param azureResourceManager the azureResourceManager
-     * @param azureResourceMetadata the azureResourceMetadata
+     * @param azureResourceManager the azure resource manager
+     * @param azureResourceMetadata the azure resource metadata
      */
     public DefaultEventHubsProvisioner(AzureResourceManager azureResourceManager,
                                        AzureResourceMetadata azureResourceMetadata) {

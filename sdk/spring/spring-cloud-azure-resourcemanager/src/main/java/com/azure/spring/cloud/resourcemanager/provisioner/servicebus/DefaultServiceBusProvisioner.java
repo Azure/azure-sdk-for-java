@@ -21,8 +21,8 @@ public class DefaultServiceBusProvisioner implements ServiceBusProvisioner {
 
     /**
      * Creates a new instance of {@link DefaultServiceBusProvisioner}.
-     * @param azureResourceManager the azureResourceManager
-     * @param azureResourceMetadata the azureResourceMetadata
+     * @param azureResourceManager the azure resource manager
+     * @param azureResourceMetadata the azure resource metadata
      */
     public DefaultServiceBusProvisioner(AzureResourceManager azureResourceManager,
                                         AzureResourceMetadata azureResourceMetadata) {

@@ -24,7 +24,7 @@ public class StorageQueueHealthIndicator implements HealthIndicator {
 
     /**
      * Creates a new instance of {@link StorageQueueHealthIndicator}.
-     * @param queueServiceClient the queueServiceClient
+     * @param queueServiceClient the queue service client
      */
     public StorageQueueHealthIndicator(QueueServiceAsyncClient queueServiceClient) {
         internalClient = queueServiceClient;
