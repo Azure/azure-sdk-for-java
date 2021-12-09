@@ -150,7 +150,6 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
         String stringToSign = httpMethod.toUpperCase(Locale.US) + "\n" + pathAndQuery + "\n" + signedHeaderValues;
         final String signature =
             Base64.getEncoder().encodeToString(sha256HMAC.doFinal(stringToSign.getBytes(StandardCharsets.UTF_8)));
-        //httpHeaders.put("testio", stringToSign);
         httpHeaders.put(AUTHORIZATIONHEADERNAME, String.format(HMACSHA256FORMAT, signedHeaderNames, signature));
     }
 

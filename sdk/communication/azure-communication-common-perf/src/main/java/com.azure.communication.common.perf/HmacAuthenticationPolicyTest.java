@@ -68,7 +68,6 @@ public class HmacAuthenticationPolicyTest extends PerfStressTest<PerfStressOptio
         String date = response.getRequest().getHeaders().getValue("date");
         String signature = response.getRequest().getHeaders().getValue("Authorization");
         checkSignatureCorrectness(date, signature);
-        // System.out.println("***" + response.getRequest().getHeaders().getValue("testio"));
         return Mono.empty();
     }
 
