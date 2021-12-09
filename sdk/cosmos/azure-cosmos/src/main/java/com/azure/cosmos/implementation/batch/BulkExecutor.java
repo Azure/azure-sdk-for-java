@@ -41,6 +41,7 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -93,6 +94,7 @@ public final class BulkExecutor<TContext> {
     private final FluxSink<CosmosItemOperation> mainSink;
     private final List<FluxSink<CosmosItemOperation>> groupSinks;
     private final ScheduledExecutorService executorService;
+    private final ScheduledFuture<?> scheduledFuture;
 
     public BulkExecutor(CosmosAsyncContainer container,
                         Flux<CosmosItemOperation> inputOperations,
@@ -145,7 +147,7 @@ public final class BulkExecutor<TContext> {
         // filtered out before sending requests to the backend)
         this.executorService = Executors.newSingleThreadScheduledExecutor(
                 new CosmosDaemonThreadFactory("BulkExecutor-" + instanceCount.incrementAndGet()));
-        this.executorService.scheduleWithFixedDelay(
+        this.scheduledFuture = this.executorService.scheduleWithFixedDelay(
             this::onFlush,
             this.maxMicroBatchIntervalInMs,
             this.maxMicroBatchIntervalInMs,
@@ -553,6 +555,13 @@ public final class BulkExecutor<TContext> {
         logger.debug("Main sink completed, Context: {}", this.operationContextText);
         groupSinks.forEach(FluxSink::complete);
         logger.debug("All group sinks completed, Context: {}", this.operationContextText);
+
+        try {
+            this.scheduledFuture.cancel(true);
+            logger.debug("Cancelled all future scheduled tasks");
+        } catch (Exception e) {
+            logger.warn("Failed to cancel scheduled tasks", e);
+        }
     }
 
     private void onFlush() {
