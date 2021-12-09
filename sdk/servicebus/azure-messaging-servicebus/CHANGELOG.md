@@ -1,10 +1,11 @@
 # Release History
 
 ## 7.5.1 (2021-12-08)
-
 ### Bugs Fixed
-
 - Fixed a bug where Synchronous Receiver client stops receiving messages if MaxMessages is greater than 1. Issue [25063]
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.22.0` to `>1.23.1`.
 
 ## 7.5.0 (2021-11-16)
 ### Features Added
