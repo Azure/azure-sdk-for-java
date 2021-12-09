@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.routing.LocationHelper
 import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, CosmosParameterizedQuery, FeedRange}
 import com.azure.cosmos.spark.ChangeFeedModes.ChangeFeedMode
 import com.azure.cosmos.spark.ChangeFeedStartFromModes.{ChangeFeedStartFromMode, PointInTime}
+import com.azure.cosmos.spark.CosmosPredicates.requireNotNullOrEmpty
 import com.azure.cosmos.spark.ItemWriteStrategy.{ItemWriteStrategy, values}
 import com.azure.cosmos.spark.PartitioningStrategies.PartitioningStrategy
 import com.azure.cosmos.spark.SchemaConversionModes.SchemaConversionMode
@@ -22,6 +23,7 @@ import java.time.format.DateTimeFormatter
 import java.time.{Duration, Instant}
 import java.util.{Locale, ServiceLoader}
 import scala.collection.immutable.{HashSet, Map}
+import scala.collection.mutable
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
@@ -52,6 +54,7 @@ private object CosmosConfigNames {
   val ReadInferSchemaQuery = "spark.cosmos.read.inferSchema.query"
   val ReadPartitioningStrategy = "spark.cosmos.read.partitioning.strategy"
   val ReadPartitioningTargetedCount = "spark.cosmos.partitioning.targetedCount"
+  val ReadPartitioningFeedRangeFilter = "spark.cosmos.partitioning.feedRangeFilter"
   val ViewsRepositoryPath = "spark.cosmos.views.repositoryPath"
   val DiagnosticsMode = "spark.cosmos.diagnostics"
   val WriteBulkEnabled = "spark.cosmos.write.bulk.enabled"
@@ -98,6 +101,7 @@ private object CosmosConfigNames {
     ReadInferSchemaQuery,
     ReadPartitioningStrategy,
     ReadPartitioningTargetedCount,
+    ReadPartitioningFeedRangeFilter,
     ViewsRepositoryPath,
     DiagnosticsMode,
     WriteBulkEnabled,
@@ -137,7 +141,7 @@ private object CosmosConfig {
   (
     databaseName: Option[String],
     containerName: Option[String],
-    sparkConf: SparkConf,
+    sparkConf: Option[SparkConf],
     // spark application configteams
     userProvidedOptions: Map[String, String] // user provided config
   ) : Map[String, String] = {
@@ -162,8 +166,13 @@ private object CosmosConfig {
       effectiveUserConfig += (CosmosContainerConfig.CONTAINER_NAME_KEY -> containerName.get)
     }
 
-    val conf = sparkConf.clone()
-    val returnValue = conf.setAll(effectiveUserConfig.toMap).getAll.toMap
+    val returnValue = sparkConf match {
+      case Some(sparkConfig) => {
+        val conf = sparkConf.get.clone()
+        conf.setAll(effectiveUserConfig.toMap).getAll.toMap
+      }
+      case None => effectiveUserConfig.toMap
+    }
 
     returnValue.foreach((configProperty) => CosmosConfigNames.validateConfigName(configProperty._1))
 
@@ -185,7 +194,23 @@ private object CosmosConfig {
     getEffectiveConfig(
       databaseName,
       containerName,
-      session.sparkContext.getConf, // spark application config
+      Some(session.sparkContext.getConf), // spark application config
+      userProvidedOptions) // user provided config
+  }
+
+  def getEffectiveConfigIgnoringSessionConfig
+  (
+    databaseName: Option[String],
+    containerName: Option[String],
+    userProvidedOptions: Map[String, String] = Map().empty
+  ) : Map[String, String] = {
+
+    // TODO: moderakh we should investigate how spark sql config should be merged:
+    // TODO: session.conf.getAll, // spark sql runtime config
+    getEffectiveConfig(
+      databaseName,
+      containerName,
+      None,
       userProvidedOptions) // user provided config
   }
 }
@@ -644,7 +669,8 @@ private object PartitioningStrategies extends Enumeration {
 private case class CosmosPartitioningConfig
 (
   partitioningStrategy: PartitioningStrategy,
-  targetedPartitionCount: Option[Int]
+  targetedPartitionCount: Option[Int],
+  feedRangeFiler: Option[Array[NormalizedRange]]
 )
 
 private object CosmosPartitioningConfig {
@@ -666,10 +692,31 @@ private object CosmosPartitioningConfig {
     parseFromStringFunction = strategyNotYetParsed => CosmosConfigEntry.parseEnumeration(strategyNotYetParsed, PartitioningStrategies),
     helpMessage = "The partitioning strategy used (Default, Custom, Restrictive or Aggressive)")
 
+  private val partitioningFeedRangeFilter = CosmosConfigEntry[Array[NormalizedRange]](
+    key = CosmosConfigNames.ReadPartitioningFeedRangeFilter,
+    defaultValue = None,
+    mandatory = false,
+    parseFromStringFunction = filter => {
+      requireNotNullOrEmpty(filter, CosmosConfigNames.ReadPartitioningFeedRangeFilter)
+
+      val epkRanges = mutable.Buffer[NormalizedRange]()
+      val fragments = filter.split(",")
+      for (fragment <- fragments) {
+        val minAndMax = fragment.trim.split("-")
+        epkRanges += (NormalizedRange(minAndMax(0), minAndMax(1)))
+      }
+
+      epkRanges.toArray
+    },
+    helpMessage = "The feed ranges this query should be scoped to")
+
   def parseCosmosPartitioningConfig(cfg: Map[String, String]): CosmosPartitioningConfig = {
     val partitioningStrategyParsed = CosmosConfigEntry
       .parse(cfg, partitioningStrategy)
       .getOrElse(DefaultPartitioningStrategy)
+
+    val partitioningFeedRangeFilterParsed = CosmosConfigEntry
+      .parse(cfg, partitioningFeedRangeFilter)
 
     val targetedPartitionCountParsed = if (partitioningStrategyParsed == PartitioningStrategies.Custom) {
       CosmosConfigEntry.parse(cfg, targetedPartitionCount)
@@ -679,7 +726,8 @@ private object CosmosPartitioningConfig {
 
     CosmosPartitioningConfig(
       partitioningStrategyParsed,
-      targetedPartitionCountParsed
+      targetedPartitionCountParsed,
+      partitioningFeedRangeFilterParsed
     )
   }
 }
