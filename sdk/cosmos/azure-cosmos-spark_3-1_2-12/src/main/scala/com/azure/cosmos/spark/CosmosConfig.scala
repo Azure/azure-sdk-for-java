@@ -33,7 +33,7 @@ import scala.collection.JavaConverters._
 // scalastyle:off file.size.limit
 // scalastyle:off number.of.types
 
-private object CosmosConfigNames {
+private[spark] object CosmosConfigNames {
   val AccountEndpoint = "spark.cosmos.accountEndpoint"
   val AccountKey = "spark.cosmos.accountKey"
   val Database = "spark.cosmos.database"

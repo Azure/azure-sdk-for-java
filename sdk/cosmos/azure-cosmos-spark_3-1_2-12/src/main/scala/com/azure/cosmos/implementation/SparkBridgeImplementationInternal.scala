@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation
 
-import com.azure.cosmos.{CosmosAsyncContainer, CosmosClientBuilder}
+import com.azure.cosmos.{CosmosAsyncContainer, CosmosClientBuilder, DirectConnectionConfig}
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientBuilderHelper
 import com.azure.cosmos.implementation.changefeed.implementation.{ChangeFeedState, ChangeFeedStateV1}
 import com.azure.cosmos.implementation.query.CompositeContinuationToken
@@ -158,5 +158,17 @@ private[cosmos] object SparkBridgeImplementationInternal {
 
     val pkDefinition = SparkModelBridgeInternal.createPartitionKeyDefinitionFromJson(partitionKeyDefinitionJson)
     rangeToNormalizedRange(feedRange.getEffectiveRange(pkDefinition))
+  }
+
+  def setIoThreadCountPerCoreFactor
+  (
+    config: DirectConnectionConfig,
+    ioThreadCountPerCoreFactor: Int
+  ): DirectConnectionConfig = {
+
+    ImplementationBridgeHelpers
+      .DirectConnectionConfigHelper
+      .getDirectConnectionConfigAccessor
+      .setIoThreadCountPerCoreFactor(config, ioThreadCountPerCoreFactor)
   }
 }
