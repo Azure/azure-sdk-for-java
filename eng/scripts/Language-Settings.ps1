@@ -274,7 +274,7 @@ function SourcePackageHasComFolder($artifactNamePrefix, $packageDirectory) {
     $mvnResults = mvn `
       dependency:copy `
       -Dartifact="$packageArtifact" `
-      -DoutputDirectory="$packageDirectory" | Out-Null
+      -DoutputDirectory="$packageDirectory" 
 
     if ($LASTEXITCODE) {
       LogWarning "Could not download source artifact: $packageArtifact"
