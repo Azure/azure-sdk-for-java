@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Supported new Azure region `Region.SWEDEN_CENTRAL`.
+
 ### Breaking Changes
 
 ### Bugs Fixed
