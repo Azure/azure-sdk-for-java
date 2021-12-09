@@ -278,7 +278,7 @@ function SourcePackageHasComFolder($artifactNamePrefix, $packageDirectory) {
 
     if ($LASTEXITCODE) {
       LogWarning "Could not download source artifact: $packageArtifact"
-      $mvnResults | Write-Host
+      # $mvnResults | Write-Host
       return $false
     }
 
@@ -313,7 +313,7 @@ function PackageDependenciesResolve($artifactNamePrefix, $packageDirectory) {
 
   if ($LASTEXITCODE) {
     LogWarning "Could not download pom artifact: $pomArtifactName"
-    $artifactDownloadOutput | Write-Host
+    # $artifactDownloadOutput | Write-Host
     return $false
   }
 
@@ -616,5 +616,5 @@ function Get-java-DocsMsMetadataForPackage($PackageInfo) {
 
 function Validate-java-DocMsPackages ($PackageInfo, $DocValidationImageId) 
 {
-  ValidatePackage $PackageInfo.GroupId $PackageInfo.Name $PackageInfo.Version | Out-Null
+  ValidatePackage $PackageInfo.GroupId $PackageInfo.Name $PackageInfo.Version 
 }
