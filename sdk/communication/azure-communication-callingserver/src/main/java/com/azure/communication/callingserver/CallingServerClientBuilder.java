@@ -281,10 +281,6 @@ public final class CallingServerClientBuilder {
             }
         }
 
-        if (pipeline == null) {
-            Objects.requireNonNull(httpClient);
-        }
-
         HttpPipeline builderPipeline = pipeline;
         if (pipeline == null) {
             builderPipeline = createHttpPipeline(httpClient);
