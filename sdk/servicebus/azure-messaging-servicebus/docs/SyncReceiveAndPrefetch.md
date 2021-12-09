@@ -10,7 +10,7 @@ Even after the application disables prefetch in the builder, the `receiveMessage
 IterableStream<ServiceBusReceivedMessage> receiveMessages(int maxMessages, Duration maxWaitTime)
 ```
 
-where `maxMessages` is the maximum number of messages to receive and `maxWaitTime` is the overall duration the SDK should wait for the entire `maxMessages` to arrive.
+where `maxMessages` is the maximum number of messages to receive and `maxWaitTime` is the maximum duration client should wait for the entire batch of `maxMessages` messages to arrive.
 
 *Note*: the overload `receiveMessages(int maxMessages)` is based on the above method, with `maxWaitTime` computed from `RetryConfig` set in builder.
 
@@ -63,11 +63,19 @@ Let's take the previous example, say within `maxTimeout` of 5 sec, the service r
 
 If the application decide not to do anything with the messages in the buffer, those are eventually GC-ed. If such messages were requested with PEEK_LOCK mode, then, after the server-side lock duration elapses, a later `receiveMessages` call on another `ServiceBusReceiverClient` object returns the same messages.
 
+## Only one Iterable can be "active"
+
+It is possible to have more than one Iterable to co-exist. For example, 3 Iterable will be allocated and co-exists if the application simply calls `receiveMessages` 3 times in a row. 
+
+Regardless of the number of co-existing Iterable, there can be only one "active" Iterable, i.e., the application can iterate only one Iterable at a time. The currently "active" Iterable needs to complete ("terminated") for another Iterable to be "active". The Iterable transitions from "active" to "terminated" in the FIFO order they were allocated.
+
+Hence it is recommended to complete the iteration on Iterable from a `receiveMessages` call before invoking `receiveMessages` again to obtain another Iterable. There is no actual use of many "in-active" Iterable to co-exists; it just consumes Heap, possibly making it hard to reason the application code.  
+
 ## Timers in receiveMessages API
 
 An invocation of `receiveMessages(int maxMessages, Duration maxWaitTime)` uses two timers. 
 
-The first one enables `maxWaitTime` support, controlling the maximum duration client should wait for entire batch of `maxMessages` messages to arrive. If `maxWaitTime` elapses before `maxMessages` messages arrive, Iterable returns whatever messages it received and completes.
+The first timer enables `maxWaitTime` support, controlling the maximum duration client should wait for the entire batch of `maxMessages` messages to arrive. If `maxWaitTime` elapses before `maxMessages` messages arrive, Iterable completes immediately after returning the messages received within this duration.
 
 The second timer controls the timeout between messages, i.e., the maximum duration the client should wait for the next message since the arrival of the last message. The Iterable completes if no message arrives within this duration. Currently, this duration is set to 1 second and cannot be changed.
 
@@ -79,6 +87,15 @@ The lock timeout configured on the service bus entity and `maxMessages` needs to
 
 Refer to [this][prefetchtradeoff] document for the tradeoff when enabling prefetch (or maxMessages > 1).
 
+## The exception/faulted state in ServiceBusReceiverClient
+
+_The exception topic is not directly related to prefetching, but adding this section given exception/faulted state is also scoped in client object-level (like prefetch-queue) and impacts the behavior of Iterables from `receiveMessages` calls._
+
+The Client types in Service Bus SDK have built-in retry to recover from retriable errors. A `ServiceBusReceiverClient` object can reach a faulted terminal state if it exhausts the maximum retry or encounters a non-retriable error.
+
+Once a `ServiceBusReceiverClient` object is in a faulted state, the SDK will throw an Exception if the application attempt to use any future Iterable.
+
+If the application finds that a `ServiceBusReceiverClient` object is in a faulted state while iterating, the application should create a new client object and dispose the current one.
 
 <!-- Links --->
 [prefetchgeneral]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-prefetch?tabs=java
