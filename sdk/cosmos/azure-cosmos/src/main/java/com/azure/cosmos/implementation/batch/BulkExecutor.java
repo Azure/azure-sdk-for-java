@@ -139,7 +139,7 @@ public final class BulkExecutor<TContext> {
 
         // The evaluation whether a micro batch should be flushed to the backend happens whenever
         // a new ItemOperation arrives. If the batch size is exceeded or the oldest buffered ItemOperation
-        // exceeds the MicroBatchInterval, the micro batch gets flushed to the backend.
+        // exceeds the MicroBatchInterval or the total serialized length exceeds, the micro batch gets flushed to the backend.
         // To make sure we flush the buffers at least every maxMicroBatchIntervalInMs we start a timer
         // that will trigger artificial ItemOperations that are only used to flush the buffers (and will be
         // filtered out before sending requests to the backend)
@@ -252,6 +252,7 @@ public final class BulkExecutor<TContext> {
 
         AtomicLong firstRecordTimeStamp = new AtomicLong(-1);
         AtomicLong currentMicroBatchSize = new AtomicLong(0);
+        AtomicInteger currentTotalSerializedLength = new AtomicInteger(0);
 
         return partitionedGroupFluxOfInputOperations
             .mergeWith(groupFluxProcessor)
@@ -270,6 +271,7 @@ public final class BulkExecutor<TContext> {
 
                         firstRecordTimeStamp.set(-1);
                         currentMicroBatchSize.set(0);
+                        currentTotalSerializedLength.set(0);
 
                         return true;
                     }
@@ -281,8 +283,11 @@ public final class BulkExecutor<TContext> {
                 firstRecordTimeStamp.compareAndSet(-1, timestamp);
                 long age = timestamp - firstRecordTimeStamp.get();
                 long batchSize = currentMicroBatchSize.incrementAndGet();
+                int totalSerializedLength = this.calculateTotalSerializedLength(currentTotalSerializedLength, itemOperation);
+
                 if (batchSize >= thresholds.getTargetMicroBatchSizeSnapshot() ||
-                    age >=  this.maxMicroBatchIntervalInMs) {
+                    age >= this.maxMicroBatchIntervalInMs ||
+                    totalSerializedLength >= BatchRequestResponseConstants.MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES) {
 
                     logger.debug(
                         "Flushing PKRange {} due to BatchSize ({}) or age ({}), Context: {}",
@@ -292,6 +297,7 @@ public final class BulkExecutor<TContext> {
                         this.operationContextText);
                     firstRecordTimeStamp.set(-1);
                     currentMicroBatchSize.set(0);
+                    currentTotalSerializedLength.set(0);
                     return true;
                 }
 
@@ -315,6 +321,16 @@ public final class BulkExecutor<TContext> {
                 ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
                     .getCosmosBulkExecutionOptionsAccessor()
                     .getMaxMicroBatchConcurrency(this.cosmosBulkExecutionOptions));
+    }
+
+    private int calculateTotalSerializedLength(AtomicInteger currentTotalSerializedLength, CosmosItemOperation item) {
+        if (item instanceof CosmosItemOperationBase) {
+            return currentTotalSerializedLength.accumulateAndGet(
+                ((CosmosItemOperationBase) item).getSerializedLength(),
+                (currentValue, incremental) -> currentValue + incremental);
+        }
+
+        return currentTotalSerializedLength.get();
     }
 
     private Flux<CosmosBulkOperationResponse<TContext>> executeOperations(
