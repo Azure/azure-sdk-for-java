@@ -195,7 +195,7 @@ function UpdateDocsMsMetadataForPackage($packageInfoJsonLocation, $packageInfo) 
 }
 
 foreach ($packageInfoLocation in $PackageInfoJsonLocations) {
-  Write-Host "Updating metadata for package: $packageInfo"
+  Write-Host "Updating metadata for package: $packageInfoLocation"
 
   # Convert package metadata json file to metadata json property.
   $packageInfo = GetPackageInfoJson $packageInfoLocation
