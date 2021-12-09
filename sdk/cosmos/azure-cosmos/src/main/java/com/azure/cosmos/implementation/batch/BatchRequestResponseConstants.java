@@ -13,7 +13,8 @@ public final class BatchRequestResponseConstants {
     public static final int MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES = 220201;
     public static final int MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST = 100;
 
-    public static final int DEFAULT_MAX_MICRO_BATCH_INTERVAL_IN_MILLISECONDS = 100;
+    public static final int DEFAULT_MAX_MICRO_BATCH_INTERVAL_IN_MILLISECONDS = 1000;
+    public static final int DEFAULT_MAX_MICRO_BATCH_INTERVAL_AFTER_DRAINING_INCOMING_FLUX_IN_MILLISECONDS = 25;
     public static final int DEFAULT_MAX_MICRO_BATCH_CONCURRENCY = 1;
     public static final double DEFAULT_MIN_MICRO_BATCH_RETRY_RATE = 0.1;
     public static final double DEFAULT_MAX_MICRO_BATCH_RETRY_RATE = 0.2;
