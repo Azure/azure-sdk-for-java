@@ -218,6 +218,9 @@ class BulkWriter(container: CosmosAsyncContainer,
     // allow staleness for ten additional minutes - which is perfectly fine
     var activeOperationsSnapshot = mutable.Set.empty[models.CosmosItemOperation]
     while (!semaphore.tryAcquire(activeOperationsSemaphoreTimeout, TimeUnit.MINUTES)) {
+
+      log.logError("SEMAPHORE TIMEDOUT!!!!")
+
       if (subscriptionDisposable.isDisposed) {
         captureIfFirstFailure(
           new IllegalStateException("Can't accept any new work - BulkWriter has been disposed already"));
@@ -490,7 +493,7 @@ class BulkWriter(container: CosmosAsyncContainer,
 
 private object BulkWriter {
   //scalastyle:off magic.number
-  val maxDelayOn408RequestTimeoutInMs = 5000
+  val maxDelayOn408RequestTimeoutInMs = 30000
   val maxItemOperationsToShowInErrorMessage = 10
 
   // we used to use 15 minutes here - extending it because of several incidents where

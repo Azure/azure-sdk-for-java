@@ -299,6 +299,8 @@ public final class BulkExecutor<TContext> {
             })
             .flatMap(
                 (List<Tuple2<Long, CosmosItemOperation>> timeStampAndItemOperationTuples) -> {
+                    String pkRange = thresholds.getPartitionKeyRangeId();
+                    //logger.error("FLUSHING BATCH FOR " + pkRange);
                     List<CosmosItemOperation> operations = new ArrayList<>(timeStampAndItemOperationTuples.size());
                     for (Tuple2<Long, CosmosItemOperation> timeStampAndItemOperationTuple :
                         timeStampAndItemOperationTuples) {
@@ -313,8 +315,8 @@ public final class BulkExecutor<TContext> {
                     return executeOperations(operations, thresholds, groupSink);
                 },
                 ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
-                    .getCosmosBulkExecutionOptionsAccessor()
-                    .getMaxMicroBatchConcurrency(this.cosmosBulkExecutionOptions));
+                        .getCosmosBulkExecutionOptionsAccessor()
+                        .getMaxMicroBatchConcurrency(this.cosmosBulkExecutionOptions));
     }
 
     private Flux<CosmosBulkOperationResponse<TContext>> executeOperations(
@@ -346,11 +348,13 @@ public final class BulkExecutor<TContext> {
         PartitionScopeThresholds thresholds) {
 
         return this.executeBatchRequest(serverRequest)
-            .flatMapMany(response ->
-                Flux.fromIterable(response.getResults()).flatMap((CosmosBatchOperationResult result) ->
-                    handleTransactionalBatchOperationResult(response, result, groupSink, thresholds)))
+            .flatMapMany(response -> {
+                    logger.error("RECEIVING RESPONSE FOR " + thresholds.getPartitionKeyRangeId());
+                return Flux.fromIterable(response.getResults()).flatMap((CosmosBatchOperationResult result) ->
+                    handleTransactionalBatchOperationResult(response, result, groupSink, thresholds));
+            })
             .onErrorResume((Throwable throwable) -> {
-
+                logger.error("BATCH FAILED FOR " + serverRequest.getPartitionKeyRangeId());
                 if (!(throwable instanceof Exception)) {
                     throw Exceptions.propagate(throwable);
                 }
@@ -368,7 +372,6 @@ public final class BulkExecutor<TContext> {
         CosmosBatchOperationResult operationResult,
         FluxSink<CosmosItemOperation> groupSink,
         PartitionScopeThresholds thresholds) {
-
         CosmosBulkItemResponse cosmosBulkItemResponse = ModelBridgeInternal.createCosmosBulkItemResponse(operationResult, response);
         CosmosItemOperation itemOperation = operationResult.getOperation();
         TContext actualContext = this.getActualContext(itemOperation);
