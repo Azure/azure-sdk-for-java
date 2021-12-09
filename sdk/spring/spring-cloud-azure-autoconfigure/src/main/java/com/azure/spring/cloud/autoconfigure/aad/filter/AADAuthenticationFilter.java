@@ -119,7 +119,7 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
     }
 
     /**
-     * Set internal filter.
+     * Do filter.
      *
      * @param httpServletRequest the http servlet request
      * @param httpServletResponse the http servlet responce

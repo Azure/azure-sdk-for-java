@@ -35,8 +35,7 @@ import java.util.stream.Stream;
 public class AADHandleConditionalAccessFilter extends OncePerRequestFilter {
 
     /**
-     * Provides HttpServletRequest and HttpServletResponse arguments instead of the
-     * default ServletRequest and ServletResponse ones.
+     * Do filter.
      *
      * @param request the HttpServletRequest
      * @param response the HttpServletResponse

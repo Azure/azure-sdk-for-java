@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.aadb2c;
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AADB2CURL;
 import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AADB2CProperties;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 
 import javax.servlet.ServletException;
@@ -37,6 +38,14 @@ public class AADB2CLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
         return AADB2CURL.getEndSessionUrl(properties.getBaseUri(), logoutSuccessUrl, userFlow);
     }
 
+    /**
+     * A strategy that is called after a successful logout,
+     * to handle redirection or forwarding to the appropriate destination.
+     *
+     * @param request the http servlet reqoest
+     * @param response the http servlet response
+     * @param authentication the authentication
+     */
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
                                 Authentication authentication) throws IOException, ServletException {
