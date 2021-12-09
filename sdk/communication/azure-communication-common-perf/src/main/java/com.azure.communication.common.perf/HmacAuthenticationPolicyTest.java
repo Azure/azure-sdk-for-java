@@ -26,14 +26,16 @@ public class HmacAuthenticationPolicyTest extends PerfStressTest<PerfStressOptio
 
         @Override
         public String toString() {
-            return  " count=" + count +", signature='" + signature;
+            return  "signature='" + signature + "\ncount=" + count;
         }
     }
 
-    private final HmacAuthenticationPolicy hmacAuthenticationPolicy;
+    private final static ConcurrentHashMap<String, CustomPair> dateToSignature = new ConcurrentHashMap<>();
+    private final static String mockedKey = "JdppJP5eH1w/CQ0cx4RGYWoC7NmQ0nmDbYR2PYWSDTXojV9bI1ck0Eh0sUIg8xj4KYj7tv+ZPLICu3BgLt6mMz==";
+    private final static HmacAuthenticationPolicy hmacAuthenticationPolicy = new HmacAuthenticationPolicy(new AzureKeyCredential(mockedKey));
+
     private final HttpPipeline pipeline;
     private final HttpRequest request;
-    private ConcurrentHashMap<String, CustomPair> dateToSignature = new ConcurrentHashMap<>();
 
     class NoOpHttpClient implements HttpClient {
         @Override
@@ -45,9 +47,6 @@ public class HmacAuthenticationPolicyTest extends PerfStressTest<PerfStressOptio
 
     public HmacAuthenticationPolicyTest(PerfStressOptions options) throws MalformedURLException {
         super(options);
-        String mockedKey = "JdppJP5eH1w/CQ0cx4RGYWoC7NmQ0nmDbYR2PYWSDTXojV9bI1ck0Eh0sUIg8xj4KYj7tv+ZPLICu3BgLt6mMz==";
-        AzureKeyCredential keyCredential = new AzureKeyCredential(mockedKey);
-        hmacAuthenticationPolicy = new HmacAuthenticationPolicy(keyCredential);
         pipeline = new HttpPipelineBuilder()
             .httpClient(new NoOpHttpClient())
             .policies(hmacAuthenticationPolicy)
@@ -57,7 +56,10 @@ public class HmacAuthenticationPolicyTest extends PerfStressTest<PerfStressOptio
 
     @Override
     public void run() {
-        pipeline.send(request);
+        HttpResponse response = pipeline.send(request).block();
+        String date = response.getRequest().getHeaders().getValue("date");
+        String signature = response.getRequest().getHeaders().getValue("Authorization");
+        checkSignatureCorrectness(date, signature);
     }
 
     @Override
@@ -70,24 +72,22 @@ public class HmacAuthenticationPolicyTest extends PerfStressTest<PerfStressOptio
         return Mono.empty();
     }
 
-    private void checkSignatureCorrectness(String date, String signature){
+    private synchronized void checkSignatureCorrectness(String date, String signature){
         if(!dateToSignature.containsKey(date))
             dateToSignature.put(date, new CustomPair(signature));
         else if(!dateToSignature.get(date).signature.contentEquals(signature)){
-            System.out.println("Incorrectly computed signature:" + signature + " for" + signature);
-            System.out.println("Expected:" + dateToSignature.get(date));
-            System.out.println();
+            String warning = "Incorrectly computed signature:" + signature + " for " + date
+                + "\nExpected:" + dateToSignature.get(date);
+            throw new IllegalStateException(warning);
         }else{
-            synchronized(this) {
-                dateToSignature.get(date).count++;
-            }
+            dateToSignature.get(date).count++;
         }
     }
 
     @Override
     public Mono<Void> globalCleanupAsync() {
         for (Map.Entry<String, CustomPair> entry : dateToSignature.entrySet()) {
-            System.out.println(entry.getKey() + " " + entry.getValue().toString());
+            System.out.println(entry.getKey() + " >> " + entry.getValue().toString());
         }
         return super.globalCleanupAsync();
     }
