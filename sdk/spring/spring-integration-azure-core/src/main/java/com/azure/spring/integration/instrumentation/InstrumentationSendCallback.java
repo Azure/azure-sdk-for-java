@@ -17,8 +17,8 @@ public class InstrumentationSendCallback implements ListenableFutureCallback<Voi
     /**
      * Constructor.
      *
-     * @param instrumentationId the instrumentation Id
-     * @param instrumentationManager the instrumentation Manager
+     * @param instrumentationId the instrumentation id
+     * @param instrumentationManager the instrumentation manager
      */
     public InstrumentationSendCallback(String instrumentationId, InstrumentationManager instrumentationManager) {
         this.instrumentationId = instrumentationId;

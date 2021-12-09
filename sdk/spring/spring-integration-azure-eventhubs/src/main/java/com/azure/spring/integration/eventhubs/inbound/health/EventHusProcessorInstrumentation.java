@@ -28,7 +28,7 @@ public class EventHusProcessorInstrumentation implements Instrumentation {
      *
      * @param name the name
      * @param type the type
-     * @param noneErrorWindow the none Error Window
+     * @param noneErrorWindow the none error window
      */
     public EventHusProcessorInstrumentation(String name, Type type, Duration noneErrorWindow) {
         this.name = name;

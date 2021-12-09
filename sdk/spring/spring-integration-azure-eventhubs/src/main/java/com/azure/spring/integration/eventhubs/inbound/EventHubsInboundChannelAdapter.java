@@ -59,10 +59,10 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
     /**
      * Constructor.
      *
-     * @param processorContainer the processor Container
-     * @param eventHubName the eventHub Name
-     * @param consumerGroup the consumer Group
-     * @param checkpointConfig the checkpoint Config
+     * @param processorContainer the processor container
+     * @param eventHubName the eventHub name
+     * @param consumerGroup the consumer group
+     * @param checkpointConfig the checkpoint config
      */
     public EventHubsInboundChannelAdapter(EventHubsProcessorContainer processorContainer,
                                           String eventHubName, String consumerGroup,
@@ -73,11 +73,11 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
     /**
      * Constructor.
      *
-     * @param eventProcessorsContainer the event Processors Container
-     * @param eventHubName the eventHub Name
-     * @param consumerGroup the consumer Group
-     * @param listenerMode the listener Mode
-     * @param checkpointConfig the checkpoint Config
+     * @param eventProcessorsContainer the event processors container
+     * @param eventHubName the eventHub name
+     * @param consumerGroup the consumer group
+     * @param listenerMode the listener mode
+     * @param checkpointConfig the checkpoint config
      */
     public EventHubsInboundChannelAdapter(EventHubsProcessorContainer eventProcessorsContainer,
                                           String eventHubName, String consumerGroup,
@@ -117,9 +117,9 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
     }
 
     /**
-     * Set message Converter.
+     * Set message converter.
      *
-     * @param messageConverter the message Converter
+     * @param messageConverter the message converter
      */
     public void setMessageConverter(EventHubsMessageConverter messageConverter) {
         this.recordEventProcessor.setMessageConverter(messageConverter);
@@ -148,9 +148,9 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
     }
 
     /**
-     * Set instrumentation Id.
+     * Set instrumentation id.
      *
-     * @param instrumentationId the instrumentation Id
+     * @param instrumentationId the instrumentation id
      */
     public void setInstrumentationId(String instrumentationId) {
         if (ListenerMode.BATCH.equals(this.listenerMode)) {
@@ -233,18 +233,18 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
         }
 
         /**
-         * Set message Converter.
+         * Set message converter.
          *
-         * @param converter the Converter
+         * @param converter the converter
          */
         public void setMessageConverter(EventHubsMessageConverter converter) {
             this.messageConverter = converter;
         }
 
         /**
-         * Set payload Type.
+         * Set payload type.
          *
-         * @param payloadType the payload Type
+         * @param payloadType the payload type
          */
         public void setPayloadType(Class<?> payloadType) {
             this.payloadType = payloadType;
@@ -292,18 +292,18 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
         }
 
         /**
-         * Set message Converter.
+         * Set message converter.
          *
-         * @param converter the Converter
+         * @param converter the converter
          */
         public void setMessageConverter(EventHubBatchMessageConverter converter) {
             this.messageConverter = converter;
         }
 
         /**
-         * Set payload Type.
+         * Set payload type.
          *
-         * @param payloadType the payload Type
+         * @param payloadType the payload type
          */
         public void setPayloadType(Class<?> payloadType) {
             this.payloadType = payloadType;

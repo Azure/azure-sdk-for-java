@@ -168,27 +168,27 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
     }
 
     /**
-     * Set partition Key Expression.
+     * Set partition key expression.
      *
-     * @param partitionKeyExpression the partition Key Expression
+     * @param partitionKeyExpression the partition key expression
      */
     public void setPartitionKeyExpression(Expression partitionKeyExpression) {
         this.partitionKeyExpression = partitionKeyExpression;
     }
 
     /**
-     * Set partition Id Expression.
+     * Set partition id expression.
      *
-     * @param partitionIdExpression the partition Id Expression
+     * @param partitionIdExpression the partition id expression
      */
     public void setPartitionIdExpression(Expression partitionIdExpression) {
         this.partitionIdExpression = partitionIdExpression;
     }
 
     /**
-     * Set partition Key Expression String.
+     * Set partition key expression string.
      *
-     * @param partitionKeyExpression the partition Key Expression
+     * @param partitionKeyExpression the partition key expression
      */
     public void setPartitionKeyExpressionString(String partitionKeyExpression) {
         setPartitionKeyExpression(EXPRESSION_PARSER.parseExpression(partitionKeyExpression));
