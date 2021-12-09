@@ -274,7 +274,7 @@ function SourcePackageHasComFolder($artifactNamePrefix, $packageDirectory) {
     $mvnResults = mvn `
       dependency:copy `
       -Dartifact="$packageArtifact" `
-      -DoutputDirectory="$packageDirectory"
+      -DoutputDirectory="$packageDirectory" | Out-Null
 
     if ($LASTEXITCODE) {
       LogWarning "Could not download source artifact: $packageArtifact"
@@ -309,7 +309,7 @@ function PackageDependenciesResolve($artifactNamePrefix, $packageDirectory) {
   $artifactDownloadOutput = mvn `
     dependency:copy `
     -Dartifact="$pomArtifactName" `
-    -DoutputDirectory="$packageDirectory"
+    -DoutputDirectory="$packageDirectory" | Out-Null
 
   if ($LASTEXITCODE) {
     LogWarning "Could not download pom artifact: $pomArtifactName"
@@ -616,5 +616,9 @@ function Get-java-DocsMsMetadataForPackage($PackageInfo) {
 
 function Validate-java-DocMsPackages ($PackageInfo, $DocValidationImageId) 
 {
-  ValidatePackage $PackageInfo.GroupId $PackageInfo.Name $PackageInfo.Version 
+  if (!(ValidatePackage $PackageInfo.GroupId $PackageInfo.Name $PackageInfo.Version)) 
+  {
+    exit 1
+  }
+  return
 }
