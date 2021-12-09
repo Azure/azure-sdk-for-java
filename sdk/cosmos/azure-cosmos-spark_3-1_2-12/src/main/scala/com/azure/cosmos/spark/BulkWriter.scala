@@ -46,10 +46,14 @@ class BulkWriter(container: CosmosAsyncContainer,
   // TODO: moderakh this requires tuning.
   // TODO: moderakh should we do a max on the max memory to ensure we don't run out of memory?
   private val cpuCount = SparkUtils.getNumberOfHostCPUCores
+  // each bulk writer allows up to maxPendingOperations being buffered
+  // there is one bulk writer per spark task/partition
+  // and default config will create one executor per core on the executor host
+  // so multiplying by cpuCount in the default config is too aggressive
   private val maxPendingOperations = writeConfig.bulkMaxPendingOperations
-    .getOrElse(math.max(cpuCount, 1) * DefaultMaxPendingOperationPerCore)
+    .getOrElse(DefaultMaxPendingOperationPerCore)
   log.logInfo(
-    s"BulkWriter instantiated (CPU count: ${cpuCount}, maxPendingOperations: ${maxPendingOperations} ...")
+    s"BulkWriter instantiated (Host CPU count: ${cpuCount}, maxPendingOperations: ${maxPendingOperations} ...")
 
   private val closed = new AtomicBoolean(false)
   private val lock = new ReentrantLock
@@ -144,7 +148,9 @@ class BulkWriter(container: CosmosAsyncContainer,
                     deferredRetryMono
                       .delaySubscription(
                         Duration(
-                          scala.util.Random.nextInt(BulkWriter.maxDelayOn408RequestTimeoutInMs),
+                          BulkWriter.minDelayOn408RequestTimeoutInMs +
+                          scala.util.Random.nextInt(
+                            BulkWriter.maxDelayOn408RequestTimeoutInMs - BulkWriter.minDelayOn408RequestTimeoutInMs),
                           TimeUnit.MILLISECONDS),
                         Schedulers.boundedElastic())
                       .subscribeOn(Schedulers.boundedElastic())
@@ -490,7 +496,8 @@ class BulkWriter(container: CosmosAsyncContainer,
 
 private object BulkWriter {
   //scalastyle:off magic.number
-  val maxDelayOn408RequestTimeoutInMs = 5000
+  val maxDelayOn408RequestTimeoutInMs = 10000
+  val minDelayOn408RequestTimeoutInMs = 1000
   val maxItemOperationsToShowInErrorMessage = 10
 
   // we used to use 15 minutes here - extending it because of several incidents where
