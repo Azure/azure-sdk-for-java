@@ -123,6 +123,7 @@ abstract class AbstractServiceBusJmsAutoConfigurationTest {
     private void testQueueJmsListenerContainerFactoryWithCustomSettings(AssertableApplicationContext loaded) {
         DefaultJmsListenerContainerFactory listenerContainerFactory = (DefaultJmsListenerContainerFactory) loaded.getBean("jmsListenerContainerFactory");
         DefaultMessageListenerContainer container = listenerContainerFactory.createListenerContainer(mock(JmsListenerEndpoint.class));
+        assertThat(container.isPubSubDomain()).isFalse().as("Pub sub domain should be false.");
         assertThat(container.isAutoStartup()).isFalse();
         assertThat(container.getSessionAcknowledgeMode()).isEqualTo(Session.CLIENT_ACKNOWLEDGE);
         assertThat(container.getConcurrentConsumers()).isEqualTo(2);
@@ -139,6 +140,7 @@ abstract class AbstractServiceBusJmsAutoConfigurationTest {
     private void testTopicJmsListenerContainerFactoryWithCustomSettings(AssertableApplicationContext loaded) {
         DefaultJmsListenerContainerFactory listenerContainerFactory = (DefaultJmsListenerContainerFactory) loaded.getBean("topicJmsListenerContainerFactory");
         DefaultMessageListenerContainer container = listenerContainerFactory.createListenerContainer(mock(JmsListenerEndpoint.class));
+        assertThat(container.isPubSubDomain()).isTrue().as("Pub sub domain should be true.");
         assertThat(container.isAutoStartup()).isFalse();
         assertThat(container.getSessionAcknowledgeMode()).isEqualTo(Session.CLIENT_ACKNOWLEDGE);
         assertThat(container.getConcurrentConsumers()).isEqualTo(2);

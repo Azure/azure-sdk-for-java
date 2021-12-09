@@ -5,12 +5,15 @@ package com.azure.spring.cloud.autoconfigure.jms;
 
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
 import org.apache.qpid.jms.JmsConnectionFactory;
+import org.apache.qpid.jms.policy.JmsDefaultPrefetchPolicy;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class NonPremiumServiceBusJmsAutoConfigurationTest extends AbstractServiceBusJmsAutoConfigurationTest {
 
@@ -46,5 +49,33 @@ class NonPremiumServiceBusJmsAutoConfigurationTest extends AbstractServiceBusJms
                 "spring.jms.servicebus.connection-string=" + CONNECTION_STRING)
             .run(context -> assertThrows(IllegalStateException.class,
                                          () -> context.getBean(AzureServiceBusJmsProperties.class)));
+    }
+
+    @Test
+    void connectionFactoryPropertiesConfigured() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.jms.servicebus.connection-string=" + CONNECTION_STRING,
+                "spring.jms.servicebus.pricing-tier=basic")
+            .run(context -> {
+                assertThat(context).hasSingleBean(JmsConnectionFactory.class);
+                JmsConnectionFactory factory = context.getBean(JmsConnectionFactory.class);
+                AzureServiceBusJmsProperties properties = context.getBean(AzureServiceBusJmsProperties.class);
+                assertEquals(factory.getRemoteURI(), "amqps://host?amqp.idleTimeout=1800000");
+                assertNull(factory.getClientID());
+                assertEquals(factory.getUsername(), "sasKeyName");
+                assertEquals(factory.getPassword(), "sasKey");
+
+                AzureServiceBusJmsProperties.PrefetchPolicy propertiesPrefetchPolicy = properties.getPrefetchPolicy();
+                JmsDefaultPrefetchPolicy prefetchPolicy = (JmsDefaultPrefetchPolicy) factory.getPrefetchPolicy();
+                assertThat(prefetchPolicy).hasFieldOrPropertyWithValue("queuePrefetch",
+                    propertiesPrefetchPolicy.getQueuePrefetch());
+                assertThat(prefetchPolicy).hasFieldOrPropertyWithValue("topicPrefetch",
+                    propertiesPrefetchPolicy.getTopicPrefetch());
+                assertThat(prefetchPolicy).hasFieldOrPropertyWithValue("queueBrowserPrefetch",
+                    propertiesPrefetchPolicy.getQueueBrowserPrefetch());
+                assertThat(prefetchPolicy).hasFieldOrPropertyWithValue("durableTopicPrefetch",
+                    propertiesPrefetchPolicy.getDurableTopicPrefetch());
+            });
     }
 }
