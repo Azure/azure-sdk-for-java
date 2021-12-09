@@ -27,7 +27,7 @@ import java.util.Optional;
 
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.DISABLE_TRACING_KEY;
-import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 import static com.azure.spring.tracing.sleuth.implementation.TraceContextUtil.isValid;
 
 /**
@@ -61,7 +61,7 @@ public class SleuthHttpPolicy implements HttpPipelinePolicy {
             return next.process();
         }
 
-        Span parentSpan = (Span) context.getData(PARENT_SPAN_KEY).orElse(tracer.currentSpan());
+        Span parentSpan = (Span) context.getData(PARENT_TRACE_CONTEXT_KEY).orElse(tracer.currentSpan());
         HttpRequest request = context.getHttpRequest();
 
         // Build new child span representing this outgoing request.
