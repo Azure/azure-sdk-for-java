@@ -114,7 +114,14 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
           val directConfig = new DirectConnectionConfig()
             .setConnectTimeout(Duration.ofSeconds(CosmosConstants.defaultDirectRequestTimeoutInSeconds))
             .setNetworkRequestTimeout(Duration.ofSeconds(CosmosConstants.defaultDirectRequestTimeoutInSeconds))
-          builder = builder.directMode(directConfig)
+
+          builder = builder.directMode(
+            // Duplicate the default number of I/O threads per core
+            // We know that Spark often works with large payloads and we have seen
+            // indicators that the default number of I/O threads can be too low
+            // for workloads with large payloads
+            SparkBridgeImplementationInternal
+              .setIoThreadCountPerCoreFactor(directConfig, CosmosConstants.defaultIoThreadCountFactorPerCore))
         }
 
         if (cosmosClientConfiguration.preferredRegionsList.isDefined) {
