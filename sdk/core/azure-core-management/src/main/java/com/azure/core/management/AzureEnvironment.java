@@ -3,6 +3,21 @@
 
 package com.azure.core.management;
 
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.management.implementation.metadata.Metadata;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.core.util.serializer.TypeReference;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +27,13 @@ import java.util.Map;
  * An instance of this class describes an environment in Azure.
  */
 public final class AzureEnvironment {
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureEnvironment.class);
+
+    private static final TypeReference<List<Metadata>> ARM_METADATA_ARRAY_TYPE_REFERENCE =
+        new TypeReference<List<Metadata>>() {
+        };
+
     /** the map of all endpoints. */
     private final Map<String, String> endpoints;
 
@@ -28,7 +50,7 @@ public final class AzureEnvironment {
      * Provides the settings for authentication with Azure.
      */
     public static final AzureEnvironment AZURE = new AzureEnvironment(new HashMap<String, String>() {{
-            put("portalUrl", "http://go.microsoft.com/fwlink/?LinkId=254433");
+            put("portalUrl", "https://portal.azure.com");
             put("publishingProfileUrl", "http://go.microsoft.com/fwlink/?LinkId=254432");
             put("managementEndpointUrl", "https://management.core.windows.net/");
             put("resourceManagerEndpointUrl", "https://management.azure.com/");
@@ -53,7 +75,7 @@ public final class AzureEnvironment {
      * Provides the settings for authentication with Azure China.
      */
     public static final AzureEnvironment AZURE_CHINA = new AzureEnvironment(new HashMap<String, String>() {{
-            put("portalUrl", "http://go.microsoft.com/fwlink/?LinkId=301902");
+            put("portalUrl", "https://portal.azure.cn");
             put("publishingProfileUrl", "http://go.microsoft.com/fwlink/?LinkID=301774");
             put("managementEndpointUrl", "https://management.core.chinacloudapi.cn/");
             put("resourceManagerEndpointUrl", "https://management.chinacloudapi.cn/");
@@ -81,7 +103,7 @@ public final class AzureEnvironment {
      * Provides the settings for authentication with Azure US Government.
      */
     public static final AzureEnvironment AZURE_US_GOVERNMENT = new AzureEnvironment(new HashMap<String, String>() {{
-            put("portalUrl", "https://manage.windowsazure.us");
+            put("portalUrl", "https://portal.azure.us");
             put("publishingProfileUrl", "https://manage.windowsazure.us/publishsettings/index");
             put("managementEndpointUrl", "https://management.core.usgovcloudapi.net/");
             put("resourceManagerEndpointUrl", "https://management.usgovcloudapi.net/");
@@ -109,7 +131,7 @@ public final class AzureEnvironment {
      * Provides the settings for authentication with Azure Germany.
      */
     public static final AzureEnvironment AZURE_GERMANY = new AzureEnvironment(new HashMap<String, String>() {{
-            put("portalUrl", "http://portal.microsoftazure.de/");
+            put("portalUrl", "https://portal.microsoftazure.de");
             put("publishingProfileUrl", "https://manage.microsoftazure.de/publishsettings/index");
             put("managementEndpointUrl", "https://management.core.cloudapi.de/");
             put("resourceManagerEndpointUrl", "https://management.microsoftazure.de/");
@@ -132,6 +154,52 @@ public final class AzureEnvironment {
             put("azureLogAnalyticsResourceId", "N/A");
             put("azureApplicationInsightsResourceId", "N/A");
         }});
+
+    /**
+     * Gets AzureEnvironment from Azure Resource Manager endpoint.
+     *
+     * If multiple Azure Resource Manager metadata is available, it uses the first one.
+     * Note that the Microsoft Graph endpoint currently is not available from metadata.
+     *
+     * @param endpoint the URL of Azure Resource Manager endpoint.
+     * @param httpClient the HTTP client for requests.
+     * @return the AzureEnvironment
+     * @throws HttpResponseException thrown if the request is rejected by server, or failed to parse metadata.
+     * @throws IllegalArgumentException thrown if Azure Resource Manager endpoint is invalid.
+     * @throws URISyntaxException thrown if Azure Resource Manager endpoint violates RFC 2396.
+     */
+    public static AzureEnvironment fromAzureResourceManagerEndpoint(String endpoint, HttpClient httpClient)
+        throws URISyntaxException {
+
+        String metadataEndpoint = String.format("%s/metadata/endpoints?api-version=2019-10-01", endpoint);
+        // verify endpoint
+        URI uri = new URI(metadataEndpoint);
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, metadataEndpoint)
+            .setHeader("accept", "application/json");
+
+        HttpResponse response = httpClient.send(request).block();
+        if (response.getStatusCode() != 200) {
+            throw LOGGER.logExceptionAsError(
+                new HttpResponseException("Status code " + response.getStatusCode(), response));
+        }
+        String body = response.getBodyAsString().block();
+        try {
+            List<Metadata> metadataArray = JacksonAdapter.createDefaultSerializerAdapter()
+                .deserialize(body, ARM_METADATA_ARRAY_TYPE_REFERENCE.getJavaType(), SerializerEncoding.JSON);
+
+            if (metadataArray == null || CoreUtils.isNullOrEmpty(metadataArray)) {
+                throw LOGGER.logExceptionAsError(
+                    new HttpResponseException("Metadata not found, " + body, response));
+            }
+
+            Metadata metadata = metadataArray.iterator().next();
+            return parseMetadata(endpoint, metadata, body, response);
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(
+                new HttpResponseException("Deserialization Failed.", response, e));
+        }
+    }
 
     /**
      * @return the entirety of the endpoints associated with the current environment.
@@ -336,5 +404,59 @@ public final class AzureEnvironment {
      */
     public String getUrlByEndpoint(Endpoint endpoint) {
         return endpoints.get(endpoint.identifier());
+    }
+
+    private static AzureEnvironment parseMetadata(String endpoint, Metadata metadata,
+                                                  String body, HttpResponse response) {
+        if (metadata == null
+            || metadata.getAuthentication() == null
+            || metadata.getAuthentication().getLoginEndpoint() == null
+            || CoreUtils.isNullOrEmpty(metadata.getAuthentication().getAudiences())) {
+
+            String errorMessage = "'authentication', 'authentication.loginEndpoint', 'authentication.audiences' "
+                + "is required in metadata, " + body;
+            throw LOGGER.logExceptionAsError(
+                new HttpResponseException(errorMessage, response));
+        }
+
+        Map<String, String> endpoints = new HashMap<>();
+        // arm
+        endpoints.put(Endpoint.MANAGEMENT.identifier(), metadata.getAuthentication().getAudiences().get(0));
+        endpoints.put(Endpoint.RESOURCE_MANAGER.identifier(), endpoint);
+        endpoints.put(Endpoint.ACTIVE_DIRECTORY.identifier(), metadata.getAuthentication().getLoginEndpoint());
+        endpoints.put("activeDirectoryResourceId", metadata.getAuthentication().getAudiences().get(0));
+        // portal
+        endpoints.put("portalUrl", getOptionalEndpoint(metadata.getPortal()));
+        // microsoft graph
+        endpoints.put(Endpoint.MICROSOFT_GRAPH.identifier(), "N/A");
+        // aad graph
+        endpoints.put(Endpoint.GRAPH.identifier(), getOptionalEndpoint(metadata.getGraph()));
+        // misc suffixes and endpoints
+        endpoints.put(Endpoint.GALLERY.identifier(), getOptionalEndpoint(metadata.getGallery()));
+        endpoints.put(Endpoint.SQL.identifier(), getOptionalEndpoint(metadata.getSqlManagement()));
+        if (metadata.getSuffixes() != null) {
+            endpoints.put("storageEndpointSuffix",
+                getOptionalDotSuffix(metadata.getSuffixes().getStorage()));
+            endpoints.put(Endpoint.KEYVAULT.identifier(),
+                getOptionalDotSuffix(metadata.getSuffixes().getKeyVaultDns()));
+            endpoints.put("sqlServerHostnameSuffix",
+                getOptionalDotSuffix(metadata.getSuffixes().getSqlServerHostname()));
+        }
+
+        return new AzureEnvironment(endpoints);
+    }
+
+    private static String getOptionalEndpoint(String endpoint) {
+        if (endpoint == null) {
+            return "N/A";
+        }
+        return endpoint;
+    }
+
+    private static String getOptionalDotSuffix(String suffix) {
+        if (suffix == null) {
+            return "N/A";
+        }
+        return suffix.startsWith(".") ? suffix : ("." + suffix);
     }
 }

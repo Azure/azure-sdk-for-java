@@ -4,6 +4,7 @@
 
 ### Features Added
 
+- Supported `AzureEnvironment.fromAzureResourceManagerEndpoint` method to populate `AzureEnvironment` via metadata from Azure Resource Manager endpoint.
 - Supported new Azure region `Region.SWEDEN_CENTRAL`.
 
 ### Breaking Changes

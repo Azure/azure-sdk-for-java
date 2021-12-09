@@ -20,6 +20,9 @@ module com.azure.core.management {
         com.azure.core;
     opens com.azure.core.management.implementation.polling to
         com.fasterxml.jackson.databind;
+    opens com.azure.core.management.implementation.metadata to
+        com.fasterxml.jackson.databind,
+        com.azure.core;
 
     uses com.azure.core.http.HttpClientProvider;
 }
