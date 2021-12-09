@@ -4,6 +4,8 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
+import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
+import com.fasterxml.jackson.databind.node.ArrayNode
 
 import java.time.format.DateTimeFormatter
 import java.time.{ZoneOffset, ZonedDateTime}
@@ -57,7 +59,7 @@ class CosmosCatalog
   private var config: Map[String, String] = _
   private var readConfig: CosmosReadConfig = _
   private var tableOptions: Map[String, String] = _
-  private var viewRepository: Option[HDFSMetadataLog[Array[ViewDefinition]]] = None
+  private var viewRepository: Option[HDFSMetadataLog[String]] = None
 
   /**
    * Called to initialize configuration.
@@ -80,7 +82,7 @@ class CosmosCatalog
 
     val viewRepositoryConfig = CosmosViewRepositoryConfig.parseCosmosViewRepositoryConfig(config)
     if (viewRepositoryConfig.metaDataPath.isDefined) {
-      this.viewRepository = Some(new HDFSMetadataLog[Array[ViewDefinition]](
+      this.viewRepository = Some(new HDFSMetadataLog[String](
         this.sparkSession,
         viewRepositoryConfig.metaDataPath.get))
     }
@@ -453,12 +455,13 @@ class CosmosCatalog
         } else {
           None
         }
-        val viewDefinition = ViewDefinition(databaseName, viewName, userProvidedSchema, containerProperties)
+        val viewDefinition = ViewDefinition(
+          databaseName, viewName, userProvidedSchema, redactAuthInfo(containerProperties))
         var lastBatchId = 0L
         val newViewDefinitionsSnapshot = viewRepositorySnapshot.getLatest() match {
-          case Some(viewDefinitionsSnapshot) =>
-            lastBatchId = viewDefinitionsSnapshot._1
-            val alreadyExistingViews = viewDefinitionsSnapshot._2
+          case Some(viewDefinitionsEnvelopeSnapshot) =>
+            lastBatchId = viewDefinitionsEnvelopeSnapshot._1
+            val alreadyExistingViews = ViewDefinitionEnvelopeSerializer.fromJson(viewDefinitionsEnvelopeSnapshot._2)
 
             if (alreadyExistingViews.exists(v => v.databaseName.equals(databaseName) &&
               v.viewName.equals(viewName))) {
@@ -470,7 +473,10 @@ class CosmosCatalog
           case None => Array(viewDefinition)
         }
 
-        if (viewRepositorySnapshot.add(lastBatchId + 1, newViewDefinitionsSnapshot)) {
+        if (viewRepositorySnapshot.add(
+          lastBatchId + 1,
+          ViewDefinitionEnvelopeSerializer.toJson(newViewDefinitionsSnapshot))) {
+
           logInfo(s"LatestBatchId: ${viewRepositorySnapshot.getLatestBatchId().getOrElse(-1)}")
           viewRepositorySnapshot.purge(lastBatchId)
           logInfo(s"LatestBatchId: ${viewRepositorySnapshot.getLatestBatchId().getOrElse(-1)}")
@@ -521,9 +527,9 @@ class CosmosCatalog
     this.viewRepository match {
       case Some(viewRepositorySnapshot) =>
         viewRepositorySnapshot.getLatest() match {
-          case Some(viewDefinitionsSnapshot) =>
-            val lastBatchId = viewDefinitionsSnapshot._1
-            val viewDefinitions = viewDefinitionsSnapshot._2
+          case Some(viewDefinitionsEnvelopeSnapshot) =>
+            val lastBatchId = viewDefinitionsEnvelopeSnapshot._1
+            val viewDefinitions = ViewDefinitionEnvelopeSerializer.fromJson(viewDefinitionsEnvelopeSnapshot._2)
 
             viewDefinitions.find(v => v.databaseName.equals(databaseName) &&
               v.viewName.equals(viewName)) match {
@@ -531,7 +537,10 @@ class CosmosCatalog
                 val updatedViewDefinitionsSnapshot: Array[ViewDefinition] =
                   (ArrayBuffer(viewDefinitions: _*) - existingView).toArray
 
-                if (viewRepositorySnapshot.add(lastBatchId + 1, updatedViewDefinitionsSnapshot)) {
+                if (viewRepositorySnapshot.add(
+                  lastBatchId + 1,
+                  ViewDefinitionEnvelopeSerializer.toJson(updatedViewDefinitionsSnapshot))) {
+
                   viewRepositorySnapshot.purge(lastBatchId)
                   true
                 } else {
@@ -638,7 +647,8 @@ class CosmosCatalog
       case Some(viewRepositorySnapshot) =>
         viewRepositorySnapshot.getLatest() match {
           case Some(latestMetadataSnapshot) =>
-            val viewDefinitions = latestMetadataSnapshot._2.filter(v => databaseName.equals(v.databaseName))
+            val viewDefinitions = ViewDefinitionEnvelopeSerializer.fromJson(latestMetadataSnapshot._2)
+              .filter(v => databaseName.equals(v.databaseName))
             if (viewDefinitions.length > 0) {
               Some(viewDefinitions)
             } else {
@@ -787,6 +797,14 @@ class CosmosCatalog
   // scalastyle:on cyclomatic.complexity
   // scalastyle:on method.length
 
+  private def redactAuthInfo(cfg: Map[String, String]): Map[String, String] = {
+    cfg.filter((kvp) => !CosmosConfigNames.AccountEndpoint.equalsIgnoreCase(kvp._1) &&
+      !CosmosConfigNames.AccountKey.equalsIgnoreCase(kvp._1) &&
+      !kvp._1.toLowerCase.contains(CosmosConfigNames.AccountEndpoint.toLowerCase()) &&
+      !kvp._1.toLowerCase.contains(CosmosConfigNames.AccountKey.toLowerCase())
+    )
+  }
+
   private object CosmosContainerProperties {
     val OnlySystemPropertiesIndexingPolicyName: String = "OnlySystemProperties"
     val AllPropertiesIndexingPolicyName: String = "AllProperties"
@@ -888,14 +906,6 @@ class CosmosCatalog
       props.asScala.toMap
     }
   }
-
-  private case class ViewDefinition
-  (
-    databaseName: String,
-    viewName: String,
-    userProvidedSchema: Option[StructType],
-    options: Map[String, String]
-  )
 }
 // scalastyle:on multiple.string.literals
 // scalastyle:on number.of.methods
