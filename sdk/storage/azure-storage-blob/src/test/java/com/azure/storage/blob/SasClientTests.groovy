@@ -143,12 +143,13 @@ class SasClientTests extends APISpec {
             .setListPermission(true)
         if (Constants.SAS_SERVICE_VERSION >= "2019-12-12") {
             permissions
-                .setMovePermission(true)
-                .setExecutePermission(true)
-        }
-        if (Constants.SAS_SERVICE_VERSION >= "2021-04-10") {
+                .setDeleteVersionPermission(true)
             permissions
                 .setFilterPermission(true)
+        }
+        if (Constants.SAS_SERVICE_VERSION >= "2020-06-12") {
+            permissions
+                .setImmutabilityPolicyPermission(true)
         }
 
         def expiryTime = namer.getUtcNow().plusDays(1)
@@ -162,6 +163,7 @@ class SasClientTests extends APISpec {
         and:
         sasValues = new BlobServiceSasSignatureValues(expiryTime, permissions)
         def sasWithPermissions = cc.generateSas(sasValues)
+        System.out.println(sasWithPermissions)
         def client2 = getContainerClient(sasWithPermissions, cc.getBlobContainerUrl())
         client2.listBlobs().iterator().hasNext()
 
