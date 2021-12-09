@@ -1,17 +1,9 @@
 ## Release History
-### 4.5.0-beta.1 (Unreleased)
+### 4.4.3-beta.4 (Unreleased)
 
 ### 4.4.2 (2021-11-15)
 #### Key Bug Fixes
 * Fixed an issue in Spark Streaming jobs processing Cosmos DB's changefeed resulting in error deserializing the offset
-
-### 4.4.1 (2021-11-12)
-#### Key Bug Fixes
-* Fixed an issue that can cause large delays before read or write operations start for large Cosmos DB container 
-
-### 4.4.1 (2021-11-12)
-#### Key Bug Fixes
-* Fixed an issue that can cause large delays before read or write operations start for large Cosmos DB container 
 
 ### 4.4.1 (2021-11-12)
 #### Key Bug Fixes

@@ -7,12 +7,39 @@ package com.azure.spring.cloud.config;
  */
 public enum RequestTracingConstants {
 
+    /**
+     * Constant for Disabling Tracing
+     */
     REQUEST_TRACING_DISABLED_ENVIRONMENT_VARIABLE("AZURE_APP_CONFIGURATION_TRACING_DISABLED"),
+    
+    /**
+     * Constant for checking for use in Azure Functions
+     */
     AZURE_FUNCTIONS_ENVIRONMENT_VARIABLE("FUNCTIONS_EXTENSION_VERSION"),
+    
+    /**
+     * Constant for checking for use in Azure Web App
+     */
     AZURE_WEB_APP_ENVIRONMENT_VARIABLE("WEBSITE_SITE_NAME"),
+    
+    /**
+     * Constant for checking for use in Kubernetes
+     */
     KUBERNETES_ENVIRONMENT_VARIABLE("KUBERNETES_PORT"),
+    
+    /**
+     * Constant for tracing the type of request
+     */
     REQUEST_TYPE_KEY("RequestType"),
+    
+    /**
+     * Constant for tracing the type of host
+     */
     HOST_TYPE_KEY("Host"),
+    
+    /**
+     * Constant for http Header Correlation Context
+     */
     CORRELATION_CONTEXT_HEADER("Correlation-Context");
 
     private final String text;

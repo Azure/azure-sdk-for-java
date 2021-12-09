@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 
 import java.sql.Timestamp
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
+import com.azure.cosmos.spark.udf.GetFeedRangeForPartitionKeyValue
 
 class SparkE2EQueryITest
   extends IntegrationSpec
@@ -467,6 +468,51 @@ class SparkE2EQueryITest
     fieldNames.contains(CosmosTableSchemaInferrer.AttachmentsAttributeName) shouldBe false
   }
 
+  "spark query" can "use schema inference with varying schema across partitions" in {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+    for (index <- 1 to 20) {
+      val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
+      objectNode.put("name", "Shrodigner's frog")
+      objectNode.put("type", "frog")
+      objectNode.put("age", 20)
+      objectNode.put(s"Property${index.toString}", index.toString)
+      objectNode.put("id", UUID.randomUUID().toString)
+      container.createItem(objectNode).block()
+    }
+
+    val cfgWithInference = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainer,
+      "spark.cosmos.read.inferSchema.enabled" -> "true",
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
+    )
+
+    // Not passing schema, letting inference work
+    val dfWithInference = spark.read.format("cosmos.oltp").options(cfgWithInference).load()
+    val rowsArrayWithInference = dfWithInference.where("type = 'frog'").collect()
+    rowsArrayWithInference should have size 20
+
+    val rowWithInference = rowsArrayWithInference(0)
+    rowWithInference.getAs[String]("name") shouldEqual "Shrodigner's frog"
+    rowWithInference.getAs[String]("type") shouldEqual "frog"
+    rowWithInference.getAs[Integer]("age") shouldEqual 20
+
+    val fieldNames = rowWithInference.schema.fields.map(field => field.name)
+    fieldNames.contains(CosmosTableSchemaInferrer.SelfAttributeName) shouldBe false
+    fieldNames.contains(CosmosTableSchemaInferrer.TimestampAttributeName) shouldBe false
+    fieldNames.contains(CosmosTableSchemaInferrer.ResourceIdAttributeName) shouldBe false
+    fieldNames.contains(CosmosTableSchemaInferrer.ETagAttributeName) shouldBe false
+    fieldNames.contains(CosmosTableSchemaInferrer.AttachmentsAttributeName) shouldBe false
+    for (index <- 1 to 20) {
+      logInfo(s"Property${index.toString}")
+      fieldNames.contains(s"Property${index.toString}") shouldBe true
+    }
+  }
+
   "spark query" can "use schema inference with custom query" in {
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
@@ -601,6 +647,7 @@ class SparkE2EQueryITest
     }
     catch {
       case inner: Exception =>
+        logInfo(inner.toString)
         inner.toString.contains("The 1th field 'B' of input row cannot be null") shouldBe true
     }
   }
@@ -854,6 +901,80 @@ class SparkE2EQueryITest
 
     val item = rowsArray(0)
     item.getAs[String]("id") shouldEqual id
+  }
+
+  "spark query" can "for single logical partition can be configured to use only one Spark partition" in  {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+
+    // assert that there is more than one range to ensure the test really is testing the parallelization of work
+    container.getFeedRanges.block().size() should be > 1
+    var lastId = ""
+    for (age <- 1 to 20) {
+      for (state <- Array(true, false)) {
+        val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
+        objectNode.put("name", "Shrodigner's cat")
+        objectNode.put("type", "cat")
+        objectNode.put("age", age)
+        objectNode.put("isAlive", state)
+        lastId = UUID.randomUUID().toString
+        objectNode.put("id", lastId)
+        container.createItem(objectNode).block()
+      }
+    }
+
+    var cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainer,
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
+    )
+
+    // scalastyle:off underscore.import
+    // scalastyle:off import.grouping
+    import org.apache.spark.sql.types._
+    // scalastyle:on underscore.import
+    // scalastyle:on import.grouping
+
+    val customSchema = StructType(Array(
+      StructField("id", StringType),
+      StructField("name", StringType),
+      StructField("type", StringType),
+      StructField("age", IntegerType),
+      StructField("isAlive", BooleanType)
+    ))
+
+    var df = spark.read.schema(customSchema).format("cosmos.oltp").options(cfg).load()
+    var rowsArray = df.where(s"id = '$lastId'").collect()
+    rowsArray should have size 1
+    rowsArray(0).getAs[String]("id") shouldEqual lastId
+    df.rdd.getNumPartitions shouldEqual container.getFeedRanges.block().size()
+
+    spark.udf.register("GetFeedRangeForPartitionKey", new GetFeedRangeForPartitionKeyValue(), StringType)
+    val pkDefinition = "{\"paths\":[\"/id\"],\"kind\":\"Hash\"}"
+    val dummyDf = spark.sql(s"SELECT GetFeedRangeForPartitionKey('$pkDefinition', '$lastId')")
+
+    val feedRange = dummyDf
+      .collect()(0)
+      .getAs[String](0)
+
+    logInfo(s"FeedRange from UDF: $feedRange")
+
+    cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainer,
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive",
+      "spark.cosmos.partitioning.feedRangeFilter" -> feedRange
+    )
+
+    df = spark.read.schema(customSchema).format("cosmos.oltp").options(cfg).load()
+    rowsArray = df.where(s"id = '$lastId'").collect()
+    rowsArray should have size 1
+    rowsArray(0).getAs[String]("id") shouldEqual lastId
+    df.rdd.getNumPartitions shouldEqual 1
   }
 
   //scalastyle:on magic.number
