@@ -174,11 +174,15 @@ public final class AzureEnvironment {
         String metadataEndpoint = String.format("%s/metadata/endpoints?api-version=2019-10-01", endpoint);
         // verify endpoint
         URI uri = new URI(metadataEndpoint);
+        metadataEndpoint = uri.toString();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, metadataEndpoint)
             .setHeader("accept", "application/json");
 
         HttpResponse response = httpClient.send(request).block();
+        if (response == null) {
+            throw LOGGER.logExceptionAsError(new RuntimeException("No response."));
+        }
         if (response.getStatusCode() != 200) {
             throw LOGGER.logExceptionAsError(
                 new HttpResponseException("Status code " + response.getStatusCode(), response));

@@ -3,11 +3,18 @@
 
 package com.azure.core.management.implementation.metadata;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public final class MetadataSuffixes {
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String keyVaultDns;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String storage;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String sqlServerHostname;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String azureDataLakeStoreFileSystem;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String azureDataLakeAnalyticsCatalogAndJob;
 
     public String getKeyVaultDns() {

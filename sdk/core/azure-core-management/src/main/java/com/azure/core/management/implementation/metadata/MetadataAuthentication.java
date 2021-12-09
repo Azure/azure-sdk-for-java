@@ -3,10 +3,14 @@
 
 package com.azure.core.management.implementation.metadata;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 public final class MetadataAuthentication {
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String loginEndpoint;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<String> audiences;
 
     public String getLoginEndpoint() {

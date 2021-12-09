@@ -3,13 +3,22 @@
 
 package com.azure.core.management.implementation.metadata;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public final class Metadata {
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String name;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String portal;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String gallery;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String graph;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String sqlManagement;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private MetadataAuthentication authentication;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private MetadataSuffixes suffixes;
 
     public String getName() {
