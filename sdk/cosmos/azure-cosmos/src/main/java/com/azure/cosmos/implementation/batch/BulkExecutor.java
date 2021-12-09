@@ -94,7 +94,7 @@ public final class BulkExecutor<TContext> {
     private final FluxSink<CosmosItemOperation> mainSink;
     private final List<FluxSink<CosmosItemOperation>> groupSinks;
     private final ScheduledExecutorService executorService;
-    private final ScheduledFuture<?> scheduledFuture;
+    private ScheduledFuture<?> scheduledFutureForFlush;
 
     public BulkExecutor(CosmosAsyncContainer container,
                         Flux<CosmosItemOperation> inputOperations,
@@ -147,7 +147,7 @@ public final class BulkExecutor<TContext> {
         // filtered out before sending requests to the backend)
         this.executorService = Executors.newSingleThreadScheduledExecutor(
                 new CosmosDaemonThreadFactory("BulkExecutor-" + instanceCount.incrementAndGet()));
-        this.scheduledFuture = this.executorService.scheduleWithFixedDelay(
+        this.scheduledFutureForFlush = this.executorService.scheduleWithFixedDelay(
             this::onFlush,
             this.maxMicroBatchIntervalInMs,
             this.maxMicroBatchIntervalInMs,
@@ -189,7 +189,29 @@ public final class BulkExecutor<TContext> {
 
                     completeAllSinks();
                 } else {
+                    ScheduledFuture<?> scheduledFutureSnapshot = this.scheduledFutureForFlush;
+
+                    if (scheduledFutureSnapshot != null) {
+                        try {
+                            scheduledFutureSnapshot.cancel(true);
+                            logger.debug("Cancelled all future scheduled tasks");
+                        } catch (Exception e) {
+                            logger.warn("Failed to cancel scheduled tasks", e);
+                        }
+                    }
+
                     this.onFlush();
+
+                    long flushIntervalAfterDrainingIncomingFlux = Math.min(
+                        this.maxMicroBatchIntervalInMs,
+                        BatchRequestResponseConstants
+                            .DEFAULT_MAX_MICRO_BATCH_INTERVAL_AFTER_DRAINING_INCOMING_FLUX_IN_MILLISECONDS);
+
+                    this.scheduledFutureForFlush = this.executorService.scheduleWithFixedDelay(
+                        this::onFlush,
+                        flushIntervalAfterDrainingIncomingFlux,
+                        flushIntervalAfterDrainingIncomingFlux,
+                        TimeUnit.MILLISECONDS);
                 }
             })
             .mergeWith(mainFluxProcessor)
@@ -557,7 +579,7 @@ public final class BulkExecutor<TContext> {
         logger.debug("All group sinks completed, Context: {}", this.operationContextText);
 
         try {
-            this.scheduledFuture.cancel(true);
+            this.scheduledFutureForFlush.cancel(true);
             logger.debug("Cancelled all future scheduled tasks");
         } catch (Exception e) {
             logger.warn("Failed to cancel scheduled tasks", e);
