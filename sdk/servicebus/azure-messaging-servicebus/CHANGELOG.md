@@ -5,7 +5,7 @@
 - Fixed a bug where Synchronous Receiver client stops receiving messages if MaxMessages is greater than 1. Issue [25063]
 
 #### Dependency Updates
-- Upgraded `azure-core` from `1.22.0` to `>1.23.1`.
+- Upgraded `azure-core` from `1.22.0` to `1.23.1`.
 - Upgraded `azure-core-amqp` from `2.3.4` to `2.3.5`.
 
 ## 7.5.0 (2021-11-16)
