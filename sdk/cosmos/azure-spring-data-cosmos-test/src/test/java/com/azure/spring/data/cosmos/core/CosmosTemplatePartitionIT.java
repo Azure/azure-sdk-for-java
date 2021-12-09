@@ -13,6 +13,7 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.PageTestUtils;
+import com.azure.spring.data.cosmos.common.ResponseDiagnosticsTestUtils;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.common.TestUtils;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
@@ -61,6 +62,7 @@ import static com.azure.spring.data.cosmos.common.TestConstants.UPDATED_FIRST_NA
 import static com.azure.spring.data.cosmos.common.TestConstants.ZIP_CODE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
@@ -85,6 +87,8 @@ public class CosmosTemplatePartitionIT {
     private CosmosConfig cosmosConfig;
     @Autowired
     private CosmosClientBuilder cosmosClientBuilder;
+    @Autowired
+    private ResponseDiagnosticsTestUtils responseDiagnosticsTestUtils;
 
     @Before
     public void setUp() throws ClassNotFoundException {
@@ -194,6 +198,16 @@ public class CosmosTemplatePartitionIT {
             new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON)));
 
         assertEquals(TEST_PERSON, partitionPersonById);
+    }
+
+    @Test
+    public void testFindByIdWithPartitionNotExists() {
+        final PartitionPerson partitionPersonById = cosmosTemplate.findById(NOT_EXIST_ID,
+            PartitionPerson.class,
+            new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON)));
+
+        assertNull(partitionPersonById);
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
     }
 
     @Test
