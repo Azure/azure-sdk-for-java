@@ -3,6 +3,7 @@ omitted_paths:
   - profiles/*
   - loganalytics/data-plane/samples/*
   - sdk/*/azure-*/samples/*
+  - sdk/authorization/microsoft-azure-authentication-msi-token-provider/*
   - sdk/*/azure-monitor-opentelemetry-exporter/*/samples/*
   - sdk/applicationinsights/microsoft-azure-applicationinsights-query/samples/*
   - sdk/spring/azure-spring-boot-samples/*
@@ -133,6 +134,7 @@ known_content_issues:
   - ['sdk/storage/azure-storage-blob-nio/README.md', '#3113']
   - ['sdk/storage/azure-storage-internal-avro/README.md', '#3113']
   - ['sdk/storage/README.md', '#3113']
+  - ['sdk/tools/azure-sdk-archetype/README.md', '#3113']
 
 package_indexing_exclusion_list:
   - azure-loganalytics-sample

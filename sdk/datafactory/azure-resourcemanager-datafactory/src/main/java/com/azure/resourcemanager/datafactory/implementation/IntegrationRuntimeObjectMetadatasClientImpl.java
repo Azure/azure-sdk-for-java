@@ -233,7 +233,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
                 this.client.getHttpPipeline(),
                 SsisObjectMetadataStatusResponseInner.class,
                 SsisObjectMetadataStatusResponseInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

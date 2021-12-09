@@ -454,7 +454,8 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
             deleteWithResponseAsync(resourceGroupName, loadBalancerName, inboundNatRuleName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -949,7 +950,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
                 this.client.getHttpPipeline(),
                 InboundNatRuleInner.class,
                 InboundNatRuleInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

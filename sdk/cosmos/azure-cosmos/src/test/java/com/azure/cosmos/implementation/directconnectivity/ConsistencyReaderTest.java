@@ -198,7 +198,7 @@ public class ConsistencyReaderTest {
                 .build();
         validateSuccess(storeResponseSingle, validator);
 
-        Mockito.verifyZeroInteractions(consistencyReader.getSpyQuorumReader());
+        Mockito.verifyNoInteractions(consistencyReader.getSpyQuorumReader());
 
 
         Mockito.verify(consistencyReader.getSpyStoreReader(), Mockito.times(1))
@@ -316,7 +316,7 @@ public class ConsistencyReaderTest {
                 .build();
         validateSuccess(storeResponseSingle, validator);
 
-        Mockito.verifyZeroInteractions(consistencyReader.getSpyQuorumReader());
+        Mockito.verifyNoInteractions(consistencyReader.getSpyQuorumReader());
 
 
         Mockito.verify(consistencyReader.getSpyStoreReader(), Mockito.times(1))

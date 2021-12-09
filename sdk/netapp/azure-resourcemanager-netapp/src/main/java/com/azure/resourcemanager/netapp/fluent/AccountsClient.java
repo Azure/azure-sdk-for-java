@@ -102,7 +102,7 @@ public interface AccountsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return netApp account resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetAppAccountInner>, NetAppAccountInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, NetAppAccountInner body);
 
@@ -118,7 +118,7 @@ public interface AccountsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return netApp account resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetAppAccountInner>, NetAppAccountInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, NetAppAccountInner body, Context context);
 
@@ -162,7 +162,7 @@ public interface AccountsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName);
 
     /**
@@ -176,7 +176,7 @@ public interface AccountsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, Context context);
 
     /**
@@ -215,7 +215,7 @@ public interface AccountsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return netApp account resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetAppAccountInner>, NetAppAccountInner> beginUpdate(
         String resourceGroupName, String accountName, NetAppAccountPatch body);
 
@@ -231,7 +231,7 @@ public interface AccountsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return netApp account resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetAppAccountInner>, NetAppAccountInner> beginUpdate(
         String resourceGroupName, String accountName, NetAppAccountPatch body, Context context);
 

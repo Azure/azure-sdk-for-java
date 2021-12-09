@@ -274,7 +274,8 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
             deleteWithResponseAsync(resourceGroupName, privateEndpointName, privateDnsZoneGroupName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -740,7 +741,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
                 this.client.getHttpPipeline(),
                 PrivateDnsZoneGroupInner.class,
                 PrivateDnsZoneGroupInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

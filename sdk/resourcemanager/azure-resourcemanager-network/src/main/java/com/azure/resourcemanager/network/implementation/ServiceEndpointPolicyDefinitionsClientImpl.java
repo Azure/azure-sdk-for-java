@@ -290,7 +290,8 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
             deleteWithResponseAsync(resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -806,7 +807,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
                 this.client.getHttpPipeline(),
                 ServiceEndpointPolicyDefinitionInner.class,
                 ServiceEndpointPolicyDefinitionInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

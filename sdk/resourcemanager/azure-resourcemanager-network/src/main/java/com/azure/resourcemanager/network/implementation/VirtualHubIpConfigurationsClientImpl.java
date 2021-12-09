@@ -460,7 +460,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
                 this.client.getHttpPipeline(),
                 HubIpConfigurationInner.class,
                 HubIpConfigurationInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -755,7 +755,8 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
             deleteWithResponseAsync(resourceGroupName, virtualHubName, ipConfigName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

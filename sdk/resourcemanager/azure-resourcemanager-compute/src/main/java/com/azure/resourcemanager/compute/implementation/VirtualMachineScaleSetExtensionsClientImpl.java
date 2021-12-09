@@ -326,7 +326,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                 this.client.getHttpPipeline(),
                 VirtualMachineScaleSetExtensionInner.class,
                 VirtualMachineScaleSetExtensionInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -666,7 +666,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                 this.client.getHttpPipeline(),
                 VirtualMachineScaleSetExtensionInner.class,
                 VirtualMachineScaleSetExtensionInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -965,7 +965,8 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
             deleteWithResponseAsync(resourceGroupName, vmScaleSetName, vmssExtensionName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

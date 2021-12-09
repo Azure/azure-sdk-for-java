@@ -557,7 +557,7 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
                 this.client.getHttpPipeline(),
                 WorkloadClassifierInner.class,
                 WorkloadClassifierInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -964,7 +964,8 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
                 resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

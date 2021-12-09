@@ -619,7 +619,7 @@ public final class PoliciesClientImpl
                 this.client.getHttpPipeline(),
                 CdnWebApplicationFirewallPolicyInner.class,
                 CdnWebApplicationFirewallPolicyInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -910,7 +910,7 @@ public final class PoliciesClientImpl
                 this.client.getHttpPipeline(),
                 CdnWebApplicationFirewallPolicyInner.class,
                 CdnWebApplicationFirewallPolicyInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

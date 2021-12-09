@@ -273,7 +273,8 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
             deleteWithResponseAsync(resourceGroupName, networkVirtualApplianceName, siteName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -735,7 +736,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
                 this.client.getHttpPipeline(),
                 VirtualApplianceSiteInner.class,
                 VirtualApplianceSiteInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

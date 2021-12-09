@@ -838,7 +838,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                 this.client.getHttpPipeline(),
                 CassandraKeyspaceGetResultsInner.class,
                 CassandraKeyspaceGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1142,7 +1142,8 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
             deleteCassandraKeyspaceWithResponseAsync(resourceGroupName, accountName, keyspaceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1611,7 +1612,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                 this.client.getHttpPipeline(),
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1932,7 +1933,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                 this.client.getHttpPipeline(),
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2204,7 +2205,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                 this.client.getHttpPipeline(),
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2888,7 +2889,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                 this.client.getHttpPipeline(),
                 CassandraTableGetResultsInner.class,
                 CassandraTableGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -3217,7 +3218,8 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
             deleteCassandraTableWithResponseAsync(resourceGroupName, accountName, keyspaceName, tableName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -3724,7 +3726,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                 this.client.getHttpPipeline(),
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -4070,7 +4072,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                 this.client.getHttpPipeline(),
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -4366,7 +4368,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                 this.client.getHttpPipeline(),
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

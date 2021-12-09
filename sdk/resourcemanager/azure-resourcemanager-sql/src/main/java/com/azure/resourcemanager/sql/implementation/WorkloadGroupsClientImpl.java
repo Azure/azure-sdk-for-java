@@ -485,7 +485,11 @@ public final class WorkloadGroupsClientImpl implements WorkloadGroupsClient {
         return this
             .client
             .<WorkloadGroupInner, WorkloadGroupInner>getLroResult(
-                mono, this.client.getHttpPipeline(), WorkloadGroupInner.class, WorkloadGroupInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                WorkloadGroupInner.class,
+                WorkloadGroupInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -816,7 +820,8 @@ public final class WorkloadGroupsClientImpl implements WorkloadGroupsClient {
             deleteWithResponseAsync(resourceGroupName, serverName, databaseName, workloadGroupName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

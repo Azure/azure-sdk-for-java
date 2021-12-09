@@ -298,7 +298,8 @@ public final class CustomIpPrefixesClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, customIpPrefixName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -738,7 +739,7 @@ public final class CustomIpPrefixesClientImpl
                 this.client.getHttpPipeline(),
                 CustomIpPrefixInner.class,
                 CustomIpPrefixInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

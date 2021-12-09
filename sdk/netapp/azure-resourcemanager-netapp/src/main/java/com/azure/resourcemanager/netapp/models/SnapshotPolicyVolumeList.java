@@ -14,7 +14,7 @@ public interface SnapshotPolicyVolumeList {
      *
      * @return the value value.
      */
-    List<Object> value();
+    List<Volume> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.netapp.fluent.models.SnapshotPolicyVolumeListInner object.

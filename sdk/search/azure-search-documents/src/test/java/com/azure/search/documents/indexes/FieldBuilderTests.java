@@ -44,7 +44,8 @@ public class FieldBuilderTests {
     public void hotelListFieldSearchableThrowException() {
         Exception exception = assertThrows(RuntimeException.class, () ->
             SearchIndexClient.buildSearchFields(HotelSearchableExceptionOnList.class, null));
-        assertExceptionMassageAndDataType(exception, SearchFieldDataType.collection(SearchFieldDataType.INT32), "getPasscode");
+        assertExceptionMassageAndDataType(exception, SearchFieldDataType.collection(SearchFieldDataType.INT32),
+            "getPasscode");
     }
 
     @Test
@@ -251,7 +252,6 @@ public class FieldBuilderTests {
     public void unsupportedFields() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
             SearchIndexClient.buildSearchFields(HotelWithUnsupportedField.class, null));
-        System.out.println(exception.getMessage());
         assertExceptionMassageAndDataType(exception, null, "is not supported");
     }
 

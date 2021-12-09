@@ -367,7 +367,11 @@ public final class ServicesClientImpl
         return this
             .client
             .<SearchServiceInner, SearchServiceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SearchServiceInner.class, SearchServiceInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                SearchServiceInner.class,
+                SearchServiceInner.class,
+                this.client.getContext());
     }
 
     /**

@@ -319,7 +319,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
                 this.client.getHttpPipeline(),
                 PacketCaptureResultInner.class,
                 PacketCaptureResultInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -780,7 +780,8 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
             deleteWithResponseAsync(resourceGroupName, networkWatcherName, packetCaptureName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1038,7 +1039,8 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
             stopWithResponseAsync(resourceGroupName, networkWatcherName, packetCaptureName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1301,7 +1303,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
                 this.client.getHttpPipeline(),
                 PacketCaptureQueryStatusResultInner.class,
                 PacketCaptureQueryStatusResultInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

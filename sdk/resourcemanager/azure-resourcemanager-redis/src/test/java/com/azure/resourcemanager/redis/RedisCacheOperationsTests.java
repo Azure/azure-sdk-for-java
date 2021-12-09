@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.redis;
 
+import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.redis.models.DayOfWeek;
@@ -15,11 +16,13 @@ import com.azure.resourcemanager.redis.models.ReplicationRole;
 import com.azure.resourcemanager.redis.models.ScheduleEntry;
 import com.azure.resourcemanager.redis.models.SkuFamily;
 import com.azure.resourcemanager.redis.models.SkuName;
+import com.azure.resourcemanager.redis.models.TlsVersion;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
+import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -288,5 +291,49 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
 
         linkedServers = premiumRgg.listLinkedServers();
         Assertions.assertEquals(0, linkedServers.size());
+    }
+
+    @Test
+    public void canCreateRedisWithRdbAof() {
+        StorageAccount storageAccount =
+            storageManager
+                .storageAccounts()
+                .define(saName)
+                .withRegion(Region.US_WEST3)
+                .withNewResourceGroup(rgName)
+                .create();
+
+        String connectionString = ResourceManagerUtils.getStorageConnectionString(saName, storageAccount.getKeys().get(0).value(), AzureEnvironment.AZURE);
+
+        // RDB
+        RedisCache redisCache =
+            redisManager
+                .redisCaches()
+                .define(rrName)
+                .withRegion(Region.US_WEST3)
+                .withExistingResourceGroup(rgName)
+                .withPremiumSku()
+                .withMinimumTlsVersion(TlsVersion.ONE_TWO)
+                .withRedisConfiguration("rdb-backup-enabled", "true")
+                .withRedisConfiguration("rdb-backup-frequency", "15")
+                .withRedisConfiguration("rdb-backup-max-snapshot-count", "1")
+                .withRedisConfiguration("rdb-storage-connection-string", connectionString)
+                .create();
+
+        redisManager.redisCaches().deleteById(redisCache.id());
+
+        // AOF
+        redisCache =
+            redisManager
+                .redisCaches()
+                .define(rrName)
+                .withRegion(Region.US_WEST3)
+                .withExistingResourceGroup(rgName)
+                .withPremiumSku()
+                .withMinimumTlsVersion(TlsVersion.ONE_TWO)
+                .withRedisConfiguration("aof-backup-enabled", "true")
+                .withRedisConfiguration("aof-storage-connection-string-0", connectionString)
+                .withRedisConfiguration("aof-storage-connection-string-1", connectionString)
+                .create();
     }
 }

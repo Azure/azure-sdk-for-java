@@ -1,5 +1,17 @@
 # Release History
 
+## 7.6.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+- Fixed a bug where Synchronous Receiver client stops receiving messages if MaxMessages is greater than 1. Issue [25063]
+
+### Other Changes
+
 ## 7.5.0 (2021-11-16)
 ### Features Added
 - Moved to service API version `2021-05`

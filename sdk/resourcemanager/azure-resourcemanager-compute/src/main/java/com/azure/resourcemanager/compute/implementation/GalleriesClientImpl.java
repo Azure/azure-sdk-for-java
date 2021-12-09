@@ -316,7 +316,7 @@ public final class GalleriesClientImpl
         return this
             .client
             .<GalleryInner, GalleryInner>getLroResult(
-                mono, this.client.getHttpPipeline(), GalleryInner.class, GalleryInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), GalleryInner.class, GalleryInner.class, this.client.getContext());
     }
 
     /**
@@ -588,7 +588,7 @@ public final class GalleriesClientImpl
         return this
             .client
             .<GalleryInner, GalleryInner>getLroResult(
-                mono, this.client.getHttpPipeline(), GalleryInner.class, GalleryInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), GalleryInner.class, GalleryInner.class, this.client.getContext());
     }
 
     /**
@@ -1021,7 +1021,8 @@ public final class GalleriesClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, galleryName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
