@@ -14,9 +14,24 @@ import java.util.Set;
  * Constants used for AAD related logic.
  */
 public class Constants {
+    /**
+     * Bearer prefix
+     */
     public static final String BEARER_PREFIX = "Bearer "; // Whitespace at the end is necessary.
+
+    /**
+     * Conditional access policy claims
+     */
     public static final String CONDITIONAL_ACCESS_POLICY_CLAIMS = "CONDITIONAL_ACCESS_POLICY_CLAIMS";
+
+    /**
+     * claims
+     */
     public static final String CLAIMS = "claims";
+
+    /**
+     * Default authority set
+     */
     public static final Set<SimpleGrantedAuthority> DEFAULT_AUTHORITY_SET;
 
     static {

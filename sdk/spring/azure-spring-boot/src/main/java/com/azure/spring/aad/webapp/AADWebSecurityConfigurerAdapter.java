@@ -31,6 +31,10 @@ public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigu
     private ClientRegistrationRepository repo;
     @Autowired
     private OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService;
+
+    /**
+     * AAD authentication properties
+     */
     @Autowired
     protected AADAuthenticationProperties properties;
 
@@ -55,6 +59,11 @@ public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigu
         // @formatter:off
     }
 
+    /**
+     * Gets the OIDC logout success handler.
+     *
+     * @return the OIDC logout success handler
+     */
     protected LogoutSuccessHandler oidcLogoutSuccessHandler() {
         OidcClientInitiatedLogoutSuccessHandler oidcLogoutSuccessHandler =
             new OidcClientInitiatedLogoutSuccessHandler(this.repo);
@@ -65,6 +74,11 @@ public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigu
         return oidcLogoutSuccessHandler;
     }
 
+    /**
+     * Gets the access token response client.
+     *
+     * @return the access token response client
+     */
     protected OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {
         DefaultAuthorizationCodeTokenResponseClient result = new DefaultAuthorizationCodeTokenResponseClient();
         if (repo instanceof AADClientRegistrationRepository) {
@@ -75,6 +89,11 @@ public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigu
         return result;
     }
 
+    /**
+     * Gets the request resolver.
+     *
+     * @return the request resolver
+     */
     protected OAuth2AuthorizationRequestResolver requestResolver() {
         return new AADOAuth2AuthorizationRequestResolver(this.repo, properties);
     }

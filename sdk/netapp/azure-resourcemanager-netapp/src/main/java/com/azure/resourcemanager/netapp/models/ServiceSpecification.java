@@ -22,7 +22,7 @@ public final class ServiceSpecification {
     private List<MetricSpecification> metricSpecifications;
 
     /*
-     * The logSpecifications property.
+     * Log specification of operation.
      */
     @JsonProperty(value = "logSpecifications")
     private List<LogSpecification> logSpecifications;
@@ -48,7 +48,7 @@ public final class ServiceSpecification {
     }
 
     /**
-     * Get the logSpecifications property: The logSpecifications property.
+     * Get the logSpecifications property: Log specification of operation.
      *
      * @return the logSpecifications value.
      */
@@ -57,7 +57,7 @@ public final class ServiceSpecification {
     }
 
     /**
-     * Set the logSpecifications property: The logSpecifications property.
+     * Set the logSpecifications property: Log specification of operation.
      *
      * @param logSpecifications the logSpecifications value to set.
      * @return the ServiceSpecification object itself.

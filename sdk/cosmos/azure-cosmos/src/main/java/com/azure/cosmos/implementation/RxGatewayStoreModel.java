@@ -39,6 +39,8 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.concurrent.Callable;
 
+import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders.INTENDED_COLLECTION_RID_HEADER;
+
 /**
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
@@ -453,7 +455,7 @@ class RxGatewayStoreModel implements RxStoreModel {
 
     @Override
     public Mono<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request) {
-        Mono<RxDocumentServiceResponse> responseObs =  this.applySessionToken(request).then(invokeAsync(request));
+        Mono<RxDocumentServiceResponse> responseObs = this.addIntendedCollectionRidAndSessionToken(request).then(invokeAsync(request));
 
         return responseObs.onErrorResume(
                 e -> {
@@ -511,6 +513,25 @@ class RxGatewayStoreModel implements RxStoreModel {
         }
     }
 
+    private Mono<Void> addIntendedCollectionRidAndSessionToken(RxDocumentServiceRequest request) {
+        return applySessionToken(request).then(addIntendedCollectionRid(request));
+    }
+
+    private Mono<Void> addIntendedCollectionRid(RxDocumentServiceRequest request) {
+        if (this.collectionCache != null && request.getResourceType().equals(ResourceType.Document)) {
+            return this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request).flatMap(documentCollectionValueHolder -> {
+                if (StringUtils.isEmpty(request.getHeaders().get(INTENDED_COLLECTION_RID_HEADER))) {
+                    request.getHeaders().put(INTENDED_COLLECTION_RID_HEADER,
+                        request.requestContext.resolvedCollectionRid);
+                } else {
+                    request.intendedCollectionRidPassedIntoSDK = true;
+                }
+                return Mono.empty();
+            });
+        }
+        return Mono.empty();
+    }
+
     private Mono<Void> applySessionToken(RxDocumentServiceRequest request) {
         Map<String, String> headers = request.getHeaders();
         Objects.requireNonNull(headers, "RxDocumentServiceRequest::headers is required and cannot be null");
@@ -541,25 +562,37 @@ class RxGatewayStoreModel implements RxStoreModel {
             // apply token for write request only if batch operation or multi master
         }
 
-        String partitionKeyRangeId = request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
-        PartitionKeyInternal partitionKeyInternal = request.getPartitionKeyInternal();
-
-        if (StringUtils.isNotEmpty(partitionKeyRangeId)) {
-            SessionTokenHelper.setPartitionLocalSessionToken(request, partitionKeyRangeId, sessionContainer);
-            return Mono.empty();
-        } else if (partitionKeyInternal != null) {
+        if (this.collectionCache != null && this.partitionKeyRangeCache != null) {
             return this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request).
                 flatMap(collectionValueHolder -> partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
                     collectionValueHolder.v.getResourceId(),
                     null,
                     null).flatMap(collectionRoutingMapValueHolder -> {
-                    String effectivePartitionKeyString = PartitionKeyInternalHelper
-                        .getEffectivePartitionKeyString(
-                            partitionKeyInternal,
-                            collectionValueHolder.v.getPartitionKey());
-                    PartitionKeyRange range =
-                        collectionRoutingMapValueHolder.v.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
-                    request.requestContext.resolvedPartitionKeyRange = range;
+                    String partitionKeyRangeId =
+                        request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
+                    PartitionKeyInternal partitionKeyInternal = request.getPartitionKeyInternal();
+
+                    if (StringUtils.isNotEmpty(partitionKeyRangeId)) {
+                        PartitionKeyRange range =
+                            collectionRoutingMapValueHolder.v.getRangeByPartitionKeyRangeId(partitionKeyRangeId);
+                        request.requestContext.resolvedPartitionKeyRange = range;
+                    } else if (partitionKeyInternal != null) {
+                        String effectivePartitionKeyString = PartitionKeyInternalHelper
+                            .getEffectivePartitionKeyString(
+                                partitionKeyInternal,
+                                collectionValueHolder.v.getPartitionKey());
+                        PartitionKeyRange range =
+                            collectionRoutingMapValueHolder.v.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
+                        request.requestContext.resolvedPartitionKeyRange = range;
+                    } else {
+                        //Apply the ambient session.
+                        String sessionToken = this.sessionContainer.resolveGlobalSessionToken(request);
+
+                        if (!Strings.isNullOrEmpty(sessionToken)) {
+                            headers.put(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionToken);
+                        }
+                        return Mono.empty();
+                    }
                     SessionTokenHelper.setPartitionLocalSessionToken(request, sessionContainer);
                     return Mono.empty();
                 }));

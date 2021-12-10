@@ -46,12 +46,19 @@ public final class ImageTemplatePlatformImageSource extends ImageTemplateSource 
      * Image version from the [Azure Gallery
      * Images](https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages).
      * If 'latest' is specified here, the version is evaluated when the image
-     * build takes place, not when the template is submitted. Specifying
-     * 'latest' could cause ROUNDTRIP_INCONSISTENT_PROPERTY issue which will be
-     * fixed.
+     * build takes place, not when the template is submitted.
      */
     @JsonProperty(value = "version")
     private String version;
+
+    /*
+     * Image version from the [Azure Gallery
+     * Images](https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages).
+     * This readonly field differs from 'version', only if the value specified
+     * in 'version' field is 'latest'.
+     */
+    @JsonProperty(value = "exactVersion", access = JsonProperty.Access.WRITE_ONLY)
+    private String exactVersion;
 
     /*
      * Optional configuration of purchase plan for platform image.
@@ -128,8 +135,7 @@ public final class ImageTemplatePlatformImageSource extends ImageTemplateSource 
     /**
      * Get the version property: Image version from the [Azure Gallery
      * Images](https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages). If 'latest' is specified here,
-     * the version is evaluated when the image build takes place, not when the template is submitted. Specifying
-     * 'latest' could cause ROUNDTRIP_INCONSISTENT_PROPERTY issue which will be fixed.
+     * the version is evaluated when the image build takes place, not when the template is submitted.
      *
      * @return the version value.
      */
@@ -140,8 +146,7 @@ public final class ImageTemplatePlatformImageSource extends ImageTemplateSource 
     /**
      * Set the version property: Image version from the [Azure Gallery
      * Images](https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages). If 'latest' is specified here,
-     * the version is evaluated when the image build takes place, not when the template is submitted. Specifying
-     * 'latest' could cause ROUNDTRIP_INCONSISTENT_PROPERTY issue which will be fixed.
+     * the version is evaluated when the image build takes place, not when the template is submitted.
      *
      * @param version the version value to set.
      * @return the ImageTemplatePlatformImageSource object itself.
@@ -149,6 +154,17 @@ public final class ImageTemplatePlatformImageSource extends ImageTemplateSource 
     public ImageTemplatePlatformImageSource withVersion(String version) {
         this.version = version;
         return this;
+    }
+
+    /**
+     * Get the exactVersion property: Image version from the [Azure Gallery
+     * Images](https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages). This readonly field differs from
+     * 'version', only if the value specified in 'version' field is 'latest'.
+     *
+     * @return the exactVersion value.
+     */
+    public String exactVersion() {
+        return this.exactVersion;
     }
 
     /**

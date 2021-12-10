@@ -38,7 +38,6 @@ import static com.azure.spring.autoconfigure.aad.Constants.BEARER_PREFIX;
  * A stateful authentication filter which uses Microsoft Graph groups to authorize. Both ID token and access token are
  * supported. In the case of access token, only access token issued for the exact same application this filter used for
  * could be accepted, e.g. access token issued for Microsoft Graph could not be processed by users' application.
- * <p>
  *
  * @deprecated See the <a href="https://github.com/Azure/azure-sdk-for-java/issues/17860">Alternative method</a>.
  */
@@ -50,6 +49,13 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
     private final UserPrincipalManager userPrincipalManager;
     private final AzureADGraphClient azureADGraphClient;
 
+    /**
+     * Creates a new instance of {@link AADAuthenticationFilter}.
+     *
+     * @param aadAuthenticationProperties the AAD authentication properties
+     * @param endpoints the AAD authorization server endpoints
+     * @param resourceRetriever the resource retriever
+     */
     public AADAuthenticationFilter(AADAuthenticationProperties aadAuthenticationProperties,
                                    AADAuthorizationServerEndpoints endpoints,
                                    ResourceRetriever resourceRetriever) {
@@ -65,6 +71,14 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
         );
     }
 
+    /**
+     * Creates a new instance of {@link AADAuthenticationFilter}.
+     *
+     * @param aadAuthenticationProperties the AAD authentication properties
+     * @param endpoints the AAD authorization server endpoints
+     * @param resourceRetriever the resource retriever
+     * @param jwkSetCache the JWK set cache
+     */
     public AADAuthenticationFilter(AADAuthenticationProperties aadAuthenticationProperties,
                                    AADAuthorizationServerEndpoints endpoints,
                                    ResourceRetriever resourceRetriever,
@@ -82,6 +96,13 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
         );
     }
 
+    /**
+     * Creates a new instance of {@link AADAuthenticationFilter}.
+     *
+     * @param aadAuthenticationProperties the AAD authentication properties
+     * @param endpoints the AAD authorization server endpoints
+     * @param userPrincipalManager the user principal manager
+     */
     public AADAuthenticationFilter(AADAuthenticationProperties aadAuthenticationProperties,
                                    AADAuthorizationServerEndpoints endpoints,
                                    UserPrincipalManager userPrincipalManager) {

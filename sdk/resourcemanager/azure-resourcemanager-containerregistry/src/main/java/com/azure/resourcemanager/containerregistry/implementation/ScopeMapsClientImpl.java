@@ -472,7 +472,11 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
         return this
             .client
             .<ScopeMapInner, ScopeMapInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ScopeMapInner.class, ScopeMapInner.class, this.client.getContext());
+                mono,
+                this.client.getHttpPipeline(),
+                ScopeMapInner.class,
+                ScopeMapInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -752,7 +756,8 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, registryName, scopeMapName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1036,7 +1041,11 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
         return this
             .client
             .<ScopeMapInner, ScopeMapInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ScopeMapInner.class, ScopeMapInner.class, this.client.getContext());
+                mono,
+                this.client.getHttpPipeline(),
+                ScopeMapInner.class,
+                ScopeMapInner.class,
+                this.client.getContext());
     }
 
     /**

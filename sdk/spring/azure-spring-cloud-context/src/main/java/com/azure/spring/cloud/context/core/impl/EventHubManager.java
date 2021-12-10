@@ -17,6 +17,12 @@ public class EventHubManager extends AzureManager<EventHub, Tuple<EventHubNamesp
 
     private final AzureResourceManager azureResourceManager;
 
+    /**
+     * Creates a new instance of {@link EventHubManager}.
+     *
+     * @param azureResourceManager The Azure resource manager.
+     * @param azureProperties The Azure properties.
+     */
     public EventHubManager(AzureResourceManager azureResourceManager, AzureProperties azureProperties) {
         super(azureProperties);
         this.azureResourceManager = azureResourceManager;

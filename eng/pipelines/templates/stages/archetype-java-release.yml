@@ -14,9 +14,6 @@ parameters:
   - name: ArtifactName
     type: string
     default: 'not-specified'
-  - name: TargetDocRepoOwner
-    type: string
-    default: ''
   - name: TargetDocRepoName
     type: string
     default: ''
@@ -47,6 +44,7 @@ stages:
                 - checkout: none
 
                 - download: current
+                  displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
                   artifact: ${{parameters.ArtifactName}}
 
                 - template: tools/java-esrp-signing/java-esrp-signing.yml@azure-sdk-build-tools
@@ -134,6 +132,10 @@ stages:
               runOnce:
                 deploy:
                   steps:
+                    - download: current
+                      displayName: 'Download Artifact: ${{parameters.ArtifactName}}-signed'
+                      artifact: ${{parameters.ArtifactName}}-signed
+                      patterns: ${{artifact.groupId}}/${{artifact.name}}/**
                     - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                     - template: /eng/common/pipelines/templates/steps/retain-run.yml
                     - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
@@ -157,6 +159,10 @@ stages:
                 runOnce:
                   deploy:
                     steps:
+                      - download: current
+                        displayName: Download Artifacts
+                        artifact: ${{parameters.ArtifactName}}-signed
+                        patterns: ${{artifact.groupId}}/${{artifact.name}}/**
                       - checkout: azure-sdk-build-tools
                         path: azure-sdk-build-tools
                       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
@@ -216,13 +222,16 @@ stages:
                           SkipDefaultCheckout: true
                           Paths:
                             - sdk/**/*.md
+                            - .github/CODEOWNERS
                       - download: current
+                        displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
+                        artifact: ${{parameters.ArtifactName}}
                       - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
                         parameters:
                           PackageInfoLocations:
                             - $(Pipeline.Workspace)/${{parameters.ArtifactName}}/PackageInfo/${{artifact.name}}.json
                           WorkingDirectory: $(System.DefaultWorkingDirectory)
-                          TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
+                          TargetDocRepoOwner: 'Azure'
                           TargetDocRepoName: ${{parameters.TargetDocRepoName}}
                           Language: 'java'
                           SparseCheckoutPaths:
@@ -245,6 +254,10 @@ stages:
                   deploy:
                     steps:
                       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+                      - download: current
+                        displayName: 'Download Artifact: ${{parameters.ArtifactName}}-signed'
+                        artifact: ${{parameters.ArtifactName}}-signed
+                        patterns: ${{artifact.groupId}}/${{artifact.name}}/**
                       - pwsh: |
                           Get-ChildItem -Recurse $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
                         workingDirectory: $(Pipeline.Workspace)
@@ -274,6 +287,8 @@ stages:
                 runOnce:
                   deploy:
                     steps:
+                      - download: none
+                      
                       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                         parameters:
                           Paths:
@@ -332,6 +347,7 @@ stages:
                 WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
 
         - download: current
+          displayName: 'Download Artifact: ${{parameters.ArtifactName}}-signed'
           artifact: ${{parameters.ArtifactName}}-signed
         - pwsh: |
             # For safety default to publishing to the private feed.
@@ -374,7 +390,10 @@ stages:
               SkipDefaultCheckout: true 
               Paths:
                 - sdk/**/*.md
+                - .github/CODEOWNERS
           - download: current
+            displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
+            artifact: ${{parameters.ArtifactName}}
           - pwsh: |
               Get-ChildItem -Recurse $(Pipeline.Workspace)/${{parameters.ArtifactName}}/
             displayName: Show visible artifacts
@@ -386,7 +405,7 @@ stages:
                   - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
                     - $(Pipeline.Workspace)/${{parameters.ArtifactName}}/PackageInfo/${{artifact.name}}.json
               WorkingDirectory: $(System.DefaultWorkingDirectory)
-              TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
+              TargetDocRepoOwner: "azure-sdk"
               TargetDocRepoName: ${{parameters.TargetDocRepoName}}
               Language: 'java'
               DailyDocsBuild: true
