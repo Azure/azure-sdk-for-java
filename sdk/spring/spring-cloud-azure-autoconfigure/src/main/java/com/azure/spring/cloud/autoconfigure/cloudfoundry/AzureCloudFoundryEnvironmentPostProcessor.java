@@ -66,7 +66,7 @@ public class AzureCloudFoundryEnvironmentPostProcessor implements EnvironmentPos
 
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
-        if (!StringUtils.isEmpty(environment.getProperty(VCAP_SERVICES_ENVVAR))) {
+        if (StringUtils.hasText(environment.getProperty(VCAP_SERVICES_ENVVAR))) {
             Map<String, Object> vcapMap = PARSER.parseMap(environment.getProperty(VCAP_SERVICES_ENVVAR));
 
             Properties azureCfServiceProperties = new Properties();
