@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemOperationType;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import io.netty.handler.codec.http.HttpMethod;
@@ -193,6 +194,16 @@ public class SessionTest extends TestSuiteBase {
         // Session token validation for cross partition query
         spyClient.clearCapturedRequests();
         queryRequestOptions = new CosmosQueryRequestOptions();
+        spyClient.queryDocuments(getCollectionLink(isNameBased), query, queryRequestOptions).blockFirst();
+        assertThat(getSessionTokensInRequests().size()).isGreaterThanOrEqualTo(1);
+        assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
+        assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
+
+        // Session token validation for feed ranges query
+        spyClient.clearCapturedRequests();
+        List<FeedRange> feedRanges = spyClient.getFeedRanges(getCollectionLink(isNameBased)).block();
+        queryRequestOptions = new CosmosQueryRequestOptions();
+        queryRequestOptions.setFeedRange(feedRanges.get(0));
         spyClient.queryDocuments(getCollectionLink(isNameBased), query, queryRequestOptions).blockFirst();
         assertThat(getSessionTokensInRequests().size()).isGreaterThanOrEqualTo(1);
         assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
