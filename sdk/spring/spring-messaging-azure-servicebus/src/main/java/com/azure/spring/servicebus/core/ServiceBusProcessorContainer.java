@@ -77,7 +77,7 @@ public class ServiceBusProcessorContainer implements Lifecycle, DisposableBean {
      *
      * @param queue the queue
      * @param listener the listener to process messages.
-     * @return
+     * @return the {@link ServiceBusProcessorClient} created to subscribe to the queue.
      */
     public ServiceBusProcessorClient subscribe(String queue, MessageProcessingListener listener) {
         ServiceBusProcessorClient processor = this.processorFactory.createProcessor(queue, listener);
@@ -102,7 +102,7 @@ public class ServiceBusProcessorContainer implements Lifecycle, DisposableBean {
      * @param topic the topic.
      * @param subscription the subscription.
      * @param listener the listener to process messages.
-     * @return
+     * @return the {@link ServiceBusProcessorClient} created to subscribe to the topic.
      */
     public ServiceBusProcessorClient subscribe(String topic, String subscription, MessageProcessingListener listener) {
         ServiceBusProcessorClient processor = this.processorFactory.createProcessor(topic, subscription, listener);

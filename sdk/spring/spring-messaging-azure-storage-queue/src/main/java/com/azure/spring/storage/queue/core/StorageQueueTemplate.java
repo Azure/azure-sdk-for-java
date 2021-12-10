@@ -28,7 +28,7 @@ import java.util.Map;
 /**
  * Azure Storage Queue template to support send / receive {@link Message} asynchronously.
  */
-public final class StorageQueueTemplate implements StorageQueueOperation {
+public class StorageQueueTemplate implements StorageQueueOperation {
     private static final Logger LOG = LoggerFactory.getLogger(StorageQueueTemplate.class);
     private static final int DEFAULT_VISIBILITY_TIMEOUT_IN_SECONDS = 30;
     private static final String MSG_FAIL_CHECKPOINT = "Failed to checkpoint %s in storage queue '%s'";

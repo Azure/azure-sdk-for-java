@@ -88,7 +88,7 @@ public class EventHubsProcessorContainer implements Lifecycle, DisposableBean {
      * @param eventHubName Event Hub entity name
      * @param consumerGroup Consumer group name
      * @param listener the listener to process Event Hub events.
-     * @return
+     * @return the {@link EventProcessorClient} created to subscribe.
      */
     public EventProcessorClient subscribe(String eventHubName, String consumerGroup, EventProcessingListener listener) {
         EventProcessorClient processor = this.processorFactory.createProcessor(eventHubName, consumerGroup, listener);

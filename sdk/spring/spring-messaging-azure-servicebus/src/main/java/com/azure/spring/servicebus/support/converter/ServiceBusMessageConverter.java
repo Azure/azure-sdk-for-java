@@ -54,7 +54,7 @@ public class ServiceBusMessageConverter
 
     /**
      * Construct the message converter with customized {@code ObjectMapper}.
-     * @param objectMapper
+     * @param objectMapper the object mapper.
      */
     public ServiceBusMessageConverter(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
