@@ -15,7 +15,6 @@ import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChan
 import com.azure.spring.eventhubs.core.EventHubsProcessorContainer;
 import com.azure.spring.eventhubs.core.EventHubsTemplate;
 import com.azure.spring.eventhubs.core.producer.DefaultEventHubsNamespaceProducerFactory;
-import com.azure.spring.integration.eventhubs.inbound.EventHubsInboundChannelAdapter;
 import com.azure.spring.integration.eventhubs.inbound.health.EventHusProcessorInstrumentation;
 import com.azure.spring.integration.instrumentation.Instrumentation;
 import com.azure.spring.integration.instrumentation.InstrumentationManager;
@@ -187,7 +186,7 @@ public class EventHubsBinderHealthIndicatorTest {
 
         private InstrumentationManager instrumentationManager;
         private String instrumentationId;
-         void updateInstrumentation(ErrorContext errorContext,
+        void updateInstrumentation(ErrorContext errorContext,
                                            InstrumentationManager instrumentationManager,
                                            String instrumentationId) {
             Instrumentation instrumentation = instrumentationManager.getHealthInstrumentation(instrumentationId);
