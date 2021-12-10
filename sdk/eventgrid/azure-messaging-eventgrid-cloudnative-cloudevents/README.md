@@ -6,12 +6,8 @@ using the Azure Event Grid library.
 ## Getting started
 
 ### Prerequisites
-If you use the Azure CLI, replace `<your-resource-group-name>` and `<your-resource-name>` with your own unique names
-and `<location>` with a valid Azure service location.
-
-```bash
-az eventgrid domain create --location <location> --resource-group <your-resource-group-name> --name <your-resource-name>
-```
+You should have an EventGrid client before using this bridge library. Follow [Azure EventGrid][eventgridGettingStarted]
+steps to create an EventGrid client.
 
 ### Include the package
 #### Include the BOM file
@@ -125,7 +121,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 <!-- LINKS -->
 [javadocs]: https://azure.github.io/azure-sdk-for-java/eventgrid.html
-
+[eventgridGettingStarted]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventgrid/azure-messaging-eventgrid#getting-started 
 [CNCFCloudEvents]: https://cloudevents.github.io/sdk-java/
 [HttpResponseException]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/exception/HttpResponseException.java
 
