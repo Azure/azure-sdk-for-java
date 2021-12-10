@@ -6,7 +6,7 @@ package com.azure.spring.messaging.checkpoint;
 import java.time.Duration;
 
 /**
- * Checkpoint related config.
+ * Checkpoint config to describe different checkpoint strategies.
  */
 public class CheckpointConfig {
 

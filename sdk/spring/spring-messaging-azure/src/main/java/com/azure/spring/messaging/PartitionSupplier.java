@@ -4,7 +4,8 @@
 package com.azure.spring.messaging;
 
 /**
- * Provide partition id or key
+ * Represents a supplier of partition id or key. When sending messages with specific partition information,
+ * {@link PartitionSupplier} can be provided to specify the partition information of the messages to be sent.
  *
  */
 public class PartitionSupplier {

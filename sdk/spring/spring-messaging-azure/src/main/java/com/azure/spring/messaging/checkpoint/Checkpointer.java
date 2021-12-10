@@ -6,9 +6,20 @@ package com.azure.spring.messaging.checkpoint;
 import reactor.core.publisher.Mono;
 
 /**
- * A callback to perform checkpoint.
+ * A callback to perform checkpoint for received messages.
+ * When the {@link CheckpointMode#MANUAL} mode is used, {@link Checkpointer} will be put in messages as the header
+ * {@link com.azure.spring.messaging.AzureHeaders#CHECKPOINTER}.
  *
- * @author Xiaolu Dai
+ * <p>
+ * Example
+ * </p>
+ * <pre>{@code
+ * Checkpointer checkpointer = message.getHeaders().get(AzureHeaders.CHECKPOINTER, Checkpointer.class);
+ * checkpointer.success()
+ *             .doOnSuccess(success -> LOGGER.info("Successfully checkpoint {}", message.getPayload()))
+ *             .doOnError(e -> LOGGER.error("Fail to checkpoint the message", e))
+ *             .subscribe();
+ * }</pre>
  */
 public interface Checkpointer {
 
@@ -19,7 +30,7 @@ public interface Checkpointer {
     Mono<Void> success();
 
     /**
-     * Fail current message. Please check result to detect failure
+     * Acknowledge failure of current message. Please check result to detect failure
      * @return Mono Void
      */
     Mono<Void> failure();
