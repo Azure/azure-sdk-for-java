@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 
 
 /**
- *
+ * Auto-configuration for Azure ResourceManager.
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(AzureResourceManager.class)
@@ -26,6 +26,10 @@ public class AzureResourceManagerAutoConfiguration {
 
     private final AzureGlobalProperties globalProperties;
 
+    /**
+     * Create {@link AzureResourceManagerAutoConfiguration} instance
+     * @param globalProperties the azure global properties
+     */
     public AzureResourceManagerAutoConfiguration(AzureGlobalProperties globalProperties) {
         this.globalProperties = globalProperties;
     }

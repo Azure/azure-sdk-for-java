@@ -3,7 +3,6 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.properties;
 
-import com.azure.spring.cloud.autoconfigure.aad.core.AADAuthorizationGrantType;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 
 import java.util.List;

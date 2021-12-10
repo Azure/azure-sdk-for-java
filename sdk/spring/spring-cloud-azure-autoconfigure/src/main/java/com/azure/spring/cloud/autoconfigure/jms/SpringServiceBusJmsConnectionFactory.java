@@ -24,6 +24,12 @@ public class SpringServiceBusJmsConnectionFactory extends ServiceBusJmsConnectio
         super(connectionString, settings);
     }
 
+
+    /**
+     * Set customized user agent.
+     *
+     * @param customUserAgent the customized user agent
+     */
     public void setCustomUserAgent(String customUserAgent) {
         super.setCustomUserAgent(customUserAgent);
     }
