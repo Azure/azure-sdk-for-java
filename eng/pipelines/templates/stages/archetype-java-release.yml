@@ -212,8 +212,6 @@ stages:
               pool:
                 name: azsdk-pool-mms-ubuntu-2004-general
                 vmImage: MMSUbuntu20.04
-              variables:
-                DocValidationImageId: azuresdkimages.azurecr.io/javarefautocr:latest
               strategy:
                 runOnce:
                   deploy:
@@ -228,12 +226,6 @@ stages:
                             - Name: Azure/azure-sdk-for-java
                               Commitish: $(Build.SourceVersion)
                               WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
-                      # Pull and build the docker image.
-                      - template: /eng/common/pipelines/templates/steps/docker-pull-image.yml
-                        parameters:
-                          ContainerRegistryClientId: $(azuresdkimages-cr-clientid)
-                          ContainerRegistryClientSecret: $(azuresdkimages-cr-clientsecret)
-                          ImageId: "$(DocValidationImageId)"
                       - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
                         parameters:
                           PackageInfoLocations:
@@ -245,7 +237,6 @@ stages:
                           SparseCheckoutPaths:
                             - docs-ref-services/
                             - metadata/
-                          DocValidationImageId: "$(DocValidationImageId)"
 
           - ${{if ne(artifact.skipPublishDocGithubIo, 'true')}}:
             - deployment: PublishDocs
@@ -393,8 +384,6 @@ stages:
         pool:
           name: azsdk-pool-mms-ubuntu-2004-general
           vmImage: MMSUbuntu20.04
-        variables:
-          DocValidationImageId: azuresdkimages.azurecr.io/javarefautocr:latest
         steps:
           - download: current
             displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
@@ -402,12 +391,6 @@ stages:
           - pwsh: |
               Get-ChildItem -Recurse $(Pipeline.Workspace)/${{parameters.ArtifactName}}/
             displayName: Show visible artifacts
-          # Pull and build the docker image.
-          - template: /eng/common/pipelines/templates/steps/docker-pull-image.yml
-            parameters:
-              ContainerRegistryClientId: $(azuresdkimages-cr-clientid)
-              ContainerRegistryClientSecret: $(azuresdkimages-cr-clientsecret)
-              ImageId: "$(DocValidationImageId)"
           # Docs daily updates is supposed to download packages from public feed repository, so we have to specify additional repositories in a POM or the profile.
           # Here is maven documentation: https://maven.apache.org/guides/mini/guide-multiple-repositories.html
           - powershell: |
@@ -436,4 +419,3 @@ stages:
               SparseCheckoutPaths:
                 - docs-ref-services/
                 - metadata/
-              DocValidationImageId: "$(DocValidationImageId)"
