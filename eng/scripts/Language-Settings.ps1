@@ -325,7 +325,7 @@ function PackageDependenciesResolve($artifactNamePrefix, $packageDirectory) {
     -f $downloadedPomPath `
     dependency:copy-dependencies `
     -P '!azure-mgmt-sdk-test-jar' `
-    -DoutputDirectory="$packageDirectory"
+    -DoutputDirectory="$packageDirectory" | Out-Null
 
   if ($LASTEXITCODE) {
     LogWarning "Could not resolve dependencies for: $pomArtifactName"
