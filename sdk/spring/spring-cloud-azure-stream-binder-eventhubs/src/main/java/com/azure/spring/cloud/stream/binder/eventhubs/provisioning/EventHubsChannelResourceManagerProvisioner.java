@@ -16,7 +16,7 @@ public class EventHubsChannelResourceManagerProvisioner extends EventHubsChannel
     private final EventHubsProvisioner eventHubsProvisioner;
 
     /**
-     * Constructor.
+     * Construct a {@link EventHubsChannelResourceManagerProvisioner} with the specified namespace and eventHubsProvisioner.
      *
      * @param namespace the namespace
      * @param eventHubsProvisioner the event Hubs Provisioner

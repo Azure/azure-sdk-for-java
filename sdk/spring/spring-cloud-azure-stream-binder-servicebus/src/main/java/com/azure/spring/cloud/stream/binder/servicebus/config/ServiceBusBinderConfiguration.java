@@ -47,7 +47,7 @@ public class ServiceBusBinderConfiguration {
      *
      * @param serviceBusProperties the service bus properties
      * @param serviceBusProvisioner the service bus provisioner
-     * @return ServiceBusChannelProvisioner the Service Bus Channel Provisioner bean
+     * @return ServiceBusChannelProvisioner bean the Service Bus Channel Provisioner bean
      */
     @Bean
     @ConditionalOnMissingBean
@@ -63,7 +63,7 @@ public class ServiceBusBinderConfiguration {
     /**
      * Declare Service Bus Channel Provisioner bean.
      *
-     * @return ServiceBusChannelProvisioner the Service Bus Channel Provisioner bean
+     * @return ServiceBusChannelProvisioner bean the Service Bus Channel Provisioner bean
      */
     @Bean
     @ConditionalOnMissingBean({ServiceBusProvisioner.class, ServiceBusChannelProvisioner.class})
@@ -78,7 +78,7 @@ public class ServiceBusBinderConfiguration {
      * @param bindingProperties the binding Properties
      * @param namespaceProperties the namespace Properties
      * @param messageConverter the message Converter
-     * @return ServiceBusMessageChannelBinder the Service Bus Message Channel Binder bean
+     * @return ServiceBusMessageChannelBinder bean the Service Bus Message Channel Binder bean
      */
     @Bean
     @ConditionalOnMissingBean

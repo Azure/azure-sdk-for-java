@@ -17,6 +17,7 @@ public class EventHubsBindingProperties implements BinderSpecificPropertiesProvi
      * Get consumer
      *
      * @return consumer the consumer
+     * @see EventHubsConsumerProperties
      */
     public EventHubsConsumerProperties getConsumer() {
         return consumer;
@@ -35,6 +36,7 @@ public class EventHubsBindingProperties implements BinderSpecificPropertiesProvi
      * Get producer
      *
      * @return producer the producer
+     * @see EventHubsProducerProperties
      */
     public EventHubsProducerProperties getProducer() {
         return producer;

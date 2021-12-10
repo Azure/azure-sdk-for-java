@@ -13,7 +13,7 @@ public class ServiceBusConsumerDestination implements ConsumerDestination {
     private final String name;
 
     /**
-     * Constructor.
+     * Construct a {@link ServiceBusConsumerDestination} with the specified name.
      *
      * @param name the name
      */

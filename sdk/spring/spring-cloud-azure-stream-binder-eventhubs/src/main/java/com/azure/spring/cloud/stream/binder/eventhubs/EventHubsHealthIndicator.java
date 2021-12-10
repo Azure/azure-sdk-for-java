@@ -16,7 +16,7 @@ public class EventHubsHealthIndicator extends AbstractHealthIndicator {
     private final InstrumentationManager instrumentationManager;
 
     /**
-     * Event Hubs Health Indicator check.
+     * Construct a {@link EventHubsHealthIndicator} with the specified binder.
      *
      * @param binder the binder
      */

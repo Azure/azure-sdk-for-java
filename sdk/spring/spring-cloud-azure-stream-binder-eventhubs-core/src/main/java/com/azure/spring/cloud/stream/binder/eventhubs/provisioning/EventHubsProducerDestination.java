@@ -13,7 +13,7 @@ public class EventHubsProducerDestination implements ProducerDestination {
     private final String name;
 
     /**
-     * Constructor.
+     * Construct a {@link EventHubsProducerDestination} with the specified binder.
      *
      * @param name the name
      */

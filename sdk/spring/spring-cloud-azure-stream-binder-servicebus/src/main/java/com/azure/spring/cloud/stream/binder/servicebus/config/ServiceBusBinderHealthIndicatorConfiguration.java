@@ -21,7 +21,7 @@ public class ServiceBusBinderHealthIndicatorConfiguration {
      * Declare Service Bus Health Indicator bean.
      *
      * @param binder the binder
-     * @return ServiceBusHealthIndicator the Service Bus Health Indicator bean
+     * @return ServiceBusHealthIndicator bean the Service Bus Health Indicator bean
      */
     @Bean
     public ServiceBusHealthIndicator serviceBusHealthIndicator(ServiceBusMessageChannelBinder binder) {

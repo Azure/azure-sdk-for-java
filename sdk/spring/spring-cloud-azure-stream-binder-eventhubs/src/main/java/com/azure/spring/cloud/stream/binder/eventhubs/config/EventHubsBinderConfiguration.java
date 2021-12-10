@@ -47,7 +47,7 @@ public class EventHubsBinderConfiguration {
      *
      * @param eventHubsProperties the event Hubs Properties
      * @param eventHubsProvisioner the event Hubs Provisioner
-     * @return EventHubsChannelResourceManagerProvisioner the Event Hubs Channel Provisioner bean
+     * @return EventHubsChannelProvisioner bean the Event Hubs Channel Provisioner bean
      */
     @Bean
     @ConditionalOnMissingBean
@@ -62,7 +62,7 @@ public class EventHubsBinderConfiguration {
     /**
      * Declare Event Hubs Channel Provisioner bean.
      *
-     * @return EventHubsChannelProvisioner the Event Hubs Channel Provisioner bean
+     * @return EventHubsChannelProvisioner bean the Event Hubs Channel Provisioner bean
      */
     @Bean
     @ConditionalOnMissingBean({ EventHubsProvisioner.class, EventHubsChannelProvisioner.class })
@@ -77,7 +77,7 @@ public class EventHubsBinderConfiguration {
      * @param bindingProperties the binding Properties
      * @param namespaceProperties the namespace Properties
      * @param checkpointStores the checkpoint Stores
-     * @return EventHubsMessageChannelBinder the Event Hubs Message Channel Binder bean
+     * @return EventHubsMessageChannelBinder bean the Event Hubs Message Channel Binder bean
      */
     @Bean
     @ConditionalOnMissingBean
