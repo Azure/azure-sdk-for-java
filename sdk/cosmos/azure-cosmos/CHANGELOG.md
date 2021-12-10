@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.23.0 (2021-12-09)
+### 4.23.0 (2021-12-10)
 #### Features Added
 * Added `setMaxMicroBatchConcurrency` and `getMaxMicroBatchConcurrency` in `CosmosBulkExecutionOptions`.
 

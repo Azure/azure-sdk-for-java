@@ -1,6 +1,6 @@
 ## Release History
 
-### 3.15.0 (2021-12-09)
+### 3.15.0 (2021-12-10)
 #### Features Added
 * Updated `Spring Boot` to version `2.6.1`.
 * Updated `azure-cosmos` to version `4.23.0`.
