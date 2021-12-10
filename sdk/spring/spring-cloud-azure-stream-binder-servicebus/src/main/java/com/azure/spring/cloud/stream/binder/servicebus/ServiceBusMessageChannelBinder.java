@@ -175,6 +175,7 @@ public class ServiceBusMessageChannelBinder extends
     /**
      * Dead-letters the message in this context.
      *
+     * @param <T> the type
      * @param destination the destination
      * @param message the message
      * @param deadLetterReason the deadLetter reason
