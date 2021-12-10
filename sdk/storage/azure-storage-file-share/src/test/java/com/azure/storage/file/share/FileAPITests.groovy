@@ -28,6 +28,7 @@ import com.azure.storage.file.share.models.ShareSnapshotInfo
 import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.options.ShareFileDownloadOptions
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions
+import com.azure.storage.file.share.options.ShareFileRenameOptions
 import com.azure.storage.file.share.sas.ShareFileSasPermission
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues
 import spock.lang.Ignore
@@ -1376,6 +1377,241 @@ class FileAPITests extends APISpec {
         notThrown(ShareStorageException)
         handlesClosedInfo.getClosedHandles() == 0
         handlesClosedInfo.getFailedHandles() == 0
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Rename min"() {
+        when:
+        primaryFileClient.rename(generatePathName())
+
+        then:
+        notThrown(ShareStorageException)
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Rename with response"() {
+        when:
+        def resp = primaryFileClient.renameWithResponse(new ShareFileRenameOptions(generatePathName()), null, null)
+
+        def renamedClient = resp.getValue()
+        renamedClient.getProperties()
+
+        then:
+        notThrown(ShareStorageException)
+
+        when:
+        primaryFileClient.getProperties()
+
+        then:
+        thrown(ShareStorageException)
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Rename different directory"() {
+        setup:
+        def dc = shareClient.getDirectoryClient(generatePathName())
+        dc.create()
+        def destinationPath = dc.getFileClient(generatePathName())
+
+        when:
+        def resultClient = primaryFileClient.rename(destinationPath.getFilePath())
+
+        then:
+        destinationPath.exists()
+        destinationPath.getFilePath() == resultClient.getFilePath()
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    @Unroll
+    def "Rename replace if exists"() {
+        setup:
+        def destination = shareClient.getFileClient(generatePathName())
+        destination.create(512)
+        def exception = false
+
+        when:
+        try {
+            primaryFileClient.renameWithResponse(new ShareFileRenameOptions(destination.getFilePath())
+                .setReplaceIfExists(replaceIfExists), null, null)
+        } catch (ShareStorageException ignored) {
+            exception = true
+        }
+
+        then:
+        replaceIfExists == !exception
+
+        where:
+        replaceIfExists | _
+        true            | _
+        false           | _
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    @Unroll
+    def "Rename ignore read only"() {
+        setup:
+        FileSmbProperties props = new FileSmbProperties()
+            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
+        def destinationFile = shareClient.getFileClient(generatePathName())
+        destinationFile.createWithResponse(512L, null, props, null, null, null, null, null)
+        def exception = false
+
+        when:
+        try {
+            primaryFileClient.renameWithResponse(new ShareFileRenameOptions(destinationFile.getFilePath())
+                .setIgnoreReadOnly(ignoreReadOnly).setReplaceIfExists(true), null, null)
+        } catch (ShareStorageException ignored) {
+            exception = true
+        }
+
+        then:
+        exception == !ignoreReadOnly
+
+        where:
+        ignoreReadOnly  | _
+        true            | _
+        false           | _
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Rename file permission"() {
+        setup:
+        def filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)"
+
+        when:
+        def destClient = primaryFileClient.renameWithResponse(new ShareFileRenameOptions(generatePathName())
+            .setFilePermission(filePermission), null, null).getValue()
+
+        then:
+        destClient.getProperties().getSmbProperties().getFilePermissionKey() != null
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Rename file permission and key set"() {
+        setup:
+        def filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)"
+
+        when:
+        def destClient = primaryFileClient.renameWithResponse(new ShareFileRenameOptions(generatePathName())
+            .setFilePermission(filePermission)
+            .setSmbProperties(new FileSmbProperties().setFilePermissionKey("filePermissionkey")), null, null).getValue()
+
+        then:
+        thrown(ShareStorageException) // permission and key cannot both be set
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Rename file smbProperties"() {
+        setup:
+        def filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)"
+        def permissionKey = shareClient.createPermission(filePermission)
+        def smbProperties = new FileSmbProperties()
+            .setFilePermissionKey(permissionKey)
+            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.ARCHIVE, NtfsFileAttributes.READ_ONLY))
+            .setFileCreationTime(OffsetDateTime.now().minusDays(5))
+            .setFileLastWriteTime(OffsetDateTime.now().minusYears(2))
+
+        when:
+        def destClient = primaryFileClient.renameWithResponse(new ShareFileRenameOptions(generatePathName())
+            .setSmbProperties(smbProperties), null, null).getValue()
+        def destProperties = destClient.getProperties()
+
+        then:
+        destProperties.getSmbProperties().getNtfsFileAttributes() == EnumSet.of(NtfsFileAttributes.ARCHIVE, NtfsFileAttributes.READ_ONLY)
+        destProperties.getSmbProperties().getFileCreationTime() == OffsetDateTime.now().minusDays(5)
+        destProperties.getSmbProperties().getFileLastWriteTime() == OffsetDateTime.now().minusYears(2)
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Rename error"() {
+        setup:
+        primaryFileClient = shareClient.getFileClient(generatePathName())
+
+        when:
+        primaryFileClient.rename(generatePathName())
+
+        then:
+        thrown(ShareStorageException)
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    @Unroll
+    def "Rename source AC"() {
+        setup:
+        leaseID = setupFileLeaseCondition(primaryFileClient, leaseID)
+        def src = new ShareRequestConditions()
+            .setLeaseId(leaseID)
+
+        expect:
+        primaryFileClient.renameWithResponse(new ShareFileRenameOptions(generatePathName())
+            .setSourceRequestConditions(src), null, null).getStatusCode() == 201
+
+        where:
+        leaseID         | _
+        receivedLeaseID | _
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    @Unroll
+    def "Rename source AC fail"() {
+        setup:
+        setupFileLeaseCondition(primaryFileClient, leaseID)
+        def src = new ShareRequestConditions()
+            .setLeaseId(leaseID)
+
+        when:
+        primaryFileClient.renameWithResponse(new ShareFileRenameOptions(generatePathName())
+            .setSourceRequestConditions(src), null, null)
+
+        then:
+        thrown(ShareStorageException)
+
+        where:
+         leaseID        | _
+         garbageLeaseID | _
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    @Unroll
+    def "Rename dest AC"() {
+        setup:
+        def pathName = generatePathName()
+        def destFile = shareClient.getFileClient(pathName)
+        destFile.create(512)
+        leaseID = setupFileLeaseCondition(destFile, leaseID)
+        def src = new ShareRequestConditions()
+            .setLeaseId(leaseID)
+
+        expect:
+        primaryFileClient.renameWithResponse(new ShareFileRenameOptions(pathName)
+            .setDestinationRequestConditions(src), null, null).getStatusCode() == 201
+
+        where:
+        leaseID         | _
+        receivedLeaseID | _
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    @Unroll
+    def "Rename dest AC fail"() {
+        setup:
+        def pathName = generatePathName()
+        def destFile = shareClient.getFileClient(pathName)
+        destFile.create(512)
+        setupFileLeaseCondition(destFile, leaseID)
+        def src = new ShareRequestConditions()
+            .setLeaseId(leaseID)
+
+        when:
+        primaryFileClient.renameWithResponse(new ShareFileRenameOptions(pathName)
+            .setDestinationRequestConditions(src), null, null)
+
+        then:
+        thrown(ShareStorageException)
+
+        where:
+        leaseID        | _
+        garbageLeaseID | _
     }
 
     def "Get snapshot id"() {

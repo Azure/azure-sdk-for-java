@@ -112,14 +112,16 @@ public class ShareFileRenameOptions {
     }
 
     /**
-     * @return Optional file permission to set on the destination file or directory.
+     * @return Optional file permission to set on the destination file or directory. The value in SmbProperties will be
+     * ignored.
      */
     public String getFilePermission() {
         return filePermission;
     }
 
     /**
-     * @param filePermission Optional file permission to set on the destination file or directory.
+     * @param filePermission Optional file permission to set on the destination file or directory. The value in
+     * SmbProperties will be ignored.
      * @return The updated options.
      */
     public ShareFileRenameOptions setFilePermission(String filePermission) {
