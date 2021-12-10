@@ -29,7 +29,7 @@ public class AzureEventHubsResourceManagerAutoConfiguration extends AzureService
     private final EventHubsResourceMetadata resourceMetadata;
 
     /**
-     * Create AzureEventHubsResourceManagerAutoConfiguration instance
+     * Create {@link AzureEventHubsResourceManagerAutoConfiguration} instance
      * @param azureResourceManager the azure resource manager
      * @param resourceMetadata the Event Hubs resource metadata
      */

@@ -27,7 +27,7 @@ public class AzureStorageQueueResourceManagerAutoConfiguration extends AzureServ
     private final StorageQueueResourceMetadata resourceMetadata;
 
     /**
-     * Create AzureStorageQueueResourceManagerAutoConfiguration instance
+     * Create {@link AzureStorageQueueResourceManagerAutoConfiguration} instance
      * @param azureResourceManager the azure resource manager
      * @param resourceMetadata the Storage Queue resource metadata
      */

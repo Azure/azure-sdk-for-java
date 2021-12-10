@@ -27,8 +27,8 @@ public class AzureResourceManagerAutoConfiguration {
     private final AzureGlobalProperties globalProperties;
 
     /**
-     * Create AzureResourceManagerAutoConfiguration instance
-     * @param globalProperties the azure globalProperties
+     * Create {@link AzureResourceManagerAutoConfiguration} instance
+     * @param globalProperties the azure global properties
      */
     public AzureResourceManagerAutoConfiguration(AzureGlobalProperties globalProperties) {
         this.globalProperties = globalProperties;
