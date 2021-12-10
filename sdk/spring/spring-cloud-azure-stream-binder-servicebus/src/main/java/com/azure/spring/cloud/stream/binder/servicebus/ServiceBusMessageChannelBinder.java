@@ -197,6 +197,7 @@ public class ServiceBusMessageChannelBinder extends
     /**
      * Abandons the message in this context.
      *
+     * @param <T> the type
      * @param destination the destination
      * @param message the message
      */
