@@ -842,6 +842,7 @@
         <module>sdk/videoanalyzer</module>
         <module>sdk/vmwarecloudsimple</module>
         <module>sdk/webpubsub</module>
+        <module>sdk/windowsesu</module>
       </modules>
     </profile>
   </profiles>
