@@ -48,6 +48,11 @@ public class SleuthHttpPolicy implements HttpPipelinePolicy {
     private static final String REQUEST_ID = "x-ms-request-id";
     private static final String AZ_NAMESPACE_KEY = "az.namespace";
 
+    /**
+     * Creates a new instance of {@link SleuthHttpPolicy}.
+     * @param tracer the tracer
+     * @param propagator the propagator
+     */
     public SleuthHttpPolicy(Tracer tracer, Propagator propagator) {
         Assert.notNull(tracer, "tracer must not be null!");
         Assert.notNull(propagator, "propagator must not be null!");
