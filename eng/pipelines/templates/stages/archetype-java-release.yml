@@ -220,6 +220,7 @@ stages:
                       - download: current
                         displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
                         artifact: ${{parameters.ArtifactName}}
+                      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                       - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
                         parameters:
                           PackageInfoLocations:
@@ -385,7 +386,7 @@ stages:
           - pwsh: |
               Get-ChildItem -Recurse $(Pipeline.Workspace)/${{parameters.ArtifactName}}/
             displayName: Show visible artifacts
-
+          - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
           # Docs daily updates is supposed to download packages from public feed repository, so we have to specify additional repositories in a POM or the profile.
           # Here is maven documentation: https://maven.apache.org/guides/mini/guide-multiple-repositories.html
           - powershell: |
