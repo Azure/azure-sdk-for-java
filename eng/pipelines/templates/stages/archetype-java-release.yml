@@ -386,7 +386,6 @@ stages:
           - pwsh: |
               Get-ChildItem -Recurse $(Pipeline.Workspace)/${{parameters.ArtifactName}}/
             displayName: Show visible artifacts
-          - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
           # Docs daily updates is supposed to download packages from public feed repository, so we have to specify additional repositories in a POM or the profile.
           # Here is maven documentation: https://maven.apache.org/guides/mini/guide-multiple-repositories.html
           - powershell: |
