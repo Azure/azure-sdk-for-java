@@ -4,8 +4,8 @@
 package com.azure.core.management;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.implementation.metadata.Metadata;
@@ -162,13 +162,13 @@ public final class AzureEnvironment {
      * Note that the Microsoft Graph endpoint currently is not available from metadata.
      *
      * @param endpoint the URL of Azure Resource Manager endpoint.
-     * @param httpClient the HTTP client for requests.
+     * @param httpPipeline the HTTP pipeline for requests.
      * @return the AzureEnvironment
      * @throws HttpResponseException thrown if the request is rejected by server, or failed to parse metadata.
      * @throws IllegalArgumentException thrown if Azure Resource Manager endpoint is invalid.
      * @throws URISyntaxException thrown if Azure Resource Manager endpoint violates RFC 2396.
      */
-    public static AzureEnvironment fromAzureResourceManagerEndpoint(String endpoint, HttpClient httpClient)
+    public static AzureEnvironment fromAzureResourceManagerEndpoint(String endpoint, HttpPipeline httpPipeline)
         throws URISyntaxException {
 
         String metadataEndpoint = String.format("%s/metadata/endpoints?api-version=2019-10-01", endpoint);
@@ -179,7 +179,7 @@ public final class AzureEnvironment {
         HttpRequest request = new HttpRequest(HttpMethod.GET, metadataEndpoint)
             .setHeader("accept", "application/json");
 
-        HttpResponse response = httpClient.send(request).block();
+        HttpResponse response = httpPipeline.send(request).block();
         if (response == null) {
             throw LOGGER.logExceptionAsError(new RuntimeException("No response."));
         }
