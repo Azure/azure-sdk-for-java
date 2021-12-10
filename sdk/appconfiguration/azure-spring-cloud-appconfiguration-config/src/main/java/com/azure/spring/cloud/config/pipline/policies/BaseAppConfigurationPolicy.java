@@ -23,8 +23,14 @@ import reactor.core.publisher.Mono;
  */
 public final class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
 
+    /**
+     * Library Package name
+     */
     private static final String PACKAGE_NAME = BaseAppConfigurationPolicy.class.getPackage().getImplementationTitle();
 
+    /**
+     * Format of User Agent
+     */
     public static final String USER_AGENT = String.format("%s/%s", StringUtils.replace(PACKAGE_NAME, " ", ""),
         BaseAppConfigurationPolicy.class.getPackage().getImplementationVersion());
 
@@ -34,6 +40,11 @@ public final class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
 
     final boolean isKeyVaultConfigured;
     
+    /**
+     * App Configuraiton Http Pipeline Policy
+     * @param isDev is using dev profile
+     * @param isKeyVaultConfigured is key vault configured
+     */
     public BaseAppConfigurationPolicy(Boolean isDev, Boolean isKeyVaultConfigured) {
         this.isDev = isDev;
         this.isKeyVaultConfigured = isKeyVaultConfigured;

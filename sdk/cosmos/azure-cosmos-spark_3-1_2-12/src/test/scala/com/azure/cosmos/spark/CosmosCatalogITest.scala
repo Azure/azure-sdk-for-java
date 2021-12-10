@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.{BadRequestException, TestConfigurations,
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.apache.commons.lang3.RandomStringUtils
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.execution.streaming.HDFSMetadataLog
 
 import java.util.UUID
 // scalastyle:off underscore.import
@@ -16,7 +17,6 @@ import scala.collection.JavaConverters._
 class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLoggingTrait {
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number
-
 
   var spark : SparkSession = _
 
@@ -534,6 +534,10 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
         s"OPTIONS (" +
         s"spark.cosmos.database = '$databaseName', " +
         s"spark.cosmos.container = '$containerName', " +
+        s"spark.sql.catalog.testCatalog.spark.cosmos.accountKey = '${TestConfigurations.MASTER_KEY}', " +
+        s"spark.sql.catalog.testCatalog.spark.cosmos.accountEndpoint = '${TestConfigurations.HOST}', " +
+        s"spark.cosmos.accountKey = '${TestConfigurations.MASTER_KEY}', " +
+        s"spark.cosmos.accountEndpoint = '${TestConfigurations.HOST}', " +
         "spark.cosmos.read.inferSchema.enabled = 'False', " +
         "spark.cosmos.read.partitioning.strategy = 'Restrictive');")
 
@@ -546,12 +550,41 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
         s"OPTIONS (" +
         s"spark.cosmos.database = '$databaseName', " +
         s"spark.cosmos.container = '$containerName', " +
+        s"spark.sql.catalog.testCatalog.spark.cosmos.accountKey = '${TestConfigurations.MASTER_KEY}', " +
+        s"spark.sql.catalog.testCatalog.spark.cosmos.accountEndpoint = '${TestConfigurations.HOST}', " +
+        s"spark.cosmos.accountKey = '${TestConfigurations.MASTER_KEY}', " +
+        s"spark.cosmos.accountEndpoint = '${TestConfigurations.HOST}', " +
         "spark.cosmos.read.inferSchema.enabled = 'True', " +
         "spark.cosmos.read.inferSchema.includeSystemProperties = 'False', " +
         "spark.cosmos.read.partitioning.strategy = 'Restrictive');")
 
     tables = spark.sql(s"SHOW TABLES in testCatalog.$databaseName;")
     tables.collect() should have size 3
+
+    val filePath = spark.conf.get("spark.sql.catalog.testCatalog.spark.cosmos.views.repositoryPath")
+    val hdfsMetadataLog = new HDFSMetadataLog[String](spark, filePath)
+
+    hdfsMetadataLog.getLatest() match {
+      case None => throw new IllegalStateException("HDFS metadata file should have been written")
+      case Some((batchId, json)) => {
+
+        logInfo(s"BatchId: $batchId, Json: $json")
+
+        // Validate the master key is not stored anywhere
+        json.contains(TestConfigurations.MASTER_KEY) shouldEqual false
+        json.contains(TestConfigurations.SECONDARY_MASTER_KEY) shouldEqual false
+        json.contains(TestConfigurations.HOST) shouldEqual false
+
+        // validate that we can deserialize the persisted json
+        val deserializedViews = ViewDefinitionEnvelopeSerializer.fromJson(json)
+        deserializedViews.length >= 2 shouldBe true
+        deserializedViews
+          .exists((vd) => vd.databaseName == databaseName && vd.viewName == viewNameRaw) shouldEqual true
+        deserializedViews
+          .exists((vd) => vd.databaseName == databaseName &&
+            vd.viewName == viewNameWithSchemaInference) shouldEqual true
+      }
+    }
 
     tables
       .where(s"tableName = '$containerName' and namespace = '$databaseName'")

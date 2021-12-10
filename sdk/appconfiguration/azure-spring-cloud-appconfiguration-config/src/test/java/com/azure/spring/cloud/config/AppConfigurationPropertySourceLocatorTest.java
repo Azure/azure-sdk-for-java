@@ -345,8 +345,8 @@ public class AppConfigurationPropertySourceLocatorTest {
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties,
             clientStoreMock, tokenCredentialProvider, null, null);
 
-        when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString())).thenThrow(new RuntimeException());
-        NullPointerException e = assertThrows(NullPointerException.class, () -> locator.locate(emptyEnvironment));
+        when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString(), Mockito.anyString())).thenThrow(new RuntimeException());
+        RuntimeException e = assertThrows(RuntimeException.class, () -> locator.locate(emptyEnvironment));
         assertNull(e.getMessage());
         verify(configStoreMock, times(1)).isFailFast();
     }
@@ -359,12 +359,12 @@ public class AppConfigurationPropertySourceLocatorTest {
         field.set(null, new AtomicBoolean(false));
         StateHolder.setLoadState(TEST_STORE_NAME, true);
 
-        when(emptyEnvironment.getProperty("spring.application.name")).thenReturn(null);
-
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties,
             clientStoreMock, tokenCredentialProvider, null, null);
 
-        NullPointerException e = assertThrows(NullPointerException.class, () -> locator.locate(emptyEnvironment));
+        when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString(), Mockito.anyString())).thenThrow(new RuntimeException());
+        RuntimeException e = assertThrows(RuntimeException.class, () -> locator.locate(emptyEnvironment));
+        assertNull(e.getMessage());
         assertNull(e.getMessage());
     }
 
