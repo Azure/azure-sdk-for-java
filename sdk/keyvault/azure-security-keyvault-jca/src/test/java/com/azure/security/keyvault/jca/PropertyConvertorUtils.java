@@ -15,11 +15,12 @@ import java.util.List;
 
 public class PropertyConvertorUtils {
 
+    private static final Configuration globalConfiguration =  Configuration.getGlobalConfiguration();
+
     public static void putEnvironmentPropertyToSystemPropertyForKeyVaultJca() {
         KEYVAULT_JCA_SYSTEM_PROPERTIES.forEach(
             environmentPropertyKey -> {
-                String value = Configuration.getGlobalConfiguration()
-                    .get(environmentPropertyKey, System.getenv(environmentPropertyKey));
+                String value = getPropertyValue(environmentPropertyKey);
                 String systemPropertyKey = environmentPropertyKey.toLowerCase().replaceFirst("azure_keyvault_",
                     "azure.keyvault.").replaceAll("_", "-");
                 System.getProperties().put(systemPropertyKey, value);
@@ -40,6 +41,14 @@ public class PropertyConvertorUtils {
     public static void addKeyVaultJcaProvider() {
         KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
         Security.addProvider(provider);
+    }
+
+    public static String getPropertyValue(String property) {
+        return globalConfiguration.get(property, System.getenv(property));
+    }
+
+    public static String getPropertyValue(String property, String defaultVault) {
+        return globalConfiguration.get(property, defaultVault);
     }
 
 }

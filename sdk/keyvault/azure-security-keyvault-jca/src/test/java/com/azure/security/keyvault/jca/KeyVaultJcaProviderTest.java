@@ -28,7 +28,7 @@ public class KeyVaultJcaProviderTest {
         PropertyConvertorUtils.putEnvironmentPropertyToSystemPropertyForKeyVaultJca();
         PropertyConvertorUtils.addKeyVaultJcaProvider();
         KeyStore keystore = PropertyConvertorUtils.getKeyVaultKeyStore();
-        assertNotNull(keystore.getCertificate(Configuration.getGlobalConfiguration()
-            .get("AZURE_KEYVAULT_CERTIFICATE_NAME", System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME"))));
+        assertNotNull(keystore.getCertificate(
+            PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CERTIFICATE_NAME")));
     }
 }

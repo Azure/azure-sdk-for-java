@@ -3,7 +3,6 @@
 
 package com.azure.security.keyvault.jca;
 
-import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
@@ -33,14 +32,12 @@ public class KeyVaultKeyStoreTest {
     public static void setEnvironmentProperty() {
         PropertyConvertorUtils.putEnvironmentPropertyToSystemPropertyForKeyVaultJca();
         keystore = new KeyVaultKeyStore();
-        Configuration globalConfiguration = Configuration.getGlobalConfiguration();
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            globalConfiguration.get("AZURE_KEYVAULT_ENDPOINT", System.getenv("AZURE_KEYVAULT_ENDPOINT")),
-            globalConfiguration.get("AZURE_KEYVAULT_TENANT_ID", System.getenv("AZURE_KEYVAULT_TENANT_ID")),
-            globalConfiguration.get("AZURE_KEYVAULT_CLIENT_ID", System.getenv("AZURE_KEYVAULT_CLIENT_ID")),
-            globalConfiguration.get("AZURE_KEYVAULT_CLIENT_SECRET", System.getenv("AZURE_KEYVAULT_CLIENT_SECRET")));
-        certificateName = globalConfiguration
-            .get("AZURE_KEYVAULT_CERTIFICATE_NAME", System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME"));
+            PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_ENDPOINT"),
+            PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_TENANT_ID"),
+            PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CLIENT_ID"),
+            PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CLIENT_SECRET"));
+        certificateName = PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CERTIFICATE_NAME");
         keystore.engineLoad(parameter);
     }
 

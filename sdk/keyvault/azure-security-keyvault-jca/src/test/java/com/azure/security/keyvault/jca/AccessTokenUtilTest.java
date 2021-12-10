@@ -3,7 +3,6 @@
 
 package com.azure.security.keyvault.jca;
 
-import com.azure.core.util.Configuration;
 import com.azure.security.keyvault.jca.implementation.model.AccessToken;
 import com.azure.security.keyvault.jca.implementation.utils.AccessTokenUtil;
 import org.junit.jupiter.api.Test;
@@ -26,17 +25,13 @@ public class AccessTokenUtilTest {
      */
     @Test
     public void testGetAuthorizationToken() throws Exception {
-        Configuration globalConfiguration = Configuration.getGlobalConfiguration();
-        String tenantId = globalConfiguration.get("AZURE_KEYVAULT_TENANT_ID", System.getenv("AZURE_KEYVAULT_TENANT_ID"));
-        String clientId = globalConfiguration.get("AZURE_KEYVAULT_CLIENT_ID", System.getenv("AZURE_KEYVAULT_CLIENT_ID"));
-        String clientSecret = globalConfiguration.get("AZURE_KEYVAULT_CLIENT_SECRET", System.getenv("AZURE_KEYVAULT_CLIENT_SECRET"));
-        String keyVaultEndPoint = globalConfiguration.get("KEY_VAULT_ENDPOINT_SUFFIX", ".vault.azure.net");
-        String resourceUrl = ".vault.azure.net".equals(keyVaultEndPoint)
-            ? "https://management.azure.com/" : ".vault.usgovcloudapi.net".equals(keyVaultEndPoint)
-            ? "https://management.usgovcloudapi.net/" : "https://management.chinacloudapi.cn/";
-        String aadAuthenticationUrl = ".vault.azure.net".equals(keyVaultEndPoint)
-            ? "https://login.microsoftonline.com/"  : ".vault.usgovcloudapi.net".equals(keyVaultEndPoint)
-            ? "https://login.microsoftonline.us/" : "https://login.partner.microsoftonline.cn/";
+        String tenantId = PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_TENANT_ID");
+        String clientId = PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CLIENT_ID");
+        String clientSecret = PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CLIENT_SECRET");
+        String keyVaultEndPointSuffix = PropertyConvertorUtils.getPropertyValue("KEY_VAULT_ENDPOINT_SUFFIX", ".vault.azure.net");
+        CloudType cloudType = getCloudTypeByKeyVaultEndPoint(keyVaultEndPointSuffix);
+        String resourceUrl = getResourceUrl(cloudType);
+        String aadAuthenticationUrl = getAadAuthenticationUrl(cloudType);
         AccessToken result = AccessTokenUtil.getAccessToken(
             resourceUrl,
             aadAuthenticationUrl,
@@ -45,5 +40,41 @@ public class AccessTokenUtilTest {
             URLEncoder.encode(clientSecret, "UTF-8")
         );
         assertNotNull(result);
+    }
+
+    private String getResourceUrl(CloudType cloudType) {
+        if (CloudType.UsGov.equals(cloudType)) {
+            return "https://management.usgovcloudapi.net/";
+        } else if (CloudType.China.equals(cloudType)) {
+            return "https://management.chinacloudapi.cn/";
+        }
+        return "https://management.azure.com/";
+    }
+
+    private String getAadAuthenticationUrl(CloudType cloudType) {
+        if (CloudType.UsGov.equals(cloudType)) {
+            return "https://login.microsoftonline.us/";
+        } else if (CloudType.China.equals(cloudType)) {
+            return "https://login.partner.microsoftonline.cn/";
+        }
+        return "https://management.azure.com/";
+    }
+
+    private CloudType getCloudTypeByKeyVaultEndPoint(String keyVaultEndPointSuffix) {
+        if (".vault.azure.net".equals(keyVaultEndPointSuffix)) {
+            return CloudType.Public;
+        } else if ("vault.usgovcloudapi.net".equals(keyVaultEndPointSuffix)) {
+            return CloudType.UsGov;
+        } else {
+            return CloudType.China;
+        }
+    }
+
+    private enum CloudType{
+        Public,
+        UsGov,
+        China,
+        Canary,
+        UNKNOWN
     }
 }
