@@ -18,6 +18,12 @@ public class ServiceBusChannelResourceManagerProvisioner extends ServiceBusChann
     private final String namespace;
     private final ServiceBusProvisioner serviceBusProvisioner;
 
+    /**
+     * Constructor.
+     *
+     * @param namespace the namespace
+     * @param serviceBusProvisioner the service Bus Provisioner
+     */
     public ServiceBusChannelResourceManagerProvisioner(@NonNull String namespace,
                                                        @NonNull ServiceBusProvisioner serviceBusProvisioner) {
         Assert.hasText(namespace, "The namespace can't be null or empty");

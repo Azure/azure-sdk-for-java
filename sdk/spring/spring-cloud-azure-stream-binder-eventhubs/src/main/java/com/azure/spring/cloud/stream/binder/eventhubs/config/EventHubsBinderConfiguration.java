@@ -45,6 +45,8 @@ public class EventHubsBinderConfiguration {
     /**
      * Declare Event Hubs Channel Provisioner bean.
      *
+     * @param eventHubsProperties the event Hubs Properties
+     * @param eventHubsProvisioner the event Hubs Provisioner
      * @return EventHubsChannelResourceManagerProvisioner the Event Hubs Channel Provisioner bean
      */
     @Bean

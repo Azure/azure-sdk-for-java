@@ -12,6 +12,11 @@ public class EventHubsProducerDestination implements ProducerDestination {
 
     private final String name;
 
+    /**
+     * Constructor.
+     *
+     * @param name the name
+     */
     public EventHubsProducerDestination(String name) {
         this.name = name;
     }

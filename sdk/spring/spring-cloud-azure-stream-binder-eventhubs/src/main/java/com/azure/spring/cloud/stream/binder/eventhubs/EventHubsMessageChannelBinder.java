@@ -253,7 +253,7 @@ public class EventHubsMessageChannelBinder extends
     /**
      * Get instrumentation manager.
      *
-     * @return the instrumentation manager
+     * @return instrumentationManager the instrumentation manager
      */
     public InstrumentationManager getInstrumentationManager() {
         return instrumentationManager;

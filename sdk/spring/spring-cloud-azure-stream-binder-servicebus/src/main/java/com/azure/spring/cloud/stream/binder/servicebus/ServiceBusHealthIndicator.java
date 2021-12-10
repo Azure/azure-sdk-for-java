@@ -15,6 +15,11 @@ public class ServiceBusHealthIndicator extends AbstractHealthIndicator {
 
     private final InstrumentationManager instrumentationManager;
 
+    /**
+     * Service Bus Health Indicator check.
+     *
+     * @param binder the binder
+     */
     public ServiceBusHealthIndicator(ServiceBusMessageChannelBinder binder) {
         super("Service bus health check failed");
         this.instrumentationManager = binder.getInstrumentationManager();

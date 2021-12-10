@@ -37,6 +37,9 @@ public abstract class AzurePartitionBinderTests<B extends AbstractTestBinder<
         CP extends ConsumerProperties, PP extends ProducerProperties>
         extends PartitionCapableBinderTests<B, CP, PP> {
 
+    /**
+     * Let those expensive resources be allocated or released only once.
+     */
     @BeforeClass
     public static void enableTests() {
     }
