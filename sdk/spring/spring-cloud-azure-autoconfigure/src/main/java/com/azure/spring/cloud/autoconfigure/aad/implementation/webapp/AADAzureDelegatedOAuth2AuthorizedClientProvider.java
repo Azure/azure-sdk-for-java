@@ -60,6 +60,17 @@ public class AADAzureDelegatedOAuth2AuthorizedClientProvider implements OAuth2Au
         this.authorizedClientRepository = authorizedClientRepository;
     }
 
+    /**
+     * Attempt to authorize (or re-authorize) the
+     * {@link OAuth2AuthorizationContext#getClientRegistration() client} in the provided
+     * context. Implementations must return {@code null} if authorization is not supported
+     * for the specified client, e.g. the provider doesn't support the
+     * {@link ClientRegistration#getAuthorizationGrantType() authorization grant} type
+     * configured for the client.
+     * @param context the context that holds authorization-specific state for the client
+     * @return the {@link OAuth2AuthorizedClient} or {@code null} if authorization is not
+     * supported for the specified client
+     */
     @Override
     public OAuth2AuthorizedClient authorize(OAuth2AuthorizationContext context) {
         Assert.notNull(context, "context cannot be null");

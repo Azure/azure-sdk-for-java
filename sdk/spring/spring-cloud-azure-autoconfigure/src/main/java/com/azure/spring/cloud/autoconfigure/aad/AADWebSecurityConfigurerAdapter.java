@@ -27,6 +27,8 @@ import org.springframework.util.StringUtils;
 /**
  * Abstract configuration class, used to make AzureClientRegistrationRepository and AuthzCodeGrantRequestEntityConverter
  * take effect.
+ *
+ * @see WebSecurityConfigurerAdapter
  */
 public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
@@ -41,6 +43,13 @@ public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigu
     @Autowired
     protected AADAuthenticationProperties properties;
 
+    /**
+     * configure
+     *
+     * @param http the {@link HttpSecurity} to use
+     * @throws Exception Configuration failed
+     *
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // @formatter:off

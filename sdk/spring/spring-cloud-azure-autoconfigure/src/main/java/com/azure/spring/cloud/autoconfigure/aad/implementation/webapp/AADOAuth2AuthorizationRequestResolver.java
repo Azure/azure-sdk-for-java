@@ -18,6 +18,8 @@ import java.util.Map;
 
 /**
  * To add conditional policy claims to authorization URL.
+ *
+ * @see OAuth2AuthorizationRequestResolver
  */
 public class AADOAuth2AuthorizationRequestResolver implements OAuth2AuthorizationRequestResolver {
     private final OAuth2AuthorizationRequestResolver defaultResolver;
@@ -39,11 +41,28 @@ public class AADOAuth2AuthorizationRequestResolver implements OAuth2Authorizatio
         this.properties = properties;
     }
 
+    /**
+     * Returns the {@link OAuth2AuthorizationRequest} resolved from the provided
+     * {@code HttpServletRequest} or {@code null} if not available.
+     *
+     * @param request the {@code HttpServletRequest}
+     * @return the resolved {@link OAuth2AuthorizationRequest} or {@code null} if not
+     * available
+     */
     @Override
     public OAuth2AuthorizationRequest resolve(HttpServletRequest request) {
         return addClaims(request, defaultResolver.resolve(request));
     }
 
+    /**
+     * Returns the {@link OAuth2AuthorizationRequest} resolved from the provided
+     * {@code HttpServletRequest} or {@code null} if not available.
+     *
+     * @param request the {@code HttpServletRequest}
+     * @param clientRegistrationId the clientRegistrationId to use
+     * @return the resolved {@link OAuth2AuthorizationRequest} or {@code null} if not
+     * available
+     */
     @Override
     public OAuth2AuthorizationRequest resolve(HttpServletRequest request, String clientRegistrationId) {
         return addClaims(request, defaultResolver.resolve(request, clientRegistrationId));

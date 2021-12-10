@@ -11,6 +11,8 @@ import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCo
 
 /**
  * Configure B2C OAUTH2 login properties.
+ *
+ * @see AbstractHttpConfigurer
  */
 public class AADB2COidcLoginConfigurer extends AbstractHttpConfigurer<AADB2COidcLoginConfigurer, HttpSecurity> {
 
@@ -29,6 +31,12 @@ public class AADB2COidcLoginConfigurer extends AbstractHttpConfigurer<AADB2COidc
         this.resolver = resolver;
     }
 
+    /**
+     * Initialize the SecurityBuilder.
+     *
+     * @param http the http
+     * @throws Exception failed to initialize SecurityBuilder
+     */
     @Override
     public void init(HttpSecurity http) throws Exception {
         // @formatter:off
