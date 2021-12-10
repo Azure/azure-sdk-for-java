@@ -12,6 +12,11 @@ public class ServiceBusProducerDestination implements ProducerDestination {
 
     private final String name;
 
+    /**
+     * Constructor.
+     *
+     * @param name the name
+     */
     public ServiceBusProducerDestination(String name) {
         this.name = name;
     }

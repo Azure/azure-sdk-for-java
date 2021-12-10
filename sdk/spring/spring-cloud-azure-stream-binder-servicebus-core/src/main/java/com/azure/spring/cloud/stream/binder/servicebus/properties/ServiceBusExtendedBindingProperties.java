@@ -28,6 +28,11 @@ public class ServiceBusExtendedBindingProperties
         return ServiceBusBindingProperties.class;
     }
 
+    /**
+     * Get Bindings.
+     *
+     * @return Bindings value
+     */
     public Map<String, ServiceBusBindingProperties> getBindings() {
         return doGetBindings();
     }

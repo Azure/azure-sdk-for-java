@@ -12,18 +12,38 @@ public class ServiceBusBindingProperties implements BinderSpecificPropertiesProv
     private ServiceBusConsumerProperties consumer = new ServiceBusConsumerProperties();
     private ServiceBusProducerProperties producer = new ServiceBusProducerProperties();
 
+    /**
+     * Get consumer
+     *
+     * @return consumer the consumer
+     */
     public ServiceBusConsumerProperties getConsumer() {
         return consumer;
     }
 
+    /**
+     * Set consumer
+     *
+     * @param consumer the consumer
+     */
     public void setConsumer(ServiceBusConsumerProperties consumer) {
         this.consumer = consumer;
     }
 
+    /**
+     * Get producer
+     *
+     * @return producer the producer
+     */
     public ServiceBusProducerProperties getProducer() {
         return producer;
     }
 
+    /**
+     * Set producer
+     *
+     * @param producer the producer
+     */
     public void setProducer(ServiceBusProducerProperties producer) {
         this.producer = producer;
     }

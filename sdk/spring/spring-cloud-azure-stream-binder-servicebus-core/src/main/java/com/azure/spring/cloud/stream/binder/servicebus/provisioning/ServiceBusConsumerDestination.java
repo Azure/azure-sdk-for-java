@@ -12,6 +12,11 @@ public class ServiceBusConsumerDestination implements ConsumerDestination {
 
     private final String name;
 
+    /**
+     * Constructor.
+     *
+     * @param name the name
+     */
     public ServiceBusConsumerDestination(String name) {
         this.name = name;
     }
