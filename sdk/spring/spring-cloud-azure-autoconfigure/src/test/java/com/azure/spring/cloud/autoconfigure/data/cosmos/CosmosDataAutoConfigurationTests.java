@@ -16,9 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
-import org.springframework.boot.test.context.assertj.AssertableApplicationContext;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
-import org.springframework.boot.test.context.runner.ContextConsumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -28,7 +26,7 @@ import static org.mockito.Mockito.RETURNS_MOCKS;
 
 class CosmosDataAutoConfigurationTests {
 
-    private final static String ENDPOINT = "https://test.documents.azure.com:443/";
+    private static final String ENDPOINT = "https://test.documents.azure.com:443/";
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(
             AzureGlobalPropertiesAutoConfiguration.class,
@@ -57,23 +55,7 @@ class CosmosDataAutoConfigurationTests {
     }
 
     @Test
-    void cosmosTemplateExists() {
-        runCosmosDataApplicationContext(context -> {
-            assertThat(context).hasSingleBean(CosmosTemplate.class);
-            assertThat(context).hasSingleBean(ReactiveCosmosTemplate.class);
-        });
-    }
-
-    @Test
-    void cosmosTemplateCreatedAndUsesIt() {
-        runCosmosDataApplicationContext(context -> {
-            CosmosTemplate cosmosTemplate = context.getBean(CosmosTemplate.class);
-            assertThat(cosmosTemplate).isNotNull();
-            assertThat(cosmosTemplate).hasFieldOrPropertyWithValue("databaseName", "test");
-        });
-    }
-
-    private void runCosmosDataApplicationContext(ContextConsumer<AssertableApplicationContext> contextConsumer) {
+    void cosmosTemplateExistsAndUsesIt() {
         try (MockedStatic<CosmosFactory> mockedStatic = mockStatic(CosmosFactory.class, RETURNS_MOCKS)) {
             CosmosClientBuilder cosmosClientBuilder = mock(CosmosClientBuilder.class);
             CosmosAsyncClient cosmosAsyncClient = mock(CosmosAsyncClient.class);
@@ -81,12 +63,15 @@ class CosmosDataAutoConfigurationTests {
             mockedStatic.when(() -> CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder))
                 .thenReturn(cosmosAsyncClient);
             this.contextRunner
-                .withBean(CosmosClientBuilder.class, ()-> cosmosClientBuilder)
-                .withBean(CosmosClient.class, ()-> mock(CosmosClient.class))
+                .withBean(CosmosClientBuilder.class, () -> cosmosClientBuilder)
+                .withBean(CosmosClient.class, () -> mock(CosmosClient.class))
                 .withPropertyValues(
                     "spring.cloud.azure.cosmos.endpoint=" + ENDPOINT,
                     "spring.cloud.azure.cosmos.database=test")
-                .run(contextConsumer);
+                .run(context -> {
+                    assertThat(context).hasSingleBean(CosmosTemplate.class);
+                    assertThat(context).hasSingleBean(ReactiveCosmosTemplate.class);
+                });
         }
     }
 }
