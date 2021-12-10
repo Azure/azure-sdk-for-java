@@ -14,7 +14,6 @@ import org.springframework.util.Assert;
  * Do checkpoint after each message successfully processed.
  * Effective when {@link CheckpointMode#RECORD}
  *
- * @author Warren Zhu
  */
 class RecordCheckpointManager extends EventCheckpointManager {
     private static final Logger LOG = LoggerFactory.getLogger(RecordCheckpointManager.class);

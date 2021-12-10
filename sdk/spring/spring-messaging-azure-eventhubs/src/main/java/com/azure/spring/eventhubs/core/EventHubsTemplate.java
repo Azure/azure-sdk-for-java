@@ -110,6 +110,10 @@ public class EventHubsTemplate implements SendOperation, BatchSendOperation {
             .setPartitionKey(partitionSupplier != null ? partitionSupplier.getPartitionKey() : null);
     }
 
+    /**
+     * Set the message converter.
+     * @param messageConverter the message converter.
+     */
     public void setMessageConverter(EventHubsMessageConverter messageConverter) {
         this.messageConverter = messageConverter;
     }

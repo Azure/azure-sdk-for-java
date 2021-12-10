@@ -4,7 +4,7 @@
 package com.azure.spring.messaging.container;
 
 /**
- * @author Warren Zhu
+ * A simple implementation of {@link AbstractListenerContainer}.
  */
 public class SimpleMessageListenerContainer extends AbstractListenerContainer {
 

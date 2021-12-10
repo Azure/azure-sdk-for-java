@@ -18,7 +18,6 @@ import java.util.concurrent.atomic.AtomicReference;
  * Do checkpoint when the time since last successful checkpoint exceeds {@link CheckpointConfig#getInterval()} ()}
  * for one partition. Effective when {@link CheckpointMode#PARTITION_COUNT}
  *
- * @author Warren Zhu
  */
 class TimeCheckpointManager extends EventCheckpointManager {
     private static final Logger LOG = LoggerFactory.getLogger(TimeCheckpointManager.class);

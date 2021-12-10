@@ -46,6 +46,7 @@ public abstract class EventCheckpointManager implements EventCheckpoint, EventBa
     public void checkpoint(EventContext context) {
     }
 
+    @Override
     public void checkpoint(EventBatchContext context) {
     }
 

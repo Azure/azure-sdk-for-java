@@ -8,7 +8,7 @@ import org.springframework.core.NestedRuntimeException;
 /**
  * The Azure Service Bus specific {@link NestedRuntimeException}.
  */
-public class ServiceBusRuntimeException extends NestedRuntimeException {
+public final class ServiceBusRuntimeException extends NestedRuntimeException {
 
     /**
      * Construct {@code ServiceBusRuntimeException} with the specified detail message.

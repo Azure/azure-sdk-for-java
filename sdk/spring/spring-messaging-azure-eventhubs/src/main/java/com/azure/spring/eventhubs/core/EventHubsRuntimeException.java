@@ -9,7 +9,7 @@ import org.springframework.core.NestedRuntimeException;
  * The Azure Event Hubs specific {@link NestedRuntimeException}.
  *
  */
-public class EventHubsRuntimeException extends NestedRuntimeException {
+public final class EventHubsRuntimeException extends NestedRuntimeException {
 
     /**
      * Construct {@code EventHubsRuntimeException} with the specified detail message.

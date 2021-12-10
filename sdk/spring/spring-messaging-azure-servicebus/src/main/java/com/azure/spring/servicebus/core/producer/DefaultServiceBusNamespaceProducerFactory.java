@@ -29,7 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * take advantage.
  * </p>
  */
-public class DefaultServiceBusNamespaceProducerFactory implements ServiceBusProducerFactory, DisposableBean {
+public final class DefaultServiceBusNamespaceProducerFactory implements ServiceBusProducerFactory, DisposableBean {
 
     private final List<Listener> listeners = new ArrayList<>();
     private final NamespaceProperties namespaceProperties;
@@ -56,10 +56,12 @@ public class DefaultServiceBusNamespaceProducerFactory implements ServiceBusProd
         this.propertiesSupplier = supplier == null ? key -> null : supplier;
     }
 
+    @Override
     public ServiceBusSenderAsyncClient createProducer(String name) {
         return createProducer(name, null);
     }
 
+    @Override
     public ServiceBusSenderAsyncClient createProducer(String name, ServiceBusEntityType entityType) {
         ProducerProperties producerProperties = this.propertiesSupplier.getProperties(name) != null
             ? this.propertiesSupplier.getProperties(name) : new ProducerProperties();

@@ -37,7 +37,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * advantage.
  * </p>
  */
-public class DefaultEventHubsNamespaceProcessorFactory implements EventHubsProcessorFactory, DisposableBean {
+public final class DefaultEventHubsNamespaceProcessorFactory implements EventHubsProcessorFactory, DisposableBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultEventHubsNamespaceProcessorFactory.class);
 
