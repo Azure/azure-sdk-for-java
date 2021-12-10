@@ -217,12 +217,6 @@ stages:
                 runOnce:
                   deploy:
                     steps:
-                      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-                        parameters:
-                          SkipDefaultCheckout: true
-                          Paths:
-                            - sdk/**/*.md
-                            - .github/CODEOWNERS
                       - download: current
                         displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
                         artifact: ${{parameters.ArtifactName}}
@@ -385,12 +379,6 @@ stages:
           name: azsdk-pool-mms-ubuntu-2004-general
           vmImage: MMSUbuntu20.04
         steps:
-          - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-            parameters:
-              SkipDefaultCheckout: true 
-              Paths:
-                - sdk/**/*.md
-                - .github/CODEOWNERS
           - download: current
             displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
             artifact: ${{parameters.ArtifactName}}
