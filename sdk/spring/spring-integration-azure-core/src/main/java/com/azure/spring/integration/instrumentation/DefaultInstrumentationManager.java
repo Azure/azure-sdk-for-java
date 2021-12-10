@@ -20,7 +20,7 @@ public class DefaultInstrumentationManager implements InstrumentationManager {
      *
      * @return healthInstrumentations the health instrumentations
      */
-    public Set<Instrumentation> getHealthInstrumentations() {
+    public Set<Instrumentation> getAllHealthInstrumentation() {
         return healthInstrumentations.entrySet().stream().map(Map.Entry::getValue)
                                      .collect(Collectors.toSet());
     }

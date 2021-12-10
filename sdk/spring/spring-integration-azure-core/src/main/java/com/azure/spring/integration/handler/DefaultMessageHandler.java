@@ -39,9 +39,6 @@ import java.util.concurrent.TimeoutException;
  *
  * <p>
  * It delegates real operation to {@link SendOperation} which supports synchronous and asynchronous sending.
- *
- * @author Warren Zhu
- * @author Xiaolu
  */
 public class DefaultMessageHandler extends AbstractMessageProducingHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultMessageHandler.class);
@@ -59,10 +56,10 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
     private String sendFailureChannelName;
 
     /**
-     * Configure the default message handler.
+     * Construct a {@link DefaultMessageHandler} with the specified destination and sendOperation.
      *
      * @param destination the destination
-     * @param sendOperation operations for sending Messages to a destination
+     * @param sendOperation operation for sending Messages to a destination
      */
     public DefaultMessageHandler(String destination, @NonNull SendOperation sendOperation) {
         Assert.hasText(destination, "destination can't be null or empty");
@@ -149,11 +146,7 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
         LOGGER.info("DefaultMessageHandler sync becomes: {}", sync);
     }
 
-    /**
-     * Set send time out.
-     *
-     * @param sendTimeout the send time out
-     */
+    @Override
     public void setSendTimeout(long sendTimeout) {
         setSendTimeoutExpression(new ValueExpression<>(sendTimeout));
     }

@@ -22,17 +22,17 @@ public class ServiceBusHealthIndicator extends AbstractHealthIndicator {
 
     @Override
     protected void doHealthCheck(Health.Builder builder) {
-        if (instrumentationManager == null || instrumentationManager.getHealthInstrumentations().isEmpty()) {
+        if (instrumentationManager == null || instrumentationManager.getAllHealthInstrumentation().isEmpty()) {
             builder.unknown();
             return;
         }
-        if (instrumentationManager.getHealthInstrumentations().stream()
+        if (instrumentationManager.getAllHealthInstrumentation().stream()
                                   .allMatch(Instrumentation::isUp)) {
             builder.up();
             return;
         }
         builder.down();
-        instrumentationManager.getHealthInstrumentations().stream()
+        instrumentationManager.getAllHealthInstrumentation().stream()
                               .filter(instrumentation -> instrumentation.isDown())
                               .forEach(instrumentation -> builder
                                   .withDetail(instrumentation.getId(),

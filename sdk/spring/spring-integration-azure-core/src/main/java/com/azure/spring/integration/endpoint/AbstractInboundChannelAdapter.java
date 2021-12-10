@@ -24,7 +24,7 @@ public abstract class AbstractInboundChannelAdapter extends MessageProducerSuppo
     protected SubscribeOperation subscribeOperation = null;
 
     /**
-     * Configure the abstract inbound channel adapter destination.
+     * Construct a {@link AbstractInboundChannelAdapter} with the specified destination.
      *
      * @param destination the destination
      */

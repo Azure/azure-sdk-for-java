@@ -15,7 +15,7 @@ public class InstrumentationSendCallback implements ListenableFutureCallback<Voi
     private final String instrumentationId;
 
     /**
-     * Constructor.
+     * Construct a {@link InstrumentationSendCallback} with the specified instrumentationId and instrumentationManager.
      *
      * @param instrumentationId the instrumentation id
      * @param instrumentationManager the instrumentation manager

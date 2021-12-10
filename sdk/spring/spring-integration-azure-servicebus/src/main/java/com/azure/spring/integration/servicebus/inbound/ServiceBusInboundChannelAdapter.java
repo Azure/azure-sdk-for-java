@@ -54,7 +54,7 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
     private static final String MSG_SUCCESS_CHECKPOINT = "Checkpointed %s in %s mode";
 
     /**
-     * Constructor.
+     * Construct a {@link ServiceBusInboundChannelAdapter} with the specified processorContainer,queue and checkpointConfig.
      *
      * @param processorContainer the processor container
      * @param queue the queue
@@ -66,7 +66,7 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
     }
 
     /**
-     * Constructor.
+     * Construct a {@link ServiceBusInboundChannelAdapter} with the specified processorContainer,queue,listenerMode and checkpointConfig.
      *
      * @param processorContainer the processor container
      * @param queue the queue
@@ -79,7 +79,7 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
     }
 
     /**
-     * Constructor.
+     * Construct a {@link ServiceBusInboundChannelAdapter} with the specified processorContainer,topic,subscription and checkpointConfig.
      *
      * @param processorContainer the processor container
      * @param topic the topic
@@ -92,7 +92,8 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
     }
 
     /**
-     * Constructor.
+     * Construct a {@link ServiceBusInboundChannelAdapter} with the specified processorContainer,topic
+     * ,subscription,listenerMode and checkpointConfig.
      *
      * @param processorContainer the processor container
      * @param topic the topic

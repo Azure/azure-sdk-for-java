@@ -19,7 +19,7 @@ public class StorageQueueMessageSource extends AbstractMessageSource<Message<?>>
     private final String destination;
 
     /**
-     * Constructor.
+     * Construct a {@link StorageQueueMessageSource} with the specified destination and storageQueueOperation.
      *
      * @param destination the destination
      * @param storageQueueOperation the storage queue operation

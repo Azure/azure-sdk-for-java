@@ -57,7 +57,8 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
     private EventCheckpointManager checkpointManager;
 
     /**
-     * Constructor.
+     * Construct a {@link EventHubsInboundChannelAdapter} with the specified processorContainer,eventHubName
+     * ,consumerGroup and checkpointConfig.
      *
      * @param processorContainer the processor container
      * @param eventHubName the eventHub name
@@ -71,7 +72,8 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
     }
 
     /**
-     * Constructor.
+     * Construct a {@link EventHubsInboundChannelAdapter} with the specified processorContainer,eventHubName
+     * ,consumerGroup,listenerMode and checkpointConfig.
      *
      * @param eventProcessorsContainer the event processors container
      * @param eventHubName the eventHub name
@@ -163,7 +165,7 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
     /**
      *
      */
-    public interface InstrumentationEventProcessingListener extends EventProcessingListener {
+    private interface InstrumentationEventProcessingListener extends EventProcessingListener {
         void setInstrumentationManager(InstrumentationManager instrumentationManager);
         void setInstrumentationId(String instrumentationId);
         default void updateInstrumentation(ErrorContext errorContext,

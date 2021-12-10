@@ -24,7 +24,7 @@ public class EventHusProcessorInstrumentation implements Instrumentation {
     private ErrorContext errorContext;
 
     /**
-     * Constructor.
+     * Construct a {@link EventHusProcessorInstrumentation} with the specified name,type and noneErrorWindow.
      *
      * @param name the name
      * @param type the type
@@ -40,6 +40,7 @@ public class EventHusProcessorInstrumentation implements Instrumentation {
      * Get type.
      *
      * @return type the type
+     * @see Type
      */
     public Type getType() {
         return type;
@@ -53,7 +54,7 @@ public class EventHusProcessorInstrumentation implements Instrumentation {
     /**
      * Check whether is down.
      *
-     * @return !isRunning
+     * @return true if the status is down,false otherwise
      */
     public boolean isDown() {
         if (System.currentTimeMillis() > lastErrorTimestamp + noneErrorWindow.toMillis()) {
@@ -67,7 +68,7 @@ public class EventHusProcessorInstrumentation implements Instrumentation {
     /**
      * Check whether is up.
      *
-     * @return isRunning
+     * @return false if the status is up,true otherwise
      */
     public boolean isUp() {
         return !isDown();
@@ -93,9 +94,9 @@ public class EventHusProcessorInstrumentation implements Instrumentation {
     }
 
     /**
-     * Get name.
+     * Get the name of destination entity.
      *
-     * @return name the name
+     * @return name the name of destination entity
      */
     public String getName() {
         return name;
