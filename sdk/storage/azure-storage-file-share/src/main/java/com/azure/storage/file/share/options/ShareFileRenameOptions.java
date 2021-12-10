@@ -5,8 +5,7 @@ package com.azure.storage.file.share.options;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
-import com.azure.storage.file.share.models.ShareFileHttpHeaders;
+import com.azure.storage.file.share.FileSmbProperties;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 
 /**
@@ -21,10 +20,7 @@ public class ShareFileRenameOptions {
     private ShareRequestConditions sourceRequestConditions;
     private ShareRequestConditions destinationRequestConditions;
     private String filePermission;
-    private String filePermissionKey;
-    private CopyFileSmbInfo smbInfo;
-    private ShareFileHttpHeaders httpHeaders;
-
+    private FileSmbProperties smbProperties;
     /**
      * Creates a {@code ShareFileRenameOptions} object.
      */
@@ -132,51 +128,22 @@ public class ShareFileRenameOptions {
     }
 
     /**
-     * @return
+     * @return Optional SMB properties to set on the destination file or directory. The only properties that are
+     * considered are file attributes, file creation time, file last write time, and file permission key. The rest are
+     * ignored.
      */
-    public String getFilePermissionKey() {
-        return filePermissionKey;
+    public FileSmbProperties getSmbProperties() {
+        return smbProperties;
     }
 
     /**
-     * @param
+     * @param smbProperties Optional SMB properties to set on the destination file or directory. The only properties
+     * that are  considered are file attributes, file creation time, file last write time, and file permission key. The
+     * rest are ignored.
      * @return The updated options.
      */
-    public ShareFileRenameOptions setFilePermissionKey(String filePermissionKey) {
-        this.filePermissionKey = filePermissionKey;
-        return this;
-    }
-
-    /**
-     * @return
-     */
-    // TODO: Wrapper class or move to another package
-    public CopyFileSmbInfo getSmbInfo() {
-        return smbInfo;
-    }
-
-    /**
-     * @param
-     * @return The updated options.
-     */
-    public ShareFileRenameOptions setSmbInfo(CopyFileSmbInfo smbInfo) {
-        this.smbInfo = smbInfo;
-        return this;
-    }
-
-    /**
-     * @return
-     */
-    public ShareFileHttpHeaders getHttpHeaders() {
-        return httpHeaders;
-    }
-
-    /**
-     * @param
-     * @return The updated options.
-     */
-    public ShareFileRenameOptions setHttpHeaders(ShareFileHttpHeaders httpHeaders) {
-        this.httpHeaders = httpHeaders;
+    public ShareFileRenameOptions setSmbProperties(FileSmbProperties smbProperties) {
+        this.smbProperties = smbProperties;
         return this;
     }
 }

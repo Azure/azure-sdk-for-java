@@ -6,11 +6,9 @@ package com.azure.storage.file.share;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.policy.AzureSasCredentialPolicy;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
@@ -77,7 +75,6 @@ import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
-import com.azure.storage.file.share.models.SourceModifiedAccessConditions;
 import com.azure.storage.file.share.options.ShareFileDownloadOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
@@ -2865,8 +2862,8 @@ public class ShareFileAsyncClient {
      *
      * <!-- src_embed com.azure.storage.file.share.ShareFileAsyncClient.rename#String -->
      * <pre>
-     * DataLakeFileAsyncClient renamedClient = client.rename&#40;destinationPath&#41;.block&#40;&#41;;
-     * System.out.println&#40;&quot;Directory Client has been renamed&quot;&#41;;
+     * ShareFileAsyncClient renamedClient = client.rename&#40;destinationPath&#41;.block&#40;&#41;;
+     * System.out.println&#40;&quot;File Client has been renamed&quot;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareFileAsyncClient.rename#String -->
      *
@@ -2892,7 +2889,22 @@ public class ShareFileAsyncClient {
      *
      * <!-- src_embed com.azure.storage.file.share.ShareFileAsyncClient.renameWithResponse#ShareFileRenameOptions -->
      * <pre>
-     * TODO
+     * FileSmbProperties smbProperties = new FileSmbProperties&#40;&#41;
+     *     .setNtfsFileAttributes&#40;EnumSet.of&#40;NtfsFileAttributes.READ_ONLY&#41;&#41;
+     *     .setFileCreationTime&#40;OffsetDateTime.now&#40;&#41;&#41;
+     *     .setFileLastWriteTime&#40;OffsetDateTime.now&#40;&#41;&#41;
+     *     .setFilePermissionKey&#40;&quot;filePermissionKey&quot;&#41;;
+     * ShareFileRenameOptions options = new ShareFileRenameOptions&#40;destinationPath&#41;
+     *     .setDestinationRequestConditions&#40;new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;
+     *     .setSourceRequestConditions&#40;new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;
+     *     .setIgnoreReadOnly&#40;false&#41;
+     *     .setReplaceIfExists&#40;false&#41;
+     *     .setFilePermission&#40;&quot;filePermission&quot;&#41;
+     *     .setSmbProperties&#40;smbProperties&#41;;
+     *
+     * ShareFileAsyncClient newRenamedClient = client.renameWithResponse&#40;options&#41;.block&#40;&#41;.getValue&#40;&#41;;
+     * System.out.println&#40;&quot;File Client has been renamed&quot;&#41;;
+     * </pre>
      * <!-- end com.azure.storage.file.share.ShareFileAsyncClient.renameWithResponse#ShareFileRenameOptions -->
      *
      * @param options {@link ShareFileRenameOptions}
@@ -2924,6 +2936,22 @@ public class ShareFileAsyncClient {
         DestinationLeaseAccessConditions destinationConditions = new DestinationLeaseAccessConditions()
             .setDestinationLeaseId(destinationRequestConditions.getLeaseId());
 
+        CopyFileSmbInfo smbInfo = null;
+        String filePermissionKey = null;
+        if (options.getSmbProperties() != null) {
+            FileSmbProperties tempSmbProperties = options.getSmbProperties();
+            filePermissionKey = tempSmbProperties.getFilePermissionKey();
+
+            String fileAttributes = NtfsFileAttributes.toString(tempSmbProperties.getNtfsFileAttributes());
+            String fileCreationTime = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileCreationTime());
+            String fileLastWriteTime = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileLastWriteTime());
+            smbInfo = new CopyFileSmbInfo()
+                .setFileAttributes(fileAttributes)
+                .setFileCreationTime(fileCreationTime)
+                .setFileLastWriteTime(fileLastWriteTime)
+                .setIgnoreReadOnly(options.getIgnoreReadOnly());
+        }
+
         ShareFileAsyncClient destinationFileClient = getFileAsyncClient(options.getDestinationPath());
 
         String renameSource = "/" + this.getShareName() + "/" + Utility.urlEncode(this.getFilePath());
@@ -2934,8 +2962,7 @@ public class ShareFileAsyncClient {
         return destinationFileClient.azureFileStorageClient.getFiles().renameWithResponseAsync(
             destinationFileClient.getShareName(), destinationFileClient.getFilePath(), renameSource,
             null /* timeout */, options.getReplaceIfExists(), options.getIgnoreReadOnly(),
-            options.getFilePermission(), options.getFilePermissionKey(),
-            sourceConditions, destinationConditions, options.getSmbInfo(), options.getHttpHeaders(),
+            options.getFilePermission(), filePermissionKey, sourceConditions, destinationConditions, smbInfo, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, destinationFileClient));
     }

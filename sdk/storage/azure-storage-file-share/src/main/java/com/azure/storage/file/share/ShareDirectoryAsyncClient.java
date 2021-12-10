@@ -23,6 +23,7 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
+import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
 import com.azure.storage.file.share.implementation.models.DestinationLeaseAccessConditions;
 import com.azure.storage.file.share.implementation.models.DirectoriesCreateResponse;
 import com.azure.storage.file.share.implementation.models.DirectoriesGetPropertiesResponse;
@@ -999,7 +1000,8 @@ public class ShareDirectoryAsyncClient {
      *
      * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.rename#String -->
      * <pre>
-     * TODO
+     * ShareDirectoryAsyncClient renamedClient = client.rename&#40;destinationPath&#41;.block&#40;&#41;;
+     * System.out.println&#40;&quot;Directory Client has been renamed&quot;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.rename#String -->
      *
@@ -1025,7 +1027,22 @@ public class ShareDirectoryAsyncClient {
      *
      * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.renameWithResponse#ShareFileRenameOptions -->
      * <pre>
-     * TODO
+     * FileSmbProperties smbProperties = new FileSmbProperties&#40;&#41;
+     *     .setNtfsFileAttributes&#40;EnumSet.of&#40;NtfsFileAttributes.READ_ONLY&#41;&#41;
+     *     .setFileCreationTime&#40;OffsetDateTime.now&#40;&#41;&#41;
+     *     .setFileLastWriteTime&#40;OffsetDateTime.now&#40;&#41;&#41;
+     *     .setFilePermissionKey&#40;&quot;filePermissionKey&quot;&#41;;
+     * ShareFileRenameOptions options = new ShareFileRenameOptions&#40;destinationPath&#41;
+     *     .setDestinationRequestConditions&#40;new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;
+     *     .setSourceRequestConditions&#40;new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;
+     *     .setIgnoreReadOnly&#40;false&#41;
+     *     .setReplaceIfExists&#40;false&#41;
+     *     .setFilePermission&#40;&quot;filePermission&quot;&#41;
+     *     .setSmbProperties&#40;smbProperties&#41;;
+     *
+     * ShareDirectoryAsyncClient newRenamedClient = client.renameWithResponse&#40;options&#41;.block&#40;&#41;.getValue&#40;&#41;;
+     * System.out.println&#40;&quot;Directory Client has been renamed&quot;&#41;;
+     * </pre>
      * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.renameWithResponse#ShareFileRenameOptions -->
      *
      * @param options {@link ShareFileRenameOptions}
@@ -1057,6 +1074,22 @@ public class ShareDirectoryAsyncClient {
         DestinationLeaseAccessConditions destinationConditions = new DestinationLeaseAccessConditions()
             .setDestinationLeaseId(destinationRequestConditions.getLeaseId());
 
+        CopyFileSmbInfo smbInfo = null;
+        String filePermissionKey = null;
+        if (options.getSmbProperties() != null) {
+            FileSmbProperties tempSmbProperties = options.getSmbProperties();
+            filePermissionKey = tempSmbProperties.getFilePermissionKey();
+
+            String fileAttributes = NtfsFileAttributes.toString(tempSmbProperties.getNtfsFileAttributes());
+            String fileCreationTime = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileCreationTime());
+            String fileLastWriteTime = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileLastWriteTime());
+            smbInfo = new CopyFileSmbInfo()
+                .setFileAttributes(fileAttributes)
+                .setFileCreationTime(fileCreationTime)
+                .setFileLastWriteTime(fileLastWriteTime)
+                .setIgnoreReadOnly(options.getIgnoreReadOnly());
+        }
+
         ShareDirectoryAsyncClient destinationDirectoryClient =
             getDirectoryAsyncClient(options.getDestinationPath());
 
@@ -1068,8 +1101,7 @@ public class ShareDirectoryAsyncClient {
         return destinationDirectoryClient.azureFileStorageClient.getDirectories().renameWithResponseAsync(
             destinationDirectoryClient.getShareName(), destinationDirectoryClient.getDirectoryPath(), renameSource,
             null /* timeout */, options.getReplaceIfExists(), options.getIgnoreReadOnly(),
-            options.getFilePermission(), options.getFilePermissionKey(),
-            sourceConditions, destinationConditions, options.getSmbInfo(),
+            options.getFilePermission(), filePermissionKey, sourceConditions, destinationConditions, smbInfo,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, destinationDirectoryClient));
     }

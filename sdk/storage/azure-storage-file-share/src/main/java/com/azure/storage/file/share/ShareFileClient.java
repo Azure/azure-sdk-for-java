@@ -2174,8 +2174,8 @@ public class ShareFileClient {
      *
      * <!-- src_embed com.azure.storage.file.share.ShareFileClient.rename#String -->
      * <pre>
-     * DataLakeFileAsyncClient renamedClient = client.rename&#40;destinationPath&#41;.block&#40;&#41;;
-     * System.out.println&#40;&quot;Directory Client has been renamed&quot;&#41;;
+     * ShareFileClient renamedClient = client.rename&#40;destinationPath&#41;;
+     * System.out.println&#40;&quot;File Client has been renamed&quot;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareFileClient.rename#String -->
      *
@@ -2197,7 +2197,22 @@ public class ShareFileClient {
      *
      * <!-- src_embed com.azure.storage.file.share.ShareFileClient.renameWithResponse#ShareFileRenameOptions-Duration-Context -->
      * <pre>
-     * TODO
+     * FileSmbProperties smbProperties = new FileSmbProperties&#40;&#41;
+     *     .setNtfsFileAttributes&#40;EnumSet.of&#40;NtfsFileAttributes.READ_ONLY&#41;&#41;
+     *     .setFileCreationTime&#40;OffsetDateTime.now&#40;&#41;&#41;
+     *     .setFileLastWriteTime&#40;OffsetDateTime.now&#40;&#41;&#41;
+     *     .setFilePermissionKey&#40;&quot;filePermissionKey&quot;&#41;;
+     * ShareFileRenameOptions options = new ShareFileRenameOptions&#40;destinationPath&#41;
+     *     .setDestinationRequestConditions&#40;new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;
+     *     .setSourceRequestConditions&#40;new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;
+     *     .setIgnoreReadOnly&#40;false&#41;
+     *     .setReplaceIfExists&#40;false&#41;
+     *     .setFilePermission&#40;&quot;filePermission&quot;&#41;
+     *     .setSmbProperties&#40;smbProperties&#41;;
+     *
+     * ShareFileClient newRenamedClient = client.renameWithResponse&#40;options&#41;.getValue&#40;&#41;;
+     * System.out.println&#40;&quot;File Client has been renamed&quot;&#41;;
+     * </pre>
      * <!-- end com.azure.storage.file.share.ShareFileClient.renameWithResponse#ShareFileRenameOptions-Duration-Context -->
      *
      * @param options {@link ShareFileRenameOptions}
