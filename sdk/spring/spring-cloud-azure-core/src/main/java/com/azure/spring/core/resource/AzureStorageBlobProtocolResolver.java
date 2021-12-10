@@ -3,6 +3,7 @@
 
 package com.azure.spring.core.resource;
 
+import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobContainerListDetails;
@@ -87,10 +88,14 @@ public class AzureStorageBlobProtocolResolver extends AbstractAzureStorageProtoc
             ListBlobsOptions options = new ListBlobsOptions();
             options.setPrefix(itemPrefix);
             options.setDetails(RETRIEVE_NOTHING_DETAILS);
-            return getBlobServiceClient().getBlobContainerClient(name)
-                                    .listBlobs(options, null)
-                                    .stream()
-                                    .map(blob -> new StorageItem(name, blob.getName(), getStorageType()));
+            BlobContainerClient containerClient = getBlobServiceClient().getBlobContainerClient(name);
+            if (containerClient.exists()) {
+                return containerClient.listBlobs(options, null)
+                                      .stream()
+                                      .map(blob -> new StorageItem(name, blob.getName(), getStorageType()));
+            } else {
+                return Stream.empty();
+            }
         }
     }
 
