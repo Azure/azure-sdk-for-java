@@ -67,7 +67,7 @@ public class MethodAzureListenerEndpoint extends AbstractAzureListenerEndpoint i
 
     /**
      * Get the object instance that should manage this endpoint.
-     * @return  the target bean instance.
+     * @return the target bean instance.
      */
     public Object getBean() {
         return bean;
