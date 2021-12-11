@@ -63,11 +63,11 @@ stages:
   # pipeline completes.
   - ${{if and(in(variables['Build.Reason'], 'Manual', ''), eq(variables['System.TeamProject'], 'internal'))}}:
     - ${{ each artifact in parameters.Artifacts }}:
-  #     - stage:
-  #       displayName: 'Release: ${{artifact.name}}'
-  #       dependsOn: Signing
-  #       condition: and(succeeded(), ne(variables['SetDevVersion'], 'true'), ne(variables['Skip.Release'], 'true'), ne(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-java-pr'))
-  #       jobs:
+      - stage:
+        displayName: 'Release: ${{artifact.name}}'
+        dependsOn: Signing
+        condition: and(succeeded(), ne(variables['SetDevVersion'], 'true'), ne(variables['Skip.Release'], 'true'), ne(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-java-pr'))
+        jobs:
   #         - job: VerifyReleaseVersion
   #           displayName: "Verify release version"
   #           condition: ne(variables['Skip.VersionVerification'], 'true')
