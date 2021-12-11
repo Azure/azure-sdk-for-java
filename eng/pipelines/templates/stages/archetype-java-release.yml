@@ -226,6 +226,9 @@ stages:
                             - Name: Azure/azure-sdk-for-java
                               Commitish: $(Build.SourceVersion)
                               WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
+                      - pwsh:
+                          Get-ChildItem "eng/common/scripts/"
+                        displayName: debug path
                       - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
                         parameters:
                           PackageInfoLocations:
