@@ -149,7 +149,7 @@ stages:
               displayName: "Publish to Maven Central"
               condition: and(succeeded(), ne(variables['Skip.PublishPackage'], 'true'))
               environment: maven
-              dependsOn: TagRepository
+              #dependsOn: TagRepository
               variables:
                 - template: ../variables/globals.yml
               pool:
