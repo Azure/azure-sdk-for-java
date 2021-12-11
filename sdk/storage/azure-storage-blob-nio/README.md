@@ -191,13 +191,6 @@ Write to a file. Only writing whole files is supported. Random IO is not support
 to guarantee that the data is available to be read.
 
 ```java readme-sample-writeToAFile
-try (OutputStream os = Files.newOutputStream(filePath)) {
-    os.write(0);
-}
-``` 
-
-### Copy a file
-
 ```java readme-sample-copyAFile
 Path destinationPath = myFs.getPath("destinationFile");
 Files.copy(filePath, destinationPath, StandardCopyOption.COPY_ATTRIBUTES);
