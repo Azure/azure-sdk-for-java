@@ -57,7 +57,7 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
      */
     @Override
     public void channelCreated(final Channel channel) {
-        logger.debug("{} CHANNEL CREATED", channel);
+        logger.info("{} CHANNEL CREATED", channel);
         this.initChannel(channel);
     }
 

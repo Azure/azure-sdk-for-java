@@ -154,9 +154,29 @@ public final class BulkExecutor<TContext> {
             TimeUnit.MILLISECONDS);
     }
 
+    private String getThreadInfo() {
+        StringBuilder sb = new StringBuilder();
+        Thread t = Thread.currentThread();
+        sb
+            .append("Thread[")
+            .append("Name: ")
+            .append(t.getName())
+            .append(",Group: ")
+            .append(t.getThreadGroup() != null ? t.getThreadGroup().getName() : "n/a")
+            .append(", isDaemon: ")
+            .append(t.isDaemon())
+            .append(", Id: ")
+            .append(t.getId())
+            .append("]");
+
+        return sb.toString();
+    }
+
+
     public Flux<CosmosBulkOperationResponse<TContext>> execute() {
 
         return this.inputOperations
+            .publishOn(Schedulers.boundedElastic())
             .onErrorContinue((throwable, o) ->
                 logger.error("Skipping an error operation while processing {}. Cause: {}, Context: {}",
                     o,
@@ -174,14 +194,28 @@ public final class BulkExecutor<TContext> {
                 if (cosmosItemOperation != FlushBuffersItemOperation.singleton()) {
                     totalCount.incrementAndGet();
                 }
+
+                logger.info(
+                    "SetupRetryPolicy, operationType: {}, PK: {}, id: {}, TotalCount: {}, Context: {}, {}",
+                    cosmosItemOperation == FlushBuffersItemOperation.singleton() ?
+                        "Flush" : cosmosItemOperation.getOperationType().toString(),
+                    cosmosItemOperation == FlushBuffersItemOperation.singleton() ?
+                        "Flush" : cosmosItemOperation.getPartitionKeyValue().toString(),
+                    cosmosItemOperation == FlushBuffersItemOperation.singleton() ?
+                        "Flush" : cosmosItemOperation.getId(),
+                    totalCount.get(),
+                    this.operationContextText,
+                    getThreadInfo()
+                    );
             })
             .doOnComplete(() -> {
                 mainSourceCompleted.set(true);
 
                 long totalCountSnapshot = totalCount.get();
-                logger.debug("Main source completed - # left items {}, Context: {}",
+                logger.info("Main source completed - # left items {}, Context: {} {}",
                     totalCountSnapshot,
-                    this.operationContextText);
+                    this.operationContextText,
+                    getThreadInfo());
                 if (totalCountSnapshot == 0) {
                     // This is needed as there can be case that onComplete was called after last element was processed
                     // So complete the sink here also if count is 0, if source has completed and count isn't zero,
@@ -194,9 +228,9 @@ public final class BulkExecutor<TContext> {
                     if (scheduledFutureSnapshot != null) {
                         try {
                             scheduledFutureSnapshot.cancel(true);
-                            logger.debug("Cancelled all future scheduled tasks");
+                            logger.info("Cancelled all future scheduled tasks {}", getThreadInfo());
                         } catch (Exception e) {
-                            logger.warn("Failed to cancel scheduled tasks", e);
+                            logger.warn("Failed to cancel scheduled tasks {}", getThreadInfo(), e);
                         }
                     }
 
@@ -215,7 +249,17 @@ public final class BulkExecutor<TContext> {
                 }
             })
             .mergeWith(mainFluxProcessor)
+            .subscribeOn(Schedulers.boundedElastic())
             .flatMap(operation -> {
+                logger.info("Before Resolve PkRangeId, operationType: {}, PK: {}, id: {}, Context: {} {}",
+                    operation == FlushBuffersItemOperation.singleton() ?
+                        "Flush" : operation.getOperationType().toString(),
+                    operation == FlushBuffersItemOperation.singleton() ?
+                        "Flush" : operation.getPartitionKeyValue().toString(),
+                    operation == FlushBuffersItemOperation.singleton() ?
+                        "Flush" : operation.getId(),
+                    this.operationContextText,
+                    getThreadInfo());
 
                 // resolve partition key range id again for operations which comes in main sink due to gone retry.
                 return BulkExecutorUtil.resolvePartitionKeyRangeId(this.docClientWrapper, this.container, operation)
@@ -224,6 +268,18 @@ public final class BulkExecutor<TContext> {
                             this.partitionScopeThresholds.computeIfAbsent(
                                 pkRangeId,
                                 (newPkRangeId) -> new PartitionScopeThresholds(newPkRangeId, this.cosmosBulkExecutionOptions));
+
+                        logger.info("Resolved PkRangeId, operationType: {}, PK: {}, id: {}, PKRangeId: {} Context: {} {}",
+                            operation == FlushBuffersItemOperation.singleton() ?
+                                "Flush" : operation.getOperationType().toString(),
+                            operation == FlushBuffersItemOperation.singleton() ?
+                                "Flush" : operation.getPartitionKeyValue().toString(),
+                            operation == FlushBuffersItemOperation.singleton() ?
+                                "Flush" : operation.getId(),
+                            pkRangeId,
+                            this.operationContextText,
+                            getThreadInfo());
+
                         return Pair.of(partitionScopeThresholds, operation);
                     });
             })
@@ -236,14 +292,30 @@ public final class BulkExecutor<TContext> {
                 if (totalCountAfterDecrement == 0 && mainSourceCompletedSnapshot) {
                     // It is possible that count is zero but there are more elements in the source.
                     // Count 0 also signifies that there are no pending elements in any sink.
-                    logger.debug("All work completed, Context: {}", this.operationContextText);
+                    logger.info("All work completed, operationType: {}, PK: {}, id: {}, TotalCount: {}, Context: {} {}",
+                        requestAndResponse.getOperation() == FlushBuffersItemOperation.singleton() ?
+                            "Flush" : requestAndResponse.getOperation().getOperationType().toString(),
+                        requestAndResponse.getOperation() == FlushBuffersItemOperation.singleton() ?
+                            "Flush" : requestAndResponse.getOperation().getPartitionKeyValue().toString(),
+                        requestAndResponse.getOperation() == FlushBuffersItemOperation.singleton() ?
+                            "Flush" : requestAndResponse.getOperation().getId(),
+                        totalCountAfterDecrement,
+                        this.operationContextText,
+                        getThreadInfo());
                     completeAllSinks();
                 } else {
-                    logger.debug(
-                        "Work left - TotalCount after decrement: {}, main sink completed {}, Context: {}",
+                    logger.info(
+                        "Work left - TotalCount after decrement: {}, main sink completed {}, operationType: {}, PK: {}, id: {}, Context: {} {}",
                         totalCountAfterDecrement,
                         mainSourceCompletedSnapshot,
-                        this.operationContextText);
+                        requestAndResponse.getOperation() == FlushBuffersItemOperation.singleton() ?
+                            "Flush" : requestAndResponse.getOperation().getOperationType().toString(),
+                        requestAndResponse.getOperation() == FlushBuffersItemOperation.singleton() ?
+                            "Flush" : requestAndResponse.getOperation().getPartitionKeyValue().toString(),
+                        requestAndResponse.getOperation() == FlushBuffersItemOperation.singleton() ?
+                            "Flush" : requestAndResponse.getOperation().getId(),
+                        this.operationContextText,
+                        getThreadInfo());
                 }
             })
             .doOnComplete(() -> {
@@ -252,14 +324,15 @@ public final class BulkExecutor<TContext> {
                 if (totalCountSnapshot == 0 && mainSourceCompletedSnapshot) {
                     // It is possible that count is zero but there are more elements in the source.
                     // Count 0 also signifies that there are no pending elements in any sink.
-                    logger.debug("DoOnComplete: All work completed, Context: {}", this.operationContextText);
+                    logger.info("DoOnComplete: All work completed, Context: {}", this.operationContextText);
                     completeAllSinks();
                 } else {
-                    logger.debug(
-                        "DoOnComplete: Work left - TotalCount after decrement: {}, main sink completed {}, Context: {}",
+                    logger.info(
+                        "DoOnComplete: Work left - TotalCount after decrement: {}, main sink completed {}, Context: {} {}",
                         totalCountSnapshot,
                         mainSourceCompletedSnapshot,
-                        this.operationContextText);
+                        this.operationContextText,
+                        getThreadInfo());
                 }
             });
     }
@@ -282,16 +355,30 @@ public final class BulkExecutor<TContext> {
             .mergeWith(groupFluxProcessor)
             .onBackpressureBuffer()
             .timestamp()
+            .subscribeOn(Schedulers.boundedElastic())
             .bufferUntil(timeStampItemOperationTuple -> {
                 long timestamp = timeStampItemOperationTuple.getT1();
                 CosmosItemOperation itemOperation = timeStampItemOperationTuple.getT2();
 
+                logger.info(
+                    "BufferUntil - enqueued {}, operationType: {}, PK: {}, id: {}, Context: {} {}",
+                    timestamp,
+                    itemOperation == FlushBuffersItemOperation.singleton() ?
+                        "Flush" : itemOperation.getOperationType().toString(),
+                    itemOperation == FlushBuffersItemOperation.singleton() ?
+                        "Flush" : itemOperation.getPartitionKeyValue().toString(),
+                    itemOperation == FlushBuffersItemOperation.singleton() ?
+                        "Flush" : itemOperation.getId(),
+                    this.operationContextText,
+                    getThreadInfo());
+
                 if (itemOperation == FlushBuffersItemOperation.singleton()) {
                     if (currentMicroBatchSize.get() > 0) {
                         logger.debug(
-                            "Flushing PKRange {} due to FlushItemOperation, Context: {}",
+                            "Flushing PKRange {} due to FlushItemOperation, Context: {} {}",
                             thresholds.getPartitionKeyRangeId(),
-                            this.operationContextText);
+                            this.operationContextText,
+                            getThreadInfo());
 
                         firstRecordTimeStamp.set(-1);
                         currentMicroBatchSize.set(0);
@@ -313,12 +400,21 @@ public final class BulkExecutor<TContext> {
                     age >= this.maxMicroBatchIntervalInMs ||
                     totalSerializedLength >= BatchRequestResponseConstants.MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES) {
 
-                    logger.debug(
-                        "Flushing PKRange {} due to BatchSize ({}) or age ({}), Context: {}",
+                    logger.info(
+                        "BufferUntil - Flushing PKRange {} due to BatchSize ({}), payload size ({}) or age ({}), " +
+                            "Triggering Operation[operationType: {}, PK: {}, id: {}] Context: {} {}",
                         thresholds.getPartitionKeyRangeId(),
                         batchSize,
+                        totalSerializedLength,
                         age,
-                        this.operationContextText);
+                        itemOperation == FlushBuffersItemOperation.singleton() ?
+                            "Flush" : itemOperation.getOperationType().toString(),
+                        itemOperation == FlushBuffersItemOperation.singleton() ?
+                            "Flush" : itemOperation.getPartitionKeyValue().toString(),
+                        itemOperation == FlushBuffersItemOperation.singleton() ?
+                            "Flush" : itemOperation.getId(),
+                        this.operationContextText,
+                        getThreadInfo());
                     firstRecordTimeStamp.set(-1);
                     currentMicroBatchSize.set(0);
                     currentTotalSerializedLength.set(0);
@@ -339,6 +435,13 @@ public final class BulkExecutor<TContext> {
                         }
                         operations.add(itemOperation);
                     }
+
+                    logger.info(
+                        "Flushing PKRange {} micro batch with {} operations,  Context: {} {}",
+                        thresholds.getPartitionKeyRangeId(),
+                        operations.size(),
+                        this.operationContextText,
+                        getThreadInfo());
 
                     return executeOperations(operations, thresholds, groupSink);
                 },
@@ -363,7 +466,7 @@ public final class BulkExecutor<TContext> {
         FluxSink<CosmosItemOperation> groupSink) {
 
         if (operations.size() == 0) {
-            logger.debug("Empty operations list, Context: {}", this.operationContextText);
+            logger.info("Empty operations list, Context: {}", this.operationContextText);
             return Flux.empty();
         }
 
@@ -386,6 +489,7 @@ public final class BulkExecutor<TContext> {
         PartitionScopeThresholds thresholds) {
 
         return this.executeBatchRequest(serverRequest)
+            .subscribeOn(Schedulers.boundedElastic())
             .flatMapMany(response ->
                 Flux.fromIterable(response.getResults()).flatMap((CosmosBatchOperationResult result) ->
                     handleTransactionalBatchOperationResult(response, result, groupSink, thresholds)))
@@ -413,6 +517,20 @@ public final class BulkExecutor<TContext> {
         CosmosItemOperation itemOperation = operationResult.getOperation();
         TContext actualContext = this.getActualContext(itemOperation);
 
+        logger.info(
+            "HandleTransactionalBatchOperationResult - PKRange {}, Response Status Code {}, Operation Status Code, {}, operationType: {}, PK: {}, id: {}, Context: {} {}",
+            thresholds.getPartitionKeyRangeId(),
+            response.getStatusCode(),
+            operationResult.getStatusCode(),
+            itemOperation == FlushBuffersItemOperation.singleton() ?
+                "Flush" : itemOperation.getOperationType().toString(),
+            itemOperation == FlushBuffersItemOperation.singleton() ?
+                "Flush" : itemOperation.getPartitionKeyValue().toString(),
+            itemOperation == FlushBuffersItemOperation.singleton() ?
+                "Flush" : itemOperation.getId(),
+            this.operationContextText,
+            getThreadInfo());
+
         if (!operationResult.isSuccessStatusCode()) {
 
             if (itemOperation instanceof ItemBulkOperation<?, ?>) {
@@ -421,8 +539,34 @@ public final class BulkExecutor<TContext> {
                 return itemBulkOperation.getRetryPolicy().shouldRetry(operationResult).flatMap(
                     result -> {
                         if (result.shouldRetry) {
+                            logger.info(
+                                "HandleTransactionalBatchOperationResult - enqueue retry, PKRange {}, Response Status Code {}, Operation Status Code, {}, operationType: {}, PK: {}, id: {}, Context: {} {}",
+                                thresholds.getPartitionKeyRangeId(),
+                                response.getStatusCode(),
+                                operationResult.getStatusCode(),
+                                itemOperation == FlushBuffersItemOperation.singleton() ?
+                                    "Flush" : itemOperation.getOperationType().toString(),
+                                itemOperation == FlushBuffersItemOperation.singleton() ?
+                                    "Flush" : itemOperation.getPartitionKeyValue().toString(),
+                                itemOperation == FlushBuffersItemOperation.singleton() ?
+                                    "Flush" : itemOperation.getId(),
+                                this.operationContextText,
+                                getThreadInfo());
                             return this.enqueueForRetry(result.backOffTime, groupSink, itemOperation, thresholds);
                         } else {
+                            logger.info(
+                                "HandleTransactionalBatchOperationResult - Fail, PKRange {}, Response Status Code {}, Operation Status Code, {}, operationType: {}, PK: {}, id: {}, Context: {} {}",
+                                thresholds.getPartitionKeyRangeId(),
+                                response.getStatusCode(),
+                                operationResult.getStatusCode(),
+                                itemOperation == FlushBuffersItemOperation.singleton() ?
+                                    "Flush" : itemOperation.getOperationType().toString(),
+                                itemOperation == FlushBuffersItemOperation.singleton() ?
+                                    "Flush" : itemOperation.getPartitionKeyValue().toString(),
+                                itemOperation == FlushBuffersItemOperation.singleton() ?
+                                    "Flush" : itemOperation.getId(),
+                                this.operationContextText,
+                                getThreadInfo());
                             return Mono.just(ModelBridgeInternal.createCosmosBulkOperationResponse(
                                 itemOperation, cosmosBulkItemResponse, actualContext));
                         }
@@ -465,6 +609,19 @@ public final class BulkExecutor<TContext> {
         FluxSink<CosmosItemOperation> groupSink,
         PartitionScopeThresholds thresholds) {
 
+        logger.info(
+            "HandleTransactionalBatchExecutionException, PKRange {}, Error: {}, operationType: {}, PK: {}, id: {}, Context: {} {}",
+            thresholds.getPartitionKeyRangeId(),
+            exception,
+            itemOperation == FlushBuffersItemOperation.singleton() ?
+                "Flush" : itemOperation.getOperationType().toString(),
+            itemOperation == FlushBuffersItemOperation.singleton() ?
+                "Flush" : itemOperation.getPartitionKeyValue().toString(),
+            itemOperation == FlushBuffersItemOperation.singleton() ?
+                "Flush" : itemOperation.getId(),
+            this.operationContextText,
+            getThreadInfo());
+
         if (exception instanceof CosmosException && itemOperation instanceof ItemBulkOperation<?, ?>) {
             CosmosException cosmosException = (CosmosException) exception;
             ItemBulkOperation<?, ?> itemBulkOperation = (ItemBulkOperation<?, ?>) itemOperation;
@@ -476,10 +633,34 @@ public final class BulkExecutor<TContext> {
                 .shouldRetryForGone(cosmosException.getStatusCode(), cosmosException.getSubStatusCode())
                 .flatMap(shouldRetryGone -> {
                     if (shouldRetryGone) {
+                        logger.info(
+                            "HandleTransactionalBatchExecutionException - Retry due to split, PKRange {}, Error: {}, operationType: {}, PK: {}, id: {}, Context: {} {}",
+                            thresholds.getPartitionKeyRangeId(),
+                            exception,
+                            itemOperation == FlushBuffersItemOperation.singleton() ?
+                                "Flush" : itemOperation.getOperationType().toString(),
+                            itemOperation == FlushBuffersItemOperation.singleton() ?
+                                "Flush" : itemOperation.getPartitionKeyValue().toString(),
+                            itemOperation == FlushBuffersItemOperation.singleton() ?
+                                "Flush" : itemOperation.getId(),
+                            this.operationContextText,
+                            getThreadInfo());
                         // retry - but don't mark as enqueued for retry in thresholds
                         mainSink.next(itemOperation);
                         return Mono.empty();
                     } else {
+                        logger.info(
+                            "HandleTransactionalBatchExecutionException - Retry other, PKRange {}, Error: {}, operationType: {}, PK: {}, id: {}, Context: {} {}",
+                            thresholds.getPartitionKeyRangeId(),
+                            exception,
+                            itemOperation == FlushBuffersItemOperation.singleton() ?
+                                "Flush" : itemOperation.getOperationType().toString(),
+                            itemOperation == FlushBuffersItemOperation.singleton() ?
+                                "Flush" : itemOperation.getPartitionKeyValue().toString(),
+                            itemOperation == FlushBuffersItemOperation.singleton() ?
+                                "Flush" : itemOperation.getId(),
+                            this.operationContextText,
+                            getThreadInfo());
                         return retryOtherExceptions(
                             itemOperation,
                             exception,
@@ -490,6 +671,19 @@ public final class BulkExecutor<TContext> {
                     }
                 });
         }
+
+        logger.info(
+            "HandleTransactionalBatchExecutionException - NEVER EXPECTED, PKRange {}, Error: {}, operationType: {}, PK: {}, id: {}, Context: {} {}",
+            thresholds.getPartitionKeyRangeId(),
+            exception,
+            itemOperation == FlushBuffersItemOperation.singleton() ?
+                "Flush" : itemOperation.getOperationType().toString(),
+            itemOperation == FlushBuffersItemOperation.singleton() ?
+                "Flush" : itemOperation.getPartitionKeyValue().toString(),
+            itemOperation == FlushBuffersItemOperation.singleton() ?
+                "Flush" : itemOperation.getId(),
+            this.operationContextText,
+            getThreadInfo());
 
         TContext actualContext = this.getActualContext(itemOperation);
         return Mono.just(ModelBridgeInternal.createCosmosBulkOperationResponse(itemOperation, exception, actualContext));
@@ -572,17 +766,17 @@ public final class BulkExecutor<TContext> {
         logger.info("Closing all sinks, Context: {}", this.operationContextText);
 
         executorService.shutdown();
-        logger.debug("Executor service shut down, Context: {}", this.operationContextText);
+        logger.info("Executor service shut down, Context: {}", this.operationContextText);
         mainSink.complete();
-        logger.debug("Main sink completed, Context: {}", this.operationContextText);
+        logger.info("Main sink completed, Context: {}", this.operationContextText);
         groupSinks.forEach(FluxSink::complete);
-        logger.debug("All group sinks completed, Context: {}", this.operationContextText);
+        logger.info("All group sinks completed, Context: {}", this.operationContextText);
 
         try {
             this.executorService.shutdown();
-            logger.debug("Shutting down the executor service");
+            logger.info("Shutting down the executor service");
         } catch (Exception e) {
-            logger.warn("Failed to shut down the executor service", e);
+            logger.info("Failed to shut down the executor service", e);
         }
     }
 

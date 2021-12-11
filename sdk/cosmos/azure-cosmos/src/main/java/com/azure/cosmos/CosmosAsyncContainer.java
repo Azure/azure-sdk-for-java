@@ -64,6 +64,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -866,7 +867,7 @@ public class CosmosAsyncContainer {
             final BulkExecutor<TContext> executor = new BulkExecutor<>(this, operations, cosmosBulkExecutionOptions);
 
             return executor.execute();
-        });
+        }).subscribeOn(Schedulers.boundedElastic());
     }
 
     /**
