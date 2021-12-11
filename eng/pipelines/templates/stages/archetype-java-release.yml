@@ -223,7 +223,7 @@ stages:
                         parameters:
                           SkipDefaultCheckout: true
                           Paths:
-                            - sdk
+                            - sdk/**/*.pom
                             - common/perf-test-core
                             - .github/CODEOWNERS
                             - '!sdk/**/test-recordings'
