@@ -222,10 +222,13 @@ stages:
                       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                         parameters:
                           SkipDefaultCheckout: true
-                          Repositories:
-                            - Name: Azure/azure-sdk-for-java
-                              Commitish: $(Build.SourceVersion)
-                              WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
+                          Paths:
+                            - sdk
+                            - common/perf-test-core
+                            - .github/CODEOWNERS
+                            - '!sdk/**/test-recordings'
+                            - '!sdk/**/session-records'
+                        workingDirectory: $(System.DefaultWorkingDirectory)
                       - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
                         parameters:
                           PackageInfoLocations:
