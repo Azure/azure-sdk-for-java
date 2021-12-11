@@ -224,7 +224,10 @@ stages:
                           SkipDefaultCheckout: true
                           Paths:
                             - sdk
+                            - common
                             - .github/CODEOWNERS
+                            - '!sdk/**/test-recordings'
+                            - '!sdk/**/session-records'
                       - pwsh:
                           Get-ChildItem "./eng/common/scripts/"
                         displayName: debug path
