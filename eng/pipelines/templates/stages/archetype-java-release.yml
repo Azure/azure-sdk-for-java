@@ -61,62 +61,62 @@ stages:
   # effectively burn the version number. For testing of packages prior to burning the version number -
   # the Validation step below publishes a package to a "burner" feed which is cleaned up after the
   # pipeline completes.
-  - ${{if and(in(variables['Build.Reason'], 'Manual', ''), eq(variables['System.TeamProject'], 'internal'))}}:
-    - ${{ each artifact in parameters.Artifacts }}:
-      - stage:
-        displayName: 'Release: ${{artifact.name}}'
-        dependsOn: Signing
-        condition: and(succeeded(), ne(variables['SetDevVersion'], 'true'), ne(variables['Skip.Release'], 'true'), ne(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-java-pr'))
-        jobs:
-          - job: VerifyReleaseVersion
-            displayName: "Verify release version"
-            condition: ne(variables['Skip.VersionVerification'], 'true')
-            variables:
-              - template: ../variables/globals.yml
-            pool:
-              name: azsdk-pool-mms-ubuntu-2004-general
-              vmImage: MMSUbuntu20.04
+  # - ${{if and(in(variables['Build.Reason'], 'Manual', ''), eq(variables['System.TeamProject'], 'internal'))}}:
+  #   - ${{ each artifact in parameters.Artifacts }}:
+  #     - stage:
+  #       displayName: 'Release: ${{artifact.name}}'
+  #       dependsOn: Signing
+  #       condition: and(succeeded(), ne(variables['SetDevVersion'], 'true'), ne(variables['Skip.Release'], 'true'), ne(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-java-pr'))
+  #       jobs:
+  #         - job: VerifyReleaseVersion
+  #           displayName: "Verify release version"
+  #           condition: ne(variables['Skip.VersionVerification'], 'true')
+  #           variables:
+  #             - template: ../variables/globals.yml
+  #           pool:
+  #             name: azsdk-pool-mms-ubuntu-2004-general
+  #             vmImage: MMSUbuntu20.04
 
-            steps:
-              - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-                parameters:
-                  Paths:
-                    - '${{ parameters.ServiceDirectory }}'
-                    - '**/*.xml'
-                    - '!sdk/**/test-recordings'
-                    - '!sdk/**/session-records'
+  #           steps:
+  #             - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+  #               parameters:
+  #                 Paths:
+  #                   - '${{ parameters.ServiceDirectory }}'
+  #                   - '**/*.xml'
+  #                   - '!sdk/**/test-recordings'
+  #                   - '!sdk/**/session-records'
 
-              - task: UsePythonVersion@0
-                displayName: 'Use Python 3.6'
-                inputs:
-                  versionSpec: '3.6'
+  #             - task: UsePythonVersion@0
+  #               displayName: 'Use Python 3.6'
+  #               inputs:
+  #                 versionSpec: '3.6'
 
-              - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
-                parameters:
-                  PackageName: "azure-sdk-template"
-                  ServiceDirectory: "template"
-                  TestPipeline: ${{ parameters.TestPipeline }}
+  #             - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+  #               parameters:
+  #                 PackageName: "azure-sdk-template"
+  #                 ServiceDirectory: "template"
+  #                 TestPipeline: ${{ parameters.TestPipeline }}
 
-              - script: |
-                  python --version
-                  python eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --vv --ai ${{artifact.name}} --gi ${{artifact.groupId}}
-                displayName: 'Verify version for release'
+  #             - script: |
+  #                 python --version
+  #                 python eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --vv --ai ${{artifact.name}} --gi ${{artifact.groupId}}
+  #               displayName: 'Verify version for release'
 
-              - pwsh: |
-                  $(Build.SourcesDirectory)/eng/versioning/scan_for_unreleased_dependencies.ps1 ${{artifact.groupId}} ${{artifact.name}} $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
-                displayName: "Verify no unreleased dependencies"
+  #             - pwsh: |
+  #                 $(Build.SourcesDirectory)/eng/versioning/scan_for_unreleased_dependencies.ps1 ${{artifact.groupId}} ${{artifact.name}} $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
+  #               displayName: "Verify no unreleased dependencies"
 
-              - ${{if ne(parameters.SDKType, 'data')}}:
-                - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
-                  parameters:
-                    PackageName: ${{artifact.name}}
-                    ServiceName: ${{parameters.ServiceDirectory}}
-                    ForRelease: true
-              - template: /eng/pipelines/templates/steps/compilation.check.yml
-                parameters:
-                  Artifact: ${{ artifact }}
-                  ArtifactName: ${{ parameters.ArtifactName }}
-                  ArtifactDirectory: "$(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}"
+  #             - ${{if ne(parameters.SDKType, 'data')}}:
+  #               - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
+  #                 parameters:
+  #                   PackageName: ${{artifact.name}}
+  #                   ServiceName: ${{parameters.ServiceDirectory}}
+  #                   ForRelease: true
+  #             - template: /eng/pipelines/templates/steps/compilation.check.yml
+  #               parameters:
+  #                 Artifact: ${{ artifact }}
+  #                 ArtifactName: ${{ parameters.ArtifactName }}
+  #                 ArtifactDirectory: "$(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}"
 
           # - deployment: TagRepository
           #   displayName: "Create release tag"
