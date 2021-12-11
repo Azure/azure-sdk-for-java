@@ -222,10 +222,9 @@ stages:
                       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                         parameters:
                           SkipDefaultCheckout: true
-                          Repositories:
-                            - Name: Azure/azure-sdk-for-java
-                              Commitish: $(Build.SourceVersion)
-                              WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
+                          Paths:
+                            - sdk
+                            - .github/CODEOWNERS
                       - pwsh:
                           Get-ChildItem "./eng/common/scripts/"
                         displayName: debug path
