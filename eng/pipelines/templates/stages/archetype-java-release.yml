@@ -228,7 +228,6 @@ stages:
                             - .github/CODEOWNERS
                             - '!sdk/**/test-recordings'
                             - '!sdk/**/session-records'
-                        workingDirectory: $(System.DefaultWorkingDirectory)
                       - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
                         parameters:
                           PackageInfoLocations:
