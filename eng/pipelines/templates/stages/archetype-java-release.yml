@@ -61,8 +61,8 @@ stages:
   # effectively burn the version number. For testing of packages prior to burning the version number -
   # the Validation step below publishes a package to a "burner" feed which is cleaned up after the
   # pipeline completes.
-  # - ${{if and(in(variables['Build.Reason'], 'Manual', ''), eq(variables['System.TeamProject'], 'internal'))}}:
-  #   - ${{ each artifact in parameters.Artifacts }}:
+  - ${{if and(in(variables['Build.Reason'], 'Manual', ''), eq(variables['System.TeamProject'], 'internal'))}}:
+    - ${{ each artifact in parameters.Artifacts }}:
   #     - stage:
   #       displayName: 'Release: ${{artifact.name}}'
   #       dependsOn: Signing
