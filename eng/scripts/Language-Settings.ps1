@@ -347,19 +347,19 @@ function ValidatePackage($groupId, $artifactId, $version, $DocValidationImageId)
   $packageDirectory = Join-Path `
     $workingDirectory `
     "${groupId}__${artifactId}__${version}"
-  New-Item -ItemType Directory -Path $packageDirectory -Force | Out-Null
+  New-Item -ItemType Directory -Path $packageDirectory -Force 
 
   # Add more validation by replicating as much of the docs CI process as
   # possible
   # https://github.com/Azure/azure-sdk-for-python/issues/20109
   if (!$DocValidationImageId) 
   {
-    Write-Host "Validating using mvn command directly on $packageName."
+    Write-Host "Validating using mvn command directly on $artifactId."
     FallbackValidation -artifactNamePrefix $artifactNamePrefix -workingDirectory $packageDirectory
   } 
   else 
   {
-    Write-Host "Validating using $DocValidationImageId on $packageName."
+    Write-Host "Validating using $DocValidationImageId on $artifactId."
     DockerValidation -packageName "$artifactId" -packageVersion "$version" -groupId "$groudId" `
         -DocValidationImageId $DocValidationImageId -workingDirectory $packageDirectory
   }
@@ -375,7 +375,7 @@ function DockerValidation($packageName, $packageVersion, $groupId, $DocValidatio
 {
 
   docker run -v "${workingDirectory}:/workdir/out" `
-    -e TARGET_PACKAGE=$packageName -e TARGET_VERSION=$packageVersion -TARGET_GROUP=$groupId -t $DocValidationImageId 2>&1 | Out-Null
+    -e TARGET_PACKAGE=$packageName -e TARGET_VERSION=$packageVersion -TARGET_GROUP_ID=$groupId -t $DocValidationImageId 2>&1 | Out-Null
   # The docker exit codes: https://docs.docker.com/engine/reference/run/#exit-status
   # If the docker failed because of docker itself instead of the application, 
   # we should skip the validation and keep the packages. 
