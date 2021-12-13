@@ -7,6 +7,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
+/**
+ * The metadata of OAuth authentication endpoint and audience of Azure Resource Manager.
+ */
 public final class MetadataAuthentication {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String loginEndpoint;

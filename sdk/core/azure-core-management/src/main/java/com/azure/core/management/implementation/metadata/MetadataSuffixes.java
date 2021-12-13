@@ -5,6 +5,9 @@ package com.azure.core.management.implementation.metadata;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * The metadata of endpoint suffixes of Azure Resource Manager.
+ */
 public final class MetadataSuffixes {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String keyVaultDns;

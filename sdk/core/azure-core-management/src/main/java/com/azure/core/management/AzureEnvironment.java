@@ -8,7 +8,7 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.management.implementation.metadata.Metadata;
+import com.azure.core.management.implementation.metadata.MetadataEndpoint;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -31,8 +31,8 @@ public final class AzureEnvironment {
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureEnvironment.class);
 
-    private static final TypeReference<List<Metadata>> ARM_METADATA_ARRAY_TYPE_REFERENCE =
-        new TypeReference<List<Metadata>>() {
+    private static final TypeReference<List<MetadataEndpoint>> ARM_METADATA_ARRAY_TYPE_REFERENCE =
+        new TypeReference<List<MetadataEndpoint>>() {
         };
 
     /** the map of all endpoints. */
@@ -197,7 +197,7 @@ public final class AzureEnvironment {
         }
         String body = response.getBodyAsString().block();
         try {
-            List<Metadata> metadataArray = JacksonAdapter.createDefaultSerializerAdapter()
+            List<MetadataEndpoint> metadataArray = JacksonAdapter.createDefaultSerializerAdapter()
                 .deserialize(body, ARM_METADATA_ARRAY_TYPE_REFERENCE.getJavaType(), SerializerEncoding.JSON);
 
             if (metadataArray == null || CoreUtils.isNullOrEmpty(metadataArray)) {
@@ -205,7 +205,7 @@ public final class AzureEnvironment {
                     new HttpResponseException("Metadata not found, " + body, response));
             }
 
-            Metadata metadata = metadataArray.iterator().next();
+            MetadataEndpoint metadata = metadataArray.iterator().next();
             return parseMetadata(endpoint, metadata, body, response);
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(
@@ -418,7 +418,7 @@ public final class AzureEnvironment {
         return endpoints.get(endpoint.identifier());
     }
 
-    private static AzureEnvironment parseMetadata(String endpoint, Metadata metadata,
+    private static AzureEnvironment parseMetadata(String endpoint, MetadataEndpoint metadata,
                                                   String body, HttpResponse response) {
         if (metadata == null
             || metadata.getAuthentication() == null
