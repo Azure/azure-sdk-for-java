@@ -10,7 +10,14 @@ import reactor.core.publisher.Mono;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.ConcurrentHashMap;
-
+/**
+ * HmacAuthenticationPolicyTest is designed to verify the correctness of the calculation
+ * of the request signature header in the HmacAuthenticationPolicy in a race condition.
+ *
+ * <p> The test checks if the same signature is calculated for the request with the exact same
+ * signed headers values in parallel threads, otherwise an exception is thrown. </p>
+ *
+ */
 public class HmacAuthenticationPolicyTest extends PerfStressTest<PerfStressOptions> {
 
     private final static ConcurrentHashMap<String, String> dateToSignature = new ConcurrentHashMap<>();
