@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.core.trace.sleuth;
+package com.azure.spring.core.trace;
 
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.spring.core.factory.AbstractAzureHttpClientBuilderFactory;
@@ -19,8 +19,8 @@ import org.springframework.core.Ordered;
 public class AzureHttpClientBuilderFactoryBeanPostProcessor implements BeanPostProcessor, Ordered, BeanFactoryAware {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureHttpClientBuilderFactoryBeanPostProcessor.class);
-    public static final String DEFAULT_SLEUTH_HTTP_POLICY_BEAN_NAME = "AzureSleuthHttpPolicy";
 
+    private final String httpPolicyBeanName;
     private BeanFactory beanFactory;
 
     @Override
@@ -33,6 +33,14 @@ public class AzureHttpClientBuilderFactoryBeanPostProcessor implements BeanPostP
         this.beanFactory = beanFactory;
     }
 
+    /**
+     * Create an {@link AzureHttpClientBuilderFactoryBeanPostProcessor} instance with a http policy bean name.
+     * @param httpPolicyBeanName the bean name for the http policy.
+     */
+    public AzureHttpClientBuilderFactoryBeanPostProcessor(String httpPolicyBeanName) {
+        this.httpPolicyBeanName = httpPolicyBeanName;
+    }
+
     @Override
     @SuppressWarnings({ "rawtypes"})
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
@@ -40,8 +48,8 @@ public class AzureHttpClientBuilderFactoryBeanPostProcessor implements BeanPostP
             return bean;
         }
 
-        if (beanFactory.containsBean(DEFAULT_SLEUTH_HTTP_POLICY_BEAN_NAME)) {
-            HttpPipelinePolicy policy = (HttpPipelinePolicy) beanFactory.getBean(DEFAULT_SLEUTH_HTTP_POLICY_BEAN_NAME);
+        if (beanFactory.containsBean(this.httpPolicyBeanName)) {
+            HttpPipelinePolicy policy = (HttpPipelinePolicy) beanFactory.getBean(this.httpPolicyBeanName);
             AbstractAzureHttpClientBuilderFactory builderFactory = (AbstractAzureHttpClientBuilderFactory) bean;
             builderFactory.addHttpPipelinePolicy(policy);
             LOGGER.debug("Added the Sleuth http pipeline policy to {} builder.", bean.getClass());
