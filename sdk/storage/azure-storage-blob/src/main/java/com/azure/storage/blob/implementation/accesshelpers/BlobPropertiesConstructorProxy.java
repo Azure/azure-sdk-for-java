@@ -9,10 +9,10 @@ import com.azure.storage.blob.models.BlobProperties;
 /**
  * Helper class to access private values of {@link BlobProperties} across package boundaries.
  */
-public final class BlobPropertiesAccessHelper {
+public final class BlobPropertiesConstructorProxy {
     private static BlobPropertiesAccessor accessor;
 
-    private BlobPropertiesAccessHelper() {
+    private BlobPropertiesConstructorProxy() {
     }
 
     /**
@@ -35,7 +35,7 @@ public final class BlobPropertiesAccessHelper {
      * @param accessor The {@link BlobProperties} accessor.
      */
     public static void setAccessor(final BlobPropertiesAccessor accessor) {
-        BlobPropertiesAccessHelper.accessor = accessor;
+        BlobPropertiesConstructorProxy.accessor = accessor;
     }
 
     /**

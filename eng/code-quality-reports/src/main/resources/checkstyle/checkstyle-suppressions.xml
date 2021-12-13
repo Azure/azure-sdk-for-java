@@ -631,4 +631,8 @@ the main ServiceBusClientBuilder. -->
 
   <!-- Suppression for bug https://github.com/checkstyle/checkstyle/issues/11001 -->
   <suppress checks="ParenPad" files="com.azure.ai.textanalytics.TextAnalyticsClientTestBase" lines="1020,1024"/>
+
+  <!-- False positive where a public implementation interface is implemented in the static initializer that has a parameter that is in implementation. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.storage.blob.models.BlobProperties"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.storage.blob.models.BlobDownloadHeaders"/>
 </suppressions>

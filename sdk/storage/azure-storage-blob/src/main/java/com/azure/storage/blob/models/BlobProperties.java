@@ -5,7 +5,7 @@ package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
-import com.azure.storage.blob.implementation.accesshelpers.BlobPropertiesAccessHelper;
+import com.azure.storage.blob.implementation.accesshelpers.BlobPropertiesConstructorProxy;
 import com.azure.storage.blob.implementation.models.BlobPropertiesInternal;
 import com.azure.storage.blob.implementation.models.BlobPropertiesInternalConstructorProperties;
 import com.azure.storage.blob.implementation.util.ModelHelper;
@@ -23,7 +23,7 @@ public final class BlobProperties {
     private final BlobPropertiesInternal internalProperties;
 
     static {
-        BlobPropertiesAccessHelper.setAccessor(new BlobPropertiesAccessHelper.BlobPropertiesAccessor() {
+        BlobPropertiesConstructorProxy.setAccessor(new BlobPropertiesConstructorProxy.BlobPropertiesAccessor() {
             @Override
             public BlobProperties create(BlobPropertiesInternal internalProperties) {
                 return new BlobProperties(internalProperties);

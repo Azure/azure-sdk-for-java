@@ -40,6 +40,9 @@ public class ChunkedDownloadUtils {
             ? range.getCount() : parallelTransferOptions.getBlockSizeLong();
 
         return downloader.apply(new BlobRange(range.getOffset(), initialChunkSize), requestConditions)
+            // Subscribe on boundElastic instead of elastic as elastic is deprecated and boundElastic provided the same
+            // functionality with the added benefit that it won't infinitely create threads if needed and will instead
+            // queue.
             .subscribeOn(Schedulers.boundedElastic())
             .flatMap(response -> {
                 /*
@@ -75,6 +78,9 @@ public class ChunkedDownloadUtils {
                     .getHeaders().getValue("Content-Range")) == 0) {
 
                     return downloader.apply(new BlobRange(0, 0L), requestConditions)
+                        // Subscribe on boundElastic instead of elastic as elastic is deprecated and boundElastic
+                        // provided the same functionality with the added benefit that it won't infinitely create
+                        // threads if needed and will instead queue.
                         .subscribeOn(Schedulers.boundedElastic())
                         .flatMap(response -> {
                             /*

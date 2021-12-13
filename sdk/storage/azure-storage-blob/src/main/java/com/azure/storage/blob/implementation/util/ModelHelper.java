@@ -13,8 +13,8 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.ProgressReceiver;
-import com.azure.storage.blob.implementation.accesshelpers.BlobDownloadHeadersAccessHelper;
-import com.azure.storage.blob.implementation.accesshelpers.BlobPropertiesAccessHelper;
+import com.azure.storage.blob.implementation.accesshelpers.BlobDownloadHeadersConstructorProxy;
+import com.azure.storage.blob.implementation.accesshelpers.BlobPropertiesConstructorProxy;
 import com.azure.storage.blob.implementation.models.BlobItemInternal;
 import com.azure.storage.blob.implementation.models.BlobItemPropertiesInternal;
 import com.azure.storage.blob.implementation.models.BlobName;
@@ -192,7 +192,7 @@ public final class ModelHelper {
         (getObjectReplicationSourcePolicies), so we switched to generating BlobDownloadHeaders into implementation and
         wrapping it. Because it's headers type, we couldn't change the name of the generated type.
          */
-        return BlobDownloadHeadersAccessHelper.create(internalHeaders).setErrorCode(errorCode);
+        return BlobDownloadHeadersConstructorProxy.create(internalHeaders).setErrorCode(errorCode);
     }
 
     /**
@@ -513,7 +513,7 @@ public final class ModelHelper {
 
     public static Response<BlobProperties> buildBlobPropertiesResponse(BlobDownloadAsyncResponse response) {
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            BlobPropertiesAccessHelper.create(new BlobPropertiesInternalDownload(response.getDeserializedHeaders())));
+            BlobPropertiesConstructorProxy.create(new BlobPropertiesInternalDownload(response.getDeserializedHeaders())));
     }
 
     public static long getBlobLength(BlobDownloadHeaders headers) {
