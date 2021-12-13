@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.properties.core.profile;
+package com.azure.spring.cloud.autoconfigure.implementation.core.profile;
 
 import com.azure.spring.core.aware.AzureProfileAware;
 import com.azure.spring.core.properties.profile.AzureEnvironment;

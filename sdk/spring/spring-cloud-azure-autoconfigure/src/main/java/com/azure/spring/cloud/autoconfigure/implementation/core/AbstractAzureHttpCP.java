@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.properties.core;
+package com.azure.spring.cloud.autoconfigure.implementation.core;
 
-import com.azure.spring.cloud.autoconfigure.properties.core.client.HttpClientCP;
-import com.azure.spring.cloud.autoconfigure.properties.core.proxy.HttpProxyCP;
-import com.azure.spring.cloud.autoconfigure.properties.core.retry.HttpRetryCP;
+import com.azure.spring.cloud.autoconfigure.implementation.core.client.HttpClientCP;
+import com.azure.spring.cloud.autoconfigure.implementation.core.proxy.HttpProxyCP;
+import com.azure.spring.cloud.autoconfigure.implementation.core.retry.HttpRetryCP;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
