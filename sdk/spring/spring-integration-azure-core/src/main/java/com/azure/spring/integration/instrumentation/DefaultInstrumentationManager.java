@@ -16,7 +16,7 @@ public class DefaultInstrumentationManager implements InstrumentationManager {
     private final Map<String, Instrumentation> healthInstrumentations = new ConcurrentHashMap<>();
 
     /**
-     * Get health instrumentations.
+     * Get all health instrumentation.
      *
      * @return healthInstrumentations the health instrumentations
      */

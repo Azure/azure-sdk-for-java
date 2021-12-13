@@ -57,8 +57,8 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
     private EventCheckpointManager checkpointManager;
 
     /**
-     * Construct a {@link EventHubsInboundChannelAdapter} with the specified processorContainer,eventHubName
-     * ,consumerGroup and checkpointConfig.
+     * Construct a {@link EventHubsInboundChannelAdapter} with the specified {@link EventHubsProcessorContainer}, event Hub Name
+     * , consumer Group and {@link CheckpointConfig}.
      *
      * @param processorContainer the processor container
      * @param eventHubName the eventHub name
@@ -72,8 +72,8 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
     }
 
     /**
-     * Construct a {@link EventHubsInboundChannelAdapter} with the specified processorContainer,eventHubName
-     * ,consumerGroup,listenerMode and checkpointConfig.
+     * Construct a {@link EventHubsInboundChannelAdapter} with the specified {@link EventHubsProcessorContainer}, event Hub Name
+     * , consumer Group, {@link ListenerMode} and {@link CheckpointConfig}.
      *
      * @param eventProcessorsContainer the event processors container
      * @param eventHubName the eventHub name

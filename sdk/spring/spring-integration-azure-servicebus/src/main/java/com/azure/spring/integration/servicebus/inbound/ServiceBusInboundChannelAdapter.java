@@ -54,7 +54,7 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
     private static final String MSG_SUCCESS_CHECKPOINT = "Checkpointed %s in %s mode";
 
     /**
-     * Construct a {@link ServiceBusInboundChannelAdapter} with the specified processorContainer,queue and checkpointConfig.
+     * Construct a {@link ServiceBusInboundChannelAdapter} with the specified {@link ServiceBusProcessorContainer}, queue and {@link CheckpointConfig}.
      *
      * @param processorContainer the processor container
      * @param queue the queue
@@ -66,7 +66,7 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
     }
 
     /**
-     * Construct a {@link ServiceBusInboundChannelAdapter} with the specified processorContainer,queue,listenerMode and checkpointConfig.
+     * Construct a {@link ServiceBusInboundChannelAdapter} with the specified {@link ServiceBusProcessorContainer}, queue, {@link ListenerMode} and {@link CheckpointConfig}.
      *
      * @param processorContainer the processor container
      * @param queue the queue
@@ -79,7 +79,7 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
     }
 
     /**
-     * Construct a {@link ServiceBusInboundChannelAdapter} with the specified processorContainer,topic,subscription and checkpointConfig.
+     * Construct a {@link ServiceBusInboundChannelAdapter} with the specified {@link ServiceBusProcessorContainer}, topic, subscription and {@link CheckpointConfig}.
      *
      * @param processorContainer the processor container
      * @param topic the topic
@@ -92,8 +92,8 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
     }
 
     /**
-     * Construct a {@link ServiceBusInboundChannelAdapter} with the specified processorContainer,topic
-     * ,subscription,listenerMode and checkpointConfig.
+     * Construct a {@link ServiceBusInboundChannelAdapter} with the specified {@link ServiceBusProcessorContainer}, topic
+     * , subscription, {@link ListenerMode} and {@link CheckpointConfig}.
      *
      * @param processorContainer the processor container
      * @param topic the topic

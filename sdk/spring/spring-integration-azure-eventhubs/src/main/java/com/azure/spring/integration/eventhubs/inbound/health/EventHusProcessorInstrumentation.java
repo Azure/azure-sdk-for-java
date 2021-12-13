@@ -24,11 +24,11 @@ public class EventHusProcessorInstrumentation implements Instrumentation {
     private ErrorContext errorContext;
 
     /**
-     * Construct a {@link EventHusProcessorInstrumentation} with the specified name,type and noneErrorWindow.
+     * Construct a {@link EventHusProcessorInstrumentation} with the specified name, {@link Type} and {@link Duration}.
      *
      * @param name the name
      * @param type the type
-     * @param noneErrorWindow the none error window
+     * @param noneErrorWindow the period of a none error window
      */
     public EventHusProcessorInstrumentation(String name, Type type, Duration noneErrorWindow) {
         this.name = name;

@@ -24,11 +24,11 @@ public class ServiceBusProcessorInstrumentation implements Instrumentation {
     private ServiceBusErrorContext errorContext;
 
     /**
-     * Construct a {@link ServiceBusProcessorInstrumentation} with the specified name,type and noneErrorWindow.
+     * Construct a {@link ServiceBusProcessorInstrumentation} with the specified name, {@link Type} and {@link Duration}.
      *
      * @param name the name
      * @param type the type
-     * @param noneErrorWindow the none error window
+     * @param noneErrorWindow the period of a none error window
      */
     public ServiceBusProcessorInstrumentation(String name, Type type, Duration noneErrorWindow) {
         this.name = name;
