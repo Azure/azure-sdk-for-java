@@ -274,7 +274,7 @@ function SourcePackageHasComFolder($artifactNamePrefix, $packageDirectory) {
     $mvnResults = mvn `
       dependency:copy `
       -Dartifact="$packageArtifact" `
-      -DoutputDirectory="$packageDirectory" | Out-Null
+      -DoutputDirectory="$packageDirectory" 
 
     if ($LASTEXITCODE) {
       LogWarning "Could not download source artifact: $packageArtifact"
@@ -309,7 +309,7 @@ function PackageDependenciesResolve($artifactNamePrefix, $packageDirectory) {
   $artifactDownloadOutput = mvn `
     dependency:copy `
     -Dartifact="$pomArtifactName" `
-    -DoutputDirectory="$packageDirectory" | Out-Null
+    -DoutputDirectory="$packageDirectory"
 
   if ($LASTEXITCODE) {
     LogWarning "Could not download pom artifact: $pomArtifactName"
@@ -325,11 +325,11 @@ function PackageDependenciesResolve($artifactNamePrefix, $packageDirectory) {
     -f $downloadedPomPath `
     dependency:copy-dependencies `
     -P '!azure-mgmt-sdk-test-jar' `
-    -DoutputDirectory="$packageDirectory" | Out-Null
+    -DoutputDirectory="$packageDirectory"
 
   if ($LASTEXITCODE) {
     LogWarning "Could not resolve dependencies for: $pomArtifactName"
-    $copyDependencyOutput | Write-Host
+    $copyDependencyOutput | Write-Debug
     return $false
   }
 
@@ -375,11 +375,11 @@ function DockerValidation($packageName, $packageVersion, $groupId, $DocValidatio
 {
 
   $output = docker run -v "${workingDirectory}:/workdir/out" `
-    -e TARGET_PACKAGE=$packageName -e TARGET_VERSION=$packageVersion -e TARGET_GROUP_ID=$groupId -t $DocValidationImageId 2>&1 | Out-Null
+    -e TARGET_PACKAGE=$packageName -e TARGET_VERSION=$packageVersion -e TARGET_GROUP_ID=$groupId -t $DocValidationImageId 2>&1 
   # The docker exit codes: https://docs.docker.com/engine/reference/run/#exit-status
   # If the docker failed because of docker itself instead of the application, 
   # we should skip the validation and keep the packages. 
-  Write-Debug $output
+  $output | Write-Debug 
   $artifactNamePrefix = "${groupId}:${artifactId}:${version}"
   if ($LASTEXITCODE -eq 125 -Or $LASTEXITCODE -eq 126 -Or $LASTEXITCODE -eq 127) 
   { 
