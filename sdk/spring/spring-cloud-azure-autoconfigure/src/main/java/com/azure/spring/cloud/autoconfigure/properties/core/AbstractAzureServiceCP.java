@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.implementation.core;
+package com.azure.spring.cloud.autoconfigure.properties.core;
 
-import com.azure.spring.cloud.autoconfigure.implementation.core.authentication.TokenCredentialCP;
-import com.azure.spring.cloud.autoconfigure.implementation.core.profile.AzureProfileCP;
+import com.azure.spring.cloud.autoconfigure.properties.core.authentication.TokenCredentialCP;
+import com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileCP;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.resource.AzureResourceMetadata;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;

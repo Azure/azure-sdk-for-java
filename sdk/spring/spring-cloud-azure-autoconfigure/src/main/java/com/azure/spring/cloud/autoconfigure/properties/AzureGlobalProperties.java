@@ -4,12 +4,12 @@
 package com.azure.spring.cloud.autoconfigure.properties;
 
 import com.azure.core.amqp.AmqpTransportType;
-import com.azure.spring.cloud.autoconfigure.implementation.core.authentication.TokenCredentialCP;
-import com.azure.spring.cloud.autoconfigure.implementation.core.client.ClientCP;
-import com.azure.spring.cloud.autoconfigure.implementation.core.client.HttpLoggingCP;
-import com.azure.spring.cloud.autoconfigure.implementation.core.profile.AzureProfileCP;
-import com.azure.spring.cloud.autoconfigure.implementation.core.proxy.ProxyCP;
-import com.azure.spring.cloud.autoconfigure.implementation.core.retry.RetryCP;
+import com.azure.spring.cloud.autoconfigure.properties.core.authentication.TokenCredentialCP;
+import com.azure.spring.cloud.autoconfigure.properties.core.client.ClientCP;
+import com.azure.spring.cloud.autoconfigure.properties.core.client.HttpLoggingCP;
+import com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileCP;
+import com.azure.spring.cloud.autoconfigure.properties.core.proxy.ProxyCP;
+import com.azure.spring.cloud.autoconfigure.properties.core.retry.RetryCP;
 import com.azure.spring.core.properties.AzureProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;

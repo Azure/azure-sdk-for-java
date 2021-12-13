@@ -9,9 +9,9 @@ import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.models.CosmosPermissionProperties;
-import com.azure.spring.cloud.autoconfigure.implementation.core.AbstractAzureServiceCP;
-import com.azure.spring.cloud.autoconfigure.implementation.core.client.ClientCP;
-import com.azure.spring.cloud.autoconfigure.implementation.core.proxy.HttpProxyCP;
+import com.azure.spring.cloud.autoconfigure.properties.core.AbstractAzureServiceCP;
+import com.azure.spring.cloud.autoconfigure.properties.core.client.ClientCP;
+import com.azure.spring.cloud.autoconfigure.properties.core.proxy.HttpProxyCP;
 import com.azure.spring.service.cosmos.CosmosProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 

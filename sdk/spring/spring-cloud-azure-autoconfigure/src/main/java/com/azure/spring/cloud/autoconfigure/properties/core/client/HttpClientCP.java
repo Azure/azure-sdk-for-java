@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.implementation.core.client;
+package com.azure.spring.cloud.autoconfigure.properties.core.client;
 
 import com.azure.spring.core.aware.ClientAware;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
