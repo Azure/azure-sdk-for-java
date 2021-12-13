@@ -220,7 +220,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
         if (category == null) {
             return Mono.error(new IllegalArgumentException("Parameter category is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-20";
+        final String apiVersion = "2021-03-08";
         final String accept = "application/json";
         String tagsConverted =
             JacksonAdapter.createDefaultSerializerAdapter().serializeList(tags, CollectionFormat.CSV);
@@ -293,7 +293,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
         if (category == null) {
             return Mono.error(new IllegalArgumentException("Parameter category is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-20";
+        final String apiVersion = "2021-03-08";
         final String accept = "application/json";
         String tagsConverted =
             JacksonAdapter.createDefaultSerializerAdapter().serializeList(tags, CollectionFormat.CSV);
@@ -469,7 +469,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
         if (category == null) {
             return Mono.error(new IllegalArgumentException("Parameter category is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-20";
+        final String apiVersion = "2021-03-08";
         final String accept = "application/json";
         String tagsConverted =
             JacksonAdapter.createDefaultSerializerAdapter().serializeList(tags, CollectionFormat.CSV);
@@ -529,7 +529,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
         if (category == null) {
             return Mono.error(new IllegalArgumentException("Parameter category is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-20";
+        final String apiVersion = "2021-03-08";
         final String accept = "application/json";
         String tagsConverted =
             JacksonAdapter.createDefaultSerializerAdapter().serializeList(tags, CollectionFormat.CSV);
@@ -680,7 +680,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-20";
+        final String apiVersion = "2021-03-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -730,7 +730,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-20";
+        final String apiVersion = "2021-03-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -830,7 +830,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-20";
+        final String apiVersion = "2021-03-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -880,7 +880,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-20";
+        final String apiVersion = "2021-03-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -979,7 +979,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
         } else {
             workbookProperties.validate();
         }
-        final String apiVersion = "2020-10-20";
+        final String apiVersion = "2021-03-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1043,7 +1043,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
         } else {
             workbookProperties.validate();
         }
-        final String apiVersion = "2020-10-20";
+        final String apiVersion = "2021-03-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1193,7 +1193,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
         } else {
             workbookProperties.validate();
         }
-        final String apiVersion = "2020-10-20";
+        final String apiVersion = "2021-03-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1257,7 +1257,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
         } else {
             workbookProperties.validate();
         }
-        final String apiVersion = "2020-10-20";
+        final String apiVersion = "2021-03-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

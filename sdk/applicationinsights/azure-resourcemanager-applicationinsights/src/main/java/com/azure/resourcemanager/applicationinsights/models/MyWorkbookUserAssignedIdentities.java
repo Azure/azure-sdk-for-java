@@ -11,8 +11,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Customer Managed Identity. */
 @Immutable
-public final class UserAssignedIdentities {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserAssignedIdentities.class);
+public final class MyWorkbookUserAssignedIdentities {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MyWorkbookUserAssignedIdentities.class);
 
     /*
      * The principal ID of resource identity.

@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.applicationinsights.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.applicationinsights.fluent.models.ApplicationInsightsComponentInner;
 import com.azure.resourcemanager.applicationinsights.models.ApplicationInsightsComponent;
 import com.azure.resourcemanager.applicationinsights.models.ApplicationType;
+import com.azure.resourcemanager.applicationinsights.models.ComponentPurgeBody;
+import com.azure.resourcemanager.applicationinsights.models.ComponentPurgeResponse;
 import com.azure.resourcemanager.applicationinsights.models.FlowType;
 import com.azure.resourcemanager.applicationinsights.models.IngestionMode;
 import com.azure.resourcemanager.applicationinsights.models.PrivateLinkScopedResource;
+import com.azure.resourcemanager.applicationinsights.models.PublicNetworkAccessType;
 import com.azure.resourcemanager.applicationinsights.models.RequestSource;
 import com.azure.resourcemanager.applicationinsights.models.TagsResource;
 import java.time.OffsetDateTime;
@@ -129,6 +133,14 @@ public final class ApplicationInsightsComponentImpl
         }
     }
 
+    public PublicNetworkAccessType publicNetworkAccessForIngestion() {
+        return this.innerModel().publicNetworkAccessForIngestion();
+    }
+
+    public PublicNetworkAccessType publicNetworkAccessForQuery() {
+        return this.innerModel().publicNetworkAccessForQuery();
+    }
+
     public IngestionMode ingestionMode() {
         return this.innerModel().ingestionMode();
     }
@@ -241,6 +253,14 @@ public final class ApplicationInsightsComponentImpl
         return this;
     }
 
+    public ComponentPurgeResponse purge(ComponentPurgeBody body) {
+        return serviceManager.components().purge(resourceGroupName, resourceName, body);
+    }
+
+    public Response<ComponentPurgeResponse> purgeWithResponse(ComponentPurgeBody body, Context context) {
+        return serviceManager.components().purgeWithResponse(resourceGroupName, resourceName, body, context);
+    }
+
     public ApplicationInsightsComponentImpl withRegion(Region location) {
         this.innerModel().withLocation(location.toString());
         return this;
@@ -303,6 +323,18 @@ public final class ApplicationInsightsComponentImpl
 
     public ApplicationInsightsComponentImpl withImmediatePurgeDataOn30Days(Boolean immediatePurgeDataOn30Days) {
         this.innerModel().withImmediatePurgeDataOn30Days(immediatePurgeDataOn30Days);
+        return this;
+    }
+
+    public ApplicationInsightsComponentImpl withPublicNetworkAccessForIngestion(
+        PublicNetworkAccessType publicNetworkAccessForIngestion) {
+        this.innerModel().withPublicNetworkAccessForIngestion(publicNetworkAccessForIngestion);
+        return this;
+    }
+
+    public ApplicationInsightsComponentImpl withPublicNetworkAccessForQuery(
+        PublicNetworkAccessType publicNetworkAccessForQuery) {
+        this.innerModel().withPublicNetworkAccessForQuery(publicNetworkAccessForQuery);
         return this;
     }
 
