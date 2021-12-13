@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * An instance of this class describes an environment in Azure.
@@ -166,13 +167,20 @@ public final class AzureEnvironment {
      * @return the AzureEnvironment
      * @throws HttpResponseException thrown if the request is rejected by server, or failed to parse metadata.
      * @throws IllegalArgumentException thrown if Azure Resource Manager endpoint is invalid.
+     * @throws NullPointerException thrown if Azure Resource Manager endpoint is null.
      * @throws URISyntaxException thrown if Azure Resource Manager endpoint violates RFC 2396.
      */
     public static AzureEnvironment fromAzureResourceManagerEndpoint(String endpoint, HttpPipeline httpPipeline)
         throws URISyntaxException {
 
-        String metadataEndpoint = String.format("%s/metadata/endpoints?api-version=2019-10-01", endpoint);
         // verify endpoint
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
+        URI endpointUri = new URI(endpoint);
+        endpoint = endpointUri.toString();
+        if (!endpoint.endsWith("/")) {
+            endpoint += "/";
+        }
+        String metadataEndpoint = String.format("%smetadata/endpoints?api-version=2019-10-01", endpoint);
         URI uri = new URI(metadataEndpoint);
         metadataEndpoint = uri.toString();
 

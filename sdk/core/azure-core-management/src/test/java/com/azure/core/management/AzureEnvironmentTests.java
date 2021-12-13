@@ -62,6 +62,9 @@ public class AzureEnvironmentTests {
         // invalid URL
         Assertions.assertThrows(IllegalArgumentException.class, () -> AzureEnvironment.fromAzureResourceManagerEndpoint("management.azure.com", mockResponse()));
 
+        // null URL
+        Assertions.assertThrows(NullPointerException.class, () -> AzureEnvironment.fromAzureResourceManagerEndpoint(null, mockResponse()));
+
         // empty metadata
         Assertions.assertThrows(HttpResponseException.class, () -> AzureEnvironment.fromAzureResourceManagerEndpoint(AZURE_CLOUD_ENDPOINT, mockResponse("[]")));
 
