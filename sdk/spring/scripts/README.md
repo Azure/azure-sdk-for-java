@@ -6,7 +6,7 @@ Scripts in this folder is used to hold the scripts used in Spring Cloud Azure pr
 
 ## How to upgrade spring boot versions.
 
-1. Update `SPRING_BOOT_VERSION` and `SPRING_CLOUD_VERSION` in `update_spring_boot_managed_external_dependencies.py`.
+1. Update `SPRING_BOOT_VERSION` and `SPRING_CLOUD_VERSION` in `get_spring_boot_managed_external_dependencies.py`.
 2. Run command `python .\sdk\spring\scripts\get_spring_boot_managed_external_dependencies.py`.
 3. Update `SPRING_BOOT_VERSION` in `sync_external_dependencies.py`.
 4. Run command `python .\sdk\spring\scripts\sync_external_dependencies.py`.
