@@ -11,6 +11,9 @@ public final class AppConfigurationRefreshEvent extends ApplicationEvent {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Endpoint being refreshed.
+     */
     private final String endpoint;
 
     /**

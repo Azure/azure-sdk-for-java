@@ -15,6 +15,7 @@ import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.implementation.TimeAndFormat;
 import com.azure.storage.common.sas.SasIpRange;
 import com.azure.storage.common.sas.SasProtocol;
 
@@ -199,8 +200,10 @@ public class BlobSasImplUtil {
 
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SERVICE_VERSION, VERSION);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_PROTOCOL, this.protocol);
-        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_START_TIME, formatQueryParameterDate(this.startTime));
-        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_EXPIRY_TIME, formatQueryParameterDate(this.expiryTime));
+        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_START_TIME, formatQueryParameterDate(
+            new TimeAndFormat(this.startTime, null)));
+        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_EXPIRY_TIME, formatQueryParameterDate(
+            new TimeAndFormat(this.expiryTime, null)));
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_IP_RANGE, this.sasIpRange);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_IDENTIFIER, this.identifier);
         if (userDelegationKey != null) {
@@ -209,9 +212,9 @@ public class BlobSasImplUtil {
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_TENANT_ID,
                 userDelegationKey.getSignedTenantId());
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_START,
-                formatQueryParameterDate(userDelegationKey.getSignedStart()));
+                formatQueryParameterDate(new TimeAndFormat(userDelegationKey.getSignedStart(), null)));
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_EXPIRY,
-                formatQueryParameterDate(userDelegationKey.getSignedExpiry()));
+                formatQueryParameterDate(new TimeAndFormat(userDelegationKey.getSignedExpiry(), null)));
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_SERVICE,
                 userDelegationKey.getSignedService());
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_VERSION,

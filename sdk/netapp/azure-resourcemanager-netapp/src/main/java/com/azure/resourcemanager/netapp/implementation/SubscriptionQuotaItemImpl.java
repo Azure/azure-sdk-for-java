@@ -35,10 +35,6 @@ public final class SubscriptionQuotaItemImpl implements SubscriptionQuotaItem {
         return this.innerModel().systemData();
     }
 
-    public String namePropertiesName() {
-        return this.innerModel().namePropertiesName();
-    }
-
     public Integer current() {
         return this.innerModel().current();
     }

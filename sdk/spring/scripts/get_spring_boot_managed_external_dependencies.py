@@ -20,8 +20,8 @@ from urllib.error import HTTPError
 from log import log, Log
 from pom import Pom
 
-SPRING_BOOT_VERSION = '2.5.4'
-SPRING_CLOUD_VERSION = '2020.0.3'
+SPRING_BOOT_VERSION = '2.6.1'
+SPRING_CLOUD_VERSION = '2020.0.4'
 
 ROOT_POMS = [
     'org.springframework.boot:spring-boot-starter-parent;{}'.format(SPRING_BOOT_VERSION),

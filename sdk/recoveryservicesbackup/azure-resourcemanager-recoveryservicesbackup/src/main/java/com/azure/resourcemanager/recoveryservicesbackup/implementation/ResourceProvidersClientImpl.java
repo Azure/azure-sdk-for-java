@@ -170,7 +170,6 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -178,7 +177,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
                     service
                         .getOperationStatus(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             vaultName,
                             resourceGroupName,
                             this.client.getSubscriptionId(),
@@ -225,13 +224,12 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getOperationStatus(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 vaultName,
                 resourceGroupName,
                 this.client.getSubscriptionId(),
@@ -337,7 +335,6 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -345,7 +342,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
                     service
                         .bmsPrepareDataMove(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             vaultName,
                             resourceGroupName,
                             this.client.getSubscriptionId(),
@@ -394,13 +391,12 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .bmsPrepareDataMove(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 vaultName,
                 resourceGroupName,
                 this.client.getSubscriptionId(),
@@ -420,14 +416,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginBmsPrepareDataMoveAsync(
         String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             bmsPrepareDataMoveWithResponseAsync(vaultName, resourceGroupName, parameters);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -442,7 +439,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginBmsPrepareDataMoveAsync(
         String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -464,7 +461,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginBmsPrepareDataMove(
         String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters) {
         return beginBmsPrepareDataMoveAsync(vaultName, resourceGroupName, parameters).getSyncPoller();
@@ -482,7 +479,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginBmsPrepareDataMove(
         String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters, Context context) {
         return beginBmsPrepareDataMoveAsync(vaultName, resourceGroupName, parameters, context).getSyncPoller();
@@ -597,7 +594,6 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -605,7 +601,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
                     service
                         .bmsTriggerDataMove(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             vaultName,
                             resourceGroupName,
                             this.client.getSubscriptionId(),
@@ -654,13 +650,12 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .bmsTriggerDataMove(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 vaultName,
                 resourceGroupName,
                 this.client.getSubscriptionId(),
@@ -680,14 +675,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginBmsTriggerDataMoveAsync(
         String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             bmsTriggerDataMoveWithResponseAsync(vaultName, resourceGroupName, parameters);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -702,7 +698,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginBmsTriggerDataMoveAsync(
         String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -724,7 +720,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginBmsTriggerDataMove(
         String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters) {
         return beginBmsTriggerDataMoveAsync(vaultName, resourceGroupName, parameters).getSyncPoller();
@@ -742,7 +738,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginBmsTriggerDataMove(
         String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters, Context context) {
         return beginBmsTriggerDataMoveAsync(vaultName, resourceGroupName, parameters, context).getSyncPoller();
@@ -881,7 +877,6 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -889,7 +884,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
                     service
                         .moveRecoveryPoint(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             vaultName,
                             resourceGroupName,
                             this.client.getSubscriptionId(),
@@ -967,13 +962,12 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .moveRecoveryPoint(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 vaultName,
                 resourceGroupName,
                 this.client.getSubscriptionId(),
@@ -1001,7 +995,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginMoveRecoveryPointAsync(
         String vaultName,
         String resourceGroupName,
@@ -1021,7 +1015,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
                 parameters);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1040,7 +1035,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginMoveRecoveryPointAsync(
         String vaultName,
         String resourceGroupName,
@@ -1081,7 +1076,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginMoveRecoveryPoint(
         String vaultName,
         String resourceGroupName,
@@ -1111,7 +1106,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginMoveRecoveryPoint(
         String vaultName,
         String resourceGroupName,

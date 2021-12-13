@@ -408,7 +408,8 @@ public final class RegistriesClientImpl
             importImageWithResponseAsync(resourceGroupName, registryName, parameters);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -950,7 +951,11 @@ public final class RegistriesClientImpl
         return this
             .client
             .<RegistryInner, RegistryInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RegistryInner.class, RegistryInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                RegistryInner.class,
+                RegistryInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1190,7 +1195,8 @@ public final class RegistriesClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, registryName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1440,7 +1446,11 @@ public final class RegistriesClientImpl
         return this
             .client
             .<RegistryInner, RegistryInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RegistryInner.class, RegistryInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                RegistryInner.class,
+                RegistryInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -2460,7 +2470,7 @@ public final class RegistriesClientImpl
         return this
             .client
             .<RunInner, RunInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RunInner.class, RunInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), RunInner.class, RunInner.class, this.client.getContext());
     }
 
     /**

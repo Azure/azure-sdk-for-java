@@ -47,7 +47,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-http-okhttp</artifactId>
-    <version>1.7.5</version>
+    <version>1.7.6</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -76,6 +76,29 @@ Create an OkHttp client that is using a proxy.
 ```java readme-sample-createProxyClient
 HttpClient client = new OkHttpAsyncHttpClientBuilder()
     .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("<proxy-host>", 8888)))
+    .build();
+```
+
+### Create a Client with HTTP/2 Support
+
+Create an OkHttp client that supports both the HTTP/1.1 and HTTP/2 protocols, with HTTP/2 being the preferred protocol.
+
+```java readme-sample-useHttp2WithConfiguredOkHttpClient 
+// Constructs an HttpClient that supports both HTTP/1.1 and HTTP/2 with HTTP/2 being the preferred protocol.
+// This is the default handling for OkHttp.
+HttpClient client = new OkHttpAsyncHttpClientBuilder(new OkHttpClient.Builder()
+    .protocols(Arrays.asList(Protocol.HTTP_2, Protocol.HTTP_1_1))
+    .build())
+    .build();
+```
+
+It is also possible to create an OkHttp client that only supports HTTP/2.
+
+```java readme-sample-useHttp2OnlyWithConfiguredOkHttpClient
+// Constructs an HttpClient that only supports HTTP/2.
+HttpClient client = new OkHttpAsyncHttpClientBuilder(new OkHttpClient.Builder()
+    .protocols(Collections.singletonList(Protocol.H2_PRIOR_KNOWLEDGE))
+    .build())
     .build();
 ```
 

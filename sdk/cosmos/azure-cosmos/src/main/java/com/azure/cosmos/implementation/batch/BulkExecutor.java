@@ -41,6 +41,7 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -93,6 +94,7 @@ public final class BulkExecutor<TContext> {
     private final FluxSink<CosmosItemOperation> mainSink;
     private final List<FluxSink<CosmosItemOperation>> groupSinks;
     private final ScheduledExecutorService executorService;
+    private ScheduledFuture<?> scheduledFutureForFlush;
 
     public BulkExecutor(CosmosAsyncContainer container,
                         Flux<CosmosItemOperation> inputOperations,
@@ -139,13 +141,13 @@ public final class BulkExecutor<TContext> {
 
         // The evaluation whether a micro batch should be flushed to the backend happens whenever
         // a new ItemOperation arrives. If the batch size is exceeded or the oldest buffered ItemOperation
-        // exceeds the MicroBatchInterval, the micro batch gets flushed to the backend.
+        // exceeds the MicroBatchInterval or the total serialized length exceeds, the micro batch gets flushed to the backend.
         // To make sure we flush the buffers at least every maxMicroBatchIntervalInMs we start a timer
         // that will trigger artificial ItemOperations that are only used to flush the buffers (and will be
         // filtered out before sending requests to the backend)
         this.executorService = Executors.newSingleThreadScheduledExecutor(
                 new CosmosDaemonThreadFactory("BulkExecutor-" + instanceCount.incrementAndGet()));
-        this.executorService.scheduleWithFixedDelay(
+        this.scheduledFutureForFlush = this.executorService.scheduleWithFixedDelay(
             this::onFlush,
             this.maxMicroBatchIntervalInMs,
             this.maxMicroBatchIntervalInMs,
@@ -187,7 +189,29 @@ public final class BulkExecutor<TContext> {
 
                     completeAllSinks();
                 } else {
+                    ScheduledFuture<?> scheduledFutureSnapshot = this.scheduledFutureForFlush;
+
+                    if (scheduledFutureSnapshot != null) {
+                        try {
+                            scheduledFutureSnapshot.cancel(true);
+                            logger.debug("Cancelled all future scheduled tasks");
+                        } catch (Exception e) {
+                            logger.warn("Failed to cancel scheduled tasks", e);
+                        }
+                    }
+
                     this.onFlush();
+
+                    long flushIntervalAfterDrainingIncomingFlux = Math.min(
+                        this.maxMicroBatchIntervalInMs,
+                        BatchRequestResponseConstants
+                            .DEFAULT_MAX_MICRO_BATCH_INTERVAL_AFTER_DRAINING_INCOMING_FLUX_IN_MILLISECONDS);
+
+                    this.scheduledFutureForFlush = this.executorService.scheduleWithFixedDelay(
+                        this::onFlush,
+                        flushIntervalAfterDrainingIncomingFlux,
+                        flushIntervalAfterDrainingIncomingFlux,
+                        TimeUnit.MILLISECONDS);
                 }
             })
             .mergeWith(mainFluxProcessor)
@@ -252,6 +276,7 @@ public final class BulkExecutor<TContext> {
 
         AtomicLong firstRecordTimeStamp = new AtomicLong(-1);
         AtomicLong currentMicroBatchSize = new AtomicLong(0);
+        AtomicInteger currentTotalSerializedLength = new AtomicInteger(0);
 
         return partitionedGroupFluxOfInputOperations
             .mergeWith(groupFluxProcessor)
@@ -270,6 +295,7 @@ public final class BulkExecutor<TContext> {
 
                         firstRecordTimeStamp.set(-1);
                         currentMicroBatchSize.set(0);
+                        currentTotalSerializedLength.set(0);
 
                         return true;
                     }
@@ -281,8 +307,11 @@ public final class BulkExecutor<TContext> {
                 firstRecordTimeStamp.compareAndSet(-1, timestamp);
                 long age = timestamp - firstRecordTimeStamp.get();
                 long batchSize = currentMicroBatchSize.incrementAndGet();
+                int totalSerializedLength = this.calculateTotalSerializedLength(currentTotalSerializedLength, itemOperation);
+
                 if (batchSize >= thresholds.getTargetMicroBatchSizeSnapshot() ||
-                    age >=  this.maxMicroBatchIntervalInMs) {
+                    age >= this.maxMicroBatchIntervalInMs ||
+                    totalSerializedLength >= BatchRequestResponseConstants.MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES) {
 
                     logger.debug(
                         "Flushing PKRange {} due to BatchSize ({}) or age ({}), Context: {}",
@@ -292,6 +321,7 @@ public final class BulkExecutor<TContext> {
                         this.operationContextText);
                     firstRecordTimeStamp.set(-1);
                     currentMicroBatchSize.set(0);
+                    currentTotalSerializedLength.set(0);
                     return true;
                 }
 
@@ -315,6 +345,16 @@ public final class BulkExecutor<TContext> {
                 ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
                     .getCosmosBulkExecutionOptionsAccessor()
                     .getMaxMicroBatchConcurrency(this.cosmosBulkExecutionOptions));
+    }
+
+    private int calculateTotalSerializedLength(AtomicInteger currentTotalSerializedLength, CosmosItemOperation item) {
+        if (item instanceof CosmosItemOperationBase) {
+            return currentTotalSerializedLength.accumulateAndGet(
+                ((CosmosItemOperationBase) item).getSerializedLength(),
+                (currentValue, incremental) -> currentValue + incremental);
+        }
+
+        return currentTotalSerializedLength.get();
     }
 
     private Flux<CosmosBulkOperationResponse<TContext>> executeOperations(
@@ -537,6 +577,13 @@ public final class BulkExecutor<TContext> {
         logger.debug("Main sink completed, Context: {}", this.operationContextText);
         groupSinks.forEach(FluxSink::complete);
         logger.debug("All group sinks completed, Context: {}", this.operationContextText);
+
+        try {
+            this.executorService.shutdown();
+            logger.debug("Shutting down the executor service");
+        } catch (Exception e) {
+            logger.warn("Failed to shut down the executor service", e);
+        }
     }
 
     private void onFlush() {

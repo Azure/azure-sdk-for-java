@@ -1341,7 +1341,7 @@ public final class DomainsClientImpl
         return this
             .client
             .<DomainInner, DomainInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DomainInner.class, DomainInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), DomainInner.class, DomainInner.class, this.client.getContext());
     }
 
     /**
