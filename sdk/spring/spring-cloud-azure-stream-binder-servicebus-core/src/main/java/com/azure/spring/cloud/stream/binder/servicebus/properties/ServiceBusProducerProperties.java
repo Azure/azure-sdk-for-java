@@ -15,7 +15,7 @@ public class ServiceBusProducerProperties extends ProducerProperties {
     /**
      * Check whether is sync.
      *
-     * @return sync
+     * @return true if is sync,false otherwise
      */
     public boolean isSync() {
         return sync;
