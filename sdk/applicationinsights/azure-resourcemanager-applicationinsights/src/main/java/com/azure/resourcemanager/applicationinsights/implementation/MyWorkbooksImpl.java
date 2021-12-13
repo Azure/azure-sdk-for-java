@@ -147,7 +147,7 @@ public final class MyWorkbooksImpl implements MyWorkbooks {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'myWorkbooks'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, resourceName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {

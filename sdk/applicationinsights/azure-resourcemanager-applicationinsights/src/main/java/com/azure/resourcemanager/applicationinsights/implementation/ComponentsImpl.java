@@ -192,7 +192,7 @@ public final class ComponentsImpl implements Components {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'components'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, resourceName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
