@@ -83,7 +83,7 @@ public class ServiceBusMessageChannelBinder extends
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusMessageChannelBinder.class);
 
     /**
-     * Construct a {@link ServiceBusMessageChannelBinder} with the specified headersToEmbed and provisioningProvider.
+     * Construct a {@link ServiceBusMessageChannelBinder} with the specified headersToEmbed and {@link ServiceBusChannelProvisioner}.
      *
      * @param headersToEmbed the headers to embed
      * @param provisioningProvider the provisioning provider

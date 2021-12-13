@@ -80,7 +80,7 @@ public class EventHubsMessageChannelBinder extends
         extendedConsumerPropertiesMap = new ConcurrentHashMap<>();
 
     /**
-     * Construct a {@link EventHubsMessageChannelBinder} with the specified headersToEmbed and provisioningProvider.
+     * Construct a {@link EventHubsMessageChannelBinder} with the specified headers to embed and {@link EventHubsChannelProvisioner}.
      *
      * @param headersToEmbed the headers to embed
      * @param provisioningProvider the provisioning provider

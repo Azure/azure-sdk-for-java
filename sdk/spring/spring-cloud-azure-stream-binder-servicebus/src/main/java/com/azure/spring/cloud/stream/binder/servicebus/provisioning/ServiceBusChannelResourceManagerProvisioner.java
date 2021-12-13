@@ -19,7 +19,7 @@ public class ServiceBusChannelResourceManagerProvisioner extends ServiceBusChann
     private final ServiceBusProvisioner serviceBusProvisioner;
 
     /**
-     * Construct a {@link ServiceBusChannelResourceManagerProvisioner} with the specified binder.
+     * Construct a {@link ServiceBusChannelResourceManagerProvisioner} with the specified namespace and {@link ServiceBusProvisioner}.
      *
      * @param namespace the namespace
      * @param serviceBusProvisioner the service Bus Provisioner

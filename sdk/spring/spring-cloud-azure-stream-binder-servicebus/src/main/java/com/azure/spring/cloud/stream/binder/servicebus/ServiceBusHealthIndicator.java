@@ -16,7 +16,7 @@ public class ServiceBusHealthIndicator extends AbstractHealthIndicator {
     private final InstrumentationManager instrumentationManager;
 
     /**
-     * Construct a {@link ServiceBusHealthIndicator} with the specified binder.
+     * Construct a {@link ServiceBusHealthIndicator} with the specified {@link ServiceBusMessageChannelBinder}.
      *
      * @param binder the binder
      */
