@@ -7,9 +7,11 @@ package com.azure.resourcemanager.resourcemover.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.Map;
 
 /** Gets or sets the availability set resource settings. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resourceType")
@@ -17,6 +19,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class AvailabilitySetResourceSettings extends ResourceSettings {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailabilitySetResourceSettings.class);
+
+    /*
+     * Gets or sets the Resource tags.
+     */
+    @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, String> tags;
 
     /*
      * Gets or sets the target fault domain.
@@ -29,6 +38,26 @@ public final class AvailabilitySetResourceSettings extends ResourceSettings {
      */
     @JsonProperty(value = "updateDomain")
     private Integer updateDomain;
+
+    /**
+     * Get the tags property: Gets or sets the Resource tags.
+     *
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Gets or sets the Resource tags.
+     *
+     * @param tags the tags value to set.
+     * @return the AvailabilitySetResourceSettings object itself.
+     */
+    public AvailabilitySetResourceSettings withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
 
     /**
      * Get the faultDomain property: Gets or sets the target fault domain.

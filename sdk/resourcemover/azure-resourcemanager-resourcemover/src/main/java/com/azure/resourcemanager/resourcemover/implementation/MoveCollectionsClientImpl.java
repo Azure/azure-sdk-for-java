@@ -780,7 +780,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginDeleteAsync(
         String resourceGroupName, String moveCollectionName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, moveCollectionName);
@@ -791,7 +791,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
                 this.client.getHttpPipeline(),
                 OperationStatusInner.class,
                 OperationStatusInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -805,7 +805,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginDeleteAsync(
         String resourceGroupName, String moveCollectionName, Context context) {
         context = this.client.mergeContext(context);
@@ -826,7 +826,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginDelete(
         String resourceGroupName, String moveCollectionName) {
         return beginDeleteAsync(resourceGroupName, moveCollectionName).getSyncPoller();
@@ -843,7 +843,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginDelete(
         String resourceGroupName, String moveCollectionName, Context context) {
         return beginDeleteAsync(resourceGroupName, moveCollectionName, context).getSyncPoller();
@@ -1193,7 +1193,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginPrepareAsync(
         String resourceGroupName, String moveCollectionName, PrepareRequest body) {
         Mono<Response<Flux<ByteBuffer>>> mono = prepareWithResponseAsync(resourceGroupName, moveCollectionName, body);
@@ -1204,7 +1204,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
                 this.client.getHttpPipeline(),
                 OperationStatusInner.class,
                 OperationStatusInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1222,7 +1222,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginPrepareAsync(
         String resourceGroupName, String moveCollectionName, PrepareRequest body, Context context) {
         context = this.client.mergeContext(context);
@@ -1248,7 +1248,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginPrepare(
         String resourceGroupName, String moveCollectionName, PrepareRequest body) {
         return beginPrepareAsync(resourceGroupName, moveCollectionName, body).getSyncPoller();
@@ -1269,7 +1269,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginPrepare(
         String resourceGroupName, String moveCollectionName, PrepareRequest body, Context context) {
         return beginPrepareAsync(resourceGroupName, moveCollectionName, body, context).getSyncPoller();
@@ -1526,7 +1526,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginInitiateMoveAsync(
         String resourceGroupName, String moveCollectionName, ResourceMoveRequest body) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1538,7 +1538,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
                 this.client.getHttpPipeline(),
                 OperationStatusInner.class,
                 OperationStatusInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1556,7 +1556,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginInitiateMoveAsync(
         String resourceGroupName, String moveCollectionName, ResourceMoveRequest body, Context context) {
         context = this.client.mergeContext(context);
@@ -1582,7 +1582,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginInitiateMove(
         String resourceGroupName, String moveCollectionName, ResourceMoveRequest body) {
         return beginInitiateMoveAsync(resourceGroupName, moveCollectionName, body).getSyncPoller();
@@ -1603,7 +1603,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginInitiateMove(
         String resourceGroupName, String moveCollectionName, ResourceMoveRequest body, Context context) {
         return beginInitiateMoveAsync(resourceGroupName, moveCollectionName, body, context).getSyncPoller();
@@ -1861,7 +1861,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginCommitAsync(
         String resourceGroupName, String moveCollectionName, CommitRequest body) {
         Mono<Response<Flux<ByteBuffer>>> mono = commitWithResponseAsync(resourceGroupName, moveCollectionName, body);
@@ -1872,7 +1872,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
                 this.client.getHttpPipeline(),
                 OperationStatusInner.class,
                 OperationStatusInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1890,7 +1890,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginCommitAsync(
         String resourceGroupName, String moveCollectionName, CommitRequest body, Context context) {
         context = this.client.mergeContext(context);
@@ -1916,7 +1916,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginCommit(
         String resourceGroupName, String moveCollectionName, CommitRequest body) {
         return beginCommitAsync(resourceGroupName, moveCollectionName, body).getSyncPoller();
@@ -1937,7 +1937,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginCommit(
         String resourceGroupName, String moveCollectionName, CommitRequest body, Context context) {
         return beginCommitAsync(resourceGroupName, moveCollectionName, body, context).getSyncPoller();
@@ -2194,7 +2194,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginDiscardAsync(
         String resourceGroupName, String moveCollectionName, DiscardRequest body) {
         Mono<Response<Flux<ByteBuffer>>> mono = discardWithResponseAsync(resourceGroupName, moveCollectionName, body);
@@ -2205,7 +2205,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
                 this.client.getHttpPipeline(),
                 OperationStatusInner.class,
                 OperationStatusInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2223,7 +2223,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginDiscardAsync(
         String resourceGroupName, String moveCollectionName, DiscardRequest body, Context context) {
         context = this.client.mergeContext(context);
@@ -2249,7 +2249,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginDiscard(
         String resourceGroupName, String moveCollectionName, DiscardRequest body) {
         return beginDiscardAsync(resourceGroupName, moveCollectionName, body).getSyncPoller();
@@ -2270,7 +2270,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginDiscard(
         String resourceGroupName, String moveCollectionName, DiscardRequest body, Context context) {
         return beginDiscardAsync(resourceGroupName, moveCollectionName, body, context).getSyncPoller();
@@ -2507,7 +2507,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginResolveDependenciesAsync(
         String resourceGroupName, String moveCollectionName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -2519,7 +2519,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
                 this.client.getHttpPipeline(),
                 OperationStatusInner.class,
                 OperationStatusInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2533,7 +2533,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginResolveDependenciesAsync(
         String resourceGroupName, String moveCollectionName, Context context) {
         context = this.client.mergeContext(context);
@@ -2555,7 +2555,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginResolveDependencies(
         String resourceGroupName, String moveCollectionName) {
         return beginResolveDependenciesAsync(resourceGroupName, moveCollectionName).getSyncPoller();
@@ -2572,7 +2572,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginResolveDependencies(
         String resourceGroupName, String moveCollectionName, Context context) {
         return beginResolveDependenciesAsync(resourceGroupName, moveCollectionName, context).getSyncPoller();
@@ -2769,7 +2769,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginBulkRemoveAsync(
         String resourceGroupName, String moveCollectionName, BulkRemoveRequest body) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -2781,7 +2781,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
                 this.client.getHttpPipeline(),
                 OperationStatusInner.class,
                 OperationStatusInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2798,7 +2798,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginBulkRemoveAsync(
         String resourceGroupName, String moveCollectionName, BulkRemoveRequest body, Context context) {
         context = this.client.mergeContext(context);
@@ -2823,7 +2823,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginBulkRemove(
         String resourceGroupName, String moveCollectionName, BulkRemoveRequest body) {
         return beginBulkRemoveAsync(resourceGroupName, moveCollectionName, body).getSyncPoller();
@@ -2843,7 +2843,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginBulkRemove(
         String resourceGroupName, String moveCollectionName, BulkRemoveRequest body, Context context) {
         return beginBulkRemoveAsync(resourceGroupName, moveCollectionName, body, context).getSyncPoller();

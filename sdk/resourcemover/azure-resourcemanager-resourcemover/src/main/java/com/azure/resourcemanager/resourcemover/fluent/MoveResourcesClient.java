@@ -58,7 +58,7 @@ public interface MoveResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the move resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MoveResourceInner>, MoveResourceInner> beginCreate(
         String resourceGroupName, String moveCollectionName, String moveResourceName, MoveResourceInner body);
 
@@ -75,7 +75,7 @@ public interface MoveResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the move resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MoveResourceInner>, MoveResourceInner> beginCreate(
         String resourceGroupName,
         String moveCollectionName,
@@ -145,7 +145,7 @@ public interface MoveResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginDelete(
         String resourceGroupName, String moveCollectionName, String moveResourceName);
 
@@ -161,7 +161,7 @@ public interface MoveResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginDelete(
         String resourceGroupName, String moveCollectionName, String moveResourceName, Context context);
 
