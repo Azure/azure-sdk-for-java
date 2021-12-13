@@ -47,10 +47,10 @@ stages:
                   displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
                   artifact: ${{parameters.ArtifactName}}
 
-                - template: tools/java-esrp-signing/java-esrp-signing.yml@azure-sdk-build-tools
-                  parameters:
-                    Artifacts: ${{parameters.Artifacts}}
-                    ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}
+                # - template: tools/java-esrp-signing/java-esrp-signing.yml@azure-sdk-build-tools
+                #   parameters:
+                #     Artifacts: ${{parameters.Artifacts}}
+                #     ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}
 
                 - publish: $(Pipeline.Workspace)/${{parameters.ArtifactName}}
                   artifact: ${{parameters.ArtifactName}}-signed
