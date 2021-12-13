@@ -28,7 +28,6 @@ steps:
 
 - bash: |
     npm install -g autorest
-    npm install
   displayName: 'Install autorest'
 
 - bash: |
