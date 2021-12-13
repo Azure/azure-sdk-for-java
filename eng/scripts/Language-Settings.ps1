@@ -347,7 +347,7 @@ function ValidatePackage($groupId, $artifactId, $version, $DocValidationImageId)
   $packageDirectory = Join-Path `
     $workingDirectory `
     "${groupId}__${artifactId}__${version}"
-  New-Item -ItemType Directory -Path $packageDirectory -Force 
+  New-Item -ItemType Directory -Path $packageDirectory -Force | Out-Null
 
   # Add more validation by replicating as much of the docs CI process as
   # possible
