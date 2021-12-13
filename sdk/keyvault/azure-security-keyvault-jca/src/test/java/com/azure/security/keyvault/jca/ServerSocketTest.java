@@ -3,7 +3,6 @@
 
 package com.azure.security.keyvault.jca;
 
-import com.azure.core.util.Configuration;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
@@ -64,8 +63,7 @@ public class ServerSocketTest {
         ks = PropertyConvertorUtils.getKeyVaultKeyStore();
         kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
         kmf.init(ks, "".toCharArray());
-        certificateName = Configuration.getGlobalConfiguration()
-            .get("AZURE_KEYVAULT_CERTIFICATE_NAME", System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME"));
+        certificateName = PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CERTIFICATE_NAME");
     }
 
 

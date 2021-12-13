@@ -15,7 +15,7 @@ import java.util.List;
 
 public class PropertyConvertorUtils {
 
-    private static final Configuration globalConfiguration =  Configuration.getGlobalConfiguration();
+    private static final Configuration GLOBAL_CONFIGURATION =  Configuration.getGlobalConfiguration();
 
     public static void putEnvironmentPropertyToSystemPropertyForKeyVaultJca() {
         KEYVAULT_JCA_SYSTEM_PROPERTIES.forEach(
@@ -44,11 +44,11 @@ public class PropertyConvertorUtils {
     }
 
     public static String getPropertyValue(String property) {
-        return globalConfiguration.get(property, System.getenv(property));
+        return GLOBAL_CONFIGURATION.get(property, System.getenv(property));
     }
 
-    public static String getPropertyValue(String property, String defaultVault) {
-        return globalConfiguration.get(property, defaultVault);
+    public static String getPropertyValue(String property, String defaultValue) {
+        return GLOBAL_CONFIGURATION.get(property, defaultValue);
     }
 
 }

@@ -57,24 +57,22 @@ public class AccessTokenUtilTest {
         } else if (CloudType.China.equals(cloudType)) {
             return "https://login.partner.microsoftonline.cn/";
         }
-        return "https://management.azure.com/";
+        return "https://login.microsoftonline.com/";
     }
 
     private CloudType getCloudTypeByKeyVaultEndPoint(String keyVaultEndPointSuffix) {
-        if (".vault.azure.net".equals(keyVaultEndPointSuffix)) {
-            return CloudType.Public;
-        } else if ("vault.usgovcloudapi.net".equals(keyVaultEndPointSuffix)) {
+        if (".vault.usgovcloudapi.net".equals(keyVaultEndPointSuffix)) {
             return CloudType.UsGov;
-        } else {
+        } else if (".vault.azure.cn".equals(keyVaultEndPointSuffix)) {
             return CloudType.China;
         }
+        return CloudType.Public;
     }
 
-    private enum CloudType{
+    private enum CloudType {
         Public,
         UsGov,
         China,
-        Canary,
         UNKNOWN
     }
 }

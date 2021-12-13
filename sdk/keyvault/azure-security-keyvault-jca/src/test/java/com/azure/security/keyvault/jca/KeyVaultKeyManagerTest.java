@@ -3,7 +3,6 @@
 
 package com.azure.security.keyvault.jca;
 
-import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
