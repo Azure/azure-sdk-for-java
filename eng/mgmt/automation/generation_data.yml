@@ -33,13 +33,13 @@ steps:
 - bash: |
     export PATH=$JAVA_HOME_11_X64/bin:$PATH
     java -version
-    ./eng/mgmt/automation/generate.py --readme "$(README)" --tag "$(TAG)" --autorest-options="$(AUTOREST_OPTIONS)" --service "$(SERVICE)" --version "$(VERSION)" --suffix "$(SUFFIX)" --auto-commit-external-change --user-name "azure-sdk" --user-email "azuresdk@microsoft.com"
+    ./eng/mgmt/automation/generate_data.py --input-file="$(INPUT_FILE)" --group="$(GROUP)" --module="$(MODULE)" --credential-types="$(CREDENTIAL_TYPES)" --credential-scopes="$(CREDENTIAL_SCOPES)"
   displayName: Generation
 
 - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
   parameters:
     PRBranchName: fluent-lite-generation-$(Build.BuildId)
-    CommitMsg: '[Automation] Generate Fluent Lite from $(README)#$(TAG)'
-    PRTitle: '[Automation] Generate Fluent Lite from $(README)#$(TAG)'
-    PRLabels: 'Mgmt - Track 2'
-    OpenAsDraft: '$(DRAFT_PULL_REQUEST)'
+    CommitMsg: '[Automation] Generate Data-plane SDK for $(MODULE)'
+    PRTitle: '[Automation] Generate Data-plane SDK for $(MODULE)'
+    PRLabels: 'LLC'
+    OpenAsDraft: 'true'
