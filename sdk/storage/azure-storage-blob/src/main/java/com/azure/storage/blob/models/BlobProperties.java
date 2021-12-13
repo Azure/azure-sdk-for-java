@@ -23,7 +23,12 @@ public final class BlobProperties {
     private final BlobPropertiesInternal internalProperties;
 
     static {
-        BlobPropertiesAccessHelper.setAccessor(BlobProperties::new);
+        BlobPropertiesAccessHelper.setAccessor(new BlobPropertiesAccessHelper.BlobPropertiesAccessor() {
+            @Override
+            public BlobProperties create(BlobPropertiesInternal internalProperties) {
+                return new BlobProperties(internalProperties);
+            }
+        });
     }
 
     private BlobProperties(BlobPropertiesInternal internalProperties) {

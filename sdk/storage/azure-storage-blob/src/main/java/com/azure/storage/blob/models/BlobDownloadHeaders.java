@@ -28,7 +28,12 @@ public final class BlobDownloadHeaders {
     private final BlobsDownloadHeaders internalHeaders;
 
     static {
-        BlobDownloadHeadersAccessHelper.setAccessor(BlobDownloadHeaders::new);
+        BlobDownloadHeadersAccessHelper.setAccessor(new BlobDownloadHeadersAccessHelper.BlobDownloadHeadersAccessor() {
+            @Override
+            public BlobDownloadHeaders create(BlobsDownloadHeaders internalHeaders) {
+                return new BlobDownloadHeaders(internalHeaders);
+            }
+        });
     }
 
     private BlobDownloadHeaders(BlobsDownloadHeaders internalHeaders) {
