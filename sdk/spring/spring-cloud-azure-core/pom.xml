@@ -35,6 +35,16 @@
   <properties>
     <jacoco.min.linecoverage>0.01</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.01</jacoco.min.branchcoverage>
+    <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
+    <!-- https://issues.apache.org/jira/browse/SUREFIRE-1563 -->
+    <javaModulesSurefireArgLine>
+      --add-opens com.azure.spring.core/com.azure.spring.core=ALL-UNNAMED
+      --add-opens com.azure.spring.core/com.azure.spring.core.factory=ALL-UNNAMED
+      --add-opens com.azure.spring.core/com.azure.spring.core.implementation.connectionstring=ALL-UNNAMED
+      --add-opens com.azure.spring.core/com.azure.spring.core.properties.util=ALL-UNNAMED
+      --add-opens com.azure.spring.core/com.azure.spring.core.resource=ALL-UNNAMED
+      --add-opens com.azure.spring.core/com.azure.spring.core.resource=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
   </properties>
 
   <dependencies>
