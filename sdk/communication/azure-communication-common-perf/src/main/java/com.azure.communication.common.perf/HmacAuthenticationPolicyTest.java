@@ -7,35 +7,13 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.PerfStressTest;
 import reactor.core.publisher.Mono;
-
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class HmacAuthenticationPolicyTest extends PerfStressTest<PerfStressOptions> {
 
-    public class CustomPair {
-        String signature;
-        private AtomicInteger count;
-
-        public CustomPair(String signature){
-            this.signature = signature;
-            this.count = new AtomicInteger(1);
-        }
-
-        public int incrementCount(){
-            return this.count.incrementAndGet();
-        }
-
-        @Override
-        public String toString() {
-            return  "signature='" + signature + "\ncount=" + count.get();
-        }
-    }
-
-    private final static ConcurrentHashMap<String, CustomPair> dateToSignature = new ConcurrentHashMap<>();
+    private final static ConcurrentHashMap<String, String> dateToSignature = new ConcurrentHashMap<>();
     private final static String mockedKey = "JdppJP5eH1w/CQ0cx4RGYWoC7NmQ0nmDbYR2PYWSDTXojV9bI1ck0Eh0sUIg8xj4KYj7tv+ZPLICu3BgLt6mMz==";
     private final static HmacAuthenticationPolicy hmacAuthenticationPolicy = new HmacAuthenticationPolicy(new AzureKeyCredential(mockedKey));
 
@@ -70,30 +48,23 @@ public class HmacAuthenticationPolicyTest extends PerfStressTest<PerfStressOptio
     @Override
     public Mono<Void> runAsync() {
         HttpResponse response = pipeline.send(request).block();
-        String date = response.getRequest().getHeaders().getValue("date");
+        //getting date header from old implementation
+        //String date = response.getRequest().getHeaders().getValue("date");
+        //getting date header from new implementation
+        String date = response.getRequest().getHeaders().getValue("x-ms-date");
         String signature = response.getRequest().getHeaders().getValue("Authorization");
         checkSignatureCorrectness(date, signature);
         return Mono.empty();
     }
 
-    private synchronized void checkSignatureCorrectness(String date, String signature){
+    private void checkSignatureCorrectness(String date, String signature){
         if(!dateToSignature.containsKey(date))
-            dateToSignature.put(date, new CustomPair(signature));
-        else if(!dateToSignature.get(date).signature.contentEquals(signature)){
+            dateToSignature.put(date, signature);
+        else if(!dateToSignature.get(date).contentEquals(signature)){
             String warning = "Incorrectly computed signature:" + signature + " for " + date
                 + "\nExpected:" + dateToSignature.get(date);
             throw new IllegalStateException(warning);
-        }else{
-            dateToSignature.get(date).incrementCount();
         }
-    }
-
-    @Override
-    public Mono<Void> globalCleanupAsync() {
-        for (Map.Entry<String, CustomPair> entry : dateToSignature.entrySet()) {
-            System.out.println(entry.getKey() + " >> " + entry.getValue().toString());
-        }
-        return super.globalCleanupAsync();
     }
 
 }
