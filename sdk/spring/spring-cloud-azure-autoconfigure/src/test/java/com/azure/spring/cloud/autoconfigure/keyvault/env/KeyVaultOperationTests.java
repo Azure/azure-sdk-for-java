@@ -22,14 +22,17 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import static com.azure.spring.cloud.autoconfigure.keyvault.secrets.AzureKeyVaultPropertySourceProperties.DEFAULT_REFRESH_INTERVAL;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
-public class KeyVaultOperationUnitTest {
+public class KeyVaultOperationTests {
 
     private static final List<String> SECRET_KEYS_CONFIG = Arrays.asList("key1", "key2", "key3");
 
@@ -76,7 +79,23 @@ public class KeyVaultOperationUnitTest {
     }
 
     @Test
-    public void testGetWithNoSpecficSecretKeys() {
+    public void caseSensitive() {
+        final KeyVaultOperation keyOperation = new KeyVaultOperation(
+            keyVaultClient,
+            DEFAULT_REFRESH_INTERVAL,
+            new ArrayList<>(),
+            true);
+        final LinkedHashMap<String, String> properties = new LinkedHashMap<>();
+        properties.put("key1", "value1");
+        properties.put("Key2", "Value2");
+        keyOperation.setProperties(properties);
+
+        assertEquals("value1", keyOperation.getProperty("key1"));
+        assertEquals("Value2", keyOperation.getProperty("Key2"));
+    }
+
+    @Test
+    public void testGetWithNoSpecificSecretKeys() {
         setupSecretBundle(null);
 
         final LinkedHashMap<String, String> properties = new LinkedHashMap<>();

@@ -15,7 +15,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 
-public class KeyVaultPropertySourceUnitTest {
+public class KeyVaultPropertySourceTests {
 
     private static final String TEST_PROPERTY_NAME_1 = "testPropertyName1";
 

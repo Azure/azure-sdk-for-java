@@ -18,11 +18,12 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class AzureKeyVaultSecretAutoConfigurationTest {
+class AzureKeyVaultSecretAutoConfigurationTests {
 
     private static final String ENDPOINT = "https:/%s.vault.azure.net/";
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+        .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
         .withConfiguration(AutoConfigurations.of(AzureKeyVaultSecretAutoConfiguration.class));
 
     @Test
@@ -53,7 +54,6 @@ class AzureKeyVaultSecretAutoConfigurationTest {
     void withVaultEndpointShouldConfigure() {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.keyvault.secret.endpoint=" + String.format(ENDPOINT, "mykv"))
-            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureKeyVaultSecretAutoConfiguration.class);
                 assertThat(context).hasSingleBean(AzureKeyVaultSecretProperties.class);
@@ -69,7 +69,6 @@ class AzureKeyVaultSecretAutoConfigurationTest {
         SecretBuilderCustomizer customizer = new SecretBuilderCustomizer();
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.keyvault.secret.endpoint=" + String.format(ENDPOINT, "mykv"))
-            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withBean("customizer1", SecretBuilderCustomizer.class, () -> customizer)
             .withBean("customizer2", SecretBuilderCustomizer.class, () -> customizer)
             .run(context -> assertThat(customizer.getCustomizedTimes()).isEqualTo(2));
@@ -81,7 +80,6 @@ class AzureKeyVaultSecretAutoConfigurationTest {
         OtherBuilderCustomizer otherBuilderCustomizer = new OtherBuilderCustomizer();
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.keyvault.secret.endpoint=" + String.format(ENDPOINT, "mykv"))
-            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withBean("customizer1", SecretBuilderCustomizer.class, () -> customizer)
             .withBean("customizer2", SecretBuilderCustomizer.class, () -> customizer)
             .withBean("customizer3", OtherBuilderCustomizer.class, () -> otherBuilderCustomizer)

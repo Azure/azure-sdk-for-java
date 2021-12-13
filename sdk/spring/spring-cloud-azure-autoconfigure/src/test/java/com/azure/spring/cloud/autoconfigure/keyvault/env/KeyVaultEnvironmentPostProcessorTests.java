@@ -32,7 +32,7 @@ import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.spy;
 import static org.springframework.core.env.StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME;
 
-class KeyVaultEnvironmentPostProcessorTest {
+class KeyVaultEnvironmentPostProcessorTests {
 
     private SpringApplication application = new SpringApplication();
     private KeyVaultEnvironmentPostProcessor processor;

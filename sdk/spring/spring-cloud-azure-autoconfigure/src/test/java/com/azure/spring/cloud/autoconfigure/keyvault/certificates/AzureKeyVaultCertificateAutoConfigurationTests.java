@@ -18,12 +18,13 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class AzureKeyVaultCertificateAutoConfigurationTest {
+class AzureKeyVaultCertificateAutoConfigurationTests {
 
 
     private static final String ENDPOINT = "https:/%s.vault.azure.net/";
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+        .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
         .withConfiguration(AutoConfigurations.of(AzureKeyVaultCertificateAutoConfiguration.class));
 
     @Test
@@ -54,7 +55,6 @@ class AzureKeyVaultCertificateAutoConfigurationTest {
     void withVaultEndpointShouldConfigure() {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.keyvault.certificate.endpoint=" + String.format(ENDPOINT, "mykv"))
-            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureKeyVaultCertificateAutoConfiguration.class);
                 assertThat(context).hasSingleBean(AzureKeyVaultCertificateProperties.class);
@@ -70,7 +70,6 @@ class AzureKeyVaultCertificateAutoConfigurationTest {
         CertificateBuilderCustomizer customizer = new CertificateBuilderCustomizer();
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.keyvault.certificate.endpoint=" + String.format(ENDPOINT, "mykv"))
-            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withBean("customizer1", CertificateBuilderCustomizer.class, () -> customizer)
             .withBean("customizer2", CertificateBuilderCustomizer.class, () -> customizer)
             .run(context -> assertThat(customizer.getCustomizedTimes()).isEqualTo(2));
@@ -82,7 +81,6 @@ class AzureKeyVaultCertificateAutoConfigurationTest {
         OtherBuilderCustomizer otherBuilderCustomizer = new OtherBuilderCustomizer();
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.keyvault.certificate.endpoint=" + String.format(ENDPOINT, "mykv"))
-            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withBean("customizer1", CertificateBuilderCustomizer.class, () -> customizer)
             .withBean("customizer2", CertificateBuilderCustomizer.class, () -> customizer)
             .withBean("customizer3", OtherBuilderCustomizer.class, () -> otherBuilderCustomizer)
