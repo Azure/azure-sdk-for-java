@@ -336,7 +336,7 @@ function PackageDependenciesResolve($artifactNamePrefix, $packageDirectory) {
   return $true
 }
 
-function ValidatePackage($groupId, $artifactId, $version) {
+function ValidatePackage($groupId, $artifactId, $version, $DocValidationImageId) {
   $workingDirectory = Join-Path ([System.IO.Path]::GetTempPath()) "validation"
   if (!(Test-Path $workingDirectory)) {
     New-Item -ItemType Directory -Force -Path $workingDirectory | Out-Null
@@ -658,7 +658,7 @@ function Get-java-DocsMsMetadataForPackage($PackageInfo) {
 
 function Validate-java-DocMsPackages ($PackageInfo, $DocValidationImageId) 
 {
-  if (!(ValidatePackage $PackageInfo.Group $PackageInfo.Name $PackageInfo.Version)) 
+  if (!(ValidatePackage $PackageInfo.Group $PackageInfo.Name $PackageInfo.Version $DocValidationImageId)) 
   {
     exit 1
   }
