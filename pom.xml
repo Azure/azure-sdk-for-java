@@ -715,6 +715,7 @@
         <module>sdk/advisor</module>
         <module>sdk/agrifood</module>
         <module>sdk/anomalydetector</module>
+        <module>sdk/aot</module>
         <module>sdk/apimanagement</module>
         <module>sdk/appconfiguration</module>
         <module>sdk/applicationinsights</module>

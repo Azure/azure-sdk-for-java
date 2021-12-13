@@ -7,7 +7,6 @@ import com.azure.core.util.ReferenceManager;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 
-import java.lang.ref.PhantomReference;
 import java.lang.ref.ReferenceQueue;
 import java.util.Objects;
 
@@ -98,74 +97,11 @@ public final class ReferenceManagerImpl implements ReferenceManager {
         return 8;
     }
 
-    /*
-     * This class manages maintaining a reference to an object that will trigger a cleanup action once it is phantom
-     * reachable.
-     */
-    private static final class CleanableReference<T> extends PhantomReference<T> {
-        // The cleanup action to run once the reference is phantom reachable.
-        private final Runnable cleanupAction;
+    ReferenceQueue<Object> getQueue() {
+        return this.queue;
+    }
 
-        // The list of cleanable references.
-        private final CleanableReference<?> cleanupList;
-
-        CleanableReference<?> previous = this;
-        CleanableReference<?> next = this;
-
-        CleanableReference() {
-            super(null, null);
-            this.cleanupAction = null;
-            this.cleanupList = this;
-        }
-
-        CleanableReference(T referent, Runnable cleanupAction, ReferenceManagerImpl manager) {
-            super(referent, manager.queue);
-            this.cleanupAction = cleanupAction;
-            this.cleanupList = manager.cleanableReferenceList;
-            insert();
-        }
-
-        public void clean() {
-            if (remove()) {
-                super.clear();
-                cleanupAction.run();
-            }
-        }
-
-        @Override
-        public void clear() {
-            if (remove()) {
-                super.clear();
-            }
-        }
-
-        boolean hasRemaining() {
-            synchronized (cleanupList) {
-                return cleanupList != cleanupList.next;
-            }
-        }
-
-        private void insert() {
-            synchronized (cleanupList) {
-                previous = cleanupList;
-                next = cleanupList.next;
-                next.previous = this;
-                cleanupList.next = this;
-            }
-        }
-
-        private boolean remove() {
-            synchronized (cleanupList) {
-                if (next != this) {
-                    next.previous = previous;
-                    previous.next = next;
-                    previous = this;
-                    next = this;
-                    return true;
-                }
-
-                return false;
-            }
-        }
+    CleanableReference<?> getCleanableReferenceList() {
+        return cleanableReferenceList;
     }
 }

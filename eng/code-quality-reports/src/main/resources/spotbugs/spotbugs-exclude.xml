@@ -2542,4 +2542,27 @@
     </Or>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
+
+
+  <Match>
+    <Or>
+      <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerSslJdkAlpnApplicationProtocolNegotiatorAlpnWrapper"/>
+      <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerSslJdkAlpnApplicationProtocolNegotiatorAlpnWrapperJava8"/>
+      <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerSslJdkSslContext"/>
+      <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerSslSslContext"/>
+    </Or>
+    <Bug pattern="BC_IMPOSSIBLE_CAST"/>
+  </Match>
+  <Match>
+    <Or>
+      <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerCodecHttpHttpContentDecompressor"/>
+    </Or>
+    <Bug pattern="CI_CONFUSED_INHERITANCE"/>
+  </Match>
+  <Match>
+    <Or>
+      <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerSslOpenSsl"/>
+    </Or>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
 </FindBugsFilter>
