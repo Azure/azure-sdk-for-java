@@ -6,6 +6,9 @@ package com.azure.storage.blob.implementation.accesshelpers;
 import com.azure.storage.blob.implementation.models.BlobPropertiesInternal;
 import com.azure.storage.blob.models.BlobProperties;
 
+/**
+ * Helper class to access private values of {@link BlobProperties} across package boundaries.
+ */
 public final class BlobPropertiesAccessHelper {
     private static BlobPropertiesAccessor accessor;
 
