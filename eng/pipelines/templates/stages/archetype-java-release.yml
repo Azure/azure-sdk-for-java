@@ -212,6 +212,9 @@ stages:
               pool:
                 name: azsdk-pool-mms-ubuntu-2004-general
                 vmImage: MMSUbuntu20.04
+
+              variables:
+                DocValidationImageId: azuresdkimages.azurecr.io/javarefautocr:latest
               strategy:
                 runOnce:
                   deploy:
@@ -224,10 +227,20 @@ stages:
                           SkipDefaultCheckout: true
                           Paths:
                             - sdk
+                            - sdk/**/*.md
                             - common/perf-test-core
                             - .github/CODEOWNERS
                             - '!sdk/**/test-recordings'
                             - '!sdk/**/session-records'
+                      - download: current
+                        displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
+                        artifact: ${{parameters.ArtifactName}}
+                      # Pull and build the docker image.
+                      - template: /eng/common/pipelines/templates/steps/docker-pull-image.yml
+                        parameters:
+                          ContainerRegistryClientId: $(azuresdkimages-cr-clientid)
+                          ContainerRegistryClientSecret: $(azuresdkimages-cr-clientsecret)
+                          ImageId: "$(DocValidationImageId)"
                       - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
                         parameters:
                           PackageInfoLocations:
@@ -239,6 +252,7 @@ stages:
                           SparseCheckoutPaths:
                             - docs-ref-services/
                             - metadata/
+                          DocValidationImageId: "$(DocValidationImageId)"
 
           - ${{if ne(artifact.skipPublishDocGithubIo, 'true')}}:
             - deployment: PublishDocs
@@ -386,7 +400,15 @@ stages:
         pool:
           name: azsdk-pool-mms-ubuntu-2004-general
           vmImage: MMSUbuntu20.04
+        variables:
+          DocValidationImageId: azuresdkimages.azurecr.io/javarefautocr:latest
         steps:
+          - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+            parameters:
+              SkipDefaultCheckout: true 
+              Paths:
+                - sdk/**/*.md
+                - .github/CODEOWNERS
           - download: current
             displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
             artifact: ${{parameters.ArtifactName}}
@@ -407,6 +429,12 @@ stages:
               Copy-Item "./eng/repo-docs/docms/daily.update.setting.xml" -Destination "~/.m2/settings.xml"
             displayName: 'Configure mvn'
             workingDirectory: $(Build.SourcesDirectory)
+          # Pull and build the docker image.
+          - template: /eng/common/pipelines/templates/steps/docker-pull-image.yml
+            parameters:
+              ContainerRegistryClientId: $(azuresdkimages-cr-clientid)
+              ContainerRegistryClientSecret: $(azuresdkimages-cr-clientsecret)
+              ImageId: "$(DocValidationImageId)"
           - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
             parameters:
               PackageInfoLocations:
@@ -421,3 +449,4 @@ stages:
               SparseCheckoutPaths:
                 - docs-ref-services/
                 - metadata/
+              DocValidationImageId: "$(DocValidationImageId)"

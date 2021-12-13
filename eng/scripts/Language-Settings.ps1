@@ -349,8 +349,50 @@ function ValidatePackage($groupId, $artifactId, $version) {
     "${groupId}__${artifactId}__${version}"
   New-Item -ItemType Directory -Path $packageDirectory -Force | Out-Null
 
-  return (SourcePackageHasComFolder $artifactNamePrefix $packageDirectory) `
-    -and (PackageDependenciesResolve $artifactNamePrefix $packageDirectory)
+  # Add more validation by replicating as much of the docs CI process as
+  # possible
+  # https://github.com/Azure/azure-sdk-for-python/issues/20109
+  if (!$DocValidationImageId) 
+  {
+    Write-Host "Validating using mvn command directly on $packageName."
+    FallbackValidation -artifactNamePrefix $artifactNamePrefix -workingDirectory $packageDirectory
+  } 
+  else 
+  {
+    Write-Host "Validating using $DocValidationImageId on $packageName."
+    DockerValidation -packageName "$artifactId" -packageVersion "$version" -groupId "$groudId" `
+        -DocValidationImageId $DocValidationImageId -workingDirectory $packageDirectory
+  }
+}
+
+function FallbackValidation ($artifactNamePrefix, $workingDirectory) 
+{
+  return (SourcePackageHasComFolder $artifactNamePrefix $workingDirectory) `
+    -and (PackageDependenciesResolve $artifactNamePrefix $workingDirectory)
+}
+
+function DockerValidation($packageName, $packageVersion, $groupId, $DocValidationImageId, $workingdirectory) 
+{
+
+  docker run -v "${workingDirectory}:/workdir/out" `
+    -e TARGET_PACKAGE=$packageName -e TARGET_VERSION=$packageVersion -TARGET_GROUP=$groupId -t $DocValidationImageId 2>&1 | Out-Null
+  # The docker exit codes: https://docs.docker.com/engine/reference/run/#exit-status
+  # If the docker failed because of docker itself instead of the application, 
+  # we should skip the validation and keep the packages. 
+  if ($LASTEXITCODE -eq 125 -Or $LASTEXITCODE -eq 126 -Or $LASTEXITCODE -eq 127) 
+  { 
+    Write-Host $commandLine
+    LogWarning "The `docker` command does not work with exit code $LASTEXITCODE. Fall back to mvn install $packageName directly."
+    $artifactNamePrefix = "${groupId}:${artifactId}:${version}"
+    FallbackValidation -artifactNamePrefix "$artifactNamePrefix" -workingDirectory $workingdirectory
+  }
+  elseif ($LASTEXITCODE -ne 0) 
+  { 
+    Write-Host $commandLine
+    LogWarning "Package $($Package.name) ref docs validation failed."
+    return $false
+  }
+  return $true
 }
 
 function Update-java-DocsMsPackages($DocsRepoLocation, $DocsMetadata, $DocValidationImageId) {
