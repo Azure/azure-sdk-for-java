@@ -383,7 +383,7 @@ function DockerValidation($packageName, $packageVersion, $groupId, $DocValidatio
   if ($LASTEXITCODE -eq 125 -Or $LASTEXITCODE -eq 126 -Or $LASTEXITCODE -eq 127) 
   { 
     LogWarning "The `docker` command does not work with exit code $LASTEXITCODE. Fall back to mvn install $packageName directly."
-    FallbackValidation -artifactNamePrefix "$artifactNamePrefix" -workingDirectory $workingdirectory
+    return FallbackValidation -artifactNamePrefix "$artifactNamePrefix" -workingDirectory $workingdirectory
   }
   elseif ($LASTEXITCODE -ne 0) 
   { 
