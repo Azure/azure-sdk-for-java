@@ -278,7 +278,7 @@ function SourcePackageHasComFolder($artifactNamePrefix, $packageDirectory) {
 
     if ($LASTEXITCODE) {
       LogWarning "Could not download source artifact: $packageArtifact"
-      $mvnResults | Write-Debug
+      $mvnResults | Write-Host
       return $false
     }
 
@@ -313,7 +313,7 @@ function PackageDependenciesResolve($artifactNamePrefix, $packageDirectory) {
 
   if ($LASTEXITCODE) {
     LogWarning "Could not download pom artifact: $pomArtifactName"
-    $artifactDownloadOutput | Write-Debug
+    $artifactDownloadOutput | Write-Host
     return $false
   }
 
@@ -329,7 +329,7 @@ function PackageDependenciesResolve($artifactNamePrefix, $packageDirectory) {
 
   if ($LASTEXITCODE) {
     LogWarning "Could not resolve dependencies for: $pomArtifactName"
-    $copyDependencyOutput | Write-Debug
+    $copyDependencyOutput | Write-Host
     return $false
   }
 
@@ -379,7 +379,6 @@ function DockerValidation($packageName, $packageVersion, $groupId, $DocValidatio
   # The docker exit codes: https://docs.docker.com/engine/reference/run/#exit-status
   # If the docker failed because of docker itself instead of the application, 
   # we should skip the validation and keep the packages. 
-  $output | Write-Debug 
   $artifactNamePrefix = "${groupId}:${artifactId}:${version}"
   if ($LASTEXITCODE -eq 125 -Or $LASTEXITCODE -eq 126 -Or $LASTEXITCODE -eq 127) 
   { 
@@ -389,6 +388,7 @@ function DockerValidation($packageName, $packageVersion, $groupId, $DocValidatio
   elseif ($LASTEXITCODE -ne 0) 
   { 
     LogWarning "Package $artifactNamePrefix ref docs validation failed."
+    $output | Write-Host
     return $false
   }
   return $true
