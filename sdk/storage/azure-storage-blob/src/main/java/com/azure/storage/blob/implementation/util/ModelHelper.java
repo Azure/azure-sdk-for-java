@@ -14,9 +14,11 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.ProgressReceiver;
 import com.azure.storage.blob.implementation.accesshelpers.BlobDownloadHeadersAccessHelper;
+import com.azure.storage.blob.implementation.accesshelpers.BlobPropertiesAccessHelper;
 import com.azure.storage.blob.implementation.models.BlobItemInternal;
 import com.azure.storage.blob.implementation.models.BlobItemPropertiesInternal;
 import com.azure.storage.blob.implementation.models.BlobName;
+import com.azure.storage.blob.implementation.models.BlobPropertiesInternalDownload;
 import com.azure.storage.blob.implementation.models.BlobTag;
 import com.azure.storage.blob.implementation.models.BlobTags;
 import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
@@ -510,20 +512,8 @@ public final class ModelHelper {
     }
 
     public static Response<BlobProperties> buildBlobPropertiesResponse(BlobDownloadAsyncResponse response) {
-        // blobSize determination - contentLength only returns blobSize if the download is not chunked.
-        BlobDownloadHeaders hd = response.getDeserializedHeaders();
-        long blobSize = getBlobLength(hd);
-        BlobProperties properties = new BlobProperties(null, hd.getLastModified(), hd.getETag(), blobSize,
-            hd.getContentType(), hd.getContentMd5(), hd.getContentEncoding(), hd.getContentDisposition(),
-            hd.getContentLanguage(), hd.getCacheControl(), hd.getBlobSequenceNumber(), hd.getBlobType(),
-            hd.getLeaseStatus(), hd.getLeaseState(), hd.getLeaseDuration(), hd.getCopyId(), hd.getCopyStatus(),
-            hd.getCopySource(), hd.getCopyProgress(), hd.getCopyCompletionTime(), hd.getCopyStatusDescription(),
-            hd.isServerEncrypted(), null, null, null, null, null,
-            hd.getEncryptionKeySha256(), hd.getEncryptionScope(), null, hd.getMetadata(),
-            hd.getBlobCommittedBlockCount(), hd.getTagCount(), hd.getVersionId(), null,
-            hd.getObjectReplicationSourcePolicies(), hd.getObjectReplicationDestinationPolicyId(), null,
-            hd.isSealed(), hd.getLastAccessedTime(), null, hd.getImmutabilityPolicy(), hd.hasLegalHold());
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), properties);
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            BlobPropertiesAccessHelper.create(new BlobPropertiesInternalDownload(response.getDeserializedHeaders())));
     }
 
     public static long getBlobLength(BlobDownloadHeaders headers) {
