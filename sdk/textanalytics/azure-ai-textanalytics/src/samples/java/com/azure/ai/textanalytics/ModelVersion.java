@@ -51,7 +51,7 @@ public class ModelVersion {
         RecognizeEntitiesResultCollection recognizeEntitiesResultCollection = client.recognizeEntitiesBatchWithResponse(
             documents, requestOptions, Context.NONE).getValue();
         // Model version
-        System.out.printf("Results of Azure Text Analytics \"Entities Recognition\" Model, version: %s%n",
+        System.out.printf("Results of entities recognition has been computed with model version: %s%n",
             recognizeEntitiesResultCollection.getModelVersion());
         // Recognized entities for each document in a batch of documents
         processRecognizeEntitiesResultCollection(recognizeEntitiesResultCollection);
