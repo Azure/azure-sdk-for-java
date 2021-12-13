@@ -375,7 +375,7 @@ function DockerValidation($packageName, $packageVersion, $groupId, $DocValidatio
 {
 
   docker run -v "${workingDirectory}:/workdir/out" `
-    -e TARGET_PACKAGE=$packageName -e TARGET_VERSION=$packageVersion -TARGET_GROUP_ID=$groupId -t $DocValidationImageId 2>&1 | Out-Null
+    -e TARGET_PACKAGE=$packageName -e TARGET_VERSION=$packageVersion -e TARGET_GROUP_ID=$groupId -t $DocValidationImageId 2>&1 | Out-Null
   # The docker exit codes: https://docs.docker.com/engine/reference/run/#exit-status
   # If the docker failed because of docker itself instead of the application, 
   # we should skip the validation and keep the packages. 
