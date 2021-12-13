@@ -3,8 +3,6 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.properties;
 
-import com.azure.spring.cloud.autoconfigure.aad.core.AADApplicationType;
-import com.azure.spring.cloud.autoconfigure.aad.core.AADAuthorizationGrantType;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -25,14 +23,16 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import static com.azure.spring.cloud.autoconfigure.aad.core.AADApplicationType.inferApplicationTypeByDependencies;
-import static com.azure.spring.cloud.autoconfigure.aad.core.AADAuthorizationGrantType.AUTHORIZATION_CODE;
-import static com.azure.spring.cloud.autoconfigure.aad.core.AADAuthorizationGrantType.AZURE_DELEGATED;
-import static com.azure.spring.cloud.autoconfigure.aad.core.AADAuthorizationGrantType.ON_BEHALF_OF;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.AADClientRegistrationRepository.AZURE_CLIENT_REGISTRATION_ID;
+import static com.azure.spring.cloud.autoconfigure.aad.properties.AADApplicationType.inferApplicationTypeByDependencies;
+import static com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthorizationGrantType.AUTHORIZATION_CODE;
+import static com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthorizationGrantType.AZURE_DELEGATED;
+import static com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthorizationGrantType.ON_BEHALF_OF;
 
 /**
  * Configuration properties for Azure Active Directory Authentication.
+ *
+ * @see InitializingBean
  */
 public class AADAuthenticationProperties implements InitializingBean {
 
@@ -123,18 +123,34 @@ public class AADAuthenticationProperties implements InitializingBean {
 
     private AADApplicationType applicationType;
 
+    /**
+     *
+     * @return The AADProfileProperties.
+     */
     public AADProfileProperties getProfile() {
         return profile;
     }
 
+    /**
+     *
+     * @param profile The AADProfileProperties
+     */
     public void setProfile(AADProfileProperties profile) {
         this.profile = profile;
     }
 
+    /**
+     *
+     * @param credential The AADCredentialProperties
+     */
     public void setCredential(AADCredentialProperties credential) {
         this.credential = credential;
     }
 
+    /**
+     *
+     * @return The AADCredentialProperties.
+     */
     public AADCredentialProperties getCredential() {
         return credential;
     }
@@ -566,6 +582,10 @@ public class AADAuthenticationProperties implements InitializingBean {
         this.sessionStateless = sessionStateless;
     }
 
+    /**
+     *
+     * @return Graph membership uri.
+     */
     public String getGraphMembershipUri() {
         return getProfile().getEnvironment().getMicrosoftGraphEndpoint()
             + (getUserGroup().getUseTransitiveMembers()
@@ -608,6 +628,9 @@ public class AADAuthenticationProperties implements InitializingBean {
                        .contains(group);
     }
 
+    /**
+     * Set after properties.
+     */
     @Override
     public void afterPropertiesSet() {
         if (!StringUtils.hasText(getProfile().getTenantId())) {

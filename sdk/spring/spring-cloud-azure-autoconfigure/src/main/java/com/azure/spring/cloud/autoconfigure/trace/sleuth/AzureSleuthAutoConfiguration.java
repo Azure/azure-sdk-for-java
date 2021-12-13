@@ -29,7 +29,7 @@ public class AzureSleuthAutoConfiguration {
 
     @Bean(name = DEFAULT_SLEUTH_HTTP_POLICY_BEAN_NAME)
     @ConditionalOnMissingBean(name = DEFAULT_SLEUTH_HTTP_POLICY_BEAN_NAME)
-    public HttpPipelinePolicy sleuthHttpPolicy(Tracer tracer, Propagator propagator) {
+    public HttpPipelinePolicy azureSleuthHttpPolicy(Tracer tracer, Propagator propagator) {
         return new SleuthHttpPolicy(tracer, propagator);
     }
 

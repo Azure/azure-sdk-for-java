@@ -13,6 +13,8 @@ import static com.azure.spring.cloud.autoconfigure.keyvault.env.KeyVaultProperty
 
 /**
  * Configurations to set when Azure Key Vault is used as an external property source.
+ *
+ * @since 4.0.0
  */
 public class AzureKeyVaultPropertySourceProperties extends AbstractAzureHttpCP {
 
@@ -29,50 +31,98 @@ public class AzureKeyVaultPropertySourceProperties extends AbstractAzureHttpCP {
     private List<String> secretKeys;
     private Duration refreshInterval = DEFAULT_REFRESH_INTERVAL;
 
+    /**
+     *
+     * @return The name of this property source.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     *
+     * @param name The name of this property source.
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     *
+     * @return Endpoint of Azure Key Vault secrets used for this property source.
+     */
     public String getEndpoint() {
         return endpoint;
     }
 
+    /**
+     *
+     * @param endpoint Endpoint of Azure Key Vault secrets used for this property source.
+     */
     public void setEndpoint(String endpoint) {
         this.endpoint = endpoint;
     }
 
+    /**
+     *
+     * @return Service version of Azure Key Vault secrets used for this property source.
+     */
     public SecretServiceVersion getServiceVersion() {
         return serviceVersion;
     }
 
+    /**
+     *
+     * @param serviceVersion Service version of Azure Key Vault secrets used for this property source.
+     */
     public void setServiceVersion(SecretServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
     }
 
+    /**
+     *
+     * @return Whether the secret key is case-sensitive.
+     */
     public Boolean getCaseSensitive() {
         return caseSensitive;
     }
 
+    /**
+     *
+     * @param caseSensitive Whether the secret key is case-sensitive.
+     */
     public void setCaseSensitive(Boolean caseSensitive) {
         this.caseSensitive = caseSensitive;
     }
 
+    /**
+     *
+     * @return The secret keys supported for this property source.
+     */
     public List<String> getSecretKeys() {
         return secretKeys;
     }
 
+    /**
+     *
+     * @param secretKeys The secret keys supported for this property source.
+     */
     public void setSecretKeys(List<String> secretKeys) {
         this.secretKeys = secretKeys;
     }
 
+    /**
+     *
+     * @return Time interval to refresh all Key Vault secrets.
+     */
     public Duration getRefreshInterval() {
         return refreshInterval;
     }
 
+    /**
+     *
+     * @param refreshInterval Time interval to refresh all Key Vault secrets.
+     */
     public void setRefreshInterval(Duration refreshInterval) {
         this.refreshInterval = refreshInterval;
     }

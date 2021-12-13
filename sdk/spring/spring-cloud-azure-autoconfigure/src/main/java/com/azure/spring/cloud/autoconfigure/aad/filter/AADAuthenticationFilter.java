@@ -3,10 +3,10 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.filter;
 
-import com.azure.spring.cloud.autoconfigure.aad.core.AADAuthorizationServerEndpoints;
-import com.azure.spring.cloud.autoconfigure.aad.graph.AzureADGraphClient;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AADTokenClaim;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.graph.AzureADGraphClient;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthenticationProperties;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthorizationServerEndpoints;
 import com.microsoft.aad.msal4j.MsalServiceException;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.jwk.source.JWKSetCache;
@@ -42,6 +42,7 @@ import static com.azure.spring.cloud.autoconfigure.aad.implementation.constants.
  * could be accepted, e.g. access token issued for Microsoft Graph could not be processed by users' application.
  *
  * @deprecated See the <a href="https://github.com/Azure/azure-sdk-for-java/issues/17860">Alternative method</a>.
+ * @see OncePerRequestFilter
  */
 @Deprecated
 public class AADAuthenticationFilter extends OncePerRequestFilter {
@@ -117,6 +118,13 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
         );
     }
 
+    /**
+     * Do filter.
+     *
+     * @param httpServletRequest the http servlet request
+     * @param httpServletResponse the http servlet responce
+     * @param filterChain the filter chain
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest,
                                     HttpServletResponse httpServletResponse,

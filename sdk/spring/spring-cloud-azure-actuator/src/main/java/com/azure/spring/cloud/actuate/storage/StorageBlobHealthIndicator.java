@@ -23,6 +23,10 @@ public class StorageBlobHealthIndicator implements HealthIndicator {
     private final BlobServiceAsyncClient blobServiceAsyncClient;
     private Duration timeout = DEFAULT_HEALTH_CHECK_TIMEOUT;
 
+    /**
+     * Creates a new instance of {@link StorageBlobHealthIndicator}.
+     * @param blobServiceAsyncClient the blob service client
+     */
     public StorageBlobHealthIndicator(BlobServiceAsyncClient blobServiceAsyncClient) {
         this.blobServiceAsyncClient = blobServiceAsyncClient;
     }

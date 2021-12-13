@@ -18,9 +18,16 @@ public final class AzureStorageFileProtocolResolver extends AbstractAzureStorage
 
     private ShareServiceClient shareServiceClient;
 
+    /**
+     * The default constructor of AzureStorageFileProtocolResolver
+     */
     public AzureStorageFileProtocolResolver() {
     }
 
+    /**
+     * The storageType of current protocolResolver
+     * @return StorageType.FILE;
+     */
     @Override
     protected StorageType getStorageType() {
         return StorageType.FILE;
@@ -61,10 +68,14 @@ public final class AzureStorageFileProtocolResolver extends AbstractAzureStorage
         @Override
         public Stream<StorageItem> listItems(String itemPrefix) {
             ShareClient shareClient = getShareServiceClient().getShareClient(name);
-            return shareClient.getRootDirectoryClient().listFilesAndDirectories(itemPrefix, null, null, null)
-                              .stream()
-                              .filter(file -> !file.isDirectory())
-                              .map(file -> new StorageItem(name, file.getName(), getStorageType()));
+            if (shareClient.exists()) {
+                return shareClient.getRootDirectoryClient().listFilesAndDirectories(itemPrefix, null, null, null)
+                                  .stream()
+                                  .filter(file -> !file.isDirectory())
+                                  .map(file -> new StorageItem(name, file.getName(), getStorageType()));
+            } else {
+                return Stream.empty();
+            }
         }
     }
 

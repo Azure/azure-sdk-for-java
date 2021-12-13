@@ -8,18 +8,31 @@ import com.azure.spring.cloud.autoconfigure.keyvault.common.AzureKeyVaultPropert
 import com.azure.spring.service.keyvault.certificates.KeyVaultCertificateProperties;
 
 /**
- * Properties for Azure Key Vault Certificate.
+ * Azure Key Vault Certificate properties.
+ *
+ * @since 4.0.0
  */
 public class AzureKeyVaultCertificateProperties extends AzureKeyVaultProperties implements KeyVaultCertificateProperties {
 
     public static final String PREFIX = "spring.cloud.azure.keyvault.certificate";
 
+    /**
+     * The version of Azure Key Vault Certificate Service.
+     */
     private CertificateServiceVersion serviceVersion;
 
+    /**
+     *
+     * @return The {@link CertificateServiceVersion}.
+     */
     public CertificateServiceVersion getServiceVersion() {
         return serviceVersion;
     }
 
+    /**
+     *
+     * @param serviceVersion The {@link CertificateServiceVersion}.
+     */
     public void setServiceVersion(CertificateServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
     }
