@@ -83,7 +83,7 @@ public final class CommunicationTokenRefreshOptions {
     /**
      * @return The default time span before token expiry that causes the tokenRefresher to be called if refreshProactively is true
      */
-    public static Duration getDefaultRefreshTimeBeforeTokenExpiry() {
+    private static Duration getDefaultRefreshTimeBeforeTokenExpiry() {
         return Duration.ofMinutes(DEFAULT_EXPIRING_OFFSET_MINUTES);
     }
 
