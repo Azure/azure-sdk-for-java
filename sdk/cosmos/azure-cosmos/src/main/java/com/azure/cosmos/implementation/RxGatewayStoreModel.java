@@ -483,11 +483,8 @@ class RxGatewayStoreModel implements RxStoreModel {
 
                     return Mono.error(dce);
                 }
-        ).map(response ->
-                {
-                    this.captureSessionToken(request, response.getResponseHeaders());
-                    return response;
-                }
+        ).flatMap(response ->
+            this.captureSessionTokenAndHandlePartitionSplit(request, response.getResponseHeaders()).then(Mono.just(response))
         );
     }
 
@@ -511,6 +508,19 @@ class RxGatewayStoreModel implements RxStoreModel {
         } else {
             this.sessionContainer.setSessionToken(request, responseHeaders);
         }
+    }
+
+    private Mono<Void> captureSessionTokenAndHandlePartitionSplit(RxDocumentServiceRequest request,
+                                                                  Map<String, String> responseHeaders) {
+        this.captureSessionToken(request, responseHeaders);
+        if (request.requestContext.resolvedPartitionKeyRange != null &&
+            StringUtils.isNotEmpty(request.requestContext.resolvedCollectionRid) &&
+            StringUtils.isNotEmpty(responseHeaders.get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID)) &&
+            !responseHeaders.get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID).equals(request.requestContext.resolvedPartitionKeyRange.getId())) {
+            return this.partitionKeyRangeCache.refreshAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request.requestContext.resolvedCollectionRid)
+                .flatMap(collectionRoutingMapValueHolder -> Mono.empty());
+        }
+        return Mono.empty();
     }
 
     private Mono<Void> addIntendedCollectionRidAndSessionToken(RxDocumentServiceRequest request) {
@@ -564,27 +574,9 @@ class RxGatewayStoreModel implements RxStoreModel {
 
         if (this.collectionCache != null && this.partitionKeyRangeCache != null) {
             return this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request).
-                flatMap(collectionValueHolder -> partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
-                    collectionValueHolder.v.getResourceId(),
-                    null,
-                    null).flatMap(collectionRoutingMapValueHolder -> {
-                    String partitionKeyRangeId =
-                        request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
-                    PartitionKeyInternal partitionKeyInternal = request.getPartitionKeyInternal();
+                flatMap(collectionValueHolder -> {
 
-                    if (StringUtils.isNotEmpty(partitionKeyRangeId)) {
-                        PartitionKeyRange range =
-                            collectionRoutingMapValueHolder.v.getRangeByPartitionKeyRangeId(partitionKeyRangeId);
-                        request.requestContext.resolvedPartitionKeyRange = range;
-                    } else if (partitionKeyInternal != null) {
-                        String effectivePartitionKeyString = PartitionKeyInternalHelper
-                            .getEffectivePartitionKeyString(
-                                partitionKeyInternal,
-                                collectionValueHolder.v.getPartitionKey());
-                        PartitionKeyRange range =
-                            collectionRoutingMapValueHolder.v.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
-                        request.requestContext.resolvedPartitionKeyRange = range;
-                    } else {
+                    if(collectionValueHolder== null || collectionValueHolder.v == null) {
                         //Apply the ambient session.
                         String sessionToken = this.sessionContainer.resolveGlobalSessionToken(request);
 
@@ -593,9 +585,48 @@ class RxGatewayStoreModel implements RxStoreModel {
                         }
                         return Mono.empty();
                     }
-                    SessionTokenHelper.setPartitionLocalSessionToken(request, sessionContainer);
-                    return Mono.empty();
-                }));
+                    return partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
+                        collectionValueHolder.v.getResourceId(),
+                        null,
+                        null).flatMap(collectionRoutingMapValueHolder -> {
+                        if (collectionRoutingMapValueHolder == null || collectionRoutingMapValueHolder.v == null) {
+                            //Apply the ambient session.
+                            String sessionToken = this.sessionContainer.resolveGlobalSessionToken(request);
+
+                            if (!Strings.isNullOrEmpty(sessionToken)) {
+                                headers.put(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionToken);
+                            }
+                            return Mono.empty();
+                        }
+                        String partitionKeyRangeId =
+                            request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
+                        PartitionKeyInternal partitionKeyInternal = request.getPartitionKeyInternal();
+
+                        if (StringUtils.isNotEmpty(partitionKeyRangeId)) {
+                            PartitionKeyRange range =
+                                collectionRoutingMapValueHolder.v.getRangeByPartitionKeyRangeId(partitionKeyRangeId);
+                            request.requestContext.resolvedPartitionKeyRange = range;
+                        } else if (partitionKeyInternal != null) {
+                            String effectivePartitionKeyString = PartitionKeyInternalHelper
+                                .getEffectivePartitionKeyString(
+                                    partitionKeyInternal,
+                                    collectionValueHolder.v.getPartitionKey());
+                            PartitionKeyRange range =
+                                collectionRoutingMapValueHolder.v.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
+                            request.requestContext.resolvedPartitionKeyRange = range;
+                        } else {
+                            //Apply the ambient session.
+                            String sessionToken = this.sessionContainer.resolveGlobalSessionToken(request);
+
+                            if (!Strings.isNullOrEmpty(sessionToken)) {
+                                headers.put(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionToken);
+                            }
+                            return Mono.empty();
+                        }
+                        SessionTokenHelper.setPartitionLocalSessionToken(request, sessionContainer);
+                        return Mono.empty();
+                    });
+                });
         } else {
             //Apply the ambient session.
             String sessionToken = this.sessionContainer.resolveGlobalSessionToken(request);
