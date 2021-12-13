@@ -375,21 +375,22 @@ function DockerValidation($packageName, $packageVersion, $groupId, $DocValidatio
 {
 
   docker run -v "${workingDirectory}:/workdir/out" `
-    -e TARGET_PACKAGE=$packageName -e TARGET_VERSION=$packageVersion -e TARGET_GROUP_ID=$groupId -t $DocValidationImageId 2>&1 | Out-Null
+    -e TARGET_PACKAGE=$packageName -e TARGET_VERSION=$packageVersion -e TARGET_GROUP_ID=$groupId -t $DocValidationImageId 2>&1
   # The docker exit codes: https://docs.docker.com/engine/reference/run/#exit-status
   # If the docker failed because of docker itself instead of the application, 
   # we should skip the validation and keep the packages. 
+  
+  $artifactNamePrefix = "${groupId}:${artifactId}:${version}"
   if ($LASTEXITCODE -eq 125 -Or $LASTEXITCODE -eq 126 -Or $LASTEXITCODE -eq 127) 
   { 
     Write-Host $commandLine
     LogWarning "The `docker` command does not work with exit code $LASTEXITCODE. Fall back to mvn install $packageName directly."
-    $artifactNamePrefix = "${groupId}:${artifactId}:${version}"
     FallbackValidation -artifactNamePrefix "$artifactNamePrefix" -workingDirectory $workingdirectory
   }
   elseif ($LASTEXITCODE -ne 0) 
   { 
     Write-Host $commandLine
-    LogWarning "Package $($Package.name) ref docs validation failed."
+    LogWarning "Package $artifactNamePrefix ref docs validation failed."
     return $false
   }
   return $true
