@@ -44,7 +44,7 @@ In azure-identity, the modern client libraries have packages and namespaces that
 
 ### Authentication with managed identity
 `microsoft-azure-authentication-msi-token-provider` allows authenticating using system and user assigned managed identity. It supports Azure App Services and Azure Virtual Machines.
-You can use [azure-identity](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity/readme.md) to do the same in the following way.
+You can use [azure-identity](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity/README.md) to do the same in the following way.
 
 
 #### Authentication with system assigned managed identity
