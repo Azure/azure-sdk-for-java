@@ -4,14 +4,16 @@
 package com.azure.spring.cloud.autoconfigure.aad.filter;
 
 import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthenticationProperties;
+import com.azure.spring.cloud.autoconfigure.aad.configuration.AADPropertiesConfiguration;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBindException;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.context.properties.bind.validation.BindValidationException;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.validation.ObjectError;
 
 import java.util.Arrays;
@@ -36,8 +38,8 @@ public class AADAuthenticationFilterPropertiesTest {
 
             final AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
 
-            assertThat(properties.getClientId()).isEqualTo(TestConstants.CLIENT_ID);
-            assertThat(properties.getClientSecret()).isEqualTo(TestConstants.CLIENT_SECRET);
+            assertThat(properties.getCredential().getClientId()).isEqualTo(TestConstants.CLIENT_ID);
+            assertThat(properties.getCredential().getClientSecret()).isEqualTo(TestConstants.CLIENT_SECRET);
             assertThat(properties.getActiveDirectoryGroups()
                                  .toString()).isEqualTo(TestConstants.TARGETED_GROUPS.toString());
         }
@@ -46,9 +48,9 @@ public class AADAuthenticationFilterPropertiesTest {
     private void configureAllRequiredProperties(AnnotationConfigApplicationContext context) {
         addInlinedPropertiesToEnvironment(
             context,
-            AAD_PROPERTY_PREFIX + "tenant-id=demo-tenant-id",
-            AAD_PROPERTY_PREFIX + "client-id=" + TestConstants.CLIENT_ID,
-            AAD_PROPERTY_PREFIX + "client-secret=" + TestConstants.CLIENT_SECRET,
+            AAD_PROPERTY_PREFIX + "profile.tenant-id=demo-tenant-id",
+            AAD_PROPERTY_PREFIX + "credential.client-id=" + TestConstants.CLIENT_ID,
+            AAD_PROPERTY_PREFIX + "credential.client-secret=" + TestConstants.CLIENT_SECRET,
             AAD_PROPERTY_PREFIX + "user-group.allowed-groups="
                 + TestConstants.TARGETED_GROUPS.toString().replace("[", "").replace("]", "")
         );
@@ -58,8 +60,8 @@ public class AADAuthenticationFilterPropertiesTest {
     @Test
     //TODO (wepa) clientId and clientSecret can also be configured in oauth2 config, test to be refactored
     public void emptySettingsNotAllowed() {
-        System.setProperty("spring.cloud.azure.active-directory.client-id", "");
-        System.setProperty("spring.cloud.azure.active-directory.client-secret", "");
+        System.setProperty("spring.cloud.azure.active-directory.credential.client-id", "");
+        System.setProperty("spring.cloud.azure.active-directory.credential.client-secret", "");
 
         try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
             Exception exception = null;
@@ -98,7 +100,7 @@ public class AADAuthenticationFilterPropertiesTest {
     }
 
     @Configuration
-    @EnableConfigurationProperties(AADAuthenticationProperties.class)
+    @Import({AADPropertiesConfiguration.class, AzureGlobalPropertiesAutoConfiguration.class})
     static class Config {
     }
 }

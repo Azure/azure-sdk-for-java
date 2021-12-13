@@ -10,6 +10,9 @@ import org.springframework.util.Assert;
  * Azure storage resource utility class
  */
 final class AzureStorageUtils {
+    /**
+     * Path separator character for resource location.
+     */
     public static final String PATH_DELIMITER = "/";
     private static final String STORAGE_PROTOCOL_PREFIX = "azure-%s://";
 
