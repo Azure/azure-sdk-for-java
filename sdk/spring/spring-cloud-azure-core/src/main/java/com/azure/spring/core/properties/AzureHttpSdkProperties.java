@@ -10,7 +10,7 @@ import com.azure.spring.core.properties.retry.HttpRetryProperties;
 /**
  * Unified properties for Azure SDK clients.
  */
-public abstract class AbstractAzureHttpSdkProperties extends AbstractAzureSdkProperties {
+public abstract class AzureHttpSdkProperties extends AzureSdkProperties {
 
     protected final HttpClientProperties client = new HttpClientProperties();
     protected final HttpProxyProperties proxy = new HttpProxyProperties();

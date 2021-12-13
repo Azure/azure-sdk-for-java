@@ -10,7 +10,7 @@ import com.azure.spring.core.properties.retry.RetryProperties;
 /**
  * Unified properties for Azure SDK clients.
  */
-public abstract class AbstractAzureAmqpSdkProperties extends AbstractAzureSdkProperties {
+public abstract class AzureAmqpSdkProperties extends AzureSdkProperties {
 
     protected final AmqpClientProperties client = new AmqpClientProperties();
     protected final ProxyProperties proxy = new ProxyProperties();

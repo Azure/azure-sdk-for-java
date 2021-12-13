@@ -9,7 +9,7 @@ import com.azure.spring.core.aware.authentication.ConnectionStringAware;
 import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
-import com.azure.spring.core.properties.AbstractAzureSdkProperties;
+import com.azure.spring.core.properties.AzureSdkProperties;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.client.ClientProperties;
 import com.azure.spring.core.properties.proxy.ProxyProperties;
@@ -202,7 +202,7 @@ class AbstractAzureServiceClientBuilderFactoryTest {
         }
     }
 
-    static class TestAzureProperties extends AbstractAzureSdkProperties implements ConnectionStringAware {
+    static class TestAzureProperties extends AzureSdkProperties implements ConnectionStringAware {
         private String connectionString;
         private final ClientProperties client = new ClientProperties();
         private final ProxyProperties proxy = new ProxyProperties();

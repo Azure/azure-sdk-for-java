@@ -9,7 +9,7 @@ import com.azure.spring.core.properties.profile.AzureProfile;
 /**
  * Unified properties for Azure SDK clients.
  */
-public abstract class AbstractAzureSdkProperties implements AzureProperties {
+public abstract class AzureSdkProperties implements AzureProperties {
 
     protected final TokenCredentialProperties credential = new TokenCredentialProperties();
     protected final AzureProfile profile = new AzureProfile();
