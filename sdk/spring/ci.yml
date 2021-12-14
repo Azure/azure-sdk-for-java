@@ -117,7 +117,7 @@ pr:
       - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
 
 
-jobs:
+stages:
     PreSteps:
         template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
         parameters:
