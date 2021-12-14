@@ -40,14 +40,23 @@ public class BlobServiceUserAgentTest {
                 assertThat(context).hasSingleBean(BlobServiceAsyncClient.class);
                 assertThat(context).hasSingleBean(BlobServiceClient.class);
 
-                BlobServiceClient blobServiceClient = context.getBean(BlobServiceClient.class);
-                UserAgentPolicy policy = getUserAgentPolicy(blobServiceClient);
-                Assertions.assertNotNull(policy);
-                Field privateStringField = UserAgentPolicy.class.getDeclaredField("userAgent");
-                privateStringField.setAccessible(true);
-                String userAgent = (String) privateStringField.get(policy);
+                String userAgent = getUserAgent(context.getBean(BlobServiceClient.class));
+                Assertions.assertNotNull(userAgent);
                 Assertions.assertTrue(userAgent.contains(AZURE_SPRING_STORAGE_BLOB));
             });
+    }
+
+    private String getUserAgent(BlobServiceClient client) {
+        UserAgentPolicy policy = getUserAgentPolicy(client);
+        Assertions.assertNotNull(policy);
+        Field privateStringField;
+        try {
+            privateStringField = UserAgentPolicy.class.getDeclaredField("userAgent");
+            privateStringField.setAccessible(true);
+            return (String) privateStringField.get(policy);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            return null;
+        }
     }
 
     private UserAgentPolicy getUserAgentPolicy(BlobServiceClient client) {
