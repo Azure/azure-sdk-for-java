@@ -134,6 +134,10 @@ def create_dependency_and_path_mappings(project_list_identifiers: list, artifact
     module_path_mapping = {}
 
     for root, _, files in os.walk(root_path):
+        # Ignore sdk/resourcemanagerhybrid
+        if 'resourcemanagerhybrid' in root:
+            continue
+
         for file_name in files:
             file_path = root + os.sep + file_name
 

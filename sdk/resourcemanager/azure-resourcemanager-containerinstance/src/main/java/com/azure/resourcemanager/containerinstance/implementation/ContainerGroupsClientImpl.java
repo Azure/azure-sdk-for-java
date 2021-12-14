@@ -1534,7 +1534,8 @@ public final class ContainerGroupsClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = restartWithResponseAsync(resourceGroupName, containerGroupName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1914,7 +1915,8 @@ public final class ContainerGroupsClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, containerGroupName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

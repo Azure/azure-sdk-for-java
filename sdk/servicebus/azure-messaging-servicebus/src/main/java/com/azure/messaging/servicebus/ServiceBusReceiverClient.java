@@ -13,7 +13,7 @@ import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.DeferOptions;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
+import reactor.core.publisher.Sinks;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -447,10 +447,13 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
                 new IllegalArgumentException("'maxWaitTime' cannot be zero or less. maxWaitTime: " + maxWaitTime));
         }
 
-        final Flux<ServiceBusReceivedMessage> messages = Flux.create(emitter -> queueWork(maxMessages,
-            maxWaitTime, emitter));
+        // There are two subscribers to this emitter. One is the timeout between messages subscription in
+        // SynchronousReceiverWork.start() and the other is the IterableStream(emitter.asFlux());
+        // Since the subscriptions may happen at different times, we want to replay results to downstream subscribers.
+        final Sinks.Many<ServiceBusReceivedMessage> emitter = Sinks.many().replay().all();
+        queueWork(maxMessages, maxWaitTime, emitter);
 
-        return new IterableStream<>(messages);
+        return new IterableStream<>(emitter.asFlux());
     }
 
     /**
@@ -575,7 +578,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws ServiceBusException if the session lock cannot be renewed.
      */
     public OffsetDateTime renewSessionLock() {
-        return this.renewSessionLock(asyncClient.getReceiverOptions().getSessionId());
+        return asyncClient.renewSessionLock(asyncClient.getReceiverOptions().getSessionId()).block(operationTimeout);
     }
 
     /**
@@ -700,31 +703,32 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * entity.
      */
     private void queueWork(int maximumMessageCount, Duration maxWaitTime,
-                           FluxSink<ServiceBusReceivedMessage> emitter) {
-        final long id = idGenerator.getAndIncrement();
-        final int prefetch = asyncClient.getReceiverOptions().getPrefetchCount();
-        final int toRequest = prefetch != 0 ? Math.min(maximumMessageCount, prefetch) : maximumMessageCount;
-        final SynchronousReceiveWork work = new SynchronousReceiveWork(id,
-            toRequest,
-            maxWaitTime, emitter);
-        SynchronousMessageSubscriber messageSubscriber = synchronousMessageSubscriber.get();
-        if (messageSubscriber == null) {
-            SynchronousMessageSubscriber newSubscriber = new SynchronousMessageSubscriber(toRequest, work);
-            if (!synchronousMessageSubscriber.compareAndSet(null, newSubscriber)) {
-                newSubscriber.dispose();
-                SynchronousMessageSubscriber existing = synchronousMessageSubscriber.get();
-                existing.queueWork(work);
-            } else {
-                asyncClient.receiveMessagesNoBackPressure().subscribeWith(newSubscriber);
-            }
-        } else {
-            messageSubscriber.queueWork(work);
-        }
-        logger.verbose("[{}] Receive request queued up.", work.getId());
-    }
+        Sinks.Many<ServiceBusReceivedMessage> emitter) {
 
-    OffsetDateTime renewSessionLock(String sessionId) {
-        return asyncClient.renewSessionLock(sessionId).block(operationTimeout);
+        final long id = idGenerator.getAndIncrement();
+        final SynchronousReceiveWork work = new SynchronousReceiveWork(id, maximumMessageCount, maxWaitTime, emitter);
+        final SynchronousMessageSubscriber messageSubscriber = synchronousMessageSubscriber.get();
+
+        if (messageSubscriber != null) {
+            messageSubscriber.queueWork(work);
+            return;
+        }
+
+        final SynchronousMessageSubscriber newSubscriber = new SynchronousMessageSubscriber(work);
+
+        // NOTE: We asynchronously send the credit to the service as soon as receiveMessage() API is called (for first
+        // time).
+        // This means that there may be messages internally buffered before users start iterating the IterableStream.
+        // If users do not iterate through the stream and their lock duration expires, it is possible that the
+        // Service Bus message's delivery count will be incremented.
+        if (synchronousMessageSubscriber.compareAndSet(null, newSubscriber)) {
+            asyncClient.receiveMessagesNoBackPressure().subscribeWith(newSubscriber);
+        } else {
+            newSubscriber.dispose();
+            synchronousMessageSubscriber.get().queueWork(work);
+        }
+
+        logger.verbose("[{}] Receive request queued up.", work.getId());
     }
 
     void renewSessionLock(String sessionId, Duration maxLockRenewalDuration, Consumer<Throwable> onError) {

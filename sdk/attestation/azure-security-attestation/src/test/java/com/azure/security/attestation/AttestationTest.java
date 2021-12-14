@@ -7,12 +7,19 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.security.attestation.models.AttestationData;
 import com.azure.security.attestation.models.AttestationDataInterpretation;
 import com.azure.security.attestation.models.AttestationOptions;
+import com.azure.security.attestation.models.AttestationPolicySetOptions;
 import com.azure.security.attestation.models.AttestationResponse;
 import com.azure.security.attestation.models.AttestationResult;
+import com.azure.security.attestation.models.AttestationSigningKey;
 import com.azure.security.attestation.models.AttestationTokenValidationOptions;
+import com.azure.security.attestation.models.AttestationType;
+import com.azure.security.attestation.models.PolicyModification;
+import com.azure.security.attestation.models.PolicyResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -22,6 +29,7 @@ import reactor.test.StepVerifier;
 
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -31,6 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public class AttestationTest extends AttestationClientTestBase {
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
@@ -337,7 +346,146 @@ public class AttestationTest extends AttestationClientTestBase {
             })
             .expectComplete()
             .verify();
+    }
 
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
+    void testTpmAttestation(HttpClient httpClient, String clientUri) {
+        ClientTypes clientType = classifyClient(clientUri);
+        // TPM attestation requires that we have an attestation policy set and we can't set attestation policy on the shared client, so just exit early.
+        assumeTrue(clientType != ClientTypes.SHARED, "This test does not work on shared instances.");
+
+        // Set the TPM attestation policy to a default value.
+        AttestationAdministrationClientBuilder adminBuilder = getAttestationAdministrationBuilder(httpClient, clientUri);
+        AttestationAdministrationClient adminClient = adminBuilder.buildClient();
+        PolicyResult result = adminClient.setAttestationPolicy(AttestationType.TPM, new AttestationPolicySetOptions()
+            .setAttestationPolicy("version=1.0; authorizationrules{=>permit();};issuancerules{};")
+            .setAttestationSigner(new AttestationSigningKey(getIsolatedSigningCertificate(), getIsolatedSigningKey())));
+
+        if (result.getPolicyResolution() != PolicyModification.UPDATED) {
+            System.out.printf("Unexpected resolution setting TPM policy: %s", result.getPolicyResolution().toString());
+            return;
+        }
+
+        // We cannot perform the entire protocol exchange for TPM attestation, but we CAN perform the
+        // first leg of the attestation operation.
+        //
+        // Note that TPM attestation requires an authenticated attestation builder.
+        AttestationClientBuilder attestationBuilder = getAuthenticatedAttestationBuilder(httpClient, clientUri);
+        AttestationClient client = attestationBuilder.buildClient();
+
+        // The initial payload for TPM attestation is a JSON object with a property named "payload",
+        // containing an object with a property named "type" whose value is "aikcert".
+
+        String attestInitialPayload = "{\"payload\": { \"type\": \"aikcert\" } }";
+        String tpmResponse = client.attestTpm(attestInitialPayload);
+
+        JacksonAdapter serializer = new JacksonAdapter();
+        Object deserializedResponse = assertDoesNotThrow(() -> serializer.deserialize(tpmResponse, Object.class, SerializerEncoding.JSON));
+        assertTrue(deserializedResponse instanceof LinkedHashMap);
+        @SuppressWarnings("unchecked")
+        LinkedHashMap<String, Object> initialResponse = (LinkedHashMap<String, Object>) deserializedResponse;
+        assertTrue(initialResponse.containsKey("payload"));
+        assertTrue(initialResponse.get("payload") instanceof LinkedHashMap);
+        @SuppressWarnings("unchecked")
+        LinkedHashMap<String, Object> payload = (LinkedHashMap<String, Object>) initialResponse.get("payload");
+        assertTrue(payload.containsKey("challenge"));
+        assertTrue(payload.containsKey("service_context"));
+
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
+    void testTpmAttestationWithResult(HttpClient httpClient, String clientUri) {
+        ClientTypes clientType = classifyClient(clientUri);
+        // TPM attestation requires that we have an attestation policy set and we can't set attestation policy on the shared client, so just exit early.
+        assumeTrue(clientType != ClientTypes.SHARED, "This test does not work on shared instances.");
+
+        // Set the TPM attestation policy to a default value.
+        AttestationAdministrationClientBuilder adminBuilder = getAttestationAdministrationBuilder(httpClient, clientUri);
+        AttestationAdministrationClient adminClient = adminBuilder.buildClient();
+        PolicyResult result = adminClient.setAttestationPolicy(AttestationType.TPM, new AttestationPolicySetOptions()
+            .setAttestationPolicy("version=1.0; authorizationrules{=>permit();};issuancerules{};")
+            .setAttestationSigner(new AttestationSigningKey(getIsolatedSigningCertificate(), getIsolatedSigningKey())));
+
+        if (result.getPolicyResolution() != PolicyModification.UPDATED) {
+            System.out.printf("Unexpected resolution setting TPM policy: %s", result.getPolicyResolution().toString());
+            return;
+        }
+
+        // We cannot perform the entire protocol exchange for TPM attestation, but we CAN perform the
+        // first leg of the attestation operation.
+        //
+        // Note that TPM attestation requires an authenticated attestation builder.
+        AttestationClientBuilder attestationBuilder = getAuthenticatedAttestationBuilder(httpClient, clientUri);
+        AttestationClient client = attestationBuilder.buildClient();
+
+        // BEGIN: com.azure.security.attestation.AttestationClient.attestTpmWithResponse
+        // The initial payload for TPM attestation is a JSON object with a property named "payload",
+        // containing an object with a property named "type" whose value is "aikcert".
+
+        String attestInitialPayload = "{\"payload\": { \"type\": \"aikcert\" } }";
+        Response<String> tpmResponse = client.attestTpmWithResponse(attestInitialPayload, Context.NONE);
+        // END: com.azure.security.attestation.AttestationClient.attestTpmWithResponse
+
+        JacksonAdapter serializer = new JacksonAdapter();
+        Object deserializedResponse = assertDoesNotThrow(() -> serializer.deserialize(tpmResponse.getValue(), Object.class, SerializerEncoding.JSON));
+        assertTrue(deserializedResponse instanceof LinkedHashMap);
+        @SuppressWarnings("unchecked")
+        LinkedHashMap<String, Object> initialResponse = (LinkedHashMap<String, Object>) deserializedResponse;
+        assertTrue(initialResponse.containsKey("payload"));
+        assertTrue(initialResponse.get("payload") instanceof LinkedHashMap);
+        @SuppressWarnings("unchecked")
+        LinkedHashMap<String, Object> payload = (LinkedHashMap<String, Object>) initialResponse.get("payload");
+        assertTrue(payload.containsKey("challenge"));
+        assertTrue(payload.containsKey("service_context"));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
+    void testTpmAttestationAsync(HttpClient httpClient, String clientUri) {
+        ClientTypes clientType = classifyClient(clientUri);
+        // TPM attestation requires that we have an attestation policy set, and we can't set attestation policy on the shared client, so just exit early.
+        assumeTrue(clientType != ClientTypes.SHARED, "This test does not work on shared instances.");
+
+        // Set the TPM attestation policy to a default value.
+        AttestationAdministrationClientBuilder adminBuilder = getAttestationAdministrationBuilder(httpClient, clientUri);
+        AttestationAdministrationClient adminClient = adminBuilder.buildClient();
+        PolicyResult result = adminClient.setAttestationPolicy(AttestationType.TPM, new AttestationPolicySetOptions()
+            .setAttestationPolicy("version=1.0; authorizationrules{=>permit();};issuancerules{};")
+            .setAttestationSigner(new AttestationSigningKey(getIsolatedSigningCertificate(), getIsolatedSigningKey())));
+
+        if (result.getPolicyResolution() != PolicyModification.UPDATED) {
+            System.out.printf("Unexpected resolution setting TPM policy: %s", result.getPolicyResolution().toString());
+            return;
+        }
+
+        // We cannot perform the entire protocol exchange for TPM attestation, but we CAN perform the
+        // first leg of the attestation operation.
+        //
+        // Note that TPM attestation requires an authenticated attestation builder.
+        AttestationClientBuilder attestationBuilder = getAuthenticatedAttestationBuilder(httpClient, clientUri);
+        AttestationAsyncClient client = attestationBuilder.buildAsyncClient();
+
+        // The initial payload for TPM attestation is a JSON object with a property named "payload",
+        // containing an object with a property named "type" whose value is "aikcert".
+
+        String attestInitialPayload = "{\"payload\": { \"type\": \"aikcert\" } }";
+        StepVerifier.create(client.attestTpm(attestInitialPayload))
+            .assertNext(tpmResponse -> {
+                JacksonAdapter serializer = new JacksonAdapter();
+                Object deserializedResponse = assertDoesNotThrow(() -> serializer.deserialize(tpmResponse, Object.class, SerializerEncoding.JSON));
+                assertTrue(deserializedResponse instanceof LinkedHashMap);
+                @SuppressWarnings("unchecked")
+                LinkedHashMap<String, Object> initialResponse = (LinkedHashMap<String, Object>) deserializedResponse;
+                assertTrue(initialResponse.containsKey("payload"));
+                assertTrue(initialResponse.get("payload") instanceof LinkedHashMap);
+                @SuppressWarnings("unchecked")
+                LinkedHashMap<String, Object> payload = (LinkedHashMap<String, Object>) initialResponse.get("payload");
+                assertTrue(payload.containsKey("challenge"));
+                assertTrue(payload.containsKey("service_context"));
+            })
+            .verifyComplete();
     }
 
     @Test()
@@ -557,43 +705,6 @@ public class AttestationTest extends AttestationClientTestBase {
             }
         });
 
-    }
-
-
-    /**
-     * This test cannot be written until the setPolicy APIs are written because it depends on
-     * setting attestation policy :(.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getAttestationClients")
-    void attestTpm() {
-    }
-
-    /**
-     * This test cannot be written until the setPolicy APIs are written because it depends on
-     * setting attestation policy :(.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getAttestationClients")
-    void attestTpmAsync() {
-    }
-
-    /**
-     * This test cannot be written until the setPolicy APIs are written because it depends on
-     * setting attestation policy :(.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getAttestationClients")
-    void attestTpmWithResponse() {
-    }
-
-    /**
-     * This test cannot be written until the setPolicy APIs are written because it depends on
-     * setting attestation policy :(.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getAttestationClients")
-    void attestTpmWithResponseAsync() {
     }
 }
 

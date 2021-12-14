@@ -47,7 +47,7 @@ import com.azure.storage.file.datalake.implementation.models.PathsSetExpiryRespo
 import com.azure.storage.file.datalake.implementation.models.PathsUndeleteResponse;
 import com.azure.storage.file.datalake.implementation.models.PathsUpdateResponse;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
-import com.azure.storage.file.datalake.implementation.models.StorageErrorException;
+import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
@@ -81,7 +81,7 @@ public final class PathsImpl {
     public interface PathsService {
         @Put("/{filesystem}/{path}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<PathsCreateResponse> create(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
@@ -116,7 +116,7 @@ public final class PathsImpl {
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<PathsUpdateResponse> update(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
@@ -155,7 +155,7 @@ public final class PathsImpl {
 
         @Post("/{filesystem}/{path}")
         @ExpectedResponses({200, 201, 202})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<PathsLeaseResponse> lease(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
@@ -177,7 +177,7 @@ public final class PathsImpl {
 
         @Get("/{filesystem}/{path}")
         @ExpectedResponses({200, 206})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<StreamResponse> read(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
@@ -197,7 +197,7 @@ public final class PathsImpl {
 
         @Head("/{filesystem}/{path}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<PathsGetPropertiesResponse> getProperties(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
@@ -217,7 +217,7 @@ public final class PathsImpl {
 
         @Delete("/{filesystem}/{path}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<PathsDeleteResponse> delete(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
@@ -237,7 +237,7 @@ public final class PathsImpl {
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<PathsSetAccessControlResponse> setAccessControl(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
@@ -260,7 +260,7 @@ public final class PathsImpl {
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<PathsSetAccessControlRecursiveResponse> setAccessControlRecursive(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
@@ -279,7 +279,7 @@ public final class PathsImpl {
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<PathsFlushDataResponse> flushData(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
@@ -308,7 +308,7 @@ public final class PathsImpl {
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<PathsAppendDataResponse> appendData(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
@@ -328,7 +328,7 @@ public final class PathsImpl {
 
         @Put("/{filesystem}/{path}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<PathsSetExpiryResponse> setExpiry(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
@@ -344,7 +344,7 @@ public final class PathsImpl {
 
         @Put("/{filesystem}/{path}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<PathsUndeleteResponse> undelete(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
@@ -405,7 +405,7 @@ public final class PathsImpl {
      * @param sourceModifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -613,7 +613,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -767,7 +767,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -852,7 +852,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -936,7 +936,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties returns all system and user defined properties for a path.
      */
@@ -1016,7 +1016,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1098,7 +1098,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1191,7 +1191,7 @@ public final class PathsImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1258,7 +1258,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1385,7 +1385,7 @@ public final class PathsImpl {
      * @param leaseAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1444,7 +1444,7 @@ public final class PathsImpl {
      * @param expiresOn The time to set the blob to expiry.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1479,7 +1479,7 @@ public final class PathsImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */

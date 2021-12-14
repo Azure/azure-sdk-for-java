@@ -4,9 +4,9 @@
 
 package com.azure.resourcemanager.consumption.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.consumption.fluent.models.LegacyReservationRecommendationProperties;
 import com.azure.resourcemanager.consumption.fluent.models.ReservationRecommendationInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -20,100 +20,24 @@ import java.util.UUID;
 /** Legacy reservation recommendation. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("legacy")
-@JsonFlatten
-@Immutable
-public class LegacyReservationRecommendation extends ReservationRecommendationInner {
+@Fluent
+public final class LegacyReservationRecommendation extends ReservationRecommendationInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(LegacyReservationRecommendation.class);
 
     /*
-     * The number of days of usage to look back for recommendation.
+     * Properties for legacy reservation recommendation
      */
-    @JsonProperty(value = "properties.lookBackPeriod", access = JsonProperty.Access.WRITE_ONLY)
-    private String lookBackPeriod;
+    @JsonProperty(value = "properties", required = true)
+    private LegacyReservationRecommendationProperties innerProperties = new LegacyReservationRecommendationProperties();
 
-    /*
-     * The instance Flexibility Ratio.
+    /**
+     * Get the innerProperties property: Properties for legacy reservation recommendation.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.instanceFlexibilityRatio", access = JsonProperty.Access.WRITE_ONLY)
-    private Float instanceFlexibilityRatio;
-
-    /*
-     * The instance Flexibility Group.
-     */
-    @JsonProperty(value = "properties.instanceFlexibilityGroup", access = JsonProperty.Access.WRITE_ONLY)
-    private String instanceFlexibilityGroup;
-
-    /*
-     * The normalized Size.
-     */
-    @JsonProperty(value = "properties.normalizedSize", access = JsonProperty.Access.WRITE_ONLY)
-    private String normalizedSize;
-
-    /*
-     * The recommended Quantity Normalized.
-     */
-    @JsonProperty(value = "properties.recommendedQuantityNormalized", access = JsonProperty.Access.WRITE_ONLY)
-    private Float recommendedQuantityNormalized;
-
-    /*
-     * The meter id (GUID)
-     */
-    @JsonProperty(value = "properties.meterId", access = JsonProperty.Access.WRITE_ONLY)
-    private UUID meterId;
-
-    /*
-     * The azure resource type.
-     */
-    @JsonProperty(value = "properties.resourceType", access = JsonProperty.Access.WRITE_ONLY)
-    private String resourceType;
-
-    /*
-     * RI recommendations in one or three year terms.
-     */
-    @JsonProperty(value = "properties.term", access = JsonProperty.Access.WRITE_ONLY)
-    private String term;
-
-    /*
-     * The total amount of cost without reserved instances.
-     */
-    @JsonProperty(value = "properties.costWithNoReservedInstances", access = JsonProperty.Access.WRITE_ONLY)
-    private BigDecimal costWithNoReservedInstances;
-
-    /*
-     * Recommended quality for reserved instances.
-     */
-    @JsonProperty(value = "properties.recommendedQuantity", access = JsonProperty.Access.WRITE_ONLY)
-    private BigDecimal recommendedQuantity;
-
-    /*
-     * The total amount of cost with reserved instances.
-     */
-    @JsonProperty(value = "properties.totalCostWithReservedInstances", access = JsonProperty.Access.WRITE_ONLY)
-    private BigDecimal totalCostWithReservedInstances;
-
-    /*
-     * Total estimated savings with reserved instances.
-     */
-    @JsonProperty(value = "properties.netSavings", access = JsonProperty.Access.WRITE_ONLY)
-    private BigDecimal netSavings;
-
-    /*
-     * The usage date for looking back.
-     */
-    @JsonProperty(value = "properties.firstUsageDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime firstUsageDate;
-
-    /*
-     * Shared or single recommendation.
-     */
-    @JsonProperty(value = "properties.scope", access = JsonProperty.Access.WRITE_ONLY)
-    private String scope;
-
-    /*
-     * List of sku properties
-     */
-    @JsonProperty(value = "properties.skuProperties", access = JsonProperty.Access.WRITE_ONLY)
-    private List<SkuProperty> skuProperties;
+    private LegacyReservationRecommendationProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the lookBackPeriod property: The number of days of usage to look back for recommendation.
@@ -121,7 +45,7 @@ public class LegacyReservationRecommendation extends ReservationRecommendationIn
      * @return the lookBackPeriod value.
      */
     public String lookBackPeriod() {
-        return this.lookBackPeriod;
+        return this.innerProperties() == null ? null : this.innerProperties().lookBackPeriod();
     }
 
     /**
@@ -130,7 +54,7 @@ public class LegacyReservationRecommendation extends ReservationRecommendationIn
      * @return the instanceFlexibilityRatio value.
      */
     public Float instanceFlexibilityRatio() {
-        return this.instanceFlexibilityRatio;
+        return this.innerProperties() == null ? null : this.innerProperties().instanceFlexibilityRatio();
     }
 
     /**
@@ -139,7 +63,7 @@ public class LegacyReservationRecommendation extends ReservationRecommendationIn
      * @return the instanceFlexibilityGroup value.
      */
     public String instanceFlexibilityGroup() {
-        return this.instanceFlexibilityGroup;
+        return this.innerProperties() == null ? null : this.innerProperties().instanceFlexibilityGroup();
     }
 
     /**
@@ -148,7 +72,7 @@ public class LegacyReservationRecommendation extends ReservationRecommendationIn
      * @return the normalizedSize value.
      */
     public String normalizedSize() {
-        return this.normalizedSize;
+        return this.innerProperties() == null ? null : this.innerProperties().normalizedSize();
     }
 
     /**
@@ -157,7 +81,7 @@ public class LegacyReservationRecommendation extends ReservationRecommendationIn
      * @return the recommendedQuantityNormalized value.
      */
     public Float recommendedQuantityNormalized() {
-        return this.recommendedQuantityNormalized;
+        return this.innerProperties() == null ? null : this.innerProperties().recommendedQuantityNormalized();
     }
 
     /**
@@ -166,7 +90,7 @@ public class LegacyReservationRecommendation extends ReservationRecommendationIn
      * @return the meterId value.
      */
     public UUID meterId() {
-        return this.meterId;
+        return this.innerProperties() == null ? null : this.innerProperties().meterId();
     }
 
     /**
@@ -175,7 +99,7 @@ public class LegacyReservationRecommendation extends ReservationRecommendationIn
      * @return the resourceType value.
      */
     public String resourceType() {
-        return this.resourceType;
+        return this.innerProperties() == null ? null : this.innerProperties().resourceType();
     }
 
     /**
@@ -184,7 +108,7 @@ public class LegacyReservationRecommendation extends ReservationRecommendationIn
      * @return the term value.
      */
     public String term() {
-        return this.term;
+        return this.innerProperties() == null ? null : this.innerProperties().term();
     }
 
     /**
@@ -193,7 +117,7 @@ public class LegacyReservationRecommendation extends ReservationRecommendationIn
      * @return the costWithNoReservedInstances value.
      */
     public BigDecimal costWithNoReservedInstances() {
-        return this.costWithNoReservedInstances;
+        return this.innerProperties() == null ? null : this.innerProperties().costWithNoReservedInstances();
     }
 
     /**
@@ -202,7 +126,7 @@ public class LegacyReservationRecommendation extends ReservationRecommendationIn
      * @return the recommendedQuantity value.
      */
     public BigDecimal recommendedQuantity() {
-        return this.recommendedQuantity;
+        return this.innerProperties() == null ? null : this.innerProperties().recommendedQuantity();
     }
 
     /**
@@ -211,7 +135,7 @@ public class LegacyReservationRecommendation extends ReservationRecommendationIn
      * @return the totalCostWithReservedInstances value.
      */
     public BigDecimal totalCostWithReservedInstances() {
-        return this.totalCostWithReservedInstances;
+        return this.innerProperties() == null ? null : this.innerProperties().totalCostWithReservedInstances();
     }
 
     /**
@@ -220,7 +144,7 @@ public class LegacyReservationRecommendation extends ReservationRecommendationIn
      * @return the netSavings value.
      */
     public BigDecimal netSavings() {
-        return this.netSavings;
+        return this.innerProperties() == null ? null : this.innerProperties().netSavings();
     }
 
     /**
@@ -229,16 +153,7 @@ public class LegacyReservationRecommendation extends ReservationRecommendationIn
      * @return the firstUsageDate value.
      */
     public OffsetDateTime firstUsageDate() {
-        return this.firstUsageDate;
-    }
-
-    /**
-     * Get the scope property: Shared or single recommendation.
-     *
-     * @return the scope value.
-     */
-    public String scope() {
-        return this.scope;
+        return this.innerProperties() == null ? null : this.innerProperties().firstUsageDate();
     }
 
     /**
@@ -247,7 +162,7 @@ public class LegacyReservationRecommendation extends ReservationRecommendationIn
      * @return the skuProperties value.
      */
     public List<SkuProperty> skuProperties() {
-        return this.skuProperties;
+        return this.innerProperties() == null ? null : this.innerProperties().skuProperties();
     }
 
     /**
@@ -258,8 +173,13 @@ public class LegacyReservationRecommendation extends ReservationRecommendationIn
     @Override
     public void validate() {
         super.validate();
-        if (skuProperties() != null) {
-            skuProperties().forEach(e -> e.validate());
+        if (innerProperties() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model LegacyReservationRecommendation"));
+        } else {
+            innerProperties().validate();
         }
     }
 }

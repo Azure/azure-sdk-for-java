@@ -10,8 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** Parameter group. */
+@JacksonXmlRootElement(localName = "CopyFileSmbInfo")
 @Fluent
-@JacksonXmlRootElement(localName = "copy-file-smb-info")
 public final class CopyFileSmbInfo {
     /*
      * Specifies either the option to copy file attributes from a source

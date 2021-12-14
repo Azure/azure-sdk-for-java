@@ -9,6 +9,9 @@ import com.azure.core.util.ServiceVersion;
  * The service version of the Logs service that can be queried to retrieved Azure Monitor logs.
  */
 public enum LogsQueryServiceVersion implements ServiceVersion {
+    /**
+     * Service version {@code v1}.
+     */
     V_1("v1");
 
     String version;

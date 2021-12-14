@@ -1,0 +1,16 @@
+{
+  "resources": {
+    "includes": [
+      {
+        "pattern": "\\Qazure-key-vault-certificates.properties\\E"
+      },
+      {
+        "pattern": "\\Qcom/sun/jna/darwin/libjnidispatch.jnilib\\E"
+      },
+      {
+        "pattern": "\\QkvErrorStrings.properties\\E"
+      }
+    ]
+  },
+  "bundles": []
+}

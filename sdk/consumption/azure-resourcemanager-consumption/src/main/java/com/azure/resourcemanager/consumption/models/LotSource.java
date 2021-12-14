@@ -16,6 +16,9 @@ public final class LotSource extends ExpandableStringEnum<LotSource> {
     /** Static value PromotionalCredit for LotSource. */
     public static final LotSource PROMOTIONAL_CREDIT = fromString("PromotionalCredit");
 
+    /** Static value ConsumptionCommitment for LotSource. */
+    public static final LotSource CONSUMPTION_COMMITMENT = fromString("ConsumptionCommitment");
+
     /**
      * Creates or finds a LotSource from its string representation.
      *

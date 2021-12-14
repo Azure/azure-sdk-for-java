@@ -38,6 +38,7 @@ public class CosmosQueryRequestOptions {
     private Duration thresholdForDiagnosticsOnTracer;
     private Map<String, String> customOptions;
     private boolean indexMetricsEnabled;
+    private boolean queryPlanRetrievalDisallowed;
 
     /**
      * Instantiates a new query request options.
@@ -70,6 +71,7 @@ public class CosmosQueryRequestOptions {
         this.dedicatedGatewayRequestOptions = options.dedicatedGatewayRequestOptions;
         this.customOptions = options.customOptions;
         this.indexMetricsEnabled = options.indexMetricsEnabled;
+        this.queryPlanRetrievalDisallowed = options.queryPlanRetrievalDisallowed;
     }
 
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
@@ -538,6 +540,16 @@ public class CosmosQueryRequestOptions {
         return this.customOptions;
     }
 
+    CosmosQueryRequestOptions disallowQueryPlanRetrieval() {
+        this.queryPlanRetrievalDisallowed = true;
+
+        return this;
+    }
+
+    boolean isQueryPlanRetrievalDisallowed() {
+        return this.queryPlanRetrievalDisallowed;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -566,6 +578,18 @@ public class CosmosQueryRequestOptions {
                 @Override
                 public Map<String, String> getHeader(CosmosQueryRequestOptions queryRequestOptions) {
                     return queryRequestOptions.getHeaders();
+                }
+
+                @Override
+                public CosmosQueryRequestOptions disallowQueryPlanRetrieval(
+                    CosmosQueryRequestOptions queryRequestOptions) {
+
+                    return queryRequestOptions.disallowQueryPlanRetrieval();
+                }
+
+                @Override
+                public boolean isQueryPlanRetrievalDisallowed(CosmosQueryRequestOptions queryRequestOptions) {
+                    return queryRequestOptions.isQueryPlanRetrievalDisallowed();
                 }
             });
     }

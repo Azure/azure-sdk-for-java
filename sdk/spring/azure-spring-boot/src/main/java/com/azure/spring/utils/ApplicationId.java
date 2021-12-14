@@ -33,16 +33,40 @@ public class ApplicationId {
     //    aad: for AAD
     //    b2c: for AAD B2C
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationId.class);
+
+    /**
+     * The version
+     */
     public static final String VERSION = getVersion();
+
+    /**
+     * Azure Spring KeyVault
+     */
     public static final String AZURE_SPRING_KEY_VAULT = "az-sp-kv/" + VERSION;
+
+    /**
+     * Azure Spring ServiceBus
+     */
     public static final String AZURE_SPRING_SERVICE_BUS = "az-sp-bus/" + VERSION;
+
+    /**
+     * Azure Spring Storage Blob
+     */
     public static final String AZURE_SPRING_STORAGE_BLOB = "az-sp-sb/" + VERSION;
+
+    /**
+     * Azure Spring Storage Files
+     */
     public static final String AZURE_SPRING_STORAGE_FILES = "az-sp-sf/" + VERSION;
     /**
      * AZURE_SPRING_AAD does not contain VERSION, because AAD server support 2 headers: 1. x-client-SKU; 2.
      * x-client-VER;
      */
     public static final String AZURE_SPRING_AAD = "az-sp-aad";
+
+    /**
+     * Azure Spring B2C
+     */
     public static final String AZURE_SPRING_B2C = "az-sp-b2c";
 
     private static String getVersion() {

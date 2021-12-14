@@ -1,6 +1,6 @@
 ## Release History
 
-### 3.15.0-beta.1 (Unreleased)
+### 3.16.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,15 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 3.15.0 (2021-12-10)
+#### Features Added
+* Updated `Spring Boot` to version `2.6.1`.
+* Updated `azure-cosmos` to version `4.23.0`.
+
+#### Key Bug Fixes
+* Added support for capturing CosmosException diagnostics on `CosmosRepository` and `ReactiveRepository` APIs.
+* Solved `UnsatisfiedDependencyException` when upgrading to spring boot 2.6.1 by removing `CosmosMappingContextLookup`.
 
 ### 3.14.0 (2021-11-12)
 #### Features Added

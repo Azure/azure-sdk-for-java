@@ -346,6 +346,10 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     }
 
     private void cleanupWorkItems() {
+        if (pendingUpdates.isEmpty()) {
+            return;
+        }
+
         logger.verbose("linkName[{}]: Cleaning timed out update work tasks.", getLinkName());
         pendingUpdates.forEach((key, value) -> {
             if (value == null || !value.hasTimedout()) {
