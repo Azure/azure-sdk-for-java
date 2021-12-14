@@ -1,5 +1,9 @@
 ## Release History
-### 4.5.1-beta.1 (Unreleased)
+### 4.5.1 (2021-12-14)
+#### Key Bug Fixes
+* Fixed an issue that can cause hangs when bulk-ingesting data into Cosmos containers with more than 255 physical partitions - See [PR 26017](https://github.com/Azure/azure-sdk-for-java/pull/26017)
+* Improved robustness of built-in retry policies for transient I/O errors when calculating Spark partitioning, do schema inference or process Catalog APIs. - See [PR 26029](https://github.com/Azure/azure-sdk-for-java/pull/26029)
+
 ### 4.5.0 (2021-12-09)
 #### New Features
 * Added a user defined function that can be used to calculate the "feedRange" of a partition key value. This "feedRange" can be used to determine co-located documents and to optimize query performance when the query is scoped to a single/few logical partitions. - See [PR 25889](https://github.com/Azure/azure-sdk-for-java/pull/25889).
