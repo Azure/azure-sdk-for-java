@@ -24,6 +24,7 @@ public final class CosmosBulkExecutionOptions {
         BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_INTERVAL_IN_MILLISECONDS);
     private final Object legacyBatchScopedContext;
     private final CosmosBulkExecutionThresholdsState thresholds;
+    private Integer maxConcurrentCosmosPartitions = null;
     private OperationContextAndListenerTuple operationContextAndListenerTuple;
 
     /**
@@ -89,6 +90,15 @@ public final class CosmosBulkExecutionOptions {
      */
     CosmosBulkExecutionOptions setMaxMicroBatchSize(int maxMicroBatchSize) {
         this.maxMicroBatchSize = maxMicroBatchSize;
+        return this;
+    }
+
+    Integer getMaxConcurrentCosmosPartitions() {
+        return this.maxConcurrentCosmosPartitions;
+    }
+
+    CosmosBulkExecutionOptions setMaxConcurrentCosmosPartitions(int maxConcurrentCosmosPartitions) {
+        this.maxConcurrentCosmosPartitions = maxConcurrentCosmosPartitions;
         return this;
     }
 
@@ -255,6 +265,17 @@ public final class CosmosBulkExecutionOptions {
                 @Override
                 public int getMaxMicroBatchConcurrency(CosmosBulkExecutionOptions options) {
                     return options.getMaxMicroBatchConcurrency();
+                }
+
+                @Override
+                public Integer getMaxConcurrentCosmosPartitions(CosmosBulkExecutionOptions options) {
+                    return options.getMaxConcurrentCosmosPartitions();
+                }
+
+                @Override
+                public CosmosBulkExecutionOptions setMaxConcurrentCosmosPartitions(
+                    CosmosBulkExecutionOptions options, int maxConcurrentCosmosPartitions) {
+                    return options.setMaxConcurrentCosmosPartitions(maxConcurrentCosmosPartitions);
                 }
 
                 @Override
