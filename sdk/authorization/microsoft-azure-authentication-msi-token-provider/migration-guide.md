@@ -86,7 +86,7 @@ public void createManagedIdentityCredential() {
 
 
 [Here](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#managed-identity-support) is the complete list of Azure Services for which `azure-identity` supports managed identity authentication.
-Please refer to [azure-identity docs](https://docs.microsoft.com/en-us/java/api/overview/azure/identity-readme?view=azure-java-stable) for further reading.
+Please refer to [azure-identity docs](https://docs.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable) for further reading.
 
 <!-- Links -->
 [Guidelines]: https://azure.github.io/azure-sdk/general_introduction.html
