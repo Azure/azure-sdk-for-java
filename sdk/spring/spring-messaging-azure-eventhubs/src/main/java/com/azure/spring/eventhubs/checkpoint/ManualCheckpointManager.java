@@ -13,7 +13,6 @@ import org.springframework.util.Assert;
 /**
  * No need to do checkpoint in manual mode. Effective when {@link CheckpointMode#MANUAL}
  *
- * @author Warren Zhu
  */
 public class ManualCheckpointManager extends EventCheckpointManager {
     private static final Logger LOG = LoggerFactory.getLogger(ManualCheckpointManager.class);
@@ -24,6 +23,7 @@ public class ManualCheckpointManager extends EventCheckpointManager {
             () -> "ManualCheckpointManager should have checkpointMode manual");
     }
 
+    @Override
     protected Logger getLogger() {
         return LOG;
     }

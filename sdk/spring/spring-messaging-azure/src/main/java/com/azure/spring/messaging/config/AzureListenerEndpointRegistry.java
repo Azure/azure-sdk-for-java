@@ -37,7 +37,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  * candidates for autowiring. Use {@link #getListenerContainers()} if you need to access this registry's listener
  * containers for management purposes.
  *
- * @author Warren Zhu
  * @see AzureListenerEndpoint
  * @see MessageListenerContainer
  * @see ListenerContainerFactory

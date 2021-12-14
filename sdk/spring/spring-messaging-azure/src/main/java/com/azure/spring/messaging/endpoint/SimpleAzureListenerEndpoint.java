@@ -11,7 +11,6 @@ import org.springframework.lang.Nullable;
  * A simple {@link AzureListenerEndpoint} simply providing the {@link AzureMessageHandler} to
  * invoke to process an incoming message for this endpoint.
  *
- * @author Warren Zhu
  */
 public class SimpleAzureListenerEndpoint extends AbstractAzureListenerEndpoint {
 
@@ -23,10 +22,18 @@ public class SimpleAzureListenerEndpoint extends AbstractAzureListenerEndpoint {
         return this.azureMessageHandler;
     }
 
+    /**
+     * Get the message handler.
+     * @return the message handler.
+     */
     public AzureMessageHandler getAzureMessageHandler() {
         return azureMessageHandler;
     }
 
+    /**
+     * Set the message handler.
+     * @param azureMessageHandler the message handler.
+     */
     public void setAzureMessageHandler(AzureMessageHandler azureMessageHandler) {
         this.azureMessageHandler = azureMessageHandler;
     }

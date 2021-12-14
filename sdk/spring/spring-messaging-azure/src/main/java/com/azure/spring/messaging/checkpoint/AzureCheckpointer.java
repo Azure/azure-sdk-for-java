@@ -16,10 +16,19 @@ public class AzureCheckpointer implements Checkpointer {
     private Supplier<Mono<Void>> success;
     private Supplier<Mono<Void>> fail;
 
+    /**
+     * Construct the checkpointer with the {@link Supplier} for a success operation.
+     * @param success the {@link Supplier} for a success operation.
+     */
     public AzureCheckpointer(@NonNull Supplier<Mono<Void>> success) {
         this(success, null);
     }
 
+    /**
+     * Construct the checkpointer with {@link Supplier}s for a success operation and failure operation.
+     * @param success the {@link Supplier} for a success operation.
+     * @param fail the {@link Supplier} for a failure operation.
+     */
     public AzureCheckpointer(@NonNull Supplier<Mono<Void>> success,
                              Supplier<Mono<Void>> fail) {
         this.success = success;
@@ -39,18 +48,34 @@ public class AzureCheckpointer implements Checkpointer {
         return this.fail.get();
     }
 
+    /**
+     * Get the {@link Supplier} for a success operation.
+     * @return the {@link Supplier} for a success operation.
+     */
     public Supplier<Mono<Void>> getSuccess() {
         return success;
     }
 
+    /**
+     * Set the {@link Supplier} for a success operation.
+     * @param success the {@link Supplier} for a success operation.
+     */
     public void setSuccess(Supplier<Mono<Void>> success) {
         this.success = success;
     }
 
+    /**
+     * Get the {@link Supplier} for a failure operation.
+     * @return the {@link Supplier} for a failure operation.
+     */
     public Supplier<Mono<Void>> getFail() {
         return fail;
     }
 
+    /**
+     * Set the {@link Supplier} for a failure operation.
+     * @param fail the {@link Supplier} for a failure operation.
+     */
     public void setFail(Supplier<Mono<Void>> fail) {
         this.fail = fail;
     }

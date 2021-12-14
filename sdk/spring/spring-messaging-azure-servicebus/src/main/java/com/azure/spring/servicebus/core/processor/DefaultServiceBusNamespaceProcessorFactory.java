@@ -28,10 +28,17 @@ import java.util.function.Consumer;
 
 
 /**
- * Default implementation of {@link ServiceBusProcessorFactory}. Client will be cached to improve performance
+ * The {@link ServiceBusProcessorFactory} implementation to produce new {@link ServiceBusProcessorClient} instances
+ * for provided {@link NamespaceProperties} and optional
+ * processor {@link PropertiesSupplier} on each {@link #createProcessor} invocation.
  *
+ * <p>
+ * {@link ServiceBusProcessorClient} produced by this factory will share the same namespace level configuration, but if a
+ * configuration entry is provided at both processor and namespace level, the processor level configuration will take
+ * advantage.
+ * </p>
  */
-public class DefaultServiceBusNamespaceProcessorFactory implements ServiceBusProcessorFactory, DisposableBean {
+public final class DefaultServiceBusNamespaceProcessorFactory implements ServiceBusProcessorFactory, DisposableBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultServiceBusNamespaceProcessorFactory.class);
     private final Map<Tuple2<String, String>, ServiceBusProcessorClient> processorMap = new ConcurrentHashMap<>();
@@ -42,10 +49,19 @@ public class DefaultServiceBusNamespaceProcessorFactory implements ServiceBusPro
     public static final String INVALID_SUBSCRIPTION =
         DefaultServiceBusNamespaceProcessorFactory.class.getSimpleName() + "INVALID_SUBSCRIPTION";
 
+    /**
+     * Construct a factory with the provided namespace level properties.
+     * @param namespaceProperties the namespace properties.
+     */
     public DefaultServiceBusNamespaceProcessorFactory(NamespaceProperties namespaceProperties) {
         this(namespaceProperties, key -> null);
     }
 
+    /**
+     * Construct a factory with the provided namespace level properties and processor {@link PropertiesSupplier}.
+     * @param namespaceProperties the namespace properties.
+     * @param supplier the {@link PropertiesSupplier} to supply {@link ProcessorProperties} for each queue/topic entity.
+     */
     public DefaultServiceBusNamespaceProcessorFactory(NamespaceProperties namespaceProperties,
                                                       PropertiesSupplier<Tuple2<String, String>,
                                                           ProcessorProperties> supplier) {

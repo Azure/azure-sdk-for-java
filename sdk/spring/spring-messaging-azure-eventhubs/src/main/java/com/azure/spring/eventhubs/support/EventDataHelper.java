@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * Helper class to process {@link EventData}.
  */
-public class EventDataHelper {
+public final class EventDataHelper {
 
     public static String toString(EventData eventData) {
         Map<String, Object> map = new LinkedHashMap<>();

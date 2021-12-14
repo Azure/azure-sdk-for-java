@@ -10,7 +10,7 @@ import org.springframework.messaging.handler.invocation.InvocableHandlerMethod;
 import org.springframework.util.Assert;
 
 /**
- * @author Warren Zhu
+ * The implementation of {@link AzureMessageHandler} to handle a {@link Message}
  * @see Message
  * @see InvocableHandlerMethod
  */
@@ -53,6 +53,10 @@ public class DefaultAzureMessageHandler implements AzureMessageHandler {
         return parameterTypes[0];
     }
 
+    /**
+     * Get the handler method.
+     * @return the handler method.
+     */
     public InvocableHandlerMethod getHandlerMethod() {
         return handlerMethod;
     }
