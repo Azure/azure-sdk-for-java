@@ -3,7 +3,6 @@
 
 package com.azure.spring.service.storage.common;
 
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.spring.core.aware.RetryAware;
 import com.azure.spring.core.factory.AbstractAzureHttpClientBuilderFactory;

@@ -13,8 +13,8 @@ import com.azure.spring.core.properties.resource.AzureResourceMetadata;
  */
 public abstract class AbstractArmConnectionStringProvider<T> implements ConnectionStringProvider<T> {
 
-    protected final AzureResourceManager azureResourceManager;
-    protected final AzureResourceMetadata azureResourceMetadata;
+    private final AzureResourceManager azureResourceManager;
+    private final AzureResourceMetadata azureResourceMetadata;
 
     /**
      * Creates a new instance of {@link AbstractArmConnectionStringProvider}.
@@ -22,9 +22,24 @@ public abstract class AbstractArmConnectionStringProvider<T> implements Connecti
      * @param resourceMetadata the azure resource metadata
      */
     public AbstractArmConnectionStringProvider(AzureResourceManager resourceManager,
-                                               AzureResourceMetadata resourceMetadata) {
+                                       AzureResourceMetadata resourceMetadata) {
         this.azureResourceManager = resourceManager;
         this.azureResourceMetadata = resourceMetadata;
     }
 
+    /**
+     * Get the {@link AzureResourceManager}.
+     * @return the Azure resource manager.
+     */
+    protected AzureResourceManager getAzureResourceManager() {
+        return azureResourceManager;
+    }
+
+    /**
+     * Get the {@link AzureResourceMetadata}.
+     * @return the metadata for the Azure resource.
+     */
+    protected AzureResourceMetadata getAzureResourceMetadata() {
+        return azureResourceMetadata;
+    }
 }

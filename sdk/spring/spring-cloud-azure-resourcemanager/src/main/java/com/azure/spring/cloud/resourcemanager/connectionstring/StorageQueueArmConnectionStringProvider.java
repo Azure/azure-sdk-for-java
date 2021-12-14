@@ -16,6 +16,7 @@ import com.azure.spring.core.service.AzureServiceType;
 public class StorageQueueArmConnectionStringProvider extends AbstractArmConnectionStringProvider<AzureServiceType.StorageQueue> {
 
     private final String accountName;
+    private final StorageAccountCrud storageAccountCrud;
 
     /**
      * Creates a new instance of {@link StorageQueueArmConnectionStringProvider}.
@@ -28,16 +29,21 @@ public class StorageQueueArmConnectionStringProvider extends AbstractArmConnecti
                                                    String accountName) {
         super(resourceManager, resourceMetadata);
         this.accountName = accountName;
+        this.storageAccountCrud = new StorageAccountCrud(resourceManager, resourceMetadata);
     }
 
+    @Override
     public String getConnectionString() {
-        return new StorageAccountCrud(this.azureResourceManager, this.azureResourceMetadata)
+        return this.storageAccountCrud
             .get(this.accountName)
             .getKeys()
             .stream()
             .findFirst()
             .map(key -> ResourceManagerUtils.getStorageConnectionString(this.accountName, key.value(),
-                                                                        this.azureResourceManager.storageAccounts().manager().environment()))
+                                                                        this.getAzureResourceManager()
+                                                                            .storageAccounts()
+                                                                            .manager()
+                                                                            .environment()))
             .orElseThrow(() -> new RuntimeException("Storage account key is empty."));
     }
 
