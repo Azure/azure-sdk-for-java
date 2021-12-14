@@ -79,6 +79,12 @@ public class EventHubsMessageChannelBinder extends
     private final Map<Tuple2<String, String>, ExtendedConsumerProperties<EventHubsConsumerProperties>>
         extendedConsumerPropertiesMap = new ConcurrentHashMap<>();
 
+    /**
+     * Construct a {@link EventHubsMessageChannelBinder} with the specified headers to embed and {@link EventHubsChannelProvisioner}.
+     *
+     * @param headersToEmbed the headers to embed
+     * @param provisioningProvider the provisioning provider
+     */
     public EventHubsMessageChannelBinder(String[] headersToEmbed, EventHubsChannelProvisioner provisioningProvider) {
         super(headersToEmbed, provisioningProvider);
     }
@@ -159,6 +165,11 @@ public class EventHubsMessageChannelBinder extends
         return this.bindingProperties.getExtendedPropertiesEntryClass();
     }
 
+    /**
+     * Set binding properties.
+     *
+     * @param bindingProperties the binding properties
+     */
     public void setBindingProperties(EventHubsExtendedBindingProperties bindingProperties) {
         this.bindingProperties = bindingProperties;
     }
@@ -221,14 +232,30 @@ public class EventHubsMessageChannelBinder extends
         return this.processorContainer;
     }
 
+    /**
+     * Set namespace properties.
+     *
+     * @param namespaceProperties the namespace properties
+     */
     public void setNamespaceProperties(NamespaceProperties namespaceProperties) {
         this.namespaceProperties = namespaceProperties;
     }
 
+    /**
+     * Set checkpoint store.
+     *
+     * @param checkpointStore the checkpoint store
+     */
     public void setCheckpointStore(CheckpointStore checkpointStore) {
         this.checkpointStore = checkpointStore;
     }
 
+    /**
+     * Get instrumentation manager.
+     *
+     * @return instrumentationManager the instrumentation manager
+     * @see InstrumentationManager
+     */
     public InstrumentationManager getInstrumentationManager() {
         return instrumentationManager;
     }

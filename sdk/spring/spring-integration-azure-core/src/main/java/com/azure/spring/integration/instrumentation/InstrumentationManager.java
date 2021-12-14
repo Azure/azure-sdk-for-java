@@ -10,7 +10,7 @@ import java.util.Set;
  */
 public interface InstrumentationManager {
 
-    Set<Instrumentation> getHealthInstrumentations();
+    Set<Instrumentation> getAllHealthInstrumentation();
 
     void addHealthInstrumentation(String id, Instrumentation instrumentation);
 

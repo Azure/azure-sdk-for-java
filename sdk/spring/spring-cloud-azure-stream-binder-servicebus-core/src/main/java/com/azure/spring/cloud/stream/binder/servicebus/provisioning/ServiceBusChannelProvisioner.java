@@ -34,10 +34,24 @@ public class ServiceBusChannelProvisioner implements
         return new ServiceBusConsumerDestination(name);
     }
 
+    /**
+     * Validate or create for consumer.
+     *
+     * @param name the name
+     * @param group the group
+     * @param type the type
+     */
     protected void validateOrCreateForConsumer(String name, String group, ServiceBusEntityType type) {
         // no-op
     }
 
+
+    /**
+     * Validate or create for producer.
+     *
+     * @param name the name
+     * @param type the type
+     */
     protected void validateOrCreateForProducer(String name, ServiceBusEntityType type) {
         // no-op
     }
