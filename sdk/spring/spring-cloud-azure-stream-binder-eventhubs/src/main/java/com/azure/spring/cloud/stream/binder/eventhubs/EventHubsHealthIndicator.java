@@ -15,6 +15,11 @@ public class EventHubsHealthIndicator extends AbstractHealthIndicator {
 
     private final InstrumentationManager instrumentationManager;
 
+    /**
+     * Construct a {@link EventHubsHealthIndicator} with the specified {@link EventHubsMessageChannelBinder}.
+     *
+     * @param binder the binder
+     */
     public EventHubsHealthIndicator(EventHubsMessageChannelBinder binder) {
         super("Event hubs health check failed");
         this.instrumentationManager = binder.getInstrumentationManager();
