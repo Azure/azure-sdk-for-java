@@ -24,7 +24,7 @@ public class EventHusProcessorInstrumentation implements Instrumentation {
     private ErrorContext errorContext;
 
     /**
-     * Construct a {@link EventHusProcessorInstrumentation} with the specified name, {@link Type} and {@link Duration}.
+     * Construct a {@link EventHusProcessorInstrumentation} with the specified name, {@link Type} and the period of a none error window.
      *
      * @param name the name
      * @param type the type

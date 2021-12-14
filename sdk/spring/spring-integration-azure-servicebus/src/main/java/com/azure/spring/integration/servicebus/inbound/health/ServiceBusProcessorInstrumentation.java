@@ -24,7 +24,7 @@ public class ServiceBusProcessorInstrumentation implements Instrumentation {
     private ServiceBusErrorContext errorContext;
 
     /**
-     * Construct a {@link ServiceBusProcessorInstrumentation} with the specified name, {@link Type} and {@link Duration}.
+     * Construct a {@link ServiceBusProcessorInstrumentation} with the specified name, {@link Type} and the period of a none error window.
      *
      * @param name the name
      * @param type the type
