@@ -39,7 +39,7 @@ public final class EventGridCloudNativeEventPublisher {
      * @param syncClient a service client that publishes events to an EventGrid topic or domain.
      * @param event the native cloud event to publish.
      *
-     * @throws IllegalArgumentException if `event` is null.
+     * @throws NullPointerException if {@code event} is null.
      */
     public static void sendEvent(EventGridPublisherClient<com.azure.core.models.CloudEvent> syncClient,
         CloudEvent event) {
@@ -53,7 +53,7 @@ public final class EventGridCloudNativeEventPublisher {
      * @param event the native cloud event to publish.
      * @return a Mono that completes when the events are sent to the service.
      *
-     * @throws IllegalArgumentException if `event` is null.
+     * @throws NullPointerException if {@code event} is null.
      */
     public static Mono<Void> sendEventAsync(EventGridPublisherAsyncClient<com.azure.core.models.CloudEvent> asyncClient,
         CloudEvent event) {
@@ -66,7 +66,7 @@ public final class EventGridCloudNativeEventPublisher {
      * @param syncClient a service client that publishes events to an EventGrid topic or domain.
      * @param events the native cloud events to publish.
      *
-     * @throws IllegalArgumentException if `events` is null.
+     * @throws NullPointerException if {@code events} is null.
      */
     public static void sendEvents(EventGridPublisherClient<com.azure.core.models.CloudEvent> syncClient,
         Iterable<CloudEvent> events) {
@@ -80,7 +80,7 @@ public final class EventGridCloudNativeEventPublisher {
      * @param events the native cloud events to publish.
      * @return a Mono that completes when the events are sent to the service.
      *
-     * @throws IllegalArgumentException if `events` is null.
+     * @throws NullPointerException if {@code events} is null.
      */
     public static Mono<Void> sendEventsAsync(
         EventGridPublisherAsyncClient<com.azure.core.models.CloudEvent> asyncClient, Iterable<CloudEvent> events) {
@@ -94,7 +94,7 @@ public final class EventGridCloudNativeEventPublisher {
      * @param events the native cloud events to publish.
      * @param context the context to use along the pipeline.
      *
-     * @throws IllegalArgumentException if `events` is null.
+     * @throws NullPointerException if {@code events} is null.
      */
     public static void sendEventsWithResponse(EventGridPublisherClient<com.azure.core.models.CloudEvent> syncClient,
         Iterable<CloudEvent> events, Context context) {
@@ -108,7 +108,7 @@ public final class EventGridCloudNativeEventPublisher {
      * @param events the native cloud events to publish.
      * @return the response from the EventGrid service.
      *
-     * @throws IllegalArgumentException if `events` is null.
+     * @throws NullPointerException if {@code events} is null.
      */
     public static Mono<Response<Void>> sendEventsWithResponseAsync(
         EventGridPublisherAsyncClient<com.azure.core.models.CloudEvent> asyncClient, Iterable<CloudEvent> events) {
@@ -117,7 +117,7 @@ public final class EventGridCloudNativeEventPublisher {
 
     private static Iterable<com.azure.core.models.CloudEvent> toEventGridCloudEvents(Iterable<CloudEvent> events) {
         if (events == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("CloudEvent 'events' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("CloudEvent 'events' cannot be null."));
         }
         List<com.azure.core.models.CloudEvent> cloudEvents = new ArrayList<>();
         for (CloudEvent event : events) {
@@ -128,7 +128,7 @@ public final class EventGridCloudNativeEventPublisher {
 
     private static com.azure.core.models.CloudEvent toEventGridCloudEvent(CloudEvent event) {
         if (event == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("CloudEvent 'event' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("CloudEvent 'event' cannot be null."));
         }
 
         // Identify data format by data content type

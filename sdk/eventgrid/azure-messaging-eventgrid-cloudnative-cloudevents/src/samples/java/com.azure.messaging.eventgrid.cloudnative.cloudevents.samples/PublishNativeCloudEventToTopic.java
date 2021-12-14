@@ -12,19 +12,19 @@ import io.cloudevents.core.builder.CloudEventBuilder;
 
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
- * Code samples for the README.md
+ * This sample shows how to publish a native cloud event to Azure EventGrid.
  */
-public class ReadmeSamples {
-
-    public void sendEventGridEventsToTopic() {
-        // BEGIN: readme-sample-sendCNCFCloudEvents
+public class PublishNativeCloudEventToTopic {
+    public static void main(String[] args) {
         // Prepare Event Grid client
         EventGridPublisherClient<CloudEvent> egClient =
             new EventGridPublisherClientBuilder()
-                .endpoint(System.getenv("AZURE_EVENTGRID_CLOUDEVENT_ENDPOINT"))
+                .endpoint(System.getenv("AZURE_EVENTGRID_CLOUDEVENT_ENDPOINT")) // Event Grid topic endpoint with CloudEvent Schema
                 .credential(new AzureKeyCredential(System.getenv("AZURE_EVENTGRID_CLOUDEVENT_KEY")))
                 .buildCloudEventPublisherClient();
 
@@ -38,8 +38,14 @@ public class ReadmeSamples {
                 .withDataContentType("application/json") // Replace it
                 .build();
 
+        // Prepare multiple native cloud events input
+        final List<io.cloudevents.CloudEvent> cloudEvents = new ArrayList<>();
+        cloudEvents.add(cloudEvent);
+
         // Publishing a single event
         EventGridCloudNativeEventPublisher.sendEvent(egClient, cloudEvent);
-        // END: readme-sample-sendCNCFCloudEvents
+
+        // Publishing multiple events
+        EventGridCloudNativeEventPublisher.sendEvents(egClient, cloudEvents);
     }
 }

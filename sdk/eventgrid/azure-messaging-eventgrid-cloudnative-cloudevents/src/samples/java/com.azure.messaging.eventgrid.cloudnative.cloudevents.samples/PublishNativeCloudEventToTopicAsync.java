@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+package com.azure.messaging.eventgrid.cloudnative.cloudevents.samples;
+
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.models.CloudEvent;
 import com.azure.messaging.eventgrid.EventGridPublisherAsyncClient;
@@ -17,12 +19,12 @@ import java.util.UUID;
 /**
  * This sample shows how to publish a native cloud event to Azure EventGrid with the EventGrid client asynchronously.
  */
-public class PublishNativeCloudEventAsync {
+public class PublishNativeCloudEventToTopicAsync {
     public static void main(String[] args) {
         // Prepare Event Grid async client
         EventGridPublisherAsyncClient<CloudEvent> egClientAsync =
             new EventGridPublisherClientBuilder()
-                .endpoint(System.getenv("AZURE_EVENTGRID_CLOUDEVENT_ENDPOINT"))
+                .endpoint(System.getenv("AZURE_EVENTGRID_CLOUDEVENT_ENDPOINT")) // Event Grid topic endpoint with CloudEvent Schema
                 .credential(new AzureKeyCredential(System.getenv("AZURE_EVENTGRID_CLOUDEVENT_KEY")))
                 .buildCloudEventPublisherAsyncClient();
 

@@ -25,11 +25,12 @@ Please refer to the [Endpoint][sdk_readme_endpoint] and [Access Key][sdk_readme_
 ## Examples
 
 ### Asynchronously sending and receiving
-- [Send Native CloudEvent to Event Grid Topic asynchronously][SendCloudEventAsync]
+- [Send Native CloudEvent to Event Grid Cloud Event Topic asynchronously][SendCloudEventTopicAsync]
+- [Send Native CloudEvent to Event Grid Cloud Event Topic asynchronously][SendCloudEventDomainAsync]
 
 ### Synchronous sending
-- [Send Native CloudEvent to Event Grid Topic synchronously][SendCloudEventSync]
-
+- [Send Native CloudEvent to Event Grid Cloud Event Domain synchronously][SendCloudEventTopicSync]
+- [Send Native CloudEvent to Event Grid Cloud Event Domain synchronously][SendCloudEventDomainSync]
 ## Troubleshooting
 See [Troubleshooting][sdk_readme_troubleshooting].
 
@@ -48,7 +49,9 @@ Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.m
 [sdk_readme_access_key]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventgrid/azure-messaging-eventgrid#access-key
 [sdk_readme_troubleshooting]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventgrid/azure-messaging-eventgrid#troubleshooting
 [sdk_readme_next_steps]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventgrid/azure-messaging-eventgrid#next-steps
-[SendCloudEventAsync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventgrid/azure-messaging-eventgrid/src/samples/java/com/azure/messaging/eventgrid/samples/PublishCloudEventsToTopicAsynchronously.java
-[SendCloudEventSync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventgrid/azure-messaging-eventgrid/src/samples/java/com/azure/messaging/eventgrid/samples/PublishCloudEventsToTopic.java
+[SendCloudEventTopicAsync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventgrid/azure-messaging-eventgrid/src/samples/java/com/azure/messaging/eventgrid/samples/PublishNativeCloudEventToTopicAsync.java
+[SendCloudEventTopicSync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventgrid/azure-messaging-eventgrid/src/samples/java/com/azure/messaging/eventgrid/samples/PublishNativeCloudEventToTopic.java
+[SendCloudEventDomainAsync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventgrid/azure-messaging-eventgrid/src/samples/java/com/azure/messaging/eventgrid/samples/PublishNativeCloudEventToDomainAsync.java
+[SendCloudEventDomainSync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventgrid/azure-messaging-eventgrid/src/samples/java/com/azure/messaging/eventgrid/samples/PublishNativeCloudEventToDomain.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventgrid%2Fazure-messaging-eventgrid%2Fsrc%2Fsamples%2FREADME.png)
