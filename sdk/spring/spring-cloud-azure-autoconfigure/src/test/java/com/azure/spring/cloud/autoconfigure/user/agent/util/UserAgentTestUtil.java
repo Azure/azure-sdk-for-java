@@ -12,13 +12,11 @@ import java.lang.reflect.Field;
 
 public class UserAgentTestUtil {
 
-    public static Object getPrivateFieldValue(Class<?> clazz, String field, Object object) {
-
-        Field privateStringField;
+    public static Object getPrivateFieldValue(Class<?> clazz, String fieldName, Object object) {
         try {
-            privateStringField = clazz.getDeclaredField(field);
-            privateStringField.setAccessible(true);
-            return privateStringField.get(object);
+            Field field = clazz.getDeclaredField(fieldName);
+            field.setAccessible(true);
+            return field.get(object);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             return null;
         }
