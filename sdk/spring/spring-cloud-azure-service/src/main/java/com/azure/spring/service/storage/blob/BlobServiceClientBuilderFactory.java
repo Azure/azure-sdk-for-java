@@ -30,10 +30,14 @@ import java.util.function.BiConsumer;
  */
 public class BlobServiceClientBuilderFactory extends AbstractAzureStorageClientBuilderFactory<BlobServiceClientBuilder> {
 
-    private final StorageBlobProperties blobProperties;
+    private final BlobServiceClientProperties blobServiceClientProperties;
 
-    public BlobServiceClientBuilderFactory(StorageBlobProperties blobProperties) {
-        this.blobProperties = blobProperties;
+    /**
+     * Create a {@link BlobServiceClientBuilderFactory} with the {@link BlobServiceClientProperties}.
+     * @param blobServiceClientProperties the properties for the blob service client.
+     */
+    public BlobServiceClientBuilderFactory(BlobServiceClientProperties blobServiceClientProperties) {
+        this.blobServiceClientProperties = blobServiceClientProperties;
     }
 
     @Override
@@ -44,10 +48,10 @@ public class BlobServiceClientBuilderFactory extends AbstractAzureStorageClientB
     @Override
     public void configureService(BlobServiceClientBuilder builder) {
         PropertyMapper map = new PropertyMapper();
-        map.from(blobProperties.getCustomerProvidedKey()).to(CustomerProvidedKey::new);
-        map.from(blobProperties.getEncryptionScope()).to(builder::encryptionScope);
-        map.from(blobProperties.getEndpoint()).to(builder::endpoint);
-        map.from(blobProperties.getServiceVersion()).to(builder::serviceVersion);
+        map.from(blobServiceClientProperties.getCustomerProvidedKey()).to(CustomerProvidedKey::new);
+        map.from(blobServiceClientProperties.getEncryptionScope()).to(builder::encryptionScope);
+        map.from(blobServiceClientProperties.getEndpoint()).to(builder::endpoint);
+        map.from(blobServiceClientProperties.getServiceVersion()).to(builder::serviceVersion);
     }
 
     @Override
@@ -87,7 +91,7 @@ public class BlobServiceClientBuilderFactory extends AbstractAzureStorageClientB
 
     @Override
     protected AzureProperties getAzureProperties() {
-        return blobProperties;
+        return blobServiceClientProperties;
     }
 
     @Override

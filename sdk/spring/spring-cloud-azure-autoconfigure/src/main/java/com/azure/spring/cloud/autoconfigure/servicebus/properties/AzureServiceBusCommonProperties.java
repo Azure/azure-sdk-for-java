@@ -31,7 +31,7 @@ public abstract class AzureServiceBusCommonProperties extends AbstractAzureAmqpC
         return new ServiceBusConnectionString(this.connectionString).getFullyQualifiedNamespace();
     }
 
-    public String getFQDN() {
+    public String getFullyQualifiedNamespace() {
         return this.namespace == null ? extractFqdnFromConnectionString() : (this.namespace + "." + domainName);
     }
 

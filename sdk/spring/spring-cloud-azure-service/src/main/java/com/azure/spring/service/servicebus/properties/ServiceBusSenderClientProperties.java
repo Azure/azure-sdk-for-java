@@ -6,6 +6,6 @@ package com.azure.spring.service.servicebus.properties;
 /**
  *
  */
-public interface ServiceBusProducerDescriptor extends ServiceBusCommonDescriptor {
+public interface ServiceBusSenderClientProperties extends ServiceBusClientCommonProperties {
 
 }

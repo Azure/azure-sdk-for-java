@@ -3,12 +3,12 @@
 
 package com.azure.spring.eventhubs.core.properties;
 
-import com.azure.spring.service.eventhubs.properties.EventHubsNamespaceDescriptor;
+import com.azure.spring.service.eventhubs.properties.EventHubsNamespaceProperties;
 
 /**
  * An event hub namespace related properties.
  */
-public class NamespaceProperties extends CommonProperties implements EventHubsNamespaceDescriptor {
+public class NamespaceProperties extends CommonProperties implements EventHubsNamespaceProperties {
 
     private Boolean sharedConnection;
 

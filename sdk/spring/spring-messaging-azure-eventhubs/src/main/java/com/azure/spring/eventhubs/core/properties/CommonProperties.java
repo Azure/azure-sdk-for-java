@@ -6,12 +6,12 @@ package com.azure.spring.eventhubs.core.properties;
 import com.azure.spring.core.aware.authentication.ConnectionStringAware;
 import com.azure.spring.core.implementation.connectionstring.EventHubsConnectionString;
 import com.azure.spring.core.properties.AzureAmqpSdkProperties;
-import com.azure.spring.service.eventhubs.properties.EventHubsCommonDescriptor;
+import com.azure.spring.service.eventhubs.properties.EventHubClientCommonProperties;
 
 /**
  * Common properties shared by event hub namespace, a producer, and a consumer.
  */
-abstract class CommonProperties extends AzureAmqpSdkProperties implements EventHubsCommonDescriptor, ConnectionStringAware {
+abstract class CommonProperties extends AzureAmqpSdkProperties implements EventHubClientCommonProperties, ConnectionStringAware {
 
 
     private String domainName = "servicebus.windows.net";
@@ -39,7 +39,7 @@ abstract class CommonProperties extends AzureAmqpSdkProperties implements EventH
     // servicebus.windows.net)
     // Endpoint=sb://<FQDN>/;SharedAccessKeyName=<KeyName>;SharedAccessKey=<KeyValue>
     // https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-get-connection-string
-    public String getFQDN() {
+    public String getFullyQualifiedNamespace() {
         return this.namespace == null ? extractFqdnFromConnectionString() : (this.namespace + "." + domainName);
     }
 

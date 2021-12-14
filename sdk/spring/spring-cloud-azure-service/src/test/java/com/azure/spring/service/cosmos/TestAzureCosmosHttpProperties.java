@@ -19,7 +19,7 @@ import java.util.List;
  * Configuration properties for Cosmos database, consistency, telemetry, connection, query metrics and diagnostics.
  */
 @Validated
-public class TestAzureCosmosHttpProperties extends AbstractHttpProperties implements CosmosProperties {
+public class TestAzureCosmosHttpProperties extends AbstractHttpProperties implements CosmosClientProperties {
 
     private String endpoint;
 

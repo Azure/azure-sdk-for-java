@@ -9,9 +9,9 @@ import com.azure.spring.core.properties.AzureProperties;
 /**
  *
  */
-public interface ServiceBusCommonDescriptor extends AzureProperties, ConnectionStringAware {
+public interface ServiceBusClientCommonProperties extends AzureProperties, ConnectionStringAware {
 
-    String getFQDN();
+    String getFullyQualifiedNamespace();
 
     String getDomainName();
 

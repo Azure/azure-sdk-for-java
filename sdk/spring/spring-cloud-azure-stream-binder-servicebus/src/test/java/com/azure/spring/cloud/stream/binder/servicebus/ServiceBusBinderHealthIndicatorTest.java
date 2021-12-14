@@ -13,7 +13,7 @@ import com.azure.spring.integration.instrumentation.Instrumentation;
 import com.azure.spring.integration.servicebus.inbound.health.ServiceBusProcessorInstrumentation;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import com.azure.spring.service.servicebus.processor.RecordMessageProcessingListener;
-import com.azure.spring.service.servicebus.processor.consumer.ErrorContextConsumer;
+import com.azure.spring.service.servicebus.processor.consumer.ServiceBusErrorContextConsumer;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.servicebus.core.ServiceBusProcessorContainer;
 import com.azure.spring.servicebus.core.ServiceBusTemplate;
@@ -199,7 +199,7 @@ public class ServiceBusBinderHealthIndicatorTest {
         }
 
         @Override
-        public ErrorContextConsumer getErrorContextConsumer() {
+        public ServiceBusErrorContextConsumer getErrorContextConsumer() {
             return errorContext -> {
                 if (instrumentation != null) {
                     if (instrumentation instanceof ServiceBusProcessorInstrumentation) {

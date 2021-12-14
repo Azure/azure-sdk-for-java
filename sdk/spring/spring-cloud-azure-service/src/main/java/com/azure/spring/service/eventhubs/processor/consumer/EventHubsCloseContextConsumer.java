@@ -11,5 +11,5 @@ import java.util.function.Consumer;
  * CloseContextConsumer is a functional interface for consuming {@link CloseContext}.
  */
 @FunctionalInterface
-public interface CloseContextConsumer extends Consumer<CloseContext> {
+public interface EventHubsCloseContextConsumer extends Consumer<CloseContext> {
 }

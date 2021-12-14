@@ -6,7 +6,7 @@ package com.azure.spring.service.servicebus.properties;
 /**
  *
  */
-public interface ServiceBusProcessorDescriptor extends ServiceBusConsumerDescriptor {
+public interface ServiceBusProcessorClientProperties extends ServiceBusReceiverClientProperties {
 
     Integer getMaxConcurrentCalls();
 

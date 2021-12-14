@@ -9,9 +9,9 @@ import com.azure.spring.core.properties.AzureProperties;
 /**
  * Azure Event Hubs common related properties.
  */
-public interface EventHubsCommonDescriptor extends AzureProperties, ConnectionStringAware {
+public interface EventHubClientCommonProperties extends AzureProperties, ConnectionStringAware {
 
-    String getFQDN();
+    String getFullyQualifiedNamespace();
 
     String getDomainName();
 

@@ -1,11 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.service.storage.common.credential;
+package com.azure.spring.service.implementation.storage.credential;
 
 import com.azure.spring.core.credential.AzureCredentialResolver;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.service.storage.common.StorageProperties;
+import com.azure.spring.service.storage.common.credential.StorageSharedKeyCredentialProvider;
 import org.springframework.util.StringUtils;
 
 /**

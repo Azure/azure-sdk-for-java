@@ -16,7 +16,7 @@ import com.azure.spring.core.credential.descriptor.SasAuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor;
 import com.azure.spring.core.factory.AbstractAzureAmqpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.service.servicebus.properties.ServiceBusCommonDescriptor;
+import com.azure.spring.service.servicebus.properties.ServiceBusClientCommonProperties;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,18 +25,31 @@ import java.util.function.BiConsumer;
 /**
  * Abstract Service Bus client builder factory, it builds the {@link ServiceBusClientBuilder} sub client.
  */
-public abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBusCommonDescriptor> extends AbstractAzureAmqpClientBuilderFactory<T> {
+abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBusClientCommonProperties> extends AbstractAzureAmqpClientBuilderFactory<T> {
 
-    protected final P properties;
-    protected final ServiceBusClientBuilder serviceBusClientBuilder;
-    protected final boolean shareServiceBusClientBuilder;
+    private final P properties;
+    private final ServiceBusClientBuilder serviceBusClientBuilder;
+    private final boolean shareServiceBusClientBuilder;
 
-    public AbstractServiceBusSubClientBuilderFactory(P properties) {
+    /**
+     * Create a {@link AbstractServiceBusSubClientBuilderFactory} instance with the properties.
+     * @param properties the properties describing the service bus sub client, which could be a sender, a receiver or
+     *                   a processor.
+     */
+    AbstractServiceBusSubClientBuilderFactory(P properties) {
         this(null, properties);
     }
 
-    public AbstractServiceBusSubClientBuilderFactory(ServiceBusClientBuilder serviceBusClientBuilder,
-                                                     P properties) {
+    /**
+     * Create a {@link AbstractServiceBusSubClientBuilderFactory} instance with a {@link ServiceBusClientBuilder} and
+     * the properties.
+     * @param serviceBusClientBuilder the provided Service Bus client builder. If provided, the sub clients will be created
+     *                                from this builder.
+     * @param properties the properties describing the service bus sub client, which could be a sender, a receiver or
+     *                   a processor.
+     */
+    AbstractServiceBusSubClientBuilderFactory(ServiceBusClientBuilder serviceBusClientBuilder,
+                                              P properties) {
         this.properties = properties;
         if (serviceBusClientBuilder != null) {
             this.serviceBusClientBuilder = serviceBusClientBuilder;
@@ -46,7 +59,6 @@ public abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends Ser
             this.shareServiceBusClientBuilder = false;
         }
     }
-
 
     @Override
     protected BiConsumer<T, ProxyOptions> consumeProxyOptions() {
@@ -94,19 +106,19 @@ public abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends Ser
         return Arrays.asList(
             new NamedKeyAuthenticationDescriptor(provider -> {
                 if (!this.shareServiceBusClientBuilder) {
-                    this.serviceBusClientBuilder.credential(properties.getFQDN(),
+                    this.serviceBusClientBuilder.credential(properties.getFullyQualifiedNamespace(),
                         provider.getCredential());
                 }
             }),
             new SasAuthenticationDescriptor(provider -> {
                 if (!this.shareServiceBusClientBuilder) {
-                    this.serviceBusClientBuilder.credential(properties.getFQDN(),
+                    this.serviceBusClientBuilder.credential(properties.getFullyQualifiedNamespace(),
                         provider.getCredential());
                 }
             }),
             new TokenAuthenticationDescriptor(provider -> {
                 if (!this.shareServiceBusClientBuilder) {
-                    this.serviceBusClientBuilder.credential(properties.getFQDN(),
+                    this.serviceBusClientBuilder.credential(properties.getFullyQualifiedNamespace(),
                         provider.getCredential());
                 }
             })
@@ -126,7 +138,7 @@ public abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends Ser
     protected BiConsumer<T, TokenCredential> consumeDefaultTokenCredential() {
         return (builder, credential) -> {
             if (!this.shareServiceBusClientBuilder) {
-                this.serviceBusClientBuilder.credential(this.properties.getFQDN(), credential);
+                this.serviceBusClientBuilder.credential(this.properties.getFullyQualifiedNamespace(), credential);
             }
         };
     }
@@ -138,5 +150,9 @@ public abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends Ser
                 this.serviceBusClientBuilder.connectionString(connectionString);
             }
         };
+    }
+
+    protected ServiceBusClientBuilder getServiceBusClientBuilder() {
+        return serviceBusClientBuilder;
     }
 }

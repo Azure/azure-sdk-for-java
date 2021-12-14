@@ -10,17 +10,15 @@ import java.time.Duration;
 import java.util.Map;
 
 /**
- * Azure Event Hubs Processor related properties.
+ * Azure Event Processor client related properties.
  */
-public interface EventHubsProcessorDescriptor extends EventHubsConsumerDescriptor {
+public interface EventProcessorClientProperties extends EventHubConsumerProperties {
 
     Boolean getTrackLastEnqueuedEventProperties();
 
     Map<String, StartPosition> getInitialPartitionEventPosition();
 
-    Duration getPartitionOwnershipExpirationInterval();
-
-    Batch getBatch();
+    EventBatch getBatch();
 
     LoadBalancing getLoadBalancing();
 
@@ -28,8 +26,10 @@ public interface EventHubsProcessorDescriptor extends EventHubsConsumerDescripto
      * Event processor load balancing properties.
      */
     class LoadBalancing {
+
         private Duration updateInterval;
         private LoadBalancingStrategy strategy = LoadBalancingStrategy.BALANCED;
+        private Duration partitionOwnershipExpirationInterval;
 
         public Duration getUpdateInterval() {
             return updateInterval;
@@ -46,12 +46,21 @@ public interface EventHubsProcessorDescriptor extends EventHubsConsumerDescripto
         public void setStrategy(LoadBalancingStrategy strategy) {
             this.strategy = strategy;
         }
+
+        public Duration getPartitionOwnershipExpirationInterval() {
+            return partitionOwnershipExpirationInterval;
+        }
+
+        public void setPartitionOwnershipExpirationInterval(Duration partitionOwnershipExpirationInterval) {
+            this.partitionOwnershipExpirationInterval = partitionOwnershipExpirationInterval;
+        }
     }
 
     /**
      * Event processor batch properties.
      */
-    class Batch  {
+    class EventBatch {
+
         private Duration maxWaitTime;
         private Integer maxSize;
 

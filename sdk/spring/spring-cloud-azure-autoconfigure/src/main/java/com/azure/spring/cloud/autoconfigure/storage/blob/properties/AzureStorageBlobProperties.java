@@ -4,13 +4,13 @@
 package com.azure.spring.cloud.autoconfigure.storage.blob.properties;
 
 import com.azure.spring.cloud.autoconfigure.storage.common.AzureStorageProperties;
-import com.azure.spring.service.storage.blob.StorageBlobProperties;
+import com.azure.spring.service.storage.blob.BlobServiceClientProperties;
 import com.azure.storage.blob.BlobServiceVersion;
 
 /**
  * Properties for Azure Storage Blob.
  */
-public class AzureStorageBlobProperties extends AzureStorageProperties implements StorageBlobProperties {
+public class AzureStorageBlobProperties extends AzureStorageProperties implements BlobServiceClientProperties {
 
     public static final String PREFIX = "spring.cloud.azure.storage.blob";
 

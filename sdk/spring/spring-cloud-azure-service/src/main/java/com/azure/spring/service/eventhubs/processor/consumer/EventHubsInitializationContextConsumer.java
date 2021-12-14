@@ -11,5 +11,5 @@ import java.util.function.Consumer;
  * InitializationContextConsumer is a functional interface for consuming {@link InitializationContext}.
  */
 @FunctionalInterface
-public interface InitializationContextConsumer extends Consumer<InitializationContext> {
+public interface EventHubsInitializationContextConsumer extends Consumer<InitializationContext> {
 }

@@ -30,11 +30,14 @@ public class CertificateClientBuilderFactory extends AbstractAzureHttpClientBuil
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CertificateClientBuilderFactory.class);
 
-    private final KeyVaultCertificateProperties certificateProperties;
+    private final CertificateClientProperties certificateClientProperties;
 
-
-    public CertificateClientBuilderFactory(KeyVaultCertificateProperties certificateProperties) {
-        this.certificateProperties = certificateProperties;
+    /**
+     * Create a {@link CertificateClientBuilderFactory} with the {@link CertificateClientProperties}.
+     * @param certificateClientProperties the properties of the certificate client.
+     */
+    public CertificateClientBuilderFactory(CertificateClientProperties certificateClientProperties) {
+        this.certificateClientProperties = certificateClientProperties;
     }
 
     @Override
@@ -64,7 +67,7 @@ public class CertificateClientBuilderFactory extends AbstractAzureHttpClientBuil
 
     @Override
     protected AzureProperties getAzureProperties() {
-        return this.certificateProperties;
+        return this.certificateClientProperties;
     }
 
     @Override
@@ -77,8 +80,8 @@ public class CertificateClientBuilderFactory extends AbstractAzureHttpClientBuil
     @Override
     protected void configureService(CertificateClientBuilder builder) {
         PropertyMapper map = new PropertyMapper();
-        map.from(certificateProperties.getEndpoint()).to(builder::vaultUrl);
-        map.from(certificateProperties.getServiceVersion()).to(builder::serviceVersion);
+        map.from(certificateClientProperties.getEndpoint()).to(builder::vaultUrl);
+        map.from(certificateClientProperties.getServiceVersion()).to(builder::serviceVersion);
     }
 
     @Override

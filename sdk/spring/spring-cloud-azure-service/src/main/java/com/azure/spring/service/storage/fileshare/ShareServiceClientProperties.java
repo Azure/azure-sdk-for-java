@@ -9,12 +9,8 @@ import com.azure.storage.file.share.ShareServiceVersion;
 /**
  * Properties for Azure Storage File Share service.
  */
-public interface StorageFileShareProperties extends StorageProperties {
+public interface ShareServiceClientProperties extends StorageProperties {
 
     ShareServiceVersion getServiceVersion();
-
-    String getShareName();
-
-    String getFileName();
 
 }

@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Configuration properties for Cosmos database, consistency, telemetry, connection, query metrics and diagnostics.
  */
-public interface CosmosProperties extends AzureProperties, KeyAware {
+public interface CosmosClientProperties extends AzureProperties, KeyAware {
 
     String getEndpoint();
 

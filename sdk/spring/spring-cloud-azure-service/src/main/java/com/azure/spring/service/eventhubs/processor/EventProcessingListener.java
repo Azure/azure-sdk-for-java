@@ -4,24 +4,24 @@
 package com.azure.spring.service.eventhubs.processor;
 
 
-import com.azure.spring.service.eventhubs.processor.consumer.CloseContextConsumer;
-import com.azure.spring.service.eventhubs.processor.consumer.ErrorContextConsumer;
-import com.azure.spring.service.eventhubs.processor.consumer.InitializationContextConsumer;
+import com.azure.spring.service.eventhubs.processor.consumer.EventHubsCloseContextConsumer;
+import com.azure.spring.service.eventhubs.processor.consumer.EventHubsErrorContextConsumer;
+import com.azure.spring.service.eventhubs.processor.consumer.EventHubsInitializationContextConsumer;
 
 /**
  * A listener to process Event Hub events.
  */
 public interface EventProcessingListener {
 
-    default InitializationContextConsumer getInitializationContextConsumer() {
+    default EventHubsInitializationContextConsumer getInitializationContextConsumer() {
         return initializationContextConsumer -> { };
     }
 
-    default CloseContextConsumer getCloseContextConsumer() {
+    default EventHubsCloseContextConsumer getCloseContextConsumer() {
         return closeContext -> { };
     }
 
-    default ErrorContextConsumer getErrorContextConsumer() {
+    default EventHubsErrorContextConsumer getErrorContextConsumer() {
         return errorContext -> { };
     }
 

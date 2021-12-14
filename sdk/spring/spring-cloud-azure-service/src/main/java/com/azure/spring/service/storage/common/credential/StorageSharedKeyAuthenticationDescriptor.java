@@ -6,6 +6,7 @@ package com.azure.spring.service.storage.common.credential;
 import com.azure.spring.core.credential.AzureCredentialType;
 import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.core.credential.AzureCredentialResolver;
+import com.azure.spring.service.implementation.storage.credential.StorageSharedKeyCredentialResolver;
 
 import java.util.function.Consumer;
 
@@ -18,6 +19,12 @@ public class StorageSharedKeyAuthenticationDescriptor implements AuthenticationD
 
     private final Consumer<StorageSharedKeyCredentialProvider> consumer;
 
+    /**
+     * Create a {@link StorageSharedKeyAuthenticationDescriptor} instance with the consumer of storage shared key
+     * credential.
+     *
+     * @param consumer the consumer for setting the storage shared key credential.
+     */
     public StorageSharedKeyAuthenticationDescriptor(Consumer<StorageSharedKeyCredentialProvider> consumer) {
         this.consumer = consumer;
     }

@@ -4,13 +4,13 @@
 package com.azure.spring.cloud.autoconfigure.storage.queue.properties;
 
 import com.azure.spring.cloud.autoconfigure.storage.common.AzureStorageProperties;
-import com.azure.spring.service.storage.queue.StorageQueueProperties;
+import com.azure.spring.service.storage.queue.QueueServiceClientProperties;
 import com.azure.storage.queue.QueueServiceVersion;
 
 /**
  * Properties for Azure Storage Queue service.
  */
-public class AzureStorageQueueProperties extends AzureStorageProperties implements StorageQueueProperties {
+public class AzureStorageQueueProperties extends AzureStorageProperties implements QueueServiceClientProperties {
 
     public static final String PREFIX = "spring.cloud.azure.storage.queue";
     public static final String QUEUE_ENDPOINT_PATTERN = "https://%s.queue%s";

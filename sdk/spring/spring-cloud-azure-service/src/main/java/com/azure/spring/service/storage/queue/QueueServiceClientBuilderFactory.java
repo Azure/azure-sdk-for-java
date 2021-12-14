@@ -30,10 +30,14 @@ import java.util.function.BiConsumer;
  */
 public class QueueServiceClientBuilderFactory extends AbstractAzureStorageClientBuilderFactory<QueueServiceClientBuilder> {
 
-    private final StorageQueueProperties queueProperties;
+    private final QueueServiceClientProperties queueServiceClientProperties;
 
-    public QueueServiceClientBuilderFactory(StorageQueueProperties queueProperties) {
-        this.queueProperties = queueProperties;
+    /**
+     * Create a {@link QueueServiceClientBuilderFactory} instance with the properties.
+     * @param queueServiceClientProperties the properties of the queue service client.
+     */
+    public QueueServiceClientBuilderFactory(QueueServiceClientProperties queueServiceClientProperties) {
+        this.queueServiceClientProperties = queueServiceClientProperties;
     }
 
     @Override
@@ -63,7 +67,7 @@ public class QueueServiceClientBuilderFactory extends AbstractAzureStorageClient
 
     @Override
     protected AzureProperties getAzureProperties() {
-        return this.queueProperties;
+        return this.queueServiceClientProperties;
     }
 
     @Override
@@ -77,9 +81,10 @@ public class QueueServiceClientBuilderFactory extends AbstractAzureStorageClient
     @Override
     protected void configureService(QueueServiceClientBuilder builder) {
         PropertyMapper map = new PropertyMapper();
-        map.from(queueProperties.getMessageEncoding()).to(p -> builder.messageEncoding(convertToMessageEncoding(p)));
-        map.from(queueProperties.getServiceVersion()).to(builder::serviceVersion);
-        map.from(queueProperties.getEndpoint()).to(builder::endpoint);
+        map.from(queueServiceClientProperties.getMessageEncoding()).to(p ->
+            builder.messageEncoding(convertToMessageEncoding(p)));
+        map.from(queueServiceClientProperties.getServiceVersion()).to(builder::serviceVersion);
+        map.from(queueServiceClientProperties.getEndpoint()).to(builder::endpoint);
     }
 
     @Override

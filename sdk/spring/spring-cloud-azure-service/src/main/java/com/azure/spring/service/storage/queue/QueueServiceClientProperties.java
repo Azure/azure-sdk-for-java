@@ -9,7 +9,7 @@ import com.azure.storage.queue.QueueServiceVersion;
 /**
  * Properties for Azure Storage Queue service.
  */
-public interface StorageQueueProperties extends StorageProperties {
+public interface QueueServiceClientProperties extends StorageProperties {
 
     QueueServiceVersion getServiceVersion();
     

@@ -32,10 +32,14 @@ public class ShareServiceClientBuilderFactory extends AbstractAzureStorageClient
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ShareServiceClientBuilderFactory.class);
 
-    private final StorageFileShareProperties fileShareProperties;
+    private final ShareServiceClientProperties shareServiceClientProperties;
 
-    public ShareServiceClientBuilderFactory(StorageFileShareProperties fileShareProperties) {
-        this.fileShareProperties = fileShareProperties;
+    /**
+     * Create a  {@link ShareServiceClientBuilderFactory} instance with the properties.
+     * @param shareServiceClientProperties the properties of the share service client.
+     */
+    public ShareServiceClientBuilderFactory(ShareServiceClientProperties shareServiceClientProperties) {
+        this.shareServiceClientProperties = shareServiceClientProperties;
     }
 
     @Override
@@ -65,7 +69,7 @@ public class ShareServiceClientBuilderFactory extends AbstractAzureStorageClient
 
     @Override
     protected AzureProperties getAzureProperties() {
-        return this.fileShareProperties;
+        return this.shareServiceClientProperties;
     }
 
     @Override
@@ -79,8 +83,8 @@ public class ShareServiceClientBuilderFactory extends AbstractAzureStorageClient
     @Override
     protected void configureService(ShareServiceClientBuilder builder) {
         PropertyMapper map = new PropertyMapper();
-        map.from(this.fileShareProperties.getEndpoint()).to(builder::endpoint);
-        map.from(this.fileShareProperties.getServiceVersion()).to(builder::serviceVersion);
+        map.from(this.shareServiceClientProperties.getEndpoint()).to(builder::endpoint);
+        map.from(this.shareServiceClientProperties.getServiceVersion()).to(builder::serviceVersion);
     }
 
     @Override

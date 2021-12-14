@@ -9,16 +9,12 @@ import com.azure.storage.blob.BlobServiceVersion;
 /**
  * Properties for Azure Storage Blob.
  */
-public interface StorageBlobProperties extends StorageProperties {
+public interface BlobServiceClientProperties extends StorageProperties {
 
     String getCustomerProvidedKey();
 
     String getEncryptionScope();
 
     BlobServiceVersion getServiceVersion();
-
-    String getContainerName();
-
-    String getBlobName();
 
 }

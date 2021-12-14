@@ -9,7 +9,7 @@ import com.azure.spring.service.keyvault.KeyVaultProperties;
 /**
  * Properties for Azure Key Vault Certificate.
  */
-public interface KeyVaultCertificateProperties extends KeyVaultProperties {
+public interface CertificateClientProperties extends KeyVaultProperties {
 
     CertificateServiceVersion getServiceVersion();
 

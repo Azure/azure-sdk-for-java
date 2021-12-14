@@ -9,7 +9,7 @@ import com.azure.storage.queue.QueueServiceVersion;
 /**
  * Properties for Azure Storage Queue service.
  */
-public class TestAzureStorageQueueHttpProperties extends TestAzureStorageProperties implements StorageQueueProperties {
+public class TestAzureStorageQueueProperties extends TestAzureStorageProperties implements QueueServiceClientProperties {
 
     private QueueServiceVersion serviceVersion;
     private String messageEncoding;

@@ -11,5 +11,5 @@ import java.util.function.Consumer;
  * ErrorContextConsumer is a functional interface for consuming {@link ErrorContext}.
  */
 @FunctionalInterface
-public interface ErrorContextConsumer extends Consumer<ErrorContext> {
+public interface EventHubsErrorContextConsumer extends Consumer<ErrorContext> {
 }

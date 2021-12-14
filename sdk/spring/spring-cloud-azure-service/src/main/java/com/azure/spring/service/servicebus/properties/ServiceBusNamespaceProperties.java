@@ -6,7 +6,7 @@ package com.azure.spring.service.servicebus.properties;
 /**
  * Azure Service Bus related properties.
  */
-public interface ServiceBusNamespaceDescriptor extends ServiceBusCommonDescriptor {
+public interface ServiceBusNamespaceProperties extends ServiceBusClientCommonProperties {
 
     Boolean getCrossEntityTransactions();
 

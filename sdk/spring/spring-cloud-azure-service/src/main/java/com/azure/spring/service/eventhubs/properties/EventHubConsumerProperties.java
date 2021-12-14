@@ -6,7 +6,7 @@ package com.azure.spring.service.eventhubs.properties;
 /**
  * Azure Event Hubs Consumer related properties.
  */
-public interface EventHubsConsumerDescriptor extends EventHubsCommonDescriptor {
+public interface EventHubConsumerProperties extends EventHubClientCommonProperties {
 
     String getConsumerGroup();
 

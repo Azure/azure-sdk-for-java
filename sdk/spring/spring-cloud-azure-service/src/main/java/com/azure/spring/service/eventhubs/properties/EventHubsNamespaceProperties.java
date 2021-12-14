@@ -4,8 +4,10 @@
 package com.azure.spring.service.eventhubs.properties;
 
 /**
- * Azure Event Hubs Producer related properties.
+ * Azure Event Hubs related properties.
  */
-public interface EventHubsProducerDescriptor extends EventHubsCommonDescriptor {
+public interface EventHubsNamespaceProperties extends EventHubClientCommonProperties {
+
+    Boolean getSharedConnection();
 
 }

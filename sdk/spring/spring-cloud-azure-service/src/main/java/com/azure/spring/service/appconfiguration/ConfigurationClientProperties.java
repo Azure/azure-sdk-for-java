@@ -8,9 +8,9 @@ import com.azure.spring.core.aware.authentication.ConnectionStringAware;
 import com.azure.spring.core.properties.AzureProperties;
 
 /**
- * Properties for Azure App Configuration.
+ * Properties for Azure App Configuration Client {@link com.azure.data.appconfiguration.ConfigurationClient}.
  */
-public interface AppConfigurationProperties extends AzureProperties, ConnectionStringAware {
+public interface ConfigurationClientProperties extends AzureProperties, ConnectionStringAware {
 
     String getEndpoint();
 

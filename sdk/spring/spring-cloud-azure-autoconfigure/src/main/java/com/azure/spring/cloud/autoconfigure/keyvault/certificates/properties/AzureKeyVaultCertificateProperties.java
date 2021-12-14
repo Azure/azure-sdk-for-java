@@ -5,14 +5,14 @@ package com.azure.spring.cloud.autoconfigure.keyvault.certificates.properties;
 
 import com.azure.security.keyvault.certificates.CertificateServiceVersion;
 import com.azure.spring.cloud.autoconfigure.keyvault.common.AzureKeyVaultProperties;
-import com.azure.spring.service.keyvault.certificates.KeyVaultCertificateProperties;
+import com.azure.spring.service.keyvault.certificates.CertificateClientProperties;
 
 /**
  * Azure Key Vault Certificate properties.
  *
  * @since 4.0.0
  */
-public class AzureKeyVaultCertificateProperties extends AzureKeyVaultProperties implements KeyVaultCertificateProperties {
+public class AzureKeyVaultCertificateProperties extends AzureKeyVaultProperties implements CertificateClientProperties {
 
     public static final String PREFIX = "spring.cloud.azure.keyvault.certificate";
 
