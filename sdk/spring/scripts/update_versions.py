@@ -1,13 +1,12 @@
 # Python version 3.4 or higher is required to run this script.
 #
-# Update the external_dependencies in sdk/spring for test compatibility of spring-boot version .
+# Change the external_dependencies in sdk/spring for test compatibility of spring-boot version .
 #
 # How to use:
-# 1. Change `SPRING_BOOT_VERSION` and `SPRING_CLOUD_VERSION` in `get_spring_boot_managed_external_dependencies.py`.
-# 2. Run command `python .\sdk\spring\scripts\get_spring_boot_managed_external_dependencies.py`.
-# 3. Change `SPRING_BOOT_VERSION` in `sync_external_dependencies.py`.
-# 4. Run command `python .\sdk\spring\scripts\sync_external_dependencies.py`.
-# 5. Run Command: 'python sdk/spring/scripts/update_versions.py --ut external_dependency'
+# 1. Make sure file(`.\sdk\spring\spring_boot_SPRING_BOOT_VERSION_managed_external_dependencies.txt`) exist. If it doesn't exist, please run
+#    `.\sdk\spring\scripts\get_spring_boot_managed_external_dependencies.py` to create that file.
+# 2. Change `SPRING_BOOT_VERSION` in this script manually.
+# 3. Run command `python .\sdk\spring\scripts\update_versions.py --ut external_dependency`.
 #
 # The script must be run at the root of azure-sdk-for-java.
 
@@ -28,8 +27,12 @@ from utils import version_update_start_marker
 from utils import version_update_end_marker
 from utils import version_update_marker
 
+SPRING_BOOT_VERSION = '2.6.1'
+
+SPRING_BOOT_MANAGED_EXTERNAL_DEPENDENCIES_FILE_NAME = 'sdk/spring/scripts/spring_boot_{}_managed_external_dependencies.txt'.format(SPRING_BOOT_VERSION)
+
 def update_versions(update_type, version_map, ext_dep_map, target_file):
-    #list
+    #list for new pom
     newlines = []
     repl_open, repl_line, file_changed, is_include = False, False, False, False
     print('processing: ' + target_file)
@@ -63,7 +66,7 @@ def update_versions(update_type, version_map, ext_dep_map, target_file):
 
                 if repl_line:
                     # If the module isn't found then just continue.
-                    if module_name not in version_map and (version_type == 'current' or version_type == 'dependency'):
+                    if module_name not in ext_dep_map:
                         newlines.append(line)
                         continue
                     new_version = ''
@@ -159,7 +162,7 @@ def update_versions_all(update_type, target_file):
     ext_dep_map = {}
     # Load the version of external dependency file for the given UpdateType into the version_map.
     if update_type == UpdateType.external_dependency:
-        dependency_file = os.path.normpath('eng/versioning/external_dependencies.txt')
+        dependency_file = SPRING_BOOT_MANAGED_EXTERNAL_DEPENDENCIES_FILE_NAME
         print('external_dependency_file=' + dependency_file)
         load_version_map_from_file(dependency_file, ext_dep_map)
 
