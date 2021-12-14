@@ -37,6 +37,19 @@ public final class ManagementGroupAggregatedCostResultImpl implements Management
         return this.innerModel().type();
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
+    }
+
     public String billingPeriodId() {
         return this.innerModel().billingPeriodId();
     }
@@ -94,19 +107,6 @@ public final class ManagementGroupAggregatedCostResultImpl implements Management
             return Collections.unmodifiableList(inner);
         } else {
             return Collections.emptyList();
-        }
-    }
-
-    public String etag() {
-        return this.innerModel().etag();
-    }
-
-    public Map<String, String> tags() {
-        Map<String, String> inner = this.innerModel().tags();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
         }
     }
 

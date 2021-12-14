@@ -466,7 +466,8 @@ public final class RegistriesClientImpl
             importImageWithResponseAsync(resourceGroupName, registryName, parameters);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1026,7 +1027,11 @@ public final class RegistriesClientImpl
         return this
             .client
             .<RegistryInner, RegistryInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RegistryInner.class, RegistryInner.class, this.client.getContext());
+                mono,
+                this.client.getHttpPipeline(),
+                RegistryInner.class,
+                RegistryInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1266,7 +1271,8 @@ public final class RegistriesClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, registryName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1520,7 +1526,11 @@ public final class RegistriesClientImpl
         return this
             .client
             .<RegistryInner, RegistryInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RegistryInner.class, RegistryInner.class, this.client.getContext());
+                mono,
+                this.client.getHttpPipeline(),
+                RegistryInner.class,
+                RegistryInner.class,
+                this.client.getContext());
     }
 
     /**

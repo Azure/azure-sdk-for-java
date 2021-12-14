@@ -287,7 +287,6 @@ public class BlobClientBase {
 
     /**
      * Opens a blob input stream to download the blob.
-     * <p>
      *
      * @return An <code>InputStream</code> object that represents the stream to use for reading from the blob.
      * @throws BlobStorageException If a storage service error occurred.
@@ -298,7 +297,6 @@ public class BlobClientBase {
 
     /**
      * Opens a blob input stream to download the specified range of the blob.
-     * <p>
      *
      * @param range {@link BlobRange}
      * @param requestConditions An {@link BlobRequestConditions} object that represents the access conditions for the

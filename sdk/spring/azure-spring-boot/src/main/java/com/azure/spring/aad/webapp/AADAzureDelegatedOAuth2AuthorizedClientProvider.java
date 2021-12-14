@@ -45,6 +45,12 @@ public class AADAzureDelegatedOAuth2AuthorizedClientProvider implements OAuth2Au
     private final OAuth2AuthorizedClientProvider provider;
     private final OAuth2AuthorizedClientRepository authorizedClientRepository;
 
+    /**
+     * Creates a new instance of {@link AADAzureDelegatedOAuth2AuthorizedClientProvider}.
+     *
+     * @param provider the OAuth2 token refresh provider
+     * @param authorizedClientRepository the OAuth2 repository
+     */
     public AADAzureDelegatedOAuth2AuthorizedClientProvider(
         RefreshTokenOAuth2AuthorizedClientProvider provider,
         OAuth2AuthorizedClientRepository authorizedClientRepository) {

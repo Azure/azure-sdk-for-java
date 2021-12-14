@@ -19,7 +19,7 @@ parameters:
     default: []
   - name: BuildOptions
     type: string
-    default: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true'
+    default: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true'
   - name: TestOptions
     type: string
     default: '$(DefaultTestOptions) -Dparallel-test-playback -DAZURE_TEST_DEBUG=$(IsDebug)'
@@ -37,6 +37,9 @@ parameters:
   - name: SkipAggregateReports
     type: boolean
     default: false
+  - name: PreBuildSteps
+    type: object
+    default: []
 
 jobs:
   - job: 'Test'
@@ -67,6 +70,8 @@ jobs:
           SDKType: ${{ parameters.SDKType }}
 
       - template: ../steps/install-reporting-tools.yml
+
+      - ${{ parameters.PreBuildSteps }}
 
       - ${{ parameters.PreTestSteps }}
 

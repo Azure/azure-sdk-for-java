@@ -783,7 +783,8 @@ public final class ServerAzureADAdministratorsClientImpl implements ServerAzureA
             deleteWithResponseAsync(resourceGroupName, serverName, administratorName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

@@ -175,7 +175,7 @@ public abstract class RxCollectionCache {
                 });
     }
 
-    private Mono<Void> refreshAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, RxDocumentServiceRequest request) {
+    public Mono<Void> refreshAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, RxDocumentServiceRequest request) {
         // TODO System.Diagnostics.Debug.Assert(request.IsNameBased);
 
         String resourceFullName = PathsHelper.getCollectionPath(request.getResourceAddress());

@@ -872,7 +872,8 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
             deleteWithResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -3287,7 +3288,8 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
             resetConnectionWithResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
