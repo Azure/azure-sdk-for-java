@@ -11,8 +11,8 @@ import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 public interface EventHubsProducerFactory {
 
     /**
-     * Create {@link EventHubProducerAsyncClient} to send events to the Event Hub destination.
-     * @param eventHub the Event Hub destination
+     * Create {@link EventHubProducerAsyncClient} to send events to the event hub.
+     * @param eventHub the event hub
      * @return the producer.
      */
     EventHubProducerAsyncClient createProducer(String eventHub);

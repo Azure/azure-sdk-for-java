@@ -26,7 +26,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 /**
- * A template for executing sending operations asynchronously to Event Hub.
+ * A template for executing sending operations asynchronously to Event Hubs.
  */
 public class EventHubsTemplate implements SendOperation, BatchSendOperation {
 

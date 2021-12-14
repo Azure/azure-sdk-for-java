@@ -19,10 +19,12 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * The {@link EventHubsProducerFactory} implementation to produce new {@link EventHubProducerAsyncClient} instances
+ * The {@link EventHubsProducerFactory} implementation to produce cached {@link EventHubProducerAsyncClient} instances
  * for provided {@link NamespaceProperties} and optional producer {@link PropertiesSupplier} on each
  * {@link #createProducer} invocation.
- *
+ * <p>
+ * The created {@link EventHubProducerAsyncClient}s are cached according to the event hub names.
+ * =</p>
  * <p>
  * {@link EventHubProducerAsyncClient} produced by this factory will share the same namespace level configuration, but
  * if a configuration entry is provided at both producer and namespace level, the producer level configuration will
@@ -48,7 +50,7 @@ public final class DefaultEventHubsNamespaceProducerFactory implements EventHubs
     /**
      * Construct a factory with the provided namespace level configuration and producer {@link PropertiesSupplier}.
      * @param namespaceProperties the namespace properties.
-     * @param supplier the {@link PropertiesSupplier} to supply {@link ProducerProperties} for each event hub entity.
+     * @param supplier the {@link PropertiesSupplier} to supply {@link ProducerProperties} for each event hub.
      */
     public DefaultEventHubsNamespaceProducerFactory(NamespaceProperties namespaceProperties,
                                                     PropertiesSupplier<String, ProducerProperties> supplier) {

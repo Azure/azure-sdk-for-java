@@ -32,6 +32,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * processor {@link PropertiesSupplier} on each {@link #createProcessor} invocation.
  *
  * <p>
+ * The created {@link EventProcessorClient}s are cached according to the event hub names and consumer groups.
+ * </p>
+ * <p>
  * {@link EventProcessorClient} produced by this factory will share the same namespace level configuration, but if a
  * configuration entry is provided at both processor and namespace level, the processor level configuration will take
  * advantage.
@@ -81,7 +84,7 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
      * Construct a factory with the provided {@link CheckpointStore}, namespace level properties and processor {@link PropertiesSupplier}.
      * @param checkpointStore the checkpoint store.
      * @param namespaceProperties the namespace properties.
-     * @param supplier the {@link PropertiesSupplier} to supply {@link ProcessorProperties} for each event hub entity.
+     * @param supplier the {@link PropertiesSupplier} to supply {@link ProcessorProperties} for each event hub.
      */
     public DefaultEventHubsNamespaceProcessorFactory(CheckpointStore checkpointStore,
                                                      NamespaceProperties namespaceProperties,

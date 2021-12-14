@@ -41,8 +41,8 @@ public class ProcessorProperties extends ConsumerProperties implements EventHubs
     }
 
     /**
-     * Set the track last enqueued event properties.
-     * @param trackLastEnqueuedEventProperties the track last enqueued event properties.
+     * Set whether to track the last enqueued event properties.
+     * @param trackLastEnqueuedEventProperties whether to track the last enqueued event properties.
      */
     public void setTrackLastEnqueuedEventProperties(Boolean trackLastEnqueuedEventProperties) {
         this.trackLastEnqueuedEventProperties = trackLastEnqueuedEventProperties;
