@@ -275,21 +275,22 @@ A Dynamic Feature can be defined in the local configuration file using the follo
 
 ```yaml
 feature-management:
-  DiscountBanner:
-    assigner: "Microsoft.Targeting"
-    variants:
-      -
-        name: Big
-        default: true
-        configuration-reference: "DiscountBanner:Big"
-        assignment-parameters:
-          ...
-      -
-        name: Small
-        default: false
-        configuration-reference: "DiscountBanner:Small"
-        assignment-parameters:
-          ...
+  dynamic-features:
+    DiscountBanner:
+      assigner: "Microsoft.Targeting"
+      variants:
+        -
+          name: Big
+          default: true
+          configuration-reference: "DiscountBanner:Big"
+          assignment-parameters:
+            ...
+        -
+          name: Small
+          default: false
+          configuration-reference: "DiscountBanner:Small"
+          assignment-parameters:
+            ...
 feature-variant:
   DiscountBanner:
     Big:
