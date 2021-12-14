@@ -112,6 +112,12 @@ class CosmosCatalog
   override def listNamespaces(): Array[Array[String]] = {
     logDebug("catalog:listNamespaces")
 
+    TransientErrorsRetryPolicy.executeWithRetry(() => listNamespacesImpl())
+  }
+
+  private[this] def listNamespacesImpl(): Array[Array[String]] = {
+    logDebug("catalog:listNamespaces")
+
     Loan(CosmosClientCache(
       CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
       None,
@@ -153,6 +159,12 @@ class CosmosCatalog
   override def loadNamespaceMetadata(
                                       namespace: Array[String]): util.Map[String, String] = {
 
+    TransientErrorsRetryPolicy.executeWithRetry(() => loadNamespaceMetadataImpl(namespace))
+  }
+
+  private[this] def loadNamespaceMetadataImpl(
+                                      namespace: Array[String]): util.Map[String, String] = {
+
     checkNamespace(namespace)
 
     Loan(CosmosClientCache(
@@ -186,6 +198,12 @@ class CosmosCatalog
 
   @throws(classOf[NamespaceAlreadyExistsException])
   override def createNamespace(namespace: Array[String],
+                               metadata: util.Map[String, String]): Unit = {
+    TransientErrorsRetryPolicy.executeWithRetry(() => createNamespaceImpl(namespace, metadata))
+  }
+
+  @throws(classOf[NamespaceAlreadyExistsException])
+  private[this] def createNamespaceImpl(namespace: Array[String],
                                metadata: util.Map[String, String]): Unit = {
     checkNamespace(namespace)
     val throughputPropertiesOpt =
@@ -234,6 +252,11 @@ class CosmosCatalog
    */
   @throws(classOf[NoSuchNamespaceException])
   override def dropNamespace(namespace: Array[String]): Boolean = {
+    TransientErrorsRetryPolicy.executeWithRetry(() => dropNamespaceImpl(namespace))
+  }
+
+  @throws(classOf[NoSuchNamespaceException])
+  private[this] def dropNamespaceImpl(namespace: Array[String]): Boolean = {
     checkNamespace(namespace)
     try {
       Loan(CosmosClientCache(
@@ -256,6 +279,10 @@ class CosmosCatalog
   }
 
   override def listTables(namespace: Array[String]): Array[Identifier] = {
+    TransientErrorsRetryPolicy.executeWithRetry(() => listTablesImpl(namespace))
+  }
+
+  private[this] def listTablesImpl(namespace: Array[String]): Array[Identifier] = {
     checkNamespace(namespace)
     val databaseName = toCosmosDatabaseName(namespace.head)
 
@@ -290,6 +317,10 @@ class CosmosCatalog
   }
 
   override def loadTable(ident: Identifier): Table = {
+    TransientErrorsRetryPolicy.executeWithRetry(() => loadTableImpl(ident))
+  }
+
+  private[this] def loadTableImpl(ident: Identifier): Table = {
     checkNamespace(ident.namespace())
     val databaseName = toCosmosDatabaseName(ident.namespace().head)
     val containerName = toCosmosContainerName(ident.name())
@@ -328,6 +359,15 @@ class CosmosCatalog
                            schema: StructType,
                            partitions: Array[Transform],
                            properties: util.Map[String, String]): Table = {
+
+    TransientErrorsRetryPolicy.executeWithRetry(() =>
+      createTableImpl(ident, schema, partitions, properties))
+  }
+
+  private[this] def createTableImpl(ident: Identifier,
+                           schema: StructType,
+                           partitions: Array[Transform],
+                           properties: util.Map[String, String]): Table = {
     checkNamespace(ident.namespace())
 
     val databaseName = toCosmosDatabaseName(ident.namespace().head)
@@ -348,6 +388,10 @@ class CosmosCatalog
   }
 
   override def dropTable(ident: Identifier): Boolean = {
+    TransientErrorsRetryPolicy.executeWithRetry(() => dropTableImpl(ident))
+  }
+
+  private[this] def dropTableImpl(ident: Identifier): Boolean = {
     checkNamespace(ident.namespace())
 
     val databaseName = toCosmosDatabaseName(ident.namespace().head)
