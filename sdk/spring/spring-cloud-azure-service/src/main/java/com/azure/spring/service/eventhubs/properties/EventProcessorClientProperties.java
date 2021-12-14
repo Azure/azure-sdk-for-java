@@ -51,6 +51,10 @@ public interface EventProcessorClientProperties extends EventHubConsumerProperti
             return partitionOwnershipExpirationInterval;
         }
 
+        /**
+         * Set the partition ownership expiration interval.
+         * @param partitionOwnershipExpirationInterval the partition ownership expiration interval.
+         */
         public void setPartitionOwnershipExpirationInterval(Duration partitionOwnershipExpirationInterval) {
             this.partitionOwnershipExpirationInterval = partitionOwnershipExpirationInterval;
         }
