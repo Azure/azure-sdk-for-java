@@ -13,7 +13,7 @@ import com.azure.spring.core.service.AzureServiceType;
 /**
  * A connection string provider reads Event Hub connection string from Azure Resource Manager.
  */
-public class EventHubsArmConnectionStringProvider extends AbstractArmConnectionStringProvider<AzureServiceType.EventHubs> {
+public class EventHubsArmConnectionStringProvider extends ArmConnectionStringProvider<AzureServiceType.EventHubs> {
 
     private final String namespace;
     private final EventHubNamespaceCrud eventHubNamespaceCrud;

@@ -13,7 +13,7 @@ import com.azure.spring.core.service.AzureServiceType;
 /**
  * A connection string provider reads Service Bus connection string from Azure Resource Manager.
  */
-public class ServiceBusArmConnectionStringProvider extends AbstractArmConnectionStringProvider<AzureServiceType.ServiceBus> {
+public class ServiceBusArmConnectionStringProvider extends ArmConnectionStringProvider<AzureServiceType.ServiceBus> {
 
     private final String namespace;
     private final ServiceBusNamespaceCrud serviceBusNamespaceCrud;

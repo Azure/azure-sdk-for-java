@@ -11,17 +11,17 @@ import com.azure.spring.core.properties.resource.AzureResourceMetadata;
  * To provide an Azure service connection string from Azure Resource Manager (ARM).
  * @param <T> The Azure service type.
  */
-public abstract class AbstractArmConnectionStringProvider<T> implements ConnectionStringProvider<T> {
+public abstract class ArmConnectionStringProvider<T> implements ConnectionStringProvider<T> {
 
     private final AzureResourceManager azureResourceManager;
     private final AzureResourceMetadata azureResourceMetadata;
 
     /**
-     * Creates a new instance of {@link AbstractArmConnectionStringProvider}.
+     * Creates a new instance of {@link ArmConnectionStringProvider}.
      * @param resourceManager the azure resource manager
      * @param resourceMetadata the azure resource metadata
      */
-    public AbstractArmConnectionStringProvider(AzureResourceManager resourceManager,
+    public ArmConnectionStringProvider(AzureResourceManager resourceManager,
                                        AzureResourceMetadata resourceMetadata) {
         this.azureResourceManager = resourceManager;
         this.azureResourceMetadata = resourceMetadata;
