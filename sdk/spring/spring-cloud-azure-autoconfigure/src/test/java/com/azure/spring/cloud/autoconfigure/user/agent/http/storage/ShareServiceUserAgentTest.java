@@ -65,7 +65,7 @@ public class ShareServiceUserAgentTest {
         for (int i = 0; i < client.getHttpPipeline().getPolicyCount(); i++) {
             HttpPipelinePolicy policy = client.getHttpPipeline().getPolicy(i);
             if (policy instanceof UserAgentPolicy) {
-                return (UserAgentPolicy)policy;
+                return (UserAgentPolicy) policy;
             }
         }
         return null;
