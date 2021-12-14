@@ -6,8 +6,9 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.implementation.CosmosSchedulers
 import com.azure.cosmos.{models, _}
 import com.azure.cosmos.models.{CosmosBulkExecutionOptions, CosmosBulkExecutionThresholdsState, CosmosBulkItemRequestOptions, CosmosBulkOperations}
-import com.azure.cosmos.spark.BulkWriter.getThreadInfo
+import com.azure.cosmos.spark.BulkWriter.{bulkWriterBoundedElastic, getThreadInfo}
 import com.azure.cosmos.spark.diagnostics.DefaultDiagnostics
+import reactor.core.scheduler.Scheduler
 
 import scala.collection.mutable
 import scala.concurrent.duration.Duration
@@ -127,9 +128,9 @@ class BulkWriter(container: CosmosAsyncContainer,
     val bulkOperationResponseFlux: SFlux[models.CosmosBulkOperationResponse[Object]] =
       container
           .executeBulkOperations[Object](
-            bulkInputEmitter.asFlux().publishOn(CosmosSchedulers.BULK_WRITER_BOUNDED_ELASTIC),
+            bulkInputEmitter.asFlux().publishOn(bulkWriterBoundedElastic),
             cosmosBulkExecutionOptions)
-          .publishOn(CosmosSchedulers.BULK_WRITER_BOUNDED_ELASTIC)
+          .publishOn(bulkWriterBoundedElastic)
           .asScala
 
     bulkOperationResponseFlux.subscribe(
@@ -542,6 +543,8 @@ private object BulkWriter {
   val maxDelayOn408RequestTimeoutInMs = 10000
   val minDelayOn408RequestTimeoutInMs = 1000
   val maxItemOperationsToShowInErrorMessage = 10
+  private val BULK_WRITER_BOUNDED_ELASTIC_THREAD_NAME = "bulk-writer-bounded-elastic"
+  private val TTL_FOR_SCHEDULER_WORKER_IN_SECONDS = 60 // same as BoundedElasticScheduler.DEFAULT_TTL_SECONDS
 
   // we used to use 15 minutes here - extending it because of several incidents where
   // backend returned 420/3088 (ThrottleDueToSplit) for >= 30 minutes
@@ -575,6 +578,13 @@ private object BulkWriter {
     }
 
   val bulkProcessingThresholds = new CosmosBulkExecutionThresholdsState()
+
+  // Custom bounded elastic scheduler to switch off IO thread to process response.
+  val bulkWriterBoundedElastic: Scheduler = Schedulers.newBoundedElastic(
+    2 * Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
+    Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE,
+    BULK_WRITER_BOUNDED_ELASTIC_THREAD_NAME,
+    TTL_FOR_SCHEDULER_WORKER_IN_SECONDS, true)
 
   def getThreadInfo: String = {
     val t = Thread.currentThread()

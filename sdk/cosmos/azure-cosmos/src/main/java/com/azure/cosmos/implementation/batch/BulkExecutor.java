@@ -159,14 +159,14 @@ public final class BulkExecutor<TContext> {
 
     public Flux<CosmosBulkOperationResponse<TContext>> execute() {
 
-        // The groupBy below is running into a hng if the flatMap above is
+        // The groupBy below is running into a hang if the flatMap above is
         // not allowing at least a concurrency of the number of unique values
         // you groupBy on.
         // The groupBy is used to isolate Cosmos physical partitions
         // so when there is no config override we enforce that the flatMap is using a concurrency of
         // Math.max(default concurrency (256), #of partitions * 2 (to accommodate for some splits))
-        // The config override can beu sed by the Spark connector when customers follow best practices and
-        // repartition teh data frame to avoid that each Spark partition contains data spread across all
+        // The config override can be used by the Spark connector when customers follow best practices and
+        // repartition the data frame to avoid that each Spark partition contains data spread across all
         // physical partitions. When repartitioning the incoming data it is possible to ensure that each
         // Spark partition will only target a subset of Cosmos partitions. This will improve the efficiency
         // and mean fewer than #of Partitions concurrency will be needed for
