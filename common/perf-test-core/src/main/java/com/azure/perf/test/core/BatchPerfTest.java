@@ -6,7 +6,7 @@ package com.azure.perf.test.core;
 import reactor.core.publisher.Mono;
 
 /**
- * Represents the abstraction of a Performance test class.
+ * Represents the abstraction of a Performance test class running operations in batches.
  *
  * <p>
  * The performance test class needs to extend this class. The test class should override {@link BatchPerfTest#runBatch()}
@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 public abstract class BatchPerfTest<TOptions extends PerfStressOptions> extends PerfTestBase<TOptions> {
 
     /**
-     * Creates an instance of performance test.
+     * Creates an instance of Batch performance test.
      * @param options the options configured for the test.
      * @throws IllegalStateException if SSL context cannot be created.
      */

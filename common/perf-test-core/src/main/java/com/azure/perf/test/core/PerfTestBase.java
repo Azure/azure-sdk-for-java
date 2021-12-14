@@ -122,11 +122,6 @@ public abstract class PerfTestBase<TOptions extends PerfStressOptions> {
         }
     }
 
-
-//    public Mono<Void> postSetupAsync() {
-//        return Mono.empty();
-//    }
-
     public void runAll(long endNanoTime) {
         completedOperations = 0;
         lastCompletionNanoTime = 0;
