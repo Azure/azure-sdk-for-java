@@ -3,6 +3,7 @@
 
 package com.azure.spring.service.storage.common;
 
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.spring.core.aware.RetryAware;
 import com.azure.spring.core.factory.AbstractAzureHttpClientBuilderFactory;
@@ -22,6 +23,10 @@ public abstract class AbstractAzureStorageClientBuilderFactory<T> extends Abstra
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractAzureStorageClientBuilderFactory.class);
 
+    /**
+     * Return a {@link BiConsumer} of how the {@link T} builder consume a {@link RequestRetryOptions}.
+     * @return The consumer of how the {@link T} builder consume a {@link RequestRetryOptions}.
+     */
     protected abstract BiConsumer<T, RequestRetryOptions> consumeRequestRetryOptions();
 
     @Override
