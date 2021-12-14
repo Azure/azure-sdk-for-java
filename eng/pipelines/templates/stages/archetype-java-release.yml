@@ -212,6 +212,9 @@ stages:
               pool:
                 name: azsdk-pool-mms-ubuntu-2004-general
                 vmImage: MMSUbuntu20.04
+
+              variables:
+                DocValidationImageId: azuresdkimages.azurecr.io/javarefautocr:latest
               strategy:
                 runOnce:
                   deploy:
@@ -228,6 +231,15 @@ stages:
                             - .github/CODEOWNERS
                             - '!sdk/**/test-recordings'
                             - '!sdk/**/session-records'
+                      - download: current
+                        displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
+                        artifact: ${{parameters.ArtifactName}}
+                      # Pull and build the docker image.
+                      - template: /eng/common/pipelines/templates/steps/docker-pull-image.yml
+                        parameters:
+                          ContainerRegistryClientId: $(azuresdkimages-cr-clientid)
+                          ContainerRegistryClientSecret: $(azuresdkimages-cr-clientsecret)
+                          ImageId: "$(DocValidationImageId)"
                       - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
                         parameters:
                           PackageInfoLocations:
@@ -239,6 +251,7 @@ stages:
                           SparseCheckoutPaths:
                             - docs-ref-services/
                             - metadata/
+                          DocValidationImageId: "$(DocValidationImageId)"
 
           - ${{if ne(artifact.skipPublishDocGithubIo, 'true')}}:
             - deployment: PublishDocs
@@ -386,6 +399,8 @@ stages:
         pool:
           name: azsdk-pool-mms-ubuntu-2004-general
           vmImage: MMSUbuntu20.04
+        variables:
+          DocValidationImageId: azuresdkimages.azurecr.io/javarefautocr:latest
         steps:
           - download: current
             displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
@@ -421,3 +436,4 @@ stages:
               SparseCheckoutPaths:
                 - docs-ref-services/
                 - metadata/
+              DocValidationImageId: "$(DocValidationImageId)"
