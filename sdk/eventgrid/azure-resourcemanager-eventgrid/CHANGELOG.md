@@ -1,14 +1,24 @@
 # Release History
 
-## 1.1.0-beta.5 (Unreleased)
+## 1.1.0-beta.5 (2021-12-14)
+
+- Azure Resource Manager EventGrid client library for Java. This package contains Microsoft Azure SDK for EventGrid Management SDK. Azure EventGrid Management Client. Package tag package-2021-12. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.StringNotBeginsWithAdvancedFilter` was added
 
-### Bugs Fixed
+* `models.NumberInRangeAdvancedFilter` was added
 
-### Other Changes
+* `models.IsNotNullAdvancedFilter` was added
+
+* `models.IsNullOrUndefinedAdvancedFilter` was added
+
+* `models.NumberNotInRangeAdvancedFilter` was added
+
+* `models.StringNotEndsWithAdvancedFilter` was added
+
+* `models.StringNotContainsAdvancedFilter` was added
 
 ## 1.1.0-beta.4 (2021-10-25)
 

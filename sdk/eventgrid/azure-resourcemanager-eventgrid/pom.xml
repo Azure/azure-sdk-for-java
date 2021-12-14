@@ -42,9 +42,6 @@
     <codesnippet.skip>false</codesnippet.skip>
     <javadocDoclet></javadocDoclet>
     <javadocDocletOptions></javadocDocletOptions>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
   </properties>
   <dependencies>
     <dependency>
