@@ -33,6 +33,10 @@ public final class TagsResultImpl implements TagsResult {
         return this.innerModel().type();
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
     public List<Tag> tags() {
         List<Tag> inner = this.innerModel().tags();
         if (inner != null) {
@@ -48,10 +52,6 @@ public final class TagsResultImpl implements TagsResult {
 
     public String previousLink() {
         return this.innerModel().previousLink();
-    }
-
-    public String etag() {
-        return this.innerModel().etag();
     }
 
     public TagsResultInner innerModel() {

@@ -137,7 +137,7 @@ public final class BudgetsImpl implements Budgets {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'budgets'.", id)));
         }
-        this.deleteWithResponse(scope, budgetName, Context.NONE).getValue();
+        this.deleteWithResponse(scope, budgetName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
