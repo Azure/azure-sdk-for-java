@@ -606,6 +606,12 @@ class RxGatewayStoreModel implements RxStoreModel {
                             PartitionKeyRange range =
                                 collectionRoutingMapValueHolder.v.getRangeByPartitionKeyRangeId(partitionKeyRangeId);
                             request.requestContext.resolvedPartitionKeyRange = range;
+                            if (request.requestContext.resolvedPartitionKeyRange == null) {
+                                SessionTokenHelper.setPartitionLocalSessionToken(request, partitionKeyRangeId,
+                                    sessionContainer);
+                            } else {
+                                SessionTokenHelper.setPartitionLocalSessionToken(request, sessionContainer);
+                            }
                         } else if (partitionKeyInternal != null) {
                             String effectivePartitionKeyString = PartitionKeyInternalHelper
                                 .getEffectivePartitionKeyString(
@@ -614,6 +620,7 @@ class RxGatewayStoreModel implements RxStoreModel {
                             PartitionKeyRange range =
                                 collectionRoutingMapValueHolder.v.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
                             request.requestContext.resolvedPartitionKeyRange = range;
+                            SessionTokenHelper.setPartitionLocalSessionToken(request, sessionContainer);
                         } else {
                             //Apply the ambient session.
                             String sessionToken = this.sessionContainer.resolveGlobalSessionToken(request);
@@ -621,9 +628,8 @@ class RxGatewayStoreModel implements RxStoreModel {
                             if (!Strings.isNullOrEmpty(sessionToken)) {
                                 headers.put(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionToken);
                             }
-                            return Mono.empty();
                         }
-                        SessionTokenHelper.setPartitionLocalSessionToken(request, sessionContainer);
+
                         return Mono.empty();
                     });
                 });

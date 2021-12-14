@@ -265,6 +265,8 @@ public class SessionTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
     public void sessionTokenNotRequired(boolean isNameBased) {
         spyClient.readCollection(getCollectionLink(isNameBased), null).block();
+        // No session token set for the master resource related request
+        assertThat(getSessionTokensInRequests()).hasSize(0);
         spyClient.createDocument(getCollectionLink(isNameBased), newDocument(), null, false).block();
 
         spyClient.clearCapturedRequests();
@@ -300,17 +302,22 @@ public class SessionTest extends TestSuiteBase {
         spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions).block();
         assertThat(getSessionTokensInRequests()).hasSize(0);
 
-        // No session token set for BOUNDED_STALENESS consistency
-        spyClient.clearCapturedRequests();
-        requestOptions.setConsistencyLevel(ConsistencyLevel.BOUNDED_STALENESS);
-        spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions).block();
-        assertThat(getSessionTokensInRequests()).hasSize(0);
+        if (globalEndpointManager.getLatestDatabaseAccount().getConsistencyPolicy().getDefaultConsistencyLevel().equals(ConsistencyLevel.STRONG) ||
+            globalEndpointManager.getLatestDatabaseAccount().getConsistencyPolicy().getDefaultConsistencyLevel().equals(ConsistencyLevel.BOUNDED_STALENESS)) {
+            // No session token set for BOUNDED_STALENESS consistency
+            spyClient.clearCapturedRequests();
+            requestOptions.setConsistencyLevel(ConsistencyLevel.BOUNDED_STALENESS);
+            spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions).block();
+            assertThat(getSessionTokensInRequests()).hasSize(0);
+        }
 
-        // No session token set for STRONG consistency
-        spyClient.clearCapturedRequests();
-        requestOptions.setConsistencyLevel(ConsistencyLevel.STRONG);
-        spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions).block();
-        assertThat(getSessionTokensInRequests()).hasSize(0);
+        if (globalEndpointManager.getLatestDatabaseAccount().getConsistencyPolicy().getDefaultConsistencyLevel().equals(ConsistencyLevel.STRONG)) {
+            // No session token set for STRONG consistency
+            spyClient.clearCapturedRequests();
+            requestOptions.setConsistencyLevel(ConsistencyLevel.STRONG);
+            spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions).block();
+            assertThat(getSessionTokensInRequests()).hasSize(0);
+        }
     }
 
     @Test(groups = { "multi-master" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
