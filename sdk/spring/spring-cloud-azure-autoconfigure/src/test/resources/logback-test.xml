@@ -15,4 +15,5 @@
   </root>
   <logger name="com.azure.spring" level="debug"/>
   <logger name="com.azure.security.keyvault.secrets" level="debug"/>
+  <logger name="com.azure.security.keyvault.certificates" level="debug"/>
 </configuration>
