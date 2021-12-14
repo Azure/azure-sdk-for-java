@@ -38,7 +38,6 @@ import static com.azure.spring.servicebus.support.ServiceBusMessageHeaders.TO;
  * A converter to turn a {@link org.springframework.messaging.Message} to {@link ServiceBusMessage} and turn a {@link
  * ServiceBusReceivedMessage} to {@link org.springframework.messaging.Message}
  *
- * @author Warren Zhu
  */
 public class ServiceBusMessageConverter
     extends AbstractAzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> {
@@ -46,10 +45,17 @@ public class ServiceBusMessageConverter
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusMessageConverter.class);
     private final ObjectMapper objectMapper;
 
+    /**
+     * Construct the message converter with default {@code ObjectMapper}.
+     */
     public ServiceBusMessageConverter() {
         objectMapper = OBJECT_MAPPER;
     }
 
+    /**
+     * Construct the message converter with customized {@code ObjectMapper}.
+     * @param objectMapper the object mapper.
+     */
     public ServiceBusMessageConverter(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }

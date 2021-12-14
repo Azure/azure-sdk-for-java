@@ -13,8 +13,6 @@ import com.azure.spring.messaging.core.SendOperation;
  * You should checkpoint if message has been processed successfully, otherwise it will be visible again after certain
  * time specified by {@link #setVisibilityTimeoutInSeconds(int)}.
  *
- * @author Miao Cao
- * @author Warren Zhu
  */
 public interface StorageQueueOperation extends SendOperation, ReceiveOperation {
 

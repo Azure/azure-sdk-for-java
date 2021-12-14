@@ -77,6 +77,10 @@ public interface Topology extends Executable<Topology>, HasInnerModel<TopologyIn
         interface WithExecute extends Executable<Topology>, DefinitionStages.WithTargetNetwork {
         }
 
+        /**
+         * The stage of the definition which contains all the minimum required inputs for execution, but also allows for
+         * any other optional settings to be specified.
+         */
         interface WithExecuteAndSubnet extends Executable<Topology>, DefinitionStages.WithTargetSubnet {
         }
     }

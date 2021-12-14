@@ -95,7 +95,7 @@ public interface VolumesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return volume resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VolumeInner>, VolumeInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, String poolName, String volumeName, VolumeInner body);
 
@@ -113,7 +113,7 @@ public interface VolumesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return volume resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VolumeInner>, VolumeInner> beginCreateOrUpdate(
         String resourceGroupName,
         String accountName,
@@ -175,7 +175,7 @@ public interface VolumesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return volume resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VolumeInner>, VolumeInner> beginUpdate(
         String resourceGroupName, String accountName, String poolName, String volumeName, VolumePatch body);
 
@@ -193,7 +193,7 @@ public interface VolumesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return volume resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VolumeInner>, VolumeInner> beginUpdate(
         String resourceGroupName,
         String accountName,
@@ -254,7 +254,7 @@ public interface VolumesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String poolName, String volumeName);
 
@@ -271,7 +271,7 @@ public interface VolumesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
 
@@ -317,7 +317,7 @@ public interface VolumesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRevert(
         String resourceGroupName, String accountName, String poolName, String volumeName, VolumeRevert body);
 
@@ -335,7 +335,7 @@ public interface VolumesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRevert(
         String resourceGroupName,
         String accountName,
@@ -394,7 +394,7 @@ public interface VolumesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginBreakReplication(
         String resourceGroupName, String accountName, String poolName, String volumeName, BreakReplicationRequest body);
 
@@ -412,7 +412,7 @@ public interface VolumesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginBreakReplication(
         String resourceGroupName,
         String accountName,
@@ -519,7 +519,7 @@ public interface VolumesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginResyncReplication(
         String resourceGroupName, String accountName, String poolName, String volumeName);
 
@@ -537,7 +537,7 @@ public interface VolumesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginResyncReplication(
         String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
 
@@ -585,7 +585,7 @@ public interface VolumesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteReplication(
         String resourceGroupName, String accountName, String poolName, String volumeName);
 
@@ -602,7 +602,7 @@ public interface VolumesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteReplication(
         String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
 
@@ -649,7 +649,7 @@ public interface VolumesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginAuthorizeReplication(
         String resourceGroupName, String accountName, String poolName, String volumeName, AuthorizeRequest body);
 
@@ -667,7 +667,7 @@ public interface VolumesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginAuthorizeReplication(
         String resourceGroupName,
         String accountName,
@@ -726,7 +726,7 @@ public interface VolumesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginReInitializeReplication(
         String resourceGroupName, String accountName, String poolName, String volumeName);
 
@@ -743,7 +743,7 @@ public interface VolumesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginReInitializeReplication(
         String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
 
@@ -790,7 +790,7 @@ public interface VolumesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginPoolChange(
         String resourceGroupName, String accountName, String poolName, String volumeName, PoolChangeRequest body);
 
@@ -808,7 +808,7 @@ public interface VolumesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginPoolChange(
         String resourceGroupName,
         String accountName,

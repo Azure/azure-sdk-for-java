@@ -42,6 +42,13 @@ import org.springframework.context.annotation.Import;
 public class EventHubsBinderConfiguration {
 
 
+    /**
+     * Declare Event Hubs Channel Provisioner bean.
+     *
+     * @param eventHubsProperties the event Hubs Properties
+     * @param eventHubsProvisioner the event Hubs Provisioner
+     * @return EventHubsChannelProvisioner bean the Event Hubs Channel Provisioner bean
+     */
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean({ EventHubsProvisioner.class, AzureEventHubsProperties.class })
@@ -52,12 +59,26 @@ public class EventHubsBinderConfiguration {
                                                              eventHubsProvisioner);
     }
 
+    /**
+     * Declare Event Hubs Channel Provisioner bean.
+     *
+     * @return EventHubsChannelProvisioner bean the Event Hubs Channel Provisioner bean
+     */
     @Bean
     @ConditionalOnMissingBean({ EventHubsProvisioner.class, EventHubsChannelProvisioner.class })
     public EventHubsChannelProvisioner eventHubChannelProvisioner() {
         return new EventHubsChannelProvisioner();
     }
 
+    /**
+     * Declare Event Hubs Message Channel Binder bean.
+     *
+     * @param channelProvisioner the channel Provisioner
+     * @param bindingProperties the binding Properties
+     * @param namespaceProperties the namespace Properties
+     * @param checkpointStores the checkpoint Stores
+     * @return EventHubsMessageChannelBinder bean the Event Hubs Message Channel Binder bean
+     */
     @Bean
     @ConditionalOnMissingBean
     public EventHubsMessageChannelBinder eventHubBinder(EventHubsChannelProvisioner channelProvisioner,

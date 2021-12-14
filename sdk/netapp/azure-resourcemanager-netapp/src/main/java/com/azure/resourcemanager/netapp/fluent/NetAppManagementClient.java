@@ -128,4 +128,11 @@ public interface NetAppManagementClient {
      * @return the VaultsClient object.
      */
     VaultsClient getVaults();
+
+    /**
+     * Gets the VolumeGroupsClient object to access its operations.
+     *
+     * @return the VolumeGroupsClient object.
+     */
+    VolumeGroupsClient getVolumeGroups();
 }

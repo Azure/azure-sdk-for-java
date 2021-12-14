@@ -8,12 +8,14 @@ import org.springframework.messaging.MessagingException;
 
 /**
  * An exception that is the payload of an {@code ErrorMessage} when a send fails.
- *
- * @author Jacob Severson
- * @since 1.1
  */
 public class AzureSendFailureException extends MessagingException {
 
+    /**
+     * Construct the {@link AzureSendFailureException} with the specified detail message and nested exception.
+     * @param message the specified detail message.
+     * @param cause the nested exception.
+     */
     public AzureSendFailureException(Message<?> message, Throwable cause) {
         super(message, cause);
     }

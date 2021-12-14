@@ -38,6 +38,10 @@ public class ProcessorProperties extends ConsumerProperties implements EventProc
         return trackLastEnqueuedEventProperties;
     }
 
+    /**
+     * Set whether to track the last enqueued event properties.
+     * @param trackLastEnqueuedEventProperties whether to track the last enqueued event properties.
+     */
     public void setTrackLastEnqueuedEventProperties(Boolean trackLastEnqueuedEventProperties) {
         this.trackLastEnqueuedEventProperties = trackLastEnqueuedEventProperties;
     }

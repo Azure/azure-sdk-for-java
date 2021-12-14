@@ -47,7 +47,6 @@ import java.lang.annotation.Repeatable;
  * <p>This annotation may be used as a <em>meta-annotation</em> to create custom
  * <em>composed annotations</em> with attribute overrides.
  *
- * @author Warren Zhu
  * @see EnableAzureMessaging
  * @see AzureListenerAnnotationBeanPostProcessor
  */

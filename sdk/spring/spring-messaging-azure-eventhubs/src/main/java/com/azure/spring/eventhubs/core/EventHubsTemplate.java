@@ -26,7 +26,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 /**
- *
+ * A template for executing sending operations asynchronously to Event Hubs.
  */
 public class EventHubsTemplate implements SendOperation, BatchSendOperation {
 
@@ -35,6 +35,10 @@ public class EventHubsTemplate implements SendOperation, BatchSendOperation {
     private final EventHubsProducerFactory producerFactory;
     private EventHubsMessageConverter messageConverter = new EventHubsMessageConverter();
 
+    /**
+     * Create an instance using the supplied producer factory.
+     * @param producerFactory the producer factory.
+     */
     public EventHubsTemplate(EventHubsProducerFactory producerFactory) {
         this.producerFactory = producerFactory;
     }
@@ -106,6 +110,10 @@ public class EventHubsTemplate implements SendOperation, BatchSendOperation {
             .setPartitionKey(partitionSupplier != null ? partitionSupplier.getPartitionKey() : null);
     }
 
+    /**
+     * Set the message converter.
+     * @param messageConverter the message converter.
+     */
     public void setMessageConverter(EventHubsMessageConverter messageConverter) {
         this.messageConverter = messageConverter;
     }
