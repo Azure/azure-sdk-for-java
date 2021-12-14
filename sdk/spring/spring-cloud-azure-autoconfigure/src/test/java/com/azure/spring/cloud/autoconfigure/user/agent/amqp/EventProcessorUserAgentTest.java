@@ -46,8 +46,8 @@ class EventProcessorUserAgentTest {
                 assertThat(context).hasSingleBean(EventProcessorClient.class);
 
                 EventProcessorClientBuilder eventProcessorClientBuilder = context.getBean(EventProcessorClientBuilder.class);
-                EventHubClientBuilder eventHubClientBuilder = (EventHubClientBuilder)UserAgentTestUtil.getPrivateFieldValue(EventProcessorClientBuilder.class, "eventHubClientBuilder", eventProcessorClientBuilder);
-                ClientOptions options = (ClientOptions)UserAgentTestUtil.getPrivateFieldValue(EventHubClientBuilder.class, "clientOptions", eventHubClientBuilder);
+                EventHubClientBuilder eventHubClientBuilder = (EventHubClientBuilder) UserAgentTestUtil.getPrivateFieldValue(EventProcessorClientBuilder.class, "eventHubClientBuilder", eventProcessorClientBuilder);
+                ClientOptions options = (ClientOptions) UserAgentTestUtil.getPrivateFieldValue(EventHubClientBuilder.class, "clientOptions", eventHubClientBuilder);
                 Assertions.assertNotNull(options);
                 Assertions.assertEquals(AZURE_SPRING_EVENT_HUBS, options.getApplicationId());
 

@@ -35,7 +35,7 @@ class ServiceBusUserAgentTest {
                 assertThat(context).hasSingleBean(StaticConnectionStringProvider.class);
 
                 ServiceBusClientBuilder builder = context.getBean(ServiceBusClientBuilder.class);
-                ClientOptions options = (ClientOptions)UserAgentTestUtil.getPrivateFieldValue(ServiceBusClientBuilder.class, "clientOptions", builder);
+                ClientOptions options = (ClientOptions) UserAgentTestUtil.getPrivateFieldValue(ServiceBusClientBuilder.class, "clientOptions", builder);
                 Assertions.assertNotNull(options);
                 Assertions.assertEquals(AZURE_SPRING_SERVICE_BUS, options.getApplicationId());
 
