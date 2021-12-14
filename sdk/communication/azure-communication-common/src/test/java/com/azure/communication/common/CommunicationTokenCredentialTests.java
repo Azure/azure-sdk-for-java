@@ -24,6 +24,7 @@ import java.util.function.Supplier;
 
 public class CommunicationTokenCredentialTests {
     private final JwtTokenMocker tokenMocker = new JwtTokenMocker();
+    private static final int DEFAULT_EXPIRING_OFFSET_SECONDS = 271;
 
     @Test
     public void constructWithValidTokenWithoutFresher() throws InterruptedException, ExecutionException, IOException {
@@ -79,7 +80,7 @@ public class CommunicationTokenCredentialTests {
             if (this.onCallReturn != null) {
                 this.onCallReturn.run();
             }
-            return Mono.just(tokenMocker.generateRawToken("Mock", "user", 10 * 60 + 1));
+            return Mono.just(tokenMocker.generateRawToken("Mock", "user", DEFAULT_EXPIRING_OFFSET_SECONDS));
         }
     }
 
@@ -104,7 +105,7 @@ public class CommunicationTokenCredentialTests {
 
     @Test
     public void fresherShouldBeCalledAfterExpiringTime() throws InterruptedException, ExecutionException, IOException {
-        String tokenStr = tokenMocker.generateRawToken("resourceId", "userIdentity", 601);
+        String tokenStr = tokenMocker.generateRawToken("resourceId", "userIdentity", DEFAULT_EXPIRING_OFFSET_SECONDS);
         immediateFresher.resetCallCount();
         CountDownLatch countDownLatch = new CountDownLatch(1);
         immediateFresher.setOnCallReturn(countDownLatch::countDown);
@@ -161,7 +162,7 @@ public class CommunicationTokenCredentialTests {
     @Test
     public void refresherShouldBeCalledAgainAfterFirstRefreshCall()
             throws InterruptedException, ExecutionException, IOException {
-        String tokenStr = tokenMocker.generateRawToken("resourceId", "userIdentity", 601);
+        String tokenStr = tokenMocker.generateRawToken("resourceId", "userIdentity", DEFAULT_EXPIRING_OFFSET_SECONDS);
         immediateFresher.resetCallCount();
         CountDownLatch firstCountDownLatch = new CountDownLatch(1);
         immediateFresher.setOnCallReturn(firstCountDownLatch::countDown);
@@ -289,7 +290,7 @@ public class CommunicationTokenCredentialTests {
 
     @Test
     public void shouldNotModifyTokenWhenRefresherThrows() throws InterruptedException, ExecutionException, IOException {
-        String tokenStr = tokenMocker.generateRawToken("resourceId", "userIdentity", 601);
+        String tokenStr = tokenMocker.generateRawToken("resourceId", "userIdentity", DEFAULT_EXPIRING_OFFSET_SECONDS);
         CommunicationTokenRefreshOptions tokenRefreshOptions = new CommunicationTokenRefreshOptions(exceptionRefresher, true, tokenStr);
         CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(tokenRefreshOptions);
         CountDownLatch countDownLatch = new CountDownLatch(1);
