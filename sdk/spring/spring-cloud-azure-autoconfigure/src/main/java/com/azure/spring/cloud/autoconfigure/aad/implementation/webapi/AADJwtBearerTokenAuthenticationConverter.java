@@ -70,6 +70,12 @@ public class AADJwtBearerTokenAuthenticationConverter implements Converter<Jwt, 
         this.converter = new AADJwtGrantedAuthoritiesConverter(claimToAuthorityPrefixMap);
     }
 
+    /**
+     * Convert the source object of type {@code Jwt} to target type {@code AbstractAuthenticationToken}.
+     *
+     * @param jwt the source object to convert, which must be an instance of {@code Jwt} (never {@code null})
+     * @return the converted object
+     */
     @Override
     public AbstractAuthenticationToken convert(Jwt jwt) {
         OAuth2AccessToken accessToken = new OAuth2AccessToken(

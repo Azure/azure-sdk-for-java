@@ -11,6 +11,7 @@ import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.spring.eventhubs.checkpoint.CheckpointManagers;
 import com.azure.spring.eventhubs.checkpoint.EventCheckpointManager;
 import com.azure.spring.eventhubs.core.EventHubsProcessorContainer;
+import com.azure.spring.eventhubs.support.EventHubsHeaders;
 import com.azure.spring.eventhubs.support.converter.EventHubBatchMessageConverter;
 import com.azure.spring.eventhubs.support.converter.EventHubsMessageConverter;
 import com.azure.spring.integration.eventhubs.inbound.health.EventHusProcessorInstrumentation;
@@ -205,6 +206,7 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
 
             Map<String, Object> headers = new HashMap<>();
             headers.put(AzureHeaders.RAW_PARTITION_ID, partition.getPartitionId());
+            headers.put(EventHubsHeaders.LAST_ENQUEUED_EVENT_PROPERTIES, eventContext.getLastEnqueuedEventProperties());
 
             final EventData event = eventContext.getEventData();
 
@@ -317,6 +319,7 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
 
             Map<String, Object> headers = new HashMap<>();
             headers.put(AzureHeaders.RAW_PARTITION_ID, partition.getPartitionId());
+            headers.put(EventHubsHeaders.LAST_ENQUEUED_EVENT_PROPERTIES, eventBatchContext.getLastEnqueuedEventProperties());
 
             Checkpointer checkpointer = new AzureCheckpointer(eventBatchContext::updateCheckpointAsync);
             if (CheckpointMode.MANUAL.equals(checkpointConfig.getMode())) {

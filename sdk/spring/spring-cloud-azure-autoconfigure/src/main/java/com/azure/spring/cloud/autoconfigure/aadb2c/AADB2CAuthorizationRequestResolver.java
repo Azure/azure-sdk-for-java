@@ -57,11 +57,28 @@ public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
         this.defaultResolver = new DefaultOAuth2AuthorizationRequestResolver(repository, REQUEST_BASE_URI);
     }
 
+    /**
+     * Returns the {@link OAuth2AuthorizationRequest} resolved from the provided
+     * {@code HttpServletRequest} or {@code null} if not available.
+     *
+     * @param request the {@code HttpServletRequest}
+     * @return the resolved {@link OAuth2AuthorizationRequest} or {@code null} if not
+     * available
+     */
     @Override
     public OAuth2AuthorizationRequest resolve(HttpServletRequest request) {
         return resolve(request, getRegistrationId(request));
     }
 
+    /**
+     * Returns the {@link OAuth2AuthorizationRequest} resolved from the provided
+     * {@code HttpServletRequest} or {@code null} if not available.
+     *
+     * @param request the {@code HttpServletRequest}
+     * @param registrationId the registrationId to use
+     * @return the resolved {@link OAuth2AuthorizationRequest} or {@code null} if not
+     * available
+     */
     @Override
     public OAuth2AuthorizationRequest resolve(HttpServletRequest request, String registrationId) {
         if (StringUtils.hasText(passwordResetUserFlow) && isForgotPasswordAuthorizationRequest(request)) {

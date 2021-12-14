@@ -31,6 +31,8 @@ import static com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthorizati
 
 /**
  * Configuration properties for Azure Active Directory Authentication.
+ *
+ * @see InitializingBean
  */
 public class AADAuthenticationProperties implements InitializingBean {
 
@@ -626,6 +628,9 @@ public class AADAuthenticationProperties implements InitializingBean {
                        .contains(group);
     }
 
+    /**
+     * Set after properties.
+     */
     @Override
     public void afterPropertiesSet() {
         if (!StringUtils.hasText(getProfile().getTenantId())) {
