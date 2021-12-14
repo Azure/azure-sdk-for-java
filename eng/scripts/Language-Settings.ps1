@@ -360,8 +360,7 @@ function ValidatePackage($groupId, $artifactId, $version, $DocValidationImageId)
   else 
   {
     Write-Host "Validating using $DocValidationImageId on $artifactId."
-    return DockerValidation -packageName "$artifactId" -packageVersion "$version" -groupId "$groudId" `
-        -DocValidationImageId $DocValidationImageId -workingDirectory $packageDirectory
+    return DockerValidation -packageName "$artifactId" -packageVersion "$version" -groupId "$groudId" -DocValidationImageId $DocValidationImageId -workingDirectory $packageDirectory
   }
 }
 
