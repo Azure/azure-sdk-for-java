@@ -1,3 +1,5 @@
+package com.azure;
+
 import com.azure.AClass;
 import com.azure.implementation.AnImplementationClass;
 

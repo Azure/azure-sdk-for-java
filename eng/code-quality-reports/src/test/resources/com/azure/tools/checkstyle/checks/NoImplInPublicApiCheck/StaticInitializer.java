@@ -1,3 +1,5 @@
+package com.azure;
+
 import com.azure.implementation.TheClass;
 import com.azure.implementation.TheOtherClass;
 
