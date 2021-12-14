@@ -85,7 +85,7 @@ public final class AmqpLoggingUtils {
         return logBuilder
             .addKeyValue("isTransient", shutdownSignal.isTransient())
             .addKeyValue("isInitiatedByClient", shutdownSignal.isInitiatedByClient())
-            // will call toString() if logging is enabled
+            // will call toString() when performing logging (if enabled)
             .addKeyValue("shutdownMessage", shutdownSignal);
     }
 }
