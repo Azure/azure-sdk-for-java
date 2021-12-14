@@ -28,20 +28,20 @@ def sdk_automation(config: dict) -> List[dict]:
             re.IGNORECASE,
         )
         if match and '/examples/' not in file_path:
-            group = match.group(1)
+            service = match.group(1)
             file_name = match.group(2)
             file_name_sans = ''.join(c for c in file_name if c.isalnum())
-            module = 'azure-{0}-{1}'.format(group, file_name_sans)
+            module = 'azure-{0}-{1}'.format(service, file_name_sans)
             input_file = os.path.join(spec_root, file_path)
             # placeholder, for lack of information
             credential_types = 'tokencredential'
-            credential_scopes = 'https://{0}.azure.com/.default'.format(group)
+            credential_scopes = 'https://{0}.azure.com/.default'.format(service)
 
             succeeded = generate(sdk_root, input_file,
-                                 group, module, credential_types, credential_scopes,
+                                 service, module, credential_types, credential_scopes,
                                  AUTOREST_CORE_VERSION, AUTOREST_JAVA, '')
 
-            generated_folder = 'sdk/{0}/{1}'.format(group, module)
+            generated_folder = 'sdk/{0}/{1}'.format(service, module)
 
             if succeeded:
                 install_build_tools(sdk_root)
@@ -71,7 +71,7 @@ def sdk_automation(config: dict) -> List[dict]:
 def generate(
     sdk_root: str,
     input_file: str,
-    group: str,
+    service: str,
     module: str,
     credential_types: str,
     credential_scopes: str,
@@ -83,7 +83,7 @@ def generate(
     namespace = 'com.{0}'.format(module.replace('-', '.'))
     output_dir = os.path.join(
         sdk_root,
-        'sdk', group, module
+        'sdk', service, module
     )
     shutil.rmtree(os.path.join(output_dir, 'src/main'), ignore_errors=True)
     shutil.rmtree(os.path.join(output_dir, 'src/samples/java', namespace.replace('.', '/'), 'generated'),
@@ -137,14 +137,14 @@ def parse_args() -> argparse.Namespace:
         help='URL to OpenAPI 2.0 specification JSON as input file',
     )
     parser.add_argument(
-        '--group',
+        '--service',
         required=True,
-        help='Group name under sdk/, sample: storage',
+        help='Service name under sdk/, sample: storage',
     )
     parser.add_argument(
         '--module',
         required=True,
-        help='Module name under sdk/<group>/, sample: azure-storage-blob',
+        help='Module name under sdk/<service>/, sample: azure-storage-blob',
     )
     parser.add_argument(
         '--credential-types',
@@ -189,7 +189,7 @@ def main():
 
     output_dir = os.path.join(
         sdk_root,
-        'sdk', args['group'], args['module']
+        'sdk', args['service'], args['module']
     )
     install_build_tools(sdk_root)
     compile_package(output_dir)
