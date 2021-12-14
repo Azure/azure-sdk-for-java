@@ -747,7 +747,6 @@ public final class BulkExecutor<TContext> {
         }
 
         StringBuilder sb = new StringBuilder();
-        Thread t = Thread.currentThread();
         sb
             .append("ItemOperation[Type: ")
             .append(operation.getOperationType().toString())
