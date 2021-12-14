@@ -255,6 +255,11 @@ public class ImplementationBridgeHelpers {
             int getMaxMicroBatchConcurrency(CosmosBulkExecutionOptions options);
 
             Duration getMaxMicroBatchInterval(CosmosBulkExecutionOptions options);
+
+            CosmosBulkExecutionOptions setHeader(CosmosBulkExecutionOptions cosmosBulkExecutionOptions,
+                                                 String name, String value);
+
+            Map<String, String> getHeader(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
         }
     }
 

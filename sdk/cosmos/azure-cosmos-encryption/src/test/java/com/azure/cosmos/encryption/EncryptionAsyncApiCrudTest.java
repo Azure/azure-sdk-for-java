@@ -19,6 +19,11 @@ import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.EncryptionKeyWrapMetadata;
+import com.azure.cosmos.models.CosmosItemOperation;
+import com.azure.cosmos.models.CosmosBulkItemResponse;
+import com.azure.cosmos.models.CosmosBulkOperations;
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
+import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
@@ -33,10 +38,12 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Instant;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -48,7 +55,7 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
     CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer;
     CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase;
 
-    @Factory(dataProvider = "clientBuildersWithSessionConsistency")
+    @Factory(dataProvider = "clientBuilders")
     public EncryptionAsyncApiCrudTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
@@ -661,6 +668,52 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
         validateResponse(batchResponse.getResults().get(1).getItem(EncryptionPojo.class), replacePojo);
         validateResponse(batchResponse.getResults().get(2).getItem(EncryptionPojo.class), createPojo);
         validateResponse(batchResponse.getResults().get(3).getItem(EncryptionPojo.class), createPojo);
+    }
+
+    private int getTotalRequest() {
+        int countRequest = new Random().nextInt(100) + 120;
+        logger.info("Total count of request for this test case: " + countRequest);
+
+        return countRequest;
+    }
+
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT)
+    public void bulkExecution() {
+        int totalRequest = getTotalRequest();
+        Flux<CosmosItemOperation> cosmosItemOperationsFlux = Flux.range(0, 1).map(i -> {
+            String itemId = UUID.randomUUID().toString();
+            EncryptionPojo createPojo = getItem(itemId);
+
+            return CosmosBulkOperations.getCreateItemOperation(createPojo, new PartitionKey(createPojo.getMypk()));
+        });
+
+        CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
+        Flux<CosmosBulkOperationResponse<EncryptionAsyncApiCrudTest>> responseFlux = this.cosmosEncryptionAsyncContainer.
+            executeBulkOperations(cosmosItemOperationsFlux, cosmosBulkExecutionOptions);
+
+        AtomicInteger processedDoc = new AtomicInteger(0);
+        responseFlux
+            .flatMap((CosmosBulkOperationResponse<EncryptionAsyncApiCrudTest> cosmosBulkOperationResponse) -> {
+
+                processedDoc.incrementAndGet();
+
+                CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+                if (cosmosBulkOperationResponse.getException() != null) {
+                    logger.error("Bulk operation failed", cosmosBulkOperationResponse.getException());
+                    fail(cosmosBulkOperationResponse.getException().toString());
+                }
+
+                assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+                assertThat(cosmosBulkItemResponse.getRequestCharge()).isGreaterThan(0);
+                assertThat(cosmosBulkItemResponse.getCosmosDiagnostics().toString()).isNotNull();
+                assertThat(cosmosBulkItemResponse.getSessionToken()).isNotNull();
+                assertThat(cosmosBulkItemResponse.getActivityId()).isNotNull();
+                assertThat(cosmosBulkItemResponse.getRequestCharge()).isNotNull();
+
+                return Mono.just(cosmosBulkItemResponse);
+            }).blockLast();
+
+        assertThat(processedDoc.get()).isEqualTo(totalRequest);
     }
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
