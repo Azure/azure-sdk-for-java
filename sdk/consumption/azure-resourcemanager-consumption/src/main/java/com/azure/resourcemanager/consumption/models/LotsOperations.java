@@ -10,33 +10,57 @@ import com.azure.core.util.Context;
 /** Resource collection API of LotsOperations. */
 public interface LotsOperations {
     /**
-     * Lists the lots by billingAccountId and billingProfileId.
+     * Lists all Azure credits and Microsoft Azure consumption commitments for a billing account or a billing profile.
+     * Microsoft Azure consumption commitments are only supported for the billing account scope.
      *
-     * @param scope The scope associated with Lots operations. This includes
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfile/{billingProfileId}' for
-     *     Billing Profile scope, and
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
-     *     partners.
+     * @param billingAccountId BillingAccount ID.
+     * @param billingProfileId Azure Billing Profile ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of listing lot summary.
      */
-    PagedIterable<LotSummary> list(String scope);
+    PagedIterable<LotSummary> listByBillingProfile(String billingAccountId, String billingProfileId);
 
     /**
-     * Lists the lots by billingAccountId and billingProfileId.
+     * Lists all Azure credits and Microsoft Azure consumption commitments for a billing account or a billing profile.
+     * Microsoft Azure consumption commitments are only supported for the billing account scope.
      *
-     * @param scope The scope associated with Lots operations. This includes
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfile/{billingProfileId}' for
-     *     Billing Profile scope, and
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
-     *     partners.
+     * @param billingAccountId BillingAccount ID.
+     * @param billingProfileId Azure Billing Profile ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of listing lot summary.
      */
-    PagedIterable<LotSummary> list(String scope, Context context);
+    PagedIterable<LotSummary> listByBillingProfile(String billingAccountId, String billingProfileId, Context context);
+
+    /**
+     * Lists all Azure credits and Microsoft Azure consumption commitments for a billing account or a billing profile.
+     * Microsoft Azure consumption commitments are only supported for the billing account scope.
+     *
+     * @param billingAccountId BillingAccount ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of listing lot summary.
+     */
+    PagedIterable<LotSummary> listByBillingAccount(String billingAccountId);
+
+    /**
+     * Lists all Azure credits and Microsoft Azure consumption commitments for a billing account or a billing profile.
+     * Microsoft Azure consumption commitments are only supported for the billing account scope.
+     *
+     * @param billingAccountId BillingAccount ID.
+     * @param filter May be used to filter the lots by Status, Source etc. The filter supports 'eq', 'lt', 'gt', 'le',
+     *     'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string
+     *     where key and value is separated by a colon (:).
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of listing lot summary.
+     */
+    PagedIterable<LotSummary> listByBillingAccount(String billingAccountId, String filter, Context context);
 }
