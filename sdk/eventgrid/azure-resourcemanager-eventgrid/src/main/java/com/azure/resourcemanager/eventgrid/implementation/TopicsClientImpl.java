@@ -505,7 +505,7 @@ public final class TopicsClientImpl implements TopicsClient {
         return this
             .client
             .<TopicInner, TopicInner>getLroResult(
-                mono, this.client.getHttpPipeline(), TopicInner.class, TopicInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), TopicInner.class, TopicInner.class, this.client.getContext());
     }
 
     /**
@@ -743,7 +743,8 @@ public final class TopicsClientImpl implements TopicsClient {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, topicName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -989,7 +990,7 @@ public final class TopicsClientImpl implements TopicsClient {
         return this
             .client
             .<TopicInner, TopicInner>getLroResult(
-                mono, this.client.getHttpPipeline(), TopicInner.class, TopicInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), TopicInner.class, TopicInner.class, this.client.getContext());
     }
 
     /**
@@ -1841,7 +1842,7 @@ public final class TopicsClientImpl implements TopicsClient {
                 this.client.getHttpPipeline(),
                 TopicSharedAccessKeysInner.class,
                 TopicSharedAccessKeysInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
