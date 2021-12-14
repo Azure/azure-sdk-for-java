@@ -8,6 +8,8 @@ import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicLong
 
+//scalastyle:off magic.number
+//scalastyle:off multiple.string.literals
 class TransientErrorsRetryPolicySpec extends UnitSpec with BasicLoggingTrait {
   "TransientErrorsRetryPolicy" should "execute successfully when errorCount < maxRetryCount" in {
 
@@ -80,11 +82,10 @@ class TransientErrorsRetryPolicySpec extends UnitSpec with BasicLoggingTrait {
   }
 
   private class DummyTransientCosmosException
-    extends CosmosException(500, "Dummy Internal Server Error") {
-  }
+    extends CosmosException(500, "Dummy Internal Server Error")
 
   private class DummyNonTransientCosmosException
-    extends CosmosException(404, "Dummy Not Found Error") {
-  }
-
+    extends CosmosException(404, "Dummy Not Found Error")
 }
+//scalastyle:on magic.number
+//scalastyle:on multiple.string.literals
