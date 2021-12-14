@@ -17,6 +17,7 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.boot.test.system.OutputCaptureExtension;
 
+import static com.azure.spring.core.AzureSpringIdentifier.AZURE_SPRING_KEY_VAULT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(OutputCaptureExtension.class)
@@ -53,7 +54,7 @@ public class KeyVaultSecretUserAgentTest {
                 } catch (Exception exception) {
                     // Eat it because we just want the log.
                 }
-                assertThat(output).contains("User-Agent:az-sp-kv/");
+                assertThat(output).contains(String.format("User-Agent:%s", AZURE_SPRING_KEY_VAULT));
             });
     }
 }
