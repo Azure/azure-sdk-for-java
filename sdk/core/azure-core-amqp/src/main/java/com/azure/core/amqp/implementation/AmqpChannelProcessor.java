@@ -18,6 +18,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.Operators;
 
 import java.time.Duration;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.RejectedExecutionException;
@@ -26,6 +27,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 import java.util.function.Function;
 
+import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
+import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.INTERVAL_KEY;
 
 public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>, CoreSubscriber<T>, Disposable {
@@ -54,12 +57,30 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
     private volatile Disposable connectionSubscription;
     private volatile Disposable retrySubscription;
 
+    /**
+     * @deprecated Use constructor overload that does not take {@link ClientLogger}
+     */
+    @Deprecated
     public AmqpChannelProcessor(String fullyQualifiedNamespace, String entityPath,
         Function<T, Flux<AmqpEndpointState>> endpointStatesFunction, AmqpRetryPolicy retryPolicy, ClientLogger logger) {
         this.endpointStatesFunction = Objects.requireNonNull(endpointStatesFunction,
             "'endpointStates' cannot be null.");
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
         this.logger = Objects.requireNonNull(logger, "'logger' cannot be null.");
+
+        this.errorContext = new AmqpErrorContext(fullyQualifiedNamespace);
+    }
+
+
+    public AmqpChannelProcessor(String fullyQualifiedNamespace, String entityPath, String connectionId,
+                                Function<T, Flux<AmqpEndpointState>> endpointStatesFunction, AmqpRetryPolicy retryPolicy) {
+        this.endpointStatesFunction = Objects.requireNonNull(endpointStatesFunction,
+            "'endpointStates' cannot be null.");
+        this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
+
+        Map<String, Object> loggingContext = createContextWithConnectionId(connectionId);
+        loggingContext.put(ENTITY_PATH_KEY, Objects.requireNonNull(entityPath, "'entityPath' cannot be null."));
+        this.logger = new ClientLogger(AmqpChannelProcessor.class, loggingContext);
 
         this.errorContext = new AmqpErrorContext(fullyQualifiedNamespace);
     }

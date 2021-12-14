@@ -8,8 +8,6 @@ import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.implementation.handler.LinkHandlerTest;
-import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -58,8 +56,8 @@ class AmqpChannelProcessorTest {
     void setup() {
         mocksCloseable = MockitoAnnotations.openMocks(this);
 
-        channelProcessor = new AmqpChannelProcessor<>("connection-test", "test-path",
-            TestObject::getStates, retryPolicy, new ClientLogger(LinkHandlerTest.class));
+        channelProcessor = new AmqpChannelProcessor<>("namespace-test", "test-path", "connection-test",
+            TestObject::getStates, retryPolicy);
     }
 
     @AfterEach
