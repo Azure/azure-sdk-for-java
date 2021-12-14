@@ -9,13 +9,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import static com.azure.tools.checkstyle.checks.NoImplInPublicAPI.RETURN_TYPE_ERROR;
+
 public class NoImplInPublicApiTest extends AbstractModuleTestSupport {
-
-    private static final String DIRECT_THROW_ERROR_MESSAGE = "Directly throwing an exception is disallowed. Must "
-        + "throw through 'ClientLogger' API, either of 'logger.logExceptionAsError', 'logger.logThrowableAsError', "
-        + "'logger.logExceptionAsWarning', or 'logger.logThrowableAsWarning' where 'logger' is type of ClientLogger "
-        + "from Azure Core package.";
-
     private Checker checker;
 
     @Before
@@ -39,7 +35,21 @@ public class NoImplInPublicApiTest extends AbstractModuleTestSupport {
         verify(checker, getPath("StaticInitializer.java"), expected);
     }
 
-    private String expectedErrorMessage(int line, int column) {
-        return String.format("%d:%d: %s", line, column, DIRECT_THROW_ERROR_MESSAGE);
+    @Test
+    public void gettersNeedToCheckForImplementation() throws Exception {
+        String[] expected = {
+            expectedErrorMessage(40, 12, String.format(RETURN_TYPE_ERROR, "AnImplementationClass")),
+            expectedErrorMessage(44, 15, String.format(RETURN_TYPE_ERROR, "AnImplementationClass")),
+            expectedErrorMessage(57, 36, String.format(RETURN_TYPE_ERROR,
+                "com.azure.implementation.AnImplementationClass")),
+            expectedErrorMessage(61, 39, String.format(RETURN_TYPE_ERROR,
+                "com.azure.implementation.AnImplementationClass"))
+        };
+
+        verify(checker, getPath("Getters.java"), expected);
+    }
+
+    private String expectedErrorMessage(int line, int column, String error) {
+        return String.format("%d:%d: %s", line, column, error);
     }
 }

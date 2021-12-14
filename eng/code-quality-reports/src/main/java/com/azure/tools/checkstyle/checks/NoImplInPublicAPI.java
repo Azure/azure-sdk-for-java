@@ -8,25 +8,33 @@ import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.Scope;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.utils.CheckUtil;
 import com.puppycrawl.tools.checkstyle.utils.ScopeUtil;
 import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class NoImplInPublicAPI extends AbstractCheck {
-
-    private static final String COM_AZURE = "com.azure";
-    private static final String DOT_IMPLEMENTATION = ".implementation";
-    private static final String PARAM_TYPE_ERROR =
-        "\"%s\" class is in an implementation package, and it should not be used as a parameter type in public API. "
+    static final String PARAM_TYPE_ERROR =
+        "\"%s\" is in an implementation package and should not be used as a parameter type in public API. "
             + "Alternatively, it can be removed from the implementation package and made public API, after "
             + "appropriate API review.";
-    private static final String RETURN_TYPE_ERROR =
-        "\"%s\" class is in an implementation package, and it should not be a return type from public API. "
-            + "Alternatively, it can be removed from the implementation package and made public API.";
+    static final String RETURN_TYPE_ERROR =
+        "\"%s\" is in an implementation package and should not be a return type for public API. "
+            + "Alternatively, it can be removed from the implementation package and made public API, after "
+            + "appropriate API review.";
+
+    // Pattern that matches either an import statement or a fully-qualified type reference for being implementation.
+    private static final Pattern IMPLEMENTATION_CLASS = Pattern.compile("com\\.azure.*?\\.implementation.*?\\.(\\w+)");
 
     private Set<String> implementationClassSet = new HashSet<>();
+
+    // Flag that indicates if the current definition is contained in an implementation package.
+    // Definitions contained in implementation can be ignored as implementation doesn't have public API.
     private boolean inImplementationClass = false;
 
     @Override
@@ -51,6 +59,7 @@ public class NoImplInPublicAPI extends AbstractCheck {
     @Override
     public void beginTree(DetailAST root) {
         this.implementationClassSet.clear();
+        this.inImplementationClass = false;
     }
 
     @Override
@@ -60,29 +69,21 @@ public class NoImplInPublicAPI extends AbstractCheck {
                 String packageName = FullIdent.createFullIdentBelow(ast).getText();
                 inImplementationClass = packageName.contains("implementation");
                 break;
+
             case TokenTypes.IMPORT:
                 if (inImplementationClass) {
                     return;
                 }
 
                 String importClassPath = FullIdent.createFullIdentBelow(ast).getText();
-                if (importClassPath.startsWith(COM_AZURE)) {
-                    int idx = importClassPath.indexOf(DOT_IMPLEMENTATION);
-                    if (idx > -1) {
-                        String remainingPath = importClassPath.substring(idx + DOT_IMPLEMENTATION.length());
-                        if (remainingPath.length() > 1) {
-                            String className = remainingPath.substring(remainingPath.lastIndexOf(".") + 1);
-                            implementationClassSet.add(className);
-                        }
-                    }
+                Matcher implementationMatch = IMPLEMENTATION_CLASS.matcher(importClassPath);
+                if (implementationMatch.matches()) {
+                    implementationClassSet.add(implementationMatch.group(1));
                 }
                 break;
+
             case TokenTypes.METHOD_DEF:
                 if (inImplementationClass) {
-                    return;
-                }
-
-                if (implementationClassSet.isEmpty()) {
                     return;
                 }
 
@@ -100,22 +101,21 @@ public class NoImplInPublicAPI extends AbstractCheck {
                 Scope methodScope = ScopeUtil.getScopeFromMods(ast.findFirstToken(TokenTypes.MODIFIERS));
                 if (methodScope == Scope.PUBLIC || methodScope == Scope.PROTECTED) {
                     DetailAST typeAST = ast.findFirstToken(TokenTypes.TYPE);
-                    String returnType = typeAST.getFirstChild().getText();
-                    if (implementationClassSet.contains(returnType)) {
+                    String returnType = FullIdent.createFullIdentBelow(typeAST).getText();
+                    if (isImplementationType(returnType, implementationClassSet)) {
                         log(typeAST, String.format(RETURN_TYPE_ERROR, returnType));
                     }
 
+
                     DetailAST paramAST = ast.findFirstToken(TokenTypes.PARAMETERS);
 
-                    for (DetailAST curr = paramAST.getFirstChild(); curr != null; curr = curr.getNextSibling()) {
-                        if (curr.getType() == TokenTypes.PARAMETER_DEF) {
-                            DetailAST paramTypeAST = curr.findFirstToken(TokenTypes.TYPE);
-                            String paramType = paramTypeAST.getFirstChild().getText();
-                            if (implementationClassSet.contains(paramType)) {
-                                log(paramTypeAST, String.format(PARAM_TYPE_ERROR, paramType));
-                            }
+                    TokenUtil.forEachChild(paramAST, TokenTypes.PARAMETER_DEF, paramDefAst -> {
+                        DetailAST paramTypeAST = paramDefAst.findFirstToken(TokenTypes.TYPE);
+                        String paramType = FullIdent.createFullIdentBelow(paramTypeAST).getText();
+                        if (isImplementationType(paramType, implementationClassSet)) {
+                            log(paramTypeAST, String.format(PARAM_TYPE_ERROR, paramType));
                         }
-                    }
+                    });
                 }
                 break;
             default:
@@ -132,5 +132,15 @@ public class NoImplInPublicAPI extends AbstractCheck {
         }
 
         return false;
+    }
+
+    private static boolean isImplementationType(String type, Set<String> implementationImports) {
+        // Check if the type is contained in the known implementation class imports.
+        if (implementationImports.contains(type)) {
+            return true;
+        }
+
+        // If it isn't contained in the known imports check if it is a fully-qualified import.
+        return IMPLEMENTATION_CLASS.matcher(type).matches();
     }
 }
