@@ -275,29 +275,6 @@ public class PerfStressProgram {
         System.out.println();
     }
 
-//    private static void runLoop(PerfStressTest<?> test, int index, long endNanoTime) {
-//        long startNanoTime = System.nanoTime();
-//        while (System.nanoTime() < endNanoTime) {
-//            test.run();
-//            completedOperations[index]++;
-//            lastCompletionNanoTimes[index] = System.nanoTime() - startNanoTime;
-//        }
-//    }
-//
-//    private static Mono<Void> runLoopAsync(PerfStressTest<?> test, int index, long endNanoTime) {
-//        long startNanoTime = System.nanoTime();
-//
-//        return Flux.just(1)
-//            .repeat()
-//            .flatMap(i -> test.runAsync().then(Mono.just(1)), 1)
-//            .doOnNext(v -> {
-//                completedOperations[index]++;
-//                lastCompletionNanoTimes[index] = System.nanoTime() - startNanoTime;
-//            })
-//            .takeWhile(i -> System.nanoTime() < endNanoTime)
-//            .then();
-//    }
-
     private static Disposable printStatus(String header, Supplier<Object> status, boolean newLine, boolean printFinalStatus) {
         System.out.println(header);
 
