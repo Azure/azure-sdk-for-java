@@ -8,6 +8,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.SasAuthenticationDescriptor;
@@ -34,6 +35,11 @@ public class QueueServiceClientBuilderFactory extends AbstractAzureStorageClient
 
     public QueueServiceClientBuilderFactory(StorageQueueProperties queueProperties) {
         this.queueProperties = queueProperties;
+    }
+
+    @Override
+    protected BiConsumer<QueueServiceClientBuilder, ClientOptions> consumeClientOptions() {
+        return QueueServiceClientBuilder::clientOptions;
     }
 
     @Override
