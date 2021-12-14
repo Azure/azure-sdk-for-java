@@ -4,6 +4,10 @@
 
 package com.azure.spring.cloud.autoconfigure.user.agent.util;
 
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
+
 import java.lang.reflect.Field;
 
 public class UserAgentTestUtil {
@@ -18,5 +22,15 @@ public class UserAgentTestUtil {
         } catch (NoSuchFieldException | IllegalAccessException e) {
             return null;
         }
+    }
+
+    public static String getUserAgent(HttpPipeline pipeline) {
+        for (int i = 0; i < pipeline.getPolicyCount(); i++) {
+            HttpPipelinePolicy policy = pipeline.getPolicy(i);
+            if (policy instanceof UserAgentPolicy) {
+                return (String) getPrivateFieldValue(UserAgentPolicy.class, "userAgent", policy);
+            }
+        }
+        return null;
     }
 }

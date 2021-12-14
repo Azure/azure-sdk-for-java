@@ -3,11 +3,10 @@
 
 package com.azure.spring.cloud.autoconfigure.user.agent.http.storage;
 
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.storage.fileshare.AzureStorageFileShareAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.storage.fileshare.properties.AzureStorageFileShareProperties;
+import com.azure.spring.cloud.autoconfigure.user.agent.util.UserAgentTestUtil;
 import com.azure.spring.service.storage.fileshare.ShareServiceClientBuilderFactory;
 import com.azure.storage.file.share.ShareServiceAsyncClient;
 import com.azure.storage.file.share.ShareServiceClient;
@@ -17,8 +16,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
-
-import java.lang.reflect.Field;
 
 import static com.azure.spring.core.AzureSpringIdentifier.AZURE_SPRING_STORAGE_FILES;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -42,32 +39,10 @@ public class ShareServiceUserAgentTest {
                 assertThat(context).hasSingleBean(ShareServiceClientBuilder.class);
                 assertThat(context).hasSingleBean(ShareServiceClientBuilderFactory.class);
 
-                String userAgent = getUserAgent(context.getBean(ShareServiceClient.class));
+                ShareServiceClient client = context.getBean(ShareServiceClient.class);
+                String userAgent = UserAgentTestUtil.getUserAgent(client.getHttpPipeline());
                 Assertions.assertNotNull(userAgent);
                 Assertions.assertTrue(userAgent.contains(AZURE_SPRING_STORAGE_FILES));
             });
-    }
-
-    private String getUserAgent(ShareServiceClient client) {
-        UserAgentPolicy policy = getUserAgentPolicy(client);
-        Assertions.assertNotNull(policy);
-        Field privateStringField;
-        try {
-            privateStringField = UserAgentPolicy.class.getDeclaredField("userAgent");
-            privateStringField.setAccessible(true);
-            return (String) privateStringField.get(policy);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            return null;
-        }
-    }
-
-    private UserAgentPolicy getUserAgentPolicy(ShareServiceClient client) {
-        for (int i = 0; i < client.getHttpPipeline().getPolicyCount(); i++) {
-            HttpPipelinePolicy policy = client.getHttpPipeline().getPolicy(i);
-            if (policy instanceof UserAgentPolicy) {
-                return (UserAgentPolicy) policy;
-            }
-        }
-        return null;
     }
 }

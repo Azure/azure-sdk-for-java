@@ -3,11 +3,10 @@
 
 package com.azure.spring.cloud.autoconfigure.user.agent.http.storage;
 
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.storage.blob.AzureStorageBlobAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.storage.blob.properties.AzureStorageBlobProperties;
+import com.azure.spring.cloud.autoconfigure.user.agent.util.UserAgentTestUtil;
 import com.azure.spring.service.storage.blob.BlobServiceClientBuilderFactory;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClient;
@@ -16,8 +15,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
-
-import java.lang.reflect.Field;
 
 import static com.azure.spring.core.AzureSpringIdentifier.AZURE_SPRING_STORAGE_BLOB;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -40,32 +37,10 @@ public class BlobServiceUserAgentTest {
                 assertThat(context).hasSingleBean(BlobServiceAsyncClient.class);
                 assertThat(context).hasSingleBean(BlobServiceClient.class);
 
-                String userAgent = getUserAgent(context.getBean(BlobServiceClient.class));
+                BlobServiceClient client = context.getBean(BlobServiceClient.class);
+                String userAgent = UserAgentTestUtil.getUserAgent(client.getHttpPipeline());
                 Assertions.assertNotNull(userAgent);
                 Assertions.assertTrue(userAgent.contains(AZURE_SPRING_STORAGE_BLOB));
             });
-    }
-
-    private String getUserAgent(BlobServiceClient client) {
-        UserAgentPolicy policy = getUserAgentPolicy(client);
-        Assertions.assertNotNull(policy);
-        Field privateStringField;
-        try {
-            privateStringField = UserAgentPolicy.class.getDeclaredField("userAgent");
-            privateStringField.setAccessible(true);
-            return (String) privateStringField.get(policy);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            return null;
-        }
-    }
-
-    private UserAgentPolicy getUserAgentPolicy(BlobServiceClient client) {
-        for (int i = 0; i < client.getHttpPipeline().getPolicyCount(); i++) {
-            HttpPipelinePolicy policy = client.getHttpPipeline().getPolicy(i);
-            if (policy instanceof UserAgentPolicy) {
-                return (UserAgentPolicy) policy;
-            }
-        }
-        return null;
     }
 }

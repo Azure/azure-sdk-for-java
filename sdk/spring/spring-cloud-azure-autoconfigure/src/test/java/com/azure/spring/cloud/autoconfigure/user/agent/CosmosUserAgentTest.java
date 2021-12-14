@@ -9,13 +9,12 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.spring.cloud.autoconfigure.cosmos.AzureCosmosAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.cosmos.properties.AzureCosmosProperties;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.user.agent.util.UserAgentTestUtil;
 import com.azure.spring.service.cosmos.CosmosClientBuilderFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
-
-import java.lang.reflect.Field;
 
 import static com.azure.spring.core.AzureSpringIdentifier.AZURE_SPRING_COSMOS;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -41,21 +40,11 @@ class CosmosUserAgentTest {
                 assertThat(context).hasSingleBean(CosmosClient.class);
                 assertThat(context).hasSingleBean(CosmosAsyncClient.class);
 
-                String userAgent = getUserAgent(context.getBean(CosmosClientBuilder.class));
+                CosmosClientBuilder builder = context.getBean(CosmosClientBuilder.class);
+                String userAgent = (String) UserAgentTestUtil.getPrivateFieldValue(CosmosClientBuilder.class, "userAgentSuffix", builder);
                 Assertions.assertNotNull(userAgent);
                 Assertions.assertEquals(AZURE_SPRING_COSMOS, userAgent);
             });
-    }
-
-    private String getUserAgent(CosmosClientBuilder builder) {
-        Field privateStringField;
-        try {
-            privateStringField = CosmosClientBuilder.class.getDeclaredField("userAgentSuffix");
-            privateStringField.setAccessible(true);
-            return (String) privateStringField.get(builder);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            return null;
-        }
     }
 
 }
