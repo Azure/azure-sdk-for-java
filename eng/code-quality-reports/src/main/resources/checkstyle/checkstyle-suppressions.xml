@@ -237,12 +237,6 @@ the main ServiceBusClientBuilder. -->
             files="com.azure.core.util.serializer.JacksonAdapter"/>
   <suppress checks="com.azure.tools.checkstyle.checks.JavadocInlineTag"
             files="com.azure.core.util.serializer.SerializerAdapter"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI"
-            files="com.azure.core.http.rest.SwaggerMethodParser"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI"
-            files="com.azure.core.util.serializer.UnixTimeSerializer"/> <!-- FIXME this is a bug in the checkstyle rule - the class itself is non-public, so it doesn't matter that the method returns an implementation type -->
-  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI"
-            files="com.azure.core.util.serializer.UnixTimeDeserializer"/> <!-- FIXME, same reason as above -->
 
   <!-- JavadocInlineTagCheck Suppression for now, which need code owner's attention -->
   <suppress checks="com.azure.tools.checkstyle.checks.JavadocInlineTagCheck"

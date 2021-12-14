@@ -27,6 +27,7 @@ public class NoImplInPublicAPI extends AbstractCheck {
             + "Alternatively, it can be removed from the implementation package and made public API.";
 
     private Set<String> implementationClassSet = new HashSet<>();
+    private boolean inImplementationClass = false;
 
     @Override
     public int[] getDefaultTokens() {
@@ -55,7 +56,15 @@ public class NoImplInPublicAPI extends AbstractCheck {
     @Override
     public void visitToken(DetailAST ast) {
         switch (ast.getType()) {
+            case TokenTypes.PACKAGE_DEF:
+                String packageName = FullIdent.createFullIdentBelow(ast).getText();
+                inImplementationClass = packageName.contains("implementation");
+                break;
             case TokenTypes.IMPORT:
+                if (inImplementationClass) {
+                    return;
+                }
+
                 String importClassPath = FullIdent.createFullIdentBelow(ast).getText();
                 if (importClassPath.startsWith(COM_AZURE)) {
                     int idx = importClassPath.indexOf(DOT_IMPLEMENTATION);
@@ -69,16 +78,27 @@ public class NoImplInPublicAPI extends AbstractCheck {
                 }
                 break;
             case TokenTypes.METHOD_DEF:
+                if (inImplementationClass) {
+                    return;
+                }
+
                 if (implementationClassSet.isEmpty()) {
                     return;
                 }
 
+                // Static initializers aren't part of public API.
                 if (isInStaticInitializer(ast)) {
                     return;
                 }
 
-                Scope scope = ScopeUtil.getScopeFromMods(ast.findFirstToken(TokenTypes.MODIFIERS));
-                if (scope == Scope.PUBLIC || scope == Scope.PROTECTED) {
+                // If the method isn't contained in a public or protected scope skip it.
+                Scope surroundingScope = ScopeUtil.getSurroundingScope(ast);
+                if (surroundingScope != Scope.PUBLIC && surroundingScope != Scope.PROTECTED) {
+                    return;
+                }
+
+                Scope methodScope = ScopeUtil.getScopeFromMods(ast.findFirstToken(TokenTypes.MODIFIERS));
+                if (methodScope == Scope.PUBLIC || methodScope == Scope.PROTECTED) {
                     DetailAST typeAST = ast.findFirstToken(TokenTypes.TYPE);
                     String returnType = typeAST.getFirstChild().getText();
                     if (implementationClassSet.contains(returnType)) {
