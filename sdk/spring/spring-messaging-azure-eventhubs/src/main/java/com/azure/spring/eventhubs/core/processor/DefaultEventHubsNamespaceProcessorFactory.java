@@ -72,7 +72,7 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
     /**
      * Construct a factory with the provided {@link CheckpointStore} and processor {@link PropertiesSupplier}.
      * @param checkpointStore the checkpoint store.
-     * @param supplier the {@link PropertiesSupplier} to supply {@link ProcessorProperties} for each event hub entity.
+     * @param supplier the {@link PropertiesSupplier} to supply {@link ProcessorProperties} for each event hub.
      */
     public DefaultEventHubsNamespaceProcessorFactory(CheckpointStore checkpointStore,
                                                      PropertiesSupplier<Tuple2<String, String>,
