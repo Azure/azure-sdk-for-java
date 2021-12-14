@@ -104,7 +104,7 @@ CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(
 ### Create a credential with proactive refreshing and refresh time span before token expiry
 
 Optionally, you can adjust the time span before token expiry that will trigger the proactive refreshing of the token. For example, if the proactive refreshing is enabled ('refreshProactively' is true), setting the time span to 5 minutes means that 5 minutes before the cached token expires, the proactive refresh will request a new token by calling the 'tokenRefresher' callback.
-The default value is 10 minutes.
+The default value is 4.5 minutes to avoid MSAL compatibility issues.
 
 ```java
 String token = System.getenv("COMMUNICATION_SERVICES_USER_TOKEN");

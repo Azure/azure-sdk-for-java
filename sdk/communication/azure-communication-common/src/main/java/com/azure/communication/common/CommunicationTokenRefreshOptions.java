@@ -47,7 +47,7 @@ public final class CommunicationTokenRefreshOptions {
      * @param tokenRefresher The callback function that acquires a fresh token from the Communication Identity API, e.g. by calling the CommunicationIdentityClient
      * @param refreshProactively Determines whether the token should be proactively renewed prior to its expiry or on demand.
      * @param initialToken The optional serialized JWT token
-     * @param refreshIntervalBeforeTokenExpiry The time span before token expiry that causes the tokenRefresher to be called if refreshProactively is true. For example, setting it to 5 minutes means that 5 minutes before the cached token expires, the proactive refresh will request a new token. The default value is 10 minutes.
+     * @param refreshIntervalBeforeTokenExpiry The time span before token expiry that causes the tokenRefresher to be called if refreshProactively is true. For example, setting it to 5 minutes means that 5 minutes before the cached token expires, the proactive refresh will request a new token. The default value is 4.5 minutes.
      */
     public CommunicationTokenRefreshOptions(Supplier<Mono<String>> tokenRefresher, boolean refreshProactively, String initialToken, Duration refreshIntervalBeforeTokenExpiry) {
         this.tokenRefresher = tokenRefresher;
@@ -61,7 +61,7 @@ public final class CommunicationTokenRefreshOptions {
      *
      * @param tokenRefresher The callback function that acquires a fresh token from the Communication Identity API, e.g. by calling the CommunicationIdentityClient
      * @param refreshProactively Determines whether the token should be proactively renewed prior to its expiry or on demand.
-     * @param refreshIntervalBeforeTokenExpiry The time span before token expiry that causes the tokenRefresher to be called if refreshProactively is true. For example, setting it to 5 minutes means that 5 minutes before the cached token expires, the proactive refresh will request a new token. The default value is 10 minutes.
+     * @param refreshIntervalBeforeTokenExpiry The time span before token expiry that causes the tokenRefresher to be called if refreshProactively is true. For example, setting it to 5 minutes means that 5 minutes before the cached token expires, the proactive refresh will request a new token. The default value is 4.5 minutes.
      */
     public CommunicationTokenRefreshOptions(Supplier<Mono<String>> tokenRefresher, boolean refreshProactively, Duration refreshIntervalBeforeTokenExpiry) {
         this(tokenRefresher, refreshProactively, null, refreshIntervalBeforeTokenExpiry);
