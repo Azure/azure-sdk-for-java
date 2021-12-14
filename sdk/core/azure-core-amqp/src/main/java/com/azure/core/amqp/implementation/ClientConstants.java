@@ -23,6 +23,7 @@ public final class ClientConstants {
     public static final String EMIT_RESULT_KEY = "emitResult";
     public static final String SIGNAL_TYPE_KEY = "signalType";
     public static final String HOSTNAME_KEY = "hostName";
+    public static final String INTERVAL_KEY = "interval_ms";
 
     /**
      * The default maximum allowable size, in bytes, for a batch to be sent.

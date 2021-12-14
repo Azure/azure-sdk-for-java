@@ -237,8 +237,7 @@ public class RequestResponseChannel implements AsyncCloseable {
             .timeout(retryOptions.getTryTimeout())
             .onErrorResume(TimeoutException.class, error -> {
                 return Mono.fromRunnable(() -> {
-                    logger.atInfo()
-                        .log("Timed out waiting for RequestResponseChannel to complete closing. Manually closing.");
+                    logger.info("Timed out waiting for RequestResponseChannel to complete closing. Manually closing.");
 
                     onTerminalState("SendLinkHandler");
                     onTerminalState("ReceiveLinkHandler");

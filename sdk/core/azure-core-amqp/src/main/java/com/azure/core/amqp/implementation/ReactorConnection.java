@@ -139,8 +139,8 @@ public class ReactorConnection implements AmqpConnection {
                 if (isDisposed.getAndSet(true)) {
                     logger.verbose("Connection was already disposed: Error occurred while connection was starting.", error);
                 } else {
-                    closeAsync(new AmqpShutdownSignal(false, false, String.format(
-                        "Error occurred while connection was starting. Error: %s", error))).subscribe();
+                    closeAsync(new AmqpShutdownSignal(false, false,
+                        "Error occurred while connection was starting. Error: " + error)).subscribe();
                 }
             });
 
@@ -393,6 +393,8 @@ public class ReactorConnection implements AmqpConnection {
     protected AmqpChannelProcessor<RequestResponseChannel> createRequestResponseChannel(String sessionName,
         String linkName, String entityPath) {
 
+        Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
+
         final Flux<RequestResponseChannel> createChannel = createSession(sessionName)
             .cast(ReactorSession.class)
             .map(reactorSession -> new RequestResponseChannel(this, getId(), getFullyQualifiedNamespace(), linkName,
@@ -407,7 +409,7 @@ public class ReactorConnection implements AmqpConnection {
             .repeat();
 
         Map<String, Object> loggingContext = createContextWithConnectionId(connectionId);
-        loggingContext.put(ENTITY_PATH_KEY, Objects.requireNonNull(entityPath, "'entityPath' cannot be null."));
+        loggingContext.put(ENTITY_PATH_KEY, entityPath);
 
         return createChannel
             .subscribeWith(new AmqpChannelProcessor<>(connectionId, entityPath,
@@ -453,7 +455,7 @@ public class ReactorConnection implements AmqpConnection {
                 try {
                     dispatcher.invoke(() -> closeConnectionWork());
                 } catch (IOException e) {
-                    logger.warning("IOException while scheduling closeConnection work. Manually disposing", e);
+                    logger.warning("IOException while scheduling closeConnection work. Manually disposing.", e);
 
                     closeConnectionWork();
                 } catch (RejectedExecutionException e) {

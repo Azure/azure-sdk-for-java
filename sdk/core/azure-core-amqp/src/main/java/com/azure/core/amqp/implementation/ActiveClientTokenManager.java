@@ -20,6 +20,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addSignalTypeAndResult;
+import static com.azure.core.amqp.implementation.ClientConstants.INTERVAL_KEY;
 
 /**
  * Manages the re-authorization of the client to the token audience against the CBS node.
@@ -143,7 +144,8 @@ public class ActiveClientTokenManager implements TokenManager {
 
                     logger.atError()
                         .addKeyValue("scopes", scopes)
-                        .log("Error is transient. Rescheduling authorization task at interval {} ms", lastRefresh.toMillis(), amqpException);
+                        .addKeyValue(INTERVAL_KEY, interval)
+                        .log("Error is transient. Rescheduling authorization task.", amqpException);
 
                     durationSource.emitNext(lastRefresh, (signalType, emitResult) -> {
                         addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)
@@ -156,7 +158,8 @@ public class ActiveClientTokenManager implements TokenManager {
             .subscribe(interval -> {
                 logger.atVerbose()
                     .addKeyValue("scopes", scopes)
-                    .log("Authorization successful. Refreshing token in {} ms.", interval);
+                    .addKeyValue(INTERVAL_KEY, interval)
+                    .log("Authorization successful. Refreshing token.");
 
                 authorizationResults.emitNext(AmqpResponseCode.ACCEPTED, (signalType, emitResult) -> {
                     addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)

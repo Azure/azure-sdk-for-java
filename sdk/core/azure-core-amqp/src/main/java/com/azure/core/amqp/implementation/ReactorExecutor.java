@@ -49,7 +49,6 @@ class ReactorExecutor implements AsyncCloseable {
         this.timeout = Objects.requireNonNull(timeout, "'timeout' cannot be null.");
         this.exceptionHandler = Objects.requireNonNull(exceptionHandler, "'exceptionHandler' cannot be null.");
         this.hostname = Objects.requireNonNull(hostname, "'hostname' cannot be null.");
-        Objects.requireNonNull(connectionId, "'connectionId' cannot be null.");
         this.logger = new ClientLogger(ReactorExecutor.class, createContextWithConnectionId(connectionId));
     }
 

@@ -23,14 +23,18 @@ import static com.azure.core.amqp.implementation.ClientConstants.SIGNAL_TYPE_KEY
 /**
  * Utils for contextual logging.
  */
-public class AmqpLoggingUtils {
+public final class AmqpLoggingUtils {
+
+    private AmqpLoggingUtils() {
+    }
 
     /**
      * Creates logging context with connectionId.
      */
     public static Map<String, Object> createContextWithConnectionId(String connectionId) {
         Objects.requireNonNull(connectionId, "'connectionId' cannot be null.");
-        Map<String, Object> globalLoggingContext = new HashMap<>();
+        // caller should be able to add more context, please keep the map mutable.
+        Map<String, Object> globalLoggingContext = new HashMap<>(1);
         globalLoggingContext.put(CONNECTION_ID_KEY, connectionId);
 
         return globalLoggingContext;

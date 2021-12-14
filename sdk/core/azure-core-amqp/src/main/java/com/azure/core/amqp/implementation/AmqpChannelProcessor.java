@@ -26,11 +26,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 import java.util.function.Function;
 
+import static com.azure.core.amqp.implementation.ClientConstants.INTERVAL_KEY;
+
 public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>, CoreSubscriber<T>, Disposable {
     @SuppressWarnings("rawtypes")
     private static final AtomicReferenceFieldUpdater<AmqpChannelProcessor, Subscription> UPSTREAM =
         AtomicReferenceFieldUpdater.newUpdater(AmqpChannelProcessor.class, Subscription.class,
             "upstream");
+
+    private static final String RETRY_NUMBER_KEY = "retry";
 
     private final ClientLogger logger;
     private final AtomicBoolean isDisposed = new AtomicBoolean();
@@ -55,11 +59,7 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
         this.endpointStatesFunction = Objects.requireNonNull(endpointStatesFunction,
             "'endpointStates' cannot be null.");
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
-
-        /*Map<String, Object> loggingContext = new HashMap<>();
-        loggingContext.put(FULLY_QUALIFIED_NAMESPACE_KEY, Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null."));
-        loggingContext.put(ENTITY_PATH_KEY, Objects.requireNonNull(entityPath, "'entityPath' cannot be null."));*/
-        this.logger = Objects.requireNonNull(logger, "'retryPolicy' cannot be null.");
+        this.logger = Objects.requireNonNull(logger, "'logger' cannot be null.");
 
         this.errorContext = new AmqpErrorContext(fullyQualifiedNamespace);
     }
@@ -178,20 +178,29 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
                 return;
             }
 
-            logger.info("Retry #{}. Transient error occurred. Retrying after {} ms.", attempts, retryInterval.toMillis(), throwable);
+            logger.atInfo()
+                .addKeyValue(RETRY_NUMBER_KEY, attempts)
+                .addKeyValue(INTERVAL_KEY, retryInterval.toMillis())
+                .log("Transient error occurred. Retrying.", throwable);
 
             retrySubscription = Mono.delay(retryInterval).subscribe(i -> {
                 if (isDisposed()) {
-                    logger.info("Retry #{}. Not requesting from upstream. Processor is disposed.", attempts);
+                    logger.atInfo()
+                        .addKeyValue(RETRY_NUMBER_KEY, attempts)
+                        .log("Not requesting from upstream. Processor is disposed.");
                 } else {
-                    logger.info("Retry #{}. Requesting from upstream.", attempts);
+                    logger.atInfo()
+                        .addKeyValue(RETRY_NUMBER_KEY, attempts)
+                        .log("Requesting from upstream.");
 
                     requestUpstream();
                     isRetryPending.set(false);
                 }
             });
         } else {
-            logger.warning("Retry #{}. Retry attempts exhausted or exception was not retriable.", attempts, throwable);
+            logger.atWarning()
+                .addKeyValue(RETRY_NUMBER_KEY, attempts)
+                .log("Retry attempts exhausted or exception was not retriable.", throwable);
 
             lastError = throwable;
             isDisposed.set(true);

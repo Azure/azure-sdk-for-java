@@ -72,6 +72,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  */
 class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
     private static final String DELIVERY_TAG_KEY = "deliveryTag";
+    private static final String PENDING_SENDS_SIZE_KEY = "pending_sends_size";
     private final String entityPath;
     private final Sender sender;
     private final SendLinkHandler handler;
@@ -677,7 +678,9 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
             if (isDisposed.getAndSet(true)) {
                 logger.verbose("This was already disposed. Dropping error.");
             } else {
-                logger.verbose("Disposing of '{}' pending sends with error.", pendingSendsMap.size());
+                logger.atVerbose()
+                    .addKeyValue(PENDING_SENDS_SIZE_KEY, () -> String.valueOf(pendingSendsMap.size()))
+                    .log("Disposing pending sends with error.");
             }
 
             pendingSendsMap.forEach((key, value) -> value.error(error));
@@ -697,7 +700,9 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
             if (isDisposed.getAndSet(true)) {
                 logger.verbose("This was already disposed.");
             } else {
-                logger.verbose("Disposing of '{}' pending sends.", pendingSendsMap.size());
+                logger.atVerbose()
+                    .addKeyValue(PENDING_SENDS_SIZE_KEY, () -> String.valueOf(pendingSendsMap.size()))
+                    .log("Disposing pending sends.");
             }
 
             pendingSendsMap.forEach((key, value) -> value.error(new AmqpException(true, message, context)));
