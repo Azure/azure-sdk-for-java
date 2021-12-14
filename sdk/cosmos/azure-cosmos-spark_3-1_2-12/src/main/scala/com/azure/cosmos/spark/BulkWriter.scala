@@ -573,8 +573,13 @@ private object BulkWriter {
 
   val emitFailureHandler: EmitFailureHandler =
     (signalType, emitResult) => {
-      log.logDebug(s"emitFailureHandler - Signal: ${signalType.toString}, Result: ${emitResult.toString}")
-      if (emitResult.equals(EmitResult.FAIL_NON_SERIALIZED)) true else false
+      if (emitResult.equals(EmitResult.FAIL_NON_SERIALIZED)) {
+        log.logDebug(s"emitFailureHandler - Signal: ${signalType.toString}, Result: ${emitResult.toString}")
+        true
+      } else {
+        log.logError(s"emitFailureHandler - Signal: ${signalType.toString}, Result: ${emitResult.toString}")
+        false
+      }
     }
 
   val bulkProcessingThresholds = new CosmosBulkExecutionThresholdsState()

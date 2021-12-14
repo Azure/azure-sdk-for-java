@@ -781,11 +781,13 @@ public final class BulkExecutor<TContext> {
 
         @Override
         public boolean onEmitFailure(SignalType signalType, Sinks.EmitResult emitResult) {
-            logger.debug("SerializedEmitFailureHandler.onEmitFailure - Signal:{}, Result: {}", signalType, emitResult);
             if (emitResult.equals(Sinks.EmitResult.FAIL_NON_SERIALIZED)) {
+                logger.debug("SerializedEmitFailureHandler.onEmitFailure - Signal:{}, Result: {}", signalType, emitResult);
+
                 return true;
             }
 
+            logger.error("SerializedEmitFailureHandler.onEmitFailure - Signal:{}, Result: {}", signalType, emitResult);
             return false;
         }
     }
