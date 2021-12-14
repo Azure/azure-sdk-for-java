@@ -6,6 +6,8 @@ package com.azure.core.http;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -121,7 +123,7 @@ public class ProxyOptionsTests {
             Arguments.of(setJavaSystemProxyPrerequisiteToTrue(
                 new Configuration().put(Configuration.PROPERTY_HTTPS_PROXY, AZURE_HTTPS_PROXY_HOST_ONLY)
                     .put(Configuration.PROPERTY_NO_PROXY, NON_PROXY_HOSTS)),
-                PROXY_HOST, 443, null, null, Pattern.quote(NON_PROXY_HOSTS)),
+                PROXY_HOST, 443, null, null, "(" + NON_PROXY_HOSTS + ")"),
 
             // Basic Azure HTTP proxy.
             Arguments.of(setJavaSystemProxyPrerequisiteToTrue(
@@ -142,7 +144,7 @@ public class ProxyOptionsTests {
             Arguments.of(setJavaSystemProxyPrerequisiteToTrue(
                 new Configuration().put(Configuration.PROPERTY_HTTP_PROXY, AZURE_HTTP_PROXY_HOST_ONLY)
                     .put(Configuration.PROPERTY_NO_PROXY, NON_PROXY_HOSTS)),
-                PROXY_HOST, 80, null, null, Pattern.quote(NON_PROXY_HOSTS)),
+                PROXY_HOST, 80, null, null, "(" + NON_PROXY_HOSTS + ")"),
 
             /*
              * Setting up tests for loading the Java environment proxy configurations takes additional work as each
@@ -165,7 +167,7 @@ public class ProxyOptionsTests {
 
             // Java HTTPS proxy with non-proxying hosts.
             Arguments.of(createJavaConfiguration(443, null, null, NON_PROXY_HOSTS, true),
-                PROXY_HOST, 443, null, null, Pattern.quote(NON_PROXY_HOSTS)),
+                PROXY_HOST, 443, null, null, "(" + NON_PROXY_HOSTS + ")"),
 
             // Basic Java HTTP proxy.
             Arguments.of(createJavaConfiguration(80, null, null, null, false),
@@ -181,7 +183,7 @@ public class ProxyOptionsTests {
 
             // Java HTTP proxy with non-proxying hosts.
             Arguments.of(createJavaConfiguration(80, null, null, NON_PROXY_HOSTS, false),
-                PROXY_HOST, 80, null, null, Pattern.quote(NON_PROXY_HOSTS))
+                PROXY_HOST, 80, null, null, "(" + NON_PROXY_HOSTS + ")")
         );
     }
 
@@ -250,8 +252,10 @@ public class ProxyOptionsTests {
 
     @ParameterizedTest
     @MethodSource("nonProxyHostsSupplier")
+    @Execution(ExecutionMode.SAME_THREAD)
     public void nonProxyHosts(Pattern pattern, String host, boolean expected) {
-        assertEquals(expected, pattern.matcher(host).find());
+        assertEquals(expected, pattern.matcher(host).find(), () -> String.format(
+            "Expected Pattern '%s' to match '%s'.", pattern.pattern(), host));
     }
 
     private static Stream<Arguments> nonProxyHostsSupplier() {
@@ -314,6 +318,20 @@ public class ProxyOptionsTests {
         }
 
         return argumentsList.stream();
+    }
+
+    @Test
+    public void sanitizeNoProxyDoesNotSplitEscapedCommas() {
+        String noProxy = "noproxy\\,withescapedcomma";
+
+        assertEquals("(" + noProxy + ")", ProxyOptions.sanitizeNoProxy(noProxy));
+    }
+
+    @Test
+    public void sanitizeJavaHttpNonProxyHostsDoesNotSplitEscapedPipes() {
+        String nonProxyHosts = "nonproxyhosts\\|withescapedpipe";
+
+        assertEquals("(" + nonProxyHosts + ")", ProxyOptions.sanitizeNoProxy(nonProxyHosts));
     }
 
     private static Configuration setJavaSystemProxyPrerequisiteToTrue(Configuration configuration) {

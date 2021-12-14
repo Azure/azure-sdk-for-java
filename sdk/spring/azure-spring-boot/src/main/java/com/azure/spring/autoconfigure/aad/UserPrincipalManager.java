@@ -159,6 +159,12 @@ public class UserPrincipalManager {
         return userPrincipal;
     }
 
+    /**
+     * Whether the token was issued by AAD.
+     *
+     * @param token the token
+     * @return whether the token was issued by AAD
+     */
     public boolean isTokenIssuedByAAD(String token) {
         try {
             final JWT jwt = JWTParser.parse(token);

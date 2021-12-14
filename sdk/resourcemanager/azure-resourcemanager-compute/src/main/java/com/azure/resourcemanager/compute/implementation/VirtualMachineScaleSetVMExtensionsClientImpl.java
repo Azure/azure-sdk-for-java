@@ -1039,7 +1039,8 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
             deleteWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

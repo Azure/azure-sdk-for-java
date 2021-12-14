@@ -6,6 +6,7 @@ package com.azure.analytics.purview.catalog.implementation;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
+import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -59,10 +60,12 @@ public final class GlossariesImpl {
     @ServiceInterface(name = "PurviewCatalogClient")
     private interface GlossariesService {
         @Get("/atlas/v2/glossary")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> listGlossaries(
                 @HostParam("Endpoint") String endpoint, RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/glossary")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> createGlossary(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData atlasGlossary,
@@ -70,6 +73,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Post("/atlas/v2/glossary/categories")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> createGlossaryCategories(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData glossaryCategory,
@@ -77,6 +81,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Post("/atlas/v2/glossary/category")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> createGlossaryCategory(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData glossaryCategory,
@@ -84,6 +89,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Get("/atlas/v2/glossary/category/{categoryGuid}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> getGlossaryCategory(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("categoryGuid") String categoryGuid,
@@ -91,6 +97,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Put("/atlas/v2/glossary/category/{categoryGuid}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> updateGlossaryCategory(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("categoryGuid") String categoryGuid,
@@ -99,6 +106,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Delete("/atlas/v2/glossary/category/{categoryGuid}")
+        @ExpectedResponses({204})
         Mono<Response<Void>> deleteGlossaryCategory(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("categoryGuid") String categoryGuid,
@@ -106,6 +114,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Put("/atlas/v2/glossary/category/{categoryGuid}/partial")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> partialUpdateGlossaryCategory(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("categoryGuid") String categoryGuid,
@@ -114,6 +123,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Get("/atlas/v2/glossary/category/{categoryGuid}/related")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> listRelatedCategories(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("categoryGuid") String categoryGuid,
@@ -121,6 +131,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Get("/atlas/v2/glossary/category/{categoryGuid}/terms")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> listCategoryTerms(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("categoryGuid") String categoryGuid,
@@ -128,6 +139,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Post("/atlas/v2/glossary/term")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> createGlossaryTerm(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData glossaryTerm,
@@ -135,6 +147,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Get("/atlas/v2/glossary/term/{termGuid}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> getGlossaryTerm(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("termGuid") String termGuid,
@@ -142,6 +155,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Put("/atlas/v2/glossary/term/{termGuid}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> updateGlossaryTerm(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("termGuid") String termGuid,
@@ -150,6 +164,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Delete("/atlas/v2/glossary/term/{termGuid}")
+        @ExpectedResponses({204})
         Mono<Response<Void>> deleteGlossaryTerm(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("termGuid") String termGuid,
@@ -157,6 +172,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Put("/atlas/v2/glossary/term/{termGuid}/partial")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> partialUpdateGlossaryTerm(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("termGuid") String termGuid,
@@ -165,6 +181,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Post("/atlas/v2/glossary/terms")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> createGlossaryTerms(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData glossaryTerm,
@@ -172,6 +189,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Get("/atlas/v2/glossary/terms/{termGuid}/assignedEntities")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> getEntitiesAssignedWithTerm(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("termGuid") String termGuid,
@@ -179,6 +197,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Post("/atlas/v2/glossary/terms/{termGuid}/assignedEntities")
+        @ExpectedResponses({204})
         Mono<Response<Void>> assignTermToEntities(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("termGuid") String termGuid,
@@ -187,6 +206,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Put("/atlas/v2/glossary/terms/{termGuid}/assignedEntities")
+        @ExpectedResponses({204})
         Mono<Response<Void>> removeTermAssignmentFromEntities(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("termGuid") String termGuid,
@@ -195,6 +215,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Delete("/atlas/v2/glossary/terms/{termGuid}/assignedEntities")
+        @ExpectedResponses({204})
         Mono<Response<Void>> deleteTermAssignmentFromEntities(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("termGuid") String termGuid,
@@ -203,6 +224,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Get("/atlas/v2/glossary/terms/{termGuid}/related")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> listRelatedTerms(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("termGuid") String termGuid,
@@ -210,6 +232,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Get("/atlas/v2/glossary/{glossaryGuid}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> getGlossary(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryGuid") String glossaryGuid,
@@ -217,6 +240,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Put("/atlas/v2/glossary/{glossaryGuid}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> updateGlossary(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryGuid") String glossaryGuid,
@@ -225,6 +249,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Delete("/atlas/v2/glossary/{glossaryGuid}")
+        @ExpectedResponses({204})
         Mono<Response<Void>> deleteGlossary(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryGuid") String glossaryGuid,
@@ -232,6 +257,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Get("/atlas/v2/glossary/{glossaryGuid}/categories")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> listGlossaryCategories(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryGuid") String glossaryGuid,
@@ -239,6 +265,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Get("/atlas/v2/glossary/{glossaryGuid}/categories/headers")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> listGlossaryCategoriesHeaders(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryGuid") String glossaryGuid,
@@ -246,6 +273,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Get("/atlas/v2/glossary/{glossaryGuid}/detailed")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> getDetailedGlossary(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryGuid") String glossaryGuid,
@@ -253,6 +281,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Put("/atlas/v2/glossary/{glossaryGuid}/partial")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> partialUpdateGlossary(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryGuid") String glossaryGuid,
@@ -261,6 +290,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Get("/atlas/v2/glossary/{glossaryGuid}/terms")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> listGlossaryTerms(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryGuid") String glossaryGuid,
@@ -268,6 +298,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Get("/atlas/v2/glossary/{glossaryGuid}/terms/headers")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> listGlossaryTermHeaders(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryGuid") String glossaryGuid,
@@ -276,6 +307,7 @@ public final class GlossariesImpl {
 
         // @Multipart not supported by RestProxy
         @Post("/glossary/{glossaryGuid}/terms/import")
+        @ExpectedResponses({202})
         Mono<Response<BinaryData>> importGlossaryTermsViaCsv(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryGuid") String glossaryGuid,
@@ -286,6 +318,7 @@ public final class GlossariesImpl {
 
         // @Multipart not supported by RestProxy
         @Post("/glossary/name/{glossaryName}/terms/import")
+        @ExpectedResponses({202})
         Mono<Response<BinaryData>> importGlossaryTermsViaCsvByGlossaryName(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryName") String glossaryName,
@@ -295,6 +328,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Get("/glossary/terms/import/{operationGuid}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> getImportCsvOperationStatus(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("operationGuid") String operationGuid,
@@ -303,6 +337,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Post("/glossary/{glossaryGuid}/terms/export")
+        @ExpectedResponses({200})
         Mono<Response<Flux<ByteBuffer>>> exportGlossaryTermsAsCsv(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryGuid") String glossaryGuid,
@@ -312,6 +347,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Get("/glossary/name/{glossaryName}/terms")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> listTermsByGlossaryName(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryName") String glossaryName,
@@ -396,8 +432,7 @@ public final class GlossariesImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return all glossaries registered with Atlas.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -483,8 +518,7 @@ public final class GlossariesImpl {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return all glossaries registered with Atlas.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -568,8 +602,7 @@ public final class GlossariesImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return all glossaries registered with Atlas.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -701,8 +734,7 @@ public final class GlossariesImpl {
      * @param atlasGlossary Glossary definition, terms &amp;amp; categories can be anchored to a glossary. Using the
      *     anchor attribute when creating the Term/Category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -837,8 +869,7 @@ public final class GlossariesImpl {
      *     anchor attribute when creating the Term/Category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -971,8 +1002,7 @@ public final class GlossariesImpl {
      * @param atlasGlossary Glossary definition, terms &amp;amp; categories can be anchored to a glossary. Using the
      *     anchor attribute when creating the Term/Category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1115,8 +1145,7 @@ public final class GlossariesImpl {
      *
      * @param glossaryCategory An array of glossary category definitions to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return an array of glossary category created successfully in bulk.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1264,8 +1293,7 @@ public final class GlossariesImpl {
      * @param glossaryCategory An array of glossary category definitions to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return an array of glossary category created successfully in bulk.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1409,8 +1437,7 @@ public final class GlossariesImpl {
      *
      * @param glossaryCategory An array of glossary category definitions to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return an array of glossary category created successfully in bulk.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1551,8 +1578,7 @@ public final class GlossariesImpl {
      * @param glossaryCategory The glossary category definition. A category must be anchored to a Glossary when
      *     creating. Optionally, terms belonging to the category and the hierarchy can also be defined during creation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossaryCategory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1697,8 +1723,7 @@ public final class GlossariesImpl {
      *     creating. Optionally, terms belonging to the category and the hierarchy can also be defined during creation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossaryCategory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1839,8 +1864,7 @@ public final class GlossariesImpl {
      * @param glossaryCategory The glossary category definition. A category must be anchored to a Glossary when
      *     creating. Optionally, terms belonging to the category and the hierarchy can also be defined during creation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossaryCategory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1917,8 +1941,7 @@ public final class GlossariesImpl {
      *
      * @param categoryGuid The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return specific glossary category by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1998,8 +2021,7 @@ public final class GlossariesImpl {
      * @param categoryGuid The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return specific glossary category by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2076,8 +2098,7 @@ public final class GlossariesImpl {
      *
      * @param categoryGuid The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return specific glossary category by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2217,8 +2238,7 @@ public final class GlossariesImpl {
      * @param categoryGuid The globally unique identifier of the category.
      * @param glossaryCategory The glossary category to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossaryCategory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2363,8 +2383,7 @@ public final class GlossariesImpl {
      * @param glossaryCategory The glossary category to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossaryCategory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2506,8 +2525,7 @@ public final class GlossariesImpl {
      * @param categoryGuid The globally unique identifier of the category.
      * @param glossaryCategory The glossary category to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossaryCategory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2521,8 +2539,7 @@ public final class GlossariesImpl {
      *
      * @param categoryGuid The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2540,8 +2557,7 @@ public final class GlossariesImpl {
      * @param categoryGuid The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2555,8 +2571,7 @@ public final class GlossariesImpl {
      *
      * @param categoryGuid The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2642,8 +2657,7 @@ public final class GlossariesImpl {
      * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute values for
      *     partial update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossaryCategory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2734,8 +2748,7 @@ public final class GlossariesImpl {
      *     partial update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossaryCategory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2823,8 +2836,7 @@ public final class GlossariesImpl {
      * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute values for
      *     partial update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossaryCategory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2865,8 +2877,7 @@ public final class GlossariesImpl {
      *
      * @param categoryGuid The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return all related categories (parent and children).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2911,8 +2922,7 @@ public final class GlossariesImpl {
      * @param categoryGuid The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return all related categories (parent and children).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2953,8 +2963,7 @@ public final class GlossariesImpl {
      *
      * @param categoryGuid The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return all related categories (parent and children).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2994,8 +3003,7 @@ public final class GlossariesImpl {
      *
      * @param categoryGuid The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return all terms associated with the specific category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3038,8 +3046,7 @@ public final class GlossariesImpl {
      * @param categoryGuid The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return all terms associated with the specific category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3080,8 +3087,7 @@ public final class GlossariesImpl {
      *
      * @param categoryGuid The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return all terms associated with the specific category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3405,8 +3411,7 @@ public final class GlossariesImpl {
      * @param glossaryTerm The glossary term definition. A term must be anchored to a Glossary at the time of creation.
      *     Optionally it can be categorized as well.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossaryTerm.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3734,8 +3739,7 @@ public final class GlossariesImpl {
      *     Optionally it can be categorized as well.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossaryTerm.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4060,8 +4064,7 @@ public final class GlossariesImpl {
      * @param glossaryTerm The glossary term definition. A term must be anchored to a Glossary at the time of creation.
      *     Optionally it can be categorized as well.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossaryTerm.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4233,8 +4236,7 @@ public final class GlossariesImpl {
      *
      * @param termGuid The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return a specific glossary term by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4408,8 +4410,7 @@ public final class GlossariesImpl {
      * @param termGuid The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return a specific glossary term by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4582,8 +4583,7 @@ public final class GlossariesImpl {
      *
      * @param termGuid The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return a specific glossary term by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4899,8 +4899,7 @@ public final class GlossariesImpl {
      * @param termGuid The globally unique identifier for glossary term.
      * @param glossaryTerm The glossary term to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossaryTerm.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5221,8 +5220,7 @@ public final class GlossariesImpl {
      * @param glossaryTerm The glossary term to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossaryTerm.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5539,8 +5537,7 @@ public final class GlossariesImpl {
      * @param termGuid The globally unique identifier for glossary term.
      * @param glossaryTerm The glossary term to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossaryTerm.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5554,8 +5551,7 @@ public final class GlossariesImpl {
      *
      * @param termGuid The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5570,8 +5566,7 @@ public final class GlossariesImpl {
      * @param termGuid The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5585,8 +5580,7 @@ public final class GlossariesImpl {
      *
      * @param termGuid The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5768,8 +5762,7 @@ public final class GlossariesImpl {
      * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute values to be
      *     updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossaryTerm.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5956,8 +5949,7 @@ public final class GlossariesImpl {
      *     updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossaryTerm.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -6141,8 +6133,7 @@ public final class GlossariesImpl {
      * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute values to be
      *     updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossaryTerm.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -6470,8 +6461,7 @@ public final class GlossariesImpl {
      *
      * @param glossaryTerm An array of glossary term definitions to be created in bulk.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return if bulk glossary terms creation was successful.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -6802,8 +6792,7 @@ public final class GlossariesImpl {
      * @param glossaryTerm An array of glossary term definitions to be created in bulk.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return if bulk glossary terms creation was successful.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -7131,8 +7120,7 @@ public final class GlossariesImpl {
      *
      * @param glossaryTerm An array of glossary term definitions to be created in bulk.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return if bulk glossary terms creation was successful.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -7182,8 +7170,7 @@ public final class GlossariesImpl {
      *
      * @param termGuid The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return all related objects assigned with the specified term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -7237,8 +7224,7 @@ public final class GlossariesImpl {
      * @param termGuid The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return all related objects assigned with the specified term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -7288,8 +7274,7 @@ public final class GlossariesImpl {
      *
      * @param termGuid The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return all related objects assigned with the specified term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -7330,8 +7315,7 @@ public final class GlossariesImpl {
      * @param termGuid The globally unique identifier for glossary term.
      * @param relatedObjectIds An array of related object IDs to which the term has to be associated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -7376,8 +7360,7 @@ public final class GlossariesImpl {
      * @param relatedObjectIds An array of related object IDs to which the term has to be associated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -7419,8 +7402,7 @@ public final class GlossariesImpl {
      * @param termGuid The globally unique identifier for glossary term.
      * @param relatedObjectIds An array of related object IDs to which the term has to be associated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -7461,8 +7443,7 @@ public final class GlossariesImpl {
      * @param termGuid The globally unique identifier for glossary term.
      * @param relatedObjectIds An array of related object IDs from which the term has to be dissociated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -7507,8 +7488,7 @@ public final class GlossariesImpl {
      * @param relatedObjectIds An array of related object IDs from which the term has to be dissociated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -7550,8 +7530,7 @@ public final class GlossariesImpl {
      * @param termGuid The globally unique identifier for glossary term.
      * @param relatedObjectIds An array of related object IDs from which the term has to be dissociated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -7592,8 +7571,7 @@ public final class GlossariesImpl {
      * @param termGuid The globally unique identifier for glossary term.
      * @param relatedObjectIds An array of related object IDs from which the term has to be dissociated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -7638,8 +7616,7 @@ public final class GlossariesImpl {
      * @param relatedObjectIds An array of related object IDs from which the term has to be dissociated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -7681,8 +7658,7 @@ public final class GlossariesImpl {
      * @param termGuid The globally unique identifier for glossary term.
      * @param relatedObjectIds An array of related object IDs from which the term has to be dissociated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -7726,8 +7702,7 @@ public final class GlossariesImpl {
      *
      * @param termGuid The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return all related terms for a specific term by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -7773,8 +7748,7 @@ public final class GlossariesImpl {
      * @param termGuid The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return all related terms for a specific term by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -7818,8 +7792,7 @@ public final class GlossariesImpl {
      *
      * @param termGuid The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return all related terms for a specific term by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -7891,8 +7864,7 @@ public final class GlossariesImpl {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return a specific Glossary by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -7966,8 +7938,7 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return a specific Glossary by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -8040,8 +8011,7 @@ public final class GlossariesImpl {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return a specific Glossary by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -8173,8 +8143,7 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param updatedGlossary The glossary definition to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -8311,8 +8280,7 @@ public final class GlossariesImpl {
      * @param updatedGlossary The glossary definition to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -8446,8 +8414,7 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param updatedGlossary The glossary definition to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -8461,8 +8428,7 @@ public final class GlossariesImpl {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -8477,8 +8443,7 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -8492,8 +8457,7 @@ public final class GlossariesImpl {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -8581,8 +8545,7 @@ public final class GlossariesImpl {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the categories belonging to a specific glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -8675,8 +8638,7 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the categories belonging to a specific glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -8765,8 +8727,7 @@ public final class GlossariesImpl {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the categories belonging to a specific glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -8803,8 +8764,7 @@ public final class GlossariesImpl {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the category headers belonging to a specific glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -8846,8 +8806,7 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the category headers belonging to a specific glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -8885,8 +8844,7 @@ public final class GlossariesImpl {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the category headers belonging to a specific glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -9107,8 +9065,7 @@ public final class GlossariesImpl {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return a specific glossary with detailed information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -9332,8 +9289,7 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return a specific glossary with detailed information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -9554,8 +9510,7 @@ public final class GlossariesImpl {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return a specific glossary with detailed information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -9644,8 +9599,7 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute values.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -9739,8 +9693,7 @@ public final class GlossariesImpl {
      * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute values.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -9831,8 +9784,7 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute values.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasGlossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -10010,8 +9962,7 @@ public final class GlossariesImpl {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return terms belonging to a specific glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -10191,8 +10142,7 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return terms belonging to a specific glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -10370,8 +10320,7 @@ public final class GlossariesImpl {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return terms belonging to a specific glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -10411,8 +10360,7 @@ public final class GlossariesImpl {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return term headers belonging to a specific glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -10457,8 +10405,7 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return term headers belonging to a specific glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -10499,8 +10446,7 @@ public final class GlossariesImpl {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return term headers belonging to a specific glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -10557,8 +10503,7 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param file The csv file to import glossary terms from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return status of import csv operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -10624,8 +10569,7 @@ public final class GlossariesImpl {
      * @param file The csv file to import glossary terms from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return status of import csv operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -10688,8 +10632,7 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param file The csv file to import glossary terms from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return status of import csv operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -10752,8 +10695,7 @@ public final class GlossariesImpl {
      * @param file The csv file to import glossary terms from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return status of import csv operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -10815,8 +10757,7 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param file The csv file to import glossary terms from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return status of import csv operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -10873,8 +10814,7 @@ public final class GlossariesImpl {
      * @param glossaryName The name of the glossary.
      * @param file The csv file to import glossary terms from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return status of import csv operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -10940,8 +10880,7 @@ public final class GlossariesImpl {
      * @param file The csv file to import glossary terms from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return status of import csv operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -11004,8 +10943,7 @@ public final class GlossariesImpl {
      * @param glossaryName The name of the glossary.
      * @param file The csv file to import glossary terms from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return status of import csv operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -11068,8 +11006,7 @@ public final class GlossariesImpl {
      * @param file The csv file to import glossary terms from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return status of import csv operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -11133,8 +11070,7 @@ public final class GlossariesImpl {
      * @param glossaryName The name of the glossary.
      * @param file The csv file to import glossary terms from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return status of import csv operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -11176,8 +11112,7 @@ public final class GlossariesImpl {
      *
      * @param operationGuid The globally unique identifier for async operation/job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the status of import csv operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -11226,8 +11161,7 @@ public final class GlossariesImpl {
      * @param operationGuid The globally unique identifier for async operation/job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the status of import csv operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -11273,8 +11207,7 @@ public final class GlossariesImpl {
      *
      * @param operationGuid The globally unique identifier for async operation/job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the status of import csv operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -11312,8 +11245,7 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param termGuids An array of term guids.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -11360,8 +11292,7 @@ public final class GlossariesImpl {
      * @param termGuids An array of term guids.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -11405,8 +11336,7 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param termGuids An array of term guids.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -11584,8 +11514,7 @@ public final class GlossariesImpl {
      *
      * @param glossaryName The name of the glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return terms by glossary name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -11771,8 +11700,7 @@ public final class GlossariesImpl {
      * @param glossaryName The name of the glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return terms by glossary name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -11955,8 +11883,7 @@ public final class GlossariesImpl {
      *
      * @param glossaryName The name of the glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return terms by glossary name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

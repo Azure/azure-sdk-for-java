@@ -1,16 +1,24 @@
 # Release History
 
-## 12.8.0-beta.2 (Unreleased)
+## 12.8.0-beta.3 (Unreleased)
 
 ### Features Added
-- Added support for 2021-02-12 service version.
-- Added support for listing system containers.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.8.0-beta.2 (2021-12-07)
+
+### Features Added
+- Added support for 2021-02-12 service version.
+- Added support for listing system containers.
+
+### Bugs Fixed
+- Fixed a bug in DataLakeFileClient.flush() in which the logic of the overwrite parameter was reversed.
+- Fixed a bug that would cause authenticating with a sas token to fail if the timestamps in the token were formatted differently.
 
 ## 12.7.2 (2021-11-10)
 

@@ -331,7 +331,11 @@ public final class PrivateZonesClientImpl
         return this
             .client
             .<PrivateZoneInner, PrivateZoneInner>getLroResult(
-                mono, this.client.getHttpPipeline(), PrivateZoneInner.class, PrivateZoneInner.class, this.client.getContext());
+                mono,
+                this.client.getHttpPipeline(),
+                PrivateZoneInner.class,
+                PrivateZoneInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -708,7 +712,11 @@ public final class PrivateZonesClientImpl
         return this
             .client
             .<PrivateZoneInner, PrivateZoneInner>getLroResult(
-                mono, this.client.getHttpPipeline(), PrivateZoneInner.class, PrivateZoneInner.class, this.client.getContext());
+                mono,
+                this.client.getHttpPipeline(),
+                PrivateZoneInner.class,
+                PrivateZoneInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1030,7 +1038,8 @@ public final class PrivateZonesClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, privateZoneName, ifMatch);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

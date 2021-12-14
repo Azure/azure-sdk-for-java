@@ -8,6 +8,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -28,7 +29,6 @@ import com.azure.resourcemanager.consumption.implementation.ChargesImpl;
 import com.azure.resourcemanager.consumption.implementation.ConsumptionManagementClientBuilder;
 import com.azure.resourcemanager.consumption.implementation.CreditsImpl;
 import com.azure.resourcemanager.consumption.implementation.EventsOperationsImpl;
-import com.azure.resourcemanager.consumption.implementation.ForecastsImpl;
 import com.azure.resourcemanager.consumption.implementation.LotsOperationsImpl;
 import com.azure.resourcemanager.consumption.implementation.MarketplacesImpl;
 import com.azure.resourcemanager.consumption.implementation.OperationsImpl;
@@ -46,7 +46,6 @@ import com.azure.resourcemanager.consumption.models.Budgets;
 import com.azure.resourcemanager.consumption.models.Charges;
 import com.azure.resourcemanager.consumption.models.Credits;
 import com.azure.resourcemanager.consumption.models.EventsOperations;
-import com.azure.resourcemanager.consumption.models.Forecasts;
 import com.azure.resourcemanager.consumption.models.LotsOperations;
 import com.azure.resourcemanager.consumption.models.Marketplaces;
 import com.azure.resourcemanager.consumption.models.Operations;
@@ -63,6 +62,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Entry point to ConsumptionManager. Consumption management client provides access to consumption resources for Azure
@@ -92,8 +92,6 @@ public final class ConsumptionManager {
     private ReservationTransactions reservationTransactions;
 
     private PriceSheets priceSheets;
-
-    private Forecasts forecasts;
 
     private Operations operations;
 
@@ -241,7 +239,7 @@ public final class ConsumptionManager {
                 .append("-")
                 .append("com.azure.resourcemanager.consumption")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -264,11 +262,24 @@ public final class ConsumptionManager {
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new RequestIdPolicy());
+            policies
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies.addAll(this.policies);
+            policies
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline =
@@ -377,14 +388,6 @@ public final class ConsumptionManager {
             this.priceSheets = new PriceSheetsImpl(clientObject.getPriceSheets(), this);
         }
         return priceSheets;
-    }
-
-    /** @return Resource collection API of Forecasts. */
-    public Forecasts forecasts() {
-        if (this.forecasts == null) {
-            this.forecasts = new ForecastsImpl(clientObject.getForecasts(), this);
-        }
-        return forecasts;
     }
 
     /** @return Resource collection API of Operations. */

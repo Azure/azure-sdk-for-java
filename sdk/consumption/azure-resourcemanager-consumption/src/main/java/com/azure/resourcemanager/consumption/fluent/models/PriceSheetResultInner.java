@@ -4,43 +4,31 @@
 
 package com.azure.resourcemanager.consumption.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.consumption.models.MeterDetails;
 import com.azure.resourcemanager.consumption.models.PriceSheetProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** An pricesheet resource. */
-@JsonFlatten
-@Immutable
-public class PriceSheetResultInner extends ProxyResource {
+@Fluent
+public final class PriceSheetResultInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PriceSheetResultInner.class);
 
     /*
-     * Price sheet
+     * price sheet result. It contains the pricesheet associated with billing
+     * period
      */
-    @JsonProperty(value = "properties.pricesheets", access = JsonProperty.Access.WRITE_ONLY)
-    private List<PriceSheetProperties> pricesheets;
+    @JsonProperty(value = "properties")
+    private PriceSheetModel innerProperties;
 
     /*
-     * The link (url) to the next page of results.
-     */
-    @JsonProperty(value = "properties.nextLink", access = JsonProperty.Access.WRITE_ONLY)
-    private String nextLink;
-
-    /*
-     * Pricesheet download details.
-     */
-    @JsonProperty(value = "properties.download", access = JsonProperty.Access.WRITE_ONLY)
-    private MeterDetails download;
-
-    /*
-     * Resource etag.
+     * The etag for the resource.
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
@@ -49,37 +37,20 @@ public class PriceSheetResultInner extends ProxyResource {
      * Resource tags.
      */
     @JsonProperty(value = "tags", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /**
-     * Get the pricesheets property: Price sheet.
+     * Get the innerProperties property: price sheet result. It contains the pricesheet associated with billing period.
      *
-     * @return the pricesheets value.
+     * @return the innerProperties value.
      */
-    public List<PriceSheetProperties> pricesheets() {
-        return this.pricesheets;
+    private PriceSheetModel innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Get the nextLink property: The link (url) to the next page of results.
-     *
-     * @return the nextLink value.
-     */
-    public String nextLink() {
-        return this.nextLink;
-    }
-
-    /**
-     * Get the download property: Pricesheet download details.
-     *
-     * @return the download value.
-     */
-    public MeterDetails download() {
-        return this.download;
-    }
-
-    /**
-     * Get the etag property: Resource etag.
+     * Get the etag property: The etag for the resource.
      *
      * @return the etag value.
      */
@@ -97,16 +68,40 @@ public class PriceSheetResultInner extends ProxyResource {
     }
 
     /**
+     * Get the pricesheets property: Price sheet.
+     *
+     * @return the pricesheets value.
+     */
+    public List<PriceSheetProperties> pricesheets() {
+        return this.innerProperties() == null ? null : this.innerProperties().pricesheets();
+    }
+
+    /**
+     * Get the nextLink property: The link (url) to the next page of results.
+     *
+     * @return the nextLink value.
+     */
+    public String nextLink() {
+        return this.innerProperties() == null ? null : this.innerProperties().nextLink();
+    }
+
+    /**
+     * Get the download property: Pricesheet download details.
+     *
+     * @return the download value.
+     */
+    public MeterDetails download() {
+        return this.innerProperties() == null ? null : this.innerProperties().download();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (pricesheets() != null) {
-            pricesheets().forEach(e -> e.validate());
-        }
-        if (download() != null) {
-            download().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }
