@@ -52,7 +52,7 @@ class TransientErrorsRetryPolicySpec extends UnitSpec with BasicLoggingTrait {
     }
 
     thrownException should not be empty
-    thrownException.get.getStatusCode shouldEqual 404
+    thrownException.get.getStatusCode shouldEqual new DummyNonTransientCosmosException().getStatusCode
   }
 
   "TransientErrorsRetryPolicy" should "throw an exceptions when errorCount > maxRetryCount" in {
@@ -78,7 +78,7 @@ class TransientErrorsRetryPolicySpec extends UnitSpec with BasicLoggingTrait {
     }
 
     thrownException should not be empty
-    thrownException.get.getStatusCode shouldEqual 500
+    thrownException.get.getStatusCode shouldEqual new DummyTransientCosmosException().getStatusCode
   }
 
   private class DummyTransientCosmosException
