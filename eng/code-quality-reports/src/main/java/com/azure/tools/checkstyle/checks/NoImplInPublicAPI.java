@@ -6,7 +6,10 @@ package com.azure.tools.checkstyle.checks;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
+import com.puppycrawl.tools.checkstyle.api.Scope;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.utils.ScopeUtil;
+import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -58,7 +61,7 @@ public class NoImplInPublicAPI extends AbstractCheck {
                     int idx = importClassPath.indexOf(DOT_IMPLEMENTATION);
                     if (idx > -1) {
                         String remainingPath = importClassPath.substring(idx + DOT_IMPLEMENTATION.length());
-                        if (remainingPath != null && remainingPath.length() > 1) {
+                        if (remainingPath.length() > 1) {
                             String className = remainingPath.substring(remainingPath.lastIndexOf(".") + 1);
                             implementationClassSet.add(className);
                         }
@@ -69,9 +72,13 @@ public class NoImplInPublicAPI extends AbstractCheck {
                 if (implementationClassSet.isEmpty()) {
                     return;
                 }
-                DetailAST modifiersAST = ast.findFirstToken(TokenTypes.MODIFIERS);
-                if (modifiersAST.branchContains(TokenTypes.LITERAL_PUBLIC)
-                    || modifiersAST.branchContains(TokenTypes.LITERAL_PROTECTED)) {
+
+                if (isInStaticInitializer(ast)) {
+                    return;
+                }
+
+                Scope scope = ScopeUtil.getScopeFromMods(ast.findFirstToken(TokenTypes.MODIFIERS));
+                if (scope == Scope.PUBLIC || scope == Scope.PROTECTED) {
                     DetailAST typeAST = ast.findFirstToken(TokenTypes.TYPE);
                     String returnType = typeAST.getFirstChild().getText();
                     if (implementationClassSet.contains(returnType)) {
@@ -95,5 +102,15 @@ public class NoImplInPublicAPI extends AbstractCheck {
                 // Checkstyle complains if there's no default block in switch
                 break;
         }
+    }
+
+    private static boolean isInStaticInitializer(DetailAST ast) {
+        for (DetailAST token = ast.getParent(); token != null; token = token.getParent()) {
+            if (TokenUtil.isOfType(token, TokenTypes.STATIC_INIT)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
