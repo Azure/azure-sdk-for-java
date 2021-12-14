@@ -24,7 +24,7 @@ import static org.mockito.Mockito.mock;
 class CosmosUserAgentTest {
 
     @Test
-    void configureWithEndpoint() {
+    void userAgentTest() {
         final CosmosClient mockCosmosClient = mock(CosmosClient.class);
         final CosmosAsyncClient cosmosAsyncClient = mock(CosmosAsyncClient.class);
         new ApplicationContextRunner()

@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ServiceBusUserAgentTest {
 
     @Test
-    void connectionStringProvidedShouldConfigure() {
+    void userAgentTest() {
         new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(AzureServiceBusAutoConfiguration.class))
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
