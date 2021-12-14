@@ -173,13 +173,13 @@ public class ServiceBusMessageChannelBinder extends
     }
 
     /**
-     * Dead-letters the message in this context.
+     * Moves a message to the dead-letter sub-queue with dead-letter reason.
      *
      * @param <T> the type
      * @param destination the destination
      * @param message the message
-     * @param deadLetterReason the deadLetter reason
-     * @param deadLetterErrorDescription the deadLetter error description
+     * @param deadLetterReason the dead-letter reason
+     * @param deadLetterErrorDescription the dead-letter error description
      */
     public <T> void deadLetter(String destination,
                                Message<T> message,

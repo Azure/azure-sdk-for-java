@@ -27,7 +27,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.lang.Nullable;
 
 /**
- * @author Warren Zhu
+ *
  */
 @Configuration
 @ConditionalOnMissingBean(Binder.class)

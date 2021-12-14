@@ -24,9 +24,9 @@ public class EventHubsConsumerProperties extends ProcessorProperties {
     private final CheckpointConfig checkpoint = new CheckpointConfig();
 
     /**
-     * Get checkpoint.
+     * Get the {@link CheckpointConfig}.
      *
-     * @return checkpoint the checkpoint
+     * @return CheckpointConfig the {@link CheckpointConfig}
      * @see CheckpointConfig
      */
     public CheckpointConfig getCheckpoint() {

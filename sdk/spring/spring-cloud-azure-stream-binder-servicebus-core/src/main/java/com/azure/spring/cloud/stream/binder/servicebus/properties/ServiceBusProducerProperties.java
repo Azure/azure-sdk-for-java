@@ -6,7 +6,7 @@ package com.azure.spring.cloud.stream.binder.servicebus.properties;
 import com.azure.spring.servicebus.core.properties.ProducerProperties;
 
 /**
- * @author Warren Zhu
+ *
  */
 public class ServiceBusProducerProperties extends ProducerProperties {
     private boolean sync = false;

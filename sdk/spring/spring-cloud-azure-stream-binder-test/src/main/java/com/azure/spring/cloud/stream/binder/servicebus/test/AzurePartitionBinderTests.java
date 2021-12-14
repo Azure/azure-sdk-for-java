@@ -29,8 +29,6 @@ import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Test cases are defined in super class
- *
- * @author Warren Zhu
  */
 public abstract class AzurePartitionBinderTests<B extends AbstractTestBinder<
         ? extends AbstractBinder<MessageChannel, CP, PP>, CP, PP>,
@@ -38,7 +36,7 @@ public abstract class AzurePartitionBinderTests<B extends AbstractTestBinder<
         extends PartitionCapableBinderTests<B, CP, PP> {
 
     /**
-     * Let those expensive resources be allocated or released only once.
+     * To enable tests.
      */
     @BeforeClass
     public static void enableTests() {

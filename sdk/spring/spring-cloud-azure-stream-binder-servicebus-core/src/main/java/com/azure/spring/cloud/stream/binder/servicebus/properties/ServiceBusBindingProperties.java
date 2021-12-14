@@ -6,43 +6,43 @@ package com.azure.spring.cloud.stream.binder.servicebus.properties;
 import org.springframework.cloud.stream.binder.BinderSpecificPropertiesProvider;
 
 /**
- * @author Warren Zhu
+ *
  */
 public class ServiceBusBindingProperties implements BinderSpecificPropertiesProvider {
     private ServiceBusConsumerProperties consumer = new ServiceBusConsumerProperties();
     private ServiceBusProducerProperties producer = new ServiceBusProducerProperties();
 
     /**
-     * Get consumer
+     * Get the consumer properties.
      *
-     * @return consumer the consumer
+     * @return consumer the consumer properties
      */
     public ServiceBusConsumerProperties getConsumer() {
         return consumer;
     }
 
     /**
-     * Set consumer
+     * Set the consumer properties
      *
-     * @param consumer the consumer
+     * @param consumer the consumer properties
      */
     public void setConsumer(ServiceBusConsumerProperties consumer) {
         this.consumer = consumer;
     }
 
     /**
-     * Get producer
+     * Get the producer properties.
      *
-     * @return producer the producer
+     * @return producer the producer properties
      */
     public ServiceBusProducerProperties getProducer() {
         return producer;
     }
 
     /**
-     * Set producer
+     * Set the producer properties.
      *
-     * @param producer the producer
+     * @param producer the producer properties
      */
     public void setProducer(ServiceBusProducerProperties producer) {
         this.producer = producer;
