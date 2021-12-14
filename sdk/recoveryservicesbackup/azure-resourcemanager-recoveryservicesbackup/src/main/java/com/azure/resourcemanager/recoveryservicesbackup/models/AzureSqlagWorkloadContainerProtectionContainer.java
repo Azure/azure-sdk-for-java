@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -14,7 +14,7 @@ import java.time.OffsetDateTime;
 /** Container for SQL workloads under SQL Availability Group. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "containerType")
 @JsonTypeName("SQLAGWorkLoadContainer")
-@Immutable
+@Fluent
 public final class AzureSqlagWorkloadContainerProtectionContainer extends AzureWorkloadContainer {
     @JsonIgnore
     private final ClientLogger logger = new ClientLogger(AzureSqlagWorkloadContainerProtectionContainer.class);

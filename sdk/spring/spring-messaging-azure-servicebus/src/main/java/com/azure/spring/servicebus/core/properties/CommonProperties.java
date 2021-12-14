@@ -36,6 +36,10 @@ public class CommonProperties extends AbstractAzureAmqpSdkProperties implements 
         return domainName;
     }
 
+    /**
+     * Set the domain name.
+     * @param domainName the domain name.
+     */
     public void setDomainName(String domainName) {
         this.domainName = domainName;
     }
@@ -45,6 +49,10 @@ public class CommonProperties extends AbstractAzureAmqpSdkProperties implements 
         return namespace;
     }
 
+    /**
+     * Set the namespace.
+     * @param namespace the namespace.
+     */
     public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
@@ -54,22 +62,36 @@ public class CommonProperties extends AbstractAzureAmqpSdkProperties implements 
         return connectionString;
     }
 
+    /**
+     * Set the connection string.
+     * @param connectionString the connection string.
+     */
     public void setConnectionString(String connectionString) {
         this.connectionString = connectionString;
     }
 
+    @Override
     public String getEntityName() {
         return entityName;
     }
 
+    /**
+     * Set the entity name.
+     * @param entityName the entity name.
+     */
     public void setEntityName(String entityName) {
         this.entityName = entityName;
     }
 
+    @Override
     public ServiceBusEntityType getEntityType() {
         return entityType;
     }
 
+    /**
+     * Set the entity type.
+     * @param entityType the entity type.
+     */
     public void setEntityType(ServiceBusEntityType entityType) {
         this.entityType = entityType;
     }

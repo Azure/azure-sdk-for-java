@@ -11,8 +11,13 @@ import java.util.Map;
 /**
  * Helper class to process {@link QueueMessageItem}.
  */
-public class StorageQueueHelper {
+public final class StorageQueueHelper {
 
+    /**
+     * Convert the {@link QueueMessageItem} to {@link String}.
+     * @param messageItem the QueueMessageItem.
+     * @return the String.
+     */
     public static String toString(QueueMessageItem messageItem) {
         Map<String, Object> map = new LinkedHashMap<>();
 

@@ -81,6 +81,13 @@ public class ServiceBusMessageChannelBinder extends
 
     private static final String EXCEPTION_MESSAGE = "exception-message";
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusMessageChannelBinder.class);
+
+    /**
+     * Construct a {@link ServiceBusMessageChannelBinder} with the specified headersToEmbed and {@link ServiceBusChannelProvisioner}.
+     *
+     * @param headersToEmbed the headers to embed
+     * @param provisioningProvider the provisioning provider
+     */
     public ServiceBusMessageChannelBinder(String[] headersToEmbed, ServiceBusChannelProvisioner provisioningProvider) {
         super(headersToEmbed, provisioningProvider);
     }
@@ -165,6 +172,15 @@ public class ServiceBusMessageChannelBinder extends
         };
     }
 
+    /**
+     * Moves a message to the dead-letter sub-queue with dead-letter reason.
+     *
+     * @param <T> the type
+     * @param destination the destination
+     * @param message the message
+     * @param deadLetterReason the dead-letter reason
+     * @param deadLetterErrorDescription the dead-letter error description
+     */
     public <T> void deadLetter(String destination,
                                Message<T> message,
                                String deadLetterReason,
@@ -178,6 +194,13 @@ public class ServiceBusMessageChannelBinder extends
         }
     }
 
+    /**
+     * Abandons the message in this context.
+     *
+     * @param <T> the type
+     * @param destination the destination
+     * @param message the message
+     */
     public <T> void abandon(String destination, Message<T> message) {
         Assert.hasText(destination, "destination can't be null or empty");
         final ServiceBusReceivedMessageContext messageContext = (ServiceBusReceivedMessageContext) message.getHeaders()
@@ -213,6 +236,11 @@ public class ServiceBusMessageChannelBinder extends
         return DEFAULT_ERROR_MESSAGE_STRATEGY;
     }
 
+    /**
+     * Set binding properties.
+     *
+     * @param bindingProperties the binding properties
+     */
     public void setBindingProperties(ServiceBusExtendedBindingProperties bindingProperties) {
         this.bindingProperties = bindingProperties;
     }
@@ -284,14 +312,30 @@ public class ServiceBusMessageChannelBinder extends
         };
     }
 
+    /**
+     * Set namespace properties.
+     *
+     * @param namespaceProperties the namespace properties
+     */
     public void setNamespaceProperties(NamespaceProperties namespaceProperties) {
         this.namespaceProperties = namespaceProperties;
     }
 
+
+    /**
+     * Set message converter.
+     *
+     * @param messageConverter the message converter
+     */
     public void setMessageConverter(ServiceBusMessageConverter messageConverter) {
         this.messageConverter = messageConverter;
     }
 
+    /**
+     * Get instrumentation manager.
+     *
+     * @return instrumentationManager the instrumentation manager
+     */
     public InstrumentationManager getInstrumentationManager() {
         return instrumentationManager;
     }

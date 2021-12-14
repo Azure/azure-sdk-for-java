@@ -217,8 +217,7 @@ public final class ProtectedItemsImpl implements ProtectedItems {
         }
         this
             .deleteWithResponse(
-                vaultName, resourceGroupName, fabricName, containerName, protectedItemName, Context.NONE)
-            .getValue();
+                vaultName, resourceGroupName, fabricName, containerName, protectedItemName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {

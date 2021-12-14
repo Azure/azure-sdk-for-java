@@ -18,7 +18,6 @@ import org.springframework.util.Assert;
 /**
  * Helper bean for registering {@link AzureListenerEndpoint} with a {@link AzureListenerEndpointRegistry}.
  *
- * @author Warren Zhu
  */
 class AzureListenerEndpointRegistrar implements BeanFactoryAware, InitializingBean {
 

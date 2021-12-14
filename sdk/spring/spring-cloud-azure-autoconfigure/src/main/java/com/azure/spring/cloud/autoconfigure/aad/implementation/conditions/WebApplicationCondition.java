@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.implementation.conditions;
 
-import com.azure.spring.cloud.autoconfigure.aad.core.AADApplicationType;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AADApplicationType;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthenticationProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionMessage;
 import org.springframework.boot.autoconfigure.condition.ConditionOutcome;
@@ -11,12 +11,11 @@ import org.springframework.boot.autoconfigure.condition.SpringBootCondition;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.annotation.ConditionContext;
 import org.springframework.core.type.AnnotatedTypeMetadata;
-import org.springframework.util.StringUtils;
 
 import java.util.Optional;
 
-import static com.azure.spring.cloud.autoconfigure.aad.core.AADApplicationType.RESOURCE_SERVER;
-import static com.azure.spring.cloud.autoconfigure.aad.core.AADApplicationType.RESOURCE_SERVER_WITH_OBO;
+import static com.azure.spring.cloud.autoconfigure.aad.properties.AADApplicationType.RESOURCE_SERVER;
+import static com.azure.spring.cloud.autoconfigure.aad.properties.AADApplicationType.RESOURCE_SERVER_WITH_OBO;
 
 /**
  * Web application or all in scenario condition.
@@ -32,10 +31,6 @@ public final class WebApplicationCondition extends SpringBootCondition {
                   .orElse(null);
         if (properties == null) {
             return ConditionOutcome.noMatch(message.notAvailable("aad authorization properties"));
-        }
-
-        if (!StringUtils.hasText(properties.getClientId())) {
-            return ConditionOutcome.noMatch(message.didNotFind("client-id").atAll());
         }
 
         // Bind properties will not execute AADAuthenticationProperties#afterPropertiesSet()

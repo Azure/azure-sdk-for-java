@@ -48,15 +48,6 @@ public final class BackupPolicyPatch extends Resource {
     }
 
     /**
-     * Get the name property: Name of backup policy.
-     *
-     * @return the name value.
-     */
-    public String namePropertiesName() {
-        return this.innerProperties() == null ? null : this.innerProperties().name();
-    }
-
-    /**
      * Get the backupPolicyId property: Backup Policy Resource ID.
      *
      * @return the backupPolicyId value.

@@ -15,7 +15,12 @@ public class DefaultInstrumentationManager implements InstrumentationManager {
 
     private final Map<String, Instrumentation> healthInstrumentations = new ConcurrentHashMap<>();
 
-    public Set<Instrumentation> getHealthInstrumentations() {
+    /**
+     * Get all health instrumentation.
+     *
+     * @return healthInstrumentations the health instrumentations
+     */
+    public Set<Instrumentation> getAllHealthInstrumentation() {
         return healthInstrumentations.entrySet().stream().map(Map.Entry::getValue)
                                      .collect(Collectors.toSet());
     }

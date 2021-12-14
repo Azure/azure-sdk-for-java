@@ -17,7 +17,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Do checkpoint when uncheckpointed count exceeds {@link CheckpointConfig#getCount()} ()} for one partition.
  * Effective when {@link CheckpointMode#PARTITION_COUNT}
  *
- * @author Warren Zhu
  */
 class PartitionCountCheckpointManager extends EventCheckpointManager {
     private static final Logger LOG = LoggerFactory.getLogger(PartitionCountCheckpointManager.class);

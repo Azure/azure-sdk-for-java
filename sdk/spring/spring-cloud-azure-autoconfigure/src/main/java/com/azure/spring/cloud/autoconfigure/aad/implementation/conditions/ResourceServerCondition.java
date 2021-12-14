@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.implementation.conditions;
 
-import com.azure.spring.cloud.autoconfigure.aad.core.AADApplicationType;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AADApplicationType;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthenticationProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionMessage;
 import org.springframework.boot.autoconfigure.condition.ConditionOutcome;
@@ -14,7 +14,7 @@ import org.springframework.core.type.AnnotatedTypeMetadata;
 
 import java.util.Optional;
 
-import static com.azure.spring.cloud.autoconfigure.aad.core.AADApplicationType.WEB_APPLICATION;
+import static com.azure.spring.cloud.autoconfigure.aad.properties.AADApplicationType.WEB_APPLICATION;
 
 /**
  * Resource server or all in scenario condition.

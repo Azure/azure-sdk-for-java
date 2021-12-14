@@ -18,7 +18,6 @@ import com.azure.spring.messaging.endpoint.AzureListenerEndpoint;
  *
  * <p>See @{@link EnableAzureMessaging} for detailed usage examples.
  *
- * @author Warren Zhu
  * @see EnableAzureMessaging
  * @see AzureListenerEndpointRegistrar
  */

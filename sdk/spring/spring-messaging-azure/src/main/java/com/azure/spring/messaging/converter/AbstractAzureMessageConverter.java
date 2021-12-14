@@ -22,7 +22,6 @@ import java.util.Map;
 /**
  * Abstract class handles common conversion logic between &lt;T&gt; and {@link Message}
  *
- * @author Warren Zhu
  */
 public abstract class AbstractAzureMessageConverter<I, O> implements AzureMessageConverter<I, O> {
 
@@ -30,6 +29,10 @@ public abstract class AbstractAzureMessageConverter<I, O> implements AzureMessag
 
     protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
+    /**
+     * Get the object mapper.
+     * @return the object mapper.
+     */
     protected ObjectMapper getObjectMapper() {
         return OBJECT_MAPPER;
     }
@@ -85,15 +88,40 @@ public abstract class AbstractAzureMessageConverter<I, O> implements AzureMessag
         return (Message<U>) internalToMessage(azureMessage, mergedHeaders, targetPayloadClass);
     }
 
+    /**
+     * Get the payload of the received Azure message.
+     * @param azureMessage the received Azure message.
+     * @return message payload.
+     */
     protected abstract Object getPayload(I azureMessage);
 
+    /**
+     * Build an Azure message from the Spring {@link Message}'s payload, when the payload is a String.
+     * @param payload the String payload.
+     * @return the Azure message.
+     */
     protected abstract O fromString(String payload);
 
+    /**
+     * Build an Azure message from the Spring {@link Message}'s payload, when the payload is a byte array.
+     * @param payload the byte array payload.
+     * @return the Azure message.
+     */
     protected abstract O fromByte(byte[] payload);
 
+    /**
+     * Set the custom headers for messages to be sent to different brokers.
+     * @param headers the custom headers.
+     * @param azureMessage the message to be sent.
+     */
     protected void setCustomHeaders(MessageHeaders headers, O azureMessage) {
     }
 
+    /**
+     * Build custom headers from messages received from brokers.
+     * @param azureMessage the received Azure message.
+     * @return the headers.
+     */
     protected Map<String, Object> buildCustomHeaders(I azureMessage) {
         return emptyHeaders();
     }
@@ -121,6 +149,14 @@ public abstract class AbstractAzureMessageConverter<I, O> implements AzureMessag
         return fromByte(toPayload(payload));
     }
 
+    /**
+     * Convert the message received from Azure service to Spring {@link Message} according to the target payload class.
+     * @param azureMessage the message received from Azure service
+     * @param headers the headers built from the received Azure message.
+     * @param targetPayloadClass the target payload class.
+     * @param <U> the target payload class.
+     * @return the converted Spring message.
+     */
     protected  <U> Message<?> internalToMessage(I azureMessage, Map<String, Object> headers, Class<U> targetPayloadClass) {
         Object payload = getPayload(azureMessage);
         Assert.isTrue(payload != null, "payload must not be null");

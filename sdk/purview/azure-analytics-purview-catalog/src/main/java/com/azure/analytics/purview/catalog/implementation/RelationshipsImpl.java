@@ -6,6 +6,7 @@ package com.azure.analytics.purview.catalog.implementation;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
+import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -51,6 +52,7 @@ public final class RelationshipsImpl {
     @ServiceInterface(name = "PurviewCatalogClient")
     private interface RelationshipsService {
         @Post("/atlas/v2/relationship")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> create(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData relationship,
@@ -58,6 +60,7 @@ public final class RelationshipsImpl {
                 Context context);
 
         @Put("/atlas/v2/relationship")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> update(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData relationship,
@@ -65,6 +68,7 @@ public final class RelationshipsImpl {
                 Context context);
 
         @Get("/atlas/v2/relationship/guid/{guid}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> get(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
@@ -72,6 +76,7 @@ public final class RelationshipsImpl {
                 Context context);
 
         @Delete("/atlas/v2/relationship/guid/{guid}")
+        @ExpectedResponses({204})
         Mono<Response<Void>> delete(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
@@ -144,8 +149,7 @@ public final class RelationshipsImpl {
      *
      * @param relationship The AtlasRelationship object containing the information for the relationship to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasRelationship.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -220,8 +224,7 @@ public final class RelationshipsImpl {
      * @param relationship The AtlasRelationship object containing the information for the relationship to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasRelationship.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -295,8 +298,7 @@ public final class RelationshipsImpl {
      *
      * @param relationship The AtlasRelationship object containing the information for the relationship to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasRelationship.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -369,8 +371,7 @@ public final class RelationshipsImpl {
      *
      * @param relationship The AtlasRelationship object containing the information for the relationship to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasRelationship.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -445,8 +446,7 @@ public final class RelationshipsImpl {
      * @param relationship The AtlasRelationship object containing the information for the relationship to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasRelationship.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -520,8 +520,7 @@ public final class RelationshipsImpl {
      *
      * @param relationship The AtlasRelationship object containing the information for the relationship to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasRelationship.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -629,8 +628,7 @@ public final class RelationshipsImpl {
      *
      * @param guid The globally unique identifier of the relationship.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return relationship information between entities by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -739,8 +737,7 @@ public final class RelationshipsImpl {
      * @param guid The globally unique identifier of the relationship.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return relationship information between entities by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -849,8 +846,7 @@ public final class RelationshipsImpl {
      *
      * @param guid The globally unique identifier of the relationship.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return relationship information between entities by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -863,8 +859,7 @@ public final class RelationshipsImpl {
      *
      * @param guid The globally unique identifier of the relationship.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -879,8 +874,7 @@ public final class RelationshipsImpl {
      * @param guid The globally unique identifier of the relationship.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -893,8 +887,7 @@ public final class RelationshipsImpl {
      *
      * @param guid The globally unique identifier of the relationship.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

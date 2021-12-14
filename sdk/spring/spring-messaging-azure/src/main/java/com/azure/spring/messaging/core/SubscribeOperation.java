@@ -11,7 +11,6 @@ import java.util.function.Consumer;
 /**
  * Operations for subscribing to a destination.
  *
- * @author Warren Zhu
  */
 public interface SubscribeOperation extends Checkpointable {
 

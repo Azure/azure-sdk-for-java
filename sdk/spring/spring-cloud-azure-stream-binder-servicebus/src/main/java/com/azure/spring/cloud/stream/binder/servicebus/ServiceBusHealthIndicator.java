@@ -15,6 +15,11 @@ public class ServiceBusHealthIndicator extends AbstractHealthIndicator {
 
     private final InstrumentationManager instrumentationManager;
 
+    /**
+     * Construct a {@link ServiceBusHealthIndicator} with the specified {@link ServiceBusMessageChannelBinder}.
+     *
+     * @param binder the binder
+     */
     public ServiceBusHealthIndicator(ServiceBusMessageChannelBinder binder) {
         super("Service bus health check failed");
         this.instrumentationManager = binder.getInstrumentationManager();
@@ -22,17 +27,17 @@ public class ServiceBusHealthIndicator extends AbstractHealthIndicator {
 
     @Override
     protected void doHealthCheck(Health.Builder builder) {
-        if (instrumentationManager == null || instrumentationManager.getHealthInstrumentations().isEmpty()) {
+        if (instrumentationManager == null || instrumentationManager.getAllHealthInstrumentation().isEmpty()) {
             builder.unknown();
             return;
         }
-        if (instrumentationManager.getHealthInstrumentations().stream()
+        if (instrumentationManager.getAllHealthInstrumentation().stream()
                                   .allMatch(Instrumentation::isUp)) {
             builder.up();
             return;
         }
         builder.down();
-        instrumentationManager.getHealthInstrumentations().stream()
+        instrumentationManager.getAllHealthInstrumentation().stream()
                               .filter(instrumentation -> instrumentation.isDown())
                               .forEach(instrumentation -> builder
                                   .withDetail(instrumentation.getId(),
