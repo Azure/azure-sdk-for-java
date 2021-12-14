@@ -5,11 +5,13 @@ package com.azure.spring.cloud.feature.manager.feature.evaluators;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.azure.spring.cloud.feature.manager.TargetingException;
 import com.azure.spring.cloud.feature.manager.entities.featurevariants.FeatureDefinition;
 import com.azure.spring.cloud.feature.manager.entities.featurevariants.FeatureVariant;
 import com.azure.spring.cloud.feature.manager.entities.featurevariants.IFeatureVariantAssigner;
@@ -27,6 +29,14 @@ public class TargetingEvaluator extends TargetingFilter implements IFeatureVaria
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TargetingEvaluator.class);
 
+    protected static final String USERS = "users";
+
+    protected static final String GROUPS = "groups";
+
+    protected static final String AUDIENCE = "Audience";
+
+    private static final String OUT_OF_RANGE = "The value is out of the accepted range.";
+
     public TargetingEvaluator(ITargetingContextAccessor contextAccessor) {
         super(contextAccessor);
     }
@@ -37,7 +47,7 @@ public class TargetingEvaluator extends TargetingFilter implements IFeatureVaria
 
     @Override
     @SuppressWarnings("unchecked")
-    public Mono<FeatureVariant> assignVariantAsync(FeatureDefinition featureDefinition) {
+    public Mono<FeatureVariant> assignVariantAsync(FeatureDefinition featureDefinition) throws TargetingException {
         TargetingContext targetingContext = contextAccessor.getContextAsync().block();
 
         if (targetingContext == null) {
@@ -48,6 +58,8 @@ public class TargetingEvaluator extends TargetingFilter implements IFeatureVaria
         TargetingFilterSettings settings = new TargetingFilterSettings();
 
         List<FeatureVariant> variants = featureDefinition.getVariants();
+
+        validateVarientSettings(variants);
 
         HashMap<String, Double> totalGroupPerentages = new HashMap<>();
         double totalDefaultPercentage = 0;
@@ -67,8 +79,6 @@ public class TargetingEvaluator extends TargetingFilter implements IFeatureVaria
 
                 settings.setAudience(OBJECT_MAPPER.convertValue(parameters, Audience.class));
             }
-
-            validateSettings(settings);
 
             Audience audience = settings.getAudience();
 
@@ -110,5 +120,51 @@ public class TargetingEvaluator extends TargetingFilter implements IFeatureVaria
         }
 
         return Mono.justOrEmpty(null);
+    }
+
+    @SuppressWarnings("unchecked")
+    protected void validateVarientSettings(List<FeatureVariant> varientSettings) throws TargetingException {
+        String paramName = "";
+        String reason = "";
+
+        Map<String, Double> groupUsed = new HashMap<>();
+
+        for (FeatureVariant variant : varientSettings) {
+            TargetingFilterSettings settings = new TargetingFilterSettings();
+            LinkedHashMap<String, Object> parameters = variant.getAssignmentParameters();
+
+            if (parameters != null) {
+                Object audienceObject = parameters.get(AUDIENCE);
+                if (audienceObject != null) {
+                    parameters = (LinkedHashMap<String, Object>) audienceObject;
+                }
+
+                this.<String>updateValueFromMapToList(parameters, USERS);
+                updateValueFromMapToList(parameters, GROUPS);
+
+                settings.setAudience(OBJECT_MAPPER.convertValue(parameters, Audience.class));
+            }
+
+            validateSettings(settings);
+
+            Audience audience = settings.getAudience();
+
+            List<GroupRollout> groups = audience.getGroups();
+
+            if (groups != null) {
+                for (int index = 0; index < groups.size(); index++) {
+                    GroupRollout groupRollout = groups.get(index);
+                    Double currentSize = groupUsed.getOrDefault(groupRollout.getName(), (double) 0);
+                    currentSize += groupRollout.getRolloutPercentage();
+                    if (currentSize > 100) {
+                        paramName = groupRollout.getName();
+                        reason = OUT_OF_RANGE;
+
+                        throw new TargetingException(paramName + " : " + reason);
+                    }
+                    groupUsed.put(groupRollout.getName(), currentSize);
+                }
+            }
+        }
     }
 }

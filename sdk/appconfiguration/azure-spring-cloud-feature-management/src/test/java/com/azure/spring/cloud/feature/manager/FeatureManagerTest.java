@@ -17,6 +17,7 @@ import java.util.concurrent.ExecutionException;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -32,6 +33,7 @@ import com.azure.spring.cloud.feature.manager.entities.featurevariants.DynamicFe
 import com.azure.spring.cloud.feature.manager.entities.featurevariants.FeatureDefinition;
 import com.azure.spring.cloud.feature.manager.entities.featurevariants.FeatureVariant;
 import com.azure.spring.cloud.feature.manager.entities.featurevariants.IFeatureVariantAssigner;
+import com.azure.spring.cloud.feature.manager.entities.featurevariants.IFeatureVariantAssignerMetadata;
 import com.azure.spring.cloud.feature.manager.testobjects.BasicObject;
 
 import reactor.core.publisher.Mono;
@@ -273,7 +275,6 @@ public class FeatureManagerTest {
 
         Map<String, Object> params = new LinkedHashMap<>();
         params.put("testVariant", dynamicFeature);
-        ;
 
         featureManager.putAll(params);
 
@@ -357,7 +358,7 @@ public class FeatureManagerTest {
 
         assertEquals(testString, featureManager.getVariantAsync("testVariant", String.class).block());
     }
-    
+
     @Test
     public void getVariantAsyncComplexObject() {
         String testString = "Basic Object";
@@ -378,7 +379,6 @@ public class FeatureManagerTest {
 
         variants.put("0", createFeatureVariant("testVariant", EMPTY_MAP, EMPTY_MAP, 0));
         variants.get("0").setDefault(true);
-        variants.put("1", variant);
         dynamicFeature.setVariants(variants);
 
         Map<String, Object> params = new LinkedHashMap<>();
@@ -386,7 +386,154 @@ public class FeatureManagerTest {
 
         featureManager.putAll(params);
 
-        assertEquals(testString, featureManager.getVariantAsync("testVariant", BasicObject.class).block().getTestValue());
+        assertEquals(testString,
+            featureManager.getVariantAsync("testVariant", BasicObject.class).block().getTestValue());
+    }
+
+    @Test
+    public void noDefinedFeatureVariantDefinition() {
+        String testString = "Basic Object";
+        BasicObject testObject = new BasicObject();
+        testObject.setTestValue(testString);
+
+        FeatureVariant variant = createFeatureVariant("testVariant2", EMPTY_MAP, EMPTY_MAP, 100);
+
+        when(variantProperties.get("testVariant2Reference")).thenReturn(testObject);
+
+        when(context.getBean(Mockito.matches("Test.Assigner"))).thenReturn(filterMock);
+        when(filterMock.assignVariantAsync(Mockito.any())).thenReturn(Mono.just(variant));
+
+        DynamicFeature dynamicFeature = new DynamicFeature();
+        dynamicFeature.setAssigner(null);
+
+        Map<String, FeatureVariant> variants = new LinkedHashMap<>();
+
+        variants.put("0", createFeatureVariant("testVariant", EMPTY_MAP, EMPTY_MAP, 0));
+        variants.get("0").setDefault(true);
+        dynamicFeature.setVariants(variants);
+
+        Map<String, Object> params = new LinkedHashMap<>();
+        params.put("testVariant", dynamicFeature);
+
+        featureManager.putAll(params);
+
+        FeatureManagementException e = assertThrows(FeatureManagementException.class,
+            () -> featureManager.getVariantAsync("testVariant", BasicObject.class).block());
+        assertNotNull(e);
+        assertEquals("The feature variant testVariant has no defined Dynnamic Feature.", e.getMessage());
+    }
+
+    @Test
+    public void noDefinedFeatureVariant() {
+        String testString = "Basic Object";
+        BasicObject testObject = new BasicObject();
+        testObject.setTestValue(testString);
+
+        FeatureVariant variant = createFeatureVariant("testVariant2", EMPTY_MAP, EMPTY_MAP, 100);
+
+        when(variantProperties.get("testVariant2Reference")).thenReturn(testObject);
+
+        when(context.getBean(Mockito.matches("Test.Assigner")))
+            .thenThrow(new NoSuchBeanDefinitionException(IFeatureVariantAssignerMetadata.class));
+        when(filterMock.assignVariantAsync(Mockito.any())).thenReturn(Mono.just(variant));
+
+        DynamicFeature dynamicFeature = new DynamicFeature();
+        dynamicFeature.setAssigner("Test.Assigner");
+
+        Map<String, FeatureVariant> variants = new LinkedHashMap<>();
+
+        variants.put("0", createFeatureVariant("testVariant", EMPTY_MAP, EMPTY_MAP, 0));
+        variants.get("0").setDefault(true);
+        dynamicFeature.setVariants(variants);
+
+        Map<String, Object> params = new LinkedHashMap<>();
+        params.put("testVariant", dynamicFeature);
+
+        featureManager.putAll(params);
+
+        FeatureManagementException e = assertThrows(FeatureManagementException.class,
+            () -> featureManager.getVariantAsync("testVariant", BasicObject.class).block());
+        assertNotNull(e);
+        assertEquals("The feature variant assigner Test.Assigner specified for feature testVariant was not found.",
+            e.getMessage());
+    }
+
+    @Test
+    public void noDefinedFeature() {
+        String testString = "Basic Object";
+        BasicObject testObject = new BasicObject();
+        testObject.setTestValue(testString);
+
+        FeatureVariant variant = createFeatureVariant("testVariant2", EMPTY_MAP, EMPTY_MAP, 100);
+
+        when(variantProperties.get("testVariant2Reference")).thenReturn(testObject);
+
+        when(context.getBean(Mockito.matches("Test.Assigner"))).thenReturn(filterMock);
+        when(filterMock.assignVariantAsync(Mockito.any())).thenReturn(Mono.just(variant));
+
+        DynamicFeature dynamicFeature = new DynamicFeature();
+        dynamicFeature.setAssigner(null);
+
+        Map<String, FeatureVariant> variants = new LinkedHashMap<>();
+
+        variants.put("0", createFeatureVariant("testVariant", EMPTY_MAP, EMPTY_MAP, 0));
+        variants.get("0").setDefault(true);
+        dynamicFeature.setVariants(variants);
+
+        Map<String, Object> params = new LinkedHashMap<>();
+        params.put("testVariant", dynamicFeature);
+
+        featureManager.putAll(params);
+
+        FeatureManagementException e = assertThrows(FeatureManagementException.class,
+            () -> featureManager.getVariantAsync("testVariant", BasicObject.class).block());
+        assertNotNull(e);
+        assertEquals("The feature variant testVariant has no defined Dynnamic Feature.", e.getMessage());
+    }
+
+    @Test
+    public void validateDynamicFeature() {
+        String testString = "Basic Object";
+
+        FeatureVariant variant = createFeatureVariant("testVariant2", EMPTY_MAP, EMPTY_MAP, 100);
+
+        when(variantProperties.get("testVariant2Reference")).thenReturn(testString);
+
+        when(context.getBean(Mockito.matches("Test.Assigner"))).thenReturn(filterMock);
+        when(filterMock.assignVariantAsync(Mockito.any())).thenReturn(Mono.just(variant));
+
+        DynamicFeature dynamicFeature = new DynamicFeature();
+        dynamicFeature.setAssigner("Test.Assigner");
+
+        Map<String, FeatureVariant> variants = new LinkedHashMap<>();
+
+        variants.put("0", createFeatureVariant("testVariant", EMPTY_MAP, EMPTY_MAP, 0));
+        variants.get("0").setDefault(true);
+        variants.put("1", variant);
+        variants.get("1").setDefault(true);
+        dynamicFeature.setVariants(variants);
+
+        Map<String, Object> params = new LinkedHashMap<>();
+        params.put("testVariant", dynamicFeature);
+
+        featureManager.putAll(params);
+        FeatureManagementException e = assertThrows(FeatureManagementException.class,
+            () -> featureManager.getVariantAsync("testVariant", BasicObject.class).block());
+        assertNotNull(e);
+        assertEquals("Multiple default variants are registered for the feature testVariant", e.getMessage());
+        
+        variants.get("1").setDefault(false);
+        variants.get("1").setConfigurationReference(null);
+        dynamicFeature.setVariants(variants);
+
+        params = new LinkedHashMap<>();
+        params.put("testVariant", dynamicFeature);
+        featureManager.putAll(params);
+        
+        e = assertThrows(FeatureManagementException.class,
+            () -> featureManager.getVariantAsync("testVariant", BasicObject.class).block());
+        assertNotNull(e);
+        assertEquals("The variant testVariant2 for the feature testVariant does not have a configuration reference.", e.getMessage());
     }
 
     class MockFilter implements FeatureFilter, IFeatureVariantAssigner {

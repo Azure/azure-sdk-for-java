@@ -116,7 +116,7 @@ public class AppConfigurationPropertySourceTest {
         ".appconfig.featureflag/", "target",
         FEATURE_VALUE_TARGETING, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
 
-    private static final String FEATURE_MANAGEMENT_KEY = "feature-management.featureManagement";
+    private static final String FEATURE_MANAGEMENT_KEY = "feature-management";
 
     private static ObjectMapper mapper = new ObjectMapper();
 
@@ -158,7 +158,7 @@ public class AppConfigurationPropertySourceTest {
     private AppConfigurationProviderProperties appProperties;
 
     private KeyVaultCredentialProvider tokenCredentialProvider = null;
-    
+
     @Mock
     private PagedIterable<ConfigurationSetting> pagedFluxMock;
 
@@ -227,12 +227,9 @@ public class AppConfigurationPropertySourceTest {
         String[] keyNames = propertySource.getPropertyNames();
         String[] expectedKeyNames = testItems.stream()
             .map(t -> t.getKey().substring(TEST_CONTEXT.length())).toArray(String[]::new);
-        String[] allExpectedKeyNames = new String[expectedKeyNames.length + 1];
-        
-        String[] featureManagementKey = {FEATURE_MANAGEMENT_KEY};
-        
+        String[] allExpectedKeyNames = new String[expectedKeyNames.length];
+
         System.arraycopy(expectedKeyNames, 0, allExpectedKeyNames, 0, expectedKeyNames.length);
-        System.arraycopy(featureManagementKey, 0, allExpectedKeyNames, expectedKeyNames.length, 1);
 
         assertThat(keyNames).containsExactlyInAnyOrder(allExpectedKeyNames);
 
@@ -247,7 +244,8 @@ public class AppConfigurationPropertySourceTest {
             EMPTY_CONTENT_TYPE);
         List<ConfigurationSetting> settings = new ArrayList<ConfigurationSetting>();
         settings.add(slashedProp);
-        when(pagedFluxMock.iterator()).thenReturn(settings.iterator()).thenReturn(new ArrayList<ConfigurationSetting>().iterator());
+        when(pagedFluxMock.iterator()).thenReturn(settings.iterator())
+            .thenReturn(new ArrayList<ConfigurationSetting>().iterator());
         when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString())).thenReturn(pagedFluxMock)
             .thenReturn(pagedFluxMock);
         FeatureSet featureSet = new FeatureSet();
@@ -268,7 +266,8 @@ public class AppConfigurationPropertySourceTest {
 
     @Test
     public void testFeatureFlagCanBeInitedAndQueried() throws IOException {
-        when(pagedFluxMock.iterator()).thenReturn(new ArrayList<ConfigurationSetting>().iterator()).thenReturn(FEATURE_ITEMS.iterator());
+        when(pagedFluxMock.iterator()).thenReturn(new ArrayList<ConfigurationSetting>().iterator())
+            .thenReturn(FEATURE_ITEMS.iterator());
         when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString()))
             .thenReturn(pagedFluxMock).thenReturn(pagedFluxMock);
         featureFlagStore.setEnabled(true);
@@ -282,12 +281,12 @@ public class AppConfigurationPropertySourceTest {
         propertySource.initFeatures(featureSet);
 
         FeatureSet featureSetExpected = new FeatureSet();
-        Feature feature = new Feature();
-        feature.setKey("Alpha");
+        Feature alpha = new Feature();
+        alpha.setKey("Alpha");
         HashMap<Integer, FeatureFlagFilter> filters = new HashMap<Integer, FeatureFlagFilter>();
         FeatureFlagFilter ffec = new FeatureFlagFilter("TestFilter");
         filters.put(0, ffec);
-        feature.setEnabledFor(filters);
+        alpha.setEnabledFor(filters);
         Feature gamma = new Feature();
         gamma.setKey("Gamma");
         filters = new HashMap<Integer, FeatureFlagFilter>();
@@ -297,18 +296,22 @@ public class AppConfigurationPropertySourceTest {
         ffec.setParameters(parameters);
         filters.put(0, ffec);
         gamma.setEnabledFor(filters);
-        featureSetExpected.addFeature("Alpha", feature);
+        featureSetExpected.addFeature("Alpha", alpha);
         featureSetExpected.addFeature("Beta", true);
         featureSetExpected.addFeature("Gamma", gamma);
-        LinkedHashMap<?, ?> convertedValue = mapper.convertValue(featureSetExpected.getFeatureManagement(),
-            LinkedHashMap.class);
 
-        assertEquals(convertedValue, propertySource.getProperty(FEATURE_MANAGEMENT_KEY));
+        assertEquals(3, propertySource.getPropertyNames().length);
+        assertEquals(alpha.getKey(),
+            ((Feature) propertySource.getProperty(FEATURE_MANAGEMENT_KEY + "." + "Alpha")).getKey());
+        assertEquals(true, propertySource.getProperty(FEATURE_MANAGEMENT_KEY + "." + "Beta"));
+        assertEquals(gamma.getKey(),
+            ((Feature) propertySource.getProperty(FEATURE_MANAGEMENT_KEY + "." + "Gamma")).getKey());
     }
 
     @Test
     public void testFeatureFlagDisabled() throws IOException {
-        when(pagedFluxMock.iterator()).thenReturn(new ArrayList<ConfigurationSetting>().iterator()).thenReturn(FEATURE_ITEMS.iterator());
+        when(pagedFluxMock.iterator()).thenReturn(new ArrayList<ConfigurationSetting>().iterator())
+            .thenReturn(FEATURE_ITEMS.iterator());
         when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString()))
             .thenReturn(pagedFluxMock).thenReturn(pagedFluxMock);
         featureFlagStore.setEnabled(false);
@@ -339,7 +342,8 @@ public class AppConfigurationPropertySourceTest {
     @Test
     public void testFeatureFlagBuildError() throws IOException {
         featureFlagStore.setEnabled(true);
-        when(pagedFluxMock.iterator()).thenReturn(new ArrayList<ConfigurationSetting>().iterator()).thenReturn(FEATURE_ITEMS.iterator());
+        when(pagedFluxMock.iterator()).thenReturn(new ArrayList<ConfigurationSetting>().iterator())
+            .thenReturn(FEATURE_ITEMS.iterator());
         when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString())).thenReturn(pagedFluxMock);
 
         FeatureSet featureSet = new FeatureSet();
@@ -378,17 +382,21 @@ public class AppConfigurationPropertySourceTest {
         featureSetExpected.addFeature("Alpha", alpha);
         featureSetExpected.addFeature("Beta", true);
         featureSetExpected.addFeature("Gamma", gamma);
-        LinkedHashMap<?, ?> convertedValue = mapper.convertValue(featureSetExpected.getFeatureManagement(),
-            LinkedHashMap.class);
 
-        assertEquals(convertedValue, propertySource.getProperty(FEATURE_MANAGEMENT_KEY));
+        assertEquals(3, propertySource.getPropertyNames().length);
+        assertEquals(alpha.getKey(),
+            ((Feature) propertySource.getProperty(FEATURE_MANAGEMENT_KEY + "." + "Alpha")).getKey());
+        assertEquals(true, propertySource.getProperty(FEATURE_MANAGEMENT_KEY + "." + "Beta"));
+        assertEquals(gamma.getKey(),
+            ((Feature) propertySource.getProperty(FEATURE_MANAGEMENT_KEY + "." + "Gamma")).getKey());
     }
 
     @Test
     public void initNullValidContentTypeTest() throws IOException {
         ArrayList<ConfigurationSetting> items = new ArrayList<ConfigurationSetting>();
         items.add(ITEM_NULL);
-        when(pagedFluxMock.iterator()).thenReturn(items.iterator()).thenReturn(new ArrayList<ConfigurationSetting>().iterator());
+        when(pagedFluxMock.iterator()).thenReturn(items.iterator())
+            .thenReturn(new ArrayList<ConfigurationSetting>().iterator());
         when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString())).thenReturn(pagedFluxMock);
 
         FeatureSet featureSet = new FeatureSet();
@@ -409,7 +417,8 @@ public class AppConfigurationPropertySourceTest {
     public void initNullInvalidContentTypeFeatureFlagTest() throws IOException {
         ArrayList<ConfigurationSetting> items = new ArrayList<ConfigurationSetting>();
         items.add(FEATURE_ITEM_NULL);
-        when(pagedFluxMock.iterator()).thenReturn(new ArrayList<ConfigurationSetting>().iterator()).thenReturn(items.iterator());
+        when(pagedFluxMock.iterator()).thenReturn(new ArrayList<ConfigurationSetting>().iterator())
+            .thenReturn(items.iterator());
         when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString()))
             .thenReturn(pagedFluxMock).thenReturn(pagedFluxMock);
 
@@ -428,7 +437,8 @@ public class AppConfigurationPropertySourceTest {
 
     @Test
     public void testFeatureFlagTargeting() throws IOException {
-        when(pagedFluxMock.iterator()).thenReturn(new ArrayList<ConfigurationSetting>().iterator()).thenReturn(FEATURE_ITEMS_TARGETING.iterator());
+        when(pagedFluxMock.iterator()).thenReturn(new ArrayList<ConfigurationSetting>().iterator())
+            .thenReturn(FEATURE_ITEMS_TARGETING.iterator());
         when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString()))
             .thenReturn(pagedFluxMock).thenReturn(pagedFluxMock);
         featureFlagStore.setEnabled(true);
@@ -477,9 +487,9 @@ public class AppConfigurationPropertySourceTest {
         featureSetExpected.addFeature("target", feature);
         LinkedHashMap<?, ?> convertedValue = mapper.convertValue(featureSetExpected.getFeatureManagement(),
             LinkedHashMap.class);
-        System.out.println(convertedValue.toString());
-        System.out.println(propertySource.getProperty(FEATURE_MANAGEMENT_KEY).toString());
-        assertEquals(convertedValue.toString().length(),
-            propertySource.getProperty(FEATURE_MANAGEMENT_KEY).toString().length());
+        
+        assertEquals(convertedValue.get("target").toString().length(),
+            mapper.convertValue(propertySource.getProperty(FEATURE_MANAGEMENT_KEY + ".target"),
+                LinkedHashMap.class).toString().length());
     }
 }

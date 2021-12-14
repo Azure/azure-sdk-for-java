@@ -549,6 +549,46 @@ public class TargetingEvaluatorTest {
     }
     
     @Test
+    public void assignVariantAsyncGroupBoundsTest() {
+        when(contextAccessor.getContextAsync()).thenReturn(Mono.just(targetingContextMock));
+        
+        List<String> groups = new ArrayList<>();
+        groups.add("Test");
+        
+        when(targetingContextMock.getGroups()).thenReturn(groups);
+
+        TargetingEvaluationOptions options = new TargetingEvaluationOptions();
+        options.setIgnoreCase(true);
+        TargetingEvaluator filter = new TargetingEvaluator(contextAccessor, options);
+
+        Map<String, FeatureVariant> variants = new HashMap<String, FeatureVariant>();
+        LinkedHashMap<String, Object> variantGroups = new LinkedHashMap<String, Object>();
+        
+        GroupRollout gr1 = new GroupRollout();
+        gr1.setName("Dev");
+        gr1.setRolloutPercentage(51);
+        
+        GroupRollout gr2 = new GroupRollout();
+        gr2.setName("Test");
+        gr2.setRolloutPercentage(51);
+        
+        variantGroups.put("0", gr1);
+        variantGroups.put("1", gr2);
+
+        FeatureVariant variant = createFeatureVariant("testVariant", new LinkedHashMap<String, Object>(), variantGroups, 0);
+        variants.put("0", variant);
+        variants.put("1", variant);
+
+        DynamicFeature dynamicFeature = new DynamicFeature();
+        dynamicFeature.setAssigner("testAssigner");
+        dynamicFeature.setVariants(variants);
+        FeatureDefinition featureDefinition = new FeatureDefinition("testFeature", dynamicFeature);
+        
+        Exception exception = assertThrows(TargetingException.class, () -> filter.assignVariantAsync(featureDefinition).block());
+        assertEquals("Dev : The value is out of the accepted range.", exception.getMessage());
+    }
+    
+    @Test
     public void assignVariantAsyncNullContextTest() {
         when(contextAccessor.getContextAsync()).thenReturn(Mono.justOrEmpty(null));
 

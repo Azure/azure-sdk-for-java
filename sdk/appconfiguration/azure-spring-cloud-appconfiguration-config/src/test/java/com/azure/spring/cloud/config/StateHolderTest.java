@@ -20,7 +20,7 @@ public class StateHolderTest {
 
     @Test
     public void expireState() {
-        String endpoint = "testEndpoint";
+        String endpoint = "expireStateEndpoint";
         List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
 
         AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
@@ -34,7 +34,7 @@ public class StateHolderTest {
 
     @Test
     public void notExpireState() {
-        String endpoint = "testEndpoint";
+        String endpoint = "notExpireStateEndpoint";
         List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
 
         AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();

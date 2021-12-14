@@ -50,7 +50,9 @@ import static java.util.stream.Collectors.toMap;
 /**
  * Azure App Configuration PropertySource unique per Store Label(Profile) combo.
  *
- * <p>i.e. If connecting to 2 stores and have 2 labels set 4 AppConfigurationPropertySources need to be created.</p>
+ * <p>
+ * i.e. If connecting to 2 stores and have 2 labels set 4 AppConfigurationPropertySources need to be created.
+ * </p>
  */
 public final class AppConfigurationPropertySource extends EnumerablePropertySource<ConfigurationClient> {
 
@@ -254,8 +256,13 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
      * @param featureSet Feature Flag info to be set to this property source.
      */
     void initFeatures(FeatureSet featureSet) {
-        properties.put(FEATURE_MANAGEMENT_KEY,
-            FEATURE_MAPPER.convertValue(featureSet.getFeatureManagement(), LinkedHashMap.class));
+        if (featureSet.getFeatureManagement() == null) {
+            return;
+        }
+        for (String feature: featureSet.getFeatureManagement().keySet()) {
+            properties.put(FEATURE_MANAGEMENT_KEY + "." + feature, 
+                featureSet.getFeatureManagement().get(feature));
+        }
     }
 
     private FeatureSet addToFeatureSet(FeatureSet featureSet, PagedIterable<ConfigurationSetting> features, Date date)
