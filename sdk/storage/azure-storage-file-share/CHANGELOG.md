@@ -1,6 +1,8 @@
 # Release History
 
 ## 12.12.0-beta.3 (Unreleased)
+- Added support for the 2021-04-10 service version.
+- Added support for renaming files and directories.
 
 ### Features Added
 
