@@ -5,7 +5,6 @@ package com.azure.core.amqp.implementation.handler;
 
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import reactor.test.StepVerifier;
 
-import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -44,9 +42,8 @@ public class HandlerTest {
         final String hostname = "hostname";
 
         // Act
-        assertThrows(NullPointerException.class, () -> new TestHandler(null, hostname, new ClientLogger(TestHandler.class)));
-        assertThrows(NullPointerException.class, () -> new TestHandler(connectionId, null, new ClientLogger(TestHandler.class)));
-        assertThrows(NullPointerException.class, () -> new TestHandler(connectionId, hostname, null));
+        assertThrows(NullPointerException.class, () -> new TestHandler(null, hostname));
+        assertThrows(NullPointerException.class, () -> new TestHandler(connectionId, null));
     }
 
     @Test
@@ -158,11 +155,11 @@ public class HandlerTest {
         static final String HOSTNAME = "test-hostname";
 
         TestHandler() {
-            super(CONNECTION_ID, HOSTNAME, new ClientLogger(TestHandler.class, createContextWithConnectionId(CONNECTION_ID)));
+            super(CONNECTION_ID, HOSTNAME);
         }
 
-        TestHandler(String connectionId, String hostname, ClientLogger logger) {
-            super(connectionId, hostname, logger);
+        TestHandler(String connectionId, String hostname) {
+            super(connectionId, hostname);
         }
     }
 }

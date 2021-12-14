@@ -8,7 +8,6 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.SessionErrorContext;
 import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.amqp.implementation.ReactorDispatcher;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LoggingEventBuilder;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.EndpointState;
@@ -21,7 +20,6 @@ import java.util.Locale;
 import java.util.concurrent.RejectedExecutionException;
 
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addErrorCondition;
-import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
 import static com.azure.core.amqp.implementation.ClientConstants.SESSION_NAME_KEY;
 
 public class SessionHandler extends Handler {
@@ -31,7 +29,7 @@ public class SessionHandler extends Handler {
 
     public SessionHandler(String connectionId, String hostname, String sessionName, ReactorDispatcher reactorDispatcher,
                           Duration openTimeout) {
-        super(connectionId, hostname, new ClientLogger(SessionHandler.class, createContextWithConnectionId(connectionId)));
+        super(connectionId, hostname);
         this.sessionName = sessionName;
         this.openTimeout = openTimeout;
         this.reactorDispatcher = reactorDispatcher;

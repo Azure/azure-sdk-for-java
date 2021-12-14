@@ -8,7 +8,6 @@ import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.AmqpErrorCode;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.microsoft.azure.proton.transport.proxy.ProxyHandler;
 import com.microsoft.azure.proton.transport.proxy.impl.ProxyHandlerImpl;
 import com.microsoft.azure.proton.transport.proxy.impl.ProxyImpl;
@@ -30,7 +29,6 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addErrorCondition;
 import static com.azure.core.amqp.implementation.ClientConstants.HOSTNAME_KEY;
 
@@ -40,7 +38,6 @@ import static com.azure.core.amqp.implementation.ClientConstants.HOSTNAME_KEY;
 public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandler {
     private static final String HTTPS_URI_FORMAT = "https://%s:%s";
 
-    private final ClientLogger logger;
     private final InetSocketAddress connectionHostname;
     private final ProxyOptions proxyOptions;
     private final String fullyQualifiedNamespace;
@@ -64,7 +61,6 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
         this.proxyOptions = Objects.requireNonNull(proxyOptions, "'proxyConfiguration' cannot be null.");
         this.fullyQualifiedNamespace = connectionOptions.getFullyQualifiedNamespace();
         this.amqpBrokerHostname = connectionOptions.getFullyQualifiedNamespace() + ":" + connectionOptions.getPort();
-        this.logger = new ClientLogger(WebSocketsProxyConnectionHandler.class, createContextWithConnectionId(connectionId));
         if (proxyOptions.isProxyAddressConfigured()) {
             this.connectionHostname = (InetSocketAddress) proxyOptions.getProxyAddress().address();
         } else {
