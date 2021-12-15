@@ -4,10 +4,10 @@
 package com.azure.messaging.eventgrid.cloudnative.cloudevents.samples;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.models.CloudEvent;
-import com.azure.messaging.eventgrid.EventGridPublisherAsyncClient;
+import com.azure.messaging.eventgrid.EventGridPublisherClient;
 import com.azure.messaging.eventgrid.EventGridPublisherClientBuilder;
 import com.azure.messaging.eventgrid.cloudnative.cloudevents.EventGridCloudNativeEventPublisher;
+import io.cloudevents.CloudEvent;
 import io.cloudevents.core.builder.CloudEventBuilder;
 
 import java.net.URI;
@@ -17,19 +17,19 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * This sample shows how to publish a native cloud event to Azure EventGrid with the EventGrid client asynchronously.
+ * This sample shows how to publish a native cloud event to Azure EventGrid.
  */
-public class PublishNativeCloudEventToTopicAsync {
+public class PublishNativeCloudEventToTopic {
     public static void main(String[] args) {
-        // Prepare Event Grid async client
-        EventGridPublisherAsyncClient<CloudEvent> egClientAsync =
+        // Prepare Event Grid client
+        EventGridPublisherClient<com.azure.core.models.CloudEvent> egClient =
             new EventGridPublisherClientBuilder()
                 .endpoint(System.getenv("AZURE_EVENTGRID_CLOUDEVENT_ENDPOINT")) // Event Grid topic endpoint with CloudEvent Schema
                 .credential(new AzureKeyCredential(System.getenv("AZURE_EVENTGRID_CLOUDEVENT_KEY")))
-                .buildCloudEventPublisherAsyncClient();
+                .buildCloudEventPublisherClient();
 
         // Prepare a native cloud event input, the cloud event input should be replace with your own.
-        io.cloudevents.CloudEvent cloudEvent =
+        CloudEvent cloudEvent =
             CloudEventBuilder.v1()
                 .withData("{\"name\": \"joe\"}".getBytes(StandardCharsets.UTF_8)) // Replace it
                 .withId(UUID.randomUUID().toString()) // Replace it
@@ -39,14 +39,13 @@ public class PublishNativeCloudEventToTopicAsync {
                 .build();
 
         // Prepare multiple native cloud events input
-        final List<io.cloudevents.CloudEvent> cloudEvents = new ArrayList<>();
+        final List<CloudEvent> cloudEvents = new ArrayList<>();
         cloudEvents.add(cloudEvent);
 
         // Publishing a single event
-        EventGridCloudNativeEventPublisher.sendEventAsync(egClientAsync, cloudEvent);
+        EventGridCloudNativeEventPublisher.sendEvent(egClient, cloudEvent);
 
         // Publishing multiple events
-        EventGridCloudNativeEventPublisher.sendEventsAsync(egClientAsync, cloudEvents);
+        EventGridCloudNativeEventPublisher.sendEvents(egClient, cloudEvents);
     }
 }
-

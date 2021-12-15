@@ -57,21 +57,49 @@ add the direct dependency to your project as follows.
 ## Examples
 
 ### Sending CNCF CloudEvents To Event Grid Topics
-```java readme-sample-sendCNCFCloudEvents
+```java readme-sample-sendCNCFCloudEvents-topic
 // Prepare Event Grid client
-EventGridPublisherClient<CloudEvent> egClient =
+EventGridPublisherClient<com.azure.core.models.CloudEvent> egClient =
     new EventGridPublisherClientBuilder()
         .endpoint(System.getenv("AZURE_EVENTGRID_CLOUDEVENT_ENDPOINT"))
         .credential(new AzureKeyCredential(System.getenv("AZURE_EVENTGRID_CLOUDEVENT_KEY")))
         .buildCloudEventPublisherClient();
 
 // Prepare a native cloud event input, the cloud event input should be replace with your own.
-io.cloudevents.CloudEvent cloudEvent =
+CloudEvent cloudEvent =
     CloudEventBuilder.v1()
         .withData("{\"name\": \"joe\"}".getBytes(StandardCharsets.UTF_8)) // Replace it
         .withId(UUID.randomUUID().toString()) // Replace it
         .withType("User.Created.Text") // Replace it
         .withSource(URI.create("http://localHost")) // Replace it
+        .withDataContentType("application/json") // Replace it
+        .build();
+
+// Publishing a single event
+EventGridCloudNativeEventPublisher.sendEvent(egClient, cloudEvent);
+```
+
+### Sending CNCF CloudEvents To Event Grid Domain
+When publishing to an Event Grid domain with cloud events, the cloud event source is used as the domain topic.
+The Event Grid service doesn't support using an absolute URI for a domain topic, so you would need to do
+something like the following to integrate with the cloud native cloud events:
+```java readme-sample-sendCNCFCloudEvents-domain
+// Prepare Event Grid client
+EventGridPublisherClient<com.azure.core.models.CloudEvent> egClient =
+    new EventGridPublisherClientBuilder()
+        .endpoint(System.getenv("AZURE_EVENTGRID_CLOUDEVENT_ENDPOINT"))
+        .credential(new AzureKeyCredential(System.getenv("AZURE_EVENTGRID_CLOUDEVENT_KEY")))
+        .buildCloudEventPublisherClient();
+
+// Prepare a native cloud event input, the cloud event input should be replace with your own.
+CloudEvent cloudEvent =
+    CloudEventBuilder.v1()
+        .withData("{\"name\": \"joe\"}".getBytes(StandardCharsets.UTF_8)) // Replace it
+        .withId(UUID.randomUUID().toString()) // Replace it
+        .withType("User.Created.Text") // Replace it
+        // Replace it. Event Grid does not allow absolute URIs as the domain topic.
+        // For example, use the Event Grid Domain resource name as the relative path.
+        .withSource(URI.create("/relative/path"))
         .withDataContentType("application/json") // Replace it
         .build();
 
@@ -107,17 +135,8 @@ If you encounter any bugs with these SDKs, please file issues via [Issues](https
 
 ## Contributing
 
-For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).
-
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
-
----
-
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+If you would like to become an active contributor to this project please refer to our 
+[Contribution Guidelines]() for more information.
 
 <!-- LINKS -->
 [javadocs]: https://azure.github.io/azure-sdk-for-java/eventgrid.html
@@ -125,3 +144,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [CNCFCloudEvents]: https://cloudevents.github.io/sdk-java/
 [HttpResponseException]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/exception/HttpResponseException.java
 
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventgrid%2Fazure-messaging-eventgrid-cloudnative-cloudevents%2FREADME.png)

@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.azure.core.util.FluxUtil.monoError;
+
 /**
  * EventGrid cloud native event publisher sends the Cloud Native Computing Foundation(CNCF) CloudEvents by using
  * Azure EventGrid publisher client, see {@link EventGridPublisherClient}.
@@ -57,6 +59,9 @@ public final class EventGridCloudNativeEventPublisher {
      */
     public static Mono<Void> sendEventAsync(EventGridPublisherAsyncClient<com.azure.core.models.CloudEvent> asyncClient,
         CloudEvent event) {
+        if (event == null) {
+            return monoError(LOGGER, new NullPointerException("CloudEvent 'event' cannot be null."));
+        }
         return asyncClient.sendEvent(toEventGridCloudEvent(event));
     }
 
@@ -84,6 +89,9 @@ public final class EventGridCloudNativeEventPublisher {
      */
     public static Mono<Void> sendEventsAsync(
         EventGridPublisherAsyncClient<com.azure.core.models.CloudEvent> asyncClient, Iterable<CloudEvent> events) {
+        if (events == null) {
+            return monoError(LOGGER, new NullPointerException("CloudEvent 'events' cannot be null."));
+        }
         return asyncClient.sendEvents(toEventGridCloudEvents(events));
     }
 
@@ -113,6 +121,9 @@ public final class EventGridCloudNativeEventPublisher {
      */
     public static Mono<Response<Void>> sendEventsWithResponseAsync(
         EventGridPublisherAsyncClient<com.azure.core.models.CloudEvent> asyncClient, Iterable<CloudEvent> events) {
+        if (events == null) {
+            return monoError(LOGGER, new NullPointerException("CloudEvent 'events' cannot be null."));
+        }
         return asyncClient.sendEventsWithResponse(toEventGridCloudEvents(events));
     }
 
