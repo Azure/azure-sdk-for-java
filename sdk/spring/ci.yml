@@ -116,7 +116,7 @@ pr:
       - sdk/spring/spring-cloud-azure-stream-binder-test/pom.xml
       - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
 
-stages:
+extends:
   - template: spring-ci-template.yml
     parameters:
         PreTestSteps:
