@@ -47,21 +47,24 @@ public class HmacAuthenticationPolicyTest extends PerfStressTest<PerfStressOptio
     @Override
     public void run() {
         HttpResponse response = pipeline.send(request).block();
-        String date = response.getRequest().getHeaders().getValue("date");
+        String date = response.getRequest().getHeaders().getValue("x-ms-date");
         String signature = response.getRequest().getHeaders().getValue("Authorization");
         checkSignatureCorrectness(date, signature);
     }
 
     @Override
     public Mono<Void> runAsync() {
-        HttpResponse response = pipeline.send(request).block();
-        //getting date header from old implementation
-        //String date = response.getRequest().getHeaders().getValue("date");
-        //getting date header from new implementation
-        String date = response.getRequest().getHeaders().getValue("x-ms-date");
-        String signature = response.getRequest().getHeaders().getValue("Authorization");
-        checkSignatureCorrectness(date, signature);
-        return Mono.empty();
+        return pipeline.send(request)
+            .map(response -> {
+                String date = response.getRequest().getHeaders().getValue("x-ms-date");
+                String signature = response.getRequest().getHeaders().getValue("Authorization");
+                try {
+                    checkSignatureCorrectness(date, signature);
+                } catch (Exception e) {
+                    return Mono.error(e);
+                }
+                return Mono.empty();
+            }).then();
     }
 
     private void checkSignatureCorrectness(String date, String signature){
