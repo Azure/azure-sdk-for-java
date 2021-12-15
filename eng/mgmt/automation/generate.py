@@ -473,7 +473,8 @@ def main():
     service = get_and_update_service_from_api_specs(api_specs_file, spec,
                                                     args['service'])
     args['service'] = service
-    stable_version, current_version = set_or_increase_version(sdk_root, **args)
+    module = ARTIFACT_FORMAT.format(service)
+    stable_version, current_version = set_or_increase_version(sdk_root, GROUP_ID, module, **args)
     args['version'] = current_version
     generate(sdk_root, **args)
 
