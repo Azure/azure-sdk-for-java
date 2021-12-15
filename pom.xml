@@ -720,6 +720,7 @@
         <module>sdk/appconfiguration</module>
         <module>sdk/applicationinsights</module>
         <module>sdk/attestation</module>
+        <module>sdk/automanage</module>
         <module>sdk/automation</module>
         <module>sdk/avs</module>
         <module>sdk/azurearcdata</module>
