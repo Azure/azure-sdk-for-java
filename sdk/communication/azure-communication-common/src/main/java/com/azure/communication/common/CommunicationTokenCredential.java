@@ -26,7 +26,7 @@ import com.azure.communication.common.implementation.TokenParser;
 public final class CommunicationTokenCredential implements AutoCloseable {
 
     private final ClientLogger logger = new ClientLogger(CommunicationTokenCredential.class);
-    private final Duration refreshTimeBeforeTokenExpiry;
+    private final Duration refreshIntervalBeforeTokenExpiry;
     private AccessToken accessToken;
     private final TokenParser tokenParser = new TokenParser();
     private Supplier<Mono<String>> refresher;
@@ -41,7 +41,7 @@ public final class CommunicationTokenCredential implements AutoCloseable {
     public CommunicationTokenCredential(String token) {
         Objects.requireNonNull(token, "'token' cannot be null.");
         CommunicationTokenRefreshOptions tokenRefreshOptions = new CommunicationTokenRefreshOptions(null, false, token);
-        refreshTimeBeforeTokenExpiry = tokenRefreshOptions.getRefreshIntervalBeforeTokenExpiry();
+        refreshIntervalBeforeTokenExpiry = tokenRefreshOptions.getRefreshIntervalBeforeTokenExpiry();
         setToken(token);
     }
 
@@ -57,12 +57,12 @@ public final class CommunicationTokenCredential implements AutoCloseable {
     public CommunicationTokenCredential(CommunicationTokenRefreshOptions tokenRefreshOptions) {
         Supplier<Mono<String>> tokenRefresher = tokenRefreshOptions.getTokenRefresher();
         Objects.requireNonNull(tokenRefresher, "'tokenRefresher' cannot be null.");
-        refreshTimeBeforeTokenExpiry = tokenRefreshOptions.getRefreshIntervalBeforeTokenExpiry();
+        refreshIntervalBeforeTokenExpiry = tokenRefreshOptions.getRefreshIntervalBeforeTokenExpiry();
         refresher = tokenRefresher;
         if (tokenRefreshOptions.getInitialToken() != null) {
             setToken(tokenRefreshOptions.getInitialToken());
             if (tokenRefreshOptions.isRefreshProactively()) {
-                OffsetDateTime nextFetchTime = accessToken.getExpiresAt().minusMinutes(refreshTimeBeforeTokenExpiry.toMinutes());
+                OffsetDateTime nextFetchTime = accessToken.getExpiresAt().minusMinutes(refreshIntervalBeforeTokenExpiry.toMinutes());
                 fetchingTask = new FetchingTask(this, nextFetchTime);
             }
         }
@@ -112,7 +112,7 @@ public final class CommunicationTokenCredential implements AutoCloseable {
         accessToken = tokenParser.parseJWTToken(freshToken);
 
         if (fetchingTask != null) {
-            OffsetDateTime nextFetchTime = accessToken.getExpiresAt().minusMinutes(refreshTimeBeforeTokenExpiry.toMinutes());
+            OffsetDateTime nextFetchTime = accessToken.getExpiresAt().minusMinutes(refreshIntervalBeforeTokenExpiry.toMinutes());
             fetchingTask.setNextFetchTime(nextFetchTime);
         }
     }

@@ -108,8 +108,8 @@ The default value is 4.5 minutes to avoid MSAL compatibility issues.
 
 ```java
 String token = System.getenv("COMMUNICATION_SERVICES_USER_TOKEN");
-Duration refreshTimeBeforeTokenExpiry = Duration.ofMinutes(5);
-CommunicationTokenRefreshOptions tokenRefreshOptions = new CommunicationTokenRefreshOptions(fetchTokenFromMyServerForUser, true, token, refreshTimeBeforeTokenExpiry);
+Duration refreshIntervalBeforeTokenExpiry = Duration.ofMinutes(5);
+CommunicationTokenRefreshOptions tokenRefreshOptions = new CommunicationTokenRefreshOptions(fetchTokenFromMyServerForUser, true, token, refreshIntervalBeforeTokenExpiry);
 CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(tokenRefreshOptions);              
 ```
 
