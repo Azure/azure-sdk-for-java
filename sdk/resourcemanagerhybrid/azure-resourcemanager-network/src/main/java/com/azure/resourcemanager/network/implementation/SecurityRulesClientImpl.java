@@ -267,7 +267,8 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
             deleteWithResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -730,7 +731,11 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
         return this
             .client
             .<SecurityRuleInner, SecurityRuleInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SecurityRuleInner.class, SecurityRuleInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                SecurityRuleInner.class,
+                SecurityRuleInner.class,
+                this.client.getContext());
     }
 
     /**

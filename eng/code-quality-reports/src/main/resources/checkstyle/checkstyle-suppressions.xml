@@ -242,6 +242,7 @@ the main ServiceBusClientBuilder. -->
   <!-- Logger class suppression -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="ClientLogger.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="DefaultLogger.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="LoggingEventBuilder.java"/>
 
   <!-- Requires static access to logger to report errors while loading i18n messages (from within a static initializer )-->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="Messages.java"/>
@@ -427,7 +428,7 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-spring-cloud-feature-management-web[/\\]"/>
 
   <!-- Suppress package name warning: b2c is the product name. -->
-  <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.aad.b2c.*" />
+  <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.aadb2c.*" />
   <!-- Suppress package name warning: oauth2 is the protocol name. -->
   <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2" />
 
@@ -623,4 +624,7 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="WhitespaceAround" files="com.azure.search.documents.indexes.models.DataDeletionDetectionPolicy"/>
   <suppress checks="WhitespaceAround" files="com.azure.search.documents.indexes.models.SearchIndexerDataIdentity"/>
   <suppress checks="WhitespaceAround" files="com.azure.search.documents.indexes.models.SimilarityAlgorithm"/>
+
+  <!-- Suppression for bug https://github.com/checkstyle/checkstyle/issues/11001 -->
+  <suppress checks="ParenPad" files="com.azure.ai.textanalytics.TextAnalyticsClientTestBase" lines="1020,1024"/>
 </suppressions>

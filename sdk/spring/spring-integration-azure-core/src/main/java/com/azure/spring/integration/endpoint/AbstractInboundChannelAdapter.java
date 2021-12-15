@@ -23,11 +23,21 @@ public abstract class AbstractInboundChannelAdapter extends MessageProducerSuppo
     protected SubscribeByGroupOperation subscribeByGroupOperation = null;
     protected SubscribeOperation subscribeOperation = null;
 
+    /**
+     * Construct a {@link AbstractInboundChannelAdapter} with the specified destination.
+     *
+     * @param destination the destination
+     */
     protected AbstractInboundChannelAdapter(String destination) {
         Assert.hasText(destination, "destination can't be null or empty");
         this.destination = destination;
     }
 
+    /**
+     * Build properties map.
+     *
+     * @return the properties map
+     */
     protected Map<String, Object> buildPropertiesMap() {
         Map<String, Object> properties = new HashMap<>();
         properties.put("consumerGroup", consumerGroup);
@@ -57,6 +67,11 @@ public abstract class AbstractInboundChannelAdapter extends MessageProducerSuppo
         super.doStop();
     }
 
+    /**
+     * Send the received message.
+     *
+     * @param message received message
+     */
     public void receiveMessage(Message<?> message) {
         sendMessage(message);
     }

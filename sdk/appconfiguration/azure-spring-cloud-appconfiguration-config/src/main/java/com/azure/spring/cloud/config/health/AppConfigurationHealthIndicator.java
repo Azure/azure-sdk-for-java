@@ -14,6 +14,10 @@ public final class AppConfigurationHealthIndicator implements HealthIndicator {
 
     private final AppConfigurationRefresh refresh;
 
+    /**
+     * Indicator for the Health endpoint for connections to App Configurations.
+     * @param refresh App Configuration store refresher
+     */
     public AppConfigurationHealthIndicator(AppConfigurationRefresh refresh) {
         this.refresh = refresh;
     }

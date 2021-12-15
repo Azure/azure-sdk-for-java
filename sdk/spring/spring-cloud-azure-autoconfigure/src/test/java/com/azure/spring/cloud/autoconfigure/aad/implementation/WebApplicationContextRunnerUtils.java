@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.aad.implementation;
 
 import com.azure.spring.cloud.autoconfigure.aad.AADAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener;
 import org.springframework.boot.logging.LogLevel;
 import org.springframework.boot.test.context.FilteredClassLoader;
@@ -20,7 +21,7 @@ public class WebApplicationContextRunnerUtils {
 
     public static WebApplicationContextRunner oauthClientAndResourceServerRunner() {
         return new WebApplicationContextRunner()
-            .withUserConfiguration(AADAutoConfiguration.class)
+            .withUserConfiguration(AzureGlobalPropertiesAutoConfiguration.class, AADAutoConfiguration.class)
             .withInitializer(new ConditionEvaluationReportLoggingListener(LogLevel.INFO));
     }
 
@@ -60,14 +61,14 @@ public class WebApplicationContextRunnerUtils {
     public static String[] withWebApplicationOrResourceServerWithOboPropertyValues() {
         return new String[] {
             "spring.cloud.azure.active-directory.enabled = true",
-            "spring.cloud.azure.active-directory.client-id = fake-client-id",
-            "spring.cloud.azure.active-directory.client-secret = fake-client-secret",
-            "spring.cloud.azure.active-directory.tenant-id = fake-tenant-id"};
+            "spring.cloud.azure.active-directory.credential.client-id = fake-client-id",
+            "spring.cloud.azure.active-directory.credential.client-secret = fake-client-secret",
+            "spring.cloud.azure.active-directory.profile.tenant-id = fake-tenant-id"};
     }
 
     public static String[] withResourceServerPropertyValues() {
         return new String[] {
-            "spring.cloud.azure.active-directory.tenant-id=fake-tenant-id",
+            "spring.cloud.azure.active-directory.profile.tenant-id=fake-tenant-id",
             "spring.cloud.azure.active-directory.app-id-uri=fake-app-id-uri"};
     }
 }

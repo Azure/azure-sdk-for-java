@@ -712,7 +712,11 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
         return this
             .client
             .<CustomDomainInner, CustomDomainInner>getLroResult(
-                mono, this.client.getHttpPipeline(), CustomDomainInner.class, CustomDomainInner.class, this.client.getContext());
+                mono,
+                this.client.getHttpPipeline(),
+                CustomDomainInner.class,
+                CustomDomainInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1069,7 +1073,11 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
         return this
             .client
             .<CustomDomainInner, CustomDomainInner>getLroResult(
-                mono, this.client.getHttpPipeline(), CustomDomainInner.class, CustomDomainInner.class, this.client.getContext());
+                mono,
+                this.client.getHttpPipeline(),
+                CustomDomainInner.class,
+                CustomDomainInner.class,
+                this.client.getContext());
     }
 
     /**

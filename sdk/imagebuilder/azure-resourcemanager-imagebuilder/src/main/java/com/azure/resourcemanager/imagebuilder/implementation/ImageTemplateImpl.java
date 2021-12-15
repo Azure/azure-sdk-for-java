@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.imagebuilder.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.imagebuilder.fluent.models.ImageTemplateInner;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplate;
@@ -53,6 +54,10 @@ public final class ImageTemplateImpl implements ImageTemplate, ImageTemplate.Def
 
     public ImageTemplateIdentity identity() {
         return this.innerModel().identity();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public ImageTemplateSource source() {

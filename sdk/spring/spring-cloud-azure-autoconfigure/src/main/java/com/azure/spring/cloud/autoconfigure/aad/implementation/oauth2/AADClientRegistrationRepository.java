@@ -3,9 +3,9 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2;
 
-import com.azure.spring.cloud.autoconfigure.aad.core.AADAuthorizationGrantType;
-import com.azure.spring.cloud.autoconfigure.aad.core.AADAuthorizationServerEndpoints;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthenticationProperties;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthorizationGrantType;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthorizationServerEndpoints;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AuthorizationClientProperties;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -21,8 +21,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.azure.spring.cloud.autoconfigure.aad.core.AADAuthorizationGrantType.AUTHORIZATION_CODE;
-import static com.azure.spring.cloud.autoconfigure.aad.core.AADAuthorizationGrantType.AZURE_DELEGATED;
+import static com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthorizationGrantType.AUTHORIZATION_CODE;
+import static com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthorizationGrantType.AZURE_DELEGATED;
 
 
 /**
@@ -57,7 +57,7 @@ public class AADClientRegistrationRepository implements ClientRegistrationReposi
             // AAD server will return error if:
             // 1. authorizationCodeScopes have more than one resource server.
             // 2. accessTokenScopes have no resource server
-            String newScope = properties.getGraphBaseUri() + "User.Read";
+            String newScope = properties.getProfile().getEnvironment().getMicrosoftGraphEndpoint() + "User.Read";
             accessTokenScopes.add(newScope);
             authorizationCodeScopes.add(newScope);
         }
@@ -120,10 +120,10 @@ public class AADClientRegistrationRepository implements ClientRegistrationReposi
         // 2. https://github.com/Azure/azure-sdk-for-java/issues/21284#issuecomment-888725241
         if (properties.allowedGroupNamesConfigured()) {
             // "Directory.Read.All" allows to get group id and group name.
-            result.add(properties.getGraphBaseUri() + "Directory.Read.All");
+            result.add(properties.getProfile().getEnvironment().getMicrosoftGraphEndpoint() + "Directory.Read.All");
         } else if (properties.allowedGroupIdsConfigured()) {
-            // "User.Read" allows to get group id, but not allow to get group name.
-            result.add(properties.getGraphBaseUri() + "User.Read");
+            // "User.Read" allows getting group id, but not allow getting group name.
+            result.add(properties.getProfile().getEnvironment().getMicrosoftGraphEndpoint() + "User.Read");
         }
         return result;
     }
@@ -142,15 +142,15 @@ public class AADClientRegistrationRepository implements ClientRegistrationReposi
                                                     Collection<String> scopes,
                                                     AADAuthenticationProperties properties) {
         AADAuthorizationServerEndpoints endpoints =
-            new AADAuthorizationServerEndpoints(properties.getBaseUri(), properties.getTenantId());
+            new AADAuthorizationServerEndpoints(properties.getProfile().getEnvironment().getActiveDirectoryEndpoint(), properties.getProfile().getTenantId());
         return ClientRegistration.withRegistrationId(registrationId)
                                  .clientName(registrationId)
                                  .authorizationGrantType(new AuthorizationGrantType((aadAuthorizationGrantType.getValue())))
                                  .scope(scopes)
                                  .redirectUri(properties.getRedirectUriTemplate())
                                  .userNameAttributeName(properties.getUserNameAttribute())
-                                 .clientId(properties.getClientId())
-                                 .clientSecret(properties.getClientSecret())
+                                 .clientId(properties.getCredential().getClientId())
+                                 .clientSecret(properties.getCredential().getClientSecret())
                                  .authorizationUri(endpoints.authorizationEndpoint())
                                  .tokenUri(endpoints.tokenEndpoint())
                                  .jwkSetUri(endpoints.jwkSetEndpoint())

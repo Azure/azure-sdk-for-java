@@ -16,11 +16,23 @@ public class DefaultInstrumentation implements Instrumentation {
 
     private Throwable exception;
 
+    /**
+     * Construct a {@link DefaultInstrumentation} with the specified name and type.
+     *
+     * @param name the name
+     * @param type the type
+     */
     public DefaultInstrumentation(String name, Type type) {
         this.name = name;
         this.type = type;
     }
 
+    /**
+     * Get type.
+     *
+     * @return type the type
+     * @see Type
+     */
     public Type getType() {
         return type;
     }
@@ -30,10 +42,20 @@ public class DefaultInstrumentation implements Instrumentation {
         return exception;
     }
 
+    /**
+     * Check whether is down.
+     *
+     * @return true if the status is down,false otherwise
+     */
     public boolean isDown() {
         return !isRunning;
     }
 
+    /**
+     * Check whether is up.
+     *
+     * @return false if the status is up,true otherwise
+     */
     public boolean isUp() {
         return isRunning;
     }
@@ -49,6 +71,11 @@ public class DefaultInstrumentation implements Instrumentation {
         this.isRunning = true;
     }
 
+    /**
+     * Get the name of destination entity.
+     *
+     * @return name the name of destination entity
+     */
     public String getName() {
         return name;
     }

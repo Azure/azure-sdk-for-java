@@ -20,6 +20,10 @@ public class AppConfigurationHealthIndicator extends AbstractHealthIndicator {
     private Duration timeout = DEFAULT_HEALTH_CHECK_TIMEOUT;
     private final ConfigurationAsyncClient configurationAsyncClient;
 
+    /**
+     * Creates a new instance of {@link AppConfigurationHealthIndicator}.
+     * @param configurationAsyncClient the configuration client
+     */
     public AppConfigurationHealthIndicator(ConfigurationAsyncClient configurationAsyncClient) {
         this.configurationAsyncClient = configurationAsyncClient;
     }

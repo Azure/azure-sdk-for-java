@@ -29,6 +29,8 @@ import java.util.stream.StreamSupport;
 
 /**
  * KeyVaultOperation wraps the operations to access Key Vault.
+ *
+ * @since 4.0.0
  */
 public class KeyVaultOperation {
 

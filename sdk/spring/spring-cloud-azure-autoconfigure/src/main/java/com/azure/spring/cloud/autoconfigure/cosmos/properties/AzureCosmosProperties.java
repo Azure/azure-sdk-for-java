@@ -54,11 +54,16 @@ public class AzureCosmosProperties extends AbstractAzureServiceCP implements Cos
 
     private final List<String> preferredRegions = new ArrayList<>();
 
+    @NestedConfigurationProperty
     private final ThrottlingRetryOptions throttlingRetryOptions = new ThrottlingRetryOptions();
 
     private ConsistencyLevel consistencyLevel;
     private ConnectionMode connectionMode;
+
+    @NestedConfigurationProperty
     private final GatewayConnectionConfig gatewayConnection = new GatewayConnectionConfig();
+
+    @NestedConfigurationProperty
     private final DirectConnectionConfig directConnection = new DirectConnectionConfig();
 
     /**

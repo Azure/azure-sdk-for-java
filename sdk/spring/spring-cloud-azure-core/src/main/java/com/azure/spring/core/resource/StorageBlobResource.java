@@ -10,6 +10,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
+import com.azure.storage.blob.specialized.BlobOutputStream;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -71,6 +72,8 @@ public class StorageBlobResource extends AzureStorageResource {
      * @param blobServiceClient the BlobServiceClient
      * @param location the location
      * @param autoCreateFiles whether to automatically create files
+     * @param snapshot the snapshot name
+     * @param versionId the version id
      * @param contentType the content type
      */
     public StorageBlobResource(BlobServiceClient blobServiceClient, String location, Boolean autoCreateFiles,
@@ -99,6 +102,12 @@ public class StorageBlobResource extends AzureStorageResource {
         return true;
     }
 
+    /**
+     * Creates and opens an output stream to write data to the block blob. If the blob already exists on the service, it
+     * will be overwritten.
+     * @return A {@link BlobOutputStream} object used to write data to the blob.
+     * @throws IOException If a storage service error occurred or blob not found.
+     */
     @Override
     public OutputStream getOutputStream() throws IOException {
         try {
@@ -132,6 +141,10 @@ public class StorageBlobResource extends AzureStorageResource {
         return new URL(this.blockBlobClient.getBlobUrl());
     }
 
+    /**
+     * This implementation throws a FileNotFoundException, assuming
+     * that the resource cannot be resolved to an absolute file path.
+     */
     @Override
     public File getFile() {
         throw new UnsupportedOperationException(getDescription() + " cannot be resolved to absolute file path");
@@ -144,11 +157,17 @@ public class StorageBlobResource extends AzureStorageResource {
         return blobProperties;
     }
 
+    /**
+     * @return the size of the blob in bytes
+     */
     @Override
     public long contentLength() {
         return getBlobProperties().getBlobSize();
     }
 
+    /**
+     * @return the time when the blob was last modified
+     */
     @Override
     public long lastModified() {
         return getBlobProperties().getLastModified().toEpochSecond();
@@ -160,11 +179,18 @@ public class StorageBlobResource extends AzureStorageResource {
         return new StorageBlobResource(this.blobServiceClient, newLocation, autoCreateFiles);
     }
 
+    /**
+     * @return The decoded name of the blob.
+     */
     @Override
     public String getFilename() {
         return this.blockBlobClient.getBlobName();
     }
 
+    /**
+     * @return a description for this resource,
+     * to be used for error output when working with the resource.
+     */
     @Override
     public String getDescription() {
         StringBuilder sb = new StringBuilder();
@@ -183,6 +209,11 @@ public class StorageBlobResource extends AzureStorageResource {
         return sb.toString();
     }
 
+    /**
+     * Opens a blob input stream to download the blob.
+     * @return An <code>InputStream</code> object that represents the stream to use for reading from the blob.
+     * @throws IOException If a storage service error occurred or not existed.
+     */
     @Override
     public InputStream getInputStream() throws IOException {
         try {

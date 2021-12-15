@@ -197,6 +197,9 @@ public interface GalleryImage
             WithOsTypeAndState withIdentifier(String publisher, String offer, String sku);
         }
 
+        /**
+         * The stage of the gallery image definition allowing to specify the OS type and state.
+         */
         interface WithOsTypeAndState {
             /**
              * Specifies that image is a Windows image with OS state as generalized.

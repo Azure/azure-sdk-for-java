@@ -39,6 +39,7 @@ abstract class CommonProperties extends AbstractAzureAmqpSdkProperties implement
     // servicebus.windows.net)
     // Endpoint=sb://<FQDN>/;SharedAccessKeyName=<KeyName>;SharedAccessKey=<KeyValue>
     // https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-get-connection-string
+    @Override
     public String getFQDN() {
         return this.namespace == null ? extractFqdnFromConnectionString() : (this.namespace + "." + domainName);
     }
@@ -48,6 +49,10 @@ abstract class CommonProperties extends AbstractAzureAmqpSdkProperties implement
         return domainName;
     }
 
+    /**
+     * Set the domain name.
+     * @param domainName the domain name.
+     */
     public void setDomainName(String domainName) {
         this.domainName = domainName;
     }
@@ -57,6 +62,10 @@ abstract class CommonProperties extends AbstractAzureAmqpSdkProperties implement
         return namespace;
     }
 
+    /**
+     * Set the namespace.
+     * @param namespace the namespace.
+     */
     public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
@@ -66,6 +75,10 @@ abstract class CommonProperties extends AbstractAzureAmqpSdkProperties implement
         return eventHubName == null ? extractEventHubNameFromConnectionString() : this.eventHubName;
     }
 
+    /**
+     * Set the event hub name.
+     * @param eventHubName the event hub name.
+     */
     public void setEventHubName(String eventHubName) {
         this.eventHubName = eventHubName;
     }
@@ -75,6 +88,10 @@ abstract class CommonProperties extends AbstractAzureAmqpSdkProperties implement
         return connectionString;
     }
 
+    /**
+     * Set the connection string.
+     * @param connectionString the connection string.
+     */
     public void setConnectionString(String connectionString) {
         this.connectionString = connectionString;
     }
@@ -84,6 +101,10 @@ abstract class CommonProperties extends AbstractAzureAmqpSdkProperties implement
         return customEndpointAddress;
     }
 
+    /**
+     * Set the custom endpoint address.
+     * @param customEndpointAddress the custom endpoint address.
+     */
     public void setCustomEndpointAddress(String customEndpointAddress) {
         this.customEndpointAddress = customEndpointAddress;
     }

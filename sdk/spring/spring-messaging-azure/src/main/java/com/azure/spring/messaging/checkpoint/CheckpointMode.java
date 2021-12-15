@@ -6,7 +6,7 @@ package com.azure.spring.messaging.checkpoint;
 import com.azure.spring.messaging.ListenerMode;
 
 /**
- * The Checkpoint mode.
+ * The offset commit behavior enumeration.
  */
 public enum CheckpointMode {
 

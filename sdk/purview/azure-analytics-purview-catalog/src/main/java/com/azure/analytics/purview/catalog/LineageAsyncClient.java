@@ -134,8 +134,7 @@ public final class LineageAsyncClient {
      *
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return lineage info of the entity specified by GUID.
      */
     @Generated
@@ -248,8 +247,7 @@ public final class LineageAsyncClient {
      *
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasLineageInfo.
      */
     @Generated

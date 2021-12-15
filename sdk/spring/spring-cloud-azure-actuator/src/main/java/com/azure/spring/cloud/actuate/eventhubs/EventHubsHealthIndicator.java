@@ -22,6 +22,11 @@ public class EventHubsHealthIndicator implements HealthIndicator {
 
     private Duration timeout = DEFAULT_HEALTH_CHECK_TIMEOUT;
 
+    /**
+     * Creates a new instance of {@link EventHubsHealthIndicator}.
+     * @param producerAsyncClient the producer client
+     * @param consumerAsyncClient the consumer client
+     */
     public EventHubsHealthIndicator(EventHubProducerAsyncClient producerAsyncClient,
                                     EventHubConsumerAsyncClient consumerAsyncClient) {
         this.producerAsyncClient = producerAsyncClient;
