@@ -95,13 +95,15 @@ def generate(
 
     input_arguments = '--input-file={0}'.format(input_file)
 
+    artifact_arguments = '--artifact-id={0}'.format(module)
+
     command = 'autorest --version={0} --use={1} --java.azure-libraries-for-java-folder={2} --java.output-folder={3} --java.namespace={4} {5}'.format(
         autorest,
         use,
         os.path.abspath(sdk_root),
         os.path.abspath(output_dir),
         namespace,
-        ' '.join((LLC_ARGUMENTS, input_arguments, credential_arguments, autorest_options)),
+        ' '.join((LLC_ARGUMENTS, input_arguments, credential_arguments, artifact_arguments, autorest_options)),
     )
     logging.info(command)
     if os.system(command) != 0:
