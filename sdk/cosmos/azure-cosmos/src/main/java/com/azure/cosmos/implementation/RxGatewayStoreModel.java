@@ -114,6 +114,22 @@ class RxGatewayStoreModel implements RxStoreModel {
         this.useMultipleWriteLocations = useMultipleWriteLocations;
     }
 
+    boolean isUseMultipleWriteLocations() {
+        return useMultipleWriteLocations;
+    }
+
+    RxPartitionKeyRangeCache getPartitionKeyRangeCache() {
+        return partitionKeyRangeCache;
+    }
+
+    GatewayServiceConfigurationReader getGatewayServiceConfigurationReader() {
+        return gatewayServiceConfigurationReader;
+    }
+
+    RxClientCollectionCache getCollectionCache() {
+        return collectionCache;
+    }
+
     public void setCollectionCache(RxClientCollectionCache collectionCache) {
         this.collectionCache = collectionCache;
     }
