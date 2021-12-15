@@ -1102,7 +1102,8 @@ public class ShareDirectoryAsyncClient {
         return destinationDirectoryClient.azureFileStorageClient.getDirectories().renameWithResponseAsync(
             destinationDirectoryClient.getShareName(), destinationDirectoryClient.getDirectoryPath(), renameSource,
             null /* timeout */, options.getReplaceIfExists(), options.getIgnoreReadOnly(),
-            options.getFilePermission(), filePermissionKey, sourceConditions, destinationConditions, smbInfo,
+            options.getFilePermission(), filePermissionKey, options.getMetadata(), sourceConditions,
+            destinationConditions, smbInfo,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, destinationDirectoryClient));
     }

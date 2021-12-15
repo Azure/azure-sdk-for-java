@@ -2963,7 +2963,8 @@ public class ShareFileAsyncClient {
         return destinationFileClient.azureFileStorageClient.getFiles().renameWithResponseAsync(
             destinationFileClient.getShareName(), destinationFileClient.getFilePath(), renameSource,
             null /* timeout */, options.getReplaceIfExists(), options.getIgnoreReadOnly(),
-            options.getFilePermission(), filePermissionKey, sourceConditions, destinationConditions, smbInfo, null,
+            options.getFilePermission(), filePermissionKey, options.getMetadata(), sourceConditions,
+            destinationConditions, smbInfo,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, destinationFileClient));
     }

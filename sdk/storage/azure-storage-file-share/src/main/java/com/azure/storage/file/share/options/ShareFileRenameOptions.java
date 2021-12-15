@@ -8,6 +8,8 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.FileSmbProperties;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 
+import java.util.Map;
+
 /**
  * Extended options that may be passed when renaming a file or directory.
  */
@@ -21,6 +23,8 @@ public class ShareFileRenameOptions {
     private ShareRequestConditions destinationRequestConditions;
     private String filePermission;
     private FileSmbProperties smbProperties;
+    private Map<String, String> metadata;
+
     /**
      * Creates a {@code ShareFileRenameOptions} object.
      */
@@ -146,6 +150,22 @@ public class ShareFileRenameOptions {
      */
     public ShareFileRenameOptions setSmbProperties(FileSmbProperties smbProperties) {
         this.smbProperties = smbProperties;
+        return this;
+    }
+
+    /**
+     * @return The metadata to associate with the renamed file.
+     */
+    public Map<String, String> getMetadata() {
+        return this.metadata;
+    }
+
+    /**
+     * @param metadata The metadata to associate with the renamed file.
+     * @return The updated options.
+     */
+    public ShareFileRenameOptions setMetadata(Map<String, String> metadata) {
+        this.metadata = metadata;
         return this;
     }
 }

@@ -761,6 +761,24 @@ class DirectoryAPITests extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Rename metadata"() {
+        given:
+        primaryDirectoryClient.create()
+        def updatedMetadata = Collections.singletonMap("update", "value")
+
+        when:
+        def resp = primaryDirectoryClient.renameWithResponse(new ShareFileRenameOptions(generatePathName())
+            .setMetadata(updatedMetadata), null, null)
+
+        def renamedClient = resp.getValue()
+        def getPropertiesAfter = renamedClient.getProperties()
+
+
+        then:
+        updatedMetadata == getPropertiesAfter.getMetadata()
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
     def "Rename error"() {
         setup:
         primaryDirectoryClient = shareClient.getDirectoryClient(generatePathName())
