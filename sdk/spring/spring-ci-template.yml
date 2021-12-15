@@ -1,4 +1,4 @@
-stages:
+extends:
     - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
       parameters:
           ServiceDirectory: spring

@@ -118,17 +118,18 @@ pr:
 
 stages:
   - template: spring-ci-template.yml
-#    parameters:
-#        PreTestSteps:
-#          - script: |
-#                python .\sdk\spring\scripts\update_versions.py --ut external_dependency
+    parameters:
+      AdditionalParameters:
+          PreBuildSteps:
+            - script: |
+                python .\sdk\spring\scripts\update_versions.py --ut external_dependency
   - template: spring-ci-template.yml
-    environment: #environmentName.resourceName
-    strategy: # deployment strategy
-      runOnce: # default strategy
-        deploy:
-          steps:
-            - script: python .\sdk\spring\scripts\update_versions.py --ut external_dependency
+#    environment: #environmentName.resourceName
+#    strategy: # deployment strategy
+#      runOnce: # default strategy
+#        deploy:
+#          steps:
+#            - script: python .\sdk\spring\scripts\update_versions.py --ut external_dependency
 #jobs:
 #  - job: 'Build latest'
 #    #steps:
