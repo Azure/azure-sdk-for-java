@@ -26,10 +26,10 @@ Please refer to the [Endpoint][sdk_readme_endpoint] and [Access Key][sdk_readme_
 
 ### Asynchronously sending and receiving
 - [Send Native CloudEvent to Event Grid Cloud Event Topic asynchronously][SendCloudEventTopicAsync]
-- [Send Native CloudEvent to Event Grid Cloud Event Topic asynchronously][SendCloudEventDomainAsync]
+- [Send Native CloudEvent to Event Grid Cloud Event Domain asynchronously][SendCloudEventDomainAsync]
 
 ### Synchronous sending
-- [Send Native CloudEvent to Event Grid Cloud Event Domain synchronously][SendCloudEventTopicSync]
+- [Send Native CloudEvent to Event Grid Cloud Event Topic synchronously][SendCloudEventTopicSync]
 - [Send Native CloudEvent to Event Grid Cloud Event Domain synchronously][SendCloudEventDomainSync]
 ## Troubleshooting
 See [Troubleshooting][sdk_readme_troubleshooting].

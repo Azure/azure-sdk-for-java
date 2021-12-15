@@ -5,8 +5,6 @@ package com.azure.messaging.eventgrid.cloudnative.cloudevents.samples;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.models.CloudEvent;
-import com.azure.core.util.Context;
-import com.azure.messaging.eventgrid.EventGridPublisherAsyncClient;
 import com.azure.messaging.eventgrid.EventGridPublisherClient;
 import com.azure.messaging.eventgrid.EventGridPublisherClientBuilder;
 import com.azure.messaging.eventgrid.cloudnative.cloudevents.EventGridCloudNativeEventPublisher;
