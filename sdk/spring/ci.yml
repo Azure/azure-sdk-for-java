@@ -118,11 +118,10 @@ pr:
 
 
 stages:
-  PreSteps:
-    template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
-    parameters:
-      ServiceDirectory: spring
-      Artifacts:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: spring
+    Artifacts:
             - name: spring-cloud-azure-core
               groupId: com.azure.spring
               safeName: springcloudazurecore
@@ -337,14 +336,13 @@ stages:
               safeName: springcloudazurestreambindertest
               skipPublishDocMs: true
               skipVerifyChangelog: true
-  PostSteps:
-    script: |
-      python .\sdk\spring\scripts\update_versions.py --ut external_dependency
-#extends:
-    template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
-    parameters:
-      ServiceDirectory: spring
-      Artifacts:
+  script: |
+    python .\sdk\spring\scripts\update_versions.py --ut external_dependency
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: spring
+    Artifacts:
             - name: spring-cloud-azure-core
               groupId: com.azure.spring
               safeName: springcloudazurecore
