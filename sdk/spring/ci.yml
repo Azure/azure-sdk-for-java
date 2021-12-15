@@ -116,13 +116,19 @@ pr:
       - sdk/spring/spring-cloud-azure-stream-binder-test/pom.xml
       - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
 
-extends:
+stages:
   - template: spring-ci-template.yml
-    parameters:
-        PreTestSteps:
-          - script: |
-                python .\sdk\spring\scripts\update_versions.py --ut external_dependency
+#    parameters:
+#        PreTestSteps:
+#          - script: |
+#                python .\sdk\spring\scripts\update_versions.py --ut external_dependency
   - template: spring-ci-template.yml
+    environment: #environmentName.resourceName
+    strategy: # deployment strategy
+      runOnce: # default strategy
+        deploy:
+          steps:
+            - script: python .\sdk\spring\scripts\update_versions.py --ut external_dependency
 #jobs:
 #  - job: 'Build latest'
 #    #steps:
