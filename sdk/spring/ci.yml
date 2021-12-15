@@ -117,11 +117,13 @@ pr:
       - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
 
 
-extends:
-  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
-  parameters:
-    ServiceDirectory: spring
-    Artifacts:
+jobs:
+  - job: 'Build latest'
+    steps:
+      - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+        parameters:
+          ServiceDirectory: spring
+          Artifacts:
             - name: spring-cloud-azure-core
               groupId: com.azure.spring
               safeName: springcloudazurecore
@@ -336,8 +338,8 @@ extends:
               safeName: springcloudazurestreambindertest
               skipPublishDocMs: true
               skipVerifyChangelog: true
-  script: |
-    python .\sdk\spring\scripts\update_versions.py --ut external_dependency
+      - script: |
+          python .\sdk\spring\scripts\update_versions.py --ut external_dependency
 #extends:
 #  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
 #  parameters:
