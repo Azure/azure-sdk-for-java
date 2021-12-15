@@ -9,8 +9,10 @@ import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusCons
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusProducerProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusChannelProvisioner;
+import com.azure.spring.integration.handler.DefaultMessageHandler;
 import com.azure.spring.integration.instrumentation.Instrumentation;
 import com.azure.spring.integration.servicebus.inbound.health.ServiceBusProcessorInstrumentation;
+import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import com.azure.spring.service.servicebus.processor.RecordMessageProcessingListener;
 import com.azure.spring.service.servicebus.processor.consumer.ErrorContextConsumer;
@@ -32,6 +34,7 @@ import org.springframework.cloud.stream.binder.HeaderMode;
 import org.springframework.cloud.stream.provisioning.ConsumerDestination;
 import org.springframework.cloud.stream.provisioning.ProducerDestination;
 import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -41,7 +44,7 @@ import static com.azure.spring.integration.instrumentation.Instrumentation.Type.
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-public class ServiceBusBinderHealthIndicatorTest {
+public class ServiceBusHealthIndicatorTests {
 
     @Mock
     private ConfigurableListableBeanFactory beanFactory;
@@ -65,7 +68,7 @@ public class ServiceBusBinderHealthIndicatorTest {
     @Mock
     private MessageChannel errorChannel;
 
-    private ServiceBusMessageChannelBinder binder = new ServiceBusMessageChannelBinder(
+    private TestServiceBusMessageChannelBinder binder = new TestServiceBusMessageChannelBinder(
         BinderHeaders.STANDARD_HEADERS, new ServiceBusChannelProvisioner());
 
     private ServiceBusHealthIndicator serviceBusHealthIndicator;
@@ -87,14 +90,13 @@ public class ServiceBusBinderHealthIndicatorTest {
         assertThat(health.getStatus()).isEqualTo(Status.UNKNOWN);
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Test
     public void testServiceBusProducerHealthIndicatorIsUp() {
         prepareProducerProperties();
         when(producerDestination.getName()).thenReturn(ENTITY_NAME);
         binder.createProducerMessageHandler(producerDestination, producerProperties, errorChannel);
         ServiceBusTemplate serviceBusTemplate = (ServiceBusTemplate) ReflectionTestUtils.getField(binder,
-                "serviceBusTemplate");
+            "serviceBusTemplate");
         DefaultServiceBusNamespaceProducerFactory producerFactory =
             (DefaultServiceBusNamespaceProducerFactory) ReflectionTestUtils.getField(serviceBusTemplate,
                 "producerFactory");
@@ -103,21 +105,22 @@ public class ServiceBusBinderHealthIndicatorTest {
         assertThat(health.getStatus()).isEqualTo(Status.UP);
     }
 
-//    @SuppressWarnings({ "unchecked", "rawtypes" })
-//    @Test
-//    public void testServiceBusProducerHealthIndicatorIsDown() {
-//        prepareProducerProperties();
-//        when(producerDestination.getName()).thenReturn(ENTITY_NAME);
-//        DefaultMessageHandler producerMessageHandler =
-//            (DefaultMessageHandler) binder.createProducerMessageHandler(producerDestination, producerProperties,
-//                errorChannel);
-//        producerMessageHandler.setBeanFactory(beanFactory);
-//        producerMessageHandler.handleMessage(MessageBuilder.withPayload("test").setHeader(AzureHeaders.PARTITION_KEY, "fake-key").build());
-//        final Health health = serviceBusHealthIndicator.health();
-//        assertThat(health.getStatus()).isEqualTo(Status.DOWN);
-//    }
+    @Test
+    public void testServiceBusProducerHealthIndicatorIsDown() {
+        prepareProducerProperties();
+        when(producerDestination.getName()).thenReturn(ENTITY_NAME);
+        DefaultMessageHandler producerMessageHandler =
+            (DefaultMessageHandler) binder.createProducerMessageHandler(producerDestination, producerProperties,
+                errorChannel);
+        producerMessageHandler.setBeanFactory(beanFactory);
+        producerMessageHandler.handleMessage(MessageBuilder.withPayload("test")
+                                                           .setHeader(AzureHeaders.PARTITION_KEY, "fake-key")
+                                                           .build());
+        binder.addProducerDownInstrumentation();
+        final Health health = serviceBusHealthIndicator.health();
+        assertThat(health.getStatus()).isEqualTo(Status.DOWN);
+    }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Test
     public void testServiceBusProcessorHealthIndicatorIsUp() {
         prepareConsumerProperties();
@@ -125,7 +128,7 @@ public class ServiceBusBinderHealthIndicatorTest {
         binder.createConsumerEndpoint(consumerDestination, null, consumerProperties);
         ServiceBusProcessorContainer processorContainer =
             (ServiceBusProcessorContainer) ReflectionTestUtils.getField(binder,
-            "processorContainer");
+                "processorContainer");
         TestMessageProcessingListener listener = new TestMessageProcessingListener();
         listener.setInstrumentation(binder.getInstrumentationManager().getHealthInstrumentation(Instrumentation.buildId(CONSUMER, ENTITY_NAME)));
         processorContainer.subscribe(ENTITY_NAME, listener);
@@ -134,27 +137,22 @@ public class ServiceBusBinderHealthIndicatorTest {
         assertThat(health.getStatus()).isEqualTo(Status.UP);
     }
 
-//    @SuppressWarnings({ "unchecked", "rawtypes" })
-//    @Test
-//    @Ignore
-//    public void testServiceBusProcessorHealthIndicatorIsDown() {
-//        prepareConsumerProperties();
-//        when(consumerDestination.getName()).thenReturn(ENTITY_NAME);
-//        ServiceBusInboundChannelAdapter consumerEndpoint = (ServiceBusInboundChannelAdapter) binder.createConsumerEndpoint(consumerDestination, null,
-//            createConsumerProperties());
-//        ServiceBusProcessorContainer processorContainer =
-//            (ServiceBusProcessorContainer) ReflectionTestUtils.getField(binder,
-//                "processorContainer");
-////        DefaultServiceBusNamespaceProcessorFactory processorFactory =
-////            (DefaultServiceBusNamespaceProcessorFactory) ReflectionTestUtils.getField(processorContainer,
-////                "processorFactory");
-////        processorFactory.createProcessor(ENTITY_NAME, new TestMessageProcessingListener());
-//        TestMessageProcessingListener listener = new TestMessageProcessingListener();
-//        listener.setInstrumentation(binder.getInstrumentationManager().getHealthInstrumentation(Instrumentation.buildId(CONSUMER, ENTITY_NAME)));
-//        processorContainer.subscribe(ENTITY_NAME, listener);
-//        final Health health = serviceBusHealthIndicator.health();
-//        assertThat(health.getStatus()).isEqualTo(Status.UP);
-//    }
+    @Test
+    public void testServiceBusProcessorHealthIndicatorIsDown() {
+        prepareConsumerProperties();
+        when(consumerDestination.getName()).thenReturn(ENTITY_NAME);
+        binder.createConsumerEndpoint(consumerDestination, null, consumerProperties);
+        ServiceBusProcessorContainer processorContainer =
+            (ServiceBusProcessorContainer) ReflectionTestUtils.getField(binder,
+                "processorContainer");
+        TestMessageProcessingListener listener = new TestMessageProcessingListener();
+        listener.setInstrumentation(binder.getInstrumentationManager().getHealthInstrumentation(Instrumentation.buildId(CONSUMER, ENTITY_NAME)));
+        processorContainer.subscribe(ENTITY_NAME, listener);
+        binder.addProcessorDownInstrumentation();
+
+        final Health health = serviceBusHealthIndicator.health();
+        assertThat(health.getStatus()).isEqualTo(Status.DOWN);
+    }
 
     private void prepareProducerProperties() {
         serviceBusProducerProperties.setEntityName(ENTITY_NAME);
@@ -164,9 +162,11 @@ public class ServiceBusBinderHealthIndicatorTest {
         ServiceBusBindingProperties bindingProperties = new ServiceBusBindingProperties();
         bindingProperties.setProducer(serviceBusProducerProperties);
 
-        extendedBindingProperties.setBindings(new HashMap<String, ServiceBusBindingProperties>() {{
+        extendedBindingProperties.setBindings(new HashMap<String, ServiceBusBindingProperties>() {
+            {
                 put(ENTITY_NAME, bindingProperties);
-            }});
+            }
+        });
         binder.setBindingProperties(extendedBindingProperties);
 
         producerProperties = new ExtendedProducerProperties<>(serviceBusProducerProperties);
@@ -181,9 +181,11 @@ public class ServiceBusBinderHealthIndicatorTest {
         ServiceBusBindingProperties bindingProperties = new ServiceBusBindingProperties();
         bindingProperties.setConsumer(serviceBusConsumerProperties);
 
-        extendedBindingProperties.setBindings(new HashMap<String, ServiceBusBindingProperties>() {{
+        extendedBindingProperties.setBindings(new HashMap<String, ServiceBusBindingProperties>() {
+            {
                 put(ENTITY_NAME, bindingProperties);
-            }});
+            }
+        });
         binder.setBindingProperties(extendedBindingProperties);
 
         consumerProperties = new ExtendedConsumerProperties<>(serviceBusConsumerProperties);

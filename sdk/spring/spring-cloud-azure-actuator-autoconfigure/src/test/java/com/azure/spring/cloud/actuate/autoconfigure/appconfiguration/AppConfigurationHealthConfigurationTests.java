@@ -14,7 +14,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class AppConfigurationHealthConfigurationTests {
 
-    private static final String TEST_ENDPOINT = "https://test.https.documents.azure.com:443/";
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withPropertyValues("spring.cloud.azure.appconfiguration.endpoint=https://moaryc-appconfig.azconfig.io")
         .withBean(AzureGlobalProperties.class)

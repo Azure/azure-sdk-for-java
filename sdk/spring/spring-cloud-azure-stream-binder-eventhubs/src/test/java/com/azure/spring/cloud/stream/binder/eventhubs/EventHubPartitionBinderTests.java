@@ -69,9 +69,9 @@ public class EventHubPartitionBinderTests extends
 
     private EventHubsTestBinder binder;
 
-    private final static String DESTINATION = "testDestination";
+    private static final String DESTINATION = "testDestination";
 //    private final static String EVENTHUBS = "output";
-    private final static String CONSUMER = "test1";
+    private static final String CONSUMER = "test1";
 
     // @BeforeEach
     @Before
