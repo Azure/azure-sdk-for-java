@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2;
 
+import com.azure.spring.cloud.autoconfigure.aad.configuration.AADOAuth2ClientConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthenticationProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
@@ -37,7 +38,7 @@ class AADOAuth2ClientConfigurationTest {
         oauthClientAndResourceServerRunner()
             .withPropertyValues(
                 "spring.cloud.azure.active-directory.enabled=true",
-                "spring.cloud.azure.active-directory.client-id=fake-client-id"
+                "spring.cloud.azure.active-directory.credential.client-id=fake-client-id"
             )
             .run(context -> {
                 assertThat(context).hasSingleBean(AADAuthenticationProperties.class);
@@ -70,7 +71,6 @@ class AADOAuth2ClientConfigurationTest {
         resourceServerWithOboContextRunner()
             .withPropertyValues(
                 "spring.cloud.azure.active-directory.enabled=true",
-                "spring.cloud.azure.active-directory.authorization-clients.graph.on-demand = true",
                 "spring.cloud.azure.active-directory.authorization-clients.graph.scopes=https://graph.microsoft.com/User.Read")
             .run(context -> {
                 final AADClientRegistrationRepository oboRepo = context.getBean(

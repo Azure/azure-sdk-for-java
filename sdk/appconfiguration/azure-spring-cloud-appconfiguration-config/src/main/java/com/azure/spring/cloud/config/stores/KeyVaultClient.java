@@ -37,6 +37,14 @@ public final class KeyVaultClient {
 
     private Boolean useSecretResolver = false;
 
+    /**
+     * Creates a Client for connecting to Key Vault
+     * @param properties AppConfiguration Properties
+     * @param uri Key Vault URI
+     * @param tokenCredentialProvider optional provider of the Token Credential for connecting to Key Vault
+     * @param keyVaultClientProvider optional provider for overriding the Key Vault Client
+     * @param keyVaultSecretProvider optional provider for providing Secrets instead of connecting to Key Vault
+     */
     public KeyVaultClient(AppConfigurationProperties properties, URI uri,
         KeyVaultCredentialProvider tokenCredentialProvider, SecretClientBuilderSetup keyVaultClientProvider,
         KeyVaultSecretProvider keyVaultSecretProvider) {

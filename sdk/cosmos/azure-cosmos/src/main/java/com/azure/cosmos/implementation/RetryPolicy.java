@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ThrottlingRetryOptions;
+import com.azure.cosmos.implementation.caches.RxCollectionCache;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -16,6 +17,7 @@ public class RetryPolicy implements IRetryPolicyFactory {
     private final GlobalEndpointManager globalEndpointManager;
     private final boolean enableEndpointDiscovery;
     private final ThrottlingRetryOptions throttlingRetryOptions;
+    private RxCollectionCache rxCollectionCache;
 
     public RetryPolicy(DiagnosticsClientContext diagnosticsClientContext, GlobalEndpointManager globalEndpointManager, ConnectionPolicy connectionPolicy) {
         this.diagnosticsClientContext = diagnosticsClientContext;
@@ -27,7 +29,7 @@ public class RetryPolicy implements IRetryPolicyFactory {
     @Override
     public DocumentClientRetryPolicy getRequestPolicy() {
         ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(this.diagnosticsClientContext,
-            this.globalEndpointManager, this.enableEndpointDiscovery, this.throttlingRetryOptions);
+            this.globalEndpointManager, this.enableEndpointDiscovery, this.throttlingRetryOptions, this.rxCollectionCache);
 
         return clientRetryPolicy;
     }
@@ -35,5 +37,9 @@ public class RetryPolicy implements IRetryPolicyFactory {
     @Override
     public RetryContext getRetryContext() {
         return null;
+    }
+
+    public void setRxCollectionCache(RxCollectionCache rxCollectionCache) {
+        this.rxCollectionCache = rxCollectionCache;
     }
 }

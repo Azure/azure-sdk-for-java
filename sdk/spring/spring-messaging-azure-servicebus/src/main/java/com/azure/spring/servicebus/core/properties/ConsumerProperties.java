@@ -27,6 +27,10 @@ public class ConsumerProperties extends CommonProperties implements ServiceBusCo
         return sessionAware;
     }
 
+    /**
+     * Set if is session aware.
+     * @param sessionAware if is session awared.
+     */
     public void setSessionAware(Boolean sessionAware) {
         this.sessionAware = sessionAware;
     }
@@ -36,6 +40,10 @@ public class ConsumerProperties extends CommonProperties implements ServiceBusCo
         return autoComplete;
     }
 
+    /**
+     * Set if enable auto-complete.
+     * @param autoComplete if enable auto-complete.
+     */
     public void setAutoComplete(Boolean autoComplete) {
         this.autoComplete = autoComplete;
     }
@@ -45,6 +53,10 @@ public class ConsumerProperties extends CommonProperties implements ServiceBusCo
         return prefetchCount;
     }
 
+    /**
+     * Set the prefetch count.
+     * @param prefetchCount the prefetch count.
+     */
     public void setPrefetchCount(Integer prefetchCount) {
         this.prefetchCount = prefetchCount;
     }
@@ -54,6 +66,10 @@ public class ConsumerProperties extends CommonProperties implements ServiceBusCo
         return subQueue;
     }
 
+    /**
+     * Set the sub queue.
+     * @param subQueue the sub queue.
+     */
     public void setSubQueue(SubQueue subQueue) {
         this.subQueue = subQueue;
     }
@@ -63,6 +79,10 @@ public class ConsumerProperties extends CommonProperties implements ServiceBusCo
         return receiveMode;
     }
 
+    /**
+     * Set the receive mode.
+     * @param receiveMode the receive mode.
+     */
     public void setReceiveMode(ServiceBusReceiveMode receiveMode) {
         this.receiveMode = receiveMode;
     }
@@ -72,6 +92,10 @@ public class ConsumerProperties extends CommonProperties implements ServiceBusCo
         return subscriptionName;
     }
 
+    /**
+     * Set the subscription name.
+     * @param subscriptionName the subscription name.
+     */
     public void setSubscriptionName(String subscriptionName) {
         this.subscriptionName = subscriptionName;
     }
@@ -81,6 +105,10 @@ public class ConsumerProperties extends CommonProperties implements ServiceBusCo
         return maxAutoLockRenewDuration;
     }
 
+    /**
+     * Set the mau auto lock renew duration.
+     * @param maxAutoLockRenewDuration the mau auto lock renew duration.
+     */
     public void setMaxAutoLockRenewDuration(Duration maxAutoLockRenewDuration) {
         this.maxAutoLockRenewDuration = maxAutoLockRenewDuration;
     }

@@ -28,7 +28,7 @@
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-appservice",
     "source": "specification/web/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.appservice",
-    "args": "--payload-flattening-threshold=1 --tag=profile-hybrid-2020-09-01 --add-inner=AppServiceCertificate --name-for-ungrouped-operations=ResourceProvider",
+    "args": "--tag=profile-hybrid-2020-09-01 --add-inner=AppServiceCertificate --name-for-ungrouped-operations=ResourceProvider",
     "note": "Add status code '200' to 'syncFunctionTriggers'"
   },
   "authorization": {
@@ -41,7 +41,7 @@
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-authorization",
     "source": "specification/authorization/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.authorization",
-    "args": "--tag=profile-hybrid-2020-09-01 --payload-flattening-threshold=1"
+    "args": "--tag=profile-hybrid-2020-09-01"
   },
   "automation": {
     "dir": "azure-resourcemanager-automation",
@@ -96,7 +96,7 @@
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-compute",
     "source": "specification/compute/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.compute",
-    "args": "--payload-flattening-threshold=1 --tag=profile-hybrid-2020-09-01 --rename-model=UserAssignedIdentitiesValue:VirtualMachineIdentityUserAssignedIdentities,VirtualMachineScaleSetIdentityUserAssignedIdentitiesValue:VirtualMachineScaleSetIdentityUserAssignedIdentities --preserve-model=AvailabilitySetSkuTypes"
+    "args": "--tag=profile-hybrid-2020-09-01 --rename-model=UserAssignedIdentitiesValue:VirtualMachineIdentityUserAssignedIdentities,VirtualMachineScaleSetIdentityUserAssignedIdentitiesValue:VirtualMachineScaleSetIdentityUserAssignedIdentities --preserve-model=AvailabilitySetSkuTypes"
   },
   "consumption": {
     "dir": "azure-resourcemanager-consumption",
@@ -120,19 +120,19 @@
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-containerregistry",
     "source": "specification/containerregistry/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.containerregistry",
-    "args": "--payload-flattening-threshold=1 --tag=package-2019-05"
+    "args": "--tag=package-2019-05"
   },
   "containerservice": {
     "dir": "azure-resourcemanager-containerservice",
     "source": "specification/containerservice/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.containerservice",
-    "args": "--tag=package-2021-09 --preserve-model=ContainerServiceVMSizeTypes"
+    "args": "--tag=package-2021-10 --preserve-model=ContainerServiceVMSizeTypes"
   },
   "containerservice-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-containerservice",
     "source": "specification/containerservice/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.containerservice",
-    "args": "--payload-flattening-threshold=1 --tag=profile-hybrid-2020-09-01 --preserve-model=ContainerServiceVMSizeTypes"
+    "args": "--tag=profile-hybrid-2020-09-01 --preserve-model=ContainerServiceVMSizeTypes"
   },
   "cosmos": {
     "dir": "azure-resourcemanager-cosmos",
@@ -190,7 +190,7 @@
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-dns",
     "source": "specification/dns/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.dns",
-    "args": "--payload-flattening-threshold=1 --tag=package-2016-04"
+    "args": "--tag=package-2016-04"
   },
   "eventhubs": {
     "dir": "azure-resourcemanager-eventhubs",
@@ -202,7 +202,7 @@
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-eventhubs",
     "source": "specification/eventhub/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.eventhubs",
-    "args": "--payload-flattening-threshold=1 --tag=profile-hybrid-2020-09-01"
+    "args": "--tag=profile-hybrid-2020-09-01"
   },
   "features": {
     "dir": "azure-resourcemanager-resources",
@@ -227,7 +227,7 @@
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-authorization",
     "source": "specification/graphrbac/data-plane/readme.md",
     "package": "com.azure.resourcemanager.authorization",
-    "args": "--payload-flattening-threshold=1 --tag=1.6"
+    "args": "--tag=1.6"
   },
   "iothub": {
     "dir": "azure-resourcemanager-devices",
@@ -245,7 +245,7 @@
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-keyvault",
     "source": "specification/keyvault/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.keyvault",
-    "args": "--payload-flattening-threshold=1 --tag=package-2019-09"
+    "args": "--tag=package-2019-09"
   },
   "locks": {
     "dir": "azure-resourcemanager-resources",
@@ -257,7 +257,7 @@
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--payload-flattening-threshold=1 --tag=package-locks-2016-09"
+    "args": "--tag=package-locks-2016-09"
   },
   "logic": {
     "dir": "azure-resourcemanager-logic",
@@ -281,7 +281,7 @@
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-monitor",
     "source": "specification/monitor/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.monitor",
-    "args": "--payload-flattening-threshold=1 --tag=package-2021-04 --add-inner=AutoscaleProfile,ScaleRule,LocalizableString --rename-model=MetricUnit:Unit"
+    "args": "--tag=package-2021-04 --add-inner=AutoscaleProfile,ScaleRule,LocalizableString --rename-model=MetricUnit:Unit"
   },
   "network": {
     "dir": "azure-resourcemanager-network",
@@ -293,7 +293,7 @@
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-network",
     "source": "specification/network/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.network",
-    "args": "--payload-flattening-threshold=1 --tag=profile-hybrid-2020-09-01 --add-inner=ApplicationGatewayIpConfiguration,ApplicationGatewayPathRule,ApplicationGatewayProbe,ApplicationGatewayRedirectConfiguration,ApplicationGatewayRequestRoutingRule,ApplicationGatewaySslCertificate,ApplicationGatewayUrlPathMap,ApplicationGatewayAuthenticationCertificate,VirtualNetworkGatewayIpConfiguration,ConnectionMonitor,PacketCapture --remove-inner=Ipv6ExpressRouteCircuitPeeringConfig"
+    "args": "--tag=profile-hybrid-2020-09-01 --add-inner=ApplicationGatewayIpConfiguration,ApplicationGatewayPathRule,ApplicationGatewayProbe,ApplicationGatewayRedirectConfiguration,ApplicationGatewayRequestRoutingRule,ApplicationGatewaySslCertificate,ApplicationGatewayUrlPathMap,ApplicationGatewayAuthenticationCertificate,VirtualNetworkGatewayIpConfiguration,ConnectionMonitor,PacketCapture --remove-inner=Ipv6ExpressRouteCircuitPeeringConfig"
   },
   "notificationhubs": {
     "dir": "azure-resourcemanager-notificationhubs",
@@ -311,7 +311,7 @@
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--payload-flattening-threshold=1 --tag=package-policy-2016-12"
+    "args": "--tag=package-policy-2016-12"
   },
   "powerbi": {
     "dir": "azure-resourcemanager-powerbi",
@@ -365,7 +365,7 @@
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-resources-2019-10 --payload-flattening-threshold=1 --add-inner=Deployment"
+    "args": "--tag=package-resources-2019-10 --add-inner=Deployment"
   },
   "scheduler": {
     "dir": "azure-resourcemanager-scheduler",
@@ -414,7 +414,7 @@
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-storage",
     "source": "specification/storage/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.storage",
-    "args": "--payload-flattening-threshold=2 --tag=profile-hybrid-2020-09-01"
+    "args": "--tag=profile-hybrid-2020-09-01"
   },
   "storsimple8000series": {
     "dir": "azure-resourcemanager-storsimple8000series",

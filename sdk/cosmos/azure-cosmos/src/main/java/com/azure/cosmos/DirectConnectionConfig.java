@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import io.netty.channel.ChannelOption;
 
 import java.time.Duration;
@@ -26,6 +27,7 @@ public final class DirectConnectionConfig {
     private static final Duration MAX_NETWORK_REQUEST_TIMEOUT = Duration.ofSeconds(10L);
     private static final int DEFAULT_MAX_CONNECTIONS_PER_ENDPOINT = 130;
     private static final int DEFAULT_MAX_REQUESTS_PER_CONNECTION = 30;
+    private static final int DEFAULT_IO_THREAD_COUNT_PER_CORE_FACTOR = 2;
 
     private boolean connectionEndpointRediscoveryEnabled;
     private Duration connectTimeout;
@@ -34,6 +36,7 @@ public final class DirectConnectionConfig {
     private Duration networkRequestTimeout;
     private int maxConnectionsPerEndpoint;
     private int maxRequestsPerConnection;
+    private int ioThreadCountPerCoreFactor;
 
     /**
      * Constructor
@@ -46,6 +49,7 @@ public final class DirectConnectionConfig {
         this.maxConnectionsPerEndpoint = DEFAULT_MAX_CONNECTIONS_PER_ENDPOINT;
         this.maxRequestsPerConnection = DEFAULT_MAX_REQUESTS_PER_CONNECTION;
         this.networkRequestTimeout = DEFAULT_NETWORK_REQUEST_TIMEOUT;
+        this.ioThreadCountPerCoreFactor = DEFAULT_IO_THREAD_COUNT_PER_CORE_FACTOR;
     }
 
     /**
@@ -273,6 +277,15 @@ public final class DirectConnectionConfig {
         return this;
     }
 
+    int getIoThreadCountPerCoreFactor() {
+        return ioThreadCountPerCoreFactor;
+    }
+
+    DirectConnectionConfig setIoThreadCountPerCoreFactor(int ioThreadCountPerCoreFactor) {
+        this.ioThreadCountPerCoreFactor = ioThreadCountPerCoreFactor;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "DirectConnectionConfig{" +
@@ -282,6 +295,27 @@ public final class DirectConnectionConfig {
             ", maxConnectionsPerEndpoint=" + maxConnectionsPerEndpoint +
             ", maxRequestsPerConnection=" + maxRequestsPerConnection +
             ", networkRequestTimeout=" + networkRequestTimeout +
+            ", ioThreadCountPerCoreFactor=" + ioThreadCountPerCoreFactor +
             '}';
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    static {
+        ImplementationBridgeHelpers.DirectConnectionConfigHelper.setDirectConnectionConfigAccessor(
+            new ImplementationBridgeHelpers.DirectConnectionConfigHelper.DirectConnectionConfigAccessor() {
+                @Override
+                public int getIoThreadCountPerCoreFactor(DirectConnectionConfig config) {
+                    return config.getIoThreadCountPerCoreFactor();
+                }
+
+                @Override
+                public DirectConnectionConfig setIoThreadCountPerCoreFactor(DirectConnectionConfig config,
+                                                                            int ioThreadCountPerCoreFactor) {
+                    return config.setIoThreadCountPerCoreFactor(ioThreadCountPerCoreFactor);
+                }
+            });
     }
 }

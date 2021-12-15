@@ -3,9 +3,9 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.filter;
 
-import com.azure.spring.cloud.autoconfigure.aad.core.AADAuthorizationServerEndpoints;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AADTokenClaim;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthenticationProperties;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthorizationServerEndpoints;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSObject;
@@ -84,7 +84,7 @@ public class UserPrincipalManager {
         this.explicitAudienceCheck = explicitAudienceCheck;
         if (explicitAudienceCheck) {
             // client-id for "normal" check
-            this.validAudiences.add(this.aadAuthenticationProperties.getClientId());
+            this.validAudiences.add(this.aadAuthenticationProperties.getCredential().getClientId());
             // app id uri for client credentials flow (server to server communication)
             this.validAudiences.add(this.aadAuthenticationProperties.getAppIdUri());
         }
@@ -120,7 +120,7 @@ public class UserPrincipalManager {
         this.explicitAudienceCheck = explicitAudienceCheck;
         if (explicitAudienceCheck) {
             // client-id for "normal" check
-            this.validAudiences.add(this.aadAuthenticationProperties.getClientId());
+            this.validAudiences.add(this.aadAuthenticationProperties.getCredential().getClientId());
             // app id uri for client credentials flow (server to server communication)
             this.validAudiences.add(this.aadAuthenticationProperties.getAppIdUri());
         }

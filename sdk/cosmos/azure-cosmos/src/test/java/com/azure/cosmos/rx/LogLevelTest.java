@@ -146,7 +146,7 @@ public class LogLevelTest extends TestSuiteBase {
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_4);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "simple" }, timeOut = TIMEOUT, enabled = false)
     public void createDocumentWithTraceLevelAtRoot() throws Exception {
         final StringWriter consoleWriter = new StringWriter();
 
@@ -167,32 +167,14 @@ public class LogLevelTest extends TestSuiteBase {
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_4);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "simple" }, timeOut = TIMEOUT, enabled = false)
     public void createDocumentWithDebugLevelAtRoot() throws Exception {
         final StringWriter consoleWriter = new StringWriter();
-        final LoggerContext context = (LoggerContext) LogManager.getContext(false);
-        final Configuration configuration = context.getConfiguration();
 
-        // The cosmos DB logger has its level set to DEBUG
-        final AppenderRef[] cosmosAppenderRef = new AppenderRef[] {
-            AppenderRef.createAppenderRef("STDOUT", null, null)
-        };
-        final LoggerConfig cosmosConfig = LoggerConfig.createLogger(false, Level.DEBUG,
-            COSMOS_DB_LOGGING_CATEGORY, null, cosmosAppenderRef, null, configuration, null);
+        addAppenderAndLogger(COSMOS_DB_LOGGING_CATEGORY, Level.DEBUG, APPENDER_NAME, consoleWriter);
 
-        configuration.addLogger(COSMOS_DB_LOGGING_CATEGORY, cosmosConfig);
-        context.updateLoggers();
-
-        // The NETWORK_LOGGING should inherit its log level from the root configuration, which is info.
-        final WriterAppender appender = WriterAppender.createAppender(PatternLayout.createDefaultLayout(configuration),
-            null, consoleWriter, APPENDER_NAME, false, true);
-        appender.start();
-
-        org.apache.logging.log4j.core.Logger logger = context.getLogger(NETWORK_LOGGING_CATEGORY);
-        logger.addAppender(appender);
-
-        assertThat(LoggerFactory.getLogger(COSMOS_DB_LOGGING_CATEGORY).isDebugEnabled()).isTrue();
-        assertThat(LoggerFactory.getLogger(NETWORK_LOGGING_CATEGORY).isInfoEnabled()).isTrue();
+        final Logger logger = LoggerFactory.getLogger(COSMOS_DB_LOGGING_CATEGORY);
+        assertThat(logger.isDebugEnabled()).isTrue();
 
         ReactorNettyClient gatewayHttpClient = (ReactorNettyClient) ReflectionUtils.getGatewayHttpClient(client);
         gatewayHttpClient.enableNetworkLogging();
@@ -213,7 +195,7 @@ public class LogLevelTest extends TestSuiteBase {
      * @throws Exception
      */
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void createDocumentWithErrorClient() throws Exception {
+    public void createDocumentWithErrorLevel() throws Exception {
         final StringWriter consoleWriter = new StringWriter();
 
         addAppenderAndLogger(NETWORK_LOGGING_CATEGORY, Level.ERROR, APPENDER_NAME, consoleWriter);

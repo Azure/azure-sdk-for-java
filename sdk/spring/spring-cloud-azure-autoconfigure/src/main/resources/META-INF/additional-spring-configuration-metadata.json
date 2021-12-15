@@ -111,7 +111,7 @@
       "deprecation": {
         "level": "error",
         "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
-        "replacement": "spring.cloud.azure.active-directory.b2c.client-id"
+        "replacement": "spring.cloud.azure.active-directory.b2c.credential.client-id"
       }
     },
     {
@@ -121,7 +121,7 @@
       "deprecation": {
         "level": "error",
         "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
-        "replacement": "spring.cloud.azure.active-directory.b2c.client-secret"
+        "replacement": "spring.cloud.azure.active-directory.b2c.credential.client-secret"
       }
     },
     {
@@ -230,7 +230,7 @@
       "deprecation": {
         "level": "error",
         "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
-        "replacement": "spring.cloud.azure.active-directory.base-uri"
+        "replacement": "spring.cloud.azure.active-directory.profile.environment.active-directory-endpoint"
       }
     },
     {
@@ -240,7 +240,7 @@
       "deprecation": {
         "level": "error",
         "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
-        "replacement": "spring.cloud.azure.active-directory.client-id"
+        "replacement": "spring.cloud.azure.active-directory.credential.client-id"
       }
     },
     {
@@ -250,7 +250,7 @@
       "deprecation": {
         "level": "error",
         "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
-        "replacement": "spring.cloud.azure.active-directory.client-secret"
+        "replacement": "spring.cloud.azure.active-directory.credential.client-secret"
       }
     },
     {
@@ -259,7 +259,7 @@
       "deprecation": {
         "level": "error",
         "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
-        "replacement": "spring.cloud.azure.active-directory.graph-base-uri"
+        "replacement": "spring.cloud.azure.active-directory.profile.environment.microsoft-graph-endpoint"
       }
     },
     {
@@ -268,7 +268,7 @@
       "deprecation": {
         "level": "error",
         "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
-        "replacement": "spring.cloud.azure.active-directory.graph-membership-uri"
+        "replacement": "spring.cloud.azure.active-directory.profile.environment.microsoft-graph-endpoint and spring.cloud.azure.active-directory.user-group.use-transitive-members"
       }
     },
     {
@@ -380,7 +380,7 @@
       "deprecation": {
         "level": "error",
         "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
-        "replacement": "spring.cloud.azure.active-directory.tenant-id"
+        "replacement": "spring.cloud.azure.active-directory.profile.tenant-id"
       }
     },
     {

@@ -13,18 +13,40 @@ public class EventHubsBindingProperties implements BinderSpecificPropertiesProvi
     private EventHubsConsumerProperties consumer = new EventHubsConsumerProperties();
     private EventHubsProducerProperties producer = new EventHubsProducerProperties();
 
+    /**
+     * Get the consumer properties.
+     *
+     * @return consumer the consumer properties
+     * @see EventHubsConsumerProperties
+     */
     public EventHubsConsumerProperties getConsumer() {
         return consumer;
     }
 
+    /**
+     * Set the consumer properties.
+     *
+     * @param consumer the consumer properties
+     */
     public void setConsumer(EventHubsConsumerProperties consumer) {
         this.consumer = consumer;
     }
 
+    /**
+     * Get the producer properties.
+     *
+     * @return producer the producer properties
+     * @see EventHubsProducerProperties
+     */
     public EventHubsProducerProperties getProducer() {
         return producer;
     }
 
+    /**
+     * Set the producer properties.
+     *
+     * @param producer the producer properties
+     */
     public void setProducer(EventHubsProducerProperties producer) {
         this.producer = producer;
     }

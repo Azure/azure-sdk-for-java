@@ -4,11 +4,9 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import reactor.core.Disposable;
+import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -19,23 +17,26 @@ import java.time.Duration;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class ReceiveLinkTest {
-    @Mock
-    private AmqpReceiveLink link1;
-    @Mock
-    private AmqpReceiveLink link2;
-    @Mock
-    private AmqpReceiveLink link3;
-    @Mock
-    private AmqpReceiveLink link4;
     private final AtomicInteger counter = new AtomicInteger();
-    private AmqpReceiveLink[] allLinks = new AmqpReceiveLink[4];
+    private final AmqpReceiveLink[] allLinks = new AmqpReceiveLink[4];
+
+    @AfterEach
+    public void afterEach() {
+        Mockito.framework().clearInlineMock(this);
+    }
 
     @Test
-    void verifyCreation() {
-        MockitoAnnotations.initMocks(this);
+    public void verifyCreation() {
+        // Arrange
+        final AmqpReceiveLink link1 = mock(AmqpReceiveLink.class);
+        final AmqpReceiveLink link2 = mock(AmqpReceiveLink.class);
+        final AmqpReceiveLink link3 = mock(AmqpReceiveLink.class);
+        final AmqpReceiveLink link4 = mock(AmqpReceiveLink.class);
 
         allLinks[0] = link1;
         allLinks[1] = link2;
@@ -48,12 +49,9 @@ public class ReceiveLinkTest {
         when(link2.getLinkName()).thenReturn("link2-name");
         when(link2.getEndpointStates()).thenAnswer(invocation -> {
             System.out.println("link2-name endpoints");
+
             return Flux.create(sink -> {
-                final Disposable s = Mono.delay(Duration.ofSeconds(3))
-                    .subscribe(e -> sink.next(AmqpEndpointState.UNINITIALIZED));
-                sink.onRequest(r -> {
-                    sink.next(AmqpEndpointState.UNINITIALIZED);
-                });
+                sink.onRequest(r -> sink.next(AmqpEndpointState.UNINITIALIZED));
             });
         });
 
@@ -61,21 +59,22 @@ public class ReceiveLinkTest {
         when(link3.getEndpointStates()).thenAnswer(invocation -> {
             System.out.println("link3-name endpoints");
             return Flux.create(sink -> {
-                final Disposable s = Mono.delay(Duration.ofSeconds(3))
-                    .subscribe(e -> sink.next(AmqpEndpointState.ACTIVE));
+                // Emit uninitialized first. After 3 seconds, emit ACTIVE.
                 sink.onRequest(r -> {
                     sink.next(AmqpEndpointState.UNINITIALIZED);
                 });
+
+                Mono.delay(Duration.ofSeconds(1))
+                    .subscribe(e -> sink.next(AmqpEndpointState.ACTIVE));
             });
         });
 
         when(link4.getLinkName()).thenReturn("link4-name");
         when(link4.getEndpointStates()).thenReturn(Flux.error(new IllegalArgumentException("Did not expect this.")));
 
+        // Act & Assert
         StepVerifier.create(getActiveLink())
-            .assertNext(theLink -> {
-                Assertions.assertEquals(link3, theLink);
-            })
+            .assertNext(theLink -> assertEquals(link3, theLink))
             .verifyComplete();
     }
 
@@ -83,7 +82,7 @@ public class ReceiveLinkTest {
         return Mono.defer(() -> {
             return createReceiveLink()
                 .flatMap(link -> link.getEndpointStates()
-                    .subscriberContext(Context.of("linkName", link.getLinkName()))
+                    .contextWrite(Context.of("linkName", link.getLinkName()))
                     .takeUntil(e -> e == AmqpEndpointState.ACTIVE)
                     .timeout(Duration.ofSeconds(4))
                     .then(Mono.just(link)));

@@ -4,6 +4,9 @@ package com.azure.spring.cloud.feature.manager.targeting;
 
 import java.util.List;
 
+/**
+ * Interface for the Targeting Context used in evaluating the `Microsoft.TargetingFilter`.
+ */
 public interface ITargetingContext {
 
     /**

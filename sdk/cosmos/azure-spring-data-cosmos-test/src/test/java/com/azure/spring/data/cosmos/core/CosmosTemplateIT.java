@@ -44,7 +44,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.data.annotation.Persistent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.parser.Part;
@@ -150,7 +149,8 @@ public class CosmosTemplateIT {
                 new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON)));
             fail();
         } catch (CosmosAccessException ex) {
-            assertThat(ex.getCosmosException() instanceof ConflictException);
+            assertThat(ex.getCosmosException()).isInstanceOf(ConflictException.class);
+            assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         }
     }
 
@@ -191,6 +191,7 @@ public class CosmosTemplateIT {
         final Person nullResult = cosmosTemplate.findById(Person.class.getSimpleName(),
             NOT_EXIST_ID, Person.class);
         assertThat(nullResult).isNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
     }
 
     @Test
@@ -220,7 +221,7 @@ public class CosmosTemplateIT {
 
         final String firstName = NEW_FIRST_NAME
             + "_"
-            + UUID.randomUUID().toString();
+            + UUID.randomUUID();
         final Person newPerson = new Person(TEST_PERSON.getId(), firstName, NEW_FIRST_NAME, null, null,
             AGE, PASSPORT_IDS_BY_COUNTRY);
 
@@ -277,6 +278,7 @@ public class CosmosTemplateIT {
             final Throwable cosmosClientException = e.getCosmosException();
             assertThat(cosmosClientException).isInstanceOf(CosmosException.class);
             assertThat(cosmosClientException.getMessage()).contains(PRECONDITION_IS_NOT_MET);
+            assertThat(responseDiagnosticsTestUtils.getDiagnostics()).isNotNull();
 
             final Person unmodifiedPerson = cosmosTemplate.findById(Person.class.getSimpleName(),
                 TEST_PERSON.getId(), Person.class);

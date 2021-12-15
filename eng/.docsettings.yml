@@ -3,6 +3,7 @@ omitted_paths:
   - profiles/*
   - loganalytics/data-plane/samples/*
   - sdk/*/azure-*/samples/*
+  - sdk/authorization/microsoft-azure-authentication-msi-token-provider/*
   - sdk/*/azure-monitor-opentelemetry-exporter/*/samples/*
   - sdk/applicationinsights/microsoft-azure-applicationinsights-query/samples/*
   - sdk/boms/spring-cloud-azure-dependencies/*
@@ -128,6 +129,7 @@ known_content_issues:
   - ['sdk/parents/azure-client-sdk-parent/README.md', '#3113']
   - ['sdk/search/azure-search-documents/src/test/README.md', '#3113']
   - ['sdk/search/open-api/readme.md', '#3113']
+  - ['sdk/search/README.md', '#3113']
   - ['sdk/servicebus/microsoft-azure-servicebus/README.md', '#3113']
   - ['sdk/storage/azure-storage-blob-nio/README.md', '#3113']
   - ['sdk/storage/azure-storage-common/README.md', '#3113']
