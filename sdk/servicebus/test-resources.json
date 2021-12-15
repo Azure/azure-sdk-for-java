@@ -189,7 +189,7 @@
       "name": "[concat(variables('namespaceName'), '/', variables('topicName'), '-', copyIndex(), '/', variables('subscriptionName'))]",
       "dependsOn": [
         "[resourceId('Microsoft.ServiceBus/namespaces', variables('namespaceName'))]",
-        "[resourceId('Microsoft.ServiceBus/namespaces/topics', variables('topicName'), '-', copyIndex())]"
+        "[resourceId('Microsoft.ServiceBus/namespaces/topics', concat(variables('topicName'), '-', copyIndex()))]"
       ],
       "properties": {
         "requiresSession": false,
@@ -207,7 +207,7 @@
       "name": "[concat(variables('namespaceName'), '/', variables('topicName'), '-', copyIndex(), '/', variables('subscriptionSessionName'))]",
       "dependsOn": [
         "[resourceId('Microsoft.ServiceBus/namespaces', variables('namespaceName'))]",
-        "[resourceId('Microsoft.ServiceBus/namespaces/topics', variables('topicName'), '-', copyIndex())]"
+        "[resourceId('Microsoft.ServiceBus/namespaces/topics', concat(variables('topicName'), '-', copyIndex()))]"
       ],
       "properties": {
         "requiresSession": true,
