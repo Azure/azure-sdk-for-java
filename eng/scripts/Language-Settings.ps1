@@ -372,7 +372,6 @@ function FallbackValidation ($artifactNamePrefix, $workingDirectory)
 
 function DockerValidation($packageName, $packageVersion, $groupId, $DocValidationImageId, $workingdirectory) 
 {
-
   $output = docker run -v "${workingDirectory}:/workdir/out" `
     -e TARGET_PACKAGE=$packageName -e TARGET_VERSION=$packageVersion -e TARGET_GROUP_ID=$groupId -t $DocValidationImageId 2>&1 
   # The docker exit codes: https://docs.docker.com/engine/reference/run/#exit-status
@@ -659,7 +658,7 @@ function Validate-java-DocMsPackages ($PackageInfo, $DocValidationImageId)
 {
   if (!(ValidatePackage $PackageInfo.Group $PackageInfo.Name $PackageInfo.Version $DocValidationImageId)) 
   {
-    Write-Error "Package ${PackageInfo.Name} failed on validation" -ErrorAction Continue
+    Write-Error "Package $($PackageInfo.Name) failed on validation" -ErrorAction Continue
   }
   return
 }
