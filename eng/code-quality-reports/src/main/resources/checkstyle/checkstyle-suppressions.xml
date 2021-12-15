@@ -83,6 +83,19 @@
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
             files="Receipt.java"/>
 
+  <!-- To allow using sysout in GraalVM classes as the output is printed out during the build -->
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
+            files="com.azure.aot.graalvm.support.implementation.GraalVMFeature.java"/>
+
+  <!-- To allow using sysout in GraalVM classes as the output is printed out during the build -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
+            files="com.azure.aot.graalvm.support.netty.implementation.features.*\.java"/>
+
+  <!-- The class is copied from Quarkus and uses the relevant copyright text.
+  Also, this class contains a number of fields that are annotated to be updated in native image. So, these exceptions are needed -->
+  <suppress checks="StaticVariableName|VisibilityModifier|TypeName|Header"
+            files="com.azure.aot.graalvm.support.netty.implementation.features.*\.java"/>
+
   <!-- Suppress LineLength for i18n message properties -->
   <suppress checks="LineLength" files="messages.properties"/>
 

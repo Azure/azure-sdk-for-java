@@ -71,6 +71,7 @@ Used to influence the json serialization/deserialization behavior
 | :---        |    :----   |         :--- | 
 | `spark.cosmos.read.partitioning.strategy`     | `Default`    | The partitioning strategy used (Default, Custom, Restrictive or Aggressive) |
 | `spark.cosmos.partitioning.targetedCount`      | None    | The targeted Partition Count. This parameter is optional and ignored unless strategy==Custom is used. In this case the Spark Connector won't dynamically calculate number of partitions but stick with this value.  |
+| `spark.cosmos.partitioning.feedRangeFilter`      | None    | Can be used to scope the query to a single logical Cosmos partition (or a subset of logical partitions). If this parameter is optionally provided, the partitioning strategy will be modified - only partitions for the scoped logical partitions will be created. So, the main benefit of this config option is to reduce the necessary SparkTasks/Partitions. |
 
 ### Throughput Control Config
 | Config Property Name      | Default | Description |

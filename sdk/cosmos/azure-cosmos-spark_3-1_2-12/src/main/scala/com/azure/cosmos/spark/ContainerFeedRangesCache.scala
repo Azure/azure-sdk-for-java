@@ -40,14 +40,16 @@ private[spark] object ContainerFeedRangesCache {
   }
 
   private[this] def refreshFeedRanges(key: String, container: CosmosAsyncContainer): SMono[List[FeedRange]] = {
-    container
-      .getFeedRanges
-      .map[List[FeedRange]](javaList => {
-        val scalaList = javaList.asScala.toList
-        cache.put(key, CachedFeedRanges(scalaList, Instant.now))
-        scalaList
-      })
-      .asScala
+
+    TransientErrorsRetryPolicy.executeWithRetry(() =>
+      container
+        .getFeedRanges
+        .map[List[FeedRange]](javaList => {
+          val scalaList = javaList.asScala.toList
+          cache.put(key, CachedFeedRanges(scalaList, Instant.now))
+          scalaList
+        })
+        .asScala)
   }
 
   private case class CachedFeedRanges(feedRanges: List[FeedRange], retrievedAt: Instant)

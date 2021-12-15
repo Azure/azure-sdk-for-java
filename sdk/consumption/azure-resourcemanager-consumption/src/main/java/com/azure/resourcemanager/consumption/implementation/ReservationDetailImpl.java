@@ -34,6 +34,19 @@ public final class ReservationDetailImpl implements ReservationDetail {
         return this.innerModel().type();
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
+    }
+
     public String reservationOrderId() {
         return this.innerModel().reservationOrderId();
     }
@@ -76,19 +89,6 @@ public final class ReservationDetailImpl implements ReservationDetail {
 
     public String kind() {
         return this.innerModel().kind();
-    }
-
-    public String etag() {
-        return this.innerModel().etag();
-    }
-
-    public Map<String, String> tags() {
-        Map<String, String> inner = this.innerModel().tags();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
     }
 
     public ReservationDetailInner innerModel() {

@@ -89,8 +89,7 @@ public final class UsageDetailsClientImpl implements UsageDetailsClient {
 
     /**
      * Lists the usage details for the defined scope. Usage details are available via this API only for May 1, 2014 or
-     * later. For more information on using this API, including how to specify a date range, please see:
-     * https://docs.microsoft.com/en-us/azure/cost-management-billing/costs/manage-automation.
+     * later.
      *
      * @param scope The scope associated with usage details operations. This includes '/subscriptions/{subscriptionId}/'
      *     for subscription scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account
@@ -111,7 +110,7 @@ public final class UsageDetailsClientImpl implements UsageDetailsClient {
      *     partners.
      * @param expand May be used to expand the properties/additionalInfo or properties/meterDetails within a list of
      *     usage details. By default, these fields are not included when listing usage details.
-     * @param filter May be used to filter usageDetails by properties/resourceGroup, properties/instanceName,
+     * @param filter May be used to filter usageDetails by properties/resourceGroup, properties/resourceName,
      *     properties/resourceId, properties/chargeType, properties/reservationId, properties/publisherType or tags. The
      *     filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'.
      *     Tag filter is a key value pair string where key and value is separated by a colon (:). PublisherType Filter
@@ -168,8 +167,7 @@ public final class UsageDetailsClientImpl implements UsageDetailsClient {
 
     /**
      * Lists the usage details for the defined scope. Usage details are available via this API only for May 1, 2014 or
-     * later. For more information on using this API, including how to specify a date range, please see:
-     * https://docs.microsoft.com/en-us/azure/cost-management-billing/costs/manage-automation.
+     * later.
      *
      * @param scope The scope associated with usage details operations. This includes '/subscriptions/{subscriptionId}/'
      *     for subscription scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account
@@ -190,7 +188,7 @@ public final class UsageDetailsClientImpl implements UsageDetailsClient {
      *     partners.
      * @param expand May be used to expand the properties/additionalInfo or properties/meterDetails within a list of
      *     usage details. By default, these fields are not included when listing usage details.
-     * @param filter May be used to filter usageDetails by properties/resourceGroup, properties/instanceName,
+     * @param filter May be used to filter usageDetails by properties/resourceGroup, properties/resourceName,
      *     properties/resourceId, properties/chargeType, properties/reservationId, properties/publisherType or tags. The
      *     filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'.
      *     Tag filter is a key value pair string where key and value is separated by a colon (:). PublisherType Filter
@@ -245,8 +243,7 @@ public final class UsageDetailsClientImpl implements UsageDetailsClient {
 
     /**
      * Lists the usage details for the defined scope. Usage details are available via this API only for May 1, 2014 or
-     * later. For more information on using this API, including how to specify a date range, please see:
-     * https://docs.microsoft.com/en-us/azure/cost-management-billing/costs/manage-automation.
+     * later.
      *
      * @param scope The scope associated with usage details operations. This includes '/subscriptions/{subscriptionId}/'
      *     for subscription scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account
@@ -267,7 +264,7 @@ public final class UsageDetailsClientImpl implements UsageDetailsClient {
      *     partners.
      * @param expand May be used to expand the properties/additionalInfo or properties/meterDetails within a list of
      *     usage details. By default, these fields are not included when listing usage details.
-     * @param filter May be used to filter usageDetails by properties/resourceGroup, properties/instanceName,
+     * @param filter May be used to filter usageDetails by properties/resourceGroup, properties/resourceName,
      *     properties/resourceId, properties/chargeType, properties/reservationId, properties/publisherType or tags. The
      *     filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'.
      *     Tag filter is a key value pair string where key and value is separated by a colon (:). PublisherType Filter
@@ -292,8 +289,7 @@ public final class UsageDetailsClientImpl implements UsageDetailsClient {
 
     /**
      * Lists the usage details for the defined scope. Usage details are available via this API only for May 1, 2014 or
-     * later. For more information on using this API, including how to specify a date range, please see:
-     * https://docs.microsoft.com/en-us/azure/cost-management-billing/costs/manage-automation.
+     * later.
      *
      * @param scope The scope associated with usage details operations. This includes '/subscriptions/{subscriptionId}/'
      *     for subscription scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account
@@ -331,8 +327,7 @@ public final class UsageDetailsClientImpl implements UsageDetailsClient {
 
     /**
      * Lists the usage details for the defined scope. Usage details are available via this API only for May 1, 2014 or
-     * later. For more information on using this API, including how to specify a date range, please see:
-     * https://docs.microsoft.com/en-us/azure/cost-management-billing/costs/manage-automation.
+     * later.
      *
      * @param scope The scope associated with usage details operations. This includes '/subscriptions/{subscriptionId}/'
      *     for subscription scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account
@@ -353,7 +348,7 @@ public final class UsageDetailsClientImpl implements UsageDetailsClient {
      *     partners.
      * @param expand May be used to expand the properties/additionalInfo or properties/meterDetails within a list of
      *     usage details. By default, these fields are not included when listing usage details.
-     * @param filter May be used to filter usageDetails by properties/resourceGroup, properties/instanceName,
+     * @param filter May be used to filter usageDetails by properties/resourceGroup, properties/resourceName,
      *     properties/resourceId, properties/chargeType, properties/reservationId, properties/publisherType or tags. The
      *     filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'.
      *     Tag filter is a key value pair string where key and value is separated by a colon (:). PublisherType Filter
@@ -379,8 +374,7 @@ public final class UsageDetailsClientImpl implements UsageDetailsClient {
 
     /**
      * Lists the usage details for the defined scope. Usage details are available via this API only for May 1, 2014 or
-     * later. For more information on using this API, including how to specify a date range, please see:
-     * https://docs.microsoft.com/en-us/azure/cost-management-billing/costs/manage-automation.
+     * later.
      *
      * @param scope The scope associated with usage details operations. This includes '/subscriptions/{subscriptionId}/'
      *     for subscription scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account
@@ -416,8 +410,7 @@ public final class UsageDetailsClientImpl implements UsageDetailsClient {
 
     /**
      * Lists the usage details for the defined scope. Usage details are available via this API only for May 1, 2014 or
-     * later. For more information on using this API, including how to specify a date range, please see:
-     * https://docs.microsoft.com/en-us/azure/cost-management-billing/costs/manage-automation.
+     * later.
      *
      * @param scope The scope associated with usage details operations. This includes '/subscriptions/{subscriptionId}/'
      *     for subscription scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account
@@ -438,7 +431,7 @@ public final class UsageDetailsClientImpl implements UsageDetailsClient {
      *     partners.
      * @param expand May be used to expand the properties/additionalInfo or properties/meterDetails within a list of
      *     usage details. By default, these fields are not included when listing usage details.
-     * @param filter May be used to filter usageDetails by properties/resourceGroup, properties/instanceName,
+     * @param filter May be used to filter usageDetails by properties/resourceGroup, properties/resourceName,
      *     properties/resourceId, properties/chargeType, properties/reservationId, properties/publisherType or tags. The
      *     filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'.
      *     Tag filter is a key value pair string where key and value is separated by a colon (:). PublisherType Filter
