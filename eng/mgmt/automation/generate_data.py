@@ -9,6 +9,9 @@ import glob
 from typing import List
 
 from parameters import *
+from utils import update_service_ci_and_pom
+from utils import update_root_pom
+from utils import update_version
 
 
 LLC_ARGUMENTS = '--java --low-level-client --sdk-integration --generate-samples'
@@ -75,6 +78,7 @@ def generate(
     module: str,
     credential_types: str,
     credential_scopes: str,
+    title: str,
     autorest: str,
     use: str,
     autorest_options: str = '',
@@ -95,18 +99,27 @@ def generate(
 
     input_arguments = '--input-file={0}'.format(input_file)
 
+    artifact_arguments = '--artifact-id={0}'.format(module)
+    if title:
+        artifact_arguments += ' --title={0}'.format(title)
+
     command = 'autorest --version={0} --use={1} --java.azure-libraries-for-java-folder={2} --java.output-folder={3} --java.namespace={4} {5}'.format(
         autorest,
         use,
         os.path.abspath(sdk_root),
         os.path.abspath(output_dir),
         namespace,
-        ' '.join((LLC_ARGUMENTS, input_arguments, credential_arguments, autorest_options)),
+        ' '.join((LLC_ARGUMENTS, input_arguments, credential_arguments, artifact_arguments, autorest_options)),
     )
     logging.info(command)
     if os.system(command) != 0:
         logging.error('[GENERATE] Autorest fail')
         return False
+
+    group = "com.azure"
+    update_service_ci_and_pom(sdk_root, group, service, module)
+    update_root_pom(sdk_root, service)
+    update_version(sdk_root, output_dir)
 
     return True
 
@@ -134,30 +147,36 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         '--input-file',
         required=True,
-        help='URL to OpenAPI 2.0 specification JSON as input file',
+        help='URL to OpenAPI 2.0 specification JSON as input file.',
     )
     parser.add_argument(
         '--service',
         required=True,
-        help='Service name under sdk/, sample: storage',
+        help='Service name under sdk/. Sample: storage',
     )
     parser.add_argument(
         '--module',
         required=True,
-        help='Module name under sdk/<service>/, sample: azure-storage-blob',
+        help='Module name under sdk/<service>/. Sample: azure-storage-blob',
     )
     parser.add_argument(
         '--credential-types',
         required=True,
-        help='Credential types, '
+        help='Credential types. '
              'Sample: "tokencredential" for AAD credential for OAuth 2.0 authentication; '
              '"azurekeycredential" for Azure key credential',
     )
     parser.add_argument(
         '--credential-scopes',
         required=False,
-        help='OAuth 2.0 scopes when credential-types includes tokencredential, '
+        help='OAuth 2.0 scopes when credential-types includes "tokencredential". '
              'Sample: https://storage.azure.com/.default',
+    )
+    parser.add_argument(
+        '--title',
+        required=False,
+        help='The name of the client. The name should always ends with "Client". '
+             'Sample: BlobClient, which makes BlobClientBuilder as builder class',
     )
     parser.add_argument(
         '-u',
