@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Import;
 /**
  * Import {@link CosmosReactiveRepositoriesAutoConfigureRegistrar} class as a Bean in Spring.
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @ConditionalOnClass({ ReactiveCosmosRepository.class })
 @ConditionalOnMissingBean({ ReactiveCosmosRepositoryFactoryBean.class,
     ReactiveCosmosRepositoryConfigurationExtension.class })

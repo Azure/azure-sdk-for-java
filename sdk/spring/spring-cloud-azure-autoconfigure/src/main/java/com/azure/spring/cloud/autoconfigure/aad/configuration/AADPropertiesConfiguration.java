@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Configure Azure Active Directory related property beans
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties
 public class AADPropertiesConfiguration {
 

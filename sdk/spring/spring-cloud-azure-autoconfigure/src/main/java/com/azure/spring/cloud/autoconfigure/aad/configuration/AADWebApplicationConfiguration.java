@@ -46,7 +46,7 @@ public class AADWebApplicationConfiguration {
     /**
      * Sample configuration to make AzureActiveDirectoryOAuth2UserService take effect.
      */
-    @Configuration
+    @Configuration(proxyBeanMethods = false)
     @EnableWebSecurity
     @EnableGlobalMethodSecurity(prePostEnabled = true)
     @ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)

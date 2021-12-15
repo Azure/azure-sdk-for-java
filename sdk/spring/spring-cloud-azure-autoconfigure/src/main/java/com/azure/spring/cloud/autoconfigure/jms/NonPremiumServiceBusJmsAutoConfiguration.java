@@ -20,7 +20,7 @@ import javax.jms.ConnectionFactory;
 /**
  * Automatic configuration class of ServiceBusJMS for Standard and Basic Service Bus
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(JmsConnectionFactory.class)
 @ConditionalOnProperty(value = "spring.jms.servicebus.enabled", matchIfMissing = true)
 @ConditionalOnExpression(value = "not '${spring.jms.servicebus.pricing-tier}'.equalsIgnoreCase('premium')")

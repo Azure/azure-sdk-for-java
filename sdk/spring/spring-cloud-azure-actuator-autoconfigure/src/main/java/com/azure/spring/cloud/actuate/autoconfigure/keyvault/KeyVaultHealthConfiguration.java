@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * configuration class of KeyVaultHealth
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @ConditionalOnClass({ SecretClient.class, HealthIndicator.class })
 @ConditionalOnBean(SecretAsyncClient.class)
 @AutoConfigureAfter(AzureKeyVaultSecretAutoConfiguration.class)

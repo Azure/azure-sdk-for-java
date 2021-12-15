@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 /**
  * Configuration for AAD B2C OAuth2 client support, when depends on the Spring OAuth2 Client module.
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(value = "spring.cloud.azure.active-directory.b2c.enabled", havingValue = "true")
 @Conditional(AADB2CConditions.ClientRegistrationCondition.class)
 @Import(AADB2CPropertiesConfiguration.class)

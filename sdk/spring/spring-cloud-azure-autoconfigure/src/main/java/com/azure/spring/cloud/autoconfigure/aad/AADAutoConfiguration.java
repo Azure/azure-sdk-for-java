@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Import;
  * Auto configure beans required for AAD.
  * </p>
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(value = "spring.cloud.azure.active-directory.enabled", havingValue = "true")
 @Import({
     AADPropertiesConfiguration.class,

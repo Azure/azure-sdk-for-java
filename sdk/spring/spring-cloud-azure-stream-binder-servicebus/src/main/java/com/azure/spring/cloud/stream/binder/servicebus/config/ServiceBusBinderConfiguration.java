@@ -29,7 +29,7 @@ import org.springframework.lang.Nullable;
 /**
  *
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @ConditionalOnMissingBean(Binder.class)
 @Import({
     AzureGlobalPropertiesAutoConfiguration.class,

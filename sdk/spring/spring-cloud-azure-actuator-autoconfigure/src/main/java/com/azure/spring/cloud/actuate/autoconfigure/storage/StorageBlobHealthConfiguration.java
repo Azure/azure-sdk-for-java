@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Auto-configuration class for Storage actuator.
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @ConditionalOnClass({ BlobServiceAsyncClient.class, HealthIndicator.class })
 @ConditionalOnBean(BlobServiceAsyncClient.class)
 @AutoConfigureAfter(AzureStorageBlobAutoConfiguration.class)

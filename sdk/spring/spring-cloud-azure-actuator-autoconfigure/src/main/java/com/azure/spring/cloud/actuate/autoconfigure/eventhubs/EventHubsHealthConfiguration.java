@@ -20,7 +20,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Auto-configuration class for Event actuator.
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @ConditionalOnClass({ EventHubClientBuilder.class, HealthIndicator.class })
 @AutoConfigureAfter(AzureEventHubsAutoConfiguration.class)
 @ConditionalOnBean(EventHubClientBuilder.class)

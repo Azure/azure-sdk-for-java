@@ -1,12 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.stream.binder.eventhubs;
+package com.azure.spring.cloud.stream.binder.eventhubs.config;
 
 import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventBatchContext;
 import com.azure.messaging.eventhubs.models.EventContext;
+import com.azure.spring.cloud.stream.binder.eventhubs.EventHubsHealthIndicator;
+import com.azure.spring.cloud.stream.binder.eventhubs.TestEventHubsMessageChannelBinder;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsBindingProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsConsumerProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsExtendedBindingProperties;
@@ -15,6 +17,7 @@ import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChan
 import com.azure.spring.eventhubs.core.EventHubsProcessorContainer;
 import com.azure.spring.eventhubs.core.EventHubsTemplate;
 import com.azure.spring.eventhubs.core.producer.DefaultEventHubsNamespaceProducerFactory;
+import com.azure.spring.integration.eventhubs.inbound.EventHubsInboundChannelAdapter;
 import com.azure.spring.integration.eventhubs.inbound.health.EventHusProcessorInstrumentation;
 import com.azure.spring.integration.instrumentation.Instrumentation;
 import com.azure.spring.integration.instrumentation.InstrumentationManager;
@@ -48,7 +51,7 @@ import java.util.HashMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-public class EventHubsBinderHealthIndicatorTest {
+public class EventHubsBinderHealthIndicatorConfigurationTests {
 
     @Mock
     private ConsumerDestination consumerDestination;
@@ -78,7 +81,9 @@ public class EventHubsBinderHealthIndicatorTest {
     private static final String NAMESPACE_NAME = "eventhub-namespace";
     private static final String CONNECTION_STRING = "Endpoint=sb://test.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=key";
 
-    private EventHubsMessageChannelBinder binder = new EventHubsMessageChannelBinder(BinderHeaders.STANDARD_HEADERS, new EventHubsChannelProvisioner());
+    private TestEventHubsMessageChannelBinder binder =
+        new TestEventHubsMessageChannelBinder(BinderHeaders.STANDARD_HEADERS,
+            new EventHubsChannelProvisioner(), null, null);
 
     @BeforeEach
     public void init() {
@@ -92,6 +97,115 @@ public class EventHubsBinderHealthIndicatorTest {
     public void testNoEventHubsInUse() {
         final Health health = healthIndicator.health();
         assertThat(health.getStatus()).isEqualTo(Status.UNKNOWN);
+    }
+
+    @Test
+    public void producerHealthIndicatorIsUp() {
+        prepareProducerProperties();
+        when(producerDestination.getName()).thenReturn(PRODUCER_NAME);
+        binder.createProducerMessageHandler(producerDestination, producerProperties, errorChannel);
+        EventHubsTemplate eventHubsTemplate =
+            (EventHubsTemplate) ReflectionTestUtils.getField(binder, "eventHubsTemplate");
+        DefaultEventHubsNamespaceProducerFactory producerFactory =
+            (DefaultEventHubsNamespaceProducerFactory) ReflectionTestUtils.getField(eventHubsTemplate, "producerFactory");
+        producerFactory.createProducer(PRODUCER_NAME);
+        final Health health = healthIndicator.health();
+        assertThat(health.getStatus()).isEqualTo(Status.UP);
+    }
+
+    @Test
+    public void producerHealthIndicatorIsDown() {
+        prepareProducerProperties();
+        when(producerDestination.getName()).thenReturn(PRODUCER_NAME);
+        binder.createProducerMessageHandler(producerDestination, producerProperties, errorChannel);
+        EventHubsTemplate eventHubsTemplate =
+            (EventHubsTemplate) ReflectionTestUtils.getField(binder, "eventHubsTemplate");
+        DefaultEventHubsNamespaceProducerFactory producerFactory =
+            (DefaultEventHubsNamespaceProducerFactory) ReflectionTestUtils.getField(eventHubsTemplate, "producerFactory");
+        producerFactory.createProducer(PRODUCER_NAME);
+        binder.addProducerDownInstrumentation();
+        final Health health = healthIndicator.health();
+        assertThat(health.getStatus()).isEqualTo(Status.DOWN);
+    }
+
+    @Test
+    public void processorRecordEventHealthIndicatorIsUp() {
+        prepareConsumerProperties();
+        CheckpointConfig checkpoint = eventHubsConsumerProperties.getCheckpoint();
+        checkpoint.setMode(CheckpointMode.MANUAL);
+        when(consumerDestination.getName()).thenReturn(CONSUMER_NAME);
+        binder.setCheckpointStore(new BlobCheckpointStore(blobContainerAsyncClient));
+        binder.createConsumerEndpoint(consumerDestination, CONSUMER_GROUP_NAME, consumerProperties);
+        EventHubsProcessorContainer processorContainer =
+            (EventHubsProcessorContainer) ReflectionTestUtils.getField(binder,
+                "processorContainer");
+        TestIntegrationRecordEventProcessingListener listener = new TestIntegrationRecordEventProcessingListener();
+        processorContainer.subscribe(CONSUMER_NAME, CONSUMER_GROUP_NAME, listener);
+
+        final Health health = healthIndicator.health();
+        assertThat(health.getStatus()).isEqualTo(Status.UP);
+    }
+
+    @Test
+    public void processorRecordEventHealthIndicatorIsDown() {
+        prepareConsumerProperties();
+        CheckpointConfig checkpoint = eventHubsConsumerProperties.getCheckpoint();
+        checkpoint.setMode(CheckpointMode.MANUAL);
+        when(consumerDestination.getName()).thenReturn(CONSUMER_NAME);
+        binder.setCheckpointStore(new BlobCheckpointStore(blobContainerAsyncClient));
+        binder.createConsumerEndpoint(consumerDestination, CONSUMER_GROUP_NAME, consumerProperties);
+        EventHubsProcessorContainer processorContainer =
+            (EventHubsProcessorContainer) ReflectionTestUtils.getField(binder,
+                "processorContainer");
+        TestIntegrationRecordEventProcessingListener listener = new TestIntegrationRecordEventProcessingListener();
+        processorContainer.subscribe(CONSUMER_NAME, CONSUMER_GROUP_NAME, listener);
+        binder.addProcessorDownInstrumentation();
+
+        final Health health = healthIndicator.health();
+        assertThat(health.getStatus()).isEqualTo(Status.DOWN);
+    }
+
+    @Test
+    public void processorBatchEventHealthIndicatorIsUp() {
+        prepareConsumerProperties();
+        CheckpointConfig checkpoint = eventHubsConsumerProperties.getCheckpoint();
+        checkpoint.setMode(CheckpointMode.BATCH);
+        EventHubsProcessorDescriptor.Batch batch = eventHubsConsumerProperties.getBatch();
+        batch.setMaxSize(10);
+        batch.setMaxWaitTime(Duration.ofMillis(1));
+        when(consumerDestination.getName()).thenReturn(CONSUMER_NAME);
+        binder.setCheckpointStore(new BlobCheckpointStore(blobContainerAsyncClient));
+        binder.createConsumerEndpoint(consumerDestination, CONSUMER_GROUP_NAME, consumerProperties);
+        EventHubsProcessorContainer processorContainer =
+            (EventHubsProcessorContainer) ReflectionTestUtils.getField(binder,
+                "processorContainer");
+        TestIntegrationBatchEventProcessingListener listener = new TestIntegrationBatchEventProcessingListener();
+        processorContainer.subscribe(CONSUMER_NAME, CONSUMER_GROUP_NAME, listener);
+
+        final Health health = healthIndicator.health();
+        assertThat(health.getStatus()).isEqualTo(Status.UP);
+    }
+
+    @Test
+    public void processorBatchEventHealthIndicatorIsDown() {
+        prepareConsumerProperties();
+        CheckpointConfig checkpoint = eventHubsConsumerProperties.getCheckpoint();
+        checkpoint.setMode(CheckpointMode.BATCH);
+        EventHubsProcessorDescriptor.Batch batch = eventHubsConsumerProperties.getBatch();
+        batch.setMaxSize(10);
+        batch.setMaxWaitTime(Duration.ofMillis(1));
+        when(consumerDestination.getName()).thenReturn(CONSUMER_NAME);
+        binder.setCheckpointStore(new BlobCheckpointStore(blobContainerAsyncClient));
+        binder.createConsumerEndpoint(consumerDestination, CONSUMER_GROUP_NAME, consumerProperties);
+        EventHubsProcessorContainer processorContainer =
+            (EventHubsProcessorContainer) ReflectionTestUtils.getField(binder,
+                "processorContainer");
+        TestIntegrationBatchEventProcessingListener listener = new TestIntegrationBatchEventProcessingListener();
+        processorContainer.subscribe(CONSUMER_NAME, CONSUMER_GROUP_NAME, listener);
+        binder.addProcessorDownInstrumentation();
+
+        final Health health = healthIndicator.health();
+        assertThat(health.getStatus()).isEqualTo(Status.DOWN);
     }
 
     private void prepareProducerProperties() {
@@ -128,65 +242,10 @@ public class EventHubsBinderHealthIndicatorTest {
         consumerProperties.setHeaderMode(HeaderMode.embeddedHeaders);
     }
 
-    @Test
-    public void testEventHubProducerHealthIndicatorIsUp() {
-        prepareProducerProperties();
-        when(producerDestination.getName()).thenReturn(PRODUCER_NAME);
-        binder.createProducerMessageHandler(producerDestination, producerProperties, errorChannel);
-        EventHubsTemplate eventHubsTemplate =
-            (EventHubsTemplate) ReflectionTestUtils.getField(binder, "eventHubsTemplate");
-        DefaultEventHubsNamespaceProducerFactory producerFactory =
-            (DefaultEventHubsNamespaceProducerFactory) ReflectionTestUtils.getField(eventHubsTemplate, "producerFactory");
-        producerFactory.createProducer(PRODUCER_NAME);
-        final Health health = healthIndicator.health();
-        assertThat(health.getStatus()).isEqualTo(Status.UP);
-    }
-
-    @Test
-    public void testEventHubsProcessorRecordEventHealthIndicatorIsUp() {
-        prepareConsumerProperties();
-        CheckpointConfig checkpoint = eventHubsConsumerProperties.getCheckpoint();
-        checkpoint.setMode(CheckpointMode.MANUAL);
-        when(consumerDestination.getName()).thenReturn(CONSUMER_NAME);
-        binder.setCheckpointStore(new BlobCheckpointStore(blobContainerAsyncClient));
-        binder.createConsumerEndpoint(consumerDestination, CONSUMER_GROUP_NAME, consumerProperties);
-        EventHubsProcessorContainer processorContainer =
-            (EventHubsProcessorContainer) ReflectionTestUtils.getField(binder,
-                "processorContainer");
-        TestIntegrationRecordEventProcessingListener listener = new TestIntegrationRecordEventProcessingListener();
-        processorContainer.subscribe(CONSUMER_NAME, CONSUMER_GROUP_NAME, listener);
-
-        final Health health = healthIndicator.health();
-        assertThat(health.getStatus()).isEqualTo(Status.UP);
-    }
-
-    @Test
-    public void testEventHubsProcessorBatchEventHealthIndicatorIsUp() {
-        prepareConsumerProperties();
-        CheckpointConfig checkpoint = eventHubsConsumerProperties.getCheckpoint();
-        checkpoint.setMode(CheckpointMode.BATCH);
-        EventHubsProcessorDescriptor.Batch batch = eventHubsConsumerProperties.getBatch();
-        batch.setMaxSize(10);
-        batch.setMaxWaitTime(Duration.ofMillis(1));
-        when(consumerDestination.getName()).thenReturn(CONSUMER_NAME);
-        binder.setCheckpointStore(new BlobCheckpointStore(blobContainerAsyncClient));
-        binder.createConsumerEndpoint(consumerDestination, CONSUMER_GROUP_NAME, consumerProperties);
-        EventHubsProcessorContainer processorContainer =
-            (EventHubsProcessorContainer) ReflectionTestUtils.getField(binder,
-                "processorContainer");
-        TestIntegrationBatchEventProcessingListener listener = new TestIntegrationBatchEventProcessingListener();
-        processorContainer.subscribe(CONSUMER_NAME, CONSUMER_GROUP_NAME, listener);
-
-        final Health health = healthIndicator.health();
-        assertThat(health.getStatus()).isEqualTo(Status.UP);
-    }
-
-    private class TestIntegrationRecordEventProcessingListener implements
-        EventProcessingListener, RecordEventProcessingListener {
-
-        private InstrumentationManager instrumentationManager;
-        private String instrumentationId;
-        void updateInstrumentation(ErrorContext errorContext,
+    private interface TestInstrumentationEventProcessingListener extends EventProcessingListener {
+        void setInstrumentationManager(InstrumentationManager instrumentationManager);
+        void setInstrumentationId(String instrumentationId);
+        default void updateInstrumentation(ErrorContext errorContext,
                                            InstrumentationManager instrumentationManager,
                                            String instrumentationId) {
             Instrumentation instrumentation = instrumentationManager.getHealthInstrumentation(instrumentationId);
@@ -198,6 +257,13 @@ public class EventHubsBinderHealthIndicatorTest {
                 }
             }
         }
+    }
+
+    private class TestIntegrationRecordEventProcessingListener implements
+        TestInstrumentationEventProcessingListener, RecordEventProcessingListener {
+
+        private InstrumentationManager instrumentationManager;
+        private String instrumentationId;
 
         @Override
         public ErrorContextConsumer getErrorContextConsumer() {
@@ -211,33 +277,22 @@ public class EventHubsBinderHealthIndicatorTest {
 
         }
 
+        @Override
         public void setInstrumentationManager(InstrumentationManager instrumentationManager) {
             this.instrumentationManager = instrumentationManager;
         }
 
+        @Override
         public void setInstrumentationId(String instrumentationId) {
             this.instrumentationId = instrumentationId;
         }
     }
 
     private class TestIntegrationBatchEventProcessingListener implements
-        EventProcessingListener, BatchEventProcessingListener {
+        TestInstrumentationEventProcessingListener, BatchEventProcessingListener {
 
         private InstrumentationManager instrumentationManager;
         private String instrumentationId;
-
-        void updateInstrumentation(ErrorContext errorContext,
-                                           InstrumentationManager instrumentationManager,
-                                           String instrumentationId) {
-            Instrumentation instrumentation = instrumentationManager.getHealthInstrumentation(instrumentationId);
-            if (instrumentation != null) {
-                if (instrumentation instanceof EventHusProcessorInstrumentation) {
-                    ((EventHusProcessorInstrumentation) instrumentation).markError(errorContext);
-                } else {
-                    instrumentation.markDown(errorContext.getThrowable());
-                }
-            }
-        }
 
         @Override
         public ErrorContextConsumer getErrorContextConsumer() {
@@ -251,12 +306,12 @@ public class EventHubsBinderHealthIndicatorTest {
 
         }
 
-
+        @Override
         public void setInstrumentationManager(InstrumentationManager instrumentationManager) {
             this.instrumentationManager = instrumentationManager;
         }
 
-
+        @Override
         public void setInstrumentationId(String instrumentationId) {
             this.instrumentationId = instrumentationId;
         }
