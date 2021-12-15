@@ -118,7 +118,7 @@ pr:
 
 stages:
   - template: spring-ci-template.yml
-    parameters:
+    steps:
       - script: |
             python .\sdk\spring\scripts\update_versions.py --ut external_dependency
   - template: spring-ci-template.yml
