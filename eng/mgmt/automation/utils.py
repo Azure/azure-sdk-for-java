@@ -10,6 +10,7 @@ from parameters import CI_HEADER
 from parameters import CI_FORMAT
 from parameters import POM_FORMAT
 from parameters import POM_MODULE_FORMAT
+from parameters import DEFAULT_VERSION
 
 
 # Add two more indent for list in yaml dump
@@ -98,7 +99,7 @@ def update_root_pom(sdk_root: str, service: str):
         logging.info('[POM][Success] Write to root pom')
 
 
-def update_service_ci_and_pom(sdk_root: str, group: str, service: str, module: str):
+def update_service_ci_and_pom(sdk_root: str, service: str, group: str, module: str):
     folder = os.path.join(sdk_root, 'sdk/{0}'.format(service))
     ci_yml_file = os.path.join(folder, 'ci.yml')
     pom_xml_file = os.path.join(folder, 'pom.xml')
@@ -177,3 +178,106 @@ def update_version(sdk_root: str, output_folder: str):
         )
     finally:
         os.chdir(pwd)
+
+
+def write_version(
+    version_file: str,
+    lines: list,
+    index: int,
+    project: str,
+    stable_version: str,
+    current_version: str,
+):
+    lines[index] = '{0};{1};{2}'.format(project, stable_version,
+                                        current_version)
+    with open(version_file, 'w') as fout:
+        fout.write('\n'.join(lines))
+        fout.write('\n')
+
+
+def set_or_increase_version(
+    sdk_root: str,
+    group: str,
+    module: str,
+    preview=True,
+    version=None,
+    **kwargs,
+) -> Tuple[str, str]:
+    version_file = os.path.join(sdk_root, 'eng/versioning/version_client.txt')
+    project = '{0}:{1}'.format(group, module)
+    version_pattern = '(\d+)\.(\d+)\.(\d+)(-beta\.\d+)?'
+    version_format = '{0}.{1}.{2}{3}'
+    default_version = version if version else DEFAULT_VERSION
+
+    with open(version_file, 'r') as fin:
+        lines = fin.read().splitlines()
+        version_index = -1
+        for i, version_line in enumerate(lines):
+            version_line = version_line.strip()
+            if version_line.startswith('#'):
+                continue
+            versions = version_line.split(';')
+            if versions[0] == project:
+                if len(versions) != 3:
+                    logging.error(
+                        '[VERSION][Fallback] Unexpected version format "{0}"'.
+                        format(version_line))
+                    stable_version = ''
+                    current_version = default_version
+                else:
+                    logging.info(
+                        '[VERSION][Found] current version "{0}"'.format(
+                            version_line))
+                    stable_version = versions[1]
+                    current_version = versions[2]
+                version_index = i
+                break
+        else:
+            logging.info(
+                '[VERSION][Not Found] cannot find version for "{0}"'.format(
+                    project))
+            for i, version_line in enumerate(lines):
+                if version_line.startswith('{0}:'.format(group)):
+                    version_index = i + 1
+            lines = lines[:version_index] + [''] + lines[version_index:]
+            stable_version = ''
+            current_version = default_version
+
+    # version is given, set and return
+    if version:
+        if not stable_version:
+            stable_version = version
+        logging.info(
+            '[VERSION][Set] set to given version "{0}"'.format(version))
+        write_version(version_file, lines, version_index, project,
+                      stable_version, version)
+        return stable_version, version
+
+    current_versions = list(re.findall(version_pattern, current_version)[0])
+    stable_versions = re.findall(version_pattern, stable_version)
+    # no stable version
+    if len(stable_versions) < 1 or stable_versions[0][-1] != '':
+        if not preview:
+            current_versions[-1] = ''
+        current_version = version_format.format(*current_versions)
+        if not stable_version:
+            stable_version = current_version
+        logging.info(
+            '[VERSION][Not Found] cannot find stable version, current version "{0}"'
+            .format(current_version))
+
+        write_version(version_file, lines, version_index, project,
+                      stable_version, current_version)
+    else:
+        # TODO: auto-increase for stable version and beta version if possible
+        current_version = version_format.format(*current_versions)
+        if not stable_version:
+            stable_version = current_version
+        logging.warning(
+            '[VERSION][Not Implement] set to current version "{0}" by default'.
+            format(current_version))
+
+        write_version(version_file, lines, version_index, project,
+                      stable_version, current_version)
+
+    return stable_version, current_version
