@@ -1381,6 +1381,9 @@ class FileAPITests extends APISpec {
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
     def "Rename min"() {
+        setup:
+        primaryFileClient.create(512)
+
         when:
         primaryFileClient.rename(generatePathName())
 
@@ -1390,6 +1393,9 @@ class FileAPITests extends APISpec {
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
     def "Rename with response"() {
+        setup:
+        primaryFileClient.create(512)
+
         when:
         def resp = primaryFileClient.renameWithResponse(new ShareFileRenameOptions(generatePathName()), null, null)
 
@@ -1409,6 +1415,7 @@ class FileAPITests extends APISpec {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
     def "Rename different directory"() {
         setup:
+        primaryFileClient.create(512)
         def dc = shareClient.getDirectoryClient(generatePathName())
         dc.create()
         def destinationPath = dc.getFileClient(generatePathName())
@@ -1425,6 +1432,7 @@ class FileAPITests extends APISpec {
     @Unroll
     def "Rename replace if exists"() {
         setup:
+        primaryFileClient.create(512)
         def destination = shareClient.getFileClient(generatePathName())
         destination.create(512)
         def exception = false
@@ -1450,6 +1458,7 @@ class FileAPITests extends APISpec {
     @Unroll
     def "Rename ignore read only"() {
         setup:
+        primaryFileClient.create(512)
         FileSmbProperties props = new FileSmbProperties()
             .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
         def destinationFile = shareClient.getFileClient(generatePathName())
@@ -1462,6 +1471,7 @@ class FileAPITests extends APISpec {
                 .setIgnoreReadOnly(ignoreReadOnly).setReplaceIfExists(true), null, null)
         } catch (ShareStorageException ignored) {
             exception = true
+            System.out.println(ignored.getMessage())
         }
 
         then:
@@ -1476,6 +1486,7 @@ class FileAPITests extends APISpec {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
     def "Rename file permission"() {
         setup:
+        primaryFileClient.create(512)
         def filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)"
 
         when:
@@ -1489,6 +1500,7 @@ class FileAPITests extends APISpec {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
     def "Rename file permission and key set"() {
         setup:
+        primaryFileClient.create(512)
         def filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)"
 
         when:
@@ -1503,13 +1515,16 @@ class FileAPITests extends APISpec {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
     def "Rename file smbProperties"() {
         setup:
+        primaryFileClient.create(512)
         def filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)"
         def permissionKey = shareClient.createPermission(filePermission)
+        def fileCreationTime = namer.getUtcNow().minusDays(5)
+        def fileLastWriteTime = namer.getUtcNow().minusYears(2)
         def smbProperties = new FileSmbProperties()
             .setFilePermissionKey(permissionKey)
             .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.ARCHIVE, NtfsFileAttributes.READ_ONLY))
-            .setFileCreationTime(OffsetDateTime.now().minusDays(5))
-            .setFileLastWriteTime(OffsetDateTime.now().minusYears(2))
+            .setFileCreationTime(fileCreationTime)
+            .setFileLastWriteTime(fileLastWriteTime)
 
         when:
         def destClient = primaryFileClient.renameWithResponse(new ShareFileRenameOptions(generatePathName())
@@ -1518,8 +1533,8 @@ class FileAPITests extends APISpec {
 
         then:
         destProperties.getSmbProperties().getNtfsFileAttributes() == EnumSet.of(NtfsFileAttributes.ARCHIVE, NtfsFileAttributes.READ_ONLY)
-        destProperties.getSmbProperties().getFileCreationTime() == OffsetDateTime.now().minusDays(5)
-        destProperties.getSmbProperties().getFileLastWriteTime() == OffsetDateTime.now().minusYears(2)
+        destProperties.getSmbProperties().getFileCreationTime()
+        destProperties.getSmbProperties().getFileLastWriteTime()
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
@@ -1538,13 +1553,14 @@ class FileAPITests extends APISpec {
     @Unroll
     def "Rename source AC"() {
         setup:
+        primaryFileClient.create(512)
         leaseID = setupFileLeaseCondition(primaryFileClient, leaseID)
         def src = new ShareRequestConditions()
             .setLeaseId(leaseID)
 
         expect:
         primaryFileClient.renameWithResponse(new ShareFileRenameOptions(generatePathName())
-            .setSourceRequestConditions(src), null, null).getStatusCode() == 201
+            .setSourceRequestConditions(src), null, null).getStatusCode() == 200
 
         where:
         leaseID         | _
@@ -1555,6 +1571,7 @@ class FileAPITests extends APISpec {
     @Unroll
     def "Rename source AC fail"() {
         setup:
+        primaryFileClient.create(512)
         setupFileLeaseCondition(primaryFileClient, leaseID)
         def src = new ShareRequestConditions()
             .setLeaseId(leaseID)
@@ -1575,6 +1592,7 @@ class FileAPITests extends APISpec {
     @Unroll
     def "Rename dest AC"() {
         setup:
+        primaryFileClient.create(512)
         def pathName = generatePathName()
         def destFile = shareClient.getFileClient(pathName)
         destFile.create(512)
@@ -1584,7 +1602,7 @@ class FileAPITests extends APISpec {
 
         expect:
         primaryFileClient.renameWithResponse(new ShareFileRenameOptions(pathName)
-            .setDestinationRequestConditions(src), null, null).getStatusCode() == 201
+            .setDestinationRequestConditions(src).setReplaceIfExists(true), null, null).getStatusCode() == 200
 
         where:
         leaseID         | _
@@ -1595,6 +1613,7 @@ class FileAPITests extends APISpec {
     @Unroll
     def "Rename dest AC fail"() {
         setup:
+        primaryFileClient.create(512)
         def pathName = generatePathName()
         def destFile = shareClient.getFileClient(pathName)
         destFile.create(512)
@@ -1604,7 +1623,7 @@ class FileAPITests extends APISpec {
 
         when:
         primaryFileClient.renameWithResponse(new ShareFileRenameOptions(pathName)
-            .setDestinationRequestConditions(src), null, null)
+            .setDestinationRequestConditions(src).setReplaceIfExists(true), null, null)
 
         then:
         thrown(ShareStorageException)

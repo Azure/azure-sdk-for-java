@@ -2924,6 +2924,7 @@ public class ShareFileAsyncClient {
 
     Mono<Response<ShareFileAsyncClient>> renameWithResponse(ShareFileRenameOptions options, Context context) {
         StorageImplUtils.assertNotNull("options", options);
+        context = context == null ? Context.NONE : context;
 
         ShareRequestConditions sourceRequestConditions = options.getSourceRequestConditions() == null
             ? new ShareRequestConditions() : options.getSourceRequestConditions();
@@ -2954,7 +2955,7 @@ public class ShareFileAsyncClient {
 
         ShareFileAsyncClient destinationFileClient = getFileAsyncClient(options.getDestinationPath());
 
-        String renameSource = "/" + this.getShareName() + "/" + Utility.urlEncode(this.getFilePath());
+        String renameSource = this.getFileUrl();
         // TODO when support added to core
 //        String sasToken = this.extractSasToken();
 //        renameSource = sasToken == null ? renameSource : renameSource + sasToken;
