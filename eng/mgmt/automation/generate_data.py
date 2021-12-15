@@ -9,6 +9,7 @@ import glob
 from typing import List
 
 from parameters import *
+from utils import set_or_increase_version
 from utils import update_service_ci_and_pom
 from utils import update_root_pom
 from utils import update_version
@@ -117,7 +118,8 @@ def generate(
         return False
 
     group = "com.azure"
-    update_service_ci_and_pom(sdk_root, group, service, module)
+    set_or_increase_version(sdk_root, group, module)
+    update_service_ci_and_pom(sdk_root, service, group, module)
     update_root_pom(sdk_root, service)
     update_version(sdk_root, output_dir)
 

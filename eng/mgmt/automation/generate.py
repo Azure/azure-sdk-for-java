@@ -17,6 +17,7 @@ from typing import Tuple
 pwd = os.getcwd()
 os.chdir(os.path.abspath(os.path.dirname(sys.argv[0])))
 from parameters import *
+from utils import set_or_increase_version
 from utils import update_service_ci_and_pom
 from utils import update_root_pom
 from utils import update_version
@@ -81,7 +82,7 @@ def generate(
     module = ARTIFACT_FORMAT.format(service)
     group = GROUP_ID
     output_folder = OUTPUT_FOLDER_FORMAT.format(service)
-    update_service_ci_and_pom(sdk_root, group, service, module)
+    update_service_ci_and_pom(sdk_root, service, group, module)
     update_root_pom(sdk_root, service)
     update_version(sdk_root, output_folder)
 
@@ -212,131 +213,6 @@ def get_version(
                 return version_line
     logging.error('Cannot get version of {0}'.format(project))
     return None
-
-
-def update_version(sdk_root: str, service: str):
-    pwd = os.getcwd()
-    try:
-        os.chdir(sdk_root)
-        print(os.getcwd())
-        subprocess.run(
-            'python3 eng/versioning/update_versions.py --ut library --bt client --sr',
-            stdout = subprocess.DEVNULL,
-            stderr = sys.stderr,
-            shell = True,
-        )
-        subprocess.run(
-            'python3 eng/versioning/update_versions.py --ut library --bt client --tf {0}/README.md'
-            .format(OUTPUT_FOLDER_FORMAT.format(service)),
-            stdout = subprocess.DEVNULL,
-            stderr = sys.stderr,
-            shell = True,
-        )
-    finally:
-        os.chdir(pwd)
-
-
-def write_version(
-    version_file: str,
-    lines: list,
-    index: int,
-    project: str,
-    stable_version: str,
-    current_version: str,
-):
-    lines[index] = '{0};{1};{2}'.format(project, stable_version,
-                                        current_version)
-    with open(version_file, 'w') as fout:
-        fout.write('\n'.join(lines))
-        fout.write('\n')
-
-
-def set_or_increase_version(
-    sdk_root: str,
-    service: str,
-    preview = True,
-    version = None,
-    **kwargs,
-) -> Tuple[str, str]:
-    version_file = os.path.join(sdk_root, 'eng/versioning/version_client.txt')
-    module = ARTIFACT_FORMAT.format(service)
-    project = '{0}:{1}'.format(GROUP_ID, module)
-    version_pattern = '(\d+)\.(\d+)\.(\d+)(-beta\.\d+)?'
-    version_format = '{0}.{1}.{2}{3}'
-    default_version = version if version else DEFAULT_VERSION
-
-    with open(version_file, 'r') as fin:
-        lines = fin.read().splitlines()
-        version_index = -1
-        for i, version_line in enumerate(lines):
-            version_line = version_line.strip()
-            if version_line.startswith('#'):
-                continue
-            versions = version_line.split(';')
-            if versions[0] == project:
-                if len(versions) != 3:
-                    logging.error(
-                        '[VERSION][Fallback] Unexpected version format "{0}"'.
-                        format(version_line))
-                    stable_version = ''
-                    current_version = default_version
-                else:
-                    logging.info(
-                        '[VERSION][Found] current version "{0}"'.format(
-                            version_line))
-                    stable_version = versions[1]
-                    current_version = versions[2]
-                version_index = i
-                break
-        else:
-            logging.info(
-                '[VERSION][Not Found] cannot find version for "{0}"'.format(
-                    project))
-            for i, version_line in enumerate(lines):
-                if version_line.startswith('{0}:'.format(GROUP_ID)):
-                    version_index = i + 1
-            lines = lines[:version_index] + [''] + lines[version_index:]
-            stable_version = ''
-            current_version = default_version
-
-    # version is given, set and return
-    if version:
-        if not stable_version:
-            stable_version = version
-        logging.info(
-            '[VERSION][Set] set to given version "{0}"'.format(version))
-        write_version(version_file, lines, version_index, project,
-                      stable_version, version)
-        return stable_version, version
-
-    current_versions = list(re.findall(version_pattern, current_version)[0])
-    stable_versions = re.findall(version_pattern, stable_version)
-    # no stable version
-    if len(stable_versions) < 1 or stable_versions[0][-1] != '':
-        if not preview:
-            current_versions[-1] = ''
-        current_version = version_format.format(*current_versions)
-        if not stable_version:
-            stable_version = current_version
-        logging.info(
-            '[VERSION][Not Found] cannot find stable version, current version "{0}"'
-            .format(current_version))
-
-        write_version(version_file, lines, version_index, project,
-                      stable_version, current_version)
-    else:
-        # TODO: auto-increase for stable version and beta version if possible
-        current_version = version_format.format(*current_versions)
-        if not stable_version:
-            stable_version = current_version
-        logging.warning(
-            '[VERSION][Not Implement] set to current version "{0}" by default'.
-            format(current_version))
-
-        write_version(version_file, lines, version_index, project,
-                      stable_version, current_version)
-
-    return stable_version, current_version
 
 
 def parse_args() -> argparse.Namespace:
@@ -513,9 +389,11 @@ def sdk_automation(input_file: str, output_file: str):
                     else:
                         tag = 'package-resources-2020-10'
 
+            module = ARTIFACT_FORMAT.format(service)
             stable_version, current_version = set_or_increase_version(
                 sdk_root,
-                service,
+                GROUP_ID,
+                module
             )
             succeeded = generate(
                 sdk_root,
@@ -595,7 +473,8 @@ def main():
     service = get_and_update_service_from_api_specs(api_specs_file, spec,
                                                     args['service'])
     args['service'] = service
-    stable_version, current_version = set_or_increase_version(sdk_root, **args)
+    module = ARTIFACT_FORMAT.format(service)
+    stable_version, current_version = set_or_increase_version(sdk_root, GROUP_ID, module, **args)
     args['version'] = current_version
     generate(sdk_root, **args)
 
