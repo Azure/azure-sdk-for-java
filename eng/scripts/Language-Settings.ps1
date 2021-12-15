@@ -659,7 +659,7 @@ function Validate-java-DocMsPackages ($PackageInfo, $DocValidationImageId)
 {
   if (!(ValidatePackage $PackageInfo.Group $PackageInfo.Name $PackageInfo.Version $DocValidationImageId)) 
   {
-    Write-Error "Package $($PackageInfo.Name) failed on validation" -ErrorAction Continue
+    Write-Error "Package ${PackageInfo.Name} failed on validation" -ErrorAction Continue
   }
   return
 }
