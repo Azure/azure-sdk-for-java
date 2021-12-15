@@ -217,5 +217,4 @@ stages:
                   safeName: springcloudazurestreambindertest
                   skipPublishDocMs: true
                   skipVerifyChangelog: true
-    - script: |
-          python .\sdk\spring\scripts\update_versions.py --ut external_dependency
+
