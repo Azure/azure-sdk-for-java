@@ -118,11 +118,11 @@ pr:
 
 stages:
   - template: spring-ci-template.yml
-    parameters:
-        PostSteps:
-          - script: |
-                python .\sdk\spring\scripts\update_versions.py --ut external_dependency
   - template: spring-ci-template.yml
+    parameters:
+        PreBuildSteps:
+            - script: |
+                  python .\sdk\spring\scripts\update_versions.py --ut external_dependency
 #jobs:
 #  - job: 'Build latest'
 #    #steps:
