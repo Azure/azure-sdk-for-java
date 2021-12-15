@@ -344,7 +344,17 @@ class RxGatewayStoreModel implements RxStoreModel {
                        if (!(exception instanceof CosmosException)) {
                            // wrap in CosmosException
                            logger.error("Network failure", exception);
-                           dce = BridgeInternal.createCosmosException(request.requestContext.resourcePhysicalAddress, 0, exception);
+
+                           int statusCode = 0;
+                           if (WebExceptionUtility.isNetworkFailure(exception)) {
+                               if (WebExceptionUtility.isReadTimeoutException(exception)) {
+                                   statusCode = HttpConstants.StatusCodes.REQUEST_TIMEOUT;
+                               } else {
+                                   statusCode = HttpConstants.StatusCodes.SERVICE_UNAVAILABLE;
+                               }
+                           }
+
+                           dce = BridgeInternal.createCosmosException(request.requestContext.resourcePhysicalAddress, statusCode, exception);
                            BridgeInternal.setRequestHeaders(dce, request.getHeaders());
                        } else {
                            dce = (CosmosException) exception;
