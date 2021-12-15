@@ -34,7 +34,9 @@ public class PublishNativeCloudEventToDomainAsync {
                 .withData("{\"name\": \"joe\"}".getBytes(StandardCharsets.UTF_8)) // Replace it
                 .withId(UUID.randomUUID().toString()) // Replace it
                 .withType("User.Created.Text") // Replace it
-                .withSource(URI.create("/relative/path")) // Replace it. Event Grid does not allow absolute URIs as the domain topic
+                // Replace it. Event Grid does not allow absolute URIs as the domain topic.
+                // For example, use the Event Grid Domain resource name as the related path.
+                .withSource(URI.create("/relative/path"))
                 .withDataContentType("application/json") // Replace it
                 .build();
 

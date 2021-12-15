@@ -93,12 +93,13 @@ public final class EventGridCloudNativeEventPublisher {
      * @param syncClient a service client that publishes events to an EventGrid topic or domain.
      * @param events the native cloud events to publish.
      * @param context the context to use along the pipeline.
+     * @return the response from the EventGrid service.
      *
      * @throws NullPointerException if {@code events} is null.
      */
-    public static void sendEventsWithResponse(EventGridPublisherClient<com.azure.core.models.CloudEvent> syncClient,
+    public static Response<Void> sendEventsWithResponse(EventGridPublisherClient<com.azure.core.models.CloudEvent> syncClient,
         Iterable<CloudEvent> events, Context context) {
-        syncClient.sendEventsWithResponse(toEventGridCloudEvents(events), context);
+        return syncClient.sendEventsWithResponse(toEventGridCloudEvents(events), context);
     }
 
     /**

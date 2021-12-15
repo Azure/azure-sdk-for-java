@@ -5,7 +5,9 @@ package com.azure.messaging.eventgrid.cloudnative.cloudevents.samples;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.models.CloudEvent;
+import com.azure.core.util.Context;
 import com.azure.messaging.eventgrid.EventGridPublisherAsyncClient;
+import com.azure.messaging.eventgrid.EventGridPublisherClient;
 import com.azure.messaging.eventgrid.EventGridPublisherClientBuilder;
 import com.azure.messaging.eventgrid.cloudnative.cloudevents.EventGridCloudNativeEventPublisher;
 import io.cloudevents.core.builder.CloudEventBuilder;
@@ -19,11 +21,11 @@ import java.util.UUID;
 public class PublishNativeCloudEventToDomain {
     public static void main(String[] args) {
         // Prepare Event Grid async client
-        EventGridPublisherAsyncClient<CloudEvent> egClientAsync =
+        EventGridPublisherClient<CloudEvent> egClient =
             new EventGridPublisherClientBuilder()
                 .endpoint(System.getenv("AZURE_EVENTGRID_CLOUDEVENT_DOMAIN_ENDPOINT"))  // Event Grid Domain endpoint with CloudEvent Schema
                 .credential(new AzureKeyCredential(System.getenv("AZURE_EVENTGRID_CLOUDEVENT_DOMAIN_KEY")))
-                .buildCloudEventPublisherAsyncClient();
+                .buildCloudEventPublisherClient();
 
         // When publishing to an Event Grid domain with cloud events, the cloud event source is used as the domain topic.
         // The Event Grid service doesn't support using an absolute URI for a domain topic, so you would need to do
@@ -35,7 +37,9 @@ public class PublishNativeCloudEventToDomain {
                 .withData("{\"name\": \"joe\"}".getBytes(StandardCharsets.UTF_8)) // Replace it
                 .withId(UUID.randomUUID().toString()) // Replace it
                 .withType("User.Created.Text") // Replace it
-                .withSource(URI.create("/relative/path")) // Replace it. Event Grid does not allow absolute URIs as the domain topic
+                // Replace it. Event Grid does not allow absolute URIs as the domain topic.
+                // For example, use the Event Grid Domain resource name as the related path.
+                .withSource(URI.create("/relative/path"))
                 .withDataContentType("application/json") // Replace it
                 .build();
 
@@ -44,9 +48,9 @@ public class PublishNativeCloudEventToDomain {
         cloudEvents.add(cloudEvent);
 
         // Publishing a single event
-        EventGridCloudNativeEventPublisher.sendEventAsync(egClientAsync, cloudEvent);
+        EventGridCloudNativeEventPublisher.sendEvent(egClient, cloudEvent);
 
         // Publishing multiple events
-        EventGridCloudNativeEventPublisher.sendEventsAsync(egClientAsync, cloudEvents);
+        EventGridCloudNativeEventPublisher.sendEvents(egClient, cloudEvents);
     }
 }
