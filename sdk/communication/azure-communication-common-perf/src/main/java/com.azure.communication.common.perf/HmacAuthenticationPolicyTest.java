@@ -55,7 +55,7 @@ public class HmacAuthenticationPolicyTest extends PerfStressTest<PerfStressOptio
     @Override
     public Mono<Void> runAsync() {
         return pipeline.send(request)
-            .map(response -> {
+            .flatMap(response -> {
                 String date = response.getRequest().getHeaders().getValue("x-ms-date");
                 String signature = response.getRequest().getHeaders().getValue("Authorization");
                 try {
