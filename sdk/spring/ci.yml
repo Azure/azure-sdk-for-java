@@ -119,11 +119,11 @@ pr:
 
 jobs:
   - job: 'Build latest'
-    steps:
-      - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
-        parameters:
-          ServiceDirectory: spring
-          Artifacts:
+    #steps:
+    - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+      parameters:
+        ServiceDirectory: spring
+        Artifacts:
             - name: spring-cloud-azure-core
               groupId: com.azure.spring
               safeName: springcloudazurecore
@@ -338,8 +338,8 @@ jobs:
               safeName: springcloudazurestreambindertest
               skipPublishDocMs: true
               skipVerifyChangelog: true
-      - script: |
-          python .\sdk\spring\scripts\update_versions.py --ut external_dependency
+    - script: |
+        python .\sdk\spring\scripts\update_versions.py --ut external_dependency
 #extends:
 #  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
 #  parameters:
