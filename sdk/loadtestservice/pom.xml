@@ -47,6 +47,7 @@
       </activation>
       <modules>
         <module>azure-resourcemanager-loadtestservice</module>
+        <module>azure-test-loadtest</module>
       </modules>
     </profile>
   </profiles>
