@@ -46,10 +46,10 @@ trigger:
   paths:
     include:
       - sdk/{0}/ci.yml
-      - sdk/{0}/azure-resourcemanager-{0}/
+      - sdk/{0}/{1}/
     exclude:
       - sdk/{0}/pom.xml
-      - sdk/{0}/azure-resourcemanager-{0}/pom.xml
+      - sdk/{0}/{1}/pom.xml
 
 pr:
   branches:
@@ -61,10 +61,10 @@ pr:
   paths:
     include:
       - sdk/{0}/ci.yml
-      - sdk/{0}/azure-resourcemanager-{0}/
+      - sdk/{0}/{1}/
     exclude:
       - sdk/{0}/pom.xml
-      - sdk/{0}/azure-resourcemanager-{0}/pom.xml
+      - sdk/{0}/{1}/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

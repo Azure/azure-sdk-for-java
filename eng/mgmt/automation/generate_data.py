@@ -9,6 +9,9 @@ import glob
 from typing import List
 
 from parameters import *
+from utils import update_service_ci_and_pom
+from utils import update_root_pom
+from utils import update_version
 
 
 LLC_ARGUMENTS = '--java --low-level-client --sdk-integration --generate-samples'
@@ -112,6 +115,11 @@ def generate(
     if os.system(command) != 0:
         logging.error('[GENERATE] Autorest fail')
         return False
+
+    group = "com.azure"
+    update_service_ci_and_pom(sdk_root, group, service, module)
+    update_root_pom(sdk_root, service)
+    update_version(sdk_root, output_dir)
 
     return True
 
