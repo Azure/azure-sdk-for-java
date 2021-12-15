@@ -1042,7 +1042,7 @@ public class ShareFileJavaDocCodeSamples {
         System.out.println("File Client has been renamed");
         // END: com.azure.storage.file.share.ShareFileClient.rename#String
 
-        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.renameWithResponse#ShareRenameFileOptions-Duration-Context
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.renameWithResponse#ShareFileRenameOptions-Duration-Context
         FileSmbProperties smbProperties = new FileSmbProperties()
             .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
             .setFileCreationTime(OffsetDateTime.now())
@@ -1059,7 +1059,7 @@ public class ShareFileJavaDocCodeSamples {
         ShareFileClient newRenamedClient = client.renameWithResponse(options, timeout, new Context(key1, value1))
             .getValue();
         System.out.println("File Client has been renamed");
-        // END: com.azure.storage.file.share.ShareFileClient.renameWithResponse#ShareRenameFileOptions-Duration-Context
+        // END: com.azure.storage.file.share.ShareFileClient.renameWithResponse#ShareFileRenameOptions-Duration-Context
     }
 
     /**

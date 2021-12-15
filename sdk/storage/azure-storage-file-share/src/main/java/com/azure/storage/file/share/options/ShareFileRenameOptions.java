@@ -27,6 +27,8 @@ public class ShareFileRenameOptions {
 
     /**
      * Creates a {@code ShareFileRenameOptions} object.
+     *
+     * @param destinationPath Relative path from the share to rename the file to.
      */
     public ShareFileRenameOptions(String destinationPath) {
         StorageImplUtils.assertNotNull("destinationPath", destinationPath);

@@ -559,7 +559,7 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
         System.out.println("Directory Client has been renamed");
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.rename#String
 
-        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.renameWithResponse#ShareRenameFileOptions
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.renameWithResponse#ShareFileRenameOptions
         FileSmbProperties smbProperties = new FileSmbProperties()
             .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
             .setFileCreationTime(OffsetDateTime.now())
@@ -575,7 +575,7 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
 
         ShareDirectoryAsyncClient newRenamedClient = client.renameWithResponse(options).block().getValue();
         System.out.println("Directory Client has been renamed");
-        // END: com.azure.storage.file.share.ShareDirectoryClient.renameWithResponse#ShareRenameFileOptions
+        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.renameWithResponse#ShareFileRenameOptions
     }
 
     /**

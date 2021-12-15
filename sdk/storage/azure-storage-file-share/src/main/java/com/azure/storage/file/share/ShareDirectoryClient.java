@@ -760,7 +760,8 @@ public class ShareDirectoryClient {
      *     .setFilePermission&#40;&quot;filePermission&quot;&#41;
      *     .setSmbProperties&#40;smbProperties&#41;;
      *
-     * ShareDirectoryClient newRenamedClient = client.renameWithResponse&#40;options&#41;.getValue&#40;&#41;;
+     * ShareDirectoryClient newRenamedClient = client.renameWithResponse&#40;options, timeout,
+     *     new Context&#40;key1, value1&#41;&#41;.getValue&#40;&#41;;
      * System.out.println&#40;&quot;Directory Client has been renamed&quot;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareDirectoryClient.renameWithResponse#ShareFileRenameOptions-Duration-Context -->

@@ -2208,7 +2208,8 @@ public class ShareFileClient {
      *     .setFilePermission&#40;&quot;filePermission&quot;&#41;
      *     .setSmbProperties&#40;smbProperties&#41;;
      *
-     * ShareFileClient newRenamedClient = client.renameWithResponse&#40;options&#41;.getValue&#40;&#41;;
+     * ShareFileClient newRenamedClient = client.renameWithResponse&#40;options, timeout, new Context&#40;key1, value1&#41;&#41;
+     *     .getValue&#40;&#41;;
      * System.out.println&#40;&quot;File Client has been renamed&quot;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareFileClient.renameWithResponse#ShareFileRenameOptions-Duration-Context -->
