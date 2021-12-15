@@ -34,7 +34,7 @@ import com.azure.storage.file.share.implementation.models.DirectoriesSetMetadata
 import com.azure.storage.file.share.implementation.models.DirectoriesSetPropertiesResponse;
 import com.azure.storage.file.share.implementation.models.ListFilesIncludeType;
 import com.azure.storage.file.share.implementation.models.SourceLeaseAccessConditions;
-import com.azure.storage.file.share.implementation.models.StorageErrorException;
+import com.azure.storage.file.share.models.ShareStorageException;
 import java.util.List;
 import java.util.Map;
 import reactor.core.publisher.Mono;
@@ -67,7 +67,7 @@ public final class DirectoriesImpl {
     public interface DirectoriesService {
         @Put("/{shareName}/{directory}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<DirectoriesCreateResponse> create(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -86,7 +86,7 @@ public final class DirectoriesImpl {
 
         @Get("/{shareName}/{directory}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<DirectoriesGetPropertiesResponse> getProperties(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -100,7 +100,7 @@ public final class DirectoriesImpl {
 
         @Delete("/{shareName}/{directory}")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<DirectoriesDeleteResponse> delete(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -113,7 +113,7 @@ public final class DirectoriesImpl {
 
         @Put("/{shareName}/{directory}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<DirectoriesSetPropertiesResponse> setProperties(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -132,7 +132,7 @@ public final class DirectoriesImpl {
 
         @Put("/{shareName}/{directory}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<DirectoriesSetMetadataResponse> setMetadata(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -147,7 +147,7 @@ public final class DirectoriesImpl {
 
         @Get("/{shareName}/{directory}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<DirectoriesListFilesAndDirectoriesSegmentResponse> listFilesAndDirectoriesSegment(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -167,7 +167,7 @@ public final class DirectoriesImpl {
 
         @Get("/{shareName}/{directory}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<DirectoriesListHandlesResponse> listHandles(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -184,7 +184,7 @@ public final class DirectoriesImpl {
 
         @Put("/{shareName}/{directory}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<DirectoriesForceCloseHandlesResponse> forceCloseHandles(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -201,7 +201,7 @@ public final class DirectoriesImpl {
 
         @Put("/{shareName}/{directory}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<DirectoriesRenameResponse> rename(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -246,7 +246,7 @@ public final class DirectoriesImpl {
      *     x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -294,7 +294,7 @@ public final class DirectoriesImpl {
      *     Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -325,7 +325,7 @@ public final class DirectoriesImpl {
      *     Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -365,7 +365,7 @@ public final class DirectoriesImpl {
      *     x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -411,7 +411,7 @@ public final class DirectoriesImpl {
      * @param metadata A name-value pair to associate with a file storage object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -456,7 +456,7 @@ public final class DirectoriesImpl {
      * @param includeExtendedInfo Include extended information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of directories and files.
      */
@@ -515,7 +515,7 @@ public final class DirectoriesImpl {
      *     subdirectories and their files.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of handles.
      */
@@ -566,7 +566,7 @@ public final class DirectoriesImpl {
      *     subdirectories and their files.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -626,7 +626,7 @@ public final class DirectoriesImpl {
      * @param copyFileSmbInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
