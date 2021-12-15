@@ -141,7 +141,7 @@
         "enablePartitioning": false
       },
       "dependsOn": [
-        "[concat('Microsoft.ServiceBus/namespaces/', variables('namespaceName'))]"
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('namespaceName'))]"
       ],
       "copy": {
         "name": "queueCopy",
@@ -153,7 +153,7 @@
       "apiVersion": "2021-01-01-preview",
       "name": "[concat(variables('namespaceName'), '/', variables('queueName'), '-', copyIndex())]",
       "dependsOn": [
-        "[concat('Microsoft.ServiceBus/namespaces/', variables('namespaceName'))]"
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('namespaceName'))]"
       ],
       "properties": {
         "maxDeliveryCount": 5,
@@ -171,7 +171,7 @@
       "apiVersion": "2021-01-01-preview",
       "name": "[concat(variables('namespaceName'), '/', variables('queueSessionName'), '-', copyIndex())]",
       "dependsOn": [
-        "[concat('Microsoft.ServiceBus/namespaces/', variables('namespaceName'))]"
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('namespaceName'))]"
       ],
       "properties": {
         "maxDeliveryCount": 5,
@@ -188,7 +188,8 @@
       "apiVersion": "2021-01-01-preview",
       "name": "[concat(variables('namespaceName'), '/', variables('topicName'), '-', copyIndex(), '/', variables('subscriptionName'))]",
       "dependsOn": [
-        "[concat('Microsoft.ServiceBus/namespaces/', variables('namespaceName'), '/topics/', variables('topicName'), '-', copyIndex())]"
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('namespaceName'))]",
+        "[resourceId('Microsoft.ServiceBus/namespaces/topics', variables('topicName'), '-', copyIndex())]"
       ],
       "properties": {
         "requiresSession": false,
@@ -205,7 +206,8 @@
       "apiVersion": "2021-01-01-preview",
       "name": "[concat(variables('namespaceName'), '/', variables('topicName'), '-', copyIndex(), '/', variables('subscriptionSessionName'))]",
       "dependsOn": [
-        "[concat('Microsoft.ServiceBus/namespaces/', variables('namespaceName'), '/topics/', variables('topicName'), '-', copyIndex())]"
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('namespaceName'))]",
+        "[resourceId('Microsoft.ServiceBus/namespaces/topics', variables('topicName'), '-', copyIndex())]"
       ],
       "properties": {
         "requiresSession": true,
