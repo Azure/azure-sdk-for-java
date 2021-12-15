@@ -1471,7 +1471,6 @@ class FileAPITests extends APISpec {
                 .setIgnoreReadOnly(ignoreReadOnly).setReplaceIfExists(true), null, null)
         } catch (ShareStorageException ignored) {
             exception = true
-            System.out.println(ignored.getMessage())
         }
 
         then:

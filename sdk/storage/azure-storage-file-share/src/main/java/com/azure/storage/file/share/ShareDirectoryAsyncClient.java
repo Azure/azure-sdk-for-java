@@ -1062,6 +1062,7 @@ public class ShareDirectoryAsyncClient {
 
     Mono<Response<ShareDirectoryAsyncClient>> renameWithResponse(ShareFileRenameOptions options, Context context) {
         StorageImplUtils.assertNotNull("options", options);
+        context = context == null ? Context.NONE : context;
 
         ShareRequestConditions sourceRequestConditions = options.getSourceRequestConditions() == null
             ? new ShareRequestConditions() : options.getSourceRequestConditions();
@@ -1093,7 +1094,7 @@ public class ShareDirectoryAsyncClient {
         ShareDirectoryAsyncClient destinationDirectoryClient =
             getDirectoryAsyncClient(options.getDestinationPath());
 
-        String renameSource = "/" + this.getShareName() + "/" + Utility.urlEncode(this.getDirectoryPath());
+        String renameSource = this.getDirectoryUrl();
         // TODO when support added to core
 //        String sasToken = this.extractSasToken();
 //        renameSource = sasToken == null ? renameSource : renameSource + sasToken;

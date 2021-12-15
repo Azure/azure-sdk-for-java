@@ -606,6 +606,9 @@ class DirectoryAPITests extends APISpec {
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
     def "Rename min"() {
+        setup:
+        primaryDirectoryClient.create()
+
         when:
         primaryDirectoryClient.rename(generatePathName())
 
@@ -615,6 +618,9 @@ class DirectoryAPITests extends APISpec {
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
     def "Rename with response"() {
+        setup:
+        primaryDirectoryClient.create()
+
         when:
         def resp = primaryDirectoryClient.renameWithResponse(new ShareFileRenameOptions(generatePathName()), null, null)
 
@@ -634,6 +640,7 @@ class DirectoryAPITests extends APISpec {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
     def "Rename different directory"() {
         setup:
+        primaryDirectoryClient.create()
         def dc = shareClient.getDirectoryClient(generatePathName())
         dc.create()
         def destinationPath = dc.getFileClient(generatePathName())
@@ -642,7 +649,8 @@ class DirectoryAPITests extends APISpec {
         def resultClient = primaryDirectoryClient.rename(destinationPath.getFilePath())
 
         then:
-        destinationPath.exists()
+        resultClient.exists()
+        !primaryDirectoryClient.exists()
         destinationPath.getFilePath() == resultClient.getDirectoryPath()
     }
 
@@ -650,6 +658,7 @@ class DirectoryAPITests extends APISpec {
     @Unroll
     def "Rename replace if exists"() {
         setup:
+        primaryDirectoryClient.create()
         def destination = shareClient.getFileClient(generatePathName())
         destination.create(512)
         def exception = false
@@ -675,6 +684,7 @@ class DirectoryAPITests extends APISpec {
     @Unroll
     def "Rename ignore read only"() {
         setup:
+        primaryDirectoryClient.create()
         FileSmbProperties props = new FileSmbProperties()
             .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
         def destinationFile = shareClient.getFileClient(generatePathName())
@@ -701,6 +711,7 @@ class DirectoryAPITests extends APISpec {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
     def "Rename file permission"() {
         setup:
+        primaryDirectoryClient.create()
         def filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)"
 
         when:
@@ -714,6 +725,7 @@ class DirectoryAPITests extends APISpec {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
     def "Rename file permission and key set"() {
         setup:
+        primaryDirectoryClient.create()
         def filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)"
 
         when:
@@ -728,13 +740,14 @@ class DirectoryAPITests extends APISpec {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
     def "Rename file smbProperties"() {
         setup:
+        primaryDirectoryClient.create()
         def filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)"
         def permissionKey = shareClient.createPermission(filePermission)
         def smbProperties = new FileSmbProperties()
             .setFilePermissionKey(permissionKey)
-            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.ARCHIVE, NtfsFileAttributes.READ_ONLY))
-            .setFileCreationTime(OffsetDateTime.now().minusDays(5))
-            .setFileLastWriteTime(OffsetDateTime.now().minusYears(2))
+            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.DIRECTORY))
+            .setFileCreationTime(namer.getUtcNow().minusDays(5))
+            .setFileLastWriteTime(namer.getUtcNow().minusYears(2))
 
         when:
         def destClient = primaryDirectoryClient.renameWithResponse(new ShareFileRenameOptions(generatePathName())
@@ -742,9 +755,9 @@ class DirectoryAPITests extends APISpec {
         def destProperties = destClient.getProperties()
 
         then:
-        destProperties.getSmbProperties().getNtfsFileAttributes() == EnumSet.of(NtfsFileAttributes.ARCHIVE, NtfsFileAttributes.READ_ONLY)
-        destProperties.getSmbProperties().getFileCreationTime() == OffsetDateTime.now().minusDays(5)
-        destProperties.getSmbProperties().getFileLastWriteTime() == OffsetDateTime.now().minusYears(2)
+        destProperties.getSmbProperties().getNtfsFileAttributes() == EnumSet.of(NtfsFileAttributes.DIRECTORY)
+        destProperties.getSmbProperties().getFileCreationTime()
+        destProperties.getSmbProperties().getFileLastWriteTime()
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
@@ -763,6 +776,7 @@ class DirectoryAPITests extends APISpec {
     @Unroll
     def "Rename dest AC"() {
         setup:
+        primaryDirectoryClient.create()
         def pathName = generatePathName()
         def destFile = shareClient.getFileClient(pathName)
         destFile.create(512)
@@ -772,7 +786,7 @@ class DirectoryAPITests extends APISpec {
 
         expect:
         primaryDirectoryClient.renameWithResponse(new ShareFileRenameOptions(pathName)
-            .setDestinationRequestConditions(src), null, null).getStatusCode() == 201
+            .setDestinationRequestConditions(src).setReplaceIfExists(true), null, null).getStatusCode() == 200
 
         where:
         leaseID         | _
@@ -783,6 +797,7 @@ class DirectoryAPITests extends APISpec {
     @Unroll
     def "Rename dest AC fail"() {
         setup:
+        primaryDirectoryClient.create()
         def pathName = generatePathName()
         def destFile = shareClient.getFileClient(pathName)
         destFile.create(512)
@@ -792,7 +807,7 @@ class DirectoryAPITests extends APISpec {
 
         when:
         primaryDirectoryClient.renameWithResponse(new ShareFileRenameOptions(pathName)
-            .setDestinationRequestConditions(src), null, null)
+            .setDestinationRequestConditions(src).setReplaceIfExists(true), null, null)
 
         then:
         thrown(ShareStorageException)

@@ -36,7 +36,7 @@ public final class DirectoriesRenameHeaders {
      * The x-ms-file-creation-time property.
      */
     @JsonProperty(value = "x-ms-file-creation-time")
-    private DateTimeRfc1123 xMsFileCreationTime;
+    private OffsetDateTime xMsFileCreationTime;
 
     /*
      * The ETag property.
@@ -54,7 +54,7 @@ public final class DirectoriesRenameHeaders {
      * The x-ms-file-change-time property.
      */
     @JsonProperty(value = "x-ms-file-change-time")
-    private DateTimeRfc1123 xMsFileChangeTime;
+    private OffsetDateTime xMsFileChangeTime;
 
     /*
      * The Last-Modified property.
@@ -84,7 +84,7 @@ public final class DirectoriesRenameHeaders {
      * The x-ms-file-last-write-time property.
      */
     @JsonProperty(value = "x-ms-file-last-write-time")
-    private DateTimeRfc1123 xMsFileLastWriteTime;
+    private OffsetDateTime xMsFileLastWriteTime;
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
@@ -155,7 +155,7 @@ public final class DirectoriesRenameHeaders {
         if (this.xMsFileCreationTime == null) {
             return null;
         }
-        return this.xMsFileCreationTime.getDateTime();
+        return this.xMsFileCreationTime;
     }
 
     /**
@@ -168,7 +168,7 @@ public final class DirectoriesRenameHeaders {
         if (xMsFileCreationTime == null) {
             this.xMsFileCreationTime = null;
         } else {
-            this.xMsFileCreationTime = new DateTimeRfc1123(xMsFileCreationTime);
+            this.xMsFileCreationTime = xMsFileCreationTime;
         }
         return this;
     }
@@ -222,7 +222,7 @@ public final class DirectoriesRenameHeaders {
         if (this.xMsFileChangeTime == null) {
             return null;
         }
-        return this.xMsFileChangeTime.getDateTime();
+        return this.xMsFileChangeTime;
     }
 
     /**
@@ -235,7 +235,7 @@ public final class DirectoriesRenameHeaders {
         if (xMsFileChangeTime == null) {
             this.xMsFileChangeTime = null;
         } else {
-            this.xMsFileChangeTime = new DateTimeRfc1123(xMsFileChangeTime);
+            this.xMsFileChangeTime = xMsFileChangeTime;
         }
         return this;
     }
@@ -343,7 +343,7 @@ public final class DirectoriesRenameHeaders {
         if (this.xMsFileLastWriteTime == null) {
             return null;
         }
-        return this.xMsFileLastWriteTime.getDateTime();
+        return this.xMsFileLastWriteTime;
     }
 
     /**
@@ -356,7 +356,7 @@ public final class DirectoriesRenameHeaders {
         if (xMsFileLastWriteTime == null) {
             this.xMsFileLastWriteTime = null;
         } else {
-            this.xMsFileLastWriteTime = new DateTimeRfc1123(xMsFileLastWriteTime);
+            this.xMsFileLastWriteTime = xMsFileLastWriteTime;
         }
         return this;
     }
