@@ -31,7 +31,7 @@ public abstract class ArmConnectionStringProvider<T> implements ConnectionString
      * Get the {@link AzureResourceManager}.
      * @return the Azure resource manager.
      */
-    protected AzureResourceManager getAzureResourceManager() {
+    AzureResourceManager getAzureResourceManager() {
         return azureResourceManager;
     }
 
@@ -39,7 +39,7 @@ public abstract class ArmConnectionStringProvider<T> implements ConnectionString
      * Get the {@link AzureResourceMetadata}.
      * @return the metadata for the Azure resource.
      */
-    protected AzureResourceMetadata getAzureResourceMetadata() {
+    AzureResourceMetadata getAzureResourceMetadata() {
         return azureResourceMetadata;
     }
 }
