@@ -75,6 +75,7 @@ def generate(
     module: str,
     credential_types: str,
     credential_scopes: str,
+    title: str,
     autorest: str,
     use: str,
     autorest_options: str = '',
@@ -96,6 +97,8 @@ def generate(
     input_arguments = '--input-file={0}'.format(input_file)
 
     artifact_arguments = '--artifact-id={0}'.format(module)
+    if title:
+        artifact_arguments += ' --title={0}'.format(title)
 
     command = 'autorest --version={0} --use={1} --java.azure-libraries-for-java-folder={2} --java.output-folder={3} --java.namespace={4} {5}'.format(
         autorest,
@@ -160,6 +163,12 @@ def parse_args() -> argparse.Namespace:
         required=False,
         help='OAuth 2.0 scopes when credential-types includes tokencredential, '
              'Sample: https://storage.azure.com/.default',
+    )
+    parser.add_argument(
+        '--title',
+        required=False,
+        help='The name of , '
+             'Sample: BlobClient',
     )
     parser.add_argument(
         '-u',
