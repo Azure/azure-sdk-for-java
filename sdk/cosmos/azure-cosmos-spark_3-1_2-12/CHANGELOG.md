@@ -1,4 +1,6 @@
 ## Release History
+### 4.6.0-beta.1 (Unreleased)
+
 ### 4.5.1 (2021-12-14)
 #### Key Bug Fixes
 * Fixed an issue that can cause hangs when bulk-ingesting data into Cosmos containers with more than 255 physical partitions - See [PR 26017](https://github.com/Azure/azure-sdk-for-java/pull/26017)
