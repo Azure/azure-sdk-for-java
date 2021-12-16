@@ -152,9 +152,6 @@ public final class FilesRenameHeaders {
      * @return the xMsFileCreationTime value.
      */
     public OffsetDateTime getXMsFileCreationTime() {
-        if (this.xMsFileCreationTime == null) {
-            return null;
-        }
         return this.xMsFileCreationTime;
     }
 
@@ -165,11 +162,7 @@ public final class FilesRenameHeaders {
      * @return the FilesRenameHeaders object itself.
      */
     public FilesRenameHeaders setXMsFileCreationTime(OffsetDateTime xMsFileCreationTime) {
-        if (xMsFileCreationTime == null) {
-            this.xMsFileCreationTime = null;
-        } else {
-            this.xMsFileCreationTime = xMsFileCreationTime;
-        }
+        this.xMsFileCreationTime = xMsFileCreationTime;
         return this;
     }
 
@@ -219,9 +212,6 @@ public final class FilesRenameHeaders {
      * @return the xMsFileChangeTime value.
      */
     public OffsetDateTime getXMsFileChangeTime() {
-        if (this.xMsFileChangeTime == null) {
-            return null;
-        }
         return this.xMsFileChangeTime;
     }
 
@@ -232,11 +222,7 @@ public final class FilesRenameHeaders {
      * @return the FilesRenameHeaders object itself.
      */
     public FilesRenameHeaders setXMsFileChangeTime(OffsetDateTime xMsFileChangeTime) {
-        if (xMsFileChangeTime == null) {
-            this.xMsFileChangeTime = null;
-        } else {
-            this.xMsFileChangeTime = xMsFileChangeTime;
-        }
+        this.xMsFileChangeTime = xMsFileChangeTime;
         return this;
     }
 
@@ -340,9 +326,6 @@ public final class FilesRenameHeaders {
      * @return the xMsFileLastWriteTime value.
      */
     public OffsetDateTime getXMsFileLastWriteTime() {
-        if (this.xMsFileLastWriteTime == null) {
-            return null;
-        }
         return this.xMsFileLastWriteTime;
     }
 
@@ -353,11 +336,7 @@ public final class FilesRenameHeaders {
      * @return the FilesRenameHeaders object itself.
      */
     public FilesRenameHeaders setXMsFileLastWriteTime(OffsetDateTime xMsFileLastWriteTime) {
-        if (xMsFileLastWriteTime == null) {
-            this.xMsFileLastWriteTime = null;
-        } else {
-            this.xMsFileLastWriteTime = xMsFileLastWriteTime;
-        }
+        this.xMsFileLastWriteTime = xMsFileLastWriteTime;
         return this;
     }
 }

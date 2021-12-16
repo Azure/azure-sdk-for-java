@@ -1095,7 +1095,7 @@ public class ShareDirectoryAsyncClient {
             getDirectoryAsyncClient(options.getDestinationPath());
 
         String renameSource = this.getDirectoryUrl();
-        // TODO when support added to core
+        // TODO (rickle-msft): when support added to core
 //        String sasToken = this.extractSasToken();
 //        renameSource = sasToken == null ? renameSource : renameSource + sasToken;
 

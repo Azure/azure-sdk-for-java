@@ -2956,7 +2956,7 @@ public class ShareFileAsyncClient {
         ShareFileAsyncClient destinationFileClient = getFileAsyncClient(options.getDestinationPath());
 
         String renameSource = this.getFileUrl();
-        // TODO when support added to core
+        // TODO (rickle-msft): when support added to core
 //        String sasToken = this.extractSasToken();
 //        renameSource = sasToken == null ? renameSource : renameSource + sasToken;
 

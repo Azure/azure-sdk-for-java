@@ -104,6 +104,30 @@ directive:
         op.get.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
 ```
 
+### /{shareName}/{directory}?restype=directory&comp=rename
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]
+  transform: >
+        const op = $["/{shareName}/{directory}?restype=directory&comp=rename"];
+        op.put.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
+        op.put.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";
+        op.put.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
+```
+
+### /{shareName}/{directory}/{fileName}?comp=rename
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]
+  transform: >
+        const op = $["/{shareName}/{directory}/{fileName}?comp=rename"];
+        op.put.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
+        op.put.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";
+        op.put.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
+```
+
 ### /{shareName}/{directoryPath}?restype=directory&comp=properties
 ``` yaml
 directive:
