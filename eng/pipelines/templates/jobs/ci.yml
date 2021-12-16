@@ -1,4 +1,7 @@
 parameters:
+  - name: PublishArtifact
+    type: boolean
+    default: true
   - name: SDKType
     type: string
     default: client
