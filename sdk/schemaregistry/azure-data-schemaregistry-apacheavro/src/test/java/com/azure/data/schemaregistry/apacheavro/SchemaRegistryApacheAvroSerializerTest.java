@@ -235,6 +235,11 @@ public class SchemaRegistryApacheAvroSerializerTest {
         }
     }
 
+    @Test
+    public void testDeserializeFromPortal() {
+
+    }
+
     private static byte[] getPayload(PlayingCard card) throws IOException {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             outputStream.write(RECORD_FORMAT_INDICATOR);

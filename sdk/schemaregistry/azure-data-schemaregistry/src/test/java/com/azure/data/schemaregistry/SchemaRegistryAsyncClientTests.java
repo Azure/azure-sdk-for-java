@@ -308,6 +308,24 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
     }
 
 
+    @Test
+    public void getSchemaByIdFromPortal() {
+        // Arrange
+        final SchemaRegistryAsyncClient client = builder.buildAsyncClient();
+        final String schemaId = "6304f95e39ac42ab94259e0db9bd5e76";
+
+        // Act & Assert
+        StepVerifier.create(client.getSchema(schemaId))
+            .assertNext(schema -> {
+                assertNotNull(schema.getProperties());
+                assertEquals(schemaId, schema.getProperties().getId());
+                assertEquals(SchemaFormat.AVRO, schema.getProperties().getFormat());
+            })
+            .verifyComplete();
+
+        ;
+    }
+
     static void assertSchemaRegistrySchema(SchemaRegistrySchema actual, String expectedSchemaId, SchemaFormat format,
         String expectedContents) {
 

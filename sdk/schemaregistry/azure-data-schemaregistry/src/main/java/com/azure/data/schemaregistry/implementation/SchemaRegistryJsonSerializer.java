@@ -1,0 +1,49 @@
+package com.azure.data.schemaregistry.implementation;
+
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.util.serializer.CollectionFormat;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
+
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.List;
+
+public class SchemaRegistryJsonSerializer implements SerializerAdapter {
+    private final SerializerAdapter adapter = JacksonAdapter.createDefaultSerializerAdapter();
+
+    @Override
+    public String serialize(Object object, SerializerEncoding encoding) throws IOException {
+        if (encoding != SerializerEncoding.JSON) {
+            return adapter.serialize(object, encoding);
+        }
+
+        if (object instanceof String) {
+            return (String) object;
+        } else {
+            return adapter.serialize(object, encoding);
+        }
+    }
+
+    @Override
+    public String serializeRaw(Object object) {
+        return adapter.serializeRaw(object);
+    }
+
+    @Override
+    public String serializeList(List<?> list, CollectionFormat format) {
+        return adapter.serializeList(list, format);
+    }
+
+    @Override
+    public <T> T deserialize(String value, Type type, SerializerEncoding encoding) throws IOException {
+        //TODO (conniey): Test this.
+        return adapter.deserialize(value, type, encoding);
+    }
+
+    @Override
+    public <T> T deserialize(HttpHeaders headers, Type type) throws IOException {
+        return adapter.deserialize(headers, type);
+    }
+}
