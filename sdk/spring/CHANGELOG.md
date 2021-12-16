@@ -1,8 +1,15 @@
 # Release History
 
 ## 4.0.0-beta.3 (Unreleased)
+- Supported spring-boot version: 2.6.0 - 2.6.1
+- Supported spring-cloud version: 2021.0.0
 
 ### Features Added
+
+### Breaking Changes
+
+### Dependency Updates
+Upgrade dependency according to spring-boot-dependencies:2.6.1 and spring-cloud-dependencies:2021.0.0
 
 ### Breaking Changes
 1. Property name "spring.cloud.azure.active-directory.tenant-id" changed to "spring.cloud.azure.active-directory.profile.tenant-id".
