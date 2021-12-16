@@ -6,7 +6,7 @@ package com.azure.spring.cloud.autoconfigure.resourcemanager;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.storage.queue.properties.AzureStorageQueueProperties;
-import com.azure.spring.cloud.resourcemanager.connectionstring.StorageQueueArmConnectionStringProvider;
+import com.azure.spring.resourcemanager.connectionstring.StorageQueueArmConnectionStringProvider;
 import com.azure.storage.queue.QueueServiceClientBuilder;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;

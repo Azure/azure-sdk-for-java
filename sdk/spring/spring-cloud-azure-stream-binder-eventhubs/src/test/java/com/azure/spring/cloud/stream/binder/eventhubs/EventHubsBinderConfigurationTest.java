@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.stream.binder.eventhubs;
 
 import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
-import com.azure.spring.cloud.resourcemanager.provisioner.eventhubs.EventHubsProvisioner;
+import com.azure.spring.resourcemanager.provisioner.eventhubs.EventHubsProvisioner;
 import com.azure.spring.cloud.stream.binder.eventhubs.config.EventHubsBinderConfiguration;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelProvisioner;

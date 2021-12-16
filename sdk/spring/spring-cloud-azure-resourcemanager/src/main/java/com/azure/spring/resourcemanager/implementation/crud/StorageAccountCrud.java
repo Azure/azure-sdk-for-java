@@ -1,26 +1,26 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.resourcemanager.implementation.crud;
+package com.azure.spring.resourcemanager.implementation.crud;
 
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
+import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.spring.core.properties.resource.AzureResourceMetadata;
 
 /**
- * Resource manager for Event Hubs namespace.
+ * Resource manager for Storage account.
  */
-public class EventHubNamespaceCrud extends AbstractResourceCrud<EventHubNamespace, String> {
+public class StorageAccountCrud extends AbstractResourceCrud<StorageAccount, String> {
 
     /**
-     * Creates a new instance of {@link EventHubNamespaceCrud}.
+     * Creates a new instance of {@link StorageAccountCrud}.
      *
      * @param azureResourceManager The Azure resource manager.
      * @param azureResourceMetadata The Azure resource metadata.
      */
-    public EventHubNamespaceCrud(AzureResourceManager azureResourceManager,
-                                 AzureResourceMetadata azureResourceMetadata) {
+    public StorageAccountCrud(AzureResourceManager azureResourceManager,
+                              AzureResourceMetadata azureResourceMetadata) {
         super(azureResourceManager, azureResourceMetadata);
     }
 
@@ -31,14 +31,14 @@ public class EventHubNamespaceCrud extends AbstractResourceCrud<EventHubNamespac
 
     @Override
     String getResourceType() {
-        return EventHubNamespace.class.getSimpleName();
+        return StorageAccount.class.getSimpleName();
     }
 
     @Override
-    public EventHubNamespace internalGet(String namespace) {
+    public StorageAccount internalGet(String key) {
         try {
-            return this.resourceManager.eventHubNamespaces()
-                                       .getByResourceGroup(this.resourceMetadata.getResourceGroup(), namespace);
+            return this.resourceManager.storageAccounts().getByResourceGroup(this.resourceMetadata.getResourceGroup(),
+                                                                             key);
         } catch (ManagementException e) {
             if (e.getResponse().getStatusCode() == 404) {
                 return null;
@@ -49,9 +49,9 @@ public class EventHubNamespaceCrud extends AbstractResourceCrud<EventHubNamespac
     }
 
     @Override
-    public EventHubNamespace internalCreate(String namespace) {
-        return this.resourceManager.eventHubNamespaces()
-                                   .define(namespace)
+    public StorageAccount internalCreate(String key) {
+        return this.resourceManager.storageAccounts()
+                                   .define(key)
                                    .withRegion(this.resourceMetadata.getRegion())
                                    .withExistingResourceGroup(this.resourceMetadata.getResourceGroup())
                                    .create();

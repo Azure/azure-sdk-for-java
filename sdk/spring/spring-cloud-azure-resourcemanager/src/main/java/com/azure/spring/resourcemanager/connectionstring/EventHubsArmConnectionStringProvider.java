@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.resourcemanager.connectionstring;
+package com.azure.spring.resourcemanager.connectionstring;
 
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.eventhubs.models.AuthorizationRule;
 import com.azure.resourcemanager.eventhubs.models.EventHubAuthorizationKey;
-import com.azure.spring.cloud.resourcemanager.implementation.crud.EventHubNamespaceCrud;
+import com.azure.spring.resourcemanager.implementation.crud.EventHubNamespaceCrud;
 import com.azure.spring.core.properties.resource.AzureResourceMetadata;
 import com.azure.spring.core.service.AzureServiceType;
 

@@ -1,13 +1,14 @@
 module com.azure.spring.core {
 
+    requires transitive com.azure.core;
+    requires transitive com.azure.identity;
+    requires transitive com.azure.core.management;
     requires com.azure.core.amqp;
-    requires org.slf4j;
-    requires spring.core;
-    requires com.azure.identity;
-    requires com.azure.core.management;
     requires java.desktop;
+    requires org.slf4j;
     requires spring.beans;
     requires spring.context;
+    requires spring.core;
     requires static com.azure.storage.blob;
     requires static com.azure.storage.file.share;
 
@@ -34,4 +35,5 @@ module com.azure.spring.core {
     exports com.azure.spring.core.credential.provider;
 
     exports com.azure.spring.core.implementation.converter to com.azure.spring.service;
+    exports com.azure.spring.core.implementation.http to com.azure.spring.service;
 }

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.resourcemanager.provisioner.eventhubs;
+package com.azure.spring.resourcemanager.provisioner.eventhubs;
 
 /**
  * An interface to provision Event Hubs resources.
