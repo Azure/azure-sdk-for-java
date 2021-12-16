@@ -34,7 +34,7 @@ parameters:
   - name: PreBuildSteps
     type: object
     default: []
-    
+
 jobs:
   - job: 'Build'
 
@@ -170,10 +170,11 @@ jobs:
         parameters:
           Artifacts: ${{parameters.Artifacts}}
 
-      - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
-        parameters:
-          ArtifactPath: $(Build.ArtifactStagingDirectory)
-          ArtifactName: '$(ArtifactName)'
+      - ${{if eq(parameters.PublishArtifact, 'true')}}:
+        - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+          parameters:
+            ArtifactPath: $(Build.ArtifactStagingDirectory)
+            ArtifactName: '$(ArtifactName)'
 
       - template: /eng/common/pipelines/templates/steps/detect-api-changes.yml
         parameters:

@@ -6,6 +6,9 @@ resources:
       ref: refs/tags/azure-sdk-build-tools_20211019.1
 
 parameters:
+- name: PublishArtifact
+  type: boolean
+  default: true
 - name: Artifacts
   type: object
   default: []
