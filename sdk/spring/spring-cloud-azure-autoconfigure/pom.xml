@@ -305,7 +305,7 @@
     <dependency>
       <groupId>org.glassfish</groupId>
       <artifactId>jakarta.el</artifactId>
-      <version>3.0.3</version> <!-- {x-version-update;org.glassfish:jakarta.el;external_dependency} -->
+      <version>3.0.4</version> <!-- {x-version-update;org.glassfish:jakarta.el;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -320,7 +320,7 @@
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-sleuth</artifactId>
-      <version>3.0.3</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-starter-sleuth;external_dependency} -->
+      <version>3.1.0</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-starter-sleuth;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
@@ -35,6 +36,11 @@ public class ConfigurationClientBuilderFactory extends AbstractAzureHttpClientBu
      */
     public ConfigurationClientBuilderFactory(ConfigurationClientProperties configurationClientProperties) {
         this.configurationClientProperties = configurationClientProperties;
+    }
+
+    @Override
+    protected BiConsumer<ConfigurationClientBuilder, ClientOptions> consumeClientOptions() {
+        return ConfigurationClientBuilder::clientOptions;
     }
 
     @Override

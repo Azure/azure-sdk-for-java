@@ -10,6 +10,7 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Header;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.spring.core.aware.ClientAware;
@@ -42,6 +43,12 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
     private HttpClientProvider httpClientProvider = new DefaultHttpProvider();
     private final List<HttpPipelinePolicy> httpPipelinePolicies = new ArrayList<>();
     private HttpPipeline httpPipeline;
+
+    /**
+     * Return a {@link BiConsumer} of how the {@link T} builder consume a {@link ClientOptions}.
+     * @return The consumer of how the {@link T} builder consume a {@link ClientOptions}.
+     */
+    protected abstract BiConsumer<T, ClientOptions> consumeClientOptions();
 
     /**
      * Return a {@link BiConsumer} of how the {@link T} builder consume a {@link HttpClient}.
@@ -88,6 +95,7 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
      * @param builder The builder of the HTTP-based service client.
      */
     protected void configureHttpClient(T builder) {
+        consumeClientOptions().accept(builder, httpClientOptions);
         if (this.httpPipeline != null) {
             consumeHttpPipeline().accept(builder, this.httpPipeline);
         } else {
