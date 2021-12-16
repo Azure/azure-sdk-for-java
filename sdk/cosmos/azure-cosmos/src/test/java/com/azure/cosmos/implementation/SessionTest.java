@@ -62,7 +62,7 @@ public class SessionTest extends TestSuiteBase {
         };
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "simple", "multi-master" }, timeOut = SETUP_TIMEOUT)
     public void before_SessionTest() {
         createdDatabase = SHARED_DATABASE;
 
@@ -94,7 +94,7 @@ public class SessionTest extends TestSuiteBase {
         options.setPartitionKey(PartitionKey.NONE);
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "simple", "multi-master" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeDeleteCollection(houseKeepingClient, createdCollection);
         safeClose(houseKeepingClient);
