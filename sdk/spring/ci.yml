@@ -398,7 +398,6 @@ stages:
                 Artifacts: ${{ parameters.Artifacts }}
                 AdditionalModules: ${{ parameters.AdditionalModules }}
                 SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
-                #                SkipAggregateReports: false
                 MatrixConfigs:
                     - ${{ each config in parameters.MatrixConfigs }}:
                           -  ${{ config }}
@@ -446,7 +445,6 @@ stages:
                 Artifacts: ${{ parameters.Artifacts }}
                 AdditionalModules: ${{ parameters.AdditionalModules }}
                 SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
-                #                SkipAggregateReports: false
                 MatrixConfigs:
                     - ${{ each config in parameters.MatrixConfigs }}:
                           -  ${{ config }}
@@ -467,7 +465,7 @@ stages:
                     - AZURE_TEST.*=.*/
                 PreBuildSteps:
                     - script: |
-                        python .\sdk\spring\scripts\update_versions.py --ut external_dependency
+                        python ./sdk/spring/scripts/update_versions.py --ut external_dependency
 
 
 
@@ -485,9 +483,4 @@ stages:
                 ArtifactName: packages
                 TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
                 TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
-#    -   template: spring-ci-template.yml
-#        parameters:
-#            PreBuildSteps:
-#                - script: |
-#                      python .\sdk\spring\scripts\update_versions.py --ut external_dependency
 
