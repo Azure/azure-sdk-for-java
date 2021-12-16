@@ -818,6 +818,7 @@
         <module>sdk/resourcehealth</module>
         <module>sdk/resourcemanager</module>
         <module>sdk/resourcemover</module>
+        <module>sdk/saas</module>
         <module>sdk/schemaregistry</module>
         <module>sdk/search</module>
         <module>sdk/security</module>
