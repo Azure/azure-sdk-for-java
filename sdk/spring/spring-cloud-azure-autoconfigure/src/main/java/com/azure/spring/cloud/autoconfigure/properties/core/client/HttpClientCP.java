@@ -16,7 +16,7 @@ public class HttpClientCP extends ClientCP implements ClientAware.HttpClient {
     private Duration responseTimeout;
     private Duration readTimeout;
     private Duration connectTimeout;
-    private Integer maximumConnectionPoolSize;
+    private Integer maximumConnectionPoolSize = 500;
     private Duration connectionIdleTimeout;
     private final HttpLoggingCP logging = new HttpLoggingCP();
 

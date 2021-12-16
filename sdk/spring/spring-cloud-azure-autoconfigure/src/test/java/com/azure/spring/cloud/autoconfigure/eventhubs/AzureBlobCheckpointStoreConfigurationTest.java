@@ -25,6 +25,7 @@ import java.util.Map;
 
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.EVENT_HUB_PROCESSOR_CHECKPOINT_STORE_STORAGE_CLIENT_BUILDER_FACTORY_BEAN_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -68,6 +69,11 @@ class AzureBlobCheckpointStoreConfigurationTest {
                 assertThat(context).hasSingleBean(AzureBlobCheckpointStoreConfiguration.class);
                 assertThat(context).hasSingleBean(BlobServiceClientBuilderFactory.class);
                 assertThat(context).hasBean(EVENT_HUB_PROCESSOR_CHECKPOINT_STORE_STORAGE_CLIENT_BUILDER_FACTORY_BEAN_NAME);
+
+                AzureEventHubsProperties properties = context.getBean(AzureEventHubsProperties.class);
+                Integer maximumConnectionPoolSize =
+                    properties.getProcessor().getCheckpointStore().getClient().getMaximumConnectionPoolSize();
+                assertEquals(maximumConnectionPoolSize, 500);
             });
     }
 

@@ -180,7 +180,7 @@ public class AzureGlobalProperties implements AzureProperties {
         /**
          * Maximum connection pool size used by the underlying HTTP client.
          */
-        private Integer maximumConnectionPoolSize;
+        private Integer maximumConnectionPoolSize = 500;
         /**
          * Amount of time before an idle connection.
          */
