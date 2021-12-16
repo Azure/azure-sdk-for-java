@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.user.agent.amqp.servicebus;
+package com.azure.spring.cloud.autoconfigure.useragent.amqp.servicebus;
 
 import com.azure.core.util.ClientOptions;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.servicebus.TestMessageProcessingListener;
-import com.azure.spring.cloud.autoconfigure.user.agent.util.UserAgentTestUtil;
+import com.azure.spring.cloud.autoconfigure.useragent.util.UserAgentTestUtil;
 import com.azure.spring.service.servicebus.factory.ServiceBusProcessorClientBuilderFactory;
 import com.azure.spring.service.servicebus.processor.MessageProcessingListener;
 import org.junit.jupiter.api.Assertions;

@@ -1,19 +1,19 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.user.agent.amqp;
+package com.azure.spring.cloud.autoconfigure.useragent.amqp;
 
 import com.azure.core.util.ClientOptions;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
-import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
-import com.azure.messaging.eventhubs.EventHubConsumerClient;
+import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.eventhubs.TestCheckpointStore;
 import com.azure.spring.cloud.autoconfigure.eventhubs.TestEventProcessorListener;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
-import com.azure.spring.cloud.autoconfigure.user.agent.util.UserAgentTestUtil;
+import com.azure.spring.cloud.autoconfigure.useragent.util.UserAgentTestUtil;
+import com.azure.spring.service.eventhubs.factory.EventProcessorClientBuilderFactory;
 import com.azure.spring.service.eventhubs.processor.EventProcessingListener;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import static com.azure.spring.core.AzureSpringIdentifier.AZURE_SPRING_EVENT_HUBS;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class EventHubUserAgentTest {
+class EventProcessorUserAgentTest {
 
     @Test
     void userAgentTest() {
@@ -35,13 +35,13 @@ class EventHubUserAgentTest {
             .withPropertyValues(
                 "spring.cloud.azure.eventhubs.namespace=sample",
                 "spring.cloud.azure.eventhubs.event-hub-name=sample",
-                "spring.cloud.azure.eventhubs.processor.consumer-group=sample",
-                "spring.cloud.azure.eventhubs.consumer.consumer-group=sample"
+                "spring.cloud.azure.eventhubs.processor.consumer-group=sample"
             )
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureEventHubsAutoConfiguration.class);
-                assertThat(context).hasSingleBean(EventHubConsumerAsyncClient.class);
-                assertThat(context).hasSingleBean(EventHubConsumerClient.class);
+                assertThat(context).hasSingleBean(EventProcessorClientBuilderFactory.class);
+                assertThat(context).hasSingleBean(EventProcessorClientBuilder.class);
+                assertThat(context).hasSingleBean(EventProcessorClient.class);
 
                 EventProcessorClientBuilder eventProcessorClientBuilder = context.getBean(EventProcessorClientBuilder.class);
                 EventHubClientBuilder eventHubClientBuilder = (EventHubClientBuilder) UserAgentTestUtil.getPrivateFieldValue(EventProcessorClientBuilder.class, "eventHubClientBuilder", eventProcessorClientBuilder);

@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 
-package com.azure.spring.cloud.autoconfigure.user.agent.util;
+package com.azure.spring.cloud.autoconfigure.useragent.util;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpPipelinePolicy;

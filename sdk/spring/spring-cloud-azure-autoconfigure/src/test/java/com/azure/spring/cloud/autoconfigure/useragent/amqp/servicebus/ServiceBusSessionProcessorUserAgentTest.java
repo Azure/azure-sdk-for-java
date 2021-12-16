@@ -1,14 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.user.agent.amqp.servicebus;
+package com.azure.spring.cloud.autoconfigure.useragent.amqp.servicebus;
 
 import com.azure.core.util.ClientOptions;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.user.agent.util.UserAgentTestUtil;
-import com.azure.spring.service.servicebus.factory.ServiceBusSenderClientBuilderFactory;
+import com.azure.spring.cloud.autoconfigure.servicebus.TestMessageProcessingListener;
+import com.azure.spring.cloud.autoconfigure.useragent.util.UserAgentTestUtil;
+import com.azure.spring.service.servicebus.factory.ServiceBusSessionProcessorClientBuilderFactory;
+import com.azure.spring.service.servicebus.processor.MessageProcessingListener;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -17,14 +19,15 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import static com.azure.spring.core.AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ServiceBusSenderUserAgentTest {
+class ServiceBusSessionProcessorUserAgentTest {
 
     @Test
     void shareServiceBusClientBuilderUserAgentTest() {
         userAgentTest(
             "spring.cloud.azure.servicebus.connection-string=Endpoint=sb://sample.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=key",
-            "spring.cloud.azure.servicebus.producer.entity-name=sample",
-            "spring.cloud.azure.servicebus.producer.entity-type=QUEUE"
+            "spring.cloud.azure.servicebus.processor.entity-name=sample",
+            "spring.cloud.azure.servicebus.processor.entity-type=QUEUE",
+            "spring.cloud.azure.servicebus.processor.session-enabled=true"
         );
     }
 
@@ -32,9 +35,10 @@ class ServiceBusSenderUserAgentTest {
     void notShareServiceBusClientBuilderUserAgentTest() {
         userAgentTest(
             "spring.cloud.azure.servicebus.connection-string=Endpoint=sb://sample.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=key",
-            "spring.cloud.azure.servicebus.producer.entity-name=sample",
-            "spring.cloud.azure.servicebus.producer.entity-type=QUEUE",
-            "spring.cloud.azure.servicebus.producer.namespace=sample"
+            "spring.cloud.azure.servicebus.processor.entity-name=sample",
+            "spring.cloud.azure.servicebus.processor.entity-type=QUEUE",
+            "spring.cloud.azure.servicebus.processor.session-enabled=true",
+            "spring.cloud.azure.servicebus.processor.namespace=sample"
         );
     }
 
@@ -42,13 +46,14 @@ class ServiceBusSenderUserAgentTest {
         new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(AzureServiceBusAutoConfiguration.class))
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean(MessageProcessingListener.class, TestMessageProcessingListener::new)
             .withPropertyValues(propertyValues)
             .run(context -> {
-                assertThat(context).hasSingleBean(ServiceBusSenderClientBuilderFactory.class);
-                assertThat(context).hasSingleBean(ServiceBusClientBuilder.ServiceBusSenderClientBuilder.class);
+                assertThat(context).hasSingleBean(ServiceBusSessionProcessorClientBuilderFactory.class);
+                assertThat(context).hasSingleBean(ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder.class);
 
-                ServiceBusClientBuilder.ServiceBusSenderClientBuilder serviceBusSenderClientBuilder = context.getBean(ServiceBusClientBuilder.ServiceBusSenderClientBuilder.class);
-                ServiceBusClientBuilder builder = (ServiceBusClientBuilder) UserAgentTestUtil.getPrivateFieldValue(ServiceBusClientBuilder.ServiceBusSenderClientBuilder.class, "this$0", serviceBusSenderClientBuilder);
+                ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder processorClientBuilder = context.getBean(ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder.class);
+                ServiceBusClientBuilder builder = (ServiceBusClientBuilder) UserAgentTestUtil.getPrivateFieldValue(ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder.class, "this$0", processorClientBuilder);
                 ClientOptions options = (ClientOptions) UserAgentTestUtil.getPrivateFieldValue(ServiceBusClientBuilder.class, "clientOptions", builder);
                 Assertions.assertNotNull(options);
                 Assertions.assertEquals(AZURE_SPRING_SERVICE_BUS, options.getApplicationId());
