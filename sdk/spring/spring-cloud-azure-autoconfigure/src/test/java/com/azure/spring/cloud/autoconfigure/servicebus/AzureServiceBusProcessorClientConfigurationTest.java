@@ -6,11 +6,9 @@ package com.azure.spring.cloud.autoconfigure.servicebus;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
-import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
 import com.azure.spring.service.servicebus.factory.ServiceBusSessionProcessorClientBuilderFactory;
 import com.azure.spring.service.servicebus.processor.MessageProcessingListener;
-import com.azure.spring.service.servicebus.processor.RecordMessageProcessingListener;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -230,15 +228,6 @@ class AzureServiceBusProcessorClientConfigurationTest {
 
     private static class OtherBuilderCustomizer extends TestBuilderCustomizer<ConfigurationClientBuilder> {
 
-    }
-    
-
-    static class TestMessageProcessingListener implements RecordMessageProcessingListener {
-
-        @Override
-        public void onMessage(ServiceBusReceivedMessageContext messageContext) {
-
-        }
     }
 
 }
