@@ -9,7 +9,6 @@ import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.servicebus.TestMessageProcessingListener;
 import com.azure.spring.cloud.autoconfigure.user.agent.util.UserAgentTestUtil;
-import com.azure.spring.service.servicebus.factory.ServiceBusProcessorClientBuilderFactory;
 import com.azure.spring.service.servicebus.factory.ServiceBusSessionProcessorClientBuilderFactory;
 import com.azure.spring.service.servicebus.processor.MessageProcessingListener;
 import org.junit.jupiter.api.Assertions;
