@@ -130,5 +130,5 @@ For details on contributing to this repository, see the [contributing guide](htt
 [authenticate]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/AUTH.md
 [sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/SAMPLE.md
 [design]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/DESIGN.md
-[api_profile]: https://docs.microsoft.com/en-us/azure-stack/user/azure-stack-version-profiles
+[api_profile]: https://docs.microsoft.com/azure-stack/user/azure-stack-version-profiles
 [resourcemanagerhybrid_lib]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanagerhybrid

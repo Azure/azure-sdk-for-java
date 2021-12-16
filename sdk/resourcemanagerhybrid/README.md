@@ -340,6 +340,6 @@ For details on contributing to this repository, see the [contributing guide](htt
 [throttling]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/THROTTLING.md
 [reactor]: https://projectreactor.io/
 [rbac]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/RBAC.md
-[api_profile]: https://docs.microsoft.com/en-us/azure-stack/user/azure-stack-version-profiles
-[vm_considerations]: https://docs.microsoft.com/en-us/azure-stack/user/azure-stack-vm-considerations
+[api_profile]: https://docs.microsoft.com/azure-stack/user/azure-stack-version-profiles
+[vm_considerations]: https://docs.microsoft.com/azure-stack/user/azure-stack-vm-considerations
 [resourcemanager_azure]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/README.md
