@@ -9,7 +9,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -18,7 +17,6 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.file.share.implementation.models.FilesRenameHeaders;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
@@ -2165,7 +2163,7 @@ public class ShareFileClient {
     /**
      * Moves the file to another location within the share.
      * For more information see the
-     * <a href="TODO">Azure
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/rename-file">Azure
      * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -2188,7 +2186,7 @@ public class ShareFileClient {
     /**
      * Moves the file to another location within the share.
      * For more information see the
-     * <a href="TODO">Azure
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/rename-file">Azure
      * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>

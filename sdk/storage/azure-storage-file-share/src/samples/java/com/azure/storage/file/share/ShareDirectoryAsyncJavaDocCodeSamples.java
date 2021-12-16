@@ -12,7 +12,6 @@ import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -551,7 +550,7 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
 
     /**
      * Code snippets for {@link ShareDirectoryAsyncClient#rename(String)} and
-     * {@link ShareDirectoryAsyncClient#renameWithResponse(com.azure.storage.file.share.options.ShareFileRenameOptions)
+     * {@link ShareDirectoryAsyncClient#renameWithResponse(com.azure.storage.file.share.options.ShareFileRenameOptions)}
      */
     public void renameCodeSnippets() {
         // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.rename#String

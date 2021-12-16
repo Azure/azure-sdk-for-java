@@ -993,7 +993,7 @@ public class ShareDirectoryAsyncClient {
     /**
      * Moves the directory to another location within the share.
      * For more information see the
-     * <a href="TODO">Azure
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/rename-directory">Azure
      * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -1020,7 +1020,7 @@ public class ShareDirectoryAsyncClient {
     /**
      * Moves the directory to another location within the share.
      * For more information see the
-     * <a href="TODO">Azure
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/rename-directory">Azure
      * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>

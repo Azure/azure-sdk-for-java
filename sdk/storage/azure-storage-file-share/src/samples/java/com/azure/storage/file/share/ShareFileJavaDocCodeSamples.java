@@ -1034,7 +1034,7 @@ public class ShareFileJavaDocCodeSamples {
 
     /**
      * Code snippets for {@link ShareFileClient#rename(String)} and
-     * {@link ShareFileClient#renameWithResponse(com.azure.storage.file.share.options.ShareFileRenameOptions, Duration, Context)
+     * {@link ShareFileClient#renameWithResponse(com.azure.storage.file.share.options.ShareFileRenameOptions, Duration, Context)}
      */
     public void renameCodeSnippets() {
         // BEGIN: com.azure.storage.file.share.ShareFileClient.rename#String

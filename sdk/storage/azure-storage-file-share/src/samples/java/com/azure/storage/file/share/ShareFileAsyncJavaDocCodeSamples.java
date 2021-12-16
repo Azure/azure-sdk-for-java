@@ -1040,7 +1040,7 @@ public class ShareFileAsyncJavaDocCodeSamples {
 
     /**
      * Code snippets for {@link ShareFileAsyncClient#rename(String)} and
-     * {@link ShareFileAsyncClient#renameWithResponse(com.azure.storage.file.share.options.ShareFileRenameOptions)
+     * {@link ShareFileAsyncClient#renameWithResponse(com.azure.storage.file.share.options.ShareFileRenameOptions)}
      */
     public void renameCodeSnippets() {
         // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.rename#String
