@@ -14,7 +14,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-network</artifactId>
-  <version>1.0.0-hybridbeta.1</version>
+  <version>1.0.0-hybrid</version>
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Network Management (Hybrid)</name>
@@ -55,7 +55,7 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-resources</artifactId>
-      <version>1.0.0-hybridbeta.1</version>
+      <version>1.0.0-hybrid</version>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -84,7 +84,7 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-keyvault</artifactId>
-      <version>1.0.0-hybridbeta.1</version>
+      <version>1.0.0-hybrid</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -112,7 +112,7 @@
         <dependency>
           <groupId>com.azure.resourcemanager</groupId>
           <artifactId>azure-resourcemanager-test</artifactId>
-          <version>1.0.0-hybridbeta.1</version>
+          <version>1.0.0-hybrid</version>
           <scope>test</scope>
         </dependency>
       </dependencies>

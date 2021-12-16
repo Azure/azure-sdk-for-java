@@ -17,7 +17,7 @@ For documentation on how to use this package, please see [Azure Management Libra
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-test</artifactId>
-    <version>1.0.0-hybridbeta.1</version>
+    <version>1.0.0-hybrid</version>
 </dependency>
 ```
 
