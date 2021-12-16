@@ -1,8 +1,9 @@
 # Azure Resource Manager monitor client library for Java (Hybrid)
 
-Azure Resource Manager monitor client library for Java (Hybrid)
+Azure Resource Manager monitor client library for Java (Hybrid) using [API Profiles][api_profile] to allow building hybrid cloud solutions
+that target both Azure and Azure Stack Hub.
 
-For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+For documentation on how to use this package, please see [Azure Management Libraries for Java (Hybrid)][resourcemanagerhybrid_lib].
 
 ## Getting started
 
@@ -13,7 +14,6 @@ For documentation on how to use this package, please see [Azure Management Libra
 
 ### Adding the package to your product
 
-[//]: # ({x-version-update-start;com.azure.resourcemanager:azure-resourcemanager-monitor;current})
 ```xml
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
@@ -21,7 +21,6 @@ For documentation on how to use this package, please see [Azure Management Libra
     <version>1.0.0-hybrid</version>
 </dependency>
 ```
-[//]: # ({x-version-update-end})
 
 ### Include the recommended packages
 
@@ -51,7 +50,52 @@ MonitorManager manager = MonitorManager
     .authenticate(credential, profile);
 ```
 
-The sample code assumes global Azure. Please change `AzureEnvironment.AZURE` variable if otherwise.
+The sample code assumes global Azure. To authenticate against Azure Stack Hub, create a custom azure environment that
+fetches information from your Azure Stack Hub's Azure Resource Manager metadata endpoint:
+
+```java
+private static AzureEnvironment getAzureEnvironmentFromArmEndpoint(String armEndpoint) {
+    // Create HTTP client and request
+    HttpClient httpClient = HttpClient.createDefault();
+
+    HttpRequest request = new HttpRequest(HttpMethod.GET,
+            String.format("%s/metadata/endpoints?api-version=2019-10-01", armEndpoint))
+            .setHeader("accept", "application/json");
+
+    // Execute the request and read the response
+    HttpResponse response = httpClient.send(request).block();
+    if (response.getStatusCode() != 200) {
+        throw new RuntimeException("Failed : HTTP error code : " + response.getStatusCode());
+    }
+    String body = response.getBodyAsString().block();
+    try {
+        ArrayNode metadataArray = JacksonAdapter.createDefaultSerializerAdapter()
+                .deserialize(body, ArrayNode.class, SerializerEncoding.JSON);
+
+        if (metadataArray == null || metadataArray.isEmpty()) {
+            throw new RuntimeException("Failed to find metadata : " + body);
+        }
+
+        JsonNode metadata = metadataArray.iterator().next();
+        AzureEnvironment azureEnvironment = new AzureEnvironment(new HashMap<String, String>() {
+            {
+                put("managementEndpointUrl", metadata.at("/authentication/audiences/0").asText());
+                put("resourceManagerEndpointUrl", armEndpoint);
+                put("galleryEndpointUrl", metadata.at("/gallery").asText());
+                put("activeDirectoryEndpointUrl", metadata.at("/authentication/loginEndpoint").asText());
+                put("activeDirectoryResourceId", metadata.at("/authentication/audiences/0").asText());
+                put("activeDirectoryGraphResourceId", metadata.at("/graph").asText());
+                put("storageEndpointSuffix", "." + metadata.at("/suffixes/storage").asText());
+                put("keyVaultDnsSuffix", "." + metadata.at("/suffixes/keyVaultDns").asText());
+            }
+        });
+        return azureEnvironment;
+    } catch (IOException ioe) {
+        ioe.printStackTrace();
+        throw new RuntimeException(ioe);
+    }
+}
+```
 
 See [Authentication][authenticate] for more options.
 
@@ -85,3 +129,5 @@ For details on contributing to this repository, see the [contributing guide](htt
 [authenticate]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/AUTH.md
 [sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/SAMPLE.md
 [design]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/DESIGN.md
+[api_profile]: https://docs.microsoft.com/en-us/azure-stack/user/azure-stack-version-profiles
+[resourcemanagerhybrid_lib]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanagerhybrid
