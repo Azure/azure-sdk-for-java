@@ -378,9 +378,9 @@ parameters:
 -   name: MatrixReplace
     type: object
     default: [ ]
--   name: SkipAggregateReports
-    type: boolean
-    default: false
+#-   name: SkipAggregateReports
+#    type: boolean
+#    default: false
 -   name: PreBuildSteps
     type: object
     default: [ ]

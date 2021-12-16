@@ -9,7 +9,8 @@ stages:
                 SDKType: ${{ parameters.SDKType }}
                 Artifacts: ${{ parameters.Artifacts }}
                 AdditionalModules: ${{ parameters.AdditionalModules }}
-                SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
+#                SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
+                SkipAggregateReports: false
                 MatrixConfigs:
                     - ${{ each config in parameters.MatrixConfigs }}:
                           -  ${{ config }}
