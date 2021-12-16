@@ -136,7 +136,7 @@ If you encounter any bugs with these SDKs, please file issues via [Issues](https
 ## Contributing
 
 If you would like to become an active contributor to this project please refer to our 
-[Contribution Guidelines]() for more information.
+Contribution Guidelines for more information.
 
 <!-- LINKS -->
 [javadocs]: https://azure.github.io/azure-sdk-for-java/eventgrid.html
