@@ -28,7 +28,7 @@ steps:
       foreach ($retry in 0..${{ parameters.RetryLimit }}) {
         Write-Host "mvn --no-transfer-progress -f $pomf compile"
         mvn asdf
-        if (!$LASTEXITCODE -or $retry -ge ${{ parameters.RetryLimit }}) { break }
+        if (!$LASTEXITCODE -or ($retry -ge ${{ parameters.RetryLimit }})) { break }
         Write-Host "Install failed, retrying in 1 minute..."
         Start-Sleep -s 1
       }
