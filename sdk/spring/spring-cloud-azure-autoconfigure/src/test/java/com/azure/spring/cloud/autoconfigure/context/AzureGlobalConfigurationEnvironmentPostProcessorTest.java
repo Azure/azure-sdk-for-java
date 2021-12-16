@@ -141,6 +141,34 @@ class AzureGlobalConfigurationEnvironmentPostProcessorTest {
     }
 
     @Test
+    void azureManagedIdentityClientIdFromEnv() {
+        Properties properties = new Properties();
+        properties.put(PROPERTY_AZURE_CLIENT_ID, "client-id-from-env");
+        PropertiesPropertySource propertiesPropertySource = new PropertiesPropertySource("test-properties", properties);
+        ConfigurableEnvironment environment = getEnvironment(propertiesPropertySource);
+        AzureGlobalProperties globalProperties = Binder.get(environment)
+            .bind(AzureGlobalProperties.PREFIX, AzureGlobalProperties.class).get();
+        assertEquals("client-id-from-env", globalProperties.getCredential().getClientId());
+        assertEquals("client-id-from-env", globalProperties.getCredential().getManagedIdentityClientId());
+        assertEquals(null, globalProperties.getCredential().getUsername());
+    }
+
+    @Test
+    void azureManagedIdentityClientIdFromUserConfig() {
+        Properties properties = new Properties();
+        properties.put(PROPERTY_AZURE_CLIENT_ID, "client-id-from-env");
+        properties.put(AzureGlobalProperties.PREFIX + ".credential.managed-identity-client-id",
+            "custom-managed-identity-clientid");
+        PropertiesPropertySource propertiesPropertySource = new PropertiesPropertySource("test-properties", properties);
+        ConfigurableEnvironment environment = getEnvironment(propertiesPropertySource);
+        AzureGlobalProperties globalProperties = Binder.get(environment)
+            .bind(AzureGlobalProperties.PREFIX, AzureGlobalProperties.class).get();
+        assertEquals("client-id-from-env", globalProperties.getCredential().getClientId());
+        assertEquals("custom-managed-identity-clientid", globalProperties.getCredential().getManagedIdentityClientId());
+        assertEquals(null, globalProperties.getCredential().getUsername());
+    }
+
+    @Test
     void azureSdkEnvShouldBindCorrect() {
         Properties properties = new Properties();
         properties.put("AZURE_KEYVAULT_ENDPOINT", "test-endpoint");
