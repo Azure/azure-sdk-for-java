@@ -48,6 +48,15 @@ public final class ClientStore {
     
     private final boolean isKeyVaultConfigurated;
 
+    /**
+     * Creates Client store for connecting to App Configuration
+     * @param appProperties App Configuration Provider Properties
+     * @param pool Connections to App Configuration
+     * @param tokenCredentialProvider optional Credential provider
+     * @param clientProvider optional Client Provider
+     * @param isDev is running in Dev profile
+     * @param isKeyVaultConfigured is running with Key Vault configured
+     */
     public ClientStore(AppConfigurationProviderProperties appProperties, ConnectionPool pool,
         AppConfigurationCredentialProvider tokenCredentialProvider,
         ConfigurationClientBuilderSetup clientProvider, Boolean isDev, Boolean isKeyVaultConfigured) {

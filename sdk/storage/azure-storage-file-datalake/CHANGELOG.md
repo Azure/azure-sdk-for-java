@@ -1,12 +1,20 @@
 # Release History
 
+## 12.8.0-beta.3 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 12.8.0-beta.2 (2021-12-07)
 
 ### Features Added
 - Added support for 2021-02-12 service version.
 - Added support for listing system containers.
-
-### Breaking Changes
 
 ### Bugs Fixed
 - Fixed a bug in DataLakeFileClient.flush() in which the logic of the overwrite parameter was reversed.

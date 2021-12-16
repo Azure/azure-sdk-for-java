@@ -145,12 +145,21 @@
     <!-- This property configures whether the codesnippet-maven-plugin should be used. -->
     <codesnippet.skip>true</codesnippet.skip>
 
+    <!-- The following properties configure the maven-checkstyle-plugin. -->
+    <!-- This property configures whether the maven-checkstyle-plugin should be used. -->
+    <checkstyle.skip>false</checkstyle.skip>
+
+    <!-- The following properties configure the spotbugs-maven-plugin. -->
+    <!-- This property configures whether the spotbugs-maven-plugin should be used. -->
+    <spotbugs.skip>false</spotbugs.skip>
+
     <!-- This property configures whether Spotbugs analysis is ran on samples and tests. Default is false. -->
     <spotbugs.includeTests>false</spotbugs.includeTests>
 
     <!-- These properties exist for libraries using the new codesnippet-maven-plugin can easily disable the old doclet. -->
     <javadocDoclet>org.apidesign.javadoc.codesnippet.Doclet</javadocDoclet>
     <javadocDocletOptions>-maxLineLength 120 -snippetpath ${project.basedir}/src/samples/java -suppressMissingLinkWarnings</javadocDocletOptions>
+    <graalvm.enable>false</graalvm.enable>
   </properties>
 
   <build>
@@ -519,10 +528,11 @@
             <dependency>
               <groupId>com.puppycrawl.tools</groupId>
               <artifactId>checkstyle</artifactId>
-              <version>8.42</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
+              <version>9.2</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
             </dependency>
           </dependencies>
           <configuration>
+            <skip>${checkstyle.skip}</skip>
             <configLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
             <suppressionsLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
             <headerLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
@@ -554,6 +564,7 @@
             </dependency>
           </dependencies>
           <configuration>
+            <skip>${spotbugs.skip}</skip>
             <effort>max</effort>
             <threshold>Low</threshold>
             <xmlOutput>true</xmlOutput>
@@ -1364,6 +1375,41 @@
                 <version>4.2.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs;external_dependency} -->
               </dependency>
             </dependencies>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>native</id>
+      <dependencies>
+        <!-- graalvm test dependencies -->
+        <dependency>
+          <groupId>org.graalvm.buildtools</groupId>
+          <artifactId>junit-platform-native</artifactId>
+          <version>0.9.8</version> <!-- {x-version-update;org.graalvm.buildtools:junit-platform-native;external_dependency} -->
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.graalvm.buildtools</groupId>
+            <artifactId>native-maven-plugin</artifactId>
+            <version>0.9.8</version>  <!-- {x-version-update;org.graalvm.buildtools:native-maven-plugin;external_dependency} -->
+            <configuration>
+              <skip>${graalvm.enable}</skip>
+              <buildArgs>--no-fallback</buildArgs>
+            </configuration>
+            <executions>
+              <execution>
+                <id>test-native</id>
+                <goals>
+                  <goal>test</goal>
+                </goals>
+                <phase>test</phase>
+              </execution>
+            </executions>
           </plugin>
         </plugins>
       </build>

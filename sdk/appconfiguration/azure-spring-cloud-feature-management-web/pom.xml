@@ -15,6 +15,12 @@
   <name>Azure Spring Cloud Feature Management Web</name>
   <description>Adds Feature Management into Spring Web</description>
 
+  <properties>
+    <codesnippet.skip>false</codesnippet.skip>
+    <javadocDoclet></javadocDoclet>
+    <javadocDocletOptions></javadocDocletOptions>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>

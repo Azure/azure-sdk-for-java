@@ -8,7 +8,6 @@ import com.azure.cosmos.spark.TransientIOErrorsRetryingIteratorITest.maxRetryCou
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.util.CosmosPagedIterable
 import com.fasterxml.jackson.databind.node.ObjectNode
-import org.scalatest.Ignore
 
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap

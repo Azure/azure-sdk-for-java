@@ -87,8 +87,7 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
     }
 
     /**
-     * Gets the price sheet for a scope by subscriptionId. Price sheet is available via this API only for May 1, 2014 or
-     * later.
+     * Gets the price sheet for a subscription. Price sheet is available via this API only for May 1, 2014 or later.
      *
      * @param expand May be used to expand the properties/meterDetails within a price sheet. By default, these fields
      *     are not included when returning price sheet.
@@ -99,7 +98,7 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the price sheet for a scope by subscriptionId.
+     * @return the price sheet for a subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PriceSheetResultInner>> getWithResponseAsync(String expand, String skiptoken, Integer top) {
@@ -133,8 +132,7 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
     }
 
     /**
-     * Gets the price sheet for a scope by subscriptionId. Price sheet is available via this API only for May 1, 2014 or
-     * later.
+     * Gets the price sheet for a subscription. Price sheet is available via this API only for May 1, 2014 or later.
      *
      * @param expand May be used to expand the properties/meterDetails within a price sheet. By default, these fields
      *     are not included when returning price sheet.
@@ -146,7 +144,7 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the price sheet for a scope by subscriptionId.
+     * @return the price sheet for a subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PriceSheetResultInner>> getWithResponseAsync(
@@ -178,8 +176,7 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
     }
 
     /**
-     * Gets the price sheet for a scope by subscriptionId. Price sheet is available via this API only for May 1, 2014 or
-     * later.
+     * Gets the price sheet for a subscription. Price sheet is available via this API only for May 1, 2014 or later.
      *
      * @param expand May be used to expand the properties/meterDetails within a price sheet. By default, these fields
      *     are not included when returning price sheet.
@@ -190,7 +187,7 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the price sheet for a scope by subscriptionId.
+     * @return the price sheet for a subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PriceSheetResultInner> getAsync(String expand, String skiptoken, Integer top) {
@@ -206,12 +203,11 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
     }
 
     /**
-     * Gets the price sheet for a scope by subscriptionId. Price sheet is available via this API only for May 1, 2014 or
-     * later.
+     * Gets the price sheet for a subscription. Price sheet is available via this API only for May 1, 2014 or later.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the price sheet for a scope by subscriptionId.
+     * @return the price sheet for a subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PriceSheetResultInner> getAsync() {
@@ -230,12 +226,11 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
     }
 
     /**
-     * Gets the price sheet for a scope by subscriptionId. Price sheet is available via this API only for May 1, 2014 or
-     * later.
+     * Gets the price sheet for a subscription. Price sheet is available via this API only for May 1, 2014 or later.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the price sheet for a scope by subscriptionId.
+     * @return the price sheet for a subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PriceSheetResultInner get() {
@@ -246,8 +241,7 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
     }
 
     /**
-     * Gets the price sheet for a scope by subscriptionId. Price sheet is available via this API only for May 1, 2014 or
-     * later.
+     * Gets the price sheet for a subscription. Price sheet is available via this API only for May 1, 2014 or later.
      *
      * @param expand May be used to expand the properties/meterDetails within a price sheet. By default, these fields
      *     are not included when returning price sheet.
@@ -259,7 +253,7 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the price sheet for a scope by subscriptionId.
+     * @return the price sheet for a subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PriceSheetResultInner> getWithResponse(
