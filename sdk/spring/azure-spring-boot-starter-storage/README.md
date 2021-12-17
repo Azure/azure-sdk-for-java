@@ -45,7 +45,7 @@ You can use the annotation of `@Value("azure-blob://[your-container-name]/[your-
 private Resource storageResource;
 ```
 
-You can use the annotation of `azure-file://[your-fileshare-name]/[your-file-name]")` to autowire a **file** `Resource`.
+You can use the annotation of `@Value("azure-file://[your-fileshare-name]/[your-file-name]")` to autowire a **file** `Resource`.
 
 ```java
 @Value("azure-file://[your-fileshare-name]/[your-file-name]")
