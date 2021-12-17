@@ -322,11 +322,9 @@ class BulkWriter(container: CosmosAsyncContainer,
 
       isGettingRetried.set(true)
     } else {
-      val payload = SparkUtils.objectNodeToJson(itemOperation.getItem.asInstanceOf[ObjectNode])
-
       log.logError(s"for itemId=[${context.itemId}], partitionKeyValue=[${context.partitionKeyValue}], " +
         s"encountered status code '${itemResponse.getStatusCode}:${itemResponse.getSubStatusCode}', all retries exhausted! " +
-        s"attemptNumber=${context.attemptNumber}, exceptionMessage=${exceptionMessage}, payload=$payload, " +
+        s"attemptNumber=${context.attemptNumber}, exceptionMessage=${exceptionMessage}, " +
         s"Context: {${operationContext.toString} ${getThreadInfo}")
 
       val message = s"All retries exhausted for '${itemOperation.getOperationType}' bulk operation - " +
