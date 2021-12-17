@@ -18,7 +18,7 @@ import java.util.UUID
 
 //scalastyle:off multiple.string.literals
 //scalastyle:off magic.number
-
+//scalastyle:off null
 class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanableCosmosContainer {
   val objectMapper = new ObjectMapper()
 
@@ -357,3 +357,4 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
 }
 //scalastyle:on multiple.string.literals
 //scalastyle:on magic.number
+//scalastyle:on null
