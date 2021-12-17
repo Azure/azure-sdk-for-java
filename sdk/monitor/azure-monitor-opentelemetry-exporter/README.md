@@ -90,6 +90,27 @@ try {
 }
 ```
 
+### Setup OpenTelemetry Tracer to generate spans with better operation names
+
+
+```
+AzureMonitorTraceExporter exporter = new AzureMonitorExporterBuilder()
+    .connectionString("{connection-string}")
+    .buildTraceExporter();
+
+SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
+    .addSpanProcessor(new AiOperationNameSpanProcessor())
+    .addSpanProcessor(SimpleSpanProcessor.create(exporter))
+    .build();
+
+OpenTelemetrySdk openTelemetrySdk = OpenTelemetrySdk.builder()
+    .setTracerProvider(tracerProvider)
+    .buildAndRegisterGlobal();
+
+Tracer tracer = openTelemetrySdk.getTracer("Sample");
+
+```
+
 ## Key concepts
 
 Some of the key concepts for the Azure Monitor exporter include:
