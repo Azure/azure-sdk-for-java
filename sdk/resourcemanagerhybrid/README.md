@@ -118,8 +118,7 @@ In addition, Azure subscription ID can be configured via environment variable `A
 
 With above configuration, the manager class can be authenticated by following code:
 
-<!-- embedme ./azure-resourcemanager/src/samples/java/com/azure/resourcemanager/ReadmeSamples.java#L62-L68 -->
-```java
+```java com.azure.resourcemanager.authenticate
 AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
@@ -132,7 +131,7 @@ AzureResourceManager azure = AzureResourceManager
 The sample code assumes global Azure. To authenticate against Azure Stack Hub, create a custom azure environment that
 fetches information from your Azure Stack Hub's Azure Resource Manager metadata endpoint:
 
-```java
+```java com.azure.resourcemanager.authenticatehybrid
 private static AzureEnvironment getAzureEnvironmentFromArmEndpoint(String armEndpoint) {
     // Create HTTP client and request
     HttpClient httpClient = HttpClient.createDefault();
@@ -220,8 +219,7 @@ locate the root issue. View the [logging][logging] wiki for guidance about enabl
 
 Sample code to enable logging in Azure Management Libraries.
 
-<!-- embedme ./azure-resourcemanager/src/samples/java/com/azure/resourcemanager/ReadmeSamples.java#L76-L80 -->
-```java
+```java com.azure.resourcemanager.logging
 AzureResourceManager azure = AzureResourceManager
     .configure()
     .withLogLevel(HttpLogDetailLevel.BASIC)
