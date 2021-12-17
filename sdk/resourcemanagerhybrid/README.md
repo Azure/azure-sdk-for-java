@@ -57,19 +57,17 @@ The services available are listed as below:
 - Resources
 - Storage
 
-In the case where you are interested in certain service above, the service not included in the multi-service package, or an Azure-only service, you can choose to use the single-service package for each service. Those packages follow the same naming patterns and design principals. For example, the package for Media Services has the following artifact information.
+If you are only interested in using a subset of the services above, you can choose to use single-package services. These
+packages follow the same naming patterns and design principals. For example, the Compute package can be used directly
+with the following artifact information:
 
-[//]: # ({x-version-update-start;com.azure.resourcemanager:azure-resourcemanager-mediaservices;dependency})
 ```xml
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
-  <artifactId>azure-resourcemanager-mediaservices</artifactId>
-  <version>1.0.0</version>
+  <artifactId>azure-resourcemanager-compute</artifactId>
+  <version>1.0.0-hybrid</version>
 </dependency>
 ```
-[//]: # ({x-version-update-end})
-
-See [Single-Service Packages][single_service_packages] for a complete list of single-services packages with the API versions they are consuming.
 
 Note that some features included in service packages may not be available on Azure Stack Hub. For example, see
 [Azure Stack Hub VM Considerations][vm_considerations] for a list of difference between Compute on Azure and Azure Stack Hub.
@@ -330,7 +328,6 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_core_http_okhttp]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-okhttp
 [azure_core]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
-[single_service_packages]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/SINGLE_SERVICE_PACKAGES.md
 [authenticate]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/AUTH.md
 [sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/SAMPLE.md
 [design]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/DESIGN.md
