@@ -32,12 +32,13 @@ private object CosmosConstants {
   }
 
   object StatusCodes {
-    val Conflict = 409
-    val ServiceUnavailable = 503
-    val InternalServerError = 500
-    val Gone = 410
-    val Timeout = 408
-    val PreconditionFailed = 412
+    val Conflict = HttpConstants.StatusCodes.CONFLICT
+    val ServiceUnavailable = HttpConstants.StatusCodes.SERVICE_UNAVAILABLE
+    val InternalServerError = HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR
+    val Gone = HttpConstants.StatusCodes.GONE
+    val Timeout = HttpConstants.StatusCodes.REQUEST_TIMEOUT
+    val PreconditionFailed = HttpConstants.StatusCodes.PRECONDITION_FAILED
+    val NotFound = HttpConstants.StatusCodes.NOTFOUND
   }
 
   object SystemProperties {

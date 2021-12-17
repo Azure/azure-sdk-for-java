@@ -3,10 +3,9 @@
 package com.azure.cosmos.spark
 
 // scalastyle:off underscore.import
-import com.azure.cosmos.implementation.CosmosSchedulers
 import com.azure.cosmos.{models, _}
-import com.azure.cosmos.models.{CosmosBulkExecutionOptions, CosmosBulkExecutionThresholdsState, CosmosBulkItemRequestOptions, CosmosBulkOperations}
-import com.azure.cosmos.spark.BulkWriter.{bulkWriterBoundedElastic, getThreadInfo}
+import com.azure.cosmos.models._
+import com.azure.cosmos.spark.BulkWriter.{BulkOperationFailedException, bulkWriterBoundedElastic, getThreadInfo}
 import com.azure.cosmos.spark.diagnostics.DefaultDiagnostics
 import reactor.core.scheduler.Scheduler
 
@@ -38,6 +37,7 @@ import scala.collection.JavaConverters._
 
 //scalastyle:off null
 //scalastyle:off multiple.string.literals
+//scalastyle:off file.size.limit
 class BulkWriter(container: CosmosAsyncContainer,
                  writeConfig: CosmosWriteConfig,
                  diagnosticsConfig: DiagnosticsConfig)
@@ -135,73 +135,30 @@ class BulkWriter(container: CosmosAsyncContainer,
 
     bulkOperationResponseFlux.subscribe(
       resp => {
-        var isGettingRetried = false
+        var isGettingRetried = new AtomicBoolean(false)
         try {
           val itemOperation = resp.getOperation
           val itemOperationFound = activeOperations.remove(itemOperation)
           assume(itemOperationFound) // can't find the item operation in list of active operations!
           val context = itemOperation.getContext[OperationContext]
+          val itemResponse = resp.getResponse
 
           if (resp.getException != null) {
             Option(resp.getException) match {
               case Some(cosmosException: CosmosException) =>
-                log.logDebug(s"encountered ${cosmosException.getStatusCode}, " +
-                  s"Context: ${operationContext.toString} ${getThreadInfo}")
-                if (shouldIgnore(cosmosException, context)) {
-                  log.logDebug(s"for itemId=[${context.itemId}], partitionKeyValue=[${context.partitionKeyValue}], " +
-                    s"ignored encountered ${cosmosException.getStatusCode}, Context: ${operationContext.toString}")
-                  totalSuccessfulIngestionMetrics.getAndIncrement()
-                  // work done
-                } else if (shouldRetry(cosmosException, context)) {
-                  // requeue
-                  log.logWarning(s"for itemId=[${context.itemId}], partitionKeyValue=[${context.partitionKeyValue}], " +
-                    s"encountered ${cosmosException.getStatusCode}, will retry! " +
-                    s"attemptNumber=${context.attemptNumber}, exceptionMessage=${cosmosException.getMessage}, " +
-                    s"Context: {${operationContext.toString}} ${getThreadInfo}")
-
-                  // this is to ensure the submission will happen on a different thread in background
-                  // and doesn't block the active thread
-                  val deferredRetryMono = SMono.defer(() => {
-                      scheduleWriteInternal(itemOperation.getPartitionKeyValue,
-                        itemOperation.getItem.asInstanceOf[ObjectNode],
-                        OperationContext(context.itemId, context.partitionKeyValue, context.eTag, context.attemptNumber + 1))
-                      SMono.empty
-                    })
-
-                  if (Exceptions.isTimeout(cosmosException)) {
-                    deferredRetryMono
-                      .delaySubscription(
-                        Duration(
-                          BulkWriter.minDelayOn408RequestTimeoutInMs +
-                          scala.util.Random.nextInt(
-                            BulkWriter.maxDelayOn408RequestTimeoutInMs - BulkWriter.minDelayOn408RequestTimeoutInMs),
-                          TimeUnit.MILLISECONDS),
-                        Schedulers.boundedElastic())
-                      .subscribeOn(Schedulers.boundedElastic())
-                      .subscribe()
-
-                  } else {
-                    deferredRetryMono
-                      .subscribeOn(Schedulers.boundedElastic())
-                      .subscribe()
-                  }
-
-                  isGettingRetried = true
-                } else {
-                  log.logWarning(s"for itemId=[${context.itemId}], partitionKeyValue=[${context.partitionKeyValue}], " +
-                    s"encountered ${cosmosException.getStatusCode}, all retries exhausted! " +
-                    s"attemptNumber=${context.attemptNumber}, exceptionMessage=${cosmosException.getMessage}, " +
-                    s"Context: {${operationContext.toString} ${getThreadInfo}")
-                  captureIfFirstFailure(cosmosException)
-                  cancelWork()
-                }
+                handleNonSuccessfulStatusCode(
+                  context, itemOperation, itemResponse, isGettingRetried, Some(cosmosException))
               case _ =>
-                log.logWarning(s"unexpected failure: itemId=[${context.itemId}], partitionKeyValue=[${context.partitionKeyValue}], " +
-                  s"encountered , attemptNumber=${context.attemptNumber}, exceptionMessage=${resp.getException.getMessage}, " +
+                log.logWarning(
+                  s"unexpected failure: itemId=[${context.itemId}], partitionKeyValue=[" +
+                    s"${context.partitionKeyValue}], encountered , attemptNumber=${context.attemptNumber}, " +
+                    s"exceptionMessage=${resp.getException.getMessage}, " +
                   s"Context: ${operationContext.toString} ${getThreadInfo}", resp.getException)
                 captureIfFirstFailure(resp.getException)
                 cancelWork()
             }
+          } else if (!itemResponse.isSuccessStatusCode) {
+            handleNonSuccessfulStatusCode(context, itemOperation, itemResponse, isGettingRetried, None)
           } else {
             // no error case
             totalSuccessfulIngestionMetrics.getAndIncrement()
@@ -209,7 +166,7 @@ class BulkWriter(container: CosmosAsyncContainer,
 
         }
         finally {
-          if (!isGettingRetried) {
+          if (!isGettingRetried.get) {
             semaphore.release()
           }
         }
@@ -304,6 +261,88 @@ class BulkWriter(container: CosmosAsyncContainer,
     // For FAIL_NON_SERIALIZED, will keep retry, while for other errors, use the default behavior
     bulkInputEmitter.emitNext(bulkItemOperation, emitFailureHandler)
   }
+
+  //scalastyle:off method.length
+  private[this] def handleNonSuccessfulStatusCode
+  (
+    context: OperationContext,
+    itemOperation: CosmosItemOperation,
+    itemResponse: CosmosBulkItemResponse,
+    isGettingRetried: AtomicBoolean,
+    responseException: Option[CosmosException]
+  ) : Unit = {
+
+    val exceptionMessage = responseException match {
+      case Some(e) => e.getMessage
+      case None => ""
+    }
+
+    log.logDebug(s"encountered item operation response with status code " +
+      s"${itemResponse.getStatusCode}:${itemResponse.getSubStatusCode}, " +
+      s"Context: ${operationContext.toString} ${getThreadInfo}")
+    if (shouldIgnore(itemResponse.getStatusCode, itemResponse.getSubStatusCode, context)) {
+      log.logDebug(s"for itemId=[${context.itemId}], partitionKeyValue=[${context.partitionKeyValue}], " +
+        s"ignored encountered status code '${itemResponse.getStatusCode}:${itemResponse.getSubStatusCode}', " +
+        s"Context: ${operationContext.toString}")
+      totalSuccessfulIngestionMetrics.getAndIncrement()
+      // work done
+    } else if (shouldRetry(itemResponse.getStatusCode, itemResponse.getSubStatusCode, context)) {
+      // requeue
+      log.logWarning(s"for itemId=[${context.itemId}], partitionKeyValue=[${context.partitionKeyValue}], " +
+        s"encountered status code '${itemResponse.getStatusCode}:${itemResponse.getSubStatusCode}', will retry! " +
+        s"attemptNumber=${context.attemptNumber}, exceptionMessage=${exceptionMessage},  " +
+        s"Context: {${operationContext.toString}} ${getThreadInfo}")
+
+      // this is to ensure the submission will happen on a different thread in background
+      // and doesn't block the active thread
+      val deferredRetryMono = SMono.defer(() => {
+        scheduleWriteInternal(itemOperation.getPartitionKeyValue,
+          itemOperation.getItem.asInstanceOf[ObjectNode],
+          OperationContext(context.itemId, context.partitionKeyValue, context.eTag, context.attemptNumber + 1))
+        SMono.empty
+      })
+
+      if (Exceptions.isTimeout(itemResponse.getStatusCode)) {
+        deferredRetryMono
+          .delaySubscription(
+            Duration(
+              BulkWriter.minDelayOn408RequestTimeoutInMs +
+                scala.util.Random.nextInt(
+                  BulkWriter.maxDelayOn408RequestTimeoutInMs - BulkWriter.minDelayOn408RequestTimeoutInMs),
+              TimeUnit.MILLISECONDS),
+            Schedulers.boundedElastic())
+          .subscribeOn(Schedulers.boundedElastic())
+          .subscribe()
+
+      } else {
+        deferredRetryMono
+          .subscribeOn(Schedulers.boundedElastic())
+          .subscribe()
+      }
+
+      isGettingRetried.set(true)
+    } else {
+      log.logError(s"for itemId=[${context.itemId}], partitionKeyValue=[${context.partitionKeyValue}], " +
+        s"encountered status code '${itemResponse.getStatusCode}:${itemResponse.getSubStatusCode}', all retries exhausted! " +
+        s"attemptNumber=${context.attemptNumber}, exceptionMessage=${exceptionMessage}, " +
+        s"Context: {${operationContext.toString} ${getThreadInfo}")
+
+      val message = s"All retries exhausted for '${itemOperation.getOperationType}' bulk operation - " +
+        s"statusCode=[${itemResponse.getStatusCode}:${itemResponse.getSubStatusCode}] " +
+        s"itemId=[${context.itemId}], partitionKeyValue=[${context.partitionKeyValue}]"
+
+      val exceptionToBeThrown = responseException match {
+        case Some(e) =>
+          new BulkOperationFailedException(itemResponse.getStatusCode, itemResponse.getSubStatusCode, message, e)
+        case None =>
+          new BulkOperationFailedException(itemResponse.getStatusCode, itemResponse.getSubStatusCode, message, null)
+      }
+
+      captureIfFirstFailure(exceptionToBeThrown)
+      cancelWork()
+    }
+  }
+  //scalastyle:on method.length
 
   private[this] def throwIfCapturedExceptionExists(): Unit = {
     val errorSnapshot = errorCaptureFirstException.get()
@@ -476,26 +515,23 @@ class BulkWriter(container: CosmosAsyncContainer,
     subscriptionDisposable.dispose()
   }
 
-  private def shouldIgnore(cosmosException: CosmosException, operationContext: OperationContext): Boolean = {
+  private def shouldIgnore(statusCode: Int, subStatusCode: Int, operationContext: OperationContext): Boolean = {
     val returnValue = writeConfig.itemWriteStrategy match {
-      case ItemWriteStrategy.ItemAppend => Exceptions.isResourceExistsException(cosmosException)
-      case ItemWriteStrategy.ItemDelete => Exceptions.isNotFoundExceptionCore(cosmosException)
-      case ItemWriteStrategy.ItemDeleteIfNotModified => Exceptions.isNotFoundExceptionCore(cosmosException) ||
-        Exceptions.isPreconditionFailedException(cosmosException)
+      case ItemWriteStrategy.ItemAppend => Exceptions.isResourceExistsException(statusCode)
+      case ItemWriteStrategy.ItemDelete => Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode)
+      case ItemWriteStrategy.ItemDeleteIfNotModified => Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode) ||
+        Exceptions.isPreconditionFailedException(statusCode)
       case _ => false
     }
-
-    log.logDebug(s"Should ignore exception '$cosmosException' -> $returnValue, " +
-      s"Context: ${operationContext.toString} ${getThreadInfo}")
 
     returnValue
   }
 
-  private def shouldRetry(cosmosException: CosmosException, operationContext: OperationContext): Boolean = {
+  private def shouldRetry(statusCode: Int, subStatusCode: Int, operationContext: OperationContext): Boolean = {
     val returnValue = operationContext.attemptNumber < writeConfig.maxRetryCount &&
-      Exceptions.canBeTransientFailure(cosmosException)
+      Exceptions.canBeTransientFailure(statusCode, subStatusCode)
 
-    log.logDebug(s"Should retry exception '$cosmosException' -> $returnValue, " +
+    log.logDebug(s"Should retry statusCode '$statusCode:$subStatusCode' -> $returnValue, " +
       s"Context: ${operationContext.toString} ${getThreadInfo}")
 
     returnValue
@@ -599,7 +635,13 @@ private object BulkWriter {
     }
     s"Thread[Name: ${t.getName}, Group: $group, IsDaemon: ${t.isDaemon} Id: ${t.getId}]"
   }
+
+  private class BulkOperationFailedException(statusCode: Int, subStatusCode: Int, message:String, cause: Throwable)
+    extends CosmosException(statusCode, message, null, cause) {
+      BridgeInternal.setSubStatusCode(this, subStatusCode)
+  }
 }
 
 //scalastyle:on multiple.string.literals
 //scalastyle:on null
+//scalastyle:on file.size.limit
