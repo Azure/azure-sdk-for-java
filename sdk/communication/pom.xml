@@ -20,6 +20,7 @@
         <module>azure-communication-networktraversal</module>
         <module>azure-communication-sms</module>
         <module>azure-communication-phonenumbers</module>
+        <module>azure-communication-rooms</module>
       </modules>
 
       <dependencies>
@@ -50,6 +51,11 @@
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
+          <artifactId>azure-communication-rooms</artifactId>
+          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-networktraversal;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
           <artifactId>azure-communication-networktraversal</artifactId>
           <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-communication-networktraversal;current} -->
         </dependency>
@@ -72,6 +78,7 @@
                 <include>com/azure/communication/chat/*.class</include>
                 <include>com/azure/communication/sms/*.class</include>
                 <include>com/azure/communication/phonenumbers/*.class</include>
+                <include>com/azure/communication/rooms/*.class</include>
               </includes>
             </configuration>
             <executions>
@@ -102,6 +109,7 @@
         <module>azure-communication-identity</module>
         <module>azure-communication-networktraversal</module>
         <module>azure-communication-phonenumbers</module>
+        <module>azure-communication-rooms</module>
         <module>azure-communication-sms</module>
         <module>azure-resourcemanager-communication</module>
         <module>azure-communication-common-perf</module>

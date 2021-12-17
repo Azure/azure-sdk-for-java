@@ -15,6 +15,7 @@ module com.azure.communication.common {
         com.azure.communication.sms,
         com.azure.communication.identity,
         com.azure.communication.phonenumbers,
+        com.azure.communication.rooms,
         com.azure.communication.chat,
         com.azure.communication.callingserver,
         com.azure.communication.networktraversal;

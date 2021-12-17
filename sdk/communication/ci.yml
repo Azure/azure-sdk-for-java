@@ -15,6 +15,7 @@ trigger:
       - sdk/communication/azure-communication-identity/
       - sdk/communication/azure-communication-networktraversal/
       - sdk/communication/azure-communication-phonenumbers/
+      - sdk/communication/azure-communication-rooms/
       - sdk/communication/azure-communication-sms/
       - sdk/communication/azure-resourcemanager-communication/
     exclude:
@@ -25,6 +26,7 @@ trigger:
       - sdk/communication/azure-communication-identity/pom.xml
       - sdk/communication/azure-communication-networktraversal/pom.xml
       - sdk/communication/azure-communication-phonenumbers/pom.xml
+      - sdk/communication/azure-communication-rooms/pom.xml
       - sdk/communication/azure-communication-sms/pom.xml
       - sdk/communication/azure-resourcemanager-communication/pom.xml
 
@@ -44,6 +46,7 @@ pr:
       - sdk/communication/azure-communication-identity/
       - sdk/communication/azure-communication-networktraversal/
       - sdk/communication/azure-communication-phonenumbers/
+      - sdk/communication/azure-communication-rooms/pom.xml
       - sdk/communication/azure-communication-sms/
       - sdk/communication/azure-resourcemanager-communication/
     exclude:
@@ -54,6 +57,7 @@ pr:
       - sdk/communication/azure-communication-identity/pom.xml
       - sdk/communication/azure-communication-networktraversal/pom.xml
       - sdk/communication/azure-communication-phonenumbers/pom.xml
+      - sdk/communication/azure-communication-rooms/pom.xml
       - sdk/communication/azure-communication-sms/pom.xml
       - sdk/communication/azure-resourcemanager-communication/pom.xml
 
@@ -82,6 +86,9 @@ extends:
       - name: azure-communication-phonenumbers
         groupId: com.azure
         safeName: azurecommunicationphonenumbers
+      - name: azure-communication-rooms
+        groupId: com.azure
+        safeName: azurecommunicationrooms
       - name: azure-resourcemanager-communication
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagercommunication
