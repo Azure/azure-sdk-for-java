@@ -85,7 +85,7 @@ private class TransientIOErrorsRetryingIterator
         }
         catch {
           case cosmosException: CosmosException =>
-            if (Exceptions.canBeTransientFailure(cosmosException)) {
+            if (Exceptions.canBeTransientFailure(cosmosException.getStatusCode, cosmosException.getSubStatusCode)) {
               val retryCountSnapshot = retryCount.incrementAndGet()
               if (retryCountSnapshot > maxRetryCount) {
                 logError(
