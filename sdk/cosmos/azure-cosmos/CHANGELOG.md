@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.24.0-snapshot.2 (Unreleased)
+### 4.24.0-beta.1 (Unreleased)
 
 #### Features Added
 
