@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigurationReader;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
@@ -83,6 +84,9 @@ public class RxGatewayStoreModelTest {
         Mockito.doReturn(Mono.error(ReadTimeoutException.INSTANCE))
                 .when(httpClient).send(any(HttpRequest.class), any(Duration.class));
 
+        GatewayServiceConfigurationReader gatewayServiceConfigurationReader = Mockito.mock(GatewayServiceConfigurationReader.class);
+        Mockito.doReturn(ConsistencyLevel.SESSION)
+            .when(gatewayServiceConfigurationReader).getDefaultConsistencyLevel();
         RxGatewayStoreModel storeModel = new RxGatewayStoreModel(clientContext,
                 sessionContainer,
                 ConsistencyLevel.SESSION,
@@ -90,7 +94,8 @@ public class RxGatewayStoreModelTest {
                 userAgentContainer,
                 globalEndpointManager,
                 httpClient,
-                null);
+            null);
+        storeModel.setGatewayServiceConfigurationReader(gatewayServiceConfigurationReader);
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(clientContext,
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
@@ -170,6 +175,10 @@ public class RxGatewayStoreModelTest {
         Mockito.doReturn(Mono.error(ReadTimeoutException.INSTANCE))
             .when(httpClient).send(any(HttpRequest.class), any(Duration.class));
 
+        GatewayServiceConfigurationReader gatewayServiceConfigurationReader = Mockito.mock(GatewayServiceConfigurationReader.class);
+        Mockito.doReturn(defaultConsistency)
+            .when(gatewayServiceConfigurationReader).getDefaultConsistencyLevel();
+
         RxGatewayStoreModel storeModel = new RxGatewayStoreModel(
             clientContext,
             sessionContainer,
@@ -179,6 +188,7 @@ public class RxGatewayStoreModelTest {
             globalEndpointManager,
             httpClient,
             apiType);
+        storeModel.setGatewayServiceConfigurationReader(gatewayServiceConfigurationReader);
 
         httpClient = ReflectionUtils.getHttpClient(storeModel);
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
@@ -200,9 +210,19 @@ public class RxGatewayStoreModelTest {
             .statusCode(HttpConstants.StatusCodes.REQUEST_TIMEOUT).build());
 
         if (finalSessionTokenType == SessionTokenType.USER) {
-            assertThat(dsr.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo(userControlledSessionToken);
+            // Session token is passed only for read request, unless its batch operation, or its multi master create
+            if(!dsr.isReadOnlyRequest() && dsr.getOperationType() != OperationType.Batch){
+                assertThat(dsr.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isNull();
+            } else {
+                assertThat(dsr.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo(userControlledSessionToken);
+            }
         } else if(finalSessionTokenType == SessionTokenType.SDK) {
-            assertThat(dsr.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo(sdkGlobalSessionToken);
+            // Session token is passed only for read request, unless its batch operation, or its multi master create
+            if(!dsr.isReadOnlyRequest() && dsr.getOperationType() != OperationType.Batch){
+                assertThat(dsr.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isNull();
+            } else {
+                assertThat(dsr.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo(sdkGlobalSessionToken);
+            }
         } else {
             assertThat(dsr.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isNull();
         }
