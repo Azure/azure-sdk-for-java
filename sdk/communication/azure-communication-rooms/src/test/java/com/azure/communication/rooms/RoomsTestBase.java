@@ -46,14 +46,14 @@ public class RoomsTestBase extends TestBase {
     protected static final String USER1 = "8:acs:db75ed0c-e801-41a3-99a4-66a0a119a06c_0000000e-3240-55cf-9806-113a0d001dd9";
     protected static final String USER2 = "8:acs:db75ed0c-e801-41a3-99a4-66a0a119a06c_0000001e-322a-f9f7-740a-113a0d00ee19";
     protected static final String USER3 = "8:acs:db75ed0c-e801-41a3-99a4-66a0a119a06c_0000002e-5609-f66d-defd-8b3a0d002749";
-    protected static final Map<String, Object> PARTICIPANTS1 = new HashMap<>() {{
+    protected static final Map<String, Object> PARTICIPANTS1 = new HashMap<String, Object>() {{
             put(USER1, new RoomParticipant());
             put(USER2, new RoomParticipant());        
             put(USER3, new RoomParticipant());      
         }
     };
 
-    protected static final Map<String, Object> PARTICIPANTS2 = new HashMap<>() {{
+    protected static final Map<String, Object> PARTICIPANTS2 = new HashMap<String, Object>() {{
             put(USER1, null);
             put(USER2, null);
         }
