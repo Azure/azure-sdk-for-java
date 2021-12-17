@@ -1,6 +1,16 @@
 # Release History
 
-## 12.15.0-beta.2 (Unreleased)
+## 12.15.0-beta.3 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 12.15.0-beta.2 (2021-12-07)
 
 ### Features Added
 - Added support for 2021-02-12 service version.
@@ -8,8 +18,6 @@
 - Added support for listing blobs which contain invalid xml characters.
 
 - When opening a BlobInputStream, removed the initial getProperties call in favor of a download for better performance.
-
-### Breaking Changes
 
 ### Bugs Fixed
 - Fixed a bug that would cause authenticating with a sas token to fail if the timestamps in the token were formatted differently.
@@ -215,6 +223,7 @@ and
 - Added overloads to downloadToFile to add the option to overwrite existing files. Default behavior is to not overwrite.
 - Improved performance of BlockBlobOutputStream.
 - Added overloads to BlockBlobClient.getBlobOutputStream to allow users to provide parallel transfer options, http headers, metadata, access tier, and request conditions.
+
 
 ## 12.2.0-beta.1 (2019-12-17)
 - Added SAS generation methods on clients to improve discoverability and convenience of sas. Deprecated setContainerName, setBlobName, setSnapshotId, generateSasQueryParameters methods on BlobServiceSasSignatureValues to direct users to using the methods added on clients.

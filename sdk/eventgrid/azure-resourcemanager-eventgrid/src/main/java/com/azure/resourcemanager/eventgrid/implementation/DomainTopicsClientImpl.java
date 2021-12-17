@@ -430,7 +430,11 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
         return this
             .client
             .<DomainTopicInner, DomainTopicInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DomainTopicInner.class, DomainTopicInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                DomainTopicInner.class,
+                DomainTopicInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -684,7 +688,8 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, domainName, domainTopicName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

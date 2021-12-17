@@ -10,6 +10,7 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
 import com.azure.cosmos.implementation.patch.PatchOperation;
@@ -108,6 +109,37 @@ public class ImplementationBridgeHelpers {
 
         public interface PartitionKeyAccessor {
             PartitionKey toPartitionKey(PartitionKeyInternal partitionKeyInternal);
+        }
+    }
+
+    public static final class DirectConnectionConfigHelper {
+        static {
+            ensureClassLoaded(DirectConnectionConfig.class);
+        }
+        private static DirectConnectionConfigAccessor accessor;
+
+        private DirectConnectionConfigHelper() {}
+
+        public static void setDirectConnectionConfigAccessor(final DirectConnectionConfigAccessor newAccessor) {
+            if (accessor != null) {
+                throw new IllegalStateException("DirectConnectionConfig accessor already initialized!");
+            }
+
+            accessor = newAccessor;
+        }
+
+        public static DirectConnectionConfigAccessor getDirectConnectionConfigAccessor() {
+            if (accessor == null) {
+                throw new IllegalStateException("DirectConnectionConfig accessor is not initialized!");
+            }
+
+            return accessor;
+        }
+
+        public interface DirectConnectionConfigAccessor {
+            int getIoThreadCountPerCoreFactor(DirectConnectionConfig config);
+            DirectConnectionConfig setIoThreadCountPerCoreFactor(
+                DirectConnectionConfig config, int ioThreadCountPerCoreFactor);
         }
     }
 
@@ -255,6 +287,11 @@ public class ImplementationBridgeHelpers {
             CosmosBulkExecutionOptions setMaxMicroBatchSize(CosmosBulkExecutionOptions options, int maxMicroBatchSize);
 
             int getMaxMicroBatchConcurrency(CosmosBulkExecutionOptions options);
+
+            Integer getMaxConcurrentCosmosPartitions(CosmosBulkExecutionOptions options);
+
+            CosmosBulkExecutionOptions setMaxConcurrentCosmosPartitions(
+                CosmosBulkExecutionOptions options, int mxConcurrentCosmosPartitions);
 
             Duration getMaxMicroBatchInterval(CosmosBulkExecutionOptions options);
         }

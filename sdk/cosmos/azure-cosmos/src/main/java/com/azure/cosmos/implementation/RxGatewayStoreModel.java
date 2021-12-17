@@ -6,6 +6,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
@@ -33,6 +34,8 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.concurrent.Callable;
 
+import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders.INTENDED_COLLECTION_RID_HEADER;
+
 /**
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
@@ -50,6 +53,7 @@ class RxGatewayStoreModel implements RxStoreModel {
     private ConsistencyLevel defaultConsistencyLevel;
     private ISessionContainer sessionContainer;
     private ThroughputControlStore throughputControlStore;
+    private RxClientCollectionCache collectionCache;
 
     public RxGatewayStoreModel(
             DiagnosticsClientContext clientContext,
@@ -88,6 +92,10 @@ class RxGatewayStoreModel implements RxStoreModel {
 
         this.httpClient = httpClient;
         this.sessionContainer = sessionContainer;
+    }
+
+    void setCollectionCache(RxClientCollectionCache collectionCache) {
+        this.collectionCache = collectionCache;
     }
 
     private Mono<RxDocumentServiceResponse> create(RxDocumentServiceRequest request) {
@@ -336,7 +344,17 @@ class RxGatewayStoreModel implements RxStoreModel {
                        if (!(exception instanceof CosmosException)) {
                            // wrap in CosmosException
                            logger.error("Network failure", exception);
-                           dce = BridgeInternal.createCosmosException(request.requestContext.resourcePhysicalAddress, 0, exception);
+
+                           int statusCode = 0;
+                           if (WebExceptionUtility.isNetworkFailure(exception)) {
+                               if (WebExceptionUtility.isReadTimeoutException(exception)) {
+                                   statusCode = HttpConstants.StatusCodes.REQUEST_TIMEOUT;
+                               } else {
+                                   statusCode = HttpConstants.StatusCodes.SERVICE_UNAVAILABLE;
+                               }
+                           }
+
+                           dce = BridgeInternal.createCosmosException(request.requestContext.resourcePhysicalAddress, statusCode, exception);
                            BridgeInternal.setRequestHeaders(dce, request.getHeaders());
                        } else {
                            dce = (CosmosException) exception;
@@ -427,9 +445,7 @@ class RxGatewayStoreModel implements RxStoreModel {
 
     @Override
     public Mono<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request) {
-        this.applySessionToken(request);
-
-        Mono<RxDocumentServiceResponse> responseObs = invokeAsync(request);
+        Mono<RxDocumentServiceResponse> responseObs = this.addIntendedCollectionRidAndSessionToken(request).then(invokeAsync(request));
 
         return responseObs.onErrorResume(
                 e -> {
@@ -485,6 +501,21 @@ class RxGatewayStoreModel implements RxStoreModel {
         } else {
             this.sessionContainer.setSessionToken(request, responseHeaders);
         }
+    }
+
+    private Mono<Void> addIntendedCollectionRidAndSessionToken(RxDocumentServiceRequest request) {
+        applySessionToken(request);
+        if(this.collectionCache != null && request.getResourceType().equals(ResourceType.Document)) {
+            return this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request).flatMap(documentCollectionValueHolder -> {
+                if(StringUtils.isEmpty(request.getHeaders().get(INTENDED_COLLECTION_RID_HEADER))) {
+                    request.getHeaders().put(INTENDED_COLLECTION_RID_HEADER, request.requestContext.resolvedCollectionRid);
+                } else {
+                    request.intendedCollectionRidPassedIntoSDK = true;
+                }
+                return Mono.empty();
+            });
+        }
+        return Mono.empty();
     }
 
     private void applySessionToken(RxDocumentServiceRequest request) {

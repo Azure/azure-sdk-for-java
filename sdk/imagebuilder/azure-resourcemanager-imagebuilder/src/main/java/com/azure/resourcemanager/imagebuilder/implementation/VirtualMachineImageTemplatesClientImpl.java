@@ -27,6 +27,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -36,7 +37,6 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.imagebuilder.fluent.VirtualMachineImageTemplatesClient;
 import com.azure.resourcemanager.imagebuilder.fluent.models.ImageTemplateInner;
 import com.azure.resourcemanager.imagebuilder.fluent.models.RunOutputInner;
-import com.azure.resourcemanager.imagebuilder.models.ApiErrorException;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateListResult;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateUpdateParameters;
 import com.azure.resourcemanager.imagebuilder.models.RunOutputCollection;
@@ -77,7 +77,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.VirtualMachineImages/imageTemplates")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ImageTemplateListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
@@ -90,7 +90,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.VirtualMachineImages/imageTemplates")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ImageTemplateListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -104,7 +104,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}")
         @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
@@ -120,7 +120,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
@@ -136,7 +136,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ImageTemplateInner>> getByResourceGroup(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
@@ -151,7 +151,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}")
         @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
@@ -166,7 +166,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/run")
         @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> run(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
@@ -181,7 +181,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/cancel")
         @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> cancel(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
@@ -196,7 +196,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/runOutputs")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RunOutputCollection>> listRunOutputs(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
@@ -211,7 +211,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/runOutputs/{runOutputName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RunOutputInner>> getRunOutput(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
@@ -225,7 +225,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
         @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ImageTemplateListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
@@ -235,7 +235,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
         @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ImageTemplateListResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
@@ -245,7 +245,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
         @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RunOutputCollection>> listRunOutputsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
@@ -256,7 +256,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
     /**
      * Gets information about the VM image templates associated with the subscription.
      *
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the VM image templates associated with the subscription.
      */
@@ -302,7 +302,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the VM image templates associated with the subscription.
      */
@@ -343,7 +343,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
     /**
      * Gets information about the VM image templates associated with the subscription.
      *
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the VM image templates associated with the subscription.
      */
@@ -357,7 +357,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the VM image templates associated with the subscription.
      */
@@ -370,7 +370,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
     /**
      * Gets information about the VM image templates associated with the subscription.
      *
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the VM image templates associated with the subscription.
      */
@@ -384,7 +384,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the VM image templates associated with the subscription.
      */
@@ -398,7 +398,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the VM image templates associated with the specified resource group.
      */
@@ -450,7 +450,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the VM image templates associated with the specified resource group.
      */
@@ -499,7 +499,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the VM image templates associated with the specified resource group.
      */
@@ -516,7 +516,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the VM image templates associated with the specified resource group.
      */
@@ -532,7 +532,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the VM image templates associated with the specified resource group.
      */
@@ -547,7 +547,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the VM image templates associated with the specified resource group.
      */
@@ -563,7 +563,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param imageTemplateName The name of the image Template.
      * @param parameters Parameters supplied to the CreateImageTemplate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
@@ -620,7 +620,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param parameters Parameters supplied to the CreateImageTemplate operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
@@ -673,7 +673,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param imageTemplateName The name of the image Template.
      * @param parameters Parameters supplied to the CreateImageTemplate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
@@ -700,7 +700,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param parameters Parameters supplied to the CreateImageTemplate operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
@@ -723,7 +723,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param imageTemplateName The name of the image Template.
      * @param parameters Parameters supplied to the CreateImageTemplate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
@@ -741,7 +741,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param parameters Parameters supplied to the CreateImageTemplate operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
@@ -758,7 +758,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param imageTemplateName The name of the image Template.
      * @param parameters Parameters supplied to the CreateImageTemplate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
@@ -778,7 +778,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param parameters Parameters supplied to the CreateImageTemplate operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
@@ -797,7 +797,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param imageTemplateName The name of the image Template.
      * @param parameters Parameters supplied to the CreateImageTemplate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
@@ -815,7 +815,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param parameters Parameters supplied to the CreateImageTemplate operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
@@ -832,7 +832,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param imageTemplateName The name of the image Template.
      * @param parameters Additional parameters for Image Template update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
@@ -889,7 +889,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param parameters Additional parameters for Image Template update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
@@ -942,7 +942,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param imageTemplateName The name of the image Template.
      * @param parameters Additional parameters for Image Template update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
@@ -969,7 +969,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param parameters Additional parameters for Image Template update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
@@ -992,7 +992,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param imageTemplateName The name of the image Template.
      * @param parameters Additional parameters for Image Template update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
@@ -1010,7 +1010,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param parameters Additional parameters for Image Template update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
@@ -1027,7 +1027,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param imageTemplateName The name of the image Template.
      * @param parameters Additional parameters for Image Template update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
@@ -1047,7 +1047,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param parameters Additional parameters for Image Template update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
@@ -1066,7 +1066,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param imageTemplateName The name of the image Template.
      * @param parameters Additional parameters for Image Template update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
@@ -1084,7 +1084,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param parameters Additional parameters for Image Template update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
@@ -1100,7 +1100,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a virtual machine image template.
      */
@@ -1150,7 +1150,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a virtual machine image template.
      */
@@ -1196,7 +1196,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a virtual machine image template.
      */
@@ -1219,7 +1219,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a virtual machine image template.
      */
@@ -1235,7 +1235,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a virtual machine image template.
      */
@@ -1251,7 +1251,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1301,7 +1301,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1347,7 +1347,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1367,7 +1367,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1387,7 +1387,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1403,7 +1403,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1419,7 +1419,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1437,7 +1437,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1454,7 +1454,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1469,7 +1469,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1483,7 +1483,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1532,7 +1532,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1578,7 +1578,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1598,7 +1598,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1618,7 +1618,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1634,7 +1634,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1650,7 +1650,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1668,7 +1668,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1685,7 +1685,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1700,7 +1700,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1714,7 +1714,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1764,7 +1764,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1810,7 +1810,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1830,7 +1830,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1850,7 +1850,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1866,7 +1866,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1882,7 +1882,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1900,7 +1900,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1917,7 +1917,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1932,7 +1932,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1946,7 +1946,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of List run outputs operation.
      */
@@ -2005,7 +2005,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of List run outputs operation.
      */
@@ -2060,7 +2060,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of List run outputs operation.
      */
@@ -2078,7 +2078,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of List run outputs operation.
      */
@@ -2096,7 +2096,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of List run outputs operation.
      */
@@ -2112,7 +2112,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of List run outputs operation.
      */
@@ -2129,7 +2129,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param imageTemplateName The name of the image Template.
      * @param runOutputName The name of the run output.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified run output for the specified image template resource.
      */
@@ -2184,7 +2184,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param runOutputName The name of the run output.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified run output for the specified image template resource.
      */
@@ -2235,7 +2235,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param imageTemplateName The name of the image Template.
      * @param runOutputName The name of the run output.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified run output for the specified image template resource.
      */
@@ -2260,7 +2260,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param imageTemplateName The name of the image Template.
      * @param runOutputName The name of the run output.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified run output for the specified image template resource.
      */
@@ -2277,7 +2277,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param runOutputName The name of the run output.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified run output for the specified image template resource.
      */
@@ -2292,7 +2292,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of List image templates operation.
      */
@@ -2328,7 +2328,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of List image templates operation.
      */
@@ -2363,7 +2363,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of List image templates operation.
      */
@@ -2400,7 +2400,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of List image templates operation.
      */
@@ -2436,7 +2436,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of List run outputs operation.
      */
@@ -2472,7 +2472,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of List run outputs operation.
      */

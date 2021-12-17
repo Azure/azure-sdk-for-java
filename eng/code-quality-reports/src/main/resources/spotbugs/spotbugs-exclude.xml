@@ -1324,6 +1324,13 @@
     <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
 
+  <!-- This is a false positive. Exception is getting caught in init method-->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.RxDocumentClientImpl"/>
+    <Method name="init"/>
+    <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
+  
   <Match>
     <Class name="com.azure.cosmos.encryption.EncryptionCosmosAsyncContainer"/>
     <Method name="decryptResponseAsync"/>
@@ -2532,6 +2539,29 @@
     <Or>
       <Field name="odataType"/>
       <Field name="type"/>
+    </Or>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+
+  <Match>
+    <Or>
+      <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerSslJdkAlpnApplicationProtocolNegotiatorAlpnWrapper"/>
+      <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerSslJdkAlpnApplicationProtocolNegotiatorAlpnWrapperJava8"/>
+      <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerSslJdkSslContext"/>
+      <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerSslSslContext"/>
+    </Or>
+    <Bug pattern="BC_IMPOSSIBLE_CAST"/>
+  </Match>
+  <Match>
+    <Or>
+      <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerCodecHttpHttpContentDecompressor"/>
+    </Or>
+    <Bug pattern="CI_CONFUSED_INHERITANCE"/>
+  </Match>
+  <Match>
+    <Or>
+      <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerSslOpenSsl"/>
     </Or>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>

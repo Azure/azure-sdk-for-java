@@ -18,6 +18,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
+import java.net.SocketException;
 import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
@@ -102,9 +103,48 @@ public class RxGatewayStoreModelTest {
                 .instanceOf(CosmosException.class)
                 .causeInstanceOf(ReadTimeoutException.class)
                 .documentClientExceptionHeaderRequestContainsEntry("key", "value")
-                .statusCode(0).build());
+                .statusCode(HttpConstants.StatusCodes.REQUEST_TIMEOUT)
+                .subStatusCode(HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT)
+                .build());
     }
 
+    @Test(groups = "unit")
+    public void serviceUnavailable() throws Exception {
+        DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
+        ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
+        QueryCompatibilityMode queryCompatibilityMode = QueryCompatibilityMode.Default;
+        UserAgentContainer userAgentContainer = new UserAgentContainer();
+        GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
+        Mockito.doReturn(new URI("https://localhost"))
+               .when(globalEndpointManager).resolveServiceEndpoint(any());
+        HttpClient httpClient = Mockito.mock(HttpClient.class);
+        Mockito.doReturn(Mono.error(new SocketException("Dummy SocketException")))
+               .when(httpClient).send(any(HttpRequest.class), any(Duration.class));
+
+        RxGatewayStoreModel storeModel = new RxGatewayStoreModel(clientContext,
+            sessionContainer,
+            ConsistencyLevel.SESSION,
+            queryCompatibilityMode,
+            userAgentContainer,
+            globalEndpointManager,
+            httpClient,
+            null);
+
+        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(clientContext,
+            OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
+        dsr.getHeaders().put("key", "value");
+        dsr.requestContext = new DocumentServiceRequestContext();
+
+
+        Mono<RxDocumentServiceResponse> resp = storeModel.processMessage(dsr);
+        validateFailure(resp, FailureValidator.builder()
+                                              .instanceOf(CosmosException.class)
+                                              .causeInstanceOf(SocketException.class)
+                                              .documentClientExceptionHeaderRequestContainsEntry("key", "value")
+                                              .statusCode(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE)
+                                              .subStatusCode(HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE)
+                                              .build());
+    }
 
     @Test(groups = "unit", dataProvider = "sessionTokenConfigProvider")
     public void applySessionToken(
@@ -157,7 +197,7 @@ public class RxGatewayStoreModelTest {
         validateFailure(resp, FailureValidator.builder()
             .instanceOf(CosmosException.class)
             .causeInstanceOf(ReadTimeoutException.class)
-            .statusCode(0).build());
+            .statusCode(HttpConstants.StatusCodes.REQUEST_TIMEOUT).build());
 
         if (finalSessionTokenType == SessionTokenType.USER) {
             assertThat(dsr.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo(userControlledSessionToken);

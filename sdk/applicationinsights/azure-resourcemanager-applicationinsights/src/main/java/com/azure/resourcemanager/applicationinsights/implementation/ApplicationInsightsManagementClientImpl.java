@@ -28,16 +28,19 @@ import com.azure.resourcemanager.applicationinsights.fluent.ApplicationInsightsM
 import com.azure.resourcemanager.applicationinsights.fluent.ComponentAvailableFeaturesClient;
 import com.azure.resourcemanager.applicationinsights.fluent.ComponentCurrentBillingFeaturesClient;
 import com.azure.resourcemanager.applicationinsights.fluent.ComponentFeatureCapabilitiesClient;
+import com.azure.resourcemanager.applicationinsights.fluent.ComponentLinkedStorageAccountsOperationsClient;
 import com.azure.resourcemanager.applicationinsights.fluent.ComponentQuotaStatusClient;
 import com.azure.resourcemanager.applicationinsights.fluent.ComponentsClient;
 import com.azure.resourcemanager.applicationinsights.fluent.ExportConfigurationsClient;
 import com.azure.resourcemanager.applicationinsights.fluent.FavoritesClient;
+import com.azure.resourcemanager.applicationinsights.fluent.LiveTokensClient;
 import com.azure.resourcemanager.applicationinsights.fluent.MyWorkbooksClient;
 import com.azure.resourcemanager.applicationinsights.fluent.OperationsClient;
 import com.azure.resourcemanager.applicationinsights.fluent.ProactiveDetectionConfigurationsClient;
 import com.azure.resourcemanager.applicationinsights.fluent.WebTestLocationsClient;
 import com.azure.resourcemanager.applicationinsights.fluent.WebTestsClient;
 import com.azure.resourcemanager.applicationinsights.fluent.WorkItemConfigurationsClient;
+import com.azure.resourcemanager.applicationinsights.fluent.WorkbookTemplatesClient;
 import com.azure.resourcemanager.applicationinsights.fluent.WorkbooksClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -114,16 +117,16 @@ public final class ApplicationInsightsManagementClientImpl implements Applicatio
         return this.defaultPollInterval;
     }
 
-    /** The AnalyticsItemsClient object to access its operations. */
-    private final AnalyticsItemsClient analyticsItems;
+    /** The OperationsClient object to access its operations. */
+    private final OperationsClient operations;
 
     /**
-     * Gets the AnalyticsItemsClient object to access its operations.
+     * Gets the OperationsClient object to access its operations.
      *
-     * @return the AnalyticsItemsClient object.
+     * @return the OperationsClient object.
      */
-    public AnalyticsItemsClient getAnalyticsItems() {
-        return this.analyticsItems;
+    public OperationsClient getOperations() {
+        return this.operations;
     }
 
     /** The AnnotationsClient object to access its operations. */
@@ -222,18 +225,6 @@ public final class ApplicationInsightsManagementClientImpl implements Applicatio
         return this.proactiveDetectionConfigurations;
     }
 
-    /** The ComponentsClient object to access its operations. */
-    private final ComponentsClient components;
-
-    /**
-     * Gets the ComponentsClient object to access its operations.
-     *
-     * @return the ComponentsClient object.
-     */
-    public ComponentsClient getComponents() {
-        return this.components;
-    }
-
     /** The WorkItemConfigurationsClient object to access its operations. */
     private final WorkItemConfigurationsClient workItemConfigurations;
 
@@ -282,6 +273,30 @@ public final class ApplicationInsightsManagementClientImpl implements Applicatio
         return this.webTests;
     }
 
+    /** The AnalyticsItemsClient object to access its operations. */
+    private final AnalyticsItemsClient analyticsItems;
+
+    /**
+     * Gets the AnalyticsItemsClient object to access its operations.
+     *
+     * @return the AnalyticsItemsClient object.
+     */
+    public AnalyticsItemsClient getAnalyticsItems() {
+        return this.analyticsItems;
+    }
+
+    /** The WorkbookTemplatesClient object to access its operations. */
+    private final WorkbookTemplatesClient workbookTemplates;
+
+    /**
+     * Gets the WorkbookTemplatesClient object to access its operations.
+     *
+     * @return the WorkbookTemplatesClient object.
+     */
+    public WorkbookTemplatesClient getWorkbookTemplates() {
+        return this.workbookTemplates;
+    }
+
     /** The MyWorkbooksClient object to access its operations. */
     private final MyWorkbooksClient myWorkbooks;
 
@@ -306,16 +321,40 @@ public final class ApplicationInsightsManagementClientImpl implements Applicatio
         return this.workbooks;
     }
 
-    /** The OperationsClient object to access its operations. */
-    private final OperationsClient operations;
+    /** The ComponentsClient object to access its operations. */
+    private final ComponentsClient components;
 
     /**
-     * Gets the OperationsClient object to access its operations.
+     * Gets the ComponentsClient object to access its operations.
      *
-     * @return the OperationsClient object.
+     * @return the ComponentsClient object.
      */
-    public OperationsClient getOperations() {
-        return this.operations;
+    public ComponentsClient getComponents() {
+        return this.components;
+    }
+
+    /** The ComponentLinkedStorageAccountsOperationsClient object to access its operations. */
+    private final ComponentLinkedStorageAccountsOperationsClient componentLinkedStorageAccountsOperations;
+
+    /**
+     * Gets the ComponentLinkedStorageAccountsOperationsClient object to access its operations.
+     *
+     * @return the ComponentLinkedStorageAccountsOperationsClient object.
+     */
+    public ComponentLinkedStorageAccountsOperationsClient getComponentLinkedStorageAccountsOperations() {
+        return this.componentLinkedStorageAccountsOperations;
+    }
+
+    /** The LiveTokensClient object to access its operations. */
+    private final LiveTokensClient liveTokens;
+
+    /**
+     * Gets the LiveTokensClient object to access its operations.
+     *
+     * @return the LiveTokensClient object.
+     */
+    public LiveTokensClient getLiveTokens() {
+        return this.liveTokens;
     }
 
     /**
@@ -340,7 +379,7 @@ public final class ApplicationInsightsManagementClientImpl implements Applicatio
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.analyticsItems = new AnalyticsItemsClientImpl(this);
+        this.operations = new OperationsClientImpl(this);
         this.annotations = new AnnotationsClientImpl(this);
         this.apiKeys = new ApiKeysClientImpl(this);
         this.exportConfigurations = new ExportConfigurationsClientImpl(this);
@@ -349,14 +388,17 @@ public final class ApplicationInsightsManagementClientImpl implements Applicatio
         this.componentFeatureCapabilities = new ComponentFeatureCapabilitiesClientImpl(this);
         this.componentAvailableFeatures = new ComponentAvailableFeaturesClientImpl(this);
         this.proactiveDetectionConfigurations = new ProactiveDetectionConfigurationsClientImpl(this);
-        this.components = new ComponentsClientImpl(this);
         this.workItemConfigurations = new WorkItemConfigurationsClientImpl(this);
         this.favorites = new FavoritesClientImpl(this);
         this.webTestLocations = new WebTestLocationsClientImpl(this);
         this.webTests = new WebTestsClientImpl(this);
+        this.analyticsItems = new AnalyticsItemsClientImpl(this);
+        this.workbookTemplates = new WorkbookTemplatesClientImpl(this);
         this.myWorkbooks = new MyWorkbooksClientImpl(this);
         this.workbooks = new WorkbooksClientImpl(this);
-        this.operations = new OperationsClientImpl(this);
+        this.components = new ComponentsClientImpl(this);
+        this.componentLinkedStorageAccountsOperations = new ComponentLinkedStorageAccountsOperationsClientImpl(this);
+        this.liveTokens = new LiveTokensClientImpl(this);
     }
 
     /**

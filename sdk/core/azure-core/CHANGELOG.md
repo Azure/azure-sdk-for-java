@@ -12,6 +12,15 @@
 
 ### Other Changes
 
+## 1.23.1 (2021-12-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Jackson from `2.12.5` to `2.13.0`.
+- Upgraded Reactor from `3.4.10` to `3.4.12`.
+
 ## 1.23.0 (2021-11-22)
 
 ### Breaking Changes

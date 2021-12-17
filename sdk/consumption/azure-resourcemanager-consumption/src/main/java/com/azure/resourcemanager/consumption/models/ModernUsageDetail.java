@@ -4,9 +4,9 @@
 
 package com.azure.resourcemanager.consumption.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.consumption.fluent.models.ModernUsageDetailProperties;
 import com.azure.resourcemanager.consumption.fluent.models.UsageDetailInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -14,458 +14,29 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 /** Modern usage detail. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("modern")
-@JsonFlatten
-@Immutable
-public class ModernUsageDetail extends UsageDetailInner {
+@Fluent
+public final class ModernUsageDetail extends UsageDetailInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ModernUsageDetail.class);
 
     /*
-     * Billing Account identifier.
-     */
-    @JsonProperty(value = "properties.billingAccountId", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingAccountId;
-
-    /*
-     * Name of the Billing Account.
-     */
-    @JsonProperty(value = "properties.billingAccountName", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingAccountName;
-
-    /*
-     * Billing Period Start Date as in the invoice.
-     */
-    @JsonProperty(value = "properties.billingPeriodStartDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime billingPeriodStartDate;
-
-    /*
-     * Billing Period End Date as in the invoice.
-     */
-    @JsonProperty(value = "properties.billingPeriodEndDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime billingPeriodEndDate;
-
-    /*
-     * Identifier for the billing profile that groups costs across invoices in
-     * the a singular billing currency across across the customers who have
-     * onboarded the Microsoft customer agreement and the customers in CSP who
-     * have made entitlement purchases like SaaS, Marketplace, RI, etc.
-     */
-    @JsonProperty(value = "properties.billingProfileId", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingProfileId;
-
-    /*
-     * Name of the billing profile that groups costs across invoices in the a
-     * singular billing currency across across the customers who have onboarded
-     * the Microsoft customer agreement and the customers in CSP who have made
-     * entitlement purchases like SaaS, Marketplace, RI, etc.
-     */
-    @JsonProperty(value = "properties.billingProfileName", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingProfileName;
-
-    /*
-     * Unique Microsoft generated identifier for the Azure Subscription.
-     */
-    @JsonProperty(value = "properties.subscriptionGuid", access = JsonProperty.Access.WRITE_ONLY)
-    private String subscriptionGuid;
-
-    /*
-     * Name of the Azure Subscription.
-     */
-    @JsonProperty(value = "properties.subscriptionName", access = JsonProperty.Access.WRITE_ONLY)
-    private String subscriptionName;
-
-    /*
-     * Date for the usage record.
-     */
-    @JsonProperty(value = "properties.date", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime date;
-
-    /*
-     * Name of the product that has accrued charges by consumption or purchase
-     * as listed in the invoice. Not available for Marketplace.
-     */
-    @JsonProperty(value = "properties.product", access = JsonProperty.Access.WRITE_ONLY)
-    private String product;
-
-    /*
-     * The meter id (GUID). Not available for marketplace. For reserved
-     * instance this represents the primary meter for which the reservation was
-     * purchased. For the actual VM Size for which the reservation is purchased
-     * see productOrderName.
-     */
-    @JsonProperty(value = "properties.meterId", access = JsonProperty.Access.WRITE_ONLY)
-    private String meterId;
-
-    /*
-     * Identifies the name of the meter against which consumption is measured.
-     */
-    @JsonProperty(value = "properties.meterName", access = JsonProperty.Access.WRITE_ONLY)
-    private String meterName;
-
-    /*
-     * Identifies the location of the datacenter for certain services that are
-     * priced based on datacenter location.
-     */
-    @JsonProperty(value = "properties.meterRegion", access = JsonProperty.Access.WRITE_ONLY)
-    private String meterRegion;
-
-    /*
-     * Identifies the top-level service for the usage.
-     */
-    @JsonProperty(value = "properties.meterCategory", access = JsonProperty.Access.WRITE_ONLY)
-    private String meterCategory;
-
-    /*
-     * Defines the type or sub-category of Azure service that can affect the
-     * rate.
-     */
-    @JsonProperty(value = "properties.meterSubCategory", access = JsonProperty.Access.WRITE_ONLY)
-    private String meterSubCategory;
-
-    /*
-     * List the service family for the product purchased or charged (Example:
-     * Storage ; Compute).
-     */
-    @JsonProperty(value = "properties.serviceFamily", access = JsonProperty.Access.WRITE_ONLY)
-    private String serviceFamily;
-
-    /*
-     * Measure the quantity purchased or consumed.The amount of the meter used
-     * during the billing period.
-     */
-    @JsonProperty(value = "properties.quantity", access = JsonProperty.Access.WRITE_ONLY)
-    private BigDecimal quantity;
-
-    /*
-     * Identifies the Unit that the service is charged in. For example, GB,
-     * hours, 10,000 s.
-     */
-    @JsonProperty(value = "properties.unitOfMeasure", access = JsonProperty.Access.WRITE_ONLY)
-    private String unitOfMeasure;
-
-    /*
-     * Instance Name.
-     */
-    @JsonProperty(value = "properties.instanceName", access = JsonProperty.Access.WRITE_ONLY)
-    private String instanceName;
-
-    /*
-     * Estimated extendedCost or blended cost before tax in USD.
-     */
-    @JsonProperty(value = "properties.costInUSD", access = JsonProperty.Access.WRITE_ONLY)
-    private BigDecimal costInUsd;
-
-    /*
-     * Unit Price is the price applicable to you. (your EA or other contract
-     * price).
-     */
-    @JsonProperty(value = "properties.unitPrice", access = JsonProperty.Access.WRITE_ONLY)
-    private BigDecimal unitPrice;
-
-    /*
-     * The currency defining the billed cost.
-     */
-    @JsonProperty(value = "properties.billingCurrencyCode", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingCurrencyCode;
-
-    /*
-     * Name of the resource location.
-     */
-    @JsonProperty(value = "properties.resourceLocation", access = JsonProperty.Access.WRITE_ONLY)
-    private String resourceLocation;
-
-    /*
-     * Consumed service name. Name of the azure resource provider that emits
-     * the usage or was purchased. This value is not provided for marketplace
-     * usage.
-     */
-    @JsonProperty(value = "properties.consumedService", access = JsonProperty.Access.WRITE_ONLY)
-    private String consumedService;
-
-    /*
-     * Service Info 1.
-     */
-    @JsonProperty(value = "properties.serviceInfo1", access = JsonProperty.Access.WRITE_ONLY)
-    private String serviceInfo1;
-
-    /*
-     * Service Info 2.
-     */
-    @JsonProperty(value = "properties.serviceInfo2", access = JsonProperty.Access.WRITE_ONLY)
-    private String serviceInfo2;
-
-    /*
-     * Additional details of this usage item. Use this field to get usage line
-     * item specific details such as the actual VM Size (ServiceType) or the
-     * ratio in which the reservation discount is applied.
-     */
-    @JsonProperty(value = "properties.additionalInfo", access = JsonProperty.Access.WRITE_ONLY)
-    private String additionalInfo;
-
-    /*
-     * Identifier of the project that is being charged in the invoice. Not
-     * applicable for Microsoft Customer Agreements onboarded by partners.
-     */
-    @JsonProperty(value = "properties.invoiceSectionId", access = JsonProperty.Access.WRITE_ONLY)
-    private String invoiceSectionId;
-
-    /*
-     * Name of the project that is being charged in the invoice. Not applicable
-     * for Microsoft Customer Agreements onboarded by partners.
-     */
-    @JsonProperty(value = "properties.invoiceSectionName", access = JsonProperty.Access.WRITE_ONLY)
-    private String invoiceSectionName;
-
-    /*
-     * The cost center of this department if it is a department and a cost
-     * center is provided.
-     */
-    @JsonProperty(value = "properties.costCenter", access = JsonProperty.Access.WRITE_ONLY)
-    private String costCenter;
-
-    /*
-     * Name of the Azure resource group used for cohesive lifecycle management
-     * of resources.
-     */
-    @JsonProperty(value = "properties.resourceGroup", access = JsonProperty.Access.WRITE_ONLY)
-    private String resourceGroup;
-
-    /*
-     * ARM resource id of the reservation. Only applies to records relevant to
-     * reservations.
-     */
-    @JsonProperty(value = "properties.reservationId", access = JsonProperty.Access.WRITE_ONLY)
-    private String reservationId;
-
-    /*
-     * User provided display name of the reservation. Last known name for a
-     * particular day is populated in the daily data. Only applies to records
-     * relevant to reservations.
-     */
-    @JsonProperty(value = "properties.reservationName", access = JsonProperty.Access.WRITE_ONLY)
-    private String reservationName;
-
-    /*
-     * The identifier for the asset or Azure plan name that the subscription
-     * belongs to. For example: Azure Plan. For reservations this is the
-     * Reservation Order ID.
-     */
-    @JsonProperty(value = "properties.productOrderId", access = JsonProperty.Access.WRITE_ONLY)
-    private String productOrderId;
-
-    /*
-     * Product Order Name. For reservations this is the SKU that was purchased.
-     */
-    @JsonProperty(value = "properties.productOrderName", access = JsonProperty.Access.WRITE_ONLY)
-    private String productOrderName;
-
-    /*
-     * Determines if the cost is eligible to be paid for using Azure credits.
-     */
-    @JsonProperty(value = "properties.isAzureCreditEligible", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean isAzureCreditEligible;
-
-    /*
-     * Term (in months). Displays the term for the validity of the offer. For
-     * example. In case of reserved instances it displays 12 months for yearly
-     * term of reserved instance. For one time purchases or recurring
-     * purchases, the terms displays 1 month; This is not applicable for Azure
-     * consumption.
-     */
-    @JsonProperty(value = "properties.term", access = JsonProperty.Access.WRITE_ONLY)
-    private String term;
-
-    /*
-     * Name of the publisher of the service including Microsoft or Third Party
-     * publishers.
-     */
-    @JsonProperty(value = "properties.publisherName", access = JsonProperty.Access.WRITE_ONLY)
-    private String publisherName;
-
-    /*
-     * Type of publisher that identifies if the publisher is first party, third
-     * party reseller or third party agency.
-     */
-    @JsonProperty(value = "properties.publisherType", access = JsonProperty.Access.WRITE_ONLY)
-    private String publisherType;
-
-    /*
-     * Indicates a charge represents credits, usage, a Marketplace purchase, a
-     * reservation fee, or a refund.
-     */
-    @JsonProperty(value = "properties.chargeType", access = JsonProperty.Access.WRITE_ONLY)
-    private String chargeType;
-
-    /*
-     * Indicates how frequently this charge will occur. OneTime for purchases
-     * which only happen once, Monthly for fees which recur every month, and
-     * UsageBased for charges based on how much a service is used.
-     */
-    @JsonProperty(value = "properties.frequency", access = JsonProperty.Access.WRITE_ONLY)
-    private String frequency;
-
-    /*
-     * ExtendedCost or blended cost before tax in billed currency.
-     */
-    @JsonProperty(value = "properties.costInBillingCurrency", access = JsonProperty.Access.WRITE_ONLY)
-    private BigDecimal costInBillingCurrency;
-
-    /*
-     * ExtendedCost or blended cost before tax in pricing currency to correlate
-     * with prices.
-     */
-    @JsonProperty(value = "properties.costInPricingCurrency", access = JsonProperty.Access.WRITE_ONLY)
-    private BigDecimal costInPricingCurrency;
-
-    /*
-     * Exchange rate used in conversion from pricing currency to billing
-     * currency.
-     */
-    @JsonProperty(value = "properties.exchangeRate", access = JsonProperty.Access.WRITE_ONLY)
-    private String exchangeRate;
-
-    /*
-     * Date on which exchange rate used in conversion from pricing currency to
-     * billing currency.
-     */
-    @JsonProperty(value = "properties.exchangeRateDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime exchangeRateDate;
-
-    /*
-     * Invoice ID as on the invoice where the specific transaction appears.
-     */
-    @JsonProperty(value = "properties.invoiceId", access = JsonProperty.Access.WRITE_ONLY)
-    private String invoiceId;
-
-    /*
-     * Reference to an original invoice there is a refund (negative cost). This
-     * is populated only when there is a refund.
-     */
-    @JsonProperty(value = "properties.previousInvoiceId", access = JsonProperty.Access.WRITE_ONLY)
-    private String previousInvoiceId;
-
-    /*
-     * Pricing Billing Currency.
-     */
-    @JsonProperty(value = "properties.pricingCurrencyCode", access = JsonProperty.Access.WRITE_ONLY)
-    private String pricingCurrencyCode;
-
-    /*
-     * Identifier for the product that has accrued charges by consumption or
-     * purchase . This is the concatenated key of productId and SkuId in
-     * partner center.
-     */
-    @JsonProperty(value = "properties.productIdentifier", access = JsonProperty.Access.WRITE_ONLY)
-    private String productIdentifier;
-
-    /*
-     * Resource Location Normalized.
-     */
-    @JsonProperty(value = "properties.resourceLocationNormalized", access = JsonProperty.Access.WRITE_ONLY)
-    private String resourceLocationNormalized;
-
-    /*
-     * Start date for the rating period when the service usage was rated for
-     * charges. The prices for Azure services are determined for the rating
-     * period.
-     */
-    @JsonProperty(value = "properties.servicePeriodStartDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime servicePeriodStartDate;
-
-    /*
-     * End date for the period when the service usage was rated for charges.
-     * The prices for Azure services are determined based on the rating period.
-     */
-    @JsonProperty(value = "properties.servicePeriodEndDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime servicePeriodEndDate;
-
-    /*
-     * Identifier of the customer's AAD tenant.
-     */
-    @JsonProperty(value = "properties.customerTenantId", access = JsonProperty.Access.WRITE_ONLY)
-    private String customerTenantId;
-
-    /*
-     * Name of the customer's AAD tenant.
-     */
-    @JsonProperty(value = "properties.customerName", access = JsonProperty.Access.WRITE_ONLY)
-    private String customerName;
-
-    /*
-     * Identifier for the partner's AAD tenant.
-     */
-    @JsonProperty(value = "properties.partnerTenantId", access = JsonProperty.Access.WRITE_ONLY)
-    private String partnerTenantId;
-
-    /*
-     * Name of the partner' AAD tenant.
-     */
-    @JsonProperty(value = "properties.partnerName", access = JsonProperty.Access.WRITE_ONLY)
-    private String partnerName;
-
-    /*
-     * MPNId for the reseller associated with the subscription.
-     */
-    @JsonProperty(value = "properties.resellerMpnId", access = JsonProperty.Access.WRITE_ONLY)
-    private String resellerMpnId;
-
-    /*
-     * Reseller Name.
-     */
-    @JsonProperty(value = "properties.resellerName", access = JsonProperty.Access.WRITE_ONLY)
-    private String resellerName;
-
-    /*
-     * Publisher Id.
-     */
-    @JsonProperty(value = "properties.publisherId", access = JsonProperty.Access.WRITE_ONLY)
-    private String publisherId;
-
-    /*
-     * Market Price that's charged for the usage.
-     */
-    @JsonProperty(value = "properties.marketPrice", access = JsonProperty.Access.WRITE_ONLY)
-    private BigDecimal marketPrice;
-
-    /*
-     * Exchange Rate from pricing currency to billing currency.
-     */
-    @JsonProperty(value = "properties.exchangeRatePricingToBilling", access = JsonProperty.Access.WRITE_ONLY)
-    private BigDecimal exchangeRatePricingToBilling;
-
-    /*
-     * The amount of PayG cost before tax in billing currency.
-     */
-    @JsonProperty(value = "properties.paygCostInBillingCurrency", access = JsonProperty.Access.WRITE_ONLY)
-    private BigDecimal paygCostInBillingCurrency;
-
-    /*
-     * The amount of PayG cost before tax in US Dollar currency.
-     */
-    @JsonProperty(value = "properties.paygCostInUSD", access = JsonProperty.Access.WRITE_ONLY)
-    private BigDecimal paygCostInUsd;
-
-    /*
-     * Rate of discount applied if there is a partner earned credit (PEC) based
-     * on partner admin link access.
-     */
-    @JsonProperty(value = "properties.partnerEarnedCreditRate", access = JsonProperty.Access.WRITE_ONLY)
-    private BigDecimal partnerEarnedCreditRate;
-
-    /*
-     * Flag to indicate if partner earned credit has been applied or not.
-     */
-    @JsonProperty(value = "properties.partnerEarnedCreditApplied", access = JsonProperty.Access.WRITE_ONLY)
-    private String partnerEarnedCreditApplied;
-
-    /*
-     * Retail price for the resource.
-     */
-    @JsonProperty(value = "properties.payGPrice", access = JsonProperty.Access.WRITE_ONLY)
-    private BigDecimal payGPrice;
+     * Properties for modern usage details
+     */
+    @JsonProperty(value = "properties", required = true)
+    private ModernUsageDetailProperties innerProperties = new ModernUsageDetailProperties();
+
+    /**
+     * Get the innerProperties property: Properties for modern usage details.
+     *
+     * @return the innerProperties value.
+     */
+    private ModernUsageDetailProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the billingAccountId property: Billing Account identifier.
@@ -473,7 +44,25 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the billingAccountId value.
      */
     public String billingAccountId() {
-        return this.billingAccountId;
+        return this.innerProperties() == null ? null : this.innerProperties().billingAccountId();
+    }
+
+    /**
+     * Get the effectivePrice property: Effective Price that's charged for the usage.
+     *
+     * @return the effectivePrice value.
+     */
+    public BigDecimal effectivePrice() {
+        return this.innerProperties() == null ? null : this.innerProperties().effectivePrice();
+    }
+
+    /**
+     * Get the pricingModel property: Identifier that indicates how the meter is priced.
+     *
+     * @return the pricingModel value.
+     */
+    public PricingModelType pricingModel() {
+        return this.innerProperties() == null ? null : this.innerProperties().pricingModel();
     }
 
     /**
@@ -482,7 +71,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the billingAccountName value.
      */
     public String billingAccountName() {
-        return this.billingAccountName;
+        return this.innerProperties() == null ? null : this.innerProperties().billingAccountName();
     }
 
     /**
@@ -491,7 +80,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the billingPeriodStartDate value.
      */
     public OffsetDateTime billingPeriodStartDate() {
-        return this.billingPeriodStartDate;
+        return this.innerProperties() == null ? null : this.innerProperties().billingPeriodStartDate();
     }
 
     /**
@@ -500,7 +89,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the billingPeriodEndDate value.
      */
     public OffsetDateTime billingPeriodEndDate() {
-        return this.billingPeriodEndDate;
+        return this.innerProperties() == null ? null : this.innerProperties().billingPeriodEndDate();
     }
 
     /**
@@ -511,7 +100,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the billingProfileId value.
      */
     public String billingProfileId() {
-        return this.billingProfileId;
+        return this.innerProperties() == null ? null : this.innerProperties().billingProfileId();
     }
 
     /**
@@ -522,7 +111,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the billingProfileName value.
      */
     public String billingProfileName() {
-        return this.billingProfileName;
+        return this.innerProperties() == null ? null : this.innerProperties().billingProfileName();
     }
 
     /**
@@ -531,7 +120,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the subscriptionGuid value.
      */
     public String subscriptionGuid() {
-        return this.subscriptionGuid;
+        return this.innerProperties() == null ? null : this.innerProperties().subscriptionGuid();
     }
 
     /**
@@ -540,7 +129,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the subscriptionName value.
      */
     public String subscriptionName() {
-        return this.subscriptionName;
+        return this.innerProperties() == null ? null : this.innerProperties().subscriptionName();
     }
 
     /**
@@ -549,7 +138,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the date value.
      */
     public OffsetDateTime date() {
-        return this.date;
+        return this.innerProperties() == null ? null : this.innerProperties().date();
     }
 
     /**
@@ -559,7 +148,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the product value.
      */
     public String product() {
-        return this.product;
+        return this.innerProperties() == null ? null : this.innerProperties().product();
     }
 
     /**
@@ -569,8 +158,8 @@ public class ModernUsageDetail extends UsageDetailInner {
      *
      * @return the meterId value.
      */
-    public String meterId() {
-        return this.meterId;
+    public UUID meterId() {
+        return this.innerProperties() == null ? null : this.innerProperties().meterId();
     }
 
     /**
@@ -579,7 +168,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the meterName value.
      */
     public String meterName() {
-        return this.meterName;
+        return this.innerProperties() == null ? null : this.innerProperties().meterName();
     }
 
     /**
@@ -589,7 +178,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the meterRegion value.
      */
     public String meterRegion() {
-        return this.meterRegion;
+        return this.innerProperties() == null ? null : this.innerProperties().meterRegion();
     }
 
     /**
@@ -598,7 +187,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the meterCategory value.
      */
     public String meterCategory() {
-        return this.meterCategory;
+        return this.innerProperties() == null ? null : this.innerProperties().meterCategory();
     }
 
     /**
@@ -607,7 +196,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the meterSubCategory value.
      */
     public String meterSubCategory() {
-        return this.meterSubCategory;
+        return this.innerProperties() == null ? null : this.innerProperties().meterSubCategory();
     }
 
     /**
@@ -617,7 +206,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the serviceFamily value.
      */
     public String serviceFamily() {
-        return this.serviceFamily;
+        return this.innerProperties() == null ? null : this.innerProperties().serviceFamily();
     }
 
     /**
@@ -627,7 +216,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the quantity value.
      */
     public BigDecimal quantity() {
-        return this.quantity;
+        return this.innerProperties() == null ? null : this.innerProperties().quantity();
     }
 
     /**
@@ -637,7 +226,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the unitOfMeasure value.
      */
     public String unitOfMeasure() {
-        return this.unitOfMeasure;
+        return this.innerProperties() == null ? null : this.innerProperties().unitOfMeasure();
     }
 
     /**
@@ -646,7 +235,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the instanceName value.
      */
     public String instanceName() {
-        return this.instanceName;
+        return this.innerProperties() == null ? null : this.innerProperties().instanceName();
     }
 
     /**
@@ -655,7 +244,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the costInUsd value.
      */
     public BigDecimal costInUsd() {
-        return this.costInUsd;
+        return this.innerProperties() == null ? null : this.innerProperties().costInUsd();
     }
 
     /**
@@ -664,7 +253,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the unitPrice value.
      */
     public BigDecimal unitPrice() {
-        return this.unitPrice;
+        return this.innerProperties() == null ? null : this.innerProperties().unitPrice();
     }
 
     /**
@@ -673,7 +262,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the billingCurrencyCode value.
      */
     public String billingCurrencyCode() {
-        return this.billingCurrencyCode;
+        return this.innerProperties() == null ? null : this.innerProperties().billingCurrencyCode();
     }
 
     /**
@@ -682,7 +271,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the resourceLocation value.
      */
     public String resourceLocation() {
-        return this.resourceLocation;
+        return this.innerProperties() == null ? null : this.innerProperties().resourceLocation();
     }
 
     /**
@@ -692,25 +281,25 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the consumedService value.
      */
     public String consumedService() {
-        return this.consumedService;
+        return this.innerProperties() == null ? null : this.innerProperties().consumedService();
     }
 
     /**
-     * Get the serviceInfo1 property: Service Info 1.
+     * Get the serviceInfo1 property: Service-specific metadata.
      *
      * @return the serviceInfo1 value.
      */
     public String serviceInfo1() {
-        return this.serviceInfo1;
+        return this.innerProperties() == null ? null : this.innerProperties().serviceInfo1();
     }
 
     /**
-     * Get the serviceInfo2 property: Service Info 2.
+     * Get the serviceInfo2 property: Legacy field with optional service-specific metadata.
      *
      * @return the serviceInfo2 value.
      */
     public String serviceInfo2() {
-        return this.serviceInfo2;
+        return this.innerProperties() == null ? null : this.innerProperties().serviceInfo2();
     }
 
     /**
@@ -721,7 +310,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the additionalInfo value.
      */
     public String additionalInfo() {
-        return this.additionalInfo;
+        return this.innerProperties() == null ? null : this.innerProperties().additionalInfo();
     }
 
     /**
@@ -731,7 +320,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the invoiceSectionId value.
      */
     public String invoiceSectionId() {
-        return this.invoiceSectionId;
+        return this.innerProperties() == null ? null : this.innerProperties().invoiceSectionId();
     }
 
     /**
@@ -741,7 +330,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the invoiceSectionName value.
      */
     public String invoiceSectionName() {
-        return this.invoiceSectionName;
+        return this.innerProperties() == null ? null : this.innerProperties().invoiceSectionName();
     }
 
     /**
@@ -751,7 +340,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the costCenter value.
      */
     public String costCenter() {
-        return this.costCenter;
+        return this.innerProperties() == null ? null : this.innerProperties().costCenter();
     }
 
     /**
@@ -761,7 +350,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the resourceGroup value.
      */
     public String resourceGroup() {
-        return this.resourceGroup;
+        return this.innerProperties() == null ? null : this.innerProperties().resourceGroup();
     }
 
     /**
@@ -771,7 +360,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the reservationId value.
      */
     public String reservationId() {
-        return this.reservationId;
+        return this.innerProperties() == null ? null : this.innerProperties().reservationId();
     }
 
     /**
@@ -781,7 +370,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the reservationName value.
      */
     public String reservationName() {
-        return this.reservationName;
+        return this.innerProperties() == null ? null : this.innerProperties().reservationName();
     }
 
     /**
@@ -791,7 +380,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the productOrderId value.
      */
     public String productOrderId() {
-        return this.productOrderId;
+        return this.innerProperties() == null ? null : this.innerProperties().productOrderId();
     }
 
     /**
@@ -800,7 +389,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the productOrderName value.
      */
     public String productOrderName() {
-        return this.productOrderName;
+        return this.innerProperties() == null ? null : this.innerProperties().productOrderName();
     }
 
     /**
@@ -809,7 +398,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the isAzureCreditEligible value.
      */
     public Boolean isAzureCreditEligible() {
-        return this.isAzureCreditEligible;
+        return this.innerProperties() == null ? null : this.innerProperties().isAzureCreditEligible();
     }
 
     /**
@@ -820,7 +409,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the term value.
      */
     public String term() {
-        return this.term;
+        return this.innerProperties() == null ? null : this.innerProperties().term();
     }
 
     /**
@@ -830,7 +419,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the publisherName value.
      */
     public String publisherName() {
-        return this.publisherName;
+        return this.innerProperties() == null ? null : this.innerProperties().publisherName();
     }
 
     /**
@@ -840,7 +429,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the publisherType value.
      */
     public String publisherType() {
-        return this.publisherType;
+        return this.innerProperties() == null ? null : this.innerProperties().publisherType();
     }
 
     /**
@@ -850,7 +439,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the chargeType value.
      */
     public String chargeType() {
-        return this.chargeType;
+        return this.innerProperties() == null ? null : this.innerProperties().chargeType();
     }
 
     /**
@@ -861,7 +450,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the frequency value.
      */
     public String frequency() {
-        return this.frequency;
+        return this.innerProperties() == null ? null : this.innerProperties().frequency();
     }
 
     /**
@@ -870,7 +459,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the costInBillingCurrency value.
      */
     public BigDecimal costInBillingCurrency() {
-        return this.costInBillingCurrency;
+        return this.innerProperties() == null ? null : this.innerProperties().costInBillingCurrency();
     }
 
     /**
@@ -880,7 +469,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the costInPricingCurrency value.
      */
     public BigDecimal costInPricingCurrency() {
-        return this.costInPricingCurrency;
+        return this.innerProperties() == null ? null : this.innerProperties().costInPricingCurrency();
     }
 
     /**
@@ -889,7 +478,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the exchangeRate value.
      */
     public String exchangeRate() {
-        return this.exchangeRate;
+        return this.innerProperties() == null ? null : this.innerProperties().exchangeRate();
     }
 
     /**
@@ -899,7 +488,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the exchangeRateDate value.
      */
     public OffsetDateTime exchangeRateDate() {
-        return this.exchangeRateDate;
+        return this.innerProperties() == null ? null : this.innerProperties().exchangeRateDate();
     }
 
     /**
@@ -908,7 +497,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the invoiceId value.
      */
     public String invoiceId() {
-        return this.invoiceId;
+        return this.innerProperties() == null ? null : this.innerProperties().invoiceId();
     }
 
     /**
@@ -918,7 +507,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the previousInvoiceId value.
      */
     public String previousInvoiceId() {
-        return this.previousInvoiceId;
+        return this.innerProperties() == null ? null : this.innerProperties().previousInvoiceId();
     }
 
     /**
@@ -927,7 +516,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the pricingCurrencyCode value.
      */
     public String pricingCurrencyCode() {
-        return this.pricingCurrencyCode;
+        return this.innerProperties() == null ? null : this.innerProperties().pricingCurrencyCode();
     }
 
     /**
@@ -937,7 +526,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the productIdentifier value.
      */
     public String productIdentifier() {
-        return this.productIdentifier;
+        return this.innerProperties() == null ? null : this.innerProperties().productIdentifier();
     }
 
     /**
@@ -946,7 +535,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the resourceLocationNormalized value.
      */
     public String resourceLocationNormalized() {
-        return this.resourceLocationNormalized;
+        return this.innerProperties() == null ? null : this.innerProperties().resourceLocationNormalized();
     }
 
     /**
@@ -956,7 +545,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the servicePeriodStartDate value.
      */
     public OffsetDateTime servicePeriodStartDate() {
-        return this.servicePeriodStartDate;
+        return this.innerProperties() == null ? null : this.innerProperties().servicePeriodStartDate();
     }
 
     /**
@@ -966,7 +555,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the servicePeriodEndDate value.
      */
     public OffsetDateTime servicePeriodEndDate() {
-        return this.servicePeriodEndDate;
+        return this.innerProperties() == null ? null : this.innerProperties().servicePeriodEndDate();
     }
 
     /**
@@ -975,7 +564,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the customerTenantId value.
      */
     public String customerTenantId() {
-        return this.customerTenantId;
+        return this.innerProperties() == null ? null : this.innerProperties().customerTenantId();
     }
 
     /**
@@ -984,7 +573,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the customerName value.
      */
     public String customerName() {
-        return this.customerName;
+        return this.innerProperties() == null ? null : this.innerProperties().customerName();
     }
 
     /**
@@ -993,7 +582,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the partnerTenantId value.
      */
     public String partnerTenantId() {
-        return this.partnerTenantId;
+        return this.innerProperties() == null ? null : this.innerProperties().partnerTenantId();
     }
 
     /**
@@ -1002,7 +591,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the partnerName value.
      */
     public String partnerName() {
-        return this.partnerName;
+        return this.innerProperties() == null ? null : this.innerProperties().partnerName();
     }
 
     /**
@@ -1011,7 +600,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the resellerMpnId value.
      */
     public String resellerMpnId() {
-        return this.resellerMpnId;
+        return this.innerProperties() == null ? null : this.innerProperties().resellerMpnId();
     }
 
     /**
@@ -1020,7 +609,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the resellerName value.
      */
     public String resellerName() {
-        return this.resellerName;
+        return this.innerProperties() == null ? null : this.innerProperties().resellerName();
     }
 
     /**
@@ -1029,7 +618,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the publisherId value.
      */
     public String publisherId() {
-        return this.publisherId;
+        return this.innerProperties() == null ? null : this.innerProperties().publisherId();
     }
 
     /**
@@ -1038,7 +627,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the marketPrice value.
      */
     public BigDecimal marketPrice() {
-        return this.marketPrice;
+        return this.innerProperties() == null ? null : this.innerProperties().marketPrice();
     }
 
     /**
@@ -1047,7 +636,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the exchangeRatePricingToBilling value.
      */
     public BigDecimal exchangeRatePricingToBilling() {
-        return this.exchangeRatePricingToBilling;
+        return this.innerProperties() == null ? null : this.innerProperties().exchangeRatePricingToBilling();
     }
 
     /**
@@ -1056,7 +645,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the paygCostInBillingCurrency value.
      */
     public BigDecimal paygCostInBillingCurrency() {
-        return this.paygCostInBillingCurrency;
+        return this.innerProperties() == null ? null : this.innerProperties().paygCostInBillingCurrency();
     }
 
     /**
@@ -1065,7 +654,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the paygCostInUsd value.
      */
     public BigDecimal paygCostInUsd() {
-        return this.paygCostInUsd;
+        return this.innerProperties() == null ? null : this.innerProperties().paygCostInUsd();
     }
 
     /**
@@ -1075,7 +664,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the partnerEarnedCreditRate value.
      */
     public BigDecimal partnerEarnedCreditRate() {
-        return this.partnerEarnedCreditRate;
+        return this.innerProperties() == null ? null : this.innerProperties().partnerEarnedCreditRate();
     }
 
     /**
@@ -1084,7 +673,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the partnerEarnedCreditApplied value.
      */
     public String partnerEarnedCreditApplied() {
-        return this.partnerEarnedCreditApplied;
+        return this.innerProperties() == null ? null : this.innerProperties().partnerEarnedCreditApplied();
     }
 
     /**
@@ -1093,7 +682,44 @@ public class ModernUsageDetail extends UsageDetailInner {
      * @return the payGPrice value.
      */
     public BigDecimal payGPrice() {
-        return this.payGPrice;
+        return this.innerProperties() == null ? null : this.innerProperties().payGPrice();
+    }
+
+    /**
+     * Get the benefitId property: Unique identifier for the applicable benefit.
+     *
+     * @return the benefitId value.
+     */
+    public String benefitId() {
+        return this.innerProperties() == null ? null : this.innerProperties().benefitId();
+    }
+
+    /**
+     * Get the benefitName property: Name of the applicable benefit.
+     *
+     * @return the benefitName value.
+     */
+    public String benefitName() {
+        return this.innerProperties() == null ? null : this.innerProperties().benefitName();
+    }
+
+    /**
+     * Get the provider property: Identifier for Product Category or Line Of Business, Ex - Azure, Microsoft 365, AWS
+     * e.t.c.
+     *
+     * @return the provider value.
+     */
+    public String provider() {
+        return this.innerProperties() == null ? null : this.innerProperties().provider();
+    }
+
+    /**
+     * Get the costAllocationRuleName property: Name for Cost Allocation Rule.
+     *
+     * @return the costAllocationRuleName value.
+     */
+    public String costAllocationRuleName() {
+        return this.innerProperties() == null ? null : this.innerProperties().costAllocationRuleName();
     }
 
     /**
@@ -1104,5 +730,13 @@ public class ModernUsageDetail extends UsageDetailInner {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model ModernUsageDetail"));
+        } else {
+            innerProperties().validate();
+        }
     }
 }

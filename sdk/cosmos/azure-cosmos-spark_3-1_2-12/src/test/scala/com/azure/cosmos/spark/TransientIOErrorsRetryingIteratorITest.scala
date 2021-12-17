@@ -4,18 +4,18 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.{ServiceUnavailableException, Strings, Utils}
 import com.azure.cosmos.models.{CosmosQueryRequestOptions, ModelBridgeInternal}
+import com.azure.cosmos.spark.TransientIOErrorsRetryingIteratorITest.maxRetryCountPerIOOperation
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.util.CosmosPagedIterable
 import com.fasterxml.jackson.databind.node.ObjectNode
-import org.scalatest.Ignore
 
 import java.util.UUID
-import java.util.concurrent.atomic.AtomicLong
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.atomic.{AtomicLong, AtomicReference}
 
 //scalastyle:off magic.number
 //scalastyle:off null
 //scalastyle:off multiple.string.literals
-@Ignore
 class TransientIOErrorsRetryingIteratorITest
   extends IntegrationSpec
   with Spark
@@ -24,7 +24,8 @@ class TransientIOErrorsRetryingIteratorITest
   with BasicLoggingTrait {
 
   "transient failures" should "be retried" in {
-    val invocationCount = new AtomicLong(0)
+    val lastIdOfPage = new AtomicReference[String]("")
+    val lastIdRetrieved = new AtomicReference[String]("")
     val recordCount = new AtomicLong(0)
     val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
 
@@ -33,18 +34,18 @@ class TransientIOErrorsRetryingIteratorITest
 
     for (age <- 1 to 20) {
       for (state <- Array(true, false)) {
+        val id = UUID.randomUUID().toString
         val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
         objectNode.put("name", "Shrodigner's cat")
         objectNode.put("type", "cat")
         objectNode.put("age", age)
         objectNode.put("isAlive", state)
-        objectNode.put("id", UUID.randomUUID().toString)
+        objectNode.put("id", id)
         container.createItem(objectNode).block()
+        logInfo(s"ID of test doc: $id")
       }
     }
 
-    invocationCount.set(0)
-    recordCount.set(0)
     val queryOptions = new CosmosQueryRequestOptions()
     val retryingIterator = new TransientIOErrorsRetryingIterator(
       continuationToken => {
@@ -59,20 +60,34 @@ class TransientIOErrorsRetryingIteratorITest
         }
         container
           .queryItems("SELECT * FROM c", queryOptions, classOf[ObjectNode])
-          .handle(r => invocationCount.set(0))
+          .handle(r => {
+            val lastId = if (r.getResults.size() > 0) {
+              r.getResults.get(r.getResults.size() - 1).get("id").asText()
+            } else {
+              ""
+            }
+            logInfo(s"Last ID of page: $lastId")
+            lastIdOfPage.set(lastId)
+          })
       },
       2
     )
     retryingIterator.maxRetryIntervalInMs = 5
-    retryingIterator.maxRetryCount = 10
+    retryingIterator.maxRetryCount = maxRetryCountPerIOOperation
+    val idsWithRetries = new ConcurrentHashMap[String, Long]()
 
     while (retryingIterator.executeWithRetry(
       "hasNext",
       () => simulateExecutionWithTransientErrors(
-        invocationCount,
+        lastIdOfPage,
+        lastIdRetrieved,
+        idsWithRetries,
         () => retryingIterator.hasNext))) {
 
-      retryingIterator.currentIterator.next
+      val node = retryingIterator.currentIterator.next
+      val idRetrieved = node.get("id").asText()
+      logInfo(s"Last ID retrieved: $idRetrieved")
+      lastIdRetrieved.set(idRetrieved)
       recordCount.incrementAndGet()
     }
 
@@ -80,7 +95,6 @@ class TransientIOErrorsRetryingIteratorITest
   }
 
   "without transient failures" should "be the baseline" in {
-    val invocationCount = new AtomicLong(0)
     val recordCount = new AtomicLong(0)
     val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
 
@@ -102,8 +116,7 @@ class TransientIOErrorsRetryingIteratorITest
     val queryOptions = new CosmosQueryRequestOptions()
     val iterator = new CosmosPagedIterable[ObjectNode](
         container
-          .queryItems("SELECT * FROM c", queryOptions, classOf[ObjectNode])
-          .handle(r => invocationCount.set(0)),
+          .queryItems("SELECT * FROM c", queryOptions, classOf[ObjectNode]),
       2).iterator()
 
     while (iterator.hasNext) {
@@ -115,7 +128,8 @@ class TransientIOErrorsRetryingIteratorITest
   }
 
   "non-transient failures" should "should be thrown after retries exceed" in {
-    val invocationCount = new AtomicLong(0)
+    val lastIdOfPage = new AtomicReference[String]("")
+    val lastIdRetrieved = new AtomicReference[String]("")
     val recordCount = new AtomicLong(0)
     val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
 
@@ -134,8 +148,6 @@ class TransientIOErrorsRetryingIteratorITest
       }
     }
 
-    invocationCount.set(0)
-    recordCount.set(0)
     val queryOptions = new CosmosQueryRequestOptions()
     val retryingIterator = new TransientIOErrorsRetryingIterator(
       continuationToken => {
@@ -150,57 +162,94 @@ class TransientIOErrorsRetryingIteratorITest
         }
         container
           .queryItems("SELECT * FROM c", queryOptions, classOf[ObjectNode])
-          .handle(r => invocationCount.set(0))
+          .handle(r => {
+            if (r.getResults.size() > 0) {
+              lastIdOfPage.set(r.getResults.get(r.getResults.size() - 1).get("id").asText())
+            } else {
+              lastIdOfPage.set("")
+            }
+          })
       },
       2
     )
     retryingIterator.maxRetryIntervalInMs = 5
-    retryingIterator.maxRetryCount = 10
+    retryingIterator.maxRetryCount = maxRetryCountPerIOOperation
+    val idsWithRetries = new ConcurrentHashMap[String, Long]()
 
     assertThrows[ServiceUnavailableException]({
-      while (retryingIterator.executeWithRetry(
-        "hasNext",
-        () => simulateExecutionWithNonTransientErrors(
-          invocationCount,
-          recordCount,
-          () => retryingIterator.hasNext))) {
+    while (retryingIterator.executeWithRetry(
+      "hasNext",
+      () => simulateExecutionWithNonTransientErrors(
+        lastIdOfPage,
+        lastIdRetrieved,
+        idsWithRetries,
+        () => retryingIterator.hasNext))) {
 
-        retryingIterator.currentIterator.next
-        recordCount.incrementAndGet()
-      }
+      val node = retryingIterator.currentIterator.next
+      lastIdRetrieved.set(node.get("id").asText())
+      recordCount.incrementAndGet()
+    }
     })
   }
 
   // first 2 invocation succeed (draining one page) - then we inject 3 transient errors
   // before subsequent request retrieving new page succeeds
-  private def simulateExecutionWithTransientErrors[T](invocationCount: AtomicLong, func: () => T): T = {
-    val invocationCountSnapshot = invocationCount.incrementAndGet()
-    if (invocationCountSnapshot != 3) {
-      func()
-    } else {
+  private def simulateExecutionWithTransientErrors[T]
+  (
+    lastIdOfPage: AtomicReference[String],
+    lastIdRetrieved: AtomicReference[String],
+    idsWithRetries: ConcurrentHashMap[String, Long],
+    func: () => T): T = {
+
+    val idSnapshot = lastIdRetrieved.get
+
+    // transient I/O errors can only happen in reality between
+    // pages - and the retry logic depends on this assertion
+    // so the test here will only ever inject an error after retrieving the
+    // last document of one page (and before retrieving teh next one)
+    if (!idSnapshot.equals("") &&
+      idSnapshot.equals(lastIdOfPage.get()) &&
+        idsWithRetries.computeIfAbsent(idSnapshot, id => 0) < maxRetryCountPerIOOperation &&
+        idsWithRetries.computeIfPresent(
+          idSnapshot, (id, currentRetryCount) => currentRetryCount + 1) < maxRetryCountPerIOOperation) {
+
       //scalastyle:off null
       throw new ServiceUnavailableException("Dummy 503", null, null)
       //scalastyle:on null
+    } else {
+      func()
     }
   }
 
-  // first 2 invocation succeed (draining one page) - then we inject 15 transient failures
-  // trying to retrieve the next page - which exceeds the max allowed number
-  // of retries (10) - so will be treated as non-transient and not further retried. Exception
-  // bubbles up
-  private def simulateExecutionWithNonTransientErrors[T](
-                                                          invocationCount: AtomicLong,
-                                                          recordCount: AtomicLong,
-                                                          func: () => T): T = {
-    val invocationCountSnapshot = invocationCount.incrementAndGet()
-    if (recordCount.get < 2 || invocationCountSnapshot > 17) {
-      func()
-    } else {
+  private def simulateExecutionWithNonTransientErrors[T]
+  (
+    lastIdOfPage: AtomicReference[String],
+    lastIdRetrieved: AtomicReference[String],
+    idsWithRetries: ConcurrentHashMap[String, Long],
+    func: () => T): T = {
+
+    val idSnapshot = lastIdRetrieved.get
+
+    // transient I/O errors can only happen in reality between
+    // pages - and the retry logic depends on this assertion
+    // so the test here will only ever inject an error after retrieving the
+    // last document of one page (and before retrieving teh next one)
+    if (
+      idsWithRetries.computeIfAbsent(idSnapshot, id => 0) <= maxRetryCountPerIOOperation * 100 &&
+      idsWithRetries.computeIfPresent(
+        idSnapshot, (id, currentRetryCount) => currentRetryCount + 1) <= maxRetryCountPerIOOperation * 100) {
+
       //scalastyle:off null
       throw new ServiceUnavailableException("Dummy 503", null, null)
       //scalastyle:on null
+    } else {
+      func()
     }
   }
+}
+
+object TransientIOErrorsRetryingIteratorITest {
+  val maxRetryCountPerIOOperation = 1
 }
 //scalastyle:on magic.number
 //scalastyle:on null

@@ -492,7 +492,8 @@ public class RntbdTransportClient extends TransportClient {
             this.requestTimerResolution = Duration.ofMillis(100L);
             this.sendHangDetectionTime = Duration.ofSeconds(10L);
             this.shutdownTimeout = Duration.ofSeconds(15L);
-            this.threadCount = 2 * Runtime.getRuntime().availableProcessors();
+            this.threadCount = connectionPolicy.getIoThreadCountPerCoreFactor() *
+                Runtime.getRuntime().availableProcessors();
             this.userAgent = new UserAgentContainer();
             this.channelAcquisitionContextEnabled = false;
             this.ioThreadPriority = Thread.NORM_PRIORITY;

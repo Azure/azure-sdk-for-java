@@ -95,7 +95,7 @@ private class TransientIOErrorsRetryingIterator
               } else {
                 logWarning(
                   s"Transient failure handled in TransientIOErrorsRetryingIterator.$methodName -" +
-                    s" will be retried (attempt#$retryCountSnapshot) in $retryIntervalInMs",
+                    s" will be retried (attempt#$retryCountSnapshot) in ${retryIntervalInMs}ms",
                   cosmosException)
               }
             } else {
