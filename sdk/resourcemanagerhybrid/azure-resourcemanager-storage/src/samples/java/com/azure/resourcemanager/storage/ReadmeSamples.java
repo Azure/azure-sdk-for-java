@@ -23,7 +23,8 @@ public class ReadmeSamples {
 
     public void authenticate() {
         // BEGIN: com.azure.resourcemanager.storage.authenticate
-        AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+        String armEndpoint = "https://management.<region>.<your-domain>";
+        AzureProfile profile = new AzureProfile(getAzureEnvironmentFromArmEndpoint(armEndpoint));
         TokenCredential credential = new DefaultAzureCredentialBuilder()
             .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
             .build();
@@ -32,7 +33,7 @@ public class ReadmeSamples {
         // END: com.azure.resourcemanager.storage.authenticate
     }
 
-    // BEGIN: com.azure.resourcemanager.storage.authenticatehybrid
+    // BEGIN: com.azure.resourcemanager.storage.getazureenvironment
     private static AzureEnvironment getAzureEnvironmentFromArmEndpoint(String armEndpoint) {
         // Create HTTP client and request
         HttpClient httpClient = HttpClient.createDefault();
@@ -74,5 +75,5 @@ public class ReadmeSamples {
             throw new RuntimeException(ioe);
         }
     }
-    // END: com.azure.resourcemanager.storage.authenticatehybrid
+    // END: com.azure.resourcemanager.storage.getazureenvironment
 }

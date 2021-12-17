@@ -41,7 +41,8 @@ In addition, Azure subscription ID can be configured via environment variable `A
 With above configuration, `azure` client can be authenticated by following code:
 
 ```java com.azure.resourcemanager.containerregistry.authenticate
-AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+String armEndpoint = "https://management.<region>.<your-domain>";
+AzureProfile profile = new AzureProfile(getAzureEnvironmentFromArmEndpoint(armEndpoint));
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
     .build();
@@ -49,10 +50,10 @@ ContainerRegistryManager manager = ContainerRegistryManager
     .authenticate(credential, profile);
 ```
 
-The sample code assumes global Azure. To authenticate against Azure Stack Hub, create a custom azure environment that
-fetches information from your Azure Stack Hub's Azure Resource Manager metadata endpoint:
+Change `armEndpoint` to point to the Azure Resource Manager endpoint of your Azure Stack Hub. The azure environment's
+properties above can be populated with the following example:
 
-```java com.azure.resourcemanager.containerregistry.authenticatehybrid
+```java com.azure.resourcemanager.containerregistry.getazureenvironment
 private static AzureEnvironment getAzureEnvironmentFromArmEndpoint(String armEndpoint) {
     // Create HTTP client and request
     HttpClient httpClient = HttpClient.createDefault();
@@ -95,6 +96,8 @@ private static AzureEnvironment getAzureEnvironmentFromArmEndpoint(String armEnd
     }
 }
 ```
+
+When targeting a hybrid solution to global Azure instead of your Azure Stack Hub, `AzureEnvironment.AZURE` can be used instead.
 
 See [Authentication][authenticate] for more options.
 
