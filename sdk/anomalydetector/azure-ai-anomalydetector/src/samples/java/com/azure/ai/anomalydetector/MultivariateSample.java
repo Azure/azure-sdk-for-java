@@ -3,10 +3,29 @@
 
 package com.azure.ai.anomalydetector;
 
-import com.azure.ai.anomalydetector.models.*;
+import com.azure.ai.anomalydetector.models.AlignMode;
+import com.azure.ai.anomalydetector.models.AlignPolicy;
+import com.azure.ai.anomalydetector.models.DetectAnomalyResponse;
+import com.azure.ai.anomalydetector.models.DetectionRequest;
+import com.azure.ai.anomalydetector.models.DetectionResult;
+import com.azure.ai.anomalydetector.models.DetectionStatus;
+import com.azure.ai.anomalydetector.models.FillNaMethod;
+import com.azure.ai.anomalydetector.models.Model;
+import com.azure.ai.anomalydetector.models.ModelInfo;
+import com.azure.ai.anomalydetector.models.ModelSnapshot;
+import com.azure.ai.anomalydetector.models.ModelStatus;
+import com.azure.ai.anomalydetector.models.TrainMultivariateModelResponse;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.*;
-import com.azure.core.http.policy.*;
+import com.azure.core.http.ContentType;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.AzureKeyCredentialPolicy;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -19,16 +38,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.*;
-import java.time.format.DateTimeFormatter;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Iterator;
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 
 public class MultivariateSample {
@@ -134,14 +148,13 @@ public class MultivariateSample {
         //Start training and get Model ID
         Integer window = 28;
         AlignMode alignMode = AlignMode.OUTER;
-        FillNAMethod fillNAMethod = FillNAMethod.LINEAR;
-        Integer paddingValue = 0;
-        AlignPolicy alignPolicy = new AlignPolicy().setAlignMode(alignMode).setFillNAMethod(fillNAMethod).setPaddingValue(paddingValue);
+        FillNaMethod fillNaMethod = FillNaMethod.LINEAR;
+        Float paddingValue = 0.0f;
+        AlignPolicy alignPolicy =
+                new AlignPolicy().setAlignMode(alignMode).setFillNaMethod(fillNaMethod).setPaddingValue(paddingValue);
         String source = "<Your own data source>";
         OffsetDateTime startTime = OffsetDateTime.of(2021, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
-        ;
         OffsetDateTime endTime = OffsetDateTime.of(2021, 1, 2, 12, 0, 0, 0, ZoneOffset.UTC);
-        ;
         String displayName = "<placeholder>";
         ModelInfo request = new ModelInfo().setSlidingWindow(window).setAlignPolicy(alignPolicy).setSource(source).setStartTime(startTime).setEndTime(endTime).setDisplayName(displayName);
         UUID modelId = getMetricId(client, request);
