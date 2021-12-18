@@ -3,9 +3,11 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.models.FormRecognizerAudience;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.identity.AzureAuthorityHosts;
 import org.junit.jupiter.params.provider.Arguments;
 
 import java.io.ByteArrayInputStream;
@@ -241,5 +243,43 @@ public final class TestUtils {
         return Arrays.stream(configuredServiceVersionList).anyMatch(configuredServiceVersion ->
             serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
     }
+    public static FormRecognizerAudience getAudience(String endpoint) {
+        String authority = getAuthority(endpoint);
+        switch (authority) {
+            case AzureAuthorityHosts.AZURE_PUBLIC_CLOUD:
+                return FormRecognizerAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
+
+            case AzureAuthorityHosts.AZURE_CHINA:
+                return FormRecognizerAudience.AZURE_RESOURCE_MANAGER_CHINA;
+
+            case AzureAuthorityHosts.AZURE_GOVERNMENT:
+                return FormRecognizerAudience.AZURE_RESOURCE_MANAGER_GOVERNMENT;
+
+            default:
+                return null;
+        }
+    }
+
+    public static String getAuthority(String endpoint) {
+        if (endpoint == null) {
+            return AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;
+        }
+
+        if (endpoint.contains(".azurecr.io")) {
+            return AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;
+        }
+
+        if (endpoint.contains(".azurecr.cn")) {
+            return AzureAuthorityHosts.AZURE_CHINA;
+        }
+
+        if (endpoint.contains(".azurecr.us")) {
+            return AzureAuthorityHosts.AZURE_GOVERNMENT;
+        }
+
+        // By default, we will assume that the authority is public
+        return AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;
+    }
+
 }
 

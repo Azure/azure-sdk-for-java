@@ -60,14 +60,17 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
     DocumentAnalysisClientBuilder getDocumentAnalysisBuilder(HttpClient httpClient,
                                                              DocumentAnalysisServiceVersion serviceVersion,
                                                              boolean useKeyCredential) {
+
+        String endpoint = getEndpoint();
+        FormRecognizerAudience audience = TestUtils.getAudience(endpoint);
+
         DocumentAnalysisClientBuilder builder = new DocumentAnalysisClientBuilder()
-            .endpoint(getEndpoint())
+            .endpoint(endpoint)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion)
             .addPolicy(interceptorManager.getRecordPolicy())
-            .audience(getAudience(getEndpoint()));
-
+            .audience(audience);
 
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new AzureKeyCredential(INVALID_KEY));
@@ -75,7 +78,9 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
             if (useKeyCredential) {
                 builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
             } else {
-                builder.credential(new DefaultAzureCredentialBuilder().build());
+                builder.credential(new DefaultAzureCredentialBuilder()
+                    .authorityHost(TestUtils.getAuthority(endpoint))
+                    .build());
             }
         }
         return builder;
@@ -84,14 +89,16 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
     DocumentModelAdministrationClientBuilder getDocumentModelAdminClientBuilder(HttpClient httpClient,
                                                                                 DocumentAnalysisServiceVersion serviceVersion,
                                                                                 boolean useKeyCredential) {
+        String endpoint = getEndpoint();
+        FormRecognizerAudience audience = TestUtils.getAudience(endpoint);
+
         DocumentModelAdministrationClientBuilder builder = new DocumentModelAdministrationClientBuilder()
-            .endpoint(getEndpoint())
+            .endpoint(endpoint)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion)
             .addPolicy(interceptorManager.getRecordPolicy())
-            .audience(getAudience(getEndpoint()));
-
+            .audience(audience);
 
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new AzureKeyCredential(INVALID_KEY));
@@ -99,7 +106,9 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
             if (useKeyCredential) {
                 builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
             } else {
-                builder.credential(new DefaultAzureCredentialBuilder().build());
+                builder.credential(new DefaultAzureCredentialBuilder()
+                        .authorityHost(TestUtils.getAuthority(endpoint))
+                        .build());
             }
         }
         return builder;
@@ -811,18 +820,4 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         return interceptorManager.isPlaybackMode()
             ? "https://localhost:8080" : AZURE_FORM_RECOGNIZER_ENDPOINT_CONFIGURATION;
     }
-
-    private FormRecognizerAudience getAudience(String endpoint) {
-        if (endpoint == null) {
-            return FormRecognizerAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
-        }
-        if (endpoint.contains(".azurecr.cn")) {
-            return FormRecognizerAudience.AZURE_RESOURCE_MANAGER_CHINA;
-        }
-        if (endpoint.contains(".azurecr.us")) {
-            return FormRecognizerAudience.AZURE_RESOURCE_MANAGER_GOVERNMENT;
-        }
-        return FormRecognizerAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
-    }
-
 }
