@@ -228,8 +228,7 @@ public class CosmosClientBuilder {
      *
      * @return the token resolver
      */
-    @Beta(value = Beta.SinceVersion.V4_24_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public CosmosAuthorizationTokenResolver getAuthorizationTokenResolver() {
+    CosmosAuthorizationTokenResolver getAuthorizationTokenResolver() {
         return cosmosAuthorizationTokenResolver;
     }
 
