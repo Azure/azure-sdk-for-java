@@ -4,7 +4,7 @@
 #
 # How to use:
 # 1. Change `SPRING_BOOT_DEPENDENCIES_VERSION` to the latest version in this script manually.
-# 2. Then the ci will automatically run command `python .\sdk\spring\scripts\add_spring_boot_dependencies_management.py`.
+# 2. Then the ci will automatically run command `python .\sdk\spring\scripts\ci_add_spring_boot_dependencies_management.py`.
 #
 # The script must be run at the root of azure-sdk-for-java.
 
@@ -15,8 +15,8 @@ from log import log
 SPRING_BOOT_DEPENDENCIES_VERSION = '2.6.1'
 
 def add_dependency_management(c1,c2):
-    # for root, dirs, files in os.walk("./sdk/spring"):
-    for root, _, files in os.walk("D:/java/azure-sdk-for-java/sdk/spring/"):
+    for root, dirs, files in os.walk("./sdk/spring"):
+    # for root, _, files in os.walk("D:/java/azure-sdk-for-java/sdk/spring/"):
         for file_name in files:
             file_path = root + os.sep + file_name
             if file_name.startswith('pom') and file_name.endswith('.xml'):
@@ -25,10 +25,14 @@ def add_dependency_management(c1,c2):
                     pos1 = content.find('<dependencies>')
                     pos2 = content.find('<dependencyManagement>')
                     if pos2 != -1:
+                        print("processing:" + file_path)
+                        print("add dependency management...")
                         content = content[:pos2+41] + c1 + content[pos2+41:]
                         with open(file_path, 'r+', encoding='utf-8') as f:
                             f.writelines(content)
                     else:
+                        print("processing:" + file_path)
+                        print("add dependency management...")
                         content = content[:pos1] + c2 + content[pos1:]
                         with open(file_path, 'r+', encoding='utf-8') as f:
                             f.writelines(content)

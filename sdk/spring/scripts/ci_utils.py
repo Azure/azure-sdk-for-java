@@ -1,4 +1,4 @@
-# some classes, methods support for update_versions.py
+# some classes, methods support for ci_update_versions.py
 
 from enum import Enum
 import re

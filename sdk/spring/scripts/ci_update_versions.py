@@ -6,7 +6,7 @@
 # 1. Make sure file(`.\sdk\spring\spring_boot_SPRING_BOOT_VERSION_managed_external_dependencies.txt`) exist. If it doesn't exist, please run
 #    `.\sdk\spring\scripts\get_spring_boot_managed_external_dependencies.py` to create that file.
 # 2. Change `SPRING_BOOT_VERSION` in this script manually.
-# 3. Then the ci will automatically run command `python .\sdk\spring\scripts\update_versions.py --ut external_dependency`.
+# 3. Then the ci will automatically run command `python .\sdk\spring\scripts\ci_update_versions.py --ut external_dependency`.
 #
 # The script must be run at the root of azure-sdk-for-java.
 
@@ -17,15 +17,15 @@ import re
 import sys
 import time
 import traceback
-from utils import CodeModule
-from utils import external_dependency_version_regex
-from utils import external_dependency_include_regex
-from utils import UpdateType
-from utils import include_update_marker
-from utils import version_regex_str_no_anchor
-from utils import version_update_start_marker
-from utils import version_update_end_marker
-from utils import version_update_marker
+from ci_utils import CodeModule
+from ci_utils import external_dependency_version_regex
+from ci_utils import external_dependency_include_regex
+from ci_utils import UpdateType
+from ci_utils import include_update_marker
+from ci_utils import version_regex_str_no_anchor
+from ci_utils import version_update_start_marker
+from ci_utils import version_update_end_marker
+from ci_utils import version_update_marker
 
 SPRING_BOOT_VERSION = '2.6.1'
 
