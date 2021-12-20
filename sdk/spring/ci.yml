@@ -467,6 +467,7 @@ stages:
                 PreBuildSteps:
                     - script: |
                         python ./sdk/spring/scripts/update_versions.py --ut external_dependency
+                        python ./sdk/spring/scripts/add_spring_boot_dependencies_management.py
 
 
 
