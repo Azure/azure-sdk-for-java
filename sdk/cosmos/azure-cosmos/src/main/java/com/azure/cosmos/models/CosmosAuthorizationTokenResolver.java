@@ -15,7 +15,7 @@ import java.util.Map;
  * request at client side which enables creation of one CosmosAsyncClient per application shared across various users
  * with different resource permissions.
  */
-@Beta(value = Beta.SinceVersion.V4_22_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+@Beta(value = Beta.SinceVersion.V4_24_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public interface CosmosAuthorizationTokenResolver {
     /**
      * This method will consume the request information and based on that it will generate the authorization token.
