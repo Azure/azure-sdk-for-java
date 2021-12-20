@@ -12,8 +12,7 @@ You can use any other Spark 3.1.1 spark offering as well, also you should be abl
   [free account](https://azure.microsoft.com/try/cosmosdb/).
   Alternatively, you can use the
   [use Azure Cosmos DB Emulator](https://docs.microsoft.com/azure/cosmos-db/local-emulator) for development and testing.
-- [Azure Databricks](https://docs.microsoft.com/azure/databricks/release-notes/runtime/8.0)
-  Runtime 9.1 LTS with Spark 3.1.2.
+- [Azure Databricks  Runtime 9.1 LTS with Spark 3.1.2](https://docs.microsoft.com/azure/databricks/release-notes/runtime/9.1)
 - (Optional) [SLF4J binding](https://www.slf4j.org/manual.html) is used to associate a
   specific logging framework with SLF4J.
 
