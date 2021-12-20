@@ -10,8 +10,10 @@ import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.boot.json.JsonParseException;
 import org.springframework.boot.json.JsonParser;
 import org.springframework.boot.json.JsonParserFactory;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.lang.NonNull;
+import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -28,6 +30,8 @@ import java.util.stream.Collectors;
  * Note that this class gets invoked before Spring creates the logging subsystem, so
  * we just use System.out.println instead.
  */
+@Service
+@Configuration
 public class VcapProcessor implements EnvironmentPostProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(VcapProcessor.class);
 

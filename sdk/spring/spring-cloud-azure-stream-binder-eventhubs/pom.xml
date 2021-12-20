@@ -34,8 +34,8 @@
   </issueManagement>
 
   <properties>
-    <jacoco.min.linecoverage>0.8</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.6</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.6</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.4</jacoco.min.branchcoverage>
     <skipSpringITs>true</skipSpringITs>
   </properties>
 
