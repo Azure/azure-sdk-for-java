@@ -3,6 +3,8 @@
 #
 # How to use this script.
 #  1. Update `SPRING_BOOT_VERSION` and `SPRING_CLOUD_VERSION` in this script manually.
+#     Note that spring-cloud version should compatible with spring-boot version.
+#     Refs: https://spring.io/projects/spring-cloud
 #  2. Run command `python .\sdk\spring\scripts\get_spring_boot_managed_external_dependencies.py`.
 #  3. Then a file named `spring_boot_SPRING_BOOT_VERSION_managed_external_dependencies.txt` will be created.
 #
