@@ -66,7 +66,7 @@ public class AzureKeyVaultCertificateAutoConfiguration extends AzureServiceConfi
         ObjectProvider<AzureServiceClientBuilderCustomizer<CertificateClientBuilder>> customizers) {
         CertificateClientBuilderFactory factory = new CertificateClientBuilderFactory(properties);
 
-        factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_KEY_VAULT);
+        factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_KEY_VAULT_CERTIFICATES);
         customizers.orderedStream().forEach(factory::addBuilderCustomizer);
         return factory;
     }
