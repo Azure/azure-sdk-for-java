@@ -387,7 +387,7 @@ parameters:
 
 
 stages:
-    - stage: Build for Release
+    - stage: Build_for_Release
       jobs:
           - template: /eng/pipelines/templates/jobs/ci.yml
             parameters:
@@ -420,11 +420,11 @@ stages:
 
 
     # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
-    - ${{if and(ne(variables['Build for Release.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
+    - ${{if and(ne(variables['Build_for_Release.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
           - template: archetype-java-release.yml
             parameters:
                 DependsOn:
-                    - Build for Release
+                    - Build_for_Release
                 ServiceDirectory: ${{ parameters.ServiceDirectory }}
                 SDKType: ${{ parameters.SDKType }}
                 Artifacts: ${{ parameters.Artifacts }}
@@ -434,7 +434,7 @@ stages:
                 TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
                 TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
 
-    - stage: Build for New Version
+    - stage: Build_for_new_Version
       jobs:
           - template: /eng/pipelines/templates/jobs/ci.yml
             parameters:
@@ -472,11 +472,11 @@ stages:
 
 
     # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
-    - ${{if and(ne(variables['Build for New Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
+    - ${{if and(ne(variables['Build_for_new_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
           - template: archetype-java-release.yml
             parameters:
                 DependsOn:
-                    - Build for New Version
+                    - Build_for_new_Version
                 ServiceDirectory: ${{ parameters.ServiceDirectory }}
                 SDKType: ${{ parameters.SDKType }}
                 Artifacts: ${{ parameters.Artifacts }}
@@ -486,7 +486,7 @@ stages:
                 TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
                 TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
 
-    - stage: Build for Last Version
+    - stage: Build_for_Last_Version
       jobs:
           - template: /eng/pipelines/templates/jobs/ci.yml
             parameters:
@@ -524,11 +524,11 @@ stages:
 
 
     # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
-    - ${{if and(ne(variables['Build for Last Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
+    - ${{if and(ne(variables['Build_for_Last_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
           - template: archetype-java-release.yml
             parameters:
                 DependsOn:
-                    - Build for Last Version
+                    - Build_for_Last_Version
                 ServiceDirectory: ${{ parameters.ServiceDirectory }}
                 SDKType: ${{ parameters.SDKType }}
                 Artifacts: ${{ parameters.Artifacts }}
