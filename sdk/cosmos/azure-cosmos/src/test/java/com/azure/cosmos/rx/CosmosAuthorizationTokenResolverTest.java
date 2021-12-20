@@ -89,7 +89,7 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
         };
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void before_TokenResolverTest() {
         this.client = getClientBuilder().buildAsyncClient();
 
@@ -116,7 +116,7 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
         allPermission = userWithAllPermission.createPermission(permissionAllSettings, null).block().getProperties();
     }
 
-    @Test(groups = {"simple"}, dataProvider = "connectionMode", timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, dataProvider = "connectionMode", timeOut = TIMEOUT)
     public void readDocumentWithReadPermission(ConnectionMode connectionMode) {
         InternalObjectNode docDef = getDocumentDefinition();
         InternalObjectNode doc = createdCollection.createItem(docDef).block().getItem();
@@ -142,7 +142,7 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"simple"}, dataProvider = "connectionMode", timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, dataProvider = "connectionMode", timeOut = TIMEOUT)
     public void deleteDocumentWithReadPermission(ConnectionMode connectionMode) {
         InternalObjectNode docDef = getDocumentDefinition();
         InternalObjectNode doc = createdCollection.createItem(docDef).block().getItem();
@@ -167,7 +167,7 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"simple"}, dataProvider = "connectionMode", timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, dataProvider = "connectionMode", timeOut = TIMEOUT)
     public void writeDocumentWithReadPermission(ConnectionMode connectionMode) {
         InternalObjectNode docDef = getDocumentDefinition();
         CosmosAsyncClient asyncClientWithTokenResolver = null;
@@ -190,7 +190,7 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"simple"}, dataProvider = "connectionMode", timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, dataProvider = "connectionMode", timeOut = TIMEOUT)
     public void writeDocumentWithAllPermission(ConnectionMode connectionMode) {
         InternalObjectNode docDef = getDocumentDefinition();
 
@@ -215,7 +215,7 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"simple"}, dataProvider = "connectionMode", timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, dataProvider = "connectionMode", timeOut = TIMEOUT)
     public void deleteDocumentWithAllPermission(ConnectionMode connectionMode) {
         InternalObjectNode docDef = getDocumentDefinition();
         InternalObjectNode doc = createdCollection.createItem(docDef).block().getItem();
@@ -240,7 +240,7 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"simple"}, dataProvider = "connectionMode", timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, dataProvider = "connectionMode", timeOut = TIMEOUT)
     public void readCollectionWithReadPermission(ConnectionMode connectionMode) {
         CosmosAsyncClient asyncClientWithTokenResolver = null;
 
@@ -262,7 +262,7 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"simple"}, dataProvider = "connectionMode", timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, dataProvider = "connectionMode", timeOut = TIMEOUT)
     public void deleteCollectionWithReadPermission(ConnectionMode connectionMode) throws InterruptedException{
         CosmosAsyncClient asyncClientWithTokenResolver = null;
 
@@ -285,7 +285,7 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
     }
 
     // TBD: Validate if deleting the current container using a resource token is allowed and expected.
-//    @Test(groups = {"simple"}, dataProvider = "connectionMode", timeOut = TIMEOUT)
+//    @Test(groups = { "emulator" }, dataProvider = "connectionMode", timeOut = TIMEOUT)
     public void deleteCollectionWithAllPermission(ConnectionMode connectionMode) throws InterruptedException{
         InternalObjectNode docDef = getDocumentDefinition();
         InternalObjectNode doc = createdCollection.createItem(docDef).block().getItem();
@@ -310,7 +310,7 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"simple"}, dataProvider = "connectionMode", timeOut = 6000000)
+    @Test(groups = { "emulator" }, dataProvider = "connectionMode", timeOut = 6000000)
     public void createAndExecuteSprocWithWritePermission(ConnectionMode connectionMode) throws InterruptedException {
         CosmosAsyncClient asyncClientWithTokenResolver = null;
 
@@ -355,7 +355,7 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"simple"}, dataProvider = "connectionMode", timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, dataProvider = "connectionMode", timeOut = TIMEOUT)
     public void readDocumentsWithAllPermission(ConnectionMode connectionMode) {
         InternalObjectNode docDef1 = getDocumentDefinition();
         InternalObjectNode docDef2 = getDocumentDefinition();
@@ -401,7 +401,7 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"simple"}, dataProvider = "connectionMode", timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, dataProvider = "connectionMode", timeOut = TIMEOUT)
     public void readChangeFeedWithAllPermission(ConnectionMode connectionMode) throws InterruptedException {
         String uuid = UUID.randomUUID().toString();
         String uuid1 = UUID.randomUUID().toString();
@@ -461,7 +461,7 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"simple"}, dataProvider = "connectionMode", timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, dataProvider = "connectionMode", timeOut = TIMEOUT)
     public void verifyRuntimeExceptionWhenUserModifiesProperties(ConnectionMode connectionMode) throws InterruptedException {
         CosmosAsyncClient asyncClientWithTokenResolver = null;
 
@@ -494,7 +494,7 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
     }
 
 
-    @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         client.close();
     }

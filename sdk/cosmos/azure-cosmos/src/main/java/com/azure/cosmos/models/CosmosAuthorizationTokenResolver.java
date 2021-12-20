@@ -17,6 +17,7 @@ import java.util.Map;
  */
 @Beta(value = Beta.SinceVersion.V4_24_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public interface CosmosAuthorizationTokenResolver {
+
     /**
      * This method will consume the request information and based on that it will generate the authorization token.
      * @param properties the user properties.
