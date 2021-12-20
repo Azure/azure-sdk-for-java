@@ -11,7 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 /**
  * Holds information on Feature Management properties and can check if a given feature is enabled.
  */
-@ConfigurationProperties(prefix = "feature-variant")
+@ConfigurationProperties(prefix = "feature-variants")
 public class FeatureVariantProperties extends HashMap<String, Object> {
 
     private static final long serialVersionUID = -1132599128116263392L;

@@ -1,10 +1,8 @@
 # Spring Cloud for Azure feature management client library for Java
 
-## Key concepts
+## Feature Management
 
-### Feature Management
-
-Feature flags provide a way for Spring Boot applications to turn features on or off dynamically. Developers can use feature flags in simple use cases like conditional statement to more advanced scenarios like conditionally adding routes. Feature Flags are not dependent of any spring-cloud-azure dependencies, but may be used in conjunction with spring-cloud-azure-appconfiguration-config.
+The Azure Spring Cloud Feature Management library enables developers to use feature flags and dynamic features inside of their Spring Boot applications. Feature flags can be used to turn features on or off dynamically. Developers can use feature flags in simple use cases like conditional statement to more advanced scenarios like conditionally adding routes. Dynamic features can be used to select different variants of a feature's configuration based off of some state. Feature flags and dynamic features are not dependent of any azure-spring-cloud dependencies, but may be used in conjunction with azure-spring-cloud-appconfiguration-config.
 
 Here are some of the benefits of using this library:
 
@@ -13,10 +11,11 @@ Here are some of the benefits of using this library:
   * Supports application.yml file feature flag setup
 * Feature Flag lifetime management
   * Configuration values can change in real-time, feature flags can be consistent across the entire request
+* Use different variants of a feature in different circumstances
 
 ### Feature Flags
 
-Feature flags are composed of two parts, a name and a list of feature-filters that are used to turn the feature on.
+Feature flags can be either on 0r off. They are composed of two parts, a name and a list of feature-filters that are used to turn the feature on.
 
 ### Feature Filters
 
@@ -261,17 +260,27 @@ Options are available to customize how targeting evaluation is performed across 
 
 ## Dynamic Features
 
-Using `FeatureManager`'s `getVariantAsync` method allows for returning of dynamic features based off a feature evaluator. Usage:
+Dynamic features can have multiple values ranging from objects, to strings, to integers and so on. A developer is free to choose what type should be returned when the value of a dynamic feature is requested. They are also free to choose how many options, known as variants, are available to select from.
+
+Feature variants are the different versions of a feature that could be returned when the value of a dynamic feature is requested. Beyond the value of the feature, a feature variant contains information describing under what circumstances it should be returned over other available variants.
+
+A feature variant assigner is a component that uses contextual information within an application to decide which feature variant should be chosen when a variant of a dynamic feature is requested.
+
+When new features are being added to an application there may come a time when a feature has multiple different proposed design options. The different options for the design of a feature can be referred to as variants of the feature, and the feature itself can be referred to as a dynamic feature. A dynamic feature is a feature that can have different values (variants) extending beyond a simple on/off flag. A common pattern when rolling out dynamic features is to surface the different variants of a feature to different segments of a user base and to see how each variant is perceived. The most well received variant could be the one that gets rolled out to the entire user base, or if necessary the feature could be scrapped. There could be other reasons to expose different variants of a feature, for example using a different version every day of the week. The goal of this method is to establish a model that can help solve these common patterns that occur when rolling out features that can have different variants.
+
+### Usage
+
+Dynamic features are accessible through `FeatureManager`'s `getVariantAsync`.
 
 ```java
 featureManager.getVariantAsync("DiscountBanner", DiscountBanner.class)
 ```
 
-This example shows requesting a Dynamic Feature named "DiscountBanner", it requires the name of the Dynamic Feature and the type that needs to be returned.
+This example shows requesting a dynamic feature named "DiscountBanner". The request requires the name of the dynamic feature and the type that needs to be returned.
 
 ### Defining a Dynamic Feature
 
-A Dynamic Feature can be defined in the local configuration file using the following format.
+A dynamic feature can be defined in the local configuration file using the following format.
 
 ```yaml
 feature-management:
@@ -284,14 +293,18 @@ feature-management:
           default: true
           configuration-reference: "DiscountBanner:Big"
           assignment-parameters:
-            ...
+            Audience:
+              users:
+                - janedoe
         -
           name: Small
           default: false
           configuration-reference: "DiscountBanner:Small"
           assignment-parameters:
-            ...
-feature-variant:
+            Audience:
+              users:
+                - johndoe
+feature-variants:
   DiscountBanner:
     Big:
       size: 400
@@ -301,13 +314,15 @@ feature-variant:
       color: "#DDD"
 ```
 
-A Dynamic Feature has two main parts, the assigner and a list of variants. The assigner in this case `feature-management.DiscountBanner.assigner` which is pointing the `TargetingEvaluator` `Microsoft.Targeting` that will evaluate the list of variants and choose which configuration-reference will be used. Each variant has: a name, configuration-reference, and assignment-parameters. One of the listed variants needs to be configured as the default variant for the feature. The name field is meta data to reference the variant and just needs to be unique. The configuration-reference is a reference to the configurations defined under `feature-variant` in the configuration file. **Note:** the colon notation is required when denoting parts of the configuration. If it is needed multiple colons can be used to reference sub configurations. i.e. `DiscountBanner:Big:size` would return the `Integer` 400.
+A Dynamic Feature has two main parts, the assigner and a list of variants. The assigner used by a dynamic feature is specified by the `feature-management.DiscountBanner.assigner` property. In this example `Microsoft.Targeting` is specified which means that the `TargetingEvaluator` will be used. `TargetingEvaluator` will evaluate the list of variants and choose which configuration-reference will be used. Each variant has: a name, configuration-reference, and assignment-parameters. One of the listed variants needs to be configured as the default variant for the feature. The name field is unique identifier for the variant. The configuration-reference is a reference to the configurations defined under `feature-variant` in the configuration file.
 
-The assignment-parameters takes in a `Map` which contains the evaluation criteria. This enables custom assigners to be created. In the case of `Microsoft.Targeting` it contains the `Audience` object.
+**Note:** the colon notation is required when denoting parts of the configuration. If it is needed multiple colons can be used to reference sub configurations. i.e. `DiscountBanner:Big:size` would return the `Integer` 400.
+
+The assignment-parameters takes in a `Map` which contains the evaluation criteria. This enables custom assigners to be created. In the case of `Microsoft.Targeting` it contains the [Audience](./src/main/java/com/azure/spring/cloud/feature/manager/targeting/Audience.java) object.
 
 #### Targeting Evaluator
 
-`TargetingEvaluator` is a built-in assigner, which can be enabled by creating the `Microsoft.Targeting` Bean.
+`TargetingEvaluator` is a provided class, which can be enabled by creating the `Microsoft.Targeting` Bean.
 
 ```java
 @Bean(name = "Microsoft.Targeting")
@@ -321,12 +336,12 @@ public TargetingEvaluator targetingEvaluator(TargetingContextImpl context) {
 
 The `Microsoft.Targeting` assigner uses three evaluation criteria to assign a variant; users, groups, and defaultRolloutPercentage. Assignment requires the definition of the `ITargetingContextAccessor` where a user defines how the user and group parameters are defined.
 
-If a users is listed in a variant then they are automatically assigned to that variant. If they are in more than one variant they are returned to the first listed variant.
-
-Groups have a rollout percentage. Using the user and group information, user id and group name. This is combined so users are bucketed into parts of the rollout. This enables a rollout where 10% of a group gets a variant, then when it increases to 50% that 10% still gets the variant with an additional 40% of the group now getting the variant. This can be done by changing:
+Users are assigned to variants based on the variants defined Audience.
 
 ```yml
 Audience:
+  users:
+     - janedoe
   groups:
     -
         name: "Dev"
@@ -334,16 +349,9 @@ Audience:
   defaultRolloutPercentage: 0
 ```
 
-to
+If a users is listed as a user in a variant's audience they will be automatically assigned to that variant. If they are in more than one variant they are returned to the first listed variant.
 
-```yml
-Audience:
-  groups:
-    -
-        name: "Dev"
-        rolloutPercentage: 50
-  defaultRolloutPercentage: 0
-```
+Groups have a rollout percentage. Using the user and group information, user id and group name. This is combined so users are bucketed into parts of the rollout. This enables a rollout where 10% of a group gets a variant, then when it increases to 50% that 10% still gets the variant with an additional 40% of the group now getting the variant.
 
 If Variant A has Group "Dev" which is set to 50%, and Variant B also has Group "Dev" which is also set to 50% then, if you need to increase Variant A to have 60% for "Dev" then Variant B needs to be decreased to 40% as the max rollout percentage is 100. Which looks like:
 
