@@ -318,7 +318,7 @@ A Dynamic Feature has two main parts, the assigner and a list of variants. The a
 
 **Note:** the colon notation is required when denoting parts of the configuration. If it is needed multiple colons can be used to reference sub configurations. i.e. `DiscountBanner:Big:size` would return the `Integer` 400.
 
-The assignment-parameters takes in a `Map` which contains the evaluation criteria. This enables custom assigners to be created. In the case of `Microsoft.Targeting` it contains the [Audience](./src/main/java/com/azure/spring/cloud/feature/manager/targeting/Audience.java) object.
+The assignment-parameters takes in a `Map` which contains the evaluation criteria. This enables custom assigners to be created. In the case of `Microsoft.Targeting` it contains the [Audience](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/appconfiguration/azure-spring-cloud-feature-management/src/main/java/com/azure/spring/cloud/feature/manager/targeting/Audience.java) object.
 
 #### Targeting Evaluator
 
