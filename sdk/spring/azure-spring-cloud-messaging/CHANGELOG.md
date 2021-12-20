@@ -10,6 +10,10 @@
 
 ### Other Changes
 
+### Dependency Upgrades
+- Upgrade to [spring-boot-dependencies:2.6.1](https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-dependencies/2.6.1/spring-boot-dependencies-2.6.1.pom).
+- Upgrade to [spring-cloud-dependencies:2.5.4](https://repo1.maven.org/maven2/org/springframework/cloud/spring-cloud-dependencies/2021.0.0/spring-cloud-dependencies-2021.0.0.pom).
+
 ## 2.11.0 (2021-11-24)
 
 This release is compatible with Spring Boot 2.5.0 - 2.5.4 and Spring Cloud 2020.0.3.
