@@ -1,4 +1,6 @@
 ## Release History
+### 4.6.0-beta.1 (Unreleased)
+
 ### 4.5.2 (2021-12-17)
 #### Key Bug Fixes
 * Fixed an issue in the Java SDK that would expose request timeouts from the Gateway endpoint with StatusCode==0 instead of 408. This resulted in not retrying these transient errors in the Spark connector as expected. - See [PR 26049](https://github.com/Azure/azure-sdk-for-java/pull/26049)
