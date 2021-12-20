@@ -25,7 +25,7 @@ final class JacksonVersion {
     private static final String TROUBLESHOOTING_DOCS_LINK = "https://aka.ms/azsdk/java/dependency/troubleshoot";
 
     private static final SemanticVersion MIN_SUPPORTED_VERSION = SemanticVersion.parse("2.10.0");
-    private static final SemanticVersion MAX_SUPPORTED_VERSION = SemanticVersion.parse("2.12.5");
+    private static final SemanticVersion MAX_SUPPORTED_VERSION = SemanticVersion.parse("2.13.0");
 
     private static final String AZURE_CORE_PROPERTIES_NAME = "azure-core.properties";
     private static final String AZURE_CORE_PROPERTIES_VERSION_KEY = "version";
