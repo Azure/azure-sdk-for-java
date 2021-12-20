@@ -15,7 +15,7 @@ from log import log
 SPRING_BOOT_DEPENDENCIES_VERSION = '2.6.1'
 
 def add_dependency_management(c1,c2):
-    for root, dirs, files in os.walk("./sdk/spring"):
+    for root, _, files in os.walk("./sdk/spring"):
     # for root, _, files in os.walk("D:/java/azure-sdk-for-java/sdk/spring/"):
         for file_name in files:
             file_path = root + os.sep + file_name
