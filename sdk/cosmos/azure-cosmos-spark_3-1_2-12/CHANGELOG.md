@@ -1,6 +1,11 @@
 ## Release History
 ### 4.6.0-beta.1 (Unreleased)
 
+### 4.5.2 (2021-12-17)
+#### Key Bug Fixes
+* Fixed an issue in the Java SDK that would expose request timeouts from the Gateway endpoint with StatusCode==0 instead of 408. This resulted in not retrying these transient errors in the Spark connector as expected. - See [PR 26049](https://github.com/Azure/azure-sdk-for-java/pull/26049)
+* Fixed a bug where bulk responses with mixed results don't handle 400/409 for individual item operations properly. This resulted in silently ignoring these 400/409 errors - the Spark job (for example to Upsert documents) completed "successfully" (because the 400s were silently ignored) without actually upserting the documents. This fix ensures that these errors are thrown, and the Spark job fails. - See [PR 26069](https://github.com/Azure/azure-sdk-for-java/pull/26069)
+
 ### 4.5.1 (2021-12-14)
 #### Key Bug Fixes
 * Fixed an issue that can cause hangs when bulk-ingesting data into Cosmos containers with more than 255 physical partitions - See [PR 26017](https://github.com/Azure/azure-sdk-for-java/pull/26017)
