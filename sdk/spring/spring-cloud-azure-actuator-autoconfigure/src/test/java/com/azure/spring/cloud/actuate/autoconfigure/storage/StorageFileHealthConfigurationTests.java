@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class StorageFileHealthConfigurationTests {
+class StorageFileHealthConfigurationTests {
 
     private static final String MOCK_URL = "https://example.org/bigly_fake_url";
 

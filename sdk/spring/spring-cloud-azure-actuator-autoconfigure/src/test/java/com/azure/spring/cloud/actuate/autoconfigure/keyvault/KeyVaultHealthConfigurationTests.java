@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class KeyVaultHealthConfigurationTests {
+class KeyVaultHealthConfigurationTests {
 
     private static final String ENDPOINT = "https:/%s.vault.azure.net/";
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()

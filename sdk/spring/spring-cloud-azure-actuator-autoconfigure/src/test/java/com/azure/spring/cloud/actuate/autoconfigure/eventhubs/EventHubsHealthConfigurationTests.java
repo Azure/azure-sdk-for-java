@@ -3,9 +3,9 @@
 
 package com.azure.spring.cloud.actuate.autoconfigure.eventhubs;
 
+import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.spring.cloud.actuate.eventhubs.EventHubsHealthIndicator;
 import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsClientBuilderConfiguration;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class EventHubsHealthConfigurationTests {
+class EventHubsHealthConfigurationTests {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withPropertyValues(
@@ -24,8 +24,8 @@ public class EventHubsHealthConfigurationTests {
             "spring.cloud.azure.eventhubs.producer.namespace=test-namespace"
         )
         .withBean(AzureGlobalProperties.class)
+        .withBean(EventHubClientBuilder.class)
         .withConfiguration(AutoConfigurations.of(AzureEventHubsAutoConfiguration.class,
-            AzureEventHubsClientBuilderConfiguration.class,
             EventHubsHealthConfiguration.class));
 
     @Test

@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class StorageQueueHealthConfigurationTests {
+class StorageQueueHealthConfigurationTests {
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withPropertyValues("spring.cloud.azure.storage.queue.account-name=test")
         .withBean(AzureGlobalProperties.class)

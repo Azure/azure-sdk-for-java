@@ -15,7 +15,7 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
-public class CosmosHealthConfigurationTests {
+class CosmosHealthConfigurationTests {
 
     private static final String TEST_ENDPOINT = "https://test.https.documents.azure.com:443/";
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()

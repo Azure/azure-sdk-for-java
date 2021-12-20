@@ -12,10 +12,10 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class AppConfigurationHealthConfigurationTests {
+class AppConfigurationHealthConfigurationTests {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withPropertyValues("spring.cloud.azure.appconfiguration.endpoint=https://moaryc-appconfig.azconfig.io")
+        .withPropertyValues("spring.cloud.azure.appconfiguration.endpoint=https://test-appconfig.azconfig.io")
         .withBean(AzureGlobalProperties.class)
         .withConfiguration(AutoConfigurations.of(AzureAppConfigurationAutoConfiguration.class, AppConfigurationHealthConfiguration.class));
 

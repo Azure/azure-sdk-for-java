@@ -24,7 +24,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.eventhubs", name = { "connection-string", "namespace" })
 @ConditionalOnProperty(prefix = "spring.cloud.azure.eventhubs", name = "event-hub-name")
-public class AzureEventHubsClientBuilderConfiguration {
+class AzureEventHubsClientBuilderConfiguration {
 
     @Bean
     @ConditionalOnMissingBean

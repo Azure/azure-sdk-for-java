@@ -45,11 +45,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
-/**
- * Test cases are defined in super class
- *
- * @author Warren Zhu
- */
 @Disabled("Not finished yet")
 public class EventHubPartitionBinderTests extends
     AzurePartitionBinderTests<EventHubsTestBinder, ExtendedConsumerProperties<EventHubsConsumerProperties>,
