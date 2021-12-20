@@ -7,6 +7,7 @@ import com.azure.core.util.Context;
 import com.azure.storage.file.share.ShareClient;
 import com.azure.storage.file.share.ShareFileClient;
 import com.azure.storage.file.share.ShareServiceClient;
+import com.azure.storage.file.share.StorageFileOutputStream;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareStorageException;
 import java.io.File;
@@ -76,6 +77,13 @@ public class StorageFileResource extends AzureStorageResource {
         this.contentType = StringUtils.hasText(contentType) ? contentType : getContentType(location);
     }
 
+    /**
+     * Checks whether an Azure Storage File can be opened,
+     * if the file is not existed, and autoCreateFiles==true,
+     * it will create the file on Azure Storage.
+     * @return A {@link StorageFileOutputStream} object used to write data to the file.
+     * @throws IOException when fail to open the output stream.
+     */
     @Override
     public OutputStream getOutputStream() throws IOException {
         try {
@@ -93,6 +101,10 @@ public class StorageFileResource extends AzureStorageResource {
         }
     }
 
+    /**
+     * Determines if the file this client represents exists in the cloud.
+     * @return Flag indicating existence of the file.
+     */
     @Override
     public boolean exists() {
         return this.shareClient.exists() && shareFileClient.exists();
@@ -103,39 +115,68 @@ public class StorageFileResource extends AzureStorageResource {
         return new URL(this.shareFileClient.getFileUrl());
     }
 
+    /**
+     * This implementation throws a FileNotFoundException, assuming
+     * that the resource cannot be resolved to an absolute file path.
+     */
     @Override
     public File getFile() {
         throw new UnsupportedOperationException(getDescription() + " cannot be resolved to absolute file path");
     }
 
+    /**
+     * @return The number of bytes present in the response body.
+     */
     @Override
     public long contentLength() {
         return this.shareFileClient.getProperties().getContentLength();
     }
 
+    /**
+     *
+     * @return Last time the directory was modified.
+     */
     @Override
     public long lastModified() {
         return this.shareFileClient.getProperties().getLastModified().toEpochSecond() * 1000;
     }
 
+    /**
+     * Create relative resource from current location.
+     * @param relativePath the relative path.
+     * @return StorageFileResource with relative path from current location.
+     */
     @Override
     public Resource createRelative(String relativePath) {
         String newLocation = this.location + "/" + relativePath;
         return new StorageFileResource(this.shareServiceClient, newLocation, autoCreateFiles);
     }
 
+    /**
+     * @return The name of the file.
+     */
     @Override
     public String getFilename() {
         final String[] split = this.shareFileClient.getFilePath().split("/");
         return split[split.length - 1];
     }
 
+    /**
+     * @return a description for this resource,
+     * to be used for error output when working with the resource.
+     */
     @Override
     public String getDescription() {
         return String.format("Azure storage account file resource [container='%s', file='%s']",
             this.shareFileClient.getShareName(), this.getFilename());
     }
 
+    /**
+     * Opens a file input stream to download the file.
+     *
+     * @return An <code>InputStream</code> object that represents the stream to use for reading from the file.
+     * @throws IOException If a storage service error occurred or not existed.
+     */
     @Override
     public InputStream getInputStream() throws IOException {
         try {

@@ -7,7 +7,7 @@ package com.azure.spring.core.resource;
  * Azure Storage Account types.
  *
  * @author Warren Zhu
- * @see <a href="https://docs.microsoft.com/en-us/azure/storage/common/storage-account-overview">StorageAccount</a>
+ * @see <a href="https://docs.microsoft.com/azure/storage/common/storage-account-overview">StorageAccount</a>
  */
 public enum StorageType {
     /**

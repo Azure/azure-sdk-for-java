@@ -17,6 +17,10 @@ public class NamespaceProperties extends CommonProperties implements EventHubsNa
         return sharedConnection;
     }
 
+    /**
+     * Set if to enable shared connection.
+     * @param sharedConnection if to enable shared connection.
+     */
     public void setSharedConnection(Boolean sharedConnection) {
         this.sharedConnection = sharedConnection;
     }

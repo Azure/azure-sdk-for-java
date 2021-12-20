@@ -27,7 +27,7 @@ import java.util.Optional;
 
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.DISABLE_TRACING_KEY;
-import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 import static com.azure.spring.tracing.sleuth.implementation.TraceContextUtil.isValid;
 
 /**
@@ -48,6 +48,11 @@ public class SleuthHttpPolicy implements HttpPipelinePolicy {
     private static final String REQUEST_ID = "x-ms-request-id";
     private static final String AZ_NAMESPACE_KEY = "az.namespace";
 
+    /**
+     * Creates a new instance of {@link SleuthHttpPolicy}.
+     * @param tracer the tracer
+     * @param propagator the propagator
+     */
     public SleuthHttpPolicy(Tracer tracer, Propagator propagator) {
         Assert.notNull(tracer, "tracer must not be null!");
         Assert.notNull(propagator, "propagator must not be null!");
@@ -61,7 +66,7 @@ public class SleuthHttpPolicy implements HttpPipelinePolicy {
             return next.process();
         }
 
-        Span parentSpan = (Span) context.getData(PARENT_SPAN_KEY).orElse(tracer.currentSpan());
+        Span parentSpan = (Span) context.getData(PARENT_TRACE_CONTEXT_KEY).orElse(tracer.currentSpan());
         HttpRequest request = context.getHttpRequest();
 
         // Build new child span representing this outgoing request.

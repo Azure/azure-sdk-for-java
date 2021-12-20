@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.security.keyvault.certificates.CertificateClientBuilder;
 import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
@@ -32,6 +33,10 @@ public class CertificateClientBuilderFactory extends AbstractAzureHttpClientBuil
 
     private final KeyVaultCertificateProperties certificateProperties;
 
+    @Override
+    protected BiConsumer<CertificateClientBuilder, ClientOptions> consumeClientOptions() {
+        return CertificateClientBuilder::clientOptions;
+    }
 
     public CertificateClientBuilderFactory(KeyVaultCertificateProperties certificateProperties) {
         this.certificateProperties = certificateProperties;

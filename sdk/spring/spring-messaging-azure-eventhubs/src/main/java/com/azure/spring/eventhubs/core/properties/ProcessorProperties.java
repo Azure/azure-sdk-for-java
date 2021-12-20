@@ -40,6 +40,10 @@ public class ProcessorProperties extends ConsumerProperties implements EventHubs
         return trackLastEnqueuedEventProperties;
     }
 
+    /**
+     * Set whether to track the last enqueued event properties.
+     * @param trackLastEnqueuedEventProperties whether to track the last enqueued event properties.
+     */
     public void setTrackLastEnqueuedEventProperties(Boolean trackLastEnqueuedEventProperties) {
         this.trackLastEnqueuedEventProperties = trackLastEnqueuedEventProperties;
     }
@@ -49,6 +53,10 @@ public class ProcessorProperties extends ConsumerProperties implements EventHubs
         return partitionOwnershipExpirationInterval;
     }
 
+    /**
+     * Set the partition ownership expiration interval.
+     * @param partitionOwnershipExpirationInterval the partition ownership expiration interval.
+     */
     public void setPartitionOwnershipExpirationInterval(Duration partitionOwnershipExpirationInterval) {
         this.partitionOwnershipExpirationInterval = partitionOwnershipExpirationInterval;
     }

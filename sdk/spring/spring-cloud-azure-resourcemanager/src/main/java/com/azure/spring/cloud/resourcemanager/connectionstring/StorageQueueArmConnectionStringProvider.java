@@ -17,6 +17,12 @@ public class StorageQueueArmConnectionStringProvider extends AbstractArmConnecti
 
     private final String accountName;
 
+    /**
+     * Creates a new instance of {@link StorageQueueArmConnectionStringProvider}.
+     * @param resourceManager the azure resource manager
+     * @param resourceMetadata the azure resource metadata
+     * @param accountName the accountName
+     */
     public StorageQueueArmConnectionStringProvider(AzureResourceManager resourceManager,
                                                    AzureResourceMetadata resourceMetadata,
                                                    String accountName) {

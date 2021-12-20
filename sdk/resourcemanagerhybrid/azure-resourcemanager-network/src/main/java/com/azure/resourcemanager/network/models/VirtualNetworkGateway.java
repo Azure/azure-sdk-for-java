@@ -191,6 +191,12 @@ public interface VirtualNetworkGateway
 
         /** The stage of virtual network gateway definition allowing to specify SKU. */
         interface WithSku {
+            /**
+             * Specifies the SKU.
+             *
+             * @param skuName the SKU
+             * @return the next stage of the definition
+             */
             WithCreate withSku(VirtualNetworkGatewaySkuName skuName);
         }
 
@@ -230,6 +236,11 @@ public interface VirtualNetworkGateway
     interface UpdateStages {
         /** The stage of virtual network gateway update allowing to change SKU. */
         interface WithSku {
+            /**
+             * Specifies the SKU.
+             * @param skuName the SKU
+             * @return the next stage of the update
+             */
             Update withSku(VirtualNetworkGatewaySkuName skuName);
         }
 
@@ -265,6 +276,11 @@ public interface VirtualNetworkGateway
              */
             PointToSiteConfiguration.DefinitionStages.Blank<Update> definePointToSiteConfiguration();
 
+            /**
+             * Begins the update of point-to-site configuration to be added to this virtual network gateway.
+             *
+             * @return the first stage of the point-to-site configuration update
+             */
             PointToSiteConfiguration.Update updatePointToSiteConfiguration();
         }
     }

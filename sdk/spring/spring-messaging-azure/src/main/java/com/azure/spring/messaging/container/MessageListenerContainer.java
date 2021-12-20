@@ -9,8 +9,6 @@ import org.springframework.context.SmartLifecycle;
 /**
  * Internal abstraction used by the framework representing a message
  * listener container.
- *
- * @author Warren Zhu
  */
 public interface MessageListenerContainer extends SmartLifecycle {
 

@@ -8,14 +8,22 @@ import org.springframework.core.NestedRuntimeException;
 /**
  * The conversion specific {@link NestedRuntimeException}.
  *
- * @author Warren Zhu
  */
-public class ConversionException extends NestedRuntimeException {
+public final class ConversionException extends NestedRuntimeException {
 
+    /**
+     * Construct a {@code ConversionException} with the specified detail message.
+     * @param msg the specified detail message.
+     */
     public ConversionException(String msg) {
         super(msg);
     }
 
+    /**
+     * Construct a {@code NestedRuntimeException} with the specified detail message and nested exception.
+     * @param msg the specified detail message.
+     * @param cause the nested exception.
+     */
     public ConversionException(String msg, Throwable cause) {
         super(msg, cause);
     }

@@ -254,6 +254,12 @@ public interface Ipv6PeeringConfig extends HasInnerModel<Ipv6ExpressRouteCircuit
         interface Blank<ParentT> extends UpdateDefinitionStages.WithAdvertisedPublicPrefixes<ParentT> {
         }
 
+        /**
+         * The stage of Cross Connection Peering IPv6 configuration definition allowing to specify the advertised public
+         * prefixes.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         */
         interface WithAdvertisedPublicPrefixes<ParentT> {
             /**
              * Specify advertised prefixes: sets a list of all prefixes that are planned to advertise over the BGP

@@ -613,7 +613,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return backup policy information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BackupPolicyInner>, BackupPolicyInner> beginCreateAsync(
         String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyInner body) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -621,7 +621,11 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
         return this
             .client
             .<BackupPolicyInner, BackupPolicyInner>getLroResult(
-                mono, this.client.getHttpPipeline(), BackupPolicyInner.class, BackupPolicyInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                BackupPolicyInner.class,
+                BackupPolicyInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -637,7 +641,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return backup policy information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BackupPolicyInner>, BackupPolicyInner> beginCreateAsync(
         String resourceGroupName,
         String accountName,
@@ -665,7 +669,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return backup policy information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupPolicyInner>, BackupPolicyInner> beginCreate(
         String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyInner body) {
         return beginCreateAsync(resourceGroupName, accountName, backupPolicyName, body).getSyncPoller();
@@ -684,7 +688,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return backup policy information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupPolicyInner>, BackupPolicyInner> beginCreate(
         String resourceGroupName,
         String accountName,
@@ -916,7 +920,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return backup policy information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BackupPolicyInner>, BackupPolicyInner> beginUpdateAsync(
         String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyPatch body) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -924,7 +928,11 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
         return this
             .client
             .<BackupPolicyInner, BackupPolicyInner>getLroResult(
-                mono, this.client.getHttpPipeline(), BackupPolicyInner.class, BackupPolicyInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                BackupPolicyInner.class,
+                BackupPolicyInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -940,7 +948,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return backup policy information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BackupPolicyInner>, BackupPolicyInner> beginUpdateAsync(
         String resourceGroupName,
         String accountName,
@@ -968,7 +976,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return backup policy information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupPolicyInner>, BackupPolicyInner> beginUpdate(
         String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyPatch body) {
         return beginUpdateAsync(resourceGroupName, accountName, backupPolicyName, body).getSyncPoller();
@@ -987,7 +995,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return backup policy information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupPolicyInner>, BackupPolicyInner> beginUpdate(
         String resourceGroupName,
         String accountName,
@@ -1196,14 +1204,15 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String accountName, String backupPolicyName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, accountName, backupPolicyName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1218,7 +1227,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String accountName, String backupPolicyName, Context context) {
         context = this.client.mergeContext(context);
@@ -1240,7 +1249,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String backupPolicyName) {
         return beginDeleteAsync(resourceGroupName, accountName, backupPolicyName).getSyncPoller();
@@ -1258,7 +1267,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String backupPolicyName, Context context) {
         return beginDeleteAsync(resourceGroupName, accountName, backupPolicyName, context).getSyncPoller();

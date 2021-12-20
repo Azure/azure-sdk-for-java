@@ -9,7 +9,6 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 
-import java.time.OffsetDateTime;
 import java.util.Comparator;
 import java.util.Locale;
 import java.util.Map;
@@ -55,14 +54,18 @@ public class SasImplUtils {
     /**
      * Formats date time SAS query parameters.
      *
-     * @param dateTime The SAS date time.
+     * @param timeAndFormat The SAS date time.
      * @return A String representing the SAS date time.
      */
-    public static String formatQueryParameterDate(OffsetDateTime dateTime) {
-        if (dateTime == null) {
+    public static String formatQueryParameterDate(TimeAndFormat timeAndFormat) {
+        if (timeAndFormat == null || timeAndFormat.getDateTime() == null) {
             return null;
         } else {
-            return Constants.ISO_8601_UTC_DATE_FORMATTER.format(dateTime);
+            if (timeAndFormat.getFormatter() == null) {
+                return Constants.ISO_8601_UTC_DATE_FORMATTER.format(timeAndFormat.getDateTime());
+            } else {
+                return timeAndFormat.getFormatter().format(timeAndFormat.getDateTime());
+            }
         }
     }
 

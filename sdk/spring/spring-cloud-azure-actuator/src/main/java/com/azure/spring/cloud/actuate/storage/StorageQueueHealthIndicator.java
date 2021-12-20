@@ -22,6 +22,10 @@ public class StorageQueueHealthIndicator implements HealthIndicator {
     private final QueueServiceAsyncClient internalClient;
     private Duration timeout = DEFAULT_HEALTH_CHECK_TIMEOUT;
 
+    /**
+     * Creates a new instance of {@link StorageQueueHealthIndicator}.
+     * @param queueServiceClient the queue service client
+     */
     public StorageQueueHealthIndicator(QueueServiceAsyncClient queueServiceClient) {
         internalClient = queueServiceClient;
     }

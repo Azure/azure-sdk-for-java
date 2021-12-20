@@ -318,7 +318,19 @@ public interface ApplicationGatewayUrlPathMap
             WithPathRule<ParentT> toBackend(String name);
         }
 
+        /**
+         * The stage of an application gateway URL path map definition allowing to specify the path rule to associate
+         * the URL path map with.
+         *
+         * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
+         */
         interface WithPathRule<ParentT> {
+            /**
+             * Associates the URL path map with a path rule on this application gateway.
+             *
+             * @param name the name of an existing path rule
+             * @return the next stage of the definition
+             */
             ApplicationGatewayPathRule.UpdateDefinitionStages.Blank<WithAttach<ParentT>> definePathRule(String name);
         }
 

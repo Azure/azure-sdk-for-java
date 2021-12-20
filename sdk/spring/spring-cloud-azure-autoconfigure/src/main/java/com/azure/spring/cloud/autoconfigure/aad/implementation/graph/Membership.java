@@ -13,7 +13,8 @@ import java.util.Objects;
 
 /**
  * This class is used to deserialize json to object.
- * Refs: https://docs.microsoft.com/en-us/previous-versions/azure/ad/graph/api/api-catalog
+ *
+ * @see <a href="https://docs.microsoft.com/en-us/previous-versions/azure/ad/graph/api/api-catalog">reference doc</a>
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Membership implements Serializable {
@@ -83,6 +84,12 @@ public class Membership implements Serializable {
         return objectID;
     }
 
+    /**
+     * Determines whether the specified object is equal to the current object.
+     *
+     * @param o the current object
+     * @return true if the specified object is equal to the current object; otherwise, false.
+     */
     @Override
     public boolean equals(Object o) {
         if (o == this) {
@@ -97,6 +104,11 @@ public class Membership implements Serializable {
             && this.getObjectType().equals(group.getObjectType());
     }
 
+    /**
+     * Get hashCode value
+     *
+     * @return hashCode value
+     */
     @Override
     public int hashCode() {
         return Objects.hash(objectID, objectType, displayName);

@@ -32,8 +32,18 @@ public abstract class AbstractAzureStorageProtocolResolver implements ProtocolRe
      */
     protected final AntPathMatcher matcher = new AntPathMatcher();
 
+    /**
+     * The storageType of ProtocolResolver
+     * @return the storage type.
+     */
     protected abstract StorageType getStorageType();
 
+    /**
+     * Get Resource from resource location.
+     * @param location The specified resource location.
+     * @param autoCreate Whether to auto-create the resource if the resource is not exist.
+     * @return the storage {@link Resource}.
+     */
     protected abstract Resource getStorageResource(String location, Boolean autoCreate);
 
     protected ConfigurableListableBeanFactory beanFactory;
@@ -43,7 +53,7 @@ public abstract class AbstractAzureStorageProtocolResolver implements ProtocolRe
      * <p>
      * The underlying storage system may support 'prefix' filter, for example, Azure Storage Blob supports this
      * <p>
-     * https://docs.microsoft.com/en-us/rest/api/storageservices/list-blobs
+     * https://docs.microsoft.com/rest/api/storageservices/list-blobs
      * <p>
      * In this case, we can avoid load all containers to do client side filtering.
      *
@@ -53,6 +63,11 @@ public abstract class AbstractAzureStorageProtocolResolver implements ProtocolRe
      */
     protected abstract Stream<StorageContainerItem> listStorageContainers(String containerPrefix);
 
+    /**
+     *  Get StorageContainerClient with specified container name.
+     * @param name Container name
+     * @return the storage container client.
+     */
     protected abstract StorageContainerClient getStorageContainerClient(String name);
 
     @Override
@@ -182,6 +197,12 @@ public abstract class AbstractAzureStorageProtocolResolver implements ProtocolRe
 
     }
 
+    /**
+     * List all resources with specified container pattern and item pattern.
+     * @param containerPattern An ant style string which represent containers.
+     * @param itemPattern An ant style string which represent storage items.
+     * @return All resources matching the provided patterns.
+     */
     protected Resource[] resolveResources(String containerPattern, String itemPattern) {
         return getMatchedContainers(containerPattern)
             .flatMap(c -> getMatchedItems(c, itemPattern))
@@ -189,6 +210,11 @@ public abstract class AbstractAzureStorageProtocolResolver implements ProtocolRe
             .toArray(Resource[]::new);
     }
 
+    /**
+     * List all containers with the provided pattern.
+     * @param pattern An ant style string which represent containers.
+     * @return All container clients matching the provided pattern.
+     */
     protected Stream<StorageContainerClient> getMatchedContainers(String pattern) {
         //if the given pattern doesn't have any wildcard characters, we can avoid the complex client side filtering.
         if (matcher.isPattern(pattern)) {
@@ -202,6 +228,12 @@ public abstract class AbstractAzureStorageProtocolResolver implements ProtocolRe
         }
     }
 
+    /**
+     * List all storage items with specified container and item pattern.
+     * @param containerClient The specified container where to get storage items.
+     * @param itemPattern An ant style string represents StorageItems.
+     * @return All matching items.
+     */
     protected Stream<StorageItem> getMatchedItems(StorageContainerClient containerClient, String itemPattern) {
         if (matcher.isPattern(itemPattern)) {
             //trying to extract prefix from the pattern, so we can leverage server side filtering first.

@@ -33,9 +33,9 @@ public final class TestUtils {
         return String.format("%s=%s", propName, propValue);
     }
 
-    static ConfigurationSetting createItem(String context, String key, String value, String label, String contentType) {
+    static ConfigurationSetting createItem(String keyFilter, String key, String value, String label, String contentType) {
         ConfigurationSetting item = new ConfigurationSetting();
-        item.setKey(context + key);
+        item.setKey(keyFilter + key);
         item.setValue(value);
         item.setLabel(label);
         item.setContentType(contentType);
@@ -43,11 +43,11 @@ public final class TestUtils {
         return item;
     }
 
-    static FeatureFlagConfigurationSetting createItemFeatureFlag(String context, String key, String value, String label,
+    static FeatureFlagConfigurationSetting createItemFeatureFlag(String prefix, String key, String value, String label,
         String contentType) {
         FeatureFlagConfigurationSetting item = new FeatureFlagConfigurationSetting(key, true);
         item.setClientFilters(new ArrayList<FeatureFlagFilter>());
-        item.setKey(context + key);
+        item.setKey(prefix + key);
         item.setLabel(label);
         item.setContentType(contentType);
 
@@ -79,26 +79,26 @@ public final class TestUtils {
         return item;
     }
     
-    static SecretReferenceConfigurationSetting createSecretReference(String context, String key, String value, String label, String contentType) {
+    static SecretReferenceConfigurationSetting createSecretReference(String keyFilter, String key, String value, String label, String contentType) {
         SecretReferenceConfigurationSetting item = new SecretReferenceConfigurationSetting(key, value);
-        item.setKey(context + key);
+        item.setKey(keyFilter + key);
         item.setLabel(label);
         item.setContentType(contentType);
 
         return item;
     }
 
-    static void addStore(AppConfigurationProperties properties, String storeEndpoint, String connectionString) {
-        addStore(properties, storeEndpoint, connectionString, "\0");
+    static void addStore(AppConfigurationProperties properties, String storeEndpoint, String connectionString, String keyFilter) {
+        addStore(properties, storeEndpoint, connectionString, keyFilter, "\0");
     }
 
-    static void addStore(AppConfigurationProperties properties, String storeEndpoint, String connectionString,
+    static void addStore(AppConfigurationProperties properties, String storeEndpoint, String connectionString, String keyFilter,
         String label) {
         List<ConfigStore> stores = properties.getStores();
         ConfigStore store = new ConfigStore();
         store.setConnectionString(connectionString);
         store.setEndpoint(storeEndpoint);
-        AppConfigurationStoreSelects selectedKeys = new AppConfigurationStoreSelects().setKeyFilter("/application/").setLabelFilter(label);
+        AppConfigurationStoreSelects selectedKeys = new AppConfigurationStoreSelects().setKeyFilter(keyFilter).setLabelFilter(label);
         List<AppConfigurationStoreSelects> selects = new ArrayList<>();
         selects.add(selectedKeys);
         store.setSelects(selects);

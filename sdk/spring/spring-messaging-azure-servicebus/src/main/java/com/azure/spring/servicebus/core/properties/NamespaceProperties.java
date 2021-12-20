@@ -17,6 +17,10 @@ public class NamespaceProperties extends CommonProperties implements ServiceBusN
         return crossEntityTransactions;
     }
 
+    /**
+     * Set the cross entity transaction.
+     * @param crossEntityTransactions the cross entity transaction.
+     */
     public void setCrossEntityTransactions(Boolean crossEntityTransactions) {
         this.crossEntityTransactions = crossEntityTransactions;
     }

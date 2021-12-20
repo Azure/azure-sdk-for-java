@@ -46,7 +46,11 @@ import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 /**
+ * A strategy for authorizing (or re-authorizing) an OAuth 2.0 Client. This implementations implement {@link
+ * AADAuthorizationGrantType "on_behalf_of" authorization grant type}.
  *
+ * @see AADAuthorizationGrantType
+ * @see OAuth2AuthorizedClientProvider
  */
 public class AADOBOOAuth2AuthorizedClientProvider implements OAuth2AuthorizedClientProvider {
 
@@ -57,7 +61,18 @@ public class AADOBOOAuth2AuthorizedClientProvider implements OAuth2AuthorizedCli
 
     private final Duration clockSkew = Duration.ofSeconds(60);
 
-
+    /**
+     * Attempt to authorize (or re-authorize) the
+     * {@link OAuth2AuthorizationContext#getClientRegistration() client} in the provided
+     * context. Implementations must return {@code null} if authorization is not supported
+     * for the specified client, e.g. the provider doesn't support the
+     * {@link ClientRegistration#getAuthorizationGrantType() authorization grant} type
+     * configured for the client.
+     *
+     * @param context the context that holds authorization-specific state for the client
+     * @return the {@link OAuth2AuthorizedClient} or {@code null} if authorization is not
+     * supported for the specified client
+     */
     @Override
     public OAuth2AuthorizedClient authorize(OAuth2AuthorizationContext context) {
         Assert.notNull(context, "context cannot be null");
@@ -142,6 +157,12 @@ public class AADOBOOAuth2AuthorizedClientProvider implements OAuth2AuthorizedCli
         return null;
     }
 
+    /**
+     * Create Application
+     *
+     * @param clientRegistration clients that need to be registered
+     * @return the {@link ConfidentialClientApplication} or {@code null}
+     */
     ConfidentialClientApplication createApp(ClientRegistration clientRegistration) {
         String authorizationUri = clientRegistration.getProviderDetails().getAuthorizationUri();
         String authority = interceptAuthorizationUri(authorizationUri);

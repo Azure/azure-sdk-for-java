@@ -106,6 +106,12 @@ public interface LocalNetworkGateway
     interface UpdateStages {
         /** The stage of the local network gateway update allowing to change IP address of local network gateway. */
         interface WithIPAddress {
+            /**
+             * Specifies the IP address.
+             *
+             * @param ipAddress the IP address
+             * @return the next stage of the update
+             */
             Update withIPAddress(String ipAddress);
         }
 

@@ -816,7 +816,8 @@ public final class NetworkWatchersClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, networkWatcherName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1957,7 +1958,11 @@ public final class NetworkWatchersClientImpl
         return this
             .client
             .<NextHopResultInner, NextHopResultInner>getLroResult(
-                mono, this.client.getHttpPipeline(), NextHopResultInner.class, NextHopResultInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                NextHopResultInner.class,
+                NextHopResultInner.class,
+                this.client.getContext());
     }
 
     /**

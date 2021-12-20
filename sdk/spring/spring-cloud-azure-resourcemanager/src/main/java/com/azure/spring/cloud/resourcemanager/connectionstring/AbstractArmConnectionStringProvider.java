@@ -16,6 +16,11 @@ public abstract class AbstractArmConnectionStringProvider<T> implements Connecti
     protected final AzureResourceManager azureResourceManager;
     protected final AzureResourceMetadata azureResourceMetadata;
 
+    /**
+     * Creates a new instance of {@link AbstractArmConnectionStringProvider}.
+     * @param resourceManager the azure resource manager
+     * @param resourceMetadata the azure resource metadata
+     */
     public AbstractArmConnectionStringProvider(AzureResourceManager resourceManager,
                                                AzureResourceMetadata resourceMetadata) {
         this.azureResourceManager = resourceManager;

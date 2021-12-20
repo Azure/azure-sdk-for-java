@@ -40,6 +40,7 @@ import static com.azure.spring.cloud.autoconfigure.aad.implementation.constants.
  * Microsoft Graph to retrieve users' groups.
  *
  * @deprecated See the <a href="https://github.com/Azure/azure-sdk-for-java/issues/17860">Alternative method</a>.
+ * @see OncePerRequestFilter
  */
 @Deprecated
 public class AADAppRoleStatelessAuthenticationFilter extends OncePerRequestFilter {
@@ -57,6 +58,13 @@ public class AADAppRoleStatelessAuthenticationFilter extends OncePerRequestFilte
         this.principalManager = principalManager;
     }
 
+    /**
+     * Do filter.
+     *
+     * @param httpServletRequest the httpServletRequest
+     * @param httpServletResponse the httpServletResponse
+     * @param filterChain the filterChain
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest,
                                     HttpServletResponse httpServletResponse,

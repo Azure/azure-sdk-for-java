@@ -7,8 +7,7 @@ import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import com.azure.spring.servicebus.core.properties.ProcessorProperties;
 
 /**
- * @author Warren Zhu
- * @author Eduardo Sciullo
+ *
  */
 public class ServiceBusConsumerProperties extends ProcessorProperties {
 
@@ -16,10 +15,20 @@ public class ServiceBusConsumerProperties extends ProcessorProperties {
 
     private CheckpointMode checkpointMode = CheckpointMode.RECORD;
 
+    /**
+     * Get checkpoint mode.
+     *
+     * @return checkpointMode the checkpoint mode
+     */
     public CheckpointMode getCheckpointMode() {
         return checkpointMode;
     }
 
+    /**
+     * Set checkpoint mode.
+     *
+     * @param checkpointMode the checkpoint mode
+     */
     public void setCheckpointMode(CheckpointMode checkpointMode) {
         this.checkpointMode = checkpointMode;
     }
@@ -34,6 +43,11 @@ public class ServiceBusConsumerProperties extends ProcessorProperties {
         return requeueRejected;
     }
 
+    /**
+     * Set checkpoint mode.
+     *
+     * @param requeueRejected the requeue Rejected
+     */
     public void setRequeueRejected(boolean requeueRejected) {
         this.requeueRejected = requeueRejected;
     }

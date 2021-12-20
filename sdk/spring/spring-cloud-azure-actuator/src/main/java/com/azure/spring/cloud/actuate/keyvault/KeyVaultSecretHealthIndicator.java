@@ -20,6 +20,10 @@ public class KeyVaultSecretHealthIndicator extends AbstractHealthIndicator {
     private final SecretAsyncClient secretAsyncClient;
     private Duration timeout = DEFAULT_HEALTH_CHECK_TIMEOUT;
 
+    /**
+     * Creates a new instance of {@link KeyVaultSecretHealthIndicator}.
+     * @param secretAsyncClient the secretAsyncClient
+     */
     public KeyVaultSecretHealthIndicator(SecretAsyncClient secretAsyncClient) {
         this.secretAsyncClient = secretAsyncClient;
     }

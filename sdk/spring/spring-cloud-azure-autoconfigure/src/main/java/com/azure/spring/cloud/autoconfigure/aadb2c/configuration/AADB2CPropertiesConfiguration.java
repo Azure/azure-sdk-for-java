@@ -32,6 +32,11 @@ public class AADB2CPropertiesConfiguration {
         this.global = global;
     }
 
+    /**
+     * Declare AADB2CProperties bean.
+     *
+     * @return AADB2CProperties bean
+     */
     @Bean
     @ConfigurationProperties(prefix = AADB2CProperties.PREFIX)
     @ConditionalOnMissingBean

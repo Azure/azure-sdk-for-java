@@ -345,7 +345,8 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
             deleteWithResponseAsync(roleInstanceName, resourceGroupName, cloudServiceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1201,7 +1202,8 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
             restartWithResponseAsync(roleInstanceName, resourceGroupName, cloudServiceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1462,7 +1464,8 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
             reimageWithResponseAsync(roleInstanceName, resourceGroupName, cloudServiceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1733,7 +1736,8 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
             rebuildWithResponseAsync(roleInstanceName, resourceGroupName, cloudServiceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

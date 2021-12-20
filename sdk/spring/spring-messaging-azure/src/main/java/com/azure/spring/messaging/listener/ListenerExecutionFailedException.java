@@ -8,7 +8,6 @@ import org.springframework.core.NestedRuntimeException;
 /**
  * Exception to be thrown when the execution of a listener method failed.
  *
- * @author Warren Zhu
  */
 @SuppressWarnings("serial")
 class ListenerExecutionFailedException extends NestedRuntimeException {

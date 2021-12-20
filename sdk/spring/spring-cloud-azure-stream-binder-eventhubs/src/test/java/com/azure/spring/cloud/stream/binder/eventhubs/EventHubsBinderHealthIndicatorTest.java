@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.stream.binder.eventhubs;
 
 import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
+import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventBatchContext;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsBindingProperties;
@@ -14,11 +15,13 @@ import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChan
 import com.azure.spring.eventhubs.core.EventHubsProcessorContainer;
 import com.azure.spring.eventhubs.core.EventHubsTemplate;
 import com.azure.spring.eventhubs.core.producer.DefaultEventHubsNamespaceProducerFactory;
-import com.azure.spring.integration.eventhubs.inbound.EventHubsInboundChannelAdapter;
+import com.azure.spring.integration.eventhubs.inbound.health.EventHusProcessorInstrumentation;
+import com.azure.spring.integration.instrumentation.Instrumentation;
 import com.azure.spring.integration.instrumentation.InstrumentationManager;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import com.azure.spring.service.eventhubs.processor.BatchEventProcessingListener;
+import com.azure.spring.service.eventhubs.processor.EventProcessingListener;
 import com.azure.spring.service.eventhubs.processor.RecordEventProcessingListener;
 import com.azure.spring.service.eventhubs.processor.consumer.ErrorContextConsumer;
 import com.azure.spring.service.eventhubs.properties.EventHubsProcessorDescriptor;
@@ -179,10 +182,22 @@ public class EventHubsBinderHealthIndicatorTest {
     }
 
     private class TestIntegrationRecordEventProcessingListener implements
-        EventHubsInboundChannelAdapter.InstrumentationEventProcessingListener, RecordEventProcessingListener {
+        EventProcessingListener, RecordEventProcessingListener {
 
         private InstrumentationManager instrumentationManager;
         private String instrumentationId;
+        void updateInstrumentation(ErrorContext errorContext,
+                                           InstrumentationManager instrumentationManager,
+                                           String instrumentationId) {
+            Instrumentation instrumentation = instrumentationManager.getHealthInstrumentation(instrumentationId);
+            if (instrumentation != null) {
+                if (instrumentation instanceof EventHusProcessorInstrumentation) {
+                    ((EventHusProcessorInstrumentation) instrumentation).markError(errorContext);
+                } else {
+                    instrumentation.markDown(errorContext.getThrowable());
+                }
+            }
+        }
 
         @Override
         public ErrorContextConsumer getErrorContextConsumer() {
@@ -196,22 +211,33 @@ public class EventHubsBinderHealthIndicatorTest {
 
         }
 
-        @Override
         public void setInstrumentationManager(InstrumentationManager instrumentationManager) {
             this.instrumentationManager = instrumentationManager;
         }
 
-        @Override
         public void setInstrumentationId(String instrumentationId) {
             this.instrumentationId = instrumentationId;
         }
     }
 
     private class TestIntegrationBatchEventProcessingListener implements
-        EventHubsInboundChannelAdapter.InstrumentationEventProcessingListener, BatchEventProcessingListener {
+        EventProcessingListener, BatchEventProcessingListener {
 
         private InstrumentationManager instrumentationManager;
         private String instrumentationId;
+
+        void updateInstrumentation(ErrorContext errorContext,
+                                           InstrumentationManager instrumentationManager,
+                                           String instrumentationId) {
+            Instrumentation instrumentation = instrumentationManager.getHealthInstrumentation(instrumentationId);
+            if (instrumentation != null) {
+                if (instrumentation instanceof EventHusProcessorInstrumentation) {
+                    ((EventHusProcessorInstrumentation) instrumentation).markError(errorContext);
+                } else {
+                    instrumentation.markDown(errorContext.getThrowable());
+                }
+            }
+        }
 
         @Override
         public ErrorContextConsumer getErrorContextConsumer() {
@@ -225,12 +251,12 @@ public class EventHubsBinderHealthIndicatorTest {
 
         }
 
-        @Override
+
         public void setInstrumentationManager(InstrumentationManager instrumentationManager) {
             this.instrumentationManager = instrumentationManager;
         }
 
-        @Override
+
         public void setInstrumentationId(String instrumentationId) {
             this.instrumentationId = instrumentationId;
         }

@@ -17,6 +17,13 @@ public class ServiceBusArmConnectionStringProvider extends AbstractArmConnection
 
     private final String namespace;
     private final ServiceBusNamespaceCrud serviceBusNamespaceCrud;
+
+    /**
+     * Creates a new instance of {@link ServiceBusArmConnectionStringProvider}.
+     * @param azureResourceManager the azure resource manager
+     * @param azureResourceMetadata the azure resource metadata
+     * @param namespace the namespace
+     */
     public ServiceBusArmConnectionStringProvider(AzureResourceManager azureResourceManager,
                                                  AzureResourceMetadata azureResourceMetadata,
                                                  String namespace) {

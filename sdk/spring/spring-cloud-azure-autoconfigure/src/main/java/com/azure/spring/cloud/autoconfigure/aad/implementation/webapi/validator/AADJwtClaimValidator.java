@@ -19,6 +19,8 @@ import java.util.function.Predicate;
  * Note: Current implementation is not required, this is only used for compatibility with the
  * Spring Boot 2.2.x version. Once support version is more than 2.2.X, then we can use
  * "org.springframework.security.oauth2.jwt.JwtClaimValidator" instead.
+ *
+ * @see OAuth2TokenValidator
  */
 public final class AADJwtClaimValidator<T> implements OAuth2TokenValidator<Jwt> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AADJwtClaimValidator.class);
@@ -43,7 +45,10 @@ public final class AADJwtClaimValidator<T> implements OAuth2TokenValidator<Jwt> 
     }
 
     /**
-     * {@inheritDoc}
+     * Verify the validity and/or constraints of the provided OAuth 2.0 Token.
+     *
+     * @param token an OAuth 2.0 token
+     * @return OAuth2TokenValidationResult the success or failure detail of the validation
      */
     @Override
     public OAuth2TokenValidatorResult validate(Jwt token) {

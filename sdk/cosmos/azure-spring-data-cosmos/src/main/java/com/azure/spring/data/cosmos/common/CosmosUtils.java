@@ -3,6 +3,7 @@
 package com.azure.spring.data.cosmos.common;
 
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.spring.data.cosmos.core.ResponseDiagnostics;
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
@@ -48,6 +49,22 @@ public class CosmosUtils {
 
         //  Process response diagnostics
         responseDiagnosticsProcessor.processResponseDiagnostics(responseDiagnostics);
+    }
+
+    /**
+     * Generate ResponseDiagnostics with CosmosException diagnostics
+     * @param responseDiagnosticsProcessor response diagnostics processor
+     * @param cosmosException cosmos exception
+     */
+    public static void fillAndProcessCosmosExceptionDiagnostics(ResponseDiagnosticsProcessor responseDiagnosticsProcessor,
+                                                         CosmosException cosmosException) {
+        if (responseDiagnosticsProcessor == null) {
+            return;
+        }
+        if (cosmosException == null || cosmosException.getDiagnostics() == null) {
+            return;
+        }
+        fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor, cosmosException.getDiagnostics(), null);
     }
 
     /**

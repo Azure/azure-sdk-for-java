@@ -795,7 +795,8 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
             deleteWithResponseAsync(resourceGroupName, virtualNetworkGatewayName, natRuleName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

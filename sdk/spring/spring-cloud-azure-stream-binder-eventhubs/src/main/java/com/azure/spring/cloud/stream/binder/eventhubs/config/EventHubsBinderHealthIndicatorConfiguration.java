@@ -18,6 +18,12 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnEnabledHealthIndicator("binders")
 class EventHubsBinderHealthIndicatorConfiguration {
 
+    /**
+     * Declare Event Hubs Health Indicator bean.
+     *
+     * @param binder the binder
+     * @return EventHubsHealthIndicator bean the Event Hubs Health Indicator bean
+     */
     @Bean
     EventHubsHealthIndicator eventhubsHealthIndicator(EventHubsMessageChannelBinder binder) {
         return new EventHubsHealthIndicator(binder);

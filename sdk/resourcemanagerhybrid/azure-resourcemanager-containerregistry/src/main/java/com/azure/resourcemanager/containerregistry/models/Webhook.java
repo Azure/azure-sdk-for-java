@@ -387,6 +387,9 @@ public interface Webhook
 
     /** Grouping of webhook update stages. */
     interface UpdateStages {
+        /**
+         * The stage of the webhook definition allowing to specify actions that trigger the webhook.
+         */
         interface WithTriggerWhen {
             /**
              * Specifies the actions that will trigger the webhook notifications.
@@ -485,6 +488,11 @@ public interface Webhook
         interface Blank<ParentT> extends WithAttach<ParentT> {
         }
 
+        /**
+         * The stage of the webhook definition allowing to specify actions that trigger the webhook.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this update definition
+         */
         interface WithTriggerWhen<ParentT> {
             /**
              * Specifies the actions that will trigger the webhook notifications.

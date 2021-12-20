@@ -53,21 +53,54 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
     private static final String MSG_FAIL_CHECKPOINT = "Failed to checkpoint %s";
     private static final String MSG_SUCCESS_CHECKPOINT = "Checkpointed %s in %s mode";
 
+    /**
+     * Construct a {@link ServiceBusInboundChannelAdapter} with the specified {@link ServiceBusProcessorContainer}, queue and {@link CheckpointConfig}.
+     *
+     * @param processorContainer the processor container
+     * @param queue the queue
+     * @param checkpointConfig the checkpoint config
+     */
     public ServiceBusInboundChannelAdapter(ServiceBusProcessorContainer processorContainer, String queue,
                                            CheckpointConfig checkpointConfig) {
         this(processorContainer, queue, ListenerMode.RECORD, checkpointConfig);
     }
 
+    /**
+     * Construct a {@link ServiceBusInboundChannelAdapter} with the specified {@link ServiceBusProcessorContainer}, queue, {@link ListenerMode} and {@link CheckpointConfig}.
+     *
+     * @param processorContainer the processor container
+     * @param queue the queue
+     * @param listenerMode the listen mode
+     * @param checkpointConfig the checkpoint config
+     */
     public ServiceBusInboundChannelAdapter(ServiceBusProcessorContainer processorContainer, String queue,
                                            ListenerMode listenerMode, CheckpointConfig checkpointConfig) {
         this(processorContainer, QUEUE, queue, null, listenerMode, checkpointConfig);
     }
 
+    /**
+     * Construct a {@link ServiceBusInboundChannelAdapter} with the specified {@link ServiceBusProcessorContainer}, topic, subscription and {@link CheckpointConfig}.
+     *
+     * @param processorContainer the processor container
+     * @param topic the topic
+     * @param subscription the subscription
+     * @param checkpointConfig the checkpoint config
+     */
     public ServiceBusInboundChannelAdapter(ServiceBusProcessorContainer processorContainer, String topic,
                                            String subscription, CheckpointConfig checkpointConfig) {
         this(processorContainer, topic, subscription, ListenerMode.RECORD, checkpointConfig);
     }
 
+    /**
+     * Construct a {@link ServiceBusInboundChannelAdapter} with the specified {@link ServiceBusProcessorContainer}, topic
+     * , subscription, {@link ListenerMode} and {@link CheckpointConfig}.
+     *
+     * @param processorContainer the processor container
+     * @param topic the topic
+     * @param subscription the subscription
+     * @param listenerMode the listen mode
+     * @param checkpointConfig the checkpoint config
+     */
     public ServiceBusInboundChannelAdapter(ServiceBusProcessorContainer processorContainer, String topic,
                                            String subscription, ListenerMode listenerMode,
                                            CheckpointConfig checkpointConfig) {
@@ -107,18 +140,38 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
         this.processorContainer.start();
     }
 
+    /**
+     * Set message converter.
+     *
+     * @param messageConverter the message converter
+     */
     public void setMessageConverter(ServiceBusMessageConverter messageConverter) {
         this.recordEventProcessor.setMessageConverter(messageConverter);
     }
 
+    /**
+     * Set payload type.
+     *
+     * @param payloadType the payload type
+     */
     public void setPayloadType(Class<?> payloadType) {
         this.recordEventProcessor.setPayloadType(payloadType);
     }
 
+    /**
+     * Set instrumentation manager.
+     *
+     * @param instrumentationManager the instrumentation manager
+     */
     public void setInstrumentationManager(InstrumentationManager instrumentationManager) {
         this.recordEventProcessor.setInstrumentationManager(instrumentationManager);
     }
 
+    /**
+     * Set instrumentation id.
+     *
+     * @param instrumentationId the instrumentation id
+     */
     public void setInstrumentationId(String instrumentationId) {
         this.recordEventProcessor.setInstrumentationId(instrumentationId);
 
@@ -171,29 +224,60 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
             }
         }
 
+        /**
+         * Set message converter.
+         *
+         * @param converter the converter
+         */
         public void setMessageConverter(ServiceBusMessageConverter converter) {
             this.messageConverter = converter;
         }
 
+        /**
+         * Set payload type.
+         *
+         * @param payloadType the payload type
+         */
         public void setPayloadType(Class<?> payloadType) {
             this.payloadType = payloadType;
         }
 
+        /**
+         * Set instrumentation manager.
+         *
+         * @param instrumentationManager the instrumentation manager
+         */
         public void setInstrumentationManager(InstrumentationManager instrumentationManager) {
             this.instrumentationManager = instrumentationManager;
         }
 
+        /**
+         * Set instrumentation id.
+         *
+         * @param instrumentationId the instrumentation id
+         */
         public void setInstrumentationId(String instrumentationId) {
             this.instrumentationId = instrumentationId;
         }
     }
 
+    /**
+     * Log checkpoint fail.
+     *
+     * @param message the message
+     * @param t the cause of failure
+     */
     protected void logCheckpointFail(Message<?> message, Throwable t) {
         if (LOGGER.isWarnEnabled()) {
             LOGGER.warn(String.format(MSG_FAIL_CHECKPOINT, message), t);
         }
     }
 
+    /**
+     * Log checkpoint success.
+     *
+     * @param message the message
+     */
     protected void logCheckpointSuccess(Message<?> message) {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug(String.format(MSG_SUCCESS_CHECKPOINT, message, this.checkpointConfig.getMode()));

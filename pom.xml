@@ -719,7 +719,6 @@
         <module>sdk/appconfiguration</module>
         <module>sdk/applicationinsights</module>
         <module>sdk/attestation</module>
-        <module>sdk/authorization</module>
         <module>sdk/automation</module>
         <module>sdk/avs</module>
         <module>sdk/azurearcdata</module>
@@ -781,6 +780,7 @@
         <module>sdk/kubernetesconfiguration</module>
         <module>sdk/kusto</module>
         <module>sdk/labservices</module>
+        <module>sdk/loadtestservice</module>
         <module>sdk/loganalytics</module>
         <module>sdk/logic</module>
         <module>sdk/logz</module>

@@ -95,6 +95,13 @@ public class AADResourceServerConfiguration {
     public static class DefaultAADResourceServerWebSecurityConfigurerAdapter extends
         AADResourceServerWebSecurityConfigurerAdapter {
 
+        /**
+         * configure
+         *
+         * @param http the {@link HttpSecurity} to use
+         * @throws Exception Configuration failed
+         *
+         */
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             super.configure(http);

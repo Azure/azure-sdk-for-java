@@ -4,17 +4,21 @@
 
 package com.azure.resourcemanager.policyinsights.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Slim version of policy metadata resource definition, excluding properties with large strings. */
-@JsonFlatten
-@Immutable
-public class SlimPolicyMetadataInner {
+@Fluent
+public final class SlimPolicyMetadataInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SlimPolicyMetadataInner.class);
+
+    /*
+     * Properties of the policy metadata.
+     */
+    @JsonProperty(value = "properties")
+    private PolicyMetadataSlimProperties innerProperties;
 
     /*
      * The ID of the policy metadata.
@@ -34,41 +38,14 @@ public class SlimPolicyMetadataInner {
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
-    /*
-     * The policy metadata identifier.
+    /**
+     * Get the innerProperties property: Properties of the policy metadata.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.metadataId", access = JsonProperty.Access.WRITE_ONLY)
-    private String metadataId;
-
-    /*
-     * The category of the policy metadata.
-     */
-    @JsonProperty(value = "properties.category", access = JsonProperty.Access.WRITE_ONLY)
-    private String category;
-
-    /*
-     * The title of the policy metadata.
-     */
-    @JsonProperty(value = "properties.title", access = JsonProperty.Access.WRITE_ONLY)
-    private String title;
-
-    /*
-     * The owner of the policy metadata.
-     */
-    @JsonProperty(value = "properties.owner", access = JsonProperty.Access.WRITE_ONLY)
-    private String owner;
-
-    /*
-     * Url for getting additional content about the resource metadata.
-     */
-    @JsonProperty(value = "properties.additionalContentUrl", access = JsonProperty.Access.WRITE_ONLY)
-    private String additionalContentUrl;
-
-    /*
-     * Additional metadata.
-     */
-    @JsonProperty(value = "properties.metadata", access = JsonProperty.Access.WRITE_ONLY)
-    private Object metadata;
+    private PolicyMetadataSlimProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the id property: The ID of the policy metadata.
@@ -103,7 +80,7 @@ public class SlimPolicyMetadataInner {
      * @return the metadataId value.
      */
     public String metadataId() {
-        return this.metadataId;
+        return this.innerProperties() == null ? null : this.innerProperties().metadataId();
     }
 
     /**
@@ -112,7 +89,7 @@ public class SlimPolicyMetadataInner {
      * @return the category value.
      */
     public String category() {
-        return this.category;
+        return this.innerProperties() == null ? null : this.innerProperties().category();
     }
 
     /**
@@ -121,7 +98,7 @@ public class SlimPolicyMetadataInner {
      * @return the title value.
      */
     public String title() {
-        return this.title;
+        return this.innerProperties() == null ? null : this.innerProperties().title();
     }
 
     /**
@@ -130,7 +107,7 @@ public class SlimPolicyMetadataInner {
      * @return the owner value.
      */
     public String owner() {
-        return this.owner;
+        return this.innerProperties() == null ? null : this.innerProperties().owner();
     }
 
     /**
@@ -139,7 +116,7 @@ public class SlimPolicyMetadataInner {
      * @return the additionalContentUrl value.
      */
     public String additionalContentUrl() {
-        return this.additionalContentUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().additionalContentUrl();
     }
 
     /**
@@ -148,7 +125,7 @@ public class SlimPolicyMetadataInner {
      * @return the metadata value.
      */
     public Object metadata() {
-        return this.metadata;
+        return this.innerProperties() == null ? null : this.innerProperties().metadata();
     }
 
     /**
@@ -157,5 +134,8 @@ public class SlimPolicyMetadataInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

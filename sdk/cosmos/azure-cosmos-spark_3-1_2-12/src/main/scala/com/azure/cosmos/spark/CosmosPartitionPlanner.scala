@@ -99,10 +99,10 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
 
     assertOnSparkDriver()
     val lastContinuationTokens: ConcurrentMap[FeedRange, String] = new ConcurrentHashMap[FeedRange, String]()
-    container
-      .getFeedRanges
-      .asScala
-      .flatMapMany(feedRanges => SFlux.fromIterable(feedRanges.asScala))
+
+    ContainerFeedRangesCache
+      .getFeedRanges(container)
+      .flatMapMany(feedRanges => SFlux.fromIterable(feedRanges))
       .flatMap(feedRange => {
         val requestOptions = changeFeedConfig.toRequestOptions(feedRange)
         requestOptions.setMaxItemCount(1)
@@ -462,11 +462,9 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
         val container = ThroughputControlHelper.getContainer(userConfig, cosmosContainerConfig, clientCacheItem.client)
         SparkUtils.safeOpenConnectionInitCaches(container, (msg, e) => logWarning(msg, e))
 
-        container
-          .getFeedRanges
-          .asScala
+        ContainerFeedRangesCache
+          .getFeedRanges(container)
           .map(feedRanges => feedRanges
-            .asScala
             .map(feedRange => SparkBridgeImplementationInternal.toNormalizedRange(feedRange))
             .toArray)
       })

@@ -18,7 +18,6 @@ import org.springframework.context.annotation.Role;
  * <p>This configuration class is automatically imported when using the @{@link EnableAzureMessaging}
  * annotation. See the {@link EnableAzureMessaging} javadocs for complete usage details.
  *
- * @author Warren Zhu
  * @see AzureListenerAnnotationBeanPostProcessor
  * @see AzureListenerEndpointRegistry
  * @see EnableAzureMessaging
@@ -27,12 +26,20 @@ import org.springframework.context.annotation.Role;
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 public class AzureMessagingBootstrapConfiguration {
 
+    /**
+     * Bean for the {@link AzureListenerAnnotationBeanPostProcessor}.
+     * @return the bean post processor bean.
+     */
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
     @Bean
     public AzureListenerAnnotationBeanPostProcessor azureListenerAnnotationProcessor() {
         return new AzureListenerAnnotationBeanPostProcessor();
     }
 
+    /**
+     * Bean for the {@link AzureListenerEndpointRegistry}.
+     * @return the listener endpoint registry bean.
+     */
     @Bean(name = AzureListenerAnnotationBeanPostProcessor.DEFAULT_AZURE_LISTENER_ENDPOINT_REGISTRY_BEAN_NAME)
     public AzureListenerEndpointRegistry azureListenerEndpointRegistry() {
         return new AzureListenerEndpointRegistry();

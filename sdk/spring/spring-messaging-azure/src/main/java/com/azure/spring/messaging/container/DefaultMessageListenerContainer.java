@@ -6,7 +6,7 @@ package com.azure.spring.messaging.container;
 import com.azure.spring.messaging.core.SubscribeByGroupOperation;
 
 /**
- * @author Warren Zhu
+ * The implementation of {@link AbstractListenerContainer}.
  */
 class DefaultMessageListenerContainer extends AbstractListenerContainer {
     private final SubscribeByGroupOperation subscribeOperation;

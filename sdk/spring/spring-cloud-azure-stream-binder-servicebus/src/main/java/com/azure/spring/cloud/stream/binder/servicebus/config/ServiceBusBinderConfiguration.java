@@ -27,7 +27,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.lang.Nullable;
 
 /**
- * @author Warren Zhu
+ *
  */
 @Configuration
 @ConditionalOnMissingBean(Binder.class)
@@ -42,6 +42,13 @@ import org.springframework.lang.Nullable;
 @EnableConfigurationProperties(ServiceBusExtendedBindingProperties.class)
 public class ServiceBusBinderConfiguration {
 
+    /**
+     * Declare Service Bus Channel Provisioner bean.
+     *
+     * @param serviceBusProperties the service bus properties
+     * @param serviceBusProvisioner the service bus provisioner
+     * @return ServiceBusChannelProvisioner bean the Service Bus Channel Provisioner bean
+     */
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean({ ServiceBusProvisioner.class, AzureServiceBusProperties.class })
@@ -53,13 +60,26 @@ public class ServiceBusBinderConfiguration {
             serviceBusProvisioner);
     }
 
+    /**
+     * Declare Service Bus Channel Provisioner bean.
+     *
+     * @return ServiceBusChannelProvisioner bean the Service Bus Channel Provisioner bean
+     */
     @Bean
     @ConditionalOnMissingBean({ServiceBusProvisioner.class, ServiceBusChannelProvisioner.class})
     public ServiceBusChannelProvisioner serviceBusChannelProvisioner() {
         return new ServiceBusChannelProvisioner();
     }
 
-
+    /**
+     * Declare Service Bus Message Channel Binder bean.
+     *
+     * @param channelProvisioner the channel Provisioner
+     * @param bindingProperties the binding Properties
+     * @param namespaceProperties the namespace Properties
+     * @param messageConverter the message Converter
+     * @return ServiceBusMessageChannelBinder bean the Service Bus Message Channel Binder bean
+     */
     @Bean
     @ConditionalOnMissingBean
     public ServiceBusMessageChannelBinder serviceBusBinder(ServiceBusChannelProvisioner channelProvisioner,

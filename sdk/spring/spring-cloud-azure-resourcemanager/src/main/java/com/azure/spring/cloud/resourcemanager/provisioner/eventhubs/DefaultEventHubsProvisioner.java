@@ -19,6 +19,11 @@ public class DefaultEventHubsProvisioner implements EventHubsProvisioner {
     private final EventHubsCrud eventHubsCrud;
     private final EventHubsConsumerGroupCrud consumerGroupCrud;
 
+    /**
+     * Creates a new instance of {@link DefaultEventHubsProvisioner}.
+     * @param azureResourceManager the azure resource manager
+     * @param azureResourceMetadata the azure resource metadata
+     */
     public DefaultEventHubsProvisioner(AzureResourceManager azureResourceManager,
                                        AzureResourceMetadata azureResourceMetadata) {
         this.namespaceCrud = new EventHubNamespaceCrud(azureResourceManager, azureResourceMetadata);
