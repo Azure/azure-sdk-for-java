@@ -23,8 +23,9 @@ import com.azure.spring.integration.handler.DefaultMessageHandler;
 import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.service.eventhubs.processor.RecordEventProcessingListener;
-import org.junit.Before;
-import org.junit.Ignore;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.TestInfo;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
@@ -49,7 +50,7 @@ import static org.mockito.Mockito.when;
  *
  * @author Warren Zhu
  */
-@Ignore("Not finished yet")
+@Disabled("Not finished yet")
 public class EventHubPartitionBinderTests extends
     AzurePartitionBinderTests<EventHubsTestBinder, ExtendedConsumerProperties<EventHubsConsumerProperties>,
         ExtendedProducerProperties<EventHubsProducerProperties>> {
@@ -73,8 +74,7 @@ public class EventHubPartitionBinderTests extends
 //    private final static String EVENTHUBS = "output";
     private static final String CONSUMER = "test1";
 
-    // @BeforeEach
-    @Before
+    @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
         when(this.eventContext.getPartitionContext()).thenReturn(this.partitionContext);
@@ -125,7 +125,7 @@ public class EventHubPartitionBinderTests extends
     }
 
     @Override
-    protected ExtendedProducerProperties<EventHubsProducerProperties> createProducerProperties() {
+    protected ExtendedProducerProperties<EventHubsProducerProperties> createProducerProperties(TestInfo testInfo) {
         ExtendedProducerProperties<EventHubsProducerProperties> properties =
             new ExtendedProducerProperties<>(new EventHubsProducerProperties());
         properties.setHeaderMode(HeaderMode.embeddedHeaders);

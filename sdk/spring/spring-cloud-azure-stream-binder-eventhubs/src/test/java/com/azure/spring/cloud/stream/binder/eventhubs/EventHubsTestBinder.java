@@ -27,7 +27,9 @@ public class EventHubsTestBinder extends
         TestEventHubsMessageChannelBinder binder = new TestEventHubsMessageChannelBinder(BinderHeaders.STANDARD_HEADERS,
             new EventHubsChannelProvisioner(), messageHandler, messageProducer);
 
-        binder.setApplicationContext(new GenericApplicationContext());
+        GenericApplicationContext applicationContext = new GenericApplicationContext();
+        applicationContext.refresh();
+        binder.setApplicationContext(applicationContext);
         this.setBinder(binder);
     }
 
