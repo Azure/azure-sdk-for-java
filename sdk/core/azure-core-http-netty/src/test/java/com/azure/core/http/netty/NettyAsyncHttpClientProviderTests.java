@@ -86,7 +86,7 @@ public class NettyAsyncHttpClientProviderTests {
 
     @Test
     @Disabled("Due to a bug in reactor-netty that doesn't read maxConnections value from implementation."
-            +"Bug fix will be available in reactor-netty version 1.0.15. See https://github.com/reactor/reactor-netty/issues/1941#issuecomment-997846176")
+            + "Bug fix will be available in reactor-netty version 1.0.15. See https://github.com/reactor/reactor-netty/issues/1941#issuecomment-997846176")
     public void testDefaultMaxConnections() {
         NettyAsyncHttpClient httpClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientProvider()
                 .createInstance(null);
