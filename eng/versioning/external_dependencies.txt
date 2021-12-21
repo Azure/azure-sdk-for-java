@@ -41,6 +41,8 @@ com.squareup.okhttp3:okhttp;4.9.2
 com.zaxxer:HikariCP;4.0.3
 commons-codec:commons-codec;1.15
 commons-net:commons-net;3.6
+io.cloudevents:cloudevents-api;2.2.0
+io.cloudevents:cloudevents-core;2.2.0
 io.fabric8:kubernetes-client;5.9.0
 io.github.bonigarcia:webdrivermanager;4.3.1
 io.micrometer:micrometer-core;1.8.0
@@ -76,9 +78,9 @@ org.apache.avro:avro-maven-plugin;1.10.1
 org.apache.commons:commons-compress;1.21
 org.apache.commons:commons-lang3;3.12.0
 org.apache.httpcomponents:httpclient;4.5.13
-org.apache.logging.log4j:log4j-api;2.16.0
-org.apache.logging.log4j:log4j-core;2.16.0
-org.apache.logging.log4j:log4j-slf4j-impl;2.16.0
+org.apache.logging.log4j:log4j-api;2.17.0
+org.apache.logging.log4j:log4j-core;2.17.0
+org.apache.logging.log4j:log4j-slf4j-impl;2.17.0
 org.apache.maven.archetype:archetype-packaging;3.2.0
 org.apache.maven.archetype:maven-archetype-plugin;3.2.0
 org.apache.qpid:proton-j;0.33.8
