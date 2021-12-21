@@ -237,12 +237,6 @@ the main ServiceBusClientBuilder. -->
             files="com.azure.core.util.serializer.JacksonAdapter"/>
   <suppress checks="com.azure.tools.checkstyle.checks.JavadocInlineTag"
             files="com.azure.core.util.serializer.SerializerAdapter"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI"
-            files="com.azure.core.http.rest.SwaggerMethodParser"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI"
-            files="com.azure.core.util.serializer.UnixTimeSerializer"/> <!-- FIXME this is a bug in the checkstyle rule - the class itself is non-public, so it doesn't matter that the method returns an implementation type -->
-  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI"
-            files="com.azure.core.util.serializer.UnixTimeDeserializer"/> <!-- FIXME, same reason as above -->
 
   <!-- JavadocInlineTagCheck Suppression for now, which need code owner's attention -->
   <suppress checks="com.azure.tools.checkstyle.checks.JavadocInlineTagCheck"
@@ -539,13 +533,6 @@ the main ServiceBusClientBuilder. -->
 
   <!-- ### end: Spring related suppression -->
 
-  <!-- False positive as the methods are implemented in an anonymous class that is not exposed publicly. EntityHelper's
-    accessor classes are not visible. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.messaging.servicebus.administration.models.QueueProperties.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.messaging.servicebus.administration.models.RuleProperties.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.messaging.servicebus.administration.models.SubscriptionProperties.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.messaging.servicebus.administration.models.TopicProperties.java"/>
-
   <!-- TODO: (https://github.com/Azure/azure-sdk-for-java/issues/18279) -->
   <!-- Suppress DigitalTwins for now -->
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-digitaltwins-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]azure[/\\]digitaltwins[/\\]core[/\\]implementation[/\\]"/>
@@ -644,6 +631,9 @@ the main ServiceBusClientBuilder. -->
 
   <!-- Suppression for bug https://github.com/checkstyle/checkstyle/issues/11001 -->
   <suppress checks="ParenPad" files="com.azure.ai.textanalytics.TextAnalyticsClientTestBase" lines="1020,1024"/>
+
+  <!-- These APIs have already leaked implementation and cannot be changed -->
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.messaging.eventhubs.LogPartitionProcessor"/>
 
   <!-- Suppress CloudEvent in EventGridCloudNativeEventPublisher.-->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
