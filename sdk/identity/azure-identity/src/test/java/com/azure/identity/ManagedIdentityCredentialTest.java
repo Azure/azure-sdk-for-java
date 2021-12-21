@@ -101,7 +101,8 @@ public class ManagedIdentityCredentialTest {
 
 
         // test
-        ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId(CLIENT_ID).build();
+        ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder()
+            .configuration(configuration).clientId(CLIENT_ID).build();
         StepVerifier.create(credential.getToken(request))
             .expectErrorMatches(t -> t instanceof ClientAuthenticationException)
             .verify();

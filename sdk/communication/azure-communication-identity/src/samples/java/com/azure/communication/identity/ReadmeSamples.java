@@ -27,6 +27,7 @@ public class ReadmeSamples {
      * @return the Communication Identity Client.
      */
     public CommunicationIdentityClient createCommunicationIdentityClient() {
+        // BEGIN: readme-sample-createCommunicationIdentityClient
         // You can find your endpoint and access key from your resource in the Azure Portal
         String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
         AzureKeyCredential keyCredential = new AzureKeyCredential("<access-key>");
@@ -35,6 +36,7 @@ public class ReadmeSamples {
             .endpoint(endpoint)
             .credential(keyCredential)
             .buildClient();
+        // END: readme-sample-createCommunicationIdentityClient
 
         return communicationIdentityClient;
     }
@@ -45,12 +47,14 @@ public class ReadmeSamples {
      * @return the Communication Identity Client.
      */
     public CommunicationIdentityClient createCommunicationIdentityClientWithConnectionString() {
+        // BEGIN: readme-sample-createCommunicationIdentityClientWithConnectionString
         // You can find your connection string from your resource in the Azure Portal
         String connectionString = "<connection_string>";
 
         CommunicationIdentityClient communicationIdentityClient = new CommunicationIdentityClientBuilder()
             .connectionString(connectionString)
             .buildClient();
+        // END: readme-sample-createCommunicationIdentityClientWithConnectionString
 
         return communicationIdentityClient;
     }
@@ -61,6 +65,7 @@ public class ReadmeSamples {
      * @return the Communication Identity Client.
      */
     public CommunicationIdentityClient createCommunicationIdentityClientWithAAD() {
+        // BEGIN: readme-sample-createCommunicationIdentityClientWithAAD
         // You can find your endpoint and access key from your resource in the Azure Portal
         String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
 
@@ -68,6 +73,7 @@ public class ReadmeSamples {
             .endpoint(endpoint)
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
+        // END: readme-sample-createCommunicationIdentityClientWithAAD
 
         return communicationIdentityClient;
     }
@@ -79,8 +85,12 @@ public class ReadmeSamples {
      */
     public CommunicationUserIdentifier createNewUser() {
         CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
+
+        // BEGIN: readme-sample-createNewUser
         CommunicationUserIdentifier user = communicationIdentityClient.createUser();
         System.out.println("User id: " + user.getId());
+        // END: readme-sample-createNewUser
+
         return user;
     }
 
@@ -91,12 +101,16 @@ public class ReadmeSamples {
      */
     public CommunicationUserIdentifierAndToken createNewUserAndToken() {
         CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
+
+        // BEGIN: readme-sample-createNewUserAndToken
         // Define a list of communication token scopes
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
         CommunicationUserIdentifierAndToken result = communicationIdentityClient.createUserAndToken(scopes);
         System.out.println("User id: " + result.getUser().getId());
         System.out.println("User token value: " + result.getUserToken().getToken());
+        // END: readme-sample-createNewUserAndToken
+
         return result;
     }
 
@@ -108,12 +122,16 @@ public class ReadmeSamples {
     public AccessToken issueUserToken() {
         CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
         CommunicationUserIdentifier user = communicationIdentityClient.createUser();
+
+        // BEGIN: readme-sample-issueUserToken
          // Define a list of communication token scopes
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
         AccessToken userToken = communicationIdentityClient.getToken(user, scopes);
         System.out.println("User token value: " + userToken.getToken());
         System.out.println("Expires at: " + userToken.getExpiresAt());
+        // END: readme-sample-issueUserToken
+
         return userToken;
     }
 
@@ -126,8 +144,11 @@ public class ReadmeSamples {
         // Define a list of communication token scopes
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
         communicationIdentityClient.getToken(user, scopes);
+
+        // BEGIN: readme-sample-revokeUserToken
         // revoke tokens issued for the specified user
         communicationIdentityClient.revokeTokens(user);
+        // END: readme-sample-revokeUserToken
     }
 
     /**
@@ -136,20 +157,26 @@ public class ReadmeSamples {
     public void deleteUser() {
         CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
         CommunicationUserIdentifier user = communicationIdentityClient.createUser();
+
+        // BEGIN: readme-sample-deleteUser
         // delete a previously created user
         communicationIdentityClient.deleteUser(user);
+        // END: readme-sample-deleteUser
     }
 
     /**
      * Sample code for exchanging an AAD access token of a Teams User for a new Communication Identity access token.
      */
-    public void exchangeTeamsUserAadToken() {
+    public void getTokenForTeamsUser() {
         CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
         try {
             String teamsUserAadToken = generateTeamsUserAadToken();
-            AccessToken accessToken = communicationIdentityClient.exchangeTeamsUserAadToken(teamsUserAadToken);
+
+            // BEGIN: readme-sample-getTokenForTeamsUser
+            AccessToken accessToken = communicationIdentityClient.getTokenForTeamsUser(teamsUserAadToken);
             System.out.println("User token value: " + accessToken.getToken());
             System.out.println("Expires at: " + accessToken.getExpiresAt());
+            // END: readme-sample-getTokenForTeamsUser
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
@@ -183,10 +210,13 @@ public class ReadmeSamples {
      */
     public void createUserTroubleshooting() {
         CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
+
+        // BEGIN: readme-sample-createUserTroubleshooting
         try {
             CommunicationUserIdentifier user = communicationIdentityClient.createUser();
         } catch (RuntimeException ex) {
             System.out.println(ex.getMessage());
         }
+        // END: readme-sample-createUserTroubleshooting
     }
 }

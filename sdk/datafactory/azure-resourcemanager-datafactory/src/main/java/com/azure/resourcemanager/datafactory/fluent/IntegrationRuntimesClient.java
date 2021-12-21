@@ -380,7 +380,7 @@ public interface IntegrationRuntimesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return integration runtime status response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IntegrationRuntimeStatusResponseInner>, IntegrationRuntimeStatusResponseInner> beginStart(
         String resourceGroupName, String factoryName, String integrationRuntimeName);
 
@@ -396,7 +396,7 @@ public interface IntegrationRuntimesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return integration runtime status response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IntegrationRuntimeStatusResponseInner>, IntegrationRuntimeStatusResponseInner> beginStart(
         String resourceGroupName, String factoryName, String integrationRuntimeName, Context context);
 
@@ -442,7 +442,7 @@ public interface IntegrationRuntimesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String factoryName, String integrationRuntimeName);
 
@@ -458,7 +458,7 @@ public interface IntegrationRuntimesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String factoryName, String integrationRuntimeName, Context context);
 

@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.administration;
 
 import com.azure.analytics.purview.administration.implementation.ResourceSetRulesImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -13,18 +14,18 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Context;
 
 /** Initializes a new instance of the synchronous PurviewAccountClient type. */
 @ServiceClient(builder = PurviewAccountClientBuilder.class)
 public final class ResourceSetRulesClient {
-    private final ResourceSetRulesImpl serviceClient;
+    @Generated private final ResourceSetRulesImpl serviceClient;
 
     /**
      * Initializes an instance of ResourceSetRules client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     ResourceSetRulesClient(ResourceSetRulesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -142,14 +143,13 @@ public final class ResourceSetRulesClient {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return a resource set config service model.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getResourceSetRuleWithResponse(RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getResourceSetRuleWithResponse(requestOptions, context);
+    public Response<BinaryData> getResourceSetRuleWithResponse(RequestOptions requestOptions) {
+        return this.serviceClient.getResourceSetRuleWithResponse(requestOptions);
     }
 
     /**
@@ -367,16 +367,14 @@ public final class ResourceSetRulesClient {
      *
      * @param resourceSetRuleConfig ResourceSetRuleConfig implementation class.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return resourceSetRuleConfig implementation class.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> upsertResourceSetRuleWithResponse(
-            BinaryData resourceSetRuleConfig, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.upsertResourceSetRuleWithResponse(
-                resourceSetRuleConfig, requestOptions, context);
+    public Response<BinaryData> createOrUpdateResourceSetRuleWithResponse(
+            BinaryData resourceSetRuleConfig, RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateResourceSetRuleWithResponse(resourceSetRuleConfig, requestOptions);
     }
 
     /**
@@ -391,14 +389,13 @@ public final class ResourceSetRulesClient {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteResourceSetRuleWithResponse(RequestOptions requestOptions, Context context) {
-        return this.serviceClient.deleteResourceSetRuleWithResponse(requestOptions, context);
+    public Response<Void> deleteResourceSetRuleWithResponse(RequestOptions requestOptions) {
+        return this.serviceClient.deleteResourceSetRuleWithResponse(requestOptions);
     }
 
     /**
@@ -521,13 +518,12 @@ public final class ResourceSetRulesClient {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return a resource set config service model.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listResourceSetRules(RequestOptions requestOptions, Context context) {
-        return this.serviceClient.listResourceSetRules(requestOptions, context);
+    public PagedIterable<BinaryData> listResourceSetRules(RequestOptions requestOptions) {
+        return this.serviceClient.listResourceSetRules(requestOptions);
     }
 }

@@ -42,7 +42,15 @@ import static com.azure.core.util.FluxUtil.withContext;
  *
  * <p><strong>Instantiating an asynchronous RegistryArtifact helper.</strong></p>
  *
- * {@codesnippet com.azure.containers.containerregistry.RegistryArtifactAsync.instantiation}
+ * <!-- src_embed com.azure.containers.containerregistry.RegistryArtifactAsync.instantiation -->
+ * <pre>
+ * RegistryArtifactAsync registryArtifactAsync = new ContainerRegistryClientBuilder&#40;&#41;
+ *     .endpoint&#40;endpoint&#41;
+ *     .credential&#40;credential&#41;
+ *     .audience&#40;ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD&#41;
+ *     .buildAsyncClient&#40;&#41;.getArtifact&#40;repository, digest&#41;;
+ * </pre>
+ * <!-- end com.azure.containers.containerregistry.RegistryArtifactAsync.instantiation -->
  *
  * <p>View {@link ContainerRegistryClientBuilder this} for additional ways to construct the client.</p>
  *
@@ -162,7 +170,11 @@ public final class RegistryArtifactAsync {
      *
      * <p>Delete the registry artifact.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifactAsync.deleteWithResponse}
+     * <!-- src_embed com.azure.containers.containerregistry.RegistryArtifactAsync.deleteWithResponse -->
+     * <pre>
+     * client.deleteWithResponse&#40;&#41;.subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.RegistryArtifactAsync.deleteWithResponse -->
      *
      * @return A REST response with completion signal.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
@@ -191,7 +203,11 @@ public final class RegistryArtifactAsync {
      *
      * <p>Delete the registry artifact.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifactAsync.delete}
+     * <!-- src_embed com.azure.containers.containerregistry.RegistryArtifactAsync.delete -->
+     * <pre>
+     * client.delete&#40;&#41;.subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.RegistryArtifactAsync.delete -->
      *
      * @return the completion.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
@@ -209,7 +225,12 @@ public final class RegistryArtifactAsync {
      *
      * <p>Delete the tag for the given repository.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifactAsync.deleteTagWithResponse}
+     * <!-- src_embed com.azure.containers.containerregistry.RegistryArtifactAsync.deleteTagWithResponse -->
+     * <pre>
+     * String tag = getTag&#40;&#41;;
+     * client.deleteTagWithResponse&#40;tag&#41;.subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.RegistryArtifactAsync.deleteTagWithResponse -->
      *
      * @param tag The name of the 'tag' that uniquely identifies the 'tag' that needs to be deleted.
      * @return A REST response with completion signal.
@@ -246,7 +267,12 @@ public final class RegistryArtifactAsync {
      *
      * <p>Delete the tag for the given repository.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifactAsync.deleteTag}
+     * <!-- src_embed com.azure.containers.containerregistry.RegistryArtifactAsync.deleteTag -->
+     * <pre>
+     * String tag = getTag&#40;&#41;;
+     * client.deleteTag&#40;tag&#41;.subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.RegistryArtifactAsync.deleteTag -->
      *
      * @param tag The name of the tag that uniquely identifies the tag that needs to be deleted.
      * @return The completion.
@@ -270,7 +296,15 @@ public final class RegistryArtifactAsync {
      *
      * <p>Get the properties for the given repository.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifactAsync.getManifestPropertiesWithResponse}
+     * <!-- src_embed com.azure.containers.containerregistry.RegistryArtifactAsync.getManifestPropertiesWithResponse -->
+     * <pre>
+     * client.getManifestPropertiesWithResponse&#40;&#41;
+     *     .subscribe&#40;response -&gt; &#123;
+     *         final ArtifactManifestProperties properties = response.getValue&#40;&#41;;
+     *         System.out.printf&#40;&quot;Digest:%s,&quot;, properties.getDigest&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.RegistryArtifactAsync.getManifestPropertiesWithResponse -->
      *
      * @return A REST response containing {@link ArtifactManifestProperties properties} associated with the given {@code Digest}.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
@@ -302,7 +336,14 @@ public final class RegistryArtifactAsync {
      *
      * <p>Get the properties for the given repository.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifactAsync.getManifestProperties}.
+     * <!-- src_embed com.azure.containers.containerregistry.RegistryArtifactAsync.getManifestProperties -->
+     * <pre>
+     * client.getManifestProperties&#40;&#41;
+     *     .subscribe&#40;properties -&gt; &#123;
+     *         System.out.printf&#40;&quot;Digest:%s,&quot;, properties.getDigest&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.RegistryArtifactAsync.getManifestProperties -->
      *
      * @return The {@link ArtifactManifestProperties properties} associated with the given {@code Digest}.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
@@ -321,7 +362,15 @@ public final class RegistryArtifactAsync {
      *
      * <p>Retrieve the properties associated with the given tag.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifactAsync.getTagPropertiesWithResponse}.
+     * <!-- src_embed com.azure.containers.containerregistry.RegistryArtifactAsync.getTagPropertiesWithResponse -->
+     * <pre>
+     * String tag = getTag&#40;&#41;;
+     * client.getTagPropertiesWithResponse&#40;tag&#41;.subscribe&#40;response -&gt; &#123;
+     *     final ArtifactTagProperties properties = response.getValue&#40;&#41;;
+     *     System.out.printf&#40;&quot;Digest:%s,&quot;, properties.getDigest&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.RegistryArtifactAsync.getTagPropertiesWithResponse -->
      *
      * @param tag name of the tag that uniquely identifies a given tag.
      * @return A REST response with the {@link ArtifactTagProperties properties} associated with the given tag.
@@ -359,7 +408,14 @@ public final class RegistryArtifactAsync {
      *
      * <p>Retrieve the properties associated with the given tag.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifactAsync.getTagProperties}.
+     * <!-- src_embed com.azure.containers.containerregistry.RegistryArtifactAsync.getTagProperties -->
+     * <pre>
+     * String tag = getTag&#40;&#41;;
+     * client.getTagProperties&#40;tag&#41;.subscribe&#40;properties -&gt; &#123;
+     *     System.out.printf&#40;&quot;Digest:%s,&quot;, properties.getDigest&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.RegistryArtifactAsync.getTagProperties -->
      *
      * @param tag name of the tag that uniquely identifies a given tag.
      * @return The {@link ArtifactTagProperties properties} associated with the given tag.
@@ -386,7 +442,17 @@ public final class RegistryArtifactAsync {
      *
      * <p>Retrieve all the tags associated with the given repository from the most recently updated to the last.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifactAsync.listTagPropertiesWithOptions}.
+     * <!-- src_embed com.azure.containers.containerregistry.RegistryArtifactAsync.listTagPropertiesWithOptions -->
+     * <pre>
+     * client.listTagProperties&#40;ArtifactTagOrderBy.LAST_UPDATED_ON_DESCENDING&#41;
+     *     .byPage&#40;10&#41;
+     *     .subscribe&#40;tagPropertiesPagedResponse -&gt; &#123;
+     *         tagPropertiesPagedResponse.getValue&#40;&#41;
+     *             .stream&#40;&#41;
+     *             .forEach&#40;tagProperties -&gt; System.out.println&#40;tagProperties.getDigest&#40;&#41;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.RegistryArtifactAsync.listTagPropertiesWithOptions -->
      *
      * @return {@link PagedFlux} of the artifacts for the given repository in the order specified by the options.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
@@ -409,7 +475,17 @@ public final class RegistryArtifactAsync {
      *
      * <p>Retrieve all the tags associated with the given repository from the most recently updated to the last.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifactAsync.listTagPropertiesWithOptions}.
+     * <!-- src_embed com.azure.containers.containerregistry.RegistryArtifactAsync.listTagPropertiesWithOptions -->
+     * <pre>
+     * client.listTagProperties&#40;ArtifactTagOrderBy.LAST_UPDATED_ON_DESCENDING&#41;
+     *     .byPage&#40;10&#41;
+     *     .subscribe&#40;tagPropertiesPagedResponse -&gt; &#123;
+     *         tagPropertiesPagedResponse.getValue&#40;&#41;
+     *             .stream&#40;&#41;
+     *             .forEach&#40;tagProperties -&gt; System.out.println&#40;tagProperties.getDigest&#40;&#41;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.RegistryArtifactAsync.listTagPropertiesWithOptions -->
      *
      * @param orderBy The order in which the tags should be returned by the service.
      * @return {@link PagedFlux} of the artifacts for the given repository in the order specified by the options.
@@ -482,7 +558,13 @@ public final class RegistryArtifactAsync {
      *
      * <p>Update the writeable properties of a given tag.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifactAsync.updateTagPropertiesWithResponse}.
+     * <!-- src_embed com.azure.containers.containerregistry.RegistryArtifactAsync.updateTagPropertiesWithResponse -->
+     * <pre>
+     * ArtifactTagProperties properties = getTagProperties&#40;&#41;;
+     * String tag = getTag&#40;&#41;;
+     * client.updateTagPropertiesWithResponse&#40;tag, properties&#41;.subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.RegistryArtifactAsync.updateTagPropertiesWithResponse -->
      *
      * @param tag Name of the tag that uniquely identifies it.
      * @param tagProperties {@link ArtifactTagProperties value} to be set.
@@ -536,7 +618,13 @@ public final class RegistryArtifactAsync {
      *
      * <p>Update the writeable properties of a given tag.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifactAsync.updateTagPropertiesWithResponse}.
+     * <!-- src_embed com.azure.containers.containerregistry.RegistryArtifactAsync.updateTagPropertiesWithResponse -->
+     * <pre>
+     * ArtifactTagProperties properties = getTagProperties&#40;&#41;;
+     * String tag = getTag&#40;&#41;;
+     * client.updateTagPropertiesWithResponse&#40;tag, properties&#41;.subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.RegistryArtifactAsync.updateTagPropertiesWithResponse -->
      *
      * @param tag Name of the tag that uniquely identifies it.
      * @param tagProperties {@link ArtifactTagProperties tagProperties} to be set.
@@ -561,7 +649,12 @@ public final class RegistryArtifactAsync {
      *
      * <p>Update the writeable properties of a given manifest.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifactAsync.updateManifestPropertiesWithResponse}.
+     * <!-- src_embed com.azure.containers.containerregistry.RegistryArtifactAsync.updateManifestPropertiesWithResponse -->
+     * <pre>
+     * ArtifactManifestProperties properties = getArtifactManifestProperties&#40;&#41;;
+     * client.updateManifestPropertiesWithResponse&#40;properties&#41;.subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.RegistryArtifactAsync.updateManifestPropertiesWithResponse -->
      *
      * @param manifestProperties {@link ArtifactManifestProperties manifestProperties} to be set.
      * @return A REST response for the completion.
@@ -603,7 +696,12 @@ public final class RegistryArtifactAsync {
      *
      * <p>Update the writeable properties of a given manifest.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifactAsync.updateManifestProperties}.
+     * <!-- src_embed com.azure.containers.containerregistry.RegistryArtifactAsync.updateManifestProperties -->
+     * <pre>
+     * ArtifactManifestProperties properties = getArtifactManifestProperties&#40;&#41;;
+     * client.updateManifestProperties&#40;properties&#41;.subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.RegistryArtifactAsync.updateManifestProperties -->
      *
      * @param manifestProperties {@link ArtifactManifestProperties manifestProperties} to be set.
      * @return The completion.

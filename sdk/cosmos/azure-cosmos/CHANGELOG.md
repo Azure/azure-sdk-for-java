@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.21.0-beta.1 (Unreleased)
+### 4.24.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -10,9 +10,45 @@
 
 #### Other Changes
 
+### 4.23.0 (2021-12-10)
+#### Features Added
+* Added `setMaxMicroBatchConcurrency` and `getMaxMicroBatchConcurrency` in `CosmosBulkExecutionOptions`.
+
+#### Key Bug Fixes
+* Bulk execution improvement triggering a flush when total payload size exceeds the max payload size limit.
+* Bulk execution improvement shortening the flush interval when the `Flux` of incoming operations signals completion.
+* Fixed metadata cache refresh scenario on collection recreate for gateway mode.
+
+### 4.22.0 (2021-12-03)
+#### Features Added
+* Added Beta API `getContactedRegionNames` in `CosmosDiagnostics`.
+
+#### Key Bug Fixes
+* Fixed `IllegalStateException` for `getFeedRanges` when container recreated with same name.
+* Made Cosmos spans CLIENT which will allow Azure Monitor to show HTTP calls nested under Cosmos spans.
+* Fixed `ConcurrentModificationException` when getting `NotFoundException` with session consistency.
+
+### 4.21.1 (2021-11-13)
+#### Key Bug Fixes
+* Fixed an issue in `ChangeFeedProcessor` where processing stops in some rare cases because of a race condition can occur which prevents work to be promptly assigned to other instances.
+
+### 4.21.0 (2021-11-12)
+#### Features Added
+* GA of `Patch`, `Batch` and `Bulk` API.
+* GA of `ChangeFeedProcessorState` API.
+* Added `networkRequestTimeout` API for `DirectConnectionConfig`.
+
+#### Key Bug Fixes
+* Override the default keep-alive config on linux to keep connections open and detect a broken connection faster.
+
+### 4.20.1 (2021-10-27)
+#### Key Bug Fixes
+* Removed `AfterBurner` module for Java version 16+.
+* Fixed `BadRequestException` issue when using `Distinct` with matched `orderBy` queries via `continuationToken`.
+
 ### 4.20.0 (2021-10-14)
 #### Features Added
-* Enabling `queryplan` cache by default
+* Enabling `queryplan` cache by default.
 
 #### Key Bug Fixes
 * Fixed issue with bulk reads when `contentResponseOnWrite` is not explicitly enabled on the cosmos client.

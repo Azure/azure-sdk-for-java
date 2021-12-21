@@ -57,7 +57,6 @@ class SasClientTests extends APISpec {
             .setDeletePermission(true)
             .setAddPermission(true)
             .setListPermission(true)
-            .setImmutabilityPolicyPermission(true)
 
         if (Constants.SAS_SERVICE_VERSION >= "2019-12-12") {
             allPermissions
@@ -66,9 +65,14 @@ class SasClientTests extends APISpec {
                 .setDeleteVersionPermission(true)
                 .setTagsPermission(true)
         }
-        if (Constants.SAS_SERVICE_VERSION >= "V2020_06_12") {
+        if (Constants.SAS_SERVICE_VERSION >= "2020-02-10") {
             allPermissions
                 .setPermanentDeletePermission(true)
+        }
+
+        if (Constants.SAS_SERVICE_VERSION >= "2020-06-12") {
+            allPermissions
+                .setImmutabilityPolicyPermission(true)
         }
 
         def sasValues = generateValues(allPermissions)

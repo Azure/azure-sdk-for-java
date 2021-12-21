@@ -216,7 +216,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -272,7 +272,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -305,7 +305,8 @@ public final class SubnetsClientImpl implements SubnetsClient {
             deleteWithResponseAsync(resourceGroupName, virtualNetworkName, subnetName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -473,7 +474,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -531,7 +532,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -678,7 +679,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
         } else {
             subnetParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -746,7 +747,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
         } else {
             subnetParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -782,7 +783,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
         return this
             .client
             .<SubnetInner, SubnetInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SubnetInner.class, SubnetInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), SubnetInner.class, SubnetInner.class, this.client.getContext());
     }
 
     /**
@@ -995,7 +996,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
         } else {
             prepareNetworkPoliciesRequestParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1066,7 +1067,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
         } else {
             prepareNetworkPoliciesRequestParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1106,7 +1107,8 @@ public final class SubnetsClientImpl implements SubnetsClient {
                 resourceGroupName, virtualNetworkName, subnetName, prepareNetworkPoliciesRequestParameters);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1339,7 +1341,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
         } else {
             unprepareNetworkPoliciesRequestParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1410,7 +1412,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
         } else {
             unprepareNetworkPoliciesRequestParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1450,7 +1452,8 @@ public final class SubnetsClientImpl implements SubnetsClient {
                 resourceGroupName, virtualNetworkName, subnetName, unprepareNetworkPoliciesRequestParameters);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1665,7 +1668,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1725,7 +1728,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

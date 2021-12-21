@@ -5,39 +5,91 @@
 package com.azure.resourcemanager.eventhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.models.DefaultAction;
 import com.azure.resourcemanager.eventhubs.models.NWRuleSetIpRules;
 import com.azure.resourcemanager.eventhubs.models.NWRuleSetVirtualNetworkRules;
+import com.azure.resourcemanager.eventhubs.models.PublicNetworkAccessFlag;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Description of NetworkRuleSet resource. */
-@JsonFlatten
+/** Description of topic resource. */
 @Fluent
-public class NetworkRuleSetInner extends ProxyResource {
+public final class NetworkRuleSetInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkRuleSetInner.class);
 
     /*
-     * Default Action for Network Rule Set
+     * NetworkRuleSet properties
      */
-    @JsonProperty(value = "properties.defaultAction")
-    private DefaultAction defaultAction;
+    @JsonProperty(value = "properties")
+    private NetworkRuleSetProperties innerProperties;
 
     /*
-     * List VirtualNetwork Rules
+     * The system meta data relating to this resource.
      */
-    @JsonProperty(value = "properties.virtualNetworkRules")
-    private List<NWRuleSetVirtualNetworkRules> virtualNetworkRules;
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /*
-     * List of IpRules
+     * The geo-location where the resource lives
      */
-    @JsonProperty(value = "properties.ipRules")
-    private List<NWRuleSetIpRules> ipRules;
+    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
+    private String location;
+
+    /**
+     * Get the innerProperties property: NetworkRuleSet properties.
+     *
+     * @return the innerProperties value.
+     */
+    private NetworkRuleSetProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: The system meta data relating to this resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the location property: The geo-location where the resource lives.
+     *
+     * @return the location value.
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Get the trustedServiceAccessEnabled property: Value that indicates whether Trusted Service Access is Enabled or
+     * not.
+     *
+     * @return the trustedServiceAccessEnabled value.
+     */
+    public Boolean trustedServiceAccessEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().trustedServiceAccessEnabled();
+    }
+
+    /**
+     * Set the trustedServiceAccessEnabled property: Value that indicates whether Trusted Service Access is Enabled or
+     * not.
+     *
+     * @param trustedServiceAccessEnabled the trustedServiceAccessEnabled value to set.
+     * @return the NetworkRuleSetInner object itself.
+     */
+    public NetworkRuleSetInner withTrustedServiceAccessEnabled(Boolean trustedServiceAccessEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkRuleSetProperties();
+        }
+        this.innerProperties().withTrustedServiceAccessEnabled(trustedServiceAccessEnabled);
+        return this;
+    }
 
     /**
      * Get the defaultAction property: Default Action for Network Rule Set.
@@ -45,7 +97,7 @@ public class NetworkRuleSetInner extends ProxyResource {
      * @return the defaultAction value.
      */
     public DefaultAction defaultAction() {
-        return this.defaultAction;
+        return this.innerProperties() == null ? null : this.innerProperties().defaultAction();
     }
 
     /**
@@ -55,7 +107,10 @@ public class NetworkRuleSetInner extends ProxyResource {
      * @return the NetworkRuleSetInner object itself.
      */
     public NetworkRuleSetInner withDefaultAction(DefaultAction defaultAction) {
-        this.defaultAction = defaultAction;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkRuleSetProperties();
+        }
+        this.innerProperties().withDefaultAction(defaultAction);
         return this;
     }
 
@@ -65,7 +120,7 @@ public class NetworkRuleSetInner extends ProxyResource {
      * @return the virtualNetworkRules value.
      */
     public List<NWRuleSetVirtualNetworkRules> virtualNetworkRules() {
-        return this.virtualNetworkRules;
+        return this.innerProperties() == null ? null : this.innerProperties().virtualNetworkRules();
     }
 
     /**
@@ -75,7 +130,10 @@ public class NetworkRuleSetInner extends ProxyResource {
      * @return the NetworkRuleSetInner object itself.
      */
     public NetworkRuleSetInner withVirtualNetworkRules(List<NWRuleSetVirtualNetworkRules> virtualNetworkRules) {
-        this.virtualNetworkRules = virtualNetworkRules;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkRuleSetProperties();
+        }
+        this.innerProperties().withVirtualNetworkRules(virtualNetworkRules);
         return this;
     }
 
@@ -85,7 +143,7 @@ public class NetworkRuleSetInner extends ProxyResource {
      * @return the ipRules value.
      */
     public List<NWRuleSetIpRules> ipRules() {
-        return this.ipRules;
+        return this.innerProperties() == null ? null : this.innerProperties().ipRules();
     }
 
     /**
@@ -95,7 +153,35 @@ public class NetworkRuleSetInner extends ProxyResource {
      * @return the NetworkRuleSetInner object itself.
      */
     public NetworkRuleSetInner withIpRules(List<NWRuleSetIpRules> ipRules) {
-        this.ipRules = ipRules;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkRuleSetProperties();
+        }
+        this.innerProperties().withIpRules(ipRules);
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
+     * enabled.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccessFlag publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
+     * enabled.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the NetworkRuleSetInner object itself.
+     */
+    public NetworkRuleSetInner withPublicNetworkAccess(PublicNetworkAccessFlag publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkRuleSetProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 
@@ -105,11 +191,8 @@ public class NetworkRuleSetInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (virtualNetworkRules() != null) {
-            virtualNetworkRules().forEach(e -> e.validate());
-        }
-        if (ipRules() != null) {
-            ipRules().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

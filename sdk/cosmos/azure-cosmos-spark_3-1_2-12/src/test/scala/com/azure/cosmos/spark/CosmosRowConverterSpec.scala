@@ -366,17 +366,25 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
   "date and time in spark row" should "translate to ObjectNode" in {
     val colName1 = "testCol1"
     val colName2 = "testCol2"
+    val colName3 = "testCol3"
+    val colName4 = "testCol4"
     val currentMillis = System.currentTimeMillis()
     val colVal1 = new Date(currentMillis)
     val colVal2 = new Timestamp(colVal1.getTime)
+    val colVal3 = currentMillis.toInt
 
     val row = new GenericRowWithSchema(
-      Array(colVal1, colVal2),
-      StructType(Seq(StructField(colName1, DateType), StructField(colName2, TimestampType))))
+      Array(colVal1, colVal2, colVal3, colVal3),
+      StructType(Seq(StructField(colName1, DateType),
+        StructField(colName2, TimestampType),
+        StructField(colName3, DateType),
+        StructField(colName4, TimestampType))))
 
     val objectNode = defaultRowConverter.fromRowToObjectNode(row)
     objectNode.get(colName1).asLong() shouldEqual currentMillis
     objectNode.get(colName2).asLong() shouldEqual currentMillis
+    objectNode.get(colName3).asInt() shouldEqual colVal3
+    objectNode.get(colName4).asInt() shouldEqual colVal3
   }
 
   "numeric types in spark row" should "translate to ObjectNode" in {
@@ -969,6 +977,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     val colName2 = "testCol2"
     val colName3 = "testCol3"
     val colName4 = "testCol4"
+    val colName5 = "testCol5"
     val colVal1 = System.currentTimeMillis()
     val colVal1AsTime = new Date(colVal1)
     val colVal2 = System.currentTimeMillis()
@@ -979,17 +988,20 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     val ff = DateTimeFormatter
       .ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'").withZone(ZoneOffset.UTC)
     val colVal4AsTime = Date.valueOf(LocalDateTime.parse(colVal4, ff).toLocalDate)
+    val colVal5 = colVal1.toInt
 
     val objectNode: ObjectNode = objectMapper.createObjectNode()
     objectNode.put(colName1, colVal1)
     objectNode.put(colName2, colVal2)
     objectNode.put(colName3, colVal3)
     objectNode.put(colName4, colVal4)
+    objectNode.put(colName5, colVal5)
     val schema = StructType(Seq(
       StructField(colName1, DateType),
       StructField(colName2, DateType),
       StructField(colName3, DateType),
-      StructField(colName4, DateType)))
+      StructField(colName4, DateType),
+      StructField(colName5, DateType)))
     val row = defaultRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
     val asTime = row.get(0).asInstanceOf[Date]
     asTime.compareTo(colVal1AsTime) shouldEqual 0

@@ -58,7 +58,6 @@ import static com.azure.ai.textanalytics.TestUtils.PII_ENTITY_OFFSET_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.SENTIMENT_OFFSET_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.TIME_NOW;
 import static com.azure.ai.textanalytics.TestUtils.getAnalyzeSentimentResultCollectionForActions;
-import static com.azure.ai.textanalytics.TestUtils.getCategorizedEntitiesList1;
 import static com.azure.ai.textanalytics.TestUtils.getDetectedLanguageEnglish;
 import static com.azure.ai.textanalytics.TestUtils.getDetectedLanguageSpanish;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedAnalyzeActionsResultListForMultiplePages;
@@ -308,8 +307,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         recognizeCategorizedEntitiesForSingleTextInputRunner(input ->
             StepVerifier.create(client.recognizeEntities(input))
-                .assertNext(response -> validateCategorizedEntities(getCategorizedEntitiesList1(),
-                    response.stream().collect(Collectors.toList())))
+                .assertNext(response -> validateCategorizedEntities(response.stream().collect(Collectors.toList())))
                 .verifyComplete());
     }
 
@@ -2261,8 +2259,12 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 syncPoller = client.beginAnalyzeHealthcareEntities(documents, options).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.cancelOperation();
+            LongRunningOperationStatus operationStatus = syncPoller.poll().getStatus();
+            while (!LongRunningOperationStatus.USER_CANCELLED.equals(operationStatus)) {
+                operationStatus = syncPoller.poll().getStatus();
+            }
             syncPoller.waitForCompletion();
-            Assertions.assertEquals(LongRunningOperationStatus.USER_CANCELLED, syncPoller.poll().getStatus());
+            Assertions.assertEquals(LongRunningOperationStatus.USER_CANCELLED, operationStatus);
         });
     }
 
@@ -2674,5 +2676,69 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                         ((TextAnalyticsError) exception.getValue()).getErrorCode());
                 }, invalidCount, null);
         }
+    }
+
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/25079")
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeCustomEntitiesAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        recognizeCustomEntitiesActionRunner((documents, tasks) -> {
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
+                client.beginAnalyzeActions(documents, tasks, "en", null).getSyncPoller();
+            syncPoller = setPollInterval(syncPoller);
+            syncPoller.waitForCompletion();
+            AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
+
+            final List<AnalyzeActionsResult> actionsResults = result.toStream().collect(Collectors.toList());
+
+            actionsResults.forEach(
+                actionsResult -> actionsResult.getRecognizeCustomEntitiesResults().forEach(
+                    customEntitiesActionResult -> customEntitiesActionResult.getDocumentsResults().forEach(
+                        documentResult -> validateCategorizedEntities(
+                            documentResult.getEntities().stream().collect(Collectors.toList())))));
+        });
+    }
+
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/25079")
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void singleCategoryClassifyAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        classifyCustomSingleCategoryActionRunner((documents, tasks) -> {
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
+                client.beginAnalyzeActions(documents, tasks, "en", null).getSyncPoller();
+            syncPoller = setPollInterval(syncPoller);
+            syncPoller.waitForCompletion();
+            AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
+
+            final List<AnalyzeActionsResult> actionsResults = result.toStream().collect(Collectors.toList());
+
+            actionsResults.forEach(
+                actionsResult -> actionsResult.getSingleCategoryClassifyResults().forEach(
+                    customSingleCategoryActionResult -> customSingleCategoryActionResult.getDocumentsResults().forEach(
+                        documentResult -> validateCustomSingleCategory(documentResult))));
+        });
+    }
+
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/25079")
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void multiCategoryClassifyAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        classifyCustomMultiCategoryActionRunner((documents, tasks) -> {
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
+                client.beginAnalyzeActions(documents, tasks, "en", null).getSyncPoller();
+            syncPoller = setPollInterval(syncPoller);
+            syncPoller.waitForCompletion();
+            AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
+
+            final List<AnalyzeActionsResult> actionsResults = result.toStream().collect(Collectors.toList());
+
+            actionsResults.forEach(
+                actionsResult -> actionsResult.getMultiCategoryClassifyResults().forEach(
+                    customMultiCategoryActionResult -> customMultiCategoryActionResult.getDocumentsResults().forEach(
+                        documentResult -> validateCustomMultiCategory(documentResult))));
+        });
     }
 }

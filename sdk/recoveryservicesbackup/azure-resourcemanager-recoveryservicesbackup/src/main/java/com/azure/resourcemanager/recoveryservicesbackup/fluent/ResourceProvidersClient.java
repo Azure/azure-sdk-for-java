@@ -58,7 +58,7 @@ public interface ResourceProvidersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginBmsPrepareDataMove(
         String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters);
 
@@ -74,7 +74,7 @@ public interface ResourceProvidersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginBmsPrepareDataMove(
         String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters, Context context);
 
@@ -117,7 +117,7 @@ public interface ResourceProvidersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginBmsTriggerDataMove(
         String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters);
 
@@ -133,7 +133,7 @@ public interface ResourceProvidersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginBmsTriggerDataMove(
         String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters, Context context);
 
@@ -180,7 +180,7 @@ public interface ResourceProvidersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginMoveRecoveryPoint(
         String vaultName,
         String resourceGroupName,
@@ -206,7 +206,7 @@ public interface ResourceProvidersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginMoveRecoveryPoint(
         String vaultName,
         String resourceGroupName,

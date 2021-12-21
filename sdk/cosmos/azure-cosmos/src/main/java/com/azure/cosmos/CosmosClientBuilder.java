@@ -5,6 +5,7 @@ package com.azure.cosmos;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
+import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosAuthorizationTokenResolver;
@@ -108,6 +109,7 @@ public class CosmosClientBuilder {
     private boolean multipleWriteRegionsEnabled = true;
     private boolean readRequestsFallbackEnabled = true;
     private boolean clientTelemetryEnabled = false;
+    private ApiType apiType = null;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -128,6 +130,22 @@ public class CosmosClientBuilder {
     CosmosClientMetadataCachesSnapshot metadataCaches() {
         return this.state;
     }
+
+    /**
+     * Sets an apiType for the builder.
+     * @param apiType
+     * @return current cosmosClientBuilder
+     */
+    CosmosClientBuilder setApiType(ApiType apiType){
+        this.apiType = apiType;
+        return this;
+    }
+
+    /**
+     * Returns apiType for the Builder.
+     * @return
+     */
+    ApiType apiType(){ return this.apiType; }
 
     /**
      * Session capturing is enabled by default for {@link ConsistencyLevel#SESSION}.
@@ -760,9 +778,7 @@ public class CosmosClientBuilder {
             //  Check if the user passed additional gateway connection configuration
             if (this.gatewayConnectionConfig != null) {
                 this.connectionPolicy.setMaxConnectionPoolSize(this.gatewayConnectionConfig.getMaxConnectionPoolSize());
-                //  TODO(kuthapar): potential bug - when we expose requestTimeout from direct and gateway connection config,
-                //   as gateway connection config will overwrite direct connection config settings
-                this.connectionPolicy.setRequestTimeout(this.gatewayConnectionConfig.getRequestTimeout());
+                this.connectionPolicy.setHttpNetworkRequestTimeout(this.gatewayConnectionConfig.getNetworkRequestTimeout());
                 this.connectionPolicy.setIdleHttpConnectionTimeout(this.gatewayConnectionConfig.getIdleConnectionTimeout());
                 this.connectionPolicy.setProxy(this.gatewayConnectionConfig.getProxy());
             }
@@ -846,6 +862,16 @@ public class CosmosClientBuilder {
                 @Override
                 public CosmosClientMetadataCachesSnapshot getCosmosClientMetadataCachesSnapshot(CosmosClientBuilder builder) {
                     return builder.metadataCaches();
+                }
+
+                @Override
+                public void setCosmosClientApiType(CosmosClientBuilder builder, ApiType apiType) {
+                    builder.setApiType(apiType);
+                }
+
+                @Override
+                public ApiType getCosmosClientApiType(CosmosClientBuilder builder) {
+                    return builder.apiType();
                 }
             });
     }

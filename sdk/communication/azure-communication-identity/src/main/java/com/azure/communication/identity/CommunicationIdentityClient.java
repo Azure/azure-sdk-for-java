@@ -234,7 +234,7 @@ public final class CommunicationIdentityClient {
      * @return Communication Identity access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AccessToken exchangeTeamsUserAadToken(String teamsUserAadToken) {
+    public AccessToken getTokenForTeamsUser(String teamsUserAadToken) {
         TeamsUserAccessTokenRequest requestBody = new TeamsUserAccessTokenRequest();
         requestBody.setToken(teamsUserAadToken);
         CommunicationIdentityAccessToken rawToken = client.exchangeTeamsUserAccessToken(requestBody);
@@ -250,7 +250,7 @@ public final class CommunicationIdentityClient {
      * @return Communication Identity access token with response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AccessToken> exchangeTeamsUserAadTokenWithResponse(String teamsUserAadToken, Context context) {
+    public Response<AccessToken> getTokenForTeamsUserWithResponse(String teamsUserAadToken, Context context) {
         context = context == null ? Context.NONE : context;
         TeamsUserAccessTokenRequest requestBody = new TeamsUserAccessTokenRequest();
         requestBody.setToken(teamsUserAadToken);

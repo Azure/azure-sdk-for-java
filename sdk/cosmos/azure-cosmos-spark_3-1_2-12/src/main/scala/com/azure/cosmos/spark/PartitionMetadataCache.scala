@@ -137,7 +137,6 @@ private object PartitionMetadataCache extends BasicLoggingTrait {
 
   this.startRefreshTimer()
 
-  //scalastyle:off method.length
   private def readPartitionMetadata
   (
     userConfig: Map[String, String],
@@ -147,50 +146,78 @@ private object PartitionMetadataCache extends BasicLoggingTrait {
     feedRange: NormalizedRange,
     tolerateNotFound: Boolean
   ): SMono[Option[PartitionMetadata]] = {
-    val client = CosmosClientCache.apply(cosmosClientConfiguration, cosmosClientStateHandle)
-    val container = ThroughputControlHelper.getContainer(userConfig, cosmosContainerConfig, client)
 
-    val options = CosmosChangeFeedRequestOptions.createForProcessingFromNow(
-      SparkBridgeImplementationInternal.toFeedRange(feedRange))
-    options.setMaxItemCount(1)
-    options.setMaxPrefetchPageCount(1)
-    options.setQuotaInfoEnabled(true)
+    TransientErrorsRetryPolicy.executeWithRetry(() =>
+      readPartitionMetadataImpl(
+        userConfig,
+        cosmosClientConfiguration,
+        cosmosClientStateHandle,
+        cosmosContainerConfig,
+        feedRange,
+        tolerateNotFound))
+  }
 
-    val lastDocumentCount = new AtomicLong()
-    val lastTotalDocumentSize = new AtomicLong()
-    val lastContinuationToken = new AtomicReference[String]()
+  //scalastyle:off method.length
+  private def readPartitionMetadataImpl
+  (
+    userConfig: Map[String, String],
+    cosmosClientConfiguration: CosmosClientConfiguration,
+    cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
+    cosmosContainerConfig: CosmosContainerConfig,
+    feedRange: NormalizedRange,
+    tolerateNotFound: Boolean
+  ): SMono[Option[PartitionMetadata]] = {
+    Loan(CosmosClientCache(
+      cosmosClientConfiguration,
+      cosmosClientStateHandle,
+      "PartitionMetadataCache.readPartitionMetadata(" +
+        s"${cosmosContainerConfig.database}.${cosmosContainerConfig.container}, $feedRange)"
+    ))
+      .to(clientCacheItem => {
+        val container = ThroughputControlHelper.getContainer(userConfig, cosmosContainerConfig, clientCacheItem.client)
 
-    container
-      .queryChangeFeed(options, classOf[ObjectNode])
-      .handle(r => {
-        lastDocumentCount.set(r.getDocumentCountUsage)
-        lastTotalDocumentSize.set(r.getDocumentUsage)
-        val continuation = r.getContinuationToken
-        if (!Strings.isNullOrWhiteSpace(continuation)) {
-          lastContinuationToken.set(continuation)
-        }
-      })
-      .collectList()
-      .asScala
-      .map(_ => {
-        Some(PartitionMetadata(
-          userConfig,
-          cosmosClientConfiguration,
-          cosmosClientStateHandle,
-          cosmosContainerConfig,
-          feedRange,
-          assertNotNull(lastDocumentCount.get, "lastDocumentCount"),
-          assertNotNull(lastTotalDocumentSize.get, "lastTotalDocumentSize"),
-          assertNotNullOrEmpty(lastContinuationToken.get, "continuationToken")
-        ))
-      })
-      .onErrorResume((throwable: Throwable) => {
-        if (tolerateNotFound && Exceptions.isNotFoundException(throwable)) {
-          SMono.just(None)
-        } else {
-          SMono.error(throwable)
-        }
-      })
+        val options = CosmosChangeFeedRequestOptions.createForProcessingFromNow(
+          SparkBridgeImplementationInternal.toFeedRange(feedRange))
+        options.setMaxItemCount(1)
+        options.setMaxPrefetchPageCount(1)
+        options.setQuotaInfoEnabled(true)
+
+        val lastDocumentCount = new AtomicLong()
+        val lastTotalDocumentSize = new AtomicLong()
+        val lastContinuationToken = new AtomicReference[String]()
+
+        container
+          .queryChangeFeed(options, classOf[ObjectNode])
+          .handle(r => {
+            lastDocumentCount.set(r.getDocumentCountUsage)
+            lastTotalDocumentSize.set(r.getDocumentUsage)
+            val continuation = r.getContinuationToken
+            if (!Strings.isNullOrWhiteSpace(continuation)) {
+              lastContinuationToken.set(continuation)
+            }
+          })
+          .collectList()
+          .asScala
+          .map(_ => {
+            Some(PartitionMetadata(
+              userConfig,
+              cosmosClientConfiguration,
+              cosmosClientStateHandle,
+              cosmosContainerConfig,
+              feedRange,
+              assertNotNull(lastDocumentCount.get, "lastDocumentCount"),
+              assertNotNull(lastTotalDocumentSize.get, "lastTotalDocumentSize"),
+              assertNotNullOrEmpty(lastContinuationToken.get, "continuationToken")
+            ))
+          })
+          .onErrorResume((throwable: Throwable) => {
+            if (tolerateNotFound && Exceptions.isNotFoundException(throwable)) {
+              SMono.just(None)
+            } else {
+              SMono.error(throwable)
+            }
+          })
+    })
   }
   //scalastyle:on method.length
 

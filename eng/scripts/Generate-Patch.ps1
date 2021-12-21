@@ -17,6 +17,8 @@
 #                             The script pushes the branch to remote URL https://github.com/Azure/azure-sdk-for-java.git
 # 6. PushToRemote           - Whether the commited changes should be pushed to the remote branch or not. This is not a required parameter. The default value is false.
 #
+# 7. CreateNewBranch        - Whether to create a new branch or use an existing branch. You would want to use an existing branch if you are using the same release tag for multiple libraries.
+#
 # Example:  .\eng\scripts\Generate-Patch.ps1 -ArtifactName azure-mixedreality-remoterendering -ServiceDirectory remoterendering -ReleaseVersion 1.0.0 -PatchVersion 1.0.1
 # This creates a remote branch "release/azure-mixedreality-remoterendering" with all the necessary changes.
 
@@ -26,7 +28,8 @@ param(
   [Parameter(Mandatory=$true)][string]$ReleaseVersion,
   [Parameter(Mandatory=$false)][string]$PatchVersion,
   [Parameter(Mandatory=$false)][string]$BranchName,
-  [Parameter(Mandatory=$false)][boolean]$PushToRemote
+  [Parameter(Mandatory=$false)][boolean]$PushToRemote,
+  [Parameter(Mandatory=$false)][boolean]$CreateNewBranch = $true
 )
 
 function TestPathThrow($Path, $PathName) {
@@ -120,6 +123,8 @@ function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $Release
     $cmdOutput = git restore --source $ReleaseTag -W -S $TestResourcesFilePath
   }
 
+<# // Disabling the resetting of the sources for the common files as this may accidently remove other things. 
+    We may need this in future when we do patch releases from a single pipeline. 
   if(Test-Path $CheckStyleSuppressionFilePath) {
     $cmdOutput = git restore --source $ReleaseTag -W -S $CheckStyleSuppressionFilePath
   }
@@ -131,6 +136,7 @@ function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $Release
   if(Test-Path $SpotBugsFilePath) {
     $cmdOutput = git restore --source $ReleaseTag -W -S $SpotBugsFilePath
   }
+#>
 
    ## Commit these changes.
   $cmdOutput = git commit -a -m "Reset changes to the patch version."
@@ -206,15 +212,17 @@ function CreatePatchRelease($ArtifactName, $ServiceDirectoryName, $PatchVersion,
   }
   
   $Content += ""
-  $newChangeLogEntry = New-ChangeLogEntry -Version $Version -Status $releaseStatus -Content $Content
+  $newChangeLogEntry = New-ChangeLogEntry -Version $PatchVersion -Status $releaseStatus -Content $Content
   if ($newChangeLogEntry) {
-    $changeLogEntries.Insert(0, $Version, $newChangeLogEntry)
+    $changeLogEntries.Insert(0, $PatchVersion, $newChangeLogEntry)
   }
   else {
     LogError "Failed to create new changelog entry"
     exit 1
     }
-  Set-ChangeLogContent -ChangeLogLocation $ChangelogPath -ChangeLogEntries $changeLogEntries
+	
+	
+  $cmdOutput = Set-ChangeLogContent -ChangeLogLocation $ChangelogPath -ChangeLogEntries $ChangeLogEntries
   if($LASTEXITCODE -ne 0) {
     LogError "Could not update the changelog.. Exiting..."
     exit 1
@@ -244,7 +252,12 @@ if(!$BranchName) {
 
 try {
   ## Creating a new branch
-  $cmdOutput = git checkout -b $BranchName $RemoteName/main
+  if($CreateNewBranch) {
+    $cmdOutput = git checkout -b $BranchName $RemoteName/main
+  }
+  else {
+    $cmdOutput = git checkout $BranchName
+  }
   if($LASTEXITCODE -ne 0) {
     LogError "Could not checkout branch $BranchName, please check if it already exists and delete as necessary. Exiting..."
     exit 1
@@ -267,7 +280,7 @@ try {
   }
 
   if($PushToRemote) {
-    $cmdOutput = git push -f $RemoteName $BranchName
+    $cmdOutput = git push $RemoteName $BranchName
     if($LASTEXITCODE -ne 0) {
       LogError "Could not push the changes to $RemoteName\$BranchName. Exiting..."
       exit 1

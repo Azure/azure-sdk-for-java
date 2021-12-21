@@ -16,6 +16,7 @@ import com.azure.security.keyvault.keys.cryptography.CryptographyClient;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
+import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
@@ -55,7 +56,11 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     }
 
     protected void createKeyAsyncClient(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        HttpPipeline httpPipeline = getHttpPipeline(httpClient);
+        createKeyAsyncClient(httpClient, serviceVersion, null);
+    }
+
+    protected void createKeyAsyncClient(HttpClient httpClient, KeyServiceVersion serviceVersion, String testTenantId) {
+        HttpPipeline httpPipeline = getHttpPipeline(httpClient, testTenantId);
         client = spy(new KeyClientBuilder()
             .vaultUrl(getEndpoint())
             .pipeline(httpPipeline)
@@ -74,6 +79,23 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @MethodSource("getTestParameters")
     public void setKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyAsyncClient(httpClient, serviceVersion);
+        setKeyRunner((expected) -> StepVerifier.create(client.createKey(expected))
+            .assertNext(response -> assertKeyEquals(expected, response))
+            .verifyComplete());
+    }
+
+    /**
+     * Tests that a key can be created in the key vault while using a different tenant ID than the one that will be
+     * provided in the authentication challenge.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void setKeyWithMultipleTenants(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyAsyncClient(httpClient, serviceVersion, testResourceNamer.randomUuid());
+        setKeyRunner((expected) -> StepVerifier.create(client.createKey(expected))
+            .assertNext(response -> assertKeyEquals(expected, response))
+            .verifyComplete());
+        KeyVaultCredentialPolicy.clearCache(); // Ensure we don't have anything cached and try again.
         setKeyRunner((expected) -> StepVerifier.create(client.createKey(expected))
             .assertNext(response -> assertKeyEquals(expected, response))
             .verifyComplete());

@@ -54,6 +54,7 @@ public final class WebPubSubServiceAsyncClient {
      * @param options Options to apply when creating the client access token.
      * @return A new client access token instance.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<WebPubSubClientAccessToken> getClientAccessToken(GetClientAccessTokenOptions options) {
         if (this.keyCredential == null) {
             RequestOptions requestOptions = new RequestOptions();
@@ -67,7 +68,7 @@ public final class WebPubSubServiceAsyncClient {
                 requestOptions.addQueryParam("role", options.getRoles().stream().collect(Collectors.joining(",")));
             }
             requestOptions.addQueryParam("api-version", version.getVersion());
-            this.serviceClient.generateClientTokenWithResponseAsync(hub, requestOptions)
+            return this.serviceClient.generateClientTokenWithResponseAsync(hub, requestOptions)
                     .map(Response::getValue)
                     .map(binaryData -> {
                         String token = WebPubSubUtil.getToken(binaryData);
@@ -131,8 +132,8 @@ public final class WebPubSubServiceAsyncClient {
         if (requestOptions == null) {
             requestOptions = new RequestOptions();
         }
-        requestOptions.addHeader("contentType", contentType.toString());
-        requestOptions.addHeader("contentLength", String.valueOf(contentLength));
+        requestOptions.setHeader("Content-Type", contentType.toString());
+        requestOptions.setHeader("Content-Length", String.valueOf(contentLength));
         return this.serviceClient.sendToAllWithResponseAsync(hub, message, requestOptions);
     }
 
@@ -162,8 +163,8 @@ public final class WebPubSubServiceAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendToAll(String message, WebPubSubContentType contentType) {
         return sendToAllWithResponse(BinaryData.fromString(message),
-                new RequestOptions().addRequestCallback(request -> request.getHeaders().set("Content-Type",
-                        contentType.toString()))).flatMap(FluxUtil::toMono);
+                new RequestOptions().setHeader("Content-Type", contentType.toString()))
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -218,8 +219,8 @@ public final class WebPubSubServiceAsyncClient {
         if (requestOptions == null) {
             requestOptions = new RequestOptions();
         }
-        requestOptions.addHeader("contentType", contentType.toString());
-        requestOptions.addHeader("contentLength", String.valueOf(contentLength));
+        requestOptions.setHeader("Content-Type", contentType.toString());
+        requestOptions.setHeader("Content-Length", String.valueOf(contentLength));
         return this.serviceClient.sendToConnectionWithResponseAsync(
                 hub, connectionId, message, requestOptions);
     }
@@ -254,8 +255,7 @@ public final class WebPubSubServiceAsyncClient {
     public Mono<Void> sendToConnection(
             String connectionId, String message, WebPubSubContentType contentType) {
         return this.sendToConnectionWithResponse(connectionId, BinaryData.fromString(message),
-                new RequestOptions().addRequestCallback(request -> request.getHeaders()
-                        .set("Content-Type", contentType.toString()))).flatMap(FluxUtil::toMono);
+                new RequestOptions().setHeader("Content-Type", contentType.toString())).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -294,8 +294,8 @@ public final class WebPubSubServiceAsyncClient {
         if (requestOptions == null) {
             requestOptions = new RequestOptions();
         }
-        requestOptions.addHeader("contentType", contentType.toString());
-        requestOptions.addHeader("contentLength", String.valueOf(contentLength));
+        requestOptions.setHeader("Content-Type", contentType.toString());
+        requestOptions.setHeader("Content-Length", String.valueOf(contentLength));
         return this.serviceClient.sendToGroupWithResponseAsync(
                 hub, group, message, requestOptions);
     }
@@ -329,7 +329,7 @@ public final class WebPubSubServiceAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendToGroup(String group, String message, WebPubSubContentType contentType) {
         return sendToGroupWithResponse(group, BinaryData.fromString(message), new RequestOptions()
-                .addRequestCallback(request -> request.getHeaders().set("Content-Type", contentType.toString())))
+                .setHeader("Content-Type", contentType.toString()))
                 .flatMap(FluxUtil::toMono);
     }
 
@@ -401,8 +401,8 @@ public final class WebPubSubServiceAsyncClient {
         if (requestOptions == null) {
             requestOptions = new RequestOptions();
         }
-        requestOptions.addHeader("contentType", contentType.toString());
-        requestOptions.addHeader("contentLength", String.valueOf(contentLength));
+        requestOptions.setHeader("Content-Type", contentType.toString());
+        requestOptions.setHeader("Content-Length", String.valueOf(contentLength));
         return this.serviceClient.sendToUserWithResponseAsync(
                 hub, userId, message, requestOptions);
     }
@@ -436,7 +436,7 @@ public final class WebPubSubServiceAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendToUser(String userId, String message, WebPubSubContentType contentType) {
         return sendToUserWithResponse(userId, BinaryData.fromString(message), new RequestOptions()
-                .addRequestCallback(request -> request.getHeaders().set("Content-Type", contentType.toString())))
+                .setHeader("Content-Type", contentType.toString()))
                 .flatMap(FluxUtil::toMono);
     }
 

@@ -1201,7 +1201,7 @@ public final class AppServicePlansClientImpl
                 this.client.getHttpPipeline(),
                 AppServicePlanInner.class,
                 AppServicePlanInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

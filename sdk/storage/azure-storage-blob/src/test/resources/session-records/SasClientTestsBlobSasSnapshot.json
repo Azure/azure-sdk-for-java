@@ -3,13 +3,13 @@
     "Method" : "PUT",
     "Uri" : "https://REDACTED.blob.core.windows.net/3a6fb34903a6fb349fd367220772a52ff57c049e5ac8?restype=container",
     "Headers" : {
-      "x-ms-version" : "2020-12-06",
+      "x-ms-version" : "2021-02-12",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.15.0-beta.1 (11.0.7; Windows 10; 10.0)",
       "x-ms-client-request-id" : "1ed5d845-be7c-48a9-9181-6e79304c10f0"
     },
     "Response" : {
       "content-length" : "0",
-      "x-ms-version" : "2020-12-06",
+      "x-ms-version" : "2021-02-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "eTag" : "0x8D98E9383C8C8F5",
       "Last-Modified" : "Wed, 13 Oct 2021 21:50:47 GMT",
@@ -24,14 +24,14 @@
     "Method" : "PUT",
     "Uri" : "https://REDACTED.blob.core.windows.net/3a6fb34903a6fb349fd367220772a52ff57c049e5ac8/3a6fb34913a6fb349fd3723688ec4d0e6277a4eada14",
     "Headers" : {
-      "x-ms-version" : "2020-12-06",
+      "x-ms-version" : "2021-02-12",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.15.0-beta.1 (11.0.7; Windows 10; 10.0)",
       "x-ms-client-request-id" : "80201eb4-c75a-413c-a8ad-2c5cff74a14e",
       "Content-Type" : "application/octet-stream"
     },
     "Response" : {
       "content-length" : "0",
-      "x-ms-version" : "2020-12-06",
+      "x-ms-version" : "2021-02-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-content-crc64" : "6RYQPwaVsyQ=",
       "Last-Modified" : "Wed, 13 Oct 2021 21:50:47 GMT",
@@ -50,13 +50,13 @@
     "Method" : "PUT",
     "Uri" : "https://REDACTED.blob.core.windows.net/3a6fb34903a6fb349fd367220772a52ff57c049e5ac8/3a6fb34913a6fb349fd3723688ec4d0e6277a4eada14?comp=snapshot",
     "Headers" : {
-      "x-ms-version" : "2020-12-06",
+      "x-ms-version" : "2021-02-12",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.15.0-beta.1 (11.0.7; Windows 10; 10.0)",
       "x-ms-client-request-id" : "d3c4987e-302c-4fc8-98f5-762cfc77f0ea"
     },
     "Response" : {
       "content-length" : "0",
-      "x-ms-version" : "2020-12-06",
+      "x-ms-version" : "2021-02-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "Last-Modified" : "Wed, 13 Oct 2021 21:50:47 GMT",
       "x-ms-version-id" : "2021-10-13T21:50:48.3205994Z",
@@ -72,9 +72,9 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net/3a6fb34903a6fb349fd367220772a52ff57c049e5ac8/3a6fb34913a6fb349fd3723688ec4d0e6277a4eada14?sv=2020-12-06&spr=https%2Chttp&st=2021-10-12T21%3A50%3A48Z&se=2021-10-14T21%3A50%3A48Z&sr=bs&sp=racwd&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
+    "Uri" : "https://REDACTED.blob.core.windows.net/3a6fb34903a6fb349fd367220772a52ff57c049e5ac8/3a6fb34913a6fb349fd3723688ec4d0e6277a4eada14?sv=2021-02-12&spr=https%2Chttp&st=2021-10-12T21%3A50%3A48Z&se=2021-10-14T21%3A50%3A48Z&sr=bs&sp=racwd&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
     "Headers" : {
-      "x-ms-version" : "2020-12-06",
+      "x-ms-version" : "2021-02-12",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.15.0-beta.1 (11.0.7; Windows 10; 10.0)",
       "x-ms-client-request-id" : "6fe21a8c-8ee7-4f19-9061-d6c6c0ebe00f"
     },
@@ -94,15 +94,15 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net/3a6fb34903a6fb349fd367220772a52ff57c049e5ac8/3a6fb34913a6fb349fd3723688ec4d0e6277a4eada14?snapshot=2021-10-13T21%3A50%3A48.3195994Z&sv=2020-12-06&spr=https%2Chttp&st=2021-10-12T21%3A50%3A48Z&se=2021-10-14T21%3A50%3A48Z&sr=bs&sp=racwd&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
+    "Uri" : "https://REDACTED.blob.core.windows.net/3a6fb34903a6fb349fd367220772a52ff57c049e5ac8/3a6fb34913a6fb349fd3723688ec4d0e6277a4eada14?snapshot=2021-10-13T21%3A50%3A48.3195994Z&sv=2021-02-12&spr=https%2Chttp&st=2021-10-12T21%3A50%3A48Z&se=2021-10-14T21%3A50%3A48Z&sr=bs&sp=racwd&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
     "Headers" : {
-      "x-ms-version" : "2020-12-06",
+      "x-ms-version" : "2021-02-12",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.15.0-beta.1 (11.0.7; Windows 10; 10.0)",
       "x-ms-client-request-id" : "eac70ec0-a252-4246-8d16-2829309e8dee"
     },
     "Response" : {
       "content-length" : "7",
-      "x-ms-version" : "2020-12-06",
+      "x-ms-version" : "2021-02-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "Access-Control-Allow-Origin" : "*",
       "Last-Modified" : "Wed, 13 Oct 2021 21:50:47 GMT",
@@ -128,15 +128,15 @@
     "Exception" : null
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://REDACTED.blob.core.windows.net/3a6fb34903a6fb349fd367220772a52ff57c049e5ac8/3a6fb34913a6fb349fd3723688ec4d0e6277a4eada14?snapshot=2021-10-13T21%3A50%3A48.3195994Z&sv=2020-12-06&spr=https%2Chttp&st=2021-10-12T21%3A50%3A48Z&se=2021-10-14T21%3A50%3A48Z&sr=bs&sp=racwd&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
+    "Uri" : "https://REDACTED.blob.core.windows.net/3a6fb34903a6fb349fd367220772a52ff57c049e5ac8/3a6fb34913a6fb349fd3723688ec4d0e6277a4eada14?snapshot=2021-10-13T21%3A50%3A48.3195994Z&sv=2021-02-12&spr=https%2Chttp&st=2021-10-12T21%3A50%3A48Z&se=2021-10-14T21%3A50%3A48Z&sr=bs&sp=racwd&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
     "Headers" : {
-      "x-ms-version" : "2020-12-06",
+      "x-ms-version" : "2021-02-12",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.15.0-beta.1 (11.0.7; Windows 10; 10.0)",
       "x-ms-client-request-id" : "6ea6ecb1-d3e5-46e6-814e-32a927a7037a"
     },
     "Response" : {
       "content-length" : "7",
-      "x-ms-version" : "2020-12-06",
+      "x-ms-version" : "2021-02-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "Access-Control-Allow-Origin" : "*",
       "Last-Modified" : "Wed, 13 Oct 2021 21:50:47 GMT",

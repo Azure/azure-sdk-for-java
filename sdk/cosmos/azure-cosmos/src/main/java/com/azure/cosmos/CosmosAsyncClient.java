@@ -7,6 +7,7 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.Tracer;
+import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
@@ -69,6 +70,7 @@ public final class CosmosAsyncClient implements Closeable {
     private final TracerProvider tracerProvider;
     private final boolean contentResponseOnWriteEnabled;
     private static final Tracer TRACER;
+    private final ApiType apiType;
 
     static {
         ServiceLoader<Tracer> serviceLoader = ServiceLoader.load(Tracer.class);
@@ -95,6 +97,7 @@ public final class CosmosAsyncClient implements Closeable {
         this.clientTelemetryEnabled = builder.isClientTelemetryEnabled();
         this.contentResponseOnWriteEnabled = builder.isContentResponseOnWriteEnabled();
         this.tracerProvider = new TracerProvider(TRACER);
+        this.apiType = builder.apiType();
 
         List<Permission> permissionList = new ArrayList<>();
         if (this.permissions != null) {
@@ -120,6 +123,7 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withTokenCredential(this.tokenCredential)
                                        .withState(builder.metadataCaches())
                                        .withPermissionFeed(permissionList)
+                                       .withApiType(apiType)
                                        .build();
     }
 

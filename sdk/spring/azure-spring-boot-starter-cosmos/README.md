@@ -50,6 +50,8 @@ azure.cosmos.key=your-cosmos-key
 azure.cosmos.database=your-cosmos-databasename
 azure.cosmos.populateQueryMetrics=true
 secondary-key=put-your-cosmos-secondary-key-here
+# Whether to validate the uri, default is true.
+azure.cosmos.validateUri=true
 ```
 
 Property `azure.cosmos.consistency-level` is also supported.

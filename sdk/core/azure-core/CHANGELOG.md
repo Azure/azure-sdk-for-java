@@ -1,15 +1,57 @@
 # Release History
 
-## 1.22.0-beta.2 (Unreleased)
+## 1.24.0-beta.1 (Unreleased)
 
 ### Features Added
-- Added `getJavaClass` method to retrieve the representing instance of the `TypeReference` created.
+
+- Added `ClientLogger` APIs (`atError`, `atWarning`, `atInfo`, `atVerbose`) that allow adding key-value pairs to log entries and `ClientLogger` constructor overloads that take context to apply to every log entry written with this logger instance. Logger writes entries that have context as JSON similar to `{"az.sdk.message":"on delivery","connectionId":"foo"}`
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.23.1 (2021-12-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Jackson from `2.12.5` to `2.13.0`.
+- Upgraded Reactor from `3.4.10` to `3.4.12`.
+
+## 1.23.0 (2021-11-22)
+
+### Breaking Changes
+- Removed `ErrorOptions`
+- Removed `setErrorOptions()` from `RequestOptions`
+
+## 1.22.0 (2021-11-05)
+
+### Features Added
+
+- Added `ReferenceManager` which is capable of performing `Cleaner`-like functionality by allowing a `Runnable` callback
+  to be triggered when an object reference is eligible for garbage collection.
+- Added `RequestOptions` which allows for a chained set of operations to be applied to an `HttpRequest` before being
+  sent through the `HttpPipeline`.
+- Added an `ETag` class which represents an HTTP ETag.
+- Added `getJavaClass` method to retrieve the representing instance of the `TypeReference` created.
+- Added support for HTTP method OPTIONS by adding an `Options` annotation.
+- Added a function to `CoreUtils` which merges two `Context`s together.
+- Added a new feature flag `AZURE_JACKSON_ADAPTER_USE_ACCESS_HELPER` which indicates to `JacksonAdapter` to wrap 
+  serialization calls in `AccessController.doPrivileged` to prevent `SecurityManager` exceptions when `JacksonAdapter`
+  has the prerequisite permissions.
+
+### Bugs Fixed
+
+- Fixed a bug where an initial length of 0 wasn't permitted when creating a `ByteBuffer` collector.
+- Fixed a bug where an exception type would be instantiated and never used in a hot path, reducing memory usage.
+- Fixed a bug where the content length of a serializable request body may return null when it is known (already serialized).
+
+### Other Changes
+
+- Improved performance of operations that merge or retrieve all values of `Context`.
 
 ## 1.22.0-beta.1 (2021-10-12)
 

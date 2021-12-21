@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.scanning;
 
 import com.azure.analytics.purview.scanning.implementation.FiltersImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -17,13 +18,14 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewScanningClient type. */
 @ServiceClient(builder = PurviewScanningClientBuilder.class, isAsync = true)
 public final class FiltersAsyncClient {
-    private final FiltersImpl serviceClient;
+    @Generated private final FiltersImpl serviceClient;
 
     /**
      * Initializes an instance of Filters client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     FiltersAsyncClient(FiltersImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -59,10 +61,10 @@ public final class FiltersAsyncClient {
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return a filter.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponse(
             String dataSourceName, String scanName, RequestOptions requestOptions) {
@@ -117,13 +119,13 @@ public final class FiltersAsyncClient {
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> upsertWithResponse(
+    public Mono<Response<BinaryData>> createOrUpdateWithResponse(
             String dataSourceName, String scanName, RequestOptions requestOptions) {
-        return this.serviceClient.upsertWithResponseAsync(dataSourceName, scanName, requestOptions);
+        return this.serviceClient.createOrUpdateWithResponseAsync(dataSourceName, scanName, requestOptions);
     }
 }

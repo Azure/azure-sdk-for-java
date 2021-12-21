@@ -11,6 +11,7 @@ import com.azure.ai.textanalytics.models.AnalyzeSentimentActionResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
+import com.azure.ai.textanalytics.models.ClassificationCategory;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
@@ -26,10 +27,13 @@ import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelationRole;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
+import com.azure.ai.textanalytics.models.MultiCategoryClassifyAction;
+import com.azure.ai.textanalytics.models.MultiCategoryClassifyResult;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityDomain;
+import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesAction;
@@ -39,6 +43,8 @@ import com.azure.ai.textanalytics.models.RecognizePiiEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SentenceOpinion;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
+import com.azure.ai.textanalytics.models.SingleCategoryClassifyAction;
+import com.azure.ai.textanalytics.models.SingleCategoryClassifyResult;
 import com.azure.ai.textanalytics.models.SummarySentence;
 import com.azure.ai.textanalytics.models.SummarySentencesOrder;
 import com.azure.ai.textanalytics.models.TargetSentiment;
@@ -82,6 +88,9 @@ import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TestUtils.CATEGORIZED_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.CUSTOM_ACTION_NAME;
+import static com.azure.ai.textanalytics.TestUtils.CUSTOM_ENTITIES_INPUT;
+import static com.azure.ai.textanalytics.TestUtils.CUSTOM_MULTI_CLASSIFICATION;
+import static com.azure.ai.textanalytics.TestUtils.CUSTOM_SINGLE_CLASSIFICATION;
 import static com.azure.ai.textanalytics.TestUtils.DETECT_LANGUAGE_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.FAKE_API_KEY;
 import static com.azure.ai.textanalytics.TestUtils.HEALTHCARE_INPUTS;
@@ -107,6 +116,19 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     static final String INVALID_DOCUMENT_NPE_MESSAGE = "'document' cannot be null.";
     static final String WARNING_TOO_LONG_DOCUMENT_INPUT_MESSAGE = "The document contains very long words (longer than 64 characters). These words will be truncated and may result in unreliable model predictions.";
     static final String REDACTED = "REDACTED";
+    static final String AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_PROJECT_NAME =
+        Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_PROJECT_NAME");
+    static final String AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_DEPLOYMENT_NAME =
+        Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_DEPLOYMENT_NAME");
+    static final String AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_PROJECT_NAME =
+        Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_PROJECT_NAME");
+    static final String AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_DEPLOYMENT_NAME =
+        Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_DEPLOYMENT_NAME");
+    static final String AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_PROJECT_NAME =
+        Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_PROJECT_NAME");
+    static final String AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_DEPLOYMENT_NAME =
+        Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_DEPLOYMENT_NAME");
+
     static InterceptorManager interceptorManagerTestBase;
     Duration durationTestMode;
 
@@ -688,6 +710,18 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void analyzeExtractSummaryActionMaxSentenceCountInvalidRangeException(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion);
 
+    @Test
+    abstract void recognizeCustomEntitiesAction(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void singleCategoryClassifyAction(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void multiCategoryClassifyAction(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
+
     // Detect Language runner
     void detectLanguageShowStatisticsRunner(BiConsumer<List<DetectLanguageInput>,
         TextAnalyticsRequestOptions> testRunner) {
@@ -1083,6 +1117,25 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                     new RecognizeLinkedEntitiesAction())
                 .setAnalyzeSentimentActions(new AnalyzeSentimentAction().setActionName(CUSTOM_ACTION_NAME),
                     new AnalyzeSentimentAction())
+            // TODO: https://github.com/Azure/azure-sdk-for-java/issues/24908
+
+//                .setRecognizeCustomEntitiesActions(
+//                    new RecognizeCustomEntitiesAction(AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_PROJECT_NAME,
+//                        AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_DEPLOYMENT_NAME).setActionName(CUSTOM_ACTION_NAME),
+//                    new RecognizeCustomEntitiesAction(AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_PROJECT_NAME,
+//                        AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_DEPLOYMENT_NAME))
+//                .setSingleCategoryClassifyActions(
+//                    new SingleCategoryClassifyAction(AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_PROJECT_NAME,
+//                        AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_DEPLOYMENT_NAME)
+//                        .setActionName(CUSTOM_ACTION_NAME),
+//                    new SingleCategoryClassifyAction(AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_PROJECT_NAME,
+//                        AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_DEPLOYMENT_NAME))
+//                .setMultiCategoryClassifyActions(
+//                    new MultiCategoryClassifyAction(AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_PROJECT_NAME,
+//                        AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_DEPLOYMENT_NAME)
+//                        .setActionName(CUSTOM_ACTION_NAME),
+//                    new MultiCategoryClassifyAction(AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_PROJECT_NAME,
+//                        AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_DEPLOYMENT_NAME))
         );
     }
 
@@ -1097,9 +1150,21 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 .setExtractSummaryActions(new ExtractSummaryAction().setActionName(CUSTOM_ACTION_NAME))
                 .setRecognizeLinkedEntitiesActions(new RecognizeLinkedEntitiesAction().setActionName(CUSTOM_ACTION_NAME))
                 .setAnalyzeSentimentActions(new AnalyzeSentimentAction().setActionName(CUSTOM_ACTION_NAME))
+            // TODO: https://github.com/Azure/azure-sdk-for-java/issues/24908
+
+//                .setRecognizeCustomEntitiesActions(
+//                    new RecognizeCustomEntitiesAction(AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_PROJECT_NAME,
+//                        AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_DEPLOYMENT_NAME).setActionName(CUSTOM_ACTION_NAME))
+//                .setSingleCategoryClassifyActions(
+//                    new SingleCategoryClassifyAction(AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_PROJECT_NAME,
+//                        AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_DEPLOYMENT_NAME)
+//                        .setActionName(CUSTOM_ACTION_NAME))
+//                .setMultiCategoryClassifyActions(
+//                    new MultiCategoryClassifyAction(AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_PROJECT_NAME,
+//                        AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_DEPLOYMENT_NAME)
+//                        .setActionName(CUSTOM_ACTION_NAME))
         );
     }
-
 
     void analyzeBatchActionsPaginationRunner(BiConsumer<List<TextDocumentInput>, TextAnalyticsActions> testRunner,
         int documentsInTotal) {
@@ -1190,6 +1255,30 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                         .setOrderBy(summarySentencesOrder)));
     }
 
+    void recognizeCustomEntitiesActionRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner) {
+        testRunner.accept(CUSTOM_ENTITIES_INPUT,
+            new TextAnalyticsActions()
+                .setRecognizeCustomEntitiesActions(
+                    new RecognizeCustomEntitiesAction(AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_PROJECT_NAME,
+                        AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_DEPLOYMENT_NAME)));
+    }
+
+    void classifyCustomSingleCategoryActionRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner) {
+        testRunner.accept(CUSTOM_SINGLE_CLASSIFICATION,
+            new TextAnalyticsActions()
+                .setSingleCategoryClassifyActions(
+                    new SingleCategoryClassifyAction(AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_PROJECT_NAME,
+                        AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_DEPLOYMENT_NAME)));
+    }
+
+    void classifyCustomMultiCategoryActionRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner) {
+        testRunner.accept(CUSTOM_MULTI_CLASSIFICATION,
+            new TextAnalyticsActions()
+                .setMultiCategoryClassifyActions(
+                    new MultiCategoryClassifyAction(AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_PROJECT_NAME,
+                        AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_DEPLOYMENT_NAME)));
+    }
+
     String getEndpoint() {
         return interceptorManager.isPlaybackMode()
             ? "https://localhost:8080"
@@ -1240,9 +1329,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     static void validateCategorizedEntitiesResultCollection(boolean showStatistics,
         RecognizeEntitiesResultCollection expected, RecognizeEntitiesResultCollection actual) {
         validateTextAnalyticsResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
-            validateCategorizedEntities(
-                expectedItem.getEntities().stream().collect(Collectors.toList()),
-                actualItem.getEntities().stream().collect(Collectors.toList())));
+            validateCategorizedEntities(actualItem.getEntities().stream().collect(Collectors.toList())));
     }
 
     static void validatePiiEntitiesResultCollectionWithResponse(boolean showStatistics,
@@ -1340,15 +1427,12 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     /**
      * Helper method to validate a single categorized entity.
      *
-     * @param expectedCategorizedEntity CategorizedEntity returned by the service.
      * @param actualCategorizedEntity CategorizedEntity returned by the API.
      */
-    static void validateCategorizedEntity(
-        CategorizedEntity expectedCategorizedEntity, CategorizedEntity actualCategorizedEntity) {
-        assertEquals(expectedCategorizedEntity.getSubcategory(), actualCategorizedEntity.getSubcategory());
+    static void validateCategorizedEntity(CategorizedEntity actualCategorizedEntity) {
         assertNotNull(actualCategorizedEntity.getText());
-        assertEquals(expectedCategorizedEntity.getOffset(), actualCategorizedEntity.getOffset());
-        assertEquals(expectedCategorizedEntity.getCategory(), actualCategorizedEntity.getCategory());
+        assertNotNull(actualCategorizedEntity.getOffset());
+        assertNotNull(actualCategorizedEntity.getCategory());
         assertNotNull(actualCategorizedEntity.getConfidenceScore());
     }
 
@@ -1406,19 +1490,11 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     /**
      * Helper method to validate the list of categorized entities.
      *
-     *  @param expectedCategorizedEntityList categorizedEntities returned by the service.
      * @param actualCategorizedEntityList categorizedEntities returned by the API.
      */
-    static void validateCategorizedEntities(List<CategorizedEntity> expectedCategorizedEntityList,
-        List<CategorizedEntity> actualCategorizedEntityList) {
-        assertEquals(expectedCategorizedEntityList.size(), actualCategorizedEntityList.size());
-        expectedCategorizedEntityList.sort(Comparator.comparing(CategorizedEntity::getText));
-        actualCategorizedEntityList.sort(Comparator.comparing(CategorizedEntity::getText));
-
-        for (int i = 0; i < expectedCategorizedEntityList.size(); i++) {
-            CategorizedEntity expectedCategorizedEntity = expectedCategorizedEntityList.get(i);
-            CategorizedEntity actualCategorizedEntity = actualCategorizedEntityList.get(i);
-            validateCategorizedEntity(expectedCategorizedEntity, actualCategorizedEntity);
+    static void validateCategorizedEntities(List<CategorizedEntity> actualCategorizedEntityList) {
+        for (int i = 0; i < actualCategorizedEntityList.size(); i++) {
+            validateCategorizedEntity(actualCategorizedEntityList.get(i));
         }
     }
 
@@ -1591,6 +1667,33 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     }
 
+    static void validateCustomSingleCategory(SingleCategoryClassifyResult documentResult) {
+        assertNotNull(documentResult.getId());
+        if (documentResult.isError()) {
+            assertNotNull(documentResult.getError());
+        } else {
+            assertNull(documentResult.getError());
+            validateDocumentClassification(documentResult.getClassification());
+        }
+    }
+
+    static void validateCustomMultiCategory(MultiCategoryClassifyResult documentResult) {
+        assertNotNull(documentResult.getId());
+        if (documentResult.isError()) {
+            assertNotNull(documentResult.getError());
+        } else {
+            assertNull(documentResult.getError());
+            for (ClassificationCategory classificationCategory : documentResult.getClassifications()) {
+                validateDocumentClassification(classificationCategory);
+            }
+        }
+    }
+
+    static void validateDocumentClassification(ClassificationCategory classificationCategory) {
+        assertNotNull(classificationCategory.getCategory());
+        assertNotNull(classificationCategory.getConfidenceScore());
+    }
+
     // Healthcare task
     static void validateHealthcareEntity(HealthcareEntity expected, HealthcareEntity actual) {
         assertEquals(expected.getCategory(), actual.getCategory());
@@ -1718,7 +1821,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     // Action results validation
     static void validateRecognizeEntitiesActionResults(boolean showStatistics,
         List<RecognizeEntitiesActionResult> expected, List<RecognizeEntitiesActionResult> actual) {
-        assertEquals(expected.size(), actual.size());
         for (int i = 0; i < actual.size(); i++) {
             validateRecognizeEntitiesActionResult(showStatistics, expected.get(i), actual.get(i));
         }

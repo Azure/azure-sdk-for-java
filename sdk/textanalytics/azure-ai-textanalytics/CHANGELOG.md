@@ -1,8 +1,33 @@
 # Release History
-## 5.2.0-beta.2 (Unreleased)
+
+## 5.2.0-beta.3 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 5.1.4 (2021-11-11)
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` from `1.21.0` to `1.22.0`.
+- Updated `azure-core-http-netty` from `1.11.1` to `1.11.2`.
+
+## 5.2.0-beta.2 (2021-11-02)
 ### Feature Added
+- We are now targeting the service's v3.2-preview.2 API as the default instead of v3.2-preview.1.
 - Multiple of the same action type is now supported with `beginAnalyzeActions` method, and the action name for each 
   action can be set now.
+- Added support for `Custom Entity Recognition` actions through the `RecognizeCustomEntitiesAction` type.
+  This action can be used to get a custom entity recognition for an input document or batch of documents.
+- Added support for `Custom Single Classification` actions through the `SingleCategoryClassifyAction` type.
+  This action can be used to get a custom classification for an input document or batch of documents.
+- Added support for `Custom Multiple Classification` actions through the `MultiCategoryClassifyAction` type.
+  This action can be used to get multiple custom classifications for an input document or batch of documents.
 
 ### Breaking Changes
 - Renamed methods `setSentencesOrderBy()` to `setOrderBy()` and `getSentencesOrderBy()` to `getOrderBy()`, in the

@@ -385,6 +385,7 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
         @Override
         public void onNext(T channel) {
             if (!isCancelled()) {
+                processor.subscribers.remove(this);
                 super.complete(channel);
             }
         }

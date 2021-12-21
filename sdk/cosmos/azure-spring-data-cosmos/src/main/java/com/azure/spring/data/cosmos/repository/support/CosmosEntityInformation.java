@@ -253,6 +253,9 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         return partitionKeyField == null ? null : ReflectionUtils.getField(partitionKeyField, entity);
     }
 
+    /**
+     * @return the partition key field name
+     */
     public String getPartitionKeyFieldName() {
         return partitionKeyField == null ? null : partitionKeyField.getName();
     }
@@ -275,6 +278,9 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         return autoScale;
     }
 
+    /**
+     * @return whether indexing policy is specified
+     */
     public boolean isIndexingPolicySpecified() {
         return this.isIndexingPolicySpecified;
     }

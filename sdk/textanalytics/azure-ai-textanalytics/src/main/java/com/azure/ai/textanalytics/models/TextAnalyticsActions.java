@@ -19,6 +19,9 @@ public final class TextAnalyticsActions {
     private Iterable<ExtractKeyPhrasesAction> extractKeyPhrasesActions;
     private Iterable<AnalyzeSentimentAction> analyzeSentimentActions;
     private Iterable<ExtractSummaryAction> extractSummaryActions;
+    private Iterable<RecognizeCustomEntitiesAction> recognizeCustomEntitiesActions;
+    private Iterable<SingleCategoryClassifyAction> singleCategoryClassifyActions;
+    private Iterable<MultiCategoryClassifyAction> multiCategoryClassifyActions;
 
     /**
      * Gets the custom name for the actions.
@@ -56,9 +59,6 @@ public final class TextAnalyticsActions {
      * @param recognizeEntitiesActions The list of {@link RecognizeEntitiesAction} to be executed.
      *
      * @return The {@link TextAnalyticsActions} object itself.
-     *
-     * @throws IllegalArgumentException if more than one {@link RecognizeEntitiesAction} action are passed in.
-     * Currently service v3.1 and up only accepts up to one action per type.
      */
     public TextAnalyticsActions setRecognizeEntitiesActions(RecognizeEntitiesAction... recognizeEntitiesActions) {
         this.recognizeEntitiesActions = recognizeEntitiesActions == null ? null
@@ -81,9 +81,6 @@ public final class TextAnalyticsActions {
      * @param recognizeLinkedEntitiesActions The list of {@link RecognizeLinkedEntitiesAction} to be executed.
      *
      * @return The {@link TextAnalyticsActions} object itself.
-     *
-     * @throws IllegalArgumentException if more than one {@link RecognizeLinkedEntitiesAction} action are passed in.
-     * Currently service v3.1 and up only accepts up to one action per type.
      */
     public TextAnalyticsActions setRecognizeLinkedEntitiesActions(
         RecognizeLinkedEntitiesAction... recognizeLinkedEntitiesActions) {
@@ -107,9 +104,6 @@ public final class TextAnalyticsActions {
      * @param recognizePiiEntitiesActions The list of {@link RecognizePiiEntitiesAction} to be executed.
      *
      * @return The {@link TextAnalyticsActions} object itself.
-     *
-     * @throws IllegalArgumentException if more than one {@link RecognizePiiEntitiesAction} action are passed in.
-     * Currently service v3.1 and up only accepts up to one action per type.
      */
     public TextAnalyticsActions setRecognizePiiEntitiesActions(
         RecognizePiiEntitiesAction... recognizePiiEntitiesActions) {
@@ -133,9 +127,6 @@ public final class TextAnalyticsActions {
      * @param extractKeyPhrasesActions The list of {@link ExtractKeyPhrasesAction} to be executed.
      *
      * @return The {@link TextAnalyticsActions} object itself.
-     *
-     * @throws IllegalArgumentException if more than one {@link ExtractKeyPhrasesAction} action are passed in.
-     * Currently service v3.1 and up only accepts up to one action per type.
      */
     public TextAnalyticsActions setExtractKeyPhrasesActions(ExtractKeyPhrasesAction... extractKeyPhrasesActions) {
         this.extractKeyPhrasesActions = extractKeyPhrasesActions == null ? null
@@ -158,9 +149,6 @@ public final class TextAnalyticsActions {
      * @param analyzeSentimentActions The list of {@link AnalyzeSentimentAction} to be executed.
      *
      * @return The {@link TextAnalyticsActions} object itself.
-     *
-     * @throws IllegalArgumentException if more than one {@link AnalyzeSentimentAction} action are passed in.
-     * Currently service v3.1 and up only accepts up to one action per type.
      */
     public TextAnalyticsActions setAnalyzeSentimentActions(AnalyzeSentimentAction... analyzeSentimentActions) {
         this.analyzeSentimentActions = analyzeSentimentActions == null ? null : Arrays.asList(analyzeSentimentActions);
@@ -182,12 +170,98 @@ public final class TextAnalyticsActions {
      * @param extractSummaryActions The list of {@link ExtractSummaryAction} to be executed.
      *
      * @return The {@link TextAnalyticsActions} object itself.
-     *
-     * @throws IllegalArgumentException if more than one {@link ExtractSummaryAction} action are passed in.
-     * Currently service v3.1 and up only accepts up to one action per type.
      */
     public TextAnalyticsActions setExtractSummaryActions(ExtractSummaryAction... extractSummaryActions) {
         this.extractSummaryActions = extractSummaryActions == null ? null : Arrays.asList(extractSummaryActions);
+        return this;
+    }
+
+    /**
+     * Gets the list of {@link RecognizeCustomEntitiesAction} to be executed.
+     *
+     * See the service documentation for regional support of custom entities recognition:
+     * https://aka.ms/azsdk/textanalytics/customentityrecognition
+     *
+     * @return the list of {@link RecognizeCustomEntitiesAction} to be executed.
+     */
+    public Iterable<RecognizeCustomEntitiesAction> getRecognizeCustomEntitiesActions() {
+        return recognizeCustomEntitiesActions;
+    }
+
+    /**
+     * Sets the list of {@link RecognizeCustomEntitiesAction} to be executed.
+     *
+     * See the service documentation for regional support of custom entities recognition:
+     * https://aka.ms/azsdk/textanalytics/customentityrecognition
+     *
+     * @param recognizeCustomEntitiesActions The list of {@link RecognizeCustomEntitiesAction} to be executed.
+     *
+     * @return The {@link TextAnalyticsActions} object itself.
+     */
+    public TextAnalyticsActions setRecognizeCustomEntitiesActions(
+        RecognizeCustomEntitiesAction... recognizeCustomEntitiesActions) {
+        this.recognizeCustomEntitiesActions = recognizeCustomEntitiesActions == null ? null
+                                                  : Arrays.asList(recognizeCustomEntitiesActions);
+        return this;
+    }
+
+    /**
+     * Gets the list of {@link SingleCategoryClassifyAction} to be executed.
+     *
+     * See the service documentation for regional support of custom single classification:
+     * https://aka.ms/azsdk/textanalytics/customfunctionalities
+     *
+     * @return the list of {@link SingleCategoryClassifyAction} to be executed.
+     */
+    public Iterable<SingleCategoryClassifyAction> getSingleCategoryClassifyActions() {
+        return singleCategoryClassifyActions;
+    }
+
+    /**
+     * Sets the list of {@link SingleCategoryClassifyAction} to be executed.
+     *
+     * See the service documentation for regional support of custom single classification:
+     * https://aka.ms/azsdk/textanalytics/customfunctionalities
+     *
+     * @param singleCategoryClassifyActions The list of
+     * {@link SingleCategoryClassifyAction} to be executed.
+     *
+     * @return The {@link TextAnalyticsActions} object itself.
+     */
+    public TextAnalyticsActions setSingleCategoryClassifyActions(
+        SingleCategoryClassifyAction... singleCategoryClassifyActions) {
+        this.singleCategoryClassifyActions = singleCategoryClassifyActions == null
+                                                 ? null : Arrays.asList(singleCategoryClassifyActions);
+        return this;
+    }
+
+    /**
+     * Gets the list of {@link MultiCategoryClassifyAction} to be executed.
+     *
+     * See the service documentation for regional support of custom multi classification:
+     * https://aka.ms/azsdk/textanalytics/customfunctionalities
+     *
+     * @return the list of {@link MultiCategoryClassifyAction} to be executed.
+     */
+    public Iterable<MultiCategoryClassifyAction> getMultiCategoryClassifyActions() {
+        return multiCategoryClassifyActions;
+    }
+
+    /**
+     * Sets the list of {@link MultiCategoryClassifyAction} to be executed.
+     *
+     * See the service documentation for regional support of custom multi classification:
+     * https://aka.ms/azsdk/textanalytics/customfunctionalities
+     *
+     * @param multiCategoryClassifyActions The list of {@link MultiCategoryClassifyAction} to
+     * be executed.
+     *
+     * @return The {@link TextAnalyticsActions} object itself.
+     */
+    public TextAnalyticsActions setMultiCategoryClassifyActions(
+        MultiCategoryClassifyAction... multiCategoryClassifyActions) {
+        this.multiCategoryClassifyActions = multiCategoryClassifyActions == null
+                                                ? null : Arrays.asList(multiCategoryClassifyActions);
         return this;
     }
 }

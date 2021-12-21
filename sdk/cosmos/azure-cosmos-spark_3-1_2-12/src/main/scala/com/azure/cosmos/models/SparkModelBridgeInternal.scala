@@ -7,4 +7,8 @@ private[cosmos] object SparkModelBridgeInternal {
   def createIndexingPolicyFromJson(json: String): IndexingPolicy = {
     new IndexingPolicy(json)
   }
+
+  def createPartitionKeyDefinitionFromJson(json: String): PartitionKeyDefinition = {
+    new PartitionKeyDefinition(json)
+  }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.ArmResourceProperties;
 import com.azure.resourcemanager.cosmos.models.SqlStoredProcedureGetPropertiesResource;
@@ -14,35 +13,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** An Azure Cosmos DB storedProcedure. */
-@JsonFlatten
 @Fluent
-public class SqlStoredProcedureGetResultsInner extends ArmResourceProperties {
+public final class SqlStoredProcedureGetResultsInner extends ArmResourceProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlStoredProcedureGetResultsInner.class);
 
     /*
-     * The resource property.
+     * The properties of an Azure Cosmos DB storedProcedure
      */
-    @JsonProperty(value = "properties.resource")
-    private SqlStoredProcedureGetPropertiesResource resource;
+    @JsonProperty(value = "properties")
+    private SqlStoredProcedureGetProperties innerProperties;
 
     /**
-     * Get the resource property: The resource property.
+     * Get the innerProperties property: The properties of an Azure Cosmos DB storedProcedure.
      *
-     * @return the resource value.
+     * @return the innerProperties value.
      */
-    public SqlStoredProcedureGetPropertiesResource resource() {
-        return this.resource;
-    }
-
-    /**
-     * Set the resource property: The resource property.
-     *
-     * @param resource the resource value to set.
-     * @return the SqlStoredProcedureGetResultsInner object itself.
-     */
-    public SqlStoredProcedureGetResultsInner withResource(SqlStoredProcedureGetPropertiesResource resource) {
-        this.resource = resource;
-        return this;
+    private SqlStoredProcedureGetProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -60,6 +47,29 @@ public class SqlStoredProcedureGetResultsInner extends ArmResourceProperties {
     }
 
     /**
+     * Get the resource property: The resource property.
+     *
+     * @return the resource value.
+     */
+    public SqlStoredProcedureGetPropertiesResource resource() {
+        return this.innerProperties() == null ? null : this.innerProperties().resource();
+    }
+
+    /**
+     * Set the resource property: The resource property.
+     *
+     * @param resource the resource value to set.
+     * @return the SqlStoredProcedureGetResultsInner object itself.
+     */
+    public SqlStoredProcedureGetResultsInner withResource(SqlStoredProcedureGetPropertiesResource resource) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlStoredProcedureGetProperties();
+        }
+        this.innerProperties().withResource(resource);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -67,8 +77,8 @@ public class SqlStoredProcedureGetResultsInner extends ArmResourceProperties {
     @Override
     public void validate() {
         super.validate();
-        if (resource() != null) {
-            resource().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

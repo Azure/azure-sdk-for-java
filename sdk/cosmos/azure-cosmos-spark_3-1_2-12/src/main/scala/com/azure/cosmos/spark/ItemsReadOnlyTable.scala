@@ -17,7 +17,7 @@ import org.apache.spark.sql.types.{LongType, StringType, StructField, StructType
 import org.apache.spark.sql.util.CaseInsensitiveStringMap
 
 import java.util
-import java.util.UUID
+import java.util.{Collections, UUID}
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
@@ -43,38 +43,39 @@ private[spark] class ItemsReadOnlyTable(val sparkSession: SparkSession,
                                         val databaseName: Option[String],
                                         val containerName: Option[String],
                                         val userConfig: util.Map[String, String],
-                                        val userProvidedSchema: Option[StructType] = None)
+                                        val userProvidedSchema: Option[StructType] = None,
+                                        val tableProperties: util.Map[String, String] =
+                                          Collections.emptyMap[String, String])
   extends Table
     with SupportsRead {
 
-  protected val diagnosticsConfig = DiagnosticsConfig.parseDiagnosticsConfig(userConfig.asScala.toMap)
+  private[this] val tablePropertiesClone = Collections.unmodifiableMap[String, String](tableProperties)
+  protected val diagnosticsConfig: DiagnosticsConfig = DiagnosticsConfig.parseDiagnosticsConfig(userConfig.asScala.toMap)
 
   @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
 
   // This can only be used for data operation against a certain container.
   protected lazy val containerStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot] =
     initializeAndBroadcastCosmosClientStateForContainer()
-  protected val effectiveUserConfig = CosmosConfig.getEffectiveConfig(
+  protected val effectiveUserConfig: Map[String, String] = CosmosConfig.getEffectiveConfig(
     databaseName,
     containerName,
     userConfig.asScala.toMap)
-  protected val clientConfig = CosmosAccountConfig.parseCosmosAccountConfig(effectiveUserConfig)
-  protected val readConfig = CosmosReadConfig.parseCosmosReadConfig(effectiveUserConfig)
-  protected val cosmosContainerConfig =
+  protected val clientConfig: CosmosAccountConfig = CosmosAccountConfig.parseCosmosAccountConfig(effectiveUserConfig)
+  protected val readConfig: CosmosReadConfig = CosmosReadConfig.parseCosmosReadConfig(effectiveUserConfig)
+  protected val cosmosContainerConfig: CosmosContainerConfig =
     CosmosContainerConfig.parseCosmosContainerConfig(effectiveUserConfig, databaseName, containerName)
   //scalastyle:off multiple.string.literals
-  protected val tableName = s"com.azure.cosmos.spark.items.${clientConfig.accountName}." +
+  protected val tableName: String = s"com.azure.cosmos.spark.items.${clientConfig.accountName}." +
     s"${cosmosContainerConfig.database}.${cosmosContainerConfig.container}"
   log.logInfo(s"Instantiated ${this.getClass.getSimpleName} for $tableName")
   //scalastyle:on multiple.string.literals
-  protected val client = CosmosClientCache(
-    CosmosClientConfiguration(effectiveUserConfig,
-      useEventualConsistency = readConfig.forceEventualConsistency), None)
-
-  protected val container = ThroughputControlHelper.getContainer(effectiveUserConfig, cosmosContainerConfig, client)
-  SparkUtils.safeOpenConnectionInitCaches(container, log)
 
   override def name(): String = tableName
+
+  override def properties(): util.Map[String, String] = {
+    tablePropertiesClone
+  }
 
   override def capabilities(): util.Set[TableCapability] = Set(
     TableCapability.ACCEPT_ANY_SCHEMA,
@@ -101,7 +102,13 @@ private[spark] class ItemsReadOnlyTable(val sparkSession: SparkSession,
   }
 
   override def schema(): StructType = {
-    userProvidedSchema.getOrElse(this.inferSchema(client, effectiveUserConfig))
+    Loan(
+      CosmosClientCache(
+        CosmosClientConfiguration(effectiveUserConfig, useEventualConsistency = readConfig.forceEventualConsistency),
+        None,
+        s"ItemReadOnlyTable($tableName).schema"
+      ))
+      .to(clientCacheItem => userProvidedSchema.getOrElse(this.inferSchema(clientCacheItem.client, effectiveUserConfig)))
   }
 
   private def inferSchema(client: CosmosAsyncClient,
@@ -115,16 +122,25 @@ private[spark] class ItemsReadOnlyTable(val sparkSession: SparkSession,
 
   // This can be used only when databaseName and ContainerName are specified.
   private[spark] def initializeAndBroadcastCosmosClientStateForContainer(): Broadcast[CosmosClientMetadataCachesSnapshot] = {
-    try {
-      container.readItem(
-        UUID.randomUUID().toString, new PartitionKey(UUID.randomUUID().toString), classOf[ObjectNode])
-        .block()
-    } catch {
-      case _: CosmosException => None
-    }
+    Loan(
+      CosmosClientCache(
+        CosmosClientConfiguration(effectiveUserConfig, useEventualConsistency = readConfig.forceEventualConsistency),
+        None,
+        s"ItemReadOnlyTable($tableName).initializeAndBroadcastCosmosClientStateForContainer"))
+        .to(clientCacheItem => {
+          try {
+            val container = ThroughputControlHelper.getContainer(
+              effectiveUserConfig, cosmosContainerConfig, clientCacheItem.client)
+            container.readItem(
+              UUID.randomUUID().toString, new PartitionKey(UUID.randomUUID().toString), classOf[ObjectNode])
+              .block()
+          } catch {
+            case _: CosmosException => None
+          }
 
-    val state = new CosmosClientMetadataCachesSnapshot()
-    state.serialize(client)
-    sparkSession.sparkContext.broadcast(state)
+          val state = new CosmosClientMetadataCachesSnapshot()
+          state.serialize(clientCacheItem.client)
+          sparkSession.sparkContext.broadcast(state)
+        })
   }
 }

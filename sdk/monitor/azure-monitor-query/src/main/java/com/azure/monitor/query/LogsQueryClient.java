@@ -23,7 +23,13 @@ import java.util.List;
  *
  * <p><strong>Instantiating a synchronous Logs query Client</strong></p>
  *
- * {@codesnippet com.azure.monitor.query.LogsQueryClient.instantiation}
+ * <!-- src_embed com.azure.monitor.query.LogsQueryClient.instantiation -->
+ * <pre>
+ * LogsQueryClient logsQueryClient = new LogsQueryClientBuilder&#40;&#41;
+ *         .credential&#40;tokenCredential&#41;
+ *         .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.monitor.query.LogsQueryClient.instantiation -->
  */
 @ServiceClient(builder = LogsQueryClientBuilder.class)
 public final class LogsQueryClient {
@@ -43,7 +49,18 @@ public final class LogsQueryClient {
      *
      * <p><strong>Query logs from the last 24 hours</strong></p>
      *
-     * {@codesnippet com.azure.monitor.query.LogsQueryClient.query#String-String-QueryTimeInterval}
+     * <!-- src_embed com.azure.monitor.query.LogsQueryClient.query#String-String-QueryTimeInterval -->
+     * <pre>
+     * LogsQueryResult queryResult = logsQueryClient.queryWorkspace&#40;&quot;&#123;workspace-id&#125;&quot;, &quot;&#123;kusto-query&#125;&quot;,
+     *         QueryTimeInterval.LAST_DAY&#41;;
+     * for &#40;LogsTableRow row : queryResult.getTable&#40;&#41;.getRows&#40;&#41;&#41; &#123;
+     *     System.out.println&#40;row.getRow&#40;&#41;
+     *             .stream&#40;&#41;
+     *             .map&#40;LogsTableCell::getValueAsString&#41;
+     *             .collect&#40;Collectors.joining&#40;&quot;,&quot;&#41;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.monitor.query.LogsQueryClient.query#String-String-QueryTimeInterval -->
      * @param workspaceId The workspaceId where the query should be executed.
      * @param query The Kusto query to fetch the logs.
      * @param timeInterval The time period for which the logs should be looked up.
@@ -99,7 +116,22 @@ public final class LogsQueryClient {
      *
      * <p><strong>Query logs from the last 7 days and set the service timeout to 2 minutes</strong></p>
      *
-     * {@codesnippet com.azure.monitor.query.LogsQueryClient.queryWithResponse#String-String-QueryTimeInterval-LogsQueryOptions-Context}
+     * <!-- src_embed com.azure.monitor.query.LogsQueryClient.queryWithResponse#String-String-QueryTimeInterval-LogsQueryOptions-Context -->
+     * <pre>
+     * Response&lt;LogsQueryResult&gt; queryResult = logsQueryClient.queryWorkspaceWithResponse&#40;&quot;&#123;workspace-id&#125;&quot;,
+     *         &quot;&#123;kusto-query&#125;&quot;,
+     *         QueryTimeInterval.LAST_7_DAYS,
+     *         new LogsQueryOptions&#40;&#41;.setServerTimeout&#40;Duration.ofMinutes&#40;2&#41;&#41;,
+     *         Context.NONE&#41;;
+     *
+     * for &#40;LogsTableRow row : queryResult.getValue&#40;&#41;.getTable&#40;&#41;.getRows&#40;&#41;&#41; &#123;
+     *     System.out.println&#40;row.getRow&#40;&#41;
+     *             .stream&#40;&#41;
+     *             .map&#40;LogsTableCell::getValueAsString&#41;
+     *             .collect&#40;Collectors.joining&#40;&quot;,&quot;&#41;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.monitor.query.LogsQueryClient.queryWithResponse#String-String-QueryTimeInterval-LogsQueryOptions-Context -->
      * @param workspaceId The workspaceId where the query should be executed.
      * @param query The Kusto query to fetch the logs.
      * @param timeInterval The time period for which the logs should be looked up.
@@ -155,7 +187,26 @@ public final class LogsQueryClient {
      *
      * <p><strong>Execute a batch of logs queries</strong></p>
      *
-     * {@codesnippet com.azure.monitor.query.LogsQueryClient.queryBatch#LogsBatchQuery}
+     * <!-- src_embed com.azure.monitor.query.LogsQueryClient.queryBatch#LogsBatchQuery -->
+     * <pre>
+     * LogsBatchQuery batchQuery = new LogsBatchQuery&#40;&#41;;
+     * String queryId1 = batchQuery.addWorkspaceQuery&#40;&quot;&#123;workspace-id-1&#125;&quot;, &quot;&#123;kusto-query-1&#125;&quot;, QueryTimeInterval.LAST_DAY&#41;;
+     * String queryId2 = batchQuery.addWorkspaceQuery&#40;&quot;&#123;workspace-id-2&#125;&quot;, &quot;&#123;kusto-query-2&#125;&quot;,
+     *         QueryTimeInterval.LAST_7_DAYS, new LogsQueryOptions&#40;&#41;.setServerTimeout&#40;Duration.ofMinutes&#40;2&#41;&#41;&#41;;
+     *
+     * LogsBatchQueryResultCollection batchQueryResponse = logsQueryClient.queryBatch&#40;batchQuery&#41;;
+     *
+     * for &#40;LogsBatchQueryResult queryResult : batchQueryResponse.getBatchResults&#40;&#41;&#41; &#123;
+     *     System.out.println&#40;&quot;Logs query result for query id &quot; + queryResult.getId&#40;&#41;&#41;;
+     *     for &#40;LogsTableRow row : queryResult.getTable&#40;&#41;.getRows&#40;&#41;&#41; &#123;
+     *         System.out.println&#40;row.getRow&#40;&#41;
+     *                 .stream&#40;&#41;
+     *                 .map&#40;LogsTableCell::getValueAsString&#41;
+     *                 .collect&#40;Collectors.joining&#40;&quot;,&quot;&#41;&#41;&#41;;
+     *     &#125;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.monitor.query.LogsQueryClient.queryBatch#LogsBatchQuery -->
      * @param logsBatchQuery {@link LogsBatchQuery} containing a batch of queries.
      * @return A collection of query results corresponding to the input batch of queries.@return
      */

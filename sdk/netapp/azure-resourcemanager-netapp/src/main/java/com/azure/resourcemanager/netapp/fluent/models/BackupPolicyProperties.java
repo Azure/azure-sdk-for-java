@@ -17,12 +17,6 @@ public final class BackupPolicyProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupPolicyProperties.class);
 
     /*
-     * Name of backup policy
-     */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
-    private String name;
-
-    /*
      * Backup Policy Resource ID
      */
     @JsonProperty(value = "backupPolicyId", access = JsonProperty.Access.WRITE_ONLY)
@@ -69,15 +63,6 @@ public final class BackupPolicyProperties {
      */
     @JsonProperty(value = "volumeBackups", access = JsonProperty.Access.WRITE_ONLY)
     private List<VolumeBackups> volumeBackups;
-
-    /**
-     * Get the name property: Name of backup policy.
-     *
-     * @return the name value.
-     */
-    public String name() {
-        return this.name;
-    }
 
     /**
      * Get the backupPolicyId property: Backup Policy Resource ID.

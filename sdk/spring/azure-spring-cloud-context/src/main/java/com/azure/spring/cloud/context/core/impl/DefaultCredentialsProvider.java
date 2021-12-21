@@ -23,6 +23,11 @@ public class DefaultCredentialsProvider implements CredentialsProvider {
 
     private final TokenCredential credentials;
 
+    /**
+     * Creates a new instance of {@link DefaultCredentialsProvider}.
+     *
+     * @param azureProperties The Azure properties.
+     */
     public DefaultCredentialsProvider(AzureProperties azureProperties) {
         this.credentials = initCredentials(azureProperties);
     }

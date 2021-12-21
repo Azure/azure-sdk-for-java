@@ -715,11 +715,12 @@
         <module>sdk/advisor</module>
         <module>sdk/agrifood</module>
         <module>sdk/anomalydetector</module>
+        <module>sdk/aot</module>
         <module>sdk/apimanagement</module>
         <module>sdk/appconfiguration</module>
         <module>sdk/applicationinsights</module>
         <module>sdk/attestation</module>
-        <module>sdk/authorization</module>
+        <module>sdk/automanage</module>
         <module>sdk/automation</module>
         <module>sdk/avs</module>
         <module>sdk/azurearcdata</module>
@@ -751,8 +752,10 @@
         <module>sdk/datalakeanalytics</module>
         <module>sdk/datalakestore</module>
         <module>sdk/datamigration</module>
+        <module>sdk/dataprotection</module>
         <module>sdk/delegatednetwork</module>
         <module>sdk/deploymentmanager</module>
+        <module>sdk/desktopvirtualization</module>
         <module>sdk/deviceprovisioningservices</module>
         <module>sdk/deviceupdate</module>
         <module>sdk/devspaces</module>
@@ -779,6 +782,7 @@
         <module>sdk/kubernetesconfiguration</module>
         <module>sdk/kusto</module>
         <module>sdk/labservices</module>
+        <module>sdk/loadtestservice</module>
         <module>sdk/loganalytics</module>
         <module>sdk/logic</module>
         <module>sdk/logz</module>
@@ -835,6 +839,7 @@
         <module>sdk/template</module>
         <module>sdk/textanalytics</module>
         <module>sdk/timeseriesinsights</module>
+        <module>sdk/tools</module>
         <module>sdk/translation</module>
         <module>sdk/videoanalyzer</module>
         <module>sdk/vmwarecloudsimple</module>

@@ -22,6 +22,12 @@ public class DefaultSpringCredentialBuilder extends SpringCredentialBuilderBase<
 
     private String alternativePrefix;
 
+    /**
+     * Configures the alternate prefix.
+     *
+     * @param alternative the alternate prefix.
+     * @return the updated DefaultSpringCredentialBuilder object
+     */
     public DefaultSpringCredentialBuilder alternativePrefix(String alternative) {
         if (alternative != null) {
             this.alternativePrefix = alternative + (alternative.endsWith(".") ? "" : ".");

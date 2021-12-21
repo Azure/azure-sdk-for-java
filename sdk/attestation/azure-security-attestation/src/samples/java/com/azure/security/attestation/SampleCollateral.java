@@ -3,13 +3,21 @@
 
 package com.azure.security.attestation;
 
+import com.nimbusds.jose.util.X509CertUtils;
+
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.cert.X509Certificate;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.util.Arrays;
 import java.util.Base64;
 
 public class SampleCollateral {
 
     public static byte[] getRunTimeData() {
         return Base64.getUrlDecoder().decode(RUNTIME_DATA);
-
     }
 
     private static final String RUNTIME_DATA =
@@ -24,6 +32,57 @@ public class SampleCollateral {
     public static byte[] getOpenEnclaveReport() {
         return Base64.getUrlDecoder().decode(OPEN_ENCLAVE_REPORT);
     }
+
+    // An OpenEnclave report is a simple wrapper around an SGX quote, so it is possible
+    // to convert an OpenEnclave report to an SGX quote by removing the first 16 bytes of
+    // the OpenEnclave report.
+    public static byte[] getSgxEnclaveQuote() {
+        byte[] decodedOeReport = Base64.getUrlDecoder().decode(OPEN_ENCLAVE_REPORT);
+        return Arrays.copyOfRange(decodedOeReport, 0x10, decodedOeReport.length);
+    }
+
+    static PrivateKey privateKeyFromBase64(String base64) {
+        byte[] signingKey = Base64.getDecoder().decode(base64);
+        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(signingKey);
+        KeyFactory keyFactory;
+        try {
+            keyFactory = KeyFactory.getInstance("RSA");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        PrivateKey privateKey;
+        try {
+            privateKey = keyFactory.generatePrivate(keySpec);
+        } catch (InvalidKeySpecException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return privateKey;
+    }
+
+
+    public static X509Certificate getSigningCertificate() {
+        String base64Certificate = System.getenv("policySigningCertificate0");
+        return X509CertUtils.parse(Base64.getDecoder().decode(base64Certificate));
+    }
+
+    static PrivateKey getSigningKey() {
+        String base64key = System.getenv("policySigningKey0");
+        return privateKeyFromBase64(base64key);
+    }
+
+    public static X509Certificate getIsolatedSigningCertificate() {
+        String base64Certificate = System.getenv("isolatedSigningCertificate");
+        return X509CertUtils.parse(Base64.getDecoder().decode(base64Certificate));
+    }
+
+    public static PrivateKey getIsolatedSigningKey() {
+        String base64Key = System.getenv("isolatedSigningKey");
+        return privateKeyFromBase64(base64Key);
+    }
+
 
     private static final String OPEN_ENCLAVE_REPORT =
         "AQAAAAIAAADkEQAAAAAAAAMAAg"

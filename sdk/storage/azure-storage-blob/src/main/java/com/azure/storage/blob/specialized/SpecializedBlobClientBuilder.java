@@ -469,7 +469,14 @@ public final class SpecializedBlobClientBuilder {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.Builder.containerName#String}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobClientBase.Builder.containerName#String -->
+     * <pre>
+     * BlobClient client = new BlobClientBuilder&#40;&#41;
+     *     .endpoint&#40;endpoint&#41;
+     *     .containerName&#40;containerName&#41;
+     *     .buildClient&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobClientBase.Builder.containerName#String -->
      *
      * @param containerName Name of the container. If the value {@code null} or empty the root container, {@code $root},
      * will be used.

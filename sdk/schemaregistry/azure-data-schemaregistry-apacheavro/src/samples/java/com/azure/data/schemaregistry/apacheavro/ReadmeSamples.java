@@ -16,10 +16,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
 /**
- * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
- * ARE USED TO EXTRACT APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING
- * LINE NUMBERS OF EXISTING CODE SAMPLES.
- *
  * Code samples for the README.md
  */
 public class ReadmeSamples {
@@ -29,17 +25,21 @@ public class ReadmeSamples {
      * @return The {@link SchemaRegistryApacheAvroSerializer}.
      */
     public SchemaRegistryApacheAvroSerializer createAvroSchemaRegistrySerializer() {
+        // BEGIN: readme-sample-createSchemaRegistryAsyncClient
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
         SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBuilder()
             .fullyQualifiedNamespace("{schema-registry-endpoint")
             .credential(tokenCredential)
             .buildAsyncClient();
+        // END: readme-sample-createSchemaRegistryAsyncClient
 
+        // BEGIN: readme-sample-createSchemaRegistryAvroSerializer
         SchemaRegistryApacheAvroSerializer schemaRegistryAvroSerializer = new SchemaRegistryApacheAvroSerializerBuilder()
             .schemaRegistryAsyncClient(schemaRegistryAsyncClient)
             .schemaGroup("{schema-group}")
             .buildSerializer();
+        // END: readme-sample-createSchemaRegistryAvroSerializer
 
         return schemaRegistryAvroSerializer;
     }
@@ -50,25 +50,29 @@ public class ReadmeSamples {
     public void serializeSample() {
         SchemaRegistryApacheAvroSerializer schemaRegistryAvroSerializer = createAvroSchemaRegistrySerializer();
 
+        // BEGIN: readme-sample-serializeSample
         PlayingCard playingCard = new PlayingCard();
         playingCard.setPlayingCardSuit(PlayingCardSuit.SPADES);
         playingCard.setIsFaceCard(false);
         playingCard.setCardValue(5);
 
-        // write serialized data to byte array outputstream
+        // write serialized data to ByteArrayOutputStream
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         schemaRegistryAvroSerializer.serialize(outputStream, playingCard);
+        // END: readme-sample-serializeSample
     }
 
     /**
      * Deserialize avro payload compatible with schema registry into a strongly-type object.
      */
     public void deserializeSample() {
+        // BEGIN: readme-sample-deserializeSample
         SchemaRegistryApacheAvroSerializer schemaRegistryAvroSerializer = createAvroSchemaRegistrySerializer();
         InputStream inputStream = getSchemaRegistryAvroData();
         PlayingCard playingCard = schemaRegistryAvroSerializer.deserialize(inputStream,
             TypeReference.createInstance(PlayingCard.class));
+        // END: readme-sample-deserializeSample
     }
 
     /**

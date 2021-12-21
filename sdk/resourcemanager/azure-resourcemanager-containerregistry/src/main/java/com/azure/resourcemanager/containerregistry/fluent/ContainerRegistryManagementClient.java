@@ -38,6 +38,13 @@ public interface ContainerRegistryManagementClient {
     Duration getDefaultPollInterval();
 
     /**
+     * Gets the ExportPipelinesClient object to access its operations.
+     *
+     * @return the ExportPipelinesClient object.
+     */
+    ExportPipelinesClient getExportPipelines();
+
+    /**
      * Gets the RegistriesClient object to access its operations.
      *
      * @return the RegistriesClient object.
@@ -45,11 +52,32 @@ public interface ContainerRegistryManagementClient {
     RegistriesClient getRegistries();
 
     /**
+     * Gets the ImportPipelinesClient object to access its operations.
+     *
+     * @return the ImportPipelinesClient object.
+     */
+    ImportPipelinesClient getImportPipelines();
+
+    /**
      * Gets the OperationsClient object to access its operations.
      *
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();
+
+    /**
+     * Gets the PipelineRunsClient object to access its operations.
+     *
+     * @return the PipelineRunsClient object.
+     */
+    PipelineRunsClient getPipelineRuns();
+
+    /**
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
+     *
+     * @return the PrivateEndpointConnectionsClient object.
+     */
+    PrivateEndpointConnectionsClient getPrivateEndpointConnections();
 
     /**
      * Gets the ReplicationsClient object to access its operations.
@@ -66,6 +94,13 @@ public interface ContainerRegistryManagementClient {
     WebhooksClient getWebhooks();
 
     /**
+     * Gets the AgentPoolsClient object to access its operations.
+     *
+     * @return the AgentPoolsClient object.
+     */
+    AgentPoolsClient getAgentPools();
+
+    /**
      * Gets the RunsClient object to access its operations.
      *
      * @return the RunsClient object.
@@ -73,9 +108,30 @@ public interface ContainerRegistryManagementClient {
     RunsClient getRuns();
 
     /**
+     * Gets the TaskRunsClient object to access its operations.
+     *
+     * @return the TaskRunsClient object.
+     */
+    TaskRunsClient getTaskRuns();
+
+    /**
      * Gets the TasksClient object to access its operations.
      *
      * @return the TasksClient object.
      */
     TasksClient getTasks();
+
+    /**
+     * Gets the ScopeMapsClient object to access its operations.
+     *
+     * @return the ScopeMapsClient object.
+     */
+    ScopeMapsClient getScopeMaps();
+
+    /**
+     * Gets the TokensClient object to access its operations.
+     *
+     * @return the TokensClient object.
+     */
+    TokensClient getTokens();
 }

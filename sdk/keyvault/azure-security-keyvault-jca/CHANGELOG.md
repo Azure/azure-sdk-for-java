@@ -1,6 +1,6 @@
 # Release History
 
-## 2.2.0-beta.1 (Unreleased)
+## 2.4.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,14 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.3.0 (2021-11-25)
+### Dependency Upgrades
+Regular updates for dependency versions.
+
+## 2.2.0 (2021-11-02)
+### Features Added
+- Support connect to multi keyvault for keyless. ([24718](https://github.com/Azure/azure-sdk-for-java/pull/24718))
 
 ## 2.1.0 (2021-09-26)
 

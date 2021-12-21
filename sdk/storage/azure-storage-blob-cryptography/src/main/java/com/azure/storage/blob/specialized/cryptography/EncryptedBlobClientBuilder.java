@@ -139,7 +139,15 @@ public final class EncryptedBlobClientBuilder {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlobAsyncClient}
+     * <!-- src_embed com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlobAsyncClient -->
+     * <pre>
+     * EncryptedBlobAsyncClient client = new EncryptedBlobClientBuilder&#40;&#41;
+     *     .key&#40;key, keyWrapAlgorithm&#41;
+     *     .keyResolver&#40;keyResolver&#41;
+     *     .connectionString&#40;connectionString&#41;
+     *     .buildEncryptedBlobAsyncClient&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlobAsyncClient -->
      *
      * @return a {@link EncryptedBlobClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
@@ -154,7 +162,15 @@ public final class EncryptedBlobClientBuilder {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlobClient}
+     * <!-- src_embed com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlobClient -->
+     * <pre>
+     * EncryptedBlobClient client = new EncryptedBlobClientBuilder&#40;&#41;
+     *     .key&#40;key, keyWrapAlgorithm&#41;
+     *     .keyResolver&#40;keyResolver&#41;
+     *     .connectionString&#40;connectionString&#41;
+     *     .buildEncryptedBlobClient&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlobClient -->
      *
      * @return a {@link EncryptedBlobAsyncClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.

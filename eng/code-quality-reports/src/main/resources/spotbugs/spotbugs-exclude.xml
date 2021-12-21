@@ -1268,7 +1268,7 @@
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
-  <!-- DocumentAnalysisException fields re serializable -->
+  <!-- DocumentModelOperationException fields re serializable -->
   <Match>
     <Class name="com.azure.ai.formrecognizer.models.DocumentModelOperationException"/>
     <Field name="documentModelOperationError"/>
@@ -1310,6 +1310,13 @@
     <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
 
+    <!-- Exception is required to handle when getting java version  -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.Utils"/>
+    <Method name="getJavaVersion"/>
+    <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
+
   <!-- Exception is required to handle and fallback to default pair  -->
   <Match>
     <Class name="com.azure.cosmos.implementation.ResourceId"/>
@@ -1317,6 +1324,13 @@
     <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
 
+  <!-- This is a false positive. Exception is getting caught in init method-->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.RxDocumentClientImpl"/>
+    <Method name="init"/>
+    <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
+  
   <Match>
     <Class name="com.azure.cosmos.encryption.EncryptionCosmosAsyncContainer"/>
     <Method name="decryptResponseAsync"/>
@@ -1883,6 +1897,18 @@
     <Bug pattern="DE_MIGHT_IGNORE"/>
   </Match>
 
+  <!-- Exception in AutoCloseable.close is ignored -->
+  <Match>
+    <Class name="com.azure.core.tracing.opentelemetry.OpenTelemetryHttpPolicy$ScalarPropagatingMono"/>
+    <Method name="subscribe"/>
+    <Bug pattern="DE_MIGHT_IGNORE"/>
+  </Match>
+  <Match>
+    <Class name="com.azure.cosmos.implementation.TracerProvider"/>
+    <Method name="subscribe"/>
+    <Bug pattern="DE_MIGHT_IGNORE"/>
+  </Match>
+  
   <!-- Exception is ignored by design which indicate that non-parsable id -->
   <Match>
     <Class name="com.azure.cosmos.implementation.ResourceId"/>
@@ -2390,6 +2416,10 @@
     <Class name="com.azure.core.util.logging.ClientLogger"/>
     <Bug pattern="CRLF_INJECTION_LOGS"/>
   </Match>
+  <Match>
+    <Class name="com.azure.core.util.logging.LoggingEventBuilder"/>
+    <Bug pattern="CRLF_INJECTION_LOGS"/>
+  </Match>
 
   <!-- The predictable randomness doesn't expose any crucial detail in this case. -->
   <Match>
@@ -2509,6 +2539,29 @@
     <Or>
       <Field name="odataType"/>
       <Field name="type"/>
+    </Or>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+
+  <Match>
+    <Or>
+      <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerSslJdkAlpnApplicationProtocolNegotiatorAlpnWrapper"/>
+      <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerSslJdkAlpnApplicationProtocolNegotiatorAlpnWrapperJava8"/>
+      <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerSslJdkSslContext"/>
+      <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerSslSslContext"/>
+    </Or>
+    <Bug pattern="BC_IMPOSSIBLE_CAST"/>
+  </Match>
+  <Match>
+    <Or>
+      <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerCodecHttpHttpContentDecompressor"/>
+    </Or>
+    <Bug pattern="CI_CONFUSED_INHERITANCE"/>
+  </Match>
+  <Match>
+    <Or>
+      <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerSslOpenSsl"/>
     </Or>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>

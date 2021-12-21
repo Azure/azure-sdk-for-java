@@ -9,6 +9,9 @@ import com.azure.core.util.ServiceVersion;
  * The versions of the RemoteRenderingService supported by this client library.
  */
 public enum RemoteRenderingServiceVersion implements ServiceVersion {
+    /**
+     * Service version {@code 2021-01-01}.
+     */
     V2021_01_01("2021-01-01");
 
     private final String version;

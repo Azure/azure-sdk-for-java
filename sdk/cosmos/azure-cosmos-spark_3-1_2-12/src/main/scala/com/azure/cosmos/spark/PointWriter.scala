@@ -71,9 +71,9 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
       case ItemWriteStrategy.ItemOverwrite => upsertWithRetryAsync(partitionKeyValue, objectNode)
       case ItemWriteStrategy.ItemAppend => createWithRetryAsync(partitionKeyValue, objectNode)
       case ItemWriteStrategy.ItemDelete =>
-        deleteWithRetryAsync(partitionKeyValue, objectNode, false)
+        deleteWithRetryAsync(partitionKeyValue, objectNode, onlyIfNotModified=false)
       case ItemWriteStrategy.ItemDeleteIfNotModified =>
-        deleteWithRetryAsync(partitionKeyValue, objectNode, true)
+        deleteWithRetryAsync(partitionKeyValue, objectNode, onlyIfNotModified=true)
     }
   }
 
@@ -173,15 +173,15 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
       try {
         // TODO: moderakh, there is room for further improvement by making this code nonblocking
         // using reactive stream retry pattern
-        container.createItem(objectNode, partitionKeyValue, getOptions()).block()
+        container.createItem(objectNode, partitionKeyValue, getOptions).block()
         return
       } catch {
-        case e: CosmosException if Exceptions.isResourceExistsException(e) =>
+        case e: CosmosException if Exceptions.isResourceExistsException(e.getStatusCode) =>
           // TODO: what should we do on unique index violation? should we ignore or throw?
           // TODO moderakh we need to add log messages extract identifier (id, pk) and log
           log.logItemWriteDetails(createOperation, "item already exists")
           return
-        case e: CosmosException if Exceptions.canBeTransientFailure(e) =>
+        case e: CosmosException if Exceptions.canBeTransientFailure(e.getStatusCode, e.getSubStatusCode) =>
           log.logWarning(
             s"create item $createOperation attempt #$attempt max remaining retries"
               + s"${cosmosWriteConfig.maxRetryCount + 1 - attempt}, encountered ${e.getMessage}")
@@ -205,11 +205,11 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
         // using reactive stream retry pattern
         container.upsertItem(objectNode,
           partitionKeyValue,
-          getOptions())
+          getOptions)
           .block()
         return
       } catch {
-        case e: CosmosException if Exceptions.canBeTransientFailure(e) =>
+        case e: CosmosException if Exceptions.canBeTransientFailure(e.getStatusCode, e.getSubStatusCode) =>
           log.logWarning(
             s"upsert item $upsertOperation attempt #$attempt max remaining retries "
               + s"${cosmosWriteConfig.maxRetryCount + 1 - attempt}, encountered ${e.getMessage}")
@@ -238,10 +238,10 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
         val itemId = objectNode.get(CosmosConstants.Properties.Id).asText()
 
         val options = if (onlyIfNotModified) {
-          getOptions()
+          getOptions
             .setIfMatchETag(objectNode.get(CosmosConstants.Properties.ETag).asText())
         } else {
-          getOptions()
+          getOptions
         }
 
         container.deleteItem(itemId,
@@ -250,13 +250,13 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
           .block()
         return
       } catch {
-        case e: CosmosException if Exceptions.isNotFoundExceptionCore(e) =>
+        case e: CosmosException if Exceptions.isNotFoundExceptionCore(e.getStatusCode, e.getSubStatusCode) =>
           log.logItemWriteSkipped(deleteOperation, "notFound")
           return
-        case e: CosmosException if Exceptions.isPreconditionFailedException(e) && onlyIfNotModified =>
+        case e: CosmosException if Exceptions.isPreconditionFailedException(e.getStatusCode) && onlyIfNotModified =>
           log.logItemWriteSkipped(deleteOperation, "preConditionNotMet")
           return
-        case e: CosmosException if Exceptions.canBeTransientFailure(e) =>
+        case e: CosmosException if Exceptions.canBeTransientFailure(e.getStatusCode, e.getSubStatusCode) =>
           log.logWarning(
             s"delete item attempt #$attempt max remaining retries"
               + s"${cosmosWriteConfig.maxRetryCount + 1 - attempt}, encountered ${e.getMessage}")
@@ -285,7 +285,7 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
     future.toScala
   }
 
-  private def getOptions(): CosmosItemRequestOptions = {
+  private def getOptions: CosmosItemRequestOptions = {
     val options =  new CosmosItemRequestOptions()
     if (diagnosticsConfig.mode.isDefined) {
       val taskDiagnosticsContext = SparkTaskContext(
@@ -300,7 +300,7 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
 
       val operationContextAndListenerTuple = new OperationContextAndListenerTuple(taskDiagnosticsContext, listener)
       CosmosItemRequestOptionsHelper
-        .getCosmosItemRequestOptionsAccessor()
+        .getCosmosItemRequestOptionsAccessor
         .setOperationContext(options, operationContextAndListenerTuple)
     }
     options
@@ -316,7 +316,7 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
     captureIfFirstFailure(
       new IllegalStateException(s"The Spark task was aborted, Context: ${taskDiagnosticsContext.toString}"))
 
-    closed.set(true);
+    closed.set(true)
 
     try {
       executorService.shutdownNow()
