@@ -18,13 +18,13 @@ import com.azure.spring.eventhubs.core.processor.EventHubsProcessorFactory;
 import com.azure.spring.eventhubs.core.producer.DefaultEventHubsNamespaceProducerFactory;
 import com.azure.spring.eventhubs.core.producer.EventHubsProducerFactory;
 import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
+import com.azure.spring.eventhubs.support.converter.EventHubsMessageConverter;
 import com.azure.spring.integration.eventhubs.inbound.EventHubsInboundChannelAdapter;
 import com.azure.spring.integration.handler.DefaultMessageHandler;
 import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.service.eventhubs.processor.RecordEventProcessingListener;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.TestInfo;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -36,8 +36,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.function.Supplier;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
@@ -45,11 +45,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
-@Disabled("Not finished yet")
 public class EventHubPartitionBinderTests extends
     AzurePartitionBinderTests<EventHubsTestBinder, ExtendedConsumerProperties<EventHubsConsumerProperties>,
         ExtendedProducerProperties<EventHubsProducerProperties>> {
-    //TODO (Xiaobing Zhu): It is currently impossible to upgrade JUnit 4 to JUnit 5 due to the inheritance of Spring unit tests.
 
     @Mock
     EventContext eventContext;
@@ -64,9 +62,11 @@ public class EventHubPartitionBinderTests extends
     EventHubsProducerFactory producerFactory;
 
     private EventHubsTestBinder binder;
+    private Supplier<EventContext> eventContextSupplier;
+
+    private static final EventHubsMessageConverter MESSAGE_CONVERTER = new EventHubsMessageConverter();
 
     private static final String DESTINATION = "testDestination";
-//    private final static String EVENTHUBS = "output";
     private static final String CONSUMER = "test1";
 
     @BeforeEach
@@ -77,14 +77,9 @@ public class EventHubPartitionBinderTests extends
 
         NamespaceProperties namespaceProperties = new NamespaceProperties();
         this.producerFactory = spy(new DefaultEventHubsNamespaceProducerFactory(namespaceProperties));
-        //        EventHubProducerAsyncClient producerAsyncClient = mock(EventHubProducerAsyncClient.class);
-        //        doReturn(producerAsyncClient).when(this.producerFactory).createProducer(anyString());
-        //        EventDataBatch eventDataBatch = mock(EventDataBatch.class);
-        //        Mono<EventDataBatch> dataBatchMono = Mono.just(eventDataBatch);
-        //        when(producerAsyncClient.createBatch(any(CreateBatchOptions.class))).thenReturn(dataBatchMono);
-        //        when(producerAsyncClient.send(any(EventDataBatch.class))).thenReturn(Mono.empty());
-
-        this.messageHandler = spy(new DefaultMessageHandler(DESTINATION, new EventHubsTestTemplate(producerFactory, new TestEventProcessorListener())));
+        TestEventProcessorListener processorListener = new TestEventProcessorListener();
+        this.messageHandler = spy(new DefaultMessageHandler(DESTINATION,
+            new EventHubsTestTemplate(producerFactory, processorListener)));
 
         doNothing().when(this.messageHandler).afterPropertiesSet();
 
@@ -93,11 +88,11 @@ public class EventHubPartitionBinderTests extends
             spy(new DefaultEventHubsNamespaceProcessorFactory(checkpointStore,
                 namespaceProperties, mock(PropertiesSupplier.class)));
         EventProcessorClient processorClient = mock(EventProcessorClient.class);
-        doReturn(processorClient).when(processorFactory).createProcessor(anyString(), anyString(), any(TestEventProcessorListener.class));
-        //        when(processorFactory.createProcessor(anyString(), anyString(), any(TestEventProcessorListener.class))).thenReturn(processorClient);
+        doReturn(processorClient).when(processorFactory).createProcessor(anyString(), anyString(), processorListener);
         EventHubsProcessorContainer processorContainer = spy(new EventHubsProcessorContainer(processorFactory));
         this.messageProducer = spy(new EventHubsInboundChannelAdapter(processorContainer,
             DESTINATION, CONSUMER, new CheckpointConfig()));
+        this.eventContextSupplier = () -> eventContext;
         this.binder = new EventHubsTestBinder(this.messageHandler, this.messageProducer);
     }
 
@@ -154,6 +149,8 @@ public class EventHubPartitionBinderTests extends
 
         @Override
         public void onEvent(EventContext eventContext) {
+//            Message<?> message = MESSAGE_CONVERTER.toMessage(eventContext.getEventData(), new MessageHeaders(null), Message.class);
+//            sendMessage(message);
 
         }
     }

@@ -4,6 +4,8 @@
 package com.azure.spring.cloud.stream.binder.servicebus.test;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.TestInfo;
 import org.springframework.cloud.stream.binder.AbstractBinder;
 import org.springframework.cloud.stream.binder.AbstractTestBinder;
 import org.springframework.cloud.stream.binder.Binder;
@@ -27,12 +29,19 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Test cases are defined in super class
+ * Abstract Azure class that adds test support for {@link Binder}.
+ * @param <B> binder type
+ * @param <CP> consumer properties type
+ * @param <PP> producer properties type
  */
 public abstract class AzurePartitionBinderTests<B extends AbstractTestBinder<
         ? extends AbstractBinder<MessageChannel, CP, PP>, CP, PP>,
         CP extends ConsumerProperties, PP extends ProducerProperties>
         extends PartitionCapableBinderTests<B, CP, PP> {
+
+    @BeforeAll
+    public static void enableTests() {
+    }
 
     @Override
     protected boolean usesExplicitRouting() {
@@ -44,10 +53,26 @@ public abstract class AzurePartitionBinderTests<B extends AbstractTestBinder<
         return null;
     }
 
+    @Override
+    public void testClean(TestInfo testInfo) throws Exception {
+        // No-op
+    }
+
+    @Override
+    public void testPartitionedModuleSpEL(TestInfo testInfo) {
+        // Partitioned consumer mode unsupported
+    }
+
+    @Override
+    public void testAnonymousGroup(TestInfo testInfo) {
+        // azure binder not support anonymous group
+    }
+
 
     // Same logic as super.testSendAndReceiveNoOriginalContentType() except one line commented below
+    @Override
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public void testSendAndReceiveNoOriginalContentType() throws Exception {
+    public void testSendAndReceiveNoOriginalContentType(TestInfo testInfo) throws Exception {
         Binder binder = getBinder();
 
         BindingProperties producerBindingProperties = createProducerBindingProperties(createProducerProperties(null));

@@ -24,6 +24,7 @@ public class ServiceBusTestBinder
         ServiceBusMessageChannelBinder binder = new ServiceBusMessageChannelBinder(
             BinderHeaders.STANDARD_HEADERS, new ServiceBusChannelProvisioner());
         GenericApplicationContext context = new GenericApplicationContext();
+        context.refresh();
         binder.setApplicationContext(context);
         this.setBinder(binder);
     }
