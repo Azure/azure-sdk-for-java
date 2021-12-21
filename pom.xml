@@ -715,10 +715,12 @@
         <module>sdk/advisor</module>
         <module>sdk/agrifood</module>
         <module>sdk/anomalydetector</module>
+        <module>sdk/aot</module>
         <module>sdk/apimanagement</module>
         <module>sdk/appconfiguration</module>
         <module>sdk/applicationinsights</module>
         <module>sdk/attestation</module>
+        <module>sdk/automanage</module>
         <module>sdk/automation</module>
         <module>sdk/avs</module>
         <module>sdk/azurearcdata</module>
