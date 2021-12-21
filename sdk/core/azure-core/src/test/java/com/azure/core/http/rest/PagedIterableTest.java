@@ -449,7 +449,7 @@ public class PagedIterableTest {
     public <C, T, P extends ContinuablePage<C, T>> void streamingByPageTerminatesOn(
         ContinuablePagedFlux<C, T, P> pagedFlux, List<T> expectedItems) {
         List<T> actualItems = new ArrayList<>();
-        new ContinuablePagedIterable<>(pagedFlux).streamByPage().map(ContinuablePage::getElements)
+        new ContinuablePagedIterable<>(pagedFlux).streamByPage().map(page -> page.getElements())
             .forEach(iterableStream -> iterableStream.forEach(actualItems::add));
         assertEquals(expectedItems.size(), actualItems.size());
         for (int i = 0; i < expectedItems.size(); i++) {
