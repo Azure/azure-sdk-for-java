@@ -12,7 +12,6 @@
 
 import os
 import time
-from log import log
 
 SPRING_BOOT_DEPENDENCIES_VERSION = '2.6.1'
 ANOTHER_SPRING_BOOT_DEPENDENCIES_VERSION = '2.5.4'
@@ -56,11 +55,11 @@ def change_ci_update_versions():
 
 def main():
     start_time = time.time()
-    log.debug('Current working directory = {}.'.format(os.getcwd()))
+    print('Current working directory = {}.'.format(os.getcwd()))
     change_ci_dependency_management()
     change_ci_update_versions()
     elapsed_time = time.time() - start_time
-    log.info('elapsed_time = {}'.format(elapsed_time))
+    print('elapsed_time = {}'.format(elapsed_time))
 
 if __name__ == '__main__':
     main()
