@@ -206,9 +206,9 @@ class PartitionProcessorImpl implements PartitionProcessor {
                         }
                     }
                 } else if (throwable instanceof LeaseLostException) {
-                        logger.info("LeaseLoseException with Partition {} from thread {} with owner {}",
-                            this.lease.getLeaseToken(), Thread.currentThread().getId(), this.lease.getOwner());
-                        this.resultException = (LeaseLostException) throwable;
+                    logger.info("LeaseLoseException with Partition {} from thread {} with owner {}",
+                        this.lease.getLeaseToken(), Thread.currentThread().getId(), this.lease.getOwner());
+                    this.resultException = (LeaseLostException) throwable;
                 } else if (throwable instanceof TaskCancelledException) {
                     logger.debug("Task cancelled exception: Partition {} from thread {} with owner {}",
                         this.lease.getLeaseToken(), Thread.currentThread().getId(), this.lease.getOwner(), throwable);
