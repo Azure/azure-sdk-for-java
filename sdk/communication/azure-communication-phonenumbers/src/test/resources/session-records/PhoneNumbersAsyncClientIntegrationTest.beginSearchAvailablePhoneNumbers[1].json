@@ -4,33 +4,33 @@
     "Uri" : "https://REDACTED.communication.azure.com/availablePhoneNumbers/countries/US/:search?api-version=2022-01-11-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.1 (11.0.13; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "49f595ce-f9eb-4fc7-a35e-d31063fe6a45",
+      "x-ms-client-request-id" : "a62f90d6-44bc-4f63-99bf-8b0ceb9cebc3",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "X-Cache" : "CONFIG_NOCACHE",
       "content-length" : "0",
       "api-supported-versions" : "2021-03-07, 2022-01-11-preview",
-      "operation-id" : "search_928bc4cc-add5-4c54-b2e1-7807b48a4a9a",
+      "operation-id" : "search_47e4335f-5f93-4f5d-9844-bf331fe1ee2c",
       "retry-after" : "0",
       "StatusCode" : "202",
-      "Date" : "Tue, 14 Dec 2021 14:53:17 GMT",
+      "Date" : "Tue, 21 Dec 2021 19:58:02 GMT",
       "Access-Control-Expose-Headers" : "Location,Operation-Location,operation-id,search-id",
-      "X-Processing-Time" : "1978ms",
-      "MS-CV" : "6ubpYyIFyUSEcGvCK2UEtA.0",
-      "search-id" : "928bc4cc-add5-4c54-b2e1-7807b48a4a9a",
-      "X-Azure-Ref" : "03K+4YQAAAABRFM8WUg1FSbLcDGIz7s86U0FPMDNFREdFMDkxMQA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
-      "Operation-Location" : "/phoneNumbers/operations/search_928bc4cc-add5-4c54-b2e1-7807b48a4a9a?api-version=2022-01-11-preview",
-      "Location" : "/availablePhoneNumbers/searchResults/928bc4cc-add5-4c54-b2e1-7807b48a4a9a?api-version=2022-01-11-preview",
+      "X-Processing-Time" : "2577ms",
+      "MS-CV" : "+xhj/WMMEUG9nsx8Lr8ZlQ.0",
+      "search-id" : "47e4335f-5f93-4f5d-9844-bf331fe1ee2c",
+      "X-Azure-Ref" : "0yDHCYQAAAABFiNwnJZf2TqJcEKPZwjg/U0FPMDNFREdFMDkwOQA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "Operation-Location" : "/phoneNumbers/operations/search_47e4335f-5f93-4f5d-9844-bf331fe1ee2c?api-version=2022-01-11-preview",
+      "Location" : "/availablePhoneNumbers/searchResults/47e4335f-5f93-4f5d-9844-bf331fe1ee2c?api-version=2022-01-11-preview",
       "Request-Context" : "appId="
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.communication.azure.com/phoneNumbers/operations/search_928bc4cc-add5-4c54-b2e1-7807b48a4a9a?api-version=2022-01-11-preview",
+    "Uri" : "https://REDACTED.communication.azure.com/phoneNumbers/operations/search_47e4335f-5f93-4f5d-9844-bf331fe1ee2c?api-version=2022-01-11-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.1 (11.0.13; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "45a15b20-17ad-4910-920c-47b203a3be7f"
+      "x-ms-client-request-id" : "7e260fea-aa84-4af2-a4a1-fb297efe8a29"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -38,23 +38,23 @@
       "api-supported-versions" : "2021-03-07, 2022-01-11-preview",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Tue, 14 Dec 2021 14:53:17 GMT",
+      "Date" : "Tue, 21 Dec 2021 19:58:04 GMT",
       "Access-Control-Expose-Headers" : "Location",
-      "X-Processing-Time" : "261ms",
-      "MS-CV" : "J1DmvbI8SE2JVFsVxET11Q.0",
-      "X-Azure-Ref" : "03q+4YQAAAAA5uDOac3x3SpMzgt5hQjo+U0FPMDNFREdFMDkxMQA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
-      "Body" : "{\"operationType\":\"search\",\"status\":\"notStarted\",\"resourceLocation\":\"/availablePhoneNumbers/searchResults/928bc4cc-add5-4c54-b2e1-7807b48a4a9a?api-version=2022-01-11-preview\",\"createdDateTime\":\"2021-12-14T14:53:17.7864198+00:00\",\"id\":\"REDACTED\",\"lastActionDateTime\":\"0001-01-01T00:00:00+00:00\"}",
+      "X-Processing-Time" : "233ms",
+      "MS-CV" : "1zUqB8rJ4USiSSCQ6vE8fQ.0",
+      "X-Azure-Ref" : "0yzHCYQAAAABPDOTbA2ZIQJDWId4PIE9sU0FPMDNFREdFMDkwNwA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "Body" : "{\"operationType\":\"search\",\"status\":\"notStarted\",\"resourceLocation\":\"/availablePhoneNumbers/searchResults/47e4335f-5f93-4f5d-9844-bf331fe1ee2c?api-version=2022-01-11-preview\",\"createdDateTime\":\"2021-12-21T19:58:02.8591435+00:00\",\"id\":\"REDACTED\",\"lastActionDateTime\":\"0001-01-01T00:00:00+00:00\"}",
       "Content-Type" : "application/json; charset=utf-8",
-      "Location" : "/availablePhoneNumbers/searchResults/928bc4cc-add5-4c54-b2e1-7807b48a4a9a?api-version=2022-01-11-preview",
+      "Location" : "/availablePhoneNumbers/searchResults/47e4335f-5f93-4f5d-9844-bf331fe1ee2c?api-version=2022-01-11-preview",
       "Request-Context" : "appId="
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.communication.azure.com/phoneNumbers/operations/search_928bc4cc-add5-4c54-b2e1-7807b48a4a9a?api-version=2022-01-11-preview",
+    "Uri" : "https://REDACTED.communication.azure.com/phoneNumbers/operations/search_47e4335f-5f93-4f5d-9844-bf331fe1ee2c?api-version=2022-01-11-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.1 (11.0.13; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "7ba8e296-3ed0-4e6a-a93d-3f362396a632"
+      "x-ms-client-request-id" : "4ec6d6fa-5484-4d6f-bb49-fd09b0a7b5f5"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -62,83 +62,35 @@
       "api-supported-versions" : "2021-03-07, 2022-01-11-preview",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Tue, 14 Dec 2021 14:53:19 GMT",
+      "Date" : "Tue, 21 Dec 2021 19:58:06 GMT",
       "Access-Control-Expose-Headers" : "Location",
-      "X-Processing-Time" : "245ms",
-      "MS-CV" : "IQ3PIyi4gEODpzrX+XI2ig.0",
-      "X-Azure-Ref" : "036+4YQAAAAB2a8BoY7LLRITxGTVoZtTRU0FPMDNFREdFMDkxMQA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
-      "Body" : "{\"operationType\":\"search\",\"status\":\"running\",\"resourceLocation\":\"/availablePhoneNumbers/searchResults/928bc4cc-add5-4c54-b2e1-7807b48a4a9a?api-version=2022-01-11-preview\",\"createdDateTime\":\"2021-12-14T14:53:17.7864198+00:00\",\"id\":\"REDACTED\",\"lastActionDateTime\":\"0001-01-01T00:00:00+00:00\"}",
+      "X-Processing-Time" : "235ms",
+      "MS-CV" : "vc3fjSgx60CQpnRVUKCv+A.0",
+      "X-Azure-Ref" : "0zzHCYQAAAAB1rLX2Qd6US6NxdeelwClGU0FPMDNFREdFMDkwOQA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "Body" : "{\"operationType\":\"search\",\"status\":\"succeeded\",\"resourceLocation\":\"/availablePhoneNumbers/searchResults/47e4335f-5f93-4f5d-9844-bf331fe1ee2c?api-version=2022-01-11-preview\",\"createdDateTime\":\"2021-12-21T19:58:02.8591435+00:00\",\"id\":\"REDACTED\",\"lastActionDateTime\":\"0001-01-01T00:00:00+00:00\"}",
       "Content-Type" : "application/json; charset=utf-8",
-      "Location" : "/availablePhoneNumbers/searchResults/928bc4cc-add5-4c54-b2e1-7807b48a4a9a?api-version=2022-01-11-preview",
+      "Location" : "/availablePhoneNumbers/searchResults/47e4335f-5f93-4f5d-9844-bf331fe1ee2c?api-version=2022-01-11-preview",
       "Request-Context" : "appId="
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.communication.azure.com/phoneNumbers/operations/search_928bc4cc-add5-4c54-b2e1-7807b48a4a9a?api-version=2022-01-11-preview",
+    "Uri" : "https://REDACTED.communication.azure.com/availablePhoneNumbers/searchResults/47e4335f-5f93-4f5d-9844-bf331fe1ee2c?api-version=2022-01-11-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.1 (11.0.13; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "9028147a-031a-438f-86cb-8e1b5741cdf3"
+      "x-ms-client-request-id" : "1b151e69-8bce-43a9-847a-5dc4229d0f77"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "X-Cache" : "CONFIG_NOCACHE",
       "api-supported-versions" : "2021-03-07, 2022-01-11-preview",
+      "X-Processing-Time" : "690ms",
+      "MS-CV" : "tobQgxKRLUikbfnxuC6W9w.0",
       "retry-after" : "0",
+      "X-Azure-Ref" : "00DHCYQAAAAD01G7RouoTS7nxZPCEMQBvU0FPMDNFREdFMDkwNwA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "StatusCode" : "200",
-      "Date" : "Tue, 14 Dec 2021 14:53:20 GMT",
-      "Access-Control-Expose-Headers" : "Location",
-      "X-Processing-Time" : "258ms",
-      "MS-CV" : "3bjoKGtL8UO16rmeeT21wg.0",
-      "X-Azure-Ref" : "04a+4YQAAAABdYrMUke2cTZz50Uq2pWA6U0FPMDNFREdFMDkxMQA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
-      "Body" : "{\"operationType\":\"search\",\"status\":\"running\",\"resourceLocation\":\"/availablePhoneNumbers/searchResults/928bc4cc-add5-4c54-b2e1-7807b48a4a9a?api-version=2022-01-11-preview\",\"createdDateTime\":\"2021-12-14T14:53:17.7864198+00:00\",\"id\":\"REDACTED\",\"lastActionDateTime\":\"0001-01-01T00:00:00+00:00\"}",
-      "Content-Type" : "application/json; charset=utf-8",
-      "Location" : "/availablePhoneNumbers/searchResults/928bc4cc-add5-4c54-b2e1-7807b48a4a9a?api-version=2022-01-11-preview",
-      "Request-Context" : "appId="
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.communication.azure.com/phoneNumbers/operations/search_928bc4cc-add5-4c54-b2e1-7807b48a4a9a?api-version=2022-01-11-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.1 (11.0.13; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "a3596a5a-9e9c-45dc-8f30-c6ca35476631"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "X-Cache" : "CONFIG_NOCACHE",
-      "api-supported-versions" : "2021-03-07, 2022-01-11-preview",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Date" : "Tue, 14 Dec 2021 14:53:22 GMT",
-      "Access-Control-Expose-Headers" : "Location",
-      "X-Processing-Time" : "304ms",
-      "MS-CV" : "n+tujyCI6kOKK06JIfinyw.0",
-      "X-Azure-Ref" : "04q+4YQAAAAADzi3hwvh6R5WrLoUREYzBU0FPMDNFREdFMDkxMQA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
-      "Body" : "{\"operationType\":\"search\",\"status\":\"succeeded\",\"resourceLocation\":\"/availablePhoneNumbers/searchResults/928bc4cc-add5-4c54-b2e1-7807b48a4a9a?api-version=2022-01-11-preview\",\"createdDateTime\":\"2021-12-14T14:53:17.7864198+00:00\",\"id\":\"REDACTED\",\"lastActionDateTime\":\"0001-01-01T00:00:00+00:00\"}",
-      "Content-Type" : "application/json; charset=utf-8",
-      "Location" : "/availablePhoneNumbers/searchResults/928bc4cc-add5-4c54-b2e1-7807b48a4a9a?api-version=2022-01-11-preview",
-      "Request-Context" : "appId="
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.communication.azure.com/availablePhoneNumbers/searchResults/928bc4cc-add5-4c54-b2e1-7807b48a4a9a?api-version=2022-01-11-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.1 (11.0.13; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f8514a0e-405e-48bd-883d-6dc5e26c33ee"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "X-Cache" : "CONFIG_NOCACHE",
-      "api-supported-versions" : "2021-03-07, 2022-01-11-preview",
-      "X-Processing-Time" : "851ms",
-      "MS-CV" : "RKO6+qHyF0eGx5skVB1RbA.0",
-      "retry-after" : "0",
-      "X-Azure-Ref" : "046+4YQAAAABbntn3LmXcT4RWXabWmhtWU0FPMDNFREdFMDkxMQA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
-      "StatusCode" : "200",
-      "Body" : "{\"searchId\":\"928bc4cc-add5-4c54-b2e1-7807b48a4a9a\",\"phoneNumbers\":[\"+18339123632\"],\"phoneNumberType\":\"tollFree\",\"assignmentType\":\"application\",\"capabilities\":{\"calling\":\"inbound\",\"sms\":\"inbound+outbound\"},\"cost\":{\"amount\":2.0,\"currencyCode\":\"USD\",\"billingFrequency\":\"monthly\"},\"searchExpiresBy\":\"2021-12-14T15:09:20.2585465+00:00\"}",
-      "Date" : "Tue, 14 Dec 2021 14:53:23 GMT",
+      "Body" : "{\"searchId\":\"47e4335f-5f93-4f5d-9844-bf331fe1ee2c\",\"phoneNumbers\":[\"+REDACTED\"],\"phoneNumberType\":\"tollFree\",\"assignmentType\":\"application\",\"capabilities\":{\"calling\":\"inbound\",\"sms\":\"inbound+outbound\"},\"cost\":{\"amount\":2.0,\"currencyCode\":\"USD\",\"billingFrequency\":\"monthly\"},\"searchExpiresBy\":\"2021-12-21T20:14:05.3606960+00:00\"}",
+      "Date" : "Tue, 21 Dec 2021 19:58:08 GMT",
       "Content-Type" : "application/json; charset=utf-8",
       "Request-Context" : "appId="
     },
