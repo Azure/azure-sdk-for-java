@@ -73,6 +73,21 @@ TBLPROPERTIES(partitionKeyPath = '/id', manualThroughput = '400', indexingPolicy
 ```
 
 ### Creating a new container if the ingestion via the Cosmos Spark connector is for the initial migration
+This section will briefly describe how you can create a new Cosmos DB container with the desired number of physical partitions (based on the estimated total storage size after the migration). It will also provide some recommendations how far you can scale-up temporarily during the migration to accelerate the ingestion without causing unnecessary/unwanted partition splits.
+
+Below is a formula that can be used to determine an estimate for the desired number of physical partitions. The total Storage Size is the total size of the input data (in Json) with an estimated Indexing-overhead (rule of thumb (5-10 percent if only system properties are indexed or the indexing policy is very restrictive, 20-30 percent if all properties are getting indexed or the custom indexing policy enables indexing fro many properties)
+`DesiredPartitionCount = TotalStorageSize_in_GB / 40`
+
+You can create a container that immediately has the desired number of partitions by specifying the right level of RUs when creating the container
+`TargetInitialThroughput_in_RU = DesiredPartitionCount * 6000`
+
+During the migration you can scale-up subsequently up-to `DesiredPartitionCount * 10000` RUs synchronously (will be effective immediately and not cause any additional partition splits)
+
+There are a couple of additional configuration settings to decide on when creating a new container:
+- Partition key (see above)
+- Partition key hash versioning (V1 is the default, V2 is recommended and required if your partition ey values exceed 100 bytes)
+- Any unique key constraint need to be configured when creating the container - it is immutable
+- Indexing policy (see above)
 
 ### Input data considerations
 
