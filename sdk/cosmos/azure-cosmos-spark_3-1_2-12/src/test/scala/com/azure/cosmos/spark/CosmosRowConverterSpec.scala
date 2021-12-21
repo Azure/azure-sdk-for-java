@@ -50,6 +50,50 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     objectNode.get(colName2).asText() shouldEqual colVal2
   }
 
+  "basic spark row with various numeric types" should "translate to ObjectNode" in {
+
+    val colName1 = "testColString"
+    val colName2 = "testColByte"
+    val colName3 = "testColShort"
+    val colName4 = "testColInteger"
+    val colName5 = "testColLong"
+    val colName6 = "testColFloat"
+    val colName7 = "testColDouble"
+    val colName8 = "testColDecimal"
+
+    val colVal1 = "strVal"
+    val colVal2: Byte = 8
+    val colVal3: Short = 9
+    val colVal4: Int = 1234567
+    val colVal5: Long = 2147483648L
+    val colVal6: Float = 0.123f
+    val colVal7: Double = 0.1234
+    val colVal8: java.math.BigDecimal = new java.math.BigDecimal(0.123456)
+
+    val row = new GenericRowWithSchema(
+      Array(colVal1, colVal2, colVal3, colVal4, colVal5, colVal6, colVal7, colVal8),
+      StructType(Seq(
+        StructField(colName1, StringType),
+        StructField(colName2, ByteType),
+        StructField(colName3, ShortType),
+        StructField(colName4, IntegerType),
+        StructField(colName5, LongType),
+        StructField(colName6, FloatType),
+        StructField(colName7, DoubleType),
+        StructField(colName8, DecimalType.SYSTEM_DEFAULT)
+      )))
+
+    val objectNode = defaultRowConverter.fromRowToObjectNode(row)
+    objectNode.get(colName1).asText() shouldEqual colVal1
+    objectNode.get(colName2).asInt() shouldEqual colVal2.toInt
+    objectNode.get(colName3).asInt() shouldEqual colVal3.toInt
+    objectNode.get(colName4).asInt() shouldEqual colVal4
+    objectNode.get(colName5).asLong() shouldEqual colVal5
+    objectNode.get(colName6).asDouble() shouldEqual colVal6.toDouble
+    objectNode.get(colName7).asDouble() shouldEqual colVal7
+    new java.math.BigDecimal(objectNode.get(colName8).asDouble()) shouldEqual colVal8
+  }
+
   "null type in spark row" should "translate to null in ObjectNode" in {
 
     val colName1 = "testCol1"
@@ -164,26 +208,60 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     val colName2 = "testCol2"
     val colName3 = "testCol3"
     val colName4 = "testCol4"
+    val colName5 = "testCol5"
+    val colName6 = "testCol6"
+    val colName7 = "testCol7"
+    val colName8 = "testCol8"
+    val colName9 = "testCol9"
+    val colName10 = "testCol10"
+    val colName11 = "testCol11"
+    val colName12 = "testCol12"
     val colVal1 = 1
     val colVal2 = 0
     val colVal3 = ""
     val colVal4 = Array[Byte]()
+    val colVal5: Float = 0
+    val colVal6: Float = 0.123f
+    val colVal7: Double = 0
+    val colVal8: Double = 0.1234
+    val colVal9: Short = 0
+    val colVal10: Short = 3
+    val colVal11: Byte = 0
+    val colVal12: Byte = 4
 
     val row = new GenericRowWithSchema(
-      Array(colVal1, colVal2, colVal3, colVal4),
+      Array(
+        colVal1, colVal2, colVal3, colVal4, colVal5, colVal6, colVal7, colVal8, colVal9, colVal10, colVal11, colVal12),
       StructType(Seq(
         StructField(colName1, IntegerType),
         StructField(colName2, IntegerType),
         StructField(colName3, StringType),
-        StructField(colName4, BinaryType))))
+        StructField(colName4, BinaryType),
+        StructField(colName5, FloatType),
+        StructField(colName6, FloatType),
+        StructField(colName7, DoubleType),
+        StructField(colName8, DoubleType),
+        StructField(colName9, ShortType),
+        StructField(colName10, ShortType),
+        StructField(colName11, ByteType),
+        StructField(colName12, ByteType)
+      )))
 
     val objectNode = rowConverterInclusionNonDefault.fromRowToObjectNode(row)
     objectNode.get(colName1).asInt() shouldEqual colVal1
     objectNode.get(colName2) shouldBe null
     objectNode.get(colName3) shouldBe null
     objectNode.get(colName4) shouldBe null
+    objectNode.get(colName5) shouldBe null
+    objectNode.get(colName6).asDouble() shouldEqual colVal6.toDouble
+    objectNode.get(colName7) shouldBe null
+    objectNode.get(colName8).asDouble() shouldEqual colVal8
+    objectNode.get(colName9) shouldBe null
+    objectNode.get(colName10).asInt() shouldEqual colVal10.toInt
+    objectNode.get(colName11) shouldBe null
+    objectNode.get(colName12).asInt() shouldEqual colVal12.toInt
 
-    objectNode.toString shouldEqual s"""{"testCol1":1}"""
+    objectNode.toString shouldEqual s"""{"testCol1":1,"testCol6":0.123,"testCol8":0.1234,"testCol10":3,"testCol12":4}"""
   }
 
   "default value in spark row" should "translate to only empty valuesbeing skipped for InclusionModes.NonEmpty" in {
