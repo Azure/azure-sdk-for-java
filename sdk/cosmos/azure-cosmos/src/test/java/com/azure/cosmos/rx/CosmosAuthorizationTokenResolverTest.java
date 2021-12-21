@@ -22,6 +22,8 @@ import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPermissionProperties;
@@ -90,15 +92,21 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
-    public void before_TokenResolverTest() {
+    public void before_TokenResolverTest() throws InterruptedException {
         this.client = getClientBuilder().buildAsyncClient();
 
         createdDatabase = getSharedCosmosDatabase(this.client); // SHARED_DATABASE
-        createdCollection = getSharedMultiPartitionCosmosContainer(this.client); // SHARED_MULTI_PARTITION_COLLECTION;
+        CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
+        CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(
+            "monitor_" + UUID.randomUUID(),
+            "/mypk");
+        createdCollection = createCollection(createdDatabase, collectionDefinition, options);
 
 
         userWithReadPermission = createUser(client, createdDatabase.getId(), getUserDefinition());
+
         //create read permission
+        Thread.sleep(1000);
         CosmosPermissionProperties permissionReadSettings = new CosmosPermissionProperties()
             .setId("ReadPermissionOnColl")
             .setPermissionMode(PermissionMode.READ)
@@ -108,6 +116,7 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
 
         userWithAllPermission = createUser(client, createdDatabase.getId(), getUserDefinition());
         //create all permission
+        Thread.sleep(1000);
         CosmosPermissionProperties permissionAllSettings = new CosmosPermissionProperties()
             .setId("AllPermissionOnColl")
             .setPermissionMode(PermissionMode.ALL)
@@ -334,6 +343,8 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
                 .build();
 
             validateSuccess(createObservable, validator);
+
+            Thread.sleep(1000);
 
             CosmosAsyncStoredProcedure storedProcedure = null;
             storedProcedure = asyncClientWithTokenResolver
