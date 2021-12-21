@@ -20,7 +20,7 @@ import java.util.stream.StreamSupport;
  * @see IterableStream
  * @see ContinuablePagedFlux
  */
-public abstract class ContinuablePagedIterable<C, T, P extends ContinuablePage<C, T>> extends IterableStream<T> {
+public class ContinuablePagedIterable<C, T, P extends ContinuablePage<C, T>> extends IterableStream<T> {
     private final ContinuablePagedFlux<C, T, P> pagedFlux;
     private final int batchSize;
 
