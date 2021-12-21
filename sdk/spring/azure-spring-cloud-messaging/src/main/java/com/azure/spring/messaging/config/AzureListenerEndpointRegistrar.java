@@ -87,6 +87,9 @@ public class AzureListenerEndpointRegistrar implements BeanFactoryAware, Initial
      * underlying container.
      * <p>The {@code factory} may be {@code null} if the default factory has to be
      * used for that endpoint.
+     *
+     * @param endpoint the {@link AzureListenerEndpoint} instance to register.
+     * @param factory the {@link ListenerContainerFactory} to use.
      */
     public void registerEndpoint(AzureListenerEndpoint endpoint, @Nullable ListenerContainerFactory<?> factory) {
         Assert.notNull(endpoint, "Endpoint must not be null");
@@ -109,7 +112,7 @@ public class AzureListenerEndpointRegistrar implements BeanFactoryAware, Initial
     /**
      * Register a new {@link AzureListenerEndpoint} using the default {@link ListenerContainerFactory} to create the
      * underlying container.
-     *
+     * @param endpoint the {@link AzureListenerEndpoint} instance to register.
      * @see #setContainerFactory(ListenerContainerFactory)
      * @see #registerEndpoint(AzureListenerEndpoint, ListenerContainerFactory)
      */

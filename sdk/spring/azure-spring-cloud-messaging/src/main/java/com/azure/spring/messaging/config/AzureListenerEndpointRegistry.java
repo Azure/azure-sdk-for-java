@@ -67,6 +67,7 @@ public class AzureListenerEndpointRegistry
 
     /**
      * Return the managed {@link MessageListenerContainer} instance(s).
+     * @return the managed {@link MessageListenerContainer} instance(s).
      */
     public Collection<MessageListenerContainer> getListenerContainers() {
         return Collections.unmodifiableCollection(this.listenerContainers.values());
@@ -229,7 +230,7 @@ public class AzureListenerEndpointRegistry
 
     /**
      * Return the ids of the managed {@link MessageListenerContainer} instance(s).
-     *
+     * @return the ids of the managed {@link MessageListenerContainer} instance(s).
      * @see #getListenerContainer(String)
      */
     public Set<String> getListenerContainerIds() {
