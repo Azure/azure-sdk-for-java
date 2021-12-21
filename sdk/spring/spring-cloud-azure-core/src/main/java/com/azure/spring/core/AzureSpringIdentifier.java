@@ -24,6 +24,7 @@ public class AzureSpringIdentifier {
     //    kv: for Key Vault
     //    se: for Security
     //    jca: for JCA
+    //    ct: for Certificates
     //    sb: for Storage Blobs
     //    sf: for Storage Files
     //    eh: for Event Hub
@@ -36,7 +37,8 @@ public class AzureSpringIdentifier {
     public static final String VERSION = getVersion();
     public static final String AZURE_SPRING_APP_CONFIG = "az-sp-cfg/" + VERSION;
     public static final String AZURE_SPRING_EVENT_HUBS = "az-sp-eh/" + VERSION;
-    public static final String AZURE_SPRING_KEY_VAULT = "az-sp-kv/" + VERSION;
+    public static final String AZURE_SPRING_KEY_VAULT_SECRETS = "az-sp-kv/" + VERSION;
+    public static final String AZURE_SPRING_KEY_VAULT_CERTIFICATES = "az-sp-kv-ct/" + VERSION;
 
     /**
      * Azure Spring ServiceBus
