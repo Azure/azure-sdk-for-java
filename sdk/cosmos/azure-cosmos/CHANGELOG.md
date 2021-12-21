@@ -2,8 +2,8 @@
 
 ### 4.24.0 (2021-12-21)
 #### Features Added
-* Added implementation for CosmosAuthorizationTokenResolver.
-* Scoping session token per partition level for gateway call.
+* Added implementation for `CosmosAuthorizationTokenResolver`.
+* Scoped session token per partition level for gateway call.
 
 #### Key Bug Fixes
 * Fixed issue causing CosmosException with statusCode 0 to be thrown on connectivity issues for Gateway.
