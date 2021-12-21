@@ -338,11 +338,12 @@ parameters:
             skipPublishDocMs: true
             skipUpdatePackageJson: true
             skipVerifyChangelog: true
-        -   name: spring-cloud-azure-stream-binder-test
-            groupId: com.azure.spring
-            safeName: springcloudazurestreambindertest
-            skipPublishDocMs: true
-            skipVerifyChangelog: true
+            #skip it for ci test
+#        -   name: spring-cloud-azure-stream-binder-test
+#            groupId: com.azure.spring
+#            safeName: springcloudazurestreambindertest
+#            skipPublishDocMs: true
+#            skipVerifyChangelog: true
 -   name: TestPipeline
     type: boolean
     default: false
