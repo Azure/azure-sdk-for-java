@@ -796,13 +796,6 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         receiver.complete(receivedMessage);
     }
 
-    /**
-     * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
-     */
-    private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled) {
-        setSenderAndReceiver(entityType, entityIndex, isSessionEnabled, false);
-    }
-
     private void setReceiver(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled) {
         setReceiver(entityType, entityIndex, isSessionEnabled, false);
     }

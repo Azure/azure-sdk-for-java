@@ -497,7 +497,11 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
         return this
             .client
             .<VpnConnectionInner, VpnConnectionInner>getLroResult(
-                mono, this.client.getHttpPipeline(), VpnConnectionInner.class, VpnConnectionInner.class, this.client.getContext());
+                mono,
+                this.client.getHttpPipeline(),
+                VpnConnectionInner.class,
+                VpnConnectionInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -794,7 +798,8 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, gatewayName, connectionName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

@@ -14,6 +14,10 @@ public class FeatureConfig implements WebMvcConfigurer {
 
     private final FeatureHandler featureHandler;
 
+    /**
+     * FeatureConfig enables setting up interceptors for endpoints to be managed by FeatureHandler.
+     * @param featureHandler Interceptor for endpoint requests
+     */
     public FeatureConfig(FeatureHandler featureHandler) {
         this.featureHandler = featureHandler;
     }

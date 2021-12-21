@@ -82,6 +82,10 @@ public interface AzureReachabilityReport
          * provider should be set. If none or multiple providers specified, only one Azure region should be set.
          */
         interface WithAzureLocations {
+            /**
+             * @param azureLocations the Azure locations for the Azure reachability report
+             * @return the next stage of the definition
+             */
             WithExecute withAzureLocations(String... azureLocations);
         }
 

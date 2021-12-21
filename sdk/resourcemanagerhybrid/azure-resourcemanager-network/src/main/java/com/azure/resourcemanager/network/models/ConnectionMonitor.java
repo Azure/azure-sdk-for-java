@@ -196,6 +196,9 @@ public interface ConnectionMonitor extends HasInnerModel<ConnectionMonitorResult
             WithCreate withoutTag(String key);
         }
 
+        /**
+         * The stage of the connection monitor definition allowing creating and updating.
+         */
         interface WithCreate
             extends Creatable<ConnectionMonitor>, WithSourcePort, WithAutoStart, WithMonitoringInterval, WithTags {
         }

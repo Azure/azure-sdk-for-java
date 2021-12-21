@@ -286,6 +286,12 @@ public abstract class IndexableTaskItem
         return Mono.empty();
     }
 
+    /**
+     * Invokes a task asynchronously.
+     *
+     * @param context Context of the invocation.
+     * @return an Observable upon subscription emits {@link Indexable}.
+     */
     protected abstract Mono<Indexable> invokeTaskAsync(TaskGroup.InvocationContext context);
 
     /**

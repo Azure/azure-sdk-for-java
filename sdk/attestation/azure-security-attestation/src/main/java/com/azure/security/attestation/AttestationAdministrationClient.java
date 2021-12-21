@@ -70,10 +70,9 @@ public final class AttestationAdministrationClient {
 
     /**
      * Retrieves the current policy for an attestation type.
-     *
      * <p>
      * <b>NOTE:</b>
-     *     The {@link AttestationAdministrationClient#getAttestationPolicyWithResponse(AttestationType, AttestationTokenValidationOptions, Context)} API returns the underlying
+     *     The {@link AttestationAdministrationAsyncClient#getAttestationPolicyWithResponse(AttestationType, AttestationTokenValidationOptions, Context)} API returns the underlying
      *     attestation policy specified by the user. This is NOT the full attestation policy maintained by
      *     the attestation service. Specifically it does not include the signing certificates used to verify the attestation
      *     policy.
@@ -87,6 +86,49 @@ public final class AttestationAdministrationClient {
      *         the value stored by the attestation service.
      *  </p>
      *
+     * <p><strong>Retrieve the current attestation policy for SGX enclaves.</strong></p>
+     * <!-- src_embed com.azure.security.attestation.AttestationAdministrationClient.getPolicy -->
+     * <pre>
+     * String policy = client.getAttestationPolicy&#40;AttestationType.SGX_ENCLAVE&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationAdministrationClient.getPolicy -->
+     *
+     * @param attestationType Specifies the trusted execution environment whose policy should be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to an attestation policy operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public String getAttestationPolicy(AttestationType attestationType) {
+        return asyncClient.getAttestationPolicy(attestationType).block();
+    }
+
+    /**
+     * Retrieves the current policy for an attestation type.
+     * <p>
+     * <b>NOTE:</b>
+     *     The {@link AttestationAdministrationAsyncClient#getAttestationPolicyWithResponse(AttestationType, AttestationTokenValidationOptions, Context)} API returns the underlying
+     *     attestation policy specified by the user. This is NOT the full attestation policy maintained by
+     *     the attestation service. Specifically it does not include the signing certificates used to verify the attestation
+     *     policy.
+     *     </p>
+     *     <p>
+     *         To retrieve the signing certificates used to sign the policy, {@link Response} object returned from this API
+     *         is an instance of an {@link com.azure.security.attestation.models.AttestationResponse} object
+     *         and the caller can retrieve the full policy object maintained by the service by calling the
+     *         {@link AttestationResponse#getToken()} method.
+     *         The returned {@link com.azure.security.attestation.models.AttestationToken} object will be
+     *         the value stored by the attestation service.
+     *  </p>
+     *
+     * <p><strong>Retrieve the current attestation policy for SGX enclaves.</strong></p>
+     * <!-- src_embed com.azure.security.attestation.AttestationAdministrationClient.getPolicyWithResponse -->
+     * <pre>
+     * Response&lt;String&gt; response = client.getAttestationPolicyWithResponse&#40;AttestationType.SGX_ENCLAVE, null, Context.NONE&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationAdministrationClient.getPolicyWithResponse -->
+     *
      * @param attestationType Specifies the trusted execution environment whose policy should be retrieved.
      * @param validationOptions Options used when validating the token returned by the attestation service.
      * @param context Context for the operation.
@@ -98,34 +140,6 @@ public final class AttestationAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<String> getAttestationPolicyWithResponse(AttestationType attestationType, AttestationTokenValidationOptions validationOptions, Context context) {
         return asyncClient.getAttestationPolicyWithResponse(attestationType, validationOptions, context).block();
-    }
-
-    /**
-     * Retrieves the current policy for an attestation type.
-     *  <p>
-     *      <strong>NOTE:</strong>
-     *     The {@link AttestationAdministrationClient#getAttestationPolicy(AttestationType)} API returns the underlying
-     *     attestation policy specified by the user. This is NOT the full attestation policy maintained by
-     *     the attestation service. Specifically it does not include the signing certificates used to verify the attestation
-     *     policy.
-     *     </p>
-     *     <p>
-     *         To retrieve the signing certificates used to sign the policy, use the {@link AttestationAdministrationClient#getAttestationPolicyWithResponse(AttestationType, AttestationTokenValidationOptions, Context)} API.
-     *         The {@link Response} object is an instance of an {@link com.azure.security.attestation.models.AttestationResponse} object
-     *         and the caller can retrieve the full information maintained by the service by calling the {@link AttestationResponse#getToken()} method.
-     *         The returned {@link com.azure.security.attestation.models.AttestationToken} object will be
-     *         the value stored by the attestation service.
-     *  </p>
-     *
-     * @param attestationType Specifies the trusted execution environment whose policy should be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an attestation policy operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public String getAttestationPolicy(AttestationType attestationType) {
-        return asyncClient.getAttestationPolicy(attestationType).block();
     }
 
     /**
@@ -154,36 +168,29 @@ public final class AttestationAdministrationClient {
     }
 
     /**
-     * Sets the attestation policy for the specified attestation type for an AAD mode attestation instance.
-     *
-     * Note that this function will only work on AAD mode attestation instances, because there is
-     * no key signing certificate provided.
-     *
-     * More information about Attestation Policy can be found <a href='https://docs.microsoft.com/azure/attestation/basic-concepts#attestation-policy'>here.</a>
-     *
-     * <p><strong>Set attestation policy to a minimal value.</strong></p>
-     * <!-- src_embed com.azure.security.attestation.AttestationAdministrationClient.setPolicySimpleWithResponse -->
-     * <pre>
-     * Response&lt;PolicyResult&gt; response = client.setAttestationPolicyWithResponse&#40;AttestationType.OPEN_ENCLAVE,
-     *     &quot;version=1.0; authorizationrules&#123;=&gt; permit&#40;&#41;;&#125;; issuancerules&#123;&#125;;&quot;, Context.NONE&#41;;
-     * </pre>
-     * <!-- end com.azure.security.attestation.AttestationAdministrationClient.setPolicySimpleWithResponse -->
-     *
-     * @param attestationType The {@link AttestationType} to be updated.
-     * @param policyToSet Attestation Policy to set on the instance.
-     * @param context Context for the operation.
-     * @return {@link PolicyResult} expressing the result of the attestation operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolicyResult> setAttestationPolicyWithResponse(AttestationType attestationType, String policyToSet, Context context) {
-        return asyncClient.setAttestationPolicyWithResponse(attestationType,
-            new AttestationPolicySetOptions().setAttestationPolicy(policyToSet), context).block();
-    }
-
-    /**
      * Sets the attestation policy for the specified attestation type, with policy and signing key.
+     * Sets the current policy for an attestation type.
      *
-     * More information about Attestation Policy can be found <a href='https://docs.microsoft.com/azure/attestation/basic-concepts#attestation-policy'>here.</a>
+     * Setting the attestation requires that the caller provide an {@link AttestationPolicySetOptions} object
+     * which provides the options for setting the policy. There are two major components to a setPolicy
+     * request:
+     * <ul>
+     *     <li>The policy to set</li>
+     *     <li>A signing key used to sign the policy sent to the service (OPTIONAL)</li>
+     * </ul>
+     *
+     * On Isolated mode attestation instances, the signing key MUST be one of the configured policy signing
+     * certificates.
+     *
+     * <!-- src_embed com.azure.security.attestation.AttestationAdministrationClient.setPolicy -->
+     * <pre>
+     * String policyToSet = &quot;version=1.0; authorizationrules&#123;=&gt; permit&#40;&#41;;&#125;; issuancerules&#123;&#125;;&quot;;
+     * PolicyResult result = client.setAttestationPolicy&#40;AttestationType.OPEN_ENCLAVE,
+     *     new AttestationPolicySetOptions&#40;&#41;
+     *         .setAttestationPolicy&#40;policyToSet&#41;
+     *         .setAttestationSigner&#40;new AttestationSigningKey&#40;certificate, privateKey&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationAdministrationClient.setPolicy -->
      *
      * @param attestationType The {@link AttestationType} to be updated.
      * @param options {@link AttestationPolicySetOptions} for the request.
@@ -197,10 +204,27 @@ public final class AttestationAdministrationClient {
     /**
      * Sets the attestation policy for the specified attestation type.
      *
-     * The value of the policy to set is contained in the {@link AttestationPolicySetOptions} object, as
-     * is the (optional) signing key used to sign the setPolicy request.
+     * Setting the attestation requires that the caller provide an {@link AttestationPolicySetOptions} object
+     * which provides the options for setting the policy. There are two major components to a setPolicy
+     * request:
+     * <ul>
+     *     <li>The policy to set</li>
+     *     <li>A signing key used to sign the policy sent to the service (OPTIONAL)</li>
+     * </ul>
      *
-     * More information about Attestation Policy can be found <a href='https://docs.microsoft.com/azure/attestation/basic-concepts#attestation-policy'>here.</a>
+     * On Isolated mode attestation instances, the signing key MUST include one of the configured policy signing
+     * certificates.
+     *
+     * <!-- src_embed com.azure.security.attestation.AttestationAdministrationClient.setPolicyWithResponse -->
+     * <pre>
+     * Response&lt;PolicyResult&gt; response = client.setAttestationPolicyWithResponse&#40;AttestationType.OPEN_ENCLAVE,
+     *     new AttestationPolicySetOptions&#40;&#41;
+     *         .setAttestationPolicy&#40;policyToSet&#41;
+     *         .setAttestationSigner&#40;new AttestationSigningKey&#40;certificate, privateKey&#41;&#41;, Context.NONE&#41;;
+     *
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationAdministrationClient.setPolicyWithResponse -->
+     *
      *
      * @param attestationType The {@link AttestationType} to be updated.
      * @param options {@link AttestationPolicySetOptions} for the request.
@@ -249,13 +273,49 @@ public final class AttestationAdministrationClient {
     }
 
     /**
-     * Resets the attestation policy for the specified attestation type to the default, using the specified options.
+     * Resets the attestation policy for the specified attestation type to the default value.
+     * Resets the current policy for an attestation type to the default policy.
+     *
+     * Note: This is a convenience method that will only work on attestation service instances in AAD mode.
      *
      * Each AttestationType has a "default" attestation policy, the resetAttestationPolicy API resets the value
      * of the attestation policy to the "default" policy.
      *
      * This API allows an attestation instance owner to undo the result of a
-     * {@link AttestationAdministrationClient#setAttestationPolicy(AttestationType, AttestationPolicySetOptions)} API call.
+     * {@link AttestationAdministrationAsyncClient#setAttestationPolicy(AttestationType, AttestationPolicySetOptions)} API call.
+     *
+     * <p><strong>Reset an attestation policy to its defaults on an AAD instance</strong></p>
+     * <!-- src_embed com.azure.security.attestation.AttestationAdministrationClient.resetPolicySimple -->
+     * <pre>
+     * PolicyResult result = client.resetAttestationPolicy&#40;AttestationType.OPEN_ENCLAVE&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationAdministrationClient.resetPolicySimple -->
+     *
+     * @param attestationType The {@link AttestationType} to be updated.
+     * @return {@link PolicyResult} expressing the result of the attestation operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PolicyResult resetAttestationPolicy(AttestationType attestationType) {
+        return asyncClient.resetAttestationPolicy(attestationType).block();
+    }
+
+    /**
+     * Resets the current policy for an attestation type to the default policy.
+     *
+     * Each AttestationType has a "default" attestation policy, the resetAttestationPolicy API resets the value
+     * of the attestation policy to the "default" policy.
+     *
+     * This API allows an attestation instance owner to undo the result of a
+     * {@link AttestationAdministrationAsyncClient#setAttestationPolicy(AttestationType, AttestationPolicySetOptions)} API call.
+     *
+     * <p><strong>Reset an attestation policy to its defaults</strong></p>
+     * <!-- src_embed com.azure.security.attestation.AttestationAdministrationClient.resetPolicy -->
+     * <pre>
+     * PolicyResult result = client.resetAttestationPolicy&#40;AttestationType.OPEN_ENCLAVE,
+     *     new AttestationPolicySetOptions&#40;&#41;
+     *         .setAttestationSigner&#40;new AttestationSigningKey&#40;certificate, privateKey&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationAdministrationClient.resetPolicy -->
      *
      * @param attestationType The {@link AttestationType} to be updated.
      * @param options {@link AttestationPolicySetOptions} for the request.
@@ -267,21 +327,23 @@ public final class AttestationAdministrationClient {
     }
 
     /**
-     * Resets the attestation policy for the specified attestation type to the default value.
+     * Resets the current policy for an attestation type to the default policy.
      *
-     * Note that this function will only work on AAD mode attestation instances, because there is
-     * no token signing certificate provided.
+     * Each AttestationType has a "default" attestation policy, the resetAttestationPolicy API resets the value
+     * of the attestation policy to the "default" policy.
      *
-     * @param attestationType The {@link AttestationType} to be updated.
-     * @return {@link PolicyResult} expressing the result of the attestation operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyResult resetAttestationPolicy(AttestationType attestationType) {
-        return asyncClient.resetAttestationPolicy(attestationType).block();
-    }
-
-    /**
-     * Resets the attestation policy for the specified attestation type to the default value.
+     * This API allows an attestation instance owner to undo the result of a
+     * {@link AttestationAdministrationAsyncClient#setAttestationPolicy(AttestationType, AttestationPolicySetOptions)} API call.
+     *
+     * <p><strong>Reset an attestation policy to its defaults</strong></p>
+     * <!-- src_embed com.azure.security.attestation.AttestationAdministrationClient.resetPolicyWithResponse -->
+     * <pre>
+     * Response&lt;PolicyResult&gt; response = client.resetAttestationPolicyWithResponse&#40;AttestationType.OPEN_ENCLAVE,
+     *     new AttestationPolicySetOptions&#40;&#41;
+     *         .setAttestationSigner&#40;new AttestationSigningKey&#40;certificate, privateKey&#41;&#41;, Context.NONE&#41;;
+     *
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationAdministrationClient.resetPolicyWithResponse -->
      *
      * @param attestationType The {@link AttestationType} to be updated.
      * @param options {@link AttestationPolicySetOptions} for the request.
@@ -292,6 +354,7 @@ public final class AttestationAdministrationClient {
     public Response<PolicyResult> resetAttestationPolicyWithResponse(AttestationType attestationType, AttestationPolicySetOptions options, Context context) {
         return asyncClient.resetAttestationPolicyWithResponse(attestationType, options, context).block();
     }
+
 
     /**
      * Retrieves the current set of attestation policy signing certificates for this instance.
@@ -307,6 +370,47 @@ public final class AttestationAdministrationClient {
      *     configured attestation policy management certificates, and thus the sender is authorized
      *     to perform the API operation.
      * </p>
+     * <p><strong>Retrieve the set of policy management certificates for this instance.</strong></p>
+     * <!-- src_embed com.azure.security.attestation.AttestationAdministrationClient.listPolicyManagementCertificatesSimple -->
+     * <pre>
+     * List&lt;AttestationSigner&gt; signers = client.listPolicyManagementCertificates&#40;&#41;;
+     * System.out.printf&#40;&quot;There are %d signers on the instance&#92;n&quot;, signers.size&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationAdministrationClient.listPolicyManagementCertificatesSimple -->
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to an attestation policy operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<AttestationSigner> listPolicyManagementCertificates() {
+        return asyncClient.listPolicyManagementCertificates().block();
+    }
+
+
+    /**
+     * Retrieves the current set of attestation policy signing certificates for this instance.
+     *
+     * <p>
+     * On an Isolated attestation instance, each {@link AttestationAdministrationAsyncClient#setAttestationPolicy(AttestationType, AttestationPolicySetOptions)}
+     * or {@link AttestationAdministrationAsyncClient#resetAttestationPolicy(AttestationType, AttestationPolicySetOptions)} API call
+     * must be signed with the private key corresponding to one of the certificates in the list returned
+     * by this API.
+     *</p>
+     * <p>
+     *     This establishes that the sender is in possession of the private key associated with the
+     *     configured attestation policy management certificates, and thus the sender is authorized
+     *     to perform the API operation.
+     * </p>
+     * <p><strong>Retrieve the set of policy management certificates for this instance.</strong></p>
+     * <!-- src_embed com.azure.security.attestation.AttestationAdministrationClient.listPolicyManagementCertificatesWithResponse -->
+     * <pre>
+     * Response&lt;List&lt;AttestationSigner&gt;&gt; signersResponse = client.listPolicyManagementCertificatesWithResponse&#40;new AttestationTokenValidationOptions&#40;&#41;
+     *     .setValidationSlack&#40;Duration.ofSeconds&#40;10&#41;&#41;, Context.NONE&#41;;
+     * System.out.printf&#40;&quot;There are %d signers on the instance&#92;n&quot;, signersResponse.getValue&#40;&#41;.size&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationAdministrationClient.listPolicyManagementCertificatesWithResponse -->
      *
      * @param tokenValidationOptions Options to be used validating the token returned by the attestation service.
      * @param context Context for the operation.
@@ -321,34 +425,31 @@ public final class AttestationAdministrationClient {
     }
 
     /**
-     /**
-     * Retrieves the current set of attestation policy signing certificates for this instance.
-     *
+     * Adds a new certificate to the set of policy management certificates on this instance.
+     *<p>
+     * Each Isolated mode attestation service instance maintains a set of certificates which can be used to authorize
+     * policy modification operations (in Isolated mode, each policy modification request needs to be signed with
+     * the private key associated with one of the policy management certificates).
+     *</p>
      * <p>
-     * On an Isolated attestation instance, each {@link AttestationAdministrationAsyncClient#setAttestationPolicy(AttestationType, AttestationPolicySetOptions)}
-     * or {@link AttestationAdministrationAsyncClient#resetAttestationPolicy(AttestationType, AttestationPolicySetOptions)} API call
-     * must be signed with the private key corresponding to one of the certificates in the list returned
-     * by this API.
-     * </p>
+     * This API allows the caller to add a new certificate to the set of policy management certificates.
+     *</p>
      * <p>
-     *     This establishes that the sender is in possession of the private key associated with the
-     *     configured attestation policy management certificates, and thus the sender is authorized
-     *     to perform the API operation.
-     * </p>
+     * The request to add a new certificate must be signed with one of the existing policy management certificates,
+     * so the {@link PolicyManagementCertificateOptions} object requires both the new certificate to be added and
+     * a {@link AttestationSigningKey} to sign the add request.
+     *</p>
+     * <p><strong>Add a new certificate to the set of policy management certificates for this instance.</strong></p>
+     * <!-- src_embed com.azure.security.attestation.AttestationAdministrationClient.addPolicyManagementCertificate -->
+     * <pre>
+     * PolicyCertificatesModificationResult addResult = client.addPolicyManagementCertificate&#40;
+     *     new PolicyManagementCertificateOptions&#40;certificateToAdd, new AttestationSigningKey&#40;certificate, privateKey&#41;&#41;&#41;;
+     * System.out.printf&#40;&quot; Result: %s&#92;n&quot;, addResult.getCertificateResolution&#40;&#41;.toString&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationAdministrationClient.addPolicyManagementCertificate -->
      *
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an attestation policy operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AttestationSigner> listPolicyManagementCertificates() {
-        return asyncClient.listPolicyManagementCertificates().block();
-    }
-
-    /**
-     * Adds a new attestation policy certificate to the set of policy management certificates.
+     * <p><strong><i>Note:</i></strong> It is not considered an error to add the same certificate twice. If
+     * the same certificate is added twice, the service ignores the second add request.</p>
      *
      * @param options Options for this API call, encapsulating both the X.509 certificate to add to the set of policy
      *               signing certificates and the signing key used to sign the request to the service.
@@ -363,7 +464,29 @@ public final class AttestationAdministrationClient {
     }
 
     /**
-     * Adds a new attestation policy certificate to the set of policy management certificates.
+     * Adds a new certificate to the set of policy management certificates on this instance.
+     *
+     * Each Isolated mode attestation service instance maintains a set of certificates which can be used to authorize
+     * policy modification operations (in Isolated mode, each policy modification request needs to be signed with
+     * the private key associated with one of the policy management certificates).
+     *
+     * This API allows the caller to add a new certificate to the set of policy management certificates.
+     *
+     * The request to add a new certificate must be signed with one of the existing policy management certificates,
+     * so the {@link PolicyManagementCertificateOptions} object requires both the new certificate to be added and
+     * a {@link AttestationSigningKey} to sign the add request.
+     *
+     * <p><strong>Add a new certificate to the set of policy management certificates for this instance.</strong></p>
+     * <!-- src_embed com.azure.security.attestation.AttestationAdministrationClient.addPolicyManagementCertificateWithResponse -->
+     * <pre>
+     * Response&lt;PolicyCertificatesModificationResult&gt; addResponse = client.addPolicyManagementCertificateWithResponse&#40;
+     *     new PolicyManagementCertificateOptions&#40;certificateToAdd, new AttestationSigningKey&#40;certificate, privateKey&#41;&#41;,
+     *     Context.NONE&#41;;
+     * System.out.printf&#40;&quot; Result: %s&#92;n&quot;, addResponse.getValue&#40;&#41;.getCertificateResolution&#40;&#41;.toString&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationAdministrationClient.addPolicyManagementCertificateWithResponse -->
+     * <p><strong><i>Note:</i></strong> It is not considered an error to add the same certificate twice. If
+     * the same certificate is added twice, the service ignores the second add request.</p>
      *
      * @param options Options for this API call, encapsulating both the X.509 certificate to add to the set of policy
      *               signing certificates and the signing key used to sign the request to the service.
@@ -379,7 +502,32 @@ public final class AttestationAdministrationClient {
     }
 
     /**
-     * Adds a new attestation policy certificate to the set of policy management certificates.
+     * Removes a policy management certificate from the set of policy management certificates.
+     * <p>
+     * Each Isolated mode attestation service instance maintains a set of certificates which can be used to authorize
+     * policy modification operations (in Isolated mode, each policy modification request needs to be signed with
+     * the private key associated with one of the policy management certificates).
+     *</p>
+     * <p>
+     * This API allows the caller to remove an existing certificate from the set of policy management certificates.
+     *</p>
+     * <p>
+     * The request to add a new certificate must be signed with one of the existing policy management certificates,
+     * so the {@link PolicyManagementCertificateOptions} object requires both the new certificate to be added and
+     * a {@link AttestationSigningKey} to sign the add request.
+     *</p>
+     * <p><strong>Add a new certificate to the set of policy management certificates for this instance.</strong></p>
+     * <!-- src_embed com.azure.security.attestation.AttestationAdministrationClient.removePolicyManagementCertificate -->
+     * <pre>
+     * PolicyCertificatesModificationResult removeResult = client.removePolicyManagementCertificate&#40;
+     *     new PolicyManagementCertificateOptions&#40;certificateToAdd, new AttestationSigningKey&#40;certificate, privateKey&#41;&#41;&#41;;
+     * System.out.printf&#40;&quot; Result: %s&#92;n&quot;, removeResult.getCertificateResolution&#40;&#41;.toString&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationAdministrationClient.removePolicyManagementCertificate -->
+     *
+     * <p><strong><i>Note:</i></strong> It is not considered an error to removethe same certificate twice. If
+     * the same certificate is removed twice, the service ignores the second remove request. This also means that
+     * it is not an error to remove a certificate which was not actually in the set of policy certificates.</p>
      *
      * @param options Options for this API call, encapsulating both the X.509 certificate to remove from the set of policy
      *               signing certificates and the signing key used to sign the request to the service.
@@ -394,7 +542,33 @@ public final class AttestationAdministrationClient {
     }
 
     /**
-     * Adds a new attestation policy certificate to the set of policy management certificates.
+     * Removes a policy management certificate from the set of policy management certificates.
+     * <p>
+     * Each Isolated mode attestation service instance maintains a set of certificates which can be used to authorize
+     * policy modification operations (in Isolated mode, each policy modification request needs to be signed with
+     * the private key associated with one of the policy management certificates).
+     *</p>
+     * <p>
+     * This API allows the caller to remove an existing certificate from the set of policy management certificates.
+     *</p>
+     * <p>
+     * The request to add a new certificate must be signed with one of the existing policy management certificates,
+     * so the {@link PolicyManagementCertificateOptions} object requires both the new certificate to be added and
+     * a {@link AttestationSigningKey} to sign the add request.
+     *</p>
+     * <p><strong>Add a new certificate to the set of policy management certificates for this instance.</strong></p>
+     * <!-- src_embed com.azure.security.attestation.AttestationAdministrationClient.removePolicyManagementCertificateWithResponse -->
+     * <pre>
+     * Response&lt;PolicyCertificatesModificationResult&gt; removeResponse = client.addPolicyManagementCertificateWithResponse&#40;
+     *     new PolicyManagementCertificateOptions&#40;certificateToAdd, new AttestationSigningKey&#40;certificate, privateKey&#41;&#41;,
+     *     Context.NONE&#41;;
+     * System.out.printf&#40;&quot; Result: %s&#92;n&quot;, removeResponse.getValue&#40;&#41;.getCertificateResolution&#40;&#41;.toString&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationAdministrationClient.removePolicyManagementCertificateWithResponse -->
+     *
+     * <p><strong><i>Note:</i></strong> It is not considered an error to removethe same certificate twice. If
+     * the same certificate is removed twice, the service ignores the second remove request. This also means that
+     * it is not an error to remove a certificate which was not actually in the set of policy certificates.</p>
      *
      * @param options Options for this API call, encapsulating both the X.509 certificate to remove from the set of policy
      *               signing certificates and the signing key used to sign the request to the service.
@@ -408,6 +582,4 @@ public final class AttestationAdministrationClient {
     public Response<PolicyCertificatesModificationResult> removePolicyManagementCertificateWithResponse(PolicyManagementCertificateOptions options, Context context) {
         return asyncClient.removePolicyManagementCertificateWithResponse(options, context).block();
     }
-
-
 };

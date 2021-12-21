@@ -274,7 +274,7 @@ function SourcePackageHasComFolder($artifactNamePrefix, $packageDirectory) {
     $mvnResults = mvn `
       dependency:copy `
       -Dartifact="$packageArtifact" `
-      -DoutputDirectory="$packageDirectory"
+      -DoutputDirectory="$packageDirectory" | Out-Null
 
     if ($LASTEXITCODE) {
       LogWarning "Could not download source artifact: $packageArtifact"
@@ -309,7 +309,7 @@ function PackageDependenciesResolve($artifactNamePrefix, $packageDirectory) {
   $artifactDownloadOutput = mvn `
     dependency:copy `
     -Dartifact="$pomArtifactName" `
-    -DoutputDirectory="$packageDirectory"
+    -DoutputDirectory="$packageDirectory" | Out-Null
 
   if ($LASTEXITCODE) {
     LogWarning "Could not download pom artifact: $pomArtifactName"
@@ -325,7 +325,7 @@ function PackageDependenciesResolve($artifactNamePrefix, $packageDirectory) {
     -f $downloadedPomPath `
     dependency:copy-dependencies `
     -P '!azure-mgmt-sdk-test-jar' `
-    -DoutputDirectory="$packageDirectory"
+    -DoutputDirectory="$packageDirectory" | Out-Null
 
   if ($LASTEXITCODE) {
     LogWarning "Could not resolve dependencies for: $pomArtifactName"
@@ -336,7 +336,12 @@ function PackageDependenciesResolve($artifactNamePrefix, $packageDirectory) {
   return $true
 }
 
-function ValidatePackage($groupId, $artifactId, $version, $workingDirectory) {
+function ValidatePackage($groupId, $artifactId, $version) {
+  $workingDirectory = Join-Path ([System.IO.Path]::GetTempPath()) "validation"
+  if (!(Test-Path $workingDirectory)) {
+    New-Item -ItemType Directory -Force -Path $workingDirectory | Out-Null
+  }
+
   $artifactNamePrefix = "${groupId}:${artifactId}:${version}"
 
   $packageDirectory = Join-Path `
@@ -348,7 +353,7 @@ function ValidatePackage($groupId, $artifactId, $version, $workingDirectory) {
     -and (PackageDependenciesResolve $artifactNamePrefix $packageDirectory)
 }
 
-function Update-java-DocsMsPackages($DocsRepoLocation, $DocsMetadata) {
+function Update-java-DocsMsPackages($DocsRepoLocation, $DocsMetadata, $DocValidationImageId) {
   Write-Host "Excluded packages:"
   foreach ($excludedPackage in $PackageExclusions.Keys) {
     Write-Host "  $excludedPackage - $($PackageExclusions[$excludedPackage])"
@@ -371,9 +376,6 @@ function Update-java-DocsMsPackages($DocsRepoLocation, $DocsMetadata) {
 
 function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
   $packageConfig = Get-Content $DocConfigFile -Raw | ConvertFrom-Json
-
-  $workingDirectory = Join-Path ([System.IO.Path]::GetTempPath()) ([System.IO.Path]::GetRandomFileName())
-  New-Item -ItemType Directory -Force -Path $workingDirectory | Out-Null
 
   $packageOutputPath = 'docs-ref-autogen'
   if ($Mode -eq 'preview') {
@@ -439,7 +441,7 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
     # If upgrading the package, run basic sanity checks against the package
     if ($package.packageVersion -ne $packageVersion) {
       Write-Host "Validating new version detected for $packageName ($packageVersion)"
-      $validatePackageResult = ValidatePackage $package.packageGroupId $package.packageArtifactId $packageVersion $workingDirectory
+      $validatePackageResult = ValidatePackage $package.packageGroupId $package.packageArtifactId $packageVersion 
 
       if (!$validatePackageResult) {
         LogWarning "Package is not valid: $packageName. Keeping old version."
@@ -480,7 +482,7 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
     }
 
     Write-Host "Validating new package $($packageGroupId):$($packageName):$($packageVersion)"
-    $validatePackageResult = ValidatePackage $packageGroupId $packageName $packageVersion $workingDirectory
+    $validatePackageResult = ValidatePackage $packageGroupId $packageName $packageVersion 
     if (!$validatePackageResult) {
       LogWarning "Package is not valid: ${packageGroupId}:$packageName. Cannot onboard."
       continue
@@ -610,4 +612,13 @@ function Get-java-DocsMsMetadataForPackage($PackageInfo) {
     PreviewReadMeLocation = 'docs-ref-services/preview'
     Suffix = ''
   }
+}
+
+function Validate-java-DocMsPackages ($PackageInfo, $DocValidationImageId) 
+{
+  if (!(ValidatePackage $PackageInfo.Group $PackageInfo.Name $PackageInfo.Version)) 
+  {
+    exit 1
+  }
+  return
 }

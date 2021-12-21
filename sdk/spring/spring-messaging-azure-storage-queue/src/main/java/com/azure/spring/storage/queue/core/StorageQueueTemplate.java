@@ -43,6 +43,10 @@ public class StorageQueueTemplate implements StorageQueueOperation {
 
     private CheckpointMode checkpointMode = CheckpointMode.RECORD;
 
+    /**
+     * Create an instance using the supplied StorageQueueClientFactory.
+     * @param storageQueueClientFactory the StorageQueueClientFactory.
+     */
     public StorageQueueTemplate(@NonNull StorageQueueClientFactory storageQueueClientFactory) {
         this.storageQueueClientFactory = storageQueueClientFactory;
         LOG.info("StorageQueueTemplate started with properties {}", buildProperties());
@@ -120,6 +124,12 @@ public class StorageQueueTemplate implements StorageQueueOperation {
         return checkpointMode == CheckpointMode.MANUAL || checkpointMode == CheckpointMode.RECORD;
     }
 
+    /**
+     * The checkpoint handler.
+     * @param message the message to checkpoint.
+     * @param queueName the queue
+     * @param t the exception while checkpoint
+     */
     public void checkpointHandler(QueueMessageItem message, String queueName, Throwable t) {
         if (t != null) {
             if (LOG.isWarnEnabled()) {
@@ -139,14 +149,26 @@ public class StorageQueueTemplate implements StorageQueueOperation {
             checkpointMode);
     }
 
+    /**
+     * Get the {@code StorageQueueMessageConverter}.
+     * @return the StorageQueueMessageConverter.
+     */
     public StorageQueueMessageConverter getMessageConverter() {
         return messageConverter;
     }
 
+    /**
+     * Set the {@code StorageQueueMessageConverter}.
+     * @param messageConverter the StorageQueueMessageConverter.
+     */
     public void setMessageConverter(StorageQueueMessageConverter messageConverter) {
         this.messageConverter = messageConverter;
     }
 
+    /**
+     * Get the {@code visibilityTimeoutInSeconds}.
+     * @return the visibilityTimeoutInSeconds.
+     */
     public int getVisibilityTimeoutInSeconds() {
         return visibilityTimeoutInSeconds;
     }
@@ -158,6 +180,10 @@ public class StorageQueueTemplate implements StorageQueueOperation {
         LOG.info("StorageQueueTemplate VisibilityTimeoutInSeconds becomes: {}", this.visibilityTimeoutInSeconds);
     }
 
+    /**
+     * Get the {@code messagePayloadType}.
+     * @return the messagePayloadType.
+     */
     public Class<?> getMessagePayloadType() {
         return messagePayloadType;
     }
@@ -168,6 +194,10 @@ public class StorageQueueTemplate implements StorageQueueOperation {
         LOG.info("StorageQueueTemplate messagePayloadType becomes: {}", this.messagePayloadType);
     }
 
+    /**
+     * Get the {@code checkpointMode}.
+     * @return the {@code checkpointMode}.
+     */
     public CheckpointMode getCheckpointMode() {
         return checkpointMode;
     }

@@ -55,6 +55,8 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
 
         clientId(PROPERTY_AZURE_CLIENT_ID, "credential.client-id"),
 
+        managedIdentityClientId(PROPERTY_AZURE_CLIENT_ID, "credential.managed-identity-client-id"),
+
         clientSecret(PROPERTY_AZURE_CLIENT_SECRET, "credential.client-secret"),
 
         clientCertificatePath(PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH, "credential.client-certificate-path"),

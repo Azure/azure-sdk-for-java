@@ -13,18 +13,28 @@ public class ConsumerProperties extends CommonProperties implements EventHubsCon
     protected String consumerGroup;
     protected Integer prefetchCount;
 
+    @Override
     public String getConsumerGroup() {
         return consumerGroup;
     }
 
+    /**
+     * Set the custom endpoint address.
+     * @param consumerGroup the custom endpoint address.
+     */
     public void setConsumerGroup(String consumerGroup) {
         this.consumerGroup = consumerGroup;
     }
 
+    @Override
     public Integer getPrefetchCount() {
         return prefetchCount;
     }
 
+    /**
+     * Set the prefetch count.
+     * @param prefetchCount the prefetch count.
+     */
     public void setPrefetchCount(Integer prefetchCount) {
         this.prefetchCount = prefetchCount;
     }

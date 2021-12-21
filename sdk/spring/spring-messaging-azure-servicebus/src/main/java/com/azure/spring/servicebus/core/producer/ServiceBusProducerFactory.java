@@ -5,37 +5,42 @@ package com.azure.spring.servicebus.core.producer;
 
 
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
-import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 
 /**
- * Factory to return functional creator of service bus sender
- *
- * @author Warren Zhu
+ * The strategy to produce {@link ServiceBusSenderAsyncClient} instance.
  */
 public interface ServiceBusProducerFactory {
 
     /**
-     * Return a function which accepts service bus topic or queue name, then returns {@link ServiceBusSenderClient}
-     *
-     * @param name entity name
-     * @return message sender implement instance
+     * Create {@link ServiceBusSenderAsyncClient} to send events to the Service Bus queue/topic entity.
+     * @param name the destination entity name
+     * @return the producer.
      */
     ServiceBusSenderAsyncClient createProducer(String name);
 
     /**
-     * Return a function which accepts service bus topic or queue name, then returns {@link ServiceBusSenderClient}
-     *
-     * @param name entity name of the sender destination
-     * @param entityType entity type of the sender destination
-     * @return message sender implement instance
+     * Create {@link ServiceBusSenderAsyncClient} to send events to the Service Bus queue/topic entity with
+     * explicit {@link ServiceBusEntityType}.
+     * @param name the destination entity name.
+     * @param entityType the Service Bus entity type.
+     * @return the producer.
      */
     ServiceBusSenderAsyncClient createProducer(String name, ServiceBusEntityType entityType);
 
+    /**
+     * Add a listener for this factory.
+     * @param listener the listener
+     */
     default void addListener(Listener listener) {
 
     }
 
+    /**
+     * Remove a listener
+     * @param listener the listener
+     * @return true if removed.
+     */
     default boolean removeListener(Listener listener) {
         return false;
     }

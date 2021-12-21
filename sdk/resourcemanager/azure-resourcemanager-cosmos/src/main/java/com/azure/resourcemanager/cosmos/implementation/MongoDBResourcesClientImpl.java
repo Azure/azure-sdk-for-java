@@ -1163,7 +1163,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             deleteMongoDBDatabaseWithResponseAsync(resourceGroupName, accountName, databaseName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -3257,7 +3258,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             deleteMongoDBCollectionWithResponseAsync(resourceGroupName, accountName, databaseName, collectionName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

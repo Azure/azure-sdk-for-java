@@ -60,7 +60,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  * factory or for fine-grained control over endpoints registration. See the
  * {@link EnableAzureMessaging} javadocs for complete usage details.
  *
- * @author Warren Zhu
  * @see AzureMessageListener
  * @see EnableAzureMessaging
  * @see AzureListenerConfigurer
@@ -91,6 +90,10 @@ public class AzureListenerAnnotationBeanPostProcessor
     @Nullable
     private StringValueResolver embeddedValueResolver;
 
+    /**
+     * Set the container factory bean name.
+     * @param containerFactoryBeanName the container factory bean name.
+     */
     public void setContainerFactoryBeanName(String containerFactoryBeanName) {
         this.containerFactoryBeanName = containerFactoryBeanName;
     }

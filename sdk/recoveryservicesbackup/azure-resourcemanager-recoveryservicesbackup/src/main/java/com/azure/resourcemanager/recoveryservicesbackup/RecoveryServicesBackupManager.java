@@ -8,8 +8,8 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -17,35 +17,28 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.RecoveryServicesBackupClient;
-import com.azure.resourcemanager.recoveryservicesbackup.implementation.AadPropertiesOperationsImpl;
-import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupCrrJobDetailsImpl;
-import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupCrrJobsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupEnginesImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupJobsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupOperationResultsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupOperationStatusesImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupPoliciesImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupProtectableItemsImpl;
-import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupProtectedItemsCrrsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupProtectedItemsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupProtectionContainersImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupProtectionIntentsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupResourceEncryptionConfigsImpl;
-import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupResourceStorageConfigsImpl;
+import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupResourceStorageConfigsNonCrrsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupResourceVaultConfigsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupStatusImpl;
-import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupUsageSummariesCrrsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupUsageSummariesImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupWorkloadItemsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BmsPrepareDataMoveOperationResultsImpl;
-import com.azure.resourcemanager.recoveryservicesbackup.implementation.CrossRegionRestoresImpl;
-import com.azure.resourcemanager.recoveryservicesbackup.implementation.CrrOperationResultsImpl;
-import com.azure.resourcemanager.recoveryservicesbackup.implementation.CrrOperationStatusImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.ExportJobsOperationResultsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.FeatureSupportsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.ItemLevelRecoveryConnectionsImpl;
@@ -53,8 +46,8 @@ import com.azure.resourcemanager.recoveryservicesbackup.implementation.JobCancel
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.JobDetailsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.JobOperationResultsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.JobsImpl;
+import com.azure.resourcemanager.recoveryservicesbackup.implementation.OperationOperationsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.OperationsImpl;
-import com.azure.resourcemanager.recoveryservicesbackup.implementation.OperationsOperationsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.PrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.PrivateEndpointsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.ProtectableContainersImpl;
@@ -68,16 +61,14 @@ import com.azure.resourcemanager.recoveryservicesbackup.implementation.Protectio
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.ProtectionPoliciesImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.ProtectionPolicyOperationResultsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.ProtectionPolicyOperationStatusesImpl;
-import com.azure.resourcemanager.recoveryservicesbackup.implementation.RecoveryPointsCrrsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.RecoveryPointsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.RecoveryPointsRecommendedForMovesImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.RecoveryServicesBackupClientBuilder;
+import com.azure.resourcemanager.recoveryservicesbackup.implementation.ResourceGuardProxiesImpl;
+import com.azure.resourcemanager.recoveryservicesbackup.implementation.ResourceGuardProxyOperationsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.ResourceProvidersImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.RestoresImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.SecurityPINsImpl;
-import com.azure.resourcemanager.recoveryservicesbackup.models.AadPropertiesOperations;
-import com.azure.resourcemanager.recoveryservicesbackup.models.BackupCrrJobDetails;
-import com.azure.resourcemanager.recoveryservicesbackup.models.BackupCrrJobs;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupEngines;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupJobs;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupOperationResults;
@@ -85,21 +76,16 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.BackupOperationSt
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupPolicies;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupProtectableItems;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupProtectedItems;
-import com.azure.resourcemanager.recoveryservicesbackup.models.BackupProtectedItemsCrrs;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupProtectionContainers;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupProtectionIntents;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceEncryptionConfigs;
-import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceStorageConfigs;
+import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceStorageConfigsNonCrrs;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceVaultConfigs;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupStatus;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupUsageSummaries;
-import com.azure.resourcemanager.recoveryservicesbackup.models.BackupUsageSummariesCrrs;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupWorkloadItems;
 import com.azure.resourcemanager.recoveryservicesbackup.models.Backups;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BmsPrepareDataMoveOperationResults;
-import com.azure.resourcemanager.recoveryservicesbackup.models.CrossRegionRestores;
-import com.azure.resourcemanager.recoveryservicesbackup.models.CrrOperationResults;
-import com.azure.resourcemanager.recoveryservicesbackup.models.CrrOperationStatus;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ExportJobsOperationResults;
 import com.azure.resourcemanager.recoveryservicesbackup.models.FeatureSupports;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ItemLevelRecoveryConnections;
@@ -107,8 +93,8 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.JobCancellations;
 import com.azure.resourcemanager.recoveryservicesbackup.models.JobDetails;
 import com.azure.resourcemanager.recoveryservicesbackup.models.JobOperationResults;
 import com.azure.resourcemanager.recoveryservicesbackup.models.Jobs;
+import com.azure.resourcemanager.recoveryservicesbackup.models.OperationOperations;
 import com.azure.resourcemanager.recoveryservicesbackup.models.Operations;
-import com.azure.resourcemanager.recoveryservicesbackup.models.OperationsOperations;
 import com.azure.resourcemanager.recoveryservicesbackup.models.PrivateEndpointConnections;
 import com.azure.resourcemanager.recoveryservicesbackup.models.PrivateEndpoints;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectableContainers;
@@ -123,8 +109,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionPolicie
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionPolicyOperationResults;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionPolicyOperationStatuses;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPoints;
-import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointsCrrs;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointsRecommendedForMoves;
+import com.azure.resourcemanager.recoveryservicesbackup.models.ResourceGuardProxies;
+import com.azure.resourcemanager.recoveryservicesbackup.models.ResourceGuardProxyOperations;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ResourceProviders;
 import com.azure.resourcemanager.recoveryservicesbackup.models.Restores;
 import com.azure.resourcemanager.recoveryservicesbackup.models.SecurityPINs;
@@ -133,9 +120,24 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /** Entry point to RecoveryServicesBackupManager. Open API 2.0 Specs for Azure RecoveryServices Backup service. */
 public final class RecoveryServicesBackupManager {
+    private BackupResourceStorageConfigsNonCrrs backupResourceStorageConfigsNonCrrs;
+
+    private ProtectionIntents protectionIntents;
+
+    private BackupStatus backupStatus;
+
+    private FeatureSupports featureSupports;
+
+    private BackupProtectionIntents backupProtectionIntents;
+
+    private BackupUsageSummaries backupUsageSummaries;
+
+    private Operations operations;
+
     private BackupResourceVaultConfigs backupResourceVaultConfigs;
 
     private BackupResourceEncryptionConfigs backupResourceEncryptionConfigs;
@@ -176,7 +178,7 @@ public final class RecoveryServicesBackupManager {
 
     private BackupProtectedItems backupProtectedItems;
 
-    private Operations operations;
+    private OperationOperations operationOperations;
 
     private BackupEngines backupEngines;
 
@@ -210,37 +212,9 @@ public final class RecoveryServicesBackupManager {
 
     private RecoveryPointsRecommendedForMoves recoveryPointsRecommendedForMoves;
 
-    private BackupUsageSummariesCrrs backupUsageSummariesCrrs;
+    private ResourceGuardProxies resourceGuardProxies;
 
-    private AadPropertiesOperations aadPropertiesOperations;
-
-    private CrossRegionRestores crossRegionRestores;
-
-    private BackupCrrJobDetails backupCrrJobDetails;
-
-    private BackupCrrJobs backupCrrJobs;
-
-    private CrrOperationResults crrOperationResults;
-
-    private CrrOperationStatus crrOperationStatus;
-
-    private BackupResourceStorageConfigs backupResourceStorageConfigs;
-
-    private RecoveryPointsCrrs recoveryPointsCrrs;
-
-    private BackupProtectedItemsCrrs backupProtectedItemsCrrs;
-
-    private ProtectionIntents protectionIntents;
-
-    private BackupStatus backupStatus;
-
-    private FeatureSupports featureSupports;
-
-    private BackupProtectionIntents backupProtectionIntents;
-
-    private BackupUsageSummaries backupUsageSummaries;
-
-    private OperationsOperations operationsOperations;
+    private ResourceGuardProxyOperations resourceGuardProxyOperations;
 
     private final RecoveryServicesBackupClient clientObject;
 
@@ -287,6 +261,7 @@ public final class RecoveryServicesBackupManager {
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
+        private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
         private Duration defaultPollInterval;
 
@@ -323,6 +298,17 @@ public final class RecoveryServicesBackupManager {
          */
         public Configurable withPolicy(HttpPipelinePolicy policy) {
             this.policies.add(Objects.requireNonNull(policy, "'policy' cannot be null."));
+            return this;
+        }
+
+        /**
+         * Adds the scope to permission sets.
+         *
+         * @param scope the scope.
+         * @return the configurable object itself.
+         */
+        public Configurable withScope(String scope) {
+            this.scopes.add(Objects.requireNonNull(scope, "'scope' cannot be null."));
             return this;
         }
 
@@ -368,7 +354,7 @@ public final class RecoveryServicesBackupManager {
                 .append("-")
                 .append("com.azure.resourcemanager.recoveryservicesbackup")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -382,20 +368,33 @@ public final class RecoveryServicesBackupManager {
                 userAgentBuilder.append(" (auto-generated)");
             }
 
+            if (scopes.isEmpty()) {
+                scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
+            }
             if (retryPolicy == null) {
                 retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
             }
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new RequestIdPolicy());
+            policies
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
+            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies
-                .add(
-                    new BearerTokenAuthenticationPolicy(
-                        credential, profile.getEnvironment().getManagementEndpoint() + "/.default"));
-            policies.addAll(this.policies);
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline =
@@ -405,6 +404,65 @@ public final class RecoveryServicesBackupManager {
                     .build();
             return new RecoveryServicesBackupManager(httpPipeline, profile, defaultPollInterval);
         }
+    }
+
+    /** @return Resource collection API of BackupResourceStorageConfigsNonCrrs. */
+    public BackupResourceStorageConfigsNonCrrs backupResourceStorageConfigsNonCrrs() {
+        if (this.backupResourceStorageConfigsNonCrrs == null) {
+            this.backupResourceStorageConfigsNonCrrs =
+                new BackupResourceStorageConfigsNonCrrsImpl(
+                    clientObject.getBackupResourceStorageConfigsNonCrrs(), this);
+        }
+        return backupResourceStorageConfigsNonCrrs;
+    }
+
+    /** @return Resource collection API of ProtectionIntents. */
+    public ProtectionIntents protectionIntents() {
+        if (this.protectionIntents == null) {
+            this.protectionIntents = new ProtectionIntentsImpl(clientObject.getProtectionIntents(), this);
+        }
+        return protectionIntents;
+    }
+
+    /** @return Resource collection API of BackupStatus. */
+    public BackupStatus backupStatus() {
+        if (this.backupStatus == null) {
+            this.backupStatus = new BackupStatusImpl(clientObject.getBackupStatus(), this);
+        }
+        return backupStatus;
+    }
+
+    /** @return Resource collection API of FeatureSupports. */
+    public FeatureSupports featureSupports() {
+        if (this.featureSupports == null) {
+            this.featureSupports = new FeatureSupportsImpl(clientObject.getFeatureSupports(), this);
+        }
+        return featureSupports;
+    }
+
+    /** @return Resource collection API of BackupProtectionIntents. */
+    public BackupProtectionIntents backupProtectionIntents() {
+        if (this.backupProtectionIntents == null) {
+            this.backupProtectionIntents =
+                new BackupProtectionIntentsImpl(clientObject.getBackupProtectionIntents(), this);
+        }
+        return backupProtectionIntents;
+    }
+
+    /** @return Resource collection API of BackupUsageSummaries. */
+    public BackupUsageSummaries backupUsageSummaries() {
+        if (this.backupUsageSummaries == null) {
+            this.backupUsageSummaries = new BackupUsageSummariesImpl(clientObject.getBackupUsageSummaries(), this);
+        }
+        return backupUsageSummaries;
+    }
+
+    /** @return Resource collection API of Operations. */
+    public Operations operations() {
+        if (this.operations == null) {
+            this.operations = new OperationsImpl(clientObject.getOperations(), this);
+        }
+        return operations;
     }
 
     /** @return Resource collection API of BackupResourceVaultConfigs. */
@@ -574,12 +632,12 @@ public final class RecoveryServicesBackupManager {
         return backupProtectedItems;
     }
 
-    /** @return Resource collection API of Operations. */
-    public Operations operations() {
-        if (this.operations == null) {
-            this.operations = new OperationsImpl(clientObject.getOperations(), this);
+    /** @return Resource collection API of OperationOperations. */
+    public OperationOperations operationOperations() {
+        if (this.operationOperations == null) {
+            this.operationOperations = new OperationOperationsImpl(clientObject.getOperationOperations(), this);
         }
-        return operations;
+        return operationOperations;
     }
 
     /** @return Resource collection API of BackupEngines. */
@@ -722,137 +780,21 @@ public final class RecoveryServicesBackupManager {
         return recoveryPointsRecommendedForMoves;
     }
 
-    /** @return Resource collection API of BackupUsageSummariesCrrs. */
-    public BackupUsageSummariesCrrs backupUsageSummariesCrrs() {
-        if (this.backupUsageSummariesCrrs == null) {
-            this.backupUsageSummariesCrrs =
-                new BackupUsageSummariesCrrsImpl(clientObject.getBackupUsageSummariesCrrs(), this);
+    /** @return Resource collection API of ResourceGuardProxies. */
+    public ResourceGuardProxies resourceGuardProxies() {
+        if (this.resourceGuardProxies == null) {
+            this.resourceGuardProxies = new ResourceGuardProxiesImpl(clientObject.getResourceGuardProxies(), this);
         }
-        return backupUsageSummariesCrrs;
+        return resourceGuardProxies;
     }
 
-    /** @return Resource collection API of AadPropertiesOperations. */
-    public AadPropertiesOperations aadPropertiesOperations() {
-        if (this.aadPropertiesOperations == null) {
-            this.aadPropertiesOperations =
-                new AadPropertiesOperationsImpl(clientObject.getAadPropertiesOperations(), this);
+    /** @return Resource collection API of ResourceGuardProxyOperations. */
+    public ResourceGuardProxyOperations resourceGuardProxyOperations() {
+        if (this.resourceGuardProxyOperations == null) {
+            this.resourceGuardProxyOperations =
+                new ResourceGuardProxyOperationsImpl(clientObject.getResourceGuardProxyOperations(), this);
         }
-        return aadPropertiesOperations;
-    }
-
-    /** @return Resource collection API of CrossRegionRestores. */
-    public CrossRegionRestores crossRegionRestores() {
-        if (this.crossRegionRestores == null) {
-            this.crossRegionRestores = new CrossRegionRestoresImpl(clientObject.getCrossRegionRestores(), this);
-        }
-        return crossRegionRestores;
-    }
-
-    /** @return Resource collection API of BackupCrrJobDetails. */
-    public BackupCrrJobDetails backupCrrJobDetails() {
-        if (this.backupCrrJobDetails == null) {
-            this.backupCrrJobDetails = new BackupCrrJobDetailsImpl(clientObject.getBackupCrrJobDetails(), this);
-        }
-        return backupCrrJobDetails;
-    }
-
-    /** @return Resource collection API of BackupCrrJobs. */
-    public BackupCrrJobs backupCrrJobs() {
-        if (this.backupCrrJobs == null) {
-            this.backupCrrJobs = new BackupCrrJobsImpl(clientObject.getBackupCrrJobs(), this);
-        }
-        return backupCrrJobs;
-    }
-
-    /** @return Resource collection API of CrrOperationResults. */
-    public CrrOperationResults crrOperationResults() {
-        if (this.crrOperationResults == null) {
-            this.crrOperationResults = new CrrOperationResultsImpl(clientObject.getCrrOperationResults(), this);
-        }
-        return crrOperationResults;
-    }
-
-    /** @return Resource collection API of CrrOperationStatus. */
-    public CrrOperationStatus crrOperationStatus() {
-        if (this.crrOperationStatus == null) {
-            this.crrOperationStatus = new CrrOperationStatusImpl(clientObject.getCrrOperationStatus(), this);
-        }
-        return crrOperationStatus;
-    }
-
-    /** @return Resource collection API of BackupResourceStorageConfigs. */
-    public BackupResourceStorageConfigs backupResourceStorageConfigs() {
-        if (this.backupResourceStorageConfigs == null) {
-            this.backupResourceStorageConfigs =
-                new BackupResourceStorageConfigsImpl(clientObject.getBackupResourceStorageConfigs(), this);
-        }
-        return backupResourceStorageConfigs;
-    }
-
-    /** @return Resource collection API of RecoveryPointsCrrs. */
-    public RecoveryPointsCrrs recoveryPointsCrrs() {
-        if (this.recoveryPointsCrrs == null) {
-            this.recoveryPointsCrrs = new RecoveryPointsCrrsImpl(clientObject.getRecoveryPointsCrrs(), this);
-        }
-        return recoveryPointsCrrs;
-    }
-
-    /** @return Resource collection API of BackupProtectedItemsCrrs. */
-    public BackupProtectedItemsCrrs backupProtectedItemsCrrs() {
-        if (this.backupProtectedItemsCrrs == null) {
-            this.backupProtectedItemsCrrs =
-                new BackupProtectedItemsCrrsImpl(clientObject.getBackupProtectedItemsCrrs(), this);
-        }
-        return backupProtectedItemsCrrs;
-    }
-
-    /** @return Resource collection API of ProtectionIntents. */
-    public ProtectionIntents protectionIntents() {
-        if (this.protectionIntents == null) {
-            this.protectionIntents = new ProtectionIntentsImpl(clientObject.getProtectionIntents(), this);
-        }
-        return protectionIntents;
-    }
-
-    /** @return Resource collection API of BackupStatus. */
-    public BackupStatus backupStatus() {
-        if (this.backupStatus == null) {
-            this.backupStatus = new BackupStatusImpl(clientObject.getBackupStatus(), this);
-        }
-        return backupStatus;
-    }
-
-    /** @return Resource collection API of FeatureSupports. */
-    public FeatureSupports featureSupports() {
-        if (this.featureSupports == null) {
-            this.featureSupports = new FeatureSupportsImpl(clientObject.getFeatureSupports(), this);
-        }
-        return featureSupports;
-    }
-
-    /** @return Resource collection API of BackupProtectionIntents. */
-    public BackupProtectionIntents backupProtectionIntents() {
-        if (this.backupProtectionIntents == null) {
-            this.backupProtectionIntents =
-                new BackupProtectionIntentsImpl(clientObject.getBackupProtectionIntents(), this);
-        }
-        return backupProtectionIntents;
-    }
-
-    /** @return Resource collection API of BackupUsageSummaries. */
-    public BackupUsageSummaries backupUsageSummaries() {
-        if (this.backupUsageSummaries == null) {
-            this.backupUsageSummaries = new BackupUsageSummariesImpl(clientObject.getBackupUsageSummaries(), this);
-        }
-        return backupUsageSummaries;
-    }
-
-    /** @return Resource collection API of OperationsOperations. */
-    public OperationsOperations operationsOperations() {
-        if (this.operationsOperations == null) {
-            this.operationsOperations = new OperationsOperationsImpl(clientObject.getOperationsOperations(), this);
-        }
-        return operationsOperations;
+        return resourceGuardProxyOperations;
     }
 
     /**

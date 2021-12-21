@@ -706,7 +706,11 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
         return this
             .client
             .<AfdOriginInner, AfdOriginInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AfdOriginInner.class, AfdOriginInner.class, this.client.getContext());
+                mono,
+                this.client.getHttpPipeline(),
+                AfdOriginInner.class,
+                AfdOriginInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1058,7 +1062,11 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
         return this
             .client
             .<AfdOriginInner, AfdOriginInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AfdOriginInner.class, AfdOriginInner.class, this.client.getContext());
+                mono,
+                this.client.getHttpPipeline(),
+                AfdOriginInner.class,
+                AfdOriginInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1381,7 +1389,8 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
             deleteWithResponseAsync(resourceGroupName, profileName, originGroupName, originName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

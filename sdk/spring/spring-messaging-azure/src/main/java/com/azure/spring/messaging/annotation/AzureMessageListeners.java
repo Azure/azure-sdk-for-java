@@ -20,7 +20,6 @@ import java.lang.annotation.Documented;
  * <p>This annotation may be used as a <em>meta-annotation</em> to create custom
  * <em>composed annotations</em>.
  *
- * @author Warren Zhu
  * @see AzureMessageListener
  */
 @Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})

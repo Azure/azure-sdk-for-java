@@ -11,7 +11,6 @@ import com.azure.spring.messaging.core.SubscribeByGroupOperation;
  * Base {@link ListenerContainerFactory} for Spring's base container implementation.
  *
  * @param <C> the container type
- * @author Warren Zhu
  * @see AbstractAzureListenerEndpoint
  */
 abstract class AbstractAzureListenerContainerFactory<C extends AbstractListenerContainer>

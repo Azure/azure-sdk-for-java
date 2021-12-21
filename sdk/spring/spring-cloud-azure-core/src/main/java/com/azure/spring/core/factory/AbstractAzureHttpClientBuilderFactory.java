@@ -10,6 +10,7 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Header;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.spring.core.aware.ClientAware;
@@ -42,6 +43,9 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
     private HttpClientProvider httpClientProvider = new DefaultHttpProvider();
     private final List<HttpPipelinePolicy> httpPipelinePolicies = new ArrayList<>();
     private HttpPipeline httpPipeline;
+
+    protected abstract BiConsumer<T, ClientOptions> consumeClientOptions();
+
     protected abstract BiConsumer<T, HttpClient> consumeHttpClient();
 
     protected abstract BiConsumer<T, HttpPipelinePolicy> consumeHttpPipelinePolicy();
@@ -60,6 +64,7 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
     }
 
     protected void configureHttpClient(T builder) {
+        consumeClientOptions().accept(builder, httpClientOptions);
         if (this.httpPipeline != null) {
             consumeHttpPipeline().accept(builder, this.httpPipeline);
         } else {

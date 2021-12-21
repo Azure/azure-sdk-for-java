@@ -13,13 +13,18 @@ import org.springframework.lang.NonNull;
 import java.util.function.Function;
 
 /**
- * Default client factory for Storage Queue.
+ * The {@link StorageQueueClientFactory} implementation to produce new {@link QueueAsyncClient} instances
+ * for provided {@link QueueServiceAsyncClient} on each {@link #createQueueClient} invocation.
  */
-public class DefaultStorageQueueClientFactory implements StorageQueueClientFactory {
+public final class DefaultStorageQueueClientFactory implements StorageQueueClientFactory {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultStorageQueueClientFactory.class);
     private final Function<String, QueueAsyncClient> queueClientCreator = Memoizer.memoize(this::createQueueClient);
     private final QueueServiceAsyncClient queueServiceAsyncClient;
 
+    /**
+     * Construct a factory with the provided {@link QueueServiceAsyncClient}.
+     * @param queueServiceAsyncClient the queueServiceAsyncClient
+     */
     public DefaultStorageQueueClientFactory(@NonNull QueueServiceAsyncClient queueServiceAsyncClient) {
         this.queueServiceAsyncClient = queueServiceAsyncClient;
     }

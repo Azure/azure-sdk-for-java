@@ -75,6 +75,7 @@ public class RxDocumentServiceRequest implements Cloneable {
     public volatile AuthorizationTokenType authorizationTokenType;
     public volatile Map<String, Object> properties;
     public String throughputControlGroupName;
+    public volatile boolean intendedCollectionRidPassedIntoSDK = false;
 
     public boolean isReadOnlyRequest() {
         return this.operationType == OperationType.Read

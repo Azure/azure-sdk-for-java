@@ -20,11 +20,16 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * The {@link ServiceBusProducerFactory} implementation to produce new {@link ServiceBusSenderAsyncClient} instances
+ * for provided {@link NamespaceProperties} and optional producer {@link PropertiesSupplier} on each
+ * {@link #createProducer} invocation.
+ * <p>
  * {@link ServiceBusSenderAsyncClient} produced by this factory will share the same namespace level configuration, but
  * if a configuration entry is provided at both producer and namespace level, the producer level configuration will
  * take advantage.
+ * </p>
  */
-public class DefaultServiceBusNamespaceProducerFactory implements ServiceBusProducerFactory, DisposableBean {
+public final class DefaultServiceBusNamespaceProducerFactory implements ServiceBusProducerFactory, DisposableBean {
 
     private final List<Listener> listeners = new ArrayList<>();
     private final NamespaceProperties namespaceProperties;
@@ -32,20 +37,31 @@ public class DefaultServiceBusNamespaceProducerFactory implements ServiceBusProd
     private final Map<String, ServiceBusSenderAsyncClient> clients = new ConcurrentHashMap<>();
     private final ProducerPropertiesParentMerger parentMerger = new ProducerPropertiesParentMerger();
 
+    /**
+     * Construct a factory with the provided namespace level configuration.
+     * @param namespaceProperties the namespace properties
+     */
     public DefaultServiceBusNamespaceProducerFactory(NamespaceProperties namespaceProperties) {
         this(namespaceProperties, key -> null);
     }
 
+    /**
+     * Construct a factory with the provided namespace level configuration and producer {@link PropertiesSupplier}.
+     * @param namespaceProperties the namespace properties.
+     * @param supplier the {@link PropertiesSupplier} to supply {@link ProducerProperties} for each queue/topic entity.
+     */
     public DefaultServiceBusNamespaceProducerFactory(NamespaceProperties namespaceProperties,
                                                      PropertiesSupplier<String, ProducerProperties> supplier) {
         this.namespaceProperties = namespaceProperties;
         this.propertiesSupplier = supplier == null ? key -> null : supplier;
     }
 
+    @Override
     public ServiceBusSenderAsyncClient createProducer(String name) {
         return createProducer(name, null);
     }
 
+    @Override
     public ServiceBusSenderAsyncClient createProducer(String name, ServiceBusEntityType entityType) {
         ProducerProperties producerProperties = this.propertiesSupplier.getProperties(name) != null
             ? this.propertiesSupplier.getProperties(name) : new ProducerProperties();

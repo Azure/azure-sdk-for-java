@@ -374,7 +374,19 @@ public interface ApplicationGatewayRequestRoutingRule
             WithAttach<ParentT> withRedirectConfiguration(String name);
         }
 
+        /**
+         * The stage of an application gateway request routing rule definition allowing to associate the rule with a
+         * URL path map.
+         *
+         * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
+         */
         interface WithUrlPathMap<ParentT> {
+            /**
+             * Associates the specified URL path map with this request routing rule.
+             *
+             * @param urlPathMapName the name of a URL path map on this application gateway
+             * @return the next stage of the definition
+             */
             WithAttach<ParentT> withUrlPathMap(String urlPathMapName);
         }
     }

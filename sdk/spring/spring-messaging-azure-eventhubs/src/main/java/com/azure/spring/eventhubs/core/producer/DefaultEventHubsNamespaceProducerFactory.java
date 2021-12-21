@@ -19,9 +19,17 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * The {@link EventHubsProducerFactory} implementation to produce cached {@link EventHubProducerAsyncClient} instances
+ * for provided {@link NamespaceProperties} and optional producer {@link PropertiesSupplier} on each
+ * {@link #createProducer} invocation.
+ * <p>
+ * The created {@link EventHubProducerAsyncClient}s are cached according to the event hub names.
+ * =</p>
+ * <p>
  * {@link EventHubProducerAsyncClient} produced by this factory will share the same namespace level configuration, but
  * if a configuration entry is provided at both producer and namespace level, the producer level configuration will
  * take advantage.
+ * </p>
  */
 public final class DefaultEventHubsNamespaceProducerFactory implements EventHubsProducerFactory, DisposableBean {
 
@@ -31,10 +39,19 @@ public final class DefaultEventHubsNamespaceProducerFactory implements EventHubs
     private final Map<String, EventHubProducerAsyncClient> clients = new ConcurrentHashMap<>();
     private final ProducerPropertiesParentMerger parentMerger = new ProducerPropertiesParentMerger();
 
+    /**
+     * Construct a factory with the provided namespace level configuration.
+     * @param namespaceProperties the namespace properties
+     */
     public DefaultEventHubsNamespaceProducerFactory(NamespaceProperties namespaceProperties) {
         this(namespaceProperties, key -> null);
     }
 
+    /**
+     * Construct a factory with the provided namespace level configuration and producer {@link PropertiesSupplier}.
+     * @param namespaceProperties the namespace properties.
+     * @param supplier the {@link PropertiesSupplier} to supply {@link ProducerProperties} for each event hub.
+     */
     public DefaultEventHubsNamespaceProducerFactory(NamespaceProperties namespaceProperties,
                                                     PropertiesSupplier<String, ProducerProperties> supplier) {
         this.namespaceProperties = namespaceProperties;

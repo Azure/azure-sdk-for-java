@@ -14,9 +14,6 @@ parameters:
   - name: ArtifactName
     type: string
     default: 'not-specified'
-  - name: TargetDocRepoOwner
-    type: string
-    default: ''
   - name: TargetDocRepoName
     type: string
     default: ''
@@ -47,6 +44,7 @@ stages:
                 - checkout: none
 
                 - download: current
+                  displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
                   artifact: ${{parameters.ArtifactName}}
 
                 - template: tools/java-esrp-signing/java-esrp-signing.yml@azure-sdk-build-tools
@@ -134,6 +132,10 @@ stages:
               runOnce:
                 deploy:
                   steps:
+                    - download: current
+                      displayName: 'Download Artifact: ${{parameters.ArtifactName}}-signed'
+                      artifact: ${{parameters.ArtifactName}}-signed
+                      patterns: ${{artifact.groupId}}/${{artifact.name}}/**
                     - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                     - template: /eng/common/pipelines/templates/steps/retain-run.yml
                     - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
@@ -157,6 +159,10 @@ stages:
                 runOnce:
                   deploy:
                     steps:
+                      - download: current
+                        displayName: Download Artifacts
+                        artifact: ${{parameters.ArtifactName}}-signed
+                        patterns: ${{artifact.groupId}}/${{artifact.name}}/**
                       - checkout: azure-sdk-build-tools
                         path: azure-sdk-build-tools
                       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
@@ -206,24 +212,28 @@ stages:
               pool:
                 name: azsdk-pool-mms-ubuntu-2004-general
                 vmImage: MMSUbuntu20.04
-
               strategy:
                 runOnce:
                   deploy:
                     steps:
+                      - download: current
+                        displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
+                        artifact: ${{parameters.ArtifactName}}
                       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                         parameters:
                           SkipDefaultCheckout: true
                           Paths:
-                            - sdk/**/*.md
+                            - sdk
+                            - common/perf-test-core
                             - .github/CODEOWNERS
-                      - download: current
+                            - '!sdk/**/test-recordings'
+                            - '!sdk/**/session-records'
                       - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
                         parameters:
                           PackageInfoLocations:
                             - $(Pipeline.Workspace)/${{parameters.ArtifactName}}/PackageInfo/${{artifact.name}}.json
                           WorkingDirectory: $(System.DefaultWorkingDirectory)
-                          TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
+                          TargetDocRepoOwner: 'Azure'
                           TargetDocRepoName: ${{parameters.TargetDocRepoName}}
                           Language: 'java'
                           SparseCheckoutPaths:
@@ -246,6 +256,10 @@ stages:
                   deploy:
                     steps:
                       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+                      - download: current
+                        displayName: 'Download Artifact: ${{parameters.ArtifactName}}-signed'
+                        artifact: ${{parameters.ArtifactName}}-signed
+                        patterns: ${{artifact.groupId}}/${{artifact.name}}/**
                       - pwsh: |
                           Get-ChildItem -Recurse $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
                         workingDirectory: $(Pipeline.Workspace)
@@ -275,6 +289,8 @@ stages:
                 runOnce:
                   deploy:
                     steps:
+                      - download: none
+                      
                       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                         parameters:
                           Paths:
@@ -333,6 +349,7 @@ stages:
                 WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
 
         - download: current
+          displayName: 'Download Artifact: ${{parameters.ArtifactName}}-signed'
           artifact: ${{parameters.ArtifactName}}-signed
         - pwsh: |
             # For safety default to publishing to the private feed.
@@ -370,17 +387,26 @@ stages:
           name: azsdk-pool-mms-ubuntu-2004-general
           vmImage: MMSUbuntu20.04
         steps:
-          - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-            parameters:
-              SkipDefaultCheckout: true 
-              Paths:
-                - sdk/**/*.md
-                - .github/CODEOWNERS
           - download: current
+            displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
+            artifact: ${{parameters.ArtifactName}}
           - pwsh: |
               Get-ChildItem -Recurse $(Pipeline.Workspace)/${{parameters.ArtifactName}}/
             displayName: Show visible artifacts
-
+          # Docs daily updates is supposed to download packages from public feed repository, so we have to specify additional repositories in a POM or the profile.
+          # Here is maven documentation: https://maven.apache.org/guides/mini/guide-multiple-repositories.html
+          - powershell: |
+              # Linux mvn `setting.xml` is sitting under path `~/.m2/setting.xml`
+              Get-Command mvn
+              if (!(Test-Path '~/.m2/')) {
+                mkdir ~/.m2/
+              }
+              if (Test-Path '~/.m2/setting.xml') {
+                Write-Host "'setting.xml' exists. Overwriting the file to support multiple repositories."
+              }
+              Copy-Item "./eng/repo-docs/docms/daily.update.setting.xml" -Destination "~/.m2/settings.xml"
+            displayName: 'Configure mvn'
+            workingDirectory: $(Build.SourcesDirectory)
           - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
             parameters:
               PackageInfoLocations:
@@ -388,7 +414,7 @@ stages:
                   - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
                     - $(Pipeline.Workspace)/${{parameters.ArtifactName}}/PackageInfo/${{artifact.name}}.json
               WorkingDirectory: $(System.DefaultWorkingDirectory)
-              TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
+              TargetDocRepoOwner: "azure-sdk"
               TargetDocRepoName: ${{parameters.TargetDocRepoName}}
               Language: 'java'
               DailyDocsBuild: true

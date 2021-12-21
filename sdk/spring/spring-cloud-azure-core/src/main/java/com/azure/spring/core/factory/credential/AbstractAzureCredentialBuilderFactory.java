@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.identity.CredentialBuilderBase;
 import com.azure.spring.core.aware.RetryAware;
@@ -114,6 +115,10 @@ public abstract class AbstractAzureCredentialBuilderFactory<T extends Credential
         return Collections.emptyList();
     }
 
+    @Override
+    protected BiConsumer<T, ClientOptions> consumeClientOptions() {
+        return (a, b) -> { };
+    }
 
     @Override
     protected BiConsumer<T, TokenCredential> consumeDefaultTokenCredential() {

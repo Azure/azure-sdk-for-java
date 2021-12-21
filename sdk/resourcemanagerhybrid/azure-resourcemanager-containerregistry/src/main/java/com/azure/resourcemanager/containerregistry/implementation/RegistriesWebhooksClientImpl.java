@@ -47,7 +47,10 @@ public class RegistriesWebhooksClientImpl implements Registries.WebhooksClient {
 
     @Override
     public void delete(final String resourceGroupName, final String registryName, final String webhookName) {
-        this.containerRegistryManager.serviceClient().getWebhooks()
+        this
+            .containerRegistryManager
+            .serviceClient()
+            .getWebhooks()
             .delete(resourceGroupName, registryName, webhookName);
     }
 
@@ -71,8 +74,9 @@ public class RegistriesWebhooksClientImpl implements Registries.WebhooksClient {
 
         return PagedConverter
             .flatMapPage(
-                PagedConverter.mapPage(webhooksInner
-                    .listAsync(resourceGroupName, registryName),
+                PagedConverter
+                    .mapPage(
+                        webhooksInner.listAsync(resourceGroupName, registryName),
                         inner -> {
                             if (this.containerRegistry != null) {
                                 return new WebhookImpl(
