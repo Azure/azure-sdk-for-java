@@ -132,14 +132,38 @@ public class BlobAsyncClientBase {
     private final ClientLogger logger = new ClientLogger(BlobAsyncClientBase.class);
     private static final Duration TIMEOUT_VALUE = Duration.ofSeconds(60);
 
+    /**
+     * Backing REST client for the blob client.
+     */
     protected final AzureBlobStorageImpl azureBlobStorage;
+
     private final String snapshot;
     private final String versionId;
     private final CpkInfo customerProvidedKey;
+
+    /**
+     * Encryption scope of the blob.
+     */
     protected final EncryptionScope encryptionScope;
+
+    /**
+     * Storage account name that contains the blob.
+     */
     protected final String accountName;
+
+    /**
+     * Container name that contains the blob.
+     */
     protected final String containerName;
+
+    /**
+     * Name of the blob.
+     */
     protected final String blobName;
+
+    /**
+     * Storage REST API version used in requests to the Storage service.
+     */
     protected final BlobServiceVersion serviceVersion;
 
     /**

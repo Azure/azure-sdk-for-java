@@ -1,6 +1,16 @@
 # Release History
 
-## 2.10.0-beta.1 (Unreleased)
+## 2.11.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.10.0 (2021-11-22)
 
 ### Features Added
 

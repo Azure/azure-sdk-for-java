@@ -578,7 +578,7 @@ public final class AzurePath implements Path {
 
     /**
      * Unsupported.
-     * <p>
+     *
      * @param linkOptions options
      * @return the real path
      * @throws UnsupportedOperationException operation not suported.
@@ -590,7 +590,7 @@ public final class AzurePath implements Path {
 
     /**
      * Unsupported.
-     * <p>
+     *
      * @return the file
      * @throws UnsupportedOperationException operation not suported.
      */
@@ -601,7 +601,7 @@ public final class AzurePath implements Path {
 
     /**
      * Unsupported.
-     * <p>
+     *
      * @param watchService watchService
      * @param kinds kinds
      * @param modifiers modifiers
@@ -616,7 +616,7 @@ public final class AzurePath implements Path {
 
     /**
      * Unsupported.
-     * <p>
+     *
      * @param watchService watchService
      * @param kinds kinds
      * @return the watch key

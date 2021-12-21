@@ -7,6 +7,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -26,12 +27,14 @@ public final class AzureIaaSvmJobExtendedInfo {
      * Job properties.
      */
     @JsonProperty(value = "propertyBag")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> propertyBag;
 
     /*
      * Job internal properties.
      */
     @JsonProperty(value = "internalPropertyBag")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> internalPropertyBag;
 
     /*

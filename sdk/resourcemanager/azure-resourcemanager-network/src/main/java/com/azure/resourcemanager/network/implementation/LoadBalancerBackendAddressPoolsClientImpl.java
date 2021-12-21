@@ -662,7 +662,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
                 this.client.getHttpPipeline(),
                 BackendAddressPoolInner.class,
                 BackendAddressPoolInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -970,7 +970,8 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
             deleteWithResponseAsync(resourceGroupName, loadBalancerName, backendAddressPoolName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

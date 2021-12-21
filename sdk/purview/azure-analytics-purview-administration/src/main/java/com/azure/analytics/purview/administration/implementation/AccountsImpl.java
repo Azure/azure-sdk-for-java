@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.administration.implementation;
 
 import com.azure.core.annotation.BodyParam;
+import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -49,6 +50,7 @@ public final class AccountsImpl {
     @ServiceInterface(name = "PurviewAccountClient")
     private interface AccountsService {
         @Get("/")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> getAccountProperties(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
@@ -56,6 +58,7 @@ public final class AccountsImpl {
                 Context context);
 
         @Patch("/")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> updateAccountProperties(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
@@ -64,6 +67,7 @@ public final class AccountsImpl {
                 Context context);
 
         @Post("/listkeys")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> getAccessKeys(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
@@ -71,6 +75,7 @@ public final class AccountsImpl {
                 Context context);
 
         @Post("/regeneratekeys")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> regenerateAccessKey(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
@@ -162,8 +167,7 @@ public final class AccountsImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return an account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -261,8 +265,7 @@ public final class AccountsImpl {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return an account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -355,8 +358,7 @@ public final class AccountsImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return an account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -456,8 +458,7 @@ public final class AccountsImpl {
      *
      * @param accountUpdateParameters The account properties that can be updated through data plane.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return account resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -566,8 +567,7 @@ public final class AccountsImpl {
      * @param accountUpdateParameters The account properties that can be updated through data plane.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return account resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -673,8 +673,7 @@ public final class AccountsImpl {
      *
      * @param accountUpdateParameters The account properties that can be updated through data plane.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return account resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -704,8 +703,7 @@ public final class AccountsImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the Account access keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -741,8 +739,7 @@ public final class AccountsImpl {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the Account access keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -772,8 +769,7 @@ public final class AccountsImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the Account access keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -811,8 +807,7 @@ public final class AccountsImpl {
      *
      * @param keyOptions A access key options used for regeneration.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the Account access keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -859,8 +854,7 @@ public final class AccountsImpl {
      * @param keyOptions A access key options used for regeneration.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the Account access keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -904,8 +898,7 @@ public final class AccountsImpl {
      *
      * @param keyOptions A access key options used for regeneration.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the Account access keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

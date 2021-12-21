@@ -8,8 +8,6 @@
 - Added RouteType as optional parameter when getting a Relay Configuration so users can
   choose the routing type protocol of the requested Relay Configuration.
 
-### Other Changes
-
 ## 1.0.0-beta.1 (2021-09-09)
 
 The first preview of the Azure Communication Relay Client has the following features:

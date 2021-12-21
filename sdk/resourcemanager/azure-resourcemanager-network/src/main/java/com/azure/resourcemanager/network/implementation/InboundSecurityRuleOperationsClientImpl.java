@@ -248,7 +248,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
                 this.client.getHttpPipeline(),
                 InboundSecurityRuleInner.class,
                 InboundSecurityRuleInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

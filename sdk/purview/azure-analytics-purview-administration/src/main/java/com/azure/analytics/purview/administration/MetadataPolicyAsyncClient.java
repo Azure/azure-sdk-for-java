@@ -100,8 +100,7 @@ public final class MetadataPolicyAsyncClient {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return list of Metadata Policies.
      */
     @Generated
@@ -225,8 +224,7 @@ public final class MetadataPolicyAsyncClient {
      *
      * @param policyId Unique policy id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @Generated
@@ -299,8 +297,7 @@ public final class MetadataPolicyAsyncClient {
      *
      * @param policyId Id of an existing policy that needs to be fetched.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return a metadata policy.
      */
     @Generated

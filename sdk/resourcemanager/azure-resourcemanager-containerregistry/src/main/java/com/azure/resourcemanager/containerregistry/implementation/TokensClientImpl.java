@@ -469,7 +469,7 @@ public final class TokensClientImpl implements TokensClient {
         return this
             .client
             .<TokenInner, TokenInner>getLroResult(
-                mono, this.client.getHttpPipeline(), TokenInner.class, TokenInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), TokenInner.class, TokenInner.class, this.client.getContext());
     }
 
     /**
@@ -748,7 +748,8 @@ public final class TokensClientImpl implements TokensClient {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, registryName, tokenName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1023,7 +1024,7 @@ public final class TokensClientImpl implements TokensClient {
         return this
             .client
             .<TokenInner, TokenInner>getLroResult(
-                mono, this.client.getHttpPipeline(), TokenInner.class, TokenInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), TokenInner.class, TokenInner.class, this.client.getContext());
     }
 
     /**

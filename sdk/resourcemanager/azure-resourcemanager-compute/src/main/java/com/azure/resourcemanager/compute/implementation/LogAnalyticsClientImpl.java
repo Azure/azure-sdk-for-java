@@ -215,7 +215,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
                 this.client.getHttpPipeline(),
                 LogAnalyticsOperationResultInner.class,
                 LogAnalyticsOperationResultInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -474,7 +474,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
                 this.client.getHttpPipeline(),
                 LogAnalyticsOperationResultInner.class,
                 LogAnalyticsOperationResultInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

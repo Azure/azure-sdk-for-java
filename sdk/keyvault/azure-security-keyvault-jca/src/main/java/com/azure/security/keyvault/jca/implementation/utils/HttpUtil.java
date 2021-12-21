@@ -10,6 +10,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
+import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
@@ -129,6 +130,7 @@ public final class HttpUtil {
 
         PoolingHttpClientConnectionManager manager = new PoolingHttpClientConnectionManager(
             RegistryBuilder.<ConnectionSocketFactory>create()
+                .register("http", PlainConnectionSocketFactory.getSocketFactory())
                 .register("https", sslConnectionSocketFactory)
                 .build());
         return HttpClients.custom().setConnectionManager(manager).build();

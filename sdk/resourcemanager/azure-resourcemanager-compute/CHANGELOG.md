@@ -1,12 +1,26 @@
 # Release History
 
-## 2.10.0-beta.1 (Unreleased)
+## 2.11.0-beta.1 (Unreleased)
 
 ### Features Added
 
+- Supported Flexible orchestration mode for `VirtualMachineScaleSet` during create.
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.10.0 (2021-11-22)
+
+### Features Added
+
+- Supported hibernation for `VirtualMachine` (preview).
 - Supported `withPlan()` for `VirtualMachineScaleSet` during create.
 - Supported `getNetworkInterfaceByInstanceIdAsync()` in `VirtualMachineScaleSet`.
 - Supported `getNetworkInterfaceAsync()` in `VirtualMachineScaleSetVM`.
+- Supported `orchestrationMode()` in `VirtualMachineScaleSet`.
 
 ## 2.9.0 (2021-10-21)
 

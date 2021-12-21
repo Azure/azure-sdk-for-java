@@ -201,7 +201,7 @@ public final class VpnServerConfigurationsAssociatedWithVirtualWansClientImpl
                 this.client.getHttpPipeline(),
                 VpnServerConfigurationsResponseInner.class,
                 VpnServerConfigurationsResponseInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

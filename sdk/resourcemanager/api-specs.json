@@ -24,11 +24,24 @@
     "args": "--tag=package-2021-02 --add-inner=AppServiceCertificate --name-for-ungrouped-operations=ResourceProvider",
     "note": "Add status code '200' to 'syncFunctionTriggers'"
   },
+  "appservice-hybrid": {
+    "dir": "../resourcemanagerhybrid/azure-resourcemanager-appservice",
+    "source": "specification/web/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.appservice",
+    "args": "--tag=profile-hybrid-2020-09-01 --add-inner=AppServiceCertificate --name-for-ungrouped-operations=ResourceProvider",
+    "note": "Add status code '200' to 'syncFunctionTriggers'"
+  },
   "authorization": {
     "dir": "azure-resourcemanager-authorization",
     "source": "specification/authorization/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.authorization",
     "args": "--tag=package-2018-01-01-preview"
+  },
+  "authorization-hybrid": {
+    "dir": "../resourcemanagerhybrid/azure-resourcemanager-authorization",
+    "source": "specification/authorization/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.authorization",
+    "args": "--tag=profile-hybrid-2020-09-01"
   },
   "automation": {
     "dir": "azure-resourcemanager-automation",
@@ -79,6 +92,12 @@
     "package": "com.azure.resourcemanager.compute",
     "args": "--tag=package-2021-07-01 --rename-model=UserAssignedIdentitiesValue:VirtualMachineIdentityUserAssignedIdentities,VirtualMachineScaleSetIdentityUserAssignedIdentitiesValue:VirtualMachineScaleSetIdentityUserAssignedIdentities --preserve-model=AvailabilitySetSkuTypes"
   },
+  "compute-hybrid": {
+    "dir": "../resourcemanagerhybrid/azure-resourcemanager-compute",
+    "source": "specification/compute/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.compute",
+    "args": "--tag=profile-hybrid-2020-09-01 --rename-model=UserAssignedIdentitiesValue:VirtualMachineIdentityUserAssignedIdentities,VirtualMachineScaleSetIdentityUserAssignedIdentitiesValue:VirtualMachineScaleSetIdentityUserAssignedIdentities --preserve-model=AvailabilitySetSkuTypes"
+  },
   "consumption": {
     "dir": "azure-resourcemanager-consumption",
     "source": "specification/consumption/resource-manager/readme.md",
@@ -97,11 +116,23 @@
     "package": "com.azure.resourcemanager.containerregistry",
     "args": "--tag=package-2019-12-preview"
   },
+  "containerregistry-hybrid": {
+    "dir": "../resourcemanagerhybrid/azure-resourcemanager-containerregistry",
+    "source": "specification/containerregistry/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.containerregistry",
+    "args": "--tag=package-2019-05"
+  },
   "containerservice": {
     "dir": "azure-resourcemanager-containerservice",
     "source": "specification/containerservice/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.containerservice",
-    "args": "--tag=package-2021-09 --preserve-model=ContainerServiceVMSizeTypes"
+    "args": "--tag=package-2021-10 --preserve-model=ContainerServiceVMSizeTypes"
+  },
+  "containerservice-hybrid": {
+    "dir": "../resourcemanagerhybrid/azure-resourcemanager-containerservice",
+    "source": "specification/containerservice/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.containerservice",
+    "args": "--tag=profile-hybrid-2020-09-01 --preserve-model=ContainerServiceVMSizeTypes"
   },
   "cosmos": {
     "dir": "azure-resourcemanager-cosmos",
@@ -155,11 +186,23 @@
     "package": "com.azure.resourcemanager.dns",
     "args": "--tag=package-2018-03-preview"
   },
+  "dns-hybrid": {
+    "dir": "../resourcemanagerhybrid/azure-resourcemanager-dns",
+    "source": "specification/dns/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.dns",
+    "args": "--tag=package-2016-04"
+  },
   "eventhubs": {
     "dir": "azure-resourcemanager-eventhubs",
     "source": "specification/eventhub/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.eventhubs",
     "args": "--tag=package-2021-11"
+  },
+  "eventhubs-hybrid": {
+    "dir": "../resourcemanagerhybrid/azure-resourcemanager-eventhubs",
+    "source": "specification/eventhub/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.eventhubs",
+    "args": "--tag=profile-hybrid-2020-09-01"
   },
   "features": {
     "dir": "azure-resourcemanager-resources",
@@ -167,12 +210,24 @@
     "package": "com.azure.resourcemanager.resources",
     "args": "--tag=package-features-2021-07"
   },
+  "features-hybrid": {
+    "dir": "../resourcemanagerhybrid/azure-resourcemanager-resources",
+    "source": "specification/resources/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.resources",
+    "args": "--tag=package-features-2015-12"
+  },
   "graphrbac": {
     "spec": "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager",
     "dir": "azure-resourcemanager-authorization",
     "source": "azure-resourcemanager-authorization/swagger/swagger.md",
     "package": "com.azure.resourcemanager.authorization",
     "args": "--tag=v1.0 --title=MicrosoftGraphClient --models-subpackage=fluent.models"
+  },
+  "graphrbac-hybrid": {
+    "dir": "../resourcemanagerhybrid/azure-resourcemanager-authorization",
+    "source": "specification/graphrbac/data-plane/readme.md",
+    "package": "com.azure.resourcemanager.authorization",
+    "args": "--tag=1.6"
   },
   "iothub": {
     "dir": "azure-resourcemanager-devices",
@@ -186,8 +241,20 @@
     "package": "com.azure.resourcemanager.keyvault",
     "args": "--tag=package-2019-09"
   },
+  "keyvault-hybrid": {
+    "dir": "../resourcemanagerhybrid/azure-resourcemanager-keyvault",
+    "source": "specification/keyvault/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.keyvault",
+    "args": "--tag=package-2019-09"
+  },
   "locks": {
     "dir": "azure-resourcemanager-resources",
+    "source": "specification/resources/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.resources",
+    "args": "--tag=package-locks-2016-09"
+  },
+  "locks-hybrid": {
+    "dir": "../resourcemanagerhybrid/azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
     "args": "--tag=package-locks-2016-09"
@@ -210,11 +277,23 @@
     "package": "com.azure.resourcemanager.monitor",
     "args": "--tag=package-2021-04 --add-inner=AutoscaleProfile,ScaleRule,LocalizableString --rename-model=MetricUnit:Unit"
   },
+  "monitor-hybrid": {
+    "dir": "../resourcemanagerhybrid/azure-resourcemanager-monitor",
+    "source": "specification/monitor/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.monitor",
+    "args": "--tag=package-2021-04 --add-inner=AutoscaleProfile,ScaleRule,LocalizableString --rename-model=MetricUnit:Unit"
+  },
   "network": {
     "dir": "azure-resourcemanager-network",
     "source": "specification/network/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.network",
     "args": "--tag=package-2021-05 --add-inner=ApplicationGatewayIpConfiguration,ApplicationGatewayPathRule,ApplicationGatewayProbe,ApplicationGatewayRedirectConfiguration,ApplicationGatewayRequestRoutingRule,ApplicationGatewaySslCertificate,ApplicationGatewayUrlPathMap,ApplicationGatewayAuthenticationCertificate,VirtualNetworkGatewayIpConfiguration,ConnectionMonitor,PacketCapture"
+  },
+  "network-hybrid": {
+    "dir": "../resourcemanagerhybrid/azure-resourcemanager-network",
+    "source": "specification/network/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.network",
+    "args": "--tag=profile-hybrid-2020-09-01 --add-inner=ApplicationGatewayIpConfiguration,ApplicationGatewayPathRule,ApplicationGatewayProbe,ApplicationGatewayRedirectConfiguration,ApplicationGatewayRequestRoutingRule,ApplicationGatewaySslCertificate,ApplicationGatewayUrlPathMap,ApplicationGatewayAuthenticationCertificate,VirtualNetworkGatewayIpConfiguration,ConnectionMonitor,PacketCapture --remove-inner=Ipv6ExpressRouteCircuitPeeringConfig"
   },
   "notificationhubs": {
     "dir": "azure-resourcemanager-notificationhubs",
@@ -227,6 +306,12 @@
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
     "args": "--tag=package-policy-2021-06 --remove-model=UserAssignedIdentitiesValue"
+  },
+  "policy-hybrid": {
+    "dir": "../resourcemanagerhybrid/azure-resourcemanager-resources",
+    "source": "specification/resources/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.resources",
+    "args": "--tag=package-policy-2016-12"
   },
   "powerbi": {
     "dir": "azure-resourcemanager-powerbi",
@@ -276,6 +361,12 @@
     "package": "com.azure.resourcemanager.resources",
     "args": "--tag=package-resources-2021-01 --add-inner=Deployment"
   },
+  "resources-hybrid": {
+    "dir": "../resourcemanagerhybrid/azure-resourcemanager-resources",
+    "source": "specification/resources/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.resources",
+    "args": "--tag=package-resources-2019-10 --add-inner=Deployment"
+  },
   "scheduler": {
     "dir": "azure-resourcemanager-scheduler",
     "source": "specification/scheduler/resource-manager/readme.md",
@@ -319,6 +410,12 @@
     "package": "com.azure.resourcemanager.storage",
     "args": "--tag=package-2021-04"
   },
+  "storage-hybrid": {
+    "dir": "../resourcemanagerhybrid/azure-resourcemanager-storage",
+    "source": "specification/storage/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.storage",
+    "args": "--tag=profile-hybrid-2020-09-01"
+  },
   "storsimple8000series": {
     "dir": "azure-resourcemanager-storsimple8000series",
     "source": "specification/storsimple8000series/resource-manager/readme.md",
@@ -336,6 +433,12 @@
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
     "args": "--tag=package-subscriptions-2021-01 --name-for-ungrouped-operations=ResourceName"
+  },
+  "subscriptions-hybrid": {
+    "dir": "../resourcemanagerhybrid/azure-resourcemanager-resources",
+    "source": "specification/resources/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.resources",
+    "args": "--tag=package-subscriptions-2016-06 --name-for-ungrouped-operations=ResourceName"
   },
   "trafficmanager": {
     "dir": "azure-resourcemanager-trafficmanager",

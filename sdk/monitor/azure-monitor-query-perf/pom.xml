@@ -18,6 +18,13 @@
 
   <name>Microsoft Azure client library for Logs and Metrics query performance tests</name>
 
+  <properties>
+    <checkstyle.skip>true</checkstyle.skip>
+    <codesnippet.skip>false</codesnippet.skip>
+    <javadocDoclet></javadocDoclet>
+    <javadocDocletOptions></javadocDocletOptions>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
@@ -32,7 +39,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.4.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.4.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
     </dependency>
   </dependencies>
 

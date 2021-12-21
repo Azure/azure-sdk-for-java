@@ -131,8 +131,7 @@ public final class TypesAsyncClient {
      *
      * @param guid The globally unique identifier of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the classification definition for the given GUID.
      */
     @Generated
@@ -243,8 +242,7 @@ public final class TypesAsyncClient {
      *
      * @param name The name of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the classification definition by its name (unique).
      */
     @Generated
@@ -375,8 +373,7 @@ public final class TypesAsyncClient {
      *
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the Entity definition for the given GUID.
      */
     @Generated
@@ -507,8 +504,7 @@ public final class TypesAsyncClient {
      *
      * @param name The name of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the entity definition by its name (unique).
      */
     @Generated
@@ -592,8 +588,7 @@ public final class TypesAsyncClient {
      *
      * @param guid The globally unique identifier of the enum.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the enum definition for the given GUID.
      */
     @Generated
@@ -676,8 +671,7 @@ public final class TypesAsyncClient {
      *
      * @param name The name of the enum.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the enum definition by its name (unique).
      */
     @Generated
@@ -789,8 +783,7 @@ public final class TypesAsyncClient {
      *
      * @param guid The globally unique identifier of the relationship.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the relationship definition for the given GUID.
      */
     @Generated
@@ -902,8 +895,7 @@ public final class TypesAsyncClient {
      *
      * @param name The name of the relationship.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the relationship definition by its name (unique).
      */
     @Generated
@@ -1004,8 +996,7 @@ public final class TypesAsyncClient {
      *
      * @param guid The globally unique identifier of the struct.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the struct definition for the given GUID.
      */
     @Generated
@@ -1106,8 +1097,7 @@ public final class TypesAsyncClient {
      *
      * @param name The name of the struct.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the struct definition by its name (unique).
      */
     @Generated
@@ -1259,8 +1249,7 @@ public final class TypesAsyncClient {
      *
      * @param guid The globally unique identifier of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the type definition for the given GUID.
      */
     @Generated
@@ -1412,8 +1401,7 @@ public final class TypesAsyncClient {
      *
      * @param name The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the type definition by its name (unique).
      */
     @Generated
@@ -1427,8 +1415,7 @@ public final class TypesAsyncClient {
      *
      * @param name The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @Generated
@@ -1711,8 +1698,7 @@ public final class TypesAsyncClient {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return all type definitions in Atlas in bulk.
      */
     @Generated
@@ -2247,8 +2233,7 @@ public final class TypesAsyncClient {
      *
      * @param typesDef A composite wrapper object with corresponding lists of the type definition.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasTypesDef.
      */
     @Generated
@@ -2783,8 +2768,7 @@ public final class TypesAsyncClient {
      *
      * @param typesDef A composite object that captures all type definition changes.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasTypesDef.
      */
     @Generated
@@ -3059,8 +3043,7 @@ public final class TypesAsyncClient {
      *
      * @param typesDef A composite object that captures all types to be deleted.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @Generated
@@ -3095,8 +3078,7 @@ public final class TypesAsyncClient {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return an array of AtlasTypeDefHeader matching the search criteria or an empty list if no match.
      */
     @Generated
@@ -3205,8 +3187,7 @@ public final class TypesAsyncClient {
      *
      * @param guid The globally unique identifier of the term template.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the term template definition for the given GUID.
      */
     @Generated
@@ -3315,8 +3296,7 @@ public final class TypesAsyncClient {
      *
      * @param name The name of the term template.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the term template definition by its name (unique).
      */
     @Generated

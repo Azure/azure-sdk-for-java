@@ -32,7 +32,7 @@ Details about the terms used here are described in [Key concepts](#key-concepts)
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-webpubsub</artifactId>
-    <version>1.0.0-beta.6</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
@@ -81,10 +81,10 @@ When the client is connected, it can send messages to the upstream application, 
 
 ## Examples
 
-* [Broadcast message to entire hub](#broadcast-all "Broadcast message to entire hub")
-* [Broadcast message to a group](#broadcast-group "Broadcast message to a group")
-* [Send message to a connection](#send-to-connection "Send message to a connection")
-* [Send message to a user](#send-to-user "Send message to a user")
+* [Broadcast message to entire hub](#broadcast-message-to-entire-hub)
+* [Broadcast message to a group](#broadcast-message-to-a-group)
+* [Send message to a connection](#send-message-to-a-connection)
+* [Send message to a user](#send-message-to-a-user)
 
 ### Broadcast message to entire hub
 

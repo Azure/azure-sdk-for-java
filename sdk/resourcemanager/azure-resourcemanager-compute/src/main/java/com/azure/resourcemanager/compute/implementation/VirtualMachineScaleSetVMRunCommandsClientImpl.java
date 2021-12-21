@@ -343,7 +343,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
                 this.client.getHttpPipeline(),
                 VirtualMachineRunCommandInner.class,
                 VirtualMachineRunCommandInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -704,7 +704,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
                 this.client.getHttpPipeline(),
                 VirtualMachineRunCommandInner.class,
                 VirtualMachineRunCommandInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1027,7 +1027,8 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
             deleteWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

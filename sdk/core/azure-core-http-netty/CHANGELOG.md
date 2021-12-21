@@ -7,8 +7,27 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Set default `maxConnections` value to match the default used in `reactor-netty` when `HttpClientOptions` is set but 
+`maximumConnectionPoolSize` is not specified.
 
 ### Other Changes
+
+## 1.11.4 (2021-12-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.22.0` to `1.23.1`.
+- Upgraded Netty from `4.1.68.Final` to `4.1.70.Final`.
+- Upgraded Reactor Netty from `1.0.11` to `1.0.13`.
+
+## 1.11.3 (2021-11-23)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.22.0` to `1.23.0`.
 
 ## 1.11.2 (2021-11-05)
 
@@ -29,7 +48,7 @@
 #### Dependency Updates
 
 - Upgraded `azure-core` from `1.20.0` to `1.21.0`.
-- Upgraded Netty from `4.1.67.Final` to `4.1.60.Final`.
+- Upgraded Netty from `4.1.67.Final` to `4.1.68.Final`.
 - Upgraded Reactor Netty from `1.0.10` to `1.0.11`.
 - 
 ## 1.11.0 (2021-09-07)

@@ -471,7 +471,7 @@ public final class ImportPipelinesClientImpl implements ImportPipelinesClient {
                 this.client.getHttpPipeline(),
                 ImportPipelineInner.class,
                 ImportPipelineInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -767,7 +767,8 @@ public final class ImportPipelinesClientImpl implements ImportPipelinesClient {
             deleteWithResponseAsync(resourceGroupName, registryName, importPipelineName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

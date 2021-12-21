@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
+import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal}
 import com.azure.cosmos.models.{CosmosParameterizedQuery, SqlParameter, SqlQuerySpec}
 import com.azure.cosmos.spark.CosmosPredicates.requireNotNull
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, LoggerHelper}
@@ -81,14 +81,24 @@ private case class ItemsScan(session: SparkSession,
           .getContainer(config, containerConfig, clientCacheItem.client)
         SparkUtils.safeOpenConnectionInitCaches(container, log)
 
-        CosmosPartitionPlanner.createInputPartitions(
+        val cosmosInputPartitions =CosmosPartitionPlanner.createInputPartitions(
           partitioningConfig,
           container,
           partitionMetadata,
           defaultMinPartitionCount,
           CosmosPartitionPlanner.DefaultPartitionSizeInMB,
           ReadLimit.allAvailable()
-        ).map(_.asInstanceOf[InputPartition])
+        )
+
+        val effectiveCosmosInputPartitions = partitioningConfig.feedRangeFiler match {
+          case Some(epkRangesInScope) => cosmosInputPartitions
+            .filter(cosmosInputPartition => {
+              epkRangesInScope.exists(epk => SparkBridgeImplementationInternal.doRangesOverlap(epk, cosmosInputPartition.feedRange))
+            })
+          case None => cosmosInputPartitions
+        }
+
+        effectiveCosmosInputPartitions.map(_.asInstanceOf[InputPartition])
       })
   }
 
