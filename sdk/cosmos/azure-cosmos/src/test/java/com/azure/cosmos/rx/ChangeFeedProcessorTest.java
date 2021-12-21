@@ -449,6 +449,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                                 ServiceItemLease leaseDocument = ServiceItemLease.fromDocument(doc);
                                 leaseDocument.setOwner("TEMP_OWNER");
                                 CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+
                                 return createdLeaseCollection.replaceItem(leaseDocument, leaseDocument.getId(), new PartitionKey(leaseDocument.getId()), options)
                                     .map(CosmosItemResponse::getItem);
                             })

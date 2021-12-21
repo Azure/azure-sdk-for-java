@@ -18,7 +18,7 @@ public interface PartitionCheckpointer {
     Mono<Lease> checkpointPartition(ChangeFeedState continuationState);
 
     /**
-     * Sets the cancelation token in case we need to bail out before check-pointing.
+     * Sets the cancellation token in case we need to bail out before check-pointing.
      *
      * @param cancellationToken the cancellation token.
      * @return this instance.
