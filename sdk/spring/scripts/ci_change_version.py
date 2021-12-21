@@ -6,10 +6,13 @@
 # 1. Change `SPRING_BOOT_DEPENDENCIES_VERSION` to make sure it's consistent with the `SPRING_BOOT_DEPENDENCIES_VERSION`
 #    version in 'ci_add_spring_boot_dependencies_management.py'.
 # 2. Change 'LAST_SPRING_BOOT_DEPENDENCIES_VERSION' to the last version in this script manually.
-# 3. Change `SPRING_BOOT_VERSION` to make sure it's consistent with the `SPRING_BOOT_VERSION`
+# 3. Change `SPRING_CLOUD_DEPENDENCIES_VERSION` to make sure it's consistent with the `SPRING_CLOUD_DEPENDENCIES_VERSION`
+#    version in 'ci_add_spring_boot_dependencies_management.py'.
+# 4. Change 'LAST_SPRING_CLOUD_DEPENDENCIES_VERSION' to the last version in this script manually.
+# 5. Change `SPRING_BOOT_VERSION` to make sure it's consistent with the `SPRING_BOOT_VERSION`
 #    version in 'ci_update_versions.py'.
-# 4. Change 'LAST_SPRING_BOOT_VERSION' to the last version in this script manually.
-# 5. Then the ci will automatically run command `python .\sdk\spring\scripts\ci_change_version.py`.
+# 6. Change 'LAST_SPRING_BOOT_VERSION' to the last version in this script manually.
+# 7. Then the ci will automatically run command `python .\sdk\spring\scripts\ci_change_version.py`.
 #
 # The script must be run at the root of azure-sdk-for-java.
 
@@ -45,15 +48,19 @@ def change_ci_update_versions():
 def change_ci_add_dm_version():
     # file_path = '/ci_update_versions.py'
     file_path = './sdk/spring/scripts/ci_add_spring_boot_dependencies_management.py'
-    version1 = "SPRING_BOOT_DEPENDENCIES_VERSION = '"+SPRING_BOOT_DEPENDENCIES_VERSION+"'"
-    version2 = "SPRING_BOOT_DEPENDENCIES_VERSION = '"+LAST_SPRING_BOOT_DEPENDENCIES_VERSION+"'"
+    boot_version1 = "SPRING_BOOT_DEPENDENCIES_VERSION = '"+SPRING_BOOT_DEPENDENCIES_VERSION+"'"
+    boot_version2 = "SPRING_BOOT_DEPENDENCIES_VERSION = '"+LAST_SPRING_BOOT_DEPENDENCIES_VERSION+"'"
+    cloud_version1 = "SPRING_CLOUD_DEPENDENCIES_VERSION = '"+SPRING_CLOUD_DEPENDENCIES_VERSION+"'"
+    cloud_version2 = "SPRING_CLOUD_DEPENDENCIES_VERSION = '"+LAST_SPRING_CLOUD_DEPENDENCIES_VERSION+"'"
     with open(file_path, 'r', encoding='utf-8') as f:
         content = f.read()
-        pos = content.find(version1)
-        if pos != -1:
+        pos1 = content.find(boot_version1)
+        pos2 = content.find(cloud_version1)
+        if pos1 & pos2 != -1:
             print("processing:" + file_path)
             print("changing script:ci_add_spring_boot_dependencies_management.py version...")
-            replace(file_path, version1, version2)
+            replace(file_path, boot_version1, boot_version2)
+            replace(file_path, cloud_version1, cloud_version2)
 
 def main():
     start_time = time.time()

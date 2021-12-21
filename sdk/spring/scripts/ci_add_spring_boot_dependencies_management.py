@@ -3,8 +3,10 @@
 # This script works for ci.
 #
 # How to use:
-# 1. Change `SPRING_BOOT_DEPENDENCIES_VERSION` to the latest version in this script manually.
-# 2. Then the ci will automatically run command `python .\sdk\spring\scripts\ci_add_spring_boot_dependencies_management.py`.
+# 1. Change `SPRING_BOOT_DEPENDENCIES_VERSION` and 'SPRING_CLOUD_DEPENDENCIES_VERSION'
+#    to the latest version in this script manually.
+# 2. Then the ci will automatically run command
+#    `python .\sdk\spring\scripts\ci_add_spring_boot_dependencies_management.py`.
 #
 # The script must be run at the root of azure-sdk-for-java.
 
@@ -13,6 +15,7 @@ import time
 
 
 SPRING_BOOT_DEPENDENCIES_VERSION = '2.6.1'
+SPRING_CLOUD_DEPENDENCIES_VERSION = '2021.0.0'
 
 def add_dependency_management(c1,c2):
     for root, _, files in os.walk("./sdk/spring"):
@@ -43,6 +46,14 @@ def add_dependency_management_all():
     cores += '\n        <version>'+SPRING_BOOT_DEPENDENCIES_VERSION+'</version><!-- version test for ci -->'
     cores += '\n        <type>pom</type>'
     cores += '\n        <scope>import</scope>'
+    cores += '\n      </dependency>\n'
+    cores += '\n      <dependency>'
+    cores += '\n        <groupId>org.springframework.cloud</groupId>'
+    cores += '\n        <artifactId>spring-cloud-dependencies</artifactId>'
+    cores += '\n        <version>'+SPRING_CLOUD_DEPENDENCIES_VERSION+'</version><!-- version test for ci -->'
+    cores += '\n        <type>pom</type>'
+    cores += '\n        <scope>import</scope>'
+
 
     content1 = '\n      <dependency>' + cores + '\n      </dependency>\n'
     content2 = '\n  <dependencyManagement>' + '\n    <dependencies>' + '\n      <dependency>' \
