@@ -33,8 +33,8 @@
   </issueManagement>
 
   <properties>
-    <jacoco.min.linecoverage>0.01</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.01</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.45</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.33</jacoco.min.branchcoverage>
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <!-- https://issues.apache.org/jira/browse/SUREFIRE-1563 -->
     <javaModulesSurefireArgLine>

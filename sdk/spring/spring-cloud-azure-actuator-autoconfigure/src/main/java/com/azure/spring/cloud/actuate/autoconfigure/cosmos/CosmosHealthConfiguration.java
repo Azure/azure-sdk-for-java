@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * CosmosHealthConfiguration
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @ConditionalOnClass({ CosmosAsyncClient.class, HealthIndicator.class})
 @ConditionalOnBean(CosmosAsyncClient.class)
 @AutoConfigureAfter(AzureCosmosAutoConfiguration.class)

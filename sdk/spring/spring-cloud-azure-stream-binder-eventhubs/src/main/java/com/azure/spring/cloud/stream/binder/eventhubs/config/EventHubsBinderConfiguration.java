@@ -28,7 +28,7 @@ import org.springframework.context.annotation.Import;
 /**
  *
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @ConditionalOnMissingBean(Binder.class)
 @Import({
     AzureGlobalPropertiesAutoConfiguration.class,

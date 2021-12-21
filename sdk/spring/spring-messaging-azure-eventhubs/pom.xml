@@ -34,8 +34,8 @@
   </issueManagement>
 
   <properties>
-    <jacoco.min.linecoverage>0.07</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.00</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.90</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.90</jacoco.min.branchcoverage>
   </properties>
 
   <dependencies>

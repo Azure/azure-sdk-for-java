@@ -124,7 +124,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
      * @param propertySource The property source properties.
      * @throws IllegalStateException If KeyVaultOperations fails to initialize.
      */
-    public void addKeyVaultPropertySource(ConfigurableEnvironment environment,
+    private void addKeyVaultPropertySource(ConfigurableEnvironment environment,
                                           AzureKeyVaultPropertySourceProperties propertySource) {
         Assert.notNull(propertySource.getEndpoint(), "endpoint must not be null!");
 
@@ -132,19 +132,16 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
         AzurePropertiesUtils.copyAzureCommonProperties(propertySource, secretProperties);
         secretProperties.setServiceVersion(propertySource.getServiceVersion());
         secretProperties.setEndpoint(propertySource.getEndpoint());
-
-        final SecretClient secretClient = new SecretClientBuilderFactory(secretProperties).build().buildClient();
         try {
             final MutablePropertySources sources = environment.getPropertySources();
             final boolean caseSensitive = Boolean.TRUE.equals(propertySource.getCaseSensitive());
+            final SecretClient secretClient = buildSecretClient(secretProperties);
             final KeyVaultOperation keyVaultOperation = new KeyVaultOperation(secretClient,
                                                                               propertySource.getRefreshInterval(),
                                                                               propertySource.getSecretKeys(),
                                                                               caseSensitive);
-
             KeyVaultPropertySource keyVaultPropertySource = new KeyVaultPropertySource(propertySource.getName(),
                                                                                        keyVaultOperation);
-
             if (sources.contains(SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME)) {
                 sources.addAfter(SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, keyVaultPropertySource);
             } else {
@@ -155,6 +152,15 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
         } catch (final Exception ex) {
             throw new IllegalStateException("Failed to configure KeyVault property source", ex);
         }
+    }
+
+    /**
+     * Build a KeyVault Secret client
+     * @param secretProperties secret properties
+     * @return secret client
+     */
+    protected SecretClient buildSecretClient(AzureKeyVaultSecretProperties secretProperties) {
+        return new SecretClientBuilderFactory(secretProperties).build().buildClient();
     }
 
     private AzureKeyVaultSecretProperties loadProperties(Binder binder) {

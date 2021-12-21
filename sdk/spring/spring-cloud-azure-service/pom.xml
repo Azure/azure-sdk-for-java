@@ -34,8 +34,8 @@
   </issueManagement>
 
   <properties>
-    <jacoco.min.linecoverage>0.01</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.01</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.30</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.17</jacoco.min.branchcoverage>
     <javaModulesSurefireArgLine>
       --add-modules com.azure.cosmos
       --add-modules com.azure.messaging.eventhubs
