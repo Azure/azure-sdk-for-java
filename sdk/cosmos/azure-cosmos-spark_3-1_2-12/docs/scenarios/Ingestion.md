@@ -33,16 +33,44 @@ df \
 You can find more details about the client-throughput control feature and its configuration options here - see [Client throughput control](./ThroughputControl.md)
 
 ### Retry policies and data validation
-
-
+All transient errors (Throttled requests, network timeouts, any recoverable service errors etc.) are retried automatically by the `cosmos.oltp` data source. Any non-transient errors - for example "400-Bad request" when the value of the "id" column is invalid - which would not be recoverable by retries will result in the Spark job failing. When your container has a "unique key constraint policy" any 409 "Conflict" (indicating violation of unique key constraint) handling will depend on the `spark.cosmos.write.strategy` - for `ItemOverwrite` a 409 - Conflict due to unique key violation will result in an error - and the Spark hob will fail. For `ItemAppend` like conflicts on pk+id any unique key policy constraint violation will be ignored.
 
 ## Preparation
+Below are a couple of tipps/best-practices that can help you to prepare for a data migration into a Cosmos DB container.
 
 ### Choosing a good partition key
+To be able to fully saturate the provisioned throughput of a container it is important to choose a partition key that ensures the ingested data is spread over all physical partitions. A really bad choice for example would be a date/time based partition key. Imagine a daily batch job ingests telemetry events and a partition key of the form YYYYMMDD is used. In this cass all documents being ingested daily would target a single logical partitions. So independent of the total provisdioned throughput at most 10,000 RU (current maximum throughput per physical/logical partition) could be used for the ingestion job. You can find some more info abut [partitioning in Cosmos DB](https://docs.microsoft.com/en-us/azure/cosmos-db/partitioning-overview) and (how to choose a good partition key)[https://docs.microsoft.com/en-us/azure/cosmos-db/partitioning-overview#choose-partitionkey] in the documentation.
 
 ### Indexing policy
+The RU-charge when inserting or updating a document in Cosmos DB depends on the size of the document as well as the number of "tokens" that need to be indexed. A little simplified you can think of the number of tokens as the number of json properties that need to be indexed. So, to optimize throughput for the ingestion it would be beneficial to use a scoped indexing policy (not the default policy of indexing all properties, but only the properties that really need to be indexed). The two documents below contain more information about how to choose the right indexing policy.
+- [Indexing policies in Azure Cosmos DB](https://docs.microsoft.com/en-us/azure/cosmos-db/index-policy)
+- [Indexing in Azure Cosmos DB - Overview](https://docs.microsoft.com/en-us/azure/cosmos-db/index-overview)
 
+Sample01: How to create a new container with default indexing policy (index all properties) in Spark
+``
+%sql
+CREATE TABLE IF NOT EXISTS cosmosCatalog.SampleDatabase.ThroughputControl
+USING cosmos.oltp
+TBLPROPERTIES(partitionKeyPath = '/groupId', autoScaleMaxThroughput = '4000', indexingPolicy = 'AllProperties', defaultTtlInSeconds = '-1');
+``
 
+Sample02: How to create a new container with minimal indexing policy (index only required system properties) in Spark
+``
+%sql
+CREATE TABLE IF NOT EXISTS cosmosCatalog.SampleDatabase.GreenTaxiRecords
+USING cosmos.oltp
+TBLPROPERTIES(partitionKeyPath = '/id', autoScaleMaxThroughput = '100000', indexingPolicy = 'OnlySystemProperties');
+``
+
+Sample03: How to create a new container with custom indexing policy in Spark
+``
+myCustomIndexPolicyJson = '{"indexingMode":"consistent","automatic":true,"includedPaths":[{"path":"\/somePropertyName\/?"},{"path":"\/mypk\/?"}],"excludedPaths":[{"path":"\/*"}]}'
+spark.sql("""
+CREATE TABLE IF NOT EXISTS cosmosCatalog.SampleDatabase.TabeWithCustomIndexingPolicy
+USING cosmos.oltp
+TBLPROPERTIES(partitionKeyPath = '/id', manualThroughput = '400', indexingPolicy = '{customIndexingPolicy}');
+""".format(customIndexingPolicy = myCustomIndexPolicyJson))
+``
 
 ### Creating a new container if the ingestion via the Cosmos Spark connector is for the initial migration
 
@@ -67,5 +95,7 @@ You can find more details about the client-throughput control feature and its co
 
 
 ### Estimating the necessary duration for the migration
+
+## Checklist
 
 ## Troubleshooting
