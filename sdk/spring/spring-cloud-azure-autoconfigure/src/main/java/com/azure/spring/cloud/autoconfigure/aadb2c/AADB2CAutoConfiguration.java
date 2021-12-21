@@ -18,7 +18,7 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
  * Configure the necessary beans for AAD B2C authentication and authorization,
  * and import {@link AADB2COAuth2ClientConfiguration} class for AAD B2C OAuth2 client support.
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(value = "spring.cloud.azure.active-directory.b2c.enabled", havingValue = "true")
 @Conditional(AADB2CConditions.UserFlowCondition.class)
 @Import({ AADB2CPropertiesConfiguration.class, AADB2COAuth2ClientConfiguration.class})

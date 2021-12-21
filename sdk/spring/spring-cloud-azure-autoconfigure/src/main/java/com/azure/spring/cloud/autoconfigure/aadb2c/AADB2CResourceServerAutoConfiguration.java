@@ -36,7 +36,7 @@ import java.util.List;
  * Configure necessary beans for AAD B2C resource server beans, and import {@link AADB2COAuth2ClientConfiguration} class for AAD
  * B2C OAuth2 client support.
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(value = "spring.cloud.azure.active-directory.b2c.enabled", havingValue = "true")
 @ConditionalOnClass(BearerTokenAuthenticationToken.class)
 @Import({ AADB2CPropertiesConfiguration.class, AADB2COAuth2ClientConfiguration.class})

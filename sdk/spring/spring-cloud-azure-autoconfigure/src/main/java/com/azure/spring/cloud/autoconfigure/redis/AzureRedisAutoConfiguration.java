@@ -24,7 +24,7 @@ import java.util.Arrays;
  * An auto-configuration for Spring cache using Azure redis cache
  *
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @AutoConfigureAfter(AzureResourceManagerAutoConfiguration.class)
 @ConditionalOnExpression("${spring.cloud.azure.redis.enabled:true}")
 @ConditionalOnProperty({ "spring.cloud.azure.redis.name", "spring.cloud.azure.redis.resource.resource-group" })
