@@ -122,12 +122,9 @@ def update_versions(update_type, version_map, ext_dep_map, target_file):
                 for line in newlines:
                     f.write(line)
 
-
     except Exception as e:
         print("Unexpected exception: " + str(e))
         traceback.print_exc(file=sys.stderr)
-
-
 
 def load_version_map_from_file(the_file, version_map):
     with open(the_file) as f:
@@ -177,7 +174,6 @@ def update_versions_all(update_type, target_file):
                 file_path = root + os.sep + file_name
                 if  file_name.startswith('pom') and file_name.endswith('.xml'):
                     update_versions(update_type, version_map, ext_dep_map, file_path)
-
 
 def main():
     parser = argparse.ArgumentParser(description='Replace version numbers in poms.')

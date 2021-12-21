@@ -385,7 +385,6 @@ parameters:
     type: object
     default: [ ]
 
-
 stages:
     - stage: Build_for_Release
       jobs:
@@ -417,7 +416,6 @@ stages:
                           - TestOptions=.*/-am
                     - AZURE_TEST.*=.*/
                 PreBuildSteps: ${{ parameters.PreBuildSteps }}
-
 
     # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
     - ${{if and(ne(variables['Build_for_Release.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
@@ -469,8 +467,6 @@ stages:
                         python ./sdk/spring/scripts/ci_update_versions.py --ut external_dependency
                     - script: |
                           python ./sdk/spring/scripts/ci_add_spring_boot_dependencies_management.py
-
-
 
     # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
     - ${{if and(ne(variables['Build_for_new_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
@@ -524,7 +520,6 @@ stages:
                           python ./sdk/spring/scripts/ci_update_versions.py --ut external_dependency
                     - script: |
                           python ./sdk/spring/scripts/ci_add_spring_boot_dependencies_management.py
-
 
     # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
     - ${{if and(ne(variables['Build_for_Last_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
