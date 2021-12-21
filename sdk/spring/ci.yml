@@ -522,7 +522,8 @@ stages:
                           python ./sdk/spring/scripts/ci_change_version.py
                     - script: |
                           python ./sdk/spring/scripts/ci_update_versions.py --ut external_dependency
-
+                    - script: |
+                          python ./sdk/spring/scripts/ci_add_spring_boot_dependencies_management.py
 
 
     # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.

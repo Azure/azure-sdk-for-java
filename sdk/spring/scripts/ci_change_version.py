@@ -24,21 +24,21 @@ def replace(file_path, v1, v2):
         with open(file_path, 'w', encoding='utf-8') as f:
             f.write(content)
 
-def change_ci_dependency_management():
-    version_now = '<version>'+SPRING_BOOT_DEPENDENCIES_VERSION+'</version><!-- version test for ci -->'
-    version_change = '<version>'+ANOTHER_SPRING_BOOT_DEPENDENCIES_VERSION+'</version><!-- version test for ci -->'
-    for root, _, files in os.walk("./sdk/spring"):
-    # for root, _, files in os.walk("D:/java/azure-sdk-for-java/sdk/spring/"):
-        for file_name in files:
-            file_path = root + os.sep + file_name
-            if file_name.startswith('pom') and file_name.endswith('.xml'):
-                with open(file_path, 'r', encoding='utf-8') as f:
-                    content = f.read()
-                    pos = content.find('<artifactId>spring-boot-dependencies</artifactId>')
-                    if pos != -1:
-                        print("processing:" + file_path)
-                        print("changing springboot version...")
-                        replace(file_path, version_now, version_change)
+# def change_ci_dependency_management():
+#     version_now = '<version>'+SPRING_BOOT_DEPENDENCIES_VERSION+'</version><!-- version test for ci -->'
+#     version_change = '<version>'+ANOTHER_SPRING_BOOT_DEPENDENCIES_VERSION+'</version><!-- version test for ci -->'
+#     for root, _, files in os.walk("./sdk/spring"):
+#     # for root, _, files in os.walk("D:/java/azure-sdk-for-java/sdk/spring/"):
+#         for file_name in files:
+#             file_path = root + os.sep + file_name
+#             if file_name.startswith('pom') and file_name.endswith('.xml'):
+#                 with open(file_path, 'r', encoding='utf-8') as f:
+#                     content = f.read()
+#                     pos = content.find('<artifactId>spring-boot-dependencies</artifactId>')
+#                     if pos != -1:
+#                         print("processing:" + file_path)
+#                         print("changing springboot version...")
+#                         replace(file_path, version_now, version_change)
 
 def change_ci_update_versions():
     # file_path = '/ci_update_versions.py'
@@ -50,14 +50,28 @@ def change_ci_update_versions():
         pos = content.find(version1)
         if pos != -1:
             print("processing:" + file_path)
-            print("changing script version...")
+            print("changing script:ci_change_version.py version...")
+            replace(file_path, version1, version2)
+
+def change_ci_add_dm_version():
+    # file_path = '/ci_update_versions.py'
+    file_path = './sdk/spring/scripts/ci_add_spring_boot_dependencies_management.py'
+    version1 = "SPRING_BOOT_DEPENDENCIES_VERSION = '"+SPRING_BOOT_DEPENDENCIES_VERSION+"'"
+    version2 = "SPRING_BOOT_DEPENDENCIES_VERSION = '"+ANOTHER_SPRING_BOOT_DEPENDENCIES_VERSION+"'"
+    with open(file_path, 'r', encoding='utf-8') as f:
+        content = f.read()
+        pos = content.find(version1)
+        if pos != -1:
+            print("processing:" + file_path)
+            print("changing script:ci_add_spring_boot_dependencies_management.py version...")
             replace(file_path, version1, version2)
 
 def main():
     start_time = time.time()
     print('Current working directory = {}.'.format(os.getcwd()))
-    change_ci_dependency_management()
+    # change_ci_dependency_management()
     change_ci_update_versions()
+    change_ci_add_dm_version()
     elapsed_time = time.time() - start_time
     print('elapsed_time = {}'.format(elapsed_time))
 
