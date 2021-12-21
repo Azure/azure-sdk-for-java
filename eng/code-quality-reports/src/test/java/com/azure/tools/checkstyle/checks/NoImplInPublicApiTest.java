@@ -367,6 +367,17 @@ public class NoImplInPublicApiTest extends AbstractModuleTestSupport {
         verify(checker, new File[]{file}, file.getAbsolutePath());
     }
 
+    @Test
+    public void implementationPackageIsANoOp() throws Exception {
+        File file = TestUtils.createCheckFile("implementationPackageIsANoOp", Arrays.asList(
+            "package com.azure.implementation;",
+            "import com.azure.implementation.ImplementationClass;",
+            "public class MyClass extends ImplementationClass {", // normally would be line 3, column 30
+            "}"
+        ));
+
+        verify(checker, new File[]{file}, file.getAbsolutePath());
+    }
 
     private String expectedErrorMessage(int line, int column, String error) {
         return String.format("%d:%d: %s", line, column, error);

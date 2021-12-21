@@ -274,7 +274,7 @@ function SourcePackageHasComFolder($artifactNamePrefix, $packageDirectory) {
     $mvnResults = mvn `
       dependency:copy `
       -Dartifact="$packageArtifact" `
-      -DoutputDirectory="$packageDirectory" | Out-Null
+      -DoutputDirectory="$packageDirectory" 
 
     if ($LASTEXITCODE) {
       LogWarning "Could not download source artifact: $packageArtifact"
@@ -309,7 +309,7 @@ function PackageDependenciesResolve($artifactNamePrefix, $packageDirectory) {
   $artifactDownloadOutput = mvn `
     dependency:copy `
     -Dartifact="$pomArtifactName" `
-    -DoutputDirectory="$packageDirectory" | Out-Null
+    -DoutputDirectory="$packageDirectory"
 
   if ($LASTEXITCODE) {
     LogWarning "Could not download pom artifact: $pomArtifactName"
@@ -325,7 +325,7 @@ function PackageDependenciesResolve($artifactNamePrefix, $packageDirectory) {
     -f $downloadedPomPath `
     dependency:copy-dependencies `
     -P '!azure-mgmt-sdk-test-jar' `
-    -DoutputDirectory="$packageDirectory" | Out-Null
+    -DoutputDirectory="$packageDirectory"
 
   if ($LASTEXITCODE) {
     LogWarning "Could not resolve dependencies for: $pomArtifactName"
@@ -336,7 +336,7 @@ function PackageDependenciesResolve($artifactNamePrefix, $packageDirectory) {
   return $true
 }
 
-function ValidatePackage($groupId, $artifactId, $version) {
+function ValidatePackage($groupId, $artifactId, $version, $DocValidationImageId) {
   $workingDirectory = Join-Path ([System.IO.Path]::GetTempPath()) "validation"
   if (!(Test-Path $workingDirectory)) {
     New-Item -ItemType Directory -Force -Path $workingDirectory | Out-Null
@@ -349,8 +349,48 @@ function ValidatePackage($groupId, $artifactId, $version) {
     "${groupId}__${artifactId}__${version}"
   New-Item -ItemType Directory -Path $packageDirectory -Force | Out-Null
 
-  return (SourcePackageHasComFolder $artifactNamePrefix $packageDirectory) `
-    -and (PackageDependenciesResolve $artifactNamePrefix $packageDirectory)
+  # Add more validation by replicating as much of the docs CI process as
+  # possible
+  # https://github.com/Azure/azure-sdk-for-python/issues/20109
+  if (!$DocValidationImageId) 
+  {
+    Write-Host "Validating using mvn command directly on $artifactId."
+    return FallbackValidation -artifactNamePrefix $artifactNamePrefix -workingDirectory $packageDirectory
+  } 
+  else 
+  {
+    Write-Host "Validating using $DocValidationImageId on $artifactId."
+    return DockerValidation -packageName "$artifactId" -packageVersion "$version" -groupId "$groupId" -DocValidationImageId $DocValidationImageId -workingDirectory $packageDirectory
+  }
+}
+
+function FallbackValidation ($artifactNamePrefix, $workingDirectory) 
+{
+  return (SourcePackageHasComFolder $artifactNamePrefix $workingDirectory) `
+    -and (PackageDependenciesResolve $artifactNamePrefix $workingDirectory)
+}
+
+function DockerValidation($packageName, $packageVersion, $groupId, $DocValidationImageId, $workingdirectory) 
+{
+  $output = docker run -v "${workingDirectory}:/workdir/out" `
+    -e TARGET_PACKAGE=$packageName -e TARGET_VERSION=$packageVersion -e TARGET_GROUP_ID=$groupId -t $DocValidationImageId 2>&1 
+  # The docker exit codes: https://docs.docker.com/engine/reference/run/#exit-status
+  # If the docker failed because of docker itself instead of the application, 
+  # we should skip the validation and keep the packages. 
+  $artifactNamePrefix = "${groupId}:${packageName}:${packageVersion}"
+  if ($LASTEXITCODE -eq 125 -Or $LASTEXITCODE -eq 126 -Or $LASTEXITCODE -eq 127) 
+  { 
+    LogWarning "The `docker` command does not work with exit code $LASTEXITCODE. Fall back to mvn install $artifactNamePrefix directly."
+    $output | Write-Host
+    FallbackValidation -artifactNamePrefix "$artifactNamePrefix" -workingDirectory $workingdirectory
+  }
+  elseif ($LASTEXITCODE -ne 0) 
+  { 
+    LogWarning "Package $artifactNamePrefix ref docs validation failed."
+    $output | Write-Host
+    return $false
+  }
+  return $true
 }
 
 function Update-java-DocsMsPackages($DocsRepoLocation, $DocsMetadata, $DocValidationImageId) {
@@ -616,9 +656,9 @@ function Get-java-DocsMsMetadataForPackage($PackageInfo) {
 
 function Validate-java-DocMsPackages ($PackageInfo, $DocValidationImageId) 
 {
-  if (!(ValidatePackage $PackageInfo.Group $PackageInfo.Name $PackageInfo.Version)) 
+  if (!(ValidatePackage $PackageInfo.Group $PackageInfo.Name $PackageInfo.Version $DocValidationImageId)) 
   {
-    exit 1
+    Write-Error "Package $($PackageInfo.Name) failed on validation" -ErrorAction Continue
   }
   return
 }

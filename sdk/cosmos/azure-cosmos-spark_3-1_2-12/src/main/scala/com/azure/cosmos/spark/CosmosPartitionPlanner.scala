@@ -38,6 +38,26 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     defaultMaxPartitionSizeInMB: Int,
     readLimit: ReadLimit
   ): Array[CosmosInputPartition] = {
+
+    TransientErrorsRetryPolicy.executeWithRetry(() =>
+      createInputPartitionsImpl(
+        cosmosPartitioningConfig,
+        container,
+        partitionMetadata,
+        defaultMinimalPartitionCount,
+        defaultMaxPartitionSizeInMB,
+        readLimit))
+  }
+
+  private[this] def createInputPartitionsImpl
+  (
+    cosmosPartitioningConfig: CosmosPartitioningConfig,
+    container: CosmosAsyncContainer,
+    partitionMetadata: Array[PartitionMetadata],
+    defaultMinimalPartitionCount: Int,
+    defaultMaxPartitionSizeInMB: Int,
+    readLimit: ReadLimit
+  ): Array[CosmosInputPartition] = {
     assertOnSparkDriver()
     //scalastyle:off multiple.string.literals
     requireNotNull(cosmosPartitioningConfig, "cosmosPartitioningConfig")
@@ -89,8 +109,20 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
       .flatten
   }
 
-  // scalastyle:off method.length
   def createInitialOffset
+  (
+    container: CosmosAsyncContainer,
+    changeFeedConfig: CosmosChangeFeedConfig,
+    streamId: Option[String]
+  ): String = {
+
+    TransientErrorsRetryPolicy.executeWithRetry(() =>
+      createInitialOffsetImpl(container, changeFeedConfig, streamId)
+    )
+  }
+
+  // scalastyle:off method.length
+  private[this] def createInitialOffsetImpl
   (
     container: CosmosAsyncContainer,
     changeFeedConfig: CosmosChangeFeedConfig,
@@ -150,10 +182,40 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
   }
   // scalastyle:on method.length
 
+  // scalastyle:off parameter.number
+  def getLatestOffset
+  (
+    userConfig: Map[String, String],
+    startOffset: ChangeFeedOffset,
+    readLimit: ReadLimit,
+    maxStaleness: Duration,
+    clientConfiguration: CosmosClientConfiguration,
+    cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot],
+    containerConfig: CosmosContainerConfig,
+    partitioningConfig: CosmosPartitioningConfig,
+    defaultParallelism: Int,
+    container: CosmosAsyncContainer
+  ): ChangeFeedOffset = {
+
+    TransientErrorsRetryPolicy.executeWithRetry(() =>
+      getLatestOffsetImpl(
+        userConfig,
+        startOffset,
+        readLimit,
+        maxStaleness,
+        clientConfiguration,
+        cosmosClientStateHandle,
+        containerConfig,
+        partitioningConfig,
+        defaultParallelism,
+        container))
+  }
+  // scalastyle:on parameter.number
+
   // scalastyle:off method.length
   // scalastyle:off parameter.number
   // Based on a start offset, calculate which is the next end offset
-  def getLatestOffset
+  private[this] def getLatestOffsetImpl
   (
     userConfig: Map[String, String],
     startOffset: ChangeFeedOffset,
@@ -471,6 +533,19 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
   }
 
   def getPartitionMetadata(
+                            userConfig: Map[String, String],
+                            cosmosClientConfig: CosmosClientConfiguration,
+                            cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
+                            cosmosContainerConfig: CosmosContainerConfig,
+                            maxStaleness: Option[Duration] = None
+                          ): Array[PartitionMetadata] = {
+
+    TransientErrorsRetryPolicy.executeWithRetry(() =>
+      getPartitionMetadataImpl(
+        userConfig, cosmosClientConfig, cosmosClientStateHandle, cosmosContainerConfig, maxStaleness))
+  }
+
+  private[this] def getPartitionMetadataImpl(
       userConfig: Map[String, String],
       cosmosClientConfig: CosmosClientConfiguration,
       cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],

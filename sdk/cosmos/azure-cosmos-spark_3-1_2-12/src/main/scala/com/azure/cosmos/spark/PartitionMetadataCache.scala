@@ -137,8 +137,28 @@ private object PartitionMetadataCache extends BasicLoggingTrait {
 
   this.startRefreshTimer()
 
-  //scalastyle:off method.length
   private def readPartitionMetadata
+  (
+    userConfig: Map[String, String],
+    cosmosClientConfiguration: CosmosClientConfiguration,
+    cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
+    cosmosContainerConfig: CosmosContainerConfig,
+    feedRange: NormalizedRange,
+    tolerateNotFound: Boolean
+  ): SMono[Option[PartitionMetadata]] = {
+
+    TransientErrorsRetryPolicy.executeWithRetry(() =>
+      readPartitionMetadataImpl(
+        userConfig,
+        cosmosClientConfiguration,
+        cosmosClientStateHandle,
+        cosmosContainerConfig,
+        feedRange,
+        tolerateNotFound))
+  }
+
+  //scalastyle:off method.length
+  private def readPartitionMetadataImpl
   (
     userConfig: Map[String, String],
     cosmosClientConfiguration: CosmosClientConfiguration,

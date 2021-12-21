@@ -24,29 +24,31 @@ https://github.com/Azure/azure-sdk-for-java/issues/new
 
 ### Version Compatibility
 
-| Connector     | Minimum Spark Version | Minimum Java Version | Supported Scala Versions | Supported Databricks Runtimes |
-| ------------- | --------------------- | -------------------- | -----------------------  | ----------------------------- |
-| 4.5.0         | 3.1.1                 | 8                    | 2.12                     | 8.\*, 9.\*                    |
-| 4.4.2         | 3.1.1                 | 8                    | 2.12                     | 8.\*, 9.\*                    |
-| 4.4.1         | 3.1.1                 | 8                    | 2.12                     | 8.\*, 9.\*                    |
-| 4.4.0         | 3.1.1                 | 8                    | 2.12                     | 8.\*, 9.\*                    |
-| 4.3.1         | 3.1.1                 | 8                    | 2.12                     | 8.\*, 9.\*                    |
-| 4.3.0         | 3.1.1                 | 8                    | 2.12                     | 8.\*, 9.\*                    |
-| 4.2.0         | 3.1.1                 | 8                    | 2.12                     | 8.\*                          |
-| 4.1.0         | 3.1.1                 | 8                    | 2.12                     | 8.\*                          |
-| 4.0.0         | 3.1.1                 | 8                    | 2.12                     | 8.\*                          |
-| 4.0.0-beta.3  | 3.1.1                 | 8                    | 2.12                     | 8.\*                          |
-| 4.0.0-beta.2  | 3.1.1                 | 8                    | 2.12                     | 8.\*                          |
-| 4.0.0-beta.1  | 3.1.1                 | 8                    | 2.12                     | 8.\*                          |
+| Connector     | Supported Spark Versions | Minimum Java Version | Supported Scala Versions | Supported Databricks Runtimes |
+| ------------- | ------------------------ | -------------------- | -----------------------  | ----------------------------- |
+| 4.5.2         | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.5.1         | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.5.0         | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.4.2         | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.4.1         | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.4.0         | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.3.1         | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.3.0         | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.2.0         | 3.1.1                    | 8                    | 2.12                     | 8.\*                          |
+| 4.1.0         | 3.1.1                    | 8                    | 2.12                     | 8.\*                          |
+| 4.0.0         | 3.1.1                    | 8                    | 2.12                     | 8.\*                          |
+| 4.0.0-beta.3  | 3.1.1                    | 8                    | 2.12                     | 8.\*                          |
+| 4.0.0-beta.2  | 3.1.1                    | 8                    | 2.12                     | 8.\*                          |
+| 4.0.0-beta.1  | 3.1.1                    | 8                    | 2.12                     | 8.\*                          |
 
 ### Download
 
 You can use the maven coordinate of the jar to auto install the Spark Connector to your Databricks Runtime 8 from Maven:
-`com.azure.cosmos.spark:azure-cosmos-spark_3-1_2-12:4.5.0`
+`com.azure.cosmos.spark:azure-cosmos-spark_3-1_2-12:4.5.2`
 
 You can also integrate against Cosmos DB Spark Connector in your SBT project:
 ```scala
-libraryDependencies += "com.azure.cosmos.spark" % "azure-cosmos-spark_3-1_2-12" % "4.5.0"
+libraryDependencies += "com.azure.cosmos.spark" % "azure-cosmos-spark_3-1_2-12" % "4.5.2"
 ```
 
 Cosmos DB Spark Connector is available on [Maven Central Repo](https://search.maven.org/search?q=g:com.azure.cosmos.spark).

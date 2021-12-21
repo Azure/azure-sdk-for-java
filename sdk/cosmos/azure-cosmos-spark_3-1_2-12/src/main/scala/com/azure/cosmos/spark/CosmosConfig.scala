@@ -59,6 +59,7 @@ private[spark] object CosmosConfigNames {
   val DiagnosticsMode = "spark.cosmos.diagnostics"
   val WriteBulkEnabled = "spark.cosmos.write.bulk.enabled"
   val WriteBulkMaxPendingOperations = "spark.cosmos.write.bulk.maxPendingOperations"
+  val WriteBulkMaxConcurrentPartitions = "spark.cosmos.write.bulk.maxConcurrentCosmosPartitions"
   val WritePointMaxConcurrency = "spark.cosmos.write.point.maxConcurrency"
   val WriteStrategy = "spark.cosmos.write.strategy"
   val WriteMaxRetryCount = "spark.cosmos.write.maxRetryCount"
@@ -106,6 +107,7 @@ private[spark] object CosmosConfigNames {
     DiagnosticsMode,
     WriteBulkEnabled,
     WriteBulkMaxPendingOperations,
+    WriteBulkMaxConcurrentPartitions,
     WritePointMaxConcurrency,
     WriteStrategy,
     WriteMaxRetryCount,
@@ -458,8 +460,9 @@ private object ItemWriteStrategy extends Enumeration {
 private case class CosmosWriteConfig(itemWriteStrategy: ItemWriteStrategy,
                                      maxRetryCount: Int,
                                      bulkEnabled: Boolean,
-                                     bulkMaxPendingOperations: Option[Int] = Option.empty,
-                                     pointMaxConcurrency: Option[Int] = Option.empty)
+                                     bulkMaxPendingOperations: Option[Int] = None,
+                                     pointMaxConcurrency: Option[Int] = None,
+                                     maxConcurrentCosmosPartitions: Option[Int] = None)
 
 private object CosmosWriteConfig {
   private val bulkEnabled = CosmosConfigEntry[Boolean](key = CosmosConfigNames.WriteBulkEnabled,
@@ -475,6 +478,18 @@ private object CosmosWriteConfig {
     parseFromStringFunction = bulkMaxConcurrencyAsString => bulkMaxConcurrencyAsString.toInt,
     helpMessage = s"Cosmos DB Item Write Max Pending Operations." +
       s" If not specified it will be determined based on the Spark executor VM Size")
+
+  private val bulkMaxConcurrentPartitions = CosmosConfigEntry[Int](
+    key = CosmosConfigNames.WriteBulkMaxConcurrentPartitions,
+    mandatory = false,
+    parseFromStringFunction = bulkMaxConcurrencyAsString => bulkMaxConcurrencyAsString.toInt,
+    helpMessage = s"Cosmos DB Item Write Max Concurrent Cosmos Partitions." +
+      s" If not specified it will be determined based on the number of the container's physical partitions -" +
+      s" which would indicate every Spark partition is expected to have data from all Cosmos physical partitions." +
+      s" If specified it indicates from at most how many Cosmos Physical Partitions each Spark partition contains" +
+      s" data. So this config can be used to make bulk processing more efficient when input data in Spark has been" +
+      s" repartitioned to balance to how many Cosmos partitions each Spark partition needs to write. This is mainly" +
+      s" useful for very large containers (with hundreds of physical partitions).")
 
   private val pointWriteConcurrency = CosmosConfigEntry[Int](key = CosmosConfigNames.WritePointMaxConcurrency,
     mandatory = false,
@@ -517,7 +532,8 @@ private object CosmosWriteConfig {
       maxRetryCountOpt.get,
       bulkEnabled = bulkEnabledOpt.get,
       bulkMaxPendingOperations = CosmosConfigEntry.parse(cfg, bulkMaxPendingOperations),
-      pointMaxConcurrency = CosmosConfigEntry.parse(cfg, pointWriteConcurrency))
+      pointMaxConcurrency = CosmosConfigEntry.parse(cfg, pointWriteConcurrency),
+      maxConcurrentCosmosPartitions = CosmosConfigEntry.parse(cfg, bulkMaxConcurrentPartitions))
   }
 }
 

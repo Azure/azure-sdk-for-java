@@ -13,7 +13,6 @@ import com.azure.resourcemanager.consumption.fluent.models.ReservationRecommenda
 import com.azure.resourcemanager.consumption.models.LookBackPeriod;
 import com.azure.resourcemanager.consumption.models.ReservationRecommendationDetails;
 import com.azure.resourcemanager.consumption.models.ReservationRecommendationDetailsModel;
-import com.azure.resourcemanager.consumption.models.Scope;
 import com.azure.resourcemanager.consumption.models.Term;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -32,9 +31,9 @@ public final class ReservationRecommendationDetailsImpl implements ReservationRe
     }
 
     public ReservationRecommendationDetailsModel get(
-        String billingScope, Scope scope, String region, Term term, LookBackPeriod lookBackPeriod, String product) {
+        String scope, String region, Term term, LookBackPeriod lookBackPeriod, String product) {
         ReservationRecommendationDetailsModelInner inner =
-            this.serviceClient().get(billingScope, scope, region, term, lookBackPeriod, product);
+            this.serviceClient().get(scope, region, term, lookBackPeriod, product);
         if (inner != null) {
             return new ReservationRecommendationDetailsModelImpl(inner, this.manager());
         } else {
@@ -43,15 +42,9 @@ public final class ReservationRecommendationDetailsImpl implements ReservationRe
     }
 
     public Response<ReservationRecommendationDetailsModel> getWithResponse(
-        String billingScope,
-        Scope scope,
-        String region,
-        Term term,
-        LookBackPeriod lookBackPeriod,
-        String product,
-        Context context) {
+        String scope, String region, Term term, LookBackPeriod lookBackPeriod, String product, Context context) {
         Response<ReservationRecommendationDetailsModelInner> inner =
-            this.serviceClient().getWithResponse(billingScope, scope, region, term, lookBackPeriod, product, context);
+            this.serviceClient().getWithResponse(scope, region, term, lookBackPeriod, product, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),

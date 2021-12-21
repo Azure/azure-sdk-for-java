@@ -70,17 +70,17 @@ public class NoImplInPublicAPI extends AbstractCheck {
 
     @Override
     public void visitToken(DetailAST ast) {
+        if (inImplementationClass) {
+            return;
+        }
+
         switch (ast.getType()) {
             case TokenTypes.PACKAGE_DEF:
-                String packageName = FullIdent.createFullIdentBelow(ast).getText();
+                String packageName = FullIdent.createFullIdent(ast.findFirstToken(TokenTypes.DOT)).getText();
                 inImplementationClass = packageName.contains("implementation");
                 break;
 
             case TokenTypes.IMPORT:
-                if (inImplementationClass) {
-                    return;
-                }
-
                 String importClassPath = FullIdent.createFullIdentBelow(ast).getText();
                 Matcher implementationMatch = IMPLEMENTATION_CLASS.matcher(importClassPath);
                 if (implementationMatch.matches()) {
@@ -113,10 +113,6 @@ public class NoImplInPublicAPI extends AbstractCheck {
                 break;
 
             case TokenTypes.METHOD_DEF:
-                if (inImplementationClass) {
-                    return;
-                }
-
                 // Static initializers aren't part of public API.
                 if (isInStaticInitializer(ast)) {
                     return;
