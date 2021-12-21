@@ -16,7 +16,7 @@ The benefit of this model where each `BulkWriter` can write data across all Cosm
 The client-throughput control capability in the `cosmos.oltp` data source allows you to limit the "RU budget" that can be used for a certain Spark job - the enforcement of the "RU budget" will happen client-side - so it is a best effort enforcement and no hard guarantee - but usually you will see that the average RU consumption follows the configured restrictions very well (plus/minus a few single digit percent). The client-side through put control happens across all Spark executors and the driver - so, it is a global throughput enforcement. To be able to coordinate the "RU budget" each executor can consume, a dedicated Cosmos DB container is used, to store the meta-data and balance the load and RU-usage between executors.
 
 The below sample configuration would limit the "RU budget" for a Spark job to 60% of the total provisioned throughput (manually provisioned RU or max. AutoScale RU) of the container.
-``
+```
 df \
    .write \
    .format("cosmos.oltp") \
@@ -28,7 +28,7 @@ df \
    .option("spark.cosmos.throughputControl.globalControl.container", "ThroughputControl") \
    .mode("APPEND") \
    .save()
-``
+```
 
 You can find more details about the client-throughput control feature and its configuration options here - see [Client throughput control](./ThroughputControl.md)
 
@@ -47,30 +47,30 @@ The RU-charge when inserting or updating a document in Cosmos DB depends on the 
 - [Indexing in Azure Cosmos DB - Overview](https://docs.microsoft.com/en-us/azure/cosmos-db/index-overview)
 
 Sample01: How to create a new container with default indexing policy (index all properties) in Spark
-``
+```
 %sql
 CREATE TABLE IF NOT EXISTS cosmosCatalog.SampleDatabase.ThroughputControl
 USING cosmos.oltp
 TBLPROPERTIES(partitionKeyPath = '/groupId', autoScaleMaxThroughput = '4000', indexingPolicy = 'AllProperties', defaultTtlInSeconds = '-1');
-``
+```
 
 Sample02: How to create a new container with minimal indexing policy (index only required system properties) in Spark
-``
+```
 %sql
 CREATE TABLE IF NOT EXISTS cosmosCatalog.SampleDatabase.GreenTaxiRecords
 USING cosmos.oltp
 TBLPROPERTIES(partitionKeyPath = '/id', autoScaleMaxThroughput = '100000', indexingPolicy = 'OnlySystemProperties');
-``
+```
 
 Sample03: How to create a new container with custom indexing policy in Spark
-``
+```
 myCustomIndexPolicyJson = '{"indexingMode":"consistent","automatic":true,"includedPaths":[{"path":"\/somePropertyName\/?"},{"path":"\/mypk\/?"}],"excludedPaths":[{"path":"\/*"}]}'
 spark.sql("""
 CREATE TABLE IF NOT EXISTS cosmosCatalog.SampleDatabase.TabeWithCustomIndexingPolicy
 USING cosmos.oltp
 TBLPROPERTIES(partitionKeyPath = '/id', manualThroughput = '400', indexingPolicy = '{customIndexingPolicy}');
 """.format(customIndexingPolicy = myCustomIndexPolicyJson))
-``
+```
 
 ### Creating a new container if the ingestion via the Cosmos Spark connector is for the initial migration
 
