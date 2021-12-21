@@ -188,7 +188,7 @@ public class EventHubsHealthIndicatorTests {
         prepareConsumerProperties();
         CheckpointConfig checkpoint = eventHubsConsumerProperties.getCheckpoint();
         checkpoint.setMode(CheckpointMode.BATCH);
-        EventHubsProcessorDescriptor.Batch batch = eventHubsConsumerProperties.getBatch();
+        EventProcessorClientProperties.EventBatch batch = eventHubsConsumerProperties.getBatch();
         batch.setMaxSize(10);
         batch.setMaxWaitTime(Duration.ofMillis(1));
         when(consumerDestination.getName()).thenReturn(CONSUMER_NAME);
@@ -256,7 +256,7 @@ public class EventHubsHealthIndicatorTests {
         }
     }
 
-    private class TestIntegrationRecordEventProcessingListener implements
+    private static class TestIntegrationRecordEventProcessingListener implements
         TestInstrumentationEventProcessingListener, RecordEventProcessingListener {
 
         private InstrumentationManager instrumentationManager;
@@ -285,7 +285,7 @@ public class EventHubsHealthIndicatorTests {
         }
     }
 
-    private class TestIntegrationBatchEventProcessingListener implements
+    private static class TestIntegrationBatchEventProcessingListener implements
         TestInstrumentationEventProcessingListener, BatchEventProcessingListener {
 
         private InstrumentationManager instrumentationManager;
