@@ -172,7 +172,7 @@ public class ContinuablePagedIterable<C, T, P extends ContinuablePage<C, T>> ext
         if (pagedFlux instanceof ContinuablePagedFluxCore) {
             ContinuablePagedFluxCore<C, T, P> pagedFluxCore = (ContinuablePagedFluxCore<C, T, P>) pagedFlux;
             return new ContinuablePagedByPageIterable<>(pagedFluxCore.pageRetrieverProvider.get(), continuationToken,
-                pagedFluxCore.getContinuationPredicate().negate(), preferredPageSize);
+                pagedFluxCore.getContinuationPredicate(), preferredPageSize);
         } else {
             return nonPagedFluxCoreIterableSupplier.get();
         }
@@ -182,7 +182,7 @@ public class ContinuablePagedIterable<C, T, P extends ContinuablePage<C, T>> ext
         if (pagedFlux instanceof ContinuablePagedFluxCore) {
             ContinuablePagedFluxCore<C, T, P> pagedFluxCore = (ContinuablePagedFluxCore<C, T, P>) pagedFlux;
             return new ContinuablePagedByItemIterable<>(pagedFluxCore.pageRetrieverProvider.get(), null,
-                pagedFluxCore.getContinuationPredicate().negate(), null);
+                pagedFluxCore.getContinuationPredicate(), null);
         } else {
             return this.pagedFlux.toIterable(this.batchSize);
         }

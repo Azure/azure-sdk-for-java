@@ -25,20 +25,20 @@ import java.util.function.Predicate;
 final class ContinuablePagedByItemIterable<C, T, P extends ContinuablePage<C, T>> implements Iterable<T> {
     private final PageRetriever<C, P> pageRetriever;
     private final C continuationToken;
-    private final Predicate<C> isDonePredicate;
+    private final Predicate<C> continuationPredicate;
     private final Integer preferredPageSize;
 
-    ContinuablePagedByItemIterable(PageRetriever<C, P> pageRetriever, C continuationToken, Predicate<C> isDonePredicate,
-        Integer preferredPageSize) {
+    ContinuablePagedByItemIterable(PageRetriever<C, P> pageRetriever, C continuationToken,
+        Predicate<C> continuationPredicate, Integer preferredPageSize) {
         this.pageRetriever = pageRetriever;
         this.continuationToken = continuationToken;
-        this.isDonePredicate = isDonePredicate;
+        this.continuationPredicate = continuationPredicate;
         this.preferredPageSize = preferredPageSize;
     }
 
     @Override
     public Iterator<T> iterator() {
-        return new ContinuablePagedByItemIterator<>(pageRetriever, continuationToken, isDonePredicate,
+        return new ContinuablePagedByItemIterator<>(pageRetriever, continuationToken, continuationPredicate,
             preferredPageSize);
     }
 
@@ -48,8 +48,8 @@ final class ContinuablePagedByItemIterable<C, T, P extends ContinuablePage<C, T>
         private volatile Iterator<T> currentPage;
 
         ContinuablePagedByItemIterator(PageRetriever<C, P> pageRetriever, C continuationToken,
-            Predicate<C> isDonePredicate, Integer preferredPageSize) {
-            super(pageRetriever, new ContinuationState<>(continuationToken, isDonePredicate), preferredPageSize,
+            Predicate<C> continuationPredicate, Integer preferredPageSize) {
+            super(pageRetriever, new ContinuationState<>(continuationToken, continuationPredicate), preferredPageSize,
                 new ClientLogger(ContinuablePagedByItemIterator.class));
 
             requestPage();

@@ -255,8 +255,7 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
     private Flux<P> byPage(Supplier<PageRetriever<C, P>> provider, C continuationToken, Integer pageSize) {
         return Flux.defer(() -> {
             final PageRetriever<C, P> pageRetriever = provider.get();
-            final ContinuationState<C> state = new ContinuationState<>(continuationToken,
-                getContinuationPredicate().negate());
+            final ContinuationState<C> state = new ContinuationState<>(continuationToken, getContinuationPredicate());
             return retrievePages(state, pageRetriever, pageSize);
         });
     }

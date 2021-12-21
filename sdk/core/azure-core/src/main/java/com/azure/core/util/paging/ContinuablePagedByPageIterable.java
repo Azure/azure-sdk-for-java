@@ -25,20 +25,20 @@ import java.util.function.Predicate;
 final class ContinuablePagedByPageIterable<C, T, P extends ContinuablePage<C, T>> implements Iterable<P> {
     private final PageRetriever<C, P> pageRetriever;
     private final C continuationToken;
-    private final Predicate<C> isDonePredicate;
+    private final Predicate<C> continuationPredicate;
     private final Integer preferredPageSize;
 
-    ContinuablePagedByPageIterable(PageRetriever<C, P> pageRetriever, C continuationToken, Predicate<C> isDonePredicate,
-        Integer preferredPageSize) {
+    ContinuablePagedByPageIterable(PageRetriever<C, P> pageRetriever, C continuationToken,
+        Predicate<C> continuationPredicate, Integer preferredPageSize) {
         this.pageRetriever = pageRetriever;
         this.continuationToken = continuationToken;
-        this.isDonePredicate = isDonePredicate;
+        this.continuationPredicate = continuationPredicate;
         this.preferredPageSize = preferredPageSize;
     }
 
     @Override
     public Iterator<P> iterator() {
-        return new ContinuablePagedByPageIterator<>(pageRetriever, continuationToken, isDonePredicate,
+        return new ContinuablePagedByPageIterator<>(pageRetriever, continuationToken, continuationPredicate,
             preferredPageSize);
     }
 
@@ -47,8 +47,8 @@ final class ContinuablePagedByPageIterable<C, T, P extends ContinuablePage<C, T>
         private volatile Queue<P> pages = new ConcurrentLinkedQueue<>();
 
         ContinuablePagedByPageIterator(PageRetriever<C, P> pageRetriever, C continuationToken,
-            Predicate<C> isDonePredicate, Integer preferredPageSize) {
-            super(pageRetriever, new ContinuationState<>(continuationToken, isDonePredicate), preferredPageSize,
+            Predicate<C> continuationPredicate, Integer preferredPageSize) {
+            super(pageRetriever, new ContinuationState<>(continuationToken, continuationPredicate), preferredPageSize,
                 new ClientLogger(ContinuablePagedByPageIterator.class));
 
             requestPage();
