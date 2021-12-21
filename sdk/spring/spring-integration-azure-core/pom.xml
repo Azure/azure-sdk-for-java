@@ -34,8 +34,8 @@
   </issueManagement>
 
   <properties>
-    <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.15</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.99</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.99</jacoco.min.branchcoverage>
   </properties>
 
   <dependencies>
@@ -66,6 +66,12 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <version>5.3.13</version> <!-- {x-version-update;org.springframework:spring-test;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.powermock</groupId>
       <artifactId>powermock-api-mockito2</artifactId>
       <version>2.0.9</version> <!-- {x-version-update;org.powermock:powermock-api-mockito2;external_dependency} -->
@@ -83,6 +89,12 @@
       <version>5.8.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter;external_dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>3.21.0</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -96,9 +108,6 @@
             <bannedDependencies>
               <includes>
                 <include>org.springframework.integration:spring-integration-core:[5.5.6]</include> <!-- {x-include-update;org.springframework.integration:spring-integration-core;external_dependency} -->
-                <include>org.mockito:mockito-core:[4.0.0]</include> <!-- {x-include-update;org.mockito:mockito-core;external_dependency} -->
-                <include>org.powermock:powermock-api-mockito2:[2.0.9]</include> <!-- {x-include-update;org.powermock:powermock-api-mockito2;external_dependency} -->
-                <include>org.powermock:powermock-module-junit4:[2.0.9]</include> <!-- {x-include-update;org.powermock:powermock-module-junit4;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

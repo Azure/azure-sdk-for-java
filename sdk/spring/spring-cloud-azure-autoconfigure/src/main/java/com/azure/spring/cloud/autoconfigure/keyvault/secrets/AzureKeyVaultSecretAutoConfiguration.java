@@ -66,7 +66,7 @@ public class AzureKeyVaultSecretAutoConfiguration extends AzureServiceConfigurat
         ObjectProvider<AzureServiceClientBuilderCustomizer<SecretClientBuilder>> customizers) {
         SecretClientBuilderFactory factory = new SecretClientBuilderFactory(properties);
 
-        factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_KEY_VAULT);
+        factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_KEY_VAULT_SECRETS);
         customizers.orderedStream().forEach(factory::addBuilderCustomizer);
         return factory;
     }

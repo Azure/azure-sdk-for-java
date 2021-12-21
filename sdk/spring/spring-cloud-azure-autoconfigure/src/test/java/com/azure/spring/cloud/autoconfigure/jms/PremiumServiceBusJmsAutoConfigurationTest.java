@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 
+import static com.azure.spring.core.AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS;
+import static com.azure.spring.core.AzureSpringIdentifier.VERSION;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class PremiumServiceBusJmsAutoConfigurationTest extends AbstractServiceBusJmsAutoConfigurationTest {
@@ -37,4 +39,19 @@ class PremiumServiceBusJmsAutoConfigurationTest extends AbstractServiceBusJmsAut
                           .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusJmsProperties.class));
     }
 
+    @Test
+    void connectionFactoryPropertiesConfigured() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.jms.servicebus.connection-string=" + CONNECTION_STRING,
+                "spring.jms.servicebus.pricing-tier=premium")
+            .run(context -> {
+                assertThat(context).hasSingleBean(SpringServiceBusJmsConnectionFactory.class);
+                SpringServiceBusJmsConnectionFactory factory = context
+                    .getBean(SpringServiceBusJmsConnectionFactory.class);
+                assertThat(factory).as("User agent should be configured correctly.")
+                    .hasFieldOrPropertyWithValue("customUserAgent", AZURE_SPRING_SERVICE_BUS + VERSION);
+                assertThat(factory.getSettings()).isNotNull();
+            });
+    }
 }

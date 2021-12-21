@@ -3,8 +3,6 @@
 
 package com.azure.spring.core.resource;
 
-import java.io.FileNotFoundException;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,6 +12,11 @@ import org.springframework.core.io.ProtocolResolver;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.WritableResource;
 
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.azure.spring.core.resource.AzureStorageUtils.getStorageProtocolPrefix;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -47,13 +50,24 @@ public abstract class AbstractAzureStorageProtocolResolverTest {
     protected abstract StorageType getStorageType();
 
     protected Resource getResource(String location) {
-        return resourceLoader.getResource(AzureStorageUtils.getStorageProtocolPrefix(getStorageType()) + location);
+        return resourceLoader.getResource(getStorageProtocolPrefix(getStorageType()) + location);
     }
 
     protected WritableResource getWritableResource(String location) {
         Resource resource = getResource(location);
         assertTrue(resource instanceof WritableResource);
         return (WritableResource) resource;
+    }
+
+    protected Resource[] getResources(String... locations) {
+        List<Resource> resources = new ArrayList<>();
+        for (String location : locations) {
+            Resource resource = resourceLoader.getResource(location);
+            if (resource instanceof WritableResource) {
+                resources.add(resource);
+            }
+        }
+        return resources.toArray(new Resource[0]);
     }
 
     @Test

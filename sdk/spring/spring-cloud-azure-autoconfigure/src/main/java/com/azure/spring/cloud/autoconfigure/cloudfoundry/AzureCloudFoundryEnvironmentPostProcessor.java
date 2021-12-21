@@ -6,7 +6,7 @@ package com.azure.spring.cloud.autoconfigure.cloudfoundry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.context.config.ConfigFileApplicationListener;
+import org.springframework.boot.context.config.ConfigDataEnvironmentPostProcessor;
 import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.boot.json.JsonParser;
 import org.springframework.boot.json.JsonParserFactory;
@@ -34,7 +34,7 @@ public class AzureCloudFoundryEnvironmentPostProcessor implements EnvironmentPos
 
     private static final JsonParser PARSER = JsonParserFactory.getJsonParser();
 
-    private static final int ORDER = ConfigFileApplicationListener.DEFAULT_ORDER - 1;
+    private static final int ORDER = ConfigDataEnvironmentPostProcessor.ORDER - 1;
 
     @SuppressWarnings("unchecked")
     private static Properties retrieveCfProperties(Map<String, Object> vcapMap, AzureCfService azureCfService) {
@@ -66,7 +66,7 @@ public class AzureCloudFoundryEnvironmentPostProcessor implements EnvironmentPos
 
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
-        if (!StringUtils.isEmpty(environment.getProperty(VCAP_SERVICES_ENVVAR))) {
+        if (StringUtils.hasText(environment.getProperty(VCAP_SERVICES_ENVVAR))) {
             Map<String, Object> vcapMap = PARSER.parseMap(environment.getProperty(VCAP_SERVICES_ENVVAR));
 
             Properties azureCfServiceProperties = new Properties();

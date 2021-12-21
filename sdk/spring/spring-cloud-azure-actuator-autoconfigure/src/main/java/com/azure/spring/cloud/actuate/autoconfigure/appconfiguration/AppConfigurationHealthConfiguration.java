@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Configuration class of App Configuration Health
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @ConditionalOnClass({ ConfigurationAsyncClient.class, HealthIndicator.class })
 @ConditionalOnBean(ConfigurationAsyncClient.class)
 @AutoConfigureAfter(AzureAppConfigurationAutoConfiguration.class)
