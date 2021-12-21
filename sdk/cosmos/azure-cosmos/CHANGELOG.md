@@ -7,6 +7,7 @@
 
 #### Key Bug Fixes
 * Fixed issue causing CosmosException with statusCode 0 to be thrown on connectivity issues for Gateway.
+* Addressed potential race condition in `ChangeFeedProcessor` when check-pointing current state.
 
 ### 4.23.0 (2021-12-10)
 #### Features Added
