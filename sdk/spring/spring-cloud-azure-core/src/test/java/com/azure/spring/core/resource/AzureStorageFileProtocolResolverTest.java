@@ -10,11 +10,15 @@ import com.azure.storage.file.share.StorageFileInputStream;
 import com.azure.storage.file.share.StorageFileOutputStream;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.core.io.ProtocolResolver;
+import org.springframework.core.io.Resource;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -22,6 +26,9 @@ class AzureStorageFileProtocolResolverTest extends AbstractAzureStorageProtocolR
 
     private ShareServiceClient shareServiceClient;
     private ConfigurableListableBeanFactory beanFactory;
+    private ShareClient shareClient;
+    private ShareFileClient shareFileClient;
+
 
     @Override
     protected ProtocolResolver createInstance() {
@@ -39,8 +46,8 @@ class AzureStorageFileProtocolResolverTest extends AbstractAzureStorageProtocolR
         // mock sdk client to return an existing blob information
         this.shareServiceClient = mock(ShareServiceClient.class);
 
-        ShareClient shareClient = mock(ShareClient.class);
-        ShareFileClient shareFileClient = mock(ShareFileClient.class);
+        shareClient = mock(ShareClient.class);
+        shareFileClient = mock(ShareFileClient.class);
 
         when(shareServiceClient.getShareClient(eq(CONTAINER_NAME))).thenReturn(shareClient);
         when(shareClient.getFileClient(eq(EXISTING_ITEM_NAME))).thenReturn(shareFileClient);
@@ -79,5 +86,25 @@ class AzureStorageFileProtocolResolverTest extends AbstractAzureStorageProtocolR
     @Override
     protected StorageType getStorageType() {
         return StorageType.FILE;
+    }
+
+    @Test
+    void protocolPatternMatched() {
+        when(shareServiceClient.getShareClient(anyString())).thenReturn(shareClient);
+        when(shareClient.getFileClient(anyString())).thenReturn(shareFileClient);
+
+        String[] locations = new String[] {"azure-file://test/test", "azure-file://test/test2"};
+        Resource[] resources = getResources(locations);
+        assertEquals(locations.length, resources.length, "Correct number of resources found");
+    }
+
+    @Test
+    void protocolPatternNotMatched() {
+        when(shareServiceClient.getShareClient(anyString())).thenReturn(shareClient);
+        when(shareClient.getFileClient(anyString())).thenReturn(shareFileClient);
+
+        String[] locations = new String[]{"azurefile:test/test", "otherfile:test/test2"};
+        Resource[] resources = getResources(locations);
+        assertEquals(0, resources.length, "No resolved resources found");
     }
 }

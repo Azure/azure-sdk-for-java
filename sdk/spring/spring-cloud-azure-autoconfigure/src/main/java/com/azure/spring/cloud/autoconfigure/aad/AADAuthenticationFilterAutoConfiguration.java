@@ -35,7 +35,7 @@ import java.util.concurrent.TimeUnit;
  * A stateless filter {@link AADAppRoleStatelessAuthenticationFilter} will be auto-configured by specifying {@literal
  * spring.cloud.azure.active-directory.session-stateless=true}. Otherwise, {@link AADAuthenticationFilter} will be configured.
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @ConditionalOnWebApplication
 @ConditionalOnExpression("${spring.cloud.azure.active-directory.enabled:false}")
 @ConditionalOnMissingClass({ "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken" })

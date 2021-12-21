@@ -32,15 +32,9 @@ class EventHubsInboundAdapterTest {
                                                     .map(p -> MessageBuilder.withPayload(p).build())
                                                     .collect(Collectors.toList());
 
-
     @BeforeEach
     void setUp() {
         EventHubsProcessorContainer processorsContainer = mock(EventHubsProcessorContainer.class);
-        //        EventProcessorClient processorClient = mock(EventProcessorClient.class);
-        //        when(processorsContainer.subscribe(eventHub, consumerGroup, processorProperties)).thenReturn
-        //        (processorClient);
-        //
-
         this.adapter = new TestEventHubsInboundChannelAdapter(processorsContainer, this.eventHub, this.consumerGroup,
             new CheckpointConfig());
     }
