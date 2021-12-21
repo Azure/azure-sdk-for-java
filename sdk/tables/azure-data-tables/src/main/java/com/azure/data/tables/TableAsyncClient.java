@@ -93,8 +93,6 @@ import static com.azure.data.tables.implementation.TableUtils.toTableServiceErro
 @ServiceClient(builder = TableClientBuilder.class, isAsync = true)
 public final class TableAsyncClient {
     private static final String DELIMITER_CONTINUATION_TOKEN = ";";
-    private static final String DO_NOT_ESCAPE_SINGLE_QUOTES =
-        "AZURE_DATA_TABLES_DO_NOT_ESCAPE_SINGLE_QUOTES_IN_PARTITION_OR_ROW_KEYS";
     private final ClientLogger logger = new ClientLogger(TableAsyncClient.class);
     private final String tableName;
     private final AzureTableImpl tablesImplementation;
@@ -1346,7 +1344,6 @@ public final class TableAsyncClient {
             return null;
         }
 
-        return Configuration.getGlobalConfiguration().get(DO_NOT_ESCAPE_SINGLE_QUOTES, false) ? input
-            : input.replace("'", "''");
+        return input.replace("'", "''");
     }
 }
