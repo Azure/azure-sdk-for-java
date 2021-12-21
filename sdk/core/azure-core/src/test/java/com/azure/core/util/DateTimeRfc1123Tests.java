@@ -53,4 +53,22 @@ public class DateTimeRfc1123Tests {
         // Invalid RFC1123 date time format
         assertThrows(DateTimeException.class, () -> new DateTimeRfc1123("00 Jan 1970 00:00:00 GMT"));
     }
+
+    @Test
+    public void toRfc1123String() {
+        // Epoch instant 
+        OffsetDateTime instantDate = OffsetDateTime.ofInstant(Instant.EPOCH, ZoneOffset.UTC);
+        String dateString = RFC1123_DATE_TIME_FORMATTER.format(instantDate);
+        assertEquals(dateString, DateTimeRfc1123.toRFC1123String(instantDate));
+
+        //Random anytime
+        instantDate = OffsetDateTime.now();
+        dateString = RFC1123_DATE_TIME_FORMATTER.format(instantDate);
+        assertEquals(dateString, DateTimeRfc1123.toRFC1123String(instantDate));
+
+        // zero pad verified
+        String date1 = "Wed, 01 Dec 2021 01:01:01 GMT";
+        assertEquals(date1,
+            DateTimeRfc1123.toRFC1123String(OffsetDateTime.parse(date1, DateTimeFormatter.RFC_1123_DATE_TIME)));
+    }
 }
