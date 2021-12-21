@@ -42,7 +42,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @see MessageListenerContainer
  * @see ListenerContainerFactory
  */
-class AzureListenerEndpointRegistry
+public class AzureListenerEndpointRegistry
     implements DisposableBean, SmartLifecycle, ApplicationContextAware, ApplicationListener<ContextRefreshedEvent> {
     private static final Logger LOG = LoggerFactory.getLogger(AzureListenerEndpointRegistry.class);
 

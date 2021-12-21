@@ -20,7 +20,7 @@ import org.springframework.util.Assert;
  *
  * @author Warren Zhu
  */
-class AzureListenerEndpointRegistrar implements BeanFactoryAware, InitializingBean {
+public class AzureListenerEndpointRegistrar implements BeanFactoryAware, InitializingBean {
 
     private final List<AzureListenerEndpointDescriptor> endpointDescriptors = new ArrayList<>();
     @Nullable
