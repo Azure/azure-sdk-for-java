@@ -1750,6 +1750,8 @@ public final class TableAsyncClient {
         }
     }
 
+    // Single quotes in OData queries should be escaped by using two consecutive single quotes characters.
+    // Source: http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part2-url-conventions.html#sec_URLSyntax.
     private String escapeSingleQuotes(String input) {
         if (input == null) {
             return null;

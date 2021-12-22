@@ -61,6 +61,8 @@ public abstract class TableClientTestBase extends TestBase {
     @Test
     public abstract void createEntityWithAllSupportedDataTypes();
 
+    // Support for subclassing TableEntity was removed for the time being, although having it back is not 100%
+    // discarded. -vicolina
     /*@Test
     public abstract void createEntitySubclass();*/
 
@@ -109,6 +111,8 @@ public abstract class TableClientTestBase extends TestBase {
     @Test
     public abstract void getEntityWithResponseWithSelect();
 
+    // Support for subclassing TableEntity was removed for the time being, although having it back is not 100%
+    // discarded. -vicolina
     /*@Test
     public abstract void getEntityWithResponseSubclass();*/
 
@@ -124,6 +128,8 @@ public abstract class TableClientTestBase extends TestBase {
     @Test
     public abstract void updateEntityWithResponseMerge();
 
+    // Support for subclassing TableEntity was removed for the time being, although having it back is not 100%
+    // discarded. -vicolina
     /*@Test
     public abstract void updateEntityWithResponseSubclass();*/
 
@@ -145,6 +151,8 @@ public abstract class TableClientTestBase extends TestBase {
     @Test
     public abstract void listEntitiesWithTop();
 
+    // Support for subclassing TableEntity was removed for the time being, although having it back is not 100%
+    // discarded. -vicolina
     /*@Test
     public abstract void listEntitiesSubclass();*/
 

@@ -193,7 +193,8 @@ public class TableAsyncClientTest extends TableClientTestBase {
             .verify();
     }
 
-    // Will not be supporting subclasses of TableEntity for the time being.
+    // Support for subclassing TableEntity was removed for the time being, although having it back is not 100%
+    // discarded. -vicolina
     /*@Test
     public void createEntitySubclass() {
         // Arrange
@@ -466,7 +467,8 @@ public class TableAsyncClientTest extends TableClientTestBase {
         updateEntityWithResponseAsync(TableEntityUpdateMode.REPLACE, "partitionKey", "row'Key");
     }
 
-    // Will not be supporting subclasses of TableEntity for the time being.
+    // Support for subclassing TableEntity was removed for the time being, although having it back is not 100%
+    // discarded. -vicolina
     /*@Test
     public void getEntityWithResponseSubclass() {
         // Arrange
@@ -575,7 +577,8 @@ public class TableAsyncClientTest extends TableClientTestBase {
             .verifyComplete();
     }
 
-    // Will not be supporting subclasses of TableEntity for the time being.
+    // Support for subclassing TableEntity was removed for the time being, although having it back is not 100%
+    // discarded. -vicolina
     /*@Test
     public void updateEntityWithResponseSubclass() {
         // Arrange
@@ -702,7 +705,8 @@ public class TableAsyncClientTest extends TableClientTestBase {
             .verify();
     }
 
-    // Will not be supporting subclasses of TableEntity for the time being.
+    // Support for subclassing TableEntity was removed for the time being, although having it back is not 100%
+    // discarded. -vicolina
     /*@Test
     public void listEntitiesSubclass() {
         // Arrange

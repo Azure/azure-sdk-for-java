@@ -167,7 +167,8 @@ public class TableClientTest extends TableClientTestBase {
         assertTrue(properties.get("StringTypeProperty") instanceof String);
     }
 
-    // Will not be supporting subclasses of TableEntity for the time being.
+    // Support for subclassing TableEntity was removed for the time being, although having it back is not 100%
+    // discarded. -vicolina
     /*@Test
     public void createEntitySubclass() {
         // Arrange
@@ -416,7 +417,8 @@ public class TableClientTest extends TableClientTestBase {
             testResourceNamer.randomName("row'Key", 20));
     }
 
-    // Will not be supporting subclasses of TableEntity for the time being.
+    // Support for subclassing TableEntity was removed for the time being, although having it back is not 100%
+    // discarded. -vicolina
     /*@Test
     public void getEntityWithResponseSubclass() {
         // Arrange
@@ -520,7 +522,8 @@ public class TableClientTest extends TableClientTestBase {
         assertEquals(expectOldProperty, properties.containsKey(oldPropertyKey));
     }
 
-    // Will not be supporting subclasses of TableEntity for the time being.
+    // Support for subclassing TableEntity was removed for the time being, although having it back is not 100%
+    // discarded. -vicolina
     /*@Test
     public void updateEntityWithResponseSubclass() {
         // Arrange
@@ -644,7 +647,8 @@ public class TableClientTest extends TableClientTestBase {
         assertEquals(2, iterator.next().getValue().size());
     }
 
-    // Will not be supporting subclasses of TableEntity for the time being.
+    // Support for subclassing TableEntity was removed for the time being, although having it back is not 100%
+    // discarded. -vicolina
     /*@Test
     public void listEntitiesSubclass() {
         // Arrange
