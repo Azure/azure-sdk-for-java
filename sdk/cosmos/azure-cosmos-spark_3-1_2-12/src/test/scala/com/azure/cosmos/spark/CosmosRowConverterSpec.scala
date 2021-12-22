@@ -459,7 +459,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     val row = new GenericRowWithSchema(
       Array(
         colVal1, colVal2, colVal3, colVal4, colVal5, colVal6, colVal7, colVal8,
-        colVal9, colVal10, colVal11, colVal12, colVal13, colVal14, colVal15, colVal16,
+        colVal9, colVal10, colVal11, colVal12, colVal13, colVal14, colVal15, colVal16
       ),
       StructType(Seq(
         StructField(colName1, DoubleType),
