@@ -305,7 +305,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery image definition that you want to create or update.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<GalleryImageInner>, GalleryImageInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String galleryName, String galleryImageName, GalleryImageInner galleryImage) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -313,7 +313,11 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
         return this
             .client
             .<GalleryImageInner, GalleryImageInner>getLroResult(
-                mono, this.client.getHttpPipeline(), GalleryImageInner.class, GalleryImageInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                GalleryImageInner.class,
+                GalleryImageInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -331,7 +335,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery image definition that you want to create or update.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<GalleryImageInner>, GalleryImageInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String galleryName,
@@ -361,7 +365,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery image definition that you want to create or update.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GalleryImageInner>, GalleryImageInner> beginCreateOrUpdate(
         String resourceGroupName, String galleryName, String galleryImageName, GalleryImageInner galleryImage) {
         return beginCreateOrUpdateAsync(resourceGroupName, galleryName, galleryImageName, galleryImage).getSyncPoller();
@@ -382,7 +386,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery image definition that you want to create or update.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GalleryImageInner>, GalleryImageInner> beginCreateOrUpdate(
         String resourceGroupName,
         String galleryName,
@@ -631,7 +635,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery image definition that you want to create or update.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<GalleryImageInner>, GalleryImageInner> beginUpdateAsync(
         String resourceGroupName, String galleryName, String galleryImageName, GalleryImageUpdate galleryImage) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -639,7 +643,11 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
         return this
             .client
             .<GalleryImageInner, GalleryImageInner>getLroResult(
-                mono, this.client.getHttpPipeline(), GalleryImageInner.class, GalleryImageInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                GalleryImageInner.class,
+                GalleryImageInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -657,7 +665,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery image definition that you want to create or update.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<GalleryImageInner>, GalleryImageInner> beginUpdateAsync(
         String resourceGroupName,
         String galleryName,
@@ -687,7 +695,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery image definition that you want to create or update.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GalleryImageInner>, GalleryImageInner> beginUpdate(
         String resourceGroupName, String galleryName, String galleryImageName, GalleryImageUpdate galleryImage) {
         return beginUpdateAsync(resourceGroupName, galleryName, galleryImageName, galleryImage).getSyncPoller();
@@ -708,7 +716,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery image definition that you want to create or update.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GalleryImageInner>, GalleryImageInner> beginUpdate(
         String resourceGroupName,
         String galleryName,
@@ -1098,14 +1106,15 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String galleryName, String galleryImageName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, galleryName, galleryImageName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1120,7 +1129,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String galleryName, String galleryImageName, Context context) {
         context = this.client.mergeContext(context);
@@ -1142,7 +1151,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String galleryName, String galleryImageName) {
         return beginDeleteAsync(resourceGroupName, galleryName, galleryImageName).getSyncPoller();
@@ -1160,7 +1169,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String galleryName, String galleryImageName, Context context) {
         return beginDeleteAsync(resourceGroupName, galleryName, galleryImageName, context).getSyncPoller();

@@ -48,7 +48,7 @@ public class JsonConfigurationParserTest {
         ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue(jsonText);
 
         HashMap<String, Object> settings = JsonConfigurationParser.parseJsonSetting(setting);
-        assertEquals(11, settings.size());
+        assertEquals(13, settings.size());
     }
 
     @Test
@@ -59,7 +59,7 @@ public class JsonConfigurationParserTest {
 
         JsonConfigurationParser.parseSetting(currentKey, json, settings);
 
-        assertEquals(11, settings.size());
+        assertEquals(13, settings.size());
     }
 
 }

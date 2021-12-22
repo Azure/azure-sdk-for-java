@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
+import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal}
 import com.azure.cosmos.models.{CosmosParameterizedQuery, SqlParameter, SqlQuerySpec}
 import com.azure.cosmos.spark.CosmosPredicates.requireNotNull
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, LoggerHelper}
@@ -29,10 +29,10 @@ private case class ItemsScan(session: SparkSession,
   @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
   log.logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
-  val clientConfiguration = CosmosClientConfiguration.apply(config, readConfig.forceEventualConsistency)
-  val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
-  val partitioningConfig = CosmosPartitioningConfig.parseCosmosPartitioningConfig(config)
-  val defaultMinPartitionCount = 1 + (2 * session.sparkContext.defaultParallelism)
+  private val clientConfiguration = CosmosClientConfiguration.apply(config, readConfig.forceEventualConsistency)
+  private val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
+  private val partitioningConfig = CosmosPartitioningConfig.parseCosmosPartitioningConfig(config)
+  private val defaultMinPartitionCount = 1 + (2 * session.sparkContext.defaultParallelism)
 
   override def description(): String = {
     s"""Cosmos ItemsScan: ${containerConfig.database}.${containerConfig.container}
@@ -71,19 +71,35 @@ private case class ItemsScan(session: SparkSession,
       containerConfig
     )
 
-    val client =
-      CosmosClientCache.apply(clientConfiguration, Some(cosmosClientStateHandle))
-    val container = ThroughputControlHelper.getContainer(config, containerConfig, client)
-    SparkUtils.safeOpenConnectionInitCaches(container, log)
+    Loan(CosmosClientCache.apply(
+      clientConfiguration,
+      Some(cosmosClientStateHandle),
+      s"ItemsScan($description()).planInputPartitions"
+    ))
+      .to(clientCacheItem => {
+        val container = ThroughputControlHelper
+          .getContainer(config, containerConfig, clientCacheItem.client)
+        SparkUtils.safeOpenConnectionInitCaches(container, log)
 
-    CosmosPartitionPlanner.createInputPartitions(
-      partitioningConfig,
-      container,
-      partitionMetadata,
-      defaultMinPartitionCount,
-      CosmosPartitionPlanner.DefaultPartitionSizeInMB,
-      ReadLimit.allAvailable()
-    ).map(_.asInstanceOf[InputPartition])
+        val cosmosInputPartitions =CosmosPartitionPlanner.createInputPartitions(
+          partitioningConfig,
+          container,
+          partitionMetadata,
+          defaultMinPartitionCount,
+          CosmosPartitionPlanner.DefaultPartitionSizeInMB,
+          ReadLimit.allAvailable()
+        )
+
+        val effectiveCosmosInputPartitions = partitioningConfig.feedRangeFiler match {
+          case Some(epkRangesInScope) => cosmosInputPartitions
+            .filter(cosmosInputPartition => {
+              epkRangesInScope.exists(epk => SparkBridgeImplementationInternal.doRangesOverlap(epk, cosmosInputPartition.feedRange))
+            })
+          case None => cosmosInputPartitions
+        }
+
+        effectiveCosmosInputPartitions.map(_.asInstanceOf[InputPartition])
+      })
   }
 
   override def createReaderFactory(): PartitionReaderFactory = {

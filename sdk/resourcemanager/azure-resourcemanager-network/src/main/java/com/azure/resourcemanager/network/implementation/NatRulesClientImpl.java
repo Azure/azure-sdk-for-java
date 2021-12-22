@@ -177,7 +177,7 @@ public final class NatRulesClientImpl implements NatRulesClient {
         if (natRuleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter natRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -232,7 +232,7 @@ public final class NatRulesClientImpl implements NatRulesClient {
         if (natRuleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter natRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -348,7 +348,7 @@ public final class NatRulesClientImpl implements NatRulesClient {
         } else {
             natRuleParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -415,7 +415,7 @@ public final class NatRulesClientImpl implements NatRulesClient {
         } else {
             natRuleParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -443,7 +443,7 @@ public final class NatRulesClientImpl implements NatRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnGatewayNatRule Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VpnGatewayNatRuleInner>, VpnGatewayNatRuleInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String gatewayName, String natRuleName, VpnGatewayNatRuleInner natRuleParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -455,7 +455,7 @@ public final class NatRulesClientImpl implements NatRulesClient {
                 this.client.getHttpPipeline(),
                 VpnGatewayNatRuleInner.class,
                 VpnGatewayNatRuleInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -471,7 +471,7 @@ public final class NatRulesClientImpl implements NatRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnGatewayNatRule Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VpnGatewayNatRuleInner>, VpnGatewayNatRuleInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String gatewayName,
@@ -503,7 +503,7 @@ public final class NatRulesClientImpl implements NatRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnGatewayNatRule Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VpnGatewayNatRuleInner>, VpnGatewayNatRuleInner> beginCreateOrUpdate(
         String resourceGroupName, String gatewayName, String natRuleName, VpnGatewayNatRuleInner natRuleParameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, gatewayName, natRuleName, natRuleParameters).getSyncPoller();
@@ -522,7 +522,7 @@ public final class NatRulesClientImpl implements NatRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnGatewayNatRule Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VpnGatewayNatRuleInner>, VpnGatewayNatRuleInner> beginCreateOrUpdate(
         String resourceGroupName,
         String gatewayName,
@@ -655,7 +655,7 @@ public final class NatRulesClientImpl implements NatRulesClient {
         if (natRuleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter natRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -710,7 +710,7 @@ public final class NatRulesClientImpl implements NatRulesClient {
         if (natRuleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter natRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -736,13 +736,14 @@ public final class NatRulesClientImpl implements NatRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String gatewayName, String natRuleName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, gatewayName, natRuleName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -757,7 +758,7 @@ public final class NatRulesClientImpl implements NatRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String gatewayName, String natRuleName, Context context) {
         context = this.client.mergeContext(context);
@@ -779,7 +780,7 @@ public final class NatRulesClientImpl implements NatRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String gatewayName, String natRuleName) {
         return beginDeleteAsync(resourceGroupName, gatewayName, natRuleName).getSyncPoller();
@@ -797,7 +798,7 @@ public final class NatRulesClientImpl implements NatRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String gatewayName, String natRuleName, Context context) {
         return beginDeleteAsync(resourceGroupName, gatewayName, natRuleName, context).getSyncPoller();
@@ -903,7 +904,7 @@ public final class NatRulesClientImpl implements NatRulesClient {
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -962,7 +963,7 @@ public final class NatRulesClientImpl implements NatRulesClient {
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

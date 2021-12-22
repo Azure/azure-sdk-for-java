@@ -16,6 +16,7 @@ class SparkE2EWriteITest
 
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number
+  //scalastyle:off null
 
   private case class UpsertParameterTest(bulkEnabled: Boolean, itemWriteStrategy: ItemWriteStrategy, hasId: Boolean = true)
 
@@ -34,7 +35,8 @@ class SparkE2EWriteITest
       val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
         "spark.cosmos.accountKey" -> cosmosMasterKey,
         "spark.cosmos.database" -> cosmosDatabase,
-        "spark.cosmos.container" -> cosmosContainer
+        "spark.cosmos.container" -> cosmosContainer,
+        "spark.cosmos.serialization.inclusionMode" -> "NonDefault"
       )
 
       val cfgOverwrite = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
@@ -42,7 +44,8 @@ class SparkE2EWriteITest
         "spark.cosmos.database" -> cosmosDatabase,
         "spark.cosmos.container" -> cosmosContainer,
         "spark.cosmos.write.strategy" -> itemWriteStrategy.toString,
-        "spark.cosmos.write.bulk.enabled" -> bulkEnabled.toString
+        "spark.cosmos.write.bulk.enabled" -> bulkEnabled.toString,
+        "spark.cosmos.serialization.inclusionMode" -> "NonDefault"
       )
 
       val newSpark = getSpark()
@@ -55,16 +58,16 @@ class SparkE2EWriteITest
       // scalastyle:on import.grouping
 
       val df = Seq(
-        ("Quark", "Quark", "Red", 1.0 / 2)
-      ).toDF("particle name", "id", "color", "spin")
+        ("Quark", "Quark", "Red", 1.0 / 2, "")
+      ).toDF("particle name", "id", "color", "spin", "empty")
 
       df.write.format("cosmos.oltp").mode("Append").options(cfg).save()
 
       val overwriteDf = Seq(
-        ("Quark", "Quark", "green", "Yes"),
-        ("Boson", "Boson", "", "")
+        ("Quark", "Quark", "green", "Yes", ""),
+        ("Boson", "Boson", "", "", "")
 
-      ).toDF("particle name", if (hasId) "id" else "no-id", "color", "color charge")
+      ).toDF("particle name", if (hasId) "id" else "no-id", "color", "color charge", "empty")
 
 
       try {
@@ -89,7 +92,8 @@ class SparkE2EWriteITest
       bosons should have size 1
       val boson = bosons(0)
       boson.get("id").asText() shouldEqual "Boson"
-      boson.get("color").asText() shouldEqual ""
+      boson.get("color") shouldEqual null
+      boson.get("empty") shouldEqual null
 
       // the item with the same id/pk will be persisted based on the upsert config
       val quarks = queryItems("SELECT * FROM r where r.id = 'Quark'").toArray
@@ -99,6 +103,7 @@ class SparkE2EWriteITest
       quark.get("particle name").asText() shouldEqual "Quark"
       quark.get("id").asText() shouldEqual "Quark"
       quark.get("color").asText() shouldEqual (if (itemWriteStrategy == ItemOverwrite) "green" else "Red")
+      quark.get("empty") shouldEqual null
 
       quark.has("spin") shouldEqual !(itemWriteStrategy == ItemOverwrite)
       if (!(itemWriteStrategy == ItemOverwrite)) {
@@ -315,4 +320,5 @@ class SparkE2EWriteITest
   }
   //scalastyle:on magic.number
   //scalastyle:on multiple.string.literals
+  //scalastyle:on null
 }

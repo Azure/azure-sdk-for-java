@@ -62,12 +62,18 @@ public abstract class SecretClientTestBase extends TestBase {
     }
 
     HttpPipeline getHttpPipeline(HttpClient httpClient) {
+        return getHttpPipeline(httpClient, null);
+    }
+
+    HttpPipeline getHttpPipeline(HttpClient httpClient, String testTenantId) {
         TokenCredential credential = null;
 
         if (!interceptorManager.isPlaybackMode()) {
             String clientId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_ID");
             String clientKey = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_SECRET");
-            String tenantId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_TENANT_ID");
+            String tenantId = testTenantId == null
+                ? Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_TENANT_ID")
+                : testTenantId;
             Objects.requireNonNull(clientId, "The client id cannot be null");
             Objects.requireNonNull(clientKey, "The client key cannot be null");
             Objects.requireNonNull(tenantId, "The tenant id cannot be null");

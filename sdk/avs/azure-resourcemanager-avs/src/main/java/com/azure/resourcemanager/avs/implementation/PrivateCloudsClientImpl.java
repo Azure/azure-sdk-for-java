@@ -797,7 +797,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private cloud resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateCloudInner>, PrivateCloudInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String privateCloudName, PrivateCloudInner privateCloud) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -820,7 +820,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private cloud resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateCloudInner>, PrivateCloudInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String privateCloudName, PrivateCloudInner privateCloud, Context context) {
         context = this.client.mergeContext(context);
@@ -843,7 +843,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private cloud resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateCloudInner>, PrivateCloudInner> beginCreateOrUpdate(
         String resourceGroupName, String privateCloudName, PrivateCloudInner privateCloud) {
         return beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, privateCloud).getSyncPoller();
@@ -861,7 +861,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private cloud resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateCloudInner>, PrivateCloudInner> beginCreateOrUpdate(
         String resourceGroupName, String privateCloudName, PrivateCloudInner privateCloud, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, privateCloud, context).getSyncPoller();
@@ -1064,7 +1064,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private cloud resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateCloudInner>, PrivateCloudInner> beginUpdateAsync(
         String resourceGroupName, String privateCloudName, PrivateCloudUpdate privateCloudUpdate) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1087,7 +1087,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private cloud resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateCloudInner>, PrivateCloudInner> beginUpdateAsync(
         String resourceGroupName, String privateCloudName, PrivateCloudUpdate privateCloudUpdate, Context context) {
         context = this.client.mergeContext(context);
@@ -1110,7 +1110,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private cloud resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateCloudInner>, PrivateCloudInner> beginUpdate(
         String resourceGroupName, String privateCloudName, PrivateCloudUpdate privateCloudUpdate) {
         return beginUpdateAsync(resourceGroupName, privateCloudName, privateCloudUpdate).getSyncPoller();
@@ -1128,7 +1128,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private cloud resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateCloudInner>, PrivateCloudInner> beginUpdate(
         String resourceGroupName, String privateCloudName, PrivateCloudUpdate privateCloudUpdate, Context context) {
         return beginUpdateAsync(resourceGroupName, privateCloudName, privateCloudUpdate, context).getSyncPoller();
@@ -1314,7 +1314,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String privateCloudName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, privateCloudName);
         return this
@@ -1333,7 +1333,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String privateCloudName, Context context) {
         context = this.client.mergeContext(context);
@@ -1353,7 +1353,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateCloudName) {
         return beginDeleteAsync(resourceGroupName, privateCloudName).getSyncPoller();
     }
@@ -1369,7 +1369,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateCloudName, Context context) {
         return beginDeleteAsync(resourceGroupName, privateCloudName, context).getSyncPoller();
@@ -1545,7 +1545,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRotateVcenterPasswordAsync(
         String resourceGroupName, String privateCloudName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1566,7 +1566,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRotateVcenterPasswordAsync(
         String resourceGroupName, String privateCloudName, Context context) {
         context = this.client.mergeContext(context);
@@ -1587,7 +1587,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRotateVcenterPassword(
         String resourceGroupName, String privateCloudName) {
         return beginRotateVcenterPasswordAsync(resourceGroupName, privateCloudName).getSyncPoller();
@@ -1604,7 +1604,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRotateVcenterPassword(
         String resourceGroupName, String privateCloudName, Context context) {
         return beginRotateVcenterPasswordAsync(resourceGroupName, privateCloudName, context).getSyncPoller();
@@ -1780,7 +1780,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRotateNsxtPasswordAsync(
         String resourceGroupName, String privateCloudName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1801,7 +1801,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRotateNsxtPasswordAsync(
         String resourceGroupName, String privateCloudName, Context context) {
         context = this.client.mergeContext(context);
@@ -1822,7 +1822,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRotateNsxtPassword(
         String resourceGroupName, String privateCloudName) {
         return beginRotateNsxtPasswordAsync(resourceGroupName, privateCloudName).getSyncPoller();
@@ -1839,7 +1839,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRotateNsxtPassword(
         String resourceGroupName, String privateCloudName, Context context) {
         return beginRotateNsxtPasswordAsync(resourceGroupName, privateCloudName, context).getSyncPoller();

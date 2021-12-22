@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDnsZoneProvisioningState;
@@ -14,52 +13,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** NSX DNS Zone. */
-@JsonFlatten
 @Fluent
-public class WorkloadNetworkDnsZoneInner extends ProxyResource {
+public final class WorkloadNetworkDnsZoneInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkloadNetworkDnsZoneInner.class);
 
     /*
-     * Display name of the DNS Zone.
+     * DNS Zone properties
      */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
+    @JsonProperty(value = "properties")
+    private WorkloadNetworkDnsZoneProperties innerProperties;
 
-    /*
-     * Domain names of the DNS Zone.
+    /**
+     * Get the innerProperties property: DNS Zone properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.domain")
-    private List<String> domain;
-
-    /*
-     * DNS Server IP array of the DNS Zone.
-     */
-    @JsonProperty(value = "properties.dnsServerIps")
-    private List<String> dnsServerIps;
-
-    /*
-     * Source IP of the DNS Zone.
-     */
-    @JsonProperty(value = "properties.sourceIp")
-    private String sourceIp;
-
-    /*
-     * Number of DNS Services using the DNS zone.
-     */
-    @JsonProperty(value = "properties.dnsServices")
-    private Long dnsServices;
-
-    /*
-     * The provisioning state
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private WorkloadNetworkDnsZoneProvisioningState provisioningState;
-
-    /*
-     * NSX revision number.
-     */
-    @JsonProperty(value = "properties.revision")
-    private Long revision;
+    private WorkloadNetworkDnsZoneProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the displayName property: Display name of the DNS Zone.
@@ -67,7 +38,7 @@ public class WorkloadNetworkDnsZoneInner extends ProxyResource {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -77,7 +48,10 @@ public class WorkloadNetworkDnsZoneInner extends ProxyResource {
      * @return the WorkloadNetworkDnsZoneInner object itself.
      */
     public WorkloadNetworkDnsZoneInner withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadNetworkDnsZoneProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -87,7 +61,7 @@ public class WorkloadNetworkDnsZoneInner extends ProxyResource {
      * @return the domain value.
      */
     public List<String> domain() {
-        return this.domain;
+        return this.innerProperties() == null ? null : this.innerProperties().domain();
     }
 
     /**
@@ -97,7 +71,10 @@ public class WorkloadNetworkDnsZoneInner extends ProxyResource {
      * @return the WorkloadNetworkDnsZoneInner object itself.
      */
     public WorkloadNetworkDnsZoneInner withDomain(List<String> domain) {
-        this.domain = domain;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadNetworkDnsZoneProperties();
+        }
+        this.innerProperties().withDomain(domain);
         return this;
     }
 
@@ -107,7 +84,7 @@ public class WorkloadNetworkDnsZoneInner extends ProxyResource {
      * @return the dnsServerIps value.
      */
     public List<String> dnsServerIps() {
-        return this.dnsServerIps;
+        return this.innerProperties() == null ? null : this.innerProperties().dnsServerIps();
     }
 
     /**
@@ -117,7 +94,10 @@ public class WorkloadNetworkDnsZoneInner extends ProxyResource {
      * @return the WorkloadNetworkDnsZoneInner object itself.
      */
     public WorkloadNetworkDnsZoneInner withDnsServerIps(List<String> dnsServerIps) {
-        this.dnsServerIps = dnsServerIps;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadNetworkDnsZoneProperties();
+        }
+        this.innerProperties().withDnsServerIps(dnsServerIps);
         return this;
     }
 
@@ -127,7 +107,7 @@ public class WorkloadNetworkDnsZoneInner extends ProxyResource {
      * @return the sourceIp value.
      */
     public String sourceIp() {
-        return this.sourceIp;
+        return this.innerProperties() == null ? null : this.innerProperties().sourceIp();
     }
 
     /**
@@ -137,7 +117,10 @@ public class WorkloadNetworkDnsZoneInner extends ProxyResource {
      * @return the WorkloadNetworkDnsZoneInner object itself.
      */
     public WorkloadNetworkDnsZoneInner withSourceIp(String sourceIp) {
-        this.sourceIp = sourceIp;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadNetworkDnsZoneProperties();
+        }
+        this.innerProperties().withSourceIp(sourceIp);
         return this;
     }
 
@@ -147,7 +130,7 @@ public class WorkloadNetworkDnsZoneInner extends ProxyResource {
      * @return the dnsServices value.
      */
     public Long dnsServices() {
-        return this.dnsServices;
+        return this.innerProperties() == null ? null : this.innerProperties().dnsServices();
     }
 
     /**
@@ -157,7 +140,10 @@ public class WorkloadNetworkDnsZoneInner extends ProxyResource {
      * @return the WorkloadNetworkDnsZoneInner object itself.
      */
     public WorkloadNetworkDnsZoneInner withDnsServices(Long dnsServices) {
-        this.dnsServices = dnsServices;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadNetworkDnsZoneProperties();
+        }
+        this.innerProperties().withDnsServices(dnsServices);
         return this;
     }
 
@@ -167,7 +153,7 @@ public class WorkloadNetworkDnsZoneInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public WorkloadNetworkDnsZoneProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -176,7 +162,7 @@ public class WorkloadNetworkDnsZoneInner extends ProxyResource {
      * @return the revision value.
      */
     public Long revision() {
-        return this.revision;
+        return this.innerProperties() == null ? null : this.innerProperties().revision();
     }
 
     /**
@@ -186,7 +172,10 @@ public class WorkloadNetworkDnsZoneInner extends ProxyResource {
      * @return the WorkloadNetworkDnsZoneInner object itself.
      */
     public WorkloadNetworkDnsZoneInner withRevision(Long revision) {
-        this.revision = revision;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadNetworkDnsZoneProperties();
+        }
+        this.innerProperties().withRevision(revision);
         return this;
     }
 
@@ -196,5 +185,8 @@ public class WorkloadNetworkDnsZoneInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

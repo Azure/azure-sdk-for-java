@@ -76,6 +76,7 @@
           <arguments>
             <argument>-inputdir=${project.basedir}/inputdir</argument>
             <argument>-outputdir=${project.basedir}/outputdir</argument>
+            <argument>-mode=analyze</argument>
           </arguments>
           <cleanupDaemonThreads>false</cleanupDaemonThreads>
         </configuration>

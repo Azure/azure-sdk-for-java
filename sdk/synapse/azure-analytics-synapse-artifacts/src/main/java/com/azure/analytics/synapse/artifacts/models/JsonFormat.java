@@ -20,7 +20,7 @@ public final class JsonFormat extends DatasetStorageFormat {
      * case-sensitive.
      */
     @JsonProperty(value = "filePattern")
-    private JsonFormatFilePattern filePattern;
+    private Object filePattern;
 
     /*
      * The character used to separate nesting levels. Default value is '.'
@@ -64,7 +64,7 @@ public final class JsonFormat extends DatasetStorageFormat {
      *
      * @return the filePattern value.
      */
-    public JsonFormatFilePattern getFilePattern() {
+    public Object getFilePattern() {
         return this.filePattern;
     }
 
@@ -75,7 +75,7 @@ public final class JsonFormat extends DatasetStorageFormat {
      * @param filePattern the filePattern value to set.
      * @return the JsonFormat object itself.
      */
-    public JsonFormat setFilePattern(JsonFormatFilePattern filePattern) {
+    public JsonFormat setFilePattern(Object filePattern) {
         this.filePattern = filePattern;
         return this;
     }

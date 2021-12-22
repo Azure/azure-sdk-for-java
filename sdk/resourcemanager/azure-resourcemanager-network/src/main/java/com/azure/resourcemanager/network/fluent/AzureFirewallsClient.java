@@ -48,7 +48,7 @@ public interface AzureFirewallsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String azureFirewallName);
 
     /**
@@ -61,7 +61,7 @@ public interface AzureFirewallsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String azureFirewallName);
 
     /**
@@ -75,7 +75,7 @@ public interface AzureFirewallsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String azureFirewallName, Context context);
 
     /**
@@ -197,7 +197,7 @@ public interface AzureFirewallsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Firewall resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<AzureFirewallInner>, AzureFirewallInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String azureFirewallName, AzureFirewallInner parameters);
 
@@ -212,7 +212,7 @@ public interface AzureFirewallsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Firewall resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AzureFirewallInner>, AzureFirewallInner> beginCreateOrUpdate(
         String resourceGroupName, String azureFirewallName, AzureFirewallInner parameters);
 
@@ -228,7 +228,7 @@ public interface AzureFirewallsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Firewall resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AzureFirewallInner>, AzureFirewallInner> beginCreateOrUpdate(
         String resourceGroupName, String azureFirewallName, AzureFirewallInner parameters, Context context);
 
@@ -304,7 +304,7 @@ public interface AzureFirewallsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Firewall resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<AzureFirewallInner>, AzureFirewallInner> beginUpdateTagsAsync(
         String resourceGroupName, String azureFirewallName, TagsObject parameters);
 
@@ -319,7 +319,7 @@ public interface AzureFirewallsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Firewall resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AzureFirewallInner>, AzureFirewallInner> beginUpdateTags(
         String resourceGroupName, String azureFirewallName, TagsObject parameters);
 
@@ -335,7 +335,7 @@ public interface AzureFirewallsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Firewall resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AzureFirewallInner>, AzureFirewallInner> beginUpdateTags(
         String resourceGroupName, String azureFirewallName, TagsObject parameters, Context context);
 

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.ScriptExecutionParameter;
@@ -17,104 +16,24 @@ import java.util.List;
 import java.util.Map;
 
 /** An instance of a script executed by a user - custom or AVS. */
-@JsonFlatten
 @Fluent
-public class ScriptExecutionInner extends ProxyResource {
+public final class ScriptExecutionInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ScriptExecutionInner.class);
 
     /*
-     * A reference to the script cmdlet resource if user is running a AVS
-     * script
+     * The properties of a script execution resource
      */
-    @JsonProperty(value = "properties.scriptCmdletId")
-    private String scriptCmdletId;
+    @JsonProperty(value = "properties")
+    private ScriptExecutionProperties innerProperties;
 
-    /*
-     * Parameters the script will accept
+    /**
+     * Get the innerProperties property: The properties of a script execution resource.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.parameters")
-    private List<ScriptExecutionParameter> parameters;
-
-    /*
-     * Parameters that will be hidden/not visible to ARM, such as passwords and
-     * credentials
-     */
-    @JsonProperty(value = "properties.hiddenParameters")
-    private List<ScriptExecutionParameter> hiddenParameters;
-
-    /*
-     * Error message if the script was able to run, but if the script itself
-     * had errors or powershell threw an exception
-     */
-    @JsonProperty(value = "properties.failureReason")
-    private String failureReason;
-
-    /*
-     * Time limit for execution
-     */
-    @JsonProperty(value = "properties.timeout")
-    private String timeout;
-
-    /*
-     * Time to live for the resource. If not provided, will be available for 60
-     * days
-     */
-    @JsonProperty(value = "properties.retention")
-    private String retention;
-
-    /*
-     * Time the script execution was submitted
-     */
-    @JsonProperty(value = "properties.submittedAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime submittedAt;
-
-    /*
-     * Time the script execution was started
-     */
-    @JsonProperty(value = "properties.startedAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime startedAt;
-
-    /*
-     * Time the script execution was finished
-     */
-    @JsonProperty(value = "properties.finishedAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime finishedAt;
-
-    /*
-     * The state of the script execution resource
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ScriptExecutionProvisioningState provisioningState;
-
-    /*
-     * Standard output stream from the powershell execution
-     */
-    @JsonProperty(value = "properties.output")
-    private List<String> output;
-
-    /*
-     * User-defined dictionary.
-     */
-    @JsonProperty(value = "properties.namedOutputs")
-    private Map<String, Object> namedOutputs;
-
-    /*
-     * Standard information out stream from the powershell execution
-     */
-    @JsonProperty(value = "properties.information", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> information;
-
-    /*
-     * Standard warning out stream from the powershell execution
-     */
-    @JsonProperty(value = "properties.warnings", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> warnings;
-
-    /*
-     * Standard error output stream from the powershell execution
-     */
-    @JsonProperty(value = "properties.errors", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> errors;
+    private ScriptExecutionProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the scriptCmdletId property: A reference to the script cmdlet resource if user is running a AVS script.
@@ -122,7 +41,7 @@ public class ScriptExecutionInner extends ProxyResource {
      * @return the scriptCmdletId value.
      */
     public String scriptCmdletId() {
-        return this.scriptCmdletId;
+        return this.innerProperties() == null ? null : this.innerProperties().scriptCmdletId();
     }
 
     /**
@@ -132,7 +51,10 @@ public class ScriptExecutionInner extends ProxyResource {
      * @return the ScriptExecutionInner object itself.
      */
     public ScriptExecutionInner withScriptCmdletId(String scriptCmdletId) {
-        this.scriptCmdletId = scriptCmdletId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScriptExecutionProperties();
+        }
+        this.innerProperties().withScriptCmdletId(scriptCmdletId);
         return this;
     }
 
@@ -142,7 +64,7 @@ public class ScriptExecutionInner extends ProxyResource {
      * @return the parameters value.
      */
     public List<ScriptExecutionParameter> parameters() {
-        return this.parameters;
+        return this.innerProperties() == null ? null : this.innerProperties().parameters();
     }
 
     /**
@@ -152,7 +74,10 @@ public class ScriptExecutionInner extends ProxyResource {
      * @return the ScriptExecutionInner object itself.
      */
     public ScriptExecutionInner withParameters(List<ScriptExecutionParameter> parameters) {
-        this.parameters = parameters;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScriptExecutionProperties();
+        }
+        this.innerProperties().withParameters(parameters);
         return this;
     }
 
@@ -163,7 +88,7 @@ public class ScriptExecutionInner extends ProxyResource {
      * @return the hiddenParameters value.
      */
     public List<ScriptExecutionParameter> hiddenParameters() {
-        return this.hiddenParameters;
+        return this.innerProperties() == null ? null : this.innerProperties().hiddenParameters();
     }
 
     /**
@@ -174,7 +99,10 @@ public class ScriptExecutionInner extends ProxyResource {
      * @return the ScriptExecutionInner object itself.
      */
     public ScriptExecutionInner withHiddenParameters(List<ScriptExecutionParameter> hiddenParameters) {
-        this.hiddenParameters = hiddenParameters;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScriptExecutionProperties();
+        }
+        this.innerProperties().withHiddenParameters(hiddenParameters);
         return this;
     }
 
@@ -185,7 +113,7 @@ public class ScriptExecutionInner extends ProxyResource {
      * @return the failureReason value.
      */
     public String failureReason() {
-        return this.failureReason;
+        return this.innerProperties() == null ? null : this.innerProperties().failureReason();
     }
 
     /**
@@ -196,7 +124,10 @@ public class ScriptExecutionInner extends ProxyResource {
      * @return the ScriptExecutionInner object itself.
      */
     public ScriptExecutionInner withFailureReason(String failureReason) {
-        this.failureReason = failureReason;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScriptExecutionProperties();
+        }
+        this.innerProperties().withFailureReason(failureReason);
         return this;
     }
 
@@ -206,7 +137,7 @@ public class ScriptExecutionInner extends ProxyResource {
      * @return the timeout value.
      */
     public String timeout() {
-        return this.timeout;
+        return this.innerProperties() == null ? null : this.innerProperties().timeout();
     }
 
     /**
@@ -216,7 +147,10 @@ public class ScriptExecutionInner extends ProxyResource {
      * @return the ScriptExecutionInner object itself.
      */
     public ScriptExecutionInner withTimeout(String timeout) {
-        this.timeout = timeout;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScriptExecutionProperties();
+        }
+        this.innerProperties().withTimeout(timeout);
         return this;
     }
 
@@ -226,7 +160,7 @@ public class ScriptExecutionInner extends ProxyResource {
      * @return the retention value.
      */
     public String retention() {
-        return this.retention;
+        return this.innerProperties() == null ? null : this.innerProperties().retention();
     }
 
     /**
@@ -236,7 +170,10 @@ public class ScriptExecutionInner extends ProxyResource {
      * @return the ScriptExecutionInner object itself.
      */
     public ScriptExecutionInner withRetention(String retention) {
-        this.retention = retention;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScriptExecutionProperties();
+        }
+        this.innerProperties().withRetention(retention);
         return this;
     }
 
@@ -246,7 +183,7 @@ public class ScriptExecutionInner extends ProxyResource {
      * @return the submittedAt value.
      */
     public OffsetDateTime submittedAt() {
-        return this.submittedAt;
+        return this.innerProperties() == null ? null : this.innerProperties().submittedAt();
     }
 
     /**
@@ -255,7 +192,7 @@ public class ScriptExecutionInner extends ProxyResource {
      * @return the startedAt value.
      */
     public OffsetDateTime startedAt() {
-        return this.startedAt;
+        return this.innerProperties() == null ? null : this.innerProperties().startedAt();
     }
 
     /**
@@ -264,7 +201,7 @@ public class ScriptExecutionInner extends ProxyResource {
      * @return the finishedAt value.
      */
     public OffsetDateTime finishedAt() {
-        return this.finishedAt;
+        return this.innerProperties() == null ? null : this.innerProperties().finishedAt();
     }
 
     /**
@@ -273,7 +210,7 @@ public class ScriptExecutionInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public ScriptExecutionProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -282,7 +219,7 @@ public class ScriptExecutionInner extends ProxyResource {
      * @return the output value.
      */
     public List<String> output() {
-        return this.output;
+        return this.innerProperties() == null ? null : this.innerProperties().output();
     }
 
     /**
@@ -292,7 +229,10 @@ public class ScriptExecutionInner extends ProxyResource {
      * @return the ScriptExecutionInner object itself.
      */
     public ScriptExecutionInner withOutput(List<String> output) {
-        this.output = output;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScriptExecutionProperties();
+        }
+        this.innerProperties().withOutput(output);
         return this;
     }
 
@@ -302,7 +242,7 @@ public class ScriptExecutionInner extends ProxyResource {
      * @return the namedOutputs value.
      */
     public Map<String, Object> namedOutputs() {
-        return this.namedOutputs;
+        return this.innerProperties() == null ? null : this.innerProperties().namedOutputs();
     }
 
     /**
@@ -312,7 +252,10 @@ public class ScriptExecutionInner extends ProxyResource {
      * @return the ScriptExecutionInner object itself.
      */
     public ScriptExecutionInner withNamedOutputs(Map<String, Object> namedOutputs) {
-        this.namedOutputs = namedOutputs;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScriptExecutionProperties();
+        }
+        this.innerProperties().withNamedOutputs(namedOutputs);
         return this;
     }
 
@@ -322,7 +265,7 @@ public class ScriptExecutionInner extends ProxyResource {
      * @return the information value.
      */
     public List<String> information() {
-        return this.information;
+        return this.innerProperties() == null ? null : this.innerProperties().information();
     }
 
     /**
@@ -331,7 +274,7 @@ public class ScriptExecutionInner extends ProxyResource {
      * @return the warnings value.
      */
     public List<String> warnings() {
-        return this.warnings;
+        return this.innerProperties() == null ? null : this.innerProperties().warnings();
     }
 
     /**
@@ -340,7 +283,7 @@ public class ScriptExecutionInner extends ProxyResource {
      * @return the errors value.
      */
     public List<String> errors() {
-        return this.errors;
+        return this.innerProperties() == null ? null : this.innerProperties().errors();
     }
 
     /**
@@ -349,11 +292,8 @@ public class ScriptExecutionInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (parameters() != null) {
-            parameters().forEach(e -> e.validate());
-        }
-        if (hiddenParameters() != null) {
-            hiddenParameters().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

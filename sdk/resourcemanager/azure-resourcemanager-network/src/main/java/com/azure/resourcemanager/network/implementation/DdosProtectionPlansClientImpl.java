@@ -218,7 +218,7 @@ public final class DdosProtectionPlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -270,7 +270,7 @@ public final class DdosProtectionPlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -294,13 +294,14 @@ public final class DdosProtectionPlansClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String ddosProtectionPlanName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, ddosProtectionPlanName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -314,7 +315,7 @@ public final class DdosProtectionPlansClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String ddosProtectionPlanName, Context context) {
         context = this.client.mergeContext(context);
@@ -335,7 +336,7 @@ public final class DdosProtectionPlansClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String ddosProtectionPlanName) {
         return beginDeleteAsync(resourceGroupName, ddosProtectionPlanName).getSyncPoller();
     }
@@ -351,7 +352,7 @@ public final class DdosProtectionPlansClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String ddosProtectionPlanName, Context context) {
         return beginDeleteAsync(resourceGroupName, ddosProtectionPlanName, context).getSyncPoller();
@@ -455,7 +456,7 @@ public final class DdosProtectionPlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -507,7 +508,7 @@ public final class DdosProtectionPlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -617,7 +618,7 @@ public final class DdosProtectionPlansClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -676,7 +677,7 @@ public final class DdosProtectionPlansClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -702,7 +703,7 @@ public final class DdosProtectionPlansClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a DDoS protection plan in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DdosProtectionPlanInner>, DdosProtectionPlanInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String ddosProtectionPlanName, DdosProtectionPlanInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -714,7 +715,7 @@ public final class DdosProtectionPlansClientImpl
                 this.client.getHttpPipeline(),
                 DdosProtectionPlanInner.class,
                 DdosProtectionPlanInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -729,7 +730,7 @@ public final class DdosProtectionPlansClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a DDoS protection plan in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DdosProtectionPlanInner>, DdosProtectionPlanInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String ddosProtectionPlanName, DdosProtectionPlanInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -756,7 +757,7 @@ public final class DdosProtectionPlansClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a DDoS protection plan in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DdosProtectionPlanInner>, DdosProtectionPlanInner> beginCreateOrUpdate(
         String resourceGroupName, String ddosProtectionPlanName, DdosProtectionPlanInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, ddosProtectionPlanName, parameters).getSyncPoller();
@@ -774,7 +775,7 @@ public final class DdosProtectionPlansClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a DDoS protection plan in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DdosProtectionPlanInner>, DdosProtectionPlanInner> beginCreateOrUpdate(
         String resourceGroupName, String ddosProtectionPlanName, DdosProtectionPlanInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, ddosProtectionPlanName, parameters, context).getSyncPoller();
@@ -894,7 +895,7 @@ public final class DdosProtectionPlansClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -953,7 +954,7 @@ public final class DdosProtectionPlansClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1049,7 +1050,7 @@ public final class DdosProtectionPlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1091,7 +1092,7 @@ public final class DdosProtectionPlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1187,7 +1188,7 @@ public final class DdosProtectionPlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1241,7 +1242,7 @@ public final class DdosProtectionPlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

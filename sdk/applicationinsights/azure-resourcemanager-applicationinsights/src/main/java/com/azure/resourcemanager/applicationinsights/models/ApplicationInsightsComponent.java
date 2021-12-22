@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.applicationinsights.models;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.applicationinsights.fluent.models.ApplicationInsightsComponentInner;
@@ -186,6 +187,21 @@ public interface ApplicationInsightsComponent {
     List<PrivateLinkScopedResource> privateLinkScopedResources();
 
     /**
+     * Gets the publicNetworkAccessForIngestion property: The network access type for accessing Application Insights
+     * ingestion.
+     *
+     * @return the publicNetworkAccessForIngestion value.
+     */
+    PublicNetworkAccessType publicNetworkAccessForIngestion();
+
+    /**
+     * Gets the publicNetworkAccessForQuery property: The network access type for accessing Application Insights query.
+     *
+     * @return the publicNetworkAccessForQuery value.
+     */
+    PublicNetworkAccessType publicNetworkAccessForQuery();
+
+    /**
      * Gets the ingestionMode property: Indicates the flow of the ingestion.
      *
      * @return the ingestionMode value.
@@ -283,6 +299,8 @@ public interface ApplicationInsightsComponent {
                 DefinitionStages.WithRetentionInDays,
                 DefinitionStages.WithDisableIpMasking,
                 DefinitionStages.WithImmediatePurgeDataOn30Days,
+                DefinitionStages.WithPublicNetworkAccessForIngestion,
+                DefinitionStages.WithPublicNetworkAccessForQuery,
                 DefinitionStages.WithIngestionMode {
             /**
              * Executes the create request.
@@ -398,6 +416,31 @@ public interface ApplicationInsightsComponent {
              */
             WithCreate withImmediatePurgeDataOn30Days(Boolean immediatePurgeDataOn30Days);
         }
+        /**
+         * The stage of the ApplicationInsightsComponent definition allowing to specify publicNetworkAccessForIngestion.
+         */
+        interface WithPublicNetworkAccessForIngestion {
+            /**
+             * Specifies the publicNetworkAccessForIngestion property: The network access type for accessing Application
+             * Insights ingestion..
+             *
+             * @param publicNetworkAccessForIngestion The network access type for accessing Application Insights
+             *     ingestion.
+             * @return the next definition stage.
+             */
+            WithCreate withPublicNetworkAccessForIngestion(PublicNetworkAccessType publicNetworkAccessForIngestion);
+        }
+        /** The stage of the ApplicationInsightsComponent definition allowing to specify publicNetworkAccessForQuery. */
+        interface WithPublicNetworkAccessForQuery {
+            /**
+             * Specifies the publicNetworkAccessForQuery property: The network access type for accessing Application
+             * Insights query..
+             *
+             * @param publicNetworkAccessForQuery The network access type for accessing Application Insights query.
+             * @return the next definition stage.
+             */
+            WithCreate withPublicNetworkAccessForQuery(PublicNetworkAccessType publicNetworkAccessForQuery);
+        }
         /** The stage of the ApplicationInsightsComponent definition allowing to specify ingestionMode. */
         interface WithIngestionMode {
             /**
@@ -460,4 +503,37 @@ public interface ApplicationInsightsComponent {
      * @return the refreshed resource.
      */
     ApplicationInsightsComponent refresh(Context context);
+
+    /**
+     * Purges data in an Application Insights component by a set of user-defined filters.
+     *
+     * <p>In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch
+     * the execution of purge requests by sending a single command whose predicate includes all user identities that
+     * require purging. Use the in operator to specify multiple identities. You should run the query prior to using for
+     * a purge request to verify that the results are expected.
+     *
+     * @param body Describes the body of a request to purge data in a single table of an Application Insights component.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing operationId for a specific purge action.
+     */
+    ComponentPurgeResponse purge(ComponentPurgeBody body);
+
+    /**
+     * Purges data in an Application Insights component by a set of user-defined filters.
+     *
+     * <p>In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch
+     * the execution of purge requests by sending a single command whose predicate includes all user identities that
+     * require purging. Use the in operator to specify multiple identities. You should run the query prior to using for
+     * a purge request to verify that the results are expected.
+     *
+     * @param body Describes the body of a request to purge data in a single table of an Application Insights component.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing operationId for a specific purge action.
+     */
+    Response<ComponentPurgeResponse> purgeWithResponse(ComponentPurgeBody body, Context context);
 }

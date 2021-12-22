@@ -31,6 +31,11 @@ import java.util.function.Function;
  */
 class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
     private final AtomicBoolean isDisposed = new AtomicBoolean();
+    // Each session-specific receiver tracks the lock of the received messages via lock-container.
+    // When the app uses SessionManager (multiplexing session receivers) and wants to perform message
+    // disposition, SessionManager uses lock-container to find the session receiver owning the message.
+    // The locks in the lock-container are cleaned up at fixed (service operation timeout) intervals;
+    // also, the lock is removed after the completion of the message disposition.
     private final LockContainer<OffsetDateTime> lockContainer;
     private final AtomicReference<OffsetDateTime> sessionLockedUntil = new AtomicReference<>();
     private final AtomicReference<String> sessionId = new AtomicReference<>();
@@ -195,7 +200,12 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
     }
 
     Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState) {
-        return receiveLink.updateDisposition(lockToken, deliveryState);
+        return receiveLink.updateDisposition(lockToken, deliveryState)
+            .doFinally(ignored -> {
+                // Though the lock-container is cleanup at a fixed interval, it's a good
+                // idea to remove the lock early when possible to reduce GC pressure.
+                lockContainer.remove(lockToken);
+            });
     }
 
     @Override

@@ -298,7 +298,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the Dedicated host.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DedicatedHostInner>, DedicatedHostInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String hostGroupName, String hostname, DedicatedHostInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -306,7 +306,11 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
         return this
             .client
             .<DedicatedHostInner, DedicatedHostInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DedicatedHostInner.class, DedicatedHostInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                DedicatedHostInner.class,
+                DedicatedHostInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -322,7 +326,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the Dedicated host.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DedicatedHostInner>, DedicatedHostInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String hostGroupName,
@@ -350,7 +354,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the Dedicated host.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DedicatedHostInner>, DedicatedHostInner> beginCreateOrUpdate(
         String resourceGroupName, String hostGroupName, String hostname, DedicatedHostInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, hostGroupName, hostname, parameters).getSyncPoller();
@@ -369,7 +373,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the Dedicated host.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DedicatedHostInner>, DedicatedHostInner> beginCreateOrUpdate(
         String resourceGroupName,
         String hostGroupName,
@@ -602,7 +606,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the Dedicated host.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DedicatedHostInner>, DedicatedHostInner> beginUpdateAsync(
         String resourceGroupName, String hostGroupName, String hostname, DedicatedHostUpdate parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -610,7 +614,11 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
         return this
             .client
             .<DedicatedHostInner, DedicatedHostInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DedicatedHostInner.class, DedicatedHostInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                DedicatedHostInner.class,
+                DedicatedHostInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -626,7 +634,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the Dedicated host.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DedicatedHostInner>, DedicatedHostInner> beginUpdateAsync(
         String resourceGroupName,
         String hostGroupName,
@@ -654,7 +662,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the Dedicated host.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DedicatedHostInner>, DedicatedHostInner> beginUpdate(
         String resourceGroupName, String hostGroupName, String hostname, DedicatedHostUpdate parameters) {
         return beginUpdateAsync(resourceGroupName, hostGroupName, hostname, parameters).getSyncPoller();
@@ -673,7 +681,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the Dedicated host.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DedicatedHostInner>, DedicatedHostInner> beginUpdate(
         String resourceGroupName,
         String hostGroupName,
@@ -882,13 +890,14 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String hostGroupName, String hostname) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, hostGroupName, hostname);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -903,7 +912,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String hostGroupName, String hostname, Context context) {
         context = this.client.mergeContext(context);
@@ -925,7 +934,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String hostGroupName, String hostname) {
         return beginDeleteAsync(resourceGroupName, hostGroupName, hostname).getSyncPoller();
@@ -943,7 +952,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String hostGroupName, String hostname, Context context) {
         return beginDeleteAsync(resourceGroupName, hostGroupName, hostname, context).getSyncPoller();

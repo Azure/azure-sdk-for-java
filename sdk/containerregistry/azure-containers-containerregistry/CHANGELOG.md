@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0-beta.6 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,12 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.5 (2021-11-09)
+### New features
+- Enabled support for the stable `2021-07-01` swagger api-version.
+- Removed `getTeleportEnabled` and `setTeleportEnabled` field from `RepositoryProperties`.
+
 
 ## 1.0.0-beta.4 (2021-08-20)
 ### Breaking Changes

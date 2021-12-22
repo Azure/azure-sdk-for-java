@@ -20,6 +20,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.FluxUtil;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import reactor.test.StepVerifier;
 
@@ -33,7 +34,6 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-import static com.azure.ai.formrecognizer.TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION;
 import static com.azure.ai.formrecognizer.TestUtils.AZURE_FORM_RECOGNIZER_ENDPOINT_CONFIGURATION;
 import static com.azure.ai.formrecognizer.TestUtils.EXPECTED_MERCHANT_NAME;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
@@ -57,7 +57,8 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
     }
 
     DocumentAnalysisClientBuilder getDocumentAnalysisBuilder(HttpClient httpClient,
-                                                             DocumentAnalysisServiceVersion serviceVersion) {
+                                                             DocumentAnalysisServiceVersion serviceVersion,
+                                                             boolean useKeyCredential) {
         DocumentAnalysisClientBuilder builder = new DocumentAnalysisClientBuilder()
             .endpoint(getEndpoint())
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
@@ -65,16 +66,22 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
             .serviceVersion(serviceVersion)
             .addPolicy(interceptorManager.getRecordPolicy());
 
+
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new AzureKeyCredential(INVALID_KEY));
         } else {
-            builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
+            if (useKeyCredential) {
+                builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
+            } else {
+                builder.credential(new DefaultAzureCredentialBuilder().build());
+            }
         }
         return builder;
     }
 
     DocumentModelAdministrationClientBuilder getDocumentModelAdminClientBuilder(HttpClient httpClient,
-                                                                                DocumentAnalysisServiceVersion serviceVersion) {
+                                                                                DocumentAnalysisServiceVersion serviceVersion,
+                                                                                boolean useKeyCredential) {
         DocumentModelAdministrationClientBuilder builder = new DocumentModelAdministrationClientBuilder()
             .endpoint(getEndpoint())
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
@@ -85,7 +92,11 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new AzureKeyCredential(INVALID_KEY));
         } else {
-            builder.credential(new AzureKeyCredential(AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
+            if (useKeyCredential) {
+                builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
+            } else {
+                builder.credential(new DefaultAzureCredentialBuilder().build());
+            }
         }
         return builder;
     }
@@ -579,10 +590,9 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
             actualDocument.getFields().forEach((key, documentField) -> {
                 // document fields
 
-                // if ("Tax".equals(key)) {
-                //     // incorrect reporting to 140
-                //     assertEquals("$4.00", documentField.getValueString());
-                // }
+                if ("Tax".equals(key)) {
+                    assertEquals("$4.00", documentField.getValueString());
+                }
                 if ("Signature".equals(key)) {
                     assertEquals("Bernie Sanders", documentField.getValueString());
                 } else if ("Email".equals(key)) {
@@ -603,19 +613,16 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
                     assertEquals("Hillary Swank", documentField.getValueString());
                 } else if ("Website".equals(key)) {
                     assertEquals("www.herolimited.com", documentField.getValueString());
-                }
-                else if ("Merchant".equals(key)) {
+                } else if ("Merchant".equals(key)) {
                     assertEquals("Hero Limited", documentField.getValueString());
                 } else if ("PurchaseOrderNumber".equals(key)) {
                     assertEquals("948284", documentField.getValueString());
                 } else if ("CompanyAddress".equals(key)) {
                     assertEquals("938 NE Burner Road Boulder City, CO 92848",
                         documentField.getValueString());
+                } else if ("Subtotal".equals(key)) {
+                    assertEquals("$140.00", documentField.getValueString());
                 }
-                // else if ("Subtotal".equals(key)) {
-                // returned as null currently
-                // assertEquals("$140.00", documentField.getValueString());
-                // }
             });
         });
     }
@@ -639,10 +646,9 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
 
             validateDocumentPage(actualDocumentPage);
         });
-        Assertions.assertEquals(0, analyzeResult.getTables().size());
+        assertNull(analyzeResult.getTables());
 
         analyzeResult.getDocuments().forEach(actualDocument -> {
-            Assertions.assertEquals("custom:", actualDocument.getDocType());
             actualDocument.getFields().forEach((key, documentField) -> {
                 if ("AMEX_SELECTION_MARK".equals(key)) {
                     assertEquals(SelectionMarkState.SELECTED, documentField.getValueSelectionMark());

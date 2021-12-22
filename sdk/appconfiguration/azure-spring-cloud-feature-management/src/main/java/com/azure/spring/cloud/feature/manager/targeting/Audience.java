@@ -4,6 +4,9 @@ package com.azure.spring.cloud.feature.manager.targeting;
 
 import java.util.List;
 
+/**
+ * Audience of a TargetingFilter rollout
+ */
 public class Audience {
 
     private List<String> users;

@@ -735,7 +735,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a disk access SAS uri.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccessAsync(
         String resourceGroupName,
         String restorePointCollectionName,
@@ -752,7 +752,11 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
         return this
             .client
             .<AccessUriInner, AccessUriInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AccessUriInner.class, AccessUriInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                AccessUriInner.class,
+                AccessUriInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -769,7 +773,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a disk access SAS uri.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccessAsync(
         String resourceGroupName,
         String restorePointCollectionName,
@@ -805,7 +809,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a disk access SAS uri.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccess(
         String resourceGroupName,
         String restorePointCollectionName,
@@ -835,7 +839,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a disk access SAS uri.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccess(
         String resourceGroupName,
         String restorePointCollectionName,
@@ -1122,7 +1126,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginRevokeAccessAsync(
         String resourceGroupName,
         String restorePointCollectionName,
@@ -1133,7 +1137,8 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
                 resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1149,7 +1154,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRevokeAccessAsync(
         String resourceGroupName,
         String restorePointCollectionName,
@@ -1177,7 +1182,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevokeAccess(
         String resourceGroupName,
         String restorePointCollectionName,
@@ -1201,7 +1206,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevokeAccess(
         String resourceGroupName,
         String restorePointCollectionName,

@@ -55,11 +55,23 @@ import static com.azure.core.util.CoreUtils.getApplicationId;
  *
  * <p><strong>Instantiating an asynchronous Configuration Client</strong></p>
  *
- * {@codesnippet com.azure.data.applicationconfig.async.configurationclient.instantiation}
+ * <!-- src_embed com.azure.data.applicationconfig.async.configurationclient.instantiation -->
+ * <pre>
+ * ConfigurationAsyncClient configurationAsyncClient = new ConfigurationClientBuilder&#40;&#41;
+ *     .connectionString&#40;connectionString&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.applicationconfig.async.configurationclient.instantiation -->
  *
  * <p><strong>Instantiating a synchronous Configuration Client</strong></p>
  *
- * {@codesnippet com.azure.data.applicationconfig.configurationclient.instantiation}
+ * <!-- src_embed com.azure.data.applicationconfig.configurationclient.instantiation -->
+ * <pre>
+ * ConfigurationClient configurationClient = new ConfigurationClientBuilder&#40;&#41;
+ *     .connectionString&#40;connectionString&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.applicationconfig.configurationclient.instantiation -->
  *
  * <p>Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an
  * authenticated way to communicate with the service but it doesn't contain the service endpoint. Set the pipeline with
@@ -67,7 +79,19 @@ import static com.azure.core.util.CoreUtils.getApplicationId;
  * pipeline requires additional setup but allows for finer control on how the {@link ConfigurationClient} and {@link
  * ConfigurationAsyncClient} is built.</p>
  *
- * {@codesnippet com.azure.data.applicationconfig.configurationclient.pipeline.instantiation}
+ * <!-- src_embed com.azure.data.applicationconfig.configurationclient.pipeline.instantiation -->
+ * <pre>
+ * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
+ *     .policies&#40;&#47;* add policies *&#47;&#41;
+ *     .build&#40;&#41;;
+ *
+ * ConfigurationClient configurationClient = new ConfigurationClientBuilder&#40;&#41;
+ *     .pipeline&#40;pipeline&#41;
+ *     .endpoint&#40;&quot;https:&#47;&#47;myconfig.azure.net&#47;&quot;&#41;
+ *     .connectionString&#40;connectionString&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.applicationconfig.configurationclient.pipeline.instantiation -->
  *
  * @see ConfigurationAsyncClient
  * @see ConfigurationClient
@@ -85,9 +109,9 @@ public final class ConfigurationClientBuilder {
         CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
         CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
         ADD_HEADERS_POLICY = new AddHeadersPolicy(new HttpHeaders()
-            .put("x-ms-return-client-request-id", "true")
-            .put("Content-Type", "application/json")
-            .put("Accept", "application/vnd.microsoft.azconfig.kv+json"));
+            .set("x-ms-return-client-request-id", "true")
+            .set("Content-Type", "application/json")
+            .set("Accept", "application/vnd.microsoft.azconfig.kv+json"));
     }
 
     private final ClientLogger logger = new ClientLogger(ConfigurationClientBuilder.class);

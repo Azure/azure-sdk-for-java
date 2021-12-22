@@ -30,13 +30,6 @@ public interface Operation {
     String origin();
 
     /**
-     * Gets the isDataAction property: This Boolean is used to determine if the operation is a data plane action or not.
-     *
-     * @return the isDataAction value.
-     */
-    Boolean isDataAction();
-
-    /**
      * Gets the properties property: Properties of the operation.
      *
      * @return the properties value.

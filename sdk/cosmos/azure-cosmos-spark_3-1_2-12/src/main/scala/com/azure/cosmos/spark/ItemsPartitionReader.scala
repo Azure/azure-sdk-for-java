@@ -4,10 +4,9 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.spark.{OperationContextAndListenerTuple, OperationListener}
-import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, ImplementationBridgeHelpers, SparkBridgeImplementationInternal}
-import com.azure.cosmos.models.{CosmosParameterizedQuery, CosmosQueryRequestOptions}
+import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, ImplementationBridgeHelpers, SparkBridgeImplementationInternal, Strings}
+import com.azure.cosmos.models.{CosmosParameterizedQuery, CosmosQueryRequestOptions, ModelBridgeInternal}
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext}
-import com.azure.cosmos.util.CosmosPagedIterable
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.TaskContext
 import org.apache.spark.broadcast.Broadcast
@@ -39,16 +38,25 @@ private case class ItemsPartitionReader
   log.logInfo(s"Reading from feed range $feedRange of " +
     s"container ${containerTargetConfig.database}.${containerTargetConfig.container}")
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
-  private val client = CosmosClientCache(
+  private val clientCacheItem = CosmosClientCache(
     CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
-    Some(cosmosClientStateHandle))
+    Some(cosmosClientStateHandle),
+    s"ItemsPartitionReader($feedRange, ${containerTargetConfig.database}.${containerTargetConfig.container})"
+  )
 
-  private val cosmosAsyncContainer = ThroughputControlHelper.getContainer(config, containerTargetConfig, client)
+  private val cosmosAsyncContainer = ThroughputControlHelper.getContainer(
+    config, containerTargetConfig, clientCacheItem.client)
   SparkUtils.safeOpenConnectionInitCaches(cosmosAsyncContainer, log)
 
-  private val queryOptions = new CosmosQueryRequestOptions()
+  private val queryOptions = ImplementationBridgeHelpers
+    .CosmosQueryRequestOptionsHelper
+    .getCosmosQueryRequestOptionsAccessor
+    .disallowQueryPlanRetrieval(new CosmosQueryRequestOptions())
 
-  initializeDiagnosticsIfConfigured
+  private val cosmosSerializationConfig = CosmosSerializationConfig.parseSerializationConfig(config)
+  private val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
+
+  initializeDiagnosticsIfConfigured()
 
   private def initializeDiagnosticsIfConfigured(): Unit = {
     if (diagnosticsConfig.mode.isDefined) {
@@ -72,10 +80,21 @@ private case class ItemsPartitionReader
 
   queryOptions.setFeedRange(SparkBridgeImplementationInternal.toFeedRange(feedRange))
 
-  private lazy val iterator = new CosmosPagedIterable[ObjectNode](
-    cosmosAsyncContainer.queryItems(cosmosQuery.toSqlQuerySpec, queryOptions, classOf[ObjectNode]),
+  private lazy val iterator = new TransientIOErrorsRetryingIterator(
+    continuationToken => {
+      if (!Strings.isNullOrWhiteSpace(continuationToken)) {
+        ModelBridgeInternal.setQueryRequestOptionsContinuationTokenAndMaxItemCount(
+          queryOptions, continuationToken, readConfig.maxItemCount)
+      } else {
+        // scalastyle:off null
+        ModelBridgeInternal.setQueryRequestOptionsContinuationTokenAndMaxItemCount(
+          queryOptions, null, readConfig.maxItemCount)
+        // scalastyle:on null
+      }
+      cosmosAsyncContainer.queryItems(cosmosQuery.toSqlQuerySpec, queryOptions, classOf[ObjectNode])
+    },
     readConfig.maxItemCount
-  ).iterator()
+  )
 
   private val rowSerializer: ExpressionEncoder.Serializer[Row] = RowSerializerPool.getOrCreateSerializer(readSchema)
 
@@ -83,7 +102,7 @@ private case class ItemsPartitionReader
 
   override def get(): InternalRow = {
     val objectNode = iterator.next()
-    CosmosRowConverter.fromObjectNodeToInternalRow(
+    cosmosRowConverter.fromObjectNodeToInternalRow(
       readSchema,
       rowSerializer,
       objectNode,
@@ -92,5 +111,6 @@ private case class ItemsPartitionReader
 
   override def close(): Unit = {
     RowSerializerPool.returnSerializerToPool(readSchema, rowSerializer)
+    clientCacheItem.close()
   }
 }

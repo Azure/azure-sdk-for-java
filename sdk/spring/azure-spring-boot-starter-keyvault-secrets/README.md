@@ -195,28 +195,16 @@ azure.keyvault.secret-service-version=specify secretServiceVersion value(fill wi
 
 
 ## Troubleshooting
-### Enable client logging
-Azure SDKs for Java offers a consistent logging story to help aid in troubleshooting application
-errors and expedite their resolution. The logs produced will capture the flow of an application
-before reaching the terminal state to help locate the root issue. View the [logging] wiki for
-guidance about enabling logging.
+### Logging setting
+Please refer to [spring logging document] to get more information about logging.
 
-### Enable Spring logging
-Spring allow all the supported logging systems to set logger levels set in the Spring Environment
-(for example, in application.properties) by using `logging.level.<logger-name>=<level>` where level
-is one of TRACE, DEBUG, INFO, WARN, ERROR, FATAL, or OFF. The root logger can be configured by 
-using logging.level.root.
-
-The following example shows potential logging settings in `application.properties`:
-
-```
+#### Logging setting examples
+- Example: Setting logging level of hibernate
+```properties
 logging.level.root=WARN
 logging.level.org.springframework.web=DEBUG
 logging.level.org.hibernate=ERROR
 ```
-
-Please refer to [Spring logging documentation] to get more information.
- 
 
 ## Next steps
 
@@ -241,7 +229,6 @@ Please follow [CONTRIBUTING guide] to build from source or contribute.
 [Azure AD managed identities for Azure resources documentation]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/.
 [Set and retrieve a secret from Azure Key Vault using Azure CLI]: https://docs.microsoft.com/azure/key-vault/secrets/quick-create-cli
 [Set and retrieve a secret from Azure Key Vault using the Azure portal]: https://docs.microsoft.com/azure/key-vault/secrets/quick-create-portal
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [Spring logging documentation]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
 [SecretServiceVersion]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/src/main/java/com/azure/security/keyvault/secrets/SecretServiceVersion.java#L12
 [Key Vault Secrets Sample project]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/keyvault/azure-spring-boot-sample-keyvault-secrets

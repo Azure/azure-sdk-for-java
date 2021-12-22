@@ -46,8 +46,6 @@ import java.util.regex.Pattern;
 public class IntelliJCacheAccessor {
     private final ClientLogger logger = new ClientLogger(IntelliJCacheAccessor.class);
     private final String keePassDatabasePath;
-    private static final String INTELLIJ_CREDENTIAL_NOT_AVAILABLE_ERROR = "IntelliJ Authentication not available."
-              + " Please log in with Azure Tools for IntelliJ plugin in the IDE.";
     private static final byte[] CRYPTO_KEY = new byte[] {0x50, 0x72, 0x6f, 0x78, 0x79, 0x20, 0x43, 0x6f, 0x6e, 0x66,
         0x69, 0x67, 0x20, 0x53, 0x65, 0x63};
 
@@ -248,26 +246,22 @@ public class IntelliJCacheAccessor {
             }
         }
         if (authFile == null || !authFile.exists()) {
-            throw logger.logExceptionAsError(
-                    new CredentialUnavailableException(INTELLIJ_CREDENTIAL_NOT_AVAILABLE_ERROR));
+            return null;
         }
 
         IntelliJAuthMethodDetails authMethodDetails = parseAuthMethodDetails(authFile);
 
         String authType = authMethodDetails.getAuthMethod();
         if (CoreUtils.isNullOrEmpty(authType)) {
-            throw logger.logExceptionAsError(
-                    new CredentialUnavailableException(INTELLIJ_CREDENTIAL_NOT_AVAILABLE_ERROR));
+            return null;
         }
         if (authType.equalsIgnoreCase("SP")) {
             if (CoreUtils.isNullOrEmpty(authMethodDetails.getCredFilePath())) {
-                throw logger.logExceptionAsError(
-                        new CredentialUnavailableException(INTELLIJ_CREDENTIAL_NOT_AVAILABLE_ERROR));
+                return null;
             }
         } else if (authType.equalsIgnoreCase("DC")) {
             if (CoreUtils.isNullOrEmpty(authMethodDetails.getAccountEmail())) {
-                throw logger.logExceptionAsError(
-                        new CredentialUnavailableException(INTELLIJ_CREDENTIAL_NOT_AVAILABLE_ERROR));
+                return null;
             }
         }
         return authMethodDetails;

@@ -14,8 +14,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.containerregistry.fluent.models.ReplicationInner;
+import com.azure.resourcemanager.containerregistry.models.ReplicationUpdateParameters;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -86,7 +86,7 @@ public interface ReplicationsClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
-     * @param replication An object that represents a replication for a container registry.
+     * @param replication The parameters for creating a replication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -102,13 +102,13 @@ public interface ReplicationsClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
-     * @param replication An object that represents a replication for a container registry.
+     * @param replication The parameters for creating a replication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a replication for a container registry.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ReplicationInner>, ReplicationInner> beginCreateAsync(
         String resourceGroupName, String registryName, String replicationName, ReplicationInner replication);
 
@@ -118,13 +118,13 @@ public interface ReplicationsClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
-     * @param replication An object that represents a replication for a container registry.
+     * @param replication The parameters for creating a replication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a replication for a container registry.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationInner>, ReplicationInner> beginCreate(
         String resourceGroupName, String registryName, String replicationName, ReplicationInner replication);
 
@@ -134,14 +134,14 @@ public interface ReplicationsClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
-     * @param replication An object that represents a replication for a container registry.
+     * @param replication The parameters for creating a replication.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a replication for a container registry.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationInner>, ReplicationInner> beginCreate(
         String resourceGroupName,
         String registryName,
@@ -155,7 +155,7 @@ public interface ReplicationsClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
-     * @param replication An object that represents a replication for a container registry.
+     * @param replication The parameters for creating a replication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -171,7 +171,7 @@ public interface ReplicationsClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
-     * @param replication An object that represents a replication for a container registry.
+     * @param replication The parameters for creating a replication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -187,7 +187,7 @@ public interface ReplicationsClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
-     * @param replication An object that represents a replication for a container registry.
+     * @param replication The parameters for creating a replication.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -228,7 +228,7 @@ public interface ReplicationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String registryName, String replicationName);
 
@@ -243,7 +243,7 @@ public interface ReplicationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String registryName, String replicationName);
 
@@ -259,7 +259,7 @@ public interface ReplicationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String registryName, String replicationName, Context context);
 
@@ -310,7 +310,7 @@ public interface ReplicationsClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
-     * @param tags The tags for the replication.
+     * @param replicationUpdateParameters The parameters for updating a replication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -318,7 +318,10 @@ public interface ReplicationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String registryName, String replicationName, Map<String, String> tags);
+        String resourceGroupName,
+        String registryName,
+        String replicationName,
+        ReplicationUpdateParameters replicationUpdateParameters);
 
     /**
      * Updates a replication for a container registry with the specified parameters.
@@ -326,15 +329,18 @@ public interface ReplicationsClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
-     * @param tags The tags for the replication.
+     * @param replicationUpdateParameters The parameters for updating a replication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a replication for a container registry.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ReplicationInner>, ReplicationInner> beginUpdateAsync(
-        String resourceGroupName, String registryName, String replicationName, Map<String, String> tags);
+        String resourceGroupName,
+        String registryName,
+        String replicationName,
+        ReplicationUpdateParameters replicationUpdateParameters);
 
     /**
      * Updates a replication for a container registry with the specified parameters.
@@ -342,15 +348,18 @@ public interface ReplicationsClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
-     * @param tags The tags for the replication.
+     * @param replicationUpdateParameters The parameters for updating a replication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a replication for a container registry.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationInner>, ReplicationInner> beginUpdate(
-        String resourceGroupName, String registryName, String replicationName, Map<String, String> tags);
+        String resourceGroupName,
+        String registryName,
+        String replicationName,
+        ReplicationUpdateParameters replicationUpdateParameters);
 
     /**
      * Updates a replication for a container registry with the specified parameters.
@@ -358,19 +367,19 @@ public interface ReplicationsClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
-     * @param tags The tags for the replication.
+     * @param replicationUpdateParameters The parameters for updating a replication.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a replication for a container registry.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationInner>, ReplicationInner> beginUpdate(
         String resourceGroupName,
         String registryName,
         String replicationName,
-        Map<String, String> tags,
+        ReplicationUpdateParameters replicationUpdateParameters,
         Context context);
 
     /**
@@ -379,7 +388,7 @@ public interface ReplicationsClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
-     * @param tags The tags for the replication.
+     * @param replicationUpdateParameters The parameters for updating a replication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -387,7 +396,10 @@ public interface ReplicationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ReplicationInner> updateAsync(
-        String resourceGroupName, String registryName, String replicationName, Map<String, String> tags);
+        String resourceGroupName,
+        String registryName,
+        String replicationName,
+        ReplicationUpdateParameters replicationUpdateParameters);
 
     /**
      * Updates a replication for a container registry with the specified parameters.
@@ -395,21 +407,7 @@ public interface ReplicationsClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a replication for a container registry.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ReplicationInner> updateAsync(String resourceGroupName, String registryName, String replicationName);
-
-    /**
-     * Updates a replication for a container registry with the specified parameters.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param replicationName The name of the replication.
-     * @param tags The tags for the replication.
+     * @param replicationUpdateParameters The parameters for updating a replication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -417,7 +415,10 @@ public interface ReplicationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ReplicationInner update(
-        String resourceGroupName, String registryName, String replicationName, Map<String, String> tags);
+        String resourceGroupName,
+        String registryName,
+        String replicationName,
+        ReplicationUpdateParameters replicationUpdateParameters);
 
     /**
      * Updates a replication for a container registry with the specified parameters.
@@ -425,7 +426,7 @@ public interface ReplicationsClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
-     * @param tags The tags for the replication.
+     * @param replicationUpdateParameters The parameters for updating a replication.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -437,22 +438,8 @@ public interface ReplicationsClient {
         String resourceGroupName,
         String registryName,
         String replicationName,
-        Map<String, String> tags,
+        ReplicationUpdateParameters replicationUpdateParameters,
         Context context);
-
-    /**
-     * Updates a replication for a container registry with the specified parameters.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param replicationName The name of the replication.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a replication for a container registry.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationInner update(String resourceGroupName, String registryName, String replicationName);
 
     /**
      * Lists all the replications for the specified container registry.

@@ -5,7 +5,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-boot-bom</artifactId>
-  <version>3.9.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-bom;current} -->
+  <version>3.12.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-bom;current} -->
   <packaging>pom</packaging>
 
   <name>Azure Spring Boot BOM</name>
@@ -37,10 +37,6 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
-    <azure.keyvault.jca.version>2.1.0</azure.keyvault.jca.version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;dependency} -->
-    <azure.servicebus.jms.version>0.0.7</azure.servicebus.jms.version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus-jms;external_dependency} -->
-    <azure.spring.boot.starter.keyvault.certificates.version>3.2.0</azure.spring.boot.starter.keyvault.certificates.version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-keyvault-certificates;dependency} -->
-    <azure.spring.data.cosmos.version>3.12.0</azure.spring.data.cosmos.version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;dependency} -->
   </properties>
 
   <issueManagement>
@@ -50,76 +46,73 @@
 
   <dependencyManagement>
     <dependencies>
+
+      <!-- Import azure-sdk-bom-->
       <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-sdk-bom</artifactId>
-        <version>1.0.4</version>
+        <version>1.0.6</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
 
-      <!-- Azure Dependencies Bom -->
+      <!-- Other Azure dependencies that not managed by azure-sdk-bom. -->
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-spring-data-cosmos</artifactId>
+        <version>3.15.0</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;dependency} -->
+      </dependency>
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-servicebus-jms</artifactId>
+        <version>0.0.9</version>  <!-- {x-version-update;com.microsoft.azure:azure-servicebus-jms;external_dependency} -->
+      </dependency>
+
+      <!-- Spring Cloud Azure related dependencies-->
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot</artifactId>
-        <version>${project.version}</version>
+        <version>3.11.0</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter</artifactId>
-        <version>${project.version}</version>
+        <version>3.11.0</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-        <version>${project.version}</version>
+        <version>3.11.0</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
-        <version>${project.version}</version>
+        <version>3.11.0</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-cosmos</artifactId>
-        <version>${project.version}</version>
+        <version>3.11.0</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-keyvault-secrets</artifactId>
-        <version>${project.version}</version>
+        <version>3.11.0</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-keyvault-certificates</artifactId>
-        <version>${azure.spring.boot.starter.keyvault.certificates.version}</version>
+        <version>3.11.0</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-servicebus-jms</artifactId>
-        <version>${project.version}</version>
+        <version>3.11.0</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-storage</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-spring-data-cosmos</artifactId>
-        <version>${azure.spring.data.cosmos.version}</version>
-      </dependency>
-
-      <!-- Azure libraries-->
-      <dependency>
-        <groupId>com.microsoft.azure</groupId>
-        <artifactId>azure-servicebus-jms</artifactId>
-        <version>${azure.servicebus.jms.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-security-keyvault-jca</artifactId>
-        <version>${azure.keyvault.jca.version}</version>
+        <version>3.11.0</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

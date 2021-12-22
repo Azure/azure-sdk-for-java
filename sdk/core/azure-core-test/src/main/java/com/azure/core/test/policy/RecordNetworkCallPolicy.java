@@ -17,6 +17,7 @@ import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.test.models.RecordedData;
 import com.azure.core.test.models.RecordingRedactor;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.Exceptions;
@@ -180,9 +181,9 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
         }
 
         final HttpResponse bufferedResponse = response.buffer();
+        final Mono<byte[]> responseBody = FluxUtil.collectBytesInByteBufferStream(bufferedResponse.getBody());
         if (contentType == null) {
-            return bufferedResponse.getBodyAsByteArray()
-                .switchIfEmpty(Mono.defer(() -> Mono.just(new byte[0])))
+            return responseBody.switchIfEmpty(Mono.defer(() -> Mono.just(new byte[0])))
                 .map(bytes -> {
                     if (bytes.length == 0) {
                         return Tuples.of(bufferedResponse, responseData);
@@ -195,8 +196,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
                 });
         } else if (contentType.equalsIgnoreCase(ContentType.APPLICATION_OCTET_STREAM)
             || contentType.equalsIgnoreCase("avro/binary")) {
-            return bufferedResponse.getBodyAsByteArray()
-                .switchIfEmpty(Mono.defer(() -> Mono.just(new byte[0])))
+            return responseBody.switchIfEmpty(Mono.defer(() -> Mono.just(new byte[0])))
                 .map(bytes -> {
                     if (bytes.length == 0) {
                         return Tuples.of(bufferedResponse, responseData);
@@ -206,15 +206,14 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
                     return Tuples.of(bufferedResponse, responseData);
                 });
         } else if (contentType.contains("json") || response.getHeaderValue(CONTENT_ENCODING) == null) {
-            return bufferedResponse.getBodyAsString(StandardCharsets.UTF_8)
+            return responseBody.map(bytes -> CoreUtils.bomAwareToString(bytes, response.getHeaderValue(CONTENT_TYPE)))
                 .switchIfEmpty(Mono.defer(() -> Mono.just("")))
                 .map(content -> {
                     responseData.put(BODY, redactor.redact(content));
                     return Tuples.of(bufferedResponse, responseData);
                 });
         } else {
-            return bufferedResponse.getBodyAsByteArray()
-                .switchIfEmpty(Mono.defer(() -> Mono.just(new byte[0])))
+            return responseBody.switchIfEmpty(Mono.defer(() -> Mono.just(new byte[0])))
                 .map(bytes -> {
                     if (bytes.length == 0) {
                         return Tuples.of(bufferedResponse, responseData);

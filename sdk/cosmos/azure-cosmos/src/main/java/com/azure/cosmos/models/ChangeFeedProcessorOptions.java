@@ -11,9 +11,24 @@ import java.time.Instant;
  * Specifies the options associated with {@link ChangeFeedProcessor}.
  */
 public final class ChangeFeedProcessorOptions {
+    /**
+     * Default renew interval.
+     */
     public static final Duration DEFAULT_RENEW_INTERVAL = Duration.ofMillis(0).plusSeconds(17);
+
+    /**
+     * Default acquire interval.
+     */
     public static final Duration DEFAULT_ACQUIRE_INTERVAL = Duration.ofMillis(0).plusSeconds(13);
+
+    /**
+     * Default expiration interval.
+     */
     public static final Duration DEFAULT_EXPIRATION_INTERVAL = Duration.ofMillis(0).plusSeconds(60);
+
+    /**
+     * Default feed poll delay.
+     */
     public static final Duration DEFAULT_FEED_POLL_DELAY = Duration.ofMillis(0).plusSeconds(5);
 
     private Duration leaseRenewInterval;

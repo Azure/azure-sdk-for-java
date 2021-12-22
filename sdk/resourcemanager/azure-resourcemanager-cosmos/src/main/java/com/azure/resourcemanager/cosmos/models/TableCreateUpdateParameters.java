@@ -5,71 +5,30 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.cosmos.fluent.models.TableCreateUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Parameters to create and update Cosmos DB Table. */
-@JsonFlatten
 @Fluent
-public class TableCreateUpdateParameters extends ArmResourceProperties {
+public final class TableCreateUpdateParameters extends ArmResourceProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TableCreateUpdateParameters.class);
 
     /*
-     * The standard JSON format of a Table
+     * Properties to create and update Azure Cosmos DB Table.
      */
-    @JsonProperty(value = "properties.resource", required = true)
-    private TableResource resource;
-
-    /*
-     * A key-value pair of options to be applied for the request. This
-     * corresponds to the headers sent with the request.
-     */
-    @JsonProperty(value = "properties.options")
-    private CreateUpdateOptions options;
+    @JsonProperty(value = "properties", required = true)
+    private TableCreateUpdateProperties innerProperties = new TableCreateUpdateProperties();
 
     /**
-     * Get the resource property: The standard JSON format of a Table.
+     * Get the innerProperties property: Properties to create and update Azure Cosmos DB Table.
      *
-     * @return the resource value.
+     * @return the innerProperties value.
      */
-    public TableResource resource() {
-        return this.resource;
-    }
-
-    /**
-     * Set the resource property: The standard JSON format of a Table.
-     *
-     * @param resource the resource value to set.
-     * @return the TableCreateUpdateParameters object itself.
-     */
-    public TableCreateUpdateParameters withResource(TableResource resource) {
-        this.resource = resource;
-        return this;
-    }
-
-    /**
-     * Get the options property: A key-value pair of options to be applied for the request. This corresponds to the
-     * headers sent with the request.
-     *
-     * @return the options value.
-     */
-    public CreateUpdateOptions options() {
-        return this.options;
-    }
-
-    /**
-     * Set the options property: A key-value pair of options to be applied for the request. This corresponds to the
-     * headers sent with the request.
-     *
-     * @param options the options value to set.
-     * @return the TableCreateUpdateParameters object itself.
-     */
-    public TableCreateUpdateParameters withOptions(CreateUpdateOptions options) {
-        this.options = options;
-        return this;
+    private TableCreateUpdateProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -87,6 +46,54 @@ public class TableCreateUpdateParameters extends ArmResourceProperties {
     }
 
     /**
+     * Get the resource property: The standard JSON format of a Table.
+     *
+     * @return the resource value.
+     */
+    public TableResource resource() {
+        return this.innerProperties() == null ? null : this.innerProperties().resource();
+    }
+
+    /**
+     * Set the resource property: The standard JSON format of a Table.
+     *
+     * @param resource the resource value to set.
+     * @return the TableCreateUpdateParameters object itself.
+     */
+    public TableCreateUpdateParameters withResource(TableResource resource) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TableCreateUpdateProperties();
+        }
+        this.innerProperties().withResource(resource);
+        return this;
+    }
+
+    /**
+     * Get the options property: A key-value pair of options to be applied for the request. This corresponds to the
+     * headers sent with the request.
+     *
+     * @return the options value.
+     */
+    public CreateUpdateOptions options() {
+        return this.innerProperties() == null ? null : this.innerProperties().options();
+    }
+
+    /**
+     * Set the options property: A key-value pair of options to be applied for the request. This corresponds to the
+     * headers sent with the request.
+     *
+     * @param options the options value to set.
+     * @return the TableCreateUpdateParameters object itself.
+     */
+    public TableCreateUpdateParameters withOptions(CreateUpdateOptions options) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TableCreateUpdateProperties();
+        }
+        this.innerProperties().withOptions(options);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -94,16 +101,13 @@ public class TableCreateUpdateParameters extends ArmResourceProperties {
     @Override
     public void validate() {
         super.validate();
-        if (resource() == null) {
+        if (innerProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property resource in model TableCreateUpdateParameters"));
+                        "Missing required property innerProperties in model TableCreateUpdateParameters"));
         } else {
-            resource().validate();
-        }
-        if (options() != null) {
-            options().validate();
+            innerProperties().validate();
         }
     }
 }

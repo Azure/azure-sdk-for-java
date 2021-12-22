@@ -98,6 +98,20 @@ public final class FileTaskStep extends TaskStepProperties {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public FileTaskStep withContextPath(String contextPath) {
+        super.withContextPath(contextPath);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FileTaskStep withContextAccessToken(String contextAccessToken) {
+        super.withContextAccessToken(contextAccessToken);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

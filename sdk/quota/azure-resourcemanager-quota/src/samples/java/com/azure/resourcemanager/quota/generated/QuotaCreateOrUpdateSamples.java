@@ -4,8 +4,7 @@
 
 package com.azure.resourcemanager.quota.generated;
 
-import com.azure.resourcemanager.quota.models.LimitType;
-import com.azure.resourcemanager.quota.models.LimitValue;
+import com.azure.resourcemanager.quota.models.LimitObject;
 import com.azure.resourcemanager.quota.models.QuotaProperties;
 import com.azure.resourcemanager.quota.models.ResourceName;
 
@@ -28,7 +27,7 @@ public final class QuotaCreateOrUpdateSamples {
                 "subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.MachineLearningServices/locations/eastus")
             .withProperties(
                 new QuotaProperties()
-                    .withLimit(new LimitValue().withValue(10).withLimitObjectType(LimitType.LIMIT_VALUE))
+                    .withLimit(new LimitObject().withValue(10))
                     .withName(new ResourceName().withValue("TotalLowPriorityCores"))
                     .withResourceType("lowPriority"))
             .create();
@@ -51,7 +50,7 @@ public final class QuotaCreateOrUpdateSamples {
                 "subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.Network/locations/eastus")
             .withProperties(
                 new QuotaProperties()
-                    .withLimit(new LimitValue().withValue(10).withLimitObjectType(LimitType.LIMIT_VALUE))
+                    .withLimit(new LimitObject().withValue(10))
                     .withName(new ResourceName().withValue("StandardSkuPublicIpAddresses"))
                     .withResourceType("PublicIpAddresses"))
             .create();
@@ -73,7 +72,7 @@ public final class QuotaCreateOrUpdateSamples {
                 "subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.Compute/locations/eastus")
             .withProperties(
                 new QuotaProperties()
-                    .withLimit(new LimitValue().withValue(10).withLimitObjectType(LimitType.LIMIT_VALUE))
+                    .withLimit(new LimitObject().withValue(10))
                     .withName(new ResourceName().withValue("standardFSv2Family")))
             .create();
     }
@@ -94,7 +93,7 @@ public final class QuotaCreateOrUpdateSamples {
                 "subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.Network/locations/eastus")
             .withProperties(
                 new QuotaProperties()
-                    .withLimit(new LimitValue().withValue(10).withLimitObjectType(LimitType.LIMIT_VALUE))
+                    .withLimit(new LimitObject().withValue(10))
                     .withName(new ResourceName().withValue("MinPublicIpInterNetworkPrefixLength"))
                     .withResourceType("MinPublicIpInterNetworkPrefixLength"))
             .create();

@@ -28,6 +28,12 @@ parameters:
   - name: MatrixReplace
     type: object
     default: []
+  - name: SkipAggregateReports
+    type: boolean
+    default: false
+  - name: PreBuildSteps
+    type: object
+    default: []
 
 jobs:
   - job: 'Build'
@@ -68,6 +74,8 @@ jobs:
         displayName: 'Use Python 3.6'
         inputs:
           versionSpec: '3.6'
+
+      - ${{ parameters.PreBuildSteps }}
 
       # This step needs to run before we update to using dev versions otherwise dependency
       # check in the script will not fully work because the versions will mismatch
@@ -118,6 +126,19 @@ jobs:
         condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
         displayName: Setup Dev versioning
 
+      - ${{if ne(parameters.ServiceDirectory, '')}}:
+        - task: Powershell@2
+          inputs:
+            filePath: $(Build.SourcesDirectory)/eng/common/scripts/Save-Package-Properties.ps1
+            arguments: >
+              -ServiceDirectory ${{parameters.ServiceDirectory}}
+              -OutDirectory $(Build.ArtifactStagingDirectory)/PackageInfo
+              -AddDevVersion
+            pwsh: true
+            workingDirectory: $(Pipeline.Workspace)
+          displayName: Update package properties with dev version
+          condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
+
       - script: |
           pip install markdown2 BeautifulSoup4
         displayName: 'pip install markdown2 and BeautifulSoup4'
@@ -127,7 +148,7 @@ jobs:
         inputs:
           mavenPomFile: pom.xml
           goals: 'deploy'
-          options: '$(DefaultOptions) -T 1C -DskipTests -Dinject-codesnippets -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build' # We include template-module so we ensure it always builds in CI
+          options: '$(DefaultOptions) -T 1C -DskipTests -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build' # We include template-module so we ensure it always builds in CI
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaBuildVersion)
@@ -224,11 +245,9 @@ jobs:
           ServiceDirectory: "template"
           TestPipeline: ${{ parameters.TestPipeline }}
 
-      - script: |
-          pip install setuptools wheel
-          pip install doc-warden==$(DocWardenVersion)
-          ward scan -d $(Build.SourcesDirectory) -c $(Build.SourcesDirectory)/eng/.docsettings.yml
-        displayName: 'Verify Readmes'
+      - template: /eng/common/pipelines/templates/steps/verify-readme.yml
+        parameters:
+          ScanPath: $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}
 
       - template: /eng/common/pipelines/templates/steps/verify-links.yml
         parameters:
@@ -267,7 +286,7 @@ jobs:
         inputs:
           mavenPomFile: pom.xml
           goals: 'install'
-          options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
+          options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaBuildVersion)
@@ -305,3 +324,5 @@ jobs:
         Artifacts: ${{ parameters.Artifacts }}
         AdditionalModules: ${{ parameters.AdditionalModules }}
         PreTestSteps: ${{ parameters.PreTestSteps }}
+        SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
+        PreBuildSteps: ${{ parameters.PreBuildSteps }}

@@ -445,7 +445,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             return;
         }
 
-        long numberRequested = requested;
+        long numberRequested = REQUESTED.get(this);
         boolean isEmpty = messageQueue.isEmpty();
         while (numberRequested != 0L && !isEmpty) {
             if (checkAndSetTerminated()) {
@@ -494,7 +494,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
                 isEmpty = messageQueue.isEmpty();
             }
 
-            if (requested != Long.MAX_VALUE) {
+            if (REQUESTED.get(this) != Long.MAX_VALUE) {
                 numberRequested = REQUESTED.addAndGet(this, -numberEmitted);
             }
         }
@@ -531,8 +531,6 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
         synchronized (lock) {
             final int linkCredits = link.getCredits();
             final int credits = getCreditsToAdd(linkCredits);
-            logger.info("Link credits='{}', Link credits to add: '{}'", linkCredits, credits);
-
             if (credits > 0) {
                 link.addCredits(credits).subscribe();
             }
@@ -541,7 +539,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
 
     private int getCreditsToAdd(int linkCredits) {
         final CoreSubscriber<? super Message> subscriber = downstream.get();
-        final long r = requested;
+        final long r = REQUESTED.get(this);
         final boolean hasBackpressure = r != Long.MAX_VALUE;
 
         if (subscriber == null || r == 0) {
@@ -560,14 +558,13 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
                 //So it will request one by one from this link processor, even though the user's request has no
                 //back pressure.
                 //For sync client, the sync subscriber has back pressure.
-                //The request count uses the the argument of method receiveMessages(int maxMessages).
+                //The request count uses the argument of method receiveMessages(int maxMessages).
                 //It's at most Integer.MAX_VALUE.
                 expectedTotalCredit = Integer.MAX_VALUE;
             }
         } else {
             expectedTotalCredit = prefetch;
         }
-        logger.info("linkCredits: '{}', expectedTotalCredit: '{}'", linkCredits, expectedTotalCredit);
 
         synchronized (queueLock) {
             final int queuedMessages = pendingMessages.get();
@@ -581,6 +578,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
                     ? Math.max(expectedTotalCredit - pending, 0)
                     : 0;
             }
+
             logger.info("prefetch: '{}', requested: '{}', linkCredits: '{}', expectedTotalCredit: '{}', queuedMessages:"
                     + "'{}', creditsToAdd: '{}', messageQueue.size(): '{}'", getPrefetch(), r, linkCredits,
                 expectedTotalCredit, queuedMessages, creditsToAdd, messageQueue.size());

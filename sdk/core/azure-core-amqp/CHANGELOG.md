@@ -4,12 +4,42 @@
 
 ### Features Added
 
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.3.5 (2021-12-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.22.0` to `1.23.1`.
+
+## 2.3.4 (2021-11-15)
+
+### Bugs Fixed
+
+- Fixed GC leak where `AmqpChannelProcessor` did not remove subscribers on success. https://github.com/Azure/azure-sdk-for-java/pull/25129
+- Fixed GC leak where `TokenManager` was not closed if `authorize()` fails. https://github.com/Azure/azure-sdk-for-java/pull/25129
+
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.21.0` to `1.22.0`.
+
+## 2.3.3 (2021-10-07)
+
+### Features Added
+
 - Defer creation of AmqpException in switchIfEmpty to decrease creation of unused exception objects.
 - Updated tests to run in parallel.
 - Updated log messages so they are consistent in reporting connectionId.
 - Updated incorrect log messages in ReactorReceiver.
-
-### Breaking Changes
 
 ### Bugs Fixed
 

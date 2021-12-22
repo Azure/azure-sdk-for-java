@@ -19,27 +19,34 @@ import java.util.List;
  */
 public class ReadmeSamples {
 
-    private BlobServiceClient blobServiceClient = new BlobServiceClientBuilder().buildClient();
+    private final BlobServiceClient blobServiceClient = new BlobServiceClientBuilder().buildClient();
     private BlobChangefeedClient client = new BlobChangefeedClientBuilder(blobServiceClient).buildClient();
 
     public void getClient() {
+        // BEGIN: readme-sample-getClient
         client = new BlobChangefeedClientBuilder(blobServiceClient).buildClient();
+        // END: readme-sample-getClient
     }
 
     public void changefeed() {
+        // BEGIN: readme-sample-changefeed
         client.getEvents().forEach(event ->
             System.out.printf("Topic: %s, Subject: %s%n", event.getTopic(), event.getSubject()));
+        // END: readme-sample-changefeed
     }
 
     public void changefeedBetweenDates() {
+        // BEGIN: readme-sample-changefeedBetweenDates
         OffsetDateTime startTime = OffsetDateTime.MIN;
         OffsetDateTime endTime = OffsetDateTime.now();
 
         client.getEvents(startTime, endTime).forEach(event ->
             System.out.printf("Topic: %s, Subject: %s%n", event.getTopic(), event.getSubject()));
+        // END: readme-sample-changefeedBetweenDates
     }
 
     public void changefeedResumeWithCursor() {
+        // BEGIN: readme-sample-changefeedResumeWithCursor
         BlobChangefeedPagedIterable iterable = client.getEvents();
         Iterable<BlobChangefeedPagedResponse> pages = iterable.iterableByPage();
 
@@ -57,10 +64,12 @@ public class ReadmeSamples {
         /* Resume iterating from the pervious position with the cursor. */
         client.getEvents(cursor).forEach(event ->
             System.out.printf("Topic: %s, Subject: %s%n", event.getTopic(), event.getSubject()));
+        // END: readme-sample-changefeedResumeWithCursor
     }
 
     public void changefeedPollForEventsWithCursor() {
-        List<BlobChangefeedEvent> changefeedEvents = new ArrayList<BlobChangefeedEvent>();
+        // BEGIN: readme-sample-changefeedPollForEventsWithCursor
+        List<BlobChangefeedEvent> changefeedEvents = new ArrayList<>();
 
         /* Get the start time.  The change feed client will round start time down to the nearest hour if you provide
            an OffsetDateTime with minutes and seconds. */
@@ -94,6 +103,7 @@ public class ReadmeSamples {
             /* Resume from last continuation token and fetch latest set of events. */
             pages = client.getEvents(continuationToken).iterableByPage();
         }
+        // END: readme-sample-changefeedPollForEventsWithCursor
     }
 }
 

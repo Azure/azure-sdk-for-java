@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.synapse.generated;
 
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.synapse.models.CreateMode;
 import com.azure.resourcemanager.synapse.models.Sku;
 import com.azure.resourcemanager.synapse.models.SqlPool;
 import java.time.OffsetDateTime;
@@ -36,7 +37,7 @@ public final class SqlPoolsUpdateSamples {
             .withSourceDatabaseId("")
             .withRecoverableDatabaseId("")
             .withRestorePointInTime(OffsetDateTime.parse("1970-01-01T00:00:00.000Z"))
-            .withCreateMode("")
+            .withCreateMode(CreateMode.fromString(""))
             .withCreationDate(OffsetDateTime.parse("1970-01-01T00:00:00.000Z"))
             .apply();
     }

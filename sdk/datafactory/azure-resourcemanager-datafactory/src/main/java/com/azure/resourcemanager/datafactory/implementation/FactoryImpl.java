@@ -288,8 +288,13 @@ public final class FactoryImpl implements Factory, Factory.Definition, Factory.U
     }
 
     public FactoryImpl withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
-        this.innerModel().withPublicNetworkAccess(publicNetworkAccess);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withPublicNetworkAccess(publicNetworkAccess);
+            return this;
+        } else {
+            this.updateFactoryUpdateParameters.withPublicNetworkAccess(publicNetworkAccess);
+            return this;
+        }
     }
 
     public FactoryImpl withIfMatch(String ifMatch) {

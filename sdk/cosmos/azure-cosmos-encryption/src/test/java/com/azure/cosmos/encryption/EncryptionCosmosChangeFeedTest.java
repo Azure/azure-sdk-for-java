@@ -50,9 +50,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class EncryptionCosmosChangeFeedTest extends TestSuiteBase {
     private final static Logger logger = LoggerFactory.getLogger(EncryptionCosmosChangeFeedTest.class);
     private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
-    private final static String CHANGE_FEED_PK_1 = "changeFeedPK1";
-    private final static String CHANGE_FEED_PK_2 = "changeFeedPK2";
-    private final static String CHANGE_FEED_PK_3 = "changeFeedPK3";
     private final static String CHANGE_FEED_PROCESSOR_PK = "changeFeedProcessorPK";
     private final int LEASE_COLLECTION_THROUGHPUT = 400;
     private final int CHANGE_FEED_PROCESSOR_TIMEOUT = 5000;
@@ -63,7 +60,7 @@ public class EncryptionCosmosChangeFeedTest extends TestSuiteBase {
     private CosmosEncryptionContainer cosmosEncryptionContainer;
     private CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase;
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "clientBuildersWithSessionConsistency")
     public EncryptionCosmosChangeFeedTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
@@ -85,9 +82,10 @@ public class EncryptionCosmosChangeFeedTest extends TestSuiteBase {
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void changeFeed_fromBeginning() {
-        populateItems(createdItemsForPk1, CHANGE_FEED_PK_1);
+        String pk = UUID.randomUUID().toString();
+        populateItems(createdItemsForPk1, pk);
         FeedRange feedRange = new FeedRangePartitionKeyImpl(
-            ModelBridgeInternal.getPartitionKeyInternal(new PartitionKey(CHANGE_FEED_PK_1)));
+            ModelBridgeInternal.getPartitionKeyInternal(new PartitionKey(pk)));
         CosmosChangeFeedRequestOptions changeFeedOption =
             CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRange);
         changeFeedOption.setMaxItemCount(3);
@@ -113,8 +111,9 @@ public class EncryptionCosmosChangeFeedTest extends TestSuiteBase {
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void changeFeed_fromNow() {
+        String pk = UUID.randomUUID().toString();
         FeedRange feedRange = new FeedRangePartitionKeyImpl(
-            ModelBridgeInternal.getPartitionKeyInternal(new PartitionKey(CHANGE_FEED_PK_2)));
+            ModelBridgeInternal.getPartitionKeyInternal(new PartitionKey(pk)));
         CosmosChangeFeedRequestOptions changeFeedOption =
             CosmosChangeFeedRequestOptions.createForProcessingFromNow(feedRange);
         changeFeedOption.setMaxItemCount(3);
@@ -135,7 +134,7 @@ public class EncryptionCosmosChangeFeedTest extends TestSuiteBase {
         }
         assertThat(changeFeedResultList.size()).isEqualTo(0);
 
-        populateItems(createdItemsForPk2, CHANGE_FEED_PK_2);
+        populateItems(createdItemsForPk2, pk);
 
         changeFeedOption =
             CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(continuationToken);
@@ -158,9 +157,10 @@ public class EncryptionCosmosChangeFeedTest extends TestSuiteBase {
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void syncChangeFeed_fromBeginning() {
-        populateItems(createdItemsForPk3, CHANGE_FEED_PK_3);
+        String pk = UUID.randomUUID().toString();
+        populateItems(createdItemsForPk3, pk);
         FeedRange feedRange = new FeedRangePartitionKeyImpl(
-            ModelBridgeInternal.getPartitionKeyInternal(new PartitionKey(CHANGE_FEED_PK_3)));
+            ModelBridgeInternal.getPartitionKeyInternal(new PartitionKey(pk)));
         CosmosChangeFeedRequestOptions changeFeedOption =
             CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRange);
         changeFeedOption.setMaxItemCount(3);

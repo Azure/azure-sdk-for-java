@@ -23,9 +23,9 @@ private class ChangeFeedBatch
 
   @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
 
-  val batchId = UUID.randomUUID().toString()
+  private val batchId = UUID.randomUUID().toString
   log.logTrace(s"Instantiated ${this.getClass.getSimpleName}")
-  val defaultParallelism = session.sparkContext.defaultParallelism
+  private val defaultParallelism = session.sparkContext.defaultParallelism
 
   override def planInputPartitions(): Array[InputPartition] = {
 
@@ -36,41 +36,46 @@ private class ChangeFeedBatch
     val partitioningConfig = CosmosPartitioningConfig.parseCosmosPartitioningConfig(config)
     val changeFeedConfig = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(config)
 
-    val client =
-      CosmosClientCache.apply(clientConfiguration, Some(cosmosClientStateHandle))
-    val container = ThroughputControlHelper.getContainer(config, containerConfig, client)
+    Loan(
+      CosmosClientCache.apply(
+        clientConfiguration,
+        Some(cosmosClientStateHandle),
+        s"ChangeFeedBatch.planInputPartitions(batchId ${batchId})"
+      )).to(cacheItem => {
+      val container = ThroughputControlHelper.getContainer(config, containerConfig, cacheItem.client)
 
-    // This maps the StartFrom settings to concrete LSNs
-    val initialOffsetJson = CosmosPartitionPlanner.createInitialOffset(container, changeFeedConfig, None)
+      // This maps the StartFrom settings to concrete LSNs
+      val initialOffsetJson = CosmosPartitionPlanner.createInitialOffset(container, changeFeedConfig, None)
 
-    // Calculates the Input partitions based on start Lsn and latest Lsn
-    val latestOffset = CosmosPartitionPlanner.getLatestOffset(
-      config,
-      ChangeFeedOffset(initialOffsetJson, None),
-      changeFeedConfig.toReadLimit,
-      // ok to use from cache because endLsn is ignored in batch mode
-      Duration.ofMillis(PartitionMetadataCache.refreshIntervalInMsDefault),
-      clientConfiguration,
-      this.cosmosClientStateHandle,
-      containerConfig,
-      partitioningConfig,
-      this.defaultParallelism,
-      container
-    )
+      // Calculates the Input partitions based on start Lsn and latest Lsn
+      val latestOffset = CosmosPartitionPlanner.getLatestOffset(
+        config,
+        ChangeFeedOffset(initialOffsetJson, None),
+        changeFeedConfig.toReadLimit,
+        // ok to use from cache because endLsn is ignored in batch mode
+        Duration.ofMillis(PartitionMetadataCache.refreshIntervalInMsDefault),
+        clientConfiguration,
+        this.cosmosClientStateHandle,
+        containerConfig,
+        partitioningConfig,
+        this.defaultParallelism,
+        container
+      )
 
-    // Latest offset above has the EndLsn specified based on the point-in-time latest offset
-    // For batch mode instead we need to reset it so that the change feed will get fully drained
-    val inputPartitions = latestOffset
-      .inputPartitions
-      .get
-      .map(partition => partition
-        .withContinuationState(
-          SparkBridgeImplementationInternal
-            .extractChangeFeedStateForRange(initialOffsetJson, partition.feedRange),
-          clearEndLsn = true))
+      // Latest offset above has the EndLsn specified based on the point-in-time latest offset
+      // For batch mode instead we need to reset it so that the change feed will get fully drained
+      val inputPartitions = latestOffset
+        .inputPartitions
+        .get
+        .map(partition => partition
+          .withContinuationState(
+            SparkBridgeImplementationInternal
+              .extractChangeFeedStateForRange(initialOffsetJson, partition.feedRange),
+            clearEndLsn = true))
 
-    log.logInfo(s"<-- planInputPartitions $batchId (creating ${inputPartitions.length} partitions)" )
-    inputPartitions
+      log.logInfo(s"<-- planInputPartitions $batchId (creating ${inputPartitions.length} partitions)")
+      inputPartitions
+    })
   }
 
   override def createReaderFactory(): PartitionReaderFactory = {

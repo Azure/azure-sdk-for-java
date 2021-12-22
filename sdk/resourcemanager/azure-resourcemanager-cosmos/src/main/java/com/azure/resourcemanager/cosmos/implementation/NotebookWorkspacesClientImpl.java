@@ -661,7 +661,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a notebook workspace resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<NotebookWorkspaceInner>, NotebookWorkspaceInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String accountName,
@@ -677,7 +677,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
                 this.client.getHttpPipeline(),
                 NotebookWorkspaceInner.class,
                 NotebookWorkspaceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -693,7 +693,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a notebook workspace resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NotebookWorkspaceInner>, NotebookWorkspaceInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String accountName,
@@ -726,7 +726,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a notebook workspace resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NotebookWorkspaceInner>, NotebookWorkspaceInner> beginCreateOrUpdate(
         String resourceGroupName,
         String accountName,
@@ -750,7 +750,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a notebook workspace resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NotebookWorkspaceInner>, NotebookWorkspaceInner> beginCreateOrUpdate(
         String resourceGroupName,
         String accountName,
@@ -977,14 +977,15 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, accountName, notebookWorkspaceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -999,7 +1000,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName, Context context) {
         context = this.client.mergeContext(context);
@@ -1021,7 +1022,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName) {
         return beginDeleteAsync(resourceGroupName, accountName, notebookWorkspaceName).getSyncPoller();
@@ -1039,7 +1040,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName, Context context) {
         return beginDeleteAsync(resourceGroupName, accountName, notebookWorkspaceName, context).getSyncPoller();
@@ -1400,14 +1401,15 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginRegenerateAuthTokenAsync(
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             regenerateAuthTokenWithResponseAsync(resourceGroupName, accountName, notebookWorkspaceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1422,7 +1424,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRegenerateAuthTokenAsync(
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName, Context context) {
         context = this.client.mergeContext(context);
@@ -1444,7 +1446,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRegenerateAuthToken(
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName) {
         return beginRegenerateAuthTokenAsync(resourceGroupName, accountName, notebookWorkspaceName).getSyncPoller();
@@ -1462,7 +1464,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRegenerateAuthToken(
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName, Context context) {
         return beginRegenerateAuthTokenAsync(resourceGroupName, accountName, notebookWorkspaceName, context)
@@ -1658,14 +1660,15 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginStartAsync(
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             startWithResponseAsync(resourceGroupName, accountName, notebookWorkspaceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1680,7 +1683,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStartAsync(
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName, Context context) {
         context = this.client.mergeContext(context);
@@ -1702,7 +1705,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName) {
         return beginStartAsync(resourceGroupName, accountName, notebookWorkspaceName).getSyncPoller();
@@ -1720,7 +1723,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName, Context context) {
         return beginStartAsync(resourceGroupName, accountName, notebookWorkspaceName, context).getSyncPoller();

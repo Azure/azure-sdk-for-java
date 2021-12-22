@@ -18,6 +18,7 @@ import com.azure.cosmos.implementation.RetryWithException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.ShouldRetryResult;
 import com.azure.cosmos.implementation.guava25.base.Supplier;
+import com.azure.cosmos.implementation.RetryWithException;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
@@ -323,6 +324,49 @@ public class GoneAndRetryWithRetryPolicyTest {
                 .shouldRetry(new BadRequestException());
         ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
         assertThat(shouldRetryResult.shouldRetry).isFalse();
+    }
+
+    /**
+     * Test for custom retryWith values
+     */
+    @Test(groups = { "unit" }, timeOut = TIMEOUT)
+    public void retryWithDefaultTimeouts() {
+        int defaultInitialDelayInMs = 10;
+        int defaultSalt = 5;
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            mockDiagnosticsClientContext(),
+            OperationType.Create,
+            ResourceType.Document);
+        GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30);
+
+        RetryWithException retryWithException = Mockito.mock(RetryWithException.class);
+
+        Mono<ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy.shouldRetry(retryWithException);
+        ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
+        assertThat(shouldRetryResult.policyArg.getValue3()).isEqualTo(1);
+        validateRetryWithTimeRange(defaultInitialDelayInMs, shouldRetryResult, defaultSalt);
+
+        singleShouldRetry = goneAndRetryWithRetryPolicy.shouldRetry(retryWithException);
+        shouldRetryResult = singleShouldRetry.block();
+        assertThat(shouldRetryResult.policyArg.getValue3()).isEqualTo(2);
+        defaultInitialDelayInMs = defaultInitialDelayInMs * 2; //backoff multiplier
+        validateRetryWithTimeRange(defaultInitialDelayInMs, shouldRetryResult, defaultSalt);
+
+        singleShouldRetry = goneAndRetryWithRetryPolicy.shouldRetry(retryWithException);
+        shouldRetryResult = singleShouldRetry.block();
+        assertThat(shouldRetryResult.policyArg.getValue3()).isEqualTo(3);
+        defaultInitialDelayInMs = defaultInitialDelayInMs * 2; //backoff multiplier
+        validateRetryWithTimeRange(defaultInitialDelayInMs, shouldRetryResult, defaultSalt);
+    }
+
+    private static void validateRetryWithTimeRange(
+        int expectedDelayInMs,
+        ShouldRetryResult retryResult,
+        Integer saltValueInMs) {
+        assertThat(retryResult.shouldRetry).isTrue();
+        assertThat(retryResult.backOffTime.toMillis() >= 0).isTrue();
+        assertThat(retryResult.backOffTime.toMillis() > expectedDelayInMs - saltValueInMs).isTrue();
+        assertThat(retryResult.backOffTime.toMillis() < expectedDelayInMs + saltValueInMs).isTrue();
     }
 
     /**

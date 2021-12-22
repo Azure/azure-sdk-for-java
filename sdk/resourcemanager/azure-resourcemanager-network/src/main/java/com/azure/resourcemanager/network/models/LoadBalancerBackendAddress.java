@@ -10,6 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.LoadBalancerBackendAddressPropertiesFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** Load balancer backend addresses. */
 @Fluent
@@ -159,6 +160,15 @@ public final class LoadBalancerBackendAddress {
         }
         this.innerProperties().withLoadBalancerFrontendIpConfiguration(loadBalancerFrontendIpConfiguration);
         return this;
+    }
+
+    /**
+     * Get the inboundNatRulesPortMapping property: Collection of inbound NAT rule port mappings.
+     *
+     * @return the inboundNatRulesPortMapping value.
+     */
+    public List<NatRulePortMapping> inboundNatRulesPortMapping() {
+        return this.innerProperties() == null ? null : this.innerProperties().inboundNatRulesPortMapping();
     }
 
     /**

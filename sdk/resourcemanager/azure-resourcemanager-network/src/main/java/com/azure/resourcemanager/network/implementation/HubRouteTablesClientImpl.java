@@ -188,7 +188,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
         } else {
             routeTableParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -255,7 +255,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
         } else {
             routeTableParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -283,7 +283,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return routeTable resource in a virtual hub.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<HubRouteTableInner>, HubRouteTableInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String virtualHubName,
@@ -294,7 +294,11 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
         return this
             .client
             .<HubRouteTableInner, HubRouteTableInner>getLroResult(
-                mono, this.client.getHttpPipeline(), HubRouteTableInner.class, HubRouteTableInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                HubRouteTableInner.class,
+                HubRouteTableInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -310,7 +314,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return routeTable resource in a virtual hub.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<HubRouteTableInner>, HubRouteTableInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String virtualHubName,
@@ -339,7 +343,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return routeTable resource in a virtual hub.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HubRouteTableInner>, HubRouteTableInner> beginCreateOrUpdate(
         String resourceGroupName,
         String virtualHubName,
@@ -362,7 +366,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return routeTable resource in a virtual hub.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HubRouteTableInner>, HubRouteTableInner> beginCreateOrUpdate(
         String resourceGroupName,
         String virtualHubName,
@@ -504,7 +508,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
         if (routeTableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -559,7 +563,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
         if (routeTableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -668,7 +672,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
         if (routeTableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -723,7 +727,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
         if (routeTableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -749,14 +753,15 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String virtualHubName, String routeTableName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, virtualHubName, routeTableName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -771,7 +776,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String virtualHubName, String routeTableName, Context context) {
         context = this.client.mergeContext(context);
@@ -793,7 +798,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualHubName, String routeTableName) {
         return beginDeleteAsync(resourceGroupName, virtualHubName, routeTableName).getSyncPoller();
@@ -811,7 +816,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualHubName, String routeTableName, Context context) {
         return beginDeleteAsync(resourceGroupName, virtualHubName, routeTableName, context).getSyncPoller();
@@ -918,7 +923,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -977,7 +982,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

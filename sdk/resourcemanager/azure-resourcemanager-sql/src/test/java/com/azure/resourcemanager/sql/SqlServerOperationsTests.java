@@ -818,6 +818,8 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Assertions.assertEquals("0.0.0.4", firewallRule.startIpAddress());
         Assertions.assertEquals("0.0.0.4", firewallRule.endIpAddress());
 
+//        sqlServer.enableAccessFromAzureServices();
+
         firewallRule.delete();
     }
 

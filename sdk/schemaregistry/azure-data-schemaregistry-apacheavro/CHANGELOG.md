@@ -1,5 +1,24 @@
 # Release History
 
+## 1.0.0-beta.8 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.7 (2021-11-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-data-schemaregistry` dependency to `1.0.0`.
+- Update `azure-core-serializer-avro-apache` dependency to `1.0.0-beta.16`.
+
 ## 1.0.0-beta.6 (2021-10-08)
 
 ### Breaking Changes

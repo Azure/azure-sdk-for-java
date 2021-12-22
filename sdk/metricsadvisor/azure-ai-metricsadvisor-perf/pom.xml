@@ -21,6 +21,9 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
+    <codesnippet.skip>false</codesnippet.skip>
+    <javadocDoclet></javadocDoclet>
+    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <dependencies>
@@ -55,6 +58,10 @@
                     com.azure.ai.metricsadvisor.perf.App
                   </mainClass>
                 </manifest>
+                <!-- Add a manifest entry to indicate that the JAR with dependencies is a multi-release JAR since azure-core contains multi-release functionality. -->
+                <manifestEntries>
+                  <Multi-Release>true</Multi-Release>
+                </manifestEntries>
               </archive>
               <descriptorRefs>
                 <descriptorRef>jar-with-dependencies</descriptorRef>

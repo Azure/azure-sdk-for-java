@@ -10,6 +10,14 @@
 
 ### Other Changes
 
+## 1.0.6 (2021-11-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded azure-core to 1.22.0.
+
 ## 1.0.5 (2021-10-07)
 
 ### Other Changes

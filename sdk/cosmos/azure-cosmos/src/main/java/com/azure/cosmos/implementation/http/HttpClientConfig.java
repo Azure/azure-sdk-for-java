@@ -17,7 +17,7 @@ public class HttpClientConfig {
     private final Configs configs;
     private Integer maxPoolSize;
     private Duration maxIdleConnectionTimeout;
-    private Duration requestTimeout;
+    private Duration networkRequestTimeout;
     private ProxyOptions proxy;
     private boolean connectionKeepAlive = true;
 
@@ -40,8 +40,8 @@ public class HttpClientConfig {
         return this;
     }
 
-    public HttpClientConfig withRequestTimeout(Duration requestTimeout) {
-        this.requestTimeout = requestTimeout;
+    public HttpClientConfig withNetworkRequestTimeout(Duration requestTimeout) {
+        this.networkRequestTimeout = requestTimeout;
         return this;
     }
 
@@ -62,8 +62,8 @@ public class HttpClientConfig {
         return maxIdleConnectionTimeout;
     }
 
-    public Duration getRequestTimeout() {
-        return requestTimeout;
+    public Duration getNetworkRequestTimeout() {
+        return networkRequestTimeout;
     }
 
     public ProxyOptions getProxy() {

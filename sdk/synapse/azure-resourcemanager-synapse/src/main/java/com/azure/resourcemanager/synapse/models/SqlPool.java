@@ -105,11 +105,23 @@ public interface SqlPool {
     OffsetDateTime restorePointInTime();
 
     /**
-     * Gets the createMode property: What is this?.
+     * Gets the createMode property: Specifies the mode of sql pool creation.
+     *
+     * <p>Default: regular sql pool creation.
+     *
+     * <p>PointInTimeRestore: Creates a sql pool by restoring a point in time backup of an existing sql pool.
+     * sourceDatabaseId must be specified as the resource ID of the existing sql pool, and restorePointInTime must be
+     * specified.
+     *
+     * <p>Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId must be specified as the
+     * recoverableDatabaseId to restore.
+     *
+     * <p>Restore: Creates a sql pool by restoring a backup of a deleted sql pool. SourceDatabaseId should be the sql
+     * pool's original resource ID. SourceDatabaseId and sourceDatabaseDeletionDate must be specified.
      *
      * @return the createMode value.
      */
-    String createMode();
+    CreateMode createMode();
 
     /**
      * Gets the creationDate property: Date the SQL pool was created.
@@ -320,12 +332,33 @@ public interface SqlPool {
         /** The stage of the SqlPool definition allowing to specify createMode. */
         interface WithCreateMode {
             /**
-             * Specifies the createMode property: What is this?.
+             * Specifies the createMode property: Specifies the mode of sql pool creation.
              *
-             * @param createMode What is this?.
+             * <p>Default: regular sql pool creation.
+             *
+             * <p>PointInTimeRestore: Creates a sql pool by restoring a point in time backup of an existing sql pool.
+             * sourceDatabaseId must be specified as the resource ID of the existing sql pool, and restorePointInTime
+             * must be specified.
+             *
+             * <p>Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId must be specified as the
+             * recoverableDatabaseId to restore.
+             *
+             * <p>Restore: Creates a sql pool by restoring a backup of a deleted sql pool. SourceDatabaseId should be
+             * the sql pool's original resource ID. SourceDatabaseId and sourceDatabaseDeletionDate must be specified..
+             *
+             * @param createMode Specifies the mode of sql pool creation.
+             *     <p>Default: regular sql pool creation.
+             *     <p>PointInTimeRestore: Creates a sql pool by restoring a point in time backup of an existing sql
+             *     pool. sourceDatabaseId must be specified as the resource ID of the existing sql pool, and
+             *     restorePointInTime must be specified.
+             *     <p>Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId must be specified as the
+             *     recoverableDatabaseId to restore.
+             *     <p>Restore: Creates a sql pool by restoring a backup of a deleted sql pool. SourceDatabaseId should
+             *     be the sql pool's original resource ID. SourceDatabaseId and sourceDatabaseDeletionDate must be
+             *     specified.
              * @return the next definition stage.
              */
-            WithCreate withCreateMode(String createMode);
+            WithCreate withCreateMode(CreateMode createMode);
         }
         /** The stage of the SqlPool definition allowing to specify creationDate. */
         interface WithCreationDate {
@@ -491,12 +524,33 @@ public interface SqlPool {
         /** The stage of the SqlPool update allowing to specify createMode. */
         interface WithCreateMode {
             /**
-             * Specifies the createMode property: What is this?.
+             * Specifies the createMode property: Specifies the mode of sql pool creation.
              *
-             * @param createMode What is this?.
+             * <p>Default: regular sql pool creation.
+             *
+             * <p>PointInTimeRestore: Creates a sql pool by restoring a point in time backup of an existing sql pool.
+             * sourceDatabaseId must be specified as the resource ID of the existing sql pool, and restorePointInTime
+             * must be specified.
+             *
+             * <p>Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId must be specified as the
+             * recoverableDatabaseId to restore.
+             *
+             * <p>Restore: Creates a sql pool by restoring a backup of a deleted sql pool. SourceDatabaseId should be
+             * the sql pool's original resource ID. SourceDatabaseId and sourceDatabaseDeletionDate must be specified..
+             *
+             * @param createMode Specifies the mode of sql pool creation.
+             *     <p>Default: regular sql pool creation.
+             *     <p>PointInTimeRestore: Creates a sql pool by restoring a point in time backup of an existing sql
+             *     pool. sourceDatabaseId must be specified as the resource ID of the existing sql pool, and
+             *     restorePointInTime must be specified.
+             *     <p>Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId must be specified as the
+             *     recoverableDatabaseId to restore.
+             *     <p>Restore: Creates a sql pool by restoring a backup of a deleted sql pool. SourceDatabaseId should
+             *     be the sql pool's original resource ID. SourceDatabaseId and sourceDatabaseDeletionDate must be
+             *     specified.
              * @return the next definition stage.
              */
-            Update withCreateMode(String createMode);
+            Update withCreateMode(CreateMode createMode);
         }
         /** The stage of the SqlPool update allowing to specify creationDate. */
         interface WithCreationDate {

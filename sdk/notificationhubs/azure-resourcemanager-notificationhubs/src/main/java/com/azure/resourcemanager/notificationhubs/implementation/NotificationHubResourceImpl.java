@@ -8,6 +8,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.notificationhubs.fluent.models.NotificationHubResourceInner;
+import com.azure.resourcemanager.notificationhubs.fluent.models.SharedAccessAuthorizationRuleProperties;
 import com.azure.resourcemanager.notificationhubs.models.AdmCredential;
 import com.azure.resourcemanager.notificationhubs.models.ApnsCredential;
 import com.azure.resourcemanager.notificationhubs.models.BaiduCredential;
@@ -18,7 +19,6 @@ import com.azure.resourcemanager.notificationhubs.models.NotificationHubCreateOr
 import com.azure.resourcemanager.notificationhubs.models.NotificationHubPatchParameters;
 import com.azure.resourcemanager.notificationhubs.models.NotificationHubResource;
 import com.azure.resourcemanager.notificationhubs.models.PnsCredentialsResource;
-import com.azure.resourcemanager.notificationhubs.models.SharedAccessAuthorizationRuleProperties;
 import com.azure.resourcemanager.notificationhubs.models.Sku;
 import com.azure.resourcemanager.notificationhubs.models.WnsCredential;
 import java.util.Collections;
@@ -54,6 +54,10 @@ public final class NotificationHubResourceImpl
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    public Sku sku() {
+        return this.innerModel().sku();
     }
 
     public String namePropertiesName() {
@@ -95,10 +99,6 @@ public final class NotificationHubResourceImpl
 
     public BaiduCredential baiduCredential() {
         return this.innerModel().baiduCredential();
-    }
-
-    public Sku sku() {
-        return this.innerModel().sku();
     }
 
     public Region region() {
@@ -261,6 +261,16 @@ public final class NotificationHubResourceImpl
         }
     }
 
+    public NotificationHubResourceImpl withSku(Sku sku) {
+        if (isInCreateMode()) {
+            this.createParameters.withSku(sku);
+            return this;
+        } else {
+            this.updateParameters.withSku(sku);
+            return this;
+        }
+    }
+
     public NotificationHubResourceImpl withNamePropertiesName(String namePropertiesName) {
         if (isInCreateMode()) {
             this.createParameters.withNamePropertiesName(namePropertiesName);
@@ -348,16 +358,6 @@ public final class NotificationHubResourceImpl
             return this;
         } else {
             this.updateParameters.withBaiduCredential(baiduCredential);
-            return this;
-        }
-    }
-
-    public NotificationHubResourceImpl withSku(Sku sku) {
-        if (isInCreateMode()) {
-            this.createParameters.withSku(sku);
-            return this;
-        } else {
-            this.updateParameters.withSku(sku);
             return this;
         }
     }

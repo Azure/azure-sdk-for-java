@@ -415,7 +415,7 @@ public final class CloudServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the cloud service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<CloudServiceInner>, CloudServiceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String cloudServiceName, CloudServiceInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -423,7 +423,11 @@ public final class CloudServicesClientImpl
         return this
             .client
             .<CloudServiceInner, CloudServiceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), CloudServiceInner.class, CloudServiceInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                CloudServiceInner.class,
+                CloudServiceInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -438,7 +442,7 @@ public final class CloudServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the cloud service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CloudServiceInner>, CloudServiceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String cloudServiceName, CloudServiceInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -461,7 +465,7 @@ public final class CloudServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the cloud service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudServiceInner>, CloudServiceInner> beginCreateOrUpdate(
         String resourceGroupName, String cloudServiceName, CloudServiceInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, cloudServiceName, parameters).getSyncPoller();
@@ -479,7 +483,7 @@ public final class CloudServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the cloud service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudServiceInner>, CloudServiceInner> beginCreateOrUpdate(
         String resourceGroupName, String cloudServiceName, CloudServiceInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, cloudServiceName, parameters, context).getSyncPoller();
@@ -712,7 +716,7 @@ public final class CloudServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the cloud service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<CloudServiceInner>, CloudServiceInner> beginUpdateAsync(
         String resourceGroupName, String cloudServiceName, CloudServiceUpdate parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -720,7 +724,11 @@ public final class CloudServicesClientImpl
         return this
             .client
             .<CloudServiceInner, CloudServiceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), CloudServiceInner.class, CloudServiceInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                CloudServiceInner.class,
+                CloudServiceInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -735,7 +743,7 @@ public final class CloudServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the cloud service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CloudServiceInner>, CloudServiceInner> beginUpdateAsync(
         String resourceGroupName, String cloudServiceName, CloudServiceUpdate parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -758,7 +766,7 @@ public final class CloudServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the cloud service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudServiceInner>, CloudServiceInner> beginUpdate(
         String resourceGroupName, String cloudServiceName, CloudServiceUpdate parameters) {
         return beginUpdateAsync(resourceGroupName, cloudServiceName, parameters).getSyncPoller();
@@ -776,7 +784,7 @@ public final class CloudServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the cloud service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudServiceInner>, CloudServiceInner> beginUpdate(
         String resourceGroupName, String cloudServiceName, CloudServiceUpdate parameters, Context context) {
         return beginUpdateAsync(resourceGroupName, cloudServiceName, parameters, context).getSyncPoller();
@@ -996,12 +1004,13 @@ public final class CloudServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String cloudServiceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, cloudServiceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1015,7 +1024,7 @@ public final class CloudServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String cloudServiceName, Context context) {
         context = this.client.mergeContext(context);
@@ -1035,7 +1044,7 @@ public final class CloudServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cloudServiceName) {
         return beginDeleteAsync(resourceGroupName, cloudServiceName).getSyncPoller();
     }
@@ -1051,7 +1060,7 @@ public final class CloudServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String cloudServiceName, Context context) {
         return beginDeleteAsync(resourceGroupName, cloudServiceName, context).getSyncPoller();
@@ -1848,12 +1857,13 @@ public final class CloudServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String cloudServiceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, cloudServiceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1867,7 +1877,7 @@ public final class CloudServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStartAsync(
         String resourceGroupName, String cloudServiceName, Context context) {
         context = this.client.mergeContext(context);
@@ -1887,7 +1897,7 @@ public final class CloudServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String cloudServiceName) {
         return beginStartAsync(resourceGroupName, cloudServiceName).getSyncPoller();
     }
@@ -1903,7 +1913,7 @@ public final class CloudServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String cloudServiceName, Context context) {
         return beginStartAsync(resourceGroupName, cloudServiceName, context).getSyncPoller();
@@ -2084,12 +2094,13 @@ public final class CloudServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginPowerOffAsync(String resourceGroupName, String cloudServiceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = powerOffWithResponseAsync(resourceGroupName, cloudServiceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2104,7 +2115,7 @@ public final class CloudServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginPowerOffAsync(
         String resourceGroupName, String cloudServiceName, Context context) {
         context = this.client.mergeContext(context);
@@ -2125,7 +2136,7 @@ public final class CloudServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPowerOff(String resourceGroupName, String cloudServiceName) {
         return beginPowerOffAsync(resourceGroupName, cloudServiceName).getSyncPoller();
     }
@@ -2142,7 +2153,7 @@ public final class CloudServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPowerOff(
         String resourceGroupName, String cloudServiceName, Context context) {
         return beginPowerOffAsync(resourceGroupName, cloudServiceName, context).getSyncPoller();
@@ -2335,14 +2346,15 @@ public final class CloudServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginRestartAsync(
         String resourceGroupName, String cloudServiceName, RoleInstances parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             restartWithResponseAsync(resourceGroupName, cloudServiceName, parameters);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2357,7 +2369,7 @@ public final class CloudServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRestartAsync(
         String resourceGroupName, String cloudServiceName, RoleInstances parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -2379,7 +2391,7 @@ public final class CloudServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(
         String resourceGroupName, String cloudServiceName, RoleInstances parameters) {
         return beginRestartAsync(resourceGroupName, cloudServiceName, parameters).getSyncPoller();
@@ -2397,7 +2409,7 @@ public final class CloudServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(
         String resourceGroupName, String cloudServiceName, RoleInstances parameters, Context context) {
         return beginRestartAsync(resourceGroupName, cloudServiceName, parameters, context).getSyncPoller();
@@ -2624,14 +2636,15 @@ public final class CloudServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginReimageAsync(
         String resourceGroupName, String cloudServiceName, RoleInstances parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             reimageWithResponseAsync(resourceGroupName, cloudServiceName, parameters);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2646,7 +2659,7 @@ public final class CloudServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginReimageAsync(
         String resourceGroupName, String cloudServiceName, RoleInstances parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -2668,7 +2681,7 @@ public final class CloudServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReimage(
         String resourceGroupName, String cloudServiceName, RoleInstances parameters) {
         return beginReimageAsync(resourceGroupName, cloudServiceName, parameters).getSyncPoller();
@@ -2686,7 +2699,7 @@ public final class CloudServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReimage(
         String resourceGroupName, String cloudServiceName, RoleInstances parameters, Context context) {
         return beginReimageAsync(resourceGroupName, cloudServiceName, parameters, context).getSyncPoller();
@@ -2919,14 +2932,15 @@ public final class CloudServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginRebuildAsync(
         String resourceGroupName, String cloudServiceName, RoleInstances parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             rebuildWithResponseAsync(resourceGroupName, cloudServiceName, parameters);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2943,7 +2957,7 @@ public final class CloudServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRebuildAsync(
         String resourceGroupName, String cloudServiceName, RoleInstances parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -2967,7 +2981,7 @@ public final class CloudServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRebuild(
         String resourceGroupName, String cloudServiceName, RoleInstances parameters) {
         return beginRebuildAsync(resourceGroupName, cloudServiceName, parameters).getSyncPoller();
@@ -2987,7 +3001,7 @@ public final class CloudServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRebuild(
         String resourceGroupName, String cloudServiceName, RoleInstances parameters, Context context) {
         return beginRebuildAsync(resourceGroupName, cloudServiceName, parameters, context).getSyncPoller();
@@ -3226,14 +3240,15 @@ public final class CloudServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteInstancesAsync(
         String resourceGroupName, String cloudServiceName, RoleInstances parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteInstancesWithResponseAsync(resourceGroupName, cloudServiceName, parameters);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -3248,7 +3263,7 @@ public final class CloudServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteInstancesAsync(
         String resourceGroupName, String cloudServiceName, RoleInstances parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -3270,7 +3285,7 @@ public final class CloudServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteInstances(
         String resourceGroupName, String cloudServiceName, RoleInstances parameters) {
         return beginDeleteInstancesAsync(resourceGroupName, cloudServiceName, parameters).getSyncPoller();
@@ -3288,7 +3303,7 @@ public final class CloudServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteInstances(
         String resourceGroupName, String cloudServiceName, RoleInstances parameters, Context context) {
         return beginDeleteInstancesAsync(resourceGroupName, cloudServiceName, parameters, context).getSyncPoller();

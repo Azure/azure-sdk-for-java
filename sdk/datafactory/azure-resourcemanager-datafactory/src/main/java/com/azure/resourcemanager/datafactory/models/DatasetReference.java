@@ -20,7 +20,7 @@ public final class DatasetReference {
      * Dataset reference type.
      */
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private String type = "DatasetReference";
 
     /*
      * Reference dataset name.

@@ -49,7 +49,7 @@ public interface RestorePointsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return restore Point details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<RestorePointInner>, RestorePointInner> beginCreateAsync(
         String resourceGroupName,
         String restorePointCollectionName,
@@ -68,7 +68,7 @@ public interface RestorePointsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return restore Point details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(
         String resourceGroupName,
         String restorePointCollectionName,
@@ -88,7 +88,7 @@ public interface RestorePointsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return restore Point details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(
         String resourceGroupName,
         String restorePointCollectionName,
@@ -181,7 +181,7 @@ public interface RestorePointsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String restorePointCollectionName, String restorePointName);
 
@@ -196,7 +196,7 @@ public interface RestorePointsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String restorePointCollectionName, String restorePointName);
 
@@ -212,7 +212,7 @@ public interface RestorePointsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String restorePointCollectionName, String restorePointName, Context context);
 

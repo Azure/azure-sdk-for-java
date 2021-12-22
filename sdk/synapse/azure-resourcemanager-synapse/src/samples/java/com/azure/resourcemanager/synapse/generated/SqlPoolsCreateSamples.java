@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
+import com.azure.resourcemanager.synapse.models.CreateMode;
 import com.azure.resourcemanager.synapse.models.Sku;
 import com.azure.resourcemanager.synapse.models.StorageAccountType;
 import java.util.HashMap;
@@ -31,7 +32,7 @@ public final class SqlPoolsCreateSamples {
             .withCollation("")
             .withSourceDatabaseId("")
             .withRecoverableDatabaseId("")
-            .withCreateMode("")
+            .withCreateMode(CreateMode.fromString(""))
             .withStorageAccountType(StorageAccountType.LRS)
             .create();
     }

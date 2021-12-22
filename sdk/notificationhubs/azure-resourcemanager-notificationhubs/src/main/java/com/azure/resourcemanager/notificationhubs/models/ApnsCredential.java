@@ -5,77 +5,30 @@
 package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.notificationhubs.fluent.models.ApnsCredentialProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Description of a NotificationHub ApnsCredential. */
-@JsonFlatten
 @Fluent
-public class ApnsCredential {
+public final class ApnsCredential {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApnsCredential.class);
 
     /*
-     * The APNS certificate. Specify if using Certificate Authentication Mode.
+     * Properties of NotificationHub ApnsCredential.
      */
-    @JsonProperty(value = "properties.apnsCertificate")
-    private String apnsCertificate;
+    @JsonProperty(value = "properties")
+    private ApnsCredentialProperties innerProperties;
 
-    /*
-     * The APNS certificate password if it exists.
+    /**
+     * Get the innerProperties property: Properties of NotificationHub ApnsCredential.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.certificateKey")
-    private String certificateKey;
-
-    /*
-     * The APNS endpoint of this credential. If using Certificate
-     * Authentication Mode and Sandbox specify
-     * 'gateway.sandbox.push.apple.com'. If using Certificate Authentication
-     * Mode and Production specify 'gateway.push.apple.com'. If using Token
-     * Authentication Mode and Sandbox specify
-     * 'https://api.development.push.apple.com:443/3/device'. If using Token
-     * Authentication Mode and Production specify
-     * 'https://api.push.apple.com:443/3/device'.
-     */
-    @JsonProperty(value = "properties.endpoint")
-    private String endpoint;
-
-    /*
-     * The APNS certificate thumbprint. Specify if using Certificate
-     * Authentication Mode.
-     */
-    @JsonProperty(value = "properties.thumbprint")
-    private String thumbprint;
-
-    /*
-     * A 10-character key identifier (kid) key, obtained from your developer
-     * account. Specify if using Token Authentication Mode.
-     */
-    @JsonProperty(value = "properties.keyId")
-    private String keyId;
-
-    /*
-     * The name of the application or BundleId. Specify if using Token
-     * Authentication Mode.
-     */
-    @JsonProperty(value = "properties.appName")
-    private String appName;
-
-    /*
-     * The issuer (iss) registered claim key. The value is a 10-character
-     * TeamId, obtained from your developer account. Specify if using Token
-     * Authentication Mode.
-     */
-    @JsonProperty(value = "properties.appId")
-    private String appId;
-
-    /*
-     * Provider Authentication Token, obtained through your developer account.
-     * Specify if using Token Authentication Mode.
-     */
-    @JsonProperty(value = "properties.token")
-    private String token;
+    private ApnsCredentialProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the apnsCertificate property: The APNS certificate. Specify if using Certificate Authentication Mode.
@@ -83,7 +36,7 @@ public class ApnsCredential {
      * @return the apnsCertificate value.
      */
     public String apnsCertificate() {
-        return this.apnsCertificate;
+        return this.innerProperties() == null ? null : this.innerProperties().apnsCertificate();
     }
 
     /**
@@ -93,7 +46,10 @@ public class ApnsCredential {
      * @return the ApnsCredential object itself.
      */
     public ApnsCredential withApnsCertificate(String apnsCertificate) {
-        this.apnsCertificate = apnsCertificate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApnsCredentialProperties();
+        }
+        this.innerProperties().withApnsCertificate(apnsCertificate);
         return this;
     }
 
@@ -103,7 +59,7 @@ public class ApnsCredential {
      * @return the certificateKey value.
      */
     public String certificateKey() {
-        return this.certificateKey;
+        return this.innerProperties() == null ? null : this.innerProperties().certificateKey();
     }
 
     /**
@@ -113,7 +69,10 @@ public class ApnsCredential {
      * @return the ApnsCredential object itself.
      */
     public ApnsCredential withCertificateKey(String certificateKey) {
-        this.certificateKey = certificateKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApnsCredentialProperties();
+        }
+        this.innerProperties().withCertificateKey(certificateKey);
         return this;
     }
 
@@ -127,7 +86,7 @@ public class ApnsCredential {
      * @return the endpoint value.
      */
     public String endpoint() {
-        return this.endpoint;
+        return this.innerProperties() == null ? null : this.innerProperties().endpoint();
     }
 
     /**
@@ -141,7 +100,10 @@ public class ApnsCredential {
      * @return the ApnsCredential object itself.
      */
     public ApnsCredential withEndpoint(String endpoint) {
-        this.endpoint = endpoint;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApnsCredentialProperties();
+        }
+        this.innerProperties().withEndpoint(endpoint);
         return this;
     }
 
@@ -151,7 +113,7 @@ public class ApnsCredential {
      * @return the thumbprint value.
      */
     public String thumbprint() {
-        return this.thumbprint;
+        return this.innerProperties() == null ? null : this.innerProperties().thumbprint();
     }
 
     /**
@@ -161,7 +123,10 @@ public class ApnsCredential {
      * @return the ApnsCredential object itself.
      */
     public ApnsCredential withThumbprint(String thumbprint) {
-        this.thumbprint = thumbprint;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApnsCredentialProperties();
+        }
+        this.innerProperties().withThumbprint(thumbprint);
         return this;
     }
 
@@ -172,7 +137,7 @@ public class ApnsCredential {
      * @return the keyId value.
      */
     public String keyId() {
-        return this.keyId;
+        return this.innerProperties() == null ? null : this.innerProperties().keyId();
     }
 
     /**
@@ -183,7 +148,10 @@ public class ApnsCredential {
      * @return the ApnsCredential object itself.
      */
     public ApnsCredential withKeyId(String keyId) {
-        this.keyId = keyId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApnsCredentialProperties();
+        }
+        this.innerProperties().withKeyId(keyId);
         return this;
     }
 
@@ -193,7 +161,7 @@ public class ApnsCredential {
      * @return the appName value.
      */
     public String appName() {
-        return this.appName;
+        return this.innerProperties() == null ? null : this.innerProperties().appName();
     }
 
     /**
@@ -203,7 +171,10 @@ public class ApnsCredential {
      * @return the ApnsCredential object itself.
      */
     public ApnsCredential withAppName(String appName) {
-        this.appName = appName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApnsCredentialProperties();
+        }
+        this.innerProperties().withAppName(appName);
         return this;
     }
 
@@ -214,7 +185,7 @@ public class ApnsCredential {
      * @return the appId value.
      */
     public String appId() {
-        return this.appId;
+        return this.innerProperties() == null ? null : this.innerProperties().appId();
     }
 
     /**
@@ -225,7 +196,10 @@ public class ApnsCredential {
      * @return the ApnsCredential object itself.
      */
     public ApnsCredential withAppId(String appId) {
-        this.appId = appId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApnsCredentialProperties();
+        }
+        this.innerProperties().withAppId(appId);
         return this;
     }
 
@@ -236,7 +210,7 @@ public class ApnsCredential {
      * @return the token value.
      */
     public String token() {
-        return this.token;
+        return this.innerProperties() == null ? null : this.innerProperties().token();
     }
 
     /**
@@ -247,7 +221,10 @@ public class ApnsCredential {
      * @return the ApnsCredential object itself.
      */
     public ApnsCredential withToken(String token) {
-        this.token = token;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApnsCredentialProperties();
+        }
+        this.innerProperties().withToken(token);
         return this;
     }
 
@@ -257,5 +234,8 @@ public class ApnsCredential {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

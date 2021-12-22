@@ -43,6 +43,13 @@ will instantiate them directly (`AttestationToken` will be instantiated via the 
 be introduced later.)
  * Renamed `buildAttestationClient` to `buildClient` and `buildAsyncAttestationClient` to `buildAsyncClient` to match API
 design guidelines.
+ * Removed `buildPolicyClient`, `buildPolicyAsyncClient`, `buildPolicyCertificatesClient` and `buildPolicyCertificatesAsyncClient` methods 
+on the `AttestationClientBuilder` class and implemented a new `AttestationAdministrationClient` class which contains the administrative APIs.
+ * Removed `buildPolicyCertificatesClient` and `buildPolicyCertificatesAsyncClient`, and `PolicyCertificatesClient` and `PolicyCertificatesAsyncClient` replacing the functionality 
+with the  `listPolicyManagementCertificates`, `addPolicyManagementCertificate` and `removePolicyManagementCertificate` APIs on the `AttestationAdministrationClient` object.
+ * Removed `JsonWebKey`, `JsonWebKeySet`, `PolicyCertificatesModificationResult`, `PolicyCertificatesModifyResponse`, and `CertificatesResponse` objects 
+because they are no longer a part of the public API surface.
+ * Refactored `AttestationSigningKey` class to require certificate and signing key parameters in constructor.
 
 ### Bugs Fixed
 * Attestation tests now all pass when run in Live mode.

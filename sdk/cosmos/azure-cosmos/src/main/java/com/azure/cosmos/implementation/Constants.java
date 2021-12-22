@@ -245,4 +245,6 @@ public final class Constants {
     public static final class QueryExecutionContext {
         public static final String INCREMENTAL_FEED_HEADER_VALUE = "Incremental feed";
     }
+
+    public static final int QUERYPLAN_CACHE_SIZE = 1000;
 }

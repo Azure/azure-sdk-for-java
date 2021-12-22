@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityClient;
 import com.azure.communication.networktraversal.models.CommunicationRelayConfiguration;
+import com.azure.communication.networktraversal.models.RouteType;
 import com.azure.communication.networktraversal.models.CommunicationIceServer;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
@@ -25,7 +26,7 @@ public class CommunicationRelayTests extends CommunicationRelayClientTestBase {
     protected void afterTest() {
         super.afterTest();
     }
-    
+
     private void setupTest(HttpClient httpClient) {
         CommunicationIdentityClient communicationIdentityClient = createIdentityClientBuilder(httpClient).buildClient();
         user = communicationIdentityClient.createUser();
@@ -39,10 +40,38 @@ public class CommunicationRelayTests extends CommunicationRelayClientTestBase {
             setupTest(httpClient);
             CommunicationRelayClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
             client = setupClient(builder, "createRelayClientUsingManagedIdentitySync");
-            
+
             // Action & Assert
             assertNotNull(client);
             CommunicationRelayConfiguration config = client.getRelayConfiguration(user);
+            List<CommunicationIceServer> iceServers = config.getIceServers();
+
+            assertNotNull(config);
+            assertNotNull(config.getExpiresOn());
+
+            for (CommunicationIceServer iceS : iceServers) {
+                assertNotNull(iceS.getUrls());
+                assertNotNull(iceS.getUsername());
+                assertNotNull(iceS.getCredential());
+                assertNotNull(iceS.getRouteType());
+            }
+        } catch (Exception e) {
+            System.out.println("Exception: " + e);
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void createRelayClientWithoutUserIdUsingManagedIdentity(HttpClient httpClient) {
+        // Arrange
+        try {
+            setupTest(httpClient);
+            CommunicationRelayClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
+            client = setupClient(builder, "createRelayClientUsingManagedIdentitySync");
+
+            // Action & Assert
+            assertNotNull(client);
+            CommunicationRelayConfiguration config = client.getRelayConfiguration();
             List<CommunicationIceServer> iceServers = config.getIceServers();
 
             assertNotNull(config);
@@ -60,6 +89,34 @@ public class CommunicationRelayTests extends CommunicationRelayClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void createRelayClientUsingManagedIdentityWithRouteTypeAny(HttpClient httpClient) {
+        // Arrange
+        try {
+            setupTest(httpClient);
+            CommunicationRelayClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
+            client = setupClient(builder, "createRelayClientUsingManagedIdentitySync");
+
+            // Action & Assert
+            assertNotNull(client);
+            CommunicationRelayConfiguration config = client.getRelayConfiguration(user, RouteType.ANY);
+            List<CommunicationIceServer> iceServers = config.getIceServers();
+
+            assertNotNull(config);
+            assertNotNull(config.getExpiresOn());
+
+            for (CommunicationIceServer iceS : iceServers) {
+                assertNotNull(iceS.getUrls());
+                assertNotNull(iceS.getUsername());
+                assertNotNull(iceS.getCredential());
+                assertEquals(RouteType.ANY, iceS.getRouteType());
+            }
+        } catch (Exception e) {
+            System.out.println("Exception: " + e);
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createRelayClientUsingConnectionString(HttpClient httpClient) {
         // Arrange
         try {
@@ -68,7 +125,34 @@ public class CommunicationRelayTests extends CommunicationRelayClientTestBase {
             client = setupClient(builder, "createIdentityClientUsingConnectionStringSync");
             assertNotNull(client);
             CommunicationRelayConfiguration config = client.getRelayConfiguration(user);
-            
+
+            // Action & Assert
+            List<CommunicationIceServer> iceServers = config.getIceServers();
+            assertNotNull(config);
+            assertNotNull(config.getExpiresOn());
+
+            for (CommunicationIceServer iceS : iceServers) {
+                assertNotNull(iceS.getUrls());
+                assertNotNull(iceS.getUsername());
+                assertNotNull(iceS.getCredential());
+                assertNotNull(iceS.getRouteType());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void createRelayClientWithoutUserIdUsingConnectionString(HttpClient httpClient) {
+        // Arrange
+        try {
+            setupTest(httpClient);
+            CommunicationRelayClientBuilder builder = createClientBuilderUsingConnectionString(httpClient);
+            client = setupClient(builder, "createIdentityClientUsingConnectionStringSync");
+            assertNotNull(client);
+            CommunicationRelayConfiguration config = client.getRelayConfiguration();
+
             // Action & Assert
             List<CommunicationIceServer> iceServers = config.getIceServers();
             assertNotNull(config);
@@ -86,16 +170,43 @@ public class CommunicationRelayTests extends CommunicationRelayClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getRelayConfigWithResponse(HttpClient httpClient) {
+    public void createRelayClientUsingConnectionStringWithRouteTypeNearest(HttpClient httpClient) {
+        // Arrange
+        try {
+            setupTest(httpClient);
+            CommunicationRelayClientBuilder builder = createClientBuilderUsingConnectionString(httpClient);
+            client = setupClient(builder, "createIdentityClientUsingConnectionStringSync");
+            assertNotNull(client);
+            CommunicationRelayConfiguration config = client.getRelayConfiguration(user, RouteType.NEAREST);
+
+            // Action & Assert
+            List<CommunicationIceServer> iceServers = config.getIceServers();
+            assertNotNull(config);
+            assertNotNull(config.getExpiresOn());
+
+            for (CommunicationIceServer iceS : iceServers) {
+                assertNotNull(iceS.getUrls());
+                assertNotNull(iceS.getUsername());
+                assertNotNull(iceS.getCredential());
+                assertEquals(RouteType.NEAREST, iceS.getRouteType());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getRelayConfigWithResponseWithRouteTypeNearest(HttpClient httpClient) {
         // Arrange
         try {
             setupTest(httpClient);
             CommunicationRelayClientBuilder builder = createClientBuilder(httpClient);
             client = setupClient(builder, "getRelayConfigWithResponse");
             Response<CommunicationRelayConfiguration> response;
-        
+
             // Action & Assert
-            response = client.getRelayConfigurationWithResponse(user, Context.NONE);
+            response = client.getRelayConfigurationWithResponse(user, RouteType.NEAREST, Context.NONE);
             List<CommunicationIceServer> iceServers = response.getValue().getIceServers();
 
             assertNotNull(response.getValue());
@@ -106,6 +217,7 @@ public class CommunicationRelayTests extends CommunicationRelayClientTestBase {
                 assertNotNull(iceS.getUrls());
                 assertNotNull(iceS.getUsername());
                 assertNotNull(iceS.getCredential());
+                assertEquals(RouteType.NEAREST, iceS.getRouteType());
             }
         } catch (Exception e) {
             e.printStackTrace();

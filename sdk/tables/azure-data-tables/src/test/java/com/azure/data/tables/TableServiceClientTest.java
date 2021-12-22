@@ -55,8 +55,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class TableServiceClientTest extends TestBase {
     private static final HttpClient DEFAULT_HTTP_CLIENT = HttpClient.createDefault();
-    private static final boolean IS_COSMOS_TEST = System.getenv("AZURE_TABLES_CONNECTION_STRING") != null
-        && System.getenv("AZURE_TABLES_CONNECTION_STRING").contains("cosmos.azure.com");
+    private static final boolean IS_COSMOS_TEST = TestUtils.isCosmosTest();
 
     private TableServiceClient serviceClient;
     private HttpPipelinePolicy recordPolicy;

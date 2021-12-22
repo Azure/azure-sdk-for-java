@@ -34,11 +34,11 @@ private case class ChangeFeedOffset
   override def json(): String = jsonPersisted
 }
 
-private object ChangeFeedOffset {
+private[spark] object ChangeFeedOffset {
   private val IdPropertyName: String = "id"
   private val StatePropertyName: String = "state"
   private val InputPartitionsPropertyName: String = "partitions"
-  private val V1Identifier: String = "com.azure.cosmos.spark.changeFeed.offset.v1"
+  val V1Identifier: String = "spark.cosmos.changeFeed.offset.v1"
   private val objectMapper = new ObjectMapper()
 
   def fromJson(json: String): ChangeFeedOffset = {

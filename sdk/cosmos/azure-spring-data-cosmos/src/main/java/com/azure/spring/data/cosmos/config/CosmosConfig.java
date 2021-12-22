@@ -115,6 +115,13 @@ public class CosmosConfig {
             return this;
         }
 
+        /**
+         * Enable database throughput
+         *
+         * @param autoscale Autoscaling
+         * @param requestUnits Request units
+         * @return CosmosConfigBuilder
+         */
         public CosmosConfigBuilder enableDatabaseThroughput(boolean autoscale, int requestUnits) {
             this.databaseThroughputConfig = new DatabaseThroughputConfig(autoscale, requestUnits);
             return this;

@@ -522,7 +522,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return event Subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String systemTopicName,
@@ -538,7 +538,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
                 this.client.getHttpPipeline(),
                 EventSubscriptionInner.class,
                 EventSubscriptionInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -556,7 +556,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return event Subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String systemTopicName,
@@ -591,7 +591,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return event Subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdate(
         String resourceGroupName,
         String systemTopicName,
@@ -617,7 +617,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return event Subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdate(
         String resourceGroupName,
         String systemTopicName,
@@ -852,14 +852,15 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String systemTopicName, String eventSubscriptionName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, systemTopicName, eventSubscriptionName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -875,7 +876,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String systemTopicName, String eventSubscriptionName, Context context) {
         context = this.client.mergeContext(context);
@@ -898,7 +899,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String systemTopicName, String eventSubscriptionName) {
         return beginDeleteAsync(resourceGroupName, systemTopicName, eventSubscriptionName).getSyncPoller();
@@ -917,7 +918,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String systemTopicName, String eventSubscriptionName, Context context) {
         return beginDeleteAsync(resourceGroupName, systemTopicName, eventSubscriptionName, context).getSyncPoller();
@@ -1147,7 +1148,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return event Subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdateAsync(
         String resourceGroupName,
         String systemTopicName,
@@ -1163,7 +1164,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
                 this.client.getHttpPipeline(),
                 EventSubscriptionInner.class,
                 EventSubscriptionInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1180,7 +1181,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return event Subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdateAsync(
         String resourceGroupName,
         String systemTopicName,
@@ -1214,7 +1215,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return event Subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdate(
         String resourceGroupName,
         String systemTopicName,
@@ -1239,7 +1240,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return event Subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdate(
         String resourceGroupName,
         String systemTopicName,

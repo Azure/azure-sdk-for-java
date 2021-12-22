@@ -1,6 +1,6 @@
 # Release History
 
-## 2.9.0-beta.1 (Unreleased)
+## 2.11.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,32 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.10.0 (2021-11-22)
+
+### Features Added
+
+- Supported disabling public network access in `Registry` via `disablePublicNetworkAccess()`, for private link feature.
+
+### Breaking Changes
+
+- Removed classic SKU support in `Registry`, as service with `api-version` after late 2019 no longer supports it.
+- `taskName` property of `TaskRunRequest` renamed to `taskId`.
+- `value` property of `TaskRunRequest` moved into `overrideTaskStepProperties` property.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2019-12-01-preview`.
+
+## 2.9.0 (2021-10-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources
 
 ## 2.8.0 (2021-09-15)
 

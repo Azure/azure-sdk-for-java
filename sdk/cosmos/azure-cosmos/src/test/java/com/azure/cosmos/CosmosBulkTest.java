@@ -34,7 +34,7 @@ public class CosmosBulkTest  extends BatchTestBase {
     private CosmosClient bulkClient;
     private CosmosContainer bulkContainer;
 
-    @Factory(dataProvider = "clientBuildersWithDirectSession")
+    @Factory(dataProvider = "clientBuildersWithContentResponseOnWriteEnabledAndDisabled")
     public CosmosBulkTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
@@ -120,9 +120,13 @@ public class CosmosBulkTest  extends BatchTestBase {
 
             // Using cost as list index like we assigned
             TestDoc testDoc = cosmosBulkItemResponse.getItem(TestDoc.class);
-            assertThat(cosmosBulkOperationResponse.getOperation()).isEqualTo(cosmosItemOperations.get(testDoc.getCost()));
-            assertThat(testDoc).isEqualTo(cosmosBulkOperationResponse.getOperation().getItem());
-            assertThat(testDoc).isEqualTo(cosmosItemOperations.get(testDoc.getCost()).getItem());
+            if (this.getClientBuilder().isContentResponseOnWriteEnabled()) {
+                assertThat(cosmosBulkOperationResponse.getOperation()).isEqualTo(cosmosItemOperations.get(testDoc.getCost()));
+                assertThat(testDoc).isEqualTo(cosmosBulkOperationResponse.getOperation().getItem());
+                assertThat(testDoc).isEqualTo(cosmosItemOperations.get(testDoc.getCost()).getItem());
+            } else {
+                assertThat(testDoc).isNull();
+            }
         }
     }
 
@@ -137,7 +141,10 @@ public class CosmosBulkTest  extends BatchTestBase {
 
             // use i as a identifier for re check.
             TestDoc testDoc = this.populateTestDoc(partitionKey, i, 20);
-            cosmosItemOperations.add(CosmosBulkOperations.getCreateItemOperation(testDoc, new PartitionKey(partitionKey)));
+            cosmosItemOperations.add(CosmosBulkOperations.getCreateItemOperation(
+                testDoc,
+                new PartitionKey(partitionKey),
+                new CosmosBulkItemRequestOptions().setContentResponseOnWriteEnabled(true)));
         }
         createItemsAndVerify(cosmosItemOperations);
 
@@ -179,7 +186,11 @@ public class CosmosBulkTest  extends BatchTestBase {
 
             // use i as a identifier for re check.
             TestDoc testDoc = this.populateTestDoc(partitionKey, i, 20);
-            cosmosItemOperations.add(CosmosBulkOperations.getUpsertItemOperation(testDoc, new PartitionKey(partitionKey)));
+            cosmosItemOperations.add(
+                CosmosBulkOperations.getUpsertItemOperation(
+                    testDoc,
+                    new PartitionKey(partitionKey),
+                    new CosmosBulkItemRequestOptions().setContentResponseOnWriteEnabled(true)));
         }
 
         createItemsAndVerify(cosmosItemOperations);
@@ -225,7 +236,11 @@ public class CosmosBulkTest  extends BatchTestBase {
 
             // use i as a identifier for re check.
             TestDoc testDoc = this.populateTestDoc(partitionKey, i, 20);
-            cosmosItemOperations.add(CosmosBulkOperations.getCreateItemOperation(testDoc, new PartitionKey(partitionKey)));
+            cosmosItemOperations.add(
+                CosmosBulkOperations.getCreateItemOperation(
+                    testDoc,
+                    new PartitionKey(partitionKey),
+                    new CosmosBulkItemRequestOptions().setContentResponseOnWriteEnabled(true)));
         }
 
         createItemsAndVerify(cosmosItemOperations);
@@ -257,9 +272,12 @@ public class CosmosBulkTest  extends BatchTestBase {
 
             // Using cost as list index like we assigned
             TestDoc testDoc = cosmosBulkItemResponse.getItem(TestDoc.class);
-            assertThat(testDoc).isEqualTo(cosmosBulkOperationResponse.getOperation().getItem());
-            assertThat(testDoc).isEqualTo(cosmosItemOperations.get(testDoc.getCost()).getItem());
-
+            if (this.getClientBuilder().isContentResponseOnWriteEnabled()) {
+                assertThat(testDoc).isEqualTo(cosmosBulkOperationResponse.getOperation().getItem());
+                assertThat(testDoc).isEqualTo(cosmosItemOperations.get(testDoc.getCost()).getItem());
+            } else {
+                assertThat(testDoc).isNull();
+            }
         }
     }
 
@@ -618,5 +636,57 @@ public class CosmosBulkTest  extends BatchTestBase {
 
         assertThat(bulkResponses.get(5).getResponse().getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
         assertThat(bulkResponses.get(5).getResponse().getItem(TestDoc.class)).isEqualTo(this.TestDocPk1ExistingB);
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void bulkContentResponseOnWriteTestWithoutReadEnforcingBulkContentResponse() {
+        this.createJsonTestDocs(bulkContainer);
+
+        TestDoc testDocToCreate = this.populateTestDoc(this.partitionKey1);
+        TestDoc testDocToReplace = this.getTestDocCopy(this.TestDocPk1ExistingA);
+        testDocToReplace.setCost(testDocToReplace.getCost() + 1);
+        TestDoc testDocToUpsert = this.populateTestDoc(this.partitionKey1);
+
+        CosmosBulkItemRequestOptions contentResponseDisableRequestOption = new CosmosBulkItemRequestOptions()
+            .setContentResponseOnWriteEnabled(false);
+
+        List<com.azure.cosmos.models.CosmosItemOperation> operations = new ArrayList<>();
+        operations.add(
+            CosmosBulkOperations.getCreateItemOperation(testDocToCreate, new PartitionKey(this.partitionKey1)));
+
+        operations.add(
+            CosmosBulkOperations.getReplaceItemOperation(
+                testDocToReplace.getId(),
+                testDocToReplace,
+                new PartitionKey(this.partitionKey1),
+                contentResponseDisableRequestOption));
+
+        operations.add(
+            CosmosBulkOperations.getUpsertItemOperation(
+                testDocToUpsert,
+                new PartitionKey(this.partitionKey1),
+                contentResponseDisableRequestOption));
+
+        operations.add(
+            CosmosBulkOperations.getDeleteItemOperation(this.TestDocPk1ExistingC.getId(), new PartitionKey(this.partitionKey1)));
+
+        List<com.azure.cosmos.models.CosmosBulkOperationResponse<Object>> bulkResponses = Lists.newArrayList(bulkContainer.executeBulkOperations(operations));
+        assertThat(bulkResponses.size()).isEqualTo(operations.size());
+
+        assertThat(bulkResponses.get(0).getResponse().getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+        if (this.getClientBuilder().isContentResponseOnWriteEnabled()) {
+            assertThat(bulkResponses.get(0).getResponse().getItem(TestDoc.class)).isEqualTo(testDocToCreate);
+        } else {
+            assertThat(bulkResponses.get(0).getResponse().getItem(TestDoc.class)).isNull();
+        }
+
+        assertThat(bulkResponses.get(1).getResponse().getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(bulkResponses.get(1).getResponse().getItem(TestDoc.class)).isNull();
+
+        assertThat(bulkResponses.get(2).getResponse().getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+        assertThat(bulkResponses.get(2).getResponse().getItem(TestDoc.class)).isNull();
+
+        assertThat(bulkResponses.get(3).getResponse().getStatusCode()).isEqualTo(HttpResponseStatus.NO_CONTENT.code());
+        assertThat(bulkResponses.get(3).getResponse().getItem(TestDoc.class)).isNull(); // by default null
     }
 }

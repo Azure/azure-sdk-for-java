@@ -337,14 +337,14 @@ public final class DisksClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DiskInner>, DiskInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String diskName, DiskInner disk) {
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, diskName, disk);
         return this
             .client
             .<DiskInner, DiskInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DiskInner.class, DiskInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), DiskInner.class, DiskInner.class, this.client.getContext());
     }
 
     /**
@@ -361,7 +361,7 @@ public final class DisksClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DiskInner>, DiskInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String diskName, DiskInner disk, Context context) {
         context = this.client.mergeContext(context);
@@ -386,7 +386,7 @@ public final class DisksClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiskInner>, DiskInner> beginCreateOrUpdate(
         String resourceGroupName, String diskName, DiskInner disk) {
         return beginCreateOrUpdateAsync(resourceGroupName, diskName, disk).getSyncPoller();
@@ -406,7 +406,7 @@ public final class DisksClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiskInner>, DiskInner> beginCreateOrUpdate(
         String resourceGroupName, String diskName, DiskInner disk, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, diskName, disk, context).getSyncPoller();
@@ -618,14 +618,14 @@ public final class DisksClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DiskInner>, DiskInner> beginUpdateAsync(
         String resourceGroupName, String diskName, DiskUpdate disk) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, diskName, disk);
         return this
             .client
             .<DiskInner, DiskInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DiskInner.class, DiskInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), DiskInner.class, DiskInner.class, this.client.getContext());
     }
 
     /**
@@ -642,7 +642,7 @@ public final class DisksClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DiskInner>, DiskInner> beginUpdateAsync(
         String resourceGroupName, String diskName, DiskUpdate disk, Context context) {
         context = this.client.mergeContext(context);
@@ -666,7 +666,7 @@ public final class DisksClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiskInner>, DiskInner> beginUpdate(
         String resourceGroupName, String diskName, DiskUpdate disk) {
         return beginUpdateAsync(resourceGroupName, diskName, disk).getSyncPoller();
@@ -686,7 +686,7 @@ public final class DisksClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiskInner>, DiskInner> beginUpdate(
         String resourceGroupName, String diskName, DiskUpdate disk, Context context) {
         return beginUpdateAsync(resourceGroupName, diskName, disk, context).getSyncPoller();
@@ -1037,12 +1037,13 @@ public final class DisksClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String diskName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, diskName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1058,7 +1059,7 @@ public final class DisksClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String diskName, Context context) {
         context = this.client.mergeContext(context);
@@ -1080,7 +1081,7 @@ public final class DisksClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String diskName) {
         return beginDeleteAsync(resourceGroupName, diskName).getSyncPoller();
     }
@@ -1098,7 +1099,7 @@ public final class DisksClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String diskName, Context context) {
         return beginDeleteAsync(resourceGroupName, diskName, context).getSyncPoller();
     }
@@ -1599,7 +1600,7 @@ public final class DisksClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a disk access SAS uri.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccessAsync(
         String resourceGroupName, String diskName, GrantAccessData grantAccessData) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1607,7 +1608,11 @@ public final class DisksClientImpl
         return this
             .client
             .<AccessUriInner, AccessUriInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AccessUriInner.class, AccessUriInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                AccessUriInner.class,
+                AccessUriInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1624,7 +1629,7 @@ public final class DisksClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a disk access SAS uri.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccessAsync(
         String resourceGroupName, String diskName, GrantAccessData grantAccessData, Context context) {
         context = this.client.mergeContext(context);
@@ -1649,7 +1654,7 @@ public final class DisksClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a disk access SAS uri.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccess(
         String resourceGroupName, String diskName, GrantAccessData grantAccessData) {
         return beginGrantAccessAsync(resourceGroupName, diskName, grantAccessData).getSyncPoller();
@@ -1669,7 +1674,7 @@ public final class DisksClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a disk access SAS uri.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccess(
         String resourceGroupName, String diskName, GrantAccessData grantAccessData, Context context) {
         return beginGrantAccessAsync(resourceGroupName, diskName, grantAccessData, context).getSyncPoller();
@@ -1863,12 +1868,13 @@ public final class DisksClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginRevokeAccessAsync(String resourceGroupName, String diskName) {
         Mono<Response<Flux<ByteBuffer>>> mono = revokeAccessWithResponseAsync(resourceGroupName, diskName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1884,7 +1890,7 @@ public final class DisksClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRevokeAccessAsync(
         String resourceGroupName, String diskName, Context context) {
         context = this.client.mergeContext(context);
@@ -1906,7 +1912,7 @@ public final class DisksClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevokeAccess(String resourceGroupName, String diskName) {
         return beginRevokeAccessAsync(resourceGroupName, diskName).getSyncPoller();
     }
@@ -1924,7 +1930,7 @@ public final class DisksClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevokeAccess(
         String resourceGroupName, String diskName, Context context) {
         return beginRevokeAccessAsync(resourceGroupName, diskName, context).getSyncPoller();

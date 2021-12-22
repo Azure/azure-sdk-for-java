@@ -54,7 +54,7 @@ public interface GalleriesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the Shared Image Gallery that you want to create or update.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<GalleryInner>, GalleryInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String galleryName, GalleryInner gallery);
 
@@ -70,7 +70,7 @@ public interface GalleriesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the Shared Image Gallery that you want to create or update.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<GalleryInner>, GalleryInner> beginCreateOrUpdate(
         String resourceGroupName, String galleryName, GalleryInner gallery);
 
@@ -87,7 +87,7 @@ public interface GalleriesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the Shared Image Gallery that you want to create or update.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<GalleryInner>, GalleryInner> beginCreateOrUpdate(
         String resourceGroupName, String galleryName, GalleryInner gallery, Context context);
 
@@ -165,7 +165,7 @@ public interface GalleriesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the Shared Image Gallery that you want to create or update.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<GalleryInner>, GalleryInner> beginUpdateAsync(
         String resourceGroupName, String galleryName, GalleryUpdate gallery);
 
@@ -181,7 +181,7 @@ public interface GalleriesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the Shared Image Gallery that you want to create or update.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<GalleryInner>, GalleryInner> beginUpdate(
         String resourceGroupName, String galleryName, GalleryUpdate gallery);
 
@@ -198,7 +198,7 @@ public interface GalleriesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the Shared Image Gallery that you want to create or update.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<GalleryInner>, GalleryInner> beginUpdate(
         String resourceGroupName, String galleryName, GalleryUpdate gallery, Context context);
 
@@ -342,7 +342,7 @@ public interface GalleriesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String galleryName);
 
     /**
@@ -355,7 +355,7 @@ public interface GalleriesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String galleryName);
 
     /**
@@ -369,7 +369,7 @@ public interface GalleriesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String galleryName, Context context);
 
     /**

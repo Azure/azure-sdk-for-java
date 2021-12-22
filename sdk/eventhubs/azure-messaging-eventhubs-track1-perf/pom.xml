@@ -22,13 +22,17 @@
 
     <!-- Don't require tests for perf tests. -->
     <jacoco.skip>true</jacoco.skip>
+
+    <!-- Don't require javadoc for perf tests -->
+    <codesnippet.skip>true</codesnippet.skip>
+    <maven.javadoc.skip>true</maven.javadoc.skip>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.12.5</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+      <version>2.13.0</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
@@ -78,7 +82,7 @@
             <bannedDependencies>
               <includes>
                 <include>com.microsoft.azure:azure-eventhubs-eph:[3.3.0]</include> <!-- {x-include-update;com.microsoft.azure:azure-eventhubs-eph;dependency} -->
-                <include>com.fasterxml.jackson.core:jackson-databind:[2.12.5]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-databind:[2.13.0]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

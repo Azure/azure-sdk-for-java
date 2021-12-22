@@ -133,7 +133,12 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.PageBlobClient.create#long}
+     * <!-- src_embed com.azure.storage.blob.PageBlobClient.create#long -->
+     * <pre>
+     * PageBlobItem pageBlob = client.create&#40;size&#41;;
+     * System.out.printf&#40;&quot;Created page blob with sequence number %s%n&quot;, pageBlob.getBlobSequenceNumber&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.PageBlobClient.create#long -->
      *
      * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
      * 512-byte boundary.
@@ -151,7 +156,13 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.PageBlobClient.create#long-boolean}
+     * <!-- src_embed com.azure.storage.blob.PageBlobClient.create#long-boolean -->
+     * <pre>
+     * boolean overwrite = false; &#47;&#47; Default value
+     * PageBlobItem pageBlob = client.create&#40;size, overwrite&#41;;
+     * System.out.printf&#40;&quot;Created page blob with sequence number %s%n&quot;, pageBlob.getBlobSequenceNumber&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.PageBlobClient.create#long-boolean -->
      *
      * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
      * 512-byte boundary.
@@ -177,7 +188,21 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#long-Long-BlobHttpHeaders-Map-BlobRequestConditions-Duration-Context}
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#long-Long-BlobHttpHeaders-Map-BlobRequestConditions-Duration-Context -->
+     * <pre>
+     * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     * BlobRequestConditions blobRequestConditions = new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     * Context context = new Context&#40;key, value&#41;;
+     *
+     * PageBlobItem pageBlob = client
+     *     .createWithResponse&#40;size, sequenceNumber, headers, metadata, blobRequestConditions, timeout, context&#41;
+     *     .getValue&#40;&#41;;
+     *
+     * System.out.printf&#40;&quot;Created page blob with sequence number %s%n&quot;, pageBlob.getBlobSequenceNumber&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#long-Long-BlobHttpHeaders-Map-BlobRequestConditions-Duration-Context -->
      *
      * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
      * 512-byte boundary.
@@ -208,7 +233,24 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#PageBlobCreateOptions-Duration-Context}
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#PageBlobCreateOptions-Duration-Context -->
+     * <pre>
+     * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     * BlobRequestConditions blobRequestConditions = new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     * Context context = new Context&#40;key, value&#41;;
+     *
+     * PageBlobItem pageBlob = client
+     *     .createWithResponse&#40;new PageBlobCreateOptions&#40;size&#41;.setSequenceNumber&#40;sequenceNumber&#41;
+     *             .setHeaders&#40;headers&#41;.setMetadata&#40;metadata&#41;.setTags&#40;tags&#41;
+     *             .setRequestConditions&#40;blobRequestConditions&#41;, timeout,
+     *         context&#41;
+     *     .getValue&#40;&#41;;
+     *
+     * System.out.printf&#40;&quot;Created page blob with sequence number %s%n&quot;, pageBlob.getBlobSequenceNumber&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#PageBlobCreateOptions-Duration-Context -->
      *
      * @param options {@link PageBlobCreateOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -230,7 +272,17 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPages#PageRange-InputStream}
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobClient.uploadPages#PageRange-InputStream -->
+     * <pre>
+     * PageRange pageRange = new PageRange&#40;&#41;
+     *     .setStart&#40;0&#41;
+     *     .setEnd&#40;511&#41;;
+     * InputStream dataStream = new ByteArrayInputStream&#40;data.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;;
+     *
+     * PageBlobItem pageBlob = client.uploadPages&#40;pageRange, dataStream&#41;;
+     * System.out.printf&#40;&quot;Uploaded page blob with sequence number %s%n&quot;, pageBlob.getBlobSequenceNumber&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.PageBlobClient.uploadPages#PageRange-InputStream -->
      *
      * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
@@ -255,7 +307,22 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPagesWithResponse#PageRange-InputStream-byte-PageBlobRequestConditions-Duration-Context}
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobClient.uploadPagesWithResponse#PageRange-InputStream-byte-PageBlobRequestConditions-Duration-Context -->
+     * <pre>
+     * byte[] md5 = MessageDigest.getInstance&#40;&quot;MD5&quot;&#41;.digest&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;;
+     * PageRange pageRange = new PageRange&#40;&#41;
+     *     .setStart&#40;0&#41;
+     *     .setEnd&#40;511&#41;;
+     * InputStream dataStream = new ByteArrayInputStream&#40;data.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;;
+     * PageBlobRequestConditions pageBlobRequestConditions = new PageBlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     * Context context = new Context&#40;key, value&#41;;
+     *
+     * PageBlobItem pageBlob = client
+     *     .uploadPagesWithResponse&#40;pageRange, dataStream, md5, pageBlobRequestConditions, timeout, context&#41;.getValue&#40;&#41;;
+     *
+     * System.out.printf&#40;&quot;Uploaded page blob with sequence number %s%n&quot;, pageBlob.getBlobSequenceNumber&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.PageBlobClient.uploadPagesWithResponse#PageRange-InputStream-byte-PageBlobRequestConditions-Duration-Context -->
      *
      * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
@@ -294,7 +361,17 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromUrl#PageRange-String-Long}
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromUrl#PageRange-String-Long -->
+     * <pre>
+     * PageRange pageRange = new PageRange&#40;&#41;
+     *     .setStart&#40;0&#41;
+     *     .setEnd&#40;511&#41;;
+     *
+     * PageBlobItem pageBlob = client.uploadPagesFromUrl&#40;pageRange, url, sourceOffset&#41;;
+     *
+     * System.out.printf&#40;&quot;Uploaded page blob from URL with sequence number %s%n&quot;, pageBlob.getBlobSequenceNumber&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromUrl#PageRange-String-Long -->
      *
      * @param range A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
@@ -321,7 +398,25 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromUrlWithResponse#PageRange-String-Long-byte-PageBlobRequestConditions-BlobRequestConditions-Duration-Context}
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromUrlWithResponse#PageRange-String-Long-byte-PageBlobRequestConditions-BlobRequestConditions-Duration-Context -->
+     * <pre>
+     * PageRange pageRange = new PageRange&#40;&#41;
+     *     .setStart&#40;0&#41;
+     *     .setEnd&#40;511&#41;;
+     * InputStream dataStream = new ByteArrayInputStream&#40;data.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;;
+     * byte[] sourceContentMD5 = new byte[512];
+     * PageBlobRequestConditions pageBlobRequestConditions = new PageBlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     * BlobRequestConditions sourceRequestConditions = new BlobRequestConditions&#40;&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     * Context context = new Context&#40;key, value&#41;;
+     *
+     * PageBlobItem pageBlob = client
+     *     .uploadPagesFromUrlWithResponse&#40;pageRange, url, sourceOffset, sourceContentMD5, pageBlobRequestConditions,
+     *         sourceRequestConditions, timeout, context&#41;.getValue&#40;&#41;;
+     *
+     * System.out.printf&#40;&quot;Uploaded page blob from URL with sequence number %s%n&quot;, pageBlob.getBlobSequenceNumber&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromUrlWithResponse#PageRange-String-Long-byte-PageBlobRequestConditions-BlobRequestConditions-Duration-Context -->
      *
      * @param range The destination {@link PageRange} range. Given that pages must be aligned with 512-byte boundaries,
      * the start offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte
@@ -359,7 +454,27 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromUrlWithResponse#PageBlobUploadPagesFromUrlOptions-Duration-Context}
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromUrlWithResponse#PageBlobUploadPagesFromUrlOptions-Duration-Context -->
+     * <pre>
+     * PageRange pageRange = new PageRange&#40;&#41;
+     *     .setStart&#40;0&#41;
+     *     .setEnd&#40;511&#41;;
+     * InputStream dataStream = new ByteArrayInputStream&#40;data.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;;
+     * byte[] sourceContentMD5 = new byte[512];
+     * PageBlobRequestConditions pageBlobRequestConditions = new PageBlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     * BlobRequestConditions sourceRequestConditions = new BlobRequestConditions&#40;&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     * Context context = new Context&#40;key, value&#41;;
+     *
+     * PageBlobItem pageBlob = client
+     *     .uploadPagesFromUrlWithResponse&#40;new PageBlobUploadPagesFromUrlOptions&#40;pageRange, url&#41;
+     *         .setSourceOffset&#40;sourceOffset&#41;.setSourceContentMd5&#40;sourceContentMD5&#41;
+     *         .setDestinationRequestConditions&#40;pageBlobRequestConditions&#41;
+     *         .setSourceRequestConditions&#40;sourceRequestConditions&#41;, timeout, context&#41;.getValue&#40;&#41;;
+     *
+     * System.out.printf&#40;&quot;Uploaded page blob from URL with sequence number %s%n&quot;, pageBlob.getBlobSequenceNumber&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromUrlWithResponse#PageBlobUploadPagesFromUrlOptions-Duration-Context -->
      *
      * @param options Parameters for the operation.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -381,7 +496,17 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.clearPages#PageRange}
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobClient.clearPages#PageRange -->
+     * <pre>
+     * PageRange pageRange = new PageRange&#40;&#41;
+     *     .setStart&#40;0&#41;
+     *     .setEnd&#40;511&#41;;
+     *
+     * PageBlobItem pageBlob = client.clearPages&#40;pageRange&#41;;
+     *
+     * System.out.printf&#40;&quot;Cleared page blob with sequence number %s%n&quot;, pageBlob.getBlobSequenceNumber&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.PageBlobClient.clearPages#PageRange -->
      *
      * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
@@ -399,7 +524,20 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.clearPagesWithResponse#PageRange-PageBlobRequestConditions-Duration-Context}
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobClient.clearPagesWithResponse#PageRange-PageBlobRequestConditions-Duration-Context -->
+     * <pre>
+     * PageRange pageRange = new PageRange&#40;&#41;
+     *     .setStart&#40;0&#41;
+     *     .setEnd&#40;511&#41;;
+     * PageBlobRequestConditions pageBlobRequestConditions = new PageBlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     * Context context = new Context&#40;key, value&#41;;
+     *
+     * PageBlobItem pageBlob = client
+     *     .clearPagesWithResponse&#40;pageRange, pageBlobRequestConditions, timeout, context&#41;.getValue&#40;&#41;;
+     *
+     * System.out.printf&#40;&quot;Cleared page blob with sequence number %s%n&quot;, pageBlob.getBlobSequenceNumber&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.PageBlobClient.clearPagesWithResponse#PageRange-PageBlobRequestConditions-Duration-Context -->
      *
      * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
@@ -424,7 +562,17 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.getPageRanges#BlobRange}
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobClient.getPageRanges#BlobRange -->
+     * <pre>
+     * BlobRange blobRange = new BlobRange&#40;offset&#41;;
+     * PageList pageList = client.getPageRanges&#40;blobRange&#41;;
+     *
+     * System.out.println&#40;&quot;Valid Page Ranges are:&quot;&#41;;
+     * for &#40;PageRange pageRange : pageList.getPageRange&#40;&#41;&#41; &#123;
+     *     System.out.printf&#40;&quot;Start: %s, End: %s%n&quot;, pageRange.getStart&#40;&#41;, pageRange.getEnd&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.PageBlobClient.getPageRanges#BlobRange -->
      *
      * @param blobRange {@link BlobRange}
      * @return The information of the cleared pages.
@@ -440,7 +588,21 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.getPageRangesWithResponse#BlobRange-BlobRequestConditions-Duration-Context}
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobClient.getPageRangesWithResponse#BlobRange-BlobRequestConditions-Duration-Context -->
+     * <pre>
+     * BlobRange blobRange = new BlobRange&#40;offset&#41;;
+     * BlobRequestConditions blobRequestConditions = new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     * Context context = new Context&#40;key, value&#41;;
+     *
+     * PageList pageList = client
+     *     .getPageRangesWithResponse&#40;blobRange, blobRequestConditions, timeout, context&#41;.getValue&#40;&#41;;
+     *
+     * System.out.println&#40;&quot;Valid Page Ranges are:&quot;&#41;;
+     * for &#40;PageRange pageRange : pageList.getPageRange&#40;&#41;&#41; &#123;
+     *     System.out.printf&#40;&quot;Start: %s, End: %s%n&quot;, pageRange.getStart&#40;&#41;, pageRange.getEnd&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.PageBlobClient.getPageRangesWithResponse#BlobRange-BlobRequestConditions-Duration-Context -->
      *
      * @param blobRange {@link BlobRange}
      * @param requestConditions {@link BlobRequestConditions}
@@ -462,7 +624,18 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.getPageRangesDiff#BlobRange-String}
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobClient.getPageRangesDiff#BlobRange-String -->
+     * <pre>
+     * BlobRange blobRange = new BlobRange&#40;offset&#41;;
+     * final String prevSnapshot = &quot;previous snapshot&quot;;
+     * PageList pageList = client.getPageRangesDiff&#40;blobRange, prevSnapshot&#41;;
+     *
+     * System.out.println&#40;&quot;Valid Page Ranges are:&quot;&#41;;
+     * for &#40;PageRange pageRange : pageList.getPageRange&#40;&#41;&#41; &#123;
+     *     System.out.printf&#40;&quot;Start: %s, End: %s%n&quot;, pageRange.getStart&#40;&#41;, pageRange.getEnd&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.PageBlobClient.getPageRangesDiff#BlobRange-String -->
      *
      * @param blobRange {@link BlobRange}
      * @param prevSnapshot Specifies that the response will contain only pages that were changed between target blob and
@@ -483,7 +656,22 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.getPageRangesDiffWithResponse#BlobRange-String-BlobRequestConditions-Duration-Context}
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobClient.getPageRangesDiffWithResponse#BlobRange-String-BlobRequestConditions-Duration-Context -->
+     * <pre>
+     * BlobRange blobRange = new BlobRange&#40;offset&#41;;
+     * final String prevSnapshot = &quot;previous snapshot&quot;;
+     * BlobRequestConditions blobRequestConditions = new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     * Context context = new Context&#40;key, value&#41;;
+     *
+     * PageList pageList = client
+     *     .getPageRangesDiffWithResponse&#40;blobRange, prevSnapshot, blobRequestConditions, timeout, context&#41;.getValue&#40;&#41;;
+     *
+     * System.out.println&#40;&quot;Valid Page Ranges are:&quot;&#41;;
+     * for &#40;PageRange pageRange : pageList.getPageRange&#40;&#41;&#41; &#123;
+     *     System.out.printf&#40;&quot;Start: %s, End: %s%n&quot;, pageRange.getStart&#40;&#41;, pageRange.getEnd&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.PageBlobClient.getPageRangesDiffWithResponse#BlobRange-String-BlobRequestConditions-Duration-Context -->
      *
      * @param blobRange {@link BlobRange}
      * @param prevSnapshot Specifies that the response will contain only pages that were changed between target blob and
@@ -510,7 +698,18 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.getManagedDiskPageRangesDiff#BlobRange-String}
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobClient.getManagedDiskPageRangesDiff#BlobRange-String -->
+     * <pre>
+     * BlobRange blobRange = new BlobRange&#40;offset&#41;;
+     * final String prevSnapshotUrl = &quot;previous snapshot url&quot;;
+     * PageList pageList = client.getPageRangesDiff&#40;blobRange, prevSnapshotUrl&#41;;
+     *
+     * System.out.println&#40;&quot;Valid Page Ranges are:&quot;&#41;;
+     * for &#40;PageRange pageRange : pageList.getPageRange&#40;&#41;&#41; &#123;
+     *     System.out.printf&#40;&quot;Start: %s, End: %s%n&quot;, pageRange.getStart&#40;&#41;, pageRange.getEnd&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.PageBlobClient.getManagedDiskPageRangesDiff#BlobRange-String -->
      *
      * @param blobRange {@link BlobRange}
      * @param prevSnapshotUrl Specifies the URL of a previous snapshot of the target blob. Specifies that the
@@ -533,7 +732,22 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.getManagedDiskPageRangesDiffWithResponse#BlobRange-String-BlobRequestConditions-Duration-Context}
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobClient.getManagedDiskPageRangesDiffWithResponse#BlobRange-String-BlobRequestConditions-Duration-Context -->
+     * <pre>
+     * BlobRange blobRange = new BlobRange&#40;offset&#41;;
+     * final String prevSnapshotUrl = &quot;previous snapshot url&quot;;
+     * BlobRequestConditions blobRequestConditions = new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     * Context context = new Context&#40;key, value&#41;;
+     *
+     * PageList pageList = client
+     *     .getPageRangesDiffWithResponse&#40;blobRange, prevSnapshotUrl, blobRequestConditions, timeout, context&#41;.getValue&#40;&#41;;
+     *
+     * System.out.println&#40;&quot;Valid Page Ranges are:&quot;&#41;;
+     * for &#40;PageRange pageRange : pageList.getPageRange&#40;&#41;&#41; &#123;
+     *     System.out.printf&#40;&quot;Start: %s, End: %s%n&quot;, pageRange.getStart&#40;&#41;, pageRange.getEnd&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.PageBlobClient.getManagedDiskPageRangesDiffWithResponse#BlobRange-String-BlobRequestConditions-Duration-Context -->
      *
      * @param blobRange {@link BlobRange}
      * @param prevSnapshotUrl Specifies the URL of a previous snapshot of the target blob. Specifies that the
@@ -559,7 +773,12 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.resize#long}
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobClient.resize#long -->
+     * <pre>
+     * PageBlobItem pageBlob = client.resize&#40;size&#41;;
+     * System.out.printf&#40;&quot;Page blob resized with sequence number %s%n&quot;, pageBlob.getBlobSequenceNumber&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.PageBlobClient.resize#long -->
      *
      * @param size Resizes a page blob to the specified size. If the specified value is less than the current size of
      * the blob, then all pages above the specified value are cleared.
@@ -576,7 +795,16 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.resizeWithResponse#long-BlobRequestConditions-Duration-Context}
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobClient.resizeWithResponse#long-BlobRequestConditions-Duration-Context -->
+     * <pre>
+     * BlobRequestConditions blobRequestConditions = new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     * Context context = new Context&#40;key, value&#41;;
+     *
+     * PageBlobItem pageBlob = client
+     *     .resizeWithResponse&#40;size, blobRequestConditions, timeout, context&#41;.getValue&#40;&#41;;
+     * System.out.printf&#40;&quot;Page blob resized with sequence number %s%n&quot;, pageBlob.getBlobSequenceNumber&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.PageBlobClient.resizeWithResponse#long-BlobRequestConditions-Duration-Context -->
      *
      * @param size Resizes a page blob to the specified size. If the specified value is less than the current size of
      * the blob, then all pages above the specified value are cleared.
@@ -599,7 +827,13 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.updateSequenceNumber#SequenceNumberActionType-Long}
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobClient.updateSequenceNumber#SequenceNumberActionType-Long -->
+     * <pre>
+     * PageBlobItem pageBlob = client.updateSequenceNumber&#40;SequenceNumberActionType.INCREMENT, size&#41;;
+     *
+     * System.out.printf&#40;&quot;Page blob updated to sequence number %s%n&quot;, pageBlob.getBlobSequenceNumber&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.PageBlobClient.updateSequenceNumber#SequenceNumberActionType-Long -->
      *
      * @param action Indicates how the service should modify the blob's sequence number.
      * @param sequenceNumber The blob's sequence number. The sequence number is a user-controlled property that you can
@@ -618,7 +852,17 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.updateSequenceNumberWithResponse#SequenceNumberActionType-Long-BlobRequestConditions-Duration-Context}
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobClient.updateSequenceNumberWithResponse#SequenceNumberActionType-Long-BlobRequestConditions-Duration-Context -->
+     * <pre>
+     * BlobRequestConditions blobRequestConditions = new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     * Context context = new Context&#40;key, value&#41;;
+     *
+     * PageBlobItem pageBlob = client.updateSequenceNumberWithResponse&#40;
+     *     SequenceNumberActionType.INCREMENT, size, blobRequestConditions, timeout, context&#41;.getValue&#40;&#41;;
+     *
+     * System.out.printf&#40;&quot;Page blob updated to sequence number %s%n&quot;, pageBlob.getBlobSequenceNumber&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.PageBlobClient.updateSequenceNumberWithResponse#SequenceNumberActionType-Long-BlobRequestConditions-Duration-Context -->
      *
      * @param action Indicates how the service should modify the blob's sequence number.
      * @param sequenceNumber The blob's sequence number. The sequence number is a user-controlled property that you can
@@ -646,7 +890,29 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.copyIncremental#String-String}
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobClient.copyIncremental#String-String -->
+     * <pre>
+     * final String snapshot = &quot;copy snapshot&quot;;
+     * CopyStatusType statusType = client.copyIncremental&#40;url, snapshot&#41;;
+     *
+     * switch &#40;statusType&#41; &#123;
+     *     case SUCCESS:
+     *         System.out.println&#40;&quot;Page blob copied successfully&quot;&#41;;
+     *         break;
+     *     case FAILED:
+     *         System.out.println&#40;&quot;Page blob copied failed&quot;&#41;;
+     *         break;
+     *     case ABORTED:
+     *         System.out.println&#40;&quot;Page blob copied aborted&quot;&#41;;
+     *         break;
+     *     case PENDING:
+     *         System.out.println&#40;&quot;Page blob copied pending&quot;&#41;;
+     *         break;
+     *     default:
+     *         break;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.PageBlobClient.copyIncremental#String-String -->
      *
      * @param source The source page blob.
      * @param snapshot The snapshot on the copy source.
@@ -668,7 +934,34 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.copyIncrementalWithResponse#String-String-RequestConditions-Duration-Context}
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobClient.copyIncrementalWithResponse#String-String-RequestConditions-Duration-Context -->
+     * <pre>
+     * final String snapshot = &quot;copy snapshot&quot;;
+     * RequestConditions modifiedRequestConditions = new RequestConditions&#40;&#41;
+     *     .setIfNoneMatch&#40;&quot;snapshotMatch&quot;&#41;;
+     * Context context = new Context&#40;key, value&#41;;
+     *
+     * CopyStatusType statusType = client
+     *     .copyIncrementalWithResponse&#40;url, snapshot, modifiedRequestConditions, timeout, context&#41;.getValue&#40;&#41;;
+     *
+     * switch &#40;statusType&#41; &#123;
+     *     case SUCCESS:
+     *         System.out.println&#40;&quot;Page blob copied successfully&quot;&#41;;
+     *         break;
+     *     case FAILED:
+     *         System.out.println&#40;&quot;Page blob copied failed&quot;&#41;;
+     *         break;
+     *     case ABORTED:
+     *         System.out.println&#40;&quot;Page blob copied aborted&quot;&#41;;
+     *         break;
+     *     case PENDING:
+     *         System.out.println&#40;&quot;Page blob copied pending&quot;&#41;;
+     *         break;
+     *     default:
+     *         break;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.PageBlobClient.copyIncrementalWithResponse#String-String-RequestConditions-Duration-Context -->
      *
      * @param source The source page blob.
      * @param snapshot The snapshot on the copy source.
@@ -699,7 +992,35 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.copyIncrementalWithResponse#PageBlobCopyIncrementalOptions-Duration-Context}
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobClient.copyIncrementalWithResponse#PageBlobCopyIncrementalOptions-Duration-Context -->
+     * <pre>
+     * final String snapshot = &quot;copy snapshot&quot;;
+     * PageBlobCopyIncrementalRequestConditions destinationRequestConditions = new PageBlobCopyIncrementalRequestConditions&#40;&#41;
+     *     .setIfNoneMatch&#40;&quot;snapshotMatch&quot;&#41;;
+     * Context context = new Context&#40;key, value&#41;;
+     *
+     * CopyStatusType statusType = client
+     *     .copyIncrementalWithResponse&#40;new PageBlobCopyIncrementalOptions&#40;url, snapshot&#41;
+     *         .setRequestConditions&#40;destinationRequestConditions&#41;, timeout, context&#41;.getValue&#40;&#41;;
+     *
+     * switch &#40;statusType&#41; &#123;
+     *     case SUCCESS:
+     *         System.out.println&#40;&quot;Page blob copied successfully&quot;&#41;;
+     *         break;
+     *     case FAILED:
+     *         System.out.println&#40;&quot;Page blob copied failed&quot;&#41;;
+     *         break;
+     *     case ABORTED:
+     *         System.out.println&#40;&quot;Page blob copied aborted&quot;&#41;;
+     *         break;
+     *     case PENDING:
+     *         System.out.println&#40;&quot;Page blob copied pending&quot;&#41;;
+     *         break;
+     *     default:
+     *         break;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.PageBlobClient.copyIncrementalWithResponse#PageBlobCopyIncrementalOptions-Duration-Context -->
      *
      * @param options {@link PageBlobCopyIncrementalOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.

@@ -27,19 +27,19 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.15.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+      <version>12.15.0-beta.3</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-file-datalake</artifactId>
-      <version>12.8.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-file-datalake;current} -->
+      <version>12.8.0-beta.3</version> <!-- {x-version-update;com.azure:azure-storage-file-datalake;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-file-share</artifactId>
-      <version>12.12.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-file-share;current} -->
+      <version>12.12.0-beta.3</version> <!-- {x-version-update;com.azure:azure-storage-file-share;current} -->
     </dependency>
 
 
@@ -69,6 +69,10 @@
                     com.azure.storage.App
                   </mainClass>
                 </manifest>
+                <!-- Add a manifest entry to indicate that the JAR with dependencies is a multi-release JAR since azure-core contains multi-release functionality. -->
+                <manifestEntries>
+                  <Multi-Release>true</Multi-Release>
+                </manifestEntries>
               </archive>
               <descriptorRefs>
                 <descriptorRef>jar-with-dependencies</descriptorRef>

@@ -89,7 +89,7 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String crossConnectionName, String peeringName);
 
@@ -104,7 +104,7 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String crossConnectionName, String peeringName);
 
@@ -120,7 +120,7 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String crossConnectionName, String peeringName, Context context);
 
@@ -259,7 +259,7 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return peering in an ExpressRoute Cross Connection resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ExpressRouteCrossConnectionPeeringInner>, ExpressRouteCrossConnectionPeeringInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -280,7 +280,7 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return peering in an ExpressRoute Cross Connection resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExpressRouteCrossConnectionPeeringInner>, ExpressRouteCrossConnectionPeeringInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -302,7 +302,7 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return peering in an ExpressRoute Cross Connection resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExpressRouteCrossConnectionPeeringInner>, ExpressRouteCrossConnectionPeeringInner>
         beginCreateOrUpdate(
             String resourceGroupName,

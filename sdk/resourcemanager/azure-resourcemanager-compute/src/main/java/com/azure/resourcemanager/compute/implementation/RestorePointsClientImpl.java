@@ -259,7 +259,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return restore Point details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<RestorePointInner>, RestorePointInner> beginCreateAsync(
         String resourceGroupName,
         String restorePointCollectionName,
@@ -270,7 +270,11 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
         return this
             .client
             .<RestorePointInner, RestorePointInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RestorePointInner.class, RestorePointInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                RestorePointInner.class,
+                RestorePointInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -286,7 +290,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return restore Point details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RestorePointInner>, RestorePointInner> beginCreateAsync(
         String resourceGroupName,
         String restorePointCollectionName,
@@ -315,7 +319,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return restore Point details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(
         String resourceGroupName,
         String restorePointCollectionName,
@@ -338,7 +342,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return restore Point details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(
         String resourceGroupName,
         String restorePointCollectionName,
@@ -567,14 +571,15 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String restorePointCollectionName, String restorePointName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, restorePointCollectionName, restorePointName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -589,7 +594,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String restorePointCollectionName, String restorePointName, Context context) {
         context = this.client.mergeContext(context);
@@ -611,7 +616,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String restorePointCollectionName, String restorePointName) {
         return beginDeleteAsync(resourceGroupName, restorePointCollectionName, restorePointName).getSyncPoller();
@@ -629,7 +634,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String restorePointCollectionName, String restorePointName, Context context) {
         return beginDeleteAsync(resourceGroupName, restorePointCollectionName, restorePointName, context)

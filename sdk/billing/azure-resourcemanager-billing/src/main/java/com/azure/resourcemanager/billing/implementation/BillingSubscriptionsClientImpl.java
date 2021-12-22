@@ -1320,7 +1320,7 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a billing subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BillingSubscriptionInner>, BillingSubscriptionInner> beginMoveAsync(
         String billingAccountName, TransferBillingSubscriptionRequestProperties parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = moveWithResponseAsync(billingAccountName, parameters);
@@ -1347,7 +1347,7 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a billing subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BillingSubscriptionInner>, BillingSubscriptionInner> beginMoveAsync(
         String billingAccountName, TransferBillingSubscriptionRequestProperties parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -1374,7 +1374,7 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a billing subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BillingSubscriptionInner>, BillingSubscriptionInner> beginMove(
         String billingAccountName, TransferBillingSubscriptionRequestProperties parameters) {
         return beginMoveAsync(billingAccountName, parameters).getSyncPoller();
@@ -1393,7 +1393,7 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a billing subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BillingSubscriptionInner>, BillingSubscriptionInner> beginMove(
         String billingAccountName, TransferBillingSubscriptionRequestProperties parameters, Context context) {
         return beginMoveAsync(billingAccountName, parameters, context).getSyncPoller();

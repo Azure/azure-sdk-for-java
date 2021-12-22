@@ -11,10 +11,32 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public final class ExtractSummaryAction {
+    private String actionName;
     private String modelVersion;
     private Integer maxSentenceCount;
     private SummarySentencesOrder orderBy;
     private boolean disableServiceLogs;
+
+    /**
+     * Get the name of action.
+     *
+     * @return the name of action.
+     */
+    public String getActionName() {
+        return actionName;
+    }
+
+    /**
+     * Set the custom name for the action.
+     *
+     * @param actionName the custom name for the action.
+     *
+     * @return The {@link ExtractSummaryAction} object itself.
+     */
+    public ExtractSummaryAction setActionName(String actionName) {
+        this.actionName = actionName;
+        return this;
+    }
 
     /**
      * Gets the version of the text analytics model used by this operation.

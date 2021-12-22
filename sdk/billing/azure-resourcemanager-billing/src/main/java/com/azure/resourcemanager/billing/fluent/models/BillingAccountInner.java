@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.AccountStatus;
@@ -21,79 +20,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A billing account. */
-@JsonFlatten
 @Fluent
-public class BillingAccountInner extends ProxyResource {
+public final class BillingAccountInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingAccountInner.class);
 
     /*
-     * The billing account name.
+     * The properties of the billing account.
      */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
+    @JsonProperty(value = "properties")
+    private BillingAccountProperties innerProperties;
 
-    /*
-     * The address of the individual or organization that is responsible for
-     * the billing account.
+    /**
+     * Get the innerProperties property: The properties of the billing account.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.soldTo")
-    private AddressDetails soldTo;
-
-    /*
-     * The type of agreement.
-     */
-    @JsonProperty(value = "properties.agreementType", access = JsonProperty.Access.WRITE_ONLY)
-    private AgreementType agreementType;
-
-    /*
-     * The type of customer.
-     */
-    @JsonProperty(value = "properties.accountType", access = JsonProperty.Access.WRITE_ONLY)
-    private AccountType accountType;
-
-    /*
-     * The current status of the billing account.
-     */
-    @JsonProperty(value = "properties.accountStatus", access = JsonProperty.Access.WRITE_ONLY)
-    private AccountStatus accountStatus;
-
-    /*
-     * The billing profiles associated with the billing account. By default
-     * this is not populated, unless it's specified in $expand.
-     */
-    @JsonProperty(value = "properties.billingProfiles")
-    private BillingProfilesOnExpand billingProfiles;
-
-    /*
-     * The details about the associated legacy enrollment. By default this is
-     * not populated, unless it's specified in $expand.
-     */
-    @JsonProperty(value = "properties.enrollmentDetails", access = JsonProperty.Access.WRITE_ONLY)
-    private Enrollment enrollmentDetails;
-
-    /*
-     * The departments associated to the enrollment.
-     */
-    @JsonProperty(value = "properties.departments")
-    private List<Department> departments;
-
-    /*
-     * The accounts associated to the enrollment.
-     */
-    @JsonProperty(value = "properties.enrollmentAccounts")
-    private List<EnrollmentAccount> enrollmentAccounts;
-
-    /*
-     * Indicates whether user has read access to the billing account.
-     */
-    @JsonProperty(value = "properties.hasReadAccess", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean hasReadAccess;
-
-    /*
-     * Notification email address, only for legacy accounts
-     */
-    @JsonProperty(value = "properties.notificationEmailAddress")
-    private String notificationEmailAddress;
+    private BillingAccountProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the displayName property: The billing account name.
@@ -101,7 +45,7 @@ public class BillingAccountInner extends ProxyResource {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -111,7 +55,10 @@ public class BillingAccountInner extends ProxyResource {
      * @return the BillingAccountInner object itself.
      */
     public BillingAccountInner withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingAccountProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -122,7 +69,7 @@ public class BillingAccountInner extends ProxyResource {
      * @return the soldTo value.
      */
     public AddressDetails soldTo() {
-        return this.soldTo;
+        return this.innerProperties() == null ? null : this.innerProperties().soldTo();
     }
 
     /**
@@ -133,7 +80,10 @@ public class BillingAccountInner extends ProxyResource {
      * @return the BillingAccountInner object itself.
      */
     public BillingAccountInner withSoldTo(AddressDetails soldTo) {
-        this.soldTo = soldTo;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingAccountProperties();
+        }
+        this.innerProperties().withSoldTo(soldTo);
         return this;
     }
 
@@ -143,7 +93,7 @@ public class BillingAccountInner extends ProxyResource {
      * @return the agreementType value.
      */
     public AgreementType agreementType() {
-        return this.agreementType;
+        return this.innerProperties() == null ? null : this.innerProperties().agreementType();
     }
 
     /**
@@ -152,7 +102,7 @@ public class BillingAccountInner extends ProxyResource {
      * @return the accountType value.
      */
     public AccountType accountType() {
-        return this.accountType;
+        return this.innerProperties() == null ? null : this.innerProperties().accountType();
     }
 
     /**
@@ -161,7 +111,7 @@ public class BillingAccountInner extends ProxyResource {
      * @return the accountStatus value.
      */
     public AccountStatus accountStatus() {
-        return this.accountStatus;
+        return this.innerProperties() == null ? null : this.innerProperties().accountStatus();
     }
 
     /**
@@ -171,7 +121,7 @@ public class BillingAccountInner extends ProxyResource {
      * @return the billingProfiles value.
      */
     public BillingProfilesOnExpand billingProfiles() {
-        return this.billingProfiles;
+        return this.innerProperties() == null ? null : this.innerProperties().billingProfiles();
     }
 
     /**
@@ -182,7 +132,10 @@ public class BillingAccountInner extends ProxyResource {
      * @return the BillingAccountInner object itself.
      */
     public BillingAccountInner withBillingProfiles(BillingProfilesOnExpand billingProfiles) {
-        this.billingProfiles = billingProfiles;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingAccountProperties();
+        }
+        this.innerProperties().withBillingProfiles(billingProfiles);
         return this;
     }
 
@@ -193,7 +146,7 @@ public class BillingAccountInner extends ProxyResource {
      * @return the enrollmentDetails value.
      */
     public Enrollment enrollmentDetails() {
-        return this.enrollmentDetails;
+        return this.innerProperties() == null ? null : this.innerProperties().enrollmentDetails();
     }
 
     /**
@@ -202,7 +155,7 @@ public class BillingAccountInner extends ProxyResource {
      * @return the departments value.
      */
     public List<Department> departments() {
-        return this.departments;
+        return this.innerProperties() == null ? null : this.innerProperties().departments();
     }
 
     /**
@@ -212,7 +165,10 @@ public class BillingAccountInner extends ProxyResource {
      * @return the BillingAccountInner object itself.
      */
     public BillingAccountInner withDepartments(List<Department> departments) {
-        this.departments = departments;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingAccountProperties();
+        }
+        this.innerProperties().withDepartments(departments);
         return this;
     }
 
@@ -222,7 +178,7 @@ public class BillingAccountInner extends ProxyResource {
      * @return the enrollmentAccounts value.
      */
     public List<EnrollmentAccount> enrollmentAccounts() {
-        return this.enrollmentAccounts;
+        return this.innerProperties() == null ? null : this.innerProperties().enrollmentAccounts();
     }
 
     /**
@@ -232,7 +188,10 @@ public class BillingAccountInner extends ProxyResource {
      * @return the BillingAccountInner object itself.
      */
     public BillingAccountInner withEnrollmentAccounts(List<EnrollmentAccount> enrollmentAccounts) {
-        this.enrollmentAccounts = enrollmentAccounts;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingAccountProperties();
+        }
+        this.innerProperties().withEnrollmentAccounts(enrollmentAccounts);
         return this;
     }
 
@@ -242,7 +201,7 @@ public class BillingAccountInner extends ProxyResource {
      * @return the hasReadAccess value.
      */
     public Boolean hasReadAccess() {
-        return this.hasReadAccess;
+        return this.innerProperties() == null ? null : this.innerProperties().hasReadAccess();
     }
 
     /**
@@ -251,7 +210,7 @@ public class BillingAccountInner extends ProxyResource {
      * @return the notificationEmailAddress value.
      */
     public String notificationEmailAddress() {
-        return this.notificationEmailAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().notificationEmailAddress();
     }
 
     /**
@@ -261,7 +220,10 @@ public class BillingAccountInner extends ProxyResource {
      * @return the BillingAccountInner object itself.
      */
     public BillingAccountInner withNotificationEmailAddress(String notificationEmailAddress) {
-        this.notificationEmailAddress = notificationEmailAddress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingAccountProperties();
+        }
+        this.innerProperties().withNotificationEmailAddress(notificationEmailAddress);
         return this;
     }
 
@@ -271,20 +233,8 @@ public class BillingAccountInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (soldTo() != null) {
-            soldTo().validate();
-        }
-        if (billingProfiles() != null) {
-            billingProfiles().validate();
-        }
-        if (enrollmentDetails() != null) {
-            enrollmentDetails().validate();
-        }
-        if (departments() != null) {
-            departments().forEach(e -> e.validate());
-        }
-        if (enrollmentAccounts() != null) {
-            enrollmentAccounts().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

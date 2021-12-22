@@ -33,7 +33,7 @@ public interface DataFlowDebugSessionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response body structure for creating data flow debug session.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CreateDataFlowDebugSessionResponseInner>, CreateDataFlowDebugSessionResponseInner>
         beginCreate(String resourceGroupName, String factoryName, CreateDataFlowDebugSessionRequest request);
 
@@ -49,7 +49,7 @@ public interface DataFlowDebugSessionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response body structure for creating data flow debug session.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CreateDataFlowDebugSessionResponseInner>, CreateDataFlowDebugSessionResponseInner>
         beginCreate(
             String resourceGroupName, String factoryName, CreateDataFlowDebugSessionRequest request, Context context);
@@ -184,7 +184,7 @@ public interface DataFlowDebugSessionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response body structure of data flow result for data preview, statistics or expression preview.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DataFlowDebugCommandResponseInner>, DataFlowDebugCommandResponseInner> beginExecuteCommand(
         String resourceGroupName, String factoryName, DataFlowDebugCommandRequest request);
 
@@ -200,7 +200,7 @@ public interface DataFlowDebugSessionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response body structure of data flow result for data preview, statistics or expression preview.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DataFlowDebugCommandResponseInner>, DataFlowDebugCommandResponseInner> beginExecuteCommand(
         String resourceGroupName, String factoryName, DataFlowDebugCommandRequest request, Context context);
 

@@ -50,7 +50,7 @@ public interface CustomIpPrefixesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String customIpPrefixName);
 
     /**
@@ -63,7 +63,7 @@ public interface CustomIpPrefixesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String customIpPrefixName);
 
     /**
@@ -77,7 +77,7 @@ public interface CustomIpPrefixesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String customIpPrefixName, Context context);
 
@@ -217,7 +217,7 @@ public interface CustomIpPrefixesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return custom IP prefix resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<CustomIpPrefixInner>, CustomIpPrefixInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String customIpPrefixName, CustomIpPrefixInner parameters);
 
@@ -232,7 +232,7 @@ public interface CustomIpPrefixesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return custom IP prefix resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CustomIpPrefixInner>, CustomIpPrefixInner> beginCreateOrUpdate(
         String resourceGroupName, String customIpPrefixName, CustomIpPrefixInner parameters);
 
@@ -248,7 +248,7 @@ public interface CustomIpPrefixesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return custom IP prefix resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CustomIpPrefixInner>, CustomIpPrefixInner> beginCreateOrUpdate(
         String resourceGroupName, String customIpPrefixName, CustomIpPrefixInner parameters, Context context);
 

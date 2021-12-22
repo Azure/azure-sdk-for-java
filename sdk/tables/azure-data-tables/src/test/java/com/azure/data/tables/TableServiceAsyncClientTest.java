@@ -52,8 +52,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TableServiceAsyncClientTest extends TestBase {
     private static final Duration TIMEOUT = Duration.ofSeconds(100);
     private static final HttpClient DEFAULT_HTTP_CLIENT = HttpClient.createDefault();
-    private static final boolean IS_COSMOS_TEST = System.getenv("AZURE_TABLES_CONNECTION_STRING") != null
-        && System.getenv("AZURE_TABLES_CONNECTION_STRING").contains("cosmos.azure.com");
+    private static final boolean IS_COSMOS_TEST = TestUtils.isCosmosTest();
 
     private TableServiceAsyncClient serviceClient;
     private HttpPipelinePolicy recordPolicy;

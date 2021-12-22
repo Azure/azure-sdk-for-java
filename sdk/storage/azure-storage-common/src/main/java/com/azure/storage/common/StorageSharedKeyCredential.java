@@ -60,7 +60,11 @@ public final class StorageSharedKeyCredential {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.common.StorageSharedKeyCredential.fromConnectionString#String}
+     * <!-- src_embed com.azure.storage.common.StorageSharedKeyCredential.fromConnectionString#String -->
+     * <pre>
+     * StorageSharedKeyCredential credential = StorageSharedKeyCredential.fromConnectionString&#40;connectionString&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.common.StorageSharedKeyCredential.fromConnectionString#String -->
      *
      * @param connectionString Connection string used to build the SharedKey credential.
      * @return a SharedKey credential if the connection string contains AccountName and AccountKey

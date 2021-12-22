@@ -53,7 +53,7 @@ public interface CloudServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the cloud service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<CloudServiceInner>, CloudServiceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String cloudServiceName, CloudServiceInner parameters);
 
@@ -68,7 +68,7 @@ public interface CloudServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the cloud service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CloudServiceInner>, CloudServiceInner> beginCreateOrUpdate(
         String resourceGroupName, String cloudServiceName, CloudServiceInner parameters);
 
@@ -84,7 +84,7 @@ public interface CloudServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the cloud service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CloudServiceInner>, CloudServiceInner> beginCreateOrUpdate(
         String resourceGroupName, String cloudServiceName, CloudServiceInner parameters, Context context);
 
@@ -185,7 +185,7 @@ public interface CloudServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the cloud service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<CloudServiceInner>, CloudServiceInner> beginUpdateAsync(
         String resourceGroupName, String cloudServiceName, CloudServiceUpdate parameters);
 
@@ -200,7 +200,7 @@ public interface CloudServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the cloud service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CloudServiceInner>, CloudServiceInner> beginUpdate(
         String resourceGroupName, String cloudServiceName, CloudServiceUpdate parameters);
 
@@ -216,7 +216,7 @@ public interface CloudServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the cloud service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CloudServiceInner>, CloudServiceInner> beginUpdate(
         String resourceGroupName, String cloudServiceName, CloudServiceUpdate parameters, Context context);
 
@@ -314,7 +314,7 @@ public interface CloudServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String cloudServiceName);
 
     /**
@@ -327,7 +327,7 @@ public interface CloudServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cloudServiceName);
 
     /**
@@ -341,7 +341,7 @@ public interface CloudServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cloudServiceName, Context context);
 
     /**
@@ -593,7 +593,7 @@ public interface CloudServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String cloudServiceName);
 
     /**
@@ -606,7 +606,7 @@ public interface CloudServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String cloudServiceName);
 
     /**
@@ -620,7 +620,7 @@ public interface CloudServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String cloudServiceName, Context context);
 
     /**
@@ -686,7 +686,7 @@ public interface CloudServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginPowerOffAsync(String resourceGroupName, String cloudServiceName);
 
     /**
@@ -700,7 +700,7 @@ public interface CloudServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginPowerOff(String resourceGroupName, String cloudServiceName);
 
     /**
@@ -715,7 +715,7 @@ public interface CloudServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginPowerOff(
         String resourceGroupName, String cloudServiceName, Context context);
 
@@ -786,7 +786,7 @@ public interface CloudServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginRestartAsync(
         String resourceGroupName, String cloudServiceName, RoleInstances parameters);
 
@@ -801,7 +801,7 @@ public interface CloudServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestart(
         String resourceGroupName, String cloudServiceName, RoleInstances parameters);
 
@@ -817,7 +817,7 @@ public interface CloudServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestart(
         String resourceGroupName, String cloudServiceName, RoleInstances parameters, Context context);
 
@@ -913,7 +913,7 @@ public interface CloudServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginReimageAsync(
         String resourceGroupName, String cloudServiceName, RoleInstances parameters);
 
@@ -928,7 +928,7 @@ public interface CloudServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginReimage(
         String resourceGroupName, String cloudServiceName, RoleInstances parameters);
 
@@ -944,7 +944,7 @@ public interface CloudServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginReimage(
         String resourceGroupName, String cloudServiceName, RoleInstances parameters, Context context);
 
@@ -1044,7 +1044,7 @@ public interface CloudServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginRebuildAsync(
         String resourceGroupName, String cloudServiceName, RoleInstances parameters);
 
@@ -1061,7 +1061,7 @@ public interface CloudServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRebuild(
         String resourceGroupName, String cloudServiceName, RoleInstances parameters);
 
@@ -1079,7 +1079,7 @@ public interface CloudServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRebuild(
         String resourceGroupName, String cloudServiceName, RoleInstances parameters, Context context);
 
@@ -1185,7 +1185,7 @@ public interface CloudServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteInstancesAsync(
         String resourceGroupName, String cloudServiceName, RoleInstances parameters);
 
@@ -1200,7 +1200,7 @@ public interface CloudServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteInstances(
         String resourceGroupName, String cloudServiceName, RoleInstances parameters);
 
@@ -1216,7 +1216,7 @@ public interface CloudServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteInstances(
         String resourceGroupName, String cloudServiceName, RoleInstances parameters, Context context);
 

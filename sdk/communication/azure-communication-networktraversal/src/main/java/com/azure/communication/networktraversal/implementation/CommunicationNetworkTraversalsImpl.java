@@ -9,6 +9,7 @@ import com.azure.communication.networktraversal.models.CommunicationRelayConfigu
 import com.azure.communication.networktraversal.models.CommunicationRelayConfigurationRequest;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Post;
@@ -59,6 +60,7 @@ public final class CommunicationNetworkTraversalsImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") CommunicationRelayConfigurationRequest body,
+                @HeaderParam("Accept") String accept,
                 Context context);
     }
 
@@ -74,10 +76,11 @@ public final class CommunicationNetworkTraversalsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CommunicationRelayConfiguration>> issueRelayConfigurationWithResponseAsync(
             CommunicationRelayConfigurationRequest body) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.issueRelayConfiguration(
-                                this.client.getEndpoint(), this.client.getApiVersion(), body, context));
+                                this.client.getEndpoint(), this.client.getApiVersion(), body, accept, context));
     }
 
     /**
@@ -93,7 +96,9 @@ public final class CommunicationNetworkTraversalsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CommunicationRelayConfiguration>> issueRelayConfigurationWithResponseAsync(
             CommunicationRelayConfigurationRequest body, Context context) {
-        return service.issueRelayConfiguration(this.client.getEndpoint(), this.client.getApiVersion(), body, context);
+        final String accept = "application/json";
+        return service.issueRelayConfiguration(
+                this.client.getEndpoint(), this.client.getApiVersion(), body, accept, context);
     }
 
     /**
@@ -168,8 +173,8 @@ public final class CommunicationNetworkTraversalsImpl {
      * @return a relay configuration containing the STUN/TURN URLs and credentials.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunicationRelayConfiguration issueRelayConfiguration(
+    public Response<CommunicationRelayConfiguration> issueRelayConfigurationWithResponse(
             CommunicationRelayConfigurationRequest body, Context context) {
-        return issueRelayConfigurationAsync(body, context).block();
+        return issueRelayConfigurationWithResponseAsync(body, context).block();
     }
 }

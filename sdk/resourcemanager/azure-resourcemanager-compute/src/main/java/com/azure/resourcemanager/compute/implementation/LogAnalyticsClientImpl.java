@@ -204,7 +204,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return logAnalytics operation status response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
         beginExportRequestRateByIntervalAsync(String location, RequestRateByIntervalInput parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = exportRequestRateByIntervalWithResponseAsync(location, parameters);
@@ -215,7 +215,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
                 this.client.getHttpPipeline(),
                 LogAnalyticsOperationResultInner.class,
                 LogAnalyticsOperationResultInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -230,7 +230,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return logAnalytics operation status response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
         beginExportRequestRateByIntervalAsync(String location, RequestRateByIntervalInput parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -257,7 +257,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return logAnalytics operation status response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
         beginExportRequestRateByInterval(String location, RequestRateByIntervalInput parameters) {
         return beginExportRequestRateByIntervalAsync(location, parameters).getSyncPoller();
@@ -275,7 +275,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return logAnalytics operation status response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
         beginExportRequestRateByInterval(String location, RequestRateByIntervalInput parameters, Context context) {
         return beginExportRequestRateByIntervalAsync(location, parameters, context).getSyncPoller();
@@ -463,7 +463,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return logAnalytics operation status response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
         beginExportThrottledRequestsAsync(String location, ThrottledRequestsInput parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = exportThrottledRequestsWithResponseAsync(location, parameters);
@@ -474,7 +474,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
                 this.client.getHttpPipeline(),
                 LogAnalyticsOperationResultInner.class,
                 LogAnalyticsOperationResultInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -488,7 +488,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return logAnalytics operation status response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
         beginExportThrottledRequestsAsync(String location, ThrottledRequestsInput parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -513,7 +513,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return logAnalytics operation status response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
         beginExportThrottledRequests(String location, ThrottledRequestsInput parameters) {
         return beginExportThrottledRequestsAsync(location, parameters).getSyncPoller();
@@ -530,7 +530,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return logAnalytics operation status response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
         beginExportThrottledRequests(String location, ThrottledRequestsInput parameters, Context context) {
         return beginExportThrottledRequestsAsync(location, parameters, context).getSyncPoller();

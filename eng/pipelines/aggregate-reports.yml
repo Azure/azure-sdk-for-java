@@ -39,7 +39,7 @@ stages:
           displayName: 'Build All Libraries'
           inputs:
             mavenPomFile: pom.xml
-            options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true -Paggregatereports'
+            options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true -Paggregatereports'
             mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
             javaHomeOption: 'JDKVersion'
             jdkVersionOption: $(JavaBuildVersion)
@@ -175,7 +175,7 @@ stages:
             parameters:
               ExclusionDataBaseFileName: "JavaPoliCheckExclusion"
               PublishAnalysisLogs: false
-          
+
           - task: securedevelopmentteam.vss-secure-development-tools.build-task-credscan.CredScan@3
             displayName: 'Run CredScan'
             inputs:
@@ -188,7 +188,6 @@ stages:
               GdnBreakAllTools: false
               GdnBreakGdnToolCredScan: true
               GdnBreakGdnToolCredScanSeverity: Error
-              GdnBreakBaselineFiles: $(Build.SourcesDirectory)\eng\java.gdnbaselines
               GdnBreakBaselines: baseline
               # Used for generating baseline file.
               # GdnBreakOutputBaselineFile: java

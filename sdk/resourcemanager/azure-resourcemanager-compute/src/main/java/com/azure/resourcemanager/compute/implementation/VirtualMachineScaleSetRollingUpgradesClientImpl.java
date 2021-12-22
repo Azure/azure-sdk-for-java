@@ -227,12 +227,13 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginCancelAsync(String resourceGroupName, String vmScaleSetName) {
         Mono<Response<Flux<ByteBuffer>>> mono = cancelWithResponseAsync(resourceGroupName, vmScaleSetName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -246,7 +247,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginCancelAsync(
         String resourceGroupName, String vmScaleSetName, Context context) {
         context = this.client.mergeContext(context);
@@ -266,7 +267,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String vmScaleSetName) {
         return beginCancelAsync(resourceGroupName, vmScaleSetName).getSyncPoller();
     }
@@ -282,7 +283,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCancel(
         String resourceGroupName, String vmScaleSetName, Context context) {
         return beginCancelAsync(resourceGroupName, vmScaleSetName, context).getSyncPoller();
@@ -457,13 +458,14 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginStartOSUpgradeAsync(
         String resourceGroupName, String vmScaleSetName) {
         Mono<Response<Flux<ByteBuffer>>> mono = startOSUpgradeWithResponseAsync(resourceGroupName, vmScaleSetName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -478,7 +480,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStartOSUpgradeAsync(
         String resourceGroupName, String vmScaleSetName, Context context) {
         context = this.client.mergeContext(context);
@@ -500,7 +502,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStartOSUpgrade(String resourceGroupName, String vmScaleSetName) {
         return beginStartOSUpgradeAsync(resourceGroupName, vmScaleSetName).getSyncPoller();
     }
@@ -517,7 +519,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStartOSUpgrade(
         String resourceGroupName, String vmScaleSetName, Context context) {
         return beginStartOSUpgradeAsync(resourceGroupName, vmScaleSetName, context).getSyncPoller();
@@ -696,14 +698,15 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginStartExtensionUpgradeAsync(
         String resourceGroupName, String vmScaleSetName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             startExtensionUpgradeWithResponseAsync(resourceGroupName, vmScaleSetName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -718,7 +721,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStartExtensionUpgradeAsync(
         String resourceGroupName, String vmScaleSetName, Context context) {
         context = this.client.mergeContext(context);
@@ -740,7 +743,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStartExtensionUpgrade(
         String resourceGroupName, String vmScaleSetName) {
         return beginStartExtensionUpgradeAsync(resourceGroupName, vmScaleSetName).getSyncPoller();
@@ -758,7 +761,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStartExtensionUpgrade(
         String resourceGroupName, String vmScaleSetName, Context context) {
         return beginStartExtensionUpgradeAsync(resourceGroupName, vmScaleSetName, context).getSyncPoller();

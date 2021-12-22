@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** A Big Data pool. */
+/** Big Data pool A Big Data pool. */
 @JsonFlatten
 @Fluent
 public class BigDataPoolResourceInfo extends TrackedResource {
