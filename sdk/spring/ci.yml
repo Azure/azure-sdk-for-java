@@ -320,18 +320,18 @@ parameters:
             safeName: springcloudazurestreambindereventhubscore
             skipPublishDocMs: true
             skipVerifyChangelog: true
-        -   name: spring-cloud-azure-starter-stream-eventhubs
-            groupId: com.azure.spring
-            safeName: springcloudazurestarterstreameventhubs
-            skipPublishDocMs: true
-            skipUpdatePackageJson: true
-            skipVerifyChangelog: true
-        -   name: spring-cloud-azure-starter-stream-servicebus
-            groupId: com.azure.spring
-            safeName: springcloudazurestarterstreamservicebus
-            skipPublishDocMs: true
-            skipUpdatePackageJson: true
-            skipVerifyChangelog: true
+#        -   name: spring-cloud-azure-starter-stream-eventhubs
+#            groupId: com.azure.spring
+#            safeName: springcloudazurestarterstreameventhubs
+#            skipPublishDocMs: true
+#            skipUpdatePackageJson: true
+#            skipVerifyChangelog: true
+#        -   name: spring-cloud-azure-starter-stream-servicebus
+#            groupId: com.azure.spring
+#            safeName: springcloudazurestarterstreamservicebus
+#            skipPublishDocMs: true
+#            skipUpdatePackageJson: true
+#            skipVerifyChangelog: true
         -   name: spring-cloud-azure-starter-storage-queue
             groupId: com.azure.spring
             safeName: springcloudazurestarterstoragequeue
