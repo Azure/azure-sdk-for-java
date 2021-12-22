@@ -116,8 +116,6 @@ pr:
             - sdk/spring/spring-cloud-azure-stream-binder-test/pom.xml
             - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
 
-#extends:
-    #template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
 resources:
     repositories:
         - repository: azure-sdk-build-tools
@@ -305,44 +303,44 @@ parameters:
             safeName: springcloudazurestreambinderservicebuscore
             skipPublishDocMs: true
             skipVerifyChangelog: true
-#        -   name: spring-cloud-azure-stream-binder-servicebus
-#            groupId: com.azure.spring
-#            safeName: springcloudazurestreambinderservicebus
-#            skipPublishDocMs: true
-#            skipVerifyChangelog: true
-#        -   name: spring-cloud-azure-stream-binder-eventhubs
-#            groupId: com.azure.spring
-#            safeName: springcloudazurestreambindereventhubs
-#            skipPublishDocMs: true
-#            skipVerifyChangelog: true
+        -   name: spring-cloud-azure-stream-binder-servicebus
+            groupId: com.azure.spring
+            safeName: springcloudazurestreambinderservicebus
+            skipPublishDocMs: true
+            skipVerifyChangelog: true
+        -   name: spring-cloud-azure-stream-binder-eventhubs
+            groupId: com.azure.spring
+            safeName: springcloudazurestreambindereventhubs
+            skipPublishDocMs: true
+            skipVerifyChangelog: true
         -   name: spring-cloud-azure-stream-binder-eventhubs-core
             groupId: com.azure.spring
             safeName: springcloudazurestreambindereventhubscore
             skipPublishDocMs: true
             skipVerifyChangelog: true
-#        -   name: spring-cloud-azure-starter-stream-eventhubs
-#            groupId: com.azure.spring
-#            safeName: springcloudazurestarterstreameventhubs
-#            skipPublishDocMs: true
-#            skipUpdatePackageJson: true
-#            skipVerifyChangelog: true
-#        -   name: spring-cloud-azure-starter-stream-servicebus
-#            groupId: com.azure.spring
-#            safeName: springcloudazurestarterstreamservicebus
-#            skipPublishDocMs: true
-#            skipUpdatePackageJson: true
-#            skipVerifyChangelog: true
+        -   name: spring-cloud-azure-starter-stream-eventhubs
+            groupId: com.azure.spring
+            safeName: springcloudazurestarterstreameventhubs
+            skipPublishDocMs: true
+            skipUpdatePackageJson: true
+            skipVerifyChangelog: true
+        -   name: spring-cloud-azure-starter-stream-servicebus
+            groupId: com.azure.spring
+            safeName: springcloudazurestarterstreamservicebus
+            skipPublishDocMs: true
+            skipUpdatePackageJson: true
+            skipVerifyChangelog: true
         -   name: spring-cloud-azure-starter-storage-queue
             groupId: com.azure.spring
             safeName: springcloudazurestarterstoragequeue
             skipPublishDocMs: true
             skipUpdatePackageJson: true
             skipVerifyChangelog: true
-#        -   name: spring-cloud-azure-stream-binder-test
-#            groupId: com.azure.spring
-#            safeName: springcloudazurestreambindertest
-#            skipPublishDocMs: true
-#            skipVerifyChangelog: true
+        -   name: spring-cloud-azure-stream-binder-test
+            groupId: com.azure.spring
+            safeName: springcloudazurestreambindertest
+            skipPublishDocMs: true
+            skipVerifyChangelog: true
 -   name: TestPipeline
     type: boolean
     default: false
