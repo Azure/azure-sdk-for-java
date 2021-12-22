@@ -6,11 +6,11 @@ package com.azure.core.util;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.time.DateTimeException;
+import java.time.DayOfWeek;
+import java.time.Month;
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 
 /**
  * Wrapper over java.time.OffsetDateTime used for specifying RFC1123 format during serialization and deserialization.
@@ -18,11 +18,6 @@ import java.util.Locale;
 public final class DateTimeRfc1123 {
     private static final ClientLogger LOGGER = new ClientLogger(DateTimeRfc1123.class);
 
-    /**
-     * The pattern of the datetime used for RFC1123 datetime format.
-     */
-    private static final DateTimeFormatter RFC1123_DATE_TIME_FORMATTER =
-        DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'").withZone(ZoneId.of("UTC")).withLocale(Locale.US);
     /**
      * The actual datetime object.
      */
@@ -164,7 +159,8 @@ public final class DateTimeRfc1123 {
 
         StringBuilder sb = new StringBuilder(32);
 
-        switch (datetime.getDayOfWeek()) {
+        final DayOfWeek dayOfWeek = datetime.getDayOfWeek();
+        switch (dayOfWeek) {
             case MONDAY: sb.append("Mon, "); break;
             case TUESDAY: sb.append("Tue, "); break;
             case WEDNESDAY: sb.append("Wed, "); break;
@@ -172,11 +168,13 @@ public final class DateTimeRfc1123 {
             case FRIDAY: sb.append("Fri, "); break;
             case SATURDAY: sb.append("Sat, "); break;
             case SUNDAY: sb.append("Sun, "); break;
+            default: throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown day of week " + dayOfWeek));
         }
 
         zeroPad(datetime.getDayOfMonth(), sb);
 
-        switch (datetime.getMonth()) {
+        final Month month = datetime.getMonth();
+        switch (month) {
             case JANUARY: sb.append(" Jan "); break;
             case FEBRUARY: sb.append(" Feb "); break;
             case MARCH: sb.append(" Mar "); break;
@@ -189,6 +187,7 @@ public final class DateTimeRfc1123 {
             case OCTOBER: sb.append(" Oct "); break;
             case NOVEMBER: sb.append(" Nov "); break;
             case DECEMBER: sb.append(" Dec "); break;
+            default: throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + month));
         }
 
         sb.append(datetime.getYear());
@@ -213,7 +212,7 @@ public final class DateTimeRfc1123 {
 
     @Override
     public String toString() {
-        return RFC1123_DATE_TIME_FORMATTER.format(this.dateTime);
+        return toRFC1123String(this.dateTime);
     }
 
     @Override

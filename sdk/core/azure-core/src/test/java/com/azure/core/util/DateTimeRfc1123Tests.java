@@ -56,7 +56,7 @@ public class DateTimeRfc1123Tests {
 
     @Test
     public void toRfc1123String() {
-        // Epoch instant 
+        // Epoch instant
         OffsetDateTime instantDate = OffsetDateTime.ofInstant(Instant.EPOCH, ZoneOffset.UTC);
         String dateString = RFC1123_DATE_TIME_FORMATTER.format(instantDate);
         assertEquals(dateString, DateTimeRfc1123.toRFC1123String(instantDate));
