@@ -3,12 +3,12 @@
 
 package com.azure.spring.cloud.stream.binder.servicebus.properties;
 
-import com.azure.spring.servicebus.core.properties.ProducerProperties;
+import com.azure.spring.servicebus.core.properties.SenderProperties;
 
 /**
  *
  */
-public class ServiceBusProducerProperties extends ProducerProperties {
+public class ServiceBusProducerProperties extends SenderProperties {
     private boolean sync = false;
     private long sendTimeout = 10000;
 

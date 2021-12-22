@@ -4,22 +4,22 @@
 package com.azure.spring.servicebus.core.properties.merger;
 
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
-import com.azure.spring.servicebus.core.properties.ProducerProperties;
+import com.azure.spring.servicebus.core.properties.SenderProperties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class ProducerPropertiesParentMergerTest {
-    private final ProducerPropertiesParentMerger merger = new ProducerPropertiesParentMerger();
+public class SenderPropertiesParentMergerTest {
+    private final SenderPropertiesParentMerger merger = new SenderPropertiesParentMerger();
 
     @Test
     void childNotProvidedShouldUseParent() {
-        ProducerProperties child = new ProducerProperties();
+        SenderProperties child = new SenderProperties();
 
         NamespaceProperties parent = new NamespaceProperties();
         parent.setConnectionString("parent-connection-str");
         parent.getProxy().setHostname("parent-hostname");
 
-        ProducerProperties result = merger.mergeParent(child, parent);
+        SenderProperties result = merger.mergeParent(child, parent);
 
         Assertions.assertEquals("parent-connection-str", result.getConnectionString());
         Assertions.assertEquals("parent-hostname", result.getProxy().getHostname());
@@ -27,7 +27,7 @@ public class ProducerPropertiesParentMergerTest {
 
     @Test
     void childProvidedShouldUseChild() {
-        ProducerProperties child = new ProducerProperties();
+        SenderProperties child = new SenderProperties();
         child.setConnectionString("child-connection-str");
         child.getProxy().setHostname("child-hostname");
         child.setEntityName("test");
@@ -36,7 +36,7 @@ public class ProducerPropertiesParentMergerTest {
         parent.setConnectionString("parent-connection-str");
         parent.getProxy().setHostname("parent-hostname");
 
-        ProducerProperties result = merger.mergeParent(child, parent);
+        SenderProperties result = merger.mergeParent(child, parent);
 
         Assertions.assertEquals("child-connection-str", result.getConnectionString());
         Assertions.assertEquals("child-hostname", result.getProxy().getHostname());

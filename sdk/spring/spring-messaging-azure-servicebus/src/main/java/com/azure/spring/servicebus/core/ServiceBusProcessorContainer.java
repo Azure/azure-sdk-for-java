@@ -30,9 +30,9 @@ public class ServiceBusProcessorContainer implements Lifecycle, DisposableBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusProcessorContainer.class);
 
-    protected final ServiceBusProcessorFactory processorFactory;
+    private final ServiceBusProcessorFactory processorFactory;
     //TODO(yiliu6): map for client
-    protected final List<ServiceBusProcessorClient> clients = new ArrayList<>();
+    private final List<ServiceBusProcessorClient> clients = new ArrayList<>();
     private final AtomicBoolean isRunning = new AtomicBoolean(false);
     private final List<ServiceBusProcessorFactory.Listener> listeners = new ArrayList<>();
 

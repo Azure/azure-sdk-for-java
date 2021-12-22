@@ -8,6 +8,6 @@ import com.azure.spring.service.servicebus.properties.ServiceBusProducerDescript
 /**
  * A service bus producer related properties.
  */
-public class ProducerProperties extends CommonProperties implements ServiceBusProducerDescriptor {
+public class SenderProperties extends CommonProperties implements ServiceBusProducerDescriptor {
 
 }

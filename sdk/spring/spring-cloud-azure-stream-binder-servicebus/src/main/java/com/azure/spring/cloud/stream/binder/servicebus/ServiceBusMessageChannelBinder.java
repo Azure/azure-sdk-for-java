@@ -17,6 +17,7 @@ import com.azure.spring.integration.instrumentation.InstrumentationSendCallback;
 import com.azure.spring.integration.servicebus.inbound.ServiceBusInboundChannelAdapter;
 import com.azure.spring.integration.servicebus.inbound.health.ServiceBusProcessorInstrumentation;
 import com.azure.spring.messaging.PropertiesSupplier;
+import com.azure.spring.messaging.PubSubPair;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.servicebus.core.ServiceBusProcessorContainer;
 import com.azure.spring.servicebus.core.ServiceBusTemplate;
@@ -24,7 +25,7 @@ import com.azure.spring.servicebus.core.processor.DefaultServiceBusNamespaceProc
 import com.azure.spring.servicebus.core.producer.DefaultServiceBusNamespaceProducerFactory;
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.servicebus.core.properties.ProcessorProperties;
-import com.azure.spring.servicebus.core.properties.ProducerProperties;
+import com.azure.spring.servicebus.core.properties.SenderProperties;
 import com.azure.spring.servicebus.support.ServiceBusMessageHeaders;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
 import org.slf4j.Logger;
@@ -283,7 +284,7 @@ public class ServiceBusMessageChannelBinder extends
         return this.processorContainer;
     }
 
-    private PropertiesSupplier<String, ProducerProperties> getProducerPropertiesSupplier() {
+    private PropertiesSupplier<String, SenderProperties> getProducerPropertiesSupplier() {
         return key -> {
             if (this.extendedProducerPropertiesMap.containsKey(key)) {
                 ServiceBusProducerProperties producerProperties = this.extendedProducerPropertiesMap.get(key)
@@ -297,16 +298,16 @@ public class ServiceBusMessageChannelBinder extends
         };
     }
 
-    private PropertiesSupplier<Tuple2<String, String>, ProcessorProperties> getProcessorPropertiesSupplier() {
+    private PropertiesSupplier<PubSubPair, ProcessorProperties> getProcessorPropertiesSupplier() {
         return key -> {
             if (this.extendedConsumerPropertiesMap.containsKey(key)) {
                 ServiceBusConsumerProperties consumerProperties = this.extendedConsumerPropertiesMap.get(key)
                     .getExtension();
-                consumerProperties.setEntityName(key.getT1());
-                consumerProperties.setSubscriptionName(key.getT2());
+                consumerProperties.setEntityName(key.getPublisher());
+                consumerProperties.setSubscriptionName(key.getSubscriber());
                 return consumerProperties;
             } else {
-                LOGGER.debug("Can't find extended properties for destination {}, group {}", key.getT1(), key.getT2());
+                LOGGER.debug("Can't find extended properties for destination {}, group {}", key.getPublisher(), key.getSubscriber());
                 return null;
             }
         };

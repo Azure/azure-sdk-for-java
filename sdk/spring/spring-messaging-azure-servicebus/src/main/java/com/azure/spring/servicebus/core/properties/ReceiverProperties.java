@@ -12,7 +12,7 @@ import java.time.Duration;
 /**
  * A service bus consumer related properties.
  */
-public class ConsumerProperties extends CommonProperties implements ServiceBusConsumerDescriptor {
+public class ReceiverProperties extends CommonProperties implements ServiceBusConsumerDescriptor {
 
     private Boolean sessionAware;
     private Boolean autoComplete;
