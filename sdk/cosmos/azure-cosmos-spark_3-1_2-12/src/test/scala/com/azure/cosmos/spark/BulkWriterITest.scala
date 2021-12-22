@@ -131,7 +131,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
 
       allItems.size < 2 shouldEqual true
     } finally {
-      try container.delete().block()
+      container.delete().block()
     }
   }
 
@@ -187,7 +187,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       // and with ItemAppend 409 should get ignored
       allItems should have size 1
     } finally {
-      try container.delete().block()
+      container.delete().block()
     }
   }
 
