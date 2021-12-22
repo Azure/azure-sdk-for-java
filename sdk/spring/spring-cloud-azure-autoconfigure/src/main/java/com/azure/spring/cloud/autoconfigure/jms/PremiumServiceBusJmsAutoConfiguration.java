@@ -24,7 +24,7 @@ import static com.azure.spring.core.AzureSpringIdentifier.VERSION;
 /**
  * Automatic configuration class of ServiceBusJMS for Premium Service Bus
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(ServiceBusJmsConnectionFactory.class)
 @ConditionalOnProperty(value = "spring.jms.servicebus.enabled", matchIfMissing = true)
 @ConditionalOnExpression(value = "'${spring.jms.servicebus.pricing-tier}'.equalsIgnoreCase('premium')")

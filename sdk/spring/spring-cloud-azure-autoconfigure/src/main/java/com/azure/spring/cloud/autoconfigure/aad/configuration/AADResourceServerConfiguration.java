@@ -87,7 +87,7 @@ public class AADResourceServerConfiguration {
      * Default configuration class for using AAD authentication and authorization. User can write another configuration
      * bean to override it.
      */
-    @Configuration
+    @Configuration(proxyBeanMethods = false)
     @EnableWebSecurity
     @EnableGlobalMethodSecurity(prePostEnabled = true)
     @ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)
