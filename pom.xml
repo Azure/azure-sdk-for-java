@@ -826,6 +826,7 @@
         <module>sdk/servicebus</module>
         <module>sdk/servicefabric</module>
         <module>sdk/signalr</module>
+        <module>sdk/softwareplan</module>
         <module>sdk/spring</module>
         <module>sdk/sqlvirtualmachine</module>
         <module>sdk/storage</module>
