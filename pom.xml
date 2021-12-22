@@ -802,6 +802,7 @@
         <module>sdk/mysqlflexibleserver</module>
         <module>sdk/netapp</module>
         <module>sdk/notificationhubs</module>
+        <module>sdk/oep</module>
         <module>sdk/operationsmanagement</module>
         <module>sdk/peering</module>
         <module>sdk/policyinsights</module>
