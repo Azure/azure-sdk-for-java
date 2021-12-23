@@ -367,7 +367,7 @@ class PartitionPumpManager {
      */
     private Context startProcessTracingSpan(EventData eventData, String eventHubName, String fullyQualifiedNamespace) {
         Object diagnosticId = eventData.getProperties().get(DIAGNOSTIC_ID_KEY);
-        if (!tracerProvider.isEnabled()) {
+        if (tracerProvider == null || !tracerProvider.isEnabled()) {
             return Context.NONE;
         }
 
