@@ -2,7 +2,9 @@
 import time
 import os
 
-unsupported_list = ['com.azure.spring:spring-cloud-azure-stream-binder-test']
+unsupported_list = ['com.azure.spring:spring-cloud-azure-stream-binder-test',
+                    'com.azure.spring:spring-cloud-azure-stream-binder-servicebus',
+                    'com.azure.spring:spring-cloud-azure-stream-binder-eventhubs']
 
 def exclude_modules_in_txt():
     file_path = './eng/versioning/version_client.txt'
@@ -35,11 +37,17 @@ def exclude_modules_in_pom():
                 with open(file_path, "r+", encoding="utf-8") as f:
                     f.writelines(content)
 
+def exclude_modules_in_yml():
+    file_path = './sdk/spring/ci.yml'
+    with open(file_path, "r", encoding="utf-8") as f:
+        content = f.read()
+
 def main():
     start_time = time.time()
     print('Current working directory = {}.'.format(os.getcwd()))
     exclude_modules_in_pom()
     exclude_modules_in_txt()
+    exclude_modules_in_yml()
     elapsed_time = time.time() - start_time
     print('elapsed_time = {}'.format(elapsed_time))
 
