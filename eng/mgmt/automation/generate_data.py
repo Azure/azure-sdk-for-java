@@ -199,9 +199,9 @@ def main():
     base_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
     sdk_root = os.path.abspath(os.path.join(base_dir, SDK_ROOT))
 
-    generate(sdk_root, **args)
-
-    compile_package(sdk_root, GROUP_ID, args['module'])
+    succeeded = generate(sdk_root, **args)
+    if succeeded:
+        compile_package(sdk_root, GROUP_ID, args['module'])
 
 
 if __name__ == '__main__':
