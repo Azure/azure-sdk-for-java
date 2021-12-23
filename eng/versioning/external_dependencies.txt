@@ -43,7 +43,7 @@ commons-codec:commons-codec;1.15
 commons-net:commons-net;3.6
 io.cloudevents:cloudevents-api;2.2.0
 io.cloudevents:cloudevents-core;2.2.0
-io.fabric8:kubernetes-client;4.13.3
+io.fabric8:kubernetes-client;5.9.0
 io.github.bonigarcia:webdrivermanager;4.3.1
 io.micrometer:micrometer-core;1.8.0
 io.micrometer:micrometer-registry-azure-monitor;1.8.0
@@ -152,13 +152,13 @@ org.springframework:spring-webflux;5.3.13
 org.springframework.boot:spring-boot-starter-parent;2.6.1
 
 ## Spring cloud dependency versions
-org.springframework.cloud:spring-cloud-dependencies;2020.0.4
-org.springframework.cloud:spring-cloud-starter-bootstrap;3.0.4
-org.springframework.cloud:spring-cloud-bus;3.0.3
-org.springframework.cloud:spring-cloud-context;3.0.4
-org.springframework.cloud:spring-cloud-starter-stream-kafka;3.1.4
-org.springframework.cloud:spring-cloud-stream-binder-test;3.1.4
-org.springframework.cloud:spring-cloud-stream;3.1.4
+org.springframework.cloud:spring-cloud-dependencies;2021.0.0
+org.springframework.cloud:spring-cloud-starter-bootstrap;3.1.0
+org.springframework.cloud:spring-cloud-bus;3.1.0
+org.springframework.cloud:spring-cloud-context;3.1.0
+org.springframework.cloud:spring-cloud-starter-stream-kafka;3.2.1
+org.springframework.cloud:spring-cloud-stream-binder-test;3.2.1
+org.springframework.cloud:spring-cloud-stream;3.2.1
 
 pl.pragmatists:JUnitParams;1.1.1
 
