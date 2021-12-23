@@ -15,6 +15,7 @@ from utils import update_root_pom
 from utils import update_version
 
 
+GROUP_ID = 'com.azure'
 LLC_ARGUMENTS = '--java --low-level-client --sdk-integration --generate-samples'
 
 
@@ -48,8 +49,7 @@ def sdk_automation(config: dict) -> List[dict]:
             generated_folder = 'sdk/{0}/{1}'.format(service, module)
 
             if succeeded:
-                install_build_tools(sdk_root)
-                compile_package(os.path.join(sdk_root, generated_folder))
+                compile_package(sdk_root, GROUP_ID, module)
 
             artifacts = [
                 '{0}/pom.xml'.format(generated_folder)
@@ -104,21 +104,22 @@ def generate(
     if title:
         artifact_arguments += ' --title={0}'.format(title)
 
-    command = 'autorest --version={0} --use={1} --java.azure-libraries-for-java-folder={2} --java.output-folder={3} --java.namespace={4} {5}'.format(
-        autorest,
-        use,
-        os.path.abspath(sdk_root),
-        os.path.abspath(output_dir),
-        namespace,
-        ' '.join((LLC_ARGUMENTS, input_arguments, credential_arguments, artifact_arguments, autorest_options)),
-    )
+    command = 'autorest --version={0} --use={1} --java.azure-libraries-for-java-folder={2} --java.output-folder={3} ' \
+              '--java.namespace={4} {5}'\
+        .format(
+            autorest,
+            use,
+            os.path.abspath(sdk_root),
+            os.path.abspath(output_dir),
+            namespace,
+            ' '.join((LLC_ARGUMENTS, input_arguments, credential_arguments, artifact_arguments, autorest_options))
+        )
     logging.info(command)
     if os.system(command) != 0:
         logging.error('[GENERATE] Autorest fail')
         return False
 
-    group = "com.azure"
-    set_or_increase_version(sdk_root, group, module)
+    set_or_increase_version(sdk_root, GROUP_ID, module)
     update_service_ci_and_pom(sdk_root, service, group, module)
     update_root_pom(sdk_root, service)
     update_version(sdk_root, output_dir)
@@ -126,17 +127,9 @@ def generate(
     return True
 
 
-def install_build_tools(sdk_root: str):
-    command = 'mvn --no-transfer-progress clean install -f {0} -pl com.azure:sdk-build-tools'.format(os.path.join(sdk_root, 'pom.xml'))
-    logging.info(command)
-    if os.system(command) != 0:
-        logging.error('[COMPILE] Maven build fail for sdk-build-tools')
-        return False
-    return True
-
-
-def compile_package(output_dir: str):
-    command = 'mvn --no-transfer-progress clean verify package -f {0}'.format(os.path.join(output_dir, 'pom.xml'))
+def compile_package(sdk_root: str, group_id: str, module: str):
+    command = 'mvn --no-transfer-progress clean verify package -f {0}/pom.xml -pl {1}:{2} -am'.format(
+        sdk_root, group_id, module)
     logging.info(command)
     if os.system(command) != 0:
         logging.error('[COMPILE] Maven build fail')
@@ -208,12 +201,7 @@ def main():
 
     generate(sdk_root, **args)
 
-    output_dir = os.path.join(
-        sdk_root,
-        'sdk', args['service'], args['module']
-    )
-    install_build_tools(sdk_root)
-    compile_package(output_dir)
+    compile_package(sdk_root, GROUP_ID, args['module'])
 
 
 if __name__ == '__main__':
