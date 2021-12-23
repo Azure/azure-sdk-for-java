@@ -171,7 +171,7 @@ def update_readme(output_dir: str, input_file: str, credential_scopes: str, titl
                 with open(readme_path, 'r', encoding='utf-8') as f_in:
                     content = f_in.read()
                 if content:
-                    yaml_blocks = re.findall(r'```yaml(.*?)```', content, re.DOTALL)
+                    yaml_blocks = re.findall(r'```(?:yaml|YAML)(.*?)```', content, re.DOTALL)
                     for yaml_str in yaml_blocks:
                         yaml_json = yaml.safe_load(yaml_str)
                         if 'low-level-client' in yaml_json and yaml_json['low-level-client']:
