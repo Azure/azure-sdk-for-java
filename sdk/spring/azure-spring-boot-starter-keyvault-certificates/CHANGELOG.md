@@ -1,7 +1,7 @@
 # Release History
 
 ## 3.12.0-beta.1 (Unreleased)
-This release is compatible with Spring Boot 2.5.0-2.5.4, 2.6.0-2.6.1.
+This release is compatible with Spring Boot 2.5.5-2.5.8, 2.6.0-2.6.1.
 
 ### Features Added
 
