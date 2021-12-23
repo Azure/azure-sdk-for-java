@@ -171,7 +171,7 @@ def update_readme(output_dir: str, input_file: str, credential_types: str, crede
                 with open(readme_path, 'r', encoding='utf-8') as f_in:
                     content = f_in.read()
                 if content:
-                    yaml_blocks = re.findall(r'```(?:yaml|YAML)(.*?)```', content, re.DOTALL)
+                    yaml_blocks = re.findall(r'```\s?(?:yaml|YAML)\n(.*?)```', content, re.DOTALL)
                     for yaml_str in yaml_blocks:
                         yaml_json = yaml.safe_load(yaml_str)
                         if 'low-level-client' in yaml_json and yaml_json['low-level-client']:
@@ -191,11 +191,11 @@ def update_readme(output_dir: str, input_file: str, credential_types: str, crede
 
                             if not yaml_str == updated_yaml_str:
                                 # update readme
-                                content.replace(yaml_str, updated_yaml_str)
-                                with open(readme_path, 'r', encoding='utf-8') as f_out:
-                                    f_out.write(content)
+                                updated_content = content.replace(yaml_str, updated_yaml_str, 1)
+                                with open(readme_path, 'w', encoding='utf-8') as f_out:
+                                    f_out.write(updated_content)
 
-                                logging.info('[GENERATE] README updated from\n{0}\nto\n{1}'.format(
+                                logging.info('[GENERATE] YAML block in README updated from\n{0}\nto\n{1}'.format(
                                     yaml_str, updated_yaml_str
                                 ))
 
