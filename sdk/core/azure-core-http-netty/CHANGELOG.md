@@ -7,6 +7,8 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Set default `maxConnections` value to match the default used in `reactor-netty` when `HttpClientOptions` is set but 
+`maximumConnectionPoolSize` is not specified.
 
 ### Other Changes
 
