@@ -3,7 +3,21 @@
 
 package com.azure.ai.anomalydetector;
 
-import com.azure.ai.anomalydetector.models.*;
+import com.azure.ai.anomalydetector.models.AlignMode;
+import com.azure.ai.anomalydetector.models.AlignPolicy;
+import com.azure.ai.anomalydetector.models.DetectAnomalyResponse;
+import com.azure.ai.anomalydetector.models.DetectionRequest;
+import com.azure.ai.anomalydetector.models.DetectionResult;
+import com.azure.ai.anomalydetector.models.DetectionStatus;
+import com.azure.ai.anomalydetector.models.FillNaMethod;
+import com.azure.ai.anomalydetector.models.Model;
+import com.azure.ai.anomalydetector.models.ModelInfo;
+import com.azure.ai.anomalydetector.models.ModelSnapshot;
+import com.azure.ai.anomalydetector.models.ModelStatus;
+import com.azure.ai.anomalydetector.models.TrainMultivariateModelResponse;
+import com.azure.ai.anomalydetector.models.LastDetectionRequest;
+import com.azure.ai.anomalydetector.models.LastDetectionResult;
+import com.azure.ai.anomalydetector.models.AnomalyState;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpClient;
@@ -21,19 +35,16 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.Context;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.minidev.json.JSONObject;
 import reactor.core.publisher.Flux;
 
-import java.io.*;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -199,7 +210,7 @@ public class MultivariateSample {
                 System.out.print(
                         "\ntimestamp: " + anomalyState.getTimestamp().toString() +
                         ",  isAnomaly: " + anomalyState.getValue().isAnomaly() +
-                        ",  Score: " + anomalyState.getValue().getScore());va
+                        ",  Score: " + anomalyState.getValue().getScore());
             }
         }else{
             for (AnomalyState anomalyState: lastDetectResult.getValue().getResults()) {
