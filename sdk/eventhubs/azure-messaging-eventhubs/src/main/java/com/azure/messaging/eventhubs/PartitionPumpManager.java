@@ -32,6 +32,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
@@ -366,11 +367,12 @@ class PartitionPumpManager {
      */
     private Context startProcessTracingSpan(EventData eventData, String eventHubName, String fullyQualifiedNamespace) {
         Object diagnosticId = eventData.getProperties().get(DIAGNOSTIC_ID_KEY);
-        if (diagnosticId == null || !tracerProvider.isEnabled()) {
+        if (!tracerProvider.isEnabled()) {
             return Context.NONE;
         }
 
-        Context spanContext = tracerProvider.extractContext(diagnosticId.toString(), Context.NONE)
+        Context spanContext = Objects.isNull(diagnosticId) ? Context.NONE : tracerProvider.extractContext(diagnosticId.toString(), Context.NONE);
+        spanContext = spanContext
             .addData(ENTITY_PATH_KEY, eventHubName)
             .addData(HOST_NAME_KEY, fullyQualifiedNamespace)
             .addData(AZ_TRACING_NAMESPACE_KEY, AZ_NAMESPACE_VALUE);
