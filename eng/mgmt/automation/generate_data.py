@@ -97,7 +97,7 @@ def generate(
     shutil.rmtree(os.path.join(output_dir, 'src/samples/java', namespace.replace('.', '/'), 'generated'),
                   ignore_errors=True)
 
-    readme_relative_path = update_readme(output_dir, input_file, credential_scopes, title)
+    readme_relative_path = update_readme(output_dir, input_file, credential_types, credential_scopes, title)
     if readme_relative_path:
         logging.info('[GENERATE] Autorest from README {}'.format(readme_relative_path))
 
@@ -159,7 +159,7 @@ def compile_package(sdk_root: str, group_id: str, module: str):
     return True
 
 
-def update_readme(output_dir: str, input_file: str, credential_scopes: str, title: str) -> str:
+def update_readme(output_dir: str, input_file: str, credential_types: str, credential_scopes: str, title: str) -> str:
     readme_relative_path = ''
 
     swagger_dir = os.path.join(output_dir, 'swagger')
@@ -177,8 +177,12 @@ def update_readme(output_dir: str, input_file: str, credential_scopes: str, titl
                         if 'low-level-client' in yaml_json and yaml_json['low-level-client']:
                             # yaml block found, update
                             yaml_json['input-file'] = [input_file]
-                            yaml_json['title'] = title
-                            yaml_json['credential-scopes'] = credential_scopes
+                            if title:
+                                yaml_json['title'] = title
+                            if credential_types:
+                                yaml_json['credential-types'] = credential_types
+                            if credential_scopes:
+                                yaml_json['credential-scopes'] = credential_scopes
 
                             # write updated yaml
                             updated_yaml_str = yaml.dump(yaml_json,
