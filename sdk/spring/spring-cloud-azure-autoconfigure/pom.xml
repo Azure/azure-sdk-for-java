@@ -129,15 +129,15 @@
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-servicebus-jms</artifactId>
-      <version>0.0.9</version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus-jms;external_dependency} -->
-      <optional>true</optional>
-    </dependency>
-    <dependency>
       <groupId>org.apache.qpid</groupId>
       <artifactId>qpid-jms-client</artifactId>
       <version>0.53.0</version><!-- {x-version-update;org.apache.qpid:qpid-jms-client;external_dependency} -->
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.messaginghub</groupId>
+      <artifactId>pooled-jms</artifactId>
+      <version>1.2.2</version>
       <optional>true</optional>
     </dependency>
 
@@ -335,12 +335,12 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:azure-servicebus-jms:[0.0.9]</include> <!-- {x-include-update;com.microsoft.azure:azure-servicebus-jms;external_dependency} -->
                 <include>com.microsoft.azure:msal4j:[1.11.0]</include> <!-- {x-include-update;com.microsoft.azure:msal4j;external_dependency} -->
                 <include>com.nimbusds:nimbus-jose-jwt:[9.10.1]</include> <!-- {x-include-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
+                <include>org.messaginghub:pooled-jms:1.2.2</include> <!-- {x-include-update;org.apache.qpid:qpid-jms-client;external_dependency} -->
+                <include>org.apache.qpid:qpid-jms-client:[0.53.0]</include> <!-- {x-include-update;org.apache.qpid:qpid-jms-client;external_dependency} -->
                 <include>jakarta.validation:jakarta.validation-api:[2.0.2]</include> <!-- {x-include-update;jakarta.validation:jakarta.validation-api;external_dependency} -->
                 <include>javax.servlet:javax.servlet-api:[4.0.1]</include> <!-- {x-include-update;javax.servlet:javax.servlet-api;external_dependency} -->
-                <include>org.apache.qpid:qpid-jms-client:[0.53.0]</include> <!-- {x-include-update;org.apache.qpid:qpid-jms-client;external_dependency} -->
                 <include>org.hibernate.validator:hibernate-validator:[6.2.0.Final]</include> <!-- {x-include-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[2.6.1]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-autoconfigure-processor:[2.6.1]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure-processor;external_dependency} -->

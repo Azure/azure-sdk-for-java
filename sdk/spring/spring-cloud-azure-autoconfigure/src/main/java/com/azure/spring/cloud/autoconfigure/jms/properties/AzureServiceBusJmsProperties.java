@@ -3,18 +3,16 @@
 
 package com.azure.spring.cloud.autoconfigure.jms.properties;
 
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.jms.support.QosSettings;
 import org.springframework.util.StringUtils;
 
-import javax.annotation.PostConstruct;
-
 /**
  * {@link ConfigurationProperties} for configuring Azure Service Bus JMS.
  */
-@ConfigurationProperties(AzureServiceBusJmsProperties.PREFIX)
 // TODO(xiada): does this need to implement AzureProperties?
-public class AzureServiceBusJmsProperties {
+public class AzureServiceBusJmsProperties implements InitializingBean {
 
     public static final String PREFIX = "spring.jms.servicebus";
 
@@ -128,8 +126,8 @@ public class AzureServiceBusJmsProperties {
      *
      * @throws IllegalArgumentException If connectionString is empty.
      */
-    @PostConstruct
-    public void validate() {
+    @Override
+    public void afterPropertiesSet() throws Exception {
         if (!StringUtils.hasText(connectionString)) {
             throw new IllegalArgumentException("'spring.jms.servicebus.connection-string' should be provided");
         }
@@ -140,8 +138,8 @@ public class AzureServiceBusJmsProperties {
     }
 
     /**
-     * Properties to configure {@link org.apache.qpid.jms.policy.JmsDefaultPrefetchPolicy} for
-     * {@link org.apache.qpid.jms.JmsConnectionFactory} .
+     * Properties to configure {@link org.apache.qpid.jms.policy.JmsDefaultPrefetchPolicy} for {@link
+     * org.apache.qpid.jms.JmsConnectionFactory} .
      */
     public static class PrefetchPolicy {
 
@@ -166,6 +164,7 @@ public class AzureServiceBusJmsProperties {
 
         /**
          * Sets all.
+         *
          * @param all all
          */
         public void setAll(int all) {
@@ -187,7 +186,6 @@ public class AzureServiceBusJmsProperties {
         }
 
         /**
-         *
          * @return Returns the queueBrowserPrefetch.
          */
         public int getQueueBrowserPrefetch() {
@@ -233,8 +231,8 @@ public class AzureServiceBusJmsProperties {
 
 
     /**
-     * Properties to configure {@link org.springframework.jms.annotation.JmsListener} for
-     * {@link org.springframework.jms.config.AbstractJmsListenerContainerFactory}.
+     * Properties to configure {@link org.springframework.jms.annotation.JmsListener} for {@link
+     * org.springframework.jms.config.AbstractJmsListenerContainerFactory}.
      */
     public static class Listener {
 
@@ -259,8 +257,7 @@ public class AzureServiceBusJmsProperties {
         private Boolean subscriptionShared;
 
         /**
-         * Specify the phase in which this container should be started and
-         * stopped.
+         * Specify the phase in which this container should be started and stopped.
          */
         private Integer phase;
 
