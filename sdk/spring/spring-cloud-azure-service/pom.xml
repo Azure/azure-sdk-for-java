@@ -34,8 +34,8 @@
   </issueManagement>
 
   <properties>
-    <jacoco.min.linecoverage>0.30</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.17</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.39</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.16</jacoco.min.branchcoverage>
     <javaModulesSurefireArgLine>
       --add-modules com.azure.cosmos
       --add-modules com.azure.messaging.eventhubs
@@ -49,6 +49,7 @@
       --add-modules com.azure.data.appconfiguration
       --add-opens com.azure.spring.service/com.azure.spring.service=ALL-UNNAMED
       --add-opens com.azure.spring.service/com.azure.spring.service.core=ALL-UNNAMED
+      --add-opens com.azure.spring.service/com.azure.spring.service.appconfiguration=ALL-UNNAMED
       --add-opens com.azure.spring.service/com.azure.spring.service.cosmos=ALL-UNNAMED
       --add-opens com.azure.spring.service/com.azure.spring.service.credential=ALL-UNNAMED
       --add-opens com.azure.spring.service/com.azure.spring.service.eventhubs=ALL-UNNAMED
@@ -56,6 +57,8 @@
       --add-opens com.azure.spring.service/com.azure.spring.service.storage.blob=ALL-UNNAMED
       --add-opens com.azure.spring.service/com.azure.spring.service.storage.fileshare=ALL-UNNAMED
       --add-opens com.azure.spring.service/com.azure.spring.service.storage.queue=ALL-UNNAMED
+      --add-opens com.azure.spring.service/com.azure.spring.service.keyvault.secret=ALL-UNNAMED
+      --add-opens com.azure.spring.service/com.azure.spring.service.keyvault.certificates=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
 

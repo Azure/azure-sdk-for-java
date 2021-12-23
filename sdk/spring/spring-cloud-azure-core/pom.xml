@@ -44,9 +44,8 @@
       --add-opens com.azure.spring.core/com.azure.spring.core=ALL-UNNAMED
       --add-opens com.azure.spring.core/com.azure.spring.core.factory=ALL-UNNAMED
       --add-opens com.azure.spring.core/com.azure.spring.core.implementation.connectionstring=ALL-UNNAMED
-      --add-opens com.azure.spring.core/com.azure.spring.core.properties.util=ALL-UNNAMED
       --add-opens com.azure.spring.core/com.azure.spring.core.resource=ALL-UNNAMED
-      --add-opens com.azure.spring.core/com.azure.spring.core.resource=ALL-UNNAMED
+      --add-opens com.azure.spring.core/com.azure.spring.core.util=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
 
