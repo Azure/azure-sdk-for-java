@@ -6,6 +6,7 @@ import logging
 import argparse
 import re
 import glob
+import subprocess
 from typing import List
 
 from parameters import *
@@ -94,35 +95,54 @@ def generate(
     shutil.rmtree(os.path.join(output_dir, 'src/samples/java', namespace.replace('.', '/'), 'generated'),
                   ignore_errors=True)
 
-    credential_arguments = '--java.credential-types={0}'.format(credential_types)
-    if credential_scopes:
-        credential_arguments += ' --java.credential-scopes={0}'.format(credential_scopes)
+    readme_relative_path = update_readme(output_dir, input_file, credential_scopes, title)
+    if readme_relative_path:
+        logging.info('[GENERATE] Autorest from README {}'.format(readme_relative_path))
 
-    input_arguments = '--input-file={0}'.format(input_file)
-
-    artifact_arguments = '--artifact-id={0}'.format(module)
-    if title:
-        artifact_arguments += ' --title={0}'.format(title)
-
-    command = 'autorest --version={0} --use={1} --java.azure-libraries-for-java-folder={2} --java.output-folder={3} ' \
-              '--java.namespace={4} {5}'\
-        .format(
+        command = 'autorest --version={0} --use={1} {2}'.format(
             autorest,
             use,
-            os.path.abspath(sdk_root),
-            os.path.abspath(output_dir),
-            namespace,
-            ' '.join((LLC_ARGUMENTS, input_arguments, credential_arguments, artifact_arguments, autorest_options))
+            readme_relative_path
         )
-    logging.info(command)
-    if os.system(command) != 0:
-        logging.error('[GENERATE] Autorest fail')
-        return False
+        logging.info(command)
+        try:
+            subprocess.run(command, shell=True, cwd=output_dir, check=True)
+        except subprocess.CalledProcessError:
+            logging.error('[GENERATE] Autorest fail')
+            return False
+    else:
+        logging.info('[GENERATE] Autorest from JSON {}'.format(input_file))
 
-    set_or_increase_version(sdk_root, GROUP_ID, module)
-    update_service_ci_and_pom(sdk_root, service, group, module)
-    update_root_pom(sdk_root, service)
-    update_version(sdk_root, output_dir)
+        credential_arguments = '--java.credential-types={0}'.format(credential_types)
+        if credential_scopes:
+            credential_arguments += ' --java.credential-scopes={0}'.format(credential_scopes)
+
+        input_arguments = '--input-file={0}'.format(input_file)
+
+        artifact_arguments = '--artifact-id={0}'.format(module)
+        if title:
+            artifact_arguments += ' --title={0}'.format(title)
+
+        command = 'autorest --version={0} --use={1} ' \
+                  '--java.azure-libraries-for-java-folder={2} --java.output-folder={3} ' \
+                  '--java.namespace={4} {5}'\
+            .format(
+                autorest,
+                use,
+                os.path.abspath(sdk_root),
+                os.path.abspath(output_dir),
+                namespace,
+                ' '.join((LLC_ARGUMENTS, input_arguments, credential_arguments, artifact_arguments, autorest_options))
+            )
+        logging.info(command)
+        if os.system(command) != 0:
+            logging.error('[GENERATE] Autorest fail')
+            return False
+
+        set_or_increase_version(sdk_root, GROUP_ID, module)
+        update_service_ci_and_pom(sdk_root, service, group, module)
+        update_root_pom(sdk_root, service)
+        update_version(sdk_root, output_dir)
 
     return True
 
@@ -135,6 +155,21 @@ def compile_package(sdk_root: str, group_id: str, module: str):
         logging.error('[COMPILE] Maven build fail')
         return False
     return True
+
+
+def update_readme(output_dir: str, input_file: str, credential_scopes: str, title: str) -> str:
+    readme_relative_path = ''
+
+    swagger_dir = os.path.join(output_dir, 'swagger')
+    if os.path.isdir(swagger_dir):
+        for filename in os.listdir(swagger_dir):
+            if filename.lower().startswith('readme') and filename.lower().endswith('.md'):
+                readme_path = os.path.join(swagger_dir, filename)
+                with open(readme_path, 'r', encoding='utf-8') as f_out:
+                    content = f_out.read()
+
+                readme_relative_path = 'swagger/{}'.format(filename)
+    return readme_relative_path
 
 
 def parse_args() -> argparse.Namespace:
