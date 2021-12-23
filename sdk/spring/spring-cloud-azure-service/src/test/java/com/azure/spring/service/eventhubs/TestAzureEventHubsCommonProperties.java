@@ -9,7 +9,7 @@ import com.azure.spring.service.core.properties.AbstractAmqpProperties;
 /**
  * Azure Event Hubs related properties.
  */
-public abstract class TestAzureEventHubsCommonProperties extends AbstractAmqpProperties {
+abstract class TestAzureEventHubsCommonProperties extends AbstractAmqpProperties {
 
     protected String domainName = "servicebus.windows.net";
     protected String namespace;

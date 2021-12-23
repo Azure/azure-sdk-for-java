@@ -6,21 +6,18 @@ package com.azure.spring.service.storage.fileshare;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.spring.core.implementation.http.DefaultHttpProvider;
 import com.azure.spring.core.properties.proxy.ProxyProperties;
-import com.azure.spring.service.AzureServiceClientBuilderFactoryTestBase;
+import com.azure.spring.service.AzureHttpClientBuilderFactoryTestBase;
 import com.azure.spring.service.core.http.TestHttpClient;
-import com.azure.spring.service.core.http.TestHttpClientProvider;
-import com.azure.spring.service.core.http.TestPerCallHttpPipelinePolicy;
-import com.azure.spring.service.core.http.TestPerRetryHttpPipelinePolicy;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.file.share.ShareServiceClient;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.mockito.verification.VerificationMode;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -29,12 +26,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * @author Xiaolu Dai, 2021/8/25.
+ *
  */
-class AzureStorageFileShareClientBuilderFactoryTest extends AzureServiceClientBuilderFactoryTestBase<ShareServiceClientBuilder,
+class AzureStorageFileShareClientBuilderFactoryTest extends AzureHttpClientBuilderFactoryTestBase<ShareServiceClientBuilder,
     TestAzureStorageFileShareProperties, ShareServiceClientBuilderFactory> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AzureStorageFileShareClientBuilderFactoryTest.class);
     private static final String ENDPOINT = "https://abc.file.core.windows.net/";
 
     @Test
@@ -56,36 +52,6 @@ class AzureStorageFileShareClientBuilderFactoryTest extends AzureServiceClientBu
         verify(builder, times(1)).credential(any(AzureSasCredential.class));
     }
 
-    @Test
-    void testHttpClientConfigured() {
-        TestAzureStorageFileShareProperties properties = createMinimalServiceProperties();
-
-        final ShareServiceClientBuilderFactory builderFactory = new ShareServiceClientBuilderFactoryExt(properties);
-
-        builderFactory.setHttpClientProvider(new TestHttpClientProvider());
-
-        final ShareServiceClientBuilder builder = builderFactory.build();
-        final ShareServiceClient client = builder.buildClient();
-
-        verify(builder, times(1)).httpClient(any(TestHttpClient.class));
-    }
-
-    @Test
-    void testDefaultHttpPipelinePoliciesConfigured() {
-        TestAzureStorageFileShareProperties properties = createMinimalServiceProperties();
-
-        final ShareServiceClientBuilderFactory builderFactory = new ShareServiceClientBuilderFactoryExt(properties);
-
-        builderFactory.addHttpPipelinePolicy(new TestPerCallHttpPipelinePolicy());
-        builderFactory.addHttpPipelinePolicy(new TestPerRetryHttpPipelinePolicy());
-
-
-        final ShareServiceClientBuilder builder = builderFactory.build();
-        final ShareServiceClient client = builder.buildClient();
-
-        verify(builder, times(1)).addPolicy(any(TestPerCallHttpPipelinePolicy.class));
-        verify(builder, times(1)).addPolicy(any(TestPerRetryHttpPipelinePolicy.class));
-    }
 
     @Test
     void testProxyPropertiesConfigured() {
@@ -118,6 +84,21 @@ class AzureStorageFileShareClientBuilderFactoryTest extends AzureServiceClientBu
         TestAzureStorageFileShareProperties properties = new TestAzureStorageFileShareProperties();
         properties.setEndpoint(ENDPOINT);
         return properties;
+    }
+
+    @Override
+    protected ShareServiceClientBuilderFactory getClientBuilderFactoryWithMockBuilder(TestAzureStorageFileShareProperties properties) {
+        return new ShareServiceClientBuilderFactoryExt(properties);
+    }
+
+    @Override
+    protected void verifyHttpClientCalled(ShareServiceClientBuilder builder, VerificationMode mode) {
+        verify(builder, mode).httpClient(any(TestHttpClient.class));
+    }
+
+    @Override
+    protected void verifyHttpPipelinePolicyAdded(ShareServiceClientBuilder builder, HttpPipelinePolicy policy, VerificationMode mode) {
+        verify(builder, mode).addPolicy(policy);
     }
 
     static class ShareServiceClientBuilderFactoryExt extends ShareServiceClientBuilderFactory {

@@ -10,7 +10,6 @@ import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.spring.service.core.properties.AbstractHttpProperties;
-import org.springframework.validation.annotation.Validated;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +17,7 @@ import java.util.List;
 /**
  * Configuration properties for Cosmos database, consistency, telemetry, connection, query metrics and diagnostics.
  */
-@Validated
-public class TestAzureCosmosHttpProperties extends AbstractHttpProperties implements CosmosClientProperties {
+class TestAzureCosmosHttpProperties extends AbstractHttpProperties implements CosmosClientProperties {
 
     private String endpoint;
 

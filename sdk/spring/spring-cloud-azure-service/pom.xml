@@ -46,6 +46,8 @@
       --add-modules com.azure.storage.file.share
       --add-modules com.azure.storage.queue
       --add-modules com.azure.storage.internal.avro
+      --add-modules com.azure.data.appconfiguration
+      --add-opens com.azure.spring.service/com.azure.spring.service=ALL-UNNAMED
       --add-opens com.azure.spring.service/com.azure.spring.service.core=ALL-UNNAMED
       --add-opens com.azure.spring.service/com.azure.spring.service.cosmos=ALL-UNNAMED
       --add-opens com.azure.spring.service/com.azure.spring.service.credential=ALL-UNNAMED

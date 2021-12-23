@@ -9,7 +9,7 @@ import com.azure.storage.file.share.ShareServiceVersion;
 /**
  * Properties for Azure Storage File Share service.
  */
-public class TestAzureStorageFileShareProperties extends TestAzureStorageProperties implements ShareServiceClientProperties {
+class TestAzureStorageFileShareProperties extends TestAzureStorageProperties implements ShareServiceClientProperties {
 
     private ShareServiceVersion serviceVersion;
 

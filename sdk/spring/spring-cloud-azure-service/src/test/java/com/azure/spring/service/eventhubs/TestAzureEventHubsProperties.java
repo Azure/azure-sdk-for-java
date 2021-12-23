@@ -4,9 +4,9 @@
 package com.azure.spring.service.eventhubs;
 
 import com.azure.spring.service.eventhubs.properties.EventHubConsumerProperties;
+import com.azure.spring.service.eventhubs.properties.EventHubProducerProperties;
 import com.azure.spring.service.eventhubs.properties.EventHubsNamespaceProperties;
 import com.azure.spring.service.eventhubs.properties.EventProcessorClientProperties;
-import com.azure.spring.service.eventhubs.properties.EventHubProducerProperties;
 import com.azure.spring.service.storage.blob.TestAzureStorageBlobProperties;
 
 import java.time.Duration;
@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Azure Event Hubs related properties.
  */
-public class TestAzureEventHubsProperties extends TestAzureEventHubsCommonProperties implements EventHubsNamespaceProperties {
+class TestAzureEventHubsProperties extends TestAzureEventHubsCommonProperties implements EventHubsNamespaceProperties {
 
     private Boolean isSharedConnection;
     private final Producer producer = new Producer();
