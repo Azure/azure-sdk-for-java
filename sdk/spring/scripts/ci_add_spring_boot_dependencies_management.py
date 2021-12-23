@@ -4,20 +4,18 @@
 #
 # How to use:
 # 1. Change `SPRING_BOOT_DEPENDENCIES_VERSION` and 'SPRING_CLOUD_DEPENDENCIES_VERSION'
-#    to the latest version in this script manually.
+#    to the right version in sdk/spring/ci.yml manually.
 # 2. Then the ci will automatically run command
-#    `python .\sdk\spring\scripts\ci_add_spring_boot_dependencies_management.py`.
+#    `python .\sdk\spring\scripts\ci_add_spring_boot_dependencies_management.py
+#    --boot SPRING_BOOT_DEPENDENCIES_VERSION --cloud SPRING_CLOUD_DEPENDENCIES_VERSION`.
 #
 # The script must be run at the root of azure-sdk-for-java.
 
 import os
 import time
+import argparse
 
-
-SPRING_BOOT_DEPENDENCIES_VERSION = '2.6.1'
-SPRING_CLOUD_DEPENDENCIES_VERSION = '2021.0.0'
-
-def add_dependency_management(c1,c2):
+def add_dependency_management(content1,content2):
     for root, _, files in os.walk("./sdk/spring"):
     # for root, _, files in os.walk("D:/java/azure-sdk-for-java/sdk/spring/"):
         for file_name in files:
@@ -30,41 +28,46 @@ def add_dependency_management(c1,c2):
                     if pos2 != -1:
                         print("processing:" + file_path)
                         print("add dependency management...")
-                        content = content[:pos2+41] + c1 + content[pos2+41:]
+                        content = content[:pos2+41] + content1 + content[pos2+41:]
                         with open(file_path, 'r+', encoding='utf-8') as f:
                             f.writelines(content)
                     else:
                         print("processing:" + file_path)
                         print("add dependency management...")
-                        content = content[:pos1] + c2 + content[pos1:]
+                        content = content[:pos1] + content2 + content[pos1:]
                         with open(file_path, 'r+', encoding='utf-8') as f:
                             f.writelines(content)
 
-def add_dependency_management_all():
-    cores = '\n        <groupId>org.springframework.boot</groupId>'
-    cores += '\n        <artifactId>spring-boot-dependencies</artifactId>'
-    cores += '\n        <version>'+SPRING_BOOT_DEPENDENCIES_VERSION+'</version><!-- version test for ci -->'
-    cores += '\n        <type>pom</type>'
-    cores += '\n        <scope>import</scope>'
-    cores += '\n      </dependency>\n'
-    cores += '\n      <dependency>'
-    cores += '\n        <groupId>org.springframework.cloud</groupId>'
-    cores += '\n        <artifactId>spring-cloud-dependencies</artifactId>'
-    cores += '\n        <version>'+SPRING_CLOUD_DEPENDENCIES_VERSION+'</version><!-- version test for ci -->'
-    cores += '\n        <type>pom</type>'
-    cores += '\n        <scope>import</scope>'
+def add_dependency_management_all(spring_boot_dependencies_version, spring_cloud_dependencies_version):
+    cores = """
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>{}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
 
-
-    content1 = '\n      <dependency>' + cores + '\n      </dependency>\n'
-    content2 = '\n  <dependencyManagement>' + '\n    <dependencies>' + '\n      <dependency>' \
-            + cores + '\n      </dependency>' + '\n    </dependencies>' + '\n  </dependencyManagement>\n\n'
-    add_dependency_management(content1, content2)
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-dependencies</artifactId>
+        <version>{}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+""".format(spring_boot_dependencies_version, spring_cloud_dependencies_version)
+    content = '\n  <dependencyManagement>' + '\n    <dependencies>' + cores + '    </dependencies>' + '\n  </dependencyManagement>\n\n'
+    add_dependency_management(cores, content)
 
 
 def main():
+    parser = argparse.ArgumentParser(description='Add dependencies management in poms.')
+    parser.add_argument('--spring_boot_dependencies_version', '--boot', type=str, required=True)
+    parser.add_argument('--spring_cloud_dependencies_version', '--cloud', type=str, required=True)
+    args = parser.parse_args()
     start_time = time.time()
     print('Current working directory = {}.'.format(os.getcwd()))
-    add_dependency_management_all()
+    add_dependency_management_all(args.spring_boot_dependencies_version, args.spring_cloud_dependencies_version)
     elapsed_time = time.time() - start_time
     print('elapsed_time = {}'.format(elapsed_time))
 
