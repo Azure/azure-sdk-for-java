@@ -166,7 +166,7 @@ def update_readme(output_dir: str, input_file: str, credential_scopes: str, titl
     if os.path.isdir(swagger_dir):
         for filename in os.listdir(swagger_dir):
             if filename.lower().startswith('readme') and filename.lower().endswith('.md'):
-                readme_updated = False
+                readme_yaml_found = False
                 readme_path = os.path.join(swagger_dir, filename)
                 with open(readme_path, 'r', encoding='utf-8') as f_in:
                     content = f_in.read()
@@ -185,14 +185,20 @@ def update_readme(output_dir: str, input_file: str, credential_scopes: str, titl
                                                          sort_keys=False,
                                                          Dumper=ListIndentDumper)
 
-                            # update readme
-                            content.replace(yaml_str, updated_yaml_str)
-                            with open(readme_path, 'r', encoding='utf-8') as f_out:
-                                f_out.write(content)
+                            if not yaml_str == updated_yaml_str:
+                                # update readme
+                                content.replace(yaml_str, updated_yaml_str)
+                                with open(readme_path, 'r', encoding='utf-8') as f_out:
+                                    f_out.write(content)
 
-                            readme_updated = True
+                                logging.info('[GENERATE] README updated from\n{0}\nto\n{1}'.format(
+                                    yaml_str, updated_yaml_str
+                                ))
 
-                if readme_updated:
+                            readme_yaml_found = True
+                            break
+
+                if readme_yaml_found:
                     readme_relative_path = 'swagger/{}'.format(filename)
     return readme_relative_path
 
