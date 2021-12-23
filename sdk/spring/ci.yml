@@ -303,16 +303,16 @@ parameters:
             safeName: springcloudazurestreambinderservicebuscore
             skipPublishDocMs: true
             skipVerifyChangelog: true
-#        -   name: spring-cloud-azure-stream-binder-servicebus
-#            groupId: com.azure.spring
-#            safeName: springcloudazurestreambinderservicebus
-#            skipPublishDocMs: true
-#            skipVerifyChangelog: true
-#        -   name: spring-cloud-azure-stream-binder-eventhubs
-#            groupId: com.azure.spring
-#            safeName: springcloudazurestreambindereventhubs
-#            skipPublishDocMs: true
-#            skipVerifyChangelog: true
+        -   name: spring-cloud-azure-stream-binder-servicebus
+            groupId: com.azure.spring
+            safeName: springcloudazurestreambinderservicebus
+            skipPublishDocMs: true
+            skipVerifyChangelog: true
+        -   name: spring-cloud-azure-stream-binder-eventhubs
+            groupId: com.azure.spring
+            safeName: springcloudazurestreambindereventhubs
+            skipPublishDocMs: true
+            skipVerifyChangelog: true
         -   name: spring-cloud-azure-stream-binder-eventhubs-core
             groupId: com.azure.spring
             safeName: springcloudazurestreambindereventhubscore
@@ -336,11 +336,11 @@ parameters:
             skipPublishDocMs: true
             skipUpdatePackageJson: true
             skipVerifyChangelog: true
-#        -   name: spring-cloud-azure-stream-binder-test
-#            groupId: com.azure.spring
-#            safeName: springcloudazurestreambindertest
-#            skipPublishDocMs: true
-#            skipVerifyChangelog: true
+        -   name: spring-cloud-azure-stream-binder-test
+            groupId: com.azure.spring
+            safeName: springcloudazurestreambindertest
+            skipPublishDocMs: true
+            skipVerifyChangelog: true
 -   name: TestPipeline
     type: boolean
     default: false
