@@ -142,7 +142,7 @@ def generate(
             return False
 
         set_or_increase_version(sdk_root, GROUP_ID, module)
-        update_service_ci_and_pom(sdk_root, service, group, module)
+        update_service_ci_and_pom(sdk_root, service, GROUP_ID, module)
         update_root_pom(sdk_root, service)
         update_version(sdk_root, output_dir)
 
@@ -204,6 +204,8 @@ def update_readme(output_dir: str, input_file: str, credential_types: str, crede
 
                 if readme_yaml_found:
                     readme_relative_path = 'swagger/{}'.format(filename)
+                    break
+
     return readme_relative_path
 
 
