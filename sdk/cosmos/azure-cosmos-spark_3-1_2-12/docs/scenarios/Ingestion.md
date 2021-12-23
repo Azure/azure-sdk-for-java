@@ -41,14 +41,14 @@ All transient errors (Throttled requests, network timeouts, any recoverable serv
 Below are a couple of tips/best-practices that can help you to prepare for a data migration into a Cosmos DB container.
 
 ### Choosing a good partition key
-To be able to fully saturate the provisioned throughput of a container it is important to choose a partition key that ensures the ingested data is spread over all physical partitions. A really bad choice for example would be a date/time based partition key. Imagine a daily batch job ingests telemetry events and a partition key of the form YYYYMMDD is used. In this case all documents being ingested daily would target a single logical partitions. So independent of the total provisioned throughput at most 10,000 RU (current maximum throughput per physical/logical partition) could be used for the ingestion job. You can find some more info abut [partitioning in Cosmos DB](https://docs.microsoft.com/en-us/azure/cosmos-db/partitioning-overview) and (how to choose a good partition key)[https://docs.microsoft.com/en-us/azure/cosmos-db/partitioning-overview#choose-partitionkey] in the documentation.
+To be able to fully saturate the provisioned throughput of a container, it is important to choose a partition key that ensures the ingested data is spread over all physical partitions. A really bad choice for example would be a date/time based partition key. Imagine a daily batch job ingests telemetry events and a partition key of the form YYYYMMDD is used. In this case all documents being ingested daily would target a single logical partition. So independent of the total provisioned throughput at most 10,000 RU (current maximum throughput per physical/logical partition) could be used for the ingestion job. You can find some more info abut [partitioning in Cosmos DB](https://docs.microsoft.com/en-us/azure/cosmos-db/partitioning-overview) and (how to choose a good partition key)[https://docs.microsoft.com/en-us/azure/cosmos-db/partitioning-overview#choose-partitionkey] in the documentation.
 
 ### Indexing policy
 The RU-charge when inserting or updating a document in Cosmos DB depends on the size of the document as well as the number of "tokens" that need to be indexed. A little simplified you can think of the number of tokens as the number of json properties that need to be indexed. So, to optimize throughput for the ingestion it would be beneficial to use a scoped indexing policy (not the default policy of indexing all properties, but only the properties that really need to be indexed). The two documents below contain more information about how to choose the right indexing policy.
 - [Indexing policies in Azure Cosmos DB](https://docs.microsoft.com/en-us/azure/cosmos-db/index-policy)
 - [Indexing in Azure Cosmos DB - Overview](https://docs.microsoft.com/en-us/azure/cosmos-db/index-overview)
 
-Sample01: How to create a new container with default indexing policy (index all properties) in Spark
+*Sample 01: How to create a new container with default indexing policy (index all properties) in Spark*
 ```
 %sql
 CREATE TABLE IF NOT EXISTS cosmosCatalog.SampleDatabase.ThroughputControl
@@ -56,7 +56,7 @@ USING cosmos.oltp
 TBLPROPERTIES(partitionKeyPath = '/groupId', autoScaleMaxThroughput = '4000', indexingPolicy = 'AllProperties', defaultTtlInSeconds = '-1');
 ```
 
-Sample02: How to create a new container with minimal indexing policy (index only required system properties) in Spark
+*Sample 02: How to create a new container with minimal indexing policy (index only required system properties) in Spark*
 ```
 %sql
 CREATE TABLE IF NOT EXISTS cosmosCatalog.SampleDatabase.GreenTaxiRecords
@@ -64,7 +64,7 @@ USING cosmos.oltp
 TBLPROPERTIES(partitionKeyPath = '/id', autoScaleMaxThroughput = '100000', indexingPolicy = 'OnlySystemProperties');
 ```
 
-Sample03: How to create a new container with custom indexing policy in Spark
+*Sample 03: How to create a new container with custom indexing policy in Spark*
 ```
 myCustomIndexPolicyJson = '{"indexingMode":"consistent","automatic":true,"includedPaths":[{"path":"\/somePropertyName\/?"},{"path":"\/mypk\/?"}],"excludedPaths":[{"path":"\/*"}]}'
 spark.sql("""
@@ -98,7 +98,7 @@ This section will briefly explain how you can prepare the input data to ensure a
 Unlike the Cosmos DB connector for Spark 2.* the new connector for Spark 3.* and above `cosmos.oltp` requires you to pre-populate an `id` column in the data frame containing the data you want to write into Cosmos DB. In the previous version it was possible to let the Spark connector auto-generate a value for the `id` column. We changed this because the auto-generation of `id` values in the connector has an intrinsic problem whenever Spark retries a task, because on retry a different `id` value would be generated - which means you might end-up with duplicate records when using the `ItemOverwrite` (Upsert) or `ItemAppend` (only insert new documents) item write strategies. It is important that the `id` value is immutable when the writing to the Cosmos DB data source `cosmos.oltp` begins.
 This can be achieved by either mapping an existing value of your input data as the `id` column or by generating a random value and subsequently persisting the data frame before starting the write process.
 
-Sample 01: Creating a new `id` column with a random value
+*Sample 01: Creating a new `id` column with a random value*
 ```
 # Add a column id with random unique id
 uuidUdf= udf(lambda : str(uuid.uuid4()),StringType())
@@ -127,7 +127,7 @@ df_input \
 df_input.unpersist()
 ```
 
-Sample 02: Creating a new `id` column using the value of an existing column
+*Sample 02: Creating a new `id` column using the value of an existing column*
 ```
 # Add a column id with the value of another already existing column (needs to be unique at least per logical partition)
 df_input = df_input.withColumn("id", col("SomeOtherColumn"))
