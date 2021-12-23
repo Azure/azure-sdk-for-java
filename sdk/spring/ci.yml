@@ -12,14 +12,6 @@ trigger:
       - sdk/spring/
     exclude:
       - sdk/spring/pom.xml
-      - sdk/spring/azure-spring-boot-test-application/pom.xml
-      - sdk/spring/azure-spring-boot-test-core/pom.xml
-      - sdk/spring/azure-spring-boot-test-cosmos/pom.xml
-      - sdk/spring/azure-spring-boot-test-keyvault-certificate/pom.xml
-      - sdk/spring/azure-spring-boot-test-keyvault/pom.xml
-      - sdk/spring/azure-spring-boot-test-parent/pom.xml
-      - sdk/spring/azure-spring-boot-test-servicebus-jms/pom.xml
-      - sdk/spring/azure-spring-boot-test-storage/pom.xml
       - sdk/spring/spring-messaging-azure/pom.xml
       - sdk/spring/spring-messaging-azure-eventhubs/pom.xml
       - sdk/spring/spring-messaging-azure-servicebus/pom.xml
@@ -55,8 +47,6 @@ trigger:
       - sdk/spring/spring-cloud-azure-stream-binder-eventhubs/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus-core/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus/pom.xml
-      - sdk/spring/spring-cloud-azure-stream-binder-test/pom.xml
-      - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
 
 pr:
   branches:
@@ -70,14 +60,6 @@ pr:
       - sdk/spring/
     exclude:
       - sdk/spring/pom.xml
-      - sdk/spring/azure-spring-boot-test-application/pom.xml
-      - sdk/spring/azure-spring-boot-test-core/pom.xml
-      - sdk/spring/azure-spring-boot-test-cosmos/pom.xml
-      - sdk/spring/azure-spring-boot-test-keyvault-certificate/pom.xml
-      - sdk/spring/azure-spring-boot-test-keyvault/pom.xml
-      - sdk/spring/azure-spring-boot-test-parent/pom.xml
-      - sdk/spring/azure-spring-boot-test-servicebus-jms/pom.xml
-      - sdk/spring/azure-spring-boot-test-storage/pom.xml
       - sdk/spring/spring-messaging-azure/pom.xml
       - sdk/spring/spring-messaging-azure-eventhubs/pom.xml
       - sdk/spring/spring-messaging-azure-servicebus/pom.xml
@@ -113,8 +95,6 @@ pr:
       - sdk/spring/spring-cloud-azure-stream-binder-eventhubs/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus-core/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus/pom.xml
-      - sdk/spring/spring-cloud-azure-stream-binder-test/pom.xml
-      - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -329,9 +309,4 @@ extends:
         safeName: springcloudazurestarterstoragequeue
         skipPublishDocMs: true
         skipUpdatePackageJson: true
-        skipVerifyChangelog: true
-      - name: spring-cloud-azure-stream-binder-test
-        groupId: com.azure.spring
-        safeName: springcloudazurestreambindertest
-        skipPublishDocMs: true
         skipVerifyChangelog: true
