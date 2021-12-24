@@ -462,7 +462,7 @@ stages:
             - AZURE_TEST.*=.*/
           PreBuildSteps:
             - script: |
-                python ./sdk/spring/scripts/ci_update_versions.py --ut external_dependency
+                python ./sdk/spring/scripts/ci_update_versions.py --sbv 2.6.1
             - script: |
                 python ./sdk/spring/scripts/ci_add_spring_boot_dependencies_management.py --boot 2.6.1 --cloud 2021.0.0
 
@@ -512,12 +512,8 @@ stages:
               - TestOptions=.*/-am
             - AZURE_TEST.*=.*/
           PreBuildSteps:
-#           - script: |
-#                 python ./sdk/spring/scripts/ci_exclude_modules.py
             - script: |
-                python ./sdk/spring/scripts/ci_change_version.py
-            - script: |
-                python ./sdk/spring/scripts/ci_update_versions.py --ut external_dependency
+                python ./sdk/spring/scripts/ci_update_versions.py --sbv 2.5.4
             - script: |
                 python ./sdk/spring/scripts/ci_add_spring_boot_dependencies_management.py--boot 2.5.4 --cloud 2020.0.4
 
