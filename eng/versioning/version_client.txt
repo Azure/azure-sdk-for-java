@@ -160,7 +160,7 @@ com.azure.spring:azure-spring-boot-starter-keyvault-secrets;3.11.0;3.12.0
 com.azure.spring:azure-spring-boot-starter-servicebus-jms;3.11.0;3.12.0
 com.azure.spring:azure-spring-boot-starter-storage;3.11.0;3.12.0
 com.azure.spring:azure-spring-boot-starter;3.11.0;3.12.0
-com.azure.spring:azure-spring-boot;3.11.0;3.12.0
+com.azure.spring:azure-spring-boot;3.12.0;3.13.0-beta.1
 com.azure.spring:azure-spring-cloud-autoconfigure;2.11.0;2.12.0
 com.azure.spring:azure-spring-cloud-context;2.12.0;2.13.0-beta.1
 com.azure.spring:azure-spring-cloud-dependencies;2.11.0;2.12.0
