@@ -1,3 +1,10 @@
+resources:
+    repositories:
+        - repository: azure-sdk-build-tools
+          type: git
+          name: internal/azure-sdk-build-tools
+          ref: refs/tags/azure-sdk-build-tools_20211019.1
+
 parameters:
   - name: SDKType
     type: string
@@ -34,7 +41,7 @@ parameters:
   - name: PreBuildSteps
     type: object
     default: []
-    
+
 jobs:
   - job: 'Build'
 
