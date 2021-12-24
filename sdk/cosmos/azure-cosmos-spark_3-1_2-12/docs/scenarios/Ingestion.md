@@ -30,7 +30,7 @@ df \
    .save()
 ```
 
-You can find more details about the client-throughput control feature and its configuration options here - see TODO @fabianm add link once merged (CI pipeline enforces that it must be absolute)
+You can find more details about the client-throughput control feature and its configuration options here - see [Client throughput control](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/scenarios/ThroughputControl.md)
 
 ### Retry policies and data validation
 All transient errors (Throttled requests, network timeouts, any recoverable service errors etc.) are retried automatically by the `cosmos.oltp` data source. Any non-transient errors - for example "400-Bad request" when the value of the "id" column is invalid - which would not be recoverable by retries, will result in the Spark job failing. When your container has a "unique key constraint policy" any 409 "Conflict" (indicating violation of unique key constraint) handling will depend on the `spark.cosmos.write.strategy`.
