@@ -1,6 +1,7 @@
 # Release History
 
 ## 2.3.0 (2021-12-24)
+This release is compatible with Spring Boot 2.5.5-2.5.8, 2.6.0-2.6.1.
 
 ### Bugs Fixed
 
