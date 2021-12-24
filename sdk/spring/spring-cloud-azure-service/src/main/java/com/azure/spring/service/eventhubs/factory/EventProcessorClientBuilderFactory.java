@@ -19,13 +19,13 @@ import com.azure.spring.core.credential.descriptor.SasAuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor;
 import com.azure.spring.core.factory.AbstractAzureAmqpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.core.properties.util.PropertyMapper;
+import com.azure.spring.core.properties.PropertyMapper;
 import com.azure.spring.service.eventhubs.processor.BatchEventProcessingListener;
 import com.azure.spring.service.eventhubs.processor.EventProcessingListener;
 import com.azure.spring.service.eventhubs.processor.RecordEventProcessingListener;
-import com.azure.spring.service.eventhubs.properties.EventHubsProcessorDescriptor;
-import org.springframework.util.CollectionUtils;
+import com.azure.spring.service.eventhubs.properties.EventProcessorClientProperties;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -39,14 +39,21 @@ import java.util.stream.Collectors;
  */
 public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientBuilderFactory<EventProcessorClientBuilder> {
 
-    private final EventHubsProcessorDescriptor processorProperties;
+    private final EventProcessorClientProperties eventProcessorClientProperties;
     private final CheckpointStore checkpointStore;
     private final EventProcessingListener processorListener;
 
-    public EventProcessorClientBuilderFactory(EventHubsProcessorDescriptor processorProperties,
+    /**
+     * Create a {@link EventProcessorClientBuilderFactory} with the {@link EventProcessorClientProperties} and a
+     * {@link CheckpointStore} and a {@link EventProcessingListener}.
+     * @param eventProcessorClientProperties the properties of the event processor client.
+     * @param checkpointStore the checkpoint store.
+     * @param listener the listener for event processing.
+     */
+    public EventProcessorClientBuilderFactory(EventProcessorClientProperties eventProcessorClientProperties,
                                               CheckpointStore checkpointStore,
                                               EventProcessingListener listener) {
-        this.processorProperties = processorProperties;
+        this.eventProcessorClientProperties = eventProcessorClientProperties;
         this.checkpointStore = checkpointStore;
         this.processorListener = listener;
     }
@@ -78,7 +85,7 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
 
     @Override
     protected AzureProperties getAzureProperties() {
-        return this.processorProperties;
+        return this.eventProcessorClientProperties;
     }
 
     // Endpoint=sb://<FQDN>/;SharedAccessKeyName=<KeyName>;SharedAccessKey=<KeyValue>
@@ -86,15 +93,15 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
     @Override
     protected void configureService(EventProcessorClientBuilder builder) {
         PropertyMapper map = new PropertyMapper();
-        map.from(processorProperties.getConsumerGroup()).to(builder::consumerGroup);
-        map.from(processorProperties.getPrefetchCount()).to(builder::prefetchCount);
-        map.from(processorProperties.getCustomEndpointAddress()).to(builder::customEndpointAddress);
-        map.from(processorProperties.getTrackLastEnqueuedEventProperties()).to(builder::trackLastEnqueuedEventProperties);
-        map.from(processorProperties.getPartitionOwnershipExpirationInterval()).to(builder::partitionOwnershipExpirationInterval);
-        map.from(processorProperties.getLoadBalancing().getStrategy()).to(builder::loadBalancingStrategy);
-        map.from(processorProperties.getLoadBalancing().getUpdateInterval()).to(builder::loadBalancingUpdateInterval);
+        map.from(eventProcessorClientProperties.getConsumerGroup()).to(builder::consumerGroup);
+        map.from(eventProcessorClientProperties.getPrefetchCount()).to(builder::prefetchCount);
+        map.from(eventProcessorClientProperties.getCustomEndpointAddress()).to(builder::customEndpointAddress);
+        map.from(eventProcessorClientProperties.getTrackLastEnqueuedEventProperties()).to(builder::trackLastEnqueuedEventProperties);
+        map.from(eventProcessorClientProperties.getLoadBalancing().getPartitionOwnershipExpirationInterval()).to(builder::partitionOwnershipExpirationInterval);
+        map.from(eventProcessorClientProperties.getLoadBalancing().getStrategy()).to(builder::loadBalancingStrategy);
+        map.from(eventProcessorClientProperties.getLoadBalancing().getUpdateInterval()).to(builder::loadBalancingUpdateInterval);
 
-        map.from(processorProperties.getInitialPartitionEventPosition()).when(c -> !CollectionUtils.isEmpty(c)).to(
+        map.from(eventProcessorClientProperties.getInitialPartitionEventPosition()).when(c -> !CollectionUtils.isEmpty(c)).to(
             p -> {
                 Map<String, EventPosition> positions = p.entrySet()
                     .stream()
@@ -116,14 +123,14 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
     @Override
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(EventProcessorClientBuilder builder) {
         return Arrays.asList(
-            new NamedKeyAuthenticationDescriptor(provider -> builder.credential(processorProperties.getFQDN(),
-                processorProperties.getEventHubName(),
+            new NamedKeyAuthenticationDescriptor(provider -> builder.credential(eventProcessorClientProperties.getFullyQualifiedNamespace(),
+                eventProcessorClientProperties.getEventHubName(),
                 provider.getCredential())),
-            new SasAuthenticationDescriptor(provider -> builder.credential(processorProperties.getFQDN(),
-                processorProperties.getEventHubName(),
+            new SasAuthenticationDescriptor(provider -> builder.credential(eventProcessorClientProperties.getFullyQualifiedNamespace(),
+                eventProcessorClientProperties.getEventHubName(),
                 provider.getCredential())),
-            new TokenAuthenticationDescriptor(provider -> builder.credential(processorProperties.getFQDN(),
-                processorProperties.getEventHubName(),
+            new TokenAuthenticationDescriptor(provider -> builder.credential(eventProcessorClientProperties.getFullyQualifiedNamespace(),
+                eventProcessorClientProperties.getEventHubName(),
                 provider.getCredential()))
         );
     }
@@ -135,14 +142,14 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
 
     @Override
     protected BiConsumer<EventProcessorClientBuilder, TokenCredential> consumeDefaultTokenCredential() {
-        return (builder, tokenCredential) -> builder.credential(processorProperties.getFQDN(),
-            processorProperties.getEventHubName(),
+        return (builder, tokenCredential) -> builder.credential(eventProcessorClientProperties.getFullyQualifiedNamespace(),
+            eventProcessorClientProperties.getEventHubName(),
             tokenCredential);
     }
 
     @Override
     protected BiConsumer<EventProcessorClientBuilder, String> consumeConnectionString() {
-        return (builder, s) -> builder.connectionString(s, this.processorProperties.getEventHubName());
+        return (builder, s) -> builder.connectionString(s, this.eventProcessorClientProperties.getEventHubName());
     }
 
     private void configureCheckpointStore(EventProcessorClientBuilder builder) {
@@ -150,7 +157,7 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
     }
 
     private void configureProcessorListener(EventProcessorClientBuilder builder) {
-        final EventHubsProcessorDescriptor.Batch batch = this.processorProperties.getBatch();
+        final EventProcessorClientProperties.EventBatch batch = this.eventProcessorClientProperties.getBatch();
 
         if (processorListener instanceof BatchEventProcessingListener) {
             Assert.notNull(batch.getMaxSize(), "Batch max size must be provided");

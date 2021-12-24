@@ -8,17 +8,25 @@ import com.azure.spring.core.aware.ProxyAware;
 /**
  * Extend the proxy properties for HTTP connection
  */
-public class HttpProxyProperties extends ProxyProperties implements ProxyAware.HttpProxy {
+public final class HttpProxyProperties extends ProxyProperties implements ProxyAware.HttpProxy {
 
     /**
      * A list of hosts or CIDR to not use proxy HTTP/HTTPS connections through.
      */
     private String nonProxyHosts;
 
+    /**
+     * Get the non-proxy hosts.
+     * @return The non-proxy hosts.
+     */
     public String getNonProxyHosts() {
         return nonProxyHosts;
     }
 
+    /**
+     * Set the non-proxy hosts.
+     * @param nonProxyHosts The non-proxy hosts.
+     */
     public void setNonProxyHosts(String nonProxyHosts) {
         this.nonProxyHosts = nonProxyHosts;
     }

@@ -4,9 +4,9 @@
 package com.azure.spring.service.servicebus.factory;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
-import com.azure.spring.core.properties.util.PropertyMapper;
-import com.azure.spring.service.servicebus.properties.ServiceBusConsumerDescriptor;
+import com.azure.spring.core.properties.PropertyMapper;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
+import com.azure.spring.service.servicebus.properties.ServiceBusReceiverClientProperties;
 import org.springframework.util.Assert;
 
 import static com.azure.spring.service.servicebus.properties.ServiceBusEntityType.TOPIC;
@@ -16,46 +16,60 @@ import static com.azure.spring.service.servicebus.properties.ServiceBusEntityTyp
  */
 public class ServiceBusSessionReceiverClientBuilderFactory
     extends AbstractServiceBusSubClientBuilderFactory<ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder,
-    ServiceBusConsumerDescriptor> {
+    ServiceBusReceiverClientProperties> {
 
-    private final ServiceBusConsumerDescriptor consumerProperties;
+    private final ServiceBusReceiverClientProperties receiverClientProperties;
 
-    public ServiceBusSessionReceiverClientBuilderFactory(ServiceBusConsumerDescriptor consumerDescriptor) {
-        this(null, consumerDescriptor);
+    /**
+     * Create a {@link ServiceBusSessionReceiverClientBuilderFactory} instance with the
+     * {@link ServiceBusReceiverClientProperties}.
+     *
+     * @param properties the properties of a Service Bus receiver client.
+     */
+    public ServiceBusSessionReceiverClientBuilderFactory(ServiceBusReceiverClientProperties properties) {
+        this(null, properties);
     }
 
+    /**
+     * Create a {@link ServiceBusSessionReceiverClientBuilderFactory} instance with {@link ServiceBusClientBuilder} and
+     * the {@link ServiceBusReceiverClientProperties}.
+     *
+     * @param serviceBusClientBuilder the provided Service Bus client builder. If provided, the sub clients will be
+     *                                created from this builder.
+     * @param properties the properties of the Service Bus receiver client.
+     */
     public ServiceBusSessionReceiverClientBuilderFactory(ServiceBusClientBuilder serviceBusClientBuilder,
-                                                         ServiceBusConsumerDescriptor consumerDescriptor) {
-        super(serviceBusClientBuilder, consumerDescriptor);
-        this.consumerProperties = consumerDescriptor;
+                                                         ServiceBusReceiverClientProperties properties) {
+        super(serviceBusClientBuilder, properties);
+        this.receiverClientProperties = properties;
     }
 
     @Override
     protected ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder createBuilderInstance() {
-        return this.serviceBusClientBuilder.sessionReceiver();
+        return this.getServiceBusClientBuilder().sessionReceiver();
     }
 
     @Override
     protected void configureService(ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder builder) {
-        Assert.notNull(consumerProperties.getEntityType(), "Entity type cannot be null.");
-        Assert.notNull(consumerProperties.getEntityName(), "Entity name cannot be null.");
-        if (TOPIC == consumerProperties.getEntityType()) {
-            Assert.notNull(consumerProperties.getSubscriptionName(), "Subscription cannot be null.");
+        Assert.notNull(receiverClientProperties.getEntityType(), "Entity type cannot be null.");
+        Assert.notNull(receiverClientProperties.getEntityName(), "Entity name cannot be null.");
+        if (TOPIC == receiverClientProperties.getEntityType()) {
+            Assert.notNull(receiverClientProperties.getSubscriptionName(), "Subscription cannot be null.");
         }
 
         final PropertyMapper propertyMapper = new PropertyMapper();
-        if (ServiceBusEntityType.QUEUE == consumerProperties.getEntityType()) {
-            propertyMapper.from(consumerProperties.getEntityName()).to(builder::queueName);
-        } else if (TOPIC == consumerProperties.getEntityType()) {
-            propertyMapper.from(consumerProperties.getEntityName()).to(builder::topicName);
-            propertyMapper.from(consumerProperties.getSubscriptionName()).to(builder::subscriptionName);
+        if (ServiceBusEntityType.QUEUE == receiverClientProperties.getEntityType()) {
+            propertyMapper.from(receiverClientProperties.getEntityName()).to(builder::queueName);
+        } else if (TOPIC == receiverClientProperties.getEntityType()) {
+            propertyMapper.from(receiverClientProperties.getEntityName()).to(builder::topicName);
+            propertyMapper.from(receiverClientProperties.getSubscriptionName()).to(builder::subscriptionName);
         }
 
-        propertyMapper.from(consumerProperties.getReceiveMode()).to(builder::receiveMode);
-        propertyMapper.from(consumerProperties.getSubQueue()).to(builder::subQueue);
-        propertyMapper.from(consumerProperties.getPrefetchCount()).to(builder::prefetchCount);
-        propertyMapper.from(consumerProperties.getMaxAutoLockRenewDuration()).to(builder::maxAutoLockRenewDuration);
-        propertyMapper.from(consumerProperties.getAutoComplete()).whenFalse().to(t -> builder.disableAutoComplete());
+        propertyMapper.from(receiverClientProperties.getReceiveMode()).to(builder::receiveMode);
+        propertyMapper.from(receiverClientProperties.getSubQueue()).to(builder::subQueue);
+        propertyMapper.from(receiverClientProperties.getPrefetchCount()).to(builder::prefetchCount);
+        propertyMapper.from(receiverClientProperties.getMaxAutoLockRenewDuration()).to(builder::maxAutoLockRenewDuration);
+        propertyMapper.from(receiverClientProperties.getAutoComplete()).whenFalse().to(t -> builder.disableAutoComplete());
     }
 
 }

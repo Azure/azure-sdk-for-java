@@ -3,12 +3,12 @@
 
 package com.azure.spring.servicebus.core.properties;
 
-import com.azure.spring.service.servicebus.properties.ServiceBusNamespaceDescriptor;
+import com.azure.spring.service.servicebus.properties.ServiceBusNamespaceProperties;
 
 /**
  * A service bus namespace related properties.
  */
-public class NamespaceProperties extends CommonProperties implements ServiceBusNamespaceDescriptor {
+public class NamespaceProperties extends CommonProperties implements ServiceBusNamespaceProperties {
 
     private Boolean crossEntityTransactions;
 

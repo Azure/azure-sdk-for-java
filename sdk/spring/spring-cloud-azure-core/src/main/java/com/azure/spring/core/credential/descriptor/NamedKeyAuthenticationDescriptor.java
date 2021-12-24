@@ -3,36 +3,40 @@
 
 package com.azure.spring.core.credential.descriptor;
 
+import com.azure.spring.core.credential.AzureCredentialResolver;
 import com.azure.spring.core.credential.AzureCredentialType;
 import com.azure.spring.core.credential.provider.AzureNamedKeyCredentialProvider;
-import com.azure.spring.core.credential.resolver.AzureCredentialResolver;
-import com.azure.spring.core.credential.resolver.AzureNamedKeyCredentialResolver;
+import com.azure.spring.core.implementation.credential.resolver.AzureNamedKeyCredentialResolver;
 
 import java.util.function.Consumer;
 
 /**
  * A descriptor describes the named key authentication.
  */
-public class NamedKeyAuthenticationDescriptor implements AuthenticationDescriptor<AzureNamedKeyCredentialProvider> {
+public final class NamedKeyAuthenticationDescriptor implements AuthenticationDescriptor<AzureNamedKeyCredentialProvider> {
 
     private final Consumer<AzureNamedKeyCredentialProvider> consumer;
 
+    /**
+     * Create a {@link NamedKeyAuthenticationDescriptor} instance with the consumer to consume the resolved credential.
+     * @param consumer The consumer to consume the resolved credential.
+     */
     public NamedKeyAuthenticationDescriptor(Consumer<AzureNamedKeyCredentialProvider> consumer) {
         this.consumer = consumer;
     }
 
     @Override
-    public AzureCredentialType azureCredentialType() {
+    public AzureCredentialType getAzureCredentialType() {
         return AzureCredentialType.NAMED_KEY_CREDENTIAL;
     }
 
     @Override
-    public AzureCredentialResolver<AzureNamedKeyCredentialProvider> azureCredentialResolver() {
+    public AzureCredentialResolver<AzureNamedKeyCredentialProvider> getAzureCredentialResolver() {
         return new AzureNamedKeyCredentialResolver();
     }
 
     @Override
-    public Consumer<AzureNamedKeyCredentialProvider> consumer() {
+    public Consumer<AzureNamedKeyCredentialProvider> getConsumer() {
         return consumer;
     }
 }

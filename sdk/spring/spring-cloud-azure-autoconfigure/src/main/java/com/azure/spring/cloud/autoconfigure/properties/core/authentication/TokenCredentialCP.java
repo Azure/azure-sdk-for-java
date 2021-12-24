@@ -42,7 +42,8 @@ public class TokenCredentialCP implements TokenCredentialAware.TokenCredential {
     private String password;
 
     /**
-     * Client id to use when using managed identity to authenticate with Azure.
+     * Client id to use when using user-assigned managed identity or app registration (when working with AKS
+     * pod-identity) to authenticate with Azure.
      */
     private String managedIdentityClientId;
 

@@ -4,19 +4,28 @@
 package com.azure.spring.cloud.autoconfigure.appconfiguration.properties;
 
 import com.azure.data.appconfiguration.ConfigurationServiceVersion;
-import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureHttpCP;
-import com.azure.spring.service.appconfiguration.AppConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.core.AbstractAzureHttpCP;
+import com.azure.spring.service.appconfiguration.ConfigurationClientProperties;
 
 /**
  * Properties for Azure App Configuration.
  */
 public class AzureAppConfigurationProperties extends AbstractAzureHttpCP
-    implements AppConfigurationProperties {
+    implements ConfigurationClientProperties {
 
     public static final String PREFIX = "spring.cloud.azure.appconfiguration";
 
+    /**
+     * Endpoint of the Azure App Configuration instance.
+     */
     private String endpoint;
+    /**
+     * Connection string of the Azure App Configuration instance.
+     */
     private String connectionString;
+    /**
+     * Version of the service to be used when making request.
+     */
     private ConfigurationServiceVersion serviceVersion;
 
     @Override
