@@ -969,6 +969,20 @@ class FileSystemAPITest extends APISpec {
         }
     }
 
+    def "Async list paths max results by page"() {
+        setup:
+        def dirName = generatePathName()
+        fscAsync.getDirectoryAsyncClient(dirName).create().block()
+
+        def fileName = generatePathName()
+        fscAsync.getFileAsyncClient(fileName).create().block()
+
+        expect:
+        for (def page : fscAsync.listPaths(new ListPathsOptions()).byPage(1).collectList().block()) {
+            assert page.value.size() == 1
+        }
+    }
+
     @Unroll
     def "Create URL special chars encoded"() {
         // This test checks that we handle path names with encoded special characters correctly.
