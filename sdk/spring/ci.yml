@@ -126,7 +126,7 @@ resources:
 stages:
   - stage: Build_for_Release
     jobs:
-      - template: /eng/pipelines/templates/jobs/ci-template.yml
+      - template: /sdk/spring/ci-template.yml
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build_for_Release.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
@@ -145,7 +145,7 @@ stages:
 
   - stage: Build_for_new_Version
     jobs:
-      - template: /eng/pipelines/templates/jobs/ci-template.yml
+      - template: /sdk/spring/ci-template.yml
         parameters:
           PublishArtifact: false
           PreBuildSteps:
@@ -175,7 +175,7 @@ stages:
 
   - stage: Build_for_Last_Version
     jobs:
-      - template: /eng/pipelines/templates/jobs/ci-template.yml
+      - template: /sdk/spring/ci-template.yml
         parameters:
           PublishArtifact: false
           PreBuildSteps:
