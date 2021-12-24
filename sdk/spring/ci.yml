@@ -55,7 +55,6 @@ trigger:
       - sdk/spring/spring-cloud-azure-stream-binder-eventhubs/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus-core/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus/pom.xml
-      - sdk/spring/spring-cloud-azure-stream-binder-test/pom.xml
       - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
 
 pr:
@@ -113,7 +112,6 @@ pr:
       - sdk/spring/spring-cloud-azure-stream-binder-eventhubs/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus-core/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus/pom.xml
-      - sdk/spring/spring-cloud-azure-stream-binder-test/pom.xml
       - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
 
 extends:
@@ -329,9 +327,4 @@ extends:
         safeName: springcloudazurestarterstoragequeue
         skipPublishDocMs: true
         skipUpdatePackageJson: true
-        skipVerifyChangelog: true
-      - name: spring-cloud-azure-stream-binder-test
-        groupId: com.azure.spring
-        safeName: springcloudazurestreambindertest
-        skipPublishDocMs: true
         skipVerifyChangelog: true
