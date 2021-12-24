@@ -258,8 +258,8 @@ parameters:
   type: object
   default: []
 
-
-template: /eng/pipelines/templates/jobs/ci.yml
+job:
+- template: /eng/pipelines/templates/jobs/ci.yml
   parameters:
     ServiceDirectory: ${{ parameters.ServiceDirectory }}
     ${{ if eq(parameters.ServiceDirectory, 'template') }}:
