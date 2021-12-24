@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.stream.binder.eventhubs;
+package com.azure.spring.sample.eventhubs.binder;
 
 import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.checkpoint.Checkpointer;

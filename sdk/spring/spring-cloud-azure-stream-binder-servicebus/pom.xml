@@ -36,7 +36,6 @@
   <properties>
     <jacoco.min.linecoverage>0.7</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.3</jacoco.min.branchcoverage>
-    <skipSpringITs>true</skipSpringITs>
   </properties>
   <dependencies>
     <dependency>
@@ -118,22 +117,6 @@
             </bannedDependencies>
           </rules>
         </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-failsafe-plugin</artifactId>
-        <version>2.22.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
-        <executions>
-          <execution>
-            <id>default</id>
-            <goals>
-              <goal>integration-test</goal>
-            </goals>
-            <configuration>
-              <skipITs>${skipSpringITs}</skipITs>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
   </build>
