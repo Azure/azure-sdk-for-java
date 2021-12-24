@@ -12,7 +12,6 @@ import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsP
 import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.core.connectionstring.ConnectionStringProvider;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
-import com.azure.spring.core.properties.util.PropertyMapper;
 import com.azure.spring.core.service.AzureServiceType;
 import com.azure.spring.service.eventhubs.factory.EventHubClientBuilderFactory;
 import org.springframework.beans.factory.ObjectProvider;
@@ -20,6 +19,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.PropertyMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -51,7 +51,7 @@ class AzureEventHubsConsumerClientConfiguration {
         SharedConsumerConnectionConfiguration(AzureEventHubsProperties properties, EventHubClientBuilder builder) {
             this.builder = builder;
 
-            PropertyMapper mapper = new PropertyMapper();
+            PropertyMapper mapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
             mapper.from(properties.getConsumer().getConsumerGroup()).to(builder::consumerGroup);
             mapper.from(properties.getConsumer().getPrefetchCount()).to(builder::prefetchCount);
         }

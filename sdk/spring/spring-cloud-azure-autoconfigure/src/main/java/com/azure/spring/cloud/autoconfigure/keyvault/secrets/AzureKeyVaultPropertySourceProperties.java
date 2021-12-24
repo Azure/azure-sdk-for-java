@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.keyvault.secrets;
 
 import com.azure.security.keyvault.secrets.SecretServiceVersion;
-import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureHttpCP;
+import com.azure.spring.cloud.autoconfigure.properties.core.AbstractAzureHttpCP;
 
 import java.time.Duration;
 import java.util.List;

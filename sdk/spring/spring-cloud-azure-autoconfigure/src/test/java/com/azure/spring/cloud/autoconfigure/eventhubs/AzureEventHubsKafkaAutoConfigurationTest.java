@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.eventhubs;
 
 import com.azure.spring.cloud.autoconfigure.eventhubs.kafka.AzureEventHubsKafkaAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
-import com.azure.spring.cloud.resourcemanager.connectionstring.AbstractArmConnectionStringProvider;
+import com.azure.spring.resourcemanager.connectionstring.ArmConnectionStringProvider;
 import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.core.service.AzureServiceType;
 import org.junit.jupiter.api.Test;
@@ -185,8 +185,8 @@ class AzureEventHubsKafkaAutoConfigurationTest {
     static class ArmConnectionStringProviderConfiguration {
 
         @Bean
-        AbstractArmConnectionStringProvider<AzureServiceType.EventHubs> connectionStringProvider() {
-            return new AbstractArmConnectionStringProvider<AzureServiceType.EventHubs>(null, null) {
+        ArmConnectionStringProvider<AzureServiceType.EventHubs> connectionStringProvider() {
+            return new ArmConnectionStringProvider<AzureServiceType.EventHubs>(null, null) {
 
                 @Override
                 public String getConnectionString() {

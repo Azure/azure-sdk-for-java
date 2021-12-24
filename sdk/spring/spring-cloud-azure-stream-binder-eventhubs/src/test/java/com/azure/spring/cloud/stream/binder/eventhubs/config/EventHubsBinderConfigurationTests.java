@@ -4,11 +4,11 @@
 package com.azure.spring.cloud.stream.binder.eventhubs.config;
 
 import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
-import com.azure.spring.cloud.resourcemanager.provisioner.eventhubs.EventHubsProvisioner;
 import com.azure.spring.cloud.stream.binder.eventhubs.EventHubsMessageChannelBinder;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelProvisioner;
 import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelResourceManagerProvisioner;
+import com.azure.spring.resourcemanager.provisioner.eventhubs.EventHubsProvisioner;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;

@@ -5,11 +5,11 @@ package com.azure.spring.cloud.autoconfigure.servicebus.properties;
 
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
-import com.azure.spring.core.properties.util.AzurePropertiesUtils;
-import com.azure.spring.service.servicebus.properties.ServiceBusConsumerDescriptor;
-import com.azure.spring.service.servicebus.properties.ServiceBusNamespaceDescriptor;
-import com.azure.spring.service.servicebus.properties.ServiceBusProcessorDescriptor;
-import com.azure.spring.service.servicebus.properties.ServiceBusProducerDescriptor;
+import com.azure.spring.core.util.AzurePropertiesUtils;
+import com.azure.spring.service.servicebus.properties.ServiceBusReceiverClientProperties;
+import com.azure.spring.service.servicebus.properties.ServiceBusNamespaceProperties;
+import com.azure.spring.service.servicebus.properties.ServiceBusProcessorClientProperties;
+import com.azure.spring.service.servicebus.properties.ServiceBusSenderClientProperties;
 import org.springframework.boot.context.properties.PropertyMapper;
 
 import java.time.Duration;
@@ -17,7 +17,7 @@ import java.time.Duration;
 /**
  *
  */
-public class AzureServiceBusProperties extends AzureServiceBusCommonProperties implements ServiceBusNamespaceDescriptor {
+public class AzureServiceBusProperties extends AzureServiceBusCommonProperties implements ServiceBusNamespaceProperties {
 
     public static final String PREFIX = "spring.cloud.azure.servicebus";
 
@@ -133,14 +133,14 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties i
     /**
      * Properties of a Service Bus producer.
      */
-    public static class Producer extends AzureServiceBusCommonProperties implements ServiceBusProducerDescriptor {
+    public static class Producer extends AzureServiceBusCommonProperties implements ServiceBusSenderClientProperties {
 
     }
 
     /**
      * Properties of a Service Bus consumer.
      */
-    public static class Consumer extends AzureServiceBusCommonProperties implements ServiceBusConsumerDescriptor {
+    public static class Consumer extends AzureServiceBusCommonProperties implements ServiceBusReceiverClientProperties {
 
         private Boolean sessionEnabled;
         private Boolean autoComplete;
@@ -217,7 +217,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties i
     /**
      * Properties of a Service Bus processor.
      */
-    public static class Processor extends Consumer implements ServiceBusProcessorDescriptor {
+    public static class Processor extends Consumer implements ServiceBusProcessorClientProperties {
         private Integer maxConcurrentCalls;
         private Integer maxConcurrentSessions;
 

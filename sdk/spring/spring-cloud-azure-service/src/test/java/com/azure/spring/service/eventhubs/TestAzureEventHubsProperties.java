@@ -3,10 +3,10 @@
 
 package com.azure.spring.service.eventhubs;
 
-import com.azure.spring.service.eventhubs.properties.EventHubsConsumerDescriptor;
-import com.azure.spring.service.eventhubs.properties.EventHubsNamespaceDescriptor;
-import com.azure.spring.service.eventhubs.properties.EventHubsProcessorDescriptor;
-import com.azure.spring.service.eventhubs.properties.EventHubsProducerDescriptor;
+import com.azure.spring.service.eventhubs.properties.EventHubConsumerProperties;
+import com.azure.spring.service.eventhubs.properties.EventHubProducerProperties;
+import com.azure.spring.service.eventhubs.properties.EventHubsNamespaceProperties;
+import com.azure.spring.service.eventhubs.properties.EventProcessorClientProperties;
 import com.azure.spring.service.storage.blob.TestAzureStorageBlobProperties;
 
 import java.time.Duration;
@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Azure Event Hubs related properties.
  */
-public class TestAzureEventHubsProperties extends TestAzureEventHubsCommonProperties implements EventHubsNamespaceDescriptor {
+class TestAzureEventHubsProperties extends TestAzureEventHubsCommonProperties implements EventHubsNamespaceProperties {
 
     private Boolean isSharedConnection;
     private final Producer producer = new Producer();
@@ -46,26 +46,26 @@ public class TestAzureEventHubsProperties extends TestAzureEventHubsCommonProper
     /**
      * Properties of an Event Hub producer.
      */
-    public static class Producer extends TestAzureEventHubsCommonProperties implements EventHubsProducerDescriptor {
+    public static class Producer extends TestAzureEventHubsCommonProperties implements EventHubProducerProperties {
 
     }
 
     /**
      * Properties of an Event Hub consumer.
      */
-    public static class Consumer extends TestAzureEventHubsConsumerProperties implements EventHubsConsumerDescriptor {
+    public static class Consumer extends TestAzureEventHubsConsumerProperties implements EventHubConsumerProperties {
 
     }
 
     /**
      * Properties of an Event Hub processor.
      */
-    public static class Processor extends TestAzureEventHubsConsumerProperties implements EventHubsProcessorDescriptor {
+    public static class Processor extends TestAzureEventHubsConsumerProperties implements EventProcessorClientProperties {
 
         private Boolean trackLastEnqueuedEventProperties;
         private Map<String, StartPosition> initialPartitionEventPosition = new HashMap<>();
         private Duration partitionOwnershipExpirationInterval;
-        private final Batch batch = new Batch();
+        private final EventBatch batch = new EventBatch();
         private final LoadBalancing loadBalancing = new LoadBalancing();
         private final BlobCheckpointStore checkpointStore = new BlobCheckpointStore();
 
@@ -93,7 +93,7 @@ public class TestAzureEventHubsProperties extends TestAzureEventHubsCommonProper
             this.partitionOwnershipExpirationInterval = partitionOwnershipExpirationInterval;
         }
 
-        public Batch getBatch() {
+        public EventBatch getBatch() {
             return batch;
         }
 

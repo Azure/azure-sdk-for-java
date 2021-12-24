@@ -16,9 +16,9 @@ import com.azure.spring.core.credential.descriptor.SasAuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor;
 import com.azure.spring.core.factory.AbstractAzureAmqpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.core.properties.util.PropertyMapper;
-import com.azure.spring.service.servicebus.properties.ServiceBusCommonDescriptor;
-import com.azure.spring.service.servicebus.properties.ServiceBusNamespaceDescriptor;
+import com.azure.spring.core.properties.PropertyMapper;
+import com.azure.spring.service.servicebus.properties.ServiceBusClientCommonProperties;
+import com.azure.spring.service.servicebus.properties.ServiceBusNamespaceProperties;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,10 +29,14 @@ import java.util.function.BiConsumer;
  */
 public class ServiceBusClientBuilderFactory extends AbstractAzureAmqpClientBuilderFactory<ServiceBusClientBuilder> {
 
-    private final ServiceBusCommonDescriptor serviceBusProperties;
+    private final ServiceBusClientCommonProperties clientCommonProperties;
 
-    public ServiceBusClientBuilderFactory(ServiceBusCommonDescriptor serviceBusProperties) {
-        this.serviceBusProperties = serviceBusProperties;
+    /**
+     * Create a {@link ServiceBusClientBuilderFactory} instance from the {@link ServiceBusClientCommonProperties}.
+     * @param serviceBusProperties the properties common to a receiver, a sender, or a processor.
+     */
+    public ServiceBusClientBuilderFactory(ServiceBusClientCommonProperties serviceBusProperties) {
+        this.clientCommonProperties = serviceBusProperties;
     }
 
     @Override
@@ -62,18 +66,18 @@ public class ServiceBusClientBuilderFactory extends AbstractAzureAmqpClientBuild
 
     @Override
     protected AzureProperties getAzureProperties() {
-        return this.serviceBusProperties;
+        return this.clientCommonProperties;
     }
 
     @Override
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(ServiceBusClientBuilder builder) {
         return Arrays.asList(
-            new NamedKeyAuthenticationDescriptor(provider -> builder.credential(serviceBusProperties.getFQDN(),
-                                                                                provider.getCredential())),
-            new SasAuthenticationDescriptor(provider -> builder.credential(serviceBusProperties.getFQDN(),
-                                                                           provider.getCredential())),
-            new TokenAuthenticationDescriptor(provider -> builder.credential(serviceBusProperties.getFQDN(),
-                                                                             provider.getCredential()))
+            new NamedKeyAuthenticationDescriptor(provider -> builder.credential(
+                clientCommonProperties.getFullyQualifiedNamespace(), provider.getCredential())),
+            new SasAuthenticationDescriptor(provider -> builder.credential(
+                clientCommonProperties.getFullyQualifiedNamespace(), provider.getCredential())),
+            new TokenAuthenticationDescriptor(provider -> builder.credential(
+                clientCommonProperties.getFullyQualifiedNamespace(), provider.getCredential()))
         );
     }
 
@@ -81,8 +85,8 @@ public class ServiceBusClientBuilderFactory extends AbstractAzureAmqpClientBuild
     protected void configureService(ServiceBusClientBuilder builder) {
         PropertyMapper mapper = new PropertyMapper();
 
-        if (this.serviceBusProperties instanceof ServiceBusNamespaceDescriptor) {
-            mapper.from(((ServiceBusNamespaceDescriptor) this.serviceBusProperties).getCrossEntityTransactions())
+        if (this.clientCommonProperties instanceof ServiceBusNamespaceProperties) {
+            mapper.from(((ServiceBusNamespaceProperties) this.clientCommonProperties).getCrossEntityTransactions())
                   .whenTrue().to(t -> builder.enableCrossEntityTransactions());
         }
     }
@@ -94,7 +98,8 @@ public class ServiceBusClientBuilderFactory extends AbstractAzureAmqpClientBuild
 
     @Override
     protected BiConsumer<ServiceBusClientBuilder, TokenCredential> consumeDefaultTokenCredential() {
-        return (builder, tokenCredential) -> builder.credential(serviceBusProperties.getFQDN(), tokenCredential);
+        return (builder, tokenCredential) -> builder.credential(clientCommonProperties.getFullyQualifiedNamespace(),
+            tokenCredential);
     }
 
     @Override

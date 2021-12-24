@@ -3,19 +3,23 @@
 
 package com.azure.spring.core.util;
 
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import reactor.util.function.Tuple2;
-import reactor.util.function.Tuples;
 
 /**
  * Memorize function execution result
  *
- * @author Warren Zhu
  */
-public class Memoizer {
+public final class Memoizer {
+
+    private Memoizer() {
+
+    }
     /**
      * Memoizes a function.
      *

@@ -3,15 +3,15 @@
 
 package com.azure.spring.servicebus.core.properties;
 
-import com.azure.spring.core.connectionstring.implementation.ServiceBusConnectionString;
-import com.azure.spring.core.properties.AbstractAzureAmqpSdkProperties;
-import com.azure.spring.service.servicebus.properties.ServiceBusCommonDescriptor;
+import com.azure.spring.core.implementation.connectionstring.ServiceBusConnectionString;
+import com.azure.spring.core.properties.AzureAmqpSdkProperties;
+import com.azure.spring.service.servicebus.properties.ServiceBusClientCommonProperties;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 
 /**
  * Common properties shared by Service Bus namespace, a producer, and a consumer.
  */
-public class CommonProperties extends AbstractAzureAmqpSdkProperties implements ServiceBusCommonDescriptor {
+public class CommonProperties extends AzureAmqpSdkProperties implements ServiceBusClientCommonProperties {
 
     private String domainName = "servicebus.windows.net";
     private String namespace;
@@ -27,7 +27,7 @@ public class CommonProperties extends AbstractAzureAmqpSdkProperties implements 
     }
 
     @Override
-    public String getFQDN() {
+    public String getFullyQualifiedNamespace() {
         return this.namespace == null ? extractFqdnFromConnectionString() : (this.namespace + "." + domainName);
     }
 

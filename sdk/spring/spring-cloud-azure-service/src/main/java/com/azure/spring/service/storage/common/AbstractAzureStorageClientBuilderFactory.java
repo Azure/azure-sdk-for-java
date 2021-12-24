@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.function.BiConsumer;
 
-import static com.azure.spring.service.storage.common.AzureStorageRetryOptionsConverter.STORAGE_RETRY_CONVERTER;
+import static com.azure.spring.service.implementation.storage.AzureStorageRetryOptionsConverter.STORAGE_RETRY_CONVERTER;
 
 /**
  * Abstract factory for Storage client builder.
@@ -21,6 +21,11 @@ import static com.azure.spring.service.storage.common.AzureStorageRetryOptionsCo
 public abstract class AbstractAzureStorageClientBuilderFactory<T> extends AbstractAzureHttpClientBuilderFactory<T> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractAzureStorageClientBuilderFactory.class);
+
+    /**
+     * Return a {@link BiConsumer} of how the {@link T} builder consume a {@link RequestRetryOptions}.
+     * @return The consumer of how the {@link T} builder consume a {@link RequestRetryOptions}.
+     */
     protected abstract BiConsumer<T, RequestRetryOptions> consumeRequestRetryOptions();
 
     @Override
@@ -34,6 +39,11 @@ public abstract class AbstractAzureStorageClientBuilderFactory<T> extends Abstra
         }
     }
 
+    /**
+     * The default implementation for setting retry policy in Storage clients. The storage clients are not using the
+     * retry policy as other HTTP-based clients.
+     * @return the empty consumer for setting retry policy.
+     */
     @Override
     protected BiConsumer<T, RetryPolicy> consumeRetryPolicy() {
         return (a, b) -> { };

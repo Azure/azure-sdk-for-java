@@ -10,7 +10,7 @@ import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsMessagingAut
 import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureEventHubsResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureResourceManagerAutoConfiguration;
-import com.azure.spring.cloud.resourcemanager.provisioner.eventhubs.EventHubsProvisioner;
+import com.azure.spring.resourcemanager.provisioner.eventhubs.EventHubsProvisioner;
 import com.azure.spring.cloud.stream.binder.eventhubs.EventHubsMessageChannelBinder;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelProvisioner;
