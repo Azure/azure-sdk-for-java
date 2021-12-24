@@ -7,10 +7,8 @@ import org.springframework.core.NestedRuntimeException;
 
 /**
  * The Azure Storage specific {@link NestedRuntimeException}.
- *
- * @author Warren Zhu
  */
-public class StorageRuntimeException extends NestedRuntimeException {
+public final class StorageRuntimeException extends NestedRuntimeException {
 
     /**
      * Creates a new instance of {@link StorageRuntimeException}.

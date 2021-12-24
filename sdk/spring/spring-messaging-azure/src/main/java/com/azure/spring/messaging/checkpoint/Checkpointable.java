@@ -5,8 +5,6 @@ package com.azure.spring.messaging.checkpoint;
 
 /**
  * Support checkpoint by setting {@link CheckpointConfig}
- *
- * @author Warren Zhu
  */
 public interface Checkpointable {
 

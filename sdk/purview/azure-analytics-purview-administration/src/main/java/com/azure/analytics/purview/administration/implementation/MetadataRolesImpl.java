@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.administration.implementation;
 
+import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -55,6 +56,7 @@ public final class MetadataRolesImpl {
     @ServiceInterface(name = "PurviewMetadataClien")
     private interface MetadataRolesService {
         @Get("/metadataRoles")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> list(
                 @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
@@ -62,6 +64,7 @@ public final class MetadataRolesImpl {
                 Context context);
 
         @Get("{nextLink}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> listNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("Endpoint") String endpoint,
@@ -123,8 +126,7 @@ public final class MetadataRolesImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return list of Metadata roles.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -202,8 +204,7 @@ public final class MetadataRolesImpl {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return list of Metadata roles.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -278,8 +279,7 @@ public final class MetadataRolesImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return list of Metadata roles.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -343,8 +343,7 @@ public final class MetadataRolesImpl {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return list of Metadata roles.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -408,8 +407,7 @@ public final class MetadataRolesImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return list of Metadata roles.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -464,8 +462,7 @@ public final class MetadataRolesImpl {
      *
      * @param nextLink The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return list of Metadata roles.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -531,8 +528,7 @@ public final class MetadataRolesImpl {
      * @param nextLink The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return list of Metadata roles.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

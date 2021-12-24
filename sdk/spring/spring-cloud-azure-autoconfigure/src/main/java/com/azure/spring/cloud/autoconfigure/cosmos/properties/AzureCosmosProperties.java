@@ -12,7 +12,7 @@ import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.spring.cloud.autoconfigure.properties.core.AbstractAzureServiceCP;
 import com.azure.spring.cloud.autoconfigure.properties.core.client.ClientCP;
 import com.azure.spring.cloud.autoconfigure.properties.core.proxy.HttpProxyCP;
-import com.azure.spring.service.cosmos.CosmosProperties;
+import com.azure.spring.service.cosmos.CosmosClientProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * Configuration properties for Cosmos database, consistency, telemetry, connection, query metrics and diagnostics.
  */
-public class AzureCosmosProperties extends AbstractAzureServiceCP implements CosmosProperties {
+public class AzureCosmosProperties extends AbstractAzureServiceCP implements CosmosClientProperties {
 
     public static final String PREFIX = "spring.cloud.azure.cosmos";
 

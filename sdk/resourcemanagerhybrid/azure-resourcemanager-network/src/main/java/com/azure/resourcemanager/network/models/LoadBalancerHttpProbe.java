@@ -44,6 +44,12 @@ public interface LoadBalancerHttpProbe extends LoadBalancerProbe {
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithRequestPath<ParentT> {
+            /**
+             * Specifies the request path.
+             *
+             * @param requestPath the request path
+             * @return the next stage of the definition
+             */
             WithAttach<ParentT> withRequestPath(String requestPath);
         }
 

@@ -259,7 +259,8 @@ public final class RoutesClientImpl implements RoutesClient {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, routeTableName, routeName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -698,7 +699,7 @@ public final class RoutesClientImpl implements RoutesClient {
         return this
             .client
             .<RouteInner, RouteInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RouteInner.class, RouteInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), RouteInner.class, RouteInner.class, this.client.getContext());
     }
 
     /**

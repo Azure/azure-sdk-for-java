@@ -13,11 +13,17 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Auto configuration for {@link EventHubsHealthIndicator}.
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(name = "org.springframework.boot.actuate.health.HealthIndicator")
 @ConditionalOnEnabledHealthIndicator("binders")
 class EventHubsBinderHealthIndicatorConfiguration {
 
+    /**
+     * Declare Event Hubs Health Indicator bean.
+     *
+     * @param binder the binder
+     * @return EventHubsHealthIndicator bean the Event Hubs Health Indicator bean
+     */
     @Bean
     EventHubsHealthIndicator eventhubsHealthIndicator(EventHubsMessageChannelBinder binder) {
         return new EventHubsHealthIndicator(binder);

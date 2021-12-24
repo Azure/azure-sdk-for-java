@@ -11,7 +11,6 @@ import com.azure.spring.messaging.container.MessageListenerContainer;
  * {@link AzureListenerConfigurer
  * AzureListenerConfigurer} to register endpoints programmatically.
  *
- * @author Warren Zhu
  */
 public interface AzureListenerEndpoint {
 

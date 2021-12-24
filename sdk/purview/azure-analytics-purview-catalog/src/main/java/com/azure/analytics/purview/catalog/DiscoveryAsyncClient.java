@@ -153,8 +153,7 @@ public final class DiscoveryAsyncClient {
      *
      * @param searchRequest An object specifying the search criteria.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return data using search.
      */
     @Generated
@@ -228,8 +227,7 @@ public final class DiscoveryAsyncClient {
      *
      * @param suggestRequest An object specifying the suggest criteria.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return search suggestions by query criteria.
      */
     @Generated
@@ -288,8 +286,7 @@ public final class DiscoveryAsyncClient {
      *
      * @param browseRequest An object specifying the browse criteria.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return browseResult.
      */
     @Generated
@@ -334,8 +331,7 @@ public final class DiscoveryAsyncClient {
      *
      * @param autoCompleteRequest An object specifying the autocomplete criteria.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return auto complete options.
      */
     @Generated

@@ -13,11 +13,14 @@ import com.azure.security.attestation.models.AttestationDataInterpretation;
 import com.azure.security.attestation.models.AttestationOpenIdMetadata;
 import com.azure.security.attestation.models.AttestationOptions;
 import com.azure.security.attestation.models.AttestationPolicySetOptions;
+import com.azure.security.attestation.models.AttestationResponse;
 import com.azure.security.attestation.models.AttestationResult;
 import com.azure.security.attestation.models.AttestationSigner;
 import com.azure.security.attestation.models.AttestationSigningKey;
 import com.azure.security.attestation.models.AttestationTokenValidationOptions;
 import com.azure.security.attestation.models.AttestationType;
+import com.azure.security.attestation.models.PolicyCertificatesModificationResult;
+import com.azure.security.attestation.models.PolicyManagementCertificateOptions;
 import com.azure.security.attestation.models.PolicyResult;
 import org.bouncycastle.util.encoders.Hex;
 import reactor.core.publisher.Mono;
@@ -42,7 +45,7 @@ public class AttestationClientJavaDocCodeSnippets {
             .tokenValidationOptions(new AttestationTokenValidationOptions()
                 .setValidationSlack(Duration.ofSeconds(10)) // Allow 10 seconds of clock drift between attestation service and client.
                 .setValidationCallback((token, signer) -> { // Perform custom validation steps.
-                    System.out.printf("Validate token signed by signer %s", signer.getCertificates().get(0).getSubjectDN().toString());
+                    System.out.printf("Validate token signed by signer %s\n", signer.getCertificates().get(0).getSubjectDN().toString());
                 }))
             .buildClient();
         // END: com.azure.security.attestation.AttestationClientBuilder.buildClientWithValidation
@@ -86,7 +89,7 @@ public class AttestationClientJavaDocCodeSnippets {
             .tokenValidationOptions(new AttestationTokenValidationOptions()
                 .setValidationSlack(Duration.ofSeconds(10)) // Allow 10 seconds of clock drift between attestation service and client.
                 .setValidationCallback((token, signer) -> { // Perform custom validation steps.
-                    System.out.printf("Validate token signed by signer %s", signer.getCertificates().get(0).getSubjectDN().toString());
+                    System.out.printf("Validate token signed by signer %s\n", signer.getCertificates().get(0).getSubjectDN().toString());
                 }))
             .buildClient();
         // END: com.azure.security.attestation.AttestationAdministrationClientBuilder.buildClientWithValidation
@@ -245,8 +248,8 @@ public class AttestationClientJavaDocCodeSnippets {
         // END: com.azure.security.attestation.AttestationAsyncClient.getOpenIdMetadata
 
         // BEGIN: com.azure.security.attestation.AttestationAsyncClient.getAttestationSigners
-        Mono<List<AttestationSigner>> signers = client.listAttestationSigners();
-        signers.block().forEach(cert -> {
+        Mono<List<AttestationSigner>> signersMono = client.listAttestationSigners();
+        signersMono.subscribe(signers -> signers.forEach(cert -> {
             System.out.println("Found certificate.");
             if (cert.getKeyId() != null) {
                 System.out.println("    Certificate Key ID: " + cert.getKeyId());
@@ -257,7 +260,7 @@ public class AttestationClientJavaDocCodeSnippets {
                 System.out.println("        Cert Subject: " + chainElement.getSubjectDN().getName());
                 System.out.println("        Cert Issuer: " + chainElement.getIssuerDN().getName());
             });
-        });
+        }));
         // END: com.azure.security.attestation.AttestationAsyncClient.getAttestationSigners
 
         // BEGIN: com.azure.security.attestation.AttestationAsyncClient.getAttestationSignersWithResponse
@@ -365,12 +368,12 @@ public class AttestationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.attestation.AttestationAdministrationClient.getPolicy
         String policy = client.getAttestationPolicy(AttestationType.SGX_ENCLAVE);
         // END: com.azure.security.attestation.AttestationAdministrationClient.getPolicy
-        System.out.printf("Current SGX policy: %s", policy);
+        System.out.printf("Current SGX policy: %s\n", policy);
 
         // BEGIN: com.azure.security.attestation.AttestationAdministrationClient.getPolicyWithResponse
         Response<String> response = client.getAttestationPolicyWithResponse(AttestationType.SGX_ENCLAVE, null, Context.NONE);
         // END: com.azure.security.attestation.AttestationAdministrationClient.getPolicyWithResponse
-        System.out.printf("Current SGX policy: %s", response.getValue());
+        System.out.printf("Current SGX policy: %s\n", response.getValue());
     }
 
     public static void getPolicyAsync() {
@@ -383,15 +386,13 @@ public class AttestationClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.getPolicy
         Mono<String> policyMono = client.getAttestationPolicy(AttestationType.SGX_ENCLAVE);
-        String policy = policyMono.block();
+        policyMono.subscribe(policy -> System.out.printf("Current SGX policy: %s\n", policy));
         // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.getPolicy
-        System.out.printf("Current SGX policy: %s", policy);
 
         // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.getPolicyWithResponse
         Mono<Response<String>> responseMono = client.getAttestationPolicyWithResponse(AttestationType.SGX_ENCLAVE, null);
-        Response<String> response = responseMono.block();
+        responseMono.subscribe(response -> System.out.printf("Current SGX policy: %s\n", response.getValue()));
         // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.getPolicyWithResponse
-        System.out.printf("Current SGX policy: %s", response.getValue());
     }
 
     public static void setPolicySimpleCheckHashAsync() {
@@ -405,25 +406,20 @@ public class AttestationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.setPolicySimple
         String policyToSet = "version=1.0; authorizationrules{=> permit();}; issuancerules{};";
         Mono<PolicyResult> resultMono = client.setAttestationPolicy(AttestationType.OPEN_ENCLAVE, policyToSet);
-        PolicyResult result = resultMono.block();
+        resultMono.subscribe(result -> {
+            System.out.printf("Set Policy result: %s\n", result.getPolicyResolution());
         // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.setPolicySimple
+            // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.checkPolicyTokenHash
+            BinaryData expectedHash = client.calculatePolicyTokenHash(policyToSet, null);
+            BinaryData actualHash = result.getPolicyTokenHash();
+            String expectedString = Hex.toHexString(expectedHash.toBytes());
+            String actualString = Hex.toHexString(actualHash.toBytes());
+            if (!expectedString.equals(actualString)) {
+                throw new RuntimeException("Policy was set but not received!!!");
+            }
+            // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.checkPolicyTokenHash
+        });
 
-        // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.setPolicyWithResponseSimple
-        Mono<Response<PolicyResult>> resultWithResponseMono = client.setAttestationPolicyWithResponse(
-            AttestationType.OPEN_ENCLAVE, "version=1.0; authorizationrules{=> permit();}; issuancerules{};");
-        Response<PolicyResult> response = resultWithResponseMono.block();
-        // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.setPolicyWithResponseSimple
-
-
-        // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.checkPolicyTokenHash
-        BinaryData expectedHash = client.calculatePolicyTokenHash(policyToSet, null);
-        BinaryData actualHash = result.getPolicyTokenHash();
-        String expectedString = Hex.toHexString(expectedHash.toBytes());
-        String actualString = Hex.toHexString(actualHash.toBytes());
-        if (!expectedString.equals(actualString)) {
-            throw new RuntimeException("Policy was set but not received!!!");
-        }
-        // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.checkPolicyTokenHash
 
     }
 
@@ -439,12 +435,6 @@ public class AttestationClientJavaDocCodeSnippets {
         String policyToSet = "version=1.0; authorizationrules{=> permit();}; issuancerules{};";
         PolicyResult result = client.setAttestationPolicy(AttestationType.OPEN_ENCLAVE, policyToSet);
         // END: com.azure.security.attestation.AttestationAdministrationClient.setPolicySimple
-
-        // BEGIN: com.azure.security.attestation.AttestationAdministrationClient.setPolicySimpleWithResponse
-        Response<PolicyResult> response = client.setAttestationPolicyWithResponse(AttestationType.OPEN_ENCLAVE,
-            "version=1.0; authorizationrules{=> permit();}; issuancerules{};", Context.NONE);
-        // END: com.azure.security.attestation.AttestationAdministrationClient.setPolicySimpleWithResponse
-
 
         // BEGIN: com.azure.security.attestation.AttestationAdministrationClient.checkPolicyTokenHash
         BinaryData expectedHash = client.calculatePolicyTokenHash(policyToSet, null);
@@ -474,7 +464,7 @@ public class AttestationClientJavaDocCodeSnippets {
             new AttestationPolicySetOptions()
                 .setAttestationPolicy(policyToSet)
                 .setAttestationSigner(new AttestationSigningKey(certificate, privateKey)));
-        PolicyResult result = resultMono.block();
+        resultMono.subscribe(result -> System.out.printf("Set Policy Result: %s\n", result.getPolicyResolution()));
         // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.setPolicy
 
         // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.setPolicyWithResponse
@@ -482,7 +472,14 @@ public class AttestationClientJavaDocCodeSnippets {
             new AttestationPolicySetOptions()
                 .setAttestationPolicy(policyToSet)
                 .setAttestationSigner(new AttestationSigningKey(certificate, privateKey)));
-        Response<PolicyResult> response = resultWithResponseMono.block();
+        resultWithResponseMono.subscribe(response -> {
+            // Retrieve the token returned by the service from the response object and dump the issuer of
+            // that token.
+            if (response instanceof AttestationResponse) {
+                AttestationResponse<PolicyResult> attestationResponse = (AttestationResponse<PolicyResult>) response;
+                System.out.printf("Response token issuer: %s\n", attestationResponse.getToken().getIssuer());
+            }
+        });
         // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.setPolicyWithResponse
     }
 
@@ -512,10 +509,214 @@ public class AttestationClientJavaDocCodeSnippets {
                 .setAttestationSigner(new AttestationSigningKey(certificate, privateKey)), Context.NONE);
 
         // END: com.azure.security.attestation.AttestationAdministrationClient.setPolicyWithResponse
+    }
 
+    public static void resetPolicySimpleAsync() {
+        String endpoint = System.getenv("ATTESTATION_AAD_URL");
+        AttestationAdministrationAsyncClient client = new AttestationAdministrationClientBuilder()
+            .endpoint(endpoint)
+            .credential(new DefaultAzureCredentialBuilder()
+                .build())
+            .buildAsyncClient();
+
+        X509Certificate certificate = SampleCollateral.getSigningCertificate();
+        PrivateKey privateKey = SampleCollateral.getSigningKey();
+
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.resetPolicySimple
+        Mono<PolicyResult> resultMono = client.resetAttestationPolicy(AttestationType.OPEN_ENCLAVE);
+        resultMono.subscribe(result -> System.out.printf("Reset result: %s\n", result.getPolicyResolution()));
+        // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.resetPolicySimple
+    }
+
+    public static void resetPolicySimple() {
+        String endpoint = System.getenv("ATTESTATION_AAD_URL");
+        AttestationAdministrationClient client = new AttestationAdministrationClientBuilder()
+            .endpoint(endpoint)
+            .credential(new DefaultAzureCredentialBuilder()
+                .build())
+            .buildClient();
+
+        X509Certificate certificate = SampleCollateral.getSigningCertificate();
+        PrivateKey privateKey = SampleCollateral.getSigningKey();
+
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationClient.resetPolicySimple
+        PolicyResult result = client.resetAttestationPolicy(AttestationType.OPEN_ENCLAVE);
+        // END: com.azure.security.attestation.AttestationAdministrationClient.resetPolicySimple
+    }
+
+
+    public static void resetPolicyAsync() {
+        String endpoint = System.getenv("ATTESTATION_AAD_URL");
+        AttestationAdministrationAsyncClient client = new AttestationAdministrationClientBuilder()
+            .endpoint(endpoint)
+            .credential(new DefaultAzureCredentialBuilder()
+                .build())
+            .buildAsyncClient();
+
+        X509Certificate certificate = SampleCollateral.getSigningCertificate();
+        PrivateKey privateKey = SampleCollateral.getSigningKey();
+
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.resetPolicy
+        Mono<PolicyResult> resultMono = client.resetAttestationPolicy(AttestationType.OPEN_ENCLAVE,
+            new AttestationPolicySetOptions()
+                .setAttestationSigner(new AttestationSigningKey(certificate, privateKey)));
+        resultMono.subscribe(result -> System.out.printf("Reset result: %s\n", result.getPolicyResolution().toString()));
+        // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.resetPolicy
+
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.resetPolicyWithResponse
+        Mono<Response<PolicyResult>> resultWithResponseMono = client.resetAttestationPolicyWithResponse(AttestationType.OPEN_ENCLAVE,
+            new AttestationPolicySetOptions()
+                .setAttestationSigner(new AttestationSigningKey(certificate, privateKey)));
+        resultWithResponseMono.subscribe(resultWithResponse -> System.out.printf("Reset result: %s\n", resultWithResponse.getValue().getPolicyResolution().toString()));
+        // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.resetPolicyWithResponse
+    }
+
+    public static void resetPolicy() {
+        String endpoint = System.getenv("ATTESTATION_AAD_URL");
+        AttestationAdministrationClient client = new AttestationAdministrationClientBuilder()
+            .endpoint(endpoint)
+            .credential(new DefaultAzureCredentialBuilder()
+                .build())
+            .buildClient();
+
+        X509Certificate certificate = SampleCollateral.getSigningCertificate();
+        PrivateKey privateKey = SampleCollateral.getSigningKey();
+
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationClient.resetPolicy
+        PolicyResult result = client.resetAttestationPolicy(AttestationType.OPEN_ENCLAVE,
+            new AttestationPolicySetOptions()
+                .setAttestationSigner(new AttestationSigningKey(certificate, privateKey)));
+        // END: com.azure.security.attestation.AttestationAdministrationClient.resetPolicy
+
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationClient.resetPolicyWithResponse
+        Response<PolicyResult> response = client.resetAttestationPolicyWithResponse(AttestationType.OPEN_ENCLAVE,
+            new AttestationPolicySetOptions()
+                .setAttestationSigner(new AttestationSigningKey(certificate, privateKey)), Context.NONE);
+
+        // END: com.azure.security.attestation.AttestationAdministrationClient.resetPolicyWithResponse
+    }
+
+    public static void listPolicyManagementCertificatesSync() {
+        String endpoint = System.getenv("ATTESTATION_ISOLATED_URL");
+        AttestationAdministrationClient client = new AttestationAdministrationClientBuilder()
+            .endpoint(endpoint)
+            .credential(new DefaultAzureCredentialBuilder()
+                .build())
+            .buildClient();
+
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationClient.listPolicyManagementCertificatesSimple
+        List<AttestationSigner> signers = client.listPolicyManagementCertificates();
+        System.out.printf("There are %d signers on the instance\n", signers.size());
+        // END: com.azure.security.attestation.AttestationAdministrationClient.listPolicyManagementCertificatesSimple
+
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationClient.listPolicyManagementCertificatesWithResponse
+        Response<List<AttestationSigner>> signersResponse = client.listPolicyManagementCertificatesWithResponse(new AttestationTokenValidationOptions()
+            .setValidationSlack(Duration.ofSeconds(10)), Context.NONE);
+        System.out.printf("There are %d signers on the instance\n", signersResponse.getValue().size());
+        // END: com.azure.security.attestation.AttestationAdministrationClient.listPolicyManagementCertificatesWithResponse
 
     }
 
+    public static void listPolicyManagementCertificatesAsync() {
+        String endpoint = System.getenv("ATTESTATION_ISOLATED_URL");
+        AttestationAdministrationAsyncClient client = new AttestationAdministrationClientBuilder()
+            .endpoint(endpoint)
+            .credential(new DefaultAzureCredentialBuilder()
+                .build())
+            .buildAsyncClient();
+
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.listPolicyManagementCertificatesSimple
+        Mono<List<AttestationSigner>> signersMono = client.listPolicyManagementCertificates();
+        signersMono.subscribe(signers -> System.out.printf("There are %d signers on the instance\n", signers.size()));
+        // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.listPolicyManagementCertificatesSimple
+
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.listPolicyManagementCertificatesWithResponse
+        Mono<Response<List<AttestationSigner>>> signersResponseMono = client.listPolicyManagementCertificatesWithResponse(new AttestationTokenValidationOptions()
+            .setValidationSlack(Duration.ofSeconds(10)));
+        signersResponseMono.subscribe(response -> System.out.printf("There are %d signers on the instance\n", response.getValue().size()));
+        // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.listPolicyManagementCertificatesWithResponse
+    }
+
+    public static void addRemovePolicyManagementCertificateAsync() {
+        String endpoint = System.getenv("ATTESTATION_ISOLATED_URL");
+        AttestationAdministrationAsyncClient client = new AttestationAdministrationClientBuilder()
+            .endpoint(endpoint)
+            .credential(new DefaultAzureCredentialBuilder()
+                .build())
+            .buildAsyncClient();
+        X509Certificate certificateToAdd = SampleCollateral.getSigningCertificate();
+
+        X509Certificate certificate = SampleCollateral.getIsolatedSigningCertificate();
+        PrivateKey privateKey = SampleCollateral.getIsolatedSigningKey();
+
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.addPolicyManagementCertificate
+        Mono<PolicyCertificatesModificationResult> addResultMono = client.addPolicyManagementCertificate(
+            new PolicyManagementCertificateOptions(certificateToAdd, new AttestationSigningKey(certificate, privateKey)));
+        addResultMono.subscribe(addResult -> System.out.printf("Result: %s\n", addResult.getCertificateResolution().toString()));
+        // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.addPolicyManagementCertificate
+
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.addPolicyManagementCertificateWithResponse
+        Mono<Response<PolicyCertificatesModificationResult>> addResponseMono = client.addPolicyManagementCertificateWithResponse(
+            new PolicyManagementCertificateOptions(certificateToAdd, new AttestationSigningKey(certificate, privateKey)),
+            Context.NONE);
+        addResponseMono.subscribe(addResponse -> System.out.printf("Result: %s\n", addResponse.getValue().getCertificateResolution().toString()));
+        // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.addPolicyManagementCertificateWithResponse
+
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.removePolicyManagementCertificate
+        Mono<PolicyCertificatesModificationResult> removeResultMono = client.removePolicyManagementCertificate(
+            new PolicyManagementCertificateOptions(certificateToAdd, new AttestationSigningKey(certificate, privateKey)));
+        removeResultMono.subscribe(removeResult -> System.out.printf("Result: %s\n", removeResult.getCertificateResolution().toString()));
+        // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.removePolicyManagementCertificate
+
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.removePolicyManagementCertificateWithResponse
+        Mono<Response<PolicyCertificatesModificationResult>> removeResponseMono = client.addPolicyManagementCertificateWithResponse(
+            new PolicyManagementCertificateOptions(certificateToAdd, new AttestationSigningKey(certificate, privateKey)),
+            Context.NONE);
+        removeResponseMono.subscribe(removeResponse -> System.out.printf("Result: %s\n", removeResponse.getValue().getCertificateResolution().toString()));
+        // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.removePolicyManagementCertificateWithResponse
+    }
+
+    public static void addRemovePolicyManagementCertificateSync() {
+        String endpoint = System.getenv("ATTESTATION_ISOLATED_URL");
+        AttestationAdministrationClient client = new AttestationAdministrationClientBuilder()
+            .endpoint(endpoint)
+            .credential(new DefaultAzureCredentialBuilder()
+                .build())
+            .buildClient();
+
+        X509Certificate certificateToAdd = SampleCollateral.getSigningCertificate();
+
+        X509Certificate certificate = SampleCollateral.getIsolatedSigningCertificate();
+        PrivateKey privateKey = SampleCollateral.getIsolatedSigningKey();
+
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationClient.addPolicyManagementCertificate
+        PolicyCertificatesModificationResult addResult = client.addPolicyManagementCertificate(
+            new PolicyManagementCertificateOptions(certificateToAdd, new AttestationSigningKey(certificate, privateKey)));
+        System.out.printf(" Result: %s\n", addResult.getCertificateResolution().toString());
+        // END: com.azure.security.attestation.AttestationAdministrationClient.addPolicyManagementCertificate
+
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationClient.addPolicyManagementCertificateWithResponse
+        Response<PolicyCertificatesModificationResult> addResponse = client.addPolicyManagementCertificateWithResponse(
+            new PolicyManagementCertificateOptions(certificateToAdd, new AttestationSigningKey(certificate, privateKey)),
+            Context.NONE);
+        System.out.printf(" Result: %s\n", addResponse.getValue().getCertificateResolution().toString());
+        // END: com.azure.security.attestation.AttestationAdministrationClient.addPolicyManagementCertificateWithResponse
+
+        System.out.println("Remove Certificate Sync\n");
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationClient.removePolicyManagementCertificate
+        PolicyCertificatesModificationResult removeResult = client.removePolicyManagementCertificate(
+            new PolicyManagementCertificateOptions(certificateToAdd, new AttestationSigningKey(certificate, privateKey)));
+        System.out.printf(" Result: %s\n", removeResult.getCertificateResolution().toString());
+        // END: com.azure.security.attestation.AttestationAdministrationClient.removePolicyManagementCertificate
+
+        System.out.println("Remove Certificate With Response Sync\n");
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationClient.removePolicyManagementCertificateWithResponse
+        Response<PolicyCertificatesModificationResult> removeResponse = client.addPolicyManagementCertificateWithResponse(
+            new PolicyManagementCertificateOptions(certificateToAdd, new AttestationSigningKey(certificate, privateKey)),
+            Context.NONE);
+        System.out.printf(" Result: %s\n", removeResponse.getValue().getCertificateResolution().toString());
+        // END: com.azure.security.attestation.AttestationAdministrationClient.removePolicyManagementCertificateWithResponse
+    }
 
     static void executeSamples() {
         createAdminSyncClient();
@@ -539,6 +740,19 @@ public class AttestationClientJavaDocCodeSnippets {
 
         setPolicy();
         setPolicyAsync();
+
+        resetPolicySimple();
+        resetPolicySimpleAsync();
+
+        resetPolicy();
+        resetPolicyAsync();
+
+        listPolicyManagementCertificatesSync();
+        listPolicyManagementCertificatesAsync();
+
+        addRemovePolicyManagementCertificateSync();
+        addRemovePolicyManagementCertificateAsync();
+
     }
 
 }

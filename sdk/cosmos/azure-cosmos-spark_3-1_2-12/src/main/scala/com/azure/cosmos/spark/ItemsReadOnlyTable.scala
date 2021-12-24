@@ -17,7 +17,7 @@ import org.apache.spark.sql.types.{LongType, StringType, StructField, StructType
 import org.apache.spark.sql.util.CaseInsensitiveStringMap
 
 import java.util
-import java.util.UUID
+import java.util.{Collections, UUID}
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
@@ -43,10 +43,13 @@ private[spark] class ItemsReadOnlyTable(val sparkSession: SparkSession,
                                         val databaseName: Option[String],
                                         val containerName: Option[String],
                                         val userConfig: util.Map[String, String],
-                                        val userProvidedSchema: Option[StructType] = None)
+                                        val userProvidedSchema: Option[StructType] = None,
+                                        val tableProperties: util.Map[String, String] =
+                                          Collections.emptyMap[String, String])
   extends Table
     with SupportsRead {
 
+  private[this] val tablePropertiesClone = Collections.unmodifiableMap[String, String](tableProperties)
   protected val diagnosticsConfig: DiagnosticsConfig = DiagnosticsConfig.parseDiagnosticsConfig(userConfig.asScala.toMap)
 
   @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
@@ -69,6 +72,10 @@ private[spark] class ItemsReadOnlyTable(val sparkSession: SparkSession,
   //scalastyle:on multiple.string.literals
 
   override def name(): String = tableName
+
+  override def properties(): util.Map[String, String] = {
+    tablePropertiesClone
+  }
 
   override def capabilities(): util.Set[TableCapability] = Set(
     TableCapability.ACCEPT_ANY_SCHEMA,

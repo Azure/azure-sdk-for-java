@@ -12,6 +12,11 @@ public class EventHubsConsumerDestination implements ConsumerDestination {
 
     private final String name;
 
+    /**
+     * Construct a {@link EventHubsConsumerDestination} with the specified binder.
+     *
+     * @param name the name
+     */
     public EventHubsConsumerDestination(String name) {
         this.name = name;
     }

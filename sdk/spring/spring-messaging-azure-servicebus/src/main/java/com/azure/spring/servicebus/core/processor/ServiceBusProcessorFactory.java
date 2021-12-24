@@ -8,15 +8,12 @@ import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.service.servicebus.processor.MessageProcessingListener;
 
 /**
- * Factory to return functional creator of {@link ServiceBusProcessorClient}.
- *
- * @author Warren Zhu
+ * The strategy to produce {@link ServiceBusProcessorClient} instance.
  */
 public interface ServiceBusProcessorFactory {
 
     /**
-     * Return a function which accepts service bus queue name, then returns {@link ServiceBusProcessorClient}
-     *
+     * Create a {@link ServiceBusProcessorClient} to consume events from the specified queue.
      * @param queue The queue name.
      * @param messageProcessorListener Callback processor listener to be registered on service bus processor client.
      * @return ServiceBusProcessorClient queue processor client
@@ -25,8 +22,8 @@ public interface ServiceBusProcessorFactory {
                                               MessageProcessingListener messageProcessorListener);
 
     /**
-     * Return a function which accepts service bus topic and subscription name, then returns {@link
-     * ServiceBusProcessorClient}
+     * Create a {@link ServiceBusProcessorClient} to consume events from the specified topic in the context of the given
+     * subscription.
      *
      * @param topic The topic.
      * @param subscription The subscription.
@@ -37,10 +34,19 @@ public interface ServiceBusProcessorFactory {
                                               String subscription,
                                               MessageProcessingListener messageProcessorListener);
 
+    /**
+     * Add a listener for this factory.
+     * @param listener the listener
+     */
     default void addListener(Listener listener) {
 
     }
 
+    /**
+     * Remove a listener
+     * @param listener the listener
+     * @return true if removed.
+     */
     default boolean removeListener(Listener listener) {
         return false;
     }

@@ -8,7 +8,7 @@ import com.azure.spring.core.aware.ClientAware;
 import com.azure.spring.core.aware.ProxyAware;
 import com.azure.spring.core.aware.RetryAware;
 import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.core.properties.util.AzurePropertiesUtils;
+import com.azure.spring.core.util.AzurePropertiesUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +26,16 @@ public abstract class AzureServiceConfigurationBase {
         this.azureGlobalProperties = azureProperties;
     }
 
+    /**
+     * Load the default value to an Azure Service properties from the global Azure properties.
+     *
+     * @param source The global Azure properties.
+     * @param target The properties of an Azure Service, such as Event Hubs properties. Some common components of the
+     *               service's properties have default value as set to the global properties. For example, the proxy of
+     *               the Event Hubs properties takes the proxy set to the global Azure properties as default.
+     * @param <T> The type of the properties of an Azure Service.
+     * @return The Azure Service's properties.
+     */
     protected <T extends AzureProperties> T loadProperties(AzureGlobalProperties source, T target) {
         AzurePropertiesUtils.copyAzureCommonProperties(source, target);
 

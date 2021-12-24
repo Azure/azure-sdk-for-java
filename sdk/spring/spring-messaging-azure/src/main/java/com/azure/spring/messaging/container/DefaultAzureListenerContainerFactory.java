@@ -9,11 +9,14 @@ import com.azure.spring.messaging.core.SubscribeByGroupOperation;
  * A {@link ListenerContainerFactory} implementation to build a
  * standard {@link DefaultMessageListenerContainer}.
  *
- * @author Warren Zhu
  */
 public class DefaultAzureListenerContainerFactory
         extends AbstractAzureListenerContainerFactory<DefaultMessageListenerContainer> {
 
+    /**
+     * Construct the listener container factory with the {@link SubscribeByGroupOperation}.
+     * @param subscribeOperation the {@link SubscribeByGroupOperation}.
+     */
     public DefaultAzureListenerContainerFactory(SubscribeByGroupOperation subscribeOperation) {
         super(subscribeOperation);
     }

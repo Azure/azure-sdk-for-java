@@ -1199,7 +1199,8 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
             deleteWithResponseAsync(resourceGroupName, galleryName, galleryApplicationName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

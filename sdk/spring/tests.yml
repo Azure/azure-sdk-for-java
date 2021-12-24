@@ -11,7 +11,7 @@ stages:
         - spring/azure-spring-boot-test-servicebus-jms
         - spring/azure-spring-boot-test-storage
         - spring/spring-cloud-azure-stream-binder-eventhubs
-        - spring/spring-cloud-azure-test-servicebus-binder
+        - spring/spring-cloud-azure-stream-binder-servicebus
       Artifacts:
         - name: azure-spring-boot-test-application
           groupId: com.azure.spring
@@ -40,9 +40,9 @@ stages:
         - name: azure-spring-boot-test-storage
           groupId: com.azure.spring
           safeName: azurespringbootteststorage
-        - name: spring-cloud-azure-test-servicebus-binder
+        - name: spring-cloud-azure-stream-binder-servicebus
           groupId: com.azure.spring
-          safeName: springcloudazuretestservicebusbinder
+          safeName: springcloudazurestreambinderservicebus
         - name: spring-cloud-azure-stream-binder-eventhubs
           groupId: com.azure.spring
           safeName: springcloudazurestreambindereventhubs

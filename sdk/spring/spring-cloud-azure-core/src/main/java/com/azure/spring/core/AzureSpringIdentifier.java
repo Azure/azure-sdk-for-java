@@ -14,7 +14,11 @@ import java.util.Properties;
 /**
  * Util class for AzureSpringIdentifier
  */
-public class AzureSpringIdentifier {
+public final class AzureSpringIdentifier {
+
+    private AzureSpringIdentifier() {
+
+    }
     //    There is 24 char limitation about the app id. So some abbreviation needs to be applied:
     //    az: for Azure
     //    sp: for Spring
@@ -24,6 +28,7 @@ public class AzureSpringIdentifier {
     //    kv: for Key Vault
     //    se: for Security
     //    jca: for JCA
+    //    ct: for Certificates
     //    sb: for Storage Blobs
     //    sf: for Storage Files
     //    eh: for Event Hub
@@ -36,7 +41,8 @@ public class AzureSpringIdentifier {
     public static final String VERSION = getVersion();
     public static final String AZURE_SPRING_APP_CONFIG = "az-sp-cfg/" + VERSION;
     public static final String AZURE_SPRING_EVENT_HUBS = "az-sp-eh/" + VERSION;
-    public static final String AZURE_SPRING_KEY_VAULT = "az-sp-kv/" + VERSION;
+    public static final String AZURE_SPRING_KEY_VAULT_SECRETS = "az-sp-kv/" + VERSION;
+    public static final String AZURE_SPRING_KEY_VAULT_CERTIFICATES = "az-sp-kv-ct/" + VERSION;
 
     /**
      * Azure Spring ServiceBus

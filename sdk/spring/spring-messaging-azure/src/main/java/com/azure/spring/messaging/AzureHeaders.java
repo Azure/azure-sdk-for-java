@@ -4,9 +4,7 @@
 package com.azure.spring.messaging;
 
 /**
- * Azure internal headers for Spring Messaging messages.
- *
- * @author Warren Zhu
+ * The Azure specific message headers constants.
  */
 public class AzureHeaders {
 

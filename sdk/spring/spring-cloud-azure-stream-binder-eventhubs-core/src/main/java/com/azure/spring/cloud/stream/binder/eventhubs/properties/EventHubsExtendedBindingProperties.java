@@ -29,6 +29,11 @@ public class EventHubsExtendedBindingProperties
         return EventHubsBindingProperties.class;
     }
 
+    /**
+     * Get Bindings.
+     *
+     * @return Bindings value
+     */
     public Map<String, EventHubsBindingProperties> getBindings() {
         return doGetBindings();
     }

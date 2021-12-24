@@ -105,6 +105,13 @@ public final class GenericProtectionPolicy extends ProtectionPolicy {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public GenericProtectionPolicy withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
+        super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

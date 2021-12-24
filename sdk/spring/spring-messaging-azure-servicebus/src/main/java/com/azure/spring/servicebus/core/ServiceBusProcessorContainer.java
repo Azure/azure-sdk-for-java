@@ -15,7 +15,16 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * A processor container to subscribe on a {@link ServiceBusProcessorClient}.
+ * A processor container using {@link ServiceBusProcessorClient} to subscribe to Service Bus queue/topic entities and
+ * consumer messages.
+ * <p>
+ * For different combinations of Service Bus entity name and subscription, different {@link ServiceBusProcessorClient}s will be created to
+ * subscribe to it.
+ * </p>
+ *
+ * Implementation of {@link MessageProcessingListener} is required to be provided when using {@link ServiceBusProcessorClient}
+ * to consume messages.
+ * @see MessageProcessingListener
  */
 public class ServiceBusProcessorContainer implements Lifecycle, DisposableBean {
 
@@ -27,6 +36,10 @@ public class ServiceBusProcessorContainer implements Lifecycle, DisposableBean {
     private final AtomicBoolean isRunning = new AtomicBoolean(false);
     private final List<ServiceBusProcessorFactory.Listener> listeners = new ArrayList<>();
 
+    /**
+     * Create an instance using the supplied processor factory.
+     * @param processorFactory the processor factory.
+     */
     public ServiceBusProcessorContainer(ServiceBusProcessorFactory processorFactory) {
         this.processorFactory = processorFactory;
     }
@@ -59,6 +72,13 @@ public class ServiceBusProcessorContainer implements Lifecycle, DisposableBean {
         return this.isRunning.get();
     }
 
+    /**
+     * Subscribe to a queue to consumer messages.
+     *
+     * @param queue the queue
+     * @param listener the listener to process messages.
+     * @return the {@link ServiceBusProcessorClient} created to subscribe to the queue.
+     */
     public ServiceBusProcessorClient subscribe(String queue, MessageProcessingListener listener) {
         ServiceBusProcessorClient processor = this.processorFactory.createProcessor(queue, listener);
         processor.start();
@@ -66,11 +86,24 @@ public class ServiceBusProcessorContainer implements Lifecycle, DisposableBean {
         return processor;
     }
 
+    /**
+     * Unsubscribe to a queue.
+     * @param queue the queue.
+     * @return true if unsubscribe successfully.
+     */
     public boolean unsubscribe(String queue) {
         // TODO: stop and remove
         return false;
     }
 
+    /**
+     * Subscribe to a topic in the context of a subscription to consumer messages.
+     *
+     * @param topic the topic.
+     * @param subscription the subscription.
+     * @param listener the listener to process messages.
+     * @return the {@link ServiceBusProcessorClient} created to subscribe to the topic.
+     */
     public ServiceBusProcessorClient subscribe(String topic, String subscription, MessageProcessingListener listener) {
         ServiceBusProcessorClient processor = this.processorFactory.createProcessor(topic, subscription, listener);
         processor.start();
@@ -79,6 +112,12 @@ public class ServiceBusProcessorContainer implements Lifecycle, DisposableBean {
         return processor;
     }
 
+    /**
+     * Unsubscribe to a queue.
+     * @param topic the topic.
+     * @param subscription the subscription.
+     * @return true if unsubscribe successfully.
+     */
     public boolean unsubscribe(String topic, String subscription) {
         // TODO: stop and remove
         return false;

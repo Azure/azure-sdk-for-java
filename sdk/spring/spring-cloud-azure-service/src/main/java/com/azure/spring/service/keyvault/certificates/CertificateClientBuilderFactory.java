@@ -9,13 +9,14 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.security.keyvault.certificates.CertificateClientBuilder;
 import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor;
 import com.azure.spring.core.factory.AbstractAzureHttpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.core.properties.util.PropertyMapper;
+import com.azure.spring.core.properties.PropertyMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,11 +31,19 @@ public class CertificateClientBuilderFactory extends AbstractAzureHttpClientBuil
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CertificateClientBuilderFactory.class);
 
-    private final KeyVaultCertificateProperties certificateProperties;
+    private final CertificateClientProperties certificateClientProperties;
 
+    /**
+     * Create a {@link CertificateClientBuilderFactory} with the {@link CertificateClientProperties}.
+     * @param certificateClientProperties the properties of the certificate client.
+     */
+    public CertificateClientBuilderFactory(CertificateClientProperties certificateClientProperties) {
+        this.certificateClientProperties = certificateClientProperties;
+    }
 
-    public CertificateClientBuilderFactory(KeyVaultCertificateProperties certificateProperties) {
-        this.certificateProperties = certificateProperties;
+    @Override
+    protected BiConsumer<CertificateClientBuilder, ClientOptions> consumeClientOptions() {
+        return CertificateClientBuilder::clientOptions;
     }
 
     @Override
@@ -64,7 +73,7 @@ public class CertificateClientBuilderFactory extends AbstractAzureHttpClientBuil
 
     @Override
     protected AzureProperties getAzureProperties() {
-        return this.certificateProperties;
+        return this.certificateClientProperties;
     }
 
     @Override
@@ -77,8 +86,8 @@ public class CertificateClientBuilderFactory extends AbstractAzureHttpClientBuil
     @Override
     protected void configureService(CertificateClientBuilder builder) {
         PropertyMapper map = new PropertyMapper();
-        map.from(certificateProperties.getEndpoint()).to(builder::vaultUrl);
-        map.from(certificateProperties.getServiceVersion()).to(builder::serviceVersion);
+        map.from(certificateClientProperties.getEndpoint()).to(builder::vaultUrl);
+        map.from(certificateClientProperties.getServiceVersion()).to(builder::serviceVersion);
     }
 
     @Override

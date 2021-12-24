@@ -9,13 +9,14 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor;
 import com.azure.spring.core.factory.AbstractAzureHttpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.core.properties.util.PropertyMapper;
+import com.azure.spring.core.properties.PropertyMapper;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,11 +27,20 @@ import java.util.function.BiConsumer;
  */
 public class ConfigurationClientBuilderFactory extends AbstractAzureHttpClientBuilderFactory<ConfigurationClientBuilder> {
 
-    private final AppConfigurationProperties appConfigurationProperties;
+    private final ConfigurationClientProperties configurationClientProperties;
 
 
-    public ConfigurationClientBuilderFactory(AppConfigurationProperties configurationProperties) {
-        this.appConfigurationProperties = configurationProperties;
+    /**
+     * Create a {@link ConfigurationClientBuilderFactory} instance with a {@link ConfigurationClientProperties}.
+     * @param configurationClientProperties the properties for the configuration client.
+     */
+    public ConfigurationClientBuilderFactory(ConfigurationClientProperties configurationClientProperties) {
+        this.configurationClientProperties = configurationClientProperties;
+    }
+
+    @Override
+    protected BiConsumer<ConfigurationClientBuilder, ClientOptions> consumeClientOptions() {
+        return ConfigurationClientBuilder::clientOptions;
     }
 
     @Override
@@ -60,7 +70,7 @@ public class ConfigurationClientBuilderFactory extends AbstractAzureHttpClientBu
 
     @Override
     protected AzureProperties getAzureProperties() {
-        return this.appConfigurationProperties;
+        return this.configurationClientProperties;
     }
 
     @Override
@@ -73,9 +83,9 @@ public class ConfigurationClientBuilderFactory extends AbstractAzureHttpClientBu
     @Override
     protected void configureService(ConfigurationClientBuilder builder) {
         PropertyMapper map = new PropertyMapper();
-        map.from(appConfigurationProperties.getEndpoint()).to(builder::endpoint);
-        map.from(appConfigurationProperties.getConnectionString()).to(builder::connectionString);
-        map.from(appConfigurationProperties.getServiceVersion()).to(builder::serviceVersion);
+        map.from(configurationClientProperties.getEndpoint()).to(builder::endpoint);
+        map.from(configurationClientProperties.getConnectionString()).to(builder::connectionString);
+        map.from(configurationClientProperties.getServiceVersion()).to(builder::serviceVersion);
     }
 
     @Override

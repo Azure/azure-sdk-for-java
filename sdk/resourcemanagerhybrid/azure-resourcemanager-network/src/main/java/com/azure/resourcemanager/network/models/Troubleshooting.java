@@ -63,7 +63,7 @@ public interface Troubleshooting extends Executable<Troubleshooting>, HasParent<
         /** Sets the storage account to save the troubleshoot result. */
         interface WithStorageAccount {
             /**
-             * Set the storageAccounId value.
+             * Set the storageAccountId value.
              *
              * @param storageAccountId the ID for the storage account to save the troubleshoot result
              * @return the next stage of definition.
@@ -73,6 +73,12 @@ public interface Troubleshooting extends Executable<Troubleshooting>, HasParent<
 
         /** Sets the path to the blob to save the troubleshoot result in. */
         interface WithStoragePath {
+            /**
+             * Specifies the storage path.
+             *
+             * @param storagePath the storage path
+             * @return the next stage of definition.
+             */
             WithExecute withStoragePath(String storagePath);
         }
 

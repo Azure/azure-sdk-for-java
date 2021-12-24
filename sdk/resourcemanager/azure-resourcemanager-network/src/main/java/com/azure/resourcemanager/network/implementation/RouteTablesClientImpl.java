@@ -295,7 +295,8 @@ public final class RouteTablesClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, routeTableName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -727,7 +728,11 @@ public final class RouteTablesClientImpl
         return this
             .client
             .<RouteTableInner, RouteTableInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RouteTableInner.class, RouteTableInner.class, this.client.getContext());
+                mono,
+                this.client.getHttpPipeline(),
+                RouteTableInner.class,
+                RouteTableInner.class,
+                this.client.getContext());
     }
 
     /**

@@ -536,7 +536,7 @@ public class DataLakeFileClient extends DataLakePathClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PathInfo flush(long position, boolean overwrite) {
         DataLakeRequestConditions requestConditions = new DataLakeRequestConditions();
-        if (overwrite) {
+        if (!overwrite) {
             requestConditions = new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
         return flushWithResponse(position, false, false, null, requestConditions, null, Context.NONE).getValue();

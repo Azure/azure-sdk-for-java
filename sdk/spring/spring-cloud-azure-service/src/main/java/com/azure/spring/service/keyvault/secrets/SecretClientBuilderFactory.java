@@ -9,13 +9,14 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor;
 import com.azure.spring.core.factory.AbstractAzureHttpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.core.properties.util.PropertyMapper;
+import com.azure.spring.core.properties.PropertyMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,10 +31,19 @@ public class SecretClientBuilderFactory extends AbstractAzureHttpClientBuilderFa
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SecretClientBuilderFactory.class);
 
-    private final KeyVaultSecretProperties secretProperties;
+    private final SecretClientProperties secretClientProperties;
 
-    public SecretClientBuilderFactory(KeyVaultSecretProperties keyVaultProperties) {
-        this.secretProperties = keyVaultProperties;
+    /**
+     * Create a {@link SecretClientBuilderFactory} with the {@link SecretClientProperties}.
+     * @param secretClientProperties the properties of the secret client.
+     */
+    public SecretClientBuilderFactory(SecretClientProperties secretClientProperties) {
+        this.secretClientProperties = secretClientProperties;
+    }
+
+    @Override
+    protected BiConsumer<SecretClientBuilder, ClientOptions> consumeClientOptions() {
+        return SecretClientBuilder::clientOptions;
     }
 
     @Override
@@ -63,7 +73,7 @@ public class SecretClientBuilderFactory extends AbstractAzureHttpClientBuilderFa
 
     @Override
     protected AzureProperties getAzureProperties() {
-        return this.secretProperties;
+        return this.secretClientProperties;
     }
 
     @Override
@@ -75,8 +85,8 @@ public class SecretClientBuilderFactory extends AbstractAzureHttpClientBuilderFa
     @Override
     protected void configureService(SecretClientBuilder builder) {
         PropertyMapper map = new PropertyMapper();
-        map.from(secretProperties.getEndpoint()).to(builder::vaultUrl);
-        map.from(secretProperties.getServiceVersion()).to(builder::serviceVersion);
+        map.from(secretClientProperties.getEndpoint()).to(builder::vaultUrl);
+        map.from(secretClientProperties.getServiceVersion()).to(builder::serviceVersion);
     }
 
     @Override

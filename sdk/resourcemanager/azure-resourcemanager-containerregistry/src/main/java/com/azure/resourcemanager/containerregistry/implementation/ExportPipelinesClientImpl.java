@@ -767,7 +767,8 @@ public final class ExportPipelinesClientImpl implements ExportPipelinesClient {
             deleteWithResponseAsync(resourceGroupName, registryName, exportPipelineName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

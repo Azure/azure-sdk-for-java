@@ -3,13 +3,13 @@
 
 package com.azure.spring.service.eventhubs;
 
-import com.azure.spring.core.connectionstring.implementation.EventHubsConnectionString;
+import com.azure.spring.core.implementation.connectionstring.EventHubsConnectionString;
 import com.azure.spring.service.core.properties.AbstractAmqpProperties;
 
 /**
  * Azure Event Hubs related properties.
  */
-public abstract class TestAzureEventHubsCommonProperties extends AbstractAmqpProperties {
+abstract class TestAzureEventHubsCommonProperties extends AbstractAmqpProperties {
 
     protected String domainName = "servicebus.windows.net";
     protected String namespace;
@@ -37,7 +37,7 @@ public abstract class TestAzureEventHubsCommonProperties extends AbstractAmqpPro
     // servicebus.windows.net)
     // Endpoint=sb://<FQDN>/;SharedAccessKeyName=<KeyName>;SharedAccessKey=<KeyValue>
     // https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-get-connection-string
-    public String getFQDN() {
+    public String getFullyQualifiedNamespace() {
         return this.namespace == null ? extractFqdnFromConnectionString() : (this.namespace + "." + domainName);
     }
 

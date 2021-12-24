@@ -678,7 +678,11 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         return this
             .client
             .<AgentPoolInner, AgentPoolInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AgentPoolInner.class, AgentPoolInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                AgentPoolInner.class,
+                AgentPoolInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -961,7 +965,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName, agentPoolName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1545,7 +1550,11 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         return this
             .client
             .<AgentPoolInner, AgentPoolInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AgentPoolInner.class, AgentPoolInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                AgentPoolInner.class,
+                AgentPoolInner.class,
+                this.client.getContext());
     }
 
     /**

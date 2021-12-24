@@ -15,8 +15,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.function.BiConsumer;
 
-import static com.azure.spring.core.converter.AzureAmqpProxyOptionsConverter.AMQP_PROXY_CONVERTER;
-import static com.azure.spring.core.converter.AzureAmqpRetryOptionsConverter.AMQP_RETRY_CONVERTER;
+import static com.azure.spring.core.implementation.converter.AzureAmqpProxyOptionsConverter.AMQP_PROXY_CONVERTER;
+import static com.azure.spring.core.implementation.converter.AzureAmqpRetryOptionsConverter.AMQP_RETRY_CONVERTER;
 
 /**
  * Abstract factory of an AMQP client builder.
@@ -27,9 +27,29 @@ public abstract class AbstractAzureAmqpClientBuilderFactory<T> extends AbstractA
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractAzureAmqpClientBuilderFactory.class);
     private ClientOptions clientOptions = new ClientOptions();
+
+    /**
+     * Return a {@link BiConsumer} of how the {@link T} builder consume a {@link ProxyOptions}.
+     * @return The consumer of how the {@link T} builder consume a {@link ProxyOptions}.
+     */
     protected abstract BiConsumer<T, ProxyOptions> consumeProxyOptions();
+
+    /**
+     * Return a {@link BiConsumer} of how the {@link T} builder consume a {@link AmqpTransportType}.
+     * @return The consumer of how the {@link T} builder consume a {@link AmqpTransportType}.
+     */
     protected abstract BiConsumer<T, AmqpTransportType> consumeAmqpTransportType();
+
+    /**
+     * Return a {@link BiConsumer} of how the {@link T} builder consume a {@link AmqpRetryOptions}.
+     * @return The consumer of how the {@link T} builder consume a {@link AmqpRetryOptions}.
+     */
     protected abstract BiConsumer<T, AmqpRetryOptions> consumeAmqpRetryOptions();
+
+    /**
+     * Return a {@link BiConsumer} of how the {@link T} builder consume a {@link ClientOptions}.
+     * @return The consumer of how the {@link T} builder consume a {@link ClientOptions}.
+     */
     protected abstract BiConsumer<T, ClientOptions> consumeClientOptions();
 
     @Override
@@ -38,11 +58,20 @@ public abstract class AbstractAzureAmqpClientBuilderFactory<T> extends AbstractA
         configureAmqpClient(builder);
     }
 
+    /**
+     * Configure the AMQP related properties to the builder.
+     *
+     * @param builder The builder of the AMQP-based service client.
+     */
     protected void configureAmqpClient(T builder) {
         configureClientProperties(builder);
         configureAmqpTransportProperties(builder);
     }
 
+    /**
+     * Configure the transport properties to the builder.
+     * @param builder The builder of the AMQP-based service client.
+     */
     protected void configureAmqpTransportProperties(T builder) {
         final ClientAware.Client client = getAzureProperties().getClient();
         if (client == null) {
@@ -56,6 +85,10 @@ public abstract class AbstractAzureAmqpClientBuilderFactory<T> extends AbstractA
         }
     }
 
+    /**
+     * Configure the client properties to the builder.
+     * @param builder The builder of the AMQP-based service client.
+     */
     protected void configureClientProperties(T builder) {
         consumeClientOptions().accept(builder, this.clientOptions);
     }
@@ -90,10 +123,18 @@ public abstract class AbstractAzureAmqpClientBuilderFactory<T> extends AbstractA
         }
     }
 
+    /**
+     * Get the {@link ClientOptions} used by the AMQP client.
+     * @return The client options.
+     */
     protected ClientOptions getClientOptions() {
         return clientOptions;
     }
 
+    /**
+     * Set the client options.
+     * @param clientOptions The client options used by the AMQP client.
+     */
     public void setClientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
     }

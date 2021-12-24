@@ -1311,7 +1311,7 @@ public final class TriggersClientImpl implements TriggersClient {
                 this.client.getHttpPipeline(),
                 TriggerSubscriptionOperationStatusInner.class,
                 TriggerSubscriptionOperationStatusInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1743,7 +1743,7 @@ public final class TriggersClientImpl implements TriggersClient {
                 this.client.getHttpPipeline(),
                 TriggerSubscriptionOperationStatusInner.class,
                 TriggerSubscriptionOperationStatusInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2005,7 +2005,8 @@ public final class TriggersClientImpl implements TriggersClient {
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, factoryName, triggerName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2255,7 +2256,8 @@ public final class TriggersClientImpl implements TriggersClient {
         Mono<Response<Flux<ByteBuffer>>> mono = stopWithResponseAsync(resourceGroupName, factoryName, triggerName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

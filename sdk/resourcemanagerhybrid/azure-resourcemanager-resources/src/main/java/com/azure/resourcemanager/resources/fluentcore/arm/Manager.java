@@ -23,6 +23,13 @@ public abstract class Manager<InnerT> implements HasServiceClient<InnerT> {
 
     private final InnerT innerManagementClient;
 
+    /**
+     * Creates a new instance of {@link Manager}.
+     *
+     * @param httpPipeline The HttpPipeline used by the manager.
+     * @param profile The AzureProfile used by the manager.
+     * @param innerManagementClient The inner management client.
+     */
     protected Manager(HttpPipeline httpPipeline, AzureProfile profile, InnerT innerManagementClient) {
         this.httpPipeline = httpPipeline;
         if (httpPipeline != null) {
@@ -55,6 +62,11 @@ public abstract class Manager<InnerT> implements HasServiceClient<InnerT> {
         return this.environment;
     }
 
+    /**
+     * Configures the ResourceManager for this manager instance.
+     *
+     * @param resourceManager The ResourceManager to associate with this manager.
+     */
     protected final void withResourceManager(ResourceManager resourceManager) {
         this.resourceManager = resourceManager;
     }

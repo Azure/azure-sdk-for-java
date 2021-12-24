@@ -280,7 +280,8 @@ public final class VirtualRoutersClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, virtualRouterName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -716,7 +717,11 @@ public final class VirtualRoutersClientImpl
         return this
             .client
             .<VirtualRouterInner, VirtualRouterInner>getLroResult(
-                mono, this.client.getHttpPipeline(), VirtualRouterInner.class, VirtualRouterInner.class, this.client.getContext());
+                mono,
+                this.client.getHttpPipeline(),
+                VirtualRouterInner.class,
+                VirtualRouterInner.class,
+                this.client.getContext());
     }
 
     /**

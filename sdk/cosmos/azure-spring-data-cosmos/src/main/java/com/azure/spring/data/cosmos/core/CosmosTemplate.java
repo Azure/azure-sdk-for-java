@@ -215,7 +215,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                     cosmosItemResponse.getDiagnostics(), null))
             .onErrorResume(throwable ->
-                CosmosExceptionUtils.exceptionHandler("Failed to insert item", throwable))
+                CosmosExceptionUtils.exceptionHandler("Failed to insert item", throwable,
+                    this.responseDiagnosticsProcessor))
             .block();
 
         assert response != null;
@@ -261,7 +262,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                 return Mono.justOrEmpty(emitOnLoadEventAndConvertToDomainObject(domainType, containerName, cosmosItemResponse.getItem()));
             })
             .onErrorResume(throwable ->
-                CosmosExceptionUtils.findAPIExceptionHandler("Failed to find item", throwable))
+                CosmosExceptionUtils.findAPIExceptionHandler("Failed to find item", throwable,
+                    this.responseDiagnosticsProcessor))
             .block();
     }
 
@@ -299,7 +301,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                     .findFirst());
             })
             .onErrorResume(throwable ->
-                CosmosExceptionUtils.findAPIExceptionHandler("Failed to find item", throwable))
+                CosmosExceptionUtils.findAPIExceptionHandler("Failed to find item", throwable,
+                    this.responseDiagnosticsProcessor))
             .blockFirst();
     }
 
@@ -358,7 +361,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .doOnNext(response -> CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                 response.getDiagnostics(), null))
             .onErrorResume(throwable ->
-                CosmosExceptionUtils.exceptionHandler("Failed to upsert item", throwable))
+                CosmosExceptionUtils.exceptionHandler("Failed to upsert item", throwable,
+                    this.responseDiagnosticsProcessor))
             .block();
 
         assert cosmosItemResponse != null;
@@ -419,7 +423,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             })
             .map(jsonNode -> emitOnLoadEventAndConvertToDomainObject(domainType, containerName, jsonNode))
             .onErrorResume(throwable ->
-                CosmosExceptionUtils.exceptionHandler("Failed to find items", throwable))
+                CosmosExceptionUtils.exceptionHandler("Failed to find items", throwable,
+                    this.responseDiagnosticsProcessor))
             .toIterable();
     }
 
@@ -449,7 +454,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                                  response.getDiagnostics(), null);
                          })
                          .onErrorResume(throwable ->
-                             CosmosExceptionUtils.exceptionHandler("Failed to delete container", throwable))
+                             CosmosExceptionUtils.exceptionHandler("Failed to delete container", throwable,
+                                 this.responseDiagnosticsProcessor))
                          .block();
     }
 
@@ -465,7 +471,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         final CosmosContainerResponse response = createDatabaseIfNotExists()
             .publishOn(Schedulers.parallel())
             .onErrorResume(throwable ->
-                CosmosExceptionUtils.exceptionHandler("Failed to create database", throwable))
+                CosmosExceptionUtils.exceptionHandler("Failed to create database", throwable,
+                    this.responseDiagnosticsProcessor))
             .flatMap(cosmosDatabaseResponse -> {
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                     cosmosDatabaseResponse.getDiagnostics(), null);
@@ -494,7 +501,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                 return cosmosContainerResponseMono
                     .onErrorResume(throwable ->
                         CosmosExceptionUtils.exceptionHandler("Failed to create container",
-                            throwable))
+                            throwable, this.responseDiagnosticsProcessor))
                     .doOnNext(cosmosContainerResponse ->
                         CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                             cosmosContainerResponse.getDiagnostics(), null));
@@ -587,7 +594,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                                  response.getDiagnostics(), null))
                          .onErrorResume(throwable ->
                              CosmosExceptionUtils.exceptionHandler("Failed to delete item",
-                                 throwable))
+                                 throwable, this.responseDiagnosticsProcessor))
                          .block();
     }
 
@@ -749,7 +756,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                     propertiesFeedResponse.getCosmosDiagnostics(), propertiesFeedResponse))
             .onErrorResume(throwable ->
-                CosmosExceptionUtils.exceptionHandler("Failed to query items", throwable))
+                CosmosExceptionUtils.exceptionHandler("Failed to query items", throwable,
+                    this.responseDiagnosticsProcessor))
             .next()
             .block();
 
@@ -860,7 +868,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         return executeQuery(querySpec, containerName, options)
             .publishOn(Schedulers.parallel())
             .onErrorResume(throwable ->
-                CosmosExceptionUtils.exceptionHandler("Failed to get count value", throwable))
+                CosmosExceptionUtils.exceptionHandler("Failed to get count value", throwable,
+                    this.responseDiagnosticsProcessor))
             .doOnNext(response -> CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                 response.getCosmosDiagnostics(), response))
             .next()
@@ -902,7 +911,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                 return Flux.fromIterable(cosmosItemFeedResponse.getResults());
             })
             .onErrorResume(throwable ->
-                CosmosExceptionUtils.exceptionHandler("Failed to find items", throwable));
+                CosmosExceptionUtils.exceptionHandler("Failed to find items", throwable,
+                    this.responseDiagnosticsProcessor));
     }
 
     private Flux<JsonNode> getJsonNodeFluxFromQuerySpec(
@@ -923,7 +933,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                        return Flux.fromIterable(cosmosItemFeedResponse.getResults());
                    })
                    .onErrorResume(throwable ->
-                                      CosmosExceptionUtils.exceptionHandler("Failed to find items", throwable));
+                                      CosmosExceptionUtils.exceptionHandler("Failed to find items", throwable,
+                                          this.responseDiagnosticsProcessor));
     }
 
     private <T> Iterable<T> findItems(@NonNull CosmosQuery query,
@@ -949,7 +960,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .doOnNext(response -> CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                 response.getDiagnostics(), null))
             .onErrorResume(throwable ->
-                CosmosExceptionUtils.exceptionHandler("Failed to delete item", throwable))
+                CosmosExceptionUtils.exceptionHandler("Failed to delete item", throwable,
+                    this.responseDiagnosticsProcessor))
             .flatMap(objectCosmosItemResponse -> Mono.just(toDomainObject(domainType, jsonNode)))
             .block();
     }

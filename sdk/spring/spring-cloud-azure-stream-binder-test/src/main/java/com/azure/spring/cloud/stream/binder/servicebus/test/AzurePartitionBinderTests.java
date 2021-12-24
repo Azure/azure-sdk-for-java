@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.stream.binder.servicebus.test;
 
 import org.assertj.core.api.Assertions;
-import org.junit.BeforeClass;
 import org.springframework.cloud.stream.binder.AbstractBinder;
 import org.springframework.cloud.stream.binder.AbstractTestBinder;
 import org.springframework.cloud.stream.binder.Binder;
@@ -29,17 +28,11 @@ import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Test cases are defined in super class
- *
- * @author Warren Zhu
  */
 public abstract class AzurePartitionBinderTests<B extends AbstractTestBinder<
         ? extends AbstractBinder<MessageChannel, CP, PP>, CP, PP>,
         CP extends ConsumerProperties, PP extends ProducerProperties>
         extends PartitionCapableBinderTests<B, CP, PP> {
-
-    @BeforeClass
-    public static void enableTests() {
-    }
 
     @Override
     protected boolean usesExplicitRouting() {
@@ -51,33 +44,13 @@ public abstract class AzurePartitionBinderTests<B extends AbstractTestBinder<
         return null;
     }
 
-    @Override
-    public void testClean() throws Exception {
-        // No-op
-    }
-
-    @Override
-    public void testPartitionedModuleJava() {
-        // Partitioned consumer mode unsupported yet
-    }
-
-    @Override
-    public void testPartitionedModuleSpEL() {
-        // Partitioned consumer mode unsupported
-    }
-
-    @Override
-    public void testAnonymousGroup() {
-        // azure binder not support anonymous group
-    }
 
     // Same logic as super.testSendAndReceiveNoOriginalContentType() except one line commented below
-    @Override
     @SuppressWarnings({"rawtypes", "unchecked"})
     public void testSendAndReceiveNoOriginalContentType() throws Exception {
         Binder binder = getBinder();
 
-        BindingProperties producerBindingProperties = createProducerBindingProperties(createProducerProperties());
+        BindingProperties producerBindingProperties = createProducerBindingProperties(createProducerProperties(null));
         DirectChannel moduleOutputChannel = createBindableChannel("output", producerBindingProperties);
         BindingProperties consumerBindingProperties = createConsumerBindingProperties(createConsumerProperties());
         DirectChannel moduleInputChannel = createBindableChannel("input", consumerBindingProperties);
