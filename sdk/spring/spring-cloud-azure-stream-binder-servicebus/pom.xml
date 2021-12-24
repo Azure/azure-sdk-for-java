@@ -33,10 +33,6 @@
     <url>https://github.com/Azure/azure-sdk-for-java/issues</url>
   </issueManagement>
 
-  <properties>
-    <jacoco.min.linecoverage>0.7</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.3</jacoco.min.branchcoverage>
-  </properties>
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
