@@ -156,7 +156,7 @@ com.azure.spring:azure-spring-boot-starter-active-directory-b2c;3.11.0;3.12.0
 com.azure.spring:azure-spring-boot-starter-active-directory;3.11.0;3.12.0
 com.azure.spring:azure-spring-boot-starter-cosmos;3.11.0;3.12.0
 com.azure.spring:azure-spring-boot-starter-keyvault-certificates;3.11.0;3.12.0
-com.azure.spring:azure-spring-boot-starter-keyvault-secrets;3.11.0;3.12.0
+com.azure.spring:azure-spring-boot-starter-keyvault-secrets;3.12.0;3.13.0-beta.1
 com.azure.spring:azure-spring-boot-starter-servicebus-jms;3.11.0;3.12.0
 com.azure.spring:azure-spring-boot-starter-storage;3.11.0;3.12.0
 com.azure.spring:azure-spring-boot-starter;3.11.0;3.12.0
@@ -164,7 +164,7 @@ com.azure.spring:azure-spring-boot;3.12.0;3.13.0-beta.1
 com.azure.spring:azure-spring-cloud-autoconfigure;2.11.0;2.12.0
 com.azure.spring:azure-spring-cloud-context;2.12.0;2.13.0-beta.1
 com.azure.spring:azure-spring-cloud-dependencies;2.11.0;2.12.0
-com.azure.spring:azure-spring-cloud-messaging;2.11.0;2.12.0
+com.azure.spring:azure-spring-cloud-messaging;2.12.0;2.13.0-beta.1
 com.azure.spring:azure-spring-cloud-starter-cache;2.11.0;2.12.0
 com.azure.spring:azure-spring-cloud-starter-eventhubs-kafka;2.11.0;2.12.0
 com.azure.spring:azure-spring-cloud-starter-eventhubs;2.11.0;2.12.0
@@ -176,7 +176,7 @@ com.azure.spring:azure-spring-cloud-stream-binder-servicebus-core;2.11.0;2.12.0
 com.azure.spring:azure-spring-cloud-stream-binder-servicebus-queue;2.11.0;2.12.0
 com.azure.spring:azure-spring-cloud-stream-binder-servicebus-topic;2.11.0;2.12.0
 com.azure.spring:azure-spring-cloud-stream-binder-test;2.11.0;2.12.0
-com.azure.spring:azure-spring-integration-core;2.11.0;2.12.0
+com.azure.spring:azure-spring-integration-core;2.12.0;2.13.0-beta.1
 com.azure.spring:azure-spring-integration-eventhubs;2.11.0;2.12.0
 com.azure.spring:azure-spring-integration-servicebus;2.11.0;2.12.0
 com.azure.spring:azure-spring-integration-storage-queue;2.11.0;2.12.0
