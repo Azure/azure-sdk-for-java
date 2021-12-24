@@ -32,6 +32,22 @@
     <url>https://github.com/Azure/azure-sdk-for-java/issues</url>
   </issueManagement>
 
+
+  <properties>
+    <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
+    <!-- https://issues.apache.org/jira/browse/SUREFIRE-1563 -->
+    <javaModulesSurefireArgLine>
+      --add-modules com.azure.storage.blob
+      --add-modules com.azure.storage.internal.avro
+      --add-modules com.azure.storage.file.share
+      --add-opens com.azure.spring.core/com.azure.spring.core=ALL-UNNAMED
+      --add-opens com.azure.spring.core/com.azure.spring.core.factory=ALL-UNNAMED
+      --add-opens com.azure.spring.core/com.azure.spring.core.implementation.connectionstring=ALL-UNNAMED
+      --add-opens com.azure.spring.core/com.azure.spring.core.resource=ALL-UNNAMED
+      --add-opens com.azure.spring.core/com.azure.spring.core.util=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.springframework</groupId>
@@ -71,10 +87,6 @@
         <exclusion>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-http-netty</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-storage-internal-avro</artifactId>
         </exclusion>
       </exclusions>
     </dependency>

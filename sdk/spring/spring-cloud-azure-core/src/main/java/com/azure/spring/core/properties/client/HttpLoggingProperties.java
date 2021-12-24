@@ -4,7 +4,7 @@
 package com.azure.spring.core.properties.client;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.spring.core.aware.ClientAware;
+import com.azure.spring.core.aware.HttpLoggingAware;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,7 +13,7 @@ import java.util.Set;
  * Options related to http logging. For example, if you want to log the http request or response, you could set the
  * level to {@link HttpLogDetailLevel#BASIC} or some other levels.
  */
-public class HttpLoggingProperties implements ClientAware.HttpLogging {
+public final class HttpLoggingProperties implements HttpLoggingAware.HttpLogging {
 
     /**
      * Gets the level of detail to log on HTTP messages.
@@ -32,26 +32,50 @@ public class HttpLoggingProperties implements ClientAware.HttpLogging {
      */
     private Boolean prettyPrintBody;
 
+    /**
+     * Get the logging detail level.
+     * @return The logging detail level.
+     */
     public HttpLogDetailLevel getLevel() {
         return level;
     }
 
+    /**
+     * Set the logging detail level.
+     * @param level The logging detail level.
+     */
     public void setLevel(HttpLogDetailLevel level) {
         this.level = level;
     }
 
+    /**
+     * Get allowed http header names.
+     * @return The allowed http header names.
+     */
     public Set<String> getAllowedHeaderNames() {
         return allowedHeaderNames;
     }
 
+    /**
+     * Get allowed http query parameter names.
+     * @return The allowed http query parameter names.
+     */
     public Set<String> getAllowedQueryParamNames() {
         return allowedQueryParamNames;
     }
 
+    /**
+     * Get whether to pretty print body.
+     * @return Whether to pretty print body.
+     */
     public Boolean getPrettyPrintBody() {
         return prettyPrintBody;
     }
 
+    /**
+     * Set whether to pretty print body.
+     * @param prettyPrintBody Whether to pretty print body.
+     */
     public void setPrettyPrintBody(Boolean prettyPrintBody) {
         this.prettyPrintBody = prettyPrintBody;
     }

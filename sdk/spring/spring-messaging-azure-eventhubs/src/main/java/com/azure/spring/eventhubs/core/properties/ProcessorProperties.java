@@ -3,22 +3,20 @@
 
 package com.azure.spring.eventhubs.core.properties;
 
-import com.azure.spring.service.eventhubs.properties.EventHubsProcessorDescriptor;
+import com.azure.spring.service.eventhubs.properties.EventProcessorClientProperties;
 
-import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * An event hub processor related properties.
  */
-public class ProcessorProperties extends ConsumerProperties implements EventHubsProcessorDescriptor {
+public class ProcessorProperties extends ConsumerProperties implements EventProcessorClientProperties {
 
-    private final Map<String, EventHubsProcessorDescriptor.StartPosition> initialPartitionEventPosition = new HashMap<>();
+    private final Map<String, EventProcessorClientProperties.StartPosition> initialPartitionEventPosition = new HashMap<>();
     private final LoadBalancing loadBalancing = new LoadBalancing();
-    private final Batch batch = new Batch();
+    private final EventBatch batch = new EventBatch();
     private Boolean trackLastEnqueuedEventProperties;
-    private Duration partitionOwnershipExpirationInterval;
 
     @Override
     public Map<String, StartPosition> getInitialPartitionEventPosition() {
@@ -31,7 +29,7 @@ public class ProcessorProperties extends ConsumerProperties implements EventHubs
     }
 
     @Override
-    public Batch getBatch() {
+    public EventBatch getBatch() {
         return batch;
     }
 
@@ -48,16 +46,4 @@ public class ProcessorProperties extends ConsumerProperties implements EventHubs
         this.trackLastEnqueuedEventProperties = trackLastEnqueuedEventProperties;
     }
 
-    @Override
-    public Duration getPartitionOwnershipExpirationInterval() {
-        return partitionOwnershipExpirationInterval;
-    }
-
-    /**
-     * Set the partition ownership expiration interval.
-     * @param partitionOwnershipExpirationInterval the partition ownership expiration interval.
-     */
-    public void setPartitionOwnershipExpirationInterval(Duration partitionOwnershipExpirationInterval) {
-        this.partitionOwnershipExpirationInterval = partitionOwnershipExpirationInterval;
-    }
 }

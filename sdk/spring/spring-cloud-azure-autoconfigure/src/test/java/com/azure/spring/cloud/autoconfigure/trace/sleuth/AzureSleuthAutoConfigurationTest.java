@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.trace.sleuth;
 
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.spring.core.trace.sleuth.AzureHttpClientBuilderFactoryBeanPostProcessor;
+import com.azure.spring.core.trace.AzureHttpClientBuilderFactoryBeanPostProcessor;
 import com.azure.spring.tracing.sleuth.SleuthHttpPolicy;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -14,7 +14,7 @@ import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.cloud.sleuth.autoconfig.brave.BraveAutoConfiguration;
 import org.springframework.cloud.sleuth.autoconfig.instrument.web.TraceWebAutoConfiguration;
 
-import static com.azure.spring.core.trace.sleuth.AzureHttpClientBuilderFactoryBeanPostProcessor.DEFAULT_SLEUTH_HTTP_POLICY_BEAN_NAME;
+import static com.azure.spring.cloud.autoconfigure.trace.sleuth.AzureSleuthAutoConfiguration.DEFAULT_SLEUTH_HTTP_POLICY_BEAN_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AzureSleuthAutoConfigurationTest {

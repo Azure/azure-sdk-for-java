@@ -10,7 +10,7 @@ import com.azure.spring.core.properties.resource.AzureResourceMetadata;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
- * Configuration properties base class for all Azure clients.
+ * Configuration properties base class for all Azure Service clients.
  */
 public abstract class AbstractAzureServiceCP implements AzureProperties {
 

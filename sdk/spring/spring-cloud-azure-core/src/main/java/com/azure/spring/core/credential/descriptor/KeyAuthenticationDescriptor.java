@@ -5,34 +5,38 @@ package com.azure.spring.core.credential.descriptor;
 
 import com.azure.spring.core.credential.AzureCredentialType;
 import com.azure.spring.core.credential.provider.AzureKeyCredentialProvider;
-import com.azure.spring.core.credential.resolver.AzureCredentialResolver;
-import com.azure.spring.core.credential.resolver.AzureKeyCredentialResolver;
+import com.azure.spring.core.credential.AzureCredentialResolver;
+import com.azure.spring.core.implementation.credential.resolver.AzureKeyCredentialResolver;
 
 import java.util.function.Consumer;
 
 /**
  * A descriptor describes the key authentication.
  */
-public class KeyAuthenticationDescriptor implements AuthenticationDescriptor<AzureKeyCredentialProvider> {
+public final class KeyAuthenticationDescriptor implements AuthenticationDescriptor<AzureKeyCredentialProvider> {
 
     private final Consumer<AzureKeyCredentialProvider> consumer;
 
+    /**
+     * Create a {@link KeyAuthenticationDescriptor} instance with the consumer to consume the resolved credential.
+     * @param consumer The consumer to consume the resolved credential.
+     */
     public KeyAuthenticationDescriptor(Consumer<AzureKeyCredentialProvider> consumer) {
         this.consumer = consumer;
     }
 
     @Override
-    public AzureCredentialType azureCredentialType() {
+    public AzureCredentialType getAzureCredentialType() {
         return AzureCredentialType.KEY_CREDENTIAL;
     }
 
     @Override
-    public AzureCredentialResolver<AzureKeyCredentialProvider> azureCredentialResolver() {
+    public AzureCredentialResolver<AzureKeyCredentialProvider> getAzureCredentialResolver() {
         return new AzureKeyCredentialResolver();
     }
 
     @Override
-    public Consumer<AzureKeyCredentialProvider> consumer() {
+    public Consumer<AzureKeyCredentialProvider> getConsumer() {
         return consumer;
     }
 }
