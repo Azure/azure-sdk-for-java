@@ -15,12 +15,13 @@ import argparse
 import os
 import re
 import time
-from log import log, Log
+from log import log
 
 include_update_marker = re.compile(r'\{x-include-update;([^;]+);([^}]+)\}')
 version_update_marker = re.compile(r'\{x-version-update;([^;]+);([^}]+)\}')
 external_dependency_include_regex = r'(?<=<include>).+?(?=</include>)'
 external_dependency_version_regex = r'(?<=<version>).+?(?=</version>)'
+
 
 def update_versions(external_dependency_version_map, target_file):
     # replace artifact versions in target_file
@@ -91,19 +92,13 @@ def main():
         help='Set log level.'
     )
     args = parser.parse_args()
-    log_dict = {
-        'debug': Log.DEBUG,
-        'info': Log.INFO,
-        'warn': Log.WARN,
-        'error': Log.ERROR,
-        'none': Log.NONE
-    }
-    log.set_log_level(log_dict[args.log])
+    log.set_log_level(args.log)
     start_time = time.time()
     log.debug('Current working directory = {}.'.format(os.getcwd()))
     update_versions_all(args.target_folder, args.spring_boot_version)
     elapsed_time = time.time() - start_time
     log.info('elapsed_time={}'.format(elapsed_time))
+
 
 if __name__ == '__main__':
     main()
