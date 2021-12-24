@@ -175,7 +175,7 @@ public class ServiceBusMessageChannelBinder extends
     /**
      * Moves a message to the dead-letter sub-queue with dead-letter reason.
      *
-     * @param <T> the type
+     * @param <T> the type of message payload
      * @param destination the destination
      * @param message the message
      * @param deadLetterReason the dead-letter reason
@@ -197,7 +197,7 @@ public class ServiceBusMessageChannelBinder extends
     /**
      * Abandons the message in this context.
      *
-     * @param <T> the type
+     * @param <T> the type of message payload
      * @param destination the destination
      * @param message the message
      */
@@ -272,7 +272,7 @@ public class ServiceBusMessageChannelBinder extends
                 this.namespaceProperties, getProcessorPropertiesSupplier());
 
             factory.addListener((name, subscription, client) -> {
-                String instrumentationName = name + "/" + subscription == null ? "" : subscription;
+                String instrumentationName = name + "/" + subscription;
                 Instrumentation instrumentation = new ServiceBusProcessorInstrumentation(instrumentationName, CONSUMER, Duration.ofMinutes(2));
                 instrumentation.markUp();
                 instrumentationManager.addHealthInstrumentation(instrumentation.getId(), instrumentation);
