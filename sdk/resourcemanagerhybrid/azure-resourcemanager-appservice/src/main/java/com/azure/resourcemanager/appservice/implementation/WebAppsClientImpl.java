@@ -7267,7 +7267,7 @@ public final class WebAppsClientImpl
         return this
             .client
             .<SiteInner, SiteInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SiteInner.class, SiteInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), SiteInner.class, SiteInner.class, this.client.getContext());
     }
 
     /**
@@ -9070,7 +9070,8 @@ public final class WebAppsClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = restoreWithResponseAsync(resourceGroupName, name, backupId, request);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -11872,7 +11873,7 @@ public final class WebAppsClientImpl
         return this
             .client
             .<UserInner, UserInner>getLroResult(
-                mono, this.client.getHttpPipeline(), UserInner.class, UserInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), UserInner.class, UserInner.class, this.client.getContext());
     }
 
     /**
@@ -25857,7 +25858,11 @@ public final class WebAppsClientImpl
         return this
             .client
             .<OperationInner, OperationInner>getLroResult(
-                mono, this.client.getHttpPipeline(), OperationInner.class, OperationInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                OperationInner.class,
+                OperationInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -27460,7 +27465,7 @@ public final class WebAppsClientImpl
         return this
             .client
             .<Object, Object>getLroResult(
-                mono, this.client.getHttpPipeline(), Object.class, Object.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), Object.class, Object.class, this.client.getContext());
     }
 
     /**
@@ -32720,7 +32725,8 @@ public final class WebAppsClientImpl
             restoreFromBackupBlobWithResponseAsync(resourceGroupName, name, request);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -32973,7 +32979,8 @@ public final class WebAppsClientImpl
             restoreFromDeletedAppWithResponseAsync(resourceGroupName, name, restoreRequest);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -33230,7 +33237,8 @@ public final class WebAppsClientImpl
             restoreSnapshotWithResponseAsync(resourceGroupName, name, restoreRequest);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -34616,7 +34624,7 @@ public final class WebAppsClientImpl
         return this
             .client
             .<SiteInner, SiteInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SiteInner.class, SiteInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), SiteInner.class, SiteInner.class, this.client.getContext());
     }
 
     /**
@@ -36635,7 +36643,8 @@ public final class WebAppsClientImpl
             restoreSlotWithResponseAsync(resourceGroupName, name, backupId, slot, request);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -39807,7 +39816,7 @@ public final class WebAppsClientImpl
         return this
             .client
             .<UserInner, UserInner>getLroResult(
-                mono, this.client.getHttpPipeline(), UserInner.class, UserInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), UserInner.class, UserInner.class, this.client.getContext());
     }
 
     /**
@@ -56132,7 +56141,7 @@ public final class WebAppsClientImpl
         return this
             .client
             .<Object, Object>getLroResult(
-                mono, this.client.getHttpPipeline(), Object.class, Object.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), Object.class, Object.class, this.client.getContext());
     }
 
     /**
@@ -62009,7 +62018,8 @@ public final class WebAppsClientImpl
             restoreFromBackupBlobSlotWithResponseAsync(resourceGroupName, name, slot, request);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -62289,7 +62299,8 @@ public final class WebAppsClientImpl
             restoreFromDeletedAppSlotWithResponseAsync(resourceGroupName, name, slot, restoreRequest);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -62566,7 +62577,8 @@ public final class WebAppsClientImpl
             restoreSnapshotSlotWithResponseAsync(resourceGroupName, name, slot, restoreRequest);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -63917,7 +63929,8 @@ public final class WebAppsClientImpl
             swapSlotWithResponseAsync(resourceGroupName, name, slot, slotSwapEntity);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -65567,7 +65580,7 @@ public final class WebAppsClientImpl
         return this
             .client
             .<Object, Object>getLroResult(
-                mono, this.client.getHttpPipeline(), Object.class, Object.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), Object.class, Object.class, this.client.getContext());
     }
 
     /**
@@ -70119,7 +70132,8 @@ public final class WebAppsClientImpl
             swapSlotWithProductionWithResponseAsync(resourceGroupName, name, slotSwapEntity);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -71601,7 +71615,7 @@ public final class WebAppsClientImpl
         return this
             .client
             .<Object, Object>getLroResult(
-                mono, this.client.getHttpPipeline(), Object.class, Object.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), Object.class, Object.class, this.client.getContext());
     }
 
     /**

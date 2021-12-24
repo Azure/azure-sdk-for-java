@@ -149,6 +149,13 @@ public final class ActiveDirectory {
     @JsonProperty(value = "allowLocalNfsUsersWithLdap")
     private Boolean allowLocalNfsUsersWithLdap;
 
+    /*
+     * If enabled, Traffic between the SMB server to Domain Controller (DC)
+     * will be encrypted.
+     */
+    @JsonProperty(value = "encryptDCConnections")
+    private Boolean encryptDCConnections;
+
     /**
      * Get the activeDirectoryId property: Id of the Active Directory.
      *
@@ -548,6 +555,28 @@ public final class ActiveDirectory {
      */
     public ActiveDirectory withAllowLocalNfsUsersWithLdap(Boolean allowLocalNfsUsersWithLdap) {
         this.allowLocalNfsUsersWithLdap = allowLocalNfsUsersWithLdap;
+        return this;
+    }
+
+    /**
+     * Get the encryptDCConnections property: If enabled, Traffic between the SMB server to Domain Controller (DC) will
+     * be encrypted.
+     *
+     * @return the encryptDCConnections value.
+     */
+    public Boolean encryptDCConnections() {
+        return this.encryptDCConnections;
+    }
+
+    /**
+     * Set the encryptDCConnections property: If enabled, Traffic between the SMB server to Domain Controller (DC) will
+     * be encrypted.
+     *
+     * @param encryptDCConnections the encryptDCConnections value to set.
+     * @return the ActiveDirectory object itself.
+     */
+    public ActiveDirectory withEncryptDCConnections(Boolean encryptDCConnections) {
+        this.encryptDCConnections = encryptDCConnections;
         return this;
     }
 

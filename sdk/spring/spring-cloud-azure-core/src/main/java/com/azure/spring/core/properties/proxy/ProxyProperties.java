@@ -22,6 +22,10 @@ public class ProxyProperties implements ProxyAware.Proxy {
         return type;
     }
 
+    /**
+     * Set proxy type.
+     * @param type The proxy type.
+     */
     public void setType(String type) {
         this.type = type;
     }
@@ -31,6 +35,10 @@ public class ProxyProperties implements ProxyAware.Proxy {
         return hostname;
     }
 
+    /**
+     * Set proxy hostname.
+     * @param hostname The hostname.
+     */
     public void setHostname(String hostname) {
         this.hostname = hostname;
     }
@@ -40,6 +48,10 @@ public class ProxyProperties implements ProxyAware.Proxy {
         return port;
     }
 
+    /**
+     * Set port.
+     * @param port The port of the host.
+     */
     public void setPort(Integer port) {
         this.port = port;
     }
@@ -49,6 +61,10 @@ public class ProxyProperties implements ProxyAware.Proxy {
         return authenticationType;
     }
 
+    /**
+     * Set the authentication type for the proxy.
+     * @param authenticationType The authentication type.
+     */
     public void setAuthenticationType(String authenticationType) {
         this.authenticationType = authenticationType;
     }
@@ -58,6 +74,10 @@ public class ProxyProperties implements ProxyAware.Proxy {
         return username;
     }
 
+    /**
+     * Set the username used for authentication.
+     * @param username The username.
+     */
     public void setUsername(String username) {
         this.username = username;
     }
@@ -67,6 +87,10 @@ public class ProxyProperties implements ProxyAware.Proxy {
         return password;
     }
 
+    /**
+     * Set the password for authentication.
+     * @param password The password.
+     */
     public void setPassword(String password) {
         this.password = password;
     }

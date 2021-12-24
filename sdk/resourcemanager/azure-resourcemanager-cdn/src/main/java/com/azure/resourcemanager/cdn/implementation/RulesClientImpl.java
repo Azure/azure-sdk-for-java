@@ -1341,7 +1341,8 @@ public final class RulesClientImpl implements RulesClient {
             deleteWithResponseAsync(resourceGroupName, profileName, ruleSetName, ruleName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

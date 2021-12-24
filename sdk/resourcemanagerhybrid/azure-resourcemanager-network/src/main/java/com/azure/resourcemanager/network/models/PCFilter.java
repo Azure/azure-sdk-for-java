@@ -54,9 +54,19 @@ public interface PCFilter extends Indexable, HasParent<PacketCapture>, HasInnerM
     /** Definition stages for packet capture filter. */
     interface DefinitionStages {
 
+        /**
+         * The first stage of a packet capture filter definition.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         */
         interface WithAttach<ParentT> extends Attachable.InDefinition<ParentT>, Blank<ParentT> {
         }
 
+        /**
+         * The first stage of a packet capture filter definition.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         */
         interface Blank<ParentT>
             extends HasProtocol.DefinitionStages.WithProtocol<
                     WithAttach<PacketCapture.DefinitionStages.WithCreate>, PcProtocol>,

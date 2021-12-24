@@ -274,7 +274,8 @@ public final class AzureFirewallsClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, azureFirewallName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -678,7 +679,11 @@ public final class AzureFirewallsClientImpl
         return this
             .client
             .<AzureFirewallInner, AzureFirewallInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AzureFirewallInner.class, AzureFirewallInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                AzureFirewallInner.class,
+                AzureFirewallInner.class,
+                this.client.getContext());
     }
 
     /**

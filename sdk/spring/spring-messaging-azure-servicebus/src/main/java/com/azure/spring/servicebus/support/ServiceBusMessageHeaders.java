@@ -38,7 +38,7 @@ import com.azure.spring.messaging.AzureHeaders;
  * @see com.azure.messaging.servicebus.ServiceBusMessage
  * @see <a href="https://github.com/Azure/azure-sdk-for-java/blob/azure-messaging-servicebus_7.1.0/sdk/servicebus/azure-messaging-servicebus/src/main/java/com/azure/messaging/servicebus/ServiceBusMessage.java">com.azure.messaging.servicebus.ServiceBusMessage</a>
  */
-public class ServiceBusMessageHeaders extends AzureHeaders {
+public final class ServiceBusMessageHeaders extends AzureHeaders {
 
     private static final String PREFIX = AzureHeaders.PREFIX + "service_bus_";
 

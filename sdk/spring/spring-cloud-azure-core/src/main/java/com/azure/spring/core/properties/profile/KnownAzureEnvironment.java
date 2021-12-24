@@ -11,8 +11,12 @@ import static com.azure.spring.core.aware.AzureProfileAware.CloudType.OTHER;
 /**
  * The AzureEnvironment defines all properties to Azure services, such as endpoints, resource ids, etc.
  */
-public class KnownAzureEnvironment extends AzureEnvironment {
+public final class KnownAzureEnvironment extends AzureEnvironment {
 
+    /**
+     * Create a {@link KnownAzureEnvironment} of {@link AzureProfileAware.CloudType}.
+     * @param cloudType The cloud type.
+     */
     public KnownAzureEnvironment(AzureProfileAware.CloudType cloudType) {
         super(convertToManagementAzureEnvironmentByType(cloudType));
     }

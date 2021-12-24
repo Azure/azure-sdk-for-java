@@ -890,7 +890,8 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
             deleteWithResponseAsync(resourceGroupName, serviceName, appName, domainName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

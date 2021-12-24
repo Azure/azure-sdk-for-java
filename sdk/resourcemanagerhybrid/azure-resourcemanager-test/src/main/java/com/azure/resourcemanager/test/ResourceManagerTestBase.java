@@ -41,6 +41,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -51,7 +52,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.security.AccessController;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
@@ -109,10 +109,20 @@ public abstract class ResourceManagerTestBase extends TestBase {
     private AuthFile testAuthFile;
     private boolean isSkipInPlayback;
 
+    /**
+     * Generates a random resource name.
+     *
+     * @param prefix Prefix for the resource name.
+     * @param maxLen Maximum length of the resource name.
+     * @return A randomly generated resource name with a given prefix and maximum length.
+     */
     protected String generateRandomResourceName(String prefix, int maxLen) {
         return testResourceNamer.randomName(prefix, maxLen);
     }
 
+    /**
+     * @return A randomly generated UUID.
+     */
     protected String generateRandomUuid() {
         return testResourceNamer.randomUuid();
     }
@@ -186,22 +196,41 @@ public abstract class ResourceManagerTestBase extends TestBase {
         return Region.fromName(location);
     }
 
+    /**
+     * Loads a credential from file.
+     *
+     * @return A credential loaded from a file.
+     */
     protected TokenCredential credentialFromFile() {
         return testAuthFile.getCredential();
     }
 
+    /**
+     * Loads a client ID from file.
+     *
+     * @return A client ID loaded from a file.
+     */
     protected String clientIdFromFile() {
         return testAuthFile.getClientId();
     }
 
+    /**
+     * @return The test profile.
+     */
     protected AzureProfile profile() {
         return testProfile;
     }
 
+    /**
+     * @return Whether the test mode is {@link TestMode#PLAYBACK}.
+     */
     protected boolean isPlaybackMode() {
         return getTestMode() == TestMode.PLAYBACK;
     }
 
+    /**
+     * @return Whether the test should be skipped in playback.
+     */
     protected boolean skipInPlayback() {
         if (isPlaybackMode()) {
             isSkipInPlayback = true;
@@ -376,6 +405,14 @@ public abstract class ResourceManagerTestBase extends TestBase {
         return adSettings;
     }
 
+    /**
+     * Generates an {@link HttpClient} with a proxy.
+     *
+     * @param clientBuilder The HttpClient builder.
+     * @param proxyOptions The proxy.
+     * @param environment The Azure environment.
+     * @return An HttpClient with a proxy.
+     */
     protected HttpClient generateHttpClientWithProxy(NettyAsyncHttpClientBuilder clientBuilder, ProxyOptions proxyOptions, AzureEnvironment environment) {
         if (clientBuilder == null) {
             clientBuilder = new NettyAsyncHttpClientBuilder();
@@ -467,9 +504,10 @@ public abstract class ResourceManagerTestBase extends TestBase {
         }
     }
 
-    private void setAccessible(final Field field) {
-        AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-            field.setAccessible(true);
+    @SuppressWarnings("removal")
+    private void setAccessible(final AccessibleObject accessibleObject) {
+        java.security.AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+            accessibleObject.setAccessible(true);
             return null;
         });
     }
@@ -487,10 +525,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
     protected <T> T buildManager(Class<T> manager, HttpPipeline httpPipeline, AzureProfile profile) {
         try {
             Constructor<T> constructor = manager.getDeclaredConstructor(httpPipeline.getClass(), profile.getClass());
-            AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-                constructor.setAccessible(true);
-                return null;
-            });
+            setAccessible(constructor);
             return constructor.newInstance(httpPipeline, profile);
 
         } catch (NoSuchMethodException
@@ -501,6 +536,16 @@ public abstract class ResourceManagerTestBase extends TestBase {
         }
     }
 
+    /**
+     * Builds an HttpPipeline.
+     *
+     * @param credential The credentials to use in the pipeline.
+     * @param profile The AzureProfile to use in the pipeline.
+     * @param httpLogOptions The HTTP logging options to use in the pipeline.
+     * @param policies Additional policies to use in the pipeline.
+     * @param httpClient The HttpClient to use in the pipeline.
+     * @return A new constructed HttpPipeline.
+     */
     protected abstract HttpPipeline buildHttpPipeline(
         TokenCredential credential,
         AzureProfile profile,
@@ -508,7 +553,16 @@ public abstract class ResourceManagerTestBase extends TestBase {
         List<HttpPipelinePolicy> policies,
         HttpClient httpClient);
 
+    /**
+     * Initializes service clients used in testing.
+     *
+     * @param httpPipeline The HttpPipeline to use in the clients.
+     * @param profile The AzureProfile to use in the clients.
+     */
     protected abstract void initializeClients(HttpPipeline httpPipeline, AzureProfile profile);
 
+    /**
+     * Cleans up resources.
+     */
     protected abstract void cleanUpResources();
 }

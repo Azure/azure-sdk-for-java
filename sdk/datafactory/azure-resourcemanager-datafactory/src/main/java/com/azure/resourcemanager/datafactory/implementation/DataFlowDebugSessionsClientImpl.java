@@ -294,7 +294,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
                 this.client.getHttpPipeline(),
                 CreateDataFlowDebugSessionResponseInner.class,
                 CreateDataFlowDebugSessionResponseInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1074,7 +1074,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
                 this.client.getHttpPipeline(),
                 DataFlowDebugCommandResponseInner.class,
                 DataFlowDebugCommandResponseInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

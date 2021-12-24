@@ -6,9 +6,7 @@ package com.azure.spring.messaging;
 import org.springframework.messaging.Message;
 
 /**
- * The listener mode, RECORD or BATCH.
- *
- * @author Warren Zhu
+ * The listener mode for consuming messages, RECORD or BATCH.
  */
 public enum ListenerMode {
 

@@ -1013,7 +1013,8 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             deleteWithResponseAsync(resourceGroupName, capacityReservationGroupName, capacityReservationName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

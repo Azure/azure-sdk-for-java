@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.jms;
 
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
-import com.azure.spring.core.connectionstring.implementation.ServiceBusConnectionString;
+import com.azure.spring.core.implementation.connectionstring.ServiceBusConnectionString;
 import org.apache.qpid.jms.JmsConnectionFactory;
 import org.apache.qpid.jms.policy.JmsDefaultPrefetchPolicy;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -20,7 +20,7 @@ import javax.jms.ConnectionFactory;
 /**
  * Automatic configuration class of ServiceBusJMS for Standard and Basic Service Bus
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(JmsConnectionFactory.class)
 @ConditionalOnProperty(value = "spring.jms.servicebus.enabled", matchIfMissing = true)
 @ConditionalOnExpression(value = "not '${spring.jms.servicebus.pricing-tier}'.equalsIgnoreCase('premium')")

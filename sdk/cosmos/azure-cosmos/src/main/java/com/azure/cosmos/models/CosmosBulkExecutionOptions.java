@@ -9,6 +9,8 @@ import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 
 import java.time.Duration;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+
 /**
  * Encapsulates options that can be specified for operations used in Bulk execution.
  * It can be passed while processing bulk operations.
@@ -92,11 +94,33 @@ public final class CosmosBulkExecutionOptions {
 
     /**
      * The maximum concurrency for executing requests for a partition key range.
+     * By default, the maxMicroBatchConcurrency is 1.
      *
      * @return max micro batch concurrency
      */
-    int getMaxMicroBatchConcurrency() {
+    public int getMaxMicroBatchConcurrency() {
         return maxMicroBatchConcurrency;
+    }
+
+    /**
+     * Set the maximum concurrency for executing requests for a partition key range.
+     * By default, the maxMicroBatchConcurrency is 1.
+     * It only allows values &ge;1 and &le;5.
+     *
+     * Attention! Please adjust this value with caution.
+     * By increasing this value, more concurrent requests will be allowed to be sent to the server,
+     * in which case may cause 429 or request timed out due to saturate local resources, which could degrade the performance.
+     *
+     * @param maxMicroBatchConcurrency the micro batch concurrency.
+     *
+     * @return the bulk processing options.
+     */
+    public CosmosBulkExecutionOptions setMaxMicroBatchConcurrency(int maxMicroBatchConcurrency) {
+        checkArgument(
+            maxMicroBatchConcurrency >= 1 && maxMicroBatchConcurrency <= 5,
+            "maxMicroBatchConcurrency should be between [1, 5]");
+        this.maxMicroBatchConcurrency = maxMicroBatchConcurrency;
+        return this;
     }
 
     /**

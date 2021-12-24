@@ -86,31 +86,66 @@ public interface ExpressRouteCircuit
 
         /** The stage of express route circuit definition allowing to specify service provider name. */
         interface WithServiceProvider {
+            /**
+             * Specifies the service provider name for the express route circuit.
+             *
+             * @param serviceProviderName the service provider name
+             * @return the next stage of the definition
+             */
             WithPeeringLocation withServiceProvider(String serviceProviderName);
         }
 
         /** The stage of express route circuit definition allowing to specify service provider peering location. */
         interface WithPeeringLocation {
+            /**
+             * Specifies the location for the express route circuit.
+             *
+             * @param location the location
+             * @return the next stage of the definition
+             */
             WithBandwidth withPeeringLocation(String location);
         }
 
         /** The stage of express route circuit definition allowing to specify service provider bandwidth. */
         interface WithBandwidth {
+            /**
+             * Specifies the bandwidth in Mbps for the express route circuit.
+             *
+             * @param bandwidthInMbps the bandwidth in Mbps
+             * @return the next stage of the definition
+             */
             WithSku withBandwidthInMbps(int bandwidthInMbps);
         }
 
         /** The stage of express route circuit definition allowing to specify SKU tier and family. */
         interface WithSku {
+            /**
+             * Specifies the SKU type for the express route circuit.
+             *
+             * @param skuType the SKU type
+             * @return the next stage of the definition
+             */
             WithCreate withSku(ExpressRouteCircuitSkuType skuType);
         }
 
         /** The stage of express route circuit definition allowing to enable/disable classic operations. */
         interface WithAllowClassicOperations {
+            /**
+             * Specifies whether classic operations are enabled.
+             *
+             * @return the next stage of the definition
+             */
             WithCreate withClassicOperations();
         }
 
         /** The stage of definition allowing to add authorization. */
         interface WithAuthorization {
+            /**
+             * Specifies the authorization name for the express route circuit.
+             *
+             * @param authorizationName the authorization name
+             * @return the next stage of the definition
+             */
             WithCreate withAuthorization(String authorizationName);
         }
 
@@ -130,23 +165,51 @@ public interface ExpressRouteCircuit
     interface UpdateStages {
         /** The stage of express route circuit update allowing to specify service provider bandwidth. */
         interface WithBandwidth {
+            /**
+             * Specifies the bandwidth in Mbps for the express route circuit.
+             *
+             * @param bandwidthInMbps the bandwidth in Mbps
+             * @return the next stage of the update
+             */
             Update withBandwidthInMbps(int bandwidthInMbps);
         }
 
         /** The stage of express route circuit update allowing to specify SKU tier and family. */
         interface WithSku {
+            /**
+             * Specifies the SKU for the express route circuit.
+             *
+             * @param sku the SKI
+             * @return the next stage of the update
+             */
             Update withSku(ExpressRouteCircuitSkuType sku);
         }
 
         /** The stage of express route circuit update allowing to enable/disable classic operations. */
         interface WithAllowClassicOperations {
+            /**
+             * Specifies whether classic operations are enabled.
+             *
+             * @return the next stage of the update
+             */
             Update withClassicOperations();
 
+            /**
+             * Specifies whether classic operations are disabled.
+             *
+             * @return the next stage of the update
+             */
             Update withoutClassicOperations();
         }
 
         /** The stage of express route circuit update allowing to add authorization. */
         interface WithAuthorization {
+            /**
+             * Specifies the authorization name for the express route circuit.
+             *
+             * @param authorizationName the authorization name
+             * @return the next stage of the update
+             */
             Update withAuthorization(String authorizationName);
         }
     }

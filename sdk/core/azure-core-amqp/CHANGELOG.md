@@ -10,6 +10,14 @@
 
 ### Other Changes
 
+## 2.3.5 (2021-12-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.22.0` to `1.23.1`.
+
 ## 2.3.4 (2021-11-15)
 
 ### Bugs Fixed

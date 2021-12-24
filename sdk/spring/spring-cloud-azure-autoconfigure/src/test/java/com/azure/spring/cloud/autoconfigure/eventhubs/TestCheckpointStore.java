@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-class TestCheckpointStore implements CheckpointStore {
+public class TestCheckpointStore implements CheckpointStore {
 
     @Override
     public Flux<PartitionOwnership> listOwnership(String s, String s1, String s2) {

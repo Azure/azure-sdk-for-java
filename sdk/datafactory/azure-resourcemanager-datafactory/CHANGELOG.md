@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.8 (Unreleased)
+## 1.0.0-beta.9 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,40 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.8 (2021-11-29)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.Flowlet` was modified
+
+* `withAdditionalProperties(java.util.Map)` was removed
+* `additionalPropertiesTypePropertiesAdditionalProperties()` was removed
+* `additionalProperties()` was removed
+* `withAdditionalPropertiesTypePropertiesAdditionalProperties(java.lang.Object)` was removed
+
+### Features Added
+
+* `models.ManagedIdentityCredential` was added
+
+* `models.ServicePrincipalCredential` was added
+
+#### `models.FtpReadSettings` was modified
+
+* `withDisableChunking(java.lang.Object)` was added
+* `disableChunking()` was added
+
+#### `models.DataFlowReference` was modified
+
+* `withParameters(java.util.Map)` was added
+* `parameters()` was added
+
+#### `models.SftpReadSettings` was modified
+
+* `withDisableChunking(java.lang.Object)` was added
+* `disableChunking()` was added
 
 ## 1.0.0-beta.7 (2021-11-10)
 

@@ -242,6 +242,7 @@ the main ServiceBusClientBuilder. -->
   <!-- Logger class suppression -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="ClientLogger.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="DefaultLogger.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="LoggingEventBuilder.java"/>
 
   <!-- Requires static access to logger to report errors while loading i18n messages (from within a static initializer )-->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="Messages.java"/>
@@ -488,7 +489,6 @@ the main ServiceBusClientBuilder. -->
   <!--BlacklistedWordsCheck: URL is the name -->
   <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files="com.azure.spring.core.resource.StorageBlobResource.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files="com.azure.spring.core.resource.StorageFileResource.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files="com.azure.spring.core.util.URLValidator.java"/>
 
   <!-- EnforceFinalFieldsCheck: The property will be filled by Spring framework -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration.java"/>
@@ -623,4 +623,7 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="WhitespaceAround" files="com.azure.search.documents.indexes.models.DataDeletionDetectionPolicy"/>
   <suppress checks="WhitespaceAround" files="com.azure.search.documents.indexes.models.SearchIndexerDataIdentity"/>
   <suppress checks="WhitespaceAround" files="com.azure.search.documents.indexes.models.SimilarityAlgorithm"/>
+
+  <!-- Suppression for bug https://github.com/checkstyle/checkstyle/issues/11001 -->
+  <suppress checks="ParenPad" files="com.azure.ai.textanalytics.TextAnalyticsClientTestBase" lines="1020,1024"/>
 </suppressions>

@@ -9,7 +9,7 @@ import com.azure.storage.file.share.ShareServiceVersion;
 /**
  * Properties for Azure Storage File Share service.
  */
-public class TestAzureStorageFileShareProperties extends TestAzureStorageProperties implements StorageFileShareProperties {
+class TestAzureStorageFileShareProperties extends TestAzureStorageProperties implements ShareServiceClientProperties {
 
     private ShareServiceVersion serviceVersion;
 
@@ -25,21 +25,4 @@ public class TestAzureStorageFileShareProperties extends TestAzureStoragePropert
         this.serviceVersion = serviceVersion;
     }
 
-    @Override
-    public String getShareName() {
-        return shareName;
-    }
-
-    public void setShareName(String shareName) {
-        this.shareName = shareName;
-    }
-
-    @Override
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
 }

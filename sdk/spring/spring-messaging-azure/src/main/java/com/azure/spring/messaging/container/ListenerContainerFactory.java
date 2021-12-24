@@ -10,7 +10,6 @@ import com.azure.spring.messaging.endpoint.AzureListenerEndpoint;
  * {@link AzureListenerEndpoint} definition.
  *
  * @param <C> the container type
- * @author Warren Zhu
  * @see AzureListenerEndpoint
  */
 public interface ListenerContainerFactory<C extends MessageListenerContainer> {

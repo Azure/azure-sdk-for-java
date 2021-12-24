@@ -33,10 +33,21 @@ public class EventHubsChannelProvisioner implements
         return new EventHubsConsumerDestination(name);
     }
 
+    /**
+     * Validate or create for consumer.
+     *
+     * @param name the name
+     * @param group the group
+     */
     protected void validateOrCreateForConsumer(String name, String group) {
         // no-op
     }
 
+    /**
+     * Validate or create for producer.
+     *
+     * @param name the name
+     */
     protected void validateOrCreateForProducer(String name) {
         // no-op
     }

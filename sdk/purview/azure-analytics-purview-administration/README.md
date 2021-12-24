@@ -2,7 +2,7 @@
 
 Azure Purview data plane administration. It supports data plane operations. It can manage account, collections, keys, resource set rule, metadata policy, metadata roles.
 
-**Please rely heavily on the [service's documentation][product_documentation] and [Protocol method documentation][protocol_method] to use this library**
+**Please rely heavily on the [service's documentation][product_documentation] and [data-plane documentation][protocol_method] to use this library**
 
 [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation]
 

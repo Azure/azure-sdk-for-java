@@ -465,7 +465,11 @@ public final class PipelineRunsClientImpl implements PipelineRunsClient {
         return this
             .client
             .<PipelineRunInner, PipelineRunInner>getLroResult(
-                mono, this.client.getHttpPipeline(), PipelineRunInner.class, PipelineRunInner.class, this.client.getContext());
+                mono,
+                this.client.getHttpPipeline(),
+                PipelineRunInner.class,
+                PipelineRunInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -759,7 +763,8 @@ public final class PipelineRunsClientImpl implements PipelineRunsClient {
             deleteWithResponseAsync(resourceGroupName, registryName, pipelineRunName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

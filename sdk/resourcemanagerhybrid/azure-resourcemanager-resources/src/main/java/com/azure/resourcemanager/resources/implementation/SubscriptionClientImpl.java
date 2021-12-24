@@ -81,9 +81,7 @@ public final class SubscriptionClientImpl extends AzureServiceClient implements 
         return this.defaultPollInterval;
     }
 
-    /**
-     * The SubscriptionsClient object to access its operations.
-     */
+    /** The SubscriptionsClient object to access its operations. */
     private final SubscriptionsClient subscriptions;
 
     /**

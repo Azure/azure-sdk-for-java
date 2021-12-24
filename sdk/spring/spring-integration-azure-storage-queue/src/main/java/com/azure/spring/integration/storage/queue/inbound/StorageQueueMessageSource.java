@@ -18,6 +18,12 @@ public class StorageQueueMessageSource extends AbstractMessageSource<Message<?>>
     private final StorageQueueOperation storageQueueOperation;
     private final String destination;
 
+    /**
+     * Construct a {@link StorageQueueMessageSource} with the specified destination and {@link StorageQueueOperation}.
+     *
+     * @param destination the destination
+     * @param storageQueueOperation the storage queue operation
+     */
     public StorageQueueMessageSource(String destination, StorageQueueOperation storageQueueOperation) {
         Assert.hasText(destination, "destination can't be null or empty");
         this.storageQueueOperation = storageQueueOperation;

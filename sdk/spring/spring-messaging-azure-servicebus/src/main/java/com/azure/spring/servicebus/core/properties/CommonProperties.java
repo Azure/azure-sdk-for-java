@@ -3,15 +3,15 @@
 
 package com.azure.spring.servicebus.core.properties;
 
-import com.azure.spring.core.connectionstring.implementation.ServiceBusConnectionString;
-import com.azure.spring.core.properties.AbstractAzureAmqpSdkProperties;
-import com.azure.spring.service.servicebus.properties.ServiceBusCommonDescriptor;
+import com.azure.spring.core.implementation.connectionstring.ServiceBusConnectionString;
+import com.azure.spring.core.properties.AzureAmqpSdkProperties;
+import com.azure.spring.service.servicebus.properties.ServiceBusClientCommonProperties;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 
 /**
  * Common properties shared by Service Bus namespace, a producer, and a consumer.
  */
-public class CommonProperties extends AbstractAzureAmqpSdkProperties implements ServiceBusCommonDescriptor {
+public class CommonProperties extends AzureAmqpSdkProperties implements ServiceBusClientCommonProperties {
 
     private String domainName = "servicebus.windows.net";
     private String namespace;
@@ -27,7 +27,7 @@ public class CommonProperties extends AbstractAzureAmqpSdkProperties implements 
     }
 
     @Override
-    public String getFQDN() {
+    public String getFullyQualifiedNamespace() {
         return this.namespace == null ? extractFqdnFromConnectionString() : (this.namespace + "." + domainName);
     }
 
@@ -36,6 +36,10 @@ public class CommonProperties extends AbstractAzureAmqpSdkProperties implements 
         return domainName;
     }
 
+    /**
+     * Set the domain name.
+     * @param domainName the domain name.
+     */
     public void setDomainName(String domainName) {
         this.domainName = domainName;
     }
@@ -45,6 +49,10 @@ public class CommonProperties extends AbstractAzureAmqpSdkProperties implements 
         return namespace;
     }
 
+    /**
+     * Set the namespace.
+     * @param namespace the namespace.
+     */
     public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
@@ -54,22 +62,36 @@ public class CommonProperties extends AbstractAzureAmqpSdkProperties implements 
         return connectionString;
     }
 
+    /**
+     * Set the connection string.
+     * @param connectionString the connection string.
+     */
     public void setConnectionString(String connectionString) {
         this.connectionString = connectionString;
     }
 
+    @Override
     public String getEntityName() {
         return entityName;
     }
 
+    /**
+     * Set the entity name.
+     * @param entityName the entity name.
+     */
     public void setEntityName(String entityName) {
         this.entityName = entityName;
     }
 
+    @Override
     public ServiceBusEntityType getEntityType() {
         return entityType;
     }
 
+    /**
+     * Set the entity type.
+     * @param entityType the entity type.
+     */
     public void setEntityType(ServiceBusEntityType entityType) {
         this.entityType = entityType;
     }

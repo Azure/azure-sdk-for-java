@@ -11,8 +11,6 @@ import reactor.core.publisher.Mono;
  * Operations for receiving {@link Message}&lt;?&gt; from a destination.
  * Received message contain payload of type specified by {@link #setMessagePayloadType(Class)}}
  *
- * @author Warren Zhu
- * @author Xiaolu Dai
  */
 public interface ReceiveOperation {
 

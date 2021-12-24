@@ -244,6 +244,9 @@ public interface DiagnosticSetting
             Update withoutLogAnalytics();
         }
 
+        /**
+         * The stage of a Diagnostic Settings update allowing to modify metric and logs.
+         */
         interface WithMetricAndLogs {
             /**
              * Adds a Metric Setting to the list of Metric Settings for the current Diagnostic Settings.

@@ -15,12 +15,6 @@ public final class SubscriptionQuotaItemProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SubscriptionQuotaItemProperties.class);
 
     /*
-     * Quota Item name
-     */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
-    private String name;
-
-    /*
      * The current quota value.
      */
     @JsonProperty(value = "current", access = JsonProperty.Access.WRITE_ONLY)
@@ -31,15 +25,6 @@ public final class SubscriptionQuotaItemProperties {
      */
     @JsonProperty(value = "default", access = JsonProperty.Access.WRITE_ONLY)
     private Integer defaultProperty;
-
-    /**
-     * Get the name property: Quota Item name.
-     *
-     * @return the name value.
-     */
-    public String name() {
-        return this.name;
-    }
 
     /**
      * Get the current property: The current quota value.

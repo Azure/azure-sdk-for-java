@@ -12,11 +12,17 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Auto configuration for {@link ServiceBusHealthIndicator}.
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(name = "org.springframework.boot.actuate.health.HealthIndicator")
 @ConditionalOnEnabledHealthIndicator("binders")
 public class ServiceBusBinderHealthIndicatorConfiguration {
 
+    /**
+     * Declare Service Bus Health Indicator bean.
+     *
+     * @param binder the binder
+     * @return ServiceBusHealthIndicator bean the Service Bus Health Indicator bean
+     */
     @Bean
     public ServiceBusHealthIndicator serviceBusHealthIndicator(ServiceBusMessageChannelBinder binder) {
         return new ServiceBusHealthIndicator(binder);

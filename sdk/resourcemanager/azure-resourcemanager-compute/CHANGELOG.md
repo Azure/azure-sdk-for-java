@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Supported Flexible orchestration mode for `VirtualMachineScaleSet` during create.
+
 ### Breaking Changes
 
 ### Bugs Fixed

@@ -10,7 +10,7 @@ import org.springframework.cloud.stream.binder.BinderSpecificPropertiesProvider;
 import java.util.Map;
 
 /**
- * @author Warren Zhu
+ *
  */
 @ConfigurationProperties("spring.cloud.stream.servicebus")
 public class ServiceBusExtendedBindingProperties
@@ -28,6 +28,11 @@ public class ServiceBusExtendedBindingProperties
         return ServiceBusBindingProperties.class;
     }
 
+    /**
+     * Get Bindings.
+     *
+     * @return Bindings value
+     */
     public Map<String, ServiceBusBindingProperties> getBindings() {
         return doGetBindings();
     }

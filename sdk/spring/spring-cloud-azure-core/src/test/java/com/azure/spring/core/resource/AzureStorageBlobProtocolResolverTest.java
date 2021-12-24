@@ -15,7 +15,9 @@ import com.azure.storage.blob.specialized.BlockBlobClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.core.io.ProtocolResolver;
+import org.springframework.core.io.Resource;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -105,5 +107,23 @@ class AzureStorageBlobProtocolResolverTest extends AbstractAzureStorageProtocolR
         verify(blockBlobClient, times(1)).getProperties();
     }
 
+    @Test
+    void protocolPatternMatched() {
+        when(blobServiceClient.getBlobContainerClient(anyString())).thenReturn(blobContainerClient);
+        when(blobContainerClient.getBlobClient(anyString())).thenReturn(blobClient);
 
+        String[] locations = new String[]{"azure-blob://test/test", "azure-blob://test/test2"};
+        Resource[] resources = getResources(locations);
+        assertEquals(locations.length, resources.length, "Correct number of resources found");
+    }
+
+    @Test
+    void protocolPatternNotMatched() {
+        when(blobServiceClient.getBlobContainerClient(anyString())).thenReturn(blobContainerClient);
+        when(blobContainerClient.getBlobClient(anyString())).thenReturn(blobClient);
+
+        String[] locations = new String[]{"azureblob:test/test", "otherblob:test/test2"};
+        Resource[] resources = getResources(locations);
+        assertEquals(0, resources.length, "No resolved resources found");
+    }
 }

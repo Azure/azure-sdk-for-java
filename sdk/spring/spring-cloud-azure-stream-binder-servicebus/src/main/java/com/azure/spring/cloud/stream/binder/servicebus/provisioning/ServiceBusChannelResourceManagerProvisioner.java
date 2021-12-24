@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.stream.binder.servicebus.provisioning;
 
-import com.azure.spring.cloud.resourcemanager.provisioner.servicebus.ServiceBusProvisioner;
+import com.azure.spring.resourcemanager.provisioner.servicebus.ServiceBusProvisioner;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
@@ -18,6 +18,12 @@ public class ServiceBusChannelResourceManagerProvisioner extends ServiceBusChann
     private final String namespace;
     private final ServiceBusProvisioner serviceBusProvisioner;
 
+    /**
+     * Construct a {@link ServiceBusChannelResourceManagerProvisioner} with the specified namespace and {@link ServiceBusProvisioner}.
+     *
+     * @param namespace the namespace
+     * @param serviceBusProvisioner the service Bus Provisioner
+     */
     public ServiceBusChannelResourceManagerProvisioner(@NonNull String namespace,
                                                        @NonNull ServiceBusProvisioner serviceBusProvisioner) {
         Assert.hasText(namespace, "The namespace can't be null or empty");

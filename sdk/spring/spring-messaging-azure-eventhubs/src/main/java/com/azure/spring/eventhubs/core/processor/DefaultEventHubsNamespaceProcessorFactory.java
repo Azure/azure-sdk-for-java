@@ -27,11 +27,20 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * The {@link EventHubsProcessorFactory} implementation to produce new {@link EventProcessorClient} instances
+ * for provided {@link CheckpointStore} {@code checkpointStore} and optional {@link NamespaceProperties} and
+ * processor {@link PropertiesSupplier} on each {@link #createProcessor} invocation.
+ *
+ * <p>
+ * The created {@link EventProcessorClient}s are cached according to the event hub names and consumer groups.
+ * </p>
+ * <p>
  * {@link EventProcessorClient} produced by this factory will share the same namespace level configuration, but if a
  * configuration entry is provided at both processor and namespace level, the processor level configuration will take
  * advantage.
+ * </p>
  */
-public class DefaultEventHubsNamespaceProcessorFactory implements EventHubsProcessorFactory, DisposableBean {
+public final class DefaultEventHubsNamespaceProcessorFactory implements EventHubsProcessorFactory, DisposableBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultEventHubsNamespaceProcessorFactory.class);
 
@@ -42,20 +51,41 @@ public class DefaultEventHubsNamespaceProcessorFactory implements EventHubsProce
     private final Map<Tuple2<String, String>, EventProcessorClient> processorClientMap = new ConcurrentHashMap<>();
     private final ProcessorPropertiesParentMerger propertiesMerger = new ProcessorPropertiesParentMerger();
 
+    /**
+     * Construct a factory with the provided {@link CheckpointStore}.
+     * @param checkpointStore the checkpoint store.
+     */
     public DefaultEventHubsNamespaceProcessorFactory(CheckpointStore checkpointStore) {
         this(checkpointStore, null, null);
     }
 
+    /**
+     * Construct a factory with the provided {@link CheckpointStore} and namespace level properties.
+     * @param checkpointStore the checkpoint store.
+     * @param namespaceProperties the namespace properties.
+     */
     public DefaultEventHubsNamespaceProcessorFactory(CheckpointStore checkpointStore,
                                                      NamespaceProperties namespaceProperties) {
         this(checkpointStore, namespaceProperties, key -> null);
     }
 
+    /**
+     * Construct a factory with the provided {@link CheckpointStore} and processor {@link PropertiesSupplier}.
+     * @param checkpointStore the checkpoint store.
+     * @param supplier the {@link PropertiesSupplier} to supply {@link ProcessorProperties} for each event hub.
+     */
     public DefaultEventHubsNamespaceProcessorFactory(CheckpointStore checkpointStore,
                                                      PropertiesSupplier<Tuple2<String, String>,
                                                          ProcessorProperties> supplier) {
         this(checkpointStore, null, supplier);
     }
+
+    /**
+     * Construct a factory with the provided {@link CheckpointStore}, namespace level properties and processor {@link PropertiesSupplier}.
+     * @param checkpointStore the checkpoint store.
+     * @param namespaceProperties the namespace properties.
+     * @param supplier the {@link PropertiesSupplier} to supply {@link ProcessorProperties} for each event hub.
+     */
     public DefaultEventHubsNamespaceProcessorFactory(CheckpointStore checkpointStore,
                                                      NamespaceProperties namespaceProperties,
                                                      PropertiesSupplier<Tuple2<String, String>,

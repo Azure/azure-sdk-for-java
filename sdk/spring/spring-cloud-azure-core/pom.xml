@@ -32,39 +32,50 @@
     <url>https://github.com/Azure/azure-sdk-for-java/issues</url>
   </issueManagement>
 
+
   <properties>
-    <jacoco.min.linecoverage>0.01</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.01</jacoco.min.branchcoverage>
+    <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
+    <!-- https://issues.apache.org/jira/browse/SUREFIRE-1563 -->
+    <javaModulesSurefireArgLine>
+      --add-modules com.azure.storage.blob
+      --add-modules com.azure.storage.internal.avro
+      --add-modules com.azure.storage.file.share
+      --add-opens com.azure.spring.core/com.azure.spring.core=ALL-UNNAMED
+      --add-opens com.azure.spring.core/com.azure.spring.core.factory=ALL-UNNAMED
+      --add-opens com.azure.spring.core/com.azure.spring.core.implementation.connectionstring=ALL-UNNAMED
+      --add-opens com.azure.spring.core/com.azure.spring.core.resource=ALL-UNNAMED
+      --add-opens com.azure.spring.core/com.azure.spring.core.util=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>5.3.9</version> <!-- {x-version-update;org.springframework:spring-context;external_dependency} -->
+      <version>5.3.13</version> <!-- {x-version-update;org.springframework:spring-context;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.4.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.4.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.22.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.23.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-amqp</artifactId>
-      <version>2.3.4</version> <!-- {x-version-update;com.azure:azure-core-amqp;dependency} -->
+      <version>2.3.5</version> <!-- {x-version-update;com.azure:azure-core-amqp;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-management</artifactId>
-      <version>1.4.3</version> <!-- {x-version-update;com.azure:azure-core-management;dependency} -->
+      <version>1.4.4</version> <!-- {x-version-update;com.azure:azure-core-management;dependency} -->
     </dependency>
 
     <dependency>
@@ -76,10 +87,6 @@
         <exclusion>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-http-netty</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-storage-internal-avro</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -99,19 +106,19 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>3.12.4</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>4.0.0</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter;external_dependency} -->
+      <version>5.8.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>5.3.9</version> <!-- {x-version-update;org.springframework:spring-test;external_dependency} -->
+      <version>5.3.13</version> <!-- {x-version-update;org.springframework:spring-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -137,7 +144,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework:spring-context:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
+                <include>org.springframework:spring-context:[5.3.13]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

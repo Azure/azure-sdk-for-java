@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.stream.binder.eventhubs.provisioning;
 
-import com.azure.spring.cloud.resourcemanager.provisioner.eventhubs.EventHubsProvisioner;
+import com.azure.spring.resourcemanager.provisioner.eventhubs.EventHubsProvisioner;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 
@@ -15,6 +15,12 @@ public class EventHubsChannelResourceManagerProvisioner extends EventHubsChannel
     private final String namespace;
     private final EventHubsProvisioner eventHubsProvisioner;
 
+    /**
+     * Construct a {@link EventHubsChannelResourceManagerProvisioner} with the specified namespace and {@link EventHubsProvisioner}.
+     *
+     * @param namespace the namespace
+     * @param eventHubsProvisioner the event Hubs Provisioner
+     */
     public EventHubsChannelResourceManagerProvisioner(@NonNull String namespace,
                                                       @NonNull EventHubsProvisioner eventHubsProvisioner) {
         Assert.hasText(namespace, "The namespace can't be null or empty");

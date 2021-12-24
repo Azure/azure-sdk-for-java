@@ -3,14 +3,14 @@
 
 package com.azure.spring.service.servicebus.processor;
 
-import com.azure.spring.service.servicebus.processor.consumer.ErrorContextConsumer;
+import com.azure.spring.service.servicebus.processor.consumer.ServiceBusErrorContextConsumer;
 
 /**
  * A listener to process Service Bus messages.
  */
 public interface MessageProcessingListener {
 
-    default ErrorContextConsumer getErrorContextConsumer() {
+    default ServiceBusErrorContextConsumer getErrorContextConsumer() {
         return errorContext -> { };
     }
 

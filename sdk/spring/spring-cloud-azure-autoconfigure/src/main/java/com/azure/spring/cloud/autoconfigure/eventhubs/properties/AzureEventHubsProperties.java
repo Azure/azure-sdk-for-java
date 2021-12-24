@@ -4,11 +4,11 @@
 package com.azure.spring.cloud.autoconfigure.eventhubs.properties;
 
 import com.azure.spring.cloud.autoconfigure.storage.blob.properties.AzureStorageBlobProperties;
-import com.azure.spring.core.properties.util.AzurePropertiesUtils;
-import com.azure.spring.service.eventhubs.properties.EventHubsConsumerDescriptor;
-import com.azure.spring.service.eventhubs.properties.EventHubsNamespaceDescriptor;
-import com.azure.spring.service.eventhubs.properties.EventHubsProcessorDescriptor;
-import com.azure.spring.service.eventhubs.properties.EventHubsProducerDescriptor;
+import com.azure.spring.core.util.AzurePropertiesUtils;
+import com.azure.spring.service.eventhubs.properties.EventHubConsumerProperties;
+import com.azure.spring.service.eventhubs.properties.EventHubProducerProperties;
+import com.azure.spring.service.eventhubs.properties.EventHubsNamespaceProperties;
+import com.azure.spring.service.eventhubs.properties.EventProcessorClientProperties;
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.context.properties.PropertyMapper;
 
@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  * Azure Event Hubs related properties.
  */
-public class AzureEventHubsProperties extends AzureEventHubsCommonProperties implements EventHubsNamespaceDescriptor {
+public class AzureEventHubsProperties extends AzureEventHubsCommonProperties implements EventHubsNamespaceProperties {
 
     public static final String PREFIX = "spring.cloud.azure.eventhubs";
 
@@ -129,14 +129,14 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties imp
     /**
      * Properties of an Event Hub producer.
      */
-    public static class Producer extends AzureEventHubsCommonProperties implements EventHubsProducerDescriptor {
+    public static class Producer extends AzureEventHubsCommonProperties implements EventHubProducerProperties {
 
     }
 
     /**
      * Properties of an Event Hub consumer.
      */
-    public static class Consumer extends AzureEventHubsCommonProperties implements EventHubsConsumerDescriptor {
+    public static class Consumer extends AzureEventHubsCommonProperties implements EventHubConsumerProperties {
 
         /**
          * Name of the consumer group this consumer is associated with.
@@ -170,12 +170,12 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties imp
     /**
      * Properties of an Event Hub processor.
      */
-    public static class Processor extends Consumer implements EventHubsProcessorDescriptor {
+    public static class Processor extends Consumer implements EventProcessorClientProperties {
 
         private Boolean trackLastEnqueuedEventProperties;
         private Map<String, StartPosition> initialPartitionEventPosition = new HashMap<>();
         private Duration partitionOwnershipExpirationInterval;
-        private final Batch batch = new Batch();
+        private final EventBatch batch = new EventBatch();
         private final LoadBalancing loadBalancing = new LoadBalancing();
         private final BlobCheckpointStore checkpointStore = new BlobCheckpointStore();
 
@@ -203,7 +203,7 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties imp
             this.partitionOwnershipExpirationInterval = partitionOwnershipExpirationInterval;
         }
 
-        public Batch getBatch() {
+        public EventBatch getBatch() {
             return batch;
         }
 
@@ -218,21 +218,21 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties imp
         /**
          * Event processor load balancing properties.
          */
-        public static class LoadBalancing extends EventHubsProcessorDescriptor.LoadBalancing {
+        public static class LoadBalancing extends EventProcessorClientProperties.LoadBalancing {
 
         }
 
         /**
          * Event processor batch properties.
          */
-        public static class Batch extends EventHubsProcessorDescriptor.Batch {
+        public static class EventBatch extends EventProcessorClientProperties.EventBatch {
 
         }
 
         /**
          * Blob checkpoint store.
          */
-        public static class BlobCheckpointStore extends AzureStorageBlobProperties  {
+        public static class BlobCheckpointStore extends AzureStorageBlobProperties {
 
             private Boolean createContainerIfNotExists;
 

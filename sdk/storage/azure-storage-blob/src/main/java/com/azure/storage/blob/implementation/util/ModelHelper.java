@@ -7,6 +7,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -299,7 +300,7 @@ public class ModelHelper {
     }
 
     private static Map<String, String> tagMapFromBlobTags(BlobTags blobTags) {
-        if (blobTags == null || blobTags.getBlobTagSet() == null || blobTags.getBlobTagSet().isEmpty()) {
+        if (blobTags == null || CoreUtils.isNullOrEmpty(blobTags.getBlobTagSet())) {
             return Collections.emptyMap();
         } else {
             Map<String, String> tags = new HashMap<>();
