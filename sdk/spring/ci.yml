@@ -462,6 +462,8 @@ stages:
             - AZURE_TEST.*=.*/
           PreBuildSteps:
             - script: |
+                pip install in-place
+            - script: |
                 python ./sdk/spring/scripts/ci_update_versions.py --sbv 2.6.1
             - script: |
                 python ./sdk/spring/scripts/ci_add_spring_boot_dependencies_management.py --boot 2.6.1 --cloud 2021.0.0
@@ -512,6 +514,8 @@ stages:
               - TestOptions=.*/-am
             - AZURE_TEST.*=.*/
           PreBuildSteps:
+            - script: |
+                pip install in-place
             - script: |
                 python ./sdk/spring/scripts/ci_update_versions.py --sbv 2.5.4
             - script: |
