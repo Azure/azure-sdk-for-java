@@ -81,7 +81,7 @@ def main():
     }
     log.set_log_level(log_dict[args.log])
     start_time = time.time()
-    log.info('Current working directory = {}.'.format(os.getcwd()))
+    log.debug('Current working directory = {}.'.format(os.getcwd()))
     add_dependency_management_all(args.spring_boot_dependencies_version, args.spring_cloud_dependencies_version)
     elapsed_time = time.time() - start_time
     log.info('elapsed_time = {}'.format(elapsed_time))

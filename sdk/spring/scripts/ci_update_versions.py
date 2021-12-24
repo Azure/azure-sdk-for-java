@@ -12,7 +12,6 @@
 
 import in_place
 import argparse
-from datetime import timedelta
 import os
 import re
 import time
@@ -101,10 +100,10 @@ def main():
     }
     log.set_log_level(log_dict[args.log])
     start_time = time.time()
+    log.debug('Current working directory = {}.'.format(os.getcwd()))
     update_versions_all(args.target_folder, args.spring_boot_version)
     elapsed_time = time.time() - start_time
     log.info('elapsed_time={}'.format(elapsed_time))
-    log.info('Total time for replacement: {}'.format(str(timedelta(seconds=elapsed_time))))
 
 if __name__ == '__main__':
     main()
