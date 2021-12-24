@@ -14,6 +14,7 @@
 import os
 import time
 import argparse
+from log import log, Log
 
 def add_dependency_management(content1,content2):
     for root, _, files in os.walk("./sdk/spring"):
@@ -26,14 +27,12 @@ def add_dependency_management(content1,content2):
                     pos1 = content.find('<dependencies>')
                     pos2 = content.find('<dependencyManagement>')
                     if pos2 != -1:
-                        print("processing:" + file_path)
-                        print("add dependency management...")
+                        log.info("processing:" + file_path)
                         content = content[:pos2+41] + content1 + content[pos2+41:]
                         with open(file_path, 'r+', encoding='utf-8') as f:
                             f.writelines(content)
                     else:
-                        print("processing:" + file_path)
-                        print("add dependency management...")
+                        log.info("processing:" + file_path)
                         content = content[:pos1] + content2 + content[pos1:]
                         with open(file_path, 'r+', encoding='utf-8') as f:
                             f.writelines(content)
@@ -64,12 +63,28 @@ def main():
     parser = argparse.ArgumentParser(description='Add dependencies management in poms.')
     parser.add_argument('--spring_boot_dependencies_version', '--boot', type=str, required=True)
     parser.add_argument('--spring_cloud_dependencies_version', '--cloud', type=str, required=True)
+    parser.add_argument(
+        '--log',
+        type=str,
+        choices=['debug', 'info', 'warn', 'error', 'none'],
+        required=False,
+        default='info',
+        help='Set log level.'
+    )
     args = parser.parse_args()
+    log_dict = {
+        'debug': Log.DEBUG,
+        'info': Log.INFO,
+        'warn': Log.WARN,
+        'error': Log.ERROR,
+        'none': Log.NONE
+    }
+    log.set_log_level(log_dict[args.log])
     start_time = time.time()
-    print('Current working directory = {}.'.format(os.getcwd()))
+    log.info('Current working directory = {}.'.format(os.getcwd()))
     add_dependency_management_all(args.spring_boot_dependencies_version, args.spring_cloud_dependencies_version)
     elapsed_time = time.time() - start_time
-    print('elapsed_time = {}'.format(elapsed_time))
+    log.info('elapsed_time = {}'.format(elapsed_time))
 
 if __name__ == '__main__':
     main()

@@ -16,6 +16,7 @@ from datetime import timedelta
 import os
 import re
 import time
+from log import log, Log
 
 include_update_marker = re.compile(r'\{x-include-update;([^;]+);([^}]+)\}')
 version_update_marker = re.compile(r'\{x-version-update;([^;]+);([^}]+)\}')
@@ -35,7 +36,7 @@ def update_versions(external_dependency_version_map, target_file):
                     new_version = external_dependency_version_map[module_name]
                     newline = re.sub(external_dependency_version_regex, new_version, line)
                     file.write(newline)
-                    print("updating " + target_file + ":" + newline)
+                    log.info("updating " + target_file + ":" + newline)
                 else:
                     file.write(line)
             elif include_update_marker.search(line):
@@ -45,7 +46,7 @@ def update_versions(external_dependency_version_map, target_file):
                     new_include_version = module_name + ':[' + external_dependency_version_map[module_name] + ']'
                     newline = re.sub(external_dependency_include_regex, new_include_version, line)
                     file.write(newline)
-                    print("updating " + target_file + ":" + newline)
+                    log.info("updating " + target_file + ":" + newline)
                 else:
                     file.write(line)
             else:
@@ -69,7 +70,7 @@ def update_versions_all(target_folder, spring_boot_version):
     external_dependency_version_map = {}
     # Read artifact version from dependency_file.
     dependency_file = SPRING_BOOT_MANAGED_EXTERNAL_DEPENDENCIES_FILE_NAME
-    print('external_dependency_file=' + dependency_file)
+    log.info('external_dependency_file=' + dependency_file)
     load_version_map_from_file(dependency_file, external_dependency_version_map)
     for root, _, files in os.walk(target_folder):
     # for root, _, files in os.walk("D:/java/azure-sdk-for-java/sdk/spring/"):
@@ -82,12 +83,28 @@ def main():
     parser = argparse.ArgumentParser(description='Replace version numbers in poms.')
     parser.add_argument('--target-folder', '--tf', type=str, required=False, default="./sdk/spring", help='Set target folder.')
     parser.add_argument('--spring-boot-version', '--sbv', type=str, required=True)
+    parser.add_argument(
+        '--log',
+        type=str,
+        choices=['debug', 'info', 'warn', 'error', 'none'],
+        required=False,
+        default='info',
+        help='Set log level.'
+    )
     args = parser.parse_args()
+    log_dict = {
+        'debug': Log.DEBUG,
+        'info': Log.INFO,
+        'warn': Log.WARN,
+        'error': Log.ERROR,
+        'none': Log.NONE
+    }
+    log.set_log_level(log_dict[args.log])
     start_time = time.time()
     update_versions_all(args.target_folder, args.spring_boot_version)
     elapsed_time = time.time() - start_time
-    print('elapsed_time={}'.format(elapsed_time))
-    print('Total time for replacement: {}'.format(str(timedelta(seconds=elapsed_time))))
+    log.info('elapsed_time={}'.format(elapsed_time))
+    log.info('Total time for replacement: {}'.format(str(timedelta(seconds=elapsed_time))))
 
 if __name__ == '__main__':
     main()
