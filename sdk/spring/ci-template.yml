@@ -1,30 +1,31 @@
 jobs:
     - job:
-        template: /eng/pipelines/templates/jobs/ci.yml
-        parameters:
-            ServiceDirectory: ${{ parameters.ServiceDirectory }}
-            ${{ if eq(parameters.ServiceDirectory, 'template') }}:
-                TestPipeline: true
-            SDKType: ${{ parameters.SDKType }}
-            Artifacts: ${{ parameters.Artifacts }}
-            AdditionalModules: ${{ parameters.AdditionalModules }}
-            SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
-            MatrixConfigs:
-                - ${{ each config in parameters.MatrixConfigs }}:
-                      -  ${{ config }}
-                - ${{ each config in parameters.AdditionalMatrixConfigs }}:
-                      -  ${{ config }}
-            MatrixFilters:
-                - ${{ each filter in parameters.MatrixFilters }}:
-                      - ${{ filter }}
-                # Skip TestFromSource jobs for SDKType data
-                - ${{ if eq(parameters.SDKType, 'data') }}:
-                      - TestFromSource=^(?!true).*
-            MatrixReplace:
-                - ${{ each replacement in parameters.MatrixReplace }}:
-                      - ${{ replacement }}
-                - ${{ if eq(parameters.SDKType, 'data') }}:
-                      - TestGoals=.*/verify
-                      - TestOptions=.*/-am
-                - AZURE_TEST.*=.*/
-            PreBuildSteps: ${{ parameters.PreBuildSteps }}
+      variables:
+          - template: /eng/pipelines/templates/jobs/ci.yml
+            parameters:
+                ServiceDirectory: ${{ parameters.ServiceDirectory }}
+                ${{ if eq(parameters.ServiceDirectory, 'template') }}:
+                    TestPipeline: true
+                SDKType: ${{ parameters.SDKType }}
+                Artifacts: ${{ parameters.Artifacts }}
+                AdditionalModules: ${{ parameters.AdditionalModules }}
+                SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
+                MatrixConfigs:
+                    - ${{ each config in parameters.MatrixConfigs }}:
+                          -  ${{ config }}
+                    - ${{ each config in parameters.AdditionalMatrixConfigs }}:
+                          -  ${{ config }}
+                MatrixFilters:
+                    - ${{ each filter in parameters.MatrixFilters }}:
+                          - ${{ filter }}
+                    # Skip TestFromSource jobs for SDKType data
+                    - ${{ if eq(parameters.SDKType, 'data') }}:
+                          - TestFromSource=^(?!true).*
+                MatrixReplace:
+                    - ${{ each replacement in parameters.MatrixReplace }}:
+                          - ${{ replacement }}
+                    - ${{ if eq(parameters.SDKType, 'data') }}:
+                          - TestGoals=.*/verify
+                          - TestOptions=.*/-am
+                    - AZURE_TEST.*=.*/
+                PreBuildSteps: ${{ parameters.PreBuildSteps }}
