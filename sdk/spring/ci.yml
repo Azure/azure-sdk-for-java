@@ -352,8 +352,6 @@ parameters:
     - name: ServiceDirectory
       type: string
       default: spring
-#               ${{ if eq(parameters.ServiceDirectory, 'template') }}:
-#                   TestPipeline: true
     - name: TargetDocRepoOwner
       type: string
       default: Azure
@@ -368,30 +366,15 @@ parameters:
             Selection: sparse
             NonSparseParameters: Agent
             GenerateVMJobs: true
-          - ${{ each config in parameters.MatrixConfigs }}:
-            - ${{ config }}
-          - ${{ each config in parameters.AdditionalMatrixConfigs }}:
-            - ${{ config }}
     - name: AdditionalMatrixConfigs
       type: object
       default: []
     - name: MatrixFilters
       type: object
-      default:
-          -   ${{ each filter in parameters.MatrixFilters }}:
-                  - ${{ filter }}
-          # Skip TestFromSource jobs for SDKType data
-          -   ${{ if eq(parameters.SDKType, 'data') }}:
-                  - TestFromSource=^(?!true).*
+      default: []
     - name: MatrixReplace
       type: object
-      default:
-          -   ${{ each replacement in parameters.MatrixReplace }}:
-                  - ${{ replacement }}
-          -   ${{ if eq(parameters.SDKType, 'data') }}:
-                  - TestGoals=.*/verify
-                  - TestOptions=.*/-am
-          - AZURE_TEST.*=.*/
+      default: []
     - name: SkipAggregateReports
       type: boolean
       default: false
@@ -400,6 +383,25 @@ parameters:
       default: []
 
 stages:
+  - parameters:
+    MatrixConfigs:
+        -   ${{ each config in parameters.MatrixConfigs }}:
+                - ${{ config }}
+        -   ${{ each config in parameters.AdditionalMatrixConfigs }}:
+                - ${{ config }}
+    MatrixFilters:
+        -   ${{ each filter in parameters.MatrixFilters }}:
+                - ${{ filter }}
+        # Skip TestFromSource jobs for SDKType data
+        -   ${{ if eq(parameters.SDKType, 'data') }}:
+                - TestFromSource=^(?!true).*
+    MatrixReplace:
+        -   ${{ each replacement in parameters.MatrixReplace }}:
+                - ${{ replacement }}
+        -   ${{ if eq(parameters.SDKType, 'data') }}:
+                - TestGoals=.*/verify
+                - TestOptions=.*/-am
+        - AZURE_TEST.*=.*/
   - stage: Build_for_Release
     jobs:
       - template: /eng/pipelines/templates/jobs/ci.yml
