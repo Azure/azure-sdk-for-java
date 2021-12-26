@@ -1,4 +1,5 @@
 jobs:
+  - job:
     template: /eng/pipelines/templates/jobs/ci.yml
     parameters:
         ServiceDirectory: ${{ parameters.ServiceDirectory }}
