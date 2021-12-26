@@ -416,12 +416,6 @@ stages:
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build_for_Release.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
     - template: archetype-java-release.yml
-      parameters:
-        MatrixConfigs:
-            -   ${{ each config in parameters.MatrixConfigs }}:
-                    - ${{ config }}
-            -   ${{ each config in parameters.AdditionalMatrixConfigs }}:
-                    - ${{ config }}
         DependsOn:
           - Build_for_Release
         ServiceDirectory: ${{ parameters.ServiceDirectory }}
@@ -438,6 +432,11 @@ stages:
       - template: /eng/pipelines/templates/jobs/ci.yml
 #      - template: /sdk/spring/ci-template.yml
         parameters:
+        MatrixConfigs:
+            -   ${{ each config in parameters.MatrixConfigs }}:
+                    - ${{ config }}
+            -   ${{ each config in parameters.AdditionalMatrixConfigs }}:
+                    - ${{ config }}
           PublishArtifact: false
           PreBuildSteps:
             - script: |
