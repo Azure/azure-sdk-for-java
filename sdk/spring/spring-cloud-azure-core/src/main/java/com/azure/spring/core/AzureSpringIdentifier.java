@@ -25,7 +25,7 @@ public final class AzureSpringIdentifier {
     //    sc: for Spring Cloud
     //    sd: for Spring Data
     //    ss: for Spring Streams
-    //    kv: for Key Vault
+    //    kv: for Key Vault Secrets
     //    se: for Security
     //    jca: for JCA
     //    ct: for Certificates
