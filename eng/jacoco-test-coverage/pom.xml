@@ -268,7 +268,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-jca</artifactId>
-      <version>2.4.0</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
+      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -429,7 +429,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot</artifactId>
-      <version>3.12.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot;current} -->
+      <version>3.13.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
@@ -449,7 +449,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot-starter-keyvault-secrets</artifactId>
-      <version>3.12.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-keyvault-secrets;current} -->
+      <version>3.13.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-keyvault-secrets;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
@@ -479,12 +479,12 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-context</artifactId>
-      <version>2.12.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-context;current} -->
+      <version>2.13.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-context;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-integration-core</artifactId>
-      <version>2.12.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-core;current} -->
+      <version>2.13.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
@@ -519,7 +519,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-messaging</artifactId>
-      <version>2.12.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-messaging;current} -->
+      <version>2.13.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-messaging;current} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>

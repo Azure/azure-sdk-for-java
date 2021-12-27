@@ -1,16 +1,11 @@
 # Release History
 
-## 2.3.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 2.3.0 (2021-12-24)
+This release is compatible with Spring Boot 2.5.5-2.5.8, 2.6.0-2.6.1.
 
 ### Bugs Fixed
 
 * Fixed a bug where `spring.cloud.application` was still used in some locations. This caused a refresh bug where a `null` value was used on refresh. `spring.cloud.application` is replaced by `key-filter`.
-
-### Other Changes
 
 ## 2.2.0 (2021-11-25)
 
