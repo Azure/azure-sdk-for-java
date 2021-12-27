@@ -531,16 +531,16 @@ stages:
   - ${{if and(ne(variables['Build_for_Last_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
         - template: archetype-java-release.yml
           parameters:
-              DependsOn:
-                  - Build_for_Last_Version
-              ServiceDirectory: ${{ parameters.ServiceDirectory }}
-              SDKType: ${{ parameters.SDKType }}
-              Artifacts: ${{ parameters.Artifacts }}
-              ${{ if eq(parameters.ServiceDirectory, 'template') }}:
-                  TestPipeline: true
-              ArtifactName: packages
-              TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
-              TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
+            DependsOn:
+              - Build_for_Last_Version
+            ServiceDirectory: ${{ parameters.ServiceDirectory }}
+            SDKType: ${{ parameters.SDKType }}
+            Artifacts: ${{ parameters.Artifacts }}
+            ${{ if eq(parameters.ServiceDirectory, 'template') }}:
+              TestPipeline: true
+            ArtifactName: packages
+            TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
+            TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
 
 #  # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
 #  - ${{if and(ne(variables['Build_for_Release.Reason'], 'PullRequest'), ne(variables['Build_for_new_Version.Reason'], 'PullRequest'), ne(variables['Build_for_Last_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
