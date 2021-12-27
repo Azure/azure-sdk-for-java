@@ -10,8 +10,8 @@ stages:
         - spring/azure-spring-boot-test-keyvault-certificate
         - spring/azure-spring-boot-test-servicebus-jms
         - spring/azure-spring-boot-test-storage
-        - spring/spring-cloud-azure-stream-binder-eventhubs
-        - spring/spring-cloud-azure-stream-binder-servicebus
+        - spring/spring-cloud-azure-test-eventhubs-binder
+        - spring/spring-cloud-azure-test-servicebus-binder
       Artifacts:
         - name: azure-spring-boot-test-application
           groupId: com.azure.spring
@@ -22,6 +22,9 @@ stages:
         - name: azure-spring-boot-test-cosmos
           groupId: com.azure.spring
           safeName: azurespringboottestcosmos
+        - name: spring-cloud-azure-test-eventhubs-binder
+          groupId: com.azure.spring
+          safeName: springcloudazuretesteventhubsbinder
         - name: azure-spring-boot-test-keyvault
           groupId: com.azure.spring
           safeName: azurespringboottestkeyvault
@@ -40,12 +43,9 @@ stages:
         - name: azure-spring-boot-test-storage
           groupId: com.azure.spring
           safeName: azurespringbootteststorage
-        - name: spring-cloud-azure-stream-binder-servicebus
+        - name: spring-cloud-azure-test-servicebus-binder
           groupId: com.azure.spring
-          safeName: springcloudazurestreambinderservicebus
-        - name: spring-cloud-azure-stream-binder-eventhubs
-          groupId: com.azure.spring
-          safeName: springcloudazurestreambindereventhubs
+          safeName: springcloudazuretestservicebusbinder
       TimeoutInMinutes: 240
       ServiceDirectory: spring
       TestName: IntegrationTestInAzureGlobal
