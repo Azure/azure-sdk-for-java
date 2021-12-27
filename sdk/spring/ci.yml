@@ -55,7 +55,6 @@ trigger:
       - sdk/spring/spring-cloud-azure-stream-binder-eventhubs/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus-core/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus/pom.xml
-      - sdk/spring/spring-cloud-azure-stream-binder-test/pom.xml
       - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
 
 pr:
@@ -113,7 +112,6 @@ pr:
       - sdk/spring/spring-cloud-azure-stream-binder-eventhubs/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus-core/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus/pom.xml
-      - sdk/spring/spring-cloud-azure-stream-binder-test/pom.xml
       - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
 
 resources:
@@ -336,11 +334,6 @@ parameters:
         skipPublishDocMs: true
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
-      - name: spring-cloud-azure-stream-binder-test
-        groupId: com.azure.spring
-        safeName: springcloudazurestreambindertest
-        skipPublishDocMs: true
-        skipVerifyChangelog: true
   - name: TestPipeline
     type: boolean
     default: false
@@ -469,6 +462,8 @@ stages:
                 python ./sdk/spring/scripts/ci_update_versions.py --sbv 2.6.1
             - script: |
                 python ./sdk/spring/scripts/ci_add_spring_boot_dependencies_management.py --boot 2.6.1 --cloud 2021.0.0
+            - script: |
+                mvn dependency:tree
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build_for_new_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
       - template: archetype-java-release.yml
@@ -523,6 +518,8 @@ stages:
                 python ./sdk/spring/scripts/ci_update_versions.py --sbv 2.5.4
             - script: |
                 python ./sdk/spring/scripts/ci_add_spring_boot_dependencies_management.py --boot 2.5.4 --cloud 2020.0.4
+            - script: |
+                mvn dependency:tree
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build_for_Last_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
       - template: archetype-java-release.yml
