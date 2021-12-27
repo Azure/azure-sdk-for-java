@@ -3,11 +3,11 @@
 
 package com.azure.spring.servicebus.core.properties;
 
-import com.azure.spring.service.servicebus.properties.ServiceBusProducerDescriptor;
+import com.azure.spring.service.servicebus.properties.ServiceBusSenderClientProperties;
 
 /**
  * A service bus producer related properties.
  */
-public class ProducerProperties extends CommonProperties implements ServiceBusProducerDescriptor {
+public class ProducerProperties extends CommonProperties implements ServiceBusSenderClientProperties {
 
 }

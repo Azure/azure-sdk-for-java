@@ -28,8 +28,6 @@
   </issueManagement>
 
   <properties>
-    <jacoco.min.linecoverage>0.05</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.05</jacoco.min.branchcoverage>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <legal>

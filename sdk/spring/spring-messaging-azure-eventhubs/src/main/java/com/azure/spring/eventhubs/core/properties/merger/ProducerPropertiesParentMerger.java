@@ -3,11 +3,11 @@
 
 package com.azure.spring.eventhubs.core.properties.merger;
 
-import com.azure.spring.core.properties.util.AzurePropertiesUtils;
-import com.azure.spring.core.properties.util.PropertyMapper;
+import com.azure.spring.core.util.AzurePropertiesUtils;
+import com.azure.spring.core.properties.PropertyMapper;
 import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.eventhubs.core.properties.ProducerProperties;
-import com.azure.spring.service.core.ParentMerger;
+import com.azure.spring.service.implementation.core.ParentMerger;
 
 /**
  * A merger used to merge a {@link ProducerProperties} with its parent {@link NamespaceProperties}. When a property is

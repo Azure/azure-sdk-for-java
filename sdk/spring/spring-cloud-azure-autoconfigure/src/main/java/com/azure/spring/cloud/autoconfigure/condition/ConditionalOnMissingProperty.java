@@ -29,7 +29,7 @@ public @interface ConditionalOnMissingProperty {
     /**
      * A prefix that should be applied to each property. The prefix automatically ends
      * with a dot if not specified. A valid prefix is defined by one or more words
-     * separated with dots (e.g. {@code "azure.spring.cloud"}).
+     * separated with dots (e.g. {@code "spring.cloud.azure"}).
      * @return the prefix
      */
     String prefix() default "";
@@ -37,11 +37,11 @@ public @interface ConditionalOnMissingProperty {
     /**
      * The name of the properties to test. If a prefix has been defined, it is applied to
      * compute the full key of each property. For instance if the prefix is
-     * {@code azure.spring.cloud} and one value is {@code my-value}, the full key would be
-     * {@code azure.spring.cloud.my-value}
+     * {@code "spring.cloud.azure"} and one value is {@code "my-value"}, the full key would be
+     * {@code "spring.cloud.azure.my-value"}
      * <p>
      * Use the dashed notation to specify each property, that is all lower case with a "-"
-     * to separate words (e.g. {@code my-long-property}).
+     * to separate words (e.g. {@code "my-long-property"}).
      * @return the names
      */
     String[] name() default {};

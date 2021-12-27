@@ -12,10 +12,15 @@ public class StorageRetryProperties extends HttpRetryProperties implements Stora
 
     private String secondaryHost;
 
+    @Override
     public String getSecondaryHost() {
         return secondaryHost;
     }
 
+    /**
+     * Set the secondary host.
+     * @param secondaryHost the secondary host.
+     */
     public void setSecondaryHost(String secondaryHost) {
         this.secondaryHost = secondaryHost;
     }

@@ -7,7 +7,7 @@ import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsAutoConfigur
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureEventHubsResourceManagerAutoConfiguration;
 import com.azure.spring.core.connectionstring.ConnectionStringProvider;
 import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
-import com.azure.spring.core.connectionstring.implementation.EventHubsConnectionString;
+import com.azure.spring.core.implementation.connectionstring.EventHubsConnectionString;
 import com.azure.spring.core.service.AzureServiceType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

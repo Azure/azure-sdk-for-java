@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.properties.core.client;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.spring.core.aware.ClientAware;
+import com.azure.spring.core.aware.HttpLoggingAware;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,7 +13,7 @@ import java.util.Set;
  * Options related to http logging. For example, if you want to log the http request or response, you could set the
  *  * level to {@link HttpLogDetailLevel#BASIC} or some other levels.
  */
-public class HttpLoggingCP implements ClientAware.HttpLogging {
+public class HttpLoggingCP implements HttpLoggingAware.HttpLogging {
 
     /**
      * The level of detail to log on HTTP messages.

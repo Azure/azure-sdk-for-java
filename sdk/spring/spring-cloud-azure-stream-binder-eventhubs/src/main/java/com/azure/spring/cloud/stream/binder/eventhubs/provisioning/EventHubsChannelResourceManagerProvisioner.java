@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.stream.binder.eventhubs.provisioning;
 
-import com.azure.spring.cloud.resourcemanager.provisioner.eventhubs.EventHubsProvisioner;
+import com.azure.spring.resourcemanager.provisioner.eventhubs.EventHubsProvisioner;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 
