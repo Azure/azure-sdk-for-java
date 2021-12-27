@@ -1,387 +1,387 @@
 # NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
 
 trigger:
-    branches:
-        include:
-            - main
-            - feature/*
-            - hotfix/*
-            - release/*
-    paths:
-        include:
-            - sdk/spring/
-        exclude:
-            - sdk/spring/pom.xml
-            - sdk/spring/azure-spring-boot-test-application/pom.xml
-            - sdk/spring/azure-spring-boot-test-core/pom.xml
-            - sdk/spring/azure-spring-boot-test-cosmos/pom.xml
-            - sdk/spring/azure-spring-boot-test-keyvault-certificate/pom.xml
-            - sdk/spring/azure-spring-boot-test-keyvault/pom.xml
-            - sdk/spring/azure-spring-boot-test-parent/pom.xml
-            - sdk/spring/azure-spring-boot-test-servicebus-jms/pom.xml
-            - sdk/spring/azure-spring-boot-test-storage/pom.xml
-            - sdk/spring/spring-messaging-azure/pom.xml
-            - sdk/spring/spring-messaging-azure-eventhubs/pom.xml
-            - sdk/spring/spring-messaging-azure-servicebus/pom.xml
-            - sdk/spring/spring-messaging-azure-storage-queue/pom.xml
-            - sdk/spring/spring-integration-azure-core/pom.xml
-            - sdk/spring/spring-integration-azure-eventhubs/pom.xml
-            - sdk/spring/spring-integration-azure-servicebus/pom.xml
-            - sdk/spring/spring-integration-azure-storage-queue/pom.xml
-            - sdk/spring/spring-cloud-azure-core/pom.xml
-            - sdk/spring/spring-cloud-azure-resourcemanager/pom.xml
-            - sdk/spring/spring-cloud-azure-actuator/pom.xml
-            - sdk/spring/spring-cloud-azure-actuator-autoconfigure/pom.xml
-            - sdk/spring/spring-cloud-azure-autoconfigure/pom.xml
-            - sdk/spring/spring-cloud-azure-starter-actuator/pom.xml
-            - sdk/spring/spring-cloud-azure-starter-appconfiguration/pom.xml
-            - sdk/spring/spring-cloud-azure-starter-cosmos/pom.xml
-            - sdk/spring/spring-cloud-azure-starter-data-cosmos/pom.xml
-            - sdk/spring/spring-cloud-azure-starter-eventhubs/pom.xml
-            - sdk/spring/spring-cloud-azure-starter-keyvault-certificates/pom.xml
-            - sdk/spring/spring-cloud-azure-starter-keyvault-secrets/pom.xml
-            - sdk/spring/spring-cloud-azure-starter-servicebus-jms/pom.xml
-            - sdk/spring/spring-cloud-azure-starter-servicebus/pom.xml
-            - sdk/spring/spring-cloud-azure-starter-storage-blob/pom.xml
-            - sdk/spring/spring-cloud-azure-starter-storage-file-share/pom.xml
-            - sdk/spring/spring-cloud-azure-starter-storage-queue/pom.xml
-            - sdk/spring/spring-cloud-azure-starter-integration-eventhubs/pom.xml
-            - sdk/spring/spring-cloud-azure-starter-integration-servicebus/pom.xml
-            - sdk/spring/spring-cloud-azure-starter-integration-storage-queue/pom.xml
-            - sdk/spring/spring-cloud-azure-starter-stream-eventhubs/pom.xml
-            - sdk/spring/spring-cloud-azure-starter-stream-servicebus/pom.xml
-            - sdk/spring/spring-cloud-azure-starter/pom.xml
-            - sdk/spring/spring-cloud-azure-stream-binder-eventhubs-core/pom.xml
-            - sdk/spring/spring-cloud-azure-stream-binder-eventhubs/pom.xml
-            - sdk/spring/spring-cloud-azure-stream-binder-servicebus-core/pom.xml
-            - sdk/spring/spring-cloud-azure-stream-binder-servicebus/pom.xml
-            - sdk/spring/spring-cloud-azure-stream-binder-test/pom.xml
-            - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/spring/
+    exclude:
+      - sdk/spring/pom.xml
+      - sdk/spring/azure-spring-boot-test-application/pom.xml
+      - sdk/spring/azure-spring-boot-test-core/pom.xml
+      - sdk/spring/azure-spring-boot-test-cosmos/pom.xml
+      - sdk/spring/azure-spring-boot-test-keyvault-certificate/pom.xml
+      - sdk/spring/azure-spring-boot-test-keyvault/pom.xml
+      - sdk/spring/azure-spring-boot-test-parent/pom.xml
+      - sdk/spring/azure-spring-boot-test-servicebus-jms/pom.xml
+      - sdk/spring/azure-spring-boot-test-storage/pom.xml
+      - sdk/spring/spring-messaging-azure/pom.xml
+      - sdk/spring/spring-messaging-azure-eventhubs/pom.xml
+      - sdk/spring/spring-messaging-azure-servicebus/pom.xml
+      - sdk/spring/spring-messaging-azure-storage-queue/pom.xml
+      - sdk/spring/spring-integration-azure-core/pom.xml
+      - sdk/spring/spring-integration-azure-eventhubs/pom.xml
+      - sdk/spring/spring-integration-azure-servicebus/pom.xml
+      - sdk/spring/spring-integration-azure-storage-queue/pom.xml
+      - sdk/spring/spring-cloud-azure-core/pom.xml
+      - sdk/spring/spring-cloud-azure-resourcemanager/pom.xml
+      - sdk/spring/spring-cloud-azure-actuator/pom.xml
+      - sdk/spring/spring-cloud-azure-actuator-autoconfigure/pom.xml
+      - sdk/spring/spring-cloud-azure-autoconfigure/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-actuator/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-appconfiguration/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-cosmos/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-data-cosmos/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-eventhubs/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-keyvault-certificates/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-keyvault-secrets/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-servicebus-jms/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-servicebus/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-storage-blob/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-storage-file-share/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-storage-queue/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-integration-eventhubs/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-integration-servicebus/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-integration-storage-queue/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-stream-eventhubs/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-stream-servicebus/pom.xml
+      - sdk/spring/spring-cloud-azure-starter/pom.xml
+      - sdk/spring/spring-cloud-azure-stream-binder-eventhubs-core/pom.xml
+      - sdk/spring/spring-cloud-azure-stream-binder-eventhubs/pom.xml
+      - sdk/spring/spring-cloud-azure-stream-binder-servicebus-core/pom.xml
+      - sdk/spring/spring-cloud-azure-stream-binder-servicebus/pom.xml
+      - sdk/spring/spring-cloud-azure-stream-binder-test/pom.xml
+      - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
 
 pr:
-    branches:
-        include:
-            - main
-            - feature/*
-            - hotfix/*
-            - release/*
-    paths:
-        include:
-            - sdk/spring/
-        exclude:
-            - sdk/spring/pom.xml
-            - sdk/spring/azure-spring-boot-test-application/pom.xml
-            - sdk/spring/azure-spring-boot-test-core/pom.xml
-            - sdk/spring/azure-spring-boot-test-cosmos/pom.xml
-            - sdk/spring/azure-spring-boot-test-keyvault-certificate/pom.xml
-            - sdk/spring/azure-spring-boot-test-keyvault/pom.xml
-            - sdk/spring/azure-spring-boot-test-parent/pom.xml
-            - sdk/spring/azure-spring-boot-test-servicebus-jms/pom.xml
-            - sdk/spring/azure-spring-boot-test-storage/pom.xml
-            - sdk/spring/spring-messaging-azure/pom.xml
-            - sdk/spring/spring-messaging-azure-eventhubs/pom.xml
-            - sdk/spring/spring-messaging-azure-servicebus/pom.xml
-            - sdk/spring/spring-messaging-azure-storage-queue/pom.xml
-            - sdk/spring/spring-integration-azure-core/pom.xml
-            - sdk/spring/spring-integration-azure-eventhubs/pom.xml
-            - sdk/spring/spring-integration-azure-servicebus/pom.xml
-            - sdk/spring/spring-integration-azure-storage-queue/pom.xml
-            - sdk/spring/spring-cloud-azure-core/pom.xml
-            - sdk/spring/spring-cloud-azure-resourcemanager/pom.xml
-            - sdk/spring/spring-cloud-azure-actuator/pom.xml
-            - sdk/spring/spring-cloud-azure-actuator-autoconfigure/pom.xml
-            - sdk/spring/spring-cloud-azure-autoconfigure/pom.xml
-            - sdk/spring/spring-cloud-azure-starter-actuator/pom.xml
-            - sdk/spring/spring-cloud-azure-starter-appconfiguration/pom.xml
-            - sdk/spring/spring-cloud-azure-starter-cosmos/pom.xml
-            - sdk/spring/spring-cloud-azure-starter-data-cosmos/pom.xml
-            - sdk/spring/spring-cloud-azure-starter-eventhubs/pom.xml
-            - sdk/spring/spring-cloud-azure-starter-keyvault-certificates/pom.xml
-            - sdk/spring/spring-cloud-azure-starter-keyvault-secrets/pom.xml
-            - sdk/spring/spring-cloud-azure-starter-servicebus-jms/pom.xml
-            - sdk/spring/spring-cloud-azure-starter-servicebus/pom.xml
-            - sdk/spring/spring-cloud-azure-starter-storage-blob/pom.xml
-            - sdk/spring/spring-cloud-azure-starter-storage-file-share/pom.xml
-            - sdk/spring/spring-cloud-azure-starter-storage-queue/pom.xml
-            - sdk/spring/spring-cloud-azure-starter-integration-eventhubs/pom.xml
-            - sdk/spring/spring-cloud-azure-starter-integration-servicebus/pom.xml
-            - sdk/spring/spring-cloud-azure-starter-integration-storage-queue/pom.xml
-            - sdk/spring/spring-cloud-azure-starter-stream-eventhubs/pom.xml
-            - sdk/spring/spring-cloud-azure-starter-stream-servicebus/pom.xml
-            - sdk/spring/spring-cloud-azure-starter/pom.xml
-            - sdk/spring/spring-cloud-azure-stream-binder-eventhubs-core/pom.xml
-            - sdk/spring/spring-cloud-azure-stream-binder-eventhubs/pom.xml
-            - sdk/spring/spring-cloud-azure-stream-binder-servicebus-core/pom.xml
-            - sdk/spring/spring-cloud-azure-stream-binder-servicebus/pom.xml
-            - sdk/spring/spring-cloud-azure-stream-binder-test/pom.xml
-            - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/spring/
+    exclude:
+      - sdk/spring/pom.xml
+      - sdk/spring/azure-spring-boot-test-application/pom.xml
+      - sdk/spring/azure-spring-boot-test-core/pom.xml
+      - sdk/spring/azure-spring-boot-test-cosmos/pom.xml
+      - sdk/spring/azure-spring-boot-test-keyvault-certificate/pom.xml
+      - sdk/spring/azure-spring-boot-test-keyvault/pom.xml
+      - sdk/spring/azure-spring-boot-test-parent/pom.xml
+      - sdk/spring/azure-spring-boot-test-servicebus-jms/pom.xml
+      - sdk/spring/azure-spring-boot-test-storage/pom.xml
+      - sdk/spring/spring-messaging-azure/pom.xml
+      - sdk/spring/spring-messaging-azure-eventhubs/pom.xml
+      - sdk/spring/spring-messaging-azure-servicebus/pom.xml
+      - sdk/spring/spring-messaging-azure-storage-queue/pom.xml
+      - sdk/spring/spring-integration-azure-core/pom.xml
+      - sdk/spring/spring-integration-azure-eventhubs/pom.xml
+      - sdk/spring/spring-integration-azure-servicebus/pom.xml
+      - sdk/spring/spring-integration-azure-storage-queue/pom.xml
+      - sdk/spring/spring-cloud-azure-core/pom.xml
+      - sdk/spring/spring-cloud-azure-resourcemanager/pom.xml
+      - sdk/spring/spring-cloud-azure-actuator/pom.xml
+      - sdk/spring/spring-cloud-azure-actuator-autoconfigure/pom.xml
+      - sdk/spring/spring-cloud-azure-autoconfigure/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-actuator/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-appconfiguration/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-cosmos/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-data-cosmos/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-eventhubs/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-keyvault-certificates/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-keyvault-secrets/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-servicebus-jms/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-servicebus/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-storage-blob/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-storage-file-share/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-storage-queue/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-integration-eventhubs/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-integration-servicebus/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-integration-storage-queue/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-stream-eventhubs/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-stream-servicebus/pom.xml
+      - sdk/spring/spring-cloud-azure-starter/pom.xml
+      - sdk/spring/spring-cloud-azure-stream-binder-eventhubs-core/pom.xml
+      - sdk/spring/spring-cloud-azure-stream-binder-eventhubs/pom.xml
+      - sdk/spring/spring-cloud-azure-stream-binder-servicebus-core/pom.xml
+      - sdk/spring/spring-cloud-azure-stream-binder-servicebus/pom.xml
+      - sdk/spring/spring-cloud-azure-stream-binder-test/pom.xml
+      - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
 
 resources:
-    repositories:
-        - repository: azure-sdk-build-tools
-          type: git
-          name: internal/azure-sdk-build-tools
-          ref: refs/tags/azure-sdk-build-tools_20211019.1
+  repositories:
+    - repository: azure-sdk-build-tools
+      type: git
+      name: internal/azure-sdk-build-tools
+      ref: refs/tags/azure-sdk-build-tools_20211019.1
 
 parameters:
-    - name: Artifacts
-      type: object
-      default:
-          - name: spring-cloud-azure-core
-            groupId: com.azure.spring
-            safeName: springcloudazurecore
-            skipPublishDocMs: true
-            skipVerifyChangelog: true
-          - name: spring-cloud-azure-service
-            groupId: com.azure.spring
-            safeName: springcloudazureservice
-            skipPublishDocMs: true
-            skipVerifyChangelog: true
-          - name: spring-cloud-azure-resourcemanager
-            groupId: com.azure.spring
-            safeName: springcloudazureresourcemanager
-            skipPublishDocMs: true
-            skipVerifyChangelog: true
-          - name: spring-cloud-azure-trace-sleuth
-            groupId: com.azure.spring
-            safeName: springcloudazuretracesleuth
-            skipPublishDocMs: true
-            skipVerifyChangelog: true
-          - name: spring-messaging-azure
-            groupId: com.azure.spring
-            safeName: springmessagingazure
-            skipPublishDocMs: true
-            skipVerifyChangelog: true
-          - name: spring-messaging-azure-eventhubs
-            groupId: com.azure.spring
-            safeName: springmessagingazureeventhubs
-            skipPublishDocMs: true
-            skipVerifyChangelog: true
-          - name: spring-messaging-azure-servicebus
-            groupId: com.azure.spring
-            safeName: springmessagingazureservicebus
-            skipPublishDocMs: true
-            skipVerifyChangelog: true
-          - name: spring-messaging-azure-storage-queue
-            groupId: com.azure.spring
-            safeName: springmessagingazurestoragequeue
-            skipPublishDocMs: true
-            skipVerifyChangelog: true
-          - name: spring-integration-azure-core
-            groupId: com.azure.spring
-            safeName: springintegrationazurecore
-            skipPublishDocMs: true
-            skipVerifyChangelog: true
-          - name: spring-integration-azure-eventhubs
-            groupId: com.azure.spring
-            safeName: springintegrationazureeventhubs
-            skipPublishDocMs: true
-            skipVerifyChangelog: true
-          - name: spring-integration-azure-servicebus
-            groupId: com.azure.spring
-            safeName: springintegrationazureservicebus
-            skipPublishDocMs: true
-            skipVerifyChangelog: true
-          - name: spring-integration-azure-storage-queue
-            groupId: com.azure.spring
-            safeName: springintegrationazurestoragequeue
-            skipPublishDocMs: true
-            skipVerifyChangelog: true
-          - name: spring-cloud-azure-autoconfigure
-            groupId: com.azure.spring
-            safeName: springcloudazureautoconfigure
-            skipPublishDocMs: true
-            skipVerifyChangelog: true
-          - name: spring-cloud-azure-actuator
-            groupId: com.azure.spring
-            safeName: springcloudazureactuator
-            skipPublishDocMs: true
-            skipVerifyChangelog: true
-          - name: spring-cloud-azure-actuator-autoconfigure
-            groupId: com.azure.spring
-            safeName: springcloudazureactuatorautoconfigure
-            skipPublishDocMs: true
-            skipVerifyChangelog: true
-          - name: spring-cloud-azure-starter
-            groupId: com.azure.spring
-            safeName: springcloudazurestarter
-            skipPublishDocMs: true
-            skipUpdatePackageJson: true
-            skipVerifyChangelog: true
-          - name: spring-cloud-azure-starter-actuator
-            groupId: com.azure.spring
-            safeName: springcloudazurestarteractuator
-            skipPublishDocMs: true
-            skipUpdatePackageJson: true
-            skipVerifyChangelog: true
-          - name: spring-cloud-azure-starter-appconfiguration
-            groupId: com.azure.spring
-            safeName: springcloudazurestarterappconfiguration
-            skipPublishDocMs: true
-            skipUpdatePackageJson: true
-            skipVerifyChangelog: true
-          - name: spring-cloud-azure-starter-cosmos
-            groupId: com.azure.spring
-            safeName: springcloudazurestartercosmos
-            skipPublishDocMs: true
-            skipUpdatePackageJson: true
-            skipVerifyChangelog: true
-          - name: spring-cloud-azure-starter-data-cosmos
-            groupId: com.azure.spring
-            safeName: springcloudazurestarterdatacosmos
-            skipPublishDocMs: true
-            skipUpdatePackageJson: true
-            skipVerifyChangelog: true
-          - name: spring-cloud-azure-starter-eventhubs
-            groupId: com.azure.spring
-            safeName: springcloudazurestartereventhubs
-            skipPublishDocMs: true
-            skipUpdatePackageJson: true
-            skipVerifyChangelog: true
-          - name: spring-cloud-azure-starter-keyvault-certificates
-            groupId: com.azure.spring
-            safeName: springcloudazurestarterkeyvaultcertificates
-            skipPublishDocMs: true
-            skipUpdatePackageJson: true
-            skipVerifyChangelog: true
-          - name: spring-cloud-azure-starter-keyvault-secrets
-            groupId: com.azure.spring
-            safeName: springcloudazurestarterkeyvaultsecrets
-            skipPublishDocMs: true
-            skipUpdatePackageJson: true
-            skipVerifyChangelog: true
-          - name: spring-cloud-azure-starter-servicebus
-            groupId: com.azure.spring
-            safeName: springcloudazurestarterservicebus
-            skipPublishDocMs: true
-            skipUpdatePackageJson: true
-            skipVerifyChangelog: true
-          - name: spring-cloud-azure-starter-servicebus-jms
-            groupId: com.azure.spring
-            safeName: springcloudazurestarterservicebusjms
-            skipPublishDocMs: true
-            skipUpdatePackageJson: true
-            skipVerifyChangelog: true
-          - name: spring-cloud-azure-starter-storage-blob
-            groupId: com.azure.spring
-            safeName: springcloudazurestarterstorageblob
-            skipPublishDocMs: true
-            skipUpdatePackageJson: true
-            skipVerifyChangelog: true
-          - name: spring-cloud-azure-starter-storage-file-share
-            groupId: com.azure.spring
-            safeName: springcloudazurestarterstoragefileshare
-            skipPublishDocMs: true
-            skipUpdatePackageJson: true
-            skipVerifyChangelog: true
-          - name: spring-cloud-azure-starter-storage-queue
-            groupId: com.azure.spring
-            safeName: springcloudazurestarterstoragequeue
-            skipPublishDocMs: true
-            skipUpdatePackageJson: true
-            skipVerifyChangelog: true
-          - name: spring-cloud-azure-starter-integration-eventhubs
-            groupId: com.azure.spring
-            safeName: springcloudazurestarterintegrationeventhubs
-            skipPublishDocMs: true
-            skipUpdatePackageJson: true
-            skipVerifyChangelog: true
-          - name: spring-cloud-azure-starter-integration-servicebus
-            groupId: com.azure.spring
-            safeName: springcloudazurestarterintegrationservicebus
-            skipPublishDocMs: true
-            skipUpdatePackageJson: true
-            skipVerifyChangelog: true
-          - name: spring-cloud-azure-starter-integration-storage-queue
-            groupId: com.azure.spring
-            safeName: springcloudazurestarterintegrationstoragequeue
-            skipPublishDocMs: true
-            skipUpdatePackageJson: true
-            skipVerifyChangelog: true
-          - name: spring-cloud-azure-stream-binder-servicebus-core
-            groupId: com.azure.spring
-            safeName: springcloudazurestreambinderservicebuscore
-            skipPublishDocMs: true
-            skipVerifyChangelog: true
-          - name: spring-cloud-azure-stream-binder-servicebus
-            groupId: com.azure.spring
-            safeName: springcloudazurestreambinderservicebus
-            skipPublishDocMs: true
-            skipVerifyChangelog: true
-          - name: spring-cloud-azure-stream-binder-eventhubs
-            groupId: com.azure.spring
-            safeName: springcloudazurestreambindereventhubs
-            skipPublishDocMs: true
-            skipVerifyChangelog: true
-          - name: spring-cloud-azure-stream-binder-eventhubs-core
-            groupId: com.azure.spring
-            safeName: springcloudazurestreambindereventhubscore
-            skipPublishDocMs: true
-            skipVerifyChangelog: true
-          - name: spring-cloud-azure-starter-stream-eventhubs
-            groupId: com.azure.spring
-            safeName: springcloudazurestarterstreameventhubs
-            skipPublishDocMs: true
-            skipUpdatePackageJson: true
-            skipVerifyChangelog: true
-          - name: spring-cloud-azure-starter-stream-servicebus
-            groupId: com.azure.spring
-            safeName: springcloudazurestarterstreamservicebus
-            skipPublishDocMs: true
-            skipUpdatePackageJson: true
-            skipVerifyChangelog: true
-          - name: spring-cloud-azure-starter-storage-queue
-            groupId: com.azure.spring
-            safeName: springcloudazurestarterstoragequeue
-            skipPublishDocMs: true
-            skipUpdatePackageJson: true
-            skipVerifyChangelog: true
-          - name: spring-cloud-azure-stream-binder-test
-            groupId: com.azure.spring
-            safeName: springcloudazurestreambindertest
-            skipPublishDocMs: true
-            skipVerifyChangelog: true
-    - name: TestPipeline
-      type: boolean
-      default: false
-    - name: AdditionalModules
-      type: object
-      default: [ ]
-    - name: SDKType
-      type: string
-      default: client
-    - name: ServiceDirectory
-      type: string
-      default: spring
-    - name: TargetDocRepoOwner
-      type: string
-      default: Azure
-    - name: TargetDocRepoName
-      type: string
-      default: azure-docs-sdk-java
-    - name: MatrixConfigs
-      type: object
-      default:
-          - Name: Java_ci_test_base
-            Path: eng/pipelines/templates/stages/platform-matrix.json
-            Selection: sparse
-            NonSparseParameters: Agent
-            GenerateVMJobs: true
-    - name: AdditionalMatrixConfigs
-      type: object
-      default: [ ]
-    - name: MatrixFilters
-      type: object
-      default: [ ]
-    - name: MatrixReplace
-      type: object
-      default: [ ]
-    - name: SkipAggregateReports
-      type: boolean
-      default: false
-    - name: PreBuildSteps
-      type: object
-      default: [ ]
+  - name: Artifacts
+    type: object
+    default:
+      - name: spring-cloud-azure-core
+        groupId: com.azure.spring
+        safeName: springcloudazurecore
+        skipPublishDocMs: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-service
+        groupId: com.azure.spring
+        safeName: springcloudazureservice
+        skipPublishDocMs: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-resourcemanager
+        groupId: com.azure.spring
+        safeName: springcloudazureresourcemanager
+        skipPublishDocMs: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-trace-sleuth
+        groupId: com.azure.spring
+        safeName: springcloudazuretracesleuth
+        skipPublishDocMs: true
+        skipVerifyChangelog: true
+      - name: spring-messaging-azure
+        groupId: com.azure.spring
+        safeName: springmessagingazure
+        skipPublishDocMs: true
+        skipVerifyChangelog: true
+      - name: spring-messaging-azure-eventhubs
+        groupId: com.azure.spring
+        safeName: springmessagingazureeventhubs
+        skipPublishDocMs: true
+        skipVerifyChangelog: true
+      - name: spring-messaging-azure-servicebus
+        groupId: com.azure.spring
+        safeName: springmessagingazureservicebus
+        skipPublishDocMs: true
+        skipVerifyChangelog: true
+      - name: spring-messaging-azure-storage-queue
+        groupId: com.azure.spring
+        safeName: springmessagingazurestoragequeue
+        skipPublishDocMs: true
+        skipVerifyChangelog: true
+      - name: spring-integration-azure-core
+        groupId: com.azure.spring
+        safeName: springintegrationazurecore
+        skipPublishDocMs: true
+        skipVerifyChangelog: true
+      - name: spring-integration-azure-eventhubs
+        groupId: com.azure.spring
+        safeName: springintegrationazureeventhubs
+        skipPublishDocMs: true
+        skipVerifyChangelog: true
+      - name: spring-integration-azure-servicebus
+        groupId: com.azure.spring
+        safeName: springintegrationazureservicebus
+        skipPublishDocMs: true
+        skipVerifyChangelog: true
+      - name: spring-integration-azure-storage-queue
+        groupId: com.azure.spring
+        safeName: springintegrationazurestoragequeue
+        skipPublishDocMs: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-autoconfigure
+        groupId: com.azure.spring
+        safeName: springcloudazureautoconfigure
+        skipPublishDocMs: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-actuator
+        groupId: com.azure.spring
+        safeName: springcloudazureactuator
+        skipPublishDocMs: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-actuator-autoconfigure
+        groupId: com.azure.spring
+        safeName: springcloudazureactuatorautoconfigure
+        skipPublishDocMs: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter
+        groupId: com.azure.spring
+        safeName: springcloudazurestarter
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-actuator
+        groupId: com.azure.spring
+        safeName: springcloudazurestarteractuator
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-appconfiguration
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterappconfiguration
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-cosmos
+        groupId: com.azure.spring
+        safeName: springcloudazurestartercosmos
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-data-cosmos
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterdatacosmos
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-eventhubs
+        groupId: com.azure.spring
+        safeName: springcloudazurestartereventhubs
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-keyvault-certificates
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterkeyvaultcertificates
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-keyvault-secrets
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterkeyvaultsecrets
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-servicebus
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterservicebus
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-servicebus-jms
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterservicebusjms
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-storage-blob
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterstorageblob
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-storage-file-share
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterstoragefileshare
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-storage-queue
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterstoragequeue
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-integration-eventhubs
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterintegrationeventhubs
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-integration-servicebus
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterintegrationservicebus
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-integration-storage-queue
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterintegrationstoragequeue
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-stream-binder-servicebus-core
+        groupId: com.azure.spring
+        safeName: springcloudazurestreambinderservicebuscore
+        skipPublishDocMs: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-stream-binder-servicebus
+        groupId: com.azure.spring
+        safeName: springcloudazurestreambinderservicebus
+        skipPublishDocMs: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-stream-binder-eventhubs
+        groupId: com.azure.spring
+        safeName: springcloudazurestreambindereventhubs
+        skipPublishDocMs: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-stream-binder-eventhubs-core
+        groupId: com.azure.spring
+        safeName: springcloudazurestreambindereventhubscore
+        skipPublishDocMs: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-stream-eventhubs
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterstreameventhubs
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-stream-servicebus
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterstreamservicebus
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-storage-queue
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterstoragequeue
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-stream-binder-test
+        groupId: com.azure.spring
+        safeName: springcloudazurestreambindertest
+        skipPublishDocMs: true
+        skipVerifyChangelog: true
+  - name: TestPipeline
+    type: boolean
+    default: false
+  - name: AdditionalModules
+    type: object
+    default: [ ]
+  - name: SDKType
+    type: string
+    default: client
+  - name: ServiceDirectory
+    type: string
+    default: spring
+  - name: TargetDocRepoOwner
+    type: string
+    default: Azure
+  - name: TargetDocRepoName
+    type: string
+    default: azure-docs-sdk-java
+  - name: MatrixConfigs
+    type: object
+    default:
+      - Name: Java_ci_test_base
+        Path: eng/pipelines/templates/stages/platform-matrix.json
+        Selection: sparse
+        NonSparseParameters: Agent
+        GenerateVMJobs: true
+  - name: AdditionalMatrixConfigs
+    type: object
+    default: [ ]
+  - name: MatrixFilters
+    type: object
+    default: [ ]
+  - name: MatrixReplace
+    type: object
+    default: [ ]
+  - name: SkipAggregateReports
+    type: boolean
+    default: false
+  - name: PreBuildSteps
+    type: object
+    default: [ ]
 
 stages:
     - stage: Build_for_Release
@@ -415,20 +415,20 @@ stages:
                     - AZURE_TEST.*=.*/
                 PreBuildSteps: ${{ parameters.PreBuildSteps }}
 
-#    # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
-#    - ${{if and(ne(variables['Build_for_Release.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
-#          - template: archetype-java-release.yml
-#            parameters:
-#                DependsOn:
-#                    - Build_for_Release
-#                ServiceDirectory: ${{ parameters.ServiceDirectory }}
-#                SDKType: ${{ parameters.SDKType }}
-#                Artifacts: ${{ parameters.Artifacts }}
-#                ${{ if eq(parameters.ServiceDirectory, 'template') }}:
-#                    TestPipeline: true
-#                ArtifactName: packages
-#                TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
-#                TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
+    # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
+    - ${{if and(ne(variables['Build_for_Release.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
+          - template: archetype-java-release.yml
+            parameters:
+                DependsOn:
+                    - Build_for_Release
+                ServiceDirectory: ${{ parameters.ServiceDirectory }}
+                SDKType: ${{ parameters.SDKType }}
+                Artifacts: ${{ parameters.Artifacts }}
+                ${{ if eq(parameters.ServiceDirectory, 'template') }}:
+                    TestPipeline: true
+                ArtifactName: packages
+                TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
+                TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
 
     - stage: Build_for_new_Version
       jobs:
@@ -471,20 +471,20 @@ stages:
                           python ./sdk/spring/scripts/ci_add_spring_boot_dependencies_management.py --boot 2.6.1 --cloud 2021.0.0
                     - script: |
                           mvn dependency:tree
-#    # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
-#    - ${{if and(ne(variables['Build_for_new_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
-#          - template: archetype-java-release.yml
-#            parameters:
-#                DependsOn:
-#                    - Build_for_new_Version
-#                ServiceDirectory: ${{ parameters.ServiceDirectory }}
-#                SDKType: ${{ parameters.SDKType }}
-#                Artifacts: ${{ parameters.Artifacts }}
-#                ${{ if eq(parameters.ServiceDirectory, 'template') }}:
-#                    TestPipeline: true
-#                ArtifactName: packages
-#                TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
-#                TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
+    # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
+    - ${{if and(ne(variables['Build_for_new_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
+          - template: archetype-java-release.yml
+            parameters:
+                DependsOn:
+                    - Build_for_new_Version
+                ServiceDirectory: ${{ parameters.ServiceDirectory }}
+                SDKType: ${{ parameters.SDKType }}
+                Artifacts: ${{ parameters.Artifacts }}
+                ${{ if eq(parameters.ServiceDirectory, 'template') }}:
+                    TestPipeline: true
+                ArtifactName: packages
+                TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
+                TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
 
     - stage: Build_for_Last_Version
       jobs:
@@ -527,34 +527,34 @@ stages:
                           python ./sdk/spring/scripts/ci_add_spring_boot_dependencies_management.py --boot 2.5.4 --cloud 2020.0.4
                     - script: |
                           mvn dependency:tree
-#    # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
-#    - ${{if and(ne(variables['Build_for_Last_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
-#          - template: archetype-java-release.yml
-#            parameters:
-#                DependsOn:
-#                    - Build_for_Last_Version
-#                ServiceDirectory: ${{ parameters.ServiceDirectory }}
-#                SDKType: ${{ parameters.SDKType }}
-#                Artifacts: ${{ parameters.Artifacts }}
-#                ${{ if eq(parameters.ServiceDirectory, 'template') }}:
-#                    TestPipeline: true
-#                ArtifactName: packages
-#                TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
-#                TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
+    # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
+    - ${{if and(ne(variables['Build_for_Last_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
+          - template: archetype-java-release.yml
+            parameters:
+                DependsOn:
+                    - Build_for_Last_Version
+                ServiceDirectory: ${{ parameters.ServiceDirectory }}
+                SDKType: ${{ parameters.SDKType }}
+                Artifacts: ${{ parameters.Artifacts }}
+                ${{ if eq(parameters.ServiceDirectory, 'template') }}:
+                    TestPipeline: true
+                ArtifactName: packages
+                TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
+                TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
 
-  # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
-  - ${{if and(ne(variables['Build_for_Release.Reason'], 'PullRequest'), ne(variables['Build_for_new_Version.Reason'], 'PullRequest'), ne(variables['Build_for_Last_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
-    - template: archetype-java-release.yml
-      parameters:
-        DependsOn:
-          - Build_for_Release
-          - Build_for_new_Version
-          - Build_for_Last_Version
-        ServiceDirectory: ${{ parameters.ServiceDirectory }}
-        SDKType: ${{ parameters.SDKType }}
-        Artifacts: ${{ parameters.Artifacts }}
-        ${{ if eq(parameters.ServiceDirectory, 'template') }}:
-          TestPipeline: true
-        ArtifactName: packages
-        TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
-        TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
+#  # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
+#  - ${{if and(ne(variables['Build_for_Release.Reason'], 'PullRequest'), ne(variables['Build_for_new_Version.Reason'], 'PullRequest'), ne(variables['Build_for_Last_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
+#    - template: archetype-java-release.yml
+#      parameters:
+#        DependsOn:
+#          - Build_for_Release
+#          - Build_for_new_Version
+#          - Build_for_Last_Version
+#        ServiceDirectory: ${{ parameters.ServiceDirectory }}
+#        SDKType: ${{ parameters.SDKType }}
+#        Artifacts: ${{ parameters.Artifacts }}
+#        ${{ if eq(parameters.ServiceDirectory, 'template') }}:
+#          TestPipeline: true
+#        ArtifactName: packages
+#        TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
+#        TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
