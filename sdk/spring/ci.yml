@@ -116,6 +116,7 @@ pr:
       - sdk/spring/azure-spring-integration-storage-queue/pom.xml
       - sdk/spring/azure-spring-integration-test/pom.xml
 
+
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
