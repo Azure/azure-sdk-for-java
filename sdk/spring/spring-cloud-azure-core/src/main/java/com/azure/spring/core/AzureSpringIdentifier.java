@@ -29,7 +29,7 @@ public final class AzureSpringIdentifier {
     //    se: for Security
     //    jca: for JCA
     //    ct: for Certificates
-    //    cl: for Client
+    //    kvc: for Key Vault Certificate Client
     //    sb: for Storage Blobs
     //    sf: for Storage Files
     //    eh: for Event Hub
@@ -48,7 +48,7 @@ public final class AzureSpringIdentifier {
      * Azure Spring KeyVault Certificate Client.
      * Not use "az-sp-kv-ct", because "az-sp-kv-ct" already used for JCA module in azure-security-keyvault-jca-user-agent-value-prefix.txt
      */
-    public static final String AZURE_SPRING_KEY_VAULT_CERTIFICATES = "az-sp-kv-ct-cl/" + VERSION;
+    public static final String AZURE_SPRING_KEY_VAULT_CERTIFICATES = "az-sp-kvc/" + VERSION;
 
     /**
      * Azure Spring ServiceBus
