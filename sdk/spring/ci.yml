@@ -406,8 +406,8 @@ stages:
     jobs:
       - template: /eng/pipelines/templates/jobs/ci.yml
 #      - template: /sdk/spring/ci-template.yml
-      - parameters:
-        MatrixConfigs:
+        parameters:
+          MatrixConfigs:
             -   ${{ each config in parameters.MatrixConfigs }}:
                     - ${{ config }}
             -   ${{ each config in parameters.AdditionalMatrixConfigs }}:
