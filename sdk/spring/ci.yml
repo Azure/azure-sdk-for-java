@@ -1,127 +1,126 @@
 # NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
-
 trigger:
-  branches:
-    include:
-      - main
-      - feature/*
-      - hotfix/*
-      - release/*
-  paths:
-    include:
-      - sdk/spring/
-    exclude:
-      - sdk/spring/pom.xml
-      - sdk/spring/azure-spring-boot-test-application/pom.xml
-      - sdk/spring/azure-spring-boot-test-core/pom.xml
-      - sdk/spring/azure-spring-boot-test-cosmos/pom.xml
-      - sdk/spring/azure-spring-boot-test-keyvault-certificate/pom.xml
-      - sdk/spring/azure-spring-boot-test-keyvault/pom.xml
-      - sdk/spring/azure-spring-boot-test-parent/pom.xml
-      - sdk/spring/azure-spring-boot-test-servicebus-jms/pom.xml
-      - sdk/spring/azure-spring-boot-test-storage/pom.xml
-      - sdk/spring/spring-messaging-azure/pom.xml
-      - sdk/spring/spring-messaging-azure-eventhubs/pom.xml
-      - sdk/spring/spring-messaging-azure-servicebus/pom.xml
-      - sdk/spring/spring-messaging-azure-storage-queue/pom.xml
-      - sdk/spring/spring-integration-azure-core/pom.xml
-      - sdk/spring/spring-integration-azure-eventhubs/pom.xml
-      - sdk/spring/spring-integration-azure-servicebus/pom.xml
-      - sdk/spring/spring-integration-azure-storage-queue/pom.xml
-      - sdk/spring/spring-cloud-azure-core/pom.xml
-      - sdk/spring/spring-cloud-azure-resourcemanager/pom.xml
-      - sdk/spring/spring-cloud-azure-actuator/pom.xml
-      - sdk/spring/spring-cloud-azure-actuator-autoconfigure/pom.xml
-      - sdk/spring/spring-cloud-azure-autoconfigure/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-actuator/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-appconfiguration/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-cosmos/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-data-cosmos/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-eventhubs/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-keyvault-certificates/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-keyvault-secrets/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-servicebus-jms/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-servicebus/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-storage-blob/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-storage-file-share/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-storage-queue/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-integration-eventhubs/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-integration-servicebus/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-integration-storage-queue/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-stream-eventhubs/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-stream-servicebus/pom.xml
-      - sdk/spring/spring-cloud-azure-starter/pom.xml
-      - sdk/spring/spring-cloud-azure-stream-binder-eventhubs-core/pom.xml
-      - sdk/spring/spring-cloud-azure-stream-binder-eventhubs/pom.xml
-      - sdk/spring/spring-cloud-azure-stream-binder-servicebus-core/pom.xml
-      - sdk/spring/spring-cloud-azure-stream-binder-servicebus/pom.xml
-      - sdk/spring/spring-cloud-azure-stream-binder-test/pom.xml
-      - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
+    branches:
+        include:
+            - main
+            - feature/*
+            - hotfix/*
+            - release/*
+    paths:
+        include:
+            - sdk/spring/
+        exclude:
+            - sdk/spring/pom.xml
+            - sdk/spring/azure-spring-boot-test-application/pom.xml
+            - sdk/spring/azure-spring-boot-test-core/pom.xml
+            - sdk/spring/azure-spring-boot-test-cosmos/pom.xml
+            - sdk/spring/azure-spring-boot-test-keyvault-certificate/pom.xml
+            - sdk/spring/azure-spring-boot-test-keyvault/pom.xml
+            - sdk/spring/azure-spring-boot-test-parent/pom.xml
+            - sdk/spring/azure-spring-boot-test-servicebus-jms/pom.xml
+            - sdk/spring/azure-spring-boot-test-storage/pom.xml
+            - sdk/spring/spring-messaging-azure/pom.xml
+            - sdk/spring/spring-messaging-azure-eventhubs/pom.xml
+            - sdk/spring/spring-messaging-azure-servicebus/pom.xml
+            - sdk/spring/spring-messaging-azure-storage-queue/pom.xml
+            - sdk/spring/spring-integration-azure-core/pom.xml
+            - sdk/spring/spring-integration-azure-eventhubs/pom.xml
+            - sdk/spring/spring-integration-azure-servicebus/pom.xml
+            - sdk/spring/spring-integration-azure-storage-queue/pom.xml
+            - sdk/spring/spring-cloud-azure-core/pom.xml
+            - sdk/spring/spring-cloud-azure-resourcemanager/pom.xml
+            - sdk/spring/spring-cloud-azure-actuator/pom.xml
+            - sdk/spring/spring-cloud-azure-actuator-autoconfigure/pom.xml
+            - sdk/spring/spring-cloud-azure-autoconfigure/pom.xml
+            - sdk/spring/spring-cloud-azure-starter-actuator/pom.xml
+            - sdk/spring/spring-cloud-azure-starter-appconfiguration/pom.xml
+            - sdk/spring/spring-cloud-azure-starter-cosmos/pom.xml
+            - sdk/spring/spring-cloud-azure-starter-data-cosmos/pom.xml
+            - sdk/spring/spring-cloud-azure-starter-eventhubs/pom.xml
+            - sdk/spring/spring-cloud-azure-starter-keyvault-certificates/pom.xml
+            - sdk/spring/spring-cloud-azure-starter-keyvault-secrets/pom.xml
+            - sdk/spring/spring-cloud-azure-starter-servicebus-jms/pom.xml
+            - sdk/spring/spring-cloud-azure-starter-servicebus/pom.xml
+            - sdk/spring/spring-cloud-azure-starter-storage-blob/pom.xml
+            - sdk/spring/spring-cloud-azure-starter-storage-file-share/pom.xml
+            - sdk/spring/spring-cloud-azure-starter-storage-queue/pom.xml
+            - sdk/spring/spring-cloud-azure-starter-integration-eventhubs/pom.xml
+            - sdk/spring/spring-cloud-azure-starter-integration-servicebus/pom.xml
+            - sdk/spring/spring-cloud-azure-starter-integration-storage-queue/pom.xml
+            - sdk/spring/spring-cloud-azure-starter-stream-eventhubs/pom.xml
+            - sdk/spring/spring-cloud-azure-starter-stream-servicebus/pom.xml
+            - sdk/spring/spring-cloud-azure-starter/pom.xml
+            - sdk/spring/spring-cloud-azure-stream-binder-eventhubs-core/pom.xml
+            - sdk/spring/spring-cloud-azure-stream-binder-eventhubs/pom.xml
+            - sdk/spring/spring-cloud-azure-stream-binder-servicebus-core/pom.xml
+            - sdk/spring/spring-cloud-azure-stream-binder-servicebus/pom.xml
+            - sdk/spring/spring-cloud-azure-stream-binder-test/pom.xml
+            - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
 
 pr:
-  branches:
-    include:
-      - main
-      - feature/*
-      - hotfix/*
-      - release/*
-  paths:
-    include:
-      - sdk/spring/
-    exclude:
-      - sdk/spring/pom.xml
-      - sdk/spring/azure-spring-boot-test-application/pom.xml
-      - sdk/spring/azure-spring-boot-test-core/pom.xml
-      - sdk/spring/azure-spring-boot-test-cosmos/pom.xml
-      - sdk/spring/azure-spring-boot-test-keyvault-certificate/pom.xml
-      - sdk/spring/azure-spring-boot-test-keyvault/pom.xml
-      - sdk/spring/azure-spring-boot-test-parent/pom.xml
-      - sdk/spring/azure-spring-boot-test-servicebus-jms/pom.xml
-      - sdk/spring/azure-spring-boot-test-storage/pom.xml
-      - sdk/spring/spring-messaging-azure/pom.xml
-      - sdk/spring/spring-messaging-azure-eventhubs/pom.xml
-      - sdk/spring/spring-messaging-azure-servicebus/pom.xml
-      - sdk/spring/spring-messaging-azure-storage-queue/pom.xml
-      - sdk/spring/spring-integration-azure-core/pom.xml
-      - sdk/spring/spring-integration-azure-eventhubs/pom.xml
-      - sdk/spring/spring-integration-azure-servicebus/pom.xml
-      - sdk/spring/spring-integration-azure-storage-queue/pom.xml
-      - sdk/spring/spring-cloud-azure-core/pom.xml
-      - sdk/spring/spring-cloud-azure-resourcemanager/pom.xml
-      - sdk/spring/spring-cloud-azure-actuator/pom.xml
-      - sdk/spring/spring-cloud-azure-actuator-autoconfigure/pom.xml
-      - sdk/spring/spring-cloud-azure-autoconfigure/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-actuator/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-appconfiguration/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-cosmos/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-data-cosmos/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-eventhubs/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-keyvault-certificates/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-keyvault-secrets/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-servicebus-jms/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-servicebus/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-storage-blob/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-storage-file-share/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-storage-queue/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-integration-eventhubs/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-integration-servicebus/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-integration-storage-queue/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-stream-eventhubs/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-stream-servicebus/pom.xml
-      - sdk/spring/spring-cloud-azure-starter/pom.xml
-      - sdk/spring/spring-cloud-azure-stream-binder-eventhubs-core/pom.xml
-      - sdk/spring/spring-cloud-azure-stream-binder-eventhubs/pom.xml
-      - sdk/spring/spring-cloud-azure-stream-binder-servicebus-core/pom.xml
-      - sdk/spring/spring-cloud-azure-stream-binder-servicebus/pom.xml
-      - sdk/spring/spring-cloud-azure-stream-binder-test/pom.xml
-      - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
+    branches:
+        include:
+            - main
+            - feature/*
+            - hotfix/*
+            - release/*
+    paths:
+        include:
+            - sdk/spring/
+        exclude:
+            - sdk/spring/pom.xml
+            - sdk/spring/azure-spring-boot-test-application/pom.xml
+            - sdk/spring/azure-spring-boot-test-core/pom.xml
+            - sdk/spring/azure-spring-boot-test-cosmos/pom.xml
+            - sdk/spring/azure-spring-boot-test-keyvault-certificate/pom.xml
+            - sdk/spring/azure-spring-boot-test-keyvault/pom.xml
+            - sdk/spring/azure-spring-boot-test-parent/pom.xml
+            - sdk/spring/azure-spring-boot-test-servicebus-jms/pom.xml
+            - sdk/spring/azure-spring-boot-test-storage/pom.xml
+            - sdk/spring/spring-messaging-azure/pom.xml
+            - sdk/spring/spring-messaging-azure-eventhubs/pom.xml
+            - sdk/spring/spring-messaging-azure-servicebus/pom.xml
+            - sdk/spring/spring-messaging-azure-storage-queue/pom.xml
+            - sdk/spring/spring-integration-azure-core/pom.xml
+            - sdk/spring/spring-integration-azure-eventhubs/pom.xml
+            - sdk/spring/spring-integration-azure-servicebus/pom.xml
+            - sdk/spring/spring-integration-azure-storage-queue/pom.xml
+            - sdk/spring/spring-cloud-azure-core/pom.xml
+            - sdk/spring/spring-cloud-azure-resourcemanager/pom.xml
+            - sdk/spring/spring-cloud-azure-actuator/pom.xml
+            - sdk/spring/spring-cloud-azure-actuator-autoconfigure/pom.xml
+            - sdk/spring/spring-cloud-azure-autoconfigure/pom.xml
+            - sdk/spring/spring-cloud-azure-starter-actuator/pom.xml
+            - sdk/spring/spring-cloud-azure-starter-appconfiguration/pom.xml
+            - sdk/spring/spring-cloud-azure-starter-cosmos/pom.xml
+            - sdk/spring/spring-cloud-azure-starter-data-cosmos/pom.xml
+            - sdk/spring/spring-cloud-azure-starter-eventhubs/pom.xml
+            - sdk/spring/spring-cloud-azure-starter-keyvault-certificates/pom.xml
+            - sdk/spring/spring-cloud-azure-starter-keyvault-secrets/pom.xml
+            - sdk/spring/spring-cloud-azure-starter-servicebus-jms/pom.xml
+            - sdk/spring/spring-cloud-azure-starter-servicebus/pom.xml
+            - sdk/spring/spring-cloud-azure-starter-storage-blob/pom.xml
+            - sdk/spring/spring-cloud-azure-starter-storage-file-share/pom.xml
+            - sdk/spring/spring-cloud-azure-starter-storage-queue/pom.xml
+            - sdk/spring/spring-cloud-azure-starter-integration-eventhubs/pom.xml
+            - sdk/spring/spring-cloud-azure-starter-integration-servicebus/pom.xml
+            - sdk/spring/spring-cloud-azure-starter-integration-storage-queue/pom.xml
+            - sdk/spring/spring-cloud-azure-starter-stream-eventhubs/pom.xml
+            - sdk/spring/spring-cloud-azure-starter-stream-servicebus/pom.xml
+            - sdk/spring/spring-cloud-azure-starter/pom.xml
+            - sdk/spring/spring-cloud-azure-stream-binder-eventhubs-core/pom.xml
+            - sdk/spring/spring-cloud-azure-stream-binder-eventhubs/pom.xml
+            - sdk/spring/spring-cloud-azure-stream-binder-servicebus-core/pom.xml
+            - sdk/spring/spring-cloud-azure-stream-binder-servicebus/pom.xml
+            - sdk/spring/spring-cloud-azure-stream-binder-test/pom.xml
+            - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
 
 resources:
-  repositories:
-    - repository: azure-sdk-build-tools
-      type: git
-      name: internal/azure-sdk-build-tools
-      ref: refs/tags/azure-sdk-build-tools_20211019.1
+    repositories:
+        - repository: azure-sdk-build-tools
+          type: git
+          name: internal/azure-sdk-build-tools
+          ref: refs/tags/azure-sdk-build-tools_20211019.1
 parameters:
     - name: Artifacts
       type: object
@@ -412,56 +411,36 @@ parameters:
           PreBuildSteps: ${{ parameters.PreBuildSteps }}
 
 stages:
+    - stage: Build_for_Release
+      jobs:
+          - template: /eng/pipelines/templates/jobs/ci.yml
+              #      - template: /sdk/spring/ci-template.yml
+            parameters:
+                CiTemplates: ${{ parameters.CiTemplates }}
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+          ${{ if eq(parameters.ServiceDirectory, 'template') }}:
+            TestPipeline: true
+          Artifacts: ${{ parameters.Artifacts }}
+          MatrixConfigs:
+            -   ${{ each config in parameters.MatrixConfigs }}:
+                    - ${{ config }}
+            -   ${{ each config in parameters.AdditionalMatrixConfigs }}:
+                    - ${{ config }}
+          MatrixFilters:
+              -   ${{ each filter in parameters.MatrixFilters }}:
+                      - ${{ filter }}
+              # Skip TestFromSource jobs for SDKType data
+              -   ${{ if eq(parameters.SDKType, 'data') }}:
+                      - TestFromSource=^(?!true).*
+          MatrixReplace:
+              -   ${{ each replacement in parameters.MatrixReplace }}:
+                      - ${{ replacement }}
+              -   ${{ if eq(parameters.SDKType, 'data') }}:
+                      - TestGoals=.*/verify
+                      - TestOptions=.*/-am
+              - AZURE_TEST.*=.*/
 
-#  - parameters:
-#    MatrixConfigs:
-#        -   ${{ each config in parameters.MatrixConfigs }}:
-#                - ${{ config }}
-#        -   ${{ each config in parameters.AdditionalMatrixConfigs }}:
-#                - ${{ config }}
-#    MatrixFilters:
-#        -   ${{ each filter in parameters.MatrixFilters }}:
-#                - ${{ filter }}
-#        # Skip TestFromSource jobs for SDKType data
-#        -   ${{ if eq(parameters.SDKType, 'data') }}:
-#                - TestFromSource=^(?!true).*
-#    MatrixReplace:
-#        -   ${{ each replacement in parameters.MatrixReplace }}:
-#                - ${{ replacement }}
-#        -   ${{ if eq(parameters.SDKType, 'data') }}:
-#                - TestGoals=.*/verify
-#                - TestOptions=.*/-am
-#        - AZURE_TEST.*=.*/
-  - stage: Build_for_Release
-    jobs:
-      - template: /eng/pipelines/templates/jobs/ci.yml
-#      - template: /sdk/spring/ci-template.yml
-        parameters:
-           CiTemplates: ${{ parameters.CiTemplates }}
-#          ServiceDirectory: ${{ parameters.ServiceDirectory }}
-#          ${{ if eq(parameters.ServiceDirectory, 'template') }}:
-#            TestPipeline: true
-#          Artifacts: ${{ parameters.Artifacts }}
-#          MatrixConfigs:
-#            -   ${{ each config in parameters.MatrixConfigs }}:
-#                    - ${{ config }}
-#            -   ${{ each config in parameters.AdditionalMatrixConfigs }}:
-#                    - ${{ config }}
-#          MatrixFilters:
-#              -   ${{ each filter in parameters.MatrixFilters }}:
-#                      - ${{ filter }}
-#              # Skip TestFromSource jobs for SDKType data
-#              -   ${{ if eq(parameters.SDKType, 'data') }}:
-#                      - TestFromSource=^(?!true).*
-#          MatrixReplace:
-#              -   ${{ each replacement in parameters.MatrixReplace }}:
-#                      - ${{ replacement }}
-#              -   ${{ if eq(parameters.SDKType, 'data') }}:
-#                      - TestGoals=.*/verify
-#                      - TestOptions=.*/-am
-#              - AZURE_TEST.*=.*/
-
-#  # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
+  # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
 #  - ${{if and(ne(variables['Build_for_Release.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
 #    - template: archetype-java-release.yml
 #        DependsOn:
@@ -475,28 +454,30 @@ stages:
 #        TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
 #        TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
 
-#  - stage: Build_for_new_Version
-#    jobs:
-#      - template: /eng/pipelines/templates/jobs/ci.yml
-##      - template: /sdk/spring/ci-template.yml
-#        parameters:
-#          MatrixConfigs:
-#            -   ${{ each config in parameters.MatrixConfigs }}:
-#                    - ${{ config }}
-#            -   ${{ each config in parameters.AdditionalMatrixConfigs }}:
-#                    - ${{ config }}
-#          PublishArtifact: false
-#          PreBuildSteps:
-#            - script: |
-#                pip install in-place
-#            - script: |
-#                pip install termcolor
-#            - script: |
-#                python ./sdk/spring/scripts/ci_update_versions.py --sbv 2.6.1
-#            - script: |
-#                python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b 2.6.1 -c 2021.0.0
+  - stage: Build_for_new_Version
+    jobs:
+      - template: /eng/pipelines/templates/jobs/ci.yml
+#      - template: /sdk/spring/ci-template.yml
+        parameters:
+          MatrixConfigs:
+            -   ${{ each config in parameters.MatrixConfigs }}:
+                    - ${{ config }}
+            -   ${{ each config in parameters.AdditionalMatrixConfigs }}:
+                    - ${{ config }}
+          PublishArtifact: false
+          PreBuildSteps:
+            - script: |
+                pip install in-place
+            - script: |
+                pip install termcolor
+            - script: |
+                python ./sdk/spring/scripts/ci_update_versions.py --sbv 2.6.1
+            - script: |
+                python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b 2.6.1 -c 2021.0.0
+            - script: |
+                mvn dependency:tree
 
-#  # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
+  # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
 #  - ${{if and(ne(variables['Build_for_new_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
 #    - template: archetype-java-release.yml
 #      parameters:
@@ -511,27 +492,29 @@ stages:
 #        TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
 #        TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
 
-#  - stage: Build_for_Last_Version
-#    jobs:
-#      - template: /sdk/spring/ci-template.yml
-#        parameters:
-#          MatrixConfigs:
-#            -   ${{ each config in parameters.MatrixConfigs }}:
-#                        - ${{ config }}
-#            -   ${{ each config in parameters.AdditionalMatrixConfigs }}:
-#                        - ${{ config }}
-#          PublishArtifact: false
-#          PreBuildSteps:
-#            - script: |
-#                pip install in-place
-#            - script: |
-#                pip install termcolor
-#            - script: |
-#                python ./sdk/spring/scripts/ci_update_versions.py --sbv 2.5.4
-#            - script: |
-#                python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b 2.6.1 -c 2021.0.0
+  - stage: Build_for_Last_Version
+    jobs:
+      - template: /sdk/spring/ci-template.yml
+        parameters:
+          MatrixConfigs:
+            -   ${{ each config in parameters.MatrixConfigs }}:
+                        - ${{ config }}
+            -   ${{ each config in parameters.AdditionalMatrixConfigs }}:
+                        - ${{ config }}
+          PublishArtifact: false
+          PreBuildSteps:
+            - script: |
+                pip install in-place
+            - script: |
+                pip install termcolor
+            - script: |
+                python ./sdk/spring/scripts/ci_update_versions.py --sbv 2.5.4
+            - script: |
+                python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b 2.6.1 -c 2021.0.0
+            - script: |
+                  mvn dependency:tree
 
-#  # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
+  # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
 #  - ${{if and(ne(variables['Build_for_Release.Reason'], 'PullRequest'), ne(variables['Build_for_new_Version.Reason'], 'PullRequest'), ne(variables['Build_for_Last_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
 #    - template: archetype-java-release.yml
 #      parameters:
@@ -547,3 +530,20 @@ stages:
 #        ArtifactName: packages
 #        TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
 #        TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
+
+  # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
+  - ${{if and(ne(variables['Build_for_Release.Reason'], 'PullRequest'), ne(variables['Build_for_new_Version.Reason'], 'PullRequest'), ne(variables['Build_for_Last_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
+    - template: archetype-java-release.yml
+      parameters:
+        DependsOn:
+          - Build_for_Release
+          - Build_for_new_Version
+          - Build_for_Last_Version
+        ServiceDirectory: ${{ parameters.ServiceDirectory }}
+        SDKType: ${{ parameters.SDKType }}
+        Artifacts: ${{ parameters.Artifacts }}
+        ${{ if eq(parameters.ServiceDirectory, 'template') }}:
+          TestPipeline: true
+        ArtifactName: packages
+        TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
+        TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
