@@ -22,6 +22,31 @@ version_update_marker = re.compile(r'\{x-version-update;([^;]+);([^}]+)\}')
 external_dependency_include_regex = r'(?<=<include>).+?(?=</include>)'
 external_dependency_version_regex = r'(?<=<version>).+?(?=</version>)'
 
+def get_version_type(match):
+    print("version type:"+match.group(2))
+    return match.group(2)
+
+def get_module_name(match):
+    print('module name'+match.group(1))
+    return match.group(1)
+
+def get_version_update_line(line, match,external_dependency_version_map):
+    module_name, version_type = get_module_name(match), get_version_type(match)
+    if module_name in external_dependency_version_map and version_type == 'external_dependency':
+        new_version = external_dependency_version_map[module_name]
+        print('new version:'+new_version)
+        return re.sub(external_dependency_version_regex, new_version, line)
+    else:
+        return line
+
+def get_include_update_line(line, match,external_dependency_version_map):
+    module_name, version_type = get_module_name(match), get_version_type(match)
+    if module_name in external_dependency_version_map and version_type == 'external_dependency':
+        new_include_version = module_name + ':[' + external_dependency_version_map[module_name] + ']'
+        print('new include version:' + new_include_version)
+        return re.sub(external_dependency_version_regex, new_include_version, line)
+    else:
+        return line
 
 def update_versions(external_dependency_version_map, target_file):
     # replace artifact versions in target_file
@@ -31,24 +56,30 @@ def update_versions(external_dependency_version_map, target_file):
                 file.write(line)
             elif version_update_marker.search(line):
                 match = version_update_marker.search(line)
-                module_name, version_type = match.group(1), match.group(2)
-                if module_name in external_dependency_version_map and version_type == 'external_dependency':
-                    new_version = external_dependency_version_map[module_name]
-                    newline = re.sub(external_dependency_version_regex, new_version, line)
-                    file.write(newline)
-                    log.info("updating " + target_file + ":" + newline)
-                else:
-                    file.write(line)
+                newline = get_version_update_line(line, match, external_dependency_version_map)
+                # match = version_update_marker.search(line)
+                # module_name, version_type = match.group(1), match.group(2)
+                # if module_name in external_dependency_version_map and version_type == 'external_dependency':
+                #     new_version = external_dependency_version_map[module_name]
+                #     newline = re.sub(external_dependency_version_regex, new_version, line)
+                #     file.write(newline)
+                #     log.info("updating " + target_file + ":" + newline)
+                # else:
+                #     file.write(line)
+                file.write(str(newline))
             elif include_update_marker.search(line):
                 match = include_update_marker.search(line)
-                module_name, version_type = match.group(1), match.group(2)
-                if module_name in external_dependency_version_map and version_type == 'external_dependency':
-                    new_include_version = module_name + ':[' + external_dependency_version_map[module_name] + ']'
-                    newline = re.sub(external_dependency_include_regex, new_include_version, line)
-                    file.write(newline)
-                    log.info("updating " + target_file + ":" + newline)
-                else:
-                    file.write(line)
+                newline = get_include_update_line(line, match, external_dependency_version_map)
+                # match = include_update_marker.search(line)
+                # module_name, version_type = match.group(1), match.group(2)
+                # if module_name in external_dependency_version_map and version_type == 'external_dependency':
+                #     new_include_version = module_name + ':[' + external_dependency_version_map[module_name] + ']'
+                #     newline = re.sub(external_dependency_include_regex, new_include_version, line)
+                #     file.write(newline)
+                #     log.info("updating " + target_file + ":" + newline)
+                # else:
+                #     file.write(line)
+                file.write(str(newline))
             else:
                 file.write(line)
 
@@ -73,7 +104,7 @@ def update_versions_all(target_folder, spring_boot_version):
     log.info('external_dependency_file=' + dependency_file)
     load_version_map_from_file(dependency_file, external_dependency_version_map)
     for root, _, files in os.walk(target_folder):
-    # for root, _, files in os.walk("D:/java/azure-sdk-for-java/sdk/spring/"):
+        # for root, _, files in os.walk("D:/java/azure-sdk-for-java/sdk/spring/"):
         for file_name in files:
             file_path = root + os.sep + file_name
             if file_name.startswith('pom') and file_name.endswith('.xml'):
