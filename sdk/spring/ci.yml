@@ -1,4 +1,5 @@
 # NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
 trigger:
     branches:
         include:
@@ -121,6 +122,7 @@ resources:
           type: git
           name: internal/azure-sdk-build-tools
           ref: refs/tags/azure-sdk-build-tools_20211019.1
+
 parameters:
     - name: Artifacts
       type: object
@@ -344,7 +346,7 @@ parameters:
       default: false
     - name: AdditionalModules
       type: object
-      default: []
+      default: [ ]
     - name: SDKType
       type: string
       default: client
@@ -367,169 +369,178 @@ parameters:
             GenerateVMJobs: true
     - name: AdditionalMatrixConfigs
       type: object
-      default: []
+      default: [ ]
     - name: MatrixFilters
       type: object
-      default: []
+      default: [ ]
     - name: MatrixReplace
       type: object
-      default: []
+      default: [ ]
     - name: SkipAggregateReports
       type: boolean
       default: false
     - name: PreBuildSteps
       type: object
-      default: []
-    - name: CiTemplates
-      type: object
-      default:
-          ServiceDirectory: ${{ parameters.ServiceDirectory }}
-          ${{ if eq(parameters.ServiceDirectory, 'template') }}:
-              TestPipeline: true
-          SDKType: ${{ parameters.SDKType }}
-          Artifacts: ${{ parameters.Artifacts }}
-          AdditionalModules: ${{ parameters.AdditionalModules }}
-          SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
-          MatrixConfigs:
-              -   ${{ each config in parameters.MatrixConfigs }}:
-                      - ${{ config }}
-              -   ${{ each config in parameters.AdditionalMatrixConfigs }}:
-                      - ${{ config }}
-          MatrixFilters:
-              -   ${{ each filter in parameters.MatrixFilters }}:
-                      - ${{ filter }}
-              # Skip TestFromSource jobs for SDKType data
-              -   ${{ if eq(parameters.SDKType, 'data') }}:
-                      - TestFromSource=^(?!true).*
-          MatrixReplace:
-              -   ${{ each replacement in parameters.MatrixReplace }}:
-                      - ${{ replacement }}
-              -   ${{ if eq(parameters.SDKType, 'data') }}:
-                      - TestGoals=.*/verify
-                      - TestOptions=.*/-am
-              - AZURE_TEST.*=.*/
-          PreBuildSteps: ${{ parameters.PreBuildSteps }}
+      default: [ ]
 
 stages:
     - stage: Build_for_Release
       jobs:
           - template: /eng/pipelines/templates/jobs/ci.yml
-              #      - template: /sdk/spring/ci-template.yml
             parameters:
-                CiTemplates: ${{ parameters.CiTemplates }}
-          ServiceDirectory: ${{ parameters.ServiceDirectory }}
-          ${{ if eq(parameters.ServiceDirectory, 'template') }}:
-            TestPipeline: true
-          Artifacts: ${{ parameters.Artifacts }}
-          MatrixConfigs:
-            -   ${{ each config in parameters.MatrixConfigs }}:
-                    - ${{ config }}
-            -   ${{ each config in parameters.AdditionalMatrixConfigs }}:
-                    - ${{ config }}
-          MatrixFilters:
-              -   ${{ each filter in parameters.MatrixFilters }}:
-                      - ${{ filter }}
-              # Skip TestFromSource jobs for SDKType data
-              -   ${{ if eq(parameters.SDKType, 'data') }}:
-                      - TestFromSource=^(?!true).*
-          MatrixReplace:
-              -   ${{ each replacement in parameters.MatrixReplace }}:
-                      - ${{ replacement }}
-              -   ${{ if eq(parameters.SDKType, 'data') }}:
-                      - TestGoals=.*/verify
-                      - TestOptions=.*/-am
-              - AZURE_TEST.*=.*/
+                ServiceDirectory: ${{ parameters.ServiceDirectory }}
+                ${{ if eq(parameters.ServiceDirectory, 'template') }}:
+                    TestPipeline: true
+                SDKType: ${{ parameters.SDKType }}
+                Artifacts: ${{ parameters.Artifacts }}
+                AdditionalModules: ${{ parameters.AdditionalModules }}
+                SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
+                MatrixConfigs:
+                    - ${{ each config in parameters.MatrixConfigs }}:
+                          - ${{ config }}
+                    - ${{ each config in parameters.AdditionalMatrixConfigs }}:
+                          - ${{ config }}
+                MatrixFilters:
+                    - ${{ each filter in parameters.MatrixFilters }}:
+                          - ${{ filter }}
+                    # Skip TestFromSource jobs for SDKType data
+                    - ${{ if eq(parameters.SDKType, 'data') }}:
+                          - TestFromSource=^(?!true).*
+                MatrixReplace:
+                    - ${{ each replacement in parameters.MatrixReplace }}:
+                          - ${{ replacement }}
+                    - ${{ if eq(parameters.SDKType, 'data') }}:
+                          - TestGoals=.*/verify
+                          - TestOptions=.*/-am
+                    - AZURE_TEST.*=.*/
+                PreBuildSteps: ${{ parameters.PreBuildSteps }}
 
-  # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
-#  - ${{if and(ne(variables['Build_for_Release.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
-#    - template: archetype-java-release.yml
-#        DependsOn:
-#          - Build_for_Release
-#        ServiceDirectory: ${{ parameters.ServiceDirectory }}
-#        SDKType: ${{ parameters.SDKType }}
-#        Artifacts: ${{ parameters.Artifacts }}
-#        ${{ if eq(parameters.ServiceDirectory, 'template') }}:
-#          TestPipeline: true
-#        ArtifactName: packages
-#        TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
-#        TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
+#    # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
+#    - ${{if and(ne(variables['Build_for_Release.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
+#          - template: archetype-java-release.yml
+#            parameters:
+#                DependsOn:
+#                    - Build_for_Release
+#                ServiceDirectory: ${{ parameters.ServiceDirectory }}
+#                SDKType: ${{ parameters.SDKType }}
+#                Artifacts: ${{ parameters.Artifacts }}
+#                ${{ if eq(parameters.ServiceDirectory, 'template') }}:
+#                    TestPipeline: true
+#                ArtifactName: packages
+#                TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
+#                TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
 
-  - stage: Build_for_new_Version
-    jobs:
-      - template: /eng/pipelines/templates/jobs/ci.yml
-#      - template: /sdk/spring/ci-template.yml
-        parameters:
-          MatrixConfigs:
-            -   ${{ each config in parameters.MatrixConfigs }}:
-                    - ${{ config }}
-            -   ${{ each config in parameters.AdditionalMatrixConfigs }}:
-                    - ${{ config }}
-          PublishArtifact: false
-          PreBuildSteps:
-            - script: |
-                pip install in-place
-            - script: |
-                pip install termcolor
-            - script: |
-                python ./sdk/spring/scripts/ci_update_versions.py --sbv 2.6.1
-            - script: |
-                python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b 2.6.1 -c 2021.0.0
-            - script: |
-                mvn dependency:tree
+    - stage: Build_for_new_Version
+      jobs:
+          - template: /eng/pipelines/templates/jobs/ci.yml
+            parameters:
+                PublishArtifact: false
+                ServiceDirectory: ${{ parameters.ServiceDirectory }}
+                ${{ if eq(parameters.ServiceDirectory, 'template') }}:
+                    TestPipeline: true
+                SDKType: ${{ parameters.SDKType }}
+                Artifacts: ${{ parameters.Artifacts }}
+                AdditionalModules: ${{ parameters.AdditionalModules }}
+                SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
+                MatrixConfigs:
+                    - ${{ each config in parameters.MatrixConfigs }}:
+                          - ${{ config }}
+                    - ${{ each config in parameters.AdditionalMatrixConfigs }}:
+                          - ${{ config }}
+                MatrixFilters:
+                    - ${{ each filter in parameters.MatrixFilters }}:
+                          - ${{ filter }}
+                    # Skip TestFromSource jobs for SDKType data
+                    - ${{ if eq(parameters.SDKType, 'data') }}:
+                          - TestFromSource=^(?!true).*
+                MatrixReplace:
+                    - ${{ each replacement in parameters.MatrixReplace }}:
+                          - ${{ replacement }}
+                    - ${{ if eq(parameters.SDKType, 'data') }}:
+                          - TestGoals=.*/verify
+                          - TestOptions=.*/-am
+                    - AZURE_TEST.*=.*/
+                PreBuildSteps:
+                    - script: |
+                          pip install in-place
+                    - script: |
+                          pip install termcolor
+                    - script: |
+                          python ./sdk/spring/scripts/ci_update_versions.py --sbv 2.6.1
+                    - script: |
+                          python ./sdk/spring/scripts/ci_add_spring_boot_dependencies_management.py --boot 2.6.1 --cloud 2021.0.0
+                    - script: |
+                          mvn dependency:tree
+#    # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
+#    - ${{if and(ne(variables['Build_for_new_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
+#          - template: archetype-java-release.yml
+#            parameters:
+#                DependsOn:
+#                    - Build_for_new_Version
+#                ServiceDirectory: ${{ parameters.ServiceDirectory }}
+#                SDKType: ${{ parameters.SDKType }}
+#                Artifacts: ${{ parameters.Artifacts }}
+#                ${{ if eq(parameters.ServiceDirectory, 'template') }}:
+#                    TestPipeline: true
+#                ArtifactName: packages
+#                TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
+#                TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
 
-  # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
-#  - ${{if and(ne(variables['Build_for_new_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
-#    - template: archetype-java-release.yml
-#      parameters:
-#        DependsOn:
-#          - Build_for_new_Version
-#        ServiceDirectory: ${{ parameters.ServiceDirectory }}
-#        SDKType: ${{ parameters.SDKType }}
-#        Artifacts: ${{ parameters.Artifacts }}
-#        ${{ if eq(parameters.ServiceDirectory, 'template') }}:
-#          TestPipeline: true
-#        ArtifactName: packages
-#        TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
-#        TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
-
-  - stage: Build_for_Last_Version
-    jobs:
-      - template: /sdk/spring/ci-template.yml
-        parameters:
-          MatrixConfigs:
-            -   ${{ each config in parameters.MatrixConfigs }}:
-                        - ${{ config }}
-            -   ${{ each config in parameters.AdditionalMatrixConfigs }}:
-                        - ${{ config }}
-          PublishArtifact: false
-          PreBuildSteps:
-            - script: |
-                pip install in-place
-            - script: |
-                pip install termcolor
-            - script: |
-                python ./sdk/spring/scripts/ci_update_versions.py --sbv 2.5.4
-            - script: |
-                python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b 2.6.1 -c 2021.0.0
-            - script: |
-                  mvn dependency:tree
-
-  # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
-#  - ${{if and(ne(variables['Build_for_Release.Reason'], 'PullRequest'), ne(variables['Build_for_new_Version.Reason'], 'PullRequest'), ne(variables['Build_for_Last_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
-#    - template: archetype-java-release.yml
-#      parameters:
-#        DependsOn:
-#          - Build_for_Release
-#          - Build_for_new_Version
-#          - Build_for_Last_Version
-#        ServiceDirectory: ${{ parameters.ServiceDirectory }}
-#        SDKType: ${{ parameters.SDKType }}
-#        Artifacts: ${{ parameters.Artifacts }}
-#        ${{ if eq(parameters.ServiceDirectory, 'template') }}:
-#          TestPipeline: true
-#        ArtifactName: packages
-#        TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
-#        TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
+    - stage: Build_for_Last_Version
+      jobs:
+          - template: /eng/pipelines/templates/jobs/ci.yml
+            parameters:
+                PublishArtifact: false
+                ServiceDirectory: ${{ parameters.ServiceDirectory }}
+                ${{ if eq(parameters.ServiceDirectory, 'template') }}:
+                    TestPipeline: true
+                SDKType: ${{ parameters.SDKType }}
+                Artifacts: ${{ parameters.Artifacts }}
+                AdditionalModules: ${{ parameters.AdditionalModules }}
+                SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
+                MatrixConfigs:
+                    - ${{ each config in parameters.MatrixConfigs }}:
+                          - ${{ config }}
+                    - ${{ each config in parameters.AdditionalMatrixConfigs }}:
+                          - ${{ config }}
+                MatrixFilters:
+                    - ${{ each filter in parameters.MatrixFilters }}:
+                          - ${{ filter }}
+                    # Skip TestFromSource jobs for SDKType data
+                    - ${{ if eq(parameters.SDKType, 'data') }}:
+                          - TestFromSource=^(?!true).*
+                MatrixReplace:
+                    - ${{ each replacement in parameters.MatrixReplace }}:
+                          - ${{ replacement }}
+                    - ${{ if eq(parameters.SDKType, 'data') }}:
+                          - TestGoals=.*/verify
+                          - TestOptions=.*/-am
+                    - AZURE_TEST.*=.*/
+                PreBuildSteps:
+                    - script: |
+                          pip install in-place
+                    - script: |
+                          pip install termcolor
+                    - script: |
+                          python ./sdk/spring/scripts/ci_update_versions.py --sbv 2.5.4
+                    - script: |
+                          python ./sdk/spring/scripts/ci_add_spring_boot_dependencies_management.py --boot 2.5.4 --cloud 2020.0.4
+                    - script: |
+                          mvn dependency:tree
+#    # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
+#    - ${{if and(ne(variables['Build_for_Last_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
+#          - template: archetype-java-release.yml
+#            parameters:
+#                DependsOn:
+#                    - Build_for_Last_Version
+#                ServiceDirectory: ${{ parameters.ServiceDirectory }}
+#                SDKType: ${{ parameters.SDKType }}
+#                Artifacts: ${{ parameters.Artifacts }}
+#                ${{ if eq(parameters.ServiceDirectory, 'template') }}:
+#                    TestPipeline: true
+#                ArtifactName: packages
+#                TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
+#                TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build_for_Release.Reason'], 'PullRequest'), ne(variables['Build_for_new_Version.Reason'], 'PullRequest'), ne(variables['Build_for_Last_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
