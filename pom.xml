@@ -41,7 +41,7 @@
         <module>sdk/confidentialledger/azure-security-confidentialledger</module>
 
         <!-- Azure Container Registry -->
-        <module>sdk/containerregistry/azure-containers-containerregistry</module>
+<!--        <module>sdk/containerregistry/azure-containers-containerregistry</module>-->
 
         <!-- Azure Core -->
         <module>sdk/core/azure-core</module>
