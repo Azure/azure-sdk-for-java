@@ -108,11 +108,6 @@
       <version>1.2.2</version>
     </dependency>
     <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-servicebus-jms</artifactId>
-      <version>0.0.9</version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus-jms;external_dependency} -->
-    </dependency>
-    <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-buffer</artifactId>
       <version>4.1.70.Final</version> <!-- {x-version-update;io.netty:netty-buffer;external_dependency} -->

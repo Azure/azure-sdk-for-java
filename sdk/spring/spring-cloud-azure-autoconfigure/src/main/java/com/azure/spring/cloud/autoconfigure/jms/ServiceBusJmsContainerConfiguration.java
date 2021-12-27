@@ -18,7 +18,7 @@ import javax.jms.ConnectionFactory;
  * Abstract autoconfiguration class of ServiceBusJMS for JmsListenerContainerFactory.
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnBean(ConnectionFactory.class)
+@ConditionalOnBean({ConnectionFactory.class, DefaultJmsListenerContainerFactoryConfigurer.class})
 public class ServiceBusJmsContainerConfiguration {
 
     /**

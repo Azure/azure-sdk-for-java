@@ -7,9 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
-import javax.jms.ConnectionFactory;
-
 import static org.assertj.core.api.Assertions.assertThat;
+
 
 class ServiceBusJmsAutoConfigurationTest {
 
@@ -23,10 +22,12 @@ class ServiceBusJmsAutoConfigurationTest {
 
     @Test
     void testAzureServiceBusJMSPropertiesConnectionStringValidation() {
-        this.contextRunner.withPropertyValues("spring.jms.servicebus.pricing-tier=basic")
+        this.contextRunner.withPropertyValues("spring.jms.servicebus.connection-string=" + CONNECTION_STRING)
                           .run(context -> {
-                              assertThat(context).hasSingleBean(ConnectionFactory.class);
+                              assertThat(context).hasSingleBean(ServiceBusJmsConnectionFactoryCustomizer.class);
                           });
+
+
     }
 
 
