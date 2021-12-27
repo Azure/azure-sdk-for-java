@@ -15,6 +15,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import reactor.core.publisher.Mono;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 /** The implementation of RoleAssignments and its parent interfaces. */
@@ -55,7 +57,7 @@ public class RoleAssignmentsImpl extends CreatableResourcesImpl<RoleAssignment, 
 
     @Override
     public PagedFlux<RoleAssignment> listByScopeAsync(String scope) {
-        return PagedConverter.mapPage(inner().listForScopeAsync(scope, null), this::wrapModel);
+        return PagedConverter.mapPage(inner().listForScopeAsync(scope), this::wrapModel);
     }
 
     @Override
@@ -76,7 +78,7 @@ public class RoleAssignmentsImpl extends CreatableResourcesImpl<RoleAssignment, 
     @Override
     public PagedFlux<RoleAssignment> listByServicePrincipalAsync(String principalId) {
         String filterStr = String.format("principalId eq '%s'", Objects.requireNonNull(principalId));
-        return PagedConverter.mapPage(inner().listAsync(filterStr), this::wrapModel);
+        return PagedConverter.mapPage(inner().listAsync(URLEncoder.encode(filterStr, StandardCharsets.UTF_8), null), this::wrapModel);
     }
 
     @Override

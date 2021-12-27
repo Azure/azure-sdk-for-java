@@ -36,6 +36,7 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
     // role info
     private String roleDefinitionId;
     private String roleName;
+    private String scope;
     private final ClientLogger logger = new ClientLogger(RoleAssignmentImpl.class);
 
     RoleAssignmentImpl(String name, RoleAssignmentInner innerObject, AuthorizationManager manager) {
@@ -127,7 +128,7 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
 
     @Override
     public String scope() {
-        return innerModel().scope();
+        return this.scope == null ? this.innerModel().scope() : this.scope;
     }
 
     @Override
@@ -190,7 +191,7 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
 
     @Override
     public RoleAssignmentImpl withScope(String scope) {
-        this.innerModel().withScope(scope);
+        this.scope = scope;
         return this;
     }
 
@@ -206,7 +207,7 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
 
     @Override
     public RoleAssignmentImpl withSubscriptionScope(String subscriptionId) {
-        return withScope("subscriptions/" + subscriptionId);
+        return withScope("/subscriptions/" + subscriptionId);
     }
 
     @Override
