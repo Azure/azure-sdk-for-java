@@ -6,17 +6,21 @@ package com.azure.spring.core.factory.credential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.spring.core.aware.AzureProfileAware;
 import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.core.properties.util.PropertyMapper;
+import com.azure.spring.core.properties.PropertyMapper;
 
 import java.util.concurrent.ExecutorService;
 
 /**
- *
+ * A credential builder factory for the {@link DefaultAzureCredentialBuilder}.
  */
 public class DefaultAzureCredentialBuilderFactory extends AbstractAzureCredentialBuilderFactory<DefaultAzureCredentialBuilder> {
 
     private ExecutorService executorService = null;
 
+    /**
+     * Create a {@link DefaultAzureCredentialBuilderFactory} instance with {@link AzureProperties}.
+     * @param azureProperties The Azure properties.
+     */
     public DefaultAzureCredentialBuilderFactory(AzureProperties azureProperties) {
         super(azureProperties);
     }
@@ -37,6 +41,10 @@ public class DefaultAzureCredentialBuilderFactory extends AbstractAzureCredentia
         map.from(executorService).to(builder::executorService);
     }
 
+    /**
+     * Set the {@link ExecutorService}. The {@link ExecutorService} will be applied to the underneath identity client.
+     * @param executorService The executor service.
+     */
     public void setExecutorService(ExecutorService executorService) {
         this.executorService = executorService;
     }

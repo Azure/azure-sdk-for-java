@@ -12,12 +12,6 @@ import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
 import com.azure.storage.blob.specialized.BlobOutputStream;
 import com.azure.storage.blob.specialized.BlockBlobClient;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
@@ -25,13 +19,18 @@ import org.springframework.core.io.WritableResource;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+
 /**
  * Implements {@link WritableResource} for reading and writing objects in Azure StorageAccount blob. An instance of this
  * class represents a handle to a blob.
- *
- * @author Warren Zhu
  */
-public class StorageBlobResource extends AzureStorageResource {
+public final class StorageBlobResource extends AzureStorageResource {
     private static final Logger LOGGER = LoggerFactory.getLogger(StorageBlobResource.class);
     private static final String MSG_FAIL_OPEN_OUTPUT = "Failed to open output stream of cloud blob";
     private static final String MSG_FAIL_OPEN_INPUT = "Failed to open input stream of blob";

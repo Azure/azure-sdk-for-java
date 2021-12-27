@@ -13,7 +13,7 @@ import com.azure.core.util.Configuration;
 import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.SasAuthenticationDescriptor;
 import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.core.properties.util.PropertyMapper;
+import com.azure.spring.core.properties.PropertyMapper;
 import com.azure.spring.service.storage.common.AbstractAzureStorageClientBuilderFactory;
 import com.azure.spring.service.storage.common.credential.StorageSharedKeyAuthenticationDescriptor;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -33,10 +33,14 @@ public class ShareServiceClientBuilderFactory extends AbstractAzureStorageClient
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ShareServiceClientBuilderFactory.class);
 
-    private final StorageFileShareProperties fileShareProperties;
+    private final ShareServiceClientProperties shareServiceClientProperties;
 
-    public ShareServiceClientBuilderFactory(StorageFileShareProperties fileShareProperties) {
-        this.fileShareProperties = fileShareProperties;
+    /**
+     * Create a  {@link ShareServiceClientBuilderFactory} instance with the properties.
+     * @param shareServiceClientProperties the properties of the share service client.
+     */
+    public ShareServiceClientBuilderFactory(ShareServiceClientProperties shareServiceClientProperties) {
+        this.shareServiceClientProperties = shareServiceClientProperties;
     }
 
     @Override
@@ -71,7 +75,7 @@ public class ShareServiceClientBuilderFactory extends AbstractAzureStorageClient
 
     @Override
     protected AzureProperties getAzureProperties() {
-        return this.fileShareProperties;
+        return this.shareServiceClientProperties;
     }
 
     @Override
@@ -85,8 +89,8 @@ public class ShareServiceClientBuilderFactory extends AbstractAzureStorageClient
     @Override
     protected void configureService(ShareServiceClientBuilder builder) {
         PropertyMapper map = new PropertyMapper();
-        map.from(this.fileShareProperties.getEndpoint()).to(builder::endpoint);
-        map.from(this.fileShareProperties.getServiceVersion()).to(builder::serviceVersion);
+        map.from(this.shareServiceClientProperties.getEndpoint()).to(builder::endpoint);
+        map.from(this.shareServiceClientProperties.getServiceVersion()).to(builder::serviceVersion);
     }
 
     @Override

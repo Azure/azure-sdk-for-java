@@ -14,7 +14,7 @@ import org.springframework.core.io.Resource;
 /**
  * A {@link ProtocolResolver} implementation for the {@code azure-file://} protocol.
  */
-public class AzureStorageFileProtocolResolver extends AbstractAzureStorageProtocolResolver {
+public final class AzureStorageFileProtocolResolver extends AbstractAzureStorageProtocolResolver {
 
     private ShareServiceClient shareServiceClient;
 
