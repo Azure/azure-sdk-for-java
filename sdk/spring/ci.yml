@@ -407,6 +407,7 @@ stages:
       - template: /eng/pipelines/templates/jobs/ci.yml
 #      - template: /sdk/spring/ci-template.yml
         parameters:
+          Artifacts: ${{ parameters.Artifacts }}
           MatrixConfigs:
             -   ${{ each config in parameters.MatrixConfigs }}:
                     - ${{ config }}
@@ -427,46 +428,51 @@ stages:
 #        TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
 #        TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
 
-  - stage: Build_for_new_Version
-    jobs:
-      - template: /eng/pipelines/templates/jobs/ci.yml
-#      - template: /sdk/spring/ci-template.yml
-        parameters:
-          MatrixConfigs:
-            -   ${{ each config in parameters.MatrixConfigs }}:
-                    - ${{ config }}
-            -   ${{ each config in parameters.AdditionalMatrixConfigs }}:
-                    - ${{ config }}
-          PublishArtifact: false
-          PreBuildSteps:
-            - script: |
-                pip install in-place
-            - script: |
-                pip install termcolor
-            - script: |
-                python ./sdk/spring/scripts/ci_update_versions.py --sbv 2.6.1
-            - script: |
-                python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b 2.6.1 -c 2021.0.0
+#  - stage: Build_for_new_Version
+#    jobs:
+#      - template: /eng/pipelines/templates/jobs/ci.yml
+##      - template: /sdk/spring/ci-template.yml
+#        parameters:
+#          MatrixConfigs:
+#            -   ${{ each config in parameters.MatrixConfigs }}:
+#                    - ${{ config }}
+#            -   ${{ each config in parameters.AdditionalMatrixConfigs }}:
+#                    - ${{ config }}
+#          PublishArtifact: false
+#          PreBuildSteps:
+#            - script: |
+#                pip install in-place
+#            - script: |
+#                pip install termcolor
+#            - script: |
+#                python ./sdk/spring/scripts/ci_update_versions.py --sbv 2.6.1
+#            - script: |
+#                python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b 2.6.1 -c 2021.0.0
 
-  # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
-  - ${{if and(ne(variables['Build_for_new_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
-    - template: archetype-java-release.yml
-      parameters:
-        DependsOn:
-          - Build_for_new_Version
-        ServiceDirectory: ${{ parameters.ServiceDirectory }}
-        SDKType: ${{ parameters.SDKType }}
-        Artifacts: ${{ parameters.Artifacts }}
-        ${{ if eq(parameters.ServiceDirectory, 'template') }}:
-          TestPipeline: true
-        ArtifactName: packages
-        TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
-        TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
+#  # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
+#  - ${{if and(ne(variables['Build_for_new_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
+#    - template: archetype-java-release.yml
+#      parameters:
+#        DependsOn:
+#          - Build_for_new_Version
+#        ServiceDirectory: ${{ parameters.ServiceDirectory }}
+#        SDKType: ${{ parameters.SDKType }}
+#        Artifacts: ${{ parameters.Artifacts }}
+#        ${{ if eq(parameters.ServiceDirectory, 'template') }}:
+#          TestPipeline: true
+#        ArtifactName: packages
+#        TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
+#        TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
 
 #  - stage: Build_for_Last_Version
 #    jobs:
 #      - template: /sdk/spring/ci-template.yml
 #        parameters:
+#          MatrixConfigs:
+#            -   ${{ each config in parameters.MatrixConfigs }}:
+#                        - ${{ config }}
+#            -   ${{ each config in parameters.AdditionalMatrixConfigs }}:
+#                        - ${{ config }}
 #          PublishArtifact: false
 #          PreBuildSteps:
 #            - script: |
@@ -477,12 +483,14 @@ stages:
 #                python ./sdk/spring/scripts/ci_update_versions.py --sbv 2.5.4
 #            - script: |
 #                python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b 2.6.1 -c 2021.0.0
-#
+
 #  # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
-#  - ${{if and(ne(variables['Build_for_Last_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
+#  - ${{if and(ne(variables['Build_for_Release.Reason'], 'PullRequest'), ne(variables['Build_for_new_Version.Reason'], 'PullRequest'), ne(variables['Build_for_Last_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
 #    - template: archetype-java-release.yml
 #      parameters:
 #        DependsOn:
+#          - Build_for_Release
+#          - Build_for_new_Version
 #          - Build_for_Last_Version
 #        ServiceDirectory: ${{ parameters.ServiceDirectory }}
 #        SDKType: ${{ parameters.SDKType }}
