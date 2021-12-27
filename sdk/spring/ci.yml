@@ -461,7 +461,7 @@ stages:
             - script: |
                 python ./sdk/spring/scripts/ci_update_versions.py --sbv 2.6.1
             - script: |
-                python ./sdk/spring/scripts/ci_add_spring_boot_dependencies_management.py --boot 2.6.1 --cloud 2021.0.0
+                python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py --b 2.6.1 --c 2021.0.0
             - script: |
                 mvn dependency:tree
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
@@ -517,7 +517,7 @@ stages:
             - script: |
                 python ./sdk/spring/scripts/ci_update_versions.py --sbv 2.5.4
             - script: |
-                python ./sdk/spring/scripts/ci_add_spring_boot_dependencies_management.py --boot 2.5.4 --cloud 2020.0.4
+                python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py --b 2.5.4 --c 2020.0.4
             - script: |
                 mvn dependency:tree
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
