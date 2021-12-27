@@ -8,7 +8,7 @@ import com.azure.core.http.HttpClientProvider;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.spring.core.factory.credential.DefaultAzureCredentialBuilderFactory;
-import com.azure.spring.core.http.DefaultHttpProvider;
+import com.azure.spring.core.implementation.http.DefaultHttpProvider;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.proxy.ProxyProperties;
 import com.azure.spring.core.properties.retry.RetryProperties;

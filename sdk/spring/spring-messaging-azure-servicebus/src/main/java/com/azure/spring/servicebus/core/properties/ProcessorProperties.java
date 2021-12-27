@@ -3,12 +3,12 @@
 
 package com.azure.spring.servicebus.core.properties;
 
-import com.azure.spring.service.servicebus.properties.ServiceBusProcessorDescriptor;
+import com.azure.spring.service.servicebus.properties.ServiceBusProcessorClientProperties;
 
 /**
  * A service bus processor related properties.
  */
-public class ProcessorProperties extends ReceiverProperties implements ServiceBusProcessorDescriptor {
+public class ProcessorProperties extends ReceiverProperties implements ServiceBusProcessorClientProperties {
 
     private Integer maxConcurrentCalls = 1;
     private Integer maxConcurrentSessions = null;

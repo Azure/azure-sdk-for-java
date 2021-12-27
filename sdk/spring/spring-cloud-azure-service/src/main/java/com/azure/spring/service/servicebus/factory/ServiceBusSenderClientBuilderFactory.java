@@ -4,9 +4,9 @@
 package com.azure.spring.service.servicebus.factory;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
-import com.azure.spring.core.properties.util.PropertyMapper;
+import com.azure.spring.core.properties.PropertyMapper;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
-import com.azure.spring.service.servicebus.properties.ServiceBusProducerDescriptor;
+import com.azure.spring.service.servicebus.properties.ServiceBusSenderClientProperties;
 import org.springframework.util.Assert;
 
 /**
@@ -14,35 +14,47 @@ import org.springframework.util.Assert;
  */
 public class ServiceBusSenderClientBuilderFactory
     extends AbstractServiceBusSubClientBuilderFactory<ServiceBusClientBuilder.ServiceBusSenderClientBuilder,
-    ServiceBusProducerDescriptor> {
+    ServiceBusSenderClientProperties> {
 
-    private final ServiceBusProducerDescriptor producerProperties;
+    private final ServiceBusSenderClientProperties senderClientProperties;
 
-    public ServiceBusSenderClientBuilderFactory(ServiceBusProducerDescriptor producerProperties) {
-        this(null, producerProperties);
+    /**
+     * Create a {@link ServiceBusSenderClientBuilderFactory} instance with the {@link ServiceBusSenderClientProperties}.
+     * @param senderClientProperties the properties of a Service Bus sender client.
+     */
+    public ServiceBusSenderClientBuilderFactory(ServiceBusSenderClientProperties senderClientProperties) {
+        this(null, senderClientProperties);
     }
 
+    /**
+     * Create a {@link ServiceBusSenderClientBuilderFactory} instance with {@link ServiceBusClientBuilder} and the
+     * {@link ServiceBusSenderClientProperties}.
+     *
+     * @param serviceBusClientBuilder the provided Service Bus client builder. If provided, the sub clients will be
+     *                                created from this builder.
+     * @param senderClientProperties the properties of the Service Bus sender client.
+     */
     public ServiceBusSenderClientBuilderFactory(ServiceBusClientBuilder serviceBusClientBuilder,
-                                                ServiceBusProducerDescriptor producerProperties) {
-        super(serviceBusClientBuilder, producerProperties);
-        this.producerProperties = producerProperties;
+                                                ServiceBusSenderClientProperties senderClientProperties) {
+        super(serviceBusClientBuilder, senderClientProperties);
+        this.senderClientProperties = senderClientProperties;
     }
 
     @Override
     protected ServiceBusClientBuilder.ServiceBusSenderClientBuilder createBuilderInstance() {
-        return this.serviceBusClientBuilder.sender();
+        return this.getServiceBusClientBuilder().sender();
     }
 
     @Override
     protected void configureService(ServiceBusClientBuilder.ServiceBusSenderClientBuilder builder) {
-        Assert.notNull(producerProperties.getEntityType(), "Entity type cannot be null.");
-        Assert.notNull(producerProperties.getEntityName(), "Entity name cannot be null.");
+        Assert.notNull(senderClientProperties.getEntityType(), "Entity type cannot be null.");
+        Assert.notNull(senderClientProperties.getEntityName(), "Entity name cannot be null.");
         final PropertyMapper propertyMapper = new PropertyMapper();
 
-        if (ServiceBusEntityType.QUEUE == producerProperties.getEntityType()) {
-            propertyMapper.from(producerProperties.getEntityName()).to(builder::queueName);
-        } else if (ServiceBusEntityType.TOPIC == producerProperties.getEntityType()) {
-            propertyMapper.from(producerProperties.getEntityName()).to(builder::topicName);
+        if (ServiceBusEntityType.QUEUE == senderClientProperties.getEntityType()) {
+            propertyMapper.from(senderClientProperties.getEntityName()).to(builder::queueName);
+        } else if (ServiceBusEntityType.TOPIC == senderClientProperties.getEntityType()) {
+            propertyMapper.from(senderClientProperties.getEntityName()).to(builder::topicName);
         }
 
     }

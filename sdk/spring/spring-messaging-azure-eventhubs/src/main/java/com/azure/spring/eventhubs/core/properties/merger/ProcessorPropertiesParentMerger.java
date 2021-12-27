@@ -3,11 +3,11 @@
 
 package com.azure.spring.eventhubs.core.properties.merger;
 
-import com.azure.spring.core.properties.util.AzurePropertiesUtils;
+import com.azure.spring.core.properties.PropertyMapper;
+import com.azure.spring.core.util.AzurePropertiesUtils;
 import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.eventhubs.core.properties.ProcessorProperties;
-import com.azure.spring.service.core.ParentMerger;
-import com.azure.spring.core.properties.util.PropertyMapper;
+import com.azure.spring.service.implementation.core.ParentMerger;
 
 /**
  * A merger used to merge a {@link ProcessorProperties} with its parent {@link NamespaceProperties}. When a property is
@@ -48,9 +48,9 @@ public class ProcessorPropertiesParentMerger implements ParentMerger<ProcessorPr
 
         propertyMapper.from(child.getTrackLastEnqueuedEventProperties()).to(properties::setTrackLastEnqueuedEventProperties);
         propertyMapper.from(child.getInitialPartitionEventPosition()).to(m -> properties.getInitialPartitionEventPosition().putAll(m));
-        propertyMapper.from(child.getPartitionOwnershipExpirationInterval()).to(properties::setPartitionOwnershipExpirationInterval);
         propertyMapper.from(child.getBatch().getMaxSize()).to(properties.getBatch()::setMaxSize);
         propertyMapper.from(child.getBatch().getMaxWaitTime()).to(properties.getBatch()::setMaxWaitTime);
+        propertyMapper.from(child.getLoadBalancing().getPartitionOwnershipExpirationInterval()).to(properties.getLoadBalancing()::setPartitionOwnershipExpirationInterval);
         propertyMapper.from(child.getLoadBalancing().getStrategy()).to(properties.getLoadBalancing()::setStrategy);
         propertyMapper.from(child.getLoadBalancing().getUpdateInterval()).to(properties.getLoadBalancing()::setUpdateInterval);
 

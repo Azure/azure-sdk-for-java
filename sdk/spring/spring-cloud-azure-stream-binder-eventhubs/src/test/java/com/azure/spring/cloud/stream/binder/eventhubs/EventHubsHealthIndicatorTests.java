@@ -23,8 +23,8 @@ import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import com.azure.spring.service.eventhubs.processor.BatchEventProcessingListener;
 import com.azure.spring.service.eventhubs.processor.EventProcessingListener;
 import com.azure.spring.service.eventhubs.processor.RecordEventProcessingListener;
-import com.azure.spring.service.eventhubs.processor.consumer.ErrorContextConsumer;
-import com.azure.spring.service.eventhubs.properties.EventHubsProcessorDescriptor;
+import com.azure.spring.service.eventhubs.processor.consumer.EventHubsErrorContextConsumer;
+import com.azure.spring.service.eventhubs.properties.EventProcessorClientProperties;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -167,7 +167,7 @@ public class EventHubsHealthIndicatorTests {
         prepareConsumerProperties();
         CheckpointConfig checkpoint = eventHubsConsumerProperties.getCheckpoint();
         checkpoint.setMode(CheckpointMode.BATCH);
-        EventHubsProcessorDescriptor.Batch batch = eventHubsConsumerProperties.getBatch();
+        EventProcessorClientProperties.EventBatch batch = eventHubsConsumerProperties.getBatch();
         batch.setMaxSize(10);
         batch.setMaxWaitTime(Duration.ofMillis(1));
         when(consumerDestination.getName()).thenReturn(CONSUMER_NAME);
@@ -188,7 +188,7 @@ public class EventHubsHealthIndicatorTests {
         prepareConsumerProperties();
         CheckpointConfig checkpoint = eventHubsConsumerProperties.getCheckpoint();
         checkpoint.setMode(CheckpointMode.BATCH);
-        EventHubsProcessorDescriptor.Batch batch = eventHubsConsumerProperties.getBatch();
+        EventProcessorClientProperties.EventBatch batch = eventHubsConsumerProperties.getBatch();
         batch.setMaxSize(10);
         batch.setMaxWaitTime(Duration.ofMillis(1));
         when(consumerDestination.getName()).thenReturn(CONSUMER_NAME);
@@ -256,14 +256,14 @@ public class EventHubsHealthIndicatorTests {
         }
     }
 
-    private class TestIntegrationRecordEventProcessingListener implements
+    private static class TestIntegrationRecordEventProcessingListener implements
         TestInstrumentationEventProcessingListener, RecordEventProcessingListener {
 
         private InstrumentationManager instrumentationManager;
         private String instrumentationId;
 
         @Override
-        public ErrorContextConsumer getErrorContextConsumer() {
+        public EventHubsErrorContextConsumer getErrorContextConsumer() {
             return errorContext -> {
                 updateInstrumentation(errorContext, instrumentationManager, instrumentationId);
             };
@@ -285,14 +285,14 @@ public class EventHubsHealthIndicatorTests {
         }
     }
 
-    private class TestIntegrationBatchEventProcessingListener implements
+    private static class TestIntegrationBatchEventProcessingListener implements
         TestInstrumentationEventProcessingListener, BatchEventProcessingListener {
 
         private InstrumentationManager instrumentationManager;
         private String instrumentationId;
 
         @Override
-        public ErrorContextConsumer getErrorContextConsumer() {
+        public EventHubsErrorContextConsumer getErrorContextConsumer() {
             return errorContext -> {
                 updateInstrumentation(errorContext, instrumentationManager, instrumentationId);
             };

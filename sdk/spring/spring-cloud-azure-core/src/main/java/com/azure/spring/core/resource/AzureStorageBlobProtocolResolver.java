@@ -17,7 +17,7 @@ import org.springframework.core.io.Resource;
 /**
  * A {@link ProtocolResolver} implementation for the {@code azure-blob://} protocol.
  */
-public class AzureStorageBlobProtocolResolver extends AbstractAzureStorageProtocolResolver {
+public final class AzureStorageBlobProtocolResolver extends AbstractAzureStorageProtocolResolver {
 
     private BlobServiceClient blobServiceClient;
 
