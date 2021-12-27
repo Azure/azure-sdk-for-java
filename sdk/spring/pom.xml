@@ -208,7 +208,6 @@
       <modules>
         <module>../../eng/code-quality-reports</module>
         <module>../keyvault/azure-security-keyvault-jca</module>
-        <module>azure-spring-boot-test-core</module>
         <module>spring-messaging-azure</module>
         <module>spring-messaging-azure-eventhubs</module>
         <module>spring-messaging-azure-servicebus</module>
