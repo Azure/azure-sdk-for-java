@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.jms;
 
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
+import com.azure.spring.core.AzureSpringIdentifier;
 import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactorySettings;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -17,9 +18,6 @@ import org.springframework.context.annotation.Configuration;
 import javax.jms.ConnectionFactory;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import static com.azure.spring.core.AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS;
-import static com.azure.spring.core.AzureSpringIdentifier.VERSION;
 
 /**
  * Automatic configuration class of ServiceBusJMS for Premium Service Bus
@@ -57,7 +55,7 @@ public class PremiumServiceBusJmsAutoConfiguration extends AbstractServiceBusJms
         SpringServiceBusJmsConnectionFactory springServiceBusJmsConnectionFactory =
             new SpringServiceBusJmsConnectionFactory(connectionString, settings);
         springServiceBusJmsConnectionFactory.setClientId(clientId);
-        springServiceBusJmsConnectionFactory.setCustomUserAgent(AZURE_SPRING_SERVICE_BUS + VERSION);
+        springServiceBusJmsConnectionFactory.setCustomUserAgent(AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS);
 
         return springServiceBusJmsConnectionFactory;
     }
