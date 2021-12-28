@@ -412,6 +412,7 @@ stages:
 #                cd ./sdk/spring && mvn dependency:tree -pl $(ProjectList) -am
 
       - job: 'maven dependency'
+        steps:
           - script: |
               cd ./sdk/spring && mvn dependency:tree -pl $(ProjectList) -am
 
