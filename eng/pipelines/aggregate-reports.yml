@@ -52,9 +52,9 @@ stages:
             displayName: Copy input files for BOM generation
 
         - task: Maven@3
-            condition: succeededOrFailed()
-            displayName: 'Generate BOM Reports'
-            inputs:
+          condition: succeededOrFailed()
+          displayName: 'Generate BOM Reports'
+          inputs:
             mavenPomFile: eng/bomgenerator/pom.xml
             options: '$(DefaultOptions)'
             mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
