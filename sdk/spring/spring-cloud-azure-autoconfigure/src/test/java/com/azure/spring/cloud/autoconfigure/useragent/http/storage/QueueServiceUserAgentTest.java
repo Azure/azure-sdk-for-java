@@ -7,6 +7,7 @@ import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.storage.queue.AzureStorageQueueAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.storage.queue.properties.AzureStorageQueueProperties;
 import com.azure.spring.cloud.autoconfigure.useragent.util.UserAgentTestUtil;
+import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.service.storage.queue.QueueServiceClientBuilderFactory;
 import com.azure.storage.queue.QueueServiceAsyncClient;
 import com.azure.storage.queue.QueueServiceClient;
@@ -16,7 +17,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
-import static com.azure.spring.core.AzureSpringIdentifier.AZURE_SPRING_STORAGE_QUEUE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class QueueServiceUserAgentTest {
@@ -40,7 +40,7 @@ public class QueueServiceUserAgentTest {
                 QueueServiceClient client = context.getBean(QueueServiceClient.class);
                 String userAgent = UserAgentTestUtil.getUserAgent(client.getHttpPipeline());
                 Assertions.assertNotNull(userAgent);
-                Assertions.assertTrue(userAgent.contains(AZURE_SPRING_STORAGE_QUEUE));
+                Assertions.assertTrue(userAgent.contains(AzureSpringIdentifier.AZURE_SPRING_STORAGE_QUEUE));
             });
     }
 }

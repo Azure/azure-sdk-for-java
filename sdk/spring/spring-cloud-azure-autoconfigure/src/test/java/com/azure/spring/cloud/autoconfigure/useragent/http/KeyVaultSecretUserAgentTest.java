@@ -9,6 +9,7 @@ import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.spring.cloud.autoconfigure.keyvault.secrets.AzureKeyVaultSecretAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
+import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.service.keyvault.secrets.SecretClientBuilderFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +18,6 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.boot.test.system.OutputCaptureExtension;
 
-import static com.azure.spring.core.AzureSpringIdentifier.AZURE_SPRING_KEY_VAULT_SECRETS;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(OutputCaptureExtension.class)
@@ -54,7 +54,7 @@ public class KeyVaultSecretUserAgentTest {
                 } catch (Exception exception) {
                     // Eat it because we just want the log.
                 }
-                assertThat(output).contains(String.format("User-Agent:%s", AZURE_SPRING_KEY_VAULT_SECRETS));
+                assertThat(output).contains(String.format("User-Agent:%s", AzureSpringIdentifier.AZURE_SPRING_KEY_VAULT_SECRETS));
             });
     }
 }

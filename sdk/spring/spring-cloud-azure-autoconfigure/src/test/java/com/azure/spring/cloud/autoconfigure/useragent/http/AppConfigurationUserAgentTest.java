@@ -10,6 +10,7 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.spring.cloud.autoconfigure.appconfiguration.AzureAppConfigurationAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.appconfiguration.properties.AzureAppConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
+import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.service.appconfiguration.ConfigurationClientBuilderFactory;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,6 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.boot.test.system.OutputCaptureExtension;
 
-import static com.azure.spring.core.AzureSpringIdentifier.AZURE_SPRING_APP_CONFIG;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -64,7 +64,7 @@ public class AppConfigurationUserAgentTest {
                 } catch (Exception exception) {
                     // Eat it because we just want the log.
                 }
-                assertThat(output).contains(String.format("User-Agent:%s", AZURE_SPRING_APP_CONFIG));
+                assertThat(output).contains(String.format("User-Agent:%s", AzureSpringIdentifier.AZURE_SPRING_APP_CONFIG));
             });
     }
 }
