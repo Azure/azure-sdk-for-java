@@ -36,7 +36,7 @@
     "source": "specification/authorization/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.authorization",
     "args": "--tag=package-2020-08-01-preview",
-    "note": "1. Adaption of 'scope' property change to read-only in 'RoleAssignmentImpl'; 2. add url-encode to 'filterStr' in 'listByServicePrincipalAsync(String principalId)' of 'RoleAssignmentsImpl'; 3. Adaption of codegen parameter change in 'listByScopeAsync(String scope)' of 'RoleAssignmentsImpl'"
+    "note": "Adaption of 'scope' property change to read-only in 'RoleAssignmentImpl'; Add url-encode to 'filterStr' in 'listByServicePrincipalAsync(String principalId)' of 'RoleAssignmentsImpl'; Adaption of codegen parameter change in 'listByScopeAsync(String scope)' of 'RoleAssignmentsImpl'"
   },
   "authorization-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-authorization",

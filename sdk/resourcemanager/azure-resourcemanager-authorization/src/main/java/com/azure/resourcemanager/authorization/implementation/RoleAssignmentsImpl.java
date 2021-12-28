@@ -15,7 +15,9 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import reactor.core.publisher.Mono;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
@@ -78,7 +80,7 @@ public class RoleAssignmentsImpl extends CreatableResourcesImpl<RoleAssignment, 
     @Override
     public PagedFlux<RoleAssignment> listByServicePrincipalAsync(String principalId) {
         String filterStr = String.format("principalId eq '%s'", Objects.requireNonNull(principalId));
-        return PagedConverter.mapPage(inner().listAsync(URLEncoder.encode(filterStr, StandardCharsets.UTF_8), null), this::wrapModel);
+        return PagedConverter.mapPage(inner().listAsync(urlEncode(filterStr), null), this::wrapModel);
     }
 
     @Override
@@ -117,5 +119,17 @@ public class RoleAssignmentsImpl extends CreatableResourcesImpl<RoleAssignment, 
 
     public RoleAssignmentsClient inner() {
         return manager().roleServiceClient().getRoleAssignments();
+    }
+
+    /*
+     * url encode the given string
+     */
+    private String urlEncode(String str) {
+        try {
+            //method "URLEncoder.encode(String s, Charset charset)" appears after java 10, so it's not used here
+            return URLEncoder.encode(str, "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
