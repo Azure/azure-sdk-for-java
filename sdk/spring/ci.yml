@@ -377,7 +377,7 @@ parameters:
     default: [ ]
 
 stages:
-  - stage: Build_for_Release
+  - stage: Build
     jobs:
       - template: /eng/pipelines/templates/jobs/ci.yml
         parameters:
@@ -409,16 +409,14 @@ stages:
 #          PreBuildSteps: ${{ parameters.PreBuildSteps }}
           PreBuildSteps:
             - script: |
-                cd ./sdk/spring && mvn clean install -f pom.xml -P dev && mvn dependency:tree>tree.txt
-            - script: |
-                cd ./sdk/spring && cat tree.txt
+                cd ./sdk/spring && mvn dependency:tree -pl $(ProjectList) -am
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
-  - ${{if and(ne(variables['Build_for_Release.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
+  - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
       - template: archetype-java-release.yml
         parameters:
           DependsOn:
-            - Build_for_Release
+            - Build
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           SDKType: ${{ parameters.SDKType }}
           Artifacts: ${{ parameters.Artifacts }}
