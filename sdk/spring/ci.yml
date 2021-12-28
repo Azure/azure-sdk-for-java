@@ -422,7 +422,7 @@ stages:
           TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
           TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
 
-  - stage: Build_for_new_Version
+  - stage: Build_for_new_spring_boot_Version
     jobs:
       - template: /eng/pipelines/templates/jobs/ci.yml
         parameters:
@@ -467,11 +467,11 @@ stages:
               cd ./sdk/spring && mvn dependency:tree
             displayName: 'maven_dependency'
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
-  - ${{if and(ne(variables['Build_for_new_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
+  - ${{if and(ne(variables['Build_for_new_spring_boot_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
       - template: archetype-java-release.yml
         parameters:
           DependsOn:
-            - Build_for_new_Version
+            - Build_for_new_spring_boot_Version
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           SDKType: ${{ parameters.SDKType }}
           Artifacts: ${{ parameters.Artifacts }}
@@ -481,7 +481,7 @@ stages:
           TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
           TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
 
-  - stage: Build_for_Last_Version
+  - stage: Build_for_Last_spring_boot_Version
     jobs:
       - template: /eng/pipelines/templates/jobs/ci.yml
         parameters:
@@ -526,11 +526,11 @@ stages:
               cd ./sdk/spring && mvn dependency:tree
             displayName: 'maven_dependency'
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
-  - ${{if and(ne(variables['Build_for_Last_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
+  - ${{if and(ne(variables['Build_for_Last_spring_boot_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
       - template: archetype-java-release.yml
         parameters:
           DependsOn:
-            - Build_for_Last_Version
+            - Build_for_Last_spring_boot_Version
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           SDKType: ${{ parameters.SDKType }}
           Artifacts: ${{ parameters.Artifacts }}
