@@ -5,14 +5,15 @@ package com.azure.cosmos.implementation.batch;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.InvalidPartitionException;
 import com.azure.cosmos.implementation.ResourceThrottleRetryPolicy;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
+import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
@@ -116,7 +117,7 @@ final class BulkExecutorUtil {
 
                             if (routingMap.v == null) {
                                 collectionBeforeRecreation.set(collection);
-                                throw new InvalidPartitionException(
+                                throw new CollectionRoutingMapNotFoundException(
                                     String.format(
                                         "No collection routing map found for container %s(%s) in database %s.",
                                         container.getId(),
@@ -136,7 +137,7 @@ final class BulkExecutorUtil {
                         BatchRequestResponseConstants.MAX_COLLECTION_RECREATION_RETRY_COUNT,
                         Duration.ofSeconds(
                             BatchRequestResponseConstants.MAX_COLLECTION_RECREATION_REFRESH_INTERVAL_IN_SECONDS))
-                    .filter(t -> t instanceof InvalidPartitionException)
+                    .filter(t -> t instanceof CollectionRoutingMapNotFoundException)
                     .doBeforeRetry((retrySignal) -> docClientWrapper
                         .getCollectionCache()
                         .refresh(
@@ -195,4 +196,26 @@ final class BulkExecutorUtil {
             cosmosItemOperationType == CosmosItemOperationType.DELETE ||
             cosmosItemOperationType == CosmosItemOperationType.PATCH;
     }
+
+    static class CollectionRoutingMapNotFoundException extends CosmosException {
+
+        private static final long serialVersionUID = 1L;
+
+        /**
+         * Instantiates a new Invalid partition exception.
+         *
+         * @param msg the msg
+         */
+        public CollectionRoutingMapNotFoundException(String msg) {
+            super(HttpConstants.StatusCodes.NOTFOUND, msg);
+            setSubStatus();
+        }
+
+        private void setSubStatus() {
+            this.getResponseHeaders().put(
+                WFConstants.BackendHeaders.SUB_STATUS,
+                Integer.toString(HttpConstants.SubStatusCodes.INCORRECT_CONTAINER_RID_SUB_STATUS));
+        }
+    }
+
 }
