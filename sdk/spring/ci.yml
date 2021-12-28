@@ -409,7 +409,7 @@ stages:
 #          PreBuildSteps: ${{ parameters.PreBuildSteps }}
           PreBuildSteps:
             - script: |
-                mvn install && cd ./sdk/spring && mvn dependency:tree
+                cd ./sdk/spring && mvn clean install -f pom.xml -P dev && mvn dependency:tree
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build_for_Release.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
@@ -518,7 +518,7 @@ stages:
             - script: |
                 python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b 2.5.4 -c 2020.0.4
             - script: |
-                mvn install && cd ./sdk/spring && mvn dependency:tree
+                cd ./sdk/spring && mvn clean install -f pom.xml -P dev && mvn dependency:tree
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build_for_Last_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
       - template: archetype-java-release.yml
