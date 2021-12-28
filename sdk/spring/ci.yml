@@ -406,10 +406,14 @@ stages:
                 - TestGoals=.*/verify
                 - TestOptions=.*/-am
             - AZURE_TEST.*=.*/
-#          PreBuildSteps: ${{ parameters.PreBuildSteps }}
-          PreBuildSteps:
-            - script: |
-                cd ./sdk/spring && mvn dependency:tree -pl $(ProjectList) -am
+          PreBuildSteps: ${{ parameters.PreBuildSteps }}
+#          PreBuildSteps:
+#            - script: |
+#                cd ./sdk/spring && mvn dependency:tree -pl $(ProjectList) -am
+
+      - job: 'maven dependency'
+          - script: |
+              cd ./sdk/spring && mvn dependency:tree -pl $(ProjectList) -am
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
