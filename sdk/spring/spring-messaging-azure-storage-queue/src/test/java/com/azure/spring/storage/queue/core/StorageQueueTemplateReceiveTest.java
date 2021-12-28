@@ -116,7 +116,7 @@ public class StorageQueueTemplateReceiveTest {
             .thenReturn(new PagedFlux<>(() -> Mono.error(new QueueStorageException("error happened", null, null))));
 
         final Mono<Message<?>> mono = this.operation.receiveAsync(this.destination);
-        verifyStorageQueueRuntimeExceptionThrown(mono);
+        verifyQueueStorageExceptionThrown(mono);
     }
 
     @Test
@@ -147,12 +147,12 @@ public class StorageQueueTemplateReceiveTest {
         verify(this.mockClient, times(1)).deleteMessage(messageId, popReceipt);
     }
 
-    private void verifyStorageQueueRuntimeExceptionThrown(Mono<Message<?>> mono) {
+    private void verifyQueueStorageExceptionThrown(Mono<Message<?>> mono) {
         try {
             mono.block();
             fail("Test should fail.");
         } catch (Exception e) {
-            assertEquals(StorageQueueRuntimeException.class, e.getClass());
+            assertEquals(QueueStorageException.class, e.getClass());
         }
     }
 }

@@ -8,7 +8,7 @@ import com.azure.spring.service.servicebus.properties.ServiceBusProcessorClientP
 /**
  * A service bus processor related properties.
  */
-public class ProcessorProperties extends ReceiverProperties implements ServiceBusProcessorClientProperties {
+public class ProcessorProperties extends ConsumerProperties implements ServiceBusProcessorClientProperties {
 
     private Integer maxConcurrentCalls = 1;
     private Integer maxConcurrentSessions = null;

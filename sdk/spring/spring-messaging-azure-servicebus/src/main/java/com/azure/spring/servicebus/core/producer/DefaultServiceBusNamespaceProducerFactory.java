@@ -9,7 +9,7 @@ import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.service.servicebus.factory.ServiceBusSenderClientBuilderFactory;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
-import com.azure.spring.servicebus.core.properties.SenderProperties;
+import com.azure.spring.servicebus.core.properties.ProducerProperties;
 import com.azure.spring.servicebus.core.properties.merger.SenderPropertiesParentMerger;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.lang.Nullable;
@@ -33,7 +33,7 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
 
     private final List<Listener> listeners = new ArrayList<>();
     private final NamespaceProperties namespaceProperties;
-    private final PropertiesSupplier<String, SenderProperties> propertiesSupplier;
+    private final PropertiesSupplier<String, ProducerProperties> propertiesSupplier;
     private final Map<String, ServiceBusSenderAsyncClient> clients = new ConcurrentHashMap<>();
     private final SenderPropertiesParentMerger parentMerger = new SenderPropertiesParentMerger();
 
@@ -48,10 +48,10 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
     /**
      * Construct a factory with the provided namespace level configuration and producer {@link PropertiesSupplier}.
      * @param namespaceProperties the namespace properties.
-     * @param supplier the {@link PropertiesSupplier} to supply {@link SenderProperties} for each queue/topic entity.
+     * @param supplier the {@link PropertiesSupplier} to supply {@link ProducerProperties} for each queue/topic entity.
      */
     public DefaultServiceBusNamespaceProducerFactory(NamespaceProperties namespaceProperties,
-                                                     PropertiesSupplier<String, SenderProperties> supplier) {
+                                                     PropertiesSupplier<String, ProducerProperties> supplier) {
         this.namespaceProperties = namespaceProperties;
         this.propertiesSupplier = supplier == null ? key -> null : supplier;
     }
@@ -63,12 +63,12 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
 
     @Override
     public ServiceBusSenderAsyncClient createProducer(String name, ServiceBusEntityType entityType) {
-        SenderProperties senderProperties = this.propertiesSupplier.getProperties(name) != null
-            ? this.propertiesSupplier.getProperties(name) : new SenderProperties();
+        ProducerProperties producerProperties = this.propertiesSupplier.getProperties(name) != null
+            ? this.propertiesSupplier.getProperties(name) : new ProducerProperties();
         if (entityType != null) {
-            senderProperties.setEntityType(entityType);
+            producerProperties.setEntityType(entityType);
         }
-        return doCreateProducer(name, senderProperties);
+        return doCreateProducer(name, producerProperties);
     }
 
     @Override
@@ -91,13 +91,13 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
         this.listeners.clear();
     }
 
-    private ServiceBusSenderAsyncClient doCreateProducer(String name, @Nullable SenderProperties properties) {
+    private ServiceBusSenderAsyncClient doCreateProducer(String name, @Nullable ProducerProperties properties) {
         return clients.computeIfAbsent(name, entityName -> {
-            SenderProperties senderProperties = parentMerger.mergeParent(properties, this.namespaceProperties);
-            senderProperties.setEntityName(entityName);
+            ProducerProperties producerProperties = parentMerger.mergeParent(properties, this.namespaceProperties);
+            producerProperties.setEntityName(entityName);
 
             //TODO(yiliu6): whether to make the producer client share the same service bus client builder
-            ServiceBusSenderClientBuilderFactory factory = new ServiceBusSenderClientBuilderFactory(senderProperties);
+            ServiceBusSenderClientBuilderFactory factory = new ServiceBusSenderClientBuilderFactory(producerProperties);
             factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_SERVICE_BUS);
             ServiceBusSenderAsyncClient producerClient = factory.build().buildAsyncClient();
 

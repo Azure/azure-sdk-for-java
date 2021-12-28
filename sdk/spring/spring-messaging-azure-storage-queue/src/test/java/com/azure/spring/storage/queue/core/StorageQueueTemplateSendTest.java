@@ -8,13 +8,10 @@ import com.azure.storage.queue.QueueAsyncClient;
 import com.azure.storage.queue.models.SendMessageResult;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.core.NestedRuntimeException;
 import reactor.core.publisher.Mono;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -51,15 +48,6 @@ public class StorageQueueTemplateSendTest extends SendOperationTest<StorageQueue
         this.sendOperation = new StorageQueueTemplate(mockClientFactory);
     }
 
-
-    @Test
-    public void testSendCreateSenderFailure() {
-        whenSendWithException();
-
-        assertThrows(NestedRuntimeException.class, () -> this.sendOperation.sendAsync(destination, this.message,
-            null).block());
-    }
-
     @Override
     protected void setupError(String errorMessage) {
         when(this.mockClient.sendMessage(any(String.class)))
@@ -69,11 +57,6 @@ public class StorageQueueTemplateSendTest extends SendOperationTest<StorageQueue
     @Override
     protected void verifySendCalled(int times) {
         verify(this.mockClient, times(times)).sendMessage(isA(String.class));
-    }
-
-    protected void whenSendWithException() {
-        when(this.mockClientFactory.getOrCreateQueueClient(eq(destination)))
-            .thenThrow(new StorageQueueRuntimeException("Failed to get or create queue."));
     }
 
     @Override

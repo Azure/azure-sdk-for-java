@@ -3,6 +3,7 @@
 package com.azure.spring.servicebus.core;
 
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
+import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.service.servicebus.processor.MessageProcessingListener;
 import com.azure.spring.servicebus.core.processor.ServiceBusProcessorFactory;
 import org.slf4j.Logger;
@@ -11,8 +12,12 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.Lifecycle;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import static com.azure.spring.messaging.ConsumerIdentifier.INVALID_GROUP;
 
 /**
  * A processor container using {@link ServiceBusProcessorClient} to subscribe to Service Bus queue/topic entities and
@@ -31,8 +36,7 @@ public class ServiceBusProcessorContainer implements Lifecycle, DisposableBean {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusProcessorContainer.class);
 
     private final ServiceBusProcessorFactory processorFactory;
-    //TODO(yiliu6): map for client
-    private final List<ServiceBusProcessorClient> clients = new ArrayList<>();
+    private final Map<ConsumerIdentifier, ServiceBusProcessorClient> clients = new HashMap();
     private final AtomicBoolean isRunning = new AtomicBoolean(false);
     private final List<ServiceBusProcessorFactory.Listener> listeners = new ArrayList<>();
 
@@ -46,7 +50,8 @@ public class ServiceBusProcessorContainer implements Lifecycle, DisposableBean {
 
     @Override
     public void destroy() throws Exception {
-        this.clients.forEach(ServiceBusProcessorClient::close);
+        this.clients.values().forEach(ServiceBusProcessorClient::close);
+        this.clients.clear();
     }
 
     @Override
@@ -55,7 +60,7 @@ public class ServiceBusProcessorContainer implements Lifecycle, DisposableBean {
             LOGGER.info("Service Bus processors container is already running");
             return;
         }
-        this.clients.forEach(ServiceBusProcessorClient::start);
+        this.clients.values().forEach(ServiceBusProcessorClient::start);
     }
 
     @Override
@@ -64,7 +69,7 @@ public class ServiceBusProcessorContainer implements Lifecycle, DisposableBean {
             LOGGER.info("Service Bus processors container has already stopped");
             return;
         }
-        this.clients.forEach(ServiceBusProcessorClient::stop);
+        this.clients.values().forEach(ServiceBusProcessorClient::stop);
     }
 
     @Override
@@ -82,7 +87,7 @@ public class ServiceBusProcessorContainer implements Lifecycle, DisposableBean {
     public ServiceBusProcessorClient subscribe(String queue, MessageProcessingListener listener) {
         ServiceBusProcessorClient processor = this.processorFactory.createProcessor(queue, listener);
         processor.start();
-        this.clients.add(processor);
+        this.clients.computeIfAbsent(new ConsumerIdentifier(queue, INVALID_GROUP), k -> processor);
         return processor;
     }
 
@@ -92,8 +97,16 @@ public class ServiceBusProcessorContainer implements Lifecycle, DisposableBean {
      * @return true if unsubscribe successfully.
      */
     public boolean unsubscribe(String queue) {
-        // TODO: stop and remove
-        return false;
+        synchronized (this.clients) {
+            ServiceBusProcessorClient processor = this.clients.remove(new ConsumerIdentifier(queue, INVALID_GROUP));
+            if (processor == null) {
+                LOGGER.warn("No ServiceBusProcessorClient for Service Bus queue {}", queue);
+                return false;
+            }
+            processor.close();
+            this.listeners.forEach(l -> l.processorRemoved(queue, INVALID_GROUP, processor));
+            return true;
+        }
     }
 
     /**
@@ -108,19 +121,28 @@ public class ServiceBusProcessorContainer implements Lifecycle, DisposableBean {
         ServiceBusProcessorClient processor = this.processorFactory.createProcessor(topic, subscription, listener);
         processor.start();
         this.listeners.forEach(l -> l.processorAdded(topic, subscription, processor));
-        this.clients.add(processor);
+        this.clients.computeIfAbsent(new ConsumerIdentifier(topic, subscription), k -> processor);
         return processor;
     }
 
     /**
-     * Unsubscribe to a queue.
+     * Unsubscribe to a topic from a subscription.
      * @param topic the topic.
      * @param subscription the subscription.
      * @return true if unsubscribe successfully.
      */
     public boolean unsubscribe(String topic, String subscription) {
-        // TODO: stop and remove
-        return false;
+        synchronized (this.clients) {
+            ServiceBusProcessorClient processor = this.clients.remove(new ConsumerIdentifier(topic, subscription));
+            if (processor == null) {
+                LOGGER.warn("No ServiceBusProcessorClient for Service Bus topic {}, subscription {}",
+                    topic, subscription);
+                return false;
+            }
+            processor.close();
+            this.listeners.forEach(l -> l.processorRemoved(topic, subscription, processor));
+            return true;
+        }
     }
 
 }

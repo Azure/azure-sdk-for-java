@@ -12,7 +12,6 @@ import com.azure.spring.storage.queue.support.StorageQueueHelper;
 import com.azure.spring.storage.queue.support.converter.StorageQueueMessageConverter;
 import com.azure.storage.queue.QueueAsyncClient;
 import com.azure.storage.queue.models.QueueMessageItem;
-import com.azure.storage.queue.models.QueueStorageException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
@@ -75,8 +74,6 @@ public class StorageQueueTemplate implements StorageQueueOperation {
 
 
         return queueClient.receiveMessages(1, visibilityTimeout)
-            .onErrorMap(QueueStorageException.class, e ->
-                new StorageQueueRuntimeException("Failed to send message to storage queue", e))
             .next()
             .map(messageItem -> {
 
@@ -122,22 +119,6 @@ public class StorageQueueTemplate implements StorageQueueOperation {
 
     private boolean isValidCheckpointMode(CheckpointMode checkpointMode) {
         return checkpointMode == CheckpointMode.MANUAL || checkpointMode == CheckpointMode.RECORD;
-    }
-
-    /**
-     * The checkpoint handler.
-     * @param message the message to checkpoint.
-     * @param queueName the queue
-     * @param t the exception while checkpoint
-     */
-    public void checkpointHandler(QueueMessageItem message, String queueName, Throwable t) {
-        if (t != null) {
-            if (LOG.isWarnEnabled()) {
-                LOG.warn(buildCheckpointFailMessage(message, queueName), t);
-            }
-        } else if (LOG.isDebugEnabled()) {
-            LOG.debug(buildCheckpointSuccessMessage(message, queueName));
-        }
     }
 
     private String buildCheckpointFailMessage(QueueMessageItem cloudQueueMessage, String queueName) {

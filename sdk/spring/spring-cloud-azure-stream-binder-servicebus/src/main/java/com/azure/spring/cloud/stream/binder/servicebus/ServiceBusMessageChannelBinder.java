@@ -16,8 +16,8 @@ import com.azure.spring.integration.instrumentation.InstrumentationManager;
 import com.azure.spring.integration.instrumentation.InstrumentationSendCallback;
 import com.azure.spring.integration.servicebus.inbound.ServiceBusInboundChannelAdapter;
 import com.azure.spring.integration.servicebus.inbound.health.ServiceBusProcessorInstrumentation;
+import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
-import com.azure.spring.messaging.PubSubPair;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.servicebus.core.ServiceBusProcessorContainer;
 import com.azure.spring.servicebus.core.ServiceBusTemplate;
@@ -25,7 +25,7 @@ import com.azure.spring.servicebus.core.processor.DefaultServiceBusNamespaceProc
 import com.azure.spring.servicebus.core.producer.DefaultServiceBusNamespaceProducerFactory;
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.servicebus.core.properties.ProcessorProperties;
-import com.azure.spring.servicebus.core.properties.SenderProperties;
+import com.azure.spring.servicebus.core.properties.ProducerProperties;
 import com.azure.spring.servicebus.support.ServiceBusMessageHeaders;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
 import org.slf4j.Logger;
@@ -47,8 +47,6 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 import org.springframework.messaging.support.ErrorMessage;
 import org.springframework.util.Assert;
-import reactor.util.function.Tuple2;
-import reactor.util.function.Tuples;
 
 import java.time.Duration;
 import java.util.Map;
@@ -56,7 +54,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static com.azure.spring.integration.instrumentation.Instrumentation.Type.CONSUMER;
 import static com.azure.spring.integration.instrumentation.Instrumentation.Type.PRODUCER;
-import static com.azure.spring.servicebus.core.processor.DefaultServiceBusNamespaceProcessorFactory.INVALID_SUBSCRIPTION;
+import static com.azure.spring.messaging.ConsumerIdentifier.INVALID_GROUP;
 
 /**
  *
@@ -76,7 +74,7 @@ public class ServiceBusMessageChannelBinder extends
     private final InstrumentationManager instrumentationManager = new DefaultInstrumentationManager();
     private final Map<String, ExtendedProducerProperties<ServiceBusProducerProperties>>
         extendedProducerPropertiesMap = new ConcurrentHashMap<>();
-    private final Map<Tuple2<String, String>, ExtendedConsumerProperties<ServiceBusConsumerProperties>>
+    private final Map<ConsumerIdentifier, ExtendedConsumerProperties<ServiceBusConsumerProperties>>
         extendedConsumerPropertiesMap = new ConcurrentHashMap<>();
     private static final DefaultErrorMessageStrategy DEFAULT_ERROR_MESSAGE_STRATEGY = new DefaultErrorMessageStrategy();
 
@@ -124,11 +122,11 @@ public class ServiceBusMessageChannelBinder extends
     protected MessageProducer createConsumerEndpoint(ConsumerDestination destination, String group,
                                                      ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
         if (group == null) {
-            group = INVALID_SUBSCRIPTION;
+            group = INVALID_GROUP;
         }
-        extendedConsumerPropertiesMap.put(Tuples.of(destination.getName(), group), properties);
+        extendedConsumerPropertiesMap.put(new ConsumerIdentifier(destination.getName(), group), properties);
         final ServiceBusInboundChannelAdapter inboundAdapter;
-        if (!INVALID_SUBSCRIPTION.equals(group)) {
+        if (!INVALID_GROUP.equals(group)) {
             inboundAdapter =
                 new ServiceBusInboundChannelAdapter(getProcessorContainer(), destination.getName(), group,
                     buildCheckpointConfig(properties));
@@ -138,10 +136,10 @@ public class ServiceBusMessageChannelBinder extends
                     buildCheckpointConfig(properties));
         }
         inboundAdapter.setBeanFactory(getBeanFactory());
-        String instrumentationId = Instrumentation.buildId(CONSUMER, destination.getName() + "/" + (!INVALID_SUBSCRIPTION.equals(group) ? group : ""));
+        String instrumentationId = Instrumentation.buildId(CONSUMER, destination.getName() + "/" + (!INVALID_GROUP.equals(group) ? group : ""));
         inboundAdapter.setInstrumentationManager(instrumentationManager);
         inboundAdapter.setInstrumentationId(instrumentationId);
-        ErrorInfrastructure errorInfrastructure = registerErrorInfrastructure(destination, !INVALID_SUBSCRIPTION.equals(group) ? group : "", properties);
+        ErrorInfrastructure errorInfrastructure = registerErrorInfrastructure(destination, !INVALID_GROUP.equals(group) ? group : "", properties);
         inboundAdapter.setErrorChannel(errorInfrastructure.getErrorChannel());
         inboundAdapter.setMessageConverter(messageConverter);
         return inboundAdapter;
@@ -284,7 +282,7 @@ public class ServiceBusMessageChannelBinder extends
         return this.processorContainer;
     }
 
-    private PropertiesSupplier<String, SenderProperties> getProducerPropertiesSupplier() {
+    private PropertiesSupplier<String, ProducerProperties> getProducerPropertiesSupplier() {
         return key -> {
             if (this.extendedProducerPropertiesMap.containsKey(key)) {
                 ServiceBusProducerProperties producerProperties = this.extendedProducerPropertiesMap.get(key)
@@ -298,16 +296,16 @@ public class ServiceBusMessageChannelBinder extends
         };
     }
 
-    private PropertiesSupplier<PubSubPair, ProcessorProperties> getProcessorPropertiesSupplier() {
+    private PropertiesSupplier<ConsumerIdentifier, ProcessorProperties> getProcessorPropertiesSupplier() {
         return key -> {
             if (this.extendedConsumerPropertiesMap.containsKey(key)) {
                 ServiceBusConsumerProperties consumerProperties = this.extendedConsumerPropertiesMap.get(key)
                     .getExtension();
-                consumerProperties.setEntityName(key.getPublisher());
-                consumerProperties.setSubscriptionName(key.getSubscriber());
+                consumerProperties.setEntityName(key.getDestination());
+                consumerProperties.setSubscriptionName(key.getGroup());
                 return consumerProperties;
             } else {
-                LOGGER.debug("Can't find extended properties for destination {}, group {}", key.getPublisher(), key.getSubscriber());
+                LOGGER.debug("Can't find extended properties for destination {}, group {}", key.getDestination(), key.getGroup());
                 return null;
             }
         };

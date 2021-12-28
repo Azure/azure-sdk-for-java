@@ -10,7 +10,7 @@ import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.eventhubs.core.properties.ProcessorProperties;
 import com.azure.spring.eventhubs.core.properties.merger.ProcessorPropertiesParentMerger;
 import com.azure.spring.messaging.PropertiesSupplier;
-import com.azure.spring.messaging.PubSubPair;
+import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.service.eventhubs.factory.EventProcessorClientBuilderFactory;
 import com.azure.spring.service.eventhubs.processor.EventProcessingListener;
 import org.slf4j.Logger;
@@ -46,8 +46,8 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
     private final List<Listener> listeners = new ArrayList<>();
     private final NamespaceProperties namespaceProperties;
     private final CheckpointStore checkpointStore;
-    private final PropertiesSupplier<PubSubPair, ProcessorProperties> propertiesSupplier;
-    private final Map<PubSubPair, EventProcessorClient> processorClientMap = new ConcurrentHashMap<>();
+    private final PropertiesSupplier<ConsumerIdentifier, ProcessorProperties> propertiesSupplier;
+    private final Map<ConsumerIdentifier, EventProcessorClient> processorClientMap = new ConcurrentHashMap<>();
     private final ProcessorPropertiesParentMerger propertiesMerger = new ProcessorPropertiesParentMerger();
 
     /**
@@ -74,7 +74,7 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
      * @param supplier the {@link PropertiesSupplier} to supply {@link ProcessorProperties} for each event hub.
      */
     public DefaultEventHubsNamespaceProcessorFactory(CheckpointStore checkpointStore,
-                                                     PropertiesSupplier<PubSubPair, ProcessorProperties> supplier) {
+                                                     PropertiesSupplier<ConsumerIdentifier, ProcessorProperties> supplier) {
         this(checkpointStore, null, supplier);
     }
 
@@ -86,7 +86,7 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
      */
     public DefaultEventHubsNamespaceProcessorFactory(CheckpointStore checkpointStore,
                                                      NamespaceProperties namespaceProperties,
-                                                     PropertiesSupplier<PubSubPair,
+                                                     PropertiesSupplier<ConsumerIdentifier,
                                                         ProcessorProperties> supplier) {
         Assert.notNull(checkpointStore, "CheckpointStore must be provided.");
         this.checkpointStore = checkpointStore;
@@ -98,13 +98,13 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
     public EventProcessorClient createProcessor(@NonNull String eventHub, @NonNull String consumerGroup,
                                                 @NonNull EventProcessingListener listener) {
         return doCreateProcessor(eventHub, consumerGroup, listener,
-            this.propertiesSupplier.getProperties(PubSubPair.of(eventHub, consumerGroup)));
+            this.propertiesSupplier.getProperties(new ConsumerIdentifier(eventHub, consumerGroup)));
     }
 
     @Override
     public void destroy() {
         this.processorClientMap.forEach((t, client) -> {
-            listeners.forEach(l -> l.processorRemoved(t.getPublisher(), t.getSubscriber(), client));
+            listeners.forEach(l -> l.processorRemoved(t.getDestination(), t.getGroup(), client));
             client.stop();
         });
         this.processorClientMap.clear();
@@ -114,20 +114,20 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
     private EventProcessorClient doCreateProcessor(@NonNull String eventHub, @NonNull String consumerGroup,
                                                    @NonNull EventProcessingListener listener,
                                                    @Nullable ProcessorProperties properties) {
-        PubSubPair key = PubSubPair.of(eventHub, consumerGroup);
+        ConsumerIdentifier key = new ConsumerIdentifier(eventHub, consumerGroup);
         return processorClientMap.computeIfAbsent(key, k -> {
 
             ProcessorProperties processorProperties = propertiesMerger.mergeParent(properties, this.namespaceProperties);
-            processorProperties.setEventHubName(k.getPublisher());
-            processorProperties.setConsumerGroup(k.getSubscriber());
+            processorProperties.setEventHubName(k.getDestination());
+            processorProperties.setConsumerGroup(k.getGroup());
 
             EventProcessorClientBuilderFactory factory =
                 new EventProcessorClientBuilderFactory(processorProperties, this.checkpointStore, listener);
             factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_EVENT_HUBS);
             EventProcessorClient client = factory.build().buildEventProcessorClient();
-            LOGGER.info("EventProcessor created for event hub '{}' with consumer group '{}'", k.getPublisher(), k.getSubscriber());
+            LOGGER.info("EventProcessor created for event hub '{}' with consumer group '{}'", k.getDestination(), k.getGroup());
 
-            this.listeners.forEach(l -> l.processorAdded(k.getPublisher(), k.getSubscriber(), client));
+            this.listeners.forEach(l -> l.processorAdded(k.getDestination(), k.getGroup(), client));
 
             return client;
         });

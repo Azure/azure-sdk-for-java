@@ -25,7 +25,7 @@ import com.azure.spring.integration.instrumentation.InstrumentationManager;
 import com.azure.spring.integration.instrumentation.InstrumentationSendCallback;
 import com.azure.spring.messaging.ListenerMode;
 import com.azure.spring.messaging.PropertiesSupplier;
-import com.azure.spring.messaging.PubSubPair;
+import com.azure.spring.messaging.ConsumerIdentifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.stream.binder.AbstractMessageChannelBinder;
@@ -75,7 +75,7 @@ public class EventHubsMessageChannelBinder extends
     private EventHubsExtendedBindingProperties bindingProperties = new EventHubsExtendedBindingProperties();
     private final Map<String, ExtendedProducerProperties<EventHubsProducerProperties>>
         extendedProducerPropertiesMap = new ConcurrentHashMap<>();
-    private final Map<PubSubPair, ExtendedConsumerProperties<EventHubsConsumerProperties>>
+    private final Map<ConsumerIdentifier, ExtendedConsumerProperties<EventHubsConsumerProperties>>
         extendedConsumerPropertiesMap = new ConcurrentHashMap<>();
 
     /**
@@ -118,7 +118,7 @@ public class EventHubsMessageChannelBinder extends
     @Override
     protected MessageProducer createConsumerEndpoint(ConsumerDestination destination, String group,
                                                      ExtendedConsumerProperties<EventHubsConsumerProperties> properties) {
-        extendedConsumerPropertiesMap.put(PubSubPair.of(destination.getName(), group), properties);
+        extendedConsumerPropertiesMap.put(new ConsumerIdentifier(destination.getName(), group), properties);
         Assert.notNull(getProcessorContainer(), "eventProcessorsContainer can't be null when create a consumer");
 
         boolean anonymous = !StringUtils.hasText(group);
@@ -187,16 +187,16 @@ public class EventHubsMessageChannelBinder extends
         };
     }
 
-    private PropertiesSupplier<PubSubPair, ProcessorProperties> getProcessorPropertiesSupplier() {
+    private PropertiesSupplier<ConsumerIdentifier, ProcessorProperties> getProcessorPropertiesSupplier() {
         return key -> {
             if (this.extendedConsumerPropertiesMap.containsKey(key)) {
                 EventHubsConsumerProperties consumerProperties = this.extendedConsumerPropertiesMap.get(key)
                     .getExtension();
-                consumerProperties.setEventHubName(key.getPublisher());
-                consumerProperties.setConsumerGroup(key.getSubscriber());
+                consumerProperties.setEventHubName(key.getDestination());
+                consumerProperties.setConsumerGroup(key.getGroup());
                 return consumerProperties;
             } else {
-                LOGGER.debug("Can't find extended properties for destination {}, group {}", key.getPublisher(), key.getSubscriber());
+                LOGGER.debug("Can't find extended properties for destination {}, group {}", key.getDestination(), key.getGroup());
                 return null;
             }
         };

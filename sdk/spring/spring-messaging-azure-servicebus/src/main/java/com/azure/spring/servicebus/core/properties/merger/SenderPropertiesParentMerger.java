@@ -7,23 +7,23 @@ import com.azure.spring.core.util.AzurePropertiesUtils;
 import com.azure.spring.core.properties.PropertyMapper;
 import com.azure.spring.service.implementation.core.ParentMerger;
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
-import com.azure.spring.servicebus.core.properties.SenderProperties;
+import com.azure.spring.servicebus.core.properties.ProducerProperties;
 
 /**
- * A merger used to merge a {@link SenderProperties} with its parent {@link NamespaceProperties}. When a property is
+ * A merger used to merge a {@link ProducerProperties} with its parent {@link NamespaceProperties}. When a property is
  *  * set in the child, it will be kept. For those properties not set in the child, it will use the value in the
  *  parent.
  */
-public class SenderPropertiesParentMerger implements ParentMerger<SenderProperties, NamespaceProperties> {
+public class SenderPropertiesParentMerger implements ParentMerger<ProducerProperties, NamespaceProperties> {
 
     @Override
-    public SenderProperties mergeParent(SenderProperties child, NamespaceProperties parent) {
-        SenderProperties properties = new SenderProperties();
+    public ProducerProperties mergeParent(ProducerProperties child, NamespaceProperties parent) {
+        ProducerProperties properties = new ProducerProperties();
         if (child == null && parent == null) {
             return properties;
         }
         if (child == null) {
-            child = new SenderProperties();
+            child = new ProducerProperties();
         }
         if (parent == null) {
             parent = new NamespaceProperties();
