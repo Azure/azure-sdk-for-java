@@ -29,7 +29,7 @@
     "source": "specification/web/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.appservice",
     "args": "--tag=profile-hybrid-2020-09-01 --add-inner=AppServiceCertificate --name-for-ungrouped-operations=ResourceProvider",
-    "note": "Add status code '200' to `'syncFunctionTriggers'"
+    "note": "Add status code '200' to 'syncFunctionTriggers'"
   },
   "authorization": {
     "dir": "azure-resourcemanager-authorization",
