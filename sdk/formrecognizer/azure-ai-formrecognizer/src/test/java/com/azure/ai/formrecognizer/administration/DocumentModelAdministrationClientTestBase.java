@@ -63,7 +63,6 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestBase
             if (useKeyCredential) {
                 builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
             } else {
-                System.out.println("In LIVE MODE");
                 builder.credential(new DefaultAzureCredentialBuilder().build());
             }
         }
