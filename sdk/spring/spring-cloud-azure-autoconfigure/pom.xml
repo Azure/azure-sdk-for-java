@@ -132,7 +132,7 @@
     <dependency>
       <groupId>org.messaginghub</groupId>
       <artifactId>pooled-jms</artifactId>
-      <version>1.2.2</version> <!-- {x-include-update;org.messaginghub:pooled-jms;external_dependency} -->
+      <version>1.2.2</version> <!-- {x-version-update;org.messaginghub:pooled-jms;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
