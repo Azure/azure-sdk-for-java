@@ -39,7 +39,7 @@ All transient errors (Throttled requests, network timeouts, any recoverable serv
 
 ## Checklist
 The checklist below can help to identify which sections of this document will be relevant for your scenario.
-- [ ] Target container has been provisioned with reasonable number of physical partitions and sufficient RUs. - [Creating a new container](#creating-a-new-container-if-the-ingestion-via-the-Cosmos-Spark-connector-is-for-the-initial-migration)
+- [ ] Target container has been provisioned with reasonable number of physical partitions and sufficient RUs. - [Creating a new container](#creating-a-new-container-if-the-ingestion-via-the-cosmos-spark-connector-is-for-the-initial-migration)
 - [ ] The chosen partition key on the target container allows for reasonable distribution of documents and load. - [Choosing a good partition key](#choosing-a-good-partition-key)
 - [ ] The indexing policy of the target container has been tuned to minimize the RU-charge overhead necessary for indexing purposes. - [Indexing policy](#indexing-policy)
 - [ ] An `id` column exists in the input data frame (and values are immutable or DF has been persisted) being written to Cosmos DB. - [Populating "id" column](#populating-id-column)
