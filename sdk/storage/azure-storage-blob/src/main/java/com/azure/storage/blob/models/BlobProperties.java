@@ -23,12 +23,13 @@ public final class BlobProperties {
     private final BlobPropertiesInternal internalProperties;
 
     static {
-        BlobPropertiesConstructorProxy.setAccessor(new BlobPropertiesConstructorProxy.BlobPropertiesAccessor() {
-            @Override
-            public BlobProperties create(BlobPropertiesInternal internalProperties) {
-                return new BlobProperties(internalProperties);
-            }
-        });
+        BlobPropertiesConstructorProxy.setAccessor(
+            new BlobPropertiesConstructorProxy.BlobPropertiesConstructorAccessor() {
+                @Override
+                public BlobProperties create(BlobPropertiesInternal internalProperties) {
+                    return new BlobProperties(internalProperties);
+                }
+            });
     }
 
     private BlobProperties(BlobPropertiesInternal internalProperties) {

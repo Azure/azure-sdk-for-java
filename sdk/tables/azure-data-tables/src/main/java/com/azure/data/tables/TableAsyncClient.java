@@ -291,7 +291,7 @@ public final class TableAsyncClient {
 
         try {
             return tablesImplementation.getTables().createWithResponseAsync(properties, null,
-                ResponseFormat.RETURN_NO_CONTENT, null, context)
+                    ResponseFormat.RETURN_NO_CONTENT, null, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .map(response ->
                     new SimpleResponse<>(response,
@@ -441,7 +441,7 @@ public final class TableAsyncClient {
 
         try {
             return tablesImplementation.getTables().insertEntityWithResponseAsync(tableName, null, null,
-                ResponseFormat.RETURN_NO_CONTENT, entity.getProperties(), null, context)
+                    ResponseFormat.RETURN_NO_CONTENT, entity.getProperties(), null, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .map(response ->
                     new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null));
@@ -537,21 +537,24 @@ public final class TableAsyncClient {
             return monoError(logger, new IllegalArgumentException("'entity' cannot be null."));
         }
 
+        String partitionKey = escapeSingleQuotes(entity.getPartitionKey());
+        String rowKey = escapeSingleQuotes(entity.getRowKey());
+
         EntityHelper.setPropertiesFromGetters(entity, logger);
 
         try {
             if (updateMode == TableEntityUpdateMode.REPLACE) {
                 return tablesImplementation.getTables()
-                    .updateEntityWithResponseAsync(tableName, entity.getPartitionKey(), entity.getRowKey(), null,
-                        null, null, entity.getProperties(), null, context)
+                    .updateEntityWithResponseAsync(tableName, partitionKey, rowKey, null, null, null,
+                        entity.getProperties(), null, context)
                     .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                     .map(response ->
                         new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                             null));
             } else {
                 return tablesImplementation.getTables()
-                    .mergeEntityWithResponseAsync(tableName, entity.getPartitionKey(), entity.getRowKey(), null, null,
-                        null, entity.getProperties(), null, context)
+                    .mergeEntityWithResponseAsync(tableName, partitionKey, rowKey, null, null, null,
+                        entity.getProperties(), null, context)
                     .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                     .map(response ->
                         new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
@@ -649,7 +652,8 @@ public final class TableAsyncClient {
      * <p>When the {@link TableEntityUpdateMode update mode} is {@link TableEntityUpdateMode#MERGE MERGE}, the provided
      * {@link TableEntity entity}'s properties will be merged into the existing {@link TableEntity entity}. When the
      * {@link TableEntityUpdateMode update mode} is {@link TableEntityUpdateMode#REPLACE REPLACE}, the provided
-     * {@link TableEntity entity}'s properties will completely replace those in the existing {@link TableEntity entity}.
+     * {@link TableEntity entity}'s properties will completely replace those in the existing
+     * {@link TableEntity entity}.
      * </p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -700,22 +704,25 @@ public final class TableAsyncClient {
             return monoError(logger, new IllegalArgumentException("'entity' cannot be null."));
         }
 
+        String partitionKey = escapeSingleQuotes(entity.getPartitionKey());
+        String rowKey = escapeSingleQuotes(entity.getRowKey());
         String eTag = ifUnchanged ? entity.getETag() : "*";
+
         EntityHelper.setPropertiesFromGetters(entity, logger);
 
         try {
             if (updateMode == TableEntityUpdateMode.REPLACE) {
                 return tablesImplementation.getTables()
-                    .updateEntityWithResponseAsync(tableName, entity.getPartitionKey(), entity.getRowKey(), null,
-                        null, eTag, entity.getProperties(), null, context)
+                    .updateEntityWithResponseAsync(tableName, partitionKey, rowKey, null, null, eTag,
+                        entity.getProperties(), null, context)
                     .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                     .map(response ->
                         new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                             null));
             } else {
                 return tablesImplementation.getTables()
-                    .mergeEntityWithResponseAsync(tableName, entity.getPartitionKey(), entity.getRowKey(), null, null,
-                        eTag, entity.getProperties(), null, context)
+                    .mergeEntityWithResponseAsync(tableName, partitionKey, rowKey, null, null, eTag,
+                        entity.getProperties(), null, context)
                     .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                     .map(response ->
                         new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
@@ -839,8 +846,8 @@ public final class TableAsyncClient {
         }
 
         try {
-            return tablesImplementation.getTables().deleteEntityWithResponseAsync(tableName, partitionKey, rowKey, eTag,
-                null, null, null, context)
+            return tablesImplementation.getTables().deleteEntityWithResponseAsync(tableName,
+                    escapeSingleQuotes(partitionKey), escapeSingleQuotes(rowKey), eTag, null, null, null, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .map(response -> (Response<Void>) new SimpleResponse<Void>(response, null))
                 .onErrorResume(TableServiceException.class, e -> swallowExceptionForStatusCode(404, e, logger));
@@ -974,7 +981,7 @@ public final class TableAsyncClient {
 
         try {
             return tablesImplementation.getTables().queryEntitiesWithResponseAsync(tableName, null, null,
-                nextPartitionKey, nextRowKey, queryOptions, context)
+                    nextPartitionKey, nextRowKey, queryOptions, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .flatMap(response -> {
                     final TableEntityQueryResponse tablesQueryEntityResponse = response.getValue();
@@ -1148,7 +1155,7 @@ public final class TableAsyncClient {
 
         try {
             return tablesImplementation.getTables().queryEntityWithPartitionAndRowKeyWithResponseAsync(tableName,
-                partitionKey, rowKey, null, null, queryOptions, context)
+                    escapeSingleQuotes(partitionKey), escapeSingleQuotes(rowKey), null, null, queryOptions, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .handle((response, sink) -> {
                     final Map<String, Object> matchingEntity = response.getValue();
@@ -1741,5 +1748,15 @@ public final class TableAsyncClient {
         } else {
             return Mono.just(new SimpleResponse<>(response, Arrays.asList(response.getValue())));
         }
+    }
+
+    // Single quotes in OData queries should be escaped by using two consecutive single quotes characters.
+    // Source: http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part2-url-conventions.html#sec_URLSyntax.
+    private String escapeSingleQuotes(String input) {
+        if (input == null) {
+            return null;
+        }
+
+        return input.replace("'", "''");
     }
 }

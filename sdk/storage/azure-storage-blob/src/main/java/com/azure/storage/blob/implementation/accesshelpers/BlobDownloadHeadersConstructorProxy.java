@@ -10,14 +10,15 @@ import com.azure.storage.blob.models.BlobDownloadHeaders;
  * Helper class to access private values of {@link BlobDownloadHeaders} across package boundaries.
  */
 public final class BlobDownloadHeadersConstructorProxy {
-    private static BlobDownloadHeadersAccessor accessor;
+    private static BlobDownloadHeadersConstructorAccessor accessor;
 
     private BlobDownloadHeadersConstructorProxy() { }
 
     /**
-     * Type defining the methods to set the non-public properties of a {@link BlobDownloadHeadersAccessor} instance.
+     * Type defining the methods to set the non-public properties of a {@link BlobDownloadHeadersConstructorAccessor}
+     * instance.
      */
-    public interface BlobDownloadHeadersAccessor {
+    public interface BlobDownloadHeadersConstructorAccessor {
         /**
          * Creates a new instance of {@link BlobDownloadHeaders} backed by an internal instance of
          * {@link BlobsDownloadHeaders}.
@@ -33,7 +34,7 @@ public final class BlobDownloadHeadersConstructorProxy {
      *
      * @param accessor The accessor.
      */
-    public static void setAccessor(final BlobDownloadHeadersAccessor accessor) {
+    public static void setAccessor(final BlobDownloadHeadersConstructorAccessor accessor) {
         BlobDownloadHeadersConstructorProxy.accessor = accessor;
     }
 

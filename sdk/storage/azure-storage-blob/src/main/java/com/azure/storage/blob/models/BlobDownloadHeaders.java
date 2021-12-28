@@ -29,7 +29,7 @@ public final class BlobDownloadHeaders {
 
     static {
         BlobDownloadHeadersConstructorProxy.setAccessor(
-            new BlobDownloadHeadersConstructorProxy.BlobDownloadHeadersAccessor() {
+            new BlobDownloadHeadersConstructorProxy.BlobDownloadHeadersConstructorAccessor() {
                 @Override
                 public BlobDownloadHeaders create(BlobsDownloadHeaders internalHeaders) {
                     return new BlobDownloadHeaders(internalHeaders);

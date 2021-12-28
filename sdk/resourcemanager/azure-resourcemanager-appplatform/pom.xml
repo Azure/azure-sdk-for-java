@@ -131,12 +131,6 @@
       <version>1.7.32</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>jakarta.xml.bind</groupId>
-      <artifactId>jakarta.xml.bind-api</artifactId>
-      <version>2.3.3</version> <!-- {x-version-update;jakarta.xml.bind:jakarta.xml.bind-api;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
   </dependencies>
   <profiles>
     <profile>
