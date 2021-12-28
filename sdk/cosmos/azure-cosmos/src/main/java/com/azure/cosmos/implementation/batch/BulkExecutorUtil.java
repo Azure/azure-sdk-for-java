@@ -27,6 +27,7 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper.getEffectivePartitionKeyString;
@@ -96,11 +97,13 @@ final class BulkExecutorUtil {
 
         checkNotNull(operation, "expected non-null operation");
 
+        AtomicReference<DocumentCollection> collectionBeforeRecreation = new AtomicReference<>(null);
+
         if (operation instanceof ItemBulkOperation<?, ?>) {
             final ItemBulkOperation<?, ?> itemBulkOperation = (ItemBulkOperation<?, ?>) operation;
 
             final Mono<String> pkRangeIdMono = Mono.defer(() ->
-                BulkExecutorUtil.getCollectionInfoAsync(docClientWrapper, container)
+                BulkExecutorUtil.getCollectionInfoAsync(docClientWrapper, container, collectionBeforeRecreation.get())
                 .flatMap(collection -> {
                     final PartitionKeyDefinition definition = collection.getPartitionKey();
                     final PartitionKeyInternal partitionKeyInternal = getPartitionKeyInternal(operation, definition);
@@ -111,6 +114,7 @@ final class BulkExecutorUtil {
                         .map((Utils.ValueHolder<CollectionRoutingMap> routingMap) -> {
 
                             if (routingMap.v == null) {
+                                collectionBeforeRecreation.set(collection);
                                 throw new IllegalStateException(
                                     String.format(
                                         "No collection routing map found for container %s(%s) in database %s.",
@@ -125,7 +129,7 @@ final class BulkExecutorUtil {
                                     partitionKeyInternal,
                                     definition)).getId();
                         });
-                })
+                }))
                 .retryWhen(Retry
                     .fixedDelay(10, Duration.ofSeconds(1)) // TODO @fabianm use consistent constants
                     .filter(t -> t instanceof IllegalStateException)
@@ -136,7 +140,7 @@ final class BulkExecutorUtil {
                             Utils.getCollectionName(BridgeInternal.getLink(container)),
                             null)
                     )
-                ));
+                );
 
             return pkRangeIdMono;
         } else {
@@ -165,7 +169,8 @@ final class BulkExecutorUtil {
      */
     private static Mono<DocumentCollection> getCollectionInfoAsync(
         AsyncDocumentClient documentClient,
-        CosmosAsyncContainer container) {
+        CosmosAsyncContainer container,
+        DocumentCollection obsoleteValue) {
 
         // Utils.joinPath sanitizes the path and make sure it ends with a single '/'.
         final String resourceAddress = Utils.joinPath(BridgeInternal.getLink(container), null);
@@ -175,7 +180,8 @@ final class BulkExecutorUtil {
             .resolveByNameAsync(
                 null,
                 resourceAddress,
-                null);
+                null,
+                obsoleteValue);
     }
 
     static boolean isWriteOperation(CosmosItemOperationType cosmosItemOperationType) {
