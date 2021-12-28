@@ -21,7 +21,9 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -97,7 +99,8 @@ final class BulkExecutorUtil {
         if (operation instanceof ItemBulkOperation<?, ?>) {
             final ItemBulkOperation<?, ?> itemBulkOperation = (ItemBulkOperation<?, ?>) operation;
 
-            final Mono<String> pkRangeIdMono = BulkExecutorUtil.getCollectionInfoAsync(docClientWrapper, container)
+            final Mono<String> pkRangeIdMono = Mono.defer(() ->
+                BulkExecutorUtil.getCollectionInfoAsync(docClientWrapper, container)
                 .flatMap(collection -> {
                     final PartitionKeyDefinition definition = collection.getPartitionKey();
                     final PartitionKeyInternal partitionKeyInternal = getPartitionKeyInternal(operation, definition);
@@ -105,12 +108,35 @@ final class BulkExecutorUtil {
 
                     return docClientWrapper.getPartitionKeyRangeCache()
                         .tryLookupAsync(null, collection.getResourceId(), null, null)
-                        .map((Utils.ValueHolder<CollectionRoutingMap> routingMap) ->
-                            routingMap.v.getRangeByEffectivePartitionKey(
+                        .map((Utils.ValueHolder<CollectionRoutingMap> routingMap) -> {
+
+                            if (routingMap.v == null) {
+                                throw new IllegalStateException(
+                                    String.format(
+                                        "No collection routing map found for container %s(%s) in database %s.",
+                                        container.getId(),
+                                        collection.getResourceId(),
+                                        container.getDatabase().getId())
+                                        );
+                            }
+
+                            return routingMap.v.getRangeByEffectivePartitionKey(
                                 getEffectivePartitionKeyString(
                                     partitionKeyInternal,
-                                    definition)).getId());
-                });
+                                    definition)).getId();
+                        });
+                })
+                .retryWhen(Retry
+                    .fixedDelay(10, Duration.ofSeconds(1)) // TODO @fabianm use consistent constants
+                    .filter(t -> t instanceof IllegalStateException)
+                    .doBeforeRetry((retrySignal) -> docClientWrapper
+                        .getCollectionCache()
+                        .refresh(
+                            null,
+                            Utils.getCollectionName(BridgeInternal.getLink(container)),
+                            null)
+                    )
+                ));
 
             return pkRangeIdMono;
         } else {
