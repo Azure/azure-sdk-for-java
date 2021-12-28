@@ -422,7 +422,7 @@ stages:
           TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
           TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
 
-  - stage: Build_for_new_spring_boot_Version
+  - stage: Build_for_New_Spring_Boot_Version
     jobs:
       - template: /eng/pipelines/templates/jobs/ci.yml
         parameters:
@@ -455,23 +455,35 @@ stages:
           PreBuildSteps:
             - script: |
                 pip install in-place & pip install termcolor
+              displayName: 'python module install'
             - script: |
                 python ./sdk/spring/scripts/ci_update_versions.py --sbv 2.6.1
+              displayName: 'update spring boot versions'
             - script: |
                 python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b 2.6.1 -c 2021.0.0
+              displayName: 'insert dependency management'
+#      - job: 'maven_dependency'
+#        steps:
+#          - script: |
+#              mvn clean install -f sdk/spring/pom.xml -P dev
+#          - script: |
+#              cd ./sdk/spring && mvn dependency:tree
+#            displayName: 'maven_dependency'
+  - stage: New_Spring_Boot_Version_Dependency_tree
+    dependson:
+      - Build_for_New_Spring_Boot_Version
+    jobs:
       - job: 'maven_dependency'
         steps:
-          - script: |
-              mvn clean install -f sdk/spring/pom.xml -P dev
           - script: |
               cd ./sdk/spring && mvn dependency:tree
             displayName: 'maven_dependency'
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
-  - ${{if and(ne(variables['Build_for_new_spring_boot_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
+  - ${{if and(ne(variables['Build_for_New_Spring_Boot_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
       - template: archetype-java-release.yml
         parameters:
           DependsOn:
-            - Build_for_new_spring_boot_Version
+            - Build_for_New_Spring_Boot_Version
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           SDKType: ${{ parameters.SDKType }}
           Artifacts: ${{ parameters.Artifacts }}
@@ -481,7 +493,7 @@ stages:
           TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
           TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
 
-  - stage: Build_for_Last_spring_boot_Version
+  - stage: Build_for_Last_Spring_Boot_Version
     jobs:
       - template: /eng/pipelines/templates/jobs/ci.yml
         parameters:
@@ -514,10 +526,13 @@ stages:
           PreBuildSteps:
             - script: |
                 pip install in-place & pip install termcolor
+              displayName: 'python module install'
             - script: |
                 python ./sdk/spring/scripts/ci_update_versions.py --sbv 2.5.7
+              displayName: 'update spring boot versions'
             - script: |
                 python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b 2.5.7 -c 2020.0.4
+              displayName: 'insert dependency management'
       - job: 'maven_dependency'
         steps:
           - script: |
@@ -526,11 +541,11 @@ stages:
               cd ./sdk/spring && mvn dependency:tree
             displayName: 'maven_dependency'
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
-  - ${{if and(ne(variables['Build_for_Last_spring_boot_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
+  - ${{if and(ne(variables['Build_for_Last_Spring_Boot_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
       - template: archetype-java-release.yml
         parameters:
           DependsOn:
-            - Build_for_Last_spring_boot_Version
+            - Build_for_Last_Spring_Boot_Version
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           SDKType: ${{ parameters.SDKType }}
           Artifacts: ${{ parameters.Artifacts }}
