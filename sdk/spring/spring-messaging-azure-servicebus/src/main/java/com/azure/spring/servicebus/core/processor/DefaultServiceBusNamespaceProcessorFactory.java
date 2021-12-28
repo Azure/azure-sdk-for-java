@@ -25,8 +25,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
-import static com.azure.spring.messaging.ConsumerIdentifier.INVALID_GROUP;
-
 
 /**
  * The {@link ServiceBusProcessorFactory} implementation to produce new {@link ServiceBusProcessorClient} instances
@@ -87,7 +85,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
 
     @Override
     public ServiceBusProcessorClient createProcessor(String queue, MessageProcessingListener messageProcessingListener) {
-        return doCreateProcessor(queue, INVALID_GROUP, messageProcessingListener,
+        return doCreateProcessor(queue, null, messageProcessingListener,
             this.propertiesSupplier.getProperties(new ConsumerIdentifier(queue)));
     }
 
@@ -108,7 +106,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
             ProcessorProperties processorProperties = propertiesMerger.mergeParent(properties, this.namespaceProperties);
             processorProperties.setAutoComplete(false);
             processorProperties.setEntityName(k.getDestination());
-            if (INVALID_GROUP.equals(k.getGroup())) {
+            if (!k.hasGroup()) {
                 processorProperties.setEntityType(ServiceBusEntityType.QUEUE);
             } else {
                 processorProperties.setEntityType(ServiceBusEntityType.TOPIC);
@@ -129,8 +127,8 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
                 client = factory.build().buildProcessorClient();
             }
 
-            this.listeners.forEach(l -> l.processorAdded(k.getDestination(), INVALID_GROUP.equals(k.getGroup()) ? null
-                : k.getGroup(), client));
+            this.listeners.forEach(l -> l.processorAdded(k.getDestination(), k.hasGroup() ? k.getGroup()
+                : null, client));
             return client;
         });
     }

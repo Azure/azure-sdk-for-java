@@ -17,8 +17,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static com.azure.spring.messaging.ConsumerIdentifier.INVALID_GROUP;
-
 /**
  * A processor container using {@link ServiceBusProcessorClient} to subscribe to Service Bus queue/topic entities and
  * consumer messages.
@@ -87,7 +85,8 @@ public class ServiceBusProcessorContainer implements Lifecycle, DisposableBean {
     public ServiceBusProcessorClient subscribe(String queue, MessageProcessingListener listener) {
         ServiceBusProcessorClient processor = this.processorFactory.createProcessor(queue, listener);
         processor.start();
-        this.clients.computeIfAbsent(new ConsumerIdentifier(queue, INVALID_GROUP), k -> processor);
+        this.listeners.forEach(l -> l.processorAdded(queue, null, processor));
+        this.clients.computeIfAbsent(new ConsumerIdentifier(queue), k -> processor);
         return processor;
     }
 
@@ -98,13 +97,13 @@ public class ServiceBusProcessorContainer implements Lifecycle, DisposableBean {
      */
     public boolean unsubscribe(String queue) {
         synchronized (this.clients) {
-            ServiceBusProcessorClient processor = this.clients.remove(new ConsumerIdentifier(queue, INVALID_GROUP));
+            ServiceBusProcessorClient processor = this.clients.remove(new ConsumerIdentifier(queue));
             if (processor == null) {
                 LOGGER.warn("No ServiceBusProcessorClient for Service Bus queue {}", queue);
                 return false;
             }
             processor.close();
-            this.listeners.forEach(l -> l.processorRemoved(queue, INVALID_GROUP, processor));
+            this.listeners.forEach(l -> l.processorRemoved(queue, null, processor));
             return true;
         }
     }

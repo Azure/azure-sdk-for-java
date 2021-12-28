@@ -14,14 +14,12 @@ public class ConsumerIdentifier {
     private final String destination;
     private final String group;
 
-    public static final String INVALID_GROUP = ConsumerIdentifier.class.getSimpleName() + "INVALID_GROUP";
-
     /**
      * Construct an instance via the consumer destination, which is used for Service Bus Queue.
      * @param destination the consumer destination, should be a Service Bus Queue name.
      */
     public ConsumerIdentifier(String destination) {
-        this(destination, INVALID_GROUP);
+        this(destination, null);
     }
 
     /**
@@ -31,7 +29,6 @@ public class ConsumerIdentifier {
      */
     public ConsumerIdentifier(String destination, String group) {
         Assert.notNull(destination, "Destination must not be null!");
-        Assert.notNull(group, "Group must not be null!");
 
         this.destination = destination;
         this.group = group;
@@ -51,6 +48,14 @@ public class ConsumerIdentifier {
      */
     public String getGroup() {
         return group;
+    }
+
+    /**
+     * Return whether the consumer is in a group or not.
+     * @return true if the consumer is in a group.
+     */
+    public boolean hasGroup() {
+        return group != null;
     }
 
     @Override
