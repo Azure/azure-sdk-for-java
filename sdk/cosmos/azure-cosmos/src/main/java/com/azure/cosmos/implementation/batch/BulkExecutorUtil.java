@@ -9,6 +9,7 @@ import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.InvalidPartitionException;
 import com.azure.cosmos.implementation.ResourceThrottleRetryPolicy;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
@@ -115,7 +116,7 @@ final class BulkExecutorUtil {
 
                             if (routingMap.v == null) {
                                 collectionBeforeRecreation.set(collection);
-                                throw new IllegalStateException(
+                                throw new InvalidPartitionException(
                                     String.format(
                                         "No collection routing map found for container %s(%s) in database %s.",
                                         container.getId(),
@@ -131,8 +132,11 @@ final class BulkExecutorUtil {
                         });
                 }))
                 .retryWhen(Retry
-                    .fixedDelay(10, Duration.ofSeconds(1)) // TODO @fabianm use consistent constants
-                    .filter(t -> t instanceof IllegalStateException)
+                    .fixedDelay(
+                        BatchRequestResponseConstants.MAX_COLLECTION_RECREATION_RETRY_COUNT,
+                        Duration.ofSeconds(
+                            BatchRequestResponseConstants.MAX_COLLECTION_RECREATION_REFRESH_INTERVAL_IN_SECONDS))
+                    .filter(t -> t instanceof InvalidPartitionException)
                     .doBeforeRetry((retrySignal) -> docClientWrapper
                         .getCollectionCache()
                         .refresh(
