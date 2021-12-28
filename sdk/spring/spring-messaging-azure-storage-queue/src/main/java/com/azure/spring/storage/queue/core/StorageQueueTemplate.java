@@ -158,7 +158,7 @@ public class StorageQueueTemplate implements StorageQueueOperation {
     public void setVisibilityTimeout(Duration visibilityTimeoutDuration) {
         Assert.state(visibilityTimeoutDuration.isNegative() || visibilityTimeoutDuration.isZero(), "VisibilityTimeoutInSeconds should be positive");
         this.visibilityTimeout = visibilityTimeoutDuration;
-        LOG.info("StorageQueueTemplate VisibilityTimeout becomes: {} seconds", this.visibilityTimeout.toSeconds());
+        LOG.info("StorageQueueTemplate VisibilityTimeout becomes: {} seconds", this.visibilityTimeout.getSeconds());
     }
 
     /**
