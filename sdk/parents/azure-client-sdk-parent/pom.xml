@@ -160,6 +160,10 @@
     <javadocDoclet>org.apidesign.javadoc.codesnippet.Doclet</javadocDoclet>
     <javadocDocletOptions>-maxLineLength 120 -snippetpath ${project.basedir}/src/samples/java -suppressMissingLinkWarnings</javadocDocletOptions>
     <graalvm.enable>false</graalvm.enable>
+
+    <!-- The following properties configure the revapi-maven-plugin. -->
+    <!-- This property configures whether the revapi-maven-plugin should run. -->
+    <revapi.skip>false</revapi.skip>
   </properties>
 
   <build>
@@ -739,6 +743,7 @@
           <artifactId>revapi-maven-plugin</artifactId>
           <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
           <configuration>
+            <skip>${revapi.skip}</skip>
             <analysisConfigurationFiles>
               <configurationFile>
                 <resource>revapi/revapi.json</resource>
