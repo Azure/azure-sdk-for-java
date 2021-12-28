@@ -127,8 +127,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
                 client = factory.build().buildProcessorClient();
             }
 
-            this.listeners.forEach(l -> l.processorAdded(k.getDestination(), k.hasGroup() ? k.getGroup()
-                : null, client));
+            this.listeners.forEach(l -> l.processorAdded(k.getDestination(), k.getGroup(), client));
             return client;
         });
     }
