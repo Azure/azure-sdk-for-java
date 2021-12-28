@@ -43,20 +43,20 @@ import java.util.Map;
  * Inbound channel adapter for Azure Event Hubs.
  * <p>
  * Example:
- * <pre>{@code
- *     @ServiceActivator(inputChannel = "input")
+ * <pre> <code>
+ *   {@literal @}ServiceActivator(inputChannel = "input")
  *     public void messageReceiver(byte[] payload, @Header(AzureHeaders.CHECKPOINTER) Checkpointer checkpointer) {
  *         String message = new String(payload);
  *         LOGGER.info("New message received: '{}'", message);
  *         checkpointer.success()
- *                 .doOnSuccess(s -> LOGGER.info("Message '{}' successfully checkpointed", message))
- *                 .doOnError(e -> LOGGER.error("Error found", e))
+ *                 .doOnSuccess(s -&gt; LOGGER.info("Message '{}' successfully checkpointed", message))
+ *                 .doOnError(e -&gt; LOGGER.error("Error found", e))
  *                 .subscribe();
  *     }
  *
- *     @Bean
+ *    {@literal @}Bean
  *     public EventHubsInboundChannelAdapter messageChannelAdapter(
- *             @Qualifier("input") MessageChannel inputChannel,
+ *             {@literal @}Qualifier("input") MessageChannel inputChannel,
  *             EventHubsProcessorContainer processorContainer) {
  *         CheckpointConfig config = new CheckpointConfig(CheckpointMode.MANUAL);
  *
@@ -67,11 +67,11 @@ import java.util.Map;
  *         return adapter;
  *     }
  *
- *     @Bean
+ *    {@literal @}Bean
  *     public MessageChannel input() {
  *         return new DirectChannel();
  *     }
- *  }</pre>
+ * </code> </pre>
  */
 public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
 

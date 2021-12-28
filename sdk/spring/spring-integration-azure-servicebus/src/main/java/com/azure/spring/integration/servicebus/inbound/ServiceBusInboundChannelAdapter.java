@@ -38,31 +38,31 @@ import static com.azure.spring.service.servicebus.properties.ServiceBusEntityTyp
  * Inbound channel adapter for Service Bus.
  * <p>
  * Example:
- * <pre>{@code
- *     @ServiceActivator(inputChannel = "input")
- *     public void messageReceiver(byte[] payload, @Header(AzureHeaders.CHECKPOINTER) Checkpointer checkpointer) {
+ * <pre> <code>
+ *   {@literal @}ServiceActivator(inputChannel = "input")
+ *     public void messageReceiver(byte[] payload, {@literal @}Header(AzureHeaders.CHECKPOINTER) Checkpointer checkpointer) {
  *         String message = new String(payload);
  *         LOGGER.info("New message received: '{}'", message);
  *         checkpointer.success()
- *                 .doOnSuccess(s -> LOGGER.info("Message '{}' successfully checkpointed", message))
- *                 .doOnError(e -> LOGGER.error("Error found", e))
+ *                 .doOnSuccess(s -&gt; LOGGER.info("Message '{}' successfully checkpointed", message))
+ *                 .doOnError(e -&gt; LOGGER.error("Error found", e))
  *                 .subscribe();
  *     }
  *
- *     @Bean
+ *    {@literal @}Bean
  *     public ServiceBusInboundChannelAdapter queueMessageChannelAdapter(
- *         @Qualifier("input") MessageChannel inputChannel, ServiceBusProcessorContainer processorContainer) {
+ *         {@literal @}Qualifier("input") MessageChannel inputChannel, ServiceBusProcessorContainer processorContainer) {
  *         ServiceBusInboundChannelAdapter adapter = new ServiceBusInboundChannelAdapter(processorContainer, "queue-name",
  *             new CheckpointConfig(CheckpointMode.MANUAL));
  *         adapter.setOutputChannel(inputChannel);
  *         return adapter;
  *     }
  *
- *     @Bean(name = INPUT_CHANNEL)
+ *    {@literal @}Bean(name = INPUT_CHANNEL)
  *     public MessageChannel input() {
  *         return new DirectChannel();
  *     }
- * }</pre>
+ * </code> </pre>
  */
 public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
 
