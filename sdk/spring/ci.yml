@@ -414,6 +414,8 @@ stages:
       - job: 'maven_dependency'
         steps:
           - script: |
+              mvn clean install -f sdk/spring/pom.xml -P dev
+          - script: |
               cd ./sdk/spring && mvn dependency:tree
 #                cd ./sdk/spring && mvn dependency:tree -pl $(ProjectList) -am
 
