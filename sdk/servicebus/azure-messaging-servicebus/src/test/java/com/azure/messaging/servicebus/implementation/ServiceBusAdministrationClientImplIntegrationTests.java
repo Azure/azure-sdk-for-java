@@ -156,9 +156,9 @@ class ServiceBusAdministrationClientImplIntegrationTests extends TestBase {
 
         // Act & Assert
         StepVerifier.create(entityClient.deleteWithResponseAsync(queueName, Context.NONE))
-            .assertNext(deletedResponse ->
-                assertEquals(200, deletedResponse.getStatusCode())
-            )
+            .assertNext(deletedResponse -> {
+                assertEquals(200, deletedResponse.getStatusCode());
+            })
             .verifyComplete();
     }
 

@@ -319,12 +319,10 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusReceiverAsyncClient receiverA;
 
         if (isSessionEnabled) {
-            receiverA = builder.sessionReceiver().receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
-                .disableAutoComplete().queueName(queueA)
+            receiverA = builder.sessionReceiver().disableAutoComplete().queueName(queueA)
                 .buildAsyncClient().acceptNextSession().block();
         } else {
-            receiverA = builder.receiver().receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
-                .disableAutoComplete().queueName(queueA)
+            receiverA = builder.receiver().disableAutoComplete().queueName(queueA)
                 .buildAsyncClient();
         }
 
@@ -405,12 +403,10 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusReceiverAsyncClient receiverA;
 
         if (isSessionEnabled) {
-            receiverA = builder.sessionReceiver().receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
-                .disableAutoComplete().topicName(topicA).subscriptionName("subscription-session")
+            receiverA = builder.sessionReceiver().disableAutoComplete().topicName(topicA).subscriptionName("subscription-session")
                 .buildAsyncClient().acceptNextSession().block();
         } else {
-            receiverA = builder.receiver().receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
-                .disableAutoComplete().topicName(topicA).subscriptionName("subscription")
+            receiverA = builder.receiver().disableAutoComplete().topicName(topicA).subscriptionName("subscription")
                 .buildAsyncClient();
         }
 

@@ -312,9 +312,9 @@ public class FluxAutoLockRenewTest {
             .then(() -> {
                 messagesPublisher.next(message);
             })
-            .assertNext(actual ->
-                Assertions.assertEquals(LOCK_TOKEN_STRING, actual.getMessage().getLockToken())
-            )
+            .assertNext(actual -> {
+                Assertions.assertEquals(LOCK_TOKEN_STRING, actual.getMessage().getLockToken());
+            })
             .verifyComplete();
 
         StepVerifier.create(renewOperator.take(1))
