@@ -24,8 +24,9 @@ import time
 import json
 import xml.etree.ElementTree as ET
 
-# Only azure-client-sdk-parent and spring-boot-starter-parent are valid parent POMs for Track 2 libraries.
-valid_parents = ['azure-client-sdk-parent', 'spring-boot-starter-parent', 'azure-spring-boot-test-parent']
+# azure-client-sdk-parent, azure-perf-test-parent, spring-boot-starter-parent, and azure-spring-boot-test-parent are
+# valid parent POMs for Track 2 libraries.
+valid_parents = ['azure-client-sdk-parent', 'azure-perf-test-parent', 'spring-boot-starter-parent', 'azure-spring-boot-test-parent']
 
 # From this file get to the root path of the repo.
 root_path = os.path.normpath(os.path.abspath(__file__) + '/../../../')
@@ -180,7 +181,7 @@ def add_project_to_dependency_and_module_mappings(file_path: str, project_depend
 
     for dependency in dependencies:
 
-        # not all the <dependency> are maven dependencies, ignore them 
+        # not all the <dependency> are maven dependencies, ignore them
         if dependencies[dependency].tag == maven_xml_namespace + 'dependenciesToScan':
             continue
 
