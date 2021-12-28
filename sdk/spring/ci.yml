@@ -455,15 +455,13 @@ stages:
             - AZURE_TEST.*=.*/
           PreBuildSteps:
             - script: |
-                pip install in-place
-            - script: |
-                pip install termcolor
+                pip install in-place & pip install termcolor
             - script: |
                 python ./sdk/spring/scripts/ci_update_versions.py --sbv 2.6.1
             - script: |
                 python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b 2.6.1 -c 2021.0.0
             - script: |
-                mvn dependency:tree
+                cd sdk/spring & mvn dependency:tree
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build_for_new_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
       - template: archetype-java-release.yml
@@ -511,15 +509,13 @@ stages:
             - AZURE_TEST.*=.*/
           PreBuildSteps:
             - script: |
-                pip install in-place
-            - script: |
-                pip install termcolor
+                pip install in-place & pip install termcolor
             - script: |
                 python ./sdk/spring/scripts/ci_update_versions.py --sbv 2.5.4
             - script: |
                 python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b 2.5.4 -c 2020.0.4
             - script: |
-                mvn dependency:tree
+                cd sdk/spring & mvn dependency:tree
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build_for_Last_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
       - template: archetype-java-release.yml
