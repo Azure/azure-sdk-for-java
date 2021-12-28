@@ -49,7 +49,7 @@ stages:
 
         - pwsh: |
             $(Build.SourcesDirectory)/eng/bomgenerator/generateAzureSDKBOM.ps1
-            displayName: Copy input files for BOM generation
+          displayName: Copy input files for BOM generation
 
         - task: Maven@3
           condition: succeededOrFailed()
