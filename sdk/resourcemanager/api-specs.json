@@ -29,13 +29,14 @@
     "source": "specification/web/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.appservice",
     "args": "--tag=profile-hybrid-2020-09-01 --add-inner=AppServiceCertificate --name-for-ungrouped-operations=ResourceProvider",
-    "note": "Add status code '200' to 'syncFunctionTriggers'"
+    "note": "Add status code '200' to `'syncFunctionTriggers'"
   },
   "authorization": {
     "dir": "azure-resourcemanager-authorization",
     "source": "specification/authorization/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.authorization",
-    "args": "--tag=package-2020-08-01-preview"
+    "args": "--tag=package-2020-08-01-preview",
+    "note": "1. Adaption of 'scope' property change to read-only in 'RoleAssignmentImpl'; 2. add url-encode to 'filterStr' in 'listByServicePrincipalAsync(String principalId)' of 'RoleAssignmentsImpl'; 3. Adaption of codegen parameter change in 'listByScopeAsync(String scope)' of 'RoleAssignmentsImpl'"
   },
   "authorization-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-authorization",
