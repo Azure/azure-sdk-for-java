@@ -63,13 +63,13 @@ public class ConsumerIdentifier {
             return false;
         }
 
-        ConsumerIdentifier pair = (ConsumerIdentifier) o;
+        ConsumerIdentifier consumerIdentifier = (ConsumerIdentifier) o;
 
-        if (!ObjectUtils.nullSafeEquals(destination, pair.destination)) {
+        if (!ObjectUtils.nullSafeEquals(destination, consumerIdentifier.destination)) {
             return false;
         }
 
-        return ObjectUtils.nullSafeEquals(group, pair.group);
+        return ObjectUtils.nullSafeEquals(group, consumerIdentifier.group);
     }
 
     @Override
