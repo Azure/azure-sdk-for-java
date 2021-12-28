@@ -58,6 +58,7 @@ public class AzureMonitorTraceExporterTest extends MonitorExporterClientTestBase
             .connectionString("InstrumentationKey=ikey;IngestionEndpoint=https://testendpoint.com")
             .buildTraceExporter();
         CompletableResultCode export = azureMonitorTraceExporter.export(Collections.singleton(new RequestSpanData()));
+        export.join(30, TimeUnit.SECONDS);
         Assertions.assertTrue(export.isDone());
         Assertions.assertTrue(export.isSuccess());
     }

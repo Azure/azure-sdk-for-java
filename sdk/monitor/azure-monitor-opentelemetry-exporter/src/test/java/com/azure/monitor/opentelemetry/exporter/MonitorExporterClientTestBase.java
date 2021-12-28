@@ -7,6 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
@@ -39,9 +40,13 @@ public class MonitorExporterClientTestBase extends TestBase {
             httpClient = interceptorManager.getPlaybackClient();
         }
 
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
+        policies.add(new AzureMonitorRedirectPolicy());
+        policies.add(interceptorManager.getRecordPolicy());
         HttpPipeline httpPipeline = new HttpPipelineBuilder()
             .httpClient(httpClient)
-            .policies(interceptorManager.getRecordPolicy()).build();
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .build();
 
         return new AzureMonitorExporterBuilder().pipeline(httpPipeline);
     }
@@ -65,10 +70,12 @@ public class MonitorExporterClientTestBase extends TestBase {
             return new AzureMonitorExporterBuilder()
                 .credential(credential)
                 .httpClient(httpClient)
+                .addPolicy(new AzureMonitorRedirectPolicy())
                 .addPolicy(interceptorManager.getRecordPolicy());
         } else {
             return new AzureMonitorExporterBuilder()
                 .httpClient(httpClient)
+                .addPolicy(new AzureMonitorRedirectPolicy())
                 .addPolicy(interceptorManager.getRecordPolicy());
         }
     }
