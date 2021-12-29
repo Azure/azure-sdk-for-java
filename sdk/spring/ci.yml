@@ -466,7 +466,7 @@ stages:
                 displayName: 'insert dependency management'
       - job: 'maven_dependency'
         steps:
-          - template: eng/common/pipelines/templates/steps/sparse-checkout.yml
+          - template: ../../eng/common/pipelines/templates/steps/sparse-checkout.yml
             parameters:
               Paths: 'sdk/${{ parameters.ServiceDirectory }}'
               SkipDefaultCheckout: true
