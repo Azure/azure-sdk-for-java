@@ -122,15 +122,9 @@ public class ServiceBusMessageChannelBinder extends
                                                      ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
         extendedConsumerPropertiesMap.put(new ConsumerIdentifier(destination.getName(), group), properties);
         final ServiceBusInboundChannelAdapter inboundAdapter;
-        if (group != null) {
-            inboundAdapter =
-                new ServiceBusInboundChannelAdapter(getProcessorContainer(), destination.getName(), group,
-                    buildCheckpointConfig(properties));
-        } else {
-            inboundAdapter =
-                new ServiceBusInboundChannelAdapter(getProcessorContainer(), destination.getName(),
-                    buildCheckpointConfig(properties));
-        }
+        inboundAdapter = new ServiceBusInboundChannelAdapter(getProcessorContainer(), destination.getName(), group,
+            buildCheckpointConfig(properties));
+
         inboundAdapter.setBeanFactory(getBeanFactory());
         String instrumentationId = Instrumentation.buildId(CONSUMER, destination.getName() + "/" + getGroup(group));
         inboundAdapter.setInstrumentationManager(instrumentationManager);
