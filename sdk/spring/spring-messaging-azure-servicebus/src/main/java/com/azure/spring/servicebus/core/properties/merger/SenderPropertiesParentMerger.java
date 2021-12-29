@@ -14,7 +14,7 @@ import com.azure.spring.servicebus.core.properties.ProducerProperties;
  *  * set in the child, it will be kept. For those properties not set in the child, it will use the value in the
  *  parent.
  */
-public class ProducerPropertiesParentMerger implements ParentMerger<ProducerProperties, NamespaceProperties> {
+public class SenderPropertiesParentMerger implements ParentMerger<ProducerProperties, NamespaceProperties> {
 
     @Override
     public ProducerProperties mergeParent(ProducerProperties child, NamespaceProperties parent) {

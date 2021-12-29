@@ -33,9 +33,7 @@ public abstract class AbstractAzureMessageConverter<I, O> implements AzureMessag
      * Get the object mapper.
      * @return the object mapper.
      */
-    protected ObjectMapper getObjectMapper() {
-        return OBJECT_MAPPER;
-    }
+    protected abstract ObjectMapper getObjectMapper();
 
     /**
      * Convert payload object to byte array.

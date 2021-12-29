@@ -46,12 +46,6 @@ public class EventHubsTemplateSendTest extends SendOperationTest<EventHubsTempla
     }
 
     @Override
-    protected void whenSendWithException() {
-        when(this.producerFactory.createProducer(this.destination))
-            .thenThrow(EventHubsRuntimeException.class);
-    }
-
-    @Override
     protected void verifyGetClientCreator(int times) {
         verify(this.producerFactory, times(times)).createProducer(this.destination);
     }
