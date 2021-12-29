@@ -170,7 +170,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         final String messageId = UUID.randomUUID().toString();
         final List<ServiceBusMessage> messageList = new ArrayList<>();
-        for (int i = 0; i < totalReceiver * maxMessagesEachReceive; ++i) {
+        for (int i = 0; i < totalReceiver * maxMessagesEachReceive; i++) {
             messageList.add(getMessage(messageId, isSessionEnabled));
         }
 
@@ -181,7 +181,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         // Act & Assert
         AtomicInteger totalReceivedMessages = new AtomicInteger();
         List<Thread> receiverThreads = new ArrayList<>();
-        for (int i = 0; i < totalReceiver; ++i) {
+        for (int i = 0; i < totalReceiver; i++) {
             Thread thread = new Thread(() -> {
                 IterableStream<ServiceBusReceivedMessage> messages1 = receiver.
                     receiveMessages(maxMessagesEachReceive, shortTimeOut);
@@ -193,7 +193,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
                     assertTrue(receivedMessage.getSequenceNumber() > lastSequenceReceiver);
                     lastSequenceReceiver = receivedMessage.getSequenceNumber();
                     messagesPending.decrementAndGet();
-                    ++receivedMessageCount;
+                    receivedMessageCount++;
                 }
                 totalReceivedMessages.addAndGet(receivedMessageCount);
                 assertTrue(receivedMessageCount >= 1);
