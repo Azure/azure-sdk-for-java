@@ -466,6 +466,10 @@ stages:
                 displayName: 'insert dependency management'
       - job: 'maven_dependency'
         steps:
+          - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+              parameters:
+                Paths:
+                  - 'sdk/${{ parameters.ServiceDirectory }}'
           - template: ../../eng/pipelines/templates/steps/generate-project-list.yml
             parameters:
               Artifacts: ${{ parameters.Artifacts }}
@@ -473,7 +477,7 @@ stages:
               JobType: 'maven_dependency'
               SDKType: ${{parameters.SDKType}}
           - script: |
-              mvn -f sdk/spring/pom.xml --batch-mode --fail-at-end -Dmaven.wagon.httpconnectionManager.ttlSeconds=60 -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true -pl $(ProjectList) -am install
+              mvn --batch-mode --fail-at-end -Dmaven.wagon.httpconnectionManager.ttlSeconds=60 -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true -pl $(ProjectList) -am install
             displayName: 'maven_install'
           - script: |
               cd ./sdk/spring && mvn dependency:tree>tree.txt
