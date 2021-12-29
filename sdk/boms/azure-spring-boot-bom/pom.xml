@@ -47,15 +47,6 @@
   <dependencyManagement>
     <dependencies>
 
-      <!-- Import azure-sdk-bom-->
-      <dependency>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-sdk-bom</artifactId>
-        <version>1.0.6</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-
       <!-- Other Azure dependencies that not managed by azure-sdk-bom. -->
       <dependency>
         <groupId>com.azure</groupId>
@@ -72,47 +63,47 @@
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot</artifactId>
-        <version>3.11.0</version>
+        <version>3.12.0</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter</artifactId>
-        <version>3.11.0</version>
+        <version>3.12.0</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-        <version>3.11.0</version>
+        <version>3.12.0</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
-        <version>3.11.0</version>
+        <version>3.12.0</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-cosmos</artifactId>
-        <version>3.11.0</version>
+        <version>3.12.0</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-keyvault-secrets</artifactId>
-        <version>3.11.0</version>
+        <version>3.12.0</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-keyvault-certificates</artifactId>
-        <version>3.11.0</version>
+        <version>3.12.0</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-servicebus-jms</artifactId>
-        <version>3.11.0</version>
+        <version>3.12.0</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-storage</artifactId>
-        <version>3.11.0</version>
+        <version>3.12.0</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

@@ -1,5 +1,15 @@
 # Release History
 
+## 3.12.0 (2021-12-29)
+This release is compatible with Spring Boot 2.5.5-2.5.8, 2.6.0-2.6.1.
+
+### Dependency Upgrades
+- Upgrade to [spring-boot-dependencies:2.6.1](https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-dependencies/2.6.1/spring-boot-dependencies-2.6.1.pom).
+- Upgrade Azure Spring versions to 3.12.0.
+
+### Breaking Changes
+- Remove import of Azure SDK bom.
+
 ## 3.11.0 (2021-11-26)
 This release is compatible with Spring Boot 2.5.0 - 2.5.4.
 
