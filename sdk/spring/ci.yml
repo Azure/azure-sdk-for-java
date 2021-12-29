@@ -468,7 +468,7 @@ stages:
               mvn clean install -f sdk/spring/pom.xml -P dev
             displayName: 'maven_install'
           - script: |
-              cd ./sdk/spring && mvn dependency:tree
+              cd ./sdk/spring && mvn dependency:tree>tree.txt
             displayName: 'maven_dependency'
           - script: |
               cd ./sdk/spring && cat tree.txt
