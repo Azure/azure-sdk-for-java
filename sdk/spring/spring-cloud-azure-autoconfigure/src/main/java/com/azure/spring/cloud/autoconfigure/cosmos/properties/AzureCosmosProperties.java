@@ -9,9 +9,9 @@ import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.models.CosmosPermissionProperties;
-import com.azure.spring.cloud.autoconfigure.properties.core.AbstractAzureServiceCP;
-import com.azure.spring.cloud.autoconfigure.properties.core.client.ClientCP;
-import com.azure.spring.cloud.autoconfigure.properties.core.proxy.HttpProxyCP;
+import com.azure.spring.cloud.autoconfigure.properties.core.AbstractAzureServiceConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.core.client.ClientConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.core.proxy.HttpProxyConfigurationProperties;
 import com.azure.spring.service.cosmos.CosmosClientProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
@@ -21,15 +21,15 @@ import java.util.List;
 /**
  * Configuration properties for Cosmos database, consistency, telemetry, connection, query metrics and diagnostics.
  */
-public class AzureCosmosProperties extends AbstractAzureServiceCP implements CosmosClientProperties {
+public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProperties implements CosmosClientProperties {
 
     public static final String PREFIX = "spring.cloud.azure.cosmos";
 
     @NestedConfigurationProperty
-    private final HttpProxyCP proxy = new HttpProxyCP();
+    private final HttpProxyConfigurationProperties proxy = new HttpProxyConfigurationProperties();
 
     @NestedConfigurationProperty
-    private final ClientCP client = new ClientCP();
+    private final ClientConfigurationProperties client = new ClientConfigurationProperties();
 
     private String endpoint;
 
@@ -72,12 +72,12 @@ public class AzureCosmosProperties extends AbstractAzureServiceCP implements Cos
     private boolean populateQueryMetrics;
 
     @Override
-    public HttpProxyCP getProxy() {
+    public HttpProxyConfigurationProperties getProxy() {
         return proxy;
     }
 
     @Override
-    public ClientCP getClient() {
+    public ClientConfigurationProperties getClient() {
         return client;
     }
 

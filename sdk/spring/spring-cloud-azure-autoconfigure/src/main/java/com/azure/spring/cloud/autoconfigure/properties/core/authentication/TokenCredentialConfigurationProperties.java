@@ -9,7 +9,7 @@ import com.azure.spring.core.aware.authentication.TokenCredentialAware;
 /**
  * Azure properties used for getting token credential.
  */
-public class TokenCredentialCP implements TokenCredentialAware.TokenCredential {
+public class TokenCredentialConfigurationProperties implements TokenCredentialAware.TokenCredential {
 
     /**
      * Client id to use when performing service principal authentication with Azure.

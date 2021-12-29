@@ -10,7 +10,7 @@ import java.time.temporal.ChronoUnit;
 /**
  * Unified http retry properties for all Azure SDKs based on HTTP.
  */
-public class HttpRetryCP extends RetryCP implements RetryAware.HttpRetry {
+public class HttpRetryConfigurationProperties extends RetryConfigurationProperties implements RetryAware.HttpRetry {
 
     /**
      * HTTP header, such as Retry-After or x-ms-retry-after-ms, to lookup for the retry delay.

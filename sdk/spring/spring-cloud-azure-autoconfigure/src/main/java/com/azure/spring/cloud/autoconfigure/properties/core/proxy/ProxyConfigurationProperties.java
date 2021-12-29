@@ -8,7 +8,7 @@ import com.azure.spring.core.aware.ProxyAware;
 /**
  * Common proxy properties for all Azure SDKs.
  */
-public class ProxyCP implements ProxyAware.Proxy {
+public class ProxyConfigurationProperties implements ProxyAware.Proxy {
 
     /**
      * Type of the proxy.

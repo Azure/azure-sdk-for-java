@@ -4,12 +4,12 @@
 package com.azure.spring.cloud.autoconfigure.properties;
 
 import com.azure.core.amqp.AmqpTransportType;
-import com.azure.spring.cloud.autoconfigure.properties.core.authentication.TokenCredentialCP;
-import com.azure.spring.cloud.autoconfigure.properties.core.client.ClientCP;
-import com.azure.spring.cloud.autoconfigure.properties.core.client.HttpLoggingCP;
-import com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileCP;
-import com.azure.spring.cloud.autoconfigure.properties.core.proxy.ProxyCP;
-import com.azure.spring.cloud.autoconfigure.properties.core.retry.RetryCP;
+import com.azure.spring.cloud.autoconfigure.properties.core.authentication.TokenCredentialConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.core.client.ClientConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.core.client.HttpLoggingConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.core.proxy.ProxyConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.core.retry.RetryConfigurationProperties;
 import com.azure.spring.core.properties.AzureProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
@@ -26,58 +26,58 @@ public class AzureGlobalProperties implements AzureProperties {
     public static final String PREFIX = "spring.cloud.azure";
 
     @NestedConfigurationProperty
-    private final GlobalClientCP client = new GlobalClientCP();
+    private final GlobalClientConfigurationProperties client = new GlobalClientConfigurationProperties();
 
     @NestedConfigurationProperty
-    private final GlobalProxyCP proxy = new GlobalProxyCP();
+    private final GlobalProxyConfigurationProperties proxy = new GlobalProxyConfigurationProperties();
 
     @NestedConfigurationProperty
-    private final GlobalRetryCP retry = new GlobalRetryCP();
+    private final GlobalRetryConfigurationProperties retry = new GlobalRetryConfigurationProperties();
 
     @NestedConfigurationProperty
-    private final TokenCredentialCP credential = new TokenCredentialCP();
+    private final TokenCredentialConfigurationProperties credential = new TokenCredentialConfigurationProperties();
 
     @NestedConfigurationProperty
-    private final AzureProfileCP profile = new AzureProfileCP();
+    private final AzureProfileConfigurationProperties profile = new AzureProfileConfigurationProperties();
 
     @Override
-    public GlobalClientCP getClient() {
+    public GlobalClientConfigurationProperties getClient() {
         return client;
     }
 
     @Override
-    public GlobalProxyCP getProxy() {
+    public GlobalProxyConfigurationProperties getProxy() {
         return proxy;
     }
 
     @Override
-    public GlobalRetryCP getRetry() {
+    public GlobalRetryConfigurationProperties getRetry() {
         return retry;
     }
 
     @Override
-    public TokenCredentialCP getCredential() {
+    public TokenCredentialConfigurationProperties getCredential() {
         return credential;
     }
 
     @Override
-    public AzureProfileCP getProfile() {
+    public AzureProfileConfigurationProperties getProfile() {
         return profile;
     }
 
     /**
      * Global configurations for the transport client underneath.
      */
-    public static final class GlobalClientCP extends ClientCP {
+    public static final class GlobalClientConfigurationProperties extends ClientConfigurationProperties {
 
-        private final HttpClientCP http = new HttpClientCP();
-        private final AmqpClientCP amqp = new AmqpClientCP();
+        private final GlobalHttpClientConfigurationProperties http = new GlobalHttpClientConfigurationProperties();
+        private final GlobalAmqpClientConfigurationProperties amqp = new GlobalAmqpClientConfigurationProperties();
 
-        public HttpClientCP getHttp() {
+        public GlobalHttpClientConfigurationProperties getHttp() {
             return http;
         }
 
-        public AmqpClientCP getAmqp() {
+        public GlobalAmqpClientConfigurationProperties getAmqp() {
             return amqp;
         }
     }
@@ -85,11 +85,11 @@ public class AzureGlobalProperties implements AzureProperties {
     /**
      * Global configurations for proxy.
      */
-    public static final class GlobalProxyCP extends ProxyCP {
+    public static final class GlobalProxyConfigurationProperties extends ProxyConfigurationProperties {
 
-        private final HttpProxyCP http = new HttpProxyCP();
+        private final GlobalHttpProxyConfigurationProperties http = new GlobalHttpProxyConfigurationProperties();
 
-        public HttpProxyCP getHttp() {
+        public GlobalHttpProxyConfigurationProperties getHttp() {
             return http;
         }
     }
@@ -97,11 +97,11 @@ public class AzureGlobalProperties implements AzureProperties {
     /**
      * Global configurations for proxy.
      */
-    public static final class GlobalRetryCP extends RetryCP {
+    public static final class GlobalRetryConfigurationProperties extends RetryConfigurationProperties {
 
-        private final HttpRetryCP http = new HttpRetryCP();
+        private final GlobalHttpRetryConfigurationProperties http = new GlobalHttpRetryConfigurationProperties();
 
-        public HttpRetryCP getHttp() {
+        public GlobalHttpRetryConfigurationProperties getHttp() {
             return http;
         }
     }
@@ -109,7 +109,7 @@ public class AzureGlobalProperties implements AzureProperties {
     /**
      * Retry properties only apply to http-based clients.
      */
-    public static final class HttpRetryCP {
+    public static final class GlobalHttpRetryConfigurationProperties {
 
         /**
          * HTTP header, such as Retry-After or x-ms-retry-after-ms, to lookup for the retry delay.
@@ -141,7 +141,7 @@ public class AzureGlobalProperties implements AzureProperties {
     /**
      * Proxy properties only apply to http-based clients.
      */
-    public static final class HttpProxyCP {
+    public static final class GlobalHttpProxyConfigurationProperties {
 
         /**
          * A list of hosts or CIDR to not use proxy HTTP/HTTPS connections through.
@@ -160,7 +160,7 @@ public class AzureGlobalProperties implements AzureProperties {
     /**
      * Transport properties for http-based clients.
      */
-    public static final class HttpClientCP {
+    public static final class GlobalHttpClientConfigurationProperties {
         /**
          * Amount of time each request being sent over the wire.
          */
@@ -187,7 +187,7 @@ public class AzureGlobalProperties implements AzureProperties {
         private Duration connectionIdleTimeout;
 
         @NestedConfigurationProperty
-        private final HttpLoggingCP logging = new HttpLoggingCP();
+        private final HttpLoggingConfigurationProperties logging = new HttpLoggingConfigurationProperties();
 
         public Duration getWriteTimeout() {
             return writeTimeout;
@@ -237,7 +237,7 @@ public class AzureGlobalProperties implements AzureProperties {
             this.connectionIdleTimeout = connectionIdleTimeout;
         }
 
-        public HttpLoggingCP getLogging() {
+        public HttpLoggingConfigurationProperties getLogging() {
             return logging;
         }
     }
@@ -245,7 +245,7 @@ public class AzureGlobalProperties implements AzureProperties {
     /**
      * Transport properties for amqp-based clients.
      */
-    public static final class AmqpClientCP {
+    public static final class GlobalAmqpClientConfigurationProperties {
 
         /**
          * Transport type for AMQP-based client.

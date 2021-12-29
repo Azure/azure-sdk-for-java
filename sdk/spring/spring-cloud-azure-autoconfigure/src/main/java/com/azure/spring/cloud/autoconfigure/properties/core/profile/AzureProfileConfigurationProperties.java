@@ -12,7 +12,7 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 /**
  * The AzureProfile defines the properties related to an Azure subscription.
  */
-public class AzureProfileCP extends AzureProfileAdapter {
+public class AzureProfileConfigurationProperties extends AzureProfileAdapter {
 
     /**
      * Tenant id for Azure resources.
