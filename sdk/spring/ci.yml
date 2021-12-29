@@ -465,11 +465,25 @@ stages:
                   python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b 2.6.1 -c 2021.0.0
                 displayName: 'insert dependency management'
       - job: 'maven_dependency'
+        variables:
+          - template: ../variables/globals.yml
         steps:
-          - template: ../../eng/common/pipelines/templates/steps/sparse-checkout.yml
-            parameters:
-              Paths:
-                - 'sdk/${{ parameters.ServiceDirectory }}'
+          - checkout: none
+#          - template: ../../eng/common/pipelines/templates/steps/sparse-checkout.yml
+#            parameters:
+#              Paths:
+#                - 'sdk/${{ parameters.ServiceDirectory }}'
+          - task: Maven@3
+              displayName: 'Build and Install'
+              inputs:
+                mavenPomFile: pom.xml
+                goals: 'install'
+                options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
+                mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+                javaHomeOption: 'JDKVersion'
+                jdkVersionOption: $(JavaBuildVersion)
+                jdkArchitectureOption: 'x64'
+                publishJUnitResults: false
           - template: ../../eng/pipelines/templates/steps/generate-project-list.yml
             parameters:
               Artifacts: ${{ parameters.Artifacts }}
