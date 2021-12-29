@@ -57,6 +57,9 @@
       --add-opens com.azure.spring.service/com.azure.spring.service.storage.queue=ALL-UNNAMED
       --add-opens com.azure.spring.service/com.azure.spring.service.keyvault.secret=ALL-UNNAMED
       --add-opens com.azure.spring.service/com.azure.spring.service.keyvault.certificates=ALL-UNNAMED
+      --add-opens com.azure.spring.service/com.azure.spring.service.servicebus.factory=ALL-UNNAMED
+      --add-opens com.azure.spring.service/com.azure.spring.service.implementation.storage.credential=ALL-UNNAMED
+      --add-opens com.azure.spring.core/com.azure.spring.core.factory=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
 
