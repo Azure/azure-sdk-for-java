@@ -424,7 +424,7 @@ stages:
 
   - stage: Build_for_New_Spring_Boot_Version
     jobs:
-      - job: 'build new'
+      - job: 'build_new'
       - template: /eng/pipelines/templates/jobs/ci.yml
         parameters:
           PublishArtifact: false
@@ -476,7 +476,7 @@ stages:
 #    jobs:
       - job: 'maven_dependency'
         dependsOn:
-          - 'build new'
+          - 'build_new'
         steps:
           - script: |
               cd ./sdk/spring && mvn -e dependency:tree
@@ -541,7 +541,7 @@ stages:
           - script: |
               mvn clean install -f sdk/spring/pom.xml -P dev
           - script: |
-              cd ./sdk/spring && mvn dependency:tree
+              cd ./sdk/spring && mvn -o dependency:tree
             displayName: 'maven_dependency'
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build_for_Last_Spring_Boot_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
