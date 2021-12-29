@@ -465,7 +465,7 @@ stages:
                   python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b 2.6.1 -c 2021.0.0
                 displayName: 'insert dependency management'
 
-      - template: ../steps/generate-project-list.yml
+      - template: eng/pipelines/templates/steps/generate-project-list.yml
         parameters:
           Artifacts: ${{ parameters.Artifacts }}
           AdditionalModules: ${{ parameters.AdditionalModules }}
