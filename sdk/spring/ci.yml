@@ -474,16 +474,16 @@ stages:
 #              Paths:
 #                - 'sdk/${{ parameters.ServiceDirectory }}'
           - task: Maven@3
-              displayName: 'Build and Install'
-              inputs:
-                mavenPomFile: pom.xml
-                goals: 'install'
-                options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
-                mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-                javaHomeOption: 'JDKVersion'
-                jdkVersionOption: $(JavaBuildVersion)
-                jdkArchitectureOption: 'x64'
-                publishJUnitResults: false
+            displayName: 'Build and Install'
+            inputs:
+              mavenPomFile: pom.xml
+              goals: 'install'
+              options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
+              mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+              javaHomeOption: 'JDKVersion'
+              jdkVersionOption: $(JavaBuildVersion)
+              jdkArchitectureOption: 'x64'
+              publishJUnitResults: false
           - template: ../../eng/pipelines/templates/steps/generate-project-list.yml
             parameters:
               Artifacts: ${{ parameters.Artifacts }}
