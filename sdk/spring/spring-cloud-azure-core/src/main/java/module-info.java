@@ -36,4 +36,6 @@ module com.azure.spring.core {
 
     exports com.azure.spring.core.implementation.converter to com.azure.spring.service;
     exports com.azure.spring.core.implementation.http to com.azure.spring.service;
+
+    opens com.azure.spring.core.factory;
 }

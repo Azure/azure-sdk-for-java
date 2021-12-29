@@ -10,8 +10,6 @@ import com.azure.spring.service.AzureServiceClientBuilderFactoryTestBase;
 import com.azure.spring.service.eventhubs.factory.EventHubClientBuilderFactory;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -27,8 +25,6 @@ public class EventHubsClientBuilderFactoryTest extends AzureServiceClientBuilder
 
     @Test
     void testRetryOptionsConfigured() {
-        ArrayList<String> list = new ArrayList<>();
-
         TestAzureEventHubsProperties properties = createMinimalServiceProperties();
         final EventHubClientBuilderFactoryExt builderFactory = new EventHubClientBuilderFactoryExt(properties);
         final EventHubClientBuilder builder = builderFactory.build();

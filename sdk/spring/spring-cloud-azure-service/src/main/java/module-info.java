@@ -31,4 +31,6 @@ module com.azure.spring.service {
     exports com.azure.spring.service.storage.fileshare;
     exports com.azure.spring.service.storage.queue;
 
+    opens com.azure.spring.service.implementation.storage.credential;
+    opens com.azure.spring.service.servicebus.factory;
 }

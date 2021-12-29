@@ -8,6 +8,8 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.HttpClientOptions;
+import com.azure.identity.ClientCertificateCredential;
+import com.azure.identity.ClientSecretCredential;
 import com.azure.spring.core.implementation.http.DefaultHttpProvider;
 import com.azure.spring.core.properties.proxy.ProxyProperties;
 import com.azure.spring.service.AzureHttpClientBuilderFactoryTestBase;
@@ -20,6 +22,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.verification.VerificationMode;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -32,9 +35,51 @@ class AzureStorageQueueClientBuilderFactoryTest extends AzureHttpClientBuilderFa
     TestAzureStorageQueueProperties, QueueServiceClientBuilderFactory> {
 
     private static final String ENDPOINT = "https://abc.queue.core.windows.net/";
+    private static final String CONNECTION_STRING = "BlobEndpoint=https://test.blob.core.windows.net/;"
+        + "QueueEndpoint=https://test.queue.core.windows.net/;FileEndpoint=https://test.file.core.windows.net/;"
+        + "TableEndpoint=https://test.table.core.windows.net/;SharedAccessSignature=sv=2020-08-04"
+        + "&ss=bfqt&srt=sco&sp=rwdlacupitfx&se=2023-06-08T15:17:21Z&st=2021-12-27T07:17:21Z&sip=192.168.0.1"
+        + "&spr=https,http&sig=test";
 
     @Test
-    void testStorageSharedKeyCredentialConfigured() {
+    void clientSecretTokenCredentialConfigured() {
+        TestAzureStorageQueueProperties properties = createMinimalServiceProperties();
+
+        properties.getCredential().setClientId("test-client");
+        properties.getCredential().setClientSecret("test-secret");
+        properties.getProfile().setTenantId("test-tenant");
+
+        final QueueServiceClientBuilder builder = new QueueServiceClientBuilderFactoryExt(properties).build();
+        final QueueServiceClient client = builder.buildClient();
+
+        verify(builder, times(1)).credential(any(ClientSecretCredential.class));
+    }
+
+    @Test
+    void clientCertificateTokenCredentialConfigured() {
+        TestAzureStorageQueueProperties properties = createMinimalServiceProperties();
+
+        properties.getCredential().setClientId("test-client");
+        properties.getCredential().setClientCertificatePath("test-cert-path");
+        properties.getCredential().setClientCertificatePassword("test-cert-password");
+        properties.getProfile().setTenantId("test-tenant");
+
+        final QueueServiceClientBuilder builder = new QueueServiceClientBuilderFactoryExt(properties).build();
+        final QueueServiceClient client = builder.buildClient();
+        verify(builder, times(1)).credential(any(ClientCertificateCredential.class));
+    }
+
+    @Test
+    void connectionStringConfigured() {
+        TestAzureStorageQueueProperties properties = createMinimalServiceProperties();
+        properties.setConnectionString(CONNECTION_STRING);
+        final QueueServiceClientBuilder builder = new QueueServiceClientBuilderFactoryExt(properties).build();
+        final QueueServiceClient client = builder.buildClient();
+        verify(builder, times(1)).connectionString(anyString());
+    }
+    
+    @Test
+    void storageSharedKeyCredentialConfigured() {
         TestAzureStorageQueueProperties properties = createMinimalServiceProperties();
         properties.setAccountName("test_account_name");
         properties.setAccountKey("test_account_key");
@@ -44,7 +89,7 @@ class AzureStorageQueueClientBuilderFactoryTest extends AzureHttpClientBuilderFa
     }
 
     @Test
-    void testAzureSasCredentialConfigured() {
+    void azureSasCredentialConfigured() {
         TestAzureStorageQueueProperties properties = createMinimalServiceProperties();
         properties.setSasToken("test");
         final QueueServiceClientBuilder builder = new QueueServiceClientBuilderFactoryExt(properties).build();
@@ -52,10 +97,8 @@ class AzureStorageQueueClientBuilderFactoryTest extends AzureHttpClientBuilderFa
         verify(builder, times(1)).credential(any(AzureSasCredential.class));
     }
 
-
-
     @Test
-    void testProxyPropertiesConfigured() {
+    void proxyPropertiesConfigured() {
         TestAzureStorageQueueProperties properties = createMinimalServiceProperties();
         ProxyProperties proxyProperties = properties.getProxy();
         proxyProperties.setHostname("localhost");
@@ -71,7 +114,7 @@ class AzureStorageQueueClientBuilderFactoryTest extends AzureHttpClientBuilderFa
     }
 
     @Test
-    void testRetryOptionsConfigured() {
+    void retryOptionsConfigured() {
         TestAzureStorageQueueProperties properties = createMinimalServiceProperties();
         final QueueServiceClientBuilderFactoryExt builderFactory = new QueueServiceClientBuilderFactoryExt(properties);
         final QueueServiceClientBuilder builder = builderFactory.build();
