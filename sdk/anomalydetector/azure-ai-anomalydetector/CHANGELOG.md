@@ -6,7 +6,7 @@
 - Added 2 new optional properties: `imputeMode` & `imputeFixedValue` to the `DetectRequest` object.
 - Added 1 new optional property: `severity` to the `EntireDetectResponse` & `LastDetectResponse` objects.
 - Removed the optional property `errors` from the `VariableState` object.
-- Refactor the optional property `contributors` to `interpretation` from the `AnomalyValue` object.
+- Refactored the optional property `contributors` to `interpretation` from the `AnomalyValue` object.
 - Modified the `FillNAMethod` object into an extensible enum.
 
 
