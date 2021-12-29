@@ -105,7 +105,7 @@
     <dependency>
       <groupId>org.messaginghub</groupId>
       <artifactId>pooled-jms</artifactId>
-      <version>1.2.2</version>
+      <version>1.2.2</version> <!-- {x-version-update;org.messaginghub:pooled-jms;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
