@@ -453,7 +453,6 @@ stages:
             TestPipeline: ${{ parameters.TestPipeline }}
             Artifacts: ${{ parameters.Artifacts }}
             AdditionalModules: ${{ parameters.AdditionalModules }}
-            PreTestSteps: ${{ parameters.PreTestSteps }}
             SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
             PreBuildSteps:
               - script: |
