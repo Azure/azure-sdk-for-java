@@ -469,47 +469,34 @@ stages:
           - template: ../../eng/pipelines/templates/variables/globals.yml
         steps:
           - checkout: none
-#          - template: ../../eng/common/pipelines/templates/steps/sparse-checkout.yml
-#            parameters:
-#              Paths:
-#                - 'sdk/${{ parameters.ServiceDirectory }}'
-#          - task: Maven@3
-#            displayName: 'Build and Install'
-#            inputs:
-#              mavenPomFile: pom.xml
-#              goals: 'install'
-#              options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
-#              mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-#              javaHomeOption: 'JDKVersion'
-#              jdkVersionOption: $(JavaBuildVersion)
-#              jdkArchitectureOption: 'x64'
-#              publishJUnitResults: false
           - template: ../../eng/pipelines/templates/steps/generate-project-list.yml
             parameters:
               Artifacts: ${{ parameters.Artifacts }}
               AdditionalModules: ${{ parameters.AdditionalModules }}
               JobType: 'maven_dependency'
               SDKType: ${{parameters.SDKType}}
-          - script: |
-              /usr/bin/mvn -f /mnt/vss/_work/1/s/pom.xml --batch-mode --fail-at-end -Dmaven.wagon.httpconnectionManager.ttlSeconds=60 -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true -pl $(ProjectList) -am install
-            displayName: 'maven_install'
+          - template: ../../eng/pipelines/templates/steps/install-reporting-tools.yml
+          - task: Maven@3
+            displayName: 'Build and Install'
+            inputs:
+              mavenPomFile: pom.xml
+              goals: 'install'
+              options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
+              mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+              javaHomeOption: 'JDKVersion'
+              jdkVersionOption: $(JavaBuildVersion)
+              jdkArchitectureOption: 'x64'
+              publishJUnitResults: false
+#          - script: |
+#              /usr/bin/mvn -f /mnt/vss/_work/1/s/pom.xml --batch-mode --fail-at-end -Dmaven.wagon.httpconnectionManager.ttlSeconds=60 -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true -pl $(ProjectList) -am install
+#            displayName: 'maven_install'
           - script: |
               cd ./sdk/spring && mvn dependency:tree>tree.txt
             displayName: 'maven_dependency'
           - script: |
               cd ./sdk/spring && cat tree.txt
             displayName: 'dependency_output'
-#  - stage: New_Spring_Boot_Version_Dependency_tree
-#    dependsOn:
-#      - Build_for_New_Spring_Boot_Version
-#    jobs:
-#      - job: 'maven_dependency'
-#        dependsOn:
-#          - 'Build'
-#        steps:
-#          - script: |
-#              cd ./sdk/spring && mvn -o dependency:tree
-#            displayName: 'maven_dependency'
+
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build_for_New_Spring_Boot_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
       - template: archetype-java-release.yml
