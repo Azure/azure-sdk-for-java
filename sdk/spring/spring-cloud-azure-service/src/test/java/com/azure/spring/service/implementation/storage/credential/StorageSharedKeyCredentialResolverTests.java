@@ -16,7 +16,7 @@ public class StorageSharedKeyCredentialResolverTests {
 
     @Test
     void resolveAzurePropertiesReturnNull() {
-        TestStorageProperties properties = new TestStorageProperties();
+        TestAzureProperties properties = new TestAzureProperties();
         assertNull(resolver.resolve(properties));
     }
 
