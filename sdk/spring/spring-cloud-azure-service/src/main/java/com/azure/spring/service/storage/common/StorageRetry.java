@@ -10,5 +10,9 @@ import com.azure.spring.core.aware.RetryAware;
  */
 public interface StorageRetry extends RetryAware.HttpRetry {
 
+    /**
+     * Get the secondary host for retry.
+     * @return the secondary host.
+     */
     String getSecondaryHost();
 }

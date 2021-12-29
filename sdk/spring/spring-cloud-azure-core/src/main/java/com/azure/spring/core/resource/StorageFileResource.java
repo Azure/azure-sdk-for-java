@@ -26,7 +26,7 @@ import org.springframework.util.StringUtils;
  * Implements {@link WritableResource} for reading and writing objects in Azure StorageAccount file. An instance of this
  * class represents a handle to a file.
  */
-public class StorageFileResource extends AzureStorageResource {
+public final class StorageFileResource extends AzureStorageResource {
     private static final Logger LOGGER = LoggerFactory.getLogger(StorageFileResource.class);
     private static final String MSG_FAIL_OPEN_OUTPUT = "Failed to open output stream of file";
     private final ShareServiceClient shareServiceClient;

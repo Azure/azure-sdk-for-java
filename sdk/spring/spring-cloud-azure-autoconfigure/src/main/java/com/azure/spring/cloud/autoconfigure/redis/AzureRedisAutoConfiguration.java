@@ -21,7 +21,7 @@ import org.springframework.data.redis.core.RedisOperations;
 import java.util.Arrays;
 
 /**
- * An auto-configuration for Spring cache using Azure redis cache
+ * An autoconfiguration for Spring cache using Azure redis cache
  *
  */
 @Configuration(proxyBeanMethods = false)

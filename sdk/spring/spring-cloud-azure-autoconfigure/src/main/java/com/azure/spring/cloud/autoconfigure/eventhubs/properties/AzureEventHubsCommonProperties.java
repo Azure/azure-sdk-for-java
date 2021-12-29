@@ -3,8 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.eventhubs.properties;
 
-import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureAmqpCP;
-import com.azure.spring.core.connectionstring.implementation.EventHubsConnectionString;
+import com.azure.spring.cloud.autoconfigure.properties.core.AbstractAzureAmqpCP;
+import com.azure.spring.core.implementation.connectionstring.EventHubsConnectionString;
 
 /**
  * Azure Event Hubs related properties.
@@ -36,7 +36,7 @@ public abstract class AzureEventHubsCommonProperties extends AbstractAzureAmqpCP
     // servicebus.windows.net)
     // Endpoint=sb://<FQDN>/;SharedAccessKeyName=<KeyName>;SharedAccessKey=<KeyValue>
     // https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-get-connection-string
-    public String getFQDN() {
+    public String getFullyQualifiedNamespace() {
         return this.namespace == null ? extractFqdnFromConnectionString() : (this.namespace + "." + domainName);
     }
 

@@ -4,13 +4,18 @@
 package com.azure.spring.core.connectionstring;
 
 /**
- *
+ * A static implementation of {@link ConnectionStringProvider}, with static value of connection string.
  */
-public class StaticConnectionStringProvider<T> implements ConnectionStringProvider<T> {
+public final class StaticConnectionStringProvider<T> implements ConnectionStringProvider<T> {
 
     private final String connectionString;
     private final T serviceType;
 
+    /**
+     * Create a {@link StaticConnectionStringProvider} instance of {@link T} type and with provided connection string.
+     * @param serviceType The service type.
+     * @param connectionString The value of the connection string.
+     */
     public StaticConnectionStringProvider(T serviceType, String connectionString) {
         this.serviceType = serviceType;
         this.connectionString = connectionString;

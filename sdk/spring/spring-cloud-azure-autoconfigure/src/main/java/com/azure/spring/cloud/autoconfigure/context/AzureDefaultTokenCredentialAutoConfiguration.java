@@ -5,7 +5,9 @@ package com.azure.spring.cloud.autoconfigure.context;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.properties.core.AbstractAzureHttpCP;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.core.factory.AbstractAzureServiceClientBuilderFactory;
 import com.azure.spring.core.factory.credential.AbstractAzureCredentialBuilderFactory;
@@ -27,12 +29,13 @@ import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEF
  * Auto-configuration for Azure Spring default token credential.
  */
 @Configuration(proxyBeanMethods = false)
-public class AzureDefaultTokenCredentialAutoConfiguration {
+public class AzureDefaultTokenCredentialAutoConfiguration extends AzureServiceConfigurationBase {
 
-    private final AzureGlobalProperties azureGlobalProperties;
+    private final IdentityClientProperties identityClientProperties;
 
     public AzureDefaultTokenCredentialAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
-        this.azureGlobalProperties = azureGlobalProperties;
+        super(azureGlobalProperties);
+        this.identityClientProperties = loadProperties(azureGlobalProperties, new IdentityClientProperties());
     }
 
     @ConditionalOnMissingBean(name = DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)
@@ -47,7 +50,7 @@ public class AzureDefaultTokenCredentialAutoConfiguration {
     public AbstractAzureCredentialBuilderFactory<DefaultAzureCredentialBuilder> azureCredentialBuilderFactory(
         ObjectProvider<AzureServiceClientBuilderCustomizer<DefaultAzureCredentialBuilder>> customizers,
         ObjectProvider<ThreadPoolTaskExecutor> threadPoolTaskExecutors) {
-        DefaultAzureCredentialBuilderFactory factory = new DefaultAzureCredentialBuilderFactory(azureGlobalProperties);
+        DefaultAzureCredentialBuilderFactory factory = new DefaultAzureCredentialBuilderFactory(identityClientProperties);
 
         threadPoolTaskExecutors.ifAvailable(tpe -> factory.setExecutorService(tpe.getThreadPoolExecutor()));
         customizers.orderedStream().forEach(factory::addBuilderCustomizer);
@@ -83,5 +86,9 @@ public class AzureDefaultTokenCredentialAutoConfiguration {
         public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
             this.beanFactory = beanFactory;
         }
+    }
+
+    static class IdentityClientProperties extends AbstractAzureHttpCP {
+
     }
 }

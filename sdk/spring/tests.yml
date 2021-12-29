@@ -5,19 +5,19 @@ stages:
     parameters:
       Clouds: 'Public'
       TestResourceDirectories:
-        - spring/spring-cloud-azure-stream-binder-eventhubs
-        - spring/spring-cloud-azure-stream-binder-servicebus
         - spring/spring-cloud-azure-starter-keyvault-certificates
+        - spring/spring-cloud-azure-test-eventhubs-binder
+        - spring/spring-cloud-azure-test-servicebus-binder
       Artifacts:
-        - name: spring-cloud-azure-stream-binder-servicebus
-          groupId: com.azure.spring
-          safeName: springcloudazurestreambinderservicebus
-        - name: spring-cloud-azure-stream-binder-eventhubs
-          groupId: com.azure.spring
-          safeName: springcloudazurestreambindereventhubs
         - name: spring-cloud-azure-starter-keyvault-certificates
           groupId: com.azure.spring
           safeName: springcloudazurestarterkeyvaultcertificates
+        - name: spring-cloud-azure-test-eventhubs-binder
+          groupId: com.azure.spring
+          safeName: springcloudazuretesteventhubsbinder
+        - name: spring-cloud-azure-test-servicebus-binder
+          groupId: com.azure.spring
+          safeName: springcloudazuretestservicebusbinder
       TimeoutInMinutes: 240
       ServiceDirectory: spring
       TestName: IntegrationTestInAzureGlobal

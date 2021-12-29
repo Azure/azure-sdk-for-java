@@ -6,7 +6,7 @@ package com.azure.spring.service.storage.blob;
 import com.azure.spring.service.storage.TestAzureStorageProperties;
 import com.azure.storage.blob.BlobServiceVersion;
 
-public class TestAzureStorageBlobProperties extends TestAzureStorageProperties implements StorageBlobProperties {
+public class TestAzureStorageBlobProperties extends TestAzureStorageProperties implements BlobServiceClientProperties {
 
     private String customerProvidedKey;
     private String encryptionScope;
@@ -41,21 +41,4 @@ public class TestAzureStorageBlobProperties extends TestAzureStorageProperties i
         this.serviceVersion = serviceVersion;
     }
 
-    @Override
-    public String getContainerName() {
-        return containerName;
-    }
-
-    public void setContainerName(String containerName) {
-        this.containerName = containerName;
-    }
-
-    @Override
-    public String getBlobName() {
-        return blobName;
-    }
-
-    public void setBlobName(String blobName) {
-        this.blobName = blobName;
-    }
 }

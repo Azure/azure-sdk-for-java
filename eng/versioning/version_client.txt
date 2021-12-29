@@ -187,6 +187,7 @@ com.azure.spring:spring-cloud-azure-stream-binder-servicebus-core;4.0.0-beta.2;4
 com.azure.spring:spring-cloud-azure-stream-binder-servicebus;4.0.0-beta.2;4.0.0-beta.3
 com.azure.spring:spring-cloud-azure-trace-sleuth;4.0.0-beta.2;4.0.0-beta.3
 com.azure.spring:spring-cloud-azure-test-appconfiguration-config;1.0.0;1.0.0
+com.azure.spring:spring-cloud-azure-test-eventhubs-binder;1.0.0;1.0.0
 com.azure.spring:spring-cloud-azure-test-parent;1.0.0;1.0.0
 com.azure.spring:spring-cloud-azure-test-servicebus-binder;1.0.0;1.0.0
 com.azure.spring:spring-cloud-azure-test-storage;1.0.0;1.0.0
