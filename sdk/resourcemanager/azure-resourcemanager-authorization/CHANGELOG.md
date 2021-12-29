@@ -6,6 +6,8 @@
 
 ### Breaking Changes
 
+- Removed `JsonFlatten` annotation in `RoleAssignmentCreateParameters`
+
 ### Bugs Fixed
 
 ### Other Changes
