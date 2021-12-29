@@ -48,8 +48,9 @@ stages:
             goals: 'clean install'
 
         - pwsh: |
-            Copy-Item sdk/boms/azure-sdk-bom/pom.xml eng/bomgenerator/inputdir/
-            Copy-Item eng/versioning/version_client.txt eng/bomgenerator/inputdir/
+            New-Item eng/bomgenerator/inputDir -ItemType directory
+            Copy-Item sdk/boms/azure-sdk-bom/pom.xml eng/bomgenerator/inputDir/
+            Copy-Item eng/versioning/version_client.txt eng/bomgenerator/inputDir/
           displayName: Copy input files for BOM generation
 
         - task: Maven@3
