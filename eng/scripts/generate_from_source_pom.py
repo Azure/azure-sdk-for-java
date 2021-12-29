@@ -106,10 +106,11 @@ def create_from_source_pom(project_list: str, set_pipeline_variable: str):
     add_module_paths(modules, dependent_modules, projects)
     add_module_paths(modules, dependency_modules, projects)
 
+    modules = sorted(modules)
     with open(file=client_from_source_pom_path, mode='w') as fromSourcePom:
         fromSourcePom.write(pom_file_start)
 
-        for module in sorted(modules):
+        for module in modules:
             fromSourcePom.write('    <module>{}</module>\n'.format(module))
 
         fromSourcePom.write(pom_file_end)
@@ -274,7 +275,6 @@ def main():
     parser.add_argument('--project-list', '--pl', type=str)
     parser.add_argument('--set-pipeline-variable', type=str)
     args = parser.parse_args()
-    args.project_list='com.azure:azure-sdk-template,com.azure:azure-template-perf'
     if args.project_list == None:
         raise ValueError('Missing project list.')
     start_time = time.time()
