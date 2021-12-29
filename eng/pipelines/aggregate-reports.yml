@@ -48,7 +48,8 @@ stages:
             goals: 'clean install'
 
         - pwsh: |
-            $(Build.SourcesDirectory)/eng/bomgenerator/generateAzureSDKBOM.ps1
+            Copy-Item sdk/boms/azure-sdk-bom/pom.xml eng/bomgenerator/inputdir/
+            Copy-Item eng/versioning/version_client.txt eng/bomgenerator/inputdir/
           displayName: Copy input files for BOM generation
 
         - task: Maven@3
