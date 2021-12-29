@@ -16,6 +16,7 @@ import com.azure.spring.integration.instrumentation.InstrumentationManager;
 import com.azure.spring.integration.instrumentation.InstrumentationSendCallback;
 import com.azure.spring.integration.servicebus.inbound.ServiceBusInboundChannelAdapter;
 import com.azure.spring.integration.servicebus.inbound.health.ServiceBusProcessorInstrumentation;
+import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.servicebus.core.ServiceBusProcessorContainer;
@@ -46,8 +47,6 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 import org.springframework.messaging.support.ErrorMessage;
 import org.springframework.util.Assert;
-import reactor.util.function.Tuple2;
-import reactor.util.function.Tuples;
 
 import java.time.Duration;
 import java.util.Map;
@@ -55,7 +54,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static com.azure.spring.integration.instrumentation.Instrumentation.Type.CONSUMER;
 import static com.azure.spring.integration.instrumentation.Instrumentation.Type.PRODUCER;
-import static com.azure.spring.servicebus.core.processor.DefaultServiceBusNamespaceProcessorFactory.INVALID_SUBSCRIPTION;
 
 /**
  *
@@ -75,7 +73,7 @@ public class ServiceBusMessageChannelBinder extends
     private final InstrumentationManager instrumentationManager = new DefaultInstrumentationManager();
     private final Map<String, ExtendedProducerProperties<ServiceBusProducerProperties>>
         extendedProducerPropertiesMap = new ConcurrentHashMap<>();
-    private final Map<Tuple2<String, String>, ExtendedConsumerProperties<ServiceBusConsumerProperties>>
+    private final Map<ConsumerIdentifier, ExtendedConsumerProperties<ServiceBusConsumerProperties>>
         extendedConsumerPropertiesMap = new ConcurrentHashMap<>();
     private static final DefaultErrorMessageStrategy DEFAULT_ERROR_MESSAGE_STRATEGY = new DefaultErrorMessageStrategy();
 
@@ -122,25 +120,16 @@ public class ServiceBusMessageChannelBinder extends
     @Override
     protected MessageProducer createConsumerEndpoint(ConsumerDestination destination, String group,
                                                      ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
-        if (group == null) {
-            group = INVALID_SUBSCRIPTION;
-        }
-        extendedConsumerPropertiesMap.put(Tuples.of(destination.getName(), group), properties);
+        extendedConsumerPropertiesMap.put(new ConsumerIdentifier(destination.getName(), group), properties);
         final ServiceBusInboundChannelAdapter inboundAdapter;
-        if (!INVALID_SUBSCRIPTION.equals(group)) {
-            inboundAdapter =
-                new ServiceBusInboundChannelAdapter(getProcessorContainer(), destination.getName(), group,
-                    buildCheckpointConfig(properties));
-        } else {
-            inboundAdapter =
-                new ServiceBusInboundChannelAdapter(getProcessorContainer(), destination.getName(),
-                    buildCheckpointConfig(properties));
-        }
+        inboundAdapter = new ServiceBusInboundChannelAdapter(getProcessorContainer(), destination.getName(), group,
+            buildCheckpointConfig(properties));
+
         inboundAdapter.setBeanFactory(getBeanFactory());
-        String instrumentationId = Instrumentation.buildId(CONSUMER, destination.getName() + "/" + (!INVALID_SUBSCRIPTION.equals(group) ? group : ""));
+        String instrumentationId = Instrumentation.buildId(CONSUMER, destination.getName() + "/" + getGroup(group));
         inboundAdapter.setInstrumentationManager(instrumentationManager);
         inboundAdapter.setInstrumentationId(instrumentationId);
-        ErrorInfrastructure errorInfrastructure = registerErrorInfrastructure(destination, !INVALID_SUBSCRIPTION.equals(group) ? group : "", properties);
+        ErrorInfrastructure errorInfrastructure = registerErrorInfrastructure(destination, getGroup(group), properties);
         inboundAdapter.setErrorChannel(errorInfrastructure.getErrorChannel());
         inboundAdapter.setMessageConverter(messageConverter);
         return inboundAdapter;
@@ -272,7 +261,7 @@ public class ServiceBusMessageChannelBinder extends
                 this.namespaceProperties, getProcessorPropertiesSupplier());
 
             factory.addListener((name, subscription, client) -> {
-                String instrumentationName = name + "/" + subscription;
+                String instrumentationName = name + "/" + getGroup(subscription);
                 Instrumentation instrumentation = new ServiceBusProcessorInstrumentation(instrumentationName, CONSUMER, Duration.ofMinutes(2));
                 instrumentation.markUp();
                 instrumentationManager.addHealthInstrumentation(instrumentation.getId(), instrumentation);
@@ -297,16 +286,16 @@ public class ServiceBusMessageChannelBinder extends
         };
     }
 
-    private PropertiesSupplier<Tuple2<String, String>, ProcessorProperties> getProcessorPropertiesSupplier() {
+    private PropertiesSupplier<ConsumerIdentifier, ProcessorProperties> getProcessorPropertiesSupplier() {
         return key -> {
             if (this.extendedConsumerPropertiesMap.containsKey(key)) {
                 ServiceBusConsumerProperties consumerProperties = this.extendedConsumerPropertiesMap.get(key)
                     .getExtension();
-                consumerProperties.setEntityName(key.getT1());
-                consumerProperties.setSubscriptionName(key.getT2());
+                consumerProperties.setEntityName(key.getDestination());
+                consumerProperties.setSubscriptionName(key.getGroup());
                 return consumerProperties;
             } else {
-                LOGGER.debug("Can't find extended properties for destination {}, group {}", key.getT1(), key.getT2());
+                LOGGER.debug("Can't find extended properties for destination {}, group {}", key.getDestination(), key.getGroup());
                 return null;
             }
         };
@@ -338,5 +327,9 @@ public class ServiceBusMessageChannelBinder extends
      */
     public InstrumentationManager getInstrumentationManager() {
         return instrumentationManager;
+    }
+
+    private String getGroup(String group) {
+        return group != null ? group : "";
     }
 }

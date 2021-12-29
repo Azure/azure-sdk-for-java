@@ -6,6 +6,7 @@ package com.azure.spring.eventhubs.support.converter;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.spring.eventhubs.support.EventHubsHeaders;
 import com.azure.spring.messaging.converter.AbstractAzureMessageConverter;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.Message;
@@ -32,6 +33,28 @@ public class EventHubsMessageConverter extends AbstractAzureMessageConverter<Eve
         EventHubsHeaders.ENQUEUED_TIME,
         EventHubsHeaders.OFFSET,
         EventHubsHeaders.SEQUENCE_NUMBER)));
+
+    private final ObjectMapper objectMapper;
+
+    /**
+     * Construct the message converter with default {@code ObjectMapper}.
+     */
+    public EventHubsMessageConverter() {
+        this.objectMapper = OBJECT_MAPPER;
+    }
+
+    /**
+     * Construct the message converter with customized {@code ObjectMapper}.
+     * @param objectMapper the object mapper.
+     */
+    public EventHubsMessageConverter(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
+
+    @Override
+    protected ObjectMapper getObjectMapper() {
+        return objectMapper;
+    }
 
     @Override
     protected byte[] getPayload(EventData azureMessage) {

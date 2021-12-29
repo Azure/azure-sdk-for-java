@@ -6,6 +6,7 @@ package com.azure.spring.servicebus.core.processor;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
+import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.service.servicebus.factory.ServiceBusProcessorClientBuilderFactory;
 import com.azure.spring.service.servicebus.factory.ServiceBusSessionProcessorClientBuilderFactory;
 import com.azure.spring.service.servicebus.processor.MessageProcessingListener;
@@ -17,8 +18,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.lang.Nullable;
-import reactor.util.function.Tuple2;
-import reactor.util.function.Tuples;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,13 +40,11 @@ import java.util.function.Consumer;
 public final class DefaultServiceBusNamespaceProcessorFactory implements ServiceBusProcessorFactory, DisposableBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultServiceBusNamespaceProcessorFactory.class);
-    private final Map<Tuple2<String, String>, ServiceBusProcessorClient> processorMap = new ConcurrentHashMap<>();
+    private final Map<ConsumerIdentifier, ServiceBusProcessorClient> processorMap = new ConcurrentHashMap<>();
     private final List<Listener> listeners = new ArrayList<>();
     private final NamespaceProperties namespaceProperties;
-    private final PropertiesSupplier<Tuple2<String, String>, ProcessorProperties> propertiesSupplier;
+    private final PropertiesSupplier<ConsumerIdentifier, ProcessorProperties> propertiesSupplier;
     private final ProcessorPropertiesParentMerger propertiesMerger = new ProcessorPropertiesParentMerger();
-    public static final String INVALID_SUBSCRIPTION =
-        DefaultServiceBusNamespaceProcessorFactory.class.getSimpleName() + "INVALID_SUBSCRIPTION";
 
     /**
      * Construct a factory with the provided namespace level properties.
@@ -63,16 +60,15 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
      * @param supplier the {@link PropertiesSupplier} to supply {@link ProcessorProperties} for each queue/topic entity.
      */
     public DefaultServiceBusNamespaceProcessorFactory(NamespaceProperties namespaceProperties,
-                                                      PropertiesSupplier<Tuple2<String, String>,
-                                                          ProcessorProperties> supplier) {
+                                                      PropertiesSupplier<ConsumerIdentifier, ProcessorProperties> supplier) {
         this.namespaceProperties = namespaceProperties;
         this.propertiesSupplier = supplier == null ? key -> null : supplier;
     }
 
-    private void close(Map<Tuple2<String, String>, ServiceBusProcessorClient> map, Consumer<ServiceBusProcessorClient> close) {
+    private void close(Map<ConsumerIdentifier, ServiceBusProcessorClient> map, Consumer<ServiceBusProcessorClient> close) {
         map.forEach((t, p) -> {
             try {
-                listeners.forEach(l -> l.processorRemoved(t.getT1(), t.getT2(), p));
+                listeners.forEach(l -> l.processorRemoved(t.getDestination(), t.getGroup(), p));
                 close.accept(p);
             } catch (Exception ex) {
                 LOGGER.warn("Failed to clean service bus queue client factory", ex);
@@ -88,33 +84,33 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
     }
 
     @Override
-    public ServiceBusProcessorClient createProcessor(String queue, MessageProcessingListener messageProcessorListener) {
-        return doCreateProcessor(queue, INVALID_SUBSCRIPTION, messageProcessorListener,
-            this.propertiesSupplier.getProperties(Tuples.of(queue, INVALID_SUBSCRIPTION)));
+    public ServiceBusProcessorClient createProcessor(String queue, MessageProcessingListener messageProcessingListener) {
+        return doCreateProcessor(queue, null, messageProcessingListener,
+            this.propertiesSupplier.getProperties(new ConsumerIdentifier(queue)));
     }
 
     @Override
     public ServiceBusProcessorClient createProcessor(String topic,
                                                      String subscription,
-                                                     MessageProcessingListener messageProcessorListener) {
-        return doCreateProcessor(topic, subscription, messageProcessorListener,
-            this.propertiesSupplier.getProperties(Tuples.of(topic, subscription)));
+                                                     MessageProcessingListener messageProcessingListener) {
+        return doCreateProcessor(topic, subscription, messageProcessingListener,
+            this.propertiesSupplier.getProperties(new ConsumerIdentifier(topic, subscription)));
     }
 
     private ServiceBusProcessorClient doCreateProcessor(String name, String subscription,
                                                         MessageProcessingListener listener,
                                                         @Nullable ProcessorProperties properties) {
-        Tuple2<String, String> key = Tuples.of(name, subscription);
+        ConsumerIdentifier key = new ConsumerIdentifier(name, subscription);
 
         return processorMap.computeIfAbsent(key, k -> {
             ProcessorProperties processorProperties = propertiesMerger.mergeParent(properties, this.namespaceProperties);
             processorProperties.setAutoComplete(false);
-            processorProperties.setEntityName(k.getT1());
-            if (INVALID_SUBSCRIPTION.equals(k.getT2())) {
+            processorProperties.setEntityName(k.getDestination());
+            if (!k.hasGroup()) {
                 processorProperties.setEntityType(ServiceBusEntityType.QUEUE);
             } else {
                 processorProperties.setEntityType(ServiceBusEntityType.TOPIC);
-                processorProperties.setSubscriptionName(k.getT2());
+                processorProperties.setSubscriptionName(k.getGroup());
             }
 
             ServiceBusProcessorClient client;
@@ -131,8 +127,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
                 client = factory.build().buildProcessorClient();
             }
 
-            this.listeners.forEach(l -> l.processorAdded(k.getT1(), INVALID_SUBSCRIPTION.equals(k.getT2()) ? null
-                : k.getT2(), client));
+            this.listeners.forEach(l -> l.processorAdded(k.getDestination(), k.getGroup(), client));
             return client;
         });
     }

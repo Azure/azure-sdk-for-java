@@ -8,6 +8,7 @@ import com.azure.spring.storage.queue.core.DefaultStorageQueueClientFactory;
 import com.azure.spring.storage.queue.core.StorageQueueClientFactory;
 import com.azure.spring.storage.queue.core.StorageQueueOperation;
 import com.azure.spring.storage.queue.core.StorageQueueTemplate;
+import com.azure.spring.storage.queue.support.converter.StorageQueueMessageConverter;
 import com.azure.storage.queue.QueueServiceAsyncClient;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -35,7 +36,16 @@ public class AzureStorageQueueOperationAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public StorageQueueOperation storageQueueOperation(StorageQueueClientFactory storageQueueClientFactory) {
-        return new StorageQueueTemplate(storageQueueClientFactory);
+    public StorageQueueOperation storageQueueOperation(StorageQueueClientFactory storageQueueClientFactory,
+                                                       StorageQueueMessageConverter messageConverter) {
+        StorageQueueTemplate storageQueueTemplate = new StorageQueueTemplate(storageQueueClientFactory);
+        storageQueueTemplate.setMessageConverter(messageConverter);
+        return storageQueueTemplate;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public StorageQueueMessageConverter messageConverter() {
+        return new StorageQueueMessageConverter();
     }
 }

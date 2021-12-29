@@ -5,6 +5,7 @@ package com.azure.spring.storage.queue.support.converter;
 
 import com.azure.spring.messaging.converter.AbstractAzureMessageConverter;
 import com.azure.storage.queue.models.QueueMessageItem;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.nio.charset.StandardCharsets;
 
@@ -12,6 +13,21 @@ import java.nio.charset.StandardCharsets;
  * A converter to turn a {@link org.springframework.messaging.Message} to {@link QueueMessageItem} and vice versa.
  */
 public class StorageQueueMessageConverter extends AbstractAzureMessageConverter<QueueMessageItem, QueueMessageItem> {
+
+    private final ObjectMapper objectMapper;
+
+    public StorageQueueMessageConverter() {
+        this.objectMapper = OBJECT_MAPPER;
+    }
+
+    public StorageQueueMessageConverter(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
+
+    @Override
+    protected ObjectMapper getObjectMapper() {
+        return this.objectMapper;
+    }
 
     @Override
     protected byte[] getPayload(QueueMessageItem azureMessage) {

@@ -5,7 +5,6 @@ package com.azure.spring.integration.storage.queue;
 
 import com.azure.spring.integration.storage.queue.inbound.StorageQueueMessageSource;
 import com.azure.spring.storage.queue.core.StorageQueueOperation;
-import com.azure.spring.storage.queue.core.StorageQueueRuntimeException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +21,6 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
@@ -63,13 +61,6 @@ public class StorageQueueMessageSourceTest {
     public void testDoReceiveWhenHaveNoMessage() {
         when(this.mockOperation.receiveAsync(eq(destination))).thenReturn(Mono.empty());
         assertNull(messageSource.doReceive());
-    }
-
-    @Test
-    public void testReceiveFailure() {
-        when(this.mockOperation.receiveAsync(eq(destination))).thenReturn(Mono.error(
-            new StorageQueueRuntimeException("Failed to receive message.")));
-        assertThrows(StorageQueueRuntimeException.class, () -> messageSource.doReceive());
     }
 
     @Test
