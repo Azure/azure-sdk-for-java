@@ -470,7 +470,7 @@ stages:
 #              cd ./sdk/spring && mvn dependency:tree
 #            displayName: 'maven_dependency'
   - stage: New_Spring_Boot_Version_Dependency_tree
-    dependson:
+    dependsOn:
       - Build_for_New_Spring_Boot_Version
     jobs:
       - job: 'maven_dependency'
