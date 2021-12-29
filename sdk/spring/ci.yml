@@ -466,9 +466,13 @@ stages:
         steps:
           - script: |
               mvn clean install -f sdk/spring/pom.xml -P dev
+            displayName: 'maven_install'
           - script: |
-              cd ./sdk/spring && mvn -o dependency:tree
+              cd ./sdk/spring && mvn dependency:tree
             displayName: 'maven_dependency'
+          - script: |
+              cd ./sdk/spring && cat tree.txt
+            displayName: 'dependency_output'
 #  - stage: New_Spring_Boot_Version_Dependency_tree
 #    dependsOn:
 #      - Build_for_New_Spring_Boot_Version
@@ -541,7 +545,7 @@ stages:
               mvn clean install -f sdk/spring/pom.xml -P dev
             displayName: 'maven_install'
           - script: |
-              cd ./sdk/spring && mvn -o dependency:tree>tree.txt
+              cd ./sdk/spring && mvn dependency:tree>tree.txt
             displayName: 'maven_dependency'
           - script: |
               cd ./sdk/spring && cat tree.txt
