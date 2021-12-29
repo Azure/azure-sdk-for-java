@@ -467,9 +467,9 @@ stages:
       - job: 'maven_dependency'
         steps:
           - template: ../../eng/common/pipelines/templates/steps/sparse-checkout.yml
-              parameters:
-                Paths:
-                  - 'sdk/${{ parameters.ServiceDirectory }}'
+            parameters:
+              Paths:
+                - 'sdk/${{ parameters.ServiceDirectory }}'
           - template: ../../eng/pipelines/templates/steps/generate-project-list.yml
             parameters:
               Artifacts: ${{ parameters.Artifacts }}
