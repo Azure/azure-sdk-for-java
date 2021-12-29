@@ -424,6 +424,7 @@ stages:
 
   - stage: Build_for_New_Spring_Boot_Version
     jobs:
+      - job: 'build'
       - template: /eng/pipelines/templates/jobs/ci.yml
         parameters:
           PublishArtifact: false
@@ -467,13 +468,15 @@ stages:
 #          - script: |
 #              mvn clean install -f sdk/spring/pom.xml -P dev
 #          - script: |
-#              cd ./sdk/spring && mvn dependency:tree
+#              cd ./sdk/spring && mvn -e dependency:tree
 #            displayName: 'maven_dependency'
-  - stage: New_Spring_Boot_Version_Dependency_tree
-    dependsOn:
-      - Build_for_New_Spring_Boot_Version
-    jobs:
+#  - stage: New_Spring_Boot_Version_Dependency_tree
+#    dependsOn:
+#      - Build_for_New_Spring_Boot_Version
+#    jobs:
       - job: 'maven_dependency'
+        dependsOn:
+          - 'build'
         steps:
           - script: |
               cd ./sdk/spring && mvn dependency:tree
