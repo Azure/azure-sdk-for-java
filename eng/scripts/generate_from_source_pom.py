@@ -22,11 +22,31 @@ from datetime import timedelta
 import os
 import time
 import json
+from typing import Dict, Iterable, List, Set
 import xml.etree.ElementTree as ET
+
+class Project:
+    def __init__(self, identifier: str, module_path: str, parent_pom: str):
+        self.identifier = identifier
+        self.module_path = module_path
+        self.parent_pom = parent_pom
+        self.dependencies: List[str] = []
+        self.dependents: List[str] = []
+
+    def add_dependency(self, dependency: str):
+        if dependency not in self.dependencies:
+            self.dependencies.append(dependency)
+
+    def add_dependent(self, dependent: str):
+        if dependent not in self.dependents:
+            self.dependents.append(dependent)
 
 # azure-client-sdk-parent, azure-perf-test-parent, spring-boot-starter-parent, and azure-spring-boot-test-parent are
 # valid parent POMs for Track 2 libraries.
-valid_parents = ['azure-client-sdk-parent', 'azure-perf-test-parent', 'spring-boot-starter-parent', 'azure-spring-boot-test-parent']
+valid_parents = ['com.azure:azure-client-sdk-parent', 'com.azure:azure-perf-test-parent', 'org.springframework.boot:spring-boot-starter-parent', 'com.azure.spring:azure-spring-boot-test-parent']
+
+# List of parent POMs that should be retained as projects to create a full from source POM.
+parent_pom_identifiers = ['com.azure:azure-sdk-parent', 'com.azure:azure-client-sdk-parent', 'com.azure:azure-perf-test-parent', 'com.azure.spring:azure-spring-boot-test-parent']
 
 # From this file get to the root path of the repo.
 root_path = os.path.normpath(os.path.abspath(__file__) + '/../../../')
@@ -63,45 +83,33 @@ def create_from_source_pom(project_list: str, set_pipeline_variable: str):
     # Get the artifact identifiers from client_versions.txt to act as our source of truth.
     artifact_identifier_to_source_version = load_client_artifact_identifiers()
 
-    project_dependencies_mapping, dependency_to_project_mapping, project_to_pom_path_mapping = create_dependency_and_path_mappings(project_list_identifiers, artifact_identifier_to_source_version)
+    projects = create_projects(project_list_identifiers, artifact_identifier_to_source_version)
 
-    dependent_modules = []
+    dependent_modules: Set[str] = set()
 
     # Resolve all projects, including transitively, that are dependent on the projects in the project list.
     for project_identifier in project_list_identifiers:
-        if not project_identifier in project_to_pom_path_mapping:
-            continue
+        dependent_modules = resolve_dependent_project(project_identifier, dependent_modules, projects)
 
-        dependent_modules = resolve_dependent_project(project_identifier, dependent_modules, dependency_to_project_mapping)
-
-    # Distinct the dependent modules, even though this should be guarded, to reduce downstream processing requirements.
-    dependent_modules = list(set(dependent_modules))
-
-    # Sort for making debugging easier (since it is cheap)
-    dependent_modules.sort()
-
-    dependency_modules = []
+    dependency_modules: Set[str] = set()
 
     # Resolve all dependencies of the projects in the project list and of the dependent modules.
-    for project_identifier in project_list_identifiers + dependent_modules:
-        dependency_modules = resolve_project_dependencies(project_identifier, dependency_modules, project_dependencies_mapping)
+    for project_identifier in project_list_identifiers:
+        dependency_modules = resolve_project_dependencies(project_identifier, dependency_modules, projects)
+    for project_identifier in dependent_modules:
+        dependency_modules = resolve_project_dependencies(project_identifier, dependency_modules, projects)
 
-    modules = []
+    modules: Set[str] = set()
+
     # Finally map the project identifiers to relative module paths.
-    for project_identifier in project_list_identifiers + dependent_modules + dependency_modules:
-        if project_identifier in project_to_pom_path_mapping:
-            modules.append(project_to_pom_path_mapping[project_identifier])
-
-    # Distinct the modules list.
-    modules = list(set(modules))
-
-    # Sort the modules list for easier reading.
-    modules.sort()
+    add_module_paths(modules, project_list_identifiers, projects)
+    add_module_paths(modules, dependent_modules, projects)
+    add_module_paths(modules, dependency_modules, projects)
 
     with open(file=client_from_source_pom_path, mode='w') as fromSourcePom:
         fromSourcePom.write(pom_file_start)
 
-        for module in modules:
+        for module in sorted(modules):
             fromSourcePom.write('    <module>{}</module>\n'.format(module))
 
         fromSourcePom.write(pom_file_end)
@@ -110,8 +118,8 @@ def create_from_source_pom(project_list: str, set_pipeline_variable: str):
         print('##vso[task.setvariable variable={};]{}'.format(set_pipeline_variable, json.dumps(modules)))
 
 # Function that loads and parses client_versions.txt into a artifact identifier - source version mapping.
-def load_client_artifact_identifiers():
-    artifact_identifiers = {}
+def load_client_artifact_identifiers() -> Dict[str, str]:
+    artifact_identifiers: Dict[str, str] = {}
     with open(file=client_versions_path, mode='r') as f:
         for line in f:
             stripped_line = line.strip()
@@ -128,11 +136,10 @@ def load_client_artifact_identifiers():
 
     return artifact_identifiers
 
-# Function which creates project dependencies mapping, dependencies to dependent projects mapping, and project to module relative path mapping.
-def create_dependency_and_path_mappings(project_list_identifiers: list, artifact_identifier_to_source_version: dict):
-    project_dependencies_mapping = {}
-    dependency_mapping = {}
-    module_path_mapping = {}
+# Function that creates the Projects within the repository.
+# Projects contain a Maven identifier, module path, parent POM, its dependency Maven identifiers, and Maven identifiers for projects dependent on it.
+def create_projects(project_list_identifiers: list, artifact_identifier_to_source_version: dict) -> Dict[str, Project]:
+    projects: Dict[str, Project] = {}
 
     for root, _, files in os.walk(root_path):
         # Ignore sdk/resourcemanagerhybrid
@@ -144,43 +151,43 @@ def create_dependency_and_path_mappings(project_list_identifiers: list, artifact
 
             # Only parse files that are pom.xml files.
             if (file_name.startswith('pom') and file_name.endswith('.xml')):
-                add_project_to_dependency_and_module_mappings(file_path, project_dependencies_mapping,
-                                                              project_list_identifiers,
-                                                              artifact_identifier_to_source_version, dependency_mapping,
-                                                              module_path_mapping)
+                project = create_project_for_pom(file_path, project_list_identifiers, artifact_identifier_to_source_version)
+                if project is not None:
+                    projects[project.identifier] = project
 
-    return project_dependencies_mapping, dependency_mapping, module_path_mapping
 
-# Function that constructs the project dependencies map and adds to dependency to project map and project to module relative path map for a track 2 project.
-def add_project_to_dependency_and_module_mappings(file_path: str, project_dependencies_mapping: dict,
-                                                  project_list_identifiers: list,
-                                                  artifact_identifier_to_source_version: dict,
-                                                  dependency_mapping: dict, module_path_mapping: dict):
-    if 'eng' in file_path.split(os.sep):
+    # Once all the projects have been loaded inject their dependents by inversion the dependencies.
+    for project_identifier in projects:
+        project = projects[project_identifier]
+        for dependency in project.dependencies:
+            projects[dependency].add_dependent(project.identifier)
+
+    return projects
+
+def create_project_for_pom(pom_path: str, project_list_identifiers: list, artifact_identifier_to_source_version: dict):
+    if 'eng' in pom_path.split(os.sep):
         return
 
-    tree = ET.parse(file_path)
+    tree = ET.parse(pom_path)
     tree_root = tree.getroot()
 
     project_identifier = create_artifact_identifier(tree_root)
+    module_path = os.path.dirname(pom_path).replace(root_path, '').replace('\\', '/')
+    parent_pom = get_parent_pom(tree_root)
+
+    # If this is one of the parent POMs, retain it as a project.
+    if project_identifier in parent_pom_identifiers:
+        return Project(project_identifier, module_path, parent_pom)
 
     # If the project isn't a track 2 POM skip it and not one of the project list identifiers.
-    if not project_identifier in project_list_identifiers and not is_track_two_pom(tree_root):
+    if not project_identifier in project_list_identifiers and not parent_pom in valid_parents:
         return
 
-    module_path_mapping[project_identifier] = os.path.dirname(file_path).replace(root_path, '').replace('\\', '/')
+    project = Project(project_identifier, module_path, parent_pom)
 
     dependencies = {child:parent for parent in tree_root.iter() for child in parent if child.tag == maven_xml_namespace + 'dependency'}
 
-    # If the project doesn't have a dependencies XML element skip it.
-    if dependencies is None:
-        return
-
-    if not project_identifier in project_dependencies_mapping:
-        project_dependencies_mapping[project_identifier] = []
-
     for dependency in dependencies:
-
         # not all the <dependency> are maven dependencies, ignore them
         if dependencies[dependency].tag == maven_xml_namespace + 'dependenciesToScan':
             continue
@@ -194,39 +201,40 @@ def add_project_to_dependency_and_module_mappings(file_path: str, project_depend
         if dependency_version != artifact_identifier_to_source_version[dependency_identifier]:
             continue
 
-        if not dependency_identifier in dependency_mapping:
-            dependency_mapping[dependency_identifier] = []
-
-        project_dependencies_mapping[project_identifier].append(dependency_identifier)
-        dependency_mapping[dependency_identifier].append(project_identifier)
+        project.add_dependency(dependency_identifier)
+    
+    return project
 
 # Function which resolves the dependent projects of the project.
-def resolve_dependent_project(pom_identifier: str, dependent_modules: list, dependency_to_project_mapping: dict):
-    if pom_identifier in dependency_to_project_mapping:
-        for dependency in dependency_to_project_mapping[pom_identifier]:
+def resolve_dependent_project(pom_identifier: str, dependent_modules: Set[str], projects: Dict[str, Project]):
+    if pom_identifier in projects:
+        for dependency in projects[pom_identifier].dependents:
             # Only continue if the project's dependents haven't already been resolved.
             if not dependency in dependent_modules:
-                dependent_modules.append(dependency)
-                dependent_modules = resolve_dependent_project(dependency, dependent_modules, dependency_to_project_mapping)
+                dependent_modules.add(dependency)
+                dependent_modules = resolve_dependent_project(dependency, dependent_modules, projects)
 
     return dependent_modules
 
 # Function which resolves the dependencies of the project.
-def resolve_project_dependencies(pom_identifier: str, dependency_modules: list, project_dependencies_mapping: dict):
-    if pom_identifier in project_dependencies_mapping:
-        for dependency in project_dependencies_mapping[pom_identifier]:
+def resolve_project_dependencies(pom_identifier: str, dependency_modules: Set[str], projects: Dict[str, Project]):
+    if pom_identifier in projects:
+        for dependency in projects[pom_identifier].dependencies:
             # Only continue if the project's dependencies haven't already been resolved.
             if not dependency in dependency_modules:
-                dependency_modules.append(dependency)
-                dependency_modules = resolve_project_dependencies(dependency, dependency_modules, project_dependencies_mapping)
+                dependency_modules.add(dependency)
+                dependency_modules = resolve_project_dependencies(dependency, dependency_modules, projects)
 
     return dependency_modules
 
-# Determines if the passed POM XML is a track 2 library.
-def is_track_two_pom(tree_root: ET.Element):
+# Get parent POM.
+def get_parent_pom(tree_root: ET.Element):
     parent_node = element_find(tree_root, 'parent')
 
-    return not parent_node is None and element_find(parent_node, 'artifactId').text in valid_parents
+    if parent_node is None:
+        return None
+    
+    return create_artifact_identifier(parent_node)
 
 # Creates an artifacts identifier.
 def create_artifact_identifier(element: ET.Element):
@@ -252,11 +260,21 @@ def get_dependency_version(element: ET.Element):
 def element_find(element: ET.Element, path: str):
     return element.find(maven_xml_namespace + path)
 
+def add_module_paths(module_paths: Set[str], project_identifiers: Iterable[str], projects: Dict[str, Project]):
+    for project_identifier in project_identifiers:
+        project = projects[project_identifier]
+        module_paths.add(project.module_path)
+
+        while project.parent_pom is not None:
+            project = projects[project.parent_pom]
+            module_paths.add(project.module_path)
+
 def main():
     parser = argparse.ArgumentParser(description='Generated an aggregate POM for a From Source run.')
     parser.add_argument('--project-list', '--pl', type=str)
     parser.add_argument('--set-pipeline-variable', type=str)
     args = parser.parse_args()
+    args.project_list='com.azure:azure-sdk-template,com.azure:azure-template-perf'
     if args.project_list == None:
         raise ValueError('Missing project list.')
     start_time = time.time()
