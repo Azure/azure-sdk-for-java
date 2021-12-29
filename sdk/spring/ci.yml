@@ -543,7 +543,7 @@ stages:
           - script: |
               cd ./sdk/spring && mvn -o dependency:tree>tree.txt
             displayName: 'maven_dependency'
-          - scripts: |
+          - script: |
               cd ./sdk/spring && cat tree.txt
             displayName: 'dependency_output'
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
