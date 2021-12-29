@@ -473,17 +473,17 @@ stages:
 #            parameters:
 #              Paths:
 #                - 'sdk/${{ parameters.ServiceDirectory }}'
-          - task: Maven@3
-            displayName: 'Build and Install'
-            inputs:
-              mavenPomFile: pom.xml
-              goals: 'install'
-              options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
-              mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-              javaHomeOption: 'JDKVersion'
-              jdkVersionOption: $(JavaBuildVersion)
-              jdkArchitectureOption: 'x64'
-              publishJUnitResults: false
+#          - task: Maven@3
+#            displayName: 'Build and Install'
+#            inputs:
+#              mavenPomFile: pom.xml
+#              goals: 'install'
+#              options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
+#              mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+#              javaHomeOption: 'JDKVersion'
+#              jdkVersionOption: $(JavaBuildVersion)
+#              jdkArchitectureOption: 'x64'
+#              publishJUnitResults: false
           - template: ../../eng/pipelines/templates/steps/generate-project-list.yml
             parameters:
               Artifacts: ${{ parameters.Artifacts }}
@@ -491,7 +491,7 @@ stages:
               JobType: 'maven_dependency'
               SDKType: ${{parameters.SDKType}}
           - script: |
-              mvn --batch-mode --fail-at-end -Dmaven.wagon.httpconnectionManager.ttlSeconds=60 -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true -pl $(ProjectList) -am install
+              /usr/bin/mvn -f /mnt/vss/_work/1/s/pom.xml --batch-mode --fail-at-end -Dmaven.wagon.httpconnectionManager.ttlSeconds=60 -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true -pl $(ProjectList) -am install
             displayName: 'maven_install'
           - script: |
               cd ./sdk/spring && mvn dependency:tree>tree.txt
