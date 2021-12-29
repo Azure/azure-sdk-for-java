@@ -462,24 +462,24 @@ stages:
             - script: |
                 python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b 2.6.1 -c 2021.0.0
               displayName: 'insert dependency management'
-#      - job: 'maven_dependency'
-#        steps:
-#          - script: |
-#              mvn clean install -f sdk/spring/pom.xml -P dev
-#          - script: |
-#              cd ./sdk/spring && mvn -e dependency:tree
-#            displayName: 'maven_dependency'
+      - job: 'maven_dependency'
+        steps:
+          - script: |
+              mvn clean install -f sdk/spring/pom.xml -P dev
+          - script: |
+              cd ./sdk/spring && mvn -o dependency:tree
+            displayName: 'maven_dependency'
 #  - stage: New_Spring_Boot_Version_Dependency_tree
 #    dependsOn:
 #      - Build_for_New_Spring_Boot_Version
 #    jobs:
-      - job: 'maven_dependency'
-        dependsOn:
-          - 'Build'
-        steps:
-          - script: |
-              cd ./sdk/spring && mvn -o dependency:tree
-            displayName: 'maven_dependency'
+#      - job: 'maven_dependency'
+#        dependsOn:
+#          - 'Build'
+#        steps:
+#          - script: |
+#              cd ./sdk/spring && mvn -o dependency:tree
+#            displayName: 'maven_dependency'
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build_for_New_Spring_Boot_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
       - template: archetype-java-release.yml
@@ -539,9 +539,13 @@ stages:
         steps:
           - script: |
               mvn clean install -f sdk/spring/pom.xml -P dev
+            displayName: 'maven_install'
           - script: |
-              cd ./sdk/spring && mvn -o dependency:tree
+              cd ./sdk/spring && mvn -o dependency:tree>tree.txt
             displayName: 'maven_dependency'
+          - scripts: |
+              cd ./sdk/spring && cat tree.txt
+            displayName: 'dependency_output'
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build_for_Last_Spring_Boot_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
       - template: archetype-java-release.yml
