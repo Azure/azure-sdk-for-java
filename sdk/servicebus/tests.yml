@@ -8,7 +8,6 @@ stages:
         - name: azure-messaging-servicebus
           groupId: com.azure
           safeName: azuremessagingservicebus
-      TimeoutInMinutes: 120
       SupportedClouds: 'Public,UsGov,China'
       EnvVars:
         AZURE_LOG_LEVEL: 2
