@@ -454,7 +454,7 @@ stages:
               - script: |
                   python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b 2.6.1 -c 2021.0.0
                 displayName: 'insert dependency management'
-      - job: 'maven_dependency_${parameters.SpringBootVersion}'
+      - job: 'maven_dependency'
         variables:
           - template: ../../eng/pipelines/templates/variables/globals.yml
         pool:
