@@ -472,7 +472,15 @@ stages:
           name: azsdk-pool-mms-ubuntu-2004-general
           vmImage: MMSUbuntu20.04
         steps:
-          - checkout: none
+          - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+            parameters:
+              Paths:
+                - 'sdk/${{ parameters.ServiceDirectory }}'
+                - '**/*.xml'
+                - '**/*.md'
+                - '.vscode/cspell.json'
+                - '!sdk/**/test-recordings'
+                - '!sdk/**/session-records'
           - template: ../../eng/pipelines/templates/steps/generate-project-list.yml
             parameters:
               Artifacts: ${{ parameters.Artifacts }}
