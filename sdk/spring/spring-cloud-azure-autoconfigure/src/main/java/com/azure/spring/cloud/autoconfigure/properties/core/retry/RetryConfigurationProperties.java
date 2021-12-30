@@ -11,7 +11,7 @@ import java.time.Duration;
 /**
  * Http based client related retry properties.
  */
-public class RetryCP implements RetryAware.Retry {
+public class RetryConfigurationProperties implements RetryAware.Retry {
 
     @NestedConfigurationProperty
     private final Backoff backoff = new Backoff();

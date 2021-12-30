@@ -12,7 +12,7 @@ import java.util.List;
 /**
  *
  */
-public class ClientCP implements ClientAware.Client {
+public class ClientConfigurationProperties implements ClientAware.Client {
 
     /**
      * Represents current application and is used for telemetry/monitoring purposes.

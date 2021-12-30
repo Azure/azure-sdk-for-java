@@ -13,7 +13,7 @@ import java.time.temporal.ChronoUnit;
 /**
  *
  */
-public class StorageRetryCP implements StorageRetry {
+public class StorageRetryConfigurationProperties implements StorageRetry {
 
     /**
      * The maximum number of attempts
@@ -23,7 +23,14 @@ public class StorageRetryCP implements StorageRetry {
      * How long to wait until a timeout
      */
     private Duration timeout;
+    /**
+     * HTTP header, such as Retry-After or x-ms-retry-after-ms, to lookup for the retry delay.
+     * If the value is null, will calculate the delay using backoff and ignore the delay provided in response header.
+     */
     private String retryAfterHeader;
+    /**
+     * Time unit to use when applying the retry delay.
+     */
     private ChronoUnit retryAfterTimeUnit;
     private String secondaryHost;
 

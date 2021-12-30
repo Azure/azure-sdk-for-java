@@ -9,7 +9,7 @@ import com.azure.spring.core.aware.ClientAware;
 /**
  *
  */
-public class AmqpClientCP extends ClientCP implements ClientAware.AmqpClient {
+public class AmqpClientConfigurationProperties extends ClientConfigurationProperties implements ClientAware.AmqpClient {
 
     /**
      * Transport type for AMQP-based client.

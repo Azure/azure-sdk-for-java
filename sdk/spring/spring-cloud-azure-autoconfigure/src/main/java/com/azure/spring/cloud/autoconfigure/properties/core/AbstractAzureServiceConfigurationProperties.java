@@ -3,8 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.properties.core;
 
-import com.azure.spring.cloud.autoconfigure.properties.core.authentication.TokenCredentialCP;
-import com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileCP;
+import com.azure.spring.cloud.autoconfigure.properties.core.authentication.TokenCredentialConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.resource.AzureResourceMetadata;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
@@ -12,7 +12,7 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 /**
  * Configuration properties base class for all Azure Service clients.
  */
-public abstract class AbstractAzureServiceCP implements AzureProperties {
+public abstract class AbstractAzureServiceConfigurationProperties implements AzureProperties {
 
     /**
      * Whether an Azure Service is enabled.
@@ -20,10 +20,10 @@ public abstract class AbstractAzureServiceCP implements AzureProperties {
     protected boolean enabled = true;
 
     @NestedConfigurationProperty
-    protected final TokenCredentialCP credential = new TokenCredentialCP();
+    protected final TokenCredentialConfigurationProperties credential = new TokenCredentialConfigurationProperties();
 
     @NestedConfigurationProperty
-    protected final AzureProfileCP profile = new AzureProfileCP();
+    protected final AzureProfileConfigurationProperties profile = new AzureProfileConfigurationProperties();
 
     @NestedConfigurationProperty
     protected final AzureResourceMetadata resource = new AzureResourceMetadata();
@@ -37,12 +37,12 @@ public abstract class AbstractAzureServiceCP implements AzureProperties {
     }
 
     @Override
-    public TokenCredentialCP getCredential() {
+    public TokenCredentialConfigurationProperties getCredential() {
         return credential;
     }
 
     @Override
-    public AzureProfileCP getProfile() {
+    public AzureProfileConfigurationProperties getProfile() {
         return profile;
     }
 

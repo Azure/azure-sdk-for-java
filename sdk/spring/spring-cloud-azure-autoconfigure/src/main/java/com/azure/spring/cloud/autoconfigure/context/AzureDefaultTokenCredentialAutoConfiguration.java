@@ -7,7 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
-import com.azure.spring.cloud.autoconfigure.properties.core.AbstractAzureHttpCP;
+import com.azure.spring.cloud.autoconfigure.properties.core.AbstractAzureHttpConfigurationProperties;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.core.factory.AbstractAzureServiceClientBuilderFactory;
 import com.azure.spring.core.factory.credential.AbstractAzureCredentialBuilderFactory;
@@ -88,7 +88,7 @@ public class AzureDefaultTokenCredentialAutoConfiguration extends AzureServiceCo
         }
     }
 
-    static class IdentityClientProperties extends AbstractAzureHttpCP {
+    static class IdentityClientProperties extends AbstractAzureHttpConfigurationProperties {
 
     }
 }

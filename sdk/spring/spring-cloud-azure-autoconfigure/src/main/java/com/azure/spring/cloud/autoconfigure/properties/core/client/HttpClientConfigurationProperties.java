@@ -11,7 +11,7 @@ import java.time.Duration;
 /**
  *
  */
-public class HttpClientCP extends ClientCP implements ClientAware.HttpClient {
+public class HttpClientConfigurationProperties extends ClientConfigurationProperties implements ClientAware.HttpClient {
 
     /**
      * Amount of time each request being sent over the wire.
@@ -39,7 +39,7 @@ public class HttpClientCP extends ClientCP implements ClientAware.HttpClient {
     private Duration connectionIdleTimeout;
 
     @NestedConfigurationProperty
-    private final HttpLoggingCP logging = new HttpLoggingCP();
+    private final HttpLoggingConfigurationProperties logging = new HttpLoggingConfigurationProperties();
 
     @Override
     public Duration getWriteTimeout() {
@@ -93,7 +93,7 @@ public class HttpClientCP extends ClientCP implements ClientAware.HttpClient {
     }
 
     @Override
-    public HttpLoggingCP getLogging() {
+    public HttpLoggingConfigurationProperties getLogging() {
         return logging;
     }
 
