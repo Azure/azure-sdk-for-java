@@ -461,15 +461,7 @@ stages:
           name: azsdk-pool-mms-ubuntu-2004-general
           vmImage: MMSUbuntu20.04
         steps:
-          - script: |
-              pip install in-place & pip install termcolor
-            displayName: 'python module install'
-          - script: |
-              python ./sdk/spring/scripts/ci_update_versions.py --sbv ${{parameters.SpringBootVersion}}
-            displayName: 'update spring boot versions'
-          - script: |
-              python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b ${{parameters.SpringBootVersion}} -c 2021.0.0
-            displayName: 'insert dependency management'
+
           - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
             parameters:
               Paths:
@@ -497,6 +489,15 @@ stages:
               Paths: $(CheckoutDirectories)
               SkipDefaultCheckout: true
           - template: ../../eng/pipelines/templates/steps/install-reporting-tools.yml
+          - script: |
+              pip install in-place & pip install termcolor
+            displayName: 'python module install'
+          - script: |
+              python ./sdk/spring/scripts/ci_update_versions.py --sbv ${{parameters.SpringBootVersion}}
+            displayName: 'update spring boot versions'
+          - script: |
+              python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b ${{parameters.SpringBootVersion}} -c 2021.0.0
+            displayName: 'insert dependency management'
           - script: |
               mvn -f sdk/spring/pom.xml -P dev --batch-mode --fail-at-end $(WagonOptions) -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true -pl $(ProjectList) -am install
             displayName: 'maven_install'
@@ -557,15 +558,7 @@ stages:
           name: azsdk-pool-mms-ubuntu-2004-general
           vmImage: MMSUbuntu20.04
         steps:
-          - script: |
-              pip install in-place & pip install termcolor
-            displayName: 'python module install'
-          - script: |
-              python ./sdk/spring/scripts/ci_update_versions.py --sbv 2.5.7
-            displayName: 'update spring boot versions'
-          - script: |
-              python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b 2.5.7 -c 2020.0.4
-            displayName: 'insert dependency management'
+
           - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
             parameters:
               Paths:
@@ -593,6 +586,15 @@ stages:
               Paths: $(CheckoutDirectories)
               SkipDefaultCheckout: true
           - template: ../../eng/pipelines/templates/steps/install-reporting-tools.yml
+          - script: |
+              pip install in-place & pip install termcolor
+            displayName: 'python module install'
+          - script: |
+              python ./sdk/spring/scripts/ci_update_versions.py --sbv 2.5.7
+            displayName: 'update spring boot versions'
+          - script: |
+              python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b 2.5.7 -c 2020.0.4
+            displayName: 'insert dependency management'
           - script: |
               mvn -f sdk/spring/pom.xml -P dev --batch-mode --fail-at-end -Dmaven.wagon.httpconnectionManager.ttlSeconds=60 -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true -pl $(ProjectList) -am install
             displayName: 'maven_install'
