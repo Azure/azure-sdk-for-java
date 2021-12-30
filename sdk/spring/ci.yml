@@ -424,46 +424,46 @@ stages:
 
   - stage: Build_for_New_Spring_Boot_Version
     jobs:
-      - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
-        parameters:
-          JobTemplatePath: /eng/pipelines/templates/jobs/ci.tests.yml
-          CloudConfig:
-            Cloud: Public
-          MatrixConfigs:
-            - ${{ each config in parameters.MatrixConfigs }}:
-                - ${{ config }}
-            - ${{ each config in parameters.AdditionalMatrixConfigs }}:
-                - ${{ config }}
-          MatrixFilters:
-            - ${{ each filter in parameters.MatrixFilters }}:
-                - ${{ filter }}
-            # Skip TestFromSource jobs for SDKType data
-            - ${{ if eq(parameters.SDKType, 'data') }}:
-                - TestFromSource=^(?!true).*
-          MatrixReplace:
-            - ${{ each replacement in parameters.MatrixReplace }}:
-                - ${{ replacement }}
-            - ${{ if eq(parameters.SDKType, 'data') }}:
-                - TestGoals=.*/verify
-                - TestOptions=.*/-am
-            - AZURE_TEST.*=.*/
-          AdditionalParameters:
-            SDKType: ${{ parameters.SDKType }}
-            ServiceDirectory: ${{ parameters.ServiceDirectory }}
-            TestPipeline: ${{ parameters.TestPipeline }}
-            Artifacts: ${{ parameters.Artifacts }}
-            AdditionalModules: ${{ parameters.AdditionalModules }}
-            SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
-            PreBuildSteps:
-              - script: |
-                  pip install in-place & pip install termcolor
-                displayName: 'python module install'
-              - script: |
-                  python ./sdk/spring/scripts/ci_update_versions.py --sbv 2.6.1
-                displayName: 'update spring boot versions'
-              - script: |
-                  python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b 2.6.1 -c 2021.0.0
-                displayName: 'insert dependency management'
+#      - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
+#        parameters:
+#          JobTemplatePath: /eng/pipelines/templates/jobs/ci.tests.yml
+#          CloudConfig:
+#            Cloud: Public
+#          MatrixConfigs:
+#            - ${{ each config in parameters.MatrixConfigs }}:
+#                - ${{ config }}
+#            - ${{ each config in parameters.AdditionalMatrixConfigs }}:
+#                - ${{ config }}
+#          MatrixFilters:
+#            - ${{ each filter in parameters.MatrixFilters }}:
+#                - ${{ filter }}
+#            # Skip TestFromSource jobs for SDKType data
+#            - ${{ if eq(parameters.SDKType, 'data') }}:
+#                - TestFromSource=^(?!true).*
+#          MatrixReplace:
+#            - ${{ each replacement in parameters.MatrixReplace }}:
+#                - ${{ replacement }}
+#            - ${{ if eq(parameters.SDKType, 'data') }}:
+#                - TestGoals=.*/verify
+#                - TestOptions=.*/-am
+#            - AZURE_TEST.*=.*/
+#          AdditionalParameters:
+#            SDKType: ${{ parameters.SDKType }}
+#            ServiceDirectory: ${{ parameters.ServiceDirectory }}
+#            TestPipeline: ${{ parameters.TestPipeline }}
+#            Artifacts: ${{ parameters.Artifacts }}
+#            AdditionalModules: ${{ parameters.AdditionalModules }}
+#            SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
+#            PreBuildSteps:
+#              - script: |
+#                  pip install in-place & pip install termcolor
+#                displayName: 'python module install'
+#              - script: |
+#                  python ./sdk/spring/scripts/ci_update_versions.py --sbv 2.6.1
+#                displayName: 'update spring boot versions'
+#              - script: |
+#                  python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b 2.6.1 -c 2021.0.0
+#                displayName: 'insert dependency management'
 #      - template: /sdk/spring/spring-sdk-client.yml
       - job: 'maven_dependency'
         variables:
@@ -510,9 +510,9 @@ stages:
               jdkVersionOption: $(JavaBuildVersion)
               jdkArchitectureOption: 'x64'
               publishJUnitResults: false
-          - script: |
-              mvn -f sdk/spring/pom.xml -P dev --batch-mode --fail-at-end -Dmaven.wagon.httpconnectionManager.ttlSeconds=60 -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true -pl $(ProjectList) -am install
-            displayName: 'maven_install'
+#          - script: |
+#              mvn -f sdk/spring/pom.xml -P dev --batch-mode --fail-at-end -Dmaven.wagon.httpconnectionManager.ttlSeconds=60 -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true -pl $(ProjectList) -am install
+#            displayName: 'maven_install'
           - script: |
               cd ./sdk/spring && mvn dependency:tree>tree.txt
             displayName: 'maven_dependency'
@@ -537,44 +537,44 @@ stages:
 
   - stage: Build_for_Last_Spring_Boot_Version
     jobs:
-      - template: /eng/pipelines/templates/jobs/ci.yml
-        parameters:
-          PublishArtifact: false
-          ServiceDirectory: ${{ parameters.ServiceDirectory }}
-          ${{ if eq(parameters.ServiceDirectory, 'template') }}:
-            TestPipeline: true
-          SDKType: ${{ parameters.SDKType }}
-          Artifacts: ${{ parameters.Artifacts }}
-          AdditionalModules: ${{ parameters.AdditionalModules }}
-          SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
-          MatrixConfigs:
-            - ${{ each config in parameters.MatrixConfigs }}:
-                - ${{ config }}
-            - ${{ each config in parameters.AdditionalMatrixConfigs }}:
-                - ${{ config }}
-          MatrixFilters:
-            - ${{ each filter in parameters.MatrixFilters }}:
-                - ${{ filter }}
-            # Skip TestFromSource jobs for SDKType data
-            - ${{ if eq(parameters.SDKType, 'data') }}:
-                - TestFromSource=^(?!true).*
-          MatrixReplace:
-            - ${{ each replacement in parameters.MatrixReplace }}:
-                - ${{ replacement }}
-            - ${{ if eq(parameters.SDKType, 'data') }}:
-                - TestGoals=.*/verify
-                - TestOptions=.*/-am
-            - AZURE_TEST.*=.*/
-          PreBuildSteps:
-            - script: |
-                pip install in-place & pip install termcolor
-              displayName: 'python module install'
-            - script: |
-                python ./sdk/spring/scripts/ci_update_versions.py --sbv 2.5.7
-              displayName: 'update spring boot versions'
-            - script: |
-                python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b 2.5.7 -c 2020.0.4
-              displayName: 'insert dependency management'
+#      - template: /eng/pipelines/templates/jobs/ci.yml
+#        parameters:
+#          PublishArtifact: false
+#          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+#          ${{ if eq(parameters.ServiceDirectory, 'template') }}:
+#            TestPipeline: true
+#          SDKType: ${{ parameters.SDKType }}
+#          Artifacts: ${{ parameters.Artifacts }}
+#          AdditionalModules: ${{ parameters.AdditionalModules }}
+#          SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
+#          MatrixConfigs:
+#            - ${{ each config in parameters.MatrixConfigs }}:
+#                - ${{ config }}
+#            - ${{ each config in parameters.AdditionalMatrixConfigs }}:
+#                - ${{ config }}
+#          MatrixFilters:
+#            - ${{ each filter in parameters.MatrixFilters }}:
+#                - ${{ filter }}
+#            # Skip TestFromSource jobs for SDKType data
+#            - ${{ if eq(parameters.SDKType, 'data') }}:
+#                - TestFromSource=^(?!true).*
+#          MatrixReplace:
+#            - ${{ each replacement in parameters.MatrixReplace }}:
+#                - ${{ replacement }}
+#            - ${{ if eq(parameters.SDKType, 'data') }}:
+#                - TestGoals=.*/verify
+#                - TestOptions=.*/-am
+#            - AZURE_TEST.*=.*/
+#          PreBuildSteps:
+#            - script: |
+#                pip install in-place & pip install termcolor
+#              displayName: 'python module install'
+#            - script: |
+#                python ./sdk/spring/scripts/ci_update_versions.py --sbv 2.5.7
+#              displayName: 'update spring boot versions'
+#            - script: |
+#                python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b 2.5.7 -c 2020.0.4
+#              displayName: 'insert dependency management'
       - job: 'maven_dependency'
         variables:
           - template: ../../eng/pipelines/templates/variables/globals.yml
@@ -609,23 +609,26 @@ stages:
               Paths: $(CheckoutDirectories)
               SkipDefaultCheckout: true
           - template: ../../eng/pipelines/templates/steps/install-reporting-tools.yml
-          - task: Maven@3
-            displayName: 'Build and Install'
-            inputs:
-              mavenPomFile: pom.xml
-              goals: 'install'
-              options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
-              mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-              javaHomeOption: 'JDKVersion'
-              jdkVersionOption: $(JavaBuildVersion)
-              jdkArchitectureOption: 'x64'
-              publishJUnitResults: false
+#          - task: Maven@3
+#            displayName: 'Build and Install'
+#            inputs:
+#              mavenPomFile: pom.xml
+#              goals: 'install'
+#              options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
+#              mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+#              javaHomeOption: 'JDKVersion'
+#              jdkVersionOption: $(JavaBuildVersion)
+#              jdkArchitectureOption: 'x64'
+#              publishJUnitResults: false
 #          - script: |
 #              mvn -f sdk/spring/pom.xml -P dev --batch-mode --fail-at-end -Dmaven.wagon.httpconnectionManager.ttlSeconds=60 -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true -pl
 #              com.azure.spring:spring-cloud-azure-core,com.azure.spring:spring-cloud-azure-service,com.azure.spring:spring-cloud-azure-resourcemanager,com.azure.spring:spring-cloud-azure-trace-sleuth,com.azure.spring:spring-messaging-azure,com.azure.spring:spring-messaging-azure-eventhubs,com.azure.spring:spring-messaging-azure-servicebus,com.azure.spring:spring-messaging-azure-storage-queue,com.azure.spring:spring-integration-azure-core,com.azure.spring:spring-integration-azure-eventhubs,com.azure.spring:spring-integration-azure-servicebus,com.azure.spring:spring-integration-azure-storage-queue,com.azure.spring:spring-cloud-azure-autoconfigure,com.azure.spring:spring-cloud-azure-actuator,com.azure.spring:spring-cloud-azure-actuator-autoconfigure,com.azure.spring:spring-cloud-azure-starter,com.azure.spring:spring-cloud-azure-starter-actuator,com.azure.spring:spring-cloud-azure-starter-appconfiguration,com.azure.spring:spring-cloud-azure-starter-cosmos,com.azure.spring:spring-cloud-azure-starter-data-cosmos,com.azure.spring:spring-cloud-azure-starter-eventhubs,com.azure.spring:spring-cloud-azure-starter-keyvault-certificates,com.azure.spring:spring-cloud-azure-starter-keyvault-secrets,com.azure.spring:spring-cloud-azure-starter-servicebus,com.azure.spring:spring-cloud-azure-starter-servicebus-jms,com.azure.spring:spring-cloud-azure-starter-storage-blob,com.azure.spring:spring-cloud-azure-starter-storage-file-share,com.azure.spring:spring-cloud-azure-starter-storage-queue,com.azure.spring:spring-cloud-azure-starter-integration-eventhubs,com.azure.spring:spring-cloud-azure-starter-integration-servicebus,com.azure.spring:spring-cloud-azure-starter-integration-storage-queue,com.azure.spring:spring-cloud-azure-stream-binder-servicebus-core,com.azure.spring:spring-cloud-azure-stream-binder-servicebus,com.azure.spring:spring-cloud-azure-stream-binder-eventhubs,com.azure.spring:spring-cloud-azure-stream-binder-eventhubs-core,com.azure.spring:spring-cloud-azure-starter-stream-eventhubs,com.azure.spring:spring-cloud-azure-starter-stream-servicebus,com.azure.spring:spring-cloud-azure-starter-storage-queue
 #              -am install
 #            displayName: 'maven_install'
 #                           mvn clean install -f sdk/spring/pom.xml -P dev
+          - script: |
+              mvn -f sdk/spring/pom.xml -P dev --batch-mode --fail-at-end -Dmaven.wagon.httpconnectionManager.ttlSeconds=60 -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true -pl $(ProjectList) -am install
+            displayName: 'maven_install'
           - script: |
               cd ./sdk/spring && mvn dependency:tree>tree.txt
             displayName: 'maven_dependency'
