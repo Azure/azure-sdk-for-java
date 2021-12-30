@@ -377,50 +377,50 @@ parameters:
     default: [ ]
 
 stages:
-  - stage: Build
-    jobs:
-      - template: /eng/pipelines/templates/jobs/ci.yml
-        parameters:
-          ServiceDirectory: ${{ parameters.ServiceDirectory }}
-          ${{ if eq(parameters.ServiceDirectory, 'template') }}:
-            TestPipeline: true
-          SDKType: ${{ parameters.SDKType }}
-          Artifacts: ${{ parameters.Artifacts }}
-          AdditionalModules: ${{ parameters.AdditionalModules }}
-          SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
-          MatrixConfigs:
-            - ${{ each config in parameters.MatrixConfigs }}:
-                - ${{ config }}
-            - ${{ each config in parameters.AdditionalMatrixConfigs }}:
-                - ${{ config }}
-          MatrixFilters:
-            - ${{ each filter in parameters.MatrixFilters }}:
-                - ${{ filter }}
-            # Skip TestFromSource jobs for SDKType data
-            - ${{ if eq(parameters.SDKType, 'data') }}:
-                - TestFromSource=^(?!true).*
-          MatrixReplace:
-            - ${{ each replacement in parameters.MatrixReplace }}:
-                - ${{ replacement }}
-            - ${{ if eq(parameters.SDKType, 'data') }}:
-                - TestGoals=.*/verify
-                - TestOptions=.*/-am
-            - AZURE_TEST.*=.*/
-          PreBuildSteps: ${{ parameters.PreBuildSteps }}
+#  - stage: Build
+#    jobs:
+#      - template: /eng/pipelines/templates/jobs/ci.yml
+#        parameters:
+#          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+#          ${{ if eq(parameters.ServiceDirectory, 'template') }}:
+#            TestPipeline: true
+#          SDKType: ${{ parameters.SDKType }}
+#          Artifacts: ${{ parameters.Artifacts }}
+#          AdditionalModules: ${{ parameters.AdditionalModules }}
+#          SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
+#          MatrixConfigs:
+#            - ${{ each config in parameters.MatrixConfigs }}:
+#                - ${{ config }}
+#            - ${{ each config in parameters.AdditionalMatrixConfigs }}:
+#                - ${{ config }}
+#          MatrixFilters:
+#            - ${{ each filter in parameters.MatrixFilters }}:
+#                - ${{ filter }}
+#            # Skip TestFromSource jobs for SDKType data
+#            - ${{ if eq(parameters.SDKType, 'data') }}:
+#                - TestFromSource=^(?!true).*
+#          MatrixReplace:
+#            - ${{ each replacement in parameters.MatrixReplace }}:
+#                - ${{ replacement }}
+#            - ${{ if eq(parameters.SDKType, 'data') }}:
+#                - TestGoals=.*/verify
+#                - TestOptions=.*/-am
+#            - AZURE_TEST.*=.*/
+#          PreBuildSteps: ${{ parameters.PreBuildSteps }}
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
-  - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
-      - template: archetype-java-release.yml
-        parameters:
-          DependsOn:
-            - Build
-          ServiceDirectory: ${{ parameters.ServiceDirectory }}
-          SDKType: ${{ parameters.SDKType }}
-          Artifacts: ${{ parameters.Artifacts }}
-          ${{ if eq(parameters.ServiceDirectory, 'template') }}:
-            TestPipeline: true
-          ArtifactName: packages
-          TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
-          TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
+#  - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
+#      - template: archetype-java-release.yml
+#        parameters:
+#          DependsOn:
+#            - Build
+#          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+#          SDKType: ${{ parameters.SDKType }}
+#          Artifacts: ${{ parameters.Artifacts }}
+#          ${{ if eq(parameters.ServiceDirectory, 'template') }}:
+#            TestPipeline: true
+#          ArtifactName: packages
+#          TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
+#          TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
 
   - stage: Build_for_New_Spring_Boot_Version
     jobs:
@@ -465,49 +465,48 @@ stages:
                   python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b 2.6.1 -c 2021.0.0
                 displayName: 'insert dependency management'
       - job: 'maven_dependency'
-        condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
-        variables:
-          - template: ../../eng/pipelines/templates/variables/globals.yml
-        pool:
-          name: azsdk-pool-mms-ubuntu-2004-general
-          vmImage: MMSUbuntu20.04
-        steps:
-          - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-            parameters:
-              Paths:
-                - 'sdk/${{ parameters.ServiceDirectory }}'
-                - '**/*.xml'
-                - '**/*.md'
-                - '.vscode/cspell.json'
-                - '!sdk/**/test-recordings'
-                - '!sdk/**/session-records'
-          - template: ../../eng/pipelines/templates/steps/generate-project-list.yml
-            parameters:
-              Artifacts: ${{ parameters.Artifacts }}
-              AdditionalModules: ${{ parameters.AdditionalModules }}
-              JobType: 'maven_dependency'
-              SDKType: ${{parameters.SDKType}}
-          - template: ../../eng/pipelines/templates/steps/install-reporting-tools.yml
-          - task: Maven@3
-            displayName: 'Build and Install'
-            inputs:
-              mavenPomFile: pom.xml
-              goals: 'install'
-              options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
-              mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-              javaHomeOption: 'JDKVersion'
-              jdkVersionOption: $(JavaBuildVersion)
-              jdkArchitectureOption: 'x64'
-              publishJUnitResults: false
+        template: /sdk/spring/spring-sdk-client.yml
+#        condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
+#        variables:
+#          - template: ../../eng/pipelines/templates/variables/globals.yml
+#        pool:
+#          name: azsdk-pool-mms-ubuntu-2004-general
+#          vmImage: MMSUbuntu20.04
+#        steps:
+#          - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+#            parameters:
+#              Paths:
+#                - 'sdk/${{ parameters.ServiceDirectory }}'
+#                - '**/*.xml'
+#                - '**/*.md'
+#                - '.vscode/cspell.json'
+#                - '!sdk/**/test-recordings'
+#                - '!sdk/**/session-records'
+#          - template: ../../eng/pipelines/templates/steps/generate-project-list.yml
+#            parameters:
+#              Artifacts: ${{ parameters.Artifacts }}
+#              AdditionalModules: ${{ parameters.AdditionalModules }}
+#              JobType: 'maven_dependency'
+#              SDKType: ${{parameters.SDKType}}
+#          - template: ../../eng/pipelines/templates/steps/install-reporting-tools.yml
+#          - task: Maven@3
+#            displayName: 'Build and Install'
+#            inputs:
+#              mavenPomFile: pom.xml
+#              goals: 'install'
+#              options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
+#              mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+#              javaHomeOption: 'JDKVersion'
+#              jdkVersionOption: $(JavaBuildVersion)
+#              jdkArchitectureOption: 'x64'
+#              publishJUnitResults: false
+#
 #          - script: |
-#              /usr/bin/mvn -f /mnt/vss/_work/1/s/pom.xml --batch-mode --fail-at-end -Dmaven.wagon.httpconnectionManager.ttlSeconds=60 -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true -pl $(ProjectList) -am install
-#            displayName: 'maven_install'
-          - script: |
-              cd ./sdk/spring && mvn dependency:tree>tree.txt
-            displayName: 'maven_dependency'
-          - script: |
-              cd ./sdk/spring && cat tree.txt
-            displayName: 'dependency_output'
+#              cd ./sdk/spring && mvn dependency:tree>tree.txt
+#            displayName: 'maven_dependency'
+#          - script: |
+#              cd ./sdk/spring && cat tree.txt
+#            displayName: 'dependency_output'
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build_for_New_Spring_Boot_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
