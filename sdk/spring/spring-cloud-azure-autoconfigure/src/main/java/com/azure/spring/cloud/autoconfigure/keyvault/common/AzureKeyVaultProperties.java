@@ -3,14 +3,14 @@
 
 package com.azure.spring.cloud.autoconfigure.keyvault.common;
 
-import com.azure.spring.cloud.autoconfigure.properties.core.AbstractAzureHttpCP;
+import com.azure.spring.cloud.autoconfigure.properties.core.AbstractAzureHttpConfigurationProperties;
 
 /**
  * Azure Key Vault properties.
  *
  * @since 4.0.0
  */
-public class AzureKeyVaultProperties extends AbstractAzureHttpCP {
+public class AzureKeyVaultProperties extends AbstractAzureHttpConfigurationProperties {
 
     /**
      * Azure Key Vault endpoint.

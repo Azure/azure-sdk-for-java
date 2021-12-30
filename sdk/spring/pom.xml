@@ -197,7 +197,8 @@
         <module>spring-cloud-azure-stream-binder-eventhubs</module>
         <module>spring-cloud-azure-stream-binder-servicebus-core</module>
         <module>spring-cloud-azure-stream-binder-servicebus</module>
-        <module>spring-cloud-azure-stream-binder-test</module>
+        <module>spring-cloud-azure-test-eventhubs-binder</module>
+        <module>spring-cloud-azure-test-servicebus-binder</module>
         <module>spring-cloud-azure-trace-sleuth</module>
       </modules>
     </profile>
@@ -207,7 +208,6 @@
       <modules>
         <module>../../eng/code-quality-reports</module>
         <module>../keyvault/azure-security-keyvault-jca</module>
-        <module>azure-spring-boot-test-core</module>
         <module>spring-messaging-azure</module>
         <module>spring-messaging-azure-eventhubs</module>
         <module>spring-messaging-azure-servicebus</module>
@@ -246,7 +246,6 @@
         <module>spring-cloud-azure-stream-binder-servicebus</module>
         <module>spring-cloud-azure-starter-stream-eventhubs</module>
         <module>spring-cloud-azure-starter-stream-servicebus</module>
-        <module>spring-cloud-azure-stream-binder-test</module>
         <module>spring-cloud-azure-trace-sleuth</module>
       </modules>
     </profile>

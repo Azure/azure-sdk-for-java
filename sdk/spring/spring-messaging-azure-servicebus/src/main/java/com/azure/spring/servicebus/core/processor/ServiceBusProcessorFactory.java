@@ -15,11 +15,11 @@ public interface ServiceBusProcessorFactory {
     /**
      * Create a {@link ServiceBusProcessorClient} to consume events from the specified queue.
      * @param queue The queue name.
-     * @param messageProcessorListener Callback processor listener to be registered on service bus processor client.
+     * @param messageProcessingListener Callback processor listener to be registered on service bus processor client.
      * @return ServiceBusProcessorClient queue processor client
      */
     ServiceBusProcessorClient createProcessor(String queue,
-                                              MessageProcessingListener messageProcessorListener);
+                                              MessageProcessingListener messageProcessingListener);
 
     /**
      * Create a {@link ServiceBusProcessorClient} to consume events from the specified topic in the context of the given
@@ -27,12 +27,12 @@ public interface ServiceBusProcessorFactory {
      *
      * @param topic The topic.
      * @param subscription The subscription.
-     * @param messageProcessorListener The callback processor listener to be registered on service bus processor client.
+     * @param messageProcessingListener The callback processor listener to be registered on service bus processor client.
      * @return subscription client
      */
     ServiceBusProcessorClient createProcessor(String topic,
                                               String subscription,
-                                              MessageProcessingListener messageProcessorListener);
+                                              MessageProcessingListener messageProcessingListener);
 
     /**
      * Add a listener for this factory.

@@ -14,6 +14,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.test.util.ReflectionTestUtils;
+
+import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -61,6 +64,59 @@ class AzureDefaultTokenCredentialAutoConfigurationTest {
             .run(context -> {
                 assertThat(customizer.getCustomizedTimes()).isEqualTo(2);
                 assertThat(otherBuilderCustomizer.getCustomizedTimes()).isEqualTo(0);
+            });
+    }
+
+    @Test
+    void httpClientOptionsShouldConfigure() {
+        AzureGlobalProperties azureGlobalProperties = new AzureGlobalProperties();
+        azureGlobalProperties.getClient().getHttp().setConnectTimeout(Duration.ofSeconds(2));
+        contextRunner
+            .withBean(AzureGlobalProperties.class, () -> azureGlobalProperties)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureDefaultTokenCredentialAutoConfiguration.class);
+
+                AzureDefaultTokenCredentialAutoConfiguration configuration = context.getBean(AzureDefaultTokenCredentialAutoConfiguration.class);
+                AzureDefaultTokenCredentialAutoConfiguration.IdentityClientProperties identityClientProperties = (AzureDefaultTokenCredentialAutoConfiguration.IdentityClientProperties) ReflectionTestUtils.getField(configuration, "identityClientProperties");
+                assertThat(identityClientProperties).isNotNull();
+                assertThat(identityClientProperties.getClient().getConnectTimeout()).isEqualTo(Duration.ofSeconds(2));
+            });
+    }
+
+    @Test
+    void httpRetryOptionsShouldConfigure() {
+        AzureGlobalProperties azureGlobalProperties = new AzureGlobalProperties();
+        azureGlobalProperties.getRetry().setMaxAttempts(2);
+        azureGlobalProperties.getRetry().getHttp().setRetryAfterHeader("test-header");
+        contextRunner
+            .withBean(AzureGlobalProperties.class, () -> azureGlobalProperties)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureDefaultTokenCredentialAutoConfiguration.class);
+
+                AzureDefaultTokenCredentialAutoConfiguration configuration = context.getBean(AzureDefaultTokenCredentialAutoConfiguration.class);
+                AzureDefaultTokenCredentialAutoConfiguration.IdentityClientProperties identityClientProperties = (AzureDefaultTokenCredentialAutoConfiguration.IdentityClientProperties) ReflectionTestUtils.getField(configuration, "identityClientProperties");
+                assertThat(identityClientProperties).isNotNull();
+                assertThat(identityClientProperties.getRetry().getMaxAttempts()).isEqualTo(2);
+                assertThat(identityClientProperties.getRetry().getRetryAfterHeader()).isEqualTo("test-header");
+            });
+    }
+
+    @Test
+    void httpProxyOptionsShouldConfigure() {
+        AzureGlobalProperties azureGlobalProperties = new AzureGlobalProperties();
+
+        azureGlobalProperties.getProxy().setHostname("test-host");
+        azureGlobalProperties.getProxy().getHttp().setNonProxyHosts("test-non-proxy-host");
+        contextRunner
+            .withBean(AzureGlobalProperties.class, () -> azureGlobalProperties)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureDefaultTokenCredentialAutoConfiguration.class);
+
+                AzureDefaultTokenCredentialAutoConfiguration configuration = context.getBean(AzureDefaultTokenCredentialAutoConfiguration.class);
+                AzureDefaultTokenCredentialAutoConfiguration.IdentityClientProperties identityClientProperties = (AzureDefaultTokenCredentialAutoConfiguration.IdentityClientProperties) ReflectionTestUtils.getField(configuration, "identityClientProperties");
+                assertThat(identityClientProperties).isNotNull();
+                assertThat(identityClientProperties.getProxy().getHostname()).isEqualTo("test-host");
+                assertThat(identityClientProperties.getProxy().getNonProxyHosts()).isEqualTo("test-non-proxy-host");
             });
     }
 

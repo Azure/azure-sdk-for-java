@@ -5,23 +5,24 @@ package com.azure.spring.eventhubs.core;
 
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.spring.eventhubs.core.processor.EventHubsProcessorFactory;
+import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.service.eventhubs.processor.EventProcessingListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.Lifecycle;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
 /**
- * A processor container using {@link EventProcessorClient} to subscribe to Event Hub entities and consumer events from
- * all the partitions of each Event Hub entity.
+ * A processor container using {@link EventProcessorClient} to subscribe to event hubs and consumer events from
+ * all the partitions of each event hub.
  *
  * <p>
- * For different combinations of Event Hub and consumer group, different {@link EventProcessorClient}s will be created to
+ * For different combinations of event hub and consumer group, different {@link EventProcessorClient}s will be created to
  * subscribe to it.
  * </p>
  *
@@ -34,7 +35,7 @@ public class EventHubsProcessorContainer implements Lifecycle, DisposableBean {
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsProcessorContainer.class);
 
     private final EventHubsProcessorFactory processorFactory;
-    private final List<EventProcessorClient> clients = new ArrayList<>();
+    private final Map<ConsumerIdentifier, EventProcessorClient> clients = new HashMap<>();
     private final AtomicBoolean isRunning = new AtomicBoolean(false);
 
     /**
@@ -60,7 +61,7 @@ public class EventHubsProcessorContainer implements Lifecycle, DisposableBean {
             LOGGER.info("Event processors container is already running");
             return;
         }
-        this.clients.forEach(EventProcessorClient::start);
+        this.clients.values().forEach(EventProcessorClient::start);
     }
 
     /**
@@ -73,7 +74,7 @@ public class EventHubsProcessorContainer implements Lifecycle, DisposableBean {
             LOGGER.info("Event processors container has already stopped");
             return;
         }
-        this.clients.forEach(EventProcessorClient::stop);
+        this.clients.values().forEach(EventProcessorClient::stop);
     }
 
     @Override
@@ -83,10 +84,10 @@ public class EventHubsProcessorContainer implements Lifecycle, DisposableBean {
 
 
     /**
-     * Subscribe to an Event Hub in the context of a consumer group to consumer events from all the partitions.
+     * Subscribe to an event hub in the context of a consumer group to consumer events from all the partitions.
      *
-     * @param eventHubName Event Hub entity name
-     * @param consumerGroup Consumer group name
+     * @param eventHubName the event hub name
+     * @param consumerGroup the consumer group name
      * @param listener the listener to process Event Hub events.
      * @return the {@link EventProcessorClient} created to subscribe.
      */
@@ -94,8 +95,26 @@ public class EventHubsProcessorContainer implements Lifecycle, DisposableBean {
         EventProcessorClient processor = this.processorFactory.createProcessor(eventHubName, consumerGroup, listener);
         processor.start();
 
-        this.clients.add(processor);
+        this.clients.computeIfAbsent(new ConsumerIdentifier(eventHubName, consumerGroup), k -> processor);
         return processor;
+    }
+
+    /**
+     * Unsubscribe to an event hub from a consumer group.
+     * @param eventHubName the event hub name
+     * @param consumerGroup the consumer group name
+     * @return true if unsubscribe successfully
+     */
+    public boolean unsubscribe(String eventHubName, String consumerGroup) {
+        synchronized (this.clients) {
+            EventProcessorClient processor = this.clients.remove(new ConsumerIdentifier(eventHubName, consumerGroup));
+            if (processor == null) {
+                LOGGER.warn("No EventProcessorClient for event hub {}, consumer group {}", eventHubName, consumerGroup);
+                return false;
+            }
+            processor.stop();
+            return true;
+        }
     }
 
 }

@@ -60,12 +60,6 @@ public class StorageQueueTemplateSendTest extends SendOperationTest<StorageQueue
     }
 
     @Override
-    protected void whenSendWithException() {
-        when(this.mockClientFactory.getOrCreateQueueClient(eq(destination)))
-            .thenThrow(new StorageQueueRuntimeException("Failed to get or create queue."));
-    }
-
-    @Override
     protected void verifyGetClientCreator(int times) {
         verify(this.mockClientFactory, times(times)).getOrCreateQueueClient(this.destination);
     }

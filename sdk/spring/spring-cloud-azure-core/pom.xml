@@ -32,9 +32,8 @@
     <url>https://github.com/Azure/azure-sdk-for-java/issues</url>
   </issueManagement>
 
+
   <properties>
-    <jacoco.min.linecoverage>0.45</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.33</jacoco.min.branchcoverage>
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <!-- https://issues.apache.org/jira/browse/SUREFIRE-1563 -->
     <javaModulesSurefireArgLine>
@@ -149,18 +148,6 @@
               </includes>
             </bannedDependencies>
           </rules>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
-        <configuration>
-          <archive>
-            <manifest>
-              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-            </manifest>
-          </archive>
         </configuration>
       </plugin>
     </plugins>

@@ -12,7 +12,6 @@ import com.azure.spring.storage.queue.support.StorageQueueHelper;
 import com.azure.spring.storage.queue.support.converter.StorageQueueMessageConverter;
 import com.azure.storage.queue.QueueAsyncClient;
 import com.azure.storage.queue.models.QueueMessageItem;
-import com.azure.storage.queue.models.QueueStorageException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
@@ -30,14 +29,14 @@ import java.util.Map;
  */
 public class StorageQueueTemplate implements StorageQueueOperation {
     private static final Logger LOG = LoggerFactory.getLogger(StorageQueueTemplate.class);
-    private static final int DEFAULT_VISIBILITY_TIMEOUT_IN_SECONDS = 30;
+    private static final Duration DEFAULT_VISIBILITY_TIMEOUT_IN_SECONDS = Duration.ofSeconds(30);
     private static final String MSG_FAIL_CHECKPOINT = "Failed to checkpoint %s in storage queue '%s'";
     private static final String MSG_SUCCESS_CHECKPOINT = "Checkpointed %s in storage queue '%s' in %s mode";
     private final StorageQueueClientFactory storageQueueClientFactory;
 
-    protected StorageQueueMessageConverter messageConverter = new StorageQueueMessageConverter();
+    private StorageQueueMessageConverter messageConverter = new StorageQueueMessageConverter();
 
-    private int visibilityTimeoutInSeconds = DEFAULT_VISIBILITY_TIMEOUT_IN_SECONDS;
+    private Duration visibilityTimeout = DEFAULT_VISIBILITY_TIMEOUT_IN_SECONDS;
 
     private Class<?> messagePayloadType = byte[].class;
 
@@ -64,19 +63,17 @@ public class StorageQueueTemplate implements StorageQueueOperation {
 
     @Override
     public Mono<Message<?>> receiveAsync(String queueName) {
-        return this.receiveAsync(queueName, visibilityTimeoutInSeconds);
+        return this.receiveAsync(queueName, visibilityTimeout);
     }
 
-    private Mono<Message<?>> receiveAsync(String queueName, int visibilityTimeoutInSeconds) {
+    private Mono<Message<?>> receiveAsync(String queueName, Duration visibilityTimeout) {
         Assert.hasText(queueName, "queueName can't be null or empty");
 
 
         QueueAsyncClient queueClient = storageQueueClientFactory.getOrCreateQueueClient(queueName);
 
 
-        return queueClient.receiveMessages(1, Duration.ofSeconds(visibilityTimeoutInSeconds))
-            .onErrorMap(QueueStorageException.class, e ->
-                new StorageQueueRuntimeException("Failed to send message to storage queue", e))
+        return queueClient.receiveMessages(1, visibilityTimeout)
             .next()
             .map(messageItem -> {
 
@@ -113,7 +110,7 @@ public class StorageQueueTemplate implements StorageQueueOperation {
     private Map<String, Object> buildProperties() {
         Map<String, Object> properties = new HashMap<>();
 
-        properties.put("visibilityTimeout", this.visibilityTimeoutInSeconds);
+        properties.put("visibilityTimeout", this.visibilityTimeout);
         properties.put("messagePayloadType", this.messagePayloadType);
         properties.put("checkpointMode", this.checkpointMode);
 
@@ -122,22 +119,6 @@ public class StorageQueueTemplate implements StorageQueueOperation {
 
     private boolean isValidCheckpointMode(CheckpointMode checkpointMode) {
         return checkpointMode == CheckpointMode.MANUAL || checkpointMode == CheckpointMode.RECORD;
-    }
-
-    /**
-     * The checkpoint handler.
-     * @param message the message to checkpoint.
-     * @param queueName the queue
-     * @param t the exception while checkpoint
-     */
-    public void checkpointHandler(QueueMessageItem message, String queueName, Throwable t) {
-        if (t != null) {
-            if (LOG.isWarnEnabled()) {
-                LOG.warn(buildCheckpointFailMessage(message, queueName), t);
-            }
-        } else if (LOG.isDebugEnabled()) {
-            LOG.debug(buildCheckpointSuccessMessage(message, queueName));
-        }
     }
 
     private String buildCheckpointFailMessage(QueueMessageItem cloudQueueMessage, String queueName) {
@@ -169,15 +150,15 @@ public class StorageQueueTemplate implements StorageQueueOperation {
      * Get the {@code visibilityTimeoutInSeconds}.
      * @return the visibilityTimeoutInSeconds.
      */
-    public int getVisibilityTimeoutInSeconds() {
-        return visibilityTimeoutInSeconds;
+    public Duration getVisibilityTimeout() {
+        return visibilityTimeout;
     }
 
     @Override
-    public void setVisibilityTimeoutInSeconds(int timeout) {
-        Assert.state(timeout > 0, "VisibilityTimeoutInSeconds should be positive");
-        this.visibilityTimeoutInSeconds = timeout;
-        LOG.info("StorageQueueTemplate VisibilityTimeoutInSeconds becomes: {}", this.visibilityTimeoutInSeconds);
+    public void setVisibilityTimeout(Duration visibilityTimeoutDuration) {
+        Assert.state(visibilityTimeoutDuration.isNegative() || visibilityTimeoutDuration.isZero(), "VisibilityTimeoutInSeconds should be positive");
+        this.visibilityTimeout = visibilityTimeoutDuration;
+        LOG.info("StorageQueueTemplate VisibilityTimeout becomes: {} seconds", this.visibilityTimeout.getSeconds());
     }
 
     /**

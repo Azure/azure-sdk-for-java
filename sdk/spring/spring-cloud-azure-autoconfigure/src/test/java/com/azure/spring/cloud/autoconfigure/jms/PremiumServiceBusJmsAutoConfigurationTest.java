@@ -4,13 +4,12 @@
 package com.azure.spring.cloud.autoconfigure.jms;
 
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
+import com.azure.spring.core.AzureSpringIdentifier;
 import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 
-import static com.azure.spring.core.AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS;
-import static com.azure.spring.core.AzureSpringIdentifier.VERSION;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class PremiumServiceBusJmsAutoConfigurationTest extends AbstractServiceBusJmsAutoConfigurationTest {
@@ -50,7 +49,7 @@ class PremiumServiceBusJmsAutoConfigurationTest extends AbstractServiceBusJmsAut
                 SpringServiceBusJmsConnectionFactory factory = context
                     .getBean(SpringServiceBusJmsConnectionFactory.class);
                 assertThat(factory).as("User agent should be configured correctly.")
-                    .hasFieldOrPropertyWithValue("customUserAgent", AZURE_SPRING_SERVICE_BUS + VERSION);
+                    .hasFieldOrPropertyWithValue("customUserAgent", AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS);
                 assertThat(factory.getSettings()).isNotNull();
             });
     }

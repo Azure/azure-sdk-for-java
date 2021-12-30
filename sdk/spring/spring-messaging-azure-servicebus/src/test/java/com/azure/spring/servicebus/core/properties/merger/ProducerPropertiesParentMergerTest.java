@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class ProducerPropertiesParentMergerTest {
-    private final ProducerPropertiesParentMerger merger = new ProducerPropertiesParentMerger();
+    private final SenderPropertiesParentMerger merger = new SenderPropertiesParentMerger();
 
     @Test
     void childNotProvidedShouldUseParent() {
