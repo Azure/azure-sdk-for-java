@@ -15,6 +15,9 @@ import com.azure.ai.anomalydetector.models.ModelInfo;
 import com.azure.ai.anomalydetector.models.ModelSnapshot;
 import com.azure.ai.anomalydetector.models.ModelStatus;
 import com.azure.ai.anomalydetector.models.TrainMultivariateModelResponse;
+import com.azure.ai.anomalydetector.models.LastDetectionRequest;
+import com.azure.ai.anomalydetector.models.LastDetectionResult;
+import com.azure.ai.anomalydetector.models.AnomalyState;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpClient;
@@ -31,6 +34,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.Context;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Flux;
 
 import java.io.FileNotFoundException;
@@ -93,11 +97,10 @@ public class MultivariateSample {
         return model_id;
     }
 
-    private static ModelStatus getModelStatus(AnomalyDetectorClient client, UUID model_id) {
+    private static ModelInfo getModelInfo(AnomalyDetectorClient client, UUID model_id) {
         Response<Model> response = client.getMultivariateModelWithResponse(model_id, Context.NONE);
         UUID model = response.getValue().getModelId();
-        System.out.println("training");
-        return response.getValue().getModelInfo().getStatus();
+        return response.getValue().getModelInfo();
     }
 
     private static UUID getResultId(AnomalyDetectorClient client, UUID modelId, DetectionRequest detectionRequest) {
@@ -137,8 +140,11 @@ public class MultivariateSample {
         }
     }
 
+    private static Response<LastDetectionResult> GetLastDetectResult(AnomalyDetectorClient client, LastDetectionRequest body, UUID modelId){
+        return client.lastDetectAnomalyWithResponse(modelId, body, Context.NONE);
+    }
 
-    public static void main(final String[] args) throws IOException, InterruptedException {
+    public static void main(final String[] args) throws Exception {
         String endpoint = "<anomaly-detector-resource-endpoint>";
         String key = "<anomaly-detector-resource-key>";
         //Get multivariate client
@@ -162,12 +168,16 @@ public class MultivariateSample {
 
         //Check model status util the model get ready
         while (true) {
-            ModelStatus modelStatus = getModelStatus(client, modelId);
+            ModelInfo modelInfo = getModelInfo(client, modelId);
+            ModelStatus modelStatus = modelInfo.getStatus();
             TimeUnit.SECONDS.sleep(5);
-            assert modelStatus != ModelStatus.FAILED;
             if (modelStatus == ModelStatus.READY) {
+                System.out.println("READY");
                 break;
+            }else if(modelStatus == ModelStatus.FAILED){
+                throw new Exception(modelInfo.getErrors().get(0).getMessage());
             }
+            System.out.println("TRAINING");
         }
 
         //Start inference and get the Result ID
@@ -182,6 +192,31 @@ public class MultivariateSample {
             assert detectionStatus != DetectionStatus.FAILED;
             if (detectionStatus == DetectionStatus.READY) {
                 break;
+            }
+        }
+
+
+        // Synchronized anomaly detection
+        ObjectMapper m = new ObjectMapper();
+        // modify the variables according to your source data as the format below
+        String variables = "{\"variables\": " +
+            "[{\"name\": \"variables_name1\", \"timestamps\": [\"2021-01-01 00:00:00\", \"2021-01-01 01:00:00\", \"...\"], \"values\": [0, 0, ...]}, " +
+            "{\"name\": \"variables_name2\", \"timestamps\": [\"2021-01-01 00:00:00\", \"2021-01-01 01:00:00\", \"...\"], \"values\": [0, 0, ...]}]," +
+            " \"detectingPoints\": 2}";
+        LastDetectionRequest lastDetectBody = m.readValue(variables, LastDetectionRequest.class);
+        Response<LastDetectionResult> lastDetectResult = GetLastDetectResult(client, lastDetectBody, modelId);
+        if (lastDetectResult.getStatusCode()==200) {
+            for (AnomalyState anomalyState: lastDetectResult.getValue().getResults()) {
+                System.out.print(
+                        "\ntimestamp: " + anomalyState.getTimestamp().toString() +
+                        ",  isAnomaly: " + anomalyState.getValue().isAnomaly() +
+                        ",  Score: " + anomalyState.getValue().getScore());
+            }
+        }else{
+            for (AnomalyState anomalyState: lastDetectResult.getValue().getResults()) {
+                System.out.print(
+                        "\ntimestamp: " + anomalyState.getTimestamp().toString() +
+                        ",  errors: " + anomalyState.getErrors().get(0).getMessage());
             }
         }
 
