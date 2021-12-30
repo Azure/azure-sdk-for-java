@@ -472,6 +472,12 @@ stages:
           name: azsdk-pool-mms-ubuntu-2004-general
           vmImage: MMSUbuntu20.04
         steps:
+          - task: PythonScript@0
+            displayName: 'Generate directories variable for sparse checkout'
+            inputs:
+              scriptPath: 'eng/scripts/generate_from_source_pom.py'
+              arguments: '--set-pipeline-variable CheckoutDirectories --project-list $(ProjectList)'
+              workingDirectory: '$(System.DefaultWorkingDirectory)'
           - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
             parameters:
               Paths:
