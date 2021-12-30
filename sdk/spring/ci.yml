@@ -465,10 +465,10 @@ stages:
               pip install in-place & pip install termcolor
             displayName: 'python module install'
           - script: |
-              python ./sdk/spring/scripts/ci_update_versions.py --sbv ${parameters.SpringBootVersion}
+              python ./sdk/spring/scripts/ci_update_versions.py --sbv ${{parameters.SpringBootVersion}}
             displayName: 'update spring boot versions'
           - script: |
-              python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b ${parameters.SpringBootVersion} -c 2021.0.0
+              python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b ${{parameters.SpringBootVersion}} -c 2021.0.0
             displayName: 'insert dependency management'
           - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
             parameters:
