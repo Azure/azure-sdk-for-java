@@ -499,20 +499,20 @@ stages:
               Paths: $(CheckoutDirectories)
               SkipDefaultCheckout: true
           - template: ../../eng/pipelines/templates/steps/install-reporting-tools.yml
-          - task: Maven@3
-            displayName: 'Build and Install'
-            inputs:
-              mavenPomFile: pom.xml
-              goals: 'install'
-              options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
-              mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-              javaHomeOption: 'JDKVersion'
-              jdkVersionOption: $(JavaBuildVersion)
-              jdkArchitectureOption: 'x64'
-              publishJUnitResults: false
-#          - script: |
-#              mvn -f sdk/spring/pom.xml -P dev --batch-mode --fail-at-end -Dmaven.wagon.httpconnectionManager.ttlSeconds=60 -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true -pl $(ProjectList) -am install
-#            displayName: 'maven_install'
+#          - task: Maven@3
+#            displayName: 'Build and Install'
+#            inputs:
+#              mavenPomFile: pom.xml
+#              goals: 'install'
+#              options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
+#              mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+#              javaHomeOption: 'JDKVersion'
+#              jdkVersionOption: $(JavaBuildVersion)
+#              jdkArchitectureOption: 'x64'
+#              publishJUnitResults: false
+          - script: |
+              mvn -f sdk/spring/pom.xml -P dev --batch-mode --fail-at-end -Dmaven.wagon.httpconnectionManager.ttlSeconds=60 -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true -pl $(ProjectList) -am install
+            displayName: 'maven_install'
           - script: |
               cd ./sdk/spring && mvn dependency:tree>tree.txt
             displayName: 'maven_dependency'
