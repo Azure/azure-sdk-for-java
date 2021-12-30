@@ -375,6 +375,9 @@ parameters:
   - name: PreBuildSteps
     type: object
     default: [ ]
+  - name: SpringBootVersion
+    type: string
+    default: 2.6.1
 
 stages:
   - stage: Build
@@ -409,7 +412,7 @@ stages:
           PreBuildSteps: ${{ parameters.PreBuildSteps }}
 
 
-  - stage: Build_for_New_Spring_Boot_Version
+  - stage: Build_for_Spring_Boot_Version_${parameters.SpringBootVersion}
     jobs:
       - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
         parameters:
@@ -458,6 +461,15 @@ stages:
           name: azsdk-pool-mms-ubuntu-2004-general
           vmImage: MMSUbuntu20.04
         steps:
+          - script: |
+              pip install in-place & pip install termcolor
+            displayName: 'python module install'
+          - script: |
+              python ./sdk/spring/scripts/ci_update_versions.py --sbv ${parameters.SpringBootVersion}
+            displayName: 'update spring boot versions'
+          - script: |
+              python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b ${parameters.SpringBootVersion} -c 2021.0.0
+            displayName: 'insert dependency management'
           - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
             parameters:
               Paths:
@@ -485,19 +497,8 @@ stages:
               Paths: $(CheckoutDirectories)
               SkipDefaultCheckout: true
           - template: ../../eng/pipelines/templates/steps/install-reporting-tools.yml
-#          - task: Maven@3
-#            displayName: 'Build and Install'
-#            inputs:
-#              mavenPomFile: pom.xml
-#              goals: 'install'
-#              options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
-#              mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-#              javaHomeOption: 'JDKVersion'
-#              jdkVersionOption: $(JavaBuildVersion)
-#              jdkArchitectureOption: 'x64'
-#              publishJUnitResults: false
           - script: |
-              mvn -f sdk/spring/pom.xml -P dev --batch-mode --fail-at-end -Dmaven.wagon.httpconnectionManager.ttlSeconds=60 -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true -pl $(ProjectList) -am install
+              mvn -f sdk/spring/pom.xml -P dev --batch-mode --fail-at-end $(WagonOptions) -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true -pl $(ProjectList) -am install
             displayName: 'maven_install'
           - script: |
               cd ./sdk/spring && mvn dependency:tree>tree.txt
@@ -506,33 +507,14 @@ stages:
               python ./sdk/spring/scripts/ci_read_dptree.py
             displayName: 'dependencyTree_output'
 
-  # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
-#  - ${{if and(ne(variables['Build_for_New_Spring_Boot_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
-#      - template: archetype-java-release.yml
-#        parameters:
-#          DependsOn:
-#            - Build_for_New_Spring_Boot_Version
-#          ServiceDirectory: ${{ parameters.ServiceDirectory }}
-#          SDKType: ${{ parameters.SDKType }}
-#          Artifacts: ${{ parameters.Artifacts }}
-#          ${{ if eq(parameters.ServiceDirectory, 'template') }}:
-#            TestPipeline: true
-#          ArtifactName: packages
-#          TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
-#          TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
 
   - stage: Build_for_Last_Spring_Boot_Version
     jobs:
-      - template: /eng/pipelines/templates/jobs/ci.yml
+      - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
         parameters:
-          PublishArtifact: false
-          ServiceDirectory: ${{ parameters.ServiceDirectory }}
-          ${{ if eq(parameters.ServiceDirectory, 'template') }}:
-            TestPipeline: true
-          SDKType: ${{ parameters.SDKType }}
-          Artifacts: ${{ parameters.Artifacts }}
-          AdditionalModules: ${{ parameters.AdditionalModules }}
-          SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
+          JobTemplatePath: /eng/pipelines/templates/jobs/ci.tests.yml
+          CloudConfig:
+            Cloud: Public
           MatrixConfigs:
             - ${{ each config in parameters.MatrixConfigs }}:
                 - ${{ config }}
@@ -551,16 +533,23 @@ stages:
                 - TestGoals=.*/verify
                 - TestOptions=.*/-am
             - AZURE_TEST.*=.*/
-          PreBuildSteps:
-            - script: |
-                pip install in-place & pip install termcolor
-              displayName: 'python module install'
-            - script: |
-                python ./sdk/spring/scripts/ci_update_versions.py --sbv 2.5.7
-              displayName: 'update spring boot versions'
-            - script: |
-                python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b 2.5.7 -c 2020.0.4
-              displayName: 'insert dependency management'
+          AdditionalParameters:
+            SDKType: ${{ parameters.SDKType }}
+            ServiceDirectory: ${{ parameters.ServiceDirectory }}
+            TestPipeline: ${{ parameters.TestPipeline }}
+            Artifacts: ${{ parameters.Artifacts }}
+            AdditionalModules: ${{ parameters.AdditionalModules }}
+            SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
+            PreBuildSteps:
+              - script: |
+                  pip install in-place & pip install termcolor
+                displayName: 'python module install'
+              - script: |
+                  python ./sdk/spring/scripts/ci_update_versions.py --sbv 2.5.7
+                displayName: 'update spring boot versions'
+              - script: |
+                  python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b 2.5.7 -c 2020.0.4
+                displayName: 'insert dependency management'
       - job: 'maven_dependency'
         variables:
           - template: ../../eng/pipelines/templates/variables/globals.yml
@@ -568,6 +557,15 @@ stages:
           name: azsdk-pool-mms-ubuntu-2004-general
           vmImage: MMSUbuntu20.04
         steps:
+          - script: |
+              pip install in-place & pip install termcolor
+            displayName: 'python module install'
+          - script: |
+              python ./sdk/spring/scripts/ci_update_versions.py --sbv 2.5.7
+            displayName: 'update spring boot versions'
+          - script: |
+              python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b 2.5.7 -c 2020.0.4
+            displayName: 'insert dependency management'
           - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
             parameters:
               Paths:
@@ -604,20 +602,7 @@ stages:
           - script: |
               python ./sdk/spring/scripts/ci_read_dptree.py
             displayName: 'dependencyTree_output'
-  # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
-#  - ${{if and(ne(variables['Build_for_Last_Spring_Boot_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
-#      - template: archetype-java-release.yml
-#        parameters:
-#          DependsOn:
-#            - Build_for_Last_Spring_Boot_Version
-#          ServiceDirectory: ${{ parameters.ServiceDirectory }}
-#          SDKType: ${{ parameters.SDKType }}
-#          Artifacts: ${{ parameters.Artifacts }}
-#          ${{ if eq(parameters.ServiceDirectory, 'template') }}:
-#            TestPipeline: true
-#          ArtifactName: packages
-#          TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
-#          TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
+
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
       - template: archetype-java-release.yml
