@@ -467,6 +467,9 @@ stages:
       - job: 'maven_dependency'
         variables:
           - template: ../../eng/pipelines/templates/variables/globals.yml
+        pool:
+          name: azsdk-pool-mms-ubuntu-2004-general
+          vmImage: MMSUbuntu20.04
         steps:
           - checkout: none
           - template: ../../eng/pipelines/templates/steps/generate-project-list.yml
