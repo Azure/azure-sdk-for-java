@@ -499,17 +499,17 @@ stages:
               Paths: $(CheckoutDirectories)
               SkipDefaultCheckout: true
           - template: ../../eng/pipelines/templates/steps/install-reporting-tools.yml
-#          - task: Maven@3
-#            displayName: 'Build and Install'
-#            inputs:
-#              mavenPomFile: pom.xml
-#              goals: 'install'
-#              options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
-#              mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-#              javaHomeOption: 'JDKVersion'
-#              jdkVersionOption: $(JavaBuildVersion)
-#              jdkArchitectureOption: 'x64'
-#              publishJUnitResults: false
+          - task: Maven@3
+            displayName: 'Build and Install'
+            inputs:
+              mavenPomFile: pom.xml
+              goals: 'install'
+              options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
+              mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+              javaHomeOption: 'JDKVersion'
+              jdkVersionOption: $(JavaBuildVersion)
+              jdkArchitectureOption: 'x64'
+              publishJUnitResults: false
           - script: |
               mvn -f sdk/spring/pom.xml -P dev --batch-mode --fail-at-end -Dmaven.wagon.httpconnectionManager.ttlSeconds=60 -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true -pl $(ProjectList) -am install
             displayName: 'maven_install'
@@ -517,8 +517,8 @@ stages:
               cd ./sdk/spring && mvn dependency:tree>tree.txt
             displayName: 'maven_dependency'
           - script: |
-              cd ./sdk/spring && cat tree.txt
-            displayName: 'dependency_output'
+              python ./sdk/spring/scripts/ci_read_dptree.py
+            displayName: 'dependencyTree_output'
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build_for_New_Spring_Boot_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
@@ -576,19 +576,62 @@ stages:
                 python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b 2.5.7 -c 2020.0.4
               displayName: 'insert dependency management'
       - job: 'maven_dependency'
+        variables:
+          - template: ../../eng/pipelines/templates/variables/globals.yml
+        pool:
+          name: azsdk-pool-mms-ubuntu-2004-general
+          vmImage: MMSUbuntu20.04
         steps:
-          - script: |
-              mvn -f sdk/spring/pom.xml -P dev --batch-mode --fail-at-end -Dmaven.wagon.httpconnectionManager.ttlSeconds=60 -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true -pl
-              com.azure.spring:spring-cloud-azure-core,com.azure.spring:spring-cloud-azure-service,com.azure.spring:spring-cloud-azure-resourcemanager,com.azure.spring:spring-cloud-azure-trace-sleuth,com.azure.spring:spring-messaging-azure,com.azure.spring:spring-messaging-azure-eventhubs,com.azure.spring:spring-messaging-azure-servicebus,com.azure.spring:spring-messaging-azure-storage-queue,com.azure.spring:spring-integration-azure-core,com.azure.spring:spring-integration-azure-eventhubs,com.azure.spring:spring-integration-azure-servicebus,com.azure.spring:spring-integration-azure-storage-queue,com.azure.spring:spring-cloud-azure-autoconfigure,com.azure.spring:spring-cloud-azure-actuator,com.azure.spring:spring-cloud-azure-actuator-autoconfigure,com.azure.spring:spring-cloud-azure-starter,com.azure.spring:spring-cloud-azure-starter-actuator,com.azure.spring:spring-cloud-azure-starter-appconfiguration,com.azure.spring:spring-cloud-azure-starter-cosmos,com.azure.spring:spring-cloud-azure-starter-data-cosmos,com.azure.spring:spring-cloud-azure-starter-eventhubs,com.azure.spring:spring-cloud-azure-starter-keyvault-certificates,com.azure.spring:spring-cloud-azure-starter-keyvault-secrets,com.azure.spring:spring-cloud-azure-starter-servicebus,com.azure.spring:spring-cloud-azure-starter-servicebus-jms,com.azure.spring:spring-cloud-azure-starter-storage-blob,com.azure.spring:spring-cloud-azure-starter-storage-file-share,com.azure.spring:spring-cloud-azure-starter-storage-queue,com.azure.spring:spring-cloud-azure-starter-integration-eventhubs,com.azure.spring:spring-cloud-azure-starter-integration-servicebus,com.azure.spring:spring-cloud-azure-starter-integration-storage-queue,com.azure.spring:spring-cloud-azure-stream-binder-servicebus-core,com.azure.spring:spring-cloud-azure-stream-binder-servicebus,com.azure.spring:spring-cloud-azure-stream-binder-eventhubs,com.azure.spring:spring-cloud-azure-stream-binder-eventhubs-core,com.azure.spring:spring-cloud-azure-starter-stream-eventhubs,com.azure.spring:spring-cloud-azure-starter-stream-servicebus,com.azure.spring:spring-cloud-azure-starter-storage-queue
-              -am install
-            displayName: 'maven_install'
+          - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+            parameters:
+              Paths:
+                - 'sdk/${{ parameters.ServiceDirectory }}'
+                - '**/*.xml'
+                - '**/*.md'
+                - '.vscode/cspell.json'
+                - '!sdk/**/test-recordings'
+                - '!sdk/**/session-records'
+          - template: ../../eng/pipelines/templates/steps/generate-project-list.yml
+            parameters:
+              Artifacts: ${{ parameters.Artifacts }}
+              AdditionalModules: ${{ parameters.AdditionalModules }}
+              JobType: 'maven_dependency'
+              SDKType: ${{parameters.SDKType}}
+          - task: PythonScript@0
+            displayName: 'Generate directories variable for sparse checkout'
+            inputs:
+              scriptPath: 'eng/scripts/generate_from_source_pom.py'
+              arguments: '--set-pipeline-variable CheckoutDirectories --project-list $(ProjectList)'
+              workingDirectory: '$(System.DefaultWorkingDirectory)'
+
+          - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+            parameters:
+              Paths: $(CheckoutDirectories)
+              SkipDefaultCheckout: true
+          - template: ../../eng/pipelines/templates/steps/install-reporting-tools.yml
+          - task: Maven@3
+            displayName: 'Build and Install'
+            inputs:
+              mavenPomFile: pom.xml
+              goals: 'install'
+              options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
+              mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+              javaHomeOption: 'JDKVersion'
+              jdkVersionOption: $(JavaBuildVersion)
+              jdkArchitectureOption: 'x64'
+              publishJUnitResults: false
+#          - script: |
+#              mvn -f sdk/spring/pom.xml -P dev --batch-mode --fail-at-end -Dmaven.wagon.httpconnectionManager.ttlSeconds=60 -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true -pl
+#              com.azure.spring:spring-cloud-azure-core,com.azure.spring:spring-cloud-azure-service,com.azure.spring:spring-cloud-azure-resourcemanager,com.azure.spring:spring-cloud-azure-trace-sleuth,com.azure.spring:spring-messaging-azure,com.azure.spring:spring-messaging-azure-eventhubs,com.azure.spring:spring-messaging-azure-servicebus,com.azure.spring:spring-messaging-azure-storage-queue,com.azure.spring:spring-integration-azure-core,com.azure.spring:spring-integration-azure-eventhubs,com.azure.spring:spring-integration-azure-servicebus,com.azure.spring:spring-integration-azure-storage-queue,com.azure.spring:spring-cloud-azure-autoconfigure,com.azure.spring:spring-cloud-azure-actuator,com.azure.spring:spring-cloud-azure-actuator-autoconfigure,com.azure.spring:spring-cloud-azure-starter,com.azure.spring:spring-cloud-azure-starter-actuator,com.azure.spring:spring-cloud-azure-starter-appconfiguration,com.azure.spring:spring-cloud-azure-starter-cosmos,com.azure.spring:spring-cloud-azure-starter-data-cosmos,com.azure.spring:spring-cloud-azure-starter-eventhubs,com.azure.spring:spring-cloud-azure-starter-keyvault-certificates,com.azure.spring:spring-cloud-azure-starter-keyvault-secrets,com.azure.spring:spring-cloud-azure-starter-servicebus,com.azure.spring:spring-cloud-azure-starter-servicebus-jms,com.azure.spring:spring-cloud-azure-starter-storage-blob,com.azure.spring:spring-cloud-azure-starter-storage-file-share,com.azure.spring:spring-cloud-azure-starter-storage-queue,com.azure.spring:spring-cloud-azure-starter-integration-eventhubs,com.azure.spring:spring-cloud-azure-starter-integration-servicebus,com.azure.spring:spring-cloud-azure-starter-integration-storage-queue,com.azure.spring:spring-cloud-azure-stream-binder-servicebus-core,com.azure.spring:spring-cloud-azure-stream-binder-servicebus,com.azure.spring:spring-cloud-azure-stream-binder-eventhubs,com.azure.spring:spring-cloud-azure-stream-binder-eventhubs-core,com.azure.spring:spring-cloud-azure-starter-stream-eventhubs,com.azure.spring:spring-cloud-azure-starter-stream-servicebus,com.azure.spring:spring-cloud-azure-starter-storage-queue
+#              -am install
+#            displayName: 'maven_install'
 #                           mvn clean install -f sdk/spring/pom.xml -P dev
           - script: |
               cd ./sdk/spring && mvn dependency:tree>tree.txt
             displayName: 'maven_dependency'
           - script: |
-              cd ./sdk/spring && cat tree.txt
-            displayName: 'dependency_output'
+              python ./sdk/spring/scripts/ci_read_dptree.py
+            displayName: 'dependencyTree_output'
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build_for_Last_Spring_Boot_Version.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
       - template: archetype-java-release.yml
