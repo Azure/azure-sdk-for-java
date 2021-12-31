@@ -22,7 +22,7 @@ public final class StorageQueueHelper {
         Map<String, Object> map = new LinkedHashMap<>();
 
         map.put("id", messageItem.getMessageId());
-        map.put("body", messageItem.getMessageText());
+        map.put("body", messageItem.getBody().toString());
         map.put("dequeueCount", messageItem.getDequeueCount());
 
         return map.toString();

@@ -3,6 +3,8 @@
 
 package com.azure.spring.integration.servicebus.inbound;
 
+import com.azure.messaging.servicebus.ServiceBusMessage;
+import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.spring.integration.instrumentation.Instrumentation;
 import com.azure.spring.integration.instrumentation.InstrumentationManager;
@@ -13,6 +15,7 @@ import com.azure.spring.messaging.checkpoint.AzureCheckpointer;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import com.azure.spring.messaging.checkpoint.Checkpointer;
+import com.azure.spring.messaging.converter.AzureMessageConverter;
 import com.azure.spring.service.servicebus.processor.MessageProcessingListener;
 import com.azure.spring.service.servicebus.processor.RecordMessageProcessingListener;
 import com.azure.spring.service.servicebus.processor.consumer.ServiceBusErrorContextConsumer;
@@ -145,7 +148,7 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
      *
      * @param messageConverter the message converter
      */
-    public void setMessageConverter(ServiceBusMessageConverter messageConverter) {
+    public void setMessageConverter(AzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> messageConverter) {
         this.recordEventProcessor.setMessageConverter(messageConverter);
     }
 
@@ -176,9 +179,10 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
         this.recordEventProcessor.setInstrumentationId(instrumentationId);
 
     }
-    private class IntegrationRecordMessageProcessingListener implements RecordMessageProcessingListener {
 
-        private ServiceBusMessageConverter messageConverter = new ServiceBusMessageConverter();
+    protected class IntegrationRecordMessageProcessingListener implements RecordMessageProcessingListener {
+
+        private AzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> messageConverter = new ServiceBusMessageConverter();
         private Class<?> payloadType = byte[].class;
         private InstrumentationManager instrumentationManager;
         private String instrumentationId;
@@ -189,6 +193,9 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
                 LOGGER.error("Error occurred on entity {}. Error: {}",
                     errorContext.getEntityPath(),
                     errorContext.getException());
+                if (instrumentationManager == null) {
+                    return;
+                }
 
                 Instrumentation instrumentation = instrumentationManager.getHealthInstrumentation(instrumentationId);
                 if (instrumentation != null) {
@@ -218,8 +225,10 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
 
             if (checkpointConfig.getMode() == CheckpointMode.RECORD) {
                 checkpointer.success()
-                            .doOnSuccess(t -> logCheckpointSuccess(message))
-                            .doOnError(t -> logCheckpointFail(message, t))
+                            .doOnSuccess(t ->
+                                LOGGER.debug(String.format(MSG_SUCCESS_CHECKPOINT, message, checkpointConfig.getMode())))
+                            .doOnError(t ->
+                                LOGGER.warn(String.format(MSG_FAIL_CHECKPOINT, message), t))
                             .subscribe();
             }
         }
@@ -229,7 +238,7 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
          *
          * @param converter the converter
          */
-        public void setMessageConverter(ServiceBusMessageConverter converter) {
+        public void setMessageConverter(AzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> converter) {
             this.messageConverter = converter;
         }
 
@@ -260,28 +269,4 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
             this.instrumentationId = instrumentationId;
         }
     }
-
-    /**
-     * Log checkpoint fail.
-     *
-     * @param message the message
-     * @param t the cause of failure
-     */
-    protected void logCheckpointFail(Message<?> message, Throwable t) {
-        if (LOGGER.isWarnEnabled()) {
-            LOGGER.warn(String.format(MSG_FAIL_CHECKPOINT, message), t);
-        }
-    }
-
-    /**
-     * Log checkpoint success.
-     *
-     * @param message the message
-     */
-    protected void logCheckpointSuccess(Message<?> message) {
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(String.format(MSG_SUCCESS_CHECKPOINT, message, this.checkpointConfig.getMode()));
-        }
-    }
-
 }

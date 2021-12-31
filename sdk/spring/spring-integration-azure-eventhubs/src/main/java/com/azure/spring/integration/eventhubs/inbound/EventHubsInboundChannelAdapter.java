@@ -23,6 +23,7 @@ import com.azure.spring.messaging.checkpoint.AzureCheckpointer;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import com.azure.spring.messaging.checkpoint.Checkpointer;
+import com.azure.spring.messaging.converter.AzureMessageConverter;
 import com.azure.spring.service.eventhubs.processor.BatchEventProcessingListener;
 import com.azure.spring.service.eventhubs.processor.EventProcessingListener;
 import com.azure.spring.service.eventhubs.processor.RecordEventProcessingListener;
@@ -56,6 +57,7 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
     private final CheckpointConfig checkpointConfig;
     private InstrumentationEventProcessingListener listener;
     private EventCheckpointManager checkpointManager;
+    private Class<?> payloadType;
 
     /**
      * Construct a {@link EventHubsInboundChannelAdapter} with the specified {@link EventHubsProcessorContainer}, event Hub Name
@@ -104,9 +106,11 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
             this.listener = recordEventProcessor;
         }
 
+        if (this.payloadType != null) {
+            this.listener.setPayloadType(payloadType);
+        }
         this.checkpointManager = CheckpointManagers.of(checkpointConfig, this.listenerMode);
         this.processorContainer.subscribe(this.eventHubName, this.consumerGroup, this.listener);
-
     }
 
     @Override
@@ -124,8 +128,17 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
      *
      * @param messageConverter the message converter
      */
-    public void setMessageConverter(EventHubsMessageConverter messageConverter) {
+    public void setMessageConverter(AzureMessageConverter<EventData, EventData> messageConverter) {
         this.recordEventProcessor.setMessageConverter(messageConverter);
+    }
+
+    /**
+     * Set message converter.
+     *
+     * @param messageConverter the message converter
+     */
+    public void setBatchMessageConverter(AzureMessageConverter<EventBatchContext, EventData> messageConverter) {
+        this.batchEventProcessor.setMessageConverter(messageConverter);
     }
 
     /**
@@ -134,7 +147,7 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
      * @param payloadType the payload Type
      */
     public void setPayloadType(Class<?> payloadType) {
-        this.recordEventProcessor.setPayloadType(payloadType);
+        this.payloadType = payloadType;
     }
 
     /**
@@ -169,9 +182,14 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
     private interface InstrumentationEventProcessingListener extends EventProcessingListener {
         void setInstrumentationManager(InstrumentationManager instrumentationManager);
         void setInstrumentationId(String instrumentationId);
+        void setPayloadType(Class<?> payloadType);
         default void updateInstrumentation(ErrorContext errorContext,
                                            InstrumentationManager instrumentationManager,
                                            String instrumentationId) {
+            if (instrumentationManager == null) {
+                return;
+            }
+
             Instrumentation instrumentation = instrumentationManager.getHealthInstrumentation(instrumentationId);
             if (instrumentation != null) {
                 if (instrumentation instanceof EventHusProcessorInstrumentation) {
@@ -185,7 +203,7 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
 
     private class IntegrationRecordEventProcessingListener implements InstrumentationEventProcessingListener, RecordEventProcessingListener {
 
-        private EventHubsMessageConverter messageConverter = new EventHubsMessageConverter();
+        private AzureMessageConverter<EventData, EventData> messageConverter = new EventHubsMessageConverter();
         private Class<?> payloadType = byte[].class;
         private InstrumentationManager instrumentationManager;
         private String instrumentationId;
@@ -241,7 +259,7 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
          *
          * @param converter the converter
          */
-        public void setMessageConverter(EventHubsMessageConverter converter) {
+        public void setMessageConverter(AzureMessageConverter<EventData, EventData> converter) {
             this.messageConverter = converter;
         }
 
@@ -250,6 +268,7 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
          *
          * @param payloadType the payload type
          */
+        @Override
         public void setPayloadType(Class<?> payloadType) {
             this.payloadType = payloadType;
         }
@@ -267,7 +286,7 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
 
     private class IntegrationBatchEventProcessingListener implements InstrumentationEventProcessingListener, BatchEventProcessingListener {
 
-        private EventHubBatchMessageConverter messageConverter = new EventHubBatchMessageConverter();
+        private AzureMessageConverter<EventBatchContext, EventData> messageConverter = new EventHubBatchMessageConverter();
         private Class<?> payloadType = byte[].class;
         private InstrumentationManager instrumentationManager;
         private String instrumentationId;
@@ -300,7 +319,7 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
          *
          * @param converter the converter
          */
-        public void setMessageConverter(EventHubBatchMessageConverter converter) {
+        public void setMessageConverter(AzureMessageConverter<EventBatchContext, EventData> converter) {
             this.messageConverter = converter;
         }
 
@@ -309,6 +328,7 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
          *
          * @param payloadType the payload type
          */
+        @Override
         public void setPayloadType(Class<?> payloadType) {
             this.payloadType = payloadType;
         }

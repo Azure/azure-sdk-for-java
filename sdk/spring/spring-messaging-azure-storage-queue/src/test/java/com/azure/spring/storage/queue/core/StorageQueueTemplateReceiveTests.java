@@ -7,6 +7,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
 import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
@@ -24,13 +25,12 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
@@ -39,7 +39,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class StorageQueueTemplateReceiveTest {
+public class StorageQueueTemplateReceiveTests {
 
     private final String messageId = "1";
     private final String messageText = "test message";
@@ -58,15 +58,11 @@ public class StorageQueueTemplateReceiveTest {
     public void setup() {
         this.closeable = MockitoAnnotations.openMocks(this);
         queueMessage = new QueueMessageItem();
-        queueMessage.setMessageText(messageText);
+        queueMessage.setBody(BinaryData.fromString(messageText));
         queueMessage.setMessageId(messageId);
         queueMessage.setPopReceipt(popReceipt);
 
         final PagedResponse<QueueMessageItem> pagedResponse = new PagedResponse<QueueMessageItem>() {
-            @Override
-            public List<QueueMessageItem> getItems() {
-                return new ArrayList<>(Arrays.asList(queueMessage));
-            }
 
             @Override
             public String getContinuationToken() {
@@ -124,7 +120,7 @@ public class StorageQueueTemplateReceiveTest {
         when(mockClient.deleteMessage(this.messageId, this.popReceipt)).thenReturn(Mono.empty());
 
         final Mono<Message<?>> mono = this.operation.receiveAsync(destination);
-        assertTrue(Arrays.equals((byte[]) mono.block().getPayload(), this.queueMessage.getMessageText().getBytes()));
+        assertTrue(Arrays.equals((byte[]) mono.block().getPayload(), this.queueMessage.getBody().toBytes()));
 
         verify(this.mockClient, times(1)).receiveMessages(1,
             Duration.ofSeconds(visibilityTimeoutInSeconds));
@@ -145,6 +141,13 @@ public class StorageQueueTemplateReceiveTest {
         checkpointFuture.block();
 
         verify(this.mockClient, times(1)).deleteMessage(messageId, popReceipt);
+    }
+
+    @Test
+    public void checkpointWithInvalidMode() {
+        assertThrows(IllegalStateException.class, () -> operation.setCheckpointMode(CheckpointMode.BATCH));
+        assertThrows(IllegalStateException.class, () -> operation.setCheckpointMode(CheckpointMode.PARTITION_COUNT));
+        assertThrows(IllegalStateException.class, () -> operation.setCheckpointMode(CheckpointMode.TIME));
     }
 
     private void verifyStorageQueueRuntimeExceptionThrown(Mono<Message<?>> mono) {

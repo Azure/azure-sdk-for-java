@@ -8,7 +8,11 @@ import com.azure.spring.messaging.converter.UnaryAzureMessageConverterTest;
 import com.azure.storage.queue.models.QueueMessageItem;
 import org.springframework.messaging.Message;
 
-public class StorageQueueMessageConverterTest extends UnaryAzureMessageConverterTest<QueueMessageItem> {
+import java.nio.charset.StandardCharsets;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class StorageQueueMessageConverterTests extends UnaryAzureMessageConverterTest<QueueMessageItem> {
 
     @Override
     protected AzureMessageConverter<QueueMessageItem, QueueMessageItem> getConverter() {
@@ -22,6 +26,14 @@ public class StorageQueueMessageConverterTest extends UnaryAzureMessageConverter
 
     @Override
     protected void assertMessageHeadersEqual(QueueMessageItem azureMessage, Message<?> message) {
-
+        Class<?> payloadClass = message.getPayload().getClass();
+        if (payloadClass == String.class) {
+            assertEquals(azureMessage.getBody().toString(), message.getPayload());
+        } else if (payloadClass == byte[].class) {
+            assertEquals(azureMessage.getBody().toString(), new String((byte[]) message.getPayload(), StandardCharsets.UTF_8));
+        } else {
+            Object msg = azureMessage.getBody().toObject(payloadClass);
+            assertEquals(msg, message.getPayload());
+        }
     }
 }
