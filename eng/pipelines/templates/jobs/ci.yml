@@ -1,7 +1,4 @@
 parameters:
-  - name: PublishArtifact
-    type: boolean
-    default: true
   - name: SDKType
     type: string
     default: client
@@ -173,11 +170,10 @@ jobs:
         parameters:
           Artifacts: ${{parameters.Artifacts}}
 
-      - ${{if eq(parameters.PublishArtifact, 'true')}}:
-        - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
-          parameters:
-            ArtifactPath: $(Build.ArtifactStagingDirectory)
-            ArtifactName: '$(ArtifactName)'
+      - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+        parameters:
+          ArtifactPath: $(Build.ArtifactStagingDirectory)
+          ArtifactName: '$(ArtifactName)'
 
       - template: /eng/common/pipelines/templates/steps/detect-api-changes.yml
         parameters:
