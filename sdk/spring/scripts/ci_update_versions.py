@@ -1,6 +1,7 @@
 # Python version 3.4 or higher is required to run this script.
 #
 # This script is used to change external_dependency versions of springboot in sdk/spring.
+# Make sure 'spring_boot_{Spring boot version}_managed_external_dependencies.txt' exists before use it.
 #
 # Sample:
 #  `python .\sdk\spring\scripts\ci_update_versions.py --sbv 2.6.1`.
