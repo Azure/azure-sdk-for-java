@@ -1,12 +1,9 @@
 # Python version 3.4 or higher is required to run this script.
 #
-# Change the external_dependencies in sdk/spring for test compatibility of spring-boot version .
+# This script is used to change external_dependency versions of springboot in sdk/spring.
 #
-# How to use:
-# 1. Make sure file(`.\sdk\spring\spring_boot_SPRING_BOOT_VERSION_managed_external_dependencies.txt`) exist. If it doesn't exist, please run
-#    `.\sdk\spring\scripts\get_spring_boot_managed_external_dependencies.py` to create that file.
-# 2. Change `SPRING_BOOT_VERSION` in ci.yml for this script manually.
-# 3. Then the ci will automatically run command `python .\sdk\spring\scripts\ci_update_versions.py --sbv SPRING_BOOT_VERSION`.
+# Sample:
+#  `python .\sdk\spring\scripts\ci_update_versions.py --sbv 2.6.1`.
 #
 # The script must be run at the root of azure-sdk-for-java.
 
@@ -77,14 +74,12 @@ def load_version_map_from_file(the_file, version_map):
 
 def update_versions_all(target_folder, spring_boot_version):
     SPRING_BOOT_MANAGED_EXTERNAL_DEPENDENCIES_FILE_NAME = 'sdk/spring/scripts/spring_boot_{}_managed_external_dependencies.txt'.format(spring_boot_version)
-    # SPRING_BOOT_MANAGED_EXTERNAL_DEPENDENCIES_FILE_NAME = 'spring_boot_{}_managed_external_dependencies.txt'.format(spring_boot_version)
     external_dependency_version_map = {}
     # Read artifact version from dependency_file.
     dependency_file = SPRING_BOOT_MANAGED_EXTERNAL_DEPENDENCIES_FILE_NAME
     log.info('external_dependency_file=' + dependency_file)
     load_version_map_from_file(dependency_file, external_dependency_version_map)
     for root, _, files in os.walk(target_folder):
-        # for root, _, files in os.walk("D:/java/azure-sdk-for-java/sdk/spring/"):
         for file_name in files:
             file_path = root + os.sep + file_name
             if file_name.startswith('pom') and file_name.endswith('.xml'):
