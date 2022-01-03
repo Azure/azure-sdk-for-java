@@ -41,6 +41,8 @@ class Project:
         if dependent not in self.dependents:
             self.dependents.append(dependent)
 
+default_project = Project(None, None, None)
+
 # azure-client-sdk-parent, azure-perf-test-parent, spring-boot-starter-parent, and azure-spring-boot-test-parent are
 # valid parent POMs for Track 2 libraries.
 valid_parents = ['com.azure:azure-client-sdk-parent', 'com.azure:azure-perf-test-parent', 'org.springframework.boot:spring-boot-starter-parent', 'com.azure.spring:azure-spring-boot-test-parent']
@@ -158,10 +160,9 @@ def create_projects(project_list_identifiers: list, artifact_identifier_to_sourc
 
 
     # Once all the projects have been loaded inject their dependents by inversion the dependencies.
-    for project_identifier in projects:
-        project = projects[project_identifier]
+    for _, project in projects.items():
         for dependency in project.dependencies:
-            projects[dependency].add_dependent(project.identifier)
+            projects.get(dependency).add_dependent(project.identifier)
 
     return projects
 
@@ -267,14 +268,16 @@ def add_module_paths(module_paths: Set[str], project_identifiers: Iterable[str],
         module_paths.add(project.module_path)
 
         while project.parent_pom is not None:
-            project = projects[project.parent_pom]
-            module_paths.add(project.module_path)
+            project = projects.get(project.parent_pom, default_project)
+            if project.module_path is not None:
+                module_paths.add(project.module_path)
 
 def main():
     parser = argparse.ArgumentParser(description='Generated an aggregate POM for a From Source run.')
     parser.add_argument('--project-list', '--pl', type=str)
     parser.add_argument('--set-pipeline-variable', type=str)
     args = parser.parse_args()
+    args.project_list = "com.azure:azure-core,com.azure:azure-core-amqp,com.azure:azure-core-amqp-experimental,com.azure:azure-core-experimental,com.azure:azure-core-http-jdk-httpclient,com.azure:azure-core-http-netty,com.azure:azure-core-http-okhttp,com.azure:azure-core-management,com.azure:azure-core-serializer-avro-apache,com.azure:azure-core-serializer-json-gson,com.azure:azure-core-serializer-json-jackson,com.azure:azure-core-test,com.azure:azure-core-tracing-opentelemetry,com.azure:perf-test-core"
     if args.project_list == None:
         raise ValueError('Missing project list.')
     start_time = time.time()
