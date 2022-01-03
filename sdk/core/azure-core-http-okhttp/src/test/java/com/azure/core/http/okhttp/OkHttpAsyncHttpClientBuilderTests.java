@@ -378,27 +378,6 @@ public class OkHttpAsyncHttpClientBuilderTests {
             .verifyComplete();
     }
 
-    @Test
-    public void testToDetermineWherePrintHappens() {
-        OkHttpClient validatorClient = okHttpClientWithProxyValidation(false, Proxy.Type.HTTP);
-
-        String rawJavaNonProxyHosts = String.join("|", "localhost", "127.0.0.1", "*.microsoft.com", "*.linkedin.com");
-
-        Configuration configuration = new Configuration()
-            .put(JAVA_PROXY_PREREQUISITE, "true")
-            .put(JAVA_HTTP_PROXY_HOST, "localhost")
-            .put(JAVA_HTTP_PROXY_PORT, "12345")
-            .put(JAVA_NON_PROXY_HOSTS, rawJavaNonProxyHosts);
-
-        HttpClient okClient = new OkHttpAsyncHttpClientBuilder(validatorClient)
-            .configuration(configuration)
-            .build();
-
-        StepVerifier.create(okClient.send(new HttpRequest(HttpMethod.GET, "http://localhost")))
-            .verifyErrorMatches(throwable -> throwable.getMessage()
-                .contains(TestEventListenerValidator.EXPECTED_EXCEPTION_MESSAGE));
-    }
-
     @ParameterizedTest
     @MethodSource("buildWithConfigurationProxySupplier")
     public void buildWithConfigurationProxy(boolean shouldHaveProxy, Configuration configuration, String requestUrl) {
@@ -510,18 +489,6 @@ public class OkHttpAsyncHttpClientBuilderTests {
     private static OkHttpClient okHttpClientWithProxyValidation(boolean shouldHaveProxy, Proxy.Type proxyType) {
         return new OkHttpClient.Builder()
             .eventListener(new TestEventListenerValidator(shouldHaveProxy, proxyType))
-            // Use a custom Dispatcher and ExecutorService which overrides the uncaught exception handler.
-            // This is done to prevent the tests using this from printing their error stack trace.
-            // The reason this happens is the test throws an exception which goes uncaught in a thread, and this is an
-            // expected exception, which results in the exception and its stack trace being logged, which is very
-            // verbose.
-            .dispatcher(new Dispatcher(Executors.newFixedThreadPool(2, r -> {
-                Thread thread = new Thread(r);
-                thread.setUncaughtExceptionHandler((t, e) -> {
-                });
-
-                return thread;
-            })))
             .build();
     }
 

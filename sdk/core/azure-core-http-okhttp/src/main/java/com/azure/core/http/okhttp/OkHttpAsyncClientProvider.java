@@ -19,8 +19,8 @@ public final class OkHttpAsyncClientProvider implements HttpClientProvider {
 
     @Override
     public HttpClient createInstance() {
+        // by default use a singleton instance of http client
         DEFAULT_HTTP_CLIENT.compareAndSet(null, new OkHttpAsyncHttpClientBuilder().build());
-
         return DEFAULT_HTTP_CLIENT.get();
     }
 

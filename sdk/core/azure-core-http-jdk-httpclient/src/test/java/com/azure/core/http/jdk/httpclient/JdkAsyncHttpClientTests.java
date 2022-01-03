@@ -234,6 +234,13 @@ public class JdkAsyncHttpClientTests {
 //        assertEquals(numRequests * LONG_BODY.getBytes(StandardCharsets.UTF_8).length, numBytes);
     }
 
+    @Test
+    public void testSingletonClientInstanceCreation() {
+        HttpClient client1 = new JdkHttpClientProvider().createInstance();
+        HttpClient client2 = new JdkHttpClientProvider().createInstance();
+        Assertions.assertEquals(client1, client2);
+    }
+
     private static MessageDigest md5Digest() {
         try {
             return MessageDigest.getInstance("MD5");

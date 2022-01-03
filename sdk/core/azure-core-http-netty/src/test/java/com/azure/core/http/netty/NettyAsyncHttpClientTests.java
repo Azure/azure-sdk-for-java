@@ -18,6 +18,7 @@ import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.HttpClientOptions;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.http.Fault;
 import io.netty.handler.proxy.ProxyConnectException;
@@ -56,6 +57,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class NettyAsyncHttpClientTests {
@@ -434,6 +436,21 @@ public class NettyAsyncHttpClientTests {
             StepVerifier.create(httpPipeline.send(new HttpRequest(HttpMethod.GET, url(server, PROXY_TO_ADDRESS))))
                 .verifyError(ProxyConnectException.class);
         }
+    }
+
+    @Test
+    public void testSingletonClientInstanceCreation() {
+        HttpClient client1 = new NettyAsyncHttpClientProvider().createInstance();
+        HttpClient client2 = new NettyAsyncHttpClientProvider().createInstance();
+        assertEquals(client1, client2);
+    }
+
+    @Test
+    public void testCustomizedClientInstanceCreationNotShared() {
+        HttpClientOptions clientOptions = new HttpClientOptions().setMaximumConnectionPoolSize(500);
+        HttpClient client1 = new NettyAsyncHttpClientProvider().createInstance(clientOptions);
+        HttpClient client2 = new NettyAsyncHttpClientProvider().createInstance(clientOptions);
+        assertNotEquals(client1, client2);
     }
 
     private static Stream<Arguments> requestHeaderSupplier() {
