@@ -149,12 +149,19 @@
     <!-- This property configures whether the maven-checkstyle-plugin should be used. -->
     <checkstyle.skip>false</checkstyle.skip>
 
+    <!-- These properties configures whether maven-checkstyle-plugin should fail on errors. -->
+    <checkstyle.failOnViolation>true</checkstyle.failOnViolation>
+    <checkstyle.failsOnError>true</checkstyle.failsOnError>
+
     <!-- The following properties configure the spotbugs-maven-plugin. -->
     <!-- This property configures whether the spotbugs-maven-plugin should be used. -->
     <spotbugs.skip>false</spotbugs.skip>
 
     <!-- This property configures whether Spotbugs analysis is ran on samples and tests. Default is false. -->
     <spotbugs.includeTests>false</spotbugs.includeTests>
+
+    <!-- This property configures whether the spotbugs-maven-plugin should fail on errors. -->
+    <spotbugs.failOnError>true</spotbugs.failOnError>
 
     <!-- These properties exist for libraries using the new codesnippet-maven-plugin can easily disable the old doclet. -->
     <javadocDoclet>org.apidesign.javadoc.codesnippet.Doclet</javadocDoclet>
@@ -164,6 +171,9 @@
     <!-- The following properties configure the revapi-maven-plugin. -->
     <!-- This property configures whether the revapi-maven-plugin should run. -->
     <revapi.skip>false</revapi.skip>
+
+    <!-- This property configures whether the revapi-maven-plugin should fail on errors. -->
+    <revapi.failBuildOnProblemsFound>true</revapi.failBuildOnProblemsFound>
   </properties>
 
   <build>
@@ -545,8 +555,8 @@
             <consoleOutput>true</consoleOutput>
             <includeTestSourceDirectory>true</includeTestSourceDirectory>
             <linkXRef>true</linkXRef>
-            <failsOnError>true</failsOnError>
-            <failOnViolation>true</failOnViolation>
+            <failsOnError>${checkstyle.failsOnError}</failsOnError>
+            <failOnViolation>${checkstyle.failOnViolation}</failOnViolation>
           </configuration>
         </plugin>
 
@@ -575,7 +585,7 @@
             <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
             <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
             <fork>true</fork>
-            <failOnError>true</failOnError>
+            <failOnError>${spotbugs.failOnError}</failOnError>
             <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
             <includeTests>${spotbugs.includeTests}</includeTests>
 
@@ -744,6 +754,7 @@
           <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
           <configuration>
             <skip>${revapi.skip}</skip>
+            <convertAnalysisConfigurationFiles>true</convertAnalysisConfigurationFiles>
             <analysisConfigurationFiles>
               <configurationFile>
                 <resource>revapi/revapi.json</resource>
@@ -751,7 +762,17 @@
             </analysisConfigurationFiles>
             <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
             <checkDependencies>true</checkDependencies>
-            <failBuildOnProblemsFound>true</failBuildOnProblemsFound>
+            <failBuildOnProblemsFound>${revapi.failBuildOnProblemsFound}</failBuildOnProblemsFound>
+            <!-- The following configures reporting to file in addition to CLI reporting. -->
+            <analysisConfiguration>
+              <revapi.reporter.json id="file-report">
+                <minSeverity>NON_BREAKING</minSeverity>
+                <!--<minCriticality>documented</minCriticality>--> <!-- This is a configuration available in revapi-reporter-json 0.2.0+, enable it when upgraded -->
+                <indent>true</indent>
+                <output>${project.build.directory}/revapi.json</output>
+                <!--<keepEmptyFile>false</keepEmptyFile>--> <!-- This is a configuration available in revapi-reporter-json 0.2.0+, enable it when upgraded -->
+              </revapi.reporter.json>
+            </analysisConfiguration>
           </configuration>
           <dependencies>
             <dependency>
@@ -763,6 +784,11 @@
               <groupId>org.revapi</groupId>
               <artifactId>revapi-java</artifactId>
               <version>0.20.0</version> <!-- {x-version-update;org.revapi:revapi-java;external_dependency} -->
+            </dependency>
+            <dependency>
+              <groupId>org.revapi</groupId>
+              <artifactId>revapi-reporter-json</artifactId>
+              <version>0.1.1</version> <!-- {x-version-update;org.revapi:revapi-reporter-json;external_dependency} -->
             </dependency>
           </dependencies>
         </plugin>

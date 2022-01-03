@@ -279,6 +279,7 @@ org.mockito:mockito-core;4.0.0
 org.mockito:mockito-inline;4.0.0
 org.revapi:revapi-java;0.20.0
 org.revapi:revapi-maven-plugin;0.11.2
+org.revapi:revapi-reporter-json;0.1.1
 org.moditect:moditect-maven-plugin;1.0.0.RC1
 org.ow2.asm:asm;9.1
 com.azure.tools:codesnippet-maven-plugin;1.0.0-beta.2
