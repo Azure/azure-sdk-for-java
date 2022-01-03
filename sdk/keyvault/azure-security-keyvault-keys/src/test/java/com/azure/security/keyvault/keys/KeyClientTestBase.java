@@ -83,6 +83,11 @@ public abstract class KeyClientTestBase extends TestBase {
     }
 
     void beforeTestSetup() {
+        System.getProperties().put("IS_SKIP_ROTATION_POLICY_TEST",
+            String.valueOf(!".vault.azure.net".equals(
+                Configuration.getGlobalConfiguration()
+                    .get("KEY_VAULT_ENDPOINT_SUFFIX", ".vault.azure.net"))
+            && interceptorManager.isLiveMode()));
     }
 
     HttpPipeline getHttpPipeline(HttpClient httpClient) {

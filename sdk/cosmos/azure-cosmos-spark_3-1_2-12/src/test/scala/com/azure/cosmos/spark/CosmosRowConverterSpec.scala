@@ -164,26 +164,60 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     val colName2 = "testCol2"
     val colName3 = "testCol3"
     val colName4 = "testCol4"
+    val colName5 = "testCol5"
+    val colName6 = "testCol6"
+    val colName7 = "testCol7"
+    val colName8 = "testCol8"
+    val colName9 = "testCol9"
+    val colName10 = "testCol10"
+    val colName11 = "testCol11"
+    val colName12 = "testCol12"
     val colVal1 = 1
     val colVal2 = 0
     val colVal3 = ""
     val colVal4 = Array[Byte]()
+    val colVal5: Float = 0
+    val colVal6: Float = 0.123f
+    val colVal7: Double = 0
+    val colVal8: Double = 0.1234
+    val colVal9: Short = 0
+    val colVal10: Short = 3
+    val colVal11: Byte = 0
+    val colVal12: Byte = 4
 
     val row = new GenericRowWithSchema(
-      Array(colVal1, colVal2, colVal3, colVal4),
+      Array(
+        colVal1, colVal2, colVal3, colVal4, colVal5, colVal6, colVal7, colVal8, colVal9, colVal10, colVal11, colVal12),
       StructType(Seq(
         StructField(colName1, IntegerType),
         StructField(colName2, IntegerType),
         StructField(colName3, StringType),
-        StructField(colName4, BinaryType))))
+        StructField(colName4, BinaryType),
+        StructField(colName5, FloatType),
+        StructField(colName6, FloatType),
+        StructField(colName7, DoubleType),
+        StructField(colName8, DoubleType),
+        StructField(colName9, ShortType),
+        StructField(colName10, ShortType),
+        StructField(colName11, ByteType),
+        StructField(colName12, ByteType)
+      )))
 
     val objectNode = rowConverterInclusionNonDefault.fromRowToObjectNode(row)
     objectNode.get(colName1).asInt() shouldEqual colVal1
     objectNode.get(colName2) shouldBe null
     objectNode.get(colName3) shouldBe null
     objectNode.get(colName4) shouldBe null
+    objectNode.get(colName5) shouldBe null
+    objectNode.get(colName6).asDouble() shouldEqual colVal6.toDouble
+    objectNode.get(colName7) shouldBe null
+    objectNode.get(colName8).asDouble() shouldEqual colVal8
+    objectNode.get(colName9) shouldBe null
+    objectNode.get(colName10).asInt() shouldEqual colVal10.toInt
+    objectNode.get(colName11) shouldBe null
+    objectNode.get(colName12).asInt() shouldEqual colVal12.toInt
 
-    objectNode.toString shouldEqual s"""{"testCol1":1}"""
+    objectNode.toString shouldEqual s"""{"testCol1":1,"testCol6":0.123,"testCol8":0.1234,"testCol10":3,"testCol12":4}"""
   }
 
   "default value in spark row" should "translate to only empty valuesbeing skipped for InclusionModes.NonEmpty" in {
@@ -396,57 +430,109 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     val colName6 = "testCol6"
     val colName7 = "testCol7"
     val colName8 = "testCol8"
+    val colName9 = "testCol9"
+    val colName10 = "testCol10"
+    val colName11 = "testCol11"
+    val colName12 = "testCol12"
+    val colName13 = "testCol13"
+    val colName14 = "testCol14"
+    val colName15 = "testCol15"
+    val colName16 = "testCol16"
 
     val colVal1: Double = 3.5
     val colVal2: Float = 1e14f
     val colVal3: Long = 1000000000
     val colVal4: Decimal = Decimal(4.6)
-    val colVal5: Double = 0
-    val colVal6: Float = 0
-    val colVal7: Long = 0
-    val colVal8: Decimal = Decimal(0)
+    val colVal5: java.math.BigDecimal = new java.math.BigDecimal(4.6)
+    val colVal6: Int = 1234
+    val colVal7: Short = 123
+    val colVal8: Byte = 12
+    val colVal9: Double = 0
+    val colVal10: Float = 0
+    val colVal11: Long = 0
+    val colVal12: Decimal = Decimal(0)
+    val colVal13: java.math.BigDecimal = new java.math.BigDecimal(0)
+    val colVal14: Int = 0
+    val colVal15: Short = 0
+    val colVal16: Byte = 0
 
     val row = new GenericRowWithSchema(
-      Array(colVal1, colVal2, colVal3, colVal4, colVal5, colVal6, colVal7, colVal8),
+      Array(
+        colVal1, colVal2, colVal3, colVal4, colVal5, colVal6, colVal7, colVal8,
+        colVal9, colVal10, colVal11, colVal12, colVal13, colVal14, colVal15, colVal16
+      ),
       StructType(Seq(
         StructField(colName1, DoubleType),
         StructField(colName2, FloatType),
         StructField(colName3, LongType),
         StructField(colName4, DecimalType(precision = 2, scale = 2)),
-        StructField(colName5, DoubleType),
-        StructField(colName6, FloatType),
-        StructField(colName7, LongType),
-        StructField(colName8, DecimalType(precision = 2, scale = 2)))))
+        StructField(colName5, DecimalType.SYSTEM_DEFAULT),
+        StructField(colName6, IntegerType),
+        StructField(colName7, ShortType),
+        StructField(colName8, ByteType),
+        StructField(colName9, DoubleType),
+        StructField(colName10, FloatType),
+        StructField(colName11, LongType),
+        StructField(colName12, DecimalType(precision = 2, scale = 2)),
+        StructField(colName13, DecimalType.SYSTEM_DEFAULT),
+        StructField(colName14, IntegerType),
+        StructField(colName15, ShortType),
+        StructField(colName16, ByteType)
+      )))
 
     var objectNode = defaultRowConverter.fromRowToObjectNode(row)
     objectNode.get(colName1).asDouble() shouldEqual colVal1
     objectNode.get(colName2).asDouble() shouldEqual colVal2
     objectNode.get(colName3).asLong() shouldEqual colVal3
     Decimal(objectNode.get(colName4).asDouble()).compareTo(colVal4) shouldEqual 0
-    objectNode.get(colName5).asDouble() shouldEqual colVal5
-    objectNode.get(colName6).asDouble() shouldEqual colVal6
-    objectNode.get(colName7).asLong() shouldEqual colVal7
-    Decimal(objectNode.get(colName8).asDouble()).compareTo(colVal8) shouldEqual 0
+    new java.math.BigDecimal(objectNode.get(colName5).asDouble()).compareTo(colVal5) shouldEqual 0
+    objectNode.get(colName6).asInt() shouldEqual colVal6
+    objectNode.get(colName7).asInt() shouldEqual colVal7.toInt
+    objectNode.get(colName8).asInt() shouldEqual colVal8.toInt
+    objectNode.get(colName9).asDouble() shouldEqual colVal9
+    objectNode.get(colName10).asDouble() shouldEqual colVal10
+    objectNode.get(colName11).asLong() shouldEqual colVal11
+    Decimal(objectNode.get(colName12).asDouble()).compareTo(colVal12) shouldEqual 0
+    new java.math.BigDecimal(objectNode.get(colName13).asDouble()).compareTo(colVal13) shouldEqual 0
+    objectNode.get(colName14).asInt() shouldEqual colVal14
+    objectNode.get(colName15).asInt() shouldEqual colVal15.toInt
+    objectNode.get(colName16).asInt() shouldEqual colVal16.toInt
 
     objectNode = rowConverterInclusionNonEmpty.fromRowToObjectNode(row)
     objectNode.get(colName1).asDouble() shouldEqual colVal1
     objectNode.get(colName2).asDouble() shouldEqual colVal2
     objectNode.get(colName3).asLong() shouldEqual colVal3
     Decimal(objectNode.get(colName4).asDouble()).compareTo(colVal4) shouldEqual 0
-    objectNode.get(colName5).asDouble() shouldEqual colVal5
-    objectNode.get(colName6).asDouble() shouldEqual colVal6
-    objectNode.get(colName7).asLong() shouldEqual colVal7
-    Decimal(objectNode.get(colName8).asDouble()).compareTo(colVal8) shouldEqual 0
+    new java.math.BigDecimal(objectNode.get(colName5).asDouble()).compareTo(colVal5) shouldEqual 0
+    objectNode.get(colName6).asInt() shouldEqual colVal6
+    objectNode.get(colName7).asInt() shouldEqual colVal7.toInt
+    objectNode.get(colName8).asInt() shouldEqual colVal8.toInt
+    objectNode.get(colName9).asDouble() shouldEqual colVal9
+    objectNode.get(colName10).asDouble() shouldEqual colVal10
+    objectNode.get(colName11).asLong() shouldEqual colVal11
+    Decimal(objectNode.get(colName12).asDouble()).compareTo(colVal12) shouldEqual 0
+    new java.math.BigDecimal(objectNode.get(colName13).asDouble()).compareTo(colVal13) shouldEqual 0
+    objectNode.get(colName14).asInt() shouldEqual colVal14
+    objectNode.get(colName15).asInt() shouldEqual colVal15.toInt
+    objectNode.get(colName16).asInt() shouldEqual colVal16.toInt
 
     objectNode = rowConverterInclusionNonDefault.fromRowToObjectNode(row)
     objectNode.get(colName1).asDouble() shouldEqual colVal1
     objectNode.get(colName2).asDouble() shouldEqual colVal2
     objectNode.get(colName3).asLong() shouldEqual colVal3
     Decimal(objectNode.get(colName4).asDouble()).compareTo(colVal4) shouldEqual 0
-    objectNode.get(colName5) shouldEqual null
-    objectNode.get(colName6) shouldEqual null
-    objectNode.get(colName7) shouldEqual null
-    objectNode.get(colName8) shouldEqual null
+    new java.math.BigDecimal(objectNode.get(colName5).asDouble()).compareTo(colVal5) shouldEqual 0
+    objectNode.get(colName6).asInt() shouldEqual colVal6
+    objectNode.get(colName7).asInt() shouldEqual colVal7.toInt
+    objectNode.get(colName8).asInt() shouldEqual colVal8.toInt
+    objectNode.get(colName9) shouldEqual null
+    objectNode.get(colName10) shouldEqual null
+    objectNode.get(colName11) shouldEqual null
+    objectNode.get(colName12) shouldEqual null
+    objectNode.get(colName13) shouldEqual null
+    objectNode.get(colName14) shouldEqual null
+    objectNode.get(colName15) shouldEqual null
+    objectNode.get(colName16) shouldEqual null
   }
 
   "map in spark row" should "translate to ObjectNode" in {

@@ -41,7 +41,9 @@ com.squareup.okhttp3:okhttp;4.9.2
 com.zaxxer:HikariCP;4.0.3
 commons-codec:commons-codec;1.15
 commons-net:commons-net;3.6
-io.fabric8:kubernetes-client;4.13.3
+io.cloudevents:cloudevents-api;2.2.0
+io.cloudevents:cloudevents-core;2.2.0
+io.fabric8:kubernetes-client;5.9.0
 io.github.bonigarcia:webdrivermanager;4.3.1
 io.micrometer:micrometer-core;1.8.0
 io.micrometer:micrometer-registry-azure-monitor;1.8.0
@@ -150,13 +152,13 @@ org.springframework:spring-webflux;5.3.13
 org.springframework.boot:spring-boot-starter-parent;2.6.1
 
 ## Spring cloud dependency versions
-org.springframework.cloud:spring-cloud-dependencies;2020.0.4
-org.springframework.cloud:spring-cloud-starter-bootstrap;3.0.4
-org.springframework.cloud:spring-cloud-bus;3.0.3
-org.springframework.cloud:spring-cloud-context;3.0.4
-org.springframework.cloud:spring-cloud-starter-stream-kafka;3.1.4
-org.springframework.cloud:spring-cloud-stream-binder-test;3.1.4
-org.springframework.cloud:spring-cloud-stream;3.1.4
+org.springframework.cloud:spring-cloud-dependencies;2021.0.0
+org.springframework.cloud:spring-cloud-starter-bootstrap;3.1.0
+org.springframework.cloud:spring-cloud-bus;3.1.0
+org.springframework.cloud:spring-cloud-context;3.1.0
+org.springframework.cloud:spring-cloud-starter-stream-kafka;3.2.1
+org.springframework.cloud:spring-cloud-stream-binder-test;3.2.1
+org.springframework.cloud:spring-cloud-stream;3.2.1
 
 pl.pragmatists:JUnitParams;1.1.1
 
@@ -276,6 +278,7 @@ org.mockito:mockito-core;4.0.0
 org.mockito:mockito-inline;4.0.0
 org.revapi:revapi-java;0.20.0
 org.revapi:revapi-maven-plugin;0.11.2
+org.revapi:revapi-reporter-json;0.1.1
 org.moditect:moditect-maven-plugin;1.0.0.RC1
 org.ow2.asm:asm;9.1
 com.azure.tools:codesnippet-maven-plugin;1.0.0-beta.2
