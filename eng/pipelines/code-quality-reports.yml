@@ -84,7 +84,7 @@ jobs:
           # Skip failing on Checkstyle and Spotbugs errors.
           # This is being done as the error reporting will be captured, so if any error reports exist the build can be
           # failed later allowing all libraries to be validated.
-          options: '$(DefaultOptions) -T 1C -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -pl "!com.azure:azure-sdk-from-source"'
+          options: '$(DefaultOptions) -T 1C -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -pl "!com.azure:azure-sdk-from-source,!com.azure.spring:azure-spring-boot-test-parent,!com.azure.spring:azure-spring-cloud-test-parent"'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaBuildVersion)
