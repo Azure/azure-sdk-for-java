@@ -183,14 +183,16 @@ class LockRenewalOperation implements AutoCloseable {
         final OffsetDateTime now = OffsetDateTime.now();
         Duration initialInterval = Duration.between(now, initialLockedUntil);
 
-        if (initialInterval.isNegative()) {
-            logger.info("Duration was negative. now[{}] lockedUntil[{}]", now, initialLockedUntil);
+        if (initialInterval.isNegative() || initialInterval.toMillis() < 400) {
+            logger.info("Duration was negative or less than 400ms. now[{}] lockedUntil[{}]", now, initialLockedUntil);
             initialInterval = Duration.ZERO;
         } else {
             // Adjust the interval, so we can buffer time for the time it'll take to refresh.
-            final Duration adjusted = MessageUtils.adjustServerTimeout(initialInterval);
+            final long bufferInMilliSec = Math.min(initialInterval.toMillis() / 2, maxLockRenewalDuration.toMillis());
+            final Duration adjusted = Duration.ofMillis(initialInterval.toMillis() - bufferInMilliSec);
             if (adjusted.isNegative()) {
-                logger.info("Adjusted duration is negative. Adjusted: {}ms", initialInterval.toMillis());
+                logger.info("Adjusted duration is negative. Adjusted: {}ms. Buffer: {}ms. maxLockRenewalDuration :{}ms",
+                    initialInterval.toMillis(), bufferInMilliSec, maxLockRenewalDuration.toMillis());
             } else {
                 initialInterval = adjusted;
             }
