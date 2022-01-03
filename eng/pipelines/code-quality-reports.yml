@@ -69,7 +69,7 @@ jobs:
         inputs:
           mavenPomFile: ClientFromSourcePom.xml
           goals: 'install'
-          options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip -Dspotbugs.skip -Drevapi.skip=true -Djacoco.skip=true'
+          options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip -Dspotbugs.skip -Drevapi.skip=true -Djacoco.skip=true --quiet'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaBuildVersion)
@@ -80,20 +80,20 @@ jobs:
         displayName: 'Run Linting'
         inputs:
           mavenPomFile: ClientFromSourcePom.xml
-          goals: 'checkstyle:check spotbugs:check revapi:check'
-          # Skip failing on Checkstyle, RevApi, and Spotbugs errors.
+          goals: 'checkstyle:check spotbugs:check'
+          # Skip failing on Checkstyle and Spotbugs errors.
           # This is being done as the error reporting will be captured, so if any error reports exist the build can be
           # failed later allowing all libraries to be validated.
-          options: '$(DefaultOptions) -T 2C -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -Drevapi.failBuildOnProblemsFound=false'
+          options: '$(DefaultOptions) -T 2C -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -pl "!com.azure:azure-sdk-from-source"'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaBuildVersion)
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
 
-      - task: Powershell@2
+      - task: PowerShell@2
         inputs:
-          filePath: /eng/pipelines/scripts/Get-Linting-Reports.ps1
+          filePath: $(System.DefaultWorkingDirectory)/eng/pipelines/scripts/Get-Linting-Reports.ps1
           arguments: -OutputDirectory $(Build.ArtifactStagingDirectory)/linting-reports
           pwsh: true
           workingDirectory: $(Pipeline.Workspace)
