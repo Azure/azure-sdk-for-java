@@ -5,7 +5,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-boot-bom</artifactId>
-  <version>3.12.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-bom;current} -->
+  <version>3.12.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-bom;current} -->
   <packaging>pom</packaging>
 
   <name>Azure Spring Boot BOM</name>
@@ -60,7 +60,7 @@
       <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-spring-data-cosmos</artifactId>
-        <version>3.14.0</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;dependency} -->
+        <version>3.15.0</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;dependency} -->
       </dependency>
       <dependency>
         <groupId>com.microsoft.azure</groupId>

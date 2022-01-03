@@ -14,10 +14,12 @@ private object CosmosConstants {
   val currentName: String =
     CoreUtils.getProperties(propertiesFileName).get("name")
   val userAgentSuffix = s"SparkConnector/$currentName/$currentVersion"
+  val initialMaxRetryIntervalForTransientFailuresInMs = 100
   val maxRetryIntervalForTransientFailuresInMs = 5000
   val maxRetryCountForTransientFailures = 100
   val defaultDirectRequestTimeoutInSeconds = 10L
   val feedRangesCacheIntervalInMinutes = 1
+  val defaultIoThreadCountFactorPerCore = 4
 
   object Names {
     val ItemsDataSourceShortName = "cosmos.oltp"
@@ -30,12 +32,13 @@ private object CosmosConstants {
   }
 
   object StatusCodes {
-    val Conflict = 409
-    val ServiceUnavailable = 503
-    val InternalServerError = 500
-    val Gone = 410
-    val Timeout = 408
-    val PreconditionFailed = 412
+    val Conflict = HttpConstants.StatusCodes.CONFLICT
+    val ServiceUnavailable = HttpConstants.StatusCodes.SERVICE_UNAVAILABLE
+    val InternalServerError = HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR
+    val Gone = HttpConstants.StatusCodes.GONE
+    val Timeout = HttpConstants.StatusCodes.REQUEST_TIMEOUT
+    val PreconditionFailed = HttpConstants.StatusCodes.PRECONDITION_FAILED
+    val NotFound = HttpConstants.StatusCodes.NOTFOUND
   }
 
   object SystemProperties {

@@ -245,16 +245,9 @@ jobs:
           ServiceDirectory: "template"
           TestPipeline: ${{ parameters.TestPipeline }}
 
-      - task: PowerShell@2
-        displayName: 'Verify Readmes'
-        inputs:
-          pwsh: true
-          workingDirectory: $(Agent.BuildDirectory)
-          filePath: eng/common/scripts/Verify-Readme.ps1
-          arguments: >
-            -DocWardenVersion $(DocWardenVersion)
-            -ScanPath ${{ parameters.ServiceDirectory }}
-            -SettingsPath $(Build.SourcesDirectory)/eng/.docsettings.yml
+      - template: /eng/common/pipelines/templates/steps/verify-readme.yml
+        parameters:
+          ScanPath: $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}
 
       - template: /eng/common/pipelines/templates/steps/verify-links.yml
         parameters:

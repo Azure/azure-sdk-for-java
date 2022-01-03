@@ -44,6 +44,7 @@ public final class ConnectionPolicy {
     private int maxRequestsPerConnection;
     private Duration tcpNetworkRequestTimeout;
     private boolean tcpConnectionEndpointRediscoveryEnabled;
+    private int ioThreadCountPerCoreFactor;
 
 
     private boolean clientTelemetryEnabled;
@@ -69,6 +70,10 @@ public final class ConnectionPolicy {
         this.maxRequestsPerConnection = directConnectionConfig.getMaxRequestsPerConnection();
         this.tcpNetworkRequestTimeout = directConnectionConfig.getNetworkRequestTimeout();
         this.tcpConnectionEndpointRediscoveryEnabled = directConnectionConfig.isConnectionEndpointRediscoveryEnabled();
+        this.ioThreadCountPerCoreFactor = ImplementationBridgeHelpers
+            .DirectConnectionConfigHelper
+            .getDirectConnectionConfigAccessor()
+            .getIoThreadCountPerCoreFactor(directConnectionConfig);
     }
 
     private ConnectionPolicy(ConnectionMode connectionMode) {
@@ -538,6 +543,13 @@ public final class ConnectionPolicy {
 
     public void setClientTelemetryEnabled(boolean clientTelemetryEnabled) {
         this.clientTelemetryEnabled = clientTelemetryEnabled;
+    }
+
+    public int getIoThreadCountPerCoreFactor() { return this.ioThreadCountPerCoreFactor; }
+
+    public ConnectionPolicy setIoThreadCountPerCoreFactor(int ioThreadCountPerCoreFactor) {
+        this.ioThreadCountPerCoreFactor = ioThreadCountPerCoreFactor;
+        return this;
     }
 
     @Override

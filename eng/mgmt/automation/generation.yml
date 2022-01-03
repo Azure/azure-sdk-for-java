@@ -12,7 +12,7 @@ variables:
 - name: MAVEN_OPTS
   value: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
 - name: NodeVersion
-  value: '14.x'
+  value: '16.x'
 
 steps:
 - bash: |
@@ -28,7 +28,6 @@ steps:
 
 - bash: |
     npm install -g autorest
-    npm install
   displayName: 'Install autorest'
 
 - bash: |

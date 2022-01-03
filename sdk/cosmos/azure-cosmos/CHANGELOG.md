@@ -1,14 +1,22 @@
 ## Release History
 
-### 4.23.0-beta.1 (Unreleased)
-
+### 4.24.0 (2021-12-21)
 #### Features Added
+* Added implementation for `CosmosAuthorizationTokenResolver`.
+* Scoped session token per partition level for gateway call.
 
-#### Breaking Changes
+#### Key Bug Fixes
+* Fixed issue causing CosmosException with statusCode 0 to be thrown on connectivity issues for Gateway.
+* Addressed potential race condition in `ChangeFeedProcessor` when check-pointing current state.
 
-#### Bugs Fixed
+### 4.23.0 (2021-12-10)
+#### Features Added
+* Added `setMaxMicroBatchConcurrency` and `getMaxMicroBatchConcurrency` in `CosmosBulkExecutionOptions`.
 
-#### Other Changes
+#### Key Bug Fixes
+* Bulk execution improvement triggering a flush when total payload size exceeds the max payload size limit.
+* Bulk execution improvement shortening the flush interval when the `Flux` of incoming operations signals completion.
+* Fixed metadata cache refresh scenario on collection recreate for gateway mode.
 
 ### 4.22.0 (2021-12-03)
 #### Features Added
