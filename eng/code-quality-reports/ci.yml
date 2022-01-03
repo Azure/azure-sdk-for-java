@@ -9,6 +9,7 @@ trigger:
   paths:
     include:
       - eng/code-quality-reports/
+      - eng/pipelines/code-quality-reports.yml
 
 pr:
   branches:
@@ -20,6 +21,7 @@ pr:
   paths:
     include:
       - eng/code-quality-reports/
+      - eng/pipelines/code-quality-reports.yml
 
 extends:
   template: /eng/pipelines/code-quality-reports.yml
