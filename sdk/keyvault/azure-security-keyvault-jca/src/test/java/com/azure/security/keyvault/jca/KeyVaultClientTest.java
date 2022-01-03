@@ -3,89 +3,41 @@
 
 package com.azure.security.keyvault.jca;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
+import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
-import java.security.cert.Certificate;
-import java.util.List;
-
-import static com.azure.security.keyvault.jca.UriUtil.AAD_LOGIN_URI_CN;
-import static com.azure.security.keyvault.jca.UriUtil.AAD_LOGIN_URI_DE;
-import static com.azure.security.keyvault.jca.UriUtil.AAD_LOGIN_URI_GLOBAL;
-import static com.azure.security.keyvault.jca.UriUtil.AAD_LOGIN_URI_US;
-import static com.azure.security.keyvault.jca.UriUtil.KEY_VAULT_BASE_URI_CN;
-import static com.azure.security.keyvault.jca.UriUtil.KEY_VAULT_BASE_URI_DE;
-import static com.azure.security.keyvault.jca.UriUtil.KEY_VAULT_BASE_URI_GLOBAL;
-import static com.azure.security.keyvault.jca.UriUtil.KEY_VAULT_BASE_URI_US;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
 public class KeyVaultClientTest {
+    private static KeyVaultClient keyVaultClient;
+    private static String certificateName;
 
-    private static final String KEY_VAULT_TEST_URI_GLOBAL = "https://fake.vault.azure.net/";
-    private static final String KEY_VAULT_TEST_URI_CN = "https://fake.vault.azure.cn/";
-    private static final String KEY_VAULT_TEST_URI_US = "https://fake.vault.usgovcloudapi.net/";
-    private static final String KEY_VAULT_TEST_URI_DE = "https://fake.vault.microsoftazure.de/";
-
-    private KeyVaultClient keyVaultClient;
-
-    /**
-     * Test initialization of keyVaultBaseUri and aadAuthenticationUrl.
-     */
-    @Test
-    public void testInitializationOfGlobalURI() {
-        keyVaultClient = new KeyVaultClient(KEY_VAULT_TEST_URI_GLOBAL, null);
-        Assertions.assertEquals(keyVaultClient.getKeyVaultBaseUri(), KEY_VAULT_BASE_URI_GLOBAL);
-        Assertions.assertEquals(keyVaultClient.getAadAuthenticationUrl(), AAD_LOGIN_URI_GLOBAL);
+    @BeforeAll
+    public static void setEnvironmentProperty() {
+        keyVaultClient = new KeyVaultClient(
+            PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_ENDPOINT"),
+            PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_TENANT_ID"),
+            PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CLIENT_ID"),
+            PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CLIENT_SECRET"));
+        certificateName = PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CERTIFICATE_NAME");
     }
 
     @Test
-    public void testInitializationOfCNURI() {
-        keyVaultClient = new KeyVaultClient(KEY_VAULT_TEST_URI_CN, null);
-        Assertions.assertEquals(keyVaultClient.getKeyVaultBaseUri(), KEY_VAULT_BASE_URI_CN);
-        Assertions.assertEquals(keyVaultClient.getAadAuthenticationUrl(), AAD_LOGIN_URI_CN);
-    }
-
-    @Test
-    public void testInitializationOfUSURI() {
-        keyVaultClient = new KeyVaultClient(KEY_VAULT_TEST_URI_US, null);
-        Assertions.assertEquals(keyVaultClient.getKeyVaultBaseUri(), KEY_VAULT_BASE_URI_US);
-        Assertions.assertEquals(keyVaultClient.getAadAuthenticationUrl(), AAD_LOGIN_URI_US);
-    }
-
-    @Test
-    public void testInitializationOfDEURI() {
-        keyVaultClient = new KeyVaultClient(KEY_VAULT_TEST_URI_DE, null);
-        Assertions.assertEquals(keyVaultClient.getKeyVaultBaseUri(), KEY_VAULT_BASE_URI_DE);
-        Assertions.assertEquals(keyVaultClient.getAadAuthenticationUrl(), AAD_LOGIN_URI_DE);
-    }
-
-    @Test
-    @Disabled
     public void testGetAliases() {
-        List<String> result = getKeyVaultClient().getAliases();
-        assertNotNull(result);
+        assertTrue(keyVaultClient.getAliases().contains(certificateName));
     }
 
     @Test
-    @Disabled
     public void testGetCertificate() {
-        Certificate certificate = getKeyVaultClient().getCertificate("myalias");
-        assertNotNull(certificate);
+        assertNotNull(keyVaultClient.getCertificate(certificateName));
     }
 
     @Test
-    @Disabled
     public void testGetKey() {
-        assertNull(getKeyVaultClient().getKey("myalias", null));
-    }
-
-    private KeyVaultClient getKeyVaultClient() {
-        String keyVaultUri = System.getProperty("azure.keyvault.uri");
-        String tenantId = System.getProperty("azure.keyvault.tenant-id");
-        String clientId = System.getProperty("azure.keyvault.client-id");
-        String clientSecret = System.getProperty("azure.keyvault.client-secret");
-        return new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret);
+        assertNotNull(keyVaultClient.getKey(certificateName, null));
     }
 }

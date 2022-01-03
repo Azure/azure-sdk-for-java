@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -14,10 +13,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** An application security group in a resource group. */
-@JsonFlatten
 @Fluent
-public class ApplicationSecurityGroupInner extends Resource {
+public final class ApplicationSecurityGroupInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationSecurityGroupInner.class);
+
+    /*
+     * Properties of the application security group.
+     */
+    @JsonProperty(value = "properties")
+    private ApplicationSecurityGroupPropertiesFormat innerProperties;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
@@ -26,24 +30,19 @@ public class ApplicationSecurityGroupInner extends Resource {
     private String etag;
 
     /*
-     * The resource GUID property of the application security group resource.
-     * It uniquely identifies a resource, even if the user changes its name or
-     * migrate the resource across subscriptions or resource groups.
-     */
-    @JsonProperty(value = "properties.resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
-    private String resourceGuid;
-
-    /*
-     * The provisioning state of the application security group resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
      * Resource ID.
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /**
+     * Get the innerProperties property: Properties of the application security group.
+     *
+     * @return the innerProperties value.
+     */
+    private ApplicationSecurityGroupPropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
@@ -52,26 +51,6 @@ public class ApplicationSecurityGroupInner extends Resource {
      */
     public String etag() {
         return this.etag;
-    }
-
-    /**
-     * Get the resourceGuid property: The resource GUID property of the application security group resource. It uniquely
-     * identifies a resource, even if the user changes its name or migrate the resource across subscriptions or resource
-     * groups.
-     *
-     * @return the resourceGuid value.
-     */
-    public String resourceGuid() {
-        return this.resourceGuid;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the application security group resource.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
     }
 
     /**
@@ -109,10 +88,33 @@ public class ApplicationSecurityGroupInner extends Resource {
     }
 
     /**
+     * Get the resourceGuid property: The resource GUID property of the application security group resource. It uniquely
+     * identifies a resource, even if the user changes its name or migrate the resource across subscriptions or resource
+     * groups.
+     *
+     * @return the resourceGuid value.
+     */
+    public String resourceGuid() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceGuid();
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the application security group resource.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

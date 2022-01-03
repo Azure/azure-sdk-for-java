@@ -1,0 +1,968 @@
+[
+  {
+    "name": "io.netty.channel.ChannelException"
+  },
+  {
+    "name": "io.netty.channel.unix.Buffer"
+  },
+  {
+    "name": "io.netty.channel.unix.DatagramSocketAddress",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "byte[]",
+          "int",
+          "int",
+          "int",
+          "io.netty.channel.unix.DatagramSocketAddress"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "io.netty.channel.unix.ErrorsStaticallyReferencedJniMethods"
+  },
+  {
+    "name": "io.netty.channel.unix.FileDescriptor"
+  },
+  {
+    "name": "io.netty.channel.unix.LimitsStaticallyReferencedJniMethods"
+  },
+  {
+    "name": "io.netty.channel.unix.Socket"
+  },
+  {
+    "name": "io.netty.handler.ssl.ReferenceCountedOpenSslClientContext$ExtendedTrustManagerVerifyCallback"
+  },
+  {
+    "name": "io.netty.handler.ssl.ReferenceCountedOpenSslContext$AbstractCertificateVerifier",
+    "methods": [
+      {
+        "name": "verify",
+        "parameterTypes": [
+          "long",
+          "byte[][]",
+          "java.lang.String"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "io.netty.resolver.dns.macos.DnsResolver[]"
+  },
+  {
+    "name": "io.netty.internal.tcnative.Library"
+  },
+  {
+    "name": "io.netty.internal.tcnative.Buffer",
+    "methods": [
+      {
+        "name": "size",
+        "parameterTypes": [
+          "java.nio.ByteBuffer"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "io.netty.internal.tcnative.NativeStaticallyReferencedJniMethods"
+  },
+  {
+    "name": "io.netty.internal.tcnative.SSL",
+    "methods": [
+      {
+        "name": "version",
+        "parameterTypes": []
+      },
+      {
+        "name": "versionString",
+        "parameterTypes": []
+      },
+      {
+        "name": "initialize",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "getLastError",
+        "parameterTypes": []
+      },
+      {
+        "name": "newSSL",
+        "parameterTypes": [
+          "long",
+          "boolean"
+        ]
+      },
+      {
+        "name": "getError",
+        "parameterTypes": [
+          "long",
+          "int"
+        ]
+      },
+      {
+        "name": "bioSetByteBuffer",
+        "parameterTypes": [
+          "long",
+          "long",
+          "int",
+          "boolean"
+        ]
+      },
+      {
+        "name": "bioClearByteBuffer",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "bioFlushByteBuffer",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "bioLengthByteBuffer",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "bioLengthNonApplication",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "sslPending",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "writeToSSL",
+        "parameterTypes": [
+          "long",
+          "long",
+          "int"
+        ]
+      },
+      {
+        "name": "readFromSSL",
+        "parameterTypes": [
+          "long",
+          "long",
+          "int"
+        ]
+      },
+      {
+        "name": "getShutdown",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "setShutdown",
+        "parameterTypes": [
+          "long",
+          "int"
+        ]
+      },
+      {
+        "name": "freeSSL",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "freeBIO",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "shutdownSSL",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "getLastErrorNumber",
+        "parameterTypes": []
+      },
+      {
+        "name": "getCipherForSSL",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "getVersion",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "doHandshake",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "isInInit",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "getNextProtoNegotiated",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "getAlpnSelected",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "getPeerCertChain",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "getPeerCertificate",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "getErrorString",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "getTime",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "getTimeout",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "setTimeout",
+        "parameterTypes": [
+          "long",
+          "long"
+        ]
+      },
+      {
+        "name": "setVerify",
+        "parameterTypes": [
+          "long",
+          "int",
+          "int"
+        ]
+      },
+      {
+        "name": "setOptions",
+        "parameterTypes": [
+          "long",
+          "int"
+        ]
+      },
+      {
+        "name": "clearOptions",
+        "parameterTypes": [
+          "long",
+          "int"
+        ]
+      },
+      {
+        "name": "getOptions",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "setMode",
+        "parameterTypes": [
+          "long",
+          "int"
+        ]
+      },
+      {
+        "name": "getMode",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "getMaxWrapOverhead",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "getCiphers",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "setCipherSuites",
+        "parameterTypes": [
+          "long",
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setCipherSuites",
+        "parameterTypes": [
+          "long",
+          "java.lang.String",
+          "boolean"
+        ]
+      },
+      {
+        "name": "getSessionId",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "getHandshakeCount",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "clearError",
+        "parameterTypes": []
+      },
+      {
+        "name": "setTlsExtHostName",
+        "parameterTypes": [
+          "long",
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setHostNameValidation",
+        "parameterTypes": [
+          "long",
+          "int",
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "authenticationMethods",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "setCertificateChainBio",
+        "parameterTypes": [
+          "long",
+          "long",
+          "boolean"
+        ]
+      },
+      {
+        "name": "setCertificateBio",
+        "parameterTypes": [
+          "long",
+          "long",
+          "long",
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "loadPrivateKeyFromEngine",
+        "parameterTypes": [
+          "java.lang.String",
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "parsePrivateKey",
+        "parameterTypes": [
+          "long",
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "freePrivateKey",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "parseX509Chain",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "freeX509Chain",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "setKeyMaterialServerSide",
+        "parameterTypes": [
+          "long",
+          "long",
+          "long"
+        ]
+      },
+      {
+        "name": "setKeyMaterial",
+        "parameterTypes": [
+          "long",
+          "long",
+          "long"
+        ]
+      },
+      {
+        "name": "setKeyMaterialClientSide",
+        "parameterTypes": [
+          "long",
+          "long",
+          "long",
+          "long",
+          "long"
+        ]
+      },
+      {
+        "name": "setSession",
+        "parameterTypes": [
+          "long",
+          "long"
+        ]
+      },
+      {
+        "name": "setOcspResponse",
+        "parameterTypes": [
+          "long",
+          "byte[]"
+        ]
+      },
+      {
+        "name": "getOcspResponse",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "fipsModeSet",
+        "parameterTypes": [
+          "int"
+        ]
+      },
+      {
+        "name": "getSniHostname",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "getSigAlgs",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "getMasterKey",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "getServerRandom",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "getClientRandom",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "getTask",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "isSessionReused",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "setSession",
+        "parameterTypes": [
+          "long",
+          "long"
+        ]
+      },
+      {
+        "name": "getSession",
+        "parameterTypes": [
+          "long"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "io.netty.internal.tcnative.SSLContext",
+    "methods": [
+      {
+        "name": "make",
+        "parameterTypes": [
+          "int",
+          "int"
+        ]
+      },
+      {
+        "name": "free",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "setContextId",
+        "parameterTypes": [
+          "long",
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setOptions",
+        "parameterTypes": [
+          "long",
+          "int"
+        ]
+      },
+      {
+        "name": "getOptions",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "clearOptions",
+        "parameterTypes": [
+          "long",
+          "int"
+        ]
+      },
+      {
+        "name": "setCipherSuite",
+        "parameterTypes": [
+          "long",
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setCipherSuite",
+        "parameterTypes": [
+          "long",
+          "java.lang.String",
+          "boolean"
+        ]
+      },
+      {
+        "name": "setCertificateChainFile",
+        "parameterTypes": [
+          "long",
+          "java.lang.String",
+          "boolean"
+        ]
+      },
+      {
+        "name": "setCertificateChainBio",
+        "parameterTypes": [
+          "long",
+          "long",
+          "boolean"
+        ]
+      },
+      {
+        "name": "setCertificate",
+        "parameterTypes": [
+          "long",
+          "java.lang.String",
+          "java.lang.String",
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setCertificateBio",
+        "parameterTypes": [
+          "long",
+          "long",
+          "long",
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setSessionCacheSize",
+        "parameterTypes": [
+          "long",
+          "long"
+        ]
+      },
+      {
+        "name": "getSessionCacheSize",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "setSessionCacheTimeout",
+        "parameterTypes": [
+          "long",
+          "long"
+        ]
+      },
+      {
+        "name": "getSessionCacheTimeout",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "setSessionCacheMode",
+        "parameterTypes": [
+          "long",
+          "long"
+        ]
+      },
+      {
+        "name": "getSessionCacheMode",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "sessionAccept",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "sessionAcceptGood",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "sessionAcceptRenegotiate",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "sessionCacheFull",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "sessionCbHits",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "sessionConnect",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "sessionConnectGood",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "sessionConnectRenegotiate",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "sessionHits",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "sessionMisses",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "sessionNumber",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "sessionTimeouts",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "sessionTicketKeyNew",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "sessionTicketKeyResume",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "sessionTicketKeyRenew",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "sessionTicketKeyFail",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "setCACertificateBio",
+        "parameterTypes": [
+          "long",
+          "long"
+        ]
+      },
+      {
+        "name": "setVerify",
+        "parameterTypes": [
+          "long",
+          "int",
+          "int"
+        ]
+      },
+      {
+        "name": "setCertVerifyCallback",
+        "parameterTypes": [
+          "long",
+          "io.netty.internal.tcnative.CertificateVerifier"
+        ]
+      },
+      {
+        "name": "setCertRequestedCallback",
+        "parameterTypes": [
+          "long",
+          "io.netty.internal.tcnative.CertificateRequestedCallback"
+        ]
+      },
+      {
+        "name": "setCertificateCallback",
+        "parameterTypes": [
+          "long",
+          "io.netty.internal.tcnative.CertificateCallback"
+        ]
+      },
+      {
+        "name": "setSniHostnameMatcher",
+        "parameterTypes": [
+          "long",
+          "io.netty.internal.tcnative.SniHostNameMatcher"
+        ]
+      },
+      {
+        "name": "setNpnProtos",
+        "parameterTypes": [
+          "long",
+          "java.lang.String[]",
+          "int"
+        ]
+      },
+      {
+        "name": "setAlpnProtos",
+        "parameterTypes": [
+          "long",
+          "java.lang.String[]",
+          "int"
+        ]
+      },
+      {
+        "name": "setTmpDHLength",
+        "parameterTypes": [
+          "long",
+          "int"
+        ]
+      },
+      {
+        "name": "setSessionIdContext",
+        "parameterTypes": [
+          "long",
+          "byte[]"
+        ]
+      },
+      {
+        "name": "setMode",
+        "parameterTypes": [
+          "long",
+          "int"
+        ]
+      },
+      {
+        "name": "getMode",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "enableOcsp",
+        "parameterTypes": [
+          "long",
+          "boolean"
+        ]
+      },
+      {
+        "name": "disableOcsp",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "getSslCtx",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "setUseTasks",
+        "parameterTypes": [
+          "long",
+          "boolean"
+        ]
+      },
+      {
+        "name": "setPrivateKeyMethod",
+        "parameterTypes": [
+          "long",
+          "io.netty.internal.tcnative.SSLPrivateKeyMethod"
+        ]
+      },
+      {
+        "name": "setSSLSessionCache",
+        "parameterTypes": [
+          "long",
+          "io.netty.internal.tcnative.SSLSessionCache"
+        ]
+      },
+      {
+        "name": "setNumTickets",
+        "parameterTypes": [
+          "long",
+          "int"
+        ]
+      },
+      {
+        "name": "setSessionTicketKeys0",
+        "parameterTypes": [
+          "long",
+          "byte[]"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "io.netty.channel.kqueue.KQueueStaticallyReferencedJniMethods"
+  },
+  {
+    "name": "io.netty.channel.kqueue.Native"
+  },
+  {
+    "name": "io.netty.channel.kqueue.BsdSocket",
+    "methods": [
+      {
+        "name": "sendFile",
+        "parameterTypes": [
+          "int",
+          "io.netty.channel.DefaultFileRegion",
+          "long",
+          "long",
+          "long"
+        ]
+      },
+      {
+        "name": "getAcceptFilter",
+        "parameterTypes": [
+          "int"
+        ]
+      },
+      {
+        "name": "getTcpNoPush",
+        "parameterTypes": [
+          "int"
+        ]
+      },
+      {
+        "name": "getSndLowAt",
+        "parameterTypes": [
+          "int"
+        ]
+      },
+      {
+        "name": "getPeerCredentials",
+        "parameterTypes": [
+          "int"
+        ]
+      },
+      {
+        "name": "setAcceptFilter",
+        "parameterTypes": [
+          "int",
+          "java.lang.String",
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setTcpNoPush",
+        "parameterTypes": [
+          "int",
+          "int"
+        ]
+      },
+      {
+        "name": "setSndLowAt",
+        "parameterTypes": [
+          "int",
+          "int"
+        ]
+      }
+    ]
+  }
+]

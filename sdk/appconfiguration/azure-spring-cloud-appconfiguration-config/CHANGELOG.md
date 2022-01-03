@@ -1,5 +1,38 @@
 # Release History
 
+## 2.3.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+* Fixed a bug where `spring.cloud.application` was still used in some locations. This caused a refresh bug where a `null` value was used on refresh. `spring.cloud.application` is replaced by `key-filter`.
+
+### Other Changes
+
+## 2.2.0 (2021-11-25)
+
+* Fixed a bug where JsonNode type was passed to Spring instead of a String, when the JsonNode was a number Spring had issues resolving the value.
+
+## 2.1.1 (2021-09-28)
+
+### Bugs Fixed
+
+* Fixed usage of `null` for watch keys. Updates returned `null` labels automatically to `\0`.
+* Reworked Feature Flag watching to make sure all changes are detected. Such as new or deleted feature flags.
+
+### Other Changes
+
+* Updated Tracing to check for Key Vault and Dev usage.
+
+## 2.1.0 (2021-09-05)
+
+* Add Health Indicator with the property `management.endpoint.health.azure-app-configuration.enabled` to enable the endpoint.
+* Added Secret Resolver with use of `KeyVaultSecretProvider` which enables overriding connecting to Key Vault with client provided values.
+* Update to JUnit 5 from JUnit 4
+
 ## 2.0.0 (2021-07-20)
 
 * GA of 2.0.0 version, no changes from 2.0.0-beta.2 version.

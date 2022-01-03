@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation.batch;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.TransactionalBatchOperationResult;
 import com.azure.cosmos.implementation.HttpConstants.StatusCodes;
 import com.azure.cosmos.implementation.HttpConstants.SubStatusCodes;
 import com.azure.cosmos.implementation.IRetryPolicy;
@@ -16,6 +15,7 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
+import com.azure.cosmos.models.CosmosBatchOperationResult;
 import reactor.core.publisher.Mono;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -47,7 +47,7 @@ final class BulkOperationRetryPolicy implements IRetryPolicy {
         this.resourceThrottleRetryPolicy = resourceThrottleRetryPolicy;
     }
 
-    final Mono<ShouldRetryResult> shouldRetry(final TransactionalBatchOperationResult result) {
+    final Mono<ShouldRetryResult> shouldRetry(final CosmosBatchOperationResult result) {
 
         checkNotNull(result, "expected non-null result");
 

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -20,6 +21,12 @@ public final class VnetRoute {
      */
     @JsonProperty(value = "staticRoutes")
     private List<StaticRoute> staticRoutes;
+
+    /*
+     * The list of references to HubBgpConnection objects.
+     */
+    @JsonProperty(value = "bgpConnections", access = JsonProperty.Access.WRITE_ONLY)
+    private List<SubResource> bgpConnections;
 
     /**
      * Get the staticRoutes property: List of all Static Routes.
@@ -39,6 +46,15 @@ public final class VnetRoute {
     public VnetRoute withStaticRoutes(List<StaticRoute> staticRoutes) {
         this.staticRoutes = staticRoutes;
         return this;
+    }
+
+    /**
+     * Get the bgpConnections property: The list of references to HubBgpConnection objects.
+     *
+     * @return the bgpConnections value.
+     */
+    public List<SubResource> bgpConnections() {
+        return this.bgpConnections;
     }
 
     /**

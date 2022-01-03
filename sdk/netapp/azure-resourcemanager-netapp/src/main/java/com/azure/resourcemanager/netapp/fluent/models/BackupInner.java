@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.models.BackupType;
@@ -14,9 +13,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Backup of a Volume. */
-@JsonFlatten
 @Fluent
-public class BackupInner extends ProxyResource {
+public final class BackupInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupInner.class);
 
     /*
@@ -26,59 +24,10 @@ public class BackupInner extends ProxyResource {
     private String location;
 
     /*
-     * UUID v4 used to identify the Backup
+     * Backup Properties
      */
-    @JsonProperty(value = "properties.backupId", access = JsonProperty.Access.WRITE_ONLY)
-    private String backupId;
-
-    /*
-     * The creation date of the backup
-     */
-    @JsonProperty(value = "properties.creationDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime creationDate;
-
-    /*
-     * Azure lifecycle management
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * Size of backup
-     */
-    @JsonProperty(value = "properties.size", access = JsonProperty.Access.WRITE_ONLY)
-    private Long size;
-
-    /*
-     * Label for backup
-     */
-    @JsonProperty(value = "properties.label")
-    private String label;
-
-    /*
-     * Type of backup Manual or Scheduled
-     */
-    @JsonProperty(value = "properties.backupType", access = JsonProperty.Access.WRITE_ONLY)
-    private BackupType backupType;
-
-    /*
-     * Failure reason
-     */
-    @JsonProperty(value = "properties.failureReason", access = JsonProperty.Access.WRITE_ONLY)
-    private String failureReason;
-
-    /*
-     * Volume name
-     */
-    @JsonProperty(value = "properties.volumeName", access = JsonProperty.Access.WRITE_ONLY)
-    private String volumeName;
-
-    /*
-     * Manual backup an already existing snapshot. This will always be false
-     * for scheduled backups and true/false for manual backups
-     */
-    @JsonProperty(value = "properties.useExistingSnapshot")
-    private Boolean useExistingSnapshot;
+    @JsonProperty(value = "properties", required = true)
+    private BackupProperties innerProperties = new BackupProperties();
 
     /**
      * Get the location property: Resource location.
@@ -101,21 +50,30 @@ public class BackupInner extends ProxyResource {
     }
 
     /**
-     * Get the backupId property: UUID v4 used to identify the Backup.
+     * Get the innerProperties property: Backup Properties.
+     *
+     * @return the innerProperties value.
+     */
+    private BackupProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the backupId property: backupId UUID v4 used to identify the Backup.
      *
      * @return the backupId value.
      */
     public String backupId() {
-        return this.backupId;
+        return this.innerProperties() == null ? null : this.innerProperties().backupId();
     }
 
     /**
-     * Get the creationDate property: The creation date of the backup.
+     * Get the creationDate property: name The creation date of the backup.
      *
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
-        return this.creationDate;
+        return this.innerProperties() == null ? null : this.innerProperties().creationDate();
     }
 
     /**
@@ -124,7 +82,7 @@ public class BackupInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -133,7 +91,7 @@ public class BackupInner extends ProxyResource {
      * @return the size value.
      */
     public Long size() {
-        return this.size;
+        return this.innerProperties() == null ? null : this.innerProperties().size();
     }
 
     /**
@@ -142,7 +100,7 @@ public class BackupInner extends ProxyResource {
      * @return the label value.
      */
     public String label() {
-        return this.label;
+        return this.innerProperties() == null ? null : this.innerProperties().label();
     }
 
     /**
@@ -152,17 +110,20 @@ public class BackupInner extends ProxyResource {
      * @return the BackupInner object itself.
      */
     public BackupInner withLabel(String label) {
-        this.label = label;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackupProperties();
+        }
+        this.innerProperties().withLabel(label);
         return this;
     }
 
     /**
-     * Get the backupType property: Type of backup Manual or Scheduled.
+     * Get the backupType property: backupType Type of backup Manual or Scheduled.
      *
      * @return the backupType value.
      */
     public BackupType backupType() {
-        return this.backupType;
+        return this.innerProperties() == null ? null : this.innerProperties().backupType();
     }
 
     /**
@@ -171,7 +132,7 @@ public class BackupInner extends ProxyResource {
      * @return the failureReason value.
      */
     public String failureReason() {
-        return this.failureReason;
+        return this.innerProperties() == null ? null : this.innerProperties().failureReason();
     }
 
     /**
@@ -180,7 +141,7 @@ public class BackupInner extends ProxyResource {
      * @return the volumeName value.
      */
     public String volumeName() {
-        return this.volumeName;
+        return this.innerProperties() == null ? null : this.innerProperties().volumeName();
     }
 
     /**
@@ -190,7 +151,7 @@ public class BackupInner extends ProxyResource {
      * @return the useExistingSnapshot value.
      */
     public Boolean useExistingSnapshot() {
-        return this.useExistingSnapshot;
+        return this.innerProperties() == null ? null : this.innerProperties().useExistingSnapshot();
     }
 
     /**
@@ -201,7 +162,10 @@ public class BackupInner extends ProxyResource {
      * @return the BackupInner object itself.
      */
     public BackupInner withUseExistingSnapshot(Boolean useExistingSnapshot) {
-        this.useExistingSnapshot = useExistingSnapshot;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackupProperties();
+        }
+        this.innerProperties().withUseExistingSnapshot(useExistingSnapshot);
         return this;
     }
 
@@ -215,6 +179,13 @@ public class BackupInner extends ProxyResource {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property location in model BackupInner"));
+        }
+        if (innerProperties() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property innerProperties in model BackupInner"));
+        } else {
+            innerProperties().validate();
         }
     }
 }

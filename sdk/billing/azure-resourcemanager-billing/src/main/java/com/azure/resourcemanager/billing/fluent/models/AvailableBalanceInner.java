@@ -4,8 +4,7 @@
 
 package com.azure.resourcemanager.billing.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.Amount;
@@ -13,16 +12,24 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The latest Azure credit balance. This is the balance available for pay now. */
-@JsonFlatten
-@Immutable
-public class AvailableBalanceInner extends ProxyResource {
+@Fluent
+public final class AvailableBalanceInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableBalanceInner.class);
 
     /*
-     * Balance amount.
+     * The properties of available balance.
      */
-    @JsonProperty(value = "properties.amount", access = JsonProperty.Access.WRITE_ONLY)
-    private Amount amount;
+    @JsonProperty(value = "properties")
+    private AvailableBalanceProperties innerProperties;
+
+    /**
+     * Get the innerProperties property: The properties of available balance.
+     *
+     * @return the innerProperties value.
+     */
+    private AvailableBalanceProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the amount property: Balance amount.
@@ -30,7 +37,7 @@ public class AvailableBalanceInner extends ProxyResource {
      * @return the amount value.
      */
     public Amount amount() {
-        return this.amount;
+        return this.innerProperties() == null ? null : this.innerProperties().amount();
     }
 
     /**
@@ -39,8 +46,8 @@ public class AvailableBalanceInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (amount() != null) {
-            amount().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

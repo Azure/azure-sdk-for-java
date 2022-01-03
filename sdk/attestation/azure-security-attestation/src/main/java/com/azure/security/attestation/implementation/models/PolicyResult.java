@@ -7,6 +7,7 @@ package com.azure.security.attestation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.CoreUtils;
+import com.azure.security.attestation.models.PolicyModification;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The result of a policy certificate modification. */

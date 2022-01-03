@@ -1,6 +1,43 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.1.2 (2021-11-17)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` to 1.0.6
+- Upgraded `azure-core` to 1.22.0
+
+## 1.1.1 (2021-10-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` to 1.0.5
+- Upgraded `azure-communication-identity` to 1.1.3
+- Upgraded `azure-core` to 1.21.0
+
+## 1.1.0 (2021-09-15)
+- Added javadoc code samples
+- Removed redundant overload `ChatThreadAsyncClient.sendTypingNotification(TypingNotificationOptions options)`
+- Upgraded `azure-communication-common` to 1.0.4
+
+## 1.1.0-beta.2 (2021-08-10)
+- Fix version of dependency on azure-communication-common
+
+## 1.1.0-beta.1 (2021-08-10)
 - Added method `ChatThreadAsyncClient.listParticipants(ListParticipantsOptions listParticipantsOptions)`
 - Added method `ChatThreadAsyncClient.listReadReceipts(ListReadReceiptOptions listReadReceiptOptions)`
 - Added support for metadata in messages.

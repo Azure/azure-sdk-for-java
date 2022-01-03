@@ -53,8 +53,8 @@ public final class DataControllersImpl implements DataControllers {
         this.serviceClient().delete(resourceGroupName, dataControllerName);
     }
 
-    public Response<Void> deleteWithResponse(String resourceGroupName, String dataControllerName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, dataControllerName, context);
+    public void delete(String resourceGroupName, String dataControllerName, Context context) {
+        this.serviceClient().delete(resourceGroupName, dataControllerName, context);
     }
 
     public DataControllerResource getByResourceGroup(String resourceGroupName, String dataControllerName) {
@@ -139,10 +139,10 @@ public final class DataControllersImpl implements DataControllers {
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'dataControllers'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, dataControllerName, Context.NONE).getValue();
+        this.delete(resourceGroupName, dataControllerName, Context.NONE);
     }
 
-    public Response<Void> deleteByIdWithResponse(String id, Context context) {
+    public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw logger
@@ -159,7 +159,7 @@ public final class DataControllersImpl implements DataControllers {
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'dataControllers'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, dataControllerName, context);
+        this.delete(resourceGroupName, dataControllerName, context);
     }
 
     private DataControllersClient serviceClient() {

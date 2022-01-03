@@ -70,7 +70,7 @@ public final class ManageVirtualMachineScaleSetWithUnmanagedDisks {
         final String storageAccountName3 = Utils.randomResourceName(azureResourceManager, "stg3", 24);
 
         final String userName = "tirekicker";
-        final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
+        final String sshKey = Utils.sshPublicKey();
 
         final String apacheInstallScript = "https://raw.githubusercontent.com/anuchandy/azure-libraries-for-java/master/azure-samples/src/main/resources/install_apache.sh";
         final String installCommand = "bash install_apache.sh";

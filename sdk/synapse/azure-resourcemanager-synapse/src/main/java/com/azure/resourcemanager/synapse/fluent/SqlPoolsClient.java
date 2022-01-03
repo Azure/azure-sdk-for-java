@@ -57,7 +57,7 @@ public interface SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL Analytics pool.
+     * @return sQL pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SqlPoolInner update(
@@ -74,7 +74,7 @@ public interface SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL Analytics pool.
+     * @return sQL pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SqlPoolInner> updateWithResponse(
@@ -94,9 +94,9 @@ public interface SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL Analytics pool.
+     * @return sQL pool.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginCreate(
         String resourceGroupName, String workspaceName, String sqlPoolName, SqlPoolInner sqlPoolInfo);
 
@@ -111,9 +111,9 @@ public interface SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL Analytics pool.
+     * @return sQL pool.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginCreate(
         String resourceGroupName, String workspaceName, String sqlPoolName, SqlPoolInner sqlPoolInfo, Context context);
 
@@ -127,7 +127,7 @@ public interface SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL Analytics pool.
+     * @return sQL pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SqlPoolInner create(String resourceGroupName, String workspaceName, String sqlPoolName, SqlPoolInner sqlPoolInfo);
@@ -143,7 +143,7 @@ public interface SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL Analytics pool.
+     * @return sQL pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SqlPoolInner create(
@@ -160,7 +160,7 @@ public interface SqlPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginDelete(
         String resourceGroupName, String workspaceName, String sqlPoolName);
 
@@ -176,7 +176,7 @@ public interface SqlPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginDelete(
         String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
 
@@ -217,7 +217,7 @@ public interface SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pools.
+     * @return sQL pool collection.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SqlPoolInner> listByWorkspace(String resourceGroupName, String workspaceName);
@@ -231,7 +231,7 @@ public interface SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pools.
+     * @return sQL pool collection.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SqlPoolInner> listByWorkspace(String resourceGroupName, String workspaceName, Context context);
@@ -247,7 +247,7 @@ public interface SqlPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginPause(
         String resourceGroupName, String workspaceName, String sqlPoolName);
 
@@ -263,7 +263,7 @@ public interface SqlPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginPause(
         String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
 
@@ -307,7 +307,7 @@ public interface SqlPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginResume(
         String resourceGroupName, String workspaceName, String sqlPoolName);
 
@@ -323,7 +323,7 @@ public interface SqlPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginResume(
         String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
 

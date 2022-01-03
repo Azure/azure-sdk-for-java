@@ -12,10 +12,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.batch.fluent.BatchAccountsClient;
 import com.azure.resourcemanager.batch.fluent.models.BatchAccountInner;
 import com.azure.resourcemanager.batch.fluent.models.BatchAccountKeysInner;
+import com.azure.resourcemanager.batch.fluent.models.OutboundEnvironmentEndpointInner;
 import com.azure.resourcemanager.batch.models.BatchAccount;
 import com.azure.resourcemanager.batch.models.BatchAccountKeys;
 import com.azure.resourcemanager.batch.models.BatchAccountRegenerateKeyParameters;
 import com.azure.resourcemanager.batch.models.BatchAccounts;
+import com.azure.resourcemanager.batch.models.OutboundEnvironmentEndpoint;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BatchAccountsImpl implements BatchAccounts {
@@ -139,6 +141,20 @@ public final class BatchAccountsImpl implements BatchAccounts {
         } else {
             return null;
         }
+    }
+
+    public PagedIterable<OutboundEnvironmentEndpoint> listOutboundNetworkDependenciesEndpoints(
+        String resourceGroupName, String accountName) {
+        PagedIterable<OutboundEnvironmentEndpointInner> inner =
+            this.serviceClient().listOutboundNetworkDependenciesEndpoints(resourceGroupName, accountName);
+        return Utils.mapPage(inner, inner1 -> new OutboundEnvironmentEndpointImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<OutboundEnvironmentEndpoint> listOutboundNetworkDependenciesEndpoints(
+        String resourceGroupName, String accountName, Context context) {
+        PagedIterable<OutboundEnvironmentEndpointInner> inner =
+            this.serviceClient().listOutboundNetworkDependenciesEndpoints(resourceGroupName, accountName, context);
+        return Utils.mapPage(inner, inner1 -> new OutboundEnvironmentEndpointImpl(inner1, this.manager()));
     }
 
     public BatchAccount getById(String id) {

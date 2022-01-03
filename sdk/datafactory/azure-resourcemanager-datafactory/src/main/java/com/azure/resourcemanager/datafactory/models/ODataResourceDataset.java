@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.ODataResourceDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,36 +17,23 @@ import java.util.Map;
 /** The Open Data Protocol (OData) resource dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("ODataResource")
-@JsonFlatten
 @Fluent
-public class ODataResourceDataset extends Dataset {
+public final class ODataResourceDataset extends Dataset {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ODataResourceDataset.class);
 
     /*
-     * The OData resource path. Type: string (or Expression with resultType
-     * string).
+     * OData dataset properties.
      */
-    @JsonProperty(value = "typeProperties.path")
-    private Object path;
+    @JsonProperty(value = "typeProperties")
+    private ODataResourceDatasetTypeProperties innerTypeProperties;
 
     /**
-     * Get the path property: The OData resource path. Type: string (or Expression with resultType string).
+     * Get the innerTypeProperties property: OData dataset properties.
      *
-     * @return the path value.
+     * @return the innerTypeProperties value.
      */
-    public Object path() {
-        return this.path;
-    }
-
-    /**
-     * Set the path property: The OData resource path. Type: string (or Expression with resultType string).
-     *
-     * @param path the path value to set.
-     * @return the ODataResourceDataset object itself.
-     */
-    public ODataResourceDataset withPath(Object path) {
-        this.path = path;
-        return this;
+    private ODataResourceDatasetTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -99,6 +86,29 @@ public class ODataResourceDataset extends Dataset {
     }
 
     /**
+     * Get the path property: The OData resource path. Type: string (or Expression with resultType string).
+     *
+     * @return the path value.
+     */
+    public Object path() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().path();
+    }
+
+    /**
+     * Set the path property: The OData resource path. Type: string (or Expression with resultType string).
+     *
+     * @param path the path value to set.
+     * @return the ODataResourceDataset object itself.
+     */
+    public ODataResourceDataset withPath(Object path) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new ODataResourceDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withPath(path);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -106,5 +116,8 @@ public class ODataResourceDataset extends Dataset {
     @Override
     public void validate() {
         super.validate();
+        if (innerTypeProperties() != null) {
+            innerTypeProperties().validate();
+        }
     }
 }

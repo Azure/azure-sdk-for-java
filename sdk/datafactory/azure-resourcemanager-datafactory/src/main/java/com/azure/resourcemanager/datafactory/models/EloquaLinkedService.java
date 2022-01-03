@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.EloquaLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,208 +17,23 @@ import java.util.Map;
 /** Eloqua server linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Eloqua")
-@JsonFlatten
 @Fluent
-public class EloquaLinkedService extends LinkedService {
+public final class EloquaLinkedService extends LinkedService {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EloquaLinkedService.class);
 
     /*
-     * The endpoint of the Eloqua server. (i.e. eloqua.example.com)
+     * Eloqua server linked service properties.
      */
-    @JsonProperty(value = "typeProperties.endpoint", required = true)
-    private Object endpoint;
-
-    /*
-     * The site name and user name of your Eloqua account in the form:
-     * sitename/username. (i.e. Eloqua/Alice)
-     */
-    @JsonProperty(value = "typeProperties.username", required = true)
-    private Object username;
-
-    /*
-     * The password corresponding to the user name.
-     */
-    @JsonProperty(value = "typeProperties.password")
-    private SecretBase password;
-
-    /*
-     * Specifies whether the data source endpoints are encrypted using HTTPS.
-     * The default value is true.
-     */
-    @JsonProperty(value = "typeProperties.useEncryptedEndpoints")
-    private Object useEncryptedEndpoints;
-
-    /*
-     * Specifies whether to require the host name in the server's certificate
-     * to match the host name of the server when connecting over SSL. The
-     * default value is true.
-     */
-    @JsonProperty(value = "typeProperties.useHostVerification")
-    private Object useHostVerification;
-
-    /*
-     * Specifies whether to verify the identity of the server when connecting
-     * over SSL. The default value is true.
-     */
-    @JsonProperty(value = "typeProperties.usePeerVerification")
-    private Object usePeerVerification;
-
-    /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
-    private Object encryptedCredential;
+    @JsonProperty(value = "typeProperties", required = true)
+    private EloquaLinkedServiceTypeProperties innerTypeProperties = new EloquaLinkedServiceTypeProperties();
 
     /**
-     * Get the endpoint property: The endpoint of the Eloqua server. (i.e. eloqua.example.com).
+     * Get the innerTypeProperties property: Eloqua server linked service properties.
      *
-     * @return the endpoint value.
+     * @return the innerTypeProperties value.
      */
-    public Object endpoint() {
-        return this.endpoint;
-    }
-
-    /**
-     * Set the endpoint property: The endpoint of the Eloqua server. (i.e. eloqua.example.com).
-     *
-     * @param endpoint the endpoint value to set.
-     * @return the EloquaLinkedService object itself.
-     */
-    public EloquaLinkedService withEndpoint(Object endpoint) {
-        this.endpoint = endpoint;
-        return this;
-    }
-
-    /**
-     * Get the username property: The site name and user name of your Eloqua account in the form: sitename/username.
-     * (i.e. Eloqua/Alice).
-     *
-     * @return the username value.
-     */
-    public Object username() {
-        return this.username;
-    }
-
-    /**
-     * Set the username property: The site name and user name of your Eloqua account in the form: sitename/username.
-     * (i.e. Eloqua/Alice).
-     *
-     * @param username the username value to set.
-     * @return the EloquaLinkedService object itself.
-     */
-    public EloquaLinkedService withUsername(Object username) {
-        this.username = username;
-        return this;
-    }
-
-    /**
-     * Get the password property: The password corresponding to the user name.
-     *
-     * @return the password value.
-     */
-    public SecretBase password() {
-        return this.password;
-    }
-
-    /**
-     * Set the password property: The password corresponding to the user name.
-     *
-     * @param password the password value to set.
-     * @return the EloquaLinkedService object itself.
-     */
-    public EloquaLinkedService withPassword(SecretBase password) {
-        this.password = password;
-        return this;
-    }
-
-    /**
-     * Get the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
-     * The default value is true.
-     *
-     * @return the useEncryptedEndpoints value.
-     */
-    public Object useEncryptedEndpoints() {
-        return this.useEncryptedEndpoints;
-    }
-
-    /**
-     * Set the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
-     * The default value is true.
-     *
-     * @param useEncryptedEndpoints the useEncryptedEndpoints value to set.
-     * @return the EloquaLinkedService object itself.
-     */
-    public EloquaLinkedService withUseEncryptedEndpoints(Object useEncryptedEndpoints) {
-        this.useEncryptedEndpoints = useEncryptedEndpoints;
-        return this;
-    }
-
-    /**
-     * Get the useHostVerification property: Specifies whether to require the host name in the server's certificate to
-     * match the host name of the server when connecting over SSL. The default value is true.
-     *
-     * @return the useHostVerification value.
-     */
-    public Object useHostVerification() {
-        return this.useHostVerification;
-    }
-
-    /**
-     * Set the useHostVerification property: Specifies whether to require the host name in the server's certificate to
-     * match the host name of the server when connecting over SSL. The default value is true.
-     *
-     * @param useHostVerification the useHostVerification value to set.
-     * @return the EloquaLinkedService object itself.
-     */
-    public EloquaLinkedService withUseHostVerification(Object useHostVerification) {
-        this.useHostVerification = useHostVerification;
-        return this;
-    }
-
-    /**
-     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
-     * SSL. The default value is true.
-     *
-     * @return the usePeerVerification value.
-     */
-    public Object usePeerVerification() {
-        return this.usePeerVerification;
-    }
-
-    /**
-     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
-     * SSL. The default value is true.
-     *
-     * @param usePeerVerification the usePeerVerification value to set.
-     * @return the EloquaLinkedService object itself.
-     */
-    public EloquaLinkedService withUsePeerVerification(Object usePeerVerification) {
-        this.usePeerVerification = usePeerVerification;
-        return this;
-    }
-
-    /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @return the encryptedCredential value.
-     */
-    public Object encryptedCredential() {
-        return this.encryptedCredential;
-    }
-
-    /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @param encryptedCredential the encryptedCredential value to set.
-     * @return the EloquaLinkedService object itself.
-     */
-    public EloquaLinkedService withEncryptedCredential(Object encryptedCredential) {
-        this.encryptedCredential = encryptedCredential;
-        return this;
+    private EloquaLinkedServiceTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -250,6 +65,177 @@ public class EloquaLinkedService extends LinkedService {
     }
 
     /**
+     * Get the endpoint property: The endpoint of the Eloqua server. (i.e. eloqua.example.com).
+     *
+     * @return the endpoint value.
+     */
+    public Object endpoint() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().endpoint();
+    }
+
+    /**
+     * Set the endpoint property: The endpoint of the Eloqua server. (i.e. eloqua.example.com).
+     *
+     * @param endpoint the endpoint value to set.
+     * @return the EloquaLinkedService object itself.
+     */
+    public EloquaLinkedService withEndpoint(Object endpoint) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new EloquaLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEndpoint(endpoint);
+        return this;
+    }
+
+    /**
+     * Get the username property: The site name and user name of your Eloqua account in the form: sitename/username.
+     * (i.e. Eloqua/Alice).
+     *
+     * @return the username value.
+     */
+    public Object username() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().username();
+    }
+
+    /**
+     * Set the username property: The site name and user name of your Eloqua account in the form: sitename/username.
+     * (i.e. Eloqua/Alice).
+     *
+     * @param username the username value to set.
+     * @return the EloquaLinkedService object itself.
+     */
+    public EloquaLinkedService withUsername(Object username) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new EloquaLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withUsername(username);
+        return this;
+    }
+
+    /**
+     * Get the password property: The password corresponding to the user name.
+     *
+     * @return the password value.
+     */
+    public SecretBase password() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().password();
+    }
+
+    /**
+     * Set the password property: The password corresponding to the user name.
+     *
+     * @param password the password value to set.
+     * @return the EloquaLinkedService object itself.
+     */
+    public EloquaLinkedService withPassword(SecretBase password) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new EloquaLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withPassword(password);
+        return this;
+    }
+
+    /**
+     * Get the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
+     * The default value is true.
+     *
+     * @return the useEncryptedEndpoints value.
+     */
+    public Object useEncryptedEndpoints() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().useEncryptedEndpoints();
+    }
+
+    /**
+     * Set the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
+     * The default value is true.
+     *
+     * @param useEncryptedEndpoints the useEncryptedEndpoints value to set.
+     * @return the EloquaLinkedService object itself.
+     */
+    public EloquaLinkedService withUseEncryptedEndpoints(Object useEncryptedEndpoints) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new EloquaLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withUseEncryptedEndpoints(useEncryptedEndpoints);
+        return this;
+    }
+
+    /**
+     * Get the useHostVerification property: Specifies whether to require the host name in the server's certificate to
+     * match the host name of the server when connecting over SSL. The default value is true.
+     *
+     * @return the useHostVerification value.
+     */
+    public Object useHostVerification() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().useHostVerification();
+    }
+
+    /**
+     * Set the useHostVerification property: Specifies whether to require the host name in the server's certificate to
+     * match the host name of the server when connecting over SSL. The default value is true.
+     *
+     * @param useHostVerification the useHostVerification value to set.
+     * @return the EloquaLinkedService object itself.
+     */
+    public EloquaLinkedService withUseHostVerification(Object useHostVerification) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new EloquaLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withUseHostVerification(useHostVerification);
+        return this;
+    }
+
+    /**
+     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
+     * SSL. The default value is true.
+     *
+     * @return the usePeerVerification value.
+     */
+    public Object usePeerVerification() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().usePeerVerification();
+    }
+
+    /**
+     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
+     * SSL. The default value is true.
+     *
+     * @param usePeerVerification the usePeerVerification value to set.
+     * @return the EloquaLinkedService object itself.
+     */
+    public EloquaLinkedService withUsePeerVerification(Object usePeerVerification) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new EloquaLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withUsePeerVerification(usePeerVerification);
+        return this;
+    }
+
+    /**
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @return the encryptedCredential value.
+     */
+    public Object encryptedCredential() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
+    }
+
+    /**
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @param encryptedCredential the encryptedCredential value to set.
+     * @return the EloquaLinkedService object itself.
+     */
+    public EloquaLinkedService withEncryptedCredential(Object encryptedCredential) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new EloquaLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEncryptedCredential(encryptedCredential);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -257,18 +243,13 @@ public class EloquaLinkedService extends LinkedService {
     @Override
     public void validate() {
         super.validate();
-        if (endpoint() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property endpoint in model EloquaLinkedService"));
-        }
-        if (username() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property username in model EloquaLinkedService"));
-        }
-        if (password() != null) {
-            password().validate();
+                    new IllegalArgumentException(
+                        "Missing required property innerTypeProperties in model EloquaLinkedService"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

@@ -214,7 +214,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -282,7 +282,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -310,7 +310,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Virtual Machine Scale Set Extension.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualMachineScaleSetExtensionInner>, VirtualMachineScaleSetExtensionInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -326,7 +326,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                 this.client.getHttpPipeline(),
                 VirtualMachineScaleSetExtensionInner.class,
                 VirtualMachineScaleSetExtensionInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -342,7 +342,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Virtual Machine Scale Set Extension.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualMachineScaleSetExtensionInner>, VirtualMachineScaleSetExtensionInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -376,7 +376,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Virtual Machine Scale Set Extension.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineScaleSetExtensionInner>, VirtualMachineScaleSetExtensionInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -400,7 +400,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Virtual Machine Scale Set Extension.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineScaleSetExtensionInner>, VirtualMachineScaleSetExtensionInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -554,7 +554,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -622,7 +622,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -650,7 +650,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Virtual Machine Scale Set Extension.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualMachineScaleSetExtensionInner>, VirtualMachineScaleSetExtensionInner>
         beginUpdateAsync(
             String resourceGroupName,
@@ -666,7 +666,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                 this.client.getHttpPipeline(),
                 VirtualMachineScaleSetExtensionInner.class,
                 VirtualMachineScaleSetExtensionInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -682,7 +682,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Virtual Machine Scale Set Extension.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualMachineScaleSetExtensionInner>, VirtualMachineScaleSetExtensionInner>
         beginUpdateAsync(
             String resourceGroupName,
@@ -715,7 +715,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Virtual Machine Scale Set Extension.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineScaleSetExtensionInner>, VirtualMachineScaleSetExtensionInner>
         beginUpdate(
             String resourceGroupName,
@@ -739,7 +739,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Virtual Machine Scale Set Extension.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineScaleSetExtensionInner>, VirtualMachineScaleSetExtensionInner>
         beginUpdate(
             String resourceGroupName,
@@ -880,7 +880,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -934,7 +934,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -958,14 +958,15 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String vmScaleSetName, String vmssExtensionName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, vmScaleSetName, vmssExtensionName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -980,7 +981,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String vmScaleSetName, String vmssExtensionName, Context context) {
         context = this.client.mergeContext(context);
@@ -1002,7 +1003,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String vmScaleSetName, String vmssExtensionName) {
         return beginDeleteAsync(resourceGroupName, vmScaleSetName, vmssExtensionName).getSyncPoller();
@@ -1020,7 +1021,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String vmScaleSetName, String vmssExtensionName, Context context) {
         return beginDeleteAsync(resourceGroupName, vmScaleSetName, vmssExtensionName, context).getSyncPoller();
@@ -1133,7 +1134,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1191,7 +1192,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1328,7 +1329,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1387,7 +1388,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

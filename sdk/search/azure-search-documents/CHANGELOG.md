@@ -1,7 +1,126 @@
 # Release History
 
-## 11.5.0-beta.2 (Unreleased)
+## 11.5.0-beta.6 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 11.5.0-beta.5 (2021-11-24)
+
+### Features Added
+
+- Added support for [Semantic Search](https://docs.microsoft.com/azure/search/semantic-search-overview). `SearchOptions` 
+  now support specifying `SemanticSettings` to influence the search behavior.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.21.0` to version `1.22.0`.
+- Upgraded `azure-core-http-netty` from `1.11.1` to version `1.11.2`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.8` to version `1.2.9`.
+
+## 11.4.5 (2021-11-15)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.21.0` to version `1.22.0`.
+- Upgraded `azure-core-http-netty` from `1.11.1` to version `1.11.2`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.8` to version `1.2.9`.
+
+## 11.4.4 (2021-10-13)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` and other dependencies for the library.
+- 
+## 11.5.0-beta.4 (2021-10-12)
+
+### Features Added
+
+- Added APIs to [reset documents](https://docs.microsoft.com/azure/search/search-howto-run-reset-indexers#reset-docs-preview) 
+  and [skills](https://docs.microsoft.com/azure/search/search-howto-run-reset-indexers#reset-skills-preview).
+
+### Breaking Changes
+
+- Renamed `QueryAnswer` to `QueryAnswerType`, `QueryCaption` to `QueryCaptionType`, and `QuerySpeller` to `QuerySpellerType`.
+- Renamed `SearchOptions` `queryCaptionHighlight` to `queryCaptionHighlightEnabled`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `azure-core` from `1.20.0` to `1.21.0`.
+- Updated `azure-core-http-netty` from `1.11.0` to `1.11.1`.
+- Updated `azure-core-serializer-json-jackson` from `1.2.7` to `1.2.8`.
+
+## 11.4.3 (2021-09-09)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` and other dependencies for the library.
+
+## 11.5.0-beta.3 (2021-09-08)
+
+### Features Added
+
+- Added `CreateOrUpdateDataSourceConnectionOptions`, `CreateOrUpdateIndexerOptions`, and `CreateOrUpdateSkillsetOptions`
+  to support passing new parameters to REST API calls.
+- Added support for `LexicalNormalizerName` in `AnalyzeTextOptions`.
+- Added `queryCaptionHighlight` to `SearchOptions`.
+
+### Breaking Changes
+
+- Renamed `Captions` to `QueryCaption`.
+- Exceptions are now thrown in `EntityRecognitionSkill` and `SentimentSkill` when properties are being set in unsupported
+  skill versions.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `azure-core` from `1.19.0` to `1.20.0`.
+- Updated `azure-core-http-netty` from `1.10.2` to `1.11.0`.
+- Updated `azure-core-serializer-json-jackson` from `1.2.6` to `1.2.7`.
+
+## 11.5.0-beta.2 (2021-08-11)
+
+### Features Added
+
+- Added support for indexer caching.
+
+### Dependency Updates
+
+- Updated `azure-core` from `1.18.0` to `1.19.0`.
+- Updated `azure-core-http-netty` from `1.10.1` to `1.10.2`.
+- Updated `azure-core-serializer-json-jackson` from `1.2.5` to `1.2.6`.
+
+## 11.4.2 (2021-08-11)
+
+### Dependency Updates
+
+- Updated `azure-core` from `1.18.0` to `1.19.0`.
+- Updated `azure-core-http-netty` from `1.10.1` to `1.10.2`.
+- Updated `azure-core-serializer-json-jackson` from `1.2.5` to `1.2.6`.
+
+## 11.4.1 (2021-08-06)
+
+### Dependency Updates
+
+- Updated `azure-core` from `1.17.0` to `1.18.0`.
+- Updated `azure-core-http-netty` from `1.10.0` to `1.10.1`.
+- Updated `azure-core-serializer-json-jackson` from `1.2.4` to `1.2.5`.
 
 ## 11.5.0-beta.1 (2021-07-20)
 

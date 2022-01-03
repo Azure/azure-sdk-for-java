@@ -29,7 +29,7 @@ class CPKTest extends APISpec {
         def builder = instrument(new BlobContainerClientBuilder()
             .endpoint(cc.getBlobContainerUrl().toString())
             .customerProvidedKey(key)
-            .credential(env.primaryAccount.credential))
+            .credential(environment.primaryAccount.credential))
 
         cpkContainer = builder.buildClient()
         cpkBlockBlob = cpkContainer.getBlobClient(generateBlobName()).getBlockBlobClient()
@@ -97,7 +97,7 @@ class CPKTest extends APISpec {
             .setPermissions(new BlobSasPermission().setReadPermission(true))
             .setContainerName(cc.getBlobContainerName())
             .setBlobName(blobName)
-            .generateSasQueryParameters(env.primaryAccount.credential)
+            .generateSasQueryParameters(environment.primaryAccount.credential)
             .encode()
 
         def response = cpkBlockBlob.stageBlockFromUrlWithResponse(getBlockID(), sourceBlob.getBlobUrl().toString() + "?" + sas,
@@ -154,7 +154,7 @@ class CPKTest extends APISpec {
             .setPermissions(new BlobSasPermission().setReadPermission(true))
             .setContainerName(cc.getBlobContainerName())
             .setBlobName(blobName)
-            .generateSasQueryParameters(env.primaryAccount.credential)
+            .generateSasQueryParameters(environment.primaryAccount.credential)
             .encode()
 
         def response = cpkPageBlob.uploadPagesFromUrlWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
@@ -208,7 +208,7 @@ class CPKTest extends APISpec {
             .setPermissions(new BlobSasPermission().setReadPermission(true))
             .setContainerName(cc.getBlobContainerName())
             .setBlobName(blobName)
-            .generateSasQueryParameters(env.primaryAccount.credential)
+            .generateSasQueryParameters(environment.primaryAccount.credential)
             .encode()
         def response = cpkAppendBlob.appendBlockFromUrlWithResponse(sourceBlob.getBlobUrl().toString() + "?" + sas,
             null, null, null, null, null, null)

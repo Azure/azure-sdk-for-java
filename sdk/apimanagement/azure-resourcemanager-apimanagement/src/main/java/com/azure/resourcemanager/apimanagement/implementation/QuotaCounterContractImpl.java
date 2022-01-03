@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.apimanagement.implementation;
 
 import com.azure.resourcemanager.apimanagement.fluent.models.QuotaCounterContractInner;
+import com.azure.resourcemanager.apimanagement.fluent.models.QuotaCounterValueContractProperties;
 import com.azure.resourcemanager.apimanagement.models.QuotaCounterContract;
-import com.azure.resourcemanager.apimanagement.models.QuotaCounterValueContractProperties;
 import java.time.OffsetDateTime;
 
 public final class QuotaCounterContractImpl implements QuotaCounterContract {

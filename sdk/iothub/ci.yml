@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/iothub/
+      - sdk/iothub/ci.yml
+      - sdk/iothub/azure-resourcemanager-iothub/
+    exclude:
+      - sdk/iothub/pom.xml
+      - sdk/iothub/azure-resourcemanager-iothub/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/iothub/
+      - sdk/iothub/ci.yml
+      - sdk/iothub/azure-resourcemanager-iothub/
+    exclude:
+      - sdk/iothub/pom.xml
+      - sdk/iothub/azure-resourcemanager-iothub/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

@@ -181,7 +181,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -241,7 +241,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -371,7 +371,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -427,7 +427,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -453,14 +453,15 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String crossConnectionName, String peeringName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, crossConnectionName, peeringName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -475,7 +476,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String crossConnectionName, String peeringName, Context context) {
         context = this.client.mergeContext(context);
@@ -497,7 +498,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String crossConnectionName, String peeringName) {
         return beginDeleteAsync(resourceGroupName, crossConnectionName, peeringName).getSyncPoller();
@@ -515,7 +516,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String crossConnectionName, String peeringName, Context context) {
         return beginDeleteAsync(resourceGroupName, crossConnectionName, peeringName, context).getSyncPoller();
@@ -627,7 +628,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -683,7 +684,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -806,7 +807,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
         } else {
             peeringParameters.validate();
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -875,7 +876,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
         } else {
             peeringParameters.validate();
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -904,7 +905,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return peering in an ExpressRoute Cross Connection resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ExpressRouteCrossConnectionPeeringInner>, ExpressRouteCrossConnectionPeeringInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -920,7 +921,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
                 this.client.getHttpPipeline(),
                 ExpressRouteCrossConnectionPeeringInner.class,
                 ExpressRouteCrossConnectionPeeringInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -937,7 +938,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return peering in an ExpressRoute Cross Connection resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ExpressRouteCrossConnectionPeeringInner>, ExpressRouteCrossConnectionPeeringInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -972,7 +973,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return peering in an ExpressRoute Cross Connection resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpressRouteCrossConnectionPeeringInner>, ExpressRouteCrossConnectionPeeringInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -997,7 +998,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return peering in an ExpressRoute Cross Connection resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpressRouteCrossConnectionPeeringInner>, ExpressRouteCrossConnectionPeeringInner>
         beginCreateOrUpdate(
             String resourceGroupName,

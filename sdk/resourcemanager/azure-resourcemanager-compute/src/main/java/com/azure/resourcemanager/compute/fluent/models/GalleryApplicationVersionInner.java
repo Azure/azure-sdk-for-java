@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.GalleryApplicationVersionPropertiesProvisioningState;
@@ -16,66 +15,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Specifies information about the gallery Application Version that you want to create or update. */
-@JsonFlatten
 @Fluent
-public class GalleryApplicationVersionInner extends Resource {
+public final class GalleryApplicationVersionInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryApplicationVersionInner.class);
 
     /*
-     * The publishing profile of a gallery image version.
+     * Describes the properties of a gallery image version.
      */
-    @JsonProperty(value = "properties.publishingProfile")
-    private GalleryApplicationVersionPublishingProfile publishingProfile;
-
-    /*
-     * The provisioning state, which only appears in the response.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private GalleryApplicationVersionPropertiesProvisioningState provisioningState;
-
-    /*
-     * This is the replication status of the gallery image version.
-     */
-    @JsonProperty(value = "properties.replicationStatus", access = JsonProperty.Access.WRITE_ONLY)
-    private ReplicationStatus replicationStatus;
+    @JsonProperty(value = "properties")
+    private GalleryApplicationVersionProperties innerProperties;
 
     /**
-     * Get the publishingProfile property: The publishing profile of a gallery image version.
+     * Get the innerProperties property: Describes the properties of a gallery image version.
      *
-     * @return the publishingProfile value.
+     * @return the innerProperties value.
      */
-    public GalleryApplicationVersionPublishingProfile publishingProfile() {
-        return this.publishingProfile;
-    }
-
-    /**
-     * Set the publishingProfile property: The publishing profile of a gallery image version.
-     *
-     * @param publishingProfile the publishingProfile value to set.
-     * @return the GalleryApplicationVersionInner object itself.
-     */
-    public GalleryApplicationVersionInner withPublishingProfile(
-        GalleryApplicationVersionPublishingProfile publishingProfile) {
-        this.publishingProfile = publishingProfile;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state, which only appears in the response.
-     *
-     * @return the provisioningState value.
-     */
-    public GalleryApplicationVersionPropertiesProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the replicationStatus property: This is the replication status of the gallery image version.
-     *
-     * @return the replicationStatus value.
-     */
-    public ReplicationStatus replicationStatus() {
-        return this.replicationStatus;
+    private GalleryApplicationVersionProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -93,16 +49,56 @@ public class GalleryApplicationVersionInner extends Resource {
     }
 
     /**
+     * Get the publishingProfile property: The publishing profile of a gallery image version.
+     *
+     * @return the publishingProfile value.
+     */
+    public GalleryApplicationVersionPublishingProfile publishingProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().publishingProfile();
+    }
+
+    /**
+     * Set the publishingProfile property: The publishing profile of a gallery image version.
+     *
+     * @param publishingProfile the publishingProfile value to set.
+     * @return the GalleryApplicationVersionInner object itself.
+     */
+    public GalleryApplicationVersionInner withPublishingProfile(
+        GalleryApplicationVersionPublishingProfile publishingProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryApplicationVersionProperties();
+        }
+        this.innerProperties().withPublishingProfile(publishingProfile);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The current state of the gallery Application Version. The provisioning state,
+     * which only appears in the response.
+     *
+     * @return the provisioningState value.
+     */
+    public GalleryApplicationVersionPropertiesProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the replicationStatus property: This is the replication status of the gallery image version.
+     *
+     * @return the replicationStatus value.
+     */
+    public ReplicationStatus replicationStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().replicationStatus();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (publishingProfile() != null) {
-            publishingProfile().validate();
-        }
-        if (replicationStatus() != null) {
-            replicationStatus().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

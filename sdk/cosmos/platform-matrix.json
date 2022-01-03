@@ -7,7 +7,6 @@
     "-Pmulti-master": "MultiMaster",
     "-Pmulti-region": "MultiRegion",
     "-e -Plong": "Long",
-    "-DargLine=\"-Dazure.cosmos.directModeProtocol=Https\"": "Https",
     "-DargLine=\"-Dazure.cosmos.directModeProtocol=Tcp\"": "TCP",
     "Session": "",
     "ubuntu": "",
@@ -29,7 +28,6 @@
         }
       },
       "AdditionalArgs": [
-          "-DargLine=\"-Dazure.cosmos.directModeProtocol=Https\"",
           "-DargLine=\"-Dazure.cosmos.directModeProtocol=Tcp\""
       ],
       "ProfileFlag": "-Pe2e",

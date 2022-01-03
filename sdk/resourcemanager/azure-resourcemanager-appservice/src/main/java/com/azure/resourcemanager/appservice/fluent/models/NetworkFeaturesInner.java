@@ -4,8 +4,7 @@
 
 package com.azure.resourcemanager.appservice.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,69 +12,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Full view of network features for an app (presently VNET integration and Hybrid Connections). */
-@JsonFlatten
-@Immutable
-public class NetworkFeaturesInner extends ProxyOnlyResource {
+@Fluent
+public final class NetworkFeaturesInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkFeaturesInner.class);
 
     /*
-     * The Virtual Network name.
+     * NetworkFeatures resource specific properties
      */
-    @JsonProperty(value = "properties.virtualNetworkName", access = JsonProperty.Access.WRITE_ONLY)
-    private String virtualNetworkName;
-
-    /*
-     * The Virtual Network summary view.
-     */
-    @JsonProperty(value = "properties.virtualNetworkConnection", access = JsonProperty.Access.WRITE_ONLY)
-    private VnetInfoInner virtualNetworkConnection;
-
-    /*
-     * The Hybrid Connections summary view.
-     */
-    @JsonProperty(value = "properties.hybridConnections", access = JsonProperty.Access.WRITE_ONLY)
-    private List<RelayServiceConnectionEntityInner> hybridConnections;
-
-    /*
-     * The Hybrid Connection V2 (Service Bus) view.
-     */
-    @JsonProperty(value = "properties.hybridConnectionsV2", access = JsonProperty.Access.WRITE_ONLY)
-    private List<HybridConnectionInner> hybridConnectionsV2;
+    @JsonProperty(value = "properties")
+    private NetworkFeaturesProperties innerProperties;
 
     /**
-     * Get the virtualNetworkName property: The Virtual Network name.
+     * Get the innerProperties property: NetworkFeatures resource specific properties.
      *
-     * @return the virtualNetworkName value.
+     * @return the innerProperties value.
      */
-    public String virtualNetworkName() {
-        return this.virtualNetworkName;
-    }
-
-    /**
-     * Get the virtualNetworkConnection property: The Virtual Network summary view.
-     *
-     * @return the virtualNetworkConnection value.
-     */
-    public VnetInfoInner virtualNetworkConnection() {
-        return this.virtualNetworkConnection;
-    }
-
-    /**
-     * Get the hybridConnections property: The Hybrid Connections summary view.
-     *
-     * @return the hybridConnections value.
-     */
-    public List<RelayServiceConnectionEntityInner> hybridConnections() {
-        return this.hybridConnections;
-    }
-
-    /**
-     * Get the hybridConnectionsV2 property: The Hybrid Connection V2 (Service Bus) view.
-     *
-     * @return the hybridConnectionsV2 value.
-     */
-    public List<HybridConnectionInner> hybridConnectionsV2() {
-        return this.hybridConnectionsV2;
+    private NetworkFeaturesProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -86,6 +39,42 @@ public class NetworkFeaturesInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the virtualNetworkName property: The Virtual Network name.
+     *
+     * @return the virtualNetworkName value.
+     */
+    public String virtualNetworkName() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualNetworkName();
+    }
+
+    /**
+     * Get the virtualNetworkConnection property: The Virtual Network summary view.
+     *
+     * @return the virtualNetworkConnection value.
+     */
+    public VnetInfo virtualNetworkConnection() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualNetworkConnection();
+    }
+
+    /**
+     * Get the hybridConnections property: The Hybrid Connections summary view.
+     *
+     * @return the hybridConnections value.
+     */
+    public List<RelayServiceConnectionEntityInner> hybridConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().hybridConnections();
+    }
+
+    /**
+     * Get the hybridConnectionsV2 property: The Hybrid Connection V2 (Service Bus) view.
+     *
+     * @return the hybridConnectionsV2 value.
+     */
+    public List<HybridConnectionInner> hybridConnectionsV2() {
+        return this.innerProperties() == null ? null : this.innerProperties().hybridConnectionsV2();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -93,14 +82,8 @@ public class NetworkFeaturesInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
-        if (virtualNetworkConnection() != null) {
-            virtualNetworkConnection().validate();
-        }
-        if (hybridConnections() != null) {
-            hybridConnections().forEach(e -> e.validate());
-        }
-        if (hybridConnectionsV2() != null) {
-            hybridConnectionsV2().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

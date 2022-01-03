@@ -3,7 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.models.CosmosParameterizedQuery
-import org.apache.spark.sql.sources.{AlwaysFalse, AlwaysTrue, EqualTo, Filter, In, StringEndsWith, StringStartsWith, StringContains}
+import org.apache.spark.sql.sources.{AlwaysFalse, AlwaysTrue, EqualTo, Filter, In, IsNotNull, IsNull, StringContains, StringEndsWith, StringStartsWith}
 import org.assertj.core.api.Assertions.assertThat
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
@@ -13,7 +13,8 @@ class FilterAnalyzerSpec extends UnitSpec {
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number
 
-  private[this] val readConfigWithoutCustomQuery = new CosmosReadConfig(true, SchemaConversionModes.Relaxed, None)
+  private[this] val readConfigWithoutCustomQuery =
+    new CosmosReadConfig(true, SchemaConversionModes.Relaxed, 100, None)
   private[this] val queryText = "SELECT * FROM c WHERE c.abc='Hello World'"
   private[this] val query = Some(CosmosParameterizedQuery(
     queryText,
@@ -22,6 +23,7 @@ class FilterAnalyzerSpec extends UnitSpec {
   private[this] val readConfigWithCustomQuery = new CosmosReadConfig(
     true,
     SchemaConversionModes.Relaxed,
+    100,
     query)
 
   "many filters" should "be translated to cosmos predicates with AND" in {
@@ -80,6 +82,32 @@ class FilterAnalyzerSpec extends UnitSpec {
     query.queryText shouldEqual "SELECT * FROM r WHERE r['mathematician']=@param0"
     query.parameterNames should contain theSameElementsInOrderAs List("@param0")
     query.parameterValues should contain theSameElementsInOrderAs List("خوارزمی")
+  }
+
+  "IsNull" should "be translated to cosmos" in {
+    val filterProcessor = FilterAnalyzer()
+
+    val filters = Array[Filter](IsNull("age"))
+    val analyzedQuery = filterProcessor.analyze(filters, readConfigWithoutCustomQuery)
+    analyzedQuery.filtersNotSupportedByCosmos shouldBe empty
+    analyzedQuery.filtersToBePushedDownToCosmos should contain theSameElementsInOrderAs filters
+
+    val query = analyzedQuery.cosmosParametrizedQuery
+    query.queryText shouldEqual "SELECT * FROM r WHERE (IS_NULL(r['age']) OR NOT(IS_DEFINED(r['age'])))"
+    query.parameterNames shouldBe empty
+  }
+
+  "IsNotNull" should "be translated to cosmos" in {
+    val filterProcessor = FilterAnalyzer()
+
+    val filters = Array[Filter](IsNotNull("age"))
+    val analyzedQuery = filterProcessor.analyze(filters, readConfigWithoutCustomQuery)
+    analyzedQuery.filtersNotSupportedByCosmos shouldBe empty
+    analyzedQuery.filtersToBePushedDownToCosmos should contain theSameElementsInOrderAs filters
+
+    val query = analyzedQuery.cosmosParametrizedQuery
+    query.queryText shouldEqual "SELECT * FROM r WHERE (NOT(IS_NULL(r['age'])) AND IS_DEFINED(r['age']))"
+    query.parameterNames shouldBe empty
   }
 
   "nested filter" should "be translated to nested cosmos json filter" in {

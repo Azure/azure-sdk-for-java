@@ -142,7 +142,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
                 return this.createDocumentServiceRequestWithFeedRange(headers,
                     querySpec,
                     null,
-                    feedRangeEpk,
+                    partitionKeyRange,
                     collectionRid,
                     cosmosQueryRequestOptions.getThroughputControlGroupName());
             };

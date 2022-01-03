@@ -100,7 +100,7 @@
 
         <!-- Schema Registry -->
         <module>sdk/schemaregistry/azure-data-schemaregistry</module>
-        <module>sdk/schemaregistry/azure-data-schemaregistry-avro</module>
+        <module>sdk/schemaregistry/azure-data-schemaregistry-apacheavro</module>
 
         <!-- Cognitive Search -->
         <module>sdk/search/azure-search-documents</module>
@@ -160,7 +160,7 @@
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-javadoc-plugin</artifactId>
-              <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+              <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
               <configuration>
                 <source>1.8</source>
                 <doctitle>Azure SDK for Java Reference Documentation</doctitle>
@@ -294,6 +294,10 @@
                     <packages>com.azure.containers.containerregistry*</packages>
                   </group>
                   <group>
+                    <title>Azure Security Attestation</title>
+                    <packages>com.azure.security.attestation*</packages>
+                  </group>
+                  <group>
                     <title>Azure Purview Catalog</title>
                     <packages>com.azure.analytics.purview.catalog*</packages>
                   </group>
@@ -355,7 +359,7 @@
                   </group>
                   <group>
                     <title>Azure Web Pub Sub</title>
-                    <package>com.azure.messaging.webpubsub*</package>
+                    <packages>com.azure.messaging.webpubsub*</packages>
                   </group>
                   <group>
                     <title>Azure Mixed Reality Authentication</title>
@@ -566,7 +570,7 @@
           <plugin>
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs-maven-plugin</artifactId>
-            <version>4.2.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+            <version>4.2.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
             <configuration>
               <effort>max</effort>
               <threshold>Low</threshold>
@@ -582,7 +586,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <reportSets>
               <reportSet>
                 <id>non-aggregate</id>
@@ -600,9 +604,11 @@
                   <!-- codesnippets4javadoc does not support scanning sub-directories and doesn't support wildcards for filepaths.
                       So, path for aggregate reports have to be defined relative to parent pom -->
                   <additionalOptions>-maxLineLength 120
+                    -snippetpath ${project.basedir}/sdk/agrifood/azure-verticals-agrifood-farming/src/samples/java
                     -snippetpath ${project.basedir}/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java
                     -snippetpath ${project.basedir}/sdk/confidentialledger/azure-security-confidentialledger/src/samples/java
                     -snippetpath ${project.basedir}/sdk/containerregistry/azure-containers-containerregistry/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/attestation/azure-security-attestation/src/samples/java
                     -snippetpath ${project.basedir}/sdk/core/azure-core/src/samples/java
                     -snippetpath ${project.basedir}/sdk/core/azure-core-amqp/src/samples/java
                     -snippetpath ${project.basedir}/sdk/core/azure-core-http-netty/src/samples/java
@@ -614,11 +620,11 @@
                     -snippetpath ${project.basedir}/sdk/cosmos/azure-cosmos/src/samples/java
                     -snippetpath ${project.basedir}/sdk/digitaltwins/azure-digitaltwins-core/src/samples/java
                     -snippetpath ${project.basedir}/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java
-                    -snippetpath ${project.basedir}/sdk/agrifood/azure-verticals-agrifood-farming/src/samples/java
                     <!-- -snippetpath ${project.basedir}/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java-->
                     -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-certificates/src/samples/java
                     -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-keys/src/samples/java
                     -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/monitor/azure-monitor-query/src/samples/java
                     -snippetpath ${project.basedir}/sdk/purview/azure-analytics-purview-catalog/src/samples/java
                     -snippetpath ${project.basedir}/sdk/purview/azure-analytics-purview-scanning/src/samples/java
                     -snippetpath ${project.basedir}/sdk/servicebus/azure-messaging-servicebus/src/samples/java
@@ -709,16 +715,18 @@
         <module>sdk/advisor</module>
         <module>sdk/agrifood</module>
         <module>sdk/anomalydetector</module>
+        <module>sdk/aot</module>
         <module>sdk/apimanagement</module>
         <module>sdk/appconfiguration</module>
         <module>sdk/applicationinsights</module>
         <module>sdk/attestation</module>
-        <module>sdk/authorization</module>
+        <module>sdk/automanage</module>
         <module>sdk/automation</module>
         <module>sdk/avs</module>
         <module>sdk/azurearcdata</module>
         <module>sdk/azurestack</module>
         <module>sdk/azurestackhci</module>
+        <module>sdk/baremetalinfrastructure</module>
         <module>sdk/batch</module>
         <module>sdk/batchai</module>
         <module>sdk/billing</module>
@@ -744,16 +752,20 @@
         <module>sdk/datalakeanalytics</module>
         <module>sdk/datalakestore</module>
         <module>sdk/datamigration</module>
+        <module>sdk/dataprotection</module>
         <module>sdk/delegatednetwork</module>
         <module>sdk/deploymentmanager</module>
+        <module>sdk/desktopvirtualization</module>
         <module>sdk/deviceprovisioningservices</module>
         <module>sdk/deviceupdate</module>
         <module>sdk/devspaces</module>
         <module>sdk/devtestlabs</module>
         <module>sdk/digitaltwins</module>
+        <module>sdk/edgeorder</module>
         <module>sdk/elastic</module>
         <module>sdk/eventgrid</module>
         <module>sdk/eventhubs</module>
+        <module>sdk/extendedlocation</module>
         <module>sdk/formrecognizer</module>
         <module>sdk/frontdoor</module>
         <module>sdk/hanaonazure</module>
@@ -762,6 +774,7 @@
         <module>sdk/healthcareapis</module>
         <module>sdk/hybridcompute</module>
         <module>sdk/hybridkubernetes</module>
+        <module>sdk/hybridnetwork</module>
         <module>sdk/identity</module>
         <module>sdk/imagebuilder</module>
         <module>sdk/iotcentral</module>
@@ -770,8 +783,10 @@
         <module>sdk/kubernetesconfiguration</module>
         <module>sdk/kusto</module>
         <module>sdk/labservices</module>
+        <module>sdk/loadtestservice</module>
         <module>sdk/loganalytics</module>
         <module>sdk/logic</module>
+        <module>sdk/logz</module>
         <module>sdk/machinelearningservices</module>
         <module>sdk/maintenance</module>
         <module>sdk/managedapplications</module>
@@ -784,6 +799,7 @@
         <module>sdk/modelsrepository</module>
         <module>sdk/monitor</module>
         <module>sdk/mysql</module>
+        <module>sdk/mysqlflexibleserver</module>
         <module>sdk/netapp</module>
         <module>sdk/notificationhubs</module>
         <module>sdk/operationsmanagement</module>
@@ -794,6 +810,7 @@
         <module>sdk/powerbidedicated</module>
         <module>sdk/purview</module>
         <module>sdk/quantum</module>
+        <module>sdk/quota</module>
         <module>sdk/recoveryservices</module>
         <module>sdk/recoveryservicesbackup</module>
         <module>sdk/redisenterprise</module>
@@ -814,6 +831,7 @@
         <module>sdk/storage</module>
         <module>sdk/storagecache</module>
         <module>sdk/storageimportexport</module>
+        <module>sdk/storagepool</module>
         <module>sdk/streamanalytics</module>
         <module>sdk/subscription</module>
         <module>sdk/support</module>
@@ -822,6 +840,7 @@
         <module>sdk/template</module>
         <module>sdk/textanalytics</module>
         <module>sdk/timeseriesinsights</module>
+        <module>sdk/tools</module>
         <module>sdk/translation</module>
         <module>sdk/videoanalyzer</module>
         <module>sdk/vmwarecloudsimple</module>

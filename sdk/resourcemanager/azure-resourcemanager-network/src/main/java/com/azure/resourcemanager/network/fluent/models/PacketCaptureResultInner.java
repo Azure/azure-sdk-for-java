@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.PacketCaptureFilter;
 import com.azure.resourcemanager.network.models.PacketCaptureStorageLocation;
@@ -15,9 +14,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Information about packet capture session. */
-@JsonFlatten
 @Fluent
-public class PacketCaptureResultInner {
+public final class PacketCaptureResultInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PacketCaptureResultInner.class);
 
     /*
@@ -39,46 +37,10 @@ public class PacketCaptureResultInner {
     private String etag;
 
     /*
-     * The ID of the targeted resource, only VM is currently supported.
+     * Properties of the packet capture result.
      */
-    @JsonProperty(value = "properties.target")
-    private String target;
-
-    /*
-     * Number of bytes captured per packet, the remaining bytes are truncated.
-     */
-    @JsonProperty(value = "properties.bytesToCapturePerPacket")
-    private Long bytesToCapturePerPacket;
-
-    /*
-     * Maximum size of the capture output.
-     */
-    @JsonProperty(value = "properties.totalBytesPerSession")
-    private Long totalBytesPerSession;
-
-    /*
-     * Maximum duration of the capture session in seconds.
-     */
-    @JsonProperty(value = "properties.timeLimitInSeconds")
-    private Integer timeLimitInSeconds;
-
-    /*
-     * The storage location for a packet capture session.
-     */
-    @JsonProperty(value = "properties.storageLocation")
-    private PacketCaptureStorageLocation storageLocation;
-
-    /*
-     * A list of packet capture filters.
-     */
-    @JsonProperty(value = "properties.filters")
-    private List<PacketCaptureFilter> filters;
-
-    /*
-     * The provisioning state of the packet capture session.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    @JsonProperty(value = "properties")
+    private PacketCaptureResultProperties innerProperties;
 
     /**
      * Get the name property: Name of the packet capture session.
@@ -108,12 +70,30 @@ public class PacketCaptureResultInner {
     }
 
     /**
+     * Get the innerProperties property: Properties of the packet capture result.
+     *
+     * @return the innerProperties value.
+     */
+    private PacketCaptureResultProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the packet capture session.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
      * Get the target property: The ID of the targeted resource, only VM is currently supported.
      *
      * @return the target value.
      */
     public String target() {
-        return this.target;
+        return this.innerProperties() == null ? null : this.innerProperties().target();
     }
 
     /**
@@ -123,7 +103,10 @@ public class PacketCaptureResultInner {
      * @return the PacketCaptureResultInner object itself.
      */
     public PacketCaptureResultInner withTarget(String target) {
-        this.target = target;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PacketCaptureResultProperties();
+        }
+        this.innerProperties().withTarget(target);
         return this;
     }
 
@@ -133,7 +116,7 @@ public class PacketCaptureResultInner {
      * @return the bytesToCapturePerPacket value.
      */
     public Long bytesToCapturePerPacket() {
-        return this.bytesToCapturePerPacket;
+        return this.innerProperties() == null ? null : this.innerProperties().bytesToCapturePerPacket();
     }
 
     /**
@@ -143,7 +126,10 @@ public class PacketCaptureResultInner {
      * @return the PacketCaptureResultInner object itself.
      */
     public PacketCaptureResultInner withBytesToCapturePerPacket(Long bytesToCapturePerPacket) {
-        this.bytesToCapturePerPacket = bytesToCapturePerPacket;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PacketCaptureResultProperties();
+        }
+        this.innerProperties().withBytesToCapturePerPacket(bytesToCapturePerPacket);
         return this;
     }
 
@@ -153,7 +139,7 @@ public class PacketCaptureResultInner {
      * @return the totalBytesPerSession value.
      */
     public Long totalBytesPerSession() {
-        return this.totalBytesPerSession;
+        return this.innerProperties() == null ? null : this.innerProperties().totalBytesPerSession();
     }
 
     /**
@@ -163,7 +149,10 @@ public class PacketCaptureResultInner {
      * @return the PacketCaptureResultInner object itself.
      */
     public PacketCaptureResultInner withTotalBytesPerSession(Long totalBytesPerSession) {
-        this.totalBytesPerSession = totalBytesPerSession;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PacketCaptureResultProperties();
+        }
+        this.innerProperties().withTotalBytesPerSession(totalBytesPerSession);
         return this;
     }
 
@@ -173,7 +162,7 @@ public class PacketCaptureResultInner {
      * @return the timeLimitInSeconds value.
      */
     public Integer timeLimitInSeconds() {
-        return this.timeLimitInSeconds;
+        return this.innerProperties() == null ? null : this.innerProperties().timeLimitInSeconds();
     }
 
     /**
@@ -183,7 +172,10 @@ public class PacketCaptureResultInner {
      * @return the PacketCaptureResultInner object itself.
      */
     public PacketCaptureResultInner withTimeLimitInSeconds(Integer timeLimitInSeconds) {
-        this.timeLimitInSeconds = timeLimitInSeconds;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PacketCaptureResultProperties();
+        }
+        this.innerProperties().withTimeLimitInSeconds(timeLimitInSeconds);
         return this;
     }
 
@@ -193,7 +185,7 @@ public class PacketCaptureResultInner {
      * @return the storageLocation value.
      */
     public PacketCaptureStorageLocation storageLocation() {
-        return this.storageLocation;
+        return this.innerProperties() == null ? null : this.innerProperties().storageLocation();
     }
 
     /**
@@ -203,7 +195,10 @@ public class PacketCaptureResultInner {
      * @return the PacketCaptureResultInner object itself.
      */
     public PacketCaptureResultInner withStorageLocation(PacketCaptureStorageLocation storageLocation) {
-        this.storageLocation = storageLocation;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PacketCaptureResultProperties();
+        }
+        this.innerProperties().withStorageLocation(storageLocation);
         return this;
     }
 
@@ -213,7 +208,7 @@ public class PacketCaptureResultInner {
      * @return the filters value.
      */
     public List<PacketCaptureFilter> filters() {
-        return this.filters;
+        return this.innerProperties() == null ? null : this.innerProperties().filters();
     }
 
     /**
@@ -223,17 +218,11 @@ public class PacketCaptureResultInner {
      * @return the PacketCaptureResultInner object itself.
      */
     public PacketCaptureResultInner withFilters(List<PacketCaptureFilter> filters) {
-        this.filters = filters;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PacketCaptureResultProperties();
+        }
+        this.innerProperties().withFilters(filters);
         return this;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the packet capture session.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
     }
 
     /**
@@ -242,11 +231,8 @@ public class PacketCaptureResultInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (storageLocation() != null) {
-            storageLocation().validate();
-        }
-        if (filters() != null) {
-            filters().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

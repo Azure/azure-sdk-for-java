@@ -18,7 +18,7 @@ public final class PipelineReference {
      * Pipeline reference type.
      */
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private String type = "PipelineReference";
 
     /*
      * Reference pipeline name.

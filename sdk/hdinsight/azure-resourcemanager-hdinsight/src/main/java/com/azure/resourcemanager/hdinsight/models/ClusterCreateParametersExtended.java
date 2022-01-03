@@ -7,7 +7,9 @@ package com.azure.resourcemanager.hdinsight.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.Map;
 
 /** The CreateCluster request parameters. */
@@ -25,7 +27,14 @@ public class ClusterCreateParametersExtended {
      * The resource tags.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
+
+    /*
+     * The availability zones.
+     */
+    @JsonProperty(value = "zones")
+    private List<String> zones;
 
     /*
      * The cluster create parameters.
@@ -76,6 +85,26 @@ public class ClusterCreateParametersExtended {
      */
     public ClusterCreateParametersExtended withTags(Map<String, String> tags) {
         this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the zones property: The availability zones.
+     *
+     * @return the zones value.
+     */
+    public List<String> zones() {
+        return this.zones;
+    }
+
+    /**
+     * Set the zones property: The availability zones.
+     *
+     * @param zones the zones value to set.
+     * @return the ClusterCreateParametersExtended object itself.
+     */
+    public ClusterCreateParametersExtended withZones(List<String> zones) {
+        this.zones = zones;
         return this;
     }
 

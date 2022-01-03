@@ -10,6 +10,9 @@ trigger:
   paths:
     include:
       - sdk/security/
+    exclude:
+      - sdk/security/pom.xml
+      - sdk/security/azure-resourcemanager-security/pom.xml
 
 pr:
   branches:
@@ -22,6 +25,9 @@ pr:
   paths:
     include:
       - sdk/security/
+    exclude:
+      - sdk/security/pom.xml
+      - sdk/security/azure-resourcemanager-security/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

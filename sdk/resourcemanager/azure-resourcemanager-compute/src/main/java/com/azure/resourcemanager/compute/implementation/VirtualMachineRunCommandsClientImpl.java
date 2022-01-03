@@ -230,7 +230,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(
@@ -282,7 +282,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
@@ -387,7 +387,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(
@@ -436,7 +436,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
@@ -546,7 +546,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(
@@ -612,7 +612,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
@@ -640,7 +640,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Virtual Machine run command.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName, String vmName, String runCommandName, VirtualMachineRunCommandInner runCommand) {
@@ -653,7 +653,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
                 this.client.getHttpPipeline(),
                 VirtualMachineRunCommandInner.class,
                 VirtualMachineRunCommandInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -669,7 +669,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Virtual Machine run command.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -702,7 +702,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Virtual Machine run command.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginCreateOrUpdate(
         String resourceGroupName, String vmName, String runCommandName, VirtualMachineRunCommandInner runCommand) {
         return beginCreateOrUpdateAsync(resourceGroupName, vmName, runCommandName, runCommand).getSyncPoller();
@@ -721,7 +721,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Virtual Machine run command.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginCreateOrUpdate(
         String resourceGroupName,
         String vmName,
@@ -859,7 +859,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(
@@ -925,7 +925,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
@@ -953,7 +953,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Virtual Machine run command.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginUpdateAsync(
         String resourceGroupName, String vmName, String runCommandName, VirtualMachineRunCommandUpdate runCommand) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -965,7 +965,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
                 this.client.getHttpPipeline(),
                 VirtualMachineRunCommandInner.class,
                 VirtualMachineRunCommandInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -981,7 +981,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Virtual Machine run command.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginUpdateAsync(
         String resourceGroupName,
         String vmName,
@@ -1013,7 +1013,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Virtual Machine run command.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginUpdate(
         String resourceGroupName, String vmName, String runCommandName, VirtualMachineRunCommandUpdate runCommand) {
         return beginUpdateAsync(resourceGroupName, vmName, runCommandName, runCommand).getSyncPoller();
@@ -1032,7 +1032,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Virtual Machine run command.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginUpdate(
         String resourceGroupName,
         String vmName,
@@ -1164,7 +1164,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(
@@ -1219,7 +1219,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
@@ -1245,13 +1245,14 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String vmName, String runCommandName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, vmName, runCommandName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1266,7 +1267,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String vmName, String runCommandName, Context context) {
         context = this.client.mergeContext(context);
@@ -1288,7 +1289,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String vmName, String runCommandName) {
         return beginDeleteAsync(resourceGroupName, vmName, runCommandName).getSyncPoller();
@@ -1306,7 +1307,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String vmName, String runCommandName, Context context) {
         return beginDeleteAsync(resourceGroupName, vmName, runCommandName, context).getSyncPoller();
@@ -1417,7 +1418,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(
@@ -1474,7 +1475,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
@@ -1612,7 +1613,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(
@@ -1673,7 +1674,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service

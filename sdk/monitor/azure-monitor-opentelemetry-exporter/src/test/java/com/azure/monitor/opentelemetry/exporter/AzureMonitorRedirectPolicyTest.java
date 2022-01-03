@@ -4,13 +4,13 @@
 package com.azure.monitor.opentelemetry.exporter;
 
 
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpClient;
 import com.azure.core.test.http.MockHttpResponse;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;

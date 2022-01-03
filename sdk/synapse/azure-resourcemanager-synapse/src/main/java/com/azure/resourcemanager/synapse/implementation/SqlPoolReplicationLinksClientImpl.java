@@ -140,6 +140,7 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -147,7 +148,7 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
                     service
                         .list(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -203,12 +204,13 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -340,6 +342,7 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
         if (linkId == null) {
             return Mono.error(new IllegalArgumentException("Parameter linkId is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -347,7 +350,7 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
                     service
                         .getByName(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -399,12 +402,13 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
         if (linkId == null) {
             return Mono.error(new IllegalArgumentException("Parameter linkId is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getByName(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,

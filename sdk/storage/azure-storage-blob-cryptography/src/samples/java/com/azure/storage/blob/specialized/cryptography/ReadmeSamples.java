@@ -39,18 +39,19 @@ public class ReadmeSamples {
     private TokenCredential tokenCredential;
     private String keyVaultUrl;
     private String keyName;
-    private String containerName;
-    private String blobName;
 
     public void getEncryptedBlobClientBlobClient() {
+        // BEGIN: readme-sample-getEncryptedBlobClientBlobClient
         EncryptedBlobClient client = new EncryptedBlobClientBuilder()
             .key(key, keyWrapAlgorithm)
             .keyResolver(keyResolver)
             .blobClient(blobClient)
             .buildEncryptedBlobClient();
+        // END: readme-sample-getEncryptedBlobClientBlobClient
     }
 
     public void getEncryptedBlobClient() {
+        // BEGIN: readme-sample-getEncryptedBlobClient
         EncryptedBlobClient client = new EncryptedBlobClientBuilder()
             .key(key, keyWrapAlgorithm)
             .keyResolver(keyResolver)
@@ -58,9 +59,11 @@ public class ReadmeSamples {
             .containerName(containerName)
             .blobName(blobName)
             .buildEncryptedBlobClient();
+        // END: readme-sample-getEncryptedBlobClient
     }
 
     public void getClientLocalKey() {
+        // BEGIN: readme-sample-getClientLocalKey
         JsonWebKey localKey = JsonWebKey.fromAes(new SecretKeySpec(keyBytes, secretKeyAlgorithm),
             Arrays.asList(KeyOperation.WRAP_KEY, KeyOperation.UNWRAP_KEY))
             .setId("my-id");
@@ -73,9 +76,11 @@ public class ReadmeSamples {
             .containerName(containerName)
             .blobName(blobName)
             .buildEncryptedBlobClient();
+        // END: readme-sample-getClientLocalKey
     }
 
     public void getClientKeyVaultKey() {
+        // BEGIN: readme-sample-getClientKeyVaultKey
         KeyClient keyClient = new KeyClientBuilder()
             .vaultUrl(keyVaultUrl)
             .credential(tokenCredential)
@@ -94,6 +99,7 @@ public class ReadmeSamples {
             .containerName(containerName)
             .blobName(blobName)
             .buildEncryptedBlobClient();
+        // END: readme-sample-getClientKeyVaultKey
     }
 }
 

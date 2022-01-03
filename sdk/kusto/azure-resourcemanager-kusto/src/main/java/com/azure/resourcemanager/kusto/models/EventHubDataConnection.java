@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.fluent.models.DataConnectionInner;
+import com.azure.resourcemanager.kusto.fluent.models.EventHubConnectionProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,68 +17,31 @@ import java.util.List;
 /** Class representing an event hub data connection. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("EventHub")
-@JsonFlatten
 @Fluent
-public class EventHubDataConnection extends DataConnectionInner {
+public final class EventHubDataConnection extends DataConnectionInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EventHubDataConnection.class);
 
     /*
-     * The resource ID of the event hub to be used to create a data connection.
+     * The Event Hub data connection properties to validate.
      */
-    @JsonProperty(value = "properties.eventHubResourceId")
-    private String eventHubResourceId;
+    @JsonProperty(value = "properties")
+    private EventHubConnectionProperties innerProperties;
 
-    /*
-     * The event hub consumer group.
+    /**
+     * Get the innerProperties property: The Event Hub data connection properties to validate.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.consumerGroup")
-    private String consumerGroup;
+    private EventHubConnectionProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * The table where the data should be ingested. Optionally the table
-     * information can be added to each message.
-     */
-    @JsonProperty(value = "properties.tableName")
-    private String tableName;
-
-    /*
-     * The mapping rule to be used to ingest the data. Optionally the mapping
-     * information can be added to each message.
-     */
-    @JsonProperty(value = "properties.mappingRuleName")
-    private String mappingRuleName;
-
-    /*
-     * The data format of the message. Optionally the data format can be added
-     * to each message.
-     */
-    @JsonProperty(value = "properties.dataFormat")
-    private EventHubDataFormat dataFormat;
-
-    /*
-     * System properties of the event hub
-     */
-    @JsonProperty(value = "properties.eventSystemProperties")
-    private List<String> eventSystemProperties;
-
-    /*
-     * The event hub messages compression type
-     */
-    @JsonProperty(value = "properties.compression")
-    private Compression compression;
-
-    /*
-     * The provisioned state of the resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * The resource ID of a managed identity (system or user assigned) to be
-     * used to authenticate with event hub.
-     */
-    @JsonProperty(value = "properties.managedIdentityResourceId")
-    private String managedIdentityResourceId;
+    /** {@inheritDoc} */
+    @Override
+    public EventHubDataConnection withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
 
     /**
      * Get the eventHubResourceId property: The resource ID of the event hub to be used to create a data connection.
@@ -86,7 +49,7 @@ public class EventHubDataConnection extends DataConnectionInner {
      * @return the eventHubResourceId value.
      */
     public String eventHubResourceId() {
-        return this.eventHubResourceId;
+        return this.innerProperties() == null ? null : this.innerProperties().eventHubResourceId();
     }
 
     /**
@@ -96,7 +59,10 @@ public class EventHubDataConnection extends DataConnectionInner {
      * @return the EventHubDataConnection object itself.
      */
     public EventHubDataConnection withEventHubResourceId(String eventHubResourceId) {
-        this.eventHubResourceId = eventHubResourceId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventHubConnectionProperties();
+        }
+        this.innerProperties().withEventHubResourceId(eventHubResourceId);
         return this;
     }
 
@@ -106,7 +72,7 @@ public class EventHubDataConnection extends DataConnectionInner {
      * @return the consumerGroup value.
      */
     public String consumerGroup() {
-        return this.consumerGroup;
+        return this.innerProperties() == null ? null : this.innerProperties().consumerGroup();
     }
 
     /**
@@ -116,7 +82,10 @@ public class EventHubDataConnection extends DataConnectionInner {
      * @return the EventHubDataConnection object itself.
      */
     public EventHubDataConnection withConsumerGroup(String consumerGroup) {
-        this.consumerGroup = consumerGroup;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventHubConnectionProperties();
+        }
+        this.innerProperties().withConsumerGroup(consumerGroup);
         return this;
     }
 
@@ -127,7 +96,7 @@ public class EventHubDataConnection extends DataConnectionInner {
      * @return the tableName value.
      */
     public String tableName() {
-        return this.tableName;
+        return this.innerProperties() == null ? null : this.innerProperties().tableName();
     }
 
     /**
@@ -138,7 +107,10 @@ public class EventHubDataConnection extends DataConnectionInner {
      * @return the EventHubDataConnection object itself.
      */
     public EventHubDataConnection withTableName(String tableName) {
-        this.tableName = tableName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventHubConnectionProperties();
+        }
+        this.innerProperties().withTableName(tableName);
         return this;
     }
 
@@ -149,7 +121,7 @@ public class EventHubDataConnection extends DataConnectionInner {
      * @return the mappingRuleName value.
      */
     public String mappingRuleName() {
-        return this.mappingRuleName;
+        return this.innerProperties() == null ? null : this.innerProperties().mappingRuleName();
     }
 
     /**
@@ -160,7 +132,10 @@ public class EventHubDataConnection extends DataConnectionInner {
      * @return the EventHubDataConnection object itself.
      */
     public EventHubDataConnection withMappingRuleName(String mappingRuleName) {
-        this.mappingRuleName = mappingRuleName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventHubConnectionProperties();
+        }
+        this.innerProperties().withMappingRuleName(mappingRuleName);
         return this;
     }
 
@@ -171,7 +146,7 @@ public class EventHubDataConnection extends DataConnectionInner {
      * @return the dataFormat value.
      */
     public EventHubDataFormat dataFormat() {
-        return this.dataFormat;
+        return this.innerProperties() == null ? null : this.innerProperties().dataFormat();
     }
 
     /**
@@ -182,7 +157,10 @@ public class EventHubDataConnection extends DataConnectionInner {
      * @return the EventHubDataConnection object itself.
      */
     public EventHubDataConnection withDataFormat(EventHubDataFormat dataFormat) {
-        this.dataFormat = dataFormat;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventHubConnectionProperties();
+        }
+        this.innerProperties().withDataFormat(dataFormat);
         return this;
     }
 
@@ -192,7 +170,7 @@ public class EventHubDataConnection extends DataConnectionInner {
      * @return the eventSystemProperties value.
      */
     public List<String> eventSystemProperties() {
-        return this.eventSystemProperties;
+        return this.innerProperties() == null ? null : this.innerProperties().eventSystemProperties();
     }
 
     /**
@@ -202,7 +180,10 @@ public class EventHubDataConnection extends DataConnectionInner {
      * @return the EventHubDataConnection object itself.
      */
     public EventHubDataConnection withEventSystemProperties(List<String> eventSystemProperties) {
-        this.eventSystemProperties = eventSystemProperties;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventHubConnectionProperties();
+        }
+        this.innerProperties().withEventSystemProperties(eventSystemProperties);
         return this;
     }
 
@@ -212,7 +193,7 @@ public class EventHubDataConnection extends DataConnectionInner {
      * @return the compression value.
      */
     public Compression compression() {
-        return this.compression;
+        return this.innerProperties() == null ? null : this.innerProperties().compression();
     }
 
     /**
@@ -222,7 +203,10 @@ public class EventHubDataConnection extends DataConnectionInner {
      * @return the EventHubDataConnection object itself.
      */
     public EventHubDataConnection withCompression(Compression compression) {
-        this.compression = compression;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventHubConnectionProperties();
+        }
+        this.innerProperties().withCompression(compression);
         return this;
     }
 
@@ -232,7 +216,7 @@ public class EventHubDataConnection extends DataConnectionInner {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -242,7 +226,7 @@ public class EventHubDataConnection extends DataConnectionInner {
      * @return the managedIdentityResourceId value.
      */
     public String managedIdentityResourceId() {
-        return this.managedIdentityResourceId;
+        return this.innerProperties() == null ? null : this.innerProperties().managedIdentityResourceId();
     }
 
     /**
@@ -253,14 +237,10 @@ public class EventHubDataConnection extends DataConnectionInner {
      * @return the EventHubDataConnection object itself.
      */
     public EventHubDataConnection withManagedIdentityResourceId(String managedIdentityResourceId) {
-        this.managedIdentityResourceId = managedIdentityResourceId;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public EventHubDataConnection withLocation(String location) {
-        super.withLocation(location);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventHubConnectionProperties();
+        }
+        this.innerProperties().withManagedIdentityResourceId(managedIdentityResourceId);
         return this;
     }
 
@@ -272,5 +252,8 @@ public class EventHubDataConnection extends DataConnectionInner {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

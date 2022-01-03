@@ -14,6 +14,7 @@ import java.time.ZoneOffset;
 import java.util.Base64;
 
 class JsonWebToken {
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     /**
      * Retrieves the expiration date from the specified JWT value.
@@ -42,11 +43,9 @@ class JsonWebToken {
 
         byte[] jwtPayloadDecodedData = Base64.getDecoder().decode(jwtPayloadEncoded);
 
-        ObjectMapper mapper = new ObjectMapper();
-
         JsonNode rootNode;
         try {
-            rootNode = mapper.readTree(jwtPayloadDecodedData);
+            rootNode = MAPPER.readTree(jwtPayloadDecodedData);
         } catch (IOException exception) {
             return null;
         }

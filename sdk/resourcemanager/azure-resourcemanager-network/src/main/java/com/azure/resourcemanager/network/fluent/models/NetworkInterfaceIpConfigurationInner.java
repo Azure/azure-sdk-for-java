@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddressPool;
@@ -18,10 +17,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** IPConfiguration in a network interface. */
-@JsonFlatten
 @Fluent
-public class NetworkInterfaceIpConfigurationInner extends SubResource {
+public final class NetworkInterfaceIpConfigurationInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkInterfaceIpConfigurationInner.class);
+
+    /*
+     * Network interface IP configuration properties.
+     */
+    @JsonProperty(value = "properties")
+    private NetworkInterfaceIpConfigurationPropertiesFormatInner innerProperties;
 
     /*
      * The name of the resource that is unique within a resource group. This
@@ -42,89 +46,14 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
     @JsonProperty(value = "type")
     private String type;
 
-    /*
-     * The reference to gateway load balancer frontend IP.
+    /**
+     * Get the innerProperties property: Network interface IP configuration properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.gatewayLoadBalancer")
-    private SubResource gatewayLoadBalancer;
-
-    /*
-     * The reference to Virtual Network Taps.
-     */
-    @JsonProperty(value = "properties.virtualNetworkTaps")
-    private List<VirtualNetworkTapInner> virtualNetworkTaps;
-
-    /*
-     * The reference to ApplicationGatewayBackendAddressPool resource.
-     */
-    @JsonProperty(value = "properties.applicationGatewayBackendAddressPools")
-    private List<ApplicationGatewayBackendAddressPool> applicationGatewayBackendAddressPools;
-
-    /*
-     * The reference to LoadBalancerBackendAddressPool resource.
-     */
-    @JsonProperty(value = "properties.loadBalancerBackendAddressPools")
-    private List<BackendAddressPoolInner> loadBalancerBackendAddressPools;
-
-    /*
-     * A list of references of LoadBalancerInboundNatRules.
-     */
-    @JsonProperty(value = "properties.loadBalancerInboundNatRules")
-    private List<InboundNatRuleInner> loadBalancerInboundNatRules;
-
-    /*
-     * Private IP address of the IP configuration.
-     */
-    @JsonProperty(value = "properties.privateIPAddress")
-    private String privateIpAddress;
-
-    /*
-     * The private IP address allocation method.
-     */
-    @JsonProperty(value = "properties.privateIPAllocationMethod")
-    private IpAllocationMethod privateIpAllocationMethod;
-
-    /*
-     * Whether the specific IP configuration is IPv4 or IPv6. Default is IPv4.
-     */
-    @JsonProperty(value = "properties.privateIPAddressVersion")
-    private IpVersion privateIpAddressVersion;
-
-    /*
-     * Subnet bound to the IP configuration.
-     */
-    @JsonProperty(value = "properties.subnet")
-    private SubnetInner subnet;
-
-    /*
-     * Whether this is a primary customer address on the network interface.
-     */
-    @JsonProperty(value = "properties.primary")
-    private Boolean primary;
-
-    /*
-     * Public IP address bound to the IP configuration.
-     */
-    @JsonProperty(value = "properties.publicIPAddress")
-    private PublicIpAddressInner publicIpAddress;
-
-    /*
-     * Application security groups in which the IP configuration is included.
-     */
-    @JsonProperty(value = "properties.applicationSecurityGroups")
-    private List<ApplicationSecurityGroupInner> applicationSecurityGroups;
-
-    /*
-     * The provisioning state of the network interface IP configuration.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * PrivateLinkConnection properties for the network interface.
-     */
-    @JsonProperty(value = "properties.privateLinkConnectionProperties", access = JsonProperty.Access.WRITE_ONLY)
-    private NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties privateLinkConnectionProperties;
+    private NetworkInterfaceIpConfigurationPropertiesFormatInner innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
@@ -177,13 +106,20 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public NetworkInterfaceIpConfigurationInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the gatewayLoadBalancer property: The reference to gateway load balancer frontend IP.
      *
      * @return the gatewayLoadBalancer value.
      */
     public SubResource gatewayLoadBalancer() {
-        return this.gatewayLoadBalancer;
+        return this.innerProperties() == null ? null : this.innerProperties().gatewayLoadBalancer();
     }
 
     /**
@@ -193,7 +129,10 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
      * @return the NetworkInterfaceIpConfigurationInner object itself.
      */
     public NetworkInterfaceIpConfigurationInner withGatewayLoadBalancer(SubResource gatewayLoadBalancer) {
-        this.gatewayLoadBalancer = gatewayLoadBalancer;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkInterfaceIpConfigurationPropertiesFormatInner();
+        }
+        this.innerProperties().withGatewayLoadBalancer(gatewayLoadBalancer);
         return this;
     }
 
@@ -203,7 +142,7 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
      * @return the virtualNetworkTaps value.
      */
     public List<VirtualNetworkTapInner> virtualNetworkTaps() {
-        return this.virtualNetworkTaps;
+        return this.innerProperties() == null ? null : this.innerProperties().virtualNetworkTaps();
     }
 
     /**
@@ -214,7 +153,10 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
      */
     public NetworkInterfaceIpConfigurationInner withVirtualNetworkTaps(
         List<VirtualNetworkTapInner> virtualNetworkTaps) {
-        this.virtualNetworkTaps = virtualNetworkTaps;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkInterfaceIpConfigurationPropertiesFormatInner();
+        }
+        this.innerProperties().withVirtualNetworkTaps(virtualNetworkTaps);
         return this;
     }
 
@@ -225,7 +167,7 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
      * @return the applicationGatewayBackendAddressPools value.
      */
     public List<ApplicationGatewayBackendAddressPool> applicationGatewayBackendAddressPools() {
-        return this.applicationGatewayBackendAddressPools;
+        return this.innerProperties() == null ? null : this.innerProperties().applicationGatewayBackendAddressPools();
     }
 
     /**
@@ -237,7 +179,10 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
      */
     public NetworkInterfaceIpConfigurationInner withApplicationGatewayBackendAddressPools(
         List<ApplicationGatewayBackendAddressPool> applicationGatewayBackendAddressPools) {
-        this.applicationGatewayBackendAddressPools = applicationGatewayBackendAddressPools;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkInterfaceIpConfigurationPropertiesFormatInner();
+        }
+        this.innerProperties().withApplicationGatewayBackendAddressPools(applicationGatewayBackendAddressPools);
         return this;
     }
 
@@ -247,7 +192,7 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
      * @return the loadBalancerBackendAddressPools value.
      */
     public List<BackendAddressPoolInner> loadBalancerBackendAddressPools() {
-        return this.loadBalancerBackendAddressPools;
+        return this.innerProperties() == null ? null : this.innerProperties().loadBalancerBackendAddressPools();
     }
 
     /**
@@ -258,7 +203,10 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
      */
     public NetworkInterfaceIpConfigurationInner withLoadBalancerBackendAddressPools(
         List<BackendAddressPoolInner> loadBalancerBackendAddressPools) {
-        this.loadBalancerBackendAddressPools = loadBalancerBackendAddressPools;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkInterfaceIpConfigurationPropertiesFormatInner();
+        }
+        this.innerProperties().withLoadBalancerBackendAddressPools(loadBalancerBackendAddressPools);
         return this;
     }
 
@@ -268,7 +216,7 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
      * @return the loadBalancerInboundNatRules value.
      */
     public List<InboundNatRuleInner> loadBalancerInboundNatRules() {
-        return this.loadBalancerInboundNatRules;
+        return this.innerProperties() == null ? null : this.innerProperties().loadBalancerInboundNatRules();
     }
 
     /**
@@ -279,7 +227,10 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
      */
     public NetworkInterfaceIpConfigurationInner withLoadBalancerInboundNatRules(
         List<InboundNatRuleInner> loadBalancerInboundNatRules) {
-        this.loadBalancerInboundNatRules = loadBalancerInboundNatRules;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkInterfaceIpConfigurationPropertiesFormatInner();
+        }
+        this.innerProperties().withLoadBalancerInboundNatRules(loadBalancerInboundNatRules);
         return this;
     }
 
@@ -289,7 +240,7 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
      * @return the privateIpAddress value.
      */
     public String privateIpAddress() {
-        return this.privateIpAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().privateIpAddress();
     }
 
     /**
@@ -299,7 +250,10 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
      * @return the NetworkInterfaceIpConfigurationInner object itself.
      */
     public NetworkInterfaceIpConfigurationInner withPrivateIpAddress(String privateIpAddress) {
-        this.privateIpAddress = privateIpAddress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkInterfaceIpConfigurationPropertiesFormatInner();
+        }
+        this.innerProperties().withPrivateIpAddress(privateIpAddress);
         return this;
     }
 
@@ -309,7 +263,7 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
      * @return the privateIpAllocationMethod value.
      */
     public IpAllocationMethod privateIpAllocationMethod() {
-        return this.privateIpAllocationMethod;
+        return this.innerProperties() == null ? null : this.innerProperties().privateIpAllocationMethod();
     }
 
     /**
@@ -320,7 +274,10 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
      */
     public NetworkInterfaceIpConfigurationInner withPrivateIpAllocationMethod(
         IpAllocationMethod privateIpAllocationMethod) {
-        this.privateIpAllocationMethod = privateIpAllocationMethod;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkInterfaceIpConfigurationPropertiesFormatInner();
+        }
+        this.innerProperties().withPrivateIpAllocationMethod(privateIpAllocationMethod);
         return this;
     }
 
@@ -330,7 +287,7 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
      * @return the privateIpAddressVersion value.
      */
     public IpVersion privateIpAddressVersion() {
-        return this.privateIpAddressVersion;
+        return this.innerProperties() == null ? null : this.innerProperties().privateIpAddressVersion();
     }
 
     /**
@@ -340,7 +297,10 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
      * @return the NetworkInterfaceIpConfigurationInner object itself.
      */
     public NetworkInterfaceIpConfigurationInner withPrivateIpAddressVersion(IpVersion privateIpAddressVersion) {
-        this.privateIpAddressVersion = privateIpAddressVersion;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkInterfaceIpConfigurationPropertiesFormatInner();
+        }
+        this.innerProperties().withPrivateIpAddressVersion(privateIpAddressVersion);
         return this;
     }
 
@@ -350,7 +310,7 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
      * @return the subnet value.
      */
     public SubnetInner subnet() {
-        return this.subnet;
+        return this.innerProperties() == null ? null : this.innerProperties().subnet();
     }
 
     /**
@@ -360,7 +320,10 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
      * @return the NetworkInterfaceIpConfigurationInner object itself.
      */
     public NetworkInterfaceIpConfigurationInner withSubnet(SubnetInner subnet) {
-        this.subnet = subnet;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkInterfaceIpConfigurationPropertiesFormatInner();
+        }
+        this.innerProperties().withSubnet(subnet);
         return this;
     }
 
@@ -370,7 +333,7 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
      * @return the primary value.
      */
     public Boolean primary() {
-        return this.primary;
+        return this.innerProperties() == null ? null : this.innerProperties().primary();
     }
 
     /**
@@ -380,7 +343,10 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
      * @return the NetworkInterfaceIpConfigurationInner object itself.
      */
     public NetworkInterfaceIpConfigurationInner withPrimary(Boolean primary) {
-        this.primary = primary;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkInterfaceIpConfigurationPropertiesFormatInner();
+        }
+        this.innerProperties().withPrimary(primary);
         return this;
     }
 
@@ -390,7 +356,7 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
      * @return the publicIpAddress value.
      */
     public PublicIpAddressInner publicIpAddress() {
-        return this.publicIpAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().publicIpAddress();
     }
 
     /**
@@ -400,7 +366,10 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
      * @return the NetworkInterfaceIpConfigurationInner object itself.
      */
     public NetworkInterfaceIpConfigurationInner withPublicIpAddress(PublicIpAddressInner publicIpAddress) {
-        this.publicIpAddress = publicIpAddress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkInterfaceIpConfigurationPropertiesFormatInner();
+        }
+        this.innerProperties().withPublicIpAddress(publicIpAddress);
         return this;
     }
 
@@ -411,7 +380,7 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
      * @return the applicationSecurityGroups value.
      */
     public List<ApplicationSecurityGroupInner> applicationSecurityGroups() {
-        return this.applicationSecurityGroups;
+        return this.innerProperties() == null ? null : this.innerProperties().applicationSecurityGroups();
     }
 
     /**
@@ -423,7 +392,10 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
      */
     public NetworkInterfaceIpConfigurationInner withApplicationSecurityGroups(
         List<ApplicationSecurityGroupInner> applicationSecurityGroups) {
-        this.applicationSecurityGroups = applicationSecurityGroups;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkInterfaceIpConfigurationPropertiesFormatInner();
+        }
+        this.innerProperties().withApplicationSecurityGroups(applicationSecurityGroups);
         return this;
     }
 
@@ -433,7 +405,7 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -442,14 +414,7 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
      * @return the privateLinkConnectionProperties value.
      */
     public NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties privateLinkConnectionProperties() {
-        return this.privateLinkConnectionProperties;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public NetworkInterfaceIpConfigurationInner withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().privateLinkConnectionProperties();
     }
 
     /**
@@ -458,29 +423,8 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (virtualNetworkTaps() != null) {
-            virtualNetworkTaps().forEach(e -> e.validate());
-        }
-        if (applicationGatewayBackendAddressPools() != null) {
-            applicationGatewayBackendAddressPools().forEach(e -> e.validate());
-        }
-        if (loadBalancerBackendAddressPools() != null) {
-            loadBalancerBackendAddressPools().forEach(e -> e.validate());
-        }
-        if (loadBalancerInboundNatRules() != null) {
-            loadBalancerInboundNatRules().forEach(e -> e.validate());
-        }
-        if (subnet() != null) {
-            subnet().validate();
-        }
-        if (publicIpAddress() != null) {
-            publicIpAddress().validate();
-        }
-        if (applicationSecurityGroups() != null) {
-            applicationSecurityGroups().forEach(e -> e.validate());
-        }
-        if (privateLinkConnectionProperties() != null) {
-            privateLinkConnectionProperties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

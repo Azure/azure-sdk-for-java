@@ -14,6 +14,7 @@ import com.azure.resourcemanager.compute.models.AvailabilitySet;
 import com.azure.resourcemanager.compute.models.CachingTypes;
 import com.azure.resourcemanager.compute.models.Disk;
 import com.azure.resourcemanager.compute.models.DiskState;
+import com.azure.resourcemanager.compute.models.InstanceViewStatus;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.KnownWindowsVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.PowerState;
@@ -59,7 +60,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     private String rgName2 = "";
     private final Region region = Region.US_EAST;
     private final Region regionProxPlacementGroup = Region.US_WEST;
-    private final Region regionProxPlacementGroup2 = Region.US_SOUTH_CENTRAL;
+    private final Region regionProxPlacementGroup2 = Region.US_EAST;
     private final String vmName = "javavm";
     private final String proxGroupName = "testproxgroup1";
     private final String proxGroupName2 = "testproxgroup2";
@@ -123,7 +124,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .create();
 
         NetworkInterface primaryNic = vm.getPrimaryNetworkInterface();
@@ -694,7 +695,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withUnmanagedDisks()
                 .defineUnmanagedDataDisk("disk1")
                 .withNewVhd(100)
@@ -740,7 +741,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withUnmanagedDisks()
                 .withExistingUnmanagedDataDisk(storageAccount.name(), "diskvhds", "datadisk1vhd.vhd")
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D2as_v4"))
@@ -790,7 +791,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("firstuser")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .create();
 
@@ -802,7 +803,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Map<String, String> testTags = new HashMap<String, String>();
         testTags.put("testTag", "testValue");
         virtualMachine.update().withTags(testTags).apply();
-        Assertions.assertEquals(testTags, virtualMachine.innerModel().tags());
+        Assertions.assertEquals(testTags.get("testTag"), virtualMachine.innerModel().tags().get("testTag"));
     }
 
     @Test
@@ -819,7 +820,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("firstuser")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .create();
 
         List<String> installGit = new ArrayList<>();
@@ -891,7 +892,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withoutPrimaryPublicIPAddress()
             .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
             .withAdminUsername("Foo12")
-            .withAdminPassword("abc!@#F0orL")
+            .withAdminPassword(password())
             .create();
         // Get
         VirtualMachine virtualMachine = computeManager.virtualMachines().getByResourceGroup(rgName, vmName);
@@ -913,6 +914,49 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         // check if nic exists after force delete vm
         NetworkInterface nic = networkManager.networkInterfaces().getById(nicId);
         Assertions.assertNotNull(nic);
+    }
+
+    @Test
+    public void canHibernateVirtualMachine() {
+        // preview feature
+
+        // create to enable hibernation
+        VirtualMachine vm = computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion("eastus2euap")
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+//            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+//            .withRootUsername("Foo12")
+//            .withSsh(sshPublicKey())
+            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2019_DATACENTER)
+            .withAdminUsername("Foo12")
+            .withAdminPassword(password())
+            .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
+            .enableHibernation()
+            .create();
+
+        Assertions.assertTrue(vm.isHibernationEnabled());
+
+        // deallocate with hibernate
+        vm.deallocate(true);
+
+        InstanceViewStatus hibernationStatus = vm.instanceView().statuses().stream()
+            .filter(status -> "HibernationState/Hibernated".equals(status.code()))
+            .findFirst().orElse(null);
+        Assertions.assertNotNull(hibernationStatus);
+
+        vm.start();
+
+        // update to disable hibernation
+        vm.deallocate();
+        vm.update()
+            .disableHibernation()
+            .apply();
+
+        Assertions.assertFalse(vm.isHibernationEnabled());
     }
 
     private CreatablesInfo prepareCreatableVirtualMachines(
@@ -960,7 +1004,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                     .withNewPrimaryPublicIPAddress(publicIPAddressCreatable)
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername("tirekicker")
-                    .withRootPassword(password())
+                    .withSsh(sshPublicKey())
                     .withUnmanagedDisks()
                     .withNewStorageAccount(storageAccountCreatable);
 

@@ -9,6 +9,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.CapacityPoolInner;
 import com.azure.resourcemanager.netapp.models.CapacityPool;
 import com.azure.resourcemanager.netapp.models.CapacityPoolPatch;
+import com.azure.resourcemanager.netapp.models.EncryptionType;
 import com.azure.resourcemanager.netapp.models.QosType;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
 import java.util.Collections;
@@ -44,6 +45,10 @@ public final class CapacityPoolImpl implements CapacityPool, CapacityPool.Defini
         }
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
     public String poolId() {
         return this.innerModel().poolId();
     }
@@ -74,6 +79,10 @@ public final class CapacityPoolImpl implements CapacityPool, CapacityPool.Defini
 
     public Boolean coolAccess() {
         return this.innerModel().coolAccess();
+    }
+
+    public EncryptionType encryptionType() {
+        return this.innerModel().encryptionType();
     }
 
     public Region region() {
@@ -224,6 +233,11 @@ public final class CapacityPoolImpl implements CapacityPool, CapacityPool.Defini
 
     public CapacityPoolImpl withCoolAccess(Boolean coolAccess) {
         this.innerModel().withCoolAccess(coolAccess);
+        return this;
+    }
+
+    public CapacityPoolImpl withEncryptionType(EncryptionType encryptionType) {
+        this.innerModel().withEncryptionType(encryptionType);
         return this;
     }
 

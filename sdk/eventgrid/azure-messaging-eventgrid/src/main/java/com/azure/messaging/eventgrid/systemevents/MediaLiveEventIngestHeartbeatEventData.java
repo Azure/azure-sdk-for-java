@@ -5,14 +5,19 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.time.OffsetDateTime;
+
 /**
- * Ingest fragment dropped event data. Schema of the data property of an EventGridEvent for a
+ * Ingest heartbeat event data. Schema of the data property of an EventGridEvent for a
  * Microsoft.Media.LiveEventIngestHeartbeat event.
  */
 @Immutable
 public final class MediaLiveEventIngestHeartbeatEventData {
+    static final ClientLogger LOGGER = new ClientLogger(MediaLiveEventIngestHeartbeatEventData.class);
+
     /*
      * Gets the type of the track (Audio / Video).
      */
@@ -26,6 +31,18 @@ public final class MediaLiveEventIngestHeartbeatEventData {
     private String trackName;
 
     /*
+     * Gets the Live Transcription language.
+     */
+    @JsonProperty(value = "transcriptionLanguage", access = JsonProperty.Access.WRITE_ONLY)
+    private String transcriptionLanguage;
+
+    /*
+     * Gets the Live Transcription state.
+     */
+    @JsonProperty(value = "transcriptionState", access = JsonProperty.Access.WRITE_ONLY)
+    private String transcriptionState;
+
+    /*
      * Gets the bitrate of the track.
      */
     @JsonProperty(value = "bitrate", access = JsonProperty.Access.WRITE_ONLY)
@@ -36,6 +53,18 @@ public final class MediaLiveEventIngestHeartbeatEventData {
      */
     @JsonProperty(value = "incomingBitrate", access = JsonProperty.Access.WRITE_ONLY)
     private Long incomingBitrate;
+
+    /*
+     * Gets the track ingest drift value.
+     */
+    @JsonProperty(value = "ingestDriftValue", access = JsonProperty.Access.WRITE_ONLY)
+    private String ingestDriftValue;
+
+    /*
+     * Gets the arrival UTC time of the last fragment.
+     */
+    @JsonProperty(value = "lastFragmentArrivalTime", access = JsonProperty.Access.WRITE_ONLY)
+    private String lastFragmentArrivalTime;
 
     /*
      * Gets the last timestamp.
@@ -104,6 +133,24 @@ public final class MediaLiveEventIngestHeartbeatEventData {
     }
 
     /**
+     * Get the transcriptionLanguage property: Gets the Live Transcription language.
+     *
+     * @return the transcriptionLanguage value.
+     */
+    public String getTranscriptionLanguage() {
+        return this.transcriptionLanguage;
+    }
+
+    /**
+     * Get the transcriptionState property: Gets the Live Transcription state.
+     *
+     * @return the transcriptionState value.
+     */
+    public String getTranscriptionState() {
+        return this.transcriptionState;
+    }
+
+    /**
      * Get the bitrate property: Gets the bitrate of the track.
      *
      * @return the bitrate value.
@@ -119,6 +166,33 @@ public final class MediaLiveEventIngestHeartbeatEventData {
      */
     public Long getIncomingBitrate() {
         return this.incomingBitrate;
+    }
+
+    /**
+     * Get the ingestDriftValue property: Gets the track ingest drift value.
+     *
+     * @return the ingestDriftValue value.
+     */
+    public Integer getIngestDriftValue() {
+        if ("n/a".equals(this.ingestDriftValue)) {
+            return null;
+        }
+
+        try {
+            return Integer.parseInt(this.ingestDriftValue);
+        } catch (NumberFormatException ex) {
+            LOGGER.logExceptionAsError(ex);
+            return null;
+        }
+    }
+
+    /**
+     * Get the lastFragmentArrivalTime property: Gets the arrival UTC time of the last fragment.
+     *
+     * @return the lastFragmentArrivalTime value.
+     */
+    public OffsetDateTime getLastFragmentArrivalTime() {
+        return OffsetDateTime.parse(this.lastFragmentArrivalTime);
     }
 
     /**

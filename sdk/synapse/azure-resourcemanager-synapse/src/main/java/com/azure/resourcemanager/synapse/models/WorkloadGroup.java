@@ -35,21 +35,21 @@ public interface WorkloadGroup {
      *
      * @return the minResourcePercent value.
      */
-    Integer minResourcePercent();
+    int minResourcePercent();
 
     /**
      * Gets the maxResourcePercent property: The workload group cap percentage resource.
      *
      * @return the maxResourcePercent value.
      */
-    Integer maxResourcePercent();
+    int maxResourcePercent();
 
     /**
      * Gets the minResourcePercentPerRequest property: The workload group request minimum grant percentage.
      *
      * @return the minResourcePercentPerRequest value.
      */
-    Double minResourcePercentPerRequest();
+    double minResourcePercentPerRequest();
 
     /**
      * Gets the maxResourcePercentPerRequest property: The workload group request maximum grant percentage.
@@ -134,7 +134,7 @@ public interface WorkloadGroup {
              * @param minResourcePercent The workload group minimum percentage resource.
              * @return the next definition stage.
              */
-            WithCreate withMinResourcePercent(Integer minResourcePercent);
+            WithCreate withMinResourcePercent(int minResourcePercent);
         }
         /** The stage of the WorkloadGroup definition allowing to specify maxResourcePercent. */
         interface WithMaxResourcePercent {
@@ -144,7 +144,7 @@ public interface WorkloadGroup {
              * @param maxResourcePercent The workload group cap percentage resource.
              * @return the next definition stage.
              */
-            WithCreate withMaxResourcePercent(Integer maxResourcePercent);
+            WithCreate withMaxResourcePercent(int maxResourcePercent);
         }
         /** The stage of the WorkloadGroup definition allowing to specify minResourcePercentPerRequest. */
         interface WithMinResourcePercentPerRequest {
@@ -155,7 +155,7 @@ public interface WorkloadGroup {
              * @param minResourcePercentPerRequest The workload group request minimum grant percentage.
              * @return the next definition stage.
              */
-            WithCreate withMinResourcePercentPerRequest(Double minResourcePercentPerRequest);
+            WithCreate withMinResourcePercentPerRequest(double minResourcePercentPerRequest);
         }
         /** The stage of the WorkloadGroup definition allowing to specify maxResourcePercentPerRequest. */
         interface WithMaxResourcePercentPerRequest {
@@ -229,7 +229,7 @@ public interface WorkloadGroup {
              * @param minResourcePercent The workload group minimum percentage resource.
              * @return the next definition stage.
              */
-            Update withMinResourcePercent(Integer minResourcePercent);
+            Update withMinResourcePercent(int minResourcePercent);
         }
         /** The stage of the WorkloadGroup update allowing to specify maxResourcePercent. */
         interface WithMaxResourcePercent {
@@ -239,7 +239,7 @@ public interface WorkloadGroup {
              * @param maxResourcePercent The workload group cap percentage resource.
              * @return the next definition stage.
              */
-            Update withMaxResourcePercent(Integer maxResourcePercent);
+            Update withMaxResourcePercent(int maxResourcePercent);
         }
         /** The stage of the WorkloadGroup update allowing to specify minResourcePercentPerRequest. */
         interface WithMinResourcePercentPerRequest {
@@ -250,7 +250,7 @@ public interface WorkloadGroup {
              * @param minResourcePercentPerRequest The workload group request minimum grant percentage.
              * @return the next definition stage.
              */
-            Update withMinResourcePercentPerRequest(Double minResourcePercentPerRequest);
+            Update withMinResourcePercentPerRequest(double minResourcePercentPerRequest);
         }
         /** The stage of the WorkloadGroup update allowing to specify maxResourcePercentPerRequest. */
         interface WithMaxResourcePercentPerRequest {

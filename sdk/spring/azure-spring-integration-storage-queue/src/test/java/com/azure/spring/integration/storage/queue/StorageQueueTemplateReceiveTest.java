@@ -15,7 +15,6 @@ import com.azure.spring.integration.storage.queue.factory.StorageQueueClientFact
 import com.azure.storage.queue.QueueAsyncClient;
 import com.azure.storage.queue.models.QueueMessageItem;
 import com.azure.storage.queue.models.QueueStorageException;
-import com.google.common.collect.Lists;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,6 +25,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -66,7 +66,7 @@ public class StorageQueueTemplateReceiveTest {
         final PagedResponse<QueueMessageItem> pagedResponse = new PagedResponse<QueueMessageItem>() {
             @Override
             public List<QueueMessageItem> getItems() {
-                return Lists.newArrayList(queueMessage);
+                return new ArrayList<>(Arrays.asList(queueMessage));
             }
 
             @Override

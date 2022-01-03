@@ -4,7 +4,9 @@
 
 package com.azure.resourcemanager.hybridkubernetes.models;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.hybridkubernetes.fluent.models.ConnectedClusterInner;
 import java.time.OffsetDateTime;
@@ -363,4 +365,28 @@ public interface ConnectedCluster {
      * @return the refreshed resource.
      */
     ConnectedCluster refresh(Context context);
+
+    /**
+     * Gets cluster user credentials of the connected cluster with a specified resource group and name.
+     *
+     * @param properties ListClusterUserCredential properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster user credentials of the connected cluster with a specified resource group and name.
+     */
+    CredentialResults listClusterUserCredential(ListClusterUserCredentialProperties properties);
+
+    /**
+     * Gets cluster user credentials of the connected cluster with a specified resource group and name.
+     *
+     * @param properties ListClusterUserCredential properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster user credentials of the connected cluster with a specified resource group and name.
+     */
+    Response<CredentialResults> listClusterUserCredentialWithResponse(
+        ListClusterUserCredentialProperties properties, Context context);
 }

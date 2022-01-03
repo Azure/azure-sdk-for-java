@@ -33,6 +33,7 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
         putEnvironmentPropertyToSystemProperty(environment, "azure.keyvault.client-secret");
         putEnvironmentPropertyToSystemProperty(environment, "azure.keyvault.managed-identity");
         putEnvironmentPropertyToSystemProperty(environment, "azure.keyvault.jca.certificates-refresh-interval");
+        putEnvironmentPropertyToSystemProperty(environment, "azure.keyvault.jca.certificates-refresh-interval-in-ms");
         putEnvironmentPropertyToSystemProperty(environment, "azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate");
         putEnvironmentPropertyToSystemProperty(environment, "azure.cert-path.well-known");
         putEnvironmentPropertyToSystemProperty(environment, "azure.cert-path.custom");
@@ -55,6 +56,7 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
             propertySources.addFirst(new PropertiesPropertySource("TrustStorePropertySource", properties));
         }
 
+        Security.removeProvider("AzureKeyVault");
         Security.insertProviderAt(new KeyVaultJcaProvider(), 1);
         if (overrideTrustManagerFactory(environment)) {
             Security.insertProviderAt(new KeyVaultTrustManagerFactoryProvider(), 1);

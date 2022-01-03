@@ -147,11 +147,11 @@ private case class FilterAnalyzer() {
         true
 
       case IsNull(attr) =>
-        queryBuilder.append(s"IS_NULL(${canonicalCosmosFieldPath(attr)})")
+        queryBuilder.append(s"(IS_NULL(${canonicalCosmosFieldPath(attr)}) OR NOT(IS_DEFINED(${canonicalCosmosFieldPath(attr)})))")
         true
 
       case IsNotNull(attr) =>
-        queryBuilder.append(s"NOT(IS_NULL(${canonicalCosmosFieldPath(attr)}))")
+        queryBuilder.append(s"(NOT(IS_NULL(${canonicalCosmosFieldPath(attr)})) AND IS_DEFINED(${canonicalCosmosFieldPath(attr)}))")
         true
 
       case And(leftFilter, rightFilter) =>

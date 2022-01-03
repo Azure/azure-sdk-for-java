@@ -34,6 +34,15 @@ public final class DimensionImpl implements Dimension {
         return this.innerModel().type();
     }
 
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
+    }
+
     public String description() {
         return this.innerModel().description();
     }
@@ -73,15 +82,6 @@ public final class DimensionImpl implements Dimension {
 
     public String nextLink() {
         return this.innerModel().nextLink();
-    }
-
-    public Map<String, String> tags() {
-        Map<String, String> inner = this.innerModel().tags();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
     }
 
     public DimensionInner innerModel() {

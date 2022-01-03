@@ -3,14 +3,14 @@
 
 package com.azure.cosmos.implementation.batch;
 
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosItemOperation;
-import com.azure.cosmos.TransactionalBatchOperationResult;
-import com.azure.cosmos.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.models.CosmosBatchOperationResult;
+import com.azure.cosmos.models.CosmosBatchResponse;
+import com.azure.cosmos.models.CosmosItemOperation;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -35,15 +35,15 @@ public final class BatchResponseParser {
      * @param request the {@link ServerBatchRequest batch request} that produced {@code message}.
      * @param shouldPromoteOperationStatus indicates whether the operation status should be promoted.
      *
-     * @return the {@link TransactionalBatchResponse transactional batch response} created
+     * @return the {@link CosmosBatchResponse cosmos batch response} created
      * from {@link RxDocumentServiceResponse message} when the batch operation completes.
      */
-    public static TransactionalBatchResponse fromDocumentServiceResponse(
+    public static CosmosBatchResponse fromDocumentServiceResponse(
         final RxDocumentServiceResponse documentServiceResponse,
         final ServerBatchRequest request,
         final boolean shouldPromoteOperationStatus) {
 
-        TransactionalBatchResponse response = null;
+        CosmosBatchResponse response = null;
         final byte[] responseContent = documentServiceResponse.getResponseBodyAsByteArray();
 
         if (responseContent != null && responseContent.length > 0) {
@@ -51,7 +51,7 @@ public final class BatchResponseParser {
 
             if (response == null) {
                 // Convert any payload read failures as InternalServerError
-                response = BridgeInternal.createTransactionBatchResponse(
+                response = ModelBridgeInternal.createCosmosBatchResponse(
                     HttpResponseStatus.INTERNAL_SERVER_ERROR.code(),
                     HttpConstants.SubStatusCodes.UNKNOWN,
                     "ServerResponseDeserializationFailure",
@@ -64,7 +64,7 @@ public final class BatchResponseParser {
         int responseSubStatusCode = BatchExecUtils.getSubStatusCode(documentServiceResponse.getResponseHeaders());
 
         if (response == null) {
-            response = BridgeInternal.createTransactionBatchResponse(
+            response = ModelBridgeInternal.createCosmosBatchResponse(
                 responseStatusCode,
                 responseSubStatusCode,
                 null,
@@ -76,7 +76,7 @@ public final class BatchResponseParser {
             if (responseStatusCode >= 200 && responseStatusCode <= 299)  {
                 // Server should be guaranteeing number of results equal to operations when
                 // batch request is successful - so fail as InternalServerError if this is not the case.
-                response = BridgeInternal.createTransactionBatchResponse(
+                response = ModelBridgeInternal.createCosmosBatchResponse(
                     HttpResponseStatus.INTERNAL_SERVER_ERROR.code(),
                     HttpConstants.SubStatusCodes.UNKNOWN,
                     "Invalid server response",
@@ -99,12 +99,12 @@ public final class BatchResponseParser {
         return response;
     }
 
-    private static TransactionalBatchResponse populateFromResponseContent(
+    private static CosmosBatchResponse populateFromResponseContent(
         final RxDocumentServiceResponse documentServiceResponse,
         final ServerBatchRequest request,
         final boolean shouldPromoteOperationStatus) {
 
-        final List<TransactionalBatchOperationResult> results = new ArrayList<>(request.getOperations().size());
+        final List<CosmosBatchOperationResult> results = new ArrayList<>(request.getOperations().size());
         final byte[] responseContent = documentServiceResponse.getResponseBodyAsByteArray();
 
         if (responseContent[0] != (byte)HYBRID_V1) {
@@ -137,7 +137,7 @@ public final class BatchResponseParser {
 
         // Status code of the exact operation which failed.
         if (responseStatusCode == HttpResponseStatus.MULTI_STATUS.code() && shouldPromoteOperationStatus) {
-            for (TransactionalBatchOperationResult result : results) {
+            for (CosmosBatchOperationResult result : results) {
                 if (result.getStatusCode() !=  HttpResponseStatus.FAILED_DEPENDENCY.code() &&
                     result.getStatusCode() >= 400) {
                     responseStatusCode = result.getStatusCode();
@@ -147,14 +147,14 @@ public final class BatchResponseParser {
             }
         }
 
-        final TransactionalBatchResponse response = BridgeInternal.createTransactionBatchResponse(
+        final CosmosBatchResponse response = ModelBridgeInternal.createCosmosBatchResponse(
             responseStatusCode,
             responseSubStatusCode,
             null,
             documentServiceResponse.getResponseHeaders(),
             documentServiceResponse.getCosmosDiagnostics());
 
-        BridgeInternal.addTransactionBatchResultInResponse(response, results);
+        ModelBridgeInternal.addCosmosBatchResultInResponse(response, results);
 
         assert (response.getResults().size() == request.getOperations().size());
 
@@ -171,7 +171,7 @@ public final class BatchResponseParser {
      *
      * @return the result
      */
-    private static TransactionalBatchOperationResult createBatchOperationResultFromJson(
+    private static CosmosBatchOperationResult createBatchOperationResultFromJson(
         ObjectNode objectNode,
         CosmosItemOperation cosmosItemOperation) {
 
@@ -192,7 +192,7 @@ public final class BatchResponseParser {
         final ObjectNode resourceBody = jsonSerializable.getObject(BatchRequestResponseConstants.FIELD_RESOURCE_BODY);
         final Integer retryAfterMilliseconds = jsonSerializable.getInt(BatchRequestResponseConstants.FIELD_RETRY_AFTER_MILLISECONDS);
 
-        return BridgeInternal.createTransactionBatchResult(
+        return ModelBridgeInternal.createCosmosBatchResult(
             eTag,
             requestCharge,
             resourceBody,
@@ -209,13 +209,13 @@ public final class BatchResponseParser {
      * @param operations List of operations for which the wrapper TransactionalBatchResponse is returned.
      * @param retryAfterDuration retryAfterDuration.
      * */
-    private static void createAndPopulateResults(final TransactionalBatchResponse response,
+    private static void createAndPopulateResults(final CosmosBatchResponse response,
                                                  final List<CosmosItemOperation> operations,
                                                  final Duration retryAfterDuration) {
-        final List<TransactionalBatchOperationResult> results = new ArrayList<>(operations.size());
+        final List<CosmosBatchOperationResult> results = new ArrayList<>(operations.size());
         for (CosmosItemOperation cosmosItemOperation : operations) {
             results.add(
-                BridgeInternal.createTransactionBatchResult(
+                ModelBridgeInternal.createCosmosBatchResult(
                     null,
                     response.getRequestCharge(),
                     null,
@@ -226,6 +226,6 @@ public final class BatchResponseParser {
                 ));
         }
 
-        BridgeInternal.addTransactionBatchResultInResponse(response, results);
+        ModelBridgeInternal.addCosmosBatchResultInResponse(response, results);
     }
 }

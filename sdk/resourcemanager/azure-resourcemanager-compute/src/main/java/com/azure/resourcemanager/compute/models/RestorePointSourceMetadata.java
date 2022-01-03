@@ -60,6 +60,12 @@ public final class RestorePointSourceMetadata {
     @JsonProperty(value = "securityProfile")
     private SecurityProfile securityProfile;
 
+    /*
+     * Location of the VM from which the restore point was created.
+     */
+    @JsonProperty(value = "location")
+    private String location;
+
     /**
      * Get the hardwareProfile property: Gets the hardware profile.
      *
@@ -197,6 +203,26 @@ public final class RestorePointSourceMetadata {
      */
     public RestorePointSourceMetadata withSecurityProfile(SecurityProfile securityProfile) {
         this.securityProfile = securityProfile;
+        return this;
+    }
+
+    /**
+     * Get the location property: Location of the VM from which the restore point was created.
+     *
+     * @return the location value.
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Set the location property: Location of the VM from which the restore point was created.
+     *
+     * @param location the location value to set.
+     * @return the RestorePointSourceMetadata object itself.
+     */
+    public RestorePointSourceMetadata withLocation(String location) {
+        this.location = location;
         return this;
     }
 

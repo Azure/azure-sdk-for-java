@@ -178,7 +178,7 @@ public class ReadmeSamples {
             .createAsync()
             .flatMap(storageAccount -> azure.storageBlobContainers()
                 .defineContainer("container")
-                .withExistingBlobService(rgName, storageAccount.name())
+                .withExistingStorageAccount(storageAccount)
                 .withPublicAccess(PublicAccess.NONE)
                 .createAsync()
             )

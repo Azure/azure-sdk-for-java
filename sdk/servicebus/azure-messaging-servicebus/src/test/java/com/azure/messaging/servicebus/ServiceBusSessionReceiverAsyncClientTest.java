@@ -146,7 +146,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
             connectionProcessor.dispose();
         }
 
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
     }
 
     @Test

@@ -51,7 +51,7 @@ public final class CreateVirtualMachineUsingCustomImageFromVM {
         final String rgName = Utils.randomResourceName(azureResourceManager, "rgCOMV", 15);
         final String publicIpDnsLabel = Utils.randomResourceName(azureResourceManager, "pip", 15);
         final String userName = "tirekicker";
-        final String password = Utils.password();
+        final String sshPublicKey = Utils.sshPublicKey();
         final Region region = Region.US_WEST2;
 
         final String apacheInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/install_apache.sh";
@@ -74,7 +74,7 @@ public final class CreateVirtualMachineUsingCustomImageFromVM {
                     .withNewPrimaryPublicIPAddress(publicIpDnsLabel)
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername(userName)
-                    .withRootPassword(password)
+                    .withSsh(sshPublicKey)
                     .withUnmanagedDisks()
                     .defineUnmanagedDataDisk("disk-1")
                         .withNewVhd(100)
@@ -146,7 +146,7 @@ public final class CreateVirtualMachineUsingCustomImageFromVM {
                     .withoutPrimaryPublicIPAddress()
                     .withGeneralizedLinuxCustomImage(virtualMachineCustomImage.id())
                     .withRootUsername(userName)
-                    .withRootPassword(password)
+                    .withSsh(sshPublicKey)
                     .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     .create();
 
@@ -166,7 +166,7 @@ public final class CreateVirtualMachineUsingCustomImageFromVM {
                     .withoutPrimaryPublicIPAddress()
                     .withGeneralizedLinuxCustomImage(virtualMachineCustomImage.id())
                     .withRootUsername(userName)
-                    .withRootPassword(password)
+                    .withSsh(sshPublicKey)
                     .withNewDataDiskFromImage(1, 200, CachingTypes.READ_WRITE)  // TODO: Naming needs to be finalized
                     .withNewDataDiskFromImage(2, 100, CachingTypes.READ_ONLY)
                     .withNewDataDisk(50)

@@ -11,6 +11,7 @@ import reactor.netty.ByteBufFlux;
 import reactor.netty.Connection;
 import reactor.netty.http.client.HttpClientResponse;
 
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
@@ -50,6 +51,11 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
     @Override
     public Mono<String> getBodyAsString(Charset charset) {
         return bodyIntern().aggregate().asString(charset).doFinally(ignored -> close());
+    }
+
+    @Override
+    public Mono<InputStream> getBodyAsInputStream() {
+        return bodyIntern().aggregate().asInputStream();
     }
 
     @Override

@@ -4,56 +4,36 @@
 
 package com.azure.resourcemanager.containerservice.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the properties of a Compute Operation value. */
-@JsonFlatten
-@Immutable
-public class OperationValueInner {
+/** Describes the properties of a Operation value. */
+@Fluent
+public final class OperationValueInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationValueInner.class);
 
     /*
-     * The origin of the compute operation.
+     * The origin of the operation.
      */
     @JsonProperty(value = "origin", access = JsonProperty.Access.WRITE_ONLY)
     private String origin;
 
     /*
-     * The name of the compute operation.
+     * The name of the operation.
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
-     * The display name of the compute operation.
+     * Describes the properties of a Operation Value Display.
      */
-    @JsonProperty(value = "display.operation", access = JsonProperty.Access.WRITE_ONLY)
-    private String operation;
-
-    /*
-     * The display name of the resource the operation applies to.
-     */
-    @JsonProperty(value = "display.resource", access = JsonProperty.Access.WRITE_ONLY)
-    private String resource;
-
-    /*
-     * The description of the operation.
-     */
-    @JsonProperty(value = "display.description", access = JsonProperty.Access.WRITE_ONLY)
-    private String description;
-
-    /*
-     * The resource provider for the operation.
-     */
-    @JsonProperty(value = "display.provider", access = JsonProperty.Access.WRITE_ONLY)
-    private String provider;
+    @JsonProperty(value = "display")
+    private OperationValueDisplay innerDisplay;
 
     /**
-     * Get the origin property: The origin of the compute operation.
+     * Get the origin property: The origin of the operation.
      *
      * @return the origin value.
      */
@@ -62,7 +42,7 @@ public class OperationValueInner {
     }
 
     /**
-     * Get the name property: The name of the compute operation.
+     * Get the name property: The name of the operation.
      *
      * @return the name value.
      */
@@ -71,12 +51,21 @@ public class OperationValueInner {
     }
 
     /**
-     * Get the operation property: The display name of the compute operation.
+     * Get the innerDisplay property: Describes the properties of a Operation Value Display.
+     *
+     * @return the innerDisplay value.
+     */
+    private OperationValueDisplay innerDisplay() {
+        return this.innerDisplay;
+    }
+
+    /**
+     * Get the operation property: The display name of the operation.
      *
      * @return the operation value.
      */
     public String operation() {
-        return this.operation;
+        return this.innerDisplay() == null ? null : this.innerDisplay().operation();
     }
 
     /**
@@ -85,7 +74,7 @@ public class OperationValueInner {
      * @return the resource value.
      */
     public String resource() {
-        return this.resource;
+        return this.innerDisplay() == null ? null : this.innerDisplay().resource();
     }
 
     /**
@@ -94,7 +83,7 @@ public class OperationValueInner {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerDisplay() == null ? null : this.innerDisplay().description();
     }
 
     /**
@@ -103,7 +92,7 @@ public class OperationValueInner {
      * @return the provider value.
      */
     public String provider() {
-        return this.provider;
+        return this.innerDisplay() == null ? null : this.innerDisplay().provider();
     }
 
     /**
@@ -112,5 +101,8 @@ public class OperationValueInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerDisplay() != null) {
+            innerDisplay().validate();
+        }
     }
 }

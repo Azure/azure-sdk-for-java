@@ -9,7 +9,6 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.test.TestBase;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableServiceCorsRule;
@@ -26,6 +25,7 @@ import com.azure.data.tables.sas.TableSasIpRange;
 import com.azure.data.tables.sas.TableSasProtocol;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
 
+import static com.azure.data.tables.TestUtils.assertPropertiesEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -47,9 +48,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Tests methods for {@link TableServiceAsyncClient}.
  */
-public class TableServiceAsyncClientTest extends TestBase {
+public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
     private static final Duration TIMEOUT = Duration.ofSeconds(100);
     private static final HttpClient DEFAULT_HTTP_CLIENT = HttpClient.createDefault();
+    private static final boolean IS_COSMOS_TEST = TestUtils.isCosmosTest();
 
     private TableServiceAsyncClient serviceClient;
     private HttpPipelinePolicy recordPolicy;
@@ -90,7 +92,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceCreateTableAsync() {
+    public void serviceCreateTable() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
 
@@ -102,7 +104,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceCreateTableWithResponseAsync() {
+    public void serviceCreateTableWithResponse() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         int expectedStatusCode = 204;
@@ -118,7 +120,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceCreateTableFailsIfExistsAsync() {
+    public void serviceCreateTableFailsIfExists() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         serviceClient.createTable(tableName).block(TIMEOUT);
@@ -131,7 +133,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceCreateTableIfNotExistsAsync() {
+    public void serviceCreateTableIfNotExists() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
 
@@ -143,7 +145,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceCreateTableIfNotExistsSucceedsIfExistsAsync() {
+    public void serviceCreateTableIfNotExistsSucceedsIfExists() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         serviceClient.createTable(tableName).block(TIMEOUT);
@@ -155,7 +157,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceCreateTableIfNotExistsWithResponseAsync() {
+    public void serviceCreateTableIfNotExistsWithResponse() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         int expectedStatusCode = 204;
@@ -171,7 +173,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceCreateTableIfNotExistsWithResponseSucceedsIfExistsAsync() {
+    public void serviceCreateTableIfNotExistsWithResponseSucceedsIfExists() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         int expectedStatusCode = 409;
@@ -188,7 +190,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceDeleteTableAsync() {
+    public void serviceDeleteTable() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
         serviceClient.createTable(tableName).block(TIMEOUT);
@@ -200,7 +202,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceDeleteNonExistingTableAsync() {
+    public void serviceDeleteNonExistingTable() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
 
@@ -211,7 +213,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceDeleteTableWithResponseAsync() {
+    public void serviceDeleteTableWithResponse() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         int expectedStatusCode = 204;
@@ -225,7 +227,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceDeleteNonExistingTableWithResponseAsync() {
+    public void serviceDeleteNonExistingTableWithResponse() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         int expectedStatusCode = 404;
@@ -238,7 +240,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceListTablesAsync() {
+    public void serviceListTables() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
         final String tableName2 = testResourceNamer.randomName("test", 20);
@@ -254,7 +256,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceListTablesWithFilterAsync() {
+    public void serviceListTablesWithFilter() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
         final String tableName2 = testResourceNamer.randomName("test", 20);
@@ -264,9 +266,7 @@ public class TableServiceAsyncClientTest extends TestBase {
 
         // Act & Assert
         StepVerifier.create(serviceClient.listTables(options))
-            .assertNext(table -> {
-                assertEquals(tableName, table.getName());
-            })
+            .assertNext(table -> assertEquals(tableName, table.getName()))
             .expectNextCount(0)
             .thenConsumeWhile(x -> true)
             .expectComplete()
@@ -274,7 +274,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceListTablesWithTopAsync() {
+    public void serviceListTablesWithTop() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
         final String tableName2 = testResourceNamer.randomName("test", 20);
@@ -293,7 +293,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceGetTableClientAsync() {
+    public void serviceGetTableClient() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
         serviceClient.createTable(tableName).block(TIMEOUT);
@@ -301,7 +301,7 @@ public class TableServiceAsyncClientTest extends TestBase {
         TableAsyncClient tableClient = serviceClient.getTableClient(tableName);
 
         // Act & Assert
-        TableAsyncClientTest.getEntityWithResponseAsyncImpl(tableClient, this.testResourceNamer);
+        TableAsyncClientTest.getEntityWithResponseAsyncImpl(tableClient, testResourceNamer, "partitionKey", "rowKey");
     }
 
     @Test
@@ -420,6 +420,9 @@ public class TableServiceAsyncClientTest extends TestBase {
 
     @Test
     public void setGetProperties() {
+        Assumptions.assumeFalse(IS_COSMOS_TEST,
+            "Setting and getting properties is not supported on Cosmos endpoints.");
+
         TableServiceRetentionPolicy retentionPolicy = new TableServiceRetentionPolicy()
             .setDaysToRetain(5)
             .setEnabled(true);
@@ -449,32 +452,33 @@ public class TableServiceAsyncClientTest extends TestBase {
             .setRetentionPolicy(retentionPolicy)
             .setIncludeApis(true);
 
-        TableServiceProperties properties = new TableServiceProperties()
+        TableServiceProperties sentProperties = new TableServiceProperties()
             .setLogging(logging)
             .setCorsRules(corsRules)
             .setMinuteMetrics(minuteMetrics)
             .setHourMetrics(hourMetrics);
 
-        StepVerifier.create(serviceClient.setProperties(properties))
+        StepVerifier.create(serviceClient.setPropertiesWithResponse(sentProperties))
+            .assertNext(response -> {
+                assertNotNull(response.getHeaders().getValue("x-ms-request-id"));
+                assertNotNull(response.getHeaders().getValue("x-ms-version"));
+            })
             .expectComplete()
             .verify();
 
+        // Service properties may take up to 30s to take effect. If they weren't already in place, wait.
+        sleepIfRunningAgainstService(30000);
+
         StepVerifier.create(serviceClient.getProperties())
-            .assertNext(retrievedProperties -> {
-                assertNotNull(retrievedProperties);
-                assertNotNull(retrievedProperties.getCorsRules());
-                assertEquals(1, retrievedProperties.getCorsRules().size());
-                assertNotNull(retrievedProperties.getCorsRules().get(0));
-                assertNotNull(retrievedProperties.getHourMetrics());
-                assertNotNull(retrievedProperties.getMinuteMetrics());
-                assertNotNull(retrievedProperties.getLogging());
-            })
+            .assertNext(retrievedProperties -> assertPropertiesEquals(sentProperties, retrievedProperties))
             .expectComplete()
             .verify();
     }
 
     @Test
     public void getStatistics() throws URISyntaxException {
+        Assumptions.assumeFalse(IS_COSMOS_TEST, "Getting statistics is not supported on Cosmos endpoints.");
+
         URI primaryEndpoint = new URI(serviceClient.getServiceEndpoint());
         String[] hostParts = primaryEndpoint.getHost().split("\\.");
         StringJoiner secondaryHostJoiner = new StringJoiner(".");

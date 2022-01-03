@@ -78,6 +78,20 @@ public interface ApiManagementServiceResource {
     List<String> zones();
 
     /**
+     * Gets the publisherEmail property: Publisher email.
+     *
+     * @return the publisherEmail value.
+     */
+    String publisherEmail();
+
+    /**
+     * Gets the publisherName property: Publisher name.
+     *
+     * @return the publisherName value.
+     */
+    String publisherName();
+
+    /**
      * Gets the notificationSenderEmail property: Email address from which the notification will be sent.
      *
      * @return the notificationSenderEmail value.
@@ -266,20 +280,6 @@ public interface ApiManagementServiceResource {
      * @return the restore value.
      */
     Boolean restore();
-
-    /**
-     * Gets the publisherEmail property: Publisher email.
-     *
-     * @return the publisherEmail value.
-     */
-    String publisherEmail();
-
-    /**
-     * Gets the publisherName property: Publisher name.
-     *
-     * @return the publisherName value.
-     */
-    String publisherName();
 
     /**
      * Gets the region of the resource.
@@ -632,6 +632,8 @@ public interface ApiManagementServiceResource {
         extends UpdateStages.WithTags,
             UpdateStages.WithSku,
             UpdateStages.WithIdentity,
+            UpdateStages.WithPublisherEmail,
+            UpdateStages.WithPublisherName,
             UpdateStages.WithNotificationSenderEmail,
             UpdateStages.WithHostnameConfigurations,
             UpdateStages.WithVirtualNetworkConfiguration,
@@ -642,9 +644,7 @@ public interface ApiManagementServiceResource {
             UpdateStages.WithDisableGateway,
             UpdateStages.WithVirtualNetworkType,
             UpdateStages.WithApiVersionConstraint,
-            UpdateStages.WithRestore,
-            UpdateStages.WithPublisherEmail,
-            UpdateStages.WithPublisherName {
+            UpdateStages.WithRestore {
         /**
          * Executes the update request.
          *
@@ -691,6 +691,26 @@ public interface ApiManagementServiceResource {
              * @return the next definition stage.
              */
             Update withIdentity(ApiManagementServiceIdentity identity);
+        }
+        /** The stage of the ApiManagementServiceResource update allowing to specify publisherEmail. */
+        interface WithPublisherEmail {
+            /**
+             * Specifies the publisherEmail property: Publisher email..
+             *
+             * @param publisherEmail Publisher email.
+             * @return the next definition stage.
+             */
+            Update withPublisherEmail(String publisherEmail);
+        }
+        /** The stage of the ApiManagementServiceResource update allowing to specify publisherName. */
+        interface WithPublisherName {
+            /**
+             * Specifies the publisherName property: Publisher name..
+             *
+             * @param publisherName Publisher name.
+             * @return the next definition stage.
+             */
+            Update withPublisherName(String publisherName);
         }
         /** The stage of the ApiManagementServiceResource update allowing to specify notificationSenderEmail. */
         interface WithNotificationSenderEmail {
@@ -870,26 +890,6 @@ public interface ApiManagementServiceResource {
              * @return the next definition stage.
              */
             Update withRestore(Boolean restore);
-        }
-        /** The stage of the ApiManagementServiceResource update allowing to specify publisherEmail. */
-        interface WithPublisherEmail {
-            /**
-             * Specifies the publisherEmail property: Publisher email..
-             *
-             * @param publisherEmail Publisher email.
-             * @return the next definition stage.
-             */
-            Update withPublisherEmail(String publisherEmail);
-        }
-        /** The stage of the ApiManagementServiceResource update allowing to specify publisherName. */
-        interface WithPublisherName {
-            /**
-             * Specifies the publisherName property: Publisher name..
-             *
-             * @param publisherName Publisher name.
-             * @return the next definition stage.
-             */
-            Update withPublisherName(String publisherName);
         }
     }
     /**

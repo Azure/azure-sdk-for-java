@@ -1,7 +1,20 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.4 (2021-10-06)
+### Features Added
+- Add support for TokenCredential authentication with CallingServerClientBuilder.
+- Added support for custom options(Recordingcontenttype, Recordingchanneltype, Recordingformattype) for Mixed Audio feature
 
+### Bugs Fixed
+- Using released version of azure-communication-common.
+
+### Other Changes
+#### Dependency updates
+- Upgraded `azure-communication-common` to 1.0.4
+
+## 1.0.0-beta.3 (2021-07-26)
+### Features Added
+- Added RedirectPolicy as a new HttpPolicy to redirect requests based on the HttpResponse.
 
 ## 1.0.0-beta.2 (2021-06-25)
 - Updated sdk and apis documentation.

@@ -16,10 +16,17 @@ public final class OperationInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationInner.class);
 
     /*
-     * This is of the format {provider}/{resource}/{operation}
+     * The operation name. This is of the format
+     * {provider}/{resource}/{operation}
      */
     @JsonProperty(value = "name")
     private String name;
+
+    /*
+     * Indicates whether the operation is a data action
+     */
+    @JsonProperty(value = "isDataAction")
+    private Boolean isDataAction;
 
     /*
      * The object that describes the operation.
@@ -40,7 +47,7 @@ public final class OperationInner {
     private Object properties;
 
     /**
-     * Get the name property: This is of the format {provider}/{resource}/{operation}.
+     * Get the name property: The operation name. This is of the format {provider}/{resource}/{operation}.
      *
      * @return the name value.
      */
@@ -49,13 +56,33 @@ public final class OperationInner {
     }
 
     /**
-     * Set the name property: This is of the format {provider}/{resource}/{operation}.
+     * Set the name property: The operation name. This is of the format {provider}/{resource}/{operation}.
      *
      * @param name the name value to set.
      * @return the OperationInner object itself.
      */
     public OperationInner withName(String name) {
         this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the isDataAction property: Indicates whether the operation is a data action.
+     *
+     * @return the isDataAction value.
+     */
+    public Boolean isDataAction() {
+        return this.isDataAction;
+    }
+
+    /**
+     * Set the isDataAction property: Indicates whether the operation is a data action.
+     *
+     * @param isDataAction the isDataAction value to set.
+     * @return the OperationInner object itself.
+     */
+    public OperationInner withIsDataAction(Boolean isDataAction) {
+        this.isDataAction = isDataAction;
         return this;
     }
 

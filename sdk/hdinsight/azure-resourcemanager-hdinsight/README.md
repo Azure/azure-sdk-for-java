@@ -2,7 +2,7 @@
 
 Azure Resource Manager HDInsight client library for Java.
 
-This package contains Microsoft Azure SDK for HDInsight Management SDK. HDInsight Management Client. Package tag package-2018-06-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for HDInsight Management SDK. HDInsight Management Client. Package tag package-2021-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-hdinsight</artifactId>
-    <version>1.0.0-beta.3</version>
+    <version>1.0.0-beta.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -98,8 +98,15 @@ storageManager.blobContainers().defineContainer(containerName)
     .withPublicAccess(PublicAccess.NONE)
     .create();
 
+Map<String, Map<String, String>> clusterDefinition = new HashMap<>(1);
+Map<String, String> clusterProperties = new HashMap<>(3);
+clusterProperties.put("restAuthCredential.isEnabled", "true");
+clusterProperties.put("restAuthCredential.username", "admin");
+clusterProperties.put("restAuthCredential.password", "Pa$s" + randomPadding());
+clusterDefinition.put("gateway", Collections.unmodifiableMap(clusterProperties));
+
 // cluster
-manager.clusters().define("cluster" + randomPadding())
+Cluster cluster = manager.clusters().define("cluster" + randomPadding())
     .withExistingResourceGroup(resourceGroupName)
     .withRegion(REGION)
     .withProperties(new ClusterCreateProperties()
@@ -108,15 +115,10 @@ manager.clusters().define("cluster" + randomPadding())
         .withTier(Tier.STANDARD)
         .withClusterDefinition(new ClusterDefinition()
             .withKind("Spark")
-            .withConfigurations(ImmutableMap.of(
-                "gateway", ImmutableMap.of(
-                    "restAuthCredential.isEnabled", "true",
-                    "restAuthCredential.username", "admin",
-                    "restAuthCredential.password", "Pa$s" + randomPadding()
-                )))
+            .withConfigurations(Collections.unmodifiableMap(clusterDefinition))
         )
         .withComputeProfile(new ComputeProfile()
-            .withRoles(ImmutableList.of(
+            .withRoles(Collections.unmodifiableList(new LinkedList<>(Arrays.asList(
                 new Role().withName("headnode")
                     .withTargetInstanceCount(2)
                     .withHardwareProfile(new HardwareProfile()
@@ -149,19 +151,20 @@ manager.clusters().define("cluster" + randomPadding())
                         .withId(network.id())
                         .withSubnet(subnet.id())
                     )
-            ))
+            ))))
         )
         .withStorageProfile(new StorageProfile()
-            .withStorageaccounts(ImmutableList.of(
+            .withStorageaccounts(Collections.unmodifiableList(Arrays.asList(
                 new StorageAccount()
                     .withName(new URL(storageAccount.endPoints().primary().blob()).getHost())
                     .withKey(storageAccountKey)
                     .withContainer(containerName)
                     .withIsDefault(true)
-            ))
+            )))
         ))
     .create();
 ```
+[Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/hdinsight/azure-resourcemanager-hdinsight/SAMPLE.md)
 
 
 ## Troubleshooting

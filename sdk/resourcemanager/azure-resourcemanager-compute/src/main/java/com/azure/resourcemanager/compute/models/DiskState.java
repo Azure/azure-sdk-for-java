@@ -19,8 +19,14 @@ public final class DiskState extends ExpandableStringEnum<DiskState> {
     /** Static value Reserved for DiskState. */
     public static final DiskState RESERVED = fromString("Reserved");
 
+    /** Static value Frozen for DiskState. */
+    public static final DiskState FROZEN = fromString("Frozen");
+
     /** Static value ActiveSAS for DiskState. */
     public static final DiskState ACTIVE_SAS = fromString("ActiveSAS");
+
+    /** Static value ActiveSASFrozen for DiskState. */
+    public static final DiskState ACTIVE_SASFROZEN = fromString("ActiveSASFrozen");
 
     /** Static value ReadyToUpload for DiskState. */
     public static final DiskState READY_TO_UPLOAD = fromString("ReadyToUpload");

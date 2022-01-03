@@ -30,7 +30,7 @@ import java.util.Set;
 public class ClientSideRequestStatistics {
     private static final int MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING = 10;
     private final DiagnosticsClientContext diagnosticsClientContext;
-
+    private String activityId;
     private List<StoreResponseStatistics> responseStatisticsList;
     private List<StoreResponseStatistics> supplementalResponseStatisticsList;
     private Map<String, AddressResolutionStatistics> addressResolutionStatistics;
@@ -39,14 +39,16 @@ public class ClientSideRequestStatistics {
     private Set<URI> failedReplicas;
     private Instant requestStartTimeUTC;
     private Instant requestEndTimeUTC;
-    private Set<URI> regionsContacted;
+    private Set<String> regionsContacted;
+    private Set<URI> locationEndpointsContacted;
     private RetryContext retryContext;
     private GatewayStatistics gatewayStatistics;
     private RequestTimeline gatewayRequestTimeline;
     private MetadataDiagnosticsContext metadataDiagnosticsContext;
     private SerializationDiagnosticsContext serializationDiagnosticsContext;
+    private GlobalEndpointManager globalEndpointManager;
 
-    public ClientSideRequestStatistics(DiagnosticsClientContext diagnosticsClientContext) {
+    public ClientSideRequestStatistics(DiagnosticsClientContext diagnosticsClientContext, GlobalEndpointManager globalEndpointManager) {
         this.diagnosticsClientContext = diagnosticsClientContext;
         this.requestStartTimeUTC = Instant.now();
         this.requestEndTimeUTC = Instant.now();
@@ -56,9 +58,11 @@ public class ClientSideRequestStatistics {
         this.contactedReplicas = Collections.synchronizedList(new ArrayList<>());
         this.failedReplicas = Collections.synchronizedSet(new HashSet<>());
         this.regionsContacted = Collections.synchronizedSet(new HashSet<>());
+        this.locationEndpointsContacted = Collections.synchronizedSet(new HashSet<>());
         this.metadataDiagnosticsContext = new MetadataDiagnosticsContext();
         this.serializationDiagnosticsContext = new SerializationDiagnosticsContext();
         this.retryContext = new RetryContext();
+        this.globalEndpointManager = globalEndpointManager;
     }
 
     public Duration getDuration() {
@@ -82,6 +86,8 @@ public class ClientSideRequestStatistics {
         storeResponseStatistics.storeResult = storeResult;
         storeResponseStatistics.requestOperationType = request.getOperationType();
         storeResponseStatistics.requestResourceType = request.getResourceType();
+        activityId = request.getActivityId().toString();
+
 
         URI locationEndPoint = null;
         if (request.requestContext != null) {
@@ -96,11 +102,12 @@ public class ClientSideRequestStatistics {
             }
 
             if (locationEndPoint != null) {
-                this.regionsContacted.add(locationEndPoint);
+                this.regionsContacted.add(this.globalEndpointManager.getRegionName(locationEndPoint, request.getOperationType()));
+                this.locationEndpointsContacted.add(locationEndPoint);
             }
 
             if (storeResponseStatistics.requestOperationType == OperationType.Head
-                    || storeResponseStatistics.requestOperationType == OperationType.HeadFeed) {
+                || storeResponseStatistics.requestOperationType == OperationType.HeadFeed) {
                 this.supplementalResponseStatisticsList.add(storeResponseStatistics);
             } else {
                 this.responseStatisticsList.add(storeResponseStatistics);
@@ -125,8 +132,10 @@ public class ClientSideRequestStatistics {
             this.recordRetryContextEndTime();
 
             if (locationEndPoint != null) {
-                this.regionsContacted.add(locationEndPoint);
+                this.regionsContacted.add(this.globalEndpointManager.getRegionName(locationEndPoint, rxDocumentServiceRequest.getOperationType()));
+                this.locationEndpointsContacted.add(locationEndPoint);
             }
+
             this.gatewayStatistics = new GatewayStatistics();
             if (rxDocumentServiceRequest != null) {
                 this.gatewayStatistics.operationType = rxDocumentServiceRequest.getOperationType();
@@ -136,15 +145,18 @@ public class ClientSideRequestStatistics {
                 this.gatewayStatistics.statusCode = storeResponse.getStatus();
                 this.gatewayStatistics.subStatusCode = DirectBridgeInternal.getSubStatusCode(storeResponse);
                 this.gatewayStatistics.sessionToken = storeResponse
-                                                          .getHeaderValue(HttpConstants.HttpHeaders.SESSION_TOKEN);
+                    .getHeaderValue(HttpConstants.HttpHeaders.SESSION_TOKEN);
                 this.gatewayStatistics.requestCharge = storeResponse
-                                                           .getHeaderValue(HttpConstants.HttpHeaders.REQUEST_CHARGE);
+                    .getHeaderValue(HttpConstants.HttpHeaders.REQUEST_CHARGE);
                 this.gatewayStatistics.requestTimeline = DirectBridgeInternal.getRequestTimeline(storeResponse);
                 this.gatewayStatistics.partitionKeyRangeId = storeResponse.getPartitionKeyRangeId();
+                this.activityId= storeResponse.getHeaderValue(HttpConstants.HttpHeaders.ACTIVITY_ID);
             } else if (exception != null) {
                 this.gatewayStatistics.statusCode = exception.getStatusCode();
                 this.gatewayStatistics.subStatusCode = exception.getSubStatusCode();
                 this.gatewayStatistics.requestTimeline = this.gatewayRequestTimeline;
+                this.gatewayStatistics.requestCharge= String.valueOf(exception.getRequestCharge());
+                this.activityId=exception.getActivityId();
             }
         }
     }
@@ -157,13 +169,20 @@ public class ClientSideRequestStatistics {
         return this.gatewayRequestTimeline;
     }
 
-    public String recordAddressResolutionStart(URI targetEndpoint) {
-        String identifier = Utils.randomUUID().toString();
+    public String recordAddressResolutionStart(
+        URI targetEndpoint,
+        boolean forceRefresh,
+        boolean forceCollectionRoutingMapRefresh) {
+        String identifier = Utils
+            .randomUUID()
+            .toString();
 
         AddressResolutionStatistics resolutionStatistics = new AddressResolutionStatistics();
         resolutionStatistics.startTimeUTC = Instant.now();
         resolutionStatistics.endTimeUTC = null;
         resolutionStatistics.targetEndpoint = targetEndpoint == null ? "<NULL>" : targetEndpoint.toString();
+        resolutionStatistics.forceRefresh = forceRefresh;
+        resolutionStatistics.forceCollectionRoutingMapRefresh = forceCollectionRoutingMapRefresh;
 
         synchronized (this) {
             this.addressResolutionStatistics.put(identifier, resolutionStatistics);
@@ -181,7 +200,7 @@ public class ClientSideRequestStatistics {
         synchronized (this) {
             if (!this.addressResolutionStatistics.containsKey(identifier)) {
                 throw new IllegalArgumentException("Identifier " + identifier + " does not exist. Please call start "
-                                                       + "before calling end");
+                    + "before calling end");
             }
 
             if (responseTime.isAfter(this.requestEndTimeUTC)) {
@@ -211,19 +230,27 @@ public class ClientSideRequestStatistics {
         this.failedReplicas = Collections.synchronizedSet(failedReplicas);
     }
 
-    public Set<URI> getRegionsContacted() {
+    public Set<String> getContactedRegionNames() {
         return regionsContacted;
     }
 
-    public void setRegionsContacted(Set<URI> regionsContacted) {
+    public void setRegionsContacted(Set<String> regionsContacted) {
         this.regionsContacted = Collections.synchronizedSet(regionsContacted);
+    }
+
+    public Set<URI> getLocationEndpointsContacted() {
+        return locationEndpointsContacted;
+    }
+
+    public void setLocationEndpointsContacted(Set<URI> locationEndpointsContacted) {
+        this.locationEndpointsContacted = locationEndpointsContacted;
     }
 
     public MetadataDiagnosticsContext getMetadataDiagnosticsContext(){
         return this.metadataDiagnosticsContext;
     }
 
-    public SerializationDiagnosticsContext getSerializationDiagnosticsContext(){
+    public SerializationDiagnosticsContext getSerializationDiagnosticsContext() {
         return this.serializationDiagnosticsContext;
     }
 
@@ -314,8 +341,11 @@ public class ClientSideRequestStatistics {
             ClientSideRequestStatistics statistics, JsonGenerator generator, SerializerProvider provider) throws
             IOException {
             generator.writeStartObject();
-            long requestLatency = statistics.getDuration().toMillis();
+            long requestLatency = statistics
+                .getDuration()
+                .toMillis();
             generator.writeStringField("userAgent", Utils.getUserAgent());
+            generator.writeStringField("activityId", statistics.activityId);
             generator.writeNumberField("requestLatencyInMs", requestLatency);
             generator.writeStringField("requestStartTimeUTC", DiagnosticsInstantSerializer.fromInstant(statistics.requestStartTimeUTC));
             generator.writeStringField("requestEndTimeUTC", DiagnosticsInstantSerializer.fromInstant(statistics.requestEndTimeUTC));
@@ -362,6 +392,10 @@ public class ClientSideRequestStatistics {
         private String targetEndpoint;
         @JsonSerialize
         private String errorMessage;
+        @JsonSerialize
+        private boolean forceRefresh;
+        @JsonSerialize
+        private boolean forceCollectionRoutingMapRefresh;
 
         // If one replica return error we start address call in parallel,
         // on other replica  valid response, we end the current user request,
@@ -387,6 +421,14 @@ public class ClientSideRequestStatistics {
 
         public boolean isInflightRequest() {
             return inflightRequest;
+        }
+
+        public boolean isForceRefresh() {
+            return forceRefresh;
+        }
+
+        public boolean isForceCollectionRoutingMapRefresh() {
+            return forceCollectionRoutingMapRefresh;
         }
     }
 
@@ -444,7 +486,9 @@ public class ClientSideRequestStatistics {
         systemInformation.availableProcessors = runtime.availableProcessors();
 
         // TODO: other system related info also can be captured using a similar approach
-        systemInformation.systemCpuLoad = CpuMemoryMonitor.getCpuLoad().toString();
+        systemInformation.systemCpuLoad = CpuMemoryMonitor
+            .getCpuLoad()
+            .toString();
         return systemInformation;
     }
 }

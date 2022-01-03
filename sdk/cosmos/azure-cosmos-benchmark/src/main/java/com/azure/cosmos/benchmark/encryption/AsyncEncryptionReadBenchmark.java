@@ -1,0 +1,115 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.cosmos.benchmark.encryption;
+
+import com.azure.cosmos.benchmark.Configuration;
+import com.azure.cosmos.benchmark.PojoizedJson;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.PartitionKey;
+import com.codahale.metrics.Timer;
+import com.microsoft.data.encryption.cryptography.MicrosoftDataEncryptionException;
+import org.reactivestreams.Subscription;
+import reactor.core.publisher.BaseSubscriber;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
+
+import java.io.IOException;
+
+public class AsyncEncryptionReadBenchmark extends AsyncEncryptionBenchmark<PojoizedJson> {
+
+    static class LatencySubscriber<T> extends BaseSubscriber<T> {
+
+        volatile Timer.Context context;
+        BaseSubscriber<PojoizedJson> baseSubscriber;
+
+        LatencySubscriber(BaseSubscriber<PojoizedJson> baseSubscriber) {
+            this.baseSubscriber = baseSubscriber;
+        }
+
+        @Override
+        protected void hookOnSubscribe(Subscription subscription) {
+            super.hookOnSubscribe(subscription);
+        }
+
+        @Override
+        protected void hookOnNext(T value) {
+        }
+
+        @Override
+        protected void hookOnComplete() {
+            context.stop();
+            baseSubscriber.onComplete();
+        }
+
+        @Override
+        protected void hookOnError(Throwable throwable) {
+            context.stop();
+            baseSubscriber.onError(throwable);
+        }
+    }
+
+    public AsyncEncryptionReadBenchmark(Configuration cfg) throws IOException, MicrosoftDataEncryptionException {
+        super(cfg);
+    }
+
+    @Override
+    protected void performWorkload(BaseSubscriber<PojoizedJson> baseSubscriber, long i) throws InterruptedException {
+        int index = (int) (i % docsToRead.size());
+        PojoizedJson doc = docsToRead.get(index);
+        String partitionKeyValue = doc.getId();
+
+        Mono<PojoizedJson> result = cosmosEncryptionAsyncContainer.readItem(doc.getId(),
+            new PartitionKey(partitionKeyValue),
+            new CosmosItemRequestOptions(),
+            PojoizedJson.class).map(CosmosItemResponse::getItem);
+
+        concurrencyControlSemaphore.acquire();
+
+        switch (configuration.getOperationType()) {
+            case ReadThroughput:
+                readThroughput(result, baseSubscriber, i);
+                break;
+            case ReadLatency:
+                readLatency(result, baseSubscriber, i);
+                break;
+            default:
+                throw new IllegalArgumentException("invalid workload type " + configuration.getOperationType());
+        }
+    }
+
+    private void readLatency(Mono<PojoizedJson> readItem, BaseSubscriber<PojoizedJson> baseSubscriber, long i) {
+        Mono sparsitySleepMono = sparsityMono(i);
+        Mono<PojoizedJson> result = readItem;
+        LatencySubscriber<PojoizedJson> latencySubscriber = new LatencySubscriber<>(baseSubscriber);
+        if (sparsitySleepMono != null) {
+            result = sparsitySleepMono.flux().flatMap(
+                null,
+                null,
+                () -> {
+                    latencySubscriber.context = latency.time();
+                    return readItem;
+                }).single();
+        } else {
+            latencySubscriber.context = latency.time();
+        }
+
+        result.subscribeOn(Schedulers.parallel()).subscribe(latencySubscriber);
+    }
+
+    private void readThroughput(Mono<PojoizedJson> readItem, BaseSubscriber<PojoizedJson> baseSubscriber, long i) {
+        Mono sparsitySleepMono = sparsityMono(i);
+        Mono<PojoizedJson> result = readItem;
+        if (sparsitySleepMono != null) {
+            result = sparsitySleepMono.flux().flatMap(
+                null,
+                null,
+                () -> {
+                    return readItem;
+                }).single();
+        }
+
+        result.subscribeOn(Schedulers.parallel()).subscribe(baseSubscriber);
+    }
+}

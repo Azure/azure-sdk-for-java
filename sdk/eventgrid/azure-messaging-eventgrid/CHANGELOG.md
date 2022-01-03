@@ -1,7 +1,59 @@
 # Release History
 
-## 4.6.0-beta.1 (Unreleased)
+## 4.8.0-beta.1 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 4.7.1 (2021-11-11)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` from `1.21.0` to `1.22.0`.
+- Updated `azure-core-http-netty` from `1.11.1` to `1.11.2`.
+
+## 4.7.0 (2021-10-13)
+
+### Features Added
+- Added new Api Management service system events, `ApiManagementApiCreatedEventData`, `ApiManagementApiDeletedEventData`, 
+  `ApiManagementApiReleaseCreatedEventData`, `ApiManagementApiReleaseDeletedEventData`, 
+  `ApiManagementApiReleaseUpdatedEventData`, `ApiManagementApiUpdatedEventData`, `ApiManagementProductCreatedEventData`,
+  `ApiManagementProductDeletedEventData`, `ApiManagementProductUpdatedEventData`,
+  `ApiManagementSubscriptionCreatedEventData`, `ApiManagementSubscriptionDeletedEventData`,
+  `ApiManagementSubscriptionUpdatedEventData`,`ApiManagementUserCreatedEventData`, `ApiManagementUserDeletedEventData`,
+  `ApiManagementUserUpdatedEventData`. 
+- Added a new Media service system event, `MediaLiveEventChannelArchiveHeartbeatEventData`.
+- Added a new Communication service system event, `AcsUserDisconnectedEventData`.
+- Added fields `transcriptionLanguage`, `transcriptionState`, `ingestDriftValue`, `lastFragmentArrivalTime` 
+  to system event classes `MediaLiveEventIngestHeartbeatEventData`.
+
+### Other Changes
+
+#### Dependency Updates
+- Update `azure-core` dependency to `1.21.0`.
+- Update `azure-core-http-netty` dependency to `1.11.1`.
+
+## 4.6.1 (2021-09-10)
+
+### Other Changes
+
+#### Dependency Updates
+- Update `azure-core` dependency to `1.20.0`.
+- Update `azure-core-http-netty` dependency to `1.11.0`.
+
+## 4.6.0 (2021-08-11)
+### Features Added
+- Added new Container Service system event `ContainerServiceNewKubernetesVersionAvailableEventData`.
+
+### Dependency Updates
+- Update `azure-core` dependency to `1.19.0`.
+- Update `azure-core-http-netty` dependency to `1.10.2`.
 
 ## 4.5.0 (2021-07-19)
 ### Features Added

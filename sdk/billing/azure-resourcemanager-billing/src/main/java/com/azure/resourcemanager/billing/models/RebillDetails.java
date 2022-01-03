@@ -7,6 +7,7 @@ package com.azure.resourcemanager.billing.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -31,6 +32,7 @@ public final class RebillDetails {
      * Rebill details for an invoice.
      */
     @JsonProperty(value = "rebillDetails", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, RebillDetails> rebillDetails;
 
     /**

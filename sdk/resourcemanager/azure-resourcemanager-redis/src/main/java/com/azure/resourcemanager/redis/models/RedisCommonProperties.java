@@ -7,6 +7,7 @@ package com.azure.resourcemanager.redis.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -21,7 +22,15 @@ public class RedisCommonProperties {
      * etc.
      */
     @JsonProperty(value = "redisConfiguration")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> redisConfiguration;
+
+    /*
+     * Redis version. Only major version will be used in PUT/PATCH request with
+     * current valid values: (4, 6)
+     */
+    @JsonProperty(value = "redisVersion")
+    private String redisVersion;
 
     /*
      * Specifies whether the non-ssl Redis server port (6379) is enabled.
@@ -30,15 +39,22 @@ public class RedisCommonProperties {
     private Boolean enableNonSslPort;
 
     /*
-     * The number of replicas to be created per master.
+     * The number of replicas to be created per primary.
      */
     @JsonProperty(value = "replicasPerMaster")
     private Integer replicasPerMaster;
 
     /*
+     * The number of replicas to be created per primary.
+     */
+    @JsonProperty(value = "replicasPerPrimary")
+    private Integer replicasPerPrimary;
+
+    /*
      * A dictionary of tenant settings
      */
     @JsonProperty(value = "tenantSettings")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tenantSettings;
 
     /*
@@ -88,6 +104,28 @@ public class RedisCommonProperties {
     }
 
     /**
+     * Get the redisVersion property: Redis version. Only major version will be used in PUT/PATCH request with current
+     * valid values: (4, 6).
+     *
+     * @return the redisVersion value.
+     */
+    public String redisVersion() {
+        return this.redisVersion;
+    }
+
+    /**
+     * Set the redisVersion property: Redis version. Only major version will be used in PUT/PATCH request with current
+     * valid values: (4, 6).
+     *
+     * @param redisVersion the redisVersion value to set.
+     * @return the RedisCommonProperties object itself.
+     */
+    public RedisCommonProperties withRedisVersion(String redisVersion) {
+        this.redisVersion = redisVersion;
+        return this;
+    }
+
+    /**
      * Get the enableNonSslPort property: Specifies whether the non-ssl Redis server port (6379) is enabled.
      *
      * @return the enableNonSslPort value.
@@ -108,7 +146,7 @@ public class RedisCommonProperties {
     }
 
     /**
-     * Get the replicasPerMaster property: The number of replicas to be created per master.
+     * Get the replicasPerMaster property: The number of replicas to be created per primary.
      *
      * @return the replicasPerMaster value.
      */
@@ -117,13 +155,33 @@ public class RedisCommonProperties {
     }
 
     /**
-     * Set the replicasPerMaster property: The number of replicas to be created per master.
+     * Set the replicasPerMaster property: The number of replicas to be created per primary.
      *
      * @param replicasPerMaster the replicasPerMaster value to set.
      * @return the RedisCommonProperties object itself.
      */
     public RedisCommonProperties withReplicasPerMaster(Integer replicasPerMaster) {
         this.replicasPerMaster = replicasPerMaster;
+        return this;
+    }
+
+    /**
+     * Get the replicasPerPrimary property: The number of replicas to be created per primary.
+     *
+     * @return the replicasPerPrimary value.
+     */
+    public Integer replicasPerPrimary() {
+        return this.replicasPerPrimary;
+    }
+
+    /**
+     * Set the replicasPerPrimary property: The number of replicas to be created per primary.
+     *
+     * @param replicasPerPrimary the replicasPerPrimary value to set.
+     * @return the RedisCommonProperties object itself.
+     */
+    public RedisCommonProperties withReplicasPerPrimary(Integer replicasPerPrimary) {
+        this.replicasPerPrimary = replicasPerPrimary;
         return this;
     }
 

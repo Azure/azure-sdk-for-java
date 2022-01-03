@@ -6,10 +6,11 @@ package com.azure.cosmos.implementation.batch;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosBridgeInternal;
-import com.azure.cosmos.CosmosItemOperation;
-import com.azure.cosmos.TransactionalBatch;
-import com.azure.cosmos.TransactionalBatchRequestOptions;
-import com.azure.cosmos.TransactionalBatchResponse;
+import com.azure.cosmos.models.CosmosBatch;
+import com.azure.cosmos.models.CosmosBatchRequestOptions;
+import com.azure.cosmos.models.CosmosBatchResponse;
+import com.azure.cosmos.models.CosmosItemOperation;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -19,16 +20,16 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
 public final class BatchExecutor {
 
     private final CosmosAsyncContainer container;
-    private final TransactionalBatchRequestOptions options;
-    private final TransactionalBatch transactionalBatch;
+    private final CosmosBatchRequestOptions options;
+    private final CosmosBatch cosmosBatch;
 
     public BatchExecutor(
         final CosmosAsyncContainer container,
-        final TransactionalBatch transactionalBatch,
-        final TransactionalBatchRequestOptions options) {
+        final CosmosBatch cosmosBatch,
+        final CosmosBatchRequestOptions options) {
 
         this.container = container;
-        this.transactionalBatch = transactionalBatch;
+        this.cosmosBatch = cosmosBatch;
         this.options = options;
     }
 
@@ -37,18 +38,18 @@ public final class BatchExecutor {
      *
      * @return Response from the server.
      */
-    public final Mono<TransactionalBatchResponse> executeAsync() {
+    public final Mono<CosmosBatchResponse> executeAsync() {
 
-        List<CosmosItemOperation> operations = this.transactionalBatch.getOperations();
+        List<CosmosItemOperation> operations = this.cosmosBatch.getOperations();
         checkArgument(operations.size() > 0, "Number of operations should be more than 0.");
 
         final SinglePartitionKeyServerBatchRequest request = SinglePartitionKeyServerBatchRequest.createBatchRequest(
-            this.transactionalBatch.getPartitionKeyValue(),
+            this.cosmosBatch.getPartitionKeyValue(),
             operations);
         request.setAtomicBatch(true);
         request.setShouldContinueOnError(false);
 
         return CosmosBridgeInternal.getAsyncDocumentClient(container.getDatabase())
-            .executeBatchRequest(BridgeInternal.getLink(container), request, BridgeInternal.toRequestOptions(options), false);
+            .executeBatchRequest(BridgeInternal.getLink(container), request, ModelBridgeInternal.toRequestOptions(options), false);
     }
 }

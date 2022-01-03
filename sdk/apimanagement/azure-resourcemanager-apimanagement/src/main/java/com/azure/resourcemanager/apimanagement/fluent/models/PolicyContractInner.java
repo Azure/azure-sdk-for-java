@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.PolicyContentFormat;
@@ -13,22 +12,24 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Policy Contract details. */
-@JsonFlatten
 @Fluent
-public class PolicyContractInner extends ProxyResource {
+public final class PolicyContractInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyContractInner.class);
 
     /*
-     * Contents of the Policy as defined by the format.
+     * Properties of the Policy.
      */
-    @JsonProperty(value = "properties.value")
-    private String value;
+    @JsonProperty(value = "properties")
+    private PolicyContractProperties innerProperties;
 
-    /*
-     * Format of the policyContent.
+    /**
+     * Get the innerProperties property: Properties of the Policy.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.format")
-    private PolicyContentFormat format;
+    private PolicyContractProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the value property: Contents of the Policy as defined by the format.
@@ -36,7 +37,7 @@ public class PolicyContractInner extends ProxyResource {
      * @return the value value.
      */
     public String value() {
-        return this.value;
+        return this.innerProperties() == null ? null : this.innerProperties().value();
     }
 
     /**
@@ -46,7 +47,10 @@ public class PolicyContractInner extends ProxyResource {
      * @return the PolicyContractInner object itself.
      */
     public PolicyContractInner withValue(String value) {
-        this.value = value;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyContractProperties();
+        }
+        this.innerProperties().withValue(value);
         return this;
     }
 
@@ -56,7 +60,7 @@ public class PolicyContractInner extends ProxyResource {
      * @return the format value.
      */
     public PolicyContentFormat format() {
-        return this.format;
+        return this.innerProperties() == null ? null : this.innerProperties().format();
     }
 
     /**
@@ -66,7 +70,10 @@ public class PolicyContractInner extends ProxyResource {
      * @return the PolicyContractInner object itself.
      */
     public PolicyContractInner withFormat(PolicyContentFormat format) {
-        this.format = format;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyContractProperties();
+        }
+        this.innerProperties().withFormat(format);
         return this;
     }
 
@@ -76,5 +83,8 @@ public class PolicyContractInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

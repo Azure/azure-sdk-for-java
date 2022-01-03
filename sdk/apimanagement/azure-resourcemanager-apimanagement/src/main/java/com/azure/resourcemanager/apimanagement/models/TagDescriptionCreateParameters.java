@@ -5,34 +5,30 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.apimanagement.fluent.models.TagDescriptionBaseProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameters supplied to the Create TagDescription operation. */
-@JsonFlatten
 @Fluent
-public class TagDescriptionCreateParameters {
+public final class TagDescriptionCreateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TagDescriptionCreateParameters.class);
 
     /*
-     * Description of the Tag.
+     * Properties supplied to Create TagDescription operation.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    @JsonProperty(value = "properties")
+    private TagDescriptionBaseProperties innerProperties;
 
-    /*
-     * Absolute URL of external resources describing the tag.
+    /**
+     * Get the innerProperties property: Properties supplied to Create TagDescription operation.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.externalDocsUrl")
-    private String externalDocsUrl;
-
-    /*
-     * Description of the external resources describing the tag.
-     */
-    @JsonProperty(value = "properties.externalDocsDescription")
-    private String externalDocsDescription;
+    private TagDescriptionBaseProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the description property: Description of the Tag.
@@ -40,7 +36,7 @@ public class TagDescriptionCreateParameters {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -50,7 +46,10 @@ public class TagDescriptionCreateParameters {
      * @return the TagDescriptionCreateParameters object itself.
      */
     public TagDescriptionCreateParameters withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TagDescriptionBaseProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -60,7 +59,7 @@ public class TagDescriptionCreateParameters {
      * @return the externalDocsUrl value.
      */
     public String externalDocsUrl() {
-        return this.externalDocsUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().externalDocsUrl();
     }
 
     /**
@@ -70,7 +69,10 @@ public class TagDescriptionCreateParameters {
      * @return the TagDescriptionCreateParameters object itself.
      */
     public TagDescriptionCreateParameters withExternalDocsUrl(String externalDocsUrl) {
-        this.externalDocsUrl = externalDocsUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TagDescriptionBaseProperties();
+        }
+        this.innerProperties().withExternalDocsUrl(externalDocsUrl);
         return this;
     }
 
@@ -80,7 +82,7 @@ public class TagDescriptionCreateParameters {
      * @return the externalDocsDescription value.
      */
     public String externalDocsDescription() {
-        return this.externalDocsDescription;
+        return this.innerProperties() == null ? null : this.innerProperties().externalDocsDescription();
     }
 
     /**
@@ -90,7 +92,10 @@ public class TagDescriptionCreateParameters {
      * @return the TagDescriptionCreateParameters object itself.
      */
     public TagDescriptionCreateParameters withExternalDocsDescription(String externalDocsDescription) {
-        this.externalDocsDescription = externalDocsDescription;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TagDescriptionBaseProperties();
+        }
+        this.innerProperties().withExternalDocsDescription(externalDocsDescription);
         return this;
     }
 
@@ -100,5 +105,8 @@ public class TagDescriptionCreateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

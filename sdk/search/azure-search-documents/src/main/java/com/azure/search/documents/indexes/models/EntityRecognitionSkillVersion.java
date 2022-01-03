@@ -10,7 +10,14 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Represents the version of {@link EntityRecognitionSkill}.
  */
 public enum EntityRecognitionSkillVersion {
+    /**
+     * Version 1 of {@link EntityRecognitionSkill}.
+     */
     V1("#Microsoft.Skills.Text.EntityRecognitionSkill"),
+
+    /**
+     * Version 3 of {@link EntityRecognitionSkill}.
+     */
     V3("#Microsoft.Skills.Text.V3.EntityRecognitionSkill");
 
     @JsonValue

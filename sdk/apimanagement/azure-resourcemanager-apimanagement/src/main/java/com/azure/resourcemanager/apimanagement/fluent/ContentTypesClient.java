@@ -16,7 +16,8 @@ import com.azure.resourcemanager.apimanagement.models.ContentTypesGetResponse;
 /** An instance of this class provides access to all the operations defined in ContentTypesClient. */
 public interface ContentTypesClient {
     /**
-     * Returns list of content types.
+     * Lists the developer portal's content types. Content types describe content items' properties, validation rules,
+     * and constraints.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -29,7 +30,8 @@ public interface ContentTypesClient {
     PagedIterable<ContentTypeContractInner> listByService(String resourceGroupName, String serviceName);
 
     /**
-     * Returns list of content types.
+     * Lists the developer portal's content types. Content types describe content items' properties, validation rules,
+     * and constraints.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -44,7 +46,8 @@ public interface ContentTypesClient {
         String resourceGroupName, String serviceName, Context context);
 
     /**
-     * Gets API Management content type details.
+     * Gets the details of the developer portal's content type. Content types describe content items' properties,
+     * validation rules, and constraints.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -52,13 +55,14 @@ public interface ContentTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return aPI Management content type details.
+     * @return the details of the developer portal's content type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ContentTypeContractInner get(String resourceGroupName, String serviceName, String contentTypeId);
 
     /**
-     * Gets API Management content type details.
+     * Gets the details of the developer portal's content type. Content types describe content items' properties,
+     * validation rules, and constraints.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -67,14 +71,16 @@ public interface ContentTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return aPI Management content type details.
+     * @return the details of the developer portal's content type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ContentTypesGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String contentTypeId, Context context);
 
     /**
-     * Creates or updates an Content Type.
+     * Creates or updates the developer portal's content type. Content types describe content items' properties,
+     * validation rules, and constraints. Custom content types' identifiers need to start with the `c-` prefix. Built-in
+     * content types can't be modified.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -88,7 +94,9 @@ public interface ContentTypesClient {
     ContentTypeContractInner createOrUpdate(String resourceGroupName, String serviceName, String contentTypeId);
 
     /**
-     * Creates or updates an Content Type.
+     * Creates or updates the developer portal's content type. Content types describe content items' properties,
+     * validation rules, and constraints. Custom content types' identifiers need to start with the `c-` prefix. Built-in
+     * content types can't be modified.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -105,7 +113,9 @@ public interface ContentTypesClient {
         String resourceGroupName, String serviceName, String contentTypeId, String ifMatch, Context context);
 
     /**
-     * Removes specified content type.
+     * Removes the specified developer portal's content type. Content types describe content items' properties,
+     * validation rules, and constraints. Built-in content types (with identifiers starting with the `c-` prefix) can't
+     * be removed.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -120,7 +130,9 @@ public interface ContentTypesClient {
     void delete(String resourceGroupName, String serviceName, String contentTypeId, String ifMatch);
 
     /**
-     * Removes specified content type.
+     * Removes the specified developer portal's content type. Content types describe content items' properties,
+     * validation rules, and constraints. Built-in content types (with identifiers starting with the `c-` prefix) can't
+     * be removed.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.

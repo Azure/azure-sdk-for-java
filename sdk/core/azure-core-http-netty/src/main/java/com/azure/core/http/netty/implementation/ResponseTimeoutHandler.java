@@ -35,6 +35,10 @@ public final class ResponseTimeoutHandler extends ChannelInboundHandlerAdapter {
         this.timeoutMillis = timeoutMillis;
     }
 
+    ScheduledFuture<?> getResponseTimeoutWatcher() {
+        return responseTimeoutWatcher;
+    }
+
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) {
         if (timeoutMillis > 0) {
@@ -48,7 +52,7 @@ public final class ResponseTimeoutHandler extends ChannelInboundHandlerAdapter {
         disposeWatcher();
     }
 
-    private void responseTimedOut(ChannelHandlerContext ctx) {
+    void responseTimedOut(ChannelHandlerContext ctx) {
         if (!closed) {
             disposeWatcher();
             ctx.fireExceptionCaught(new TimeoutException(String.format(RESPONSE_TIMED_OUT_MESSAGE, timeoutMillis)));

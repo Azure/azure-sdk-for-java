@@ -112,6 +112,7 @@ public final class SqlPoolOperationResultsClientImpl implements SqlPoolOperation
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -119,7 +120,7 @@ public final class SqlPoolOperationResultsClientImpl implements SqlPoolOperation
                     service
                         .getLocationHeaderResult(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -171,12 +172,13 @@ public final class SqlPoolOperationResultsClientImpl implements SqlPoolOperation
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getLocationHeaderResult(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,

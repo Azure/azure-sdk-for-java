@@ -2,6 +2,79 @@
 
 ## 2.4.0-beta.1 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.3.5 (2021-12-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.22.0` to `1.23.1`.
+
+## 2.3.4 (2021-11-15)
+
+### Bugs Fixed
+
+- Fixed GC leak where `AmqpChannelProcessor` did not remove subscribers on success. https://github.com/Azure/azure-sdk-for-java/pull/25129
+- Fixed GC leak where `TokenManager` was not closed if `authorize()` fails. https://github.com/Azure/azure-sdk-for-java/pull/25129
+
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.21.0` to `1.22.0`.
+
+## 2.3.3 (2021-10-07)
+
+### Features Added
+
+- Defer creation of AmqpException in switchIfEmpty to decrease creation of unused exception objects.
+- Updated tests to run in parallel.
+- Updated log messages so they are consistent in reporting connectionId.
+- Updated incorrect log messages in ReactorReceiver.
+
+### Bugs Fixed
+
+- Fixed issue where RequestResponseChannel did not complete pending sends on disposal. So, any downstream subscribers would wait forever for a completion or error. This results in dependent senders or receivers not recovering from a disconnect or graceful closure.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.20.0` to `1.21.0`.
+- Upgraded Reactor from `3.4.9` to `3.4.10`.
+- Upgraded Jackson from `2.12.4` to `2.12.5`.
+
+## 2.3.2 (2021-09-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.19.0` to `1.20.0`.
+- Upgraded Reactor from `3.4.8` to `3.4.9`.
+
+## 2.3.1 (2021-08-19)
+
+### Bug Fixes
+
+- Fixed a bug where SendTimeout-timer thread was not being disposed of resulting in lingering
+  threads when a send link was remotely closed.
+- Fixed a bug where ReactorConnection waited indefinitely for CBS node to complete closing. The underlying problem is
+  that the RequestResponseChannel's sender and receiver links were not active, so they would wait forever for a remote
+  close signal.
+- Fixed a bug where ReactorReceiver and ReactorSender would not complete their close operation if their close work could
+  not be scheduled on the proton-j Reactor. This happens in the case that the connection is shutdown before the link.
+- Fixed a bug where RejectedExecutionExceptions and IllegalStateExceptions would not be retried. This happens in the
+  case that an IO pipe is interrupted while signalling the Reactor work queue.
 
 ## 2.3.0 (2021-07-01)
 
@@ -51,10 +124,6 @@
 
 ### Dependency Updates
 - Upgraded `azure-core` dependency to `1.15.0`.
-
-## 2.1.0-beta.1 (2021-03-26)
-### New Features
-- Exposes 'AmqpTransactionCoordinator' via AmqpSession. 
 
 ## 2.0.4 (2021-04-12)
 

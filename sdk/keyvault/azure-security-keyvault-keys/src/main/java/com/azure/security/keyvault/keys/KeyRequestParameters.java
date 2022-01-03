@@ -6,6 +6,7 @@ package com.azure.security.keyvault.keys;
 import com.azure.core.annotation.Fluent;
 import com.azure.security.keyvault.keys.models.KeyCurveName;
 import com.azure.security.keyvault.keys.models.KeyOperation;
+import com.azure.security.keyvault.keys.models.KeyReleasePolicy;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -57,6 +58,12 @@ class KeyRequestParameters {
      */
     @JsonProperty(value = "public_exponent")
     private int publicExponent;
+
+    /*
+     * The policy rules under which the key can be exported.
+     */
+    @JsonProperty(value = "release_policy")
+    private KeyReleasePolicy releasePolicy;
 
     /**
      * Get the key type.
@@ -208,6 +215,28 @@ class KeyRequestParameters {
      */
     public KeyRequestParameters setPublicExponent(int publicExponent) {
         this.publicExponent = publicExponent;
+        return this;
+    }
+
+    /**
+     * Get the policy rules under which the key can be exported.
+     *
+     * @return The policy rules under which the key can be exported.
+     */
+    public KeyReleasePolicy getReleasePolicy() {
+        return this.releasePolicy;
+    }
+
+    /**
+     * Set the policy rules under which the key can be exported.
+     *
+     * @param releasePolicy The policy rules to set.
+     * 
+     * @return The updated {@link KeyRequestParameters} object.
+     */
+    public KeyRequestParameters setReleasePolicy(KeyReleasePolicy releasePolicy) {
+        this.releasePolicy = releasePolicy;
+
         return this;
     }
 }

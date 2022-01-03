@@ -46,7 +46,7 @@ public interface RouteFilterRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String routeFilterName, String ruleName);
 
@@ -61,7 +61,7 @@ public interface RouteFilterRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String routeFilterName, String ruleName);
 
     /**
@@ -76,7 +76,7 @@ public interface RouteFilterRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String routeFilterName, String ruleName, Context context);
 
@@ -211,7 +211,7 @@ public interface RouteFilterRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return route Filter Rule Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<RouteFilterRuleInner>, RouteFilterRuleInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String routeFilterName,
@@ -230,7 +230,7 @@ public interface RouteFilterRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return route Filter Rule Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RouteFilterRuleInner>, RouteFilterRuleInner> beginCreateOrUpdate(
         String resourceGroupName,
         String routeFilterName,
@@ -250,7 +250,7 @@ public interface RouteFilterRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return route Filter Rule Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RouteFilterRuleInner>, RouteFilterRuleInner> beginCreateOrUpdate(
         String resourceGroupName,
         String routeFilterName,

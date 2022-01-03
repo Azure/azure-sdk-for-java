@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.services.visualstudio.com/v2//track",
+    "Uri" : "https://REDACTED.services.visualstudio.com/v2.1/track",
     "Headers" : {
       "Content-Type" : "application/json"
     },

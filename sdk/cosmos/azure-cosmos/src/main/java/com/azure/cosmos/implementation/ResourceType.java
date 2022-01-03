@@ -31,6 +31,7 @@ public enum ResourceType {
     ModuleCommand("ModuleCommand", 103),
     Offer("Offer", 113),
     PartitionKeyRange("PartitionKeyRange", 125),
+    PartitionKey("PartitionKey", 136),
     PartitionSetInformation("PartitionSetInformation", 114),
     Permission("Permission", 5),
     PreviousImage("PreviousImage", 128),

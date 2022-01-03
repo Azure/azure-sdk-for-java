@@ -4,6 +4,7 @@
 package com.azure.spring.autoconfigure.aad;
 
 import com.azure.spring.aad.AADAuthorizationServerEndpoints;
+import com.azure.spring.aad.implementation.constants.AADTokenClaim;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSObject;
@@ -158,6 +159,12 @@ public class UserPrincipalManager {
         return userPrincipal;
     }
 
+    /**
+     * Whether the token was issued by AAD.
+     *
+     * @param token the token
+     * @return whether the token was issued by AAD
+     */
     public boolean isTokenIssuedByAAD(String token) {
         try {
             final JWT jwt = JWTParser.parse(token);

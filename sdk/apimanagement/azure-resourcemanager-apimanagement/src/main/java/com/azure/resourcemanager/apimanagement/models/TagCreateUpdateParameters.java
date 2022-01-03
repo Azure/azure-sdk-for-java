@@ -5,22 +5,30 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.apimanagement.fluent.models.TagContractProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameters supplied to Create/Update Tag operations. */
-@JsonFlatten
 @Fluent
-public class TagCreateUpdateParameters {
+public final class TagCreateUpdateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TagCreateUpdateParameters.class);
 
     /*
-     * Tag name.
+     * Properties supplied to Create Tag operation.
      */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
+    @JsonProperty(value = "properties")
+    private TagContractProperties innerProperties;
+
+    /**
+     * Get the innerProperties property: Properties supplied to Create Tag operation.
+     *
+     * @return the innerProperties value.
+     */
+    private TagContractProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the displayName property: Tag name.
@@ -28,7 +36,7 @@ public class TagCreateUpdateParameters {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -38,7 +46,10 @@ public class TagCreateUpdateParameters {
      * @return the TagCreateUpdateParameters object itself.
      */
     public TagCreateUpdateParameters withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TagContractProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -48,5 +59,8 @@ public class TagCreateUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

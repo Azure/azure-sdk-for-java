@@ -4,6 +4,10 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.models.CosmosBatch;
+import com.azure.cosmos.models.CosmosBatchRequestOptions;
+import com.azure.cosmos.models.CosmosBatchResponse;
+import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.assertj.core.api.Assertions;
@@ -44,20 +48,20 @@ public class TransactionalBatchAsyncContainerTest extends BatchTestBase {
         TestDoc firstDoc = this.populateTestDoc(this.partitionKey1);
         TestDoc replaceDoc = this.getTestDocCopy(firstDoc);
         replaceDoc.setCost(replaceDoc.getCost() + 1);
-        TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
+        CosmosBatch batch = CosmosBatch.createCosmosBatch(this.getPartitionKey(this.partitionKey1));
         batch.createItemOperation(firstDoc);
         batch.replaceItemOperation(replaceDoc.getId(), replaceDoc);
 
-        Mono<TransactionalBatchResponse> batchResponseMono = batchAsyncContainer.executeTransactionalBatch(batch);
+        Mono<CosmosBatchResponse> batchResponseMono = batchAsyncContainer.executeCosmosBatch(batch);
 
-        TransactionalBatchResponse batchResponse1 = batchResponseMono.block();
+        CosmosBatchResponse batchResponse1 = batchResponseMono.block();
         this.verifyBatchProcessed(batchResponse1, 2);
 
         assertThat(batchResponse1.getResults().get(0).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
         assertThat(batchResponse1.getResults().get(1).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
 
         // Block again.
-        TransactionalBatchResponse batchResponse2 = batchResponseMono.block();
+        CosmosBatchResponse batchResponse2 = batchResponseMono.block();
         assertThat(batchResponse2.getStatusCode()).isEqualTo(HttpResponseStatus.CONFLICT.code());
         assertThat(batchResponse2.getResults().get(0).getStatusCode()).isEqualTo(HttpResponseStatus.CONFLICT.code());
         assertThat(batchResponse2.getResults().get(1).getStatusCode()).isEqualTo(HttpResponseStatus.FAILED_DEPENDENCY.code());
@@ -83,14 +87,14 @@ public class TransactionalBatchAsyncContainerTest extends BatchTestBase {
             testDocToReplace.setCost(testDocToReplace.getCost() + 1);
             TestDoc testDocToUpsert = this.populateTestDoc(this.partitionKey1);
 
-            TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
+            CosmosBatch batch = CosmosBatch.createCosmosBatch(this.getPartitionKey(this.partitionKey1));
             batch.createItemOperation(testDocToCreate);
             batch.replaceItemOperation(testDocToReplace.getId(), testDocToReplace);
             batch.upsertItemOperation(testDocToUpsert);
             batch.deleteItemOperation(this.TestDocPk1ExistingC.getId());
 
-            TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(
-                batch, new TransactionalBatchRequestOptions().setSessionToken(invalidSessionToken)).block();
+            CosmosBatchResponse batchResponse = container.executeCosmosBatch(
+                batch, new CosmosBatchRequestOptions().setSessionToken(invalidSessionToken)).block();
 
             this.verifyBatchProcessed(batchResponse, 4);
 
@@ -112,7 +116,7 @@ public class TransactionalBatchAsyncContainerTest extends BatchTestBase {
             testDocToReplace.setCost(testDocToReplace.getCost() + 1);
             TestDoc testDocToUpsert = this.populateTestDoc(this.partitionKey1);
 
-            TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
+            CosmosBatch batch = CosmosBatch.createCosmosBatch(this.getPartitionKey(this.partitionKey1));
             batch.createItemOperation(testDocToCreate);
             batch.replaceItemOperation(testDocToReplace.getId(), testDocToReplace);
             batch.upsertItemOperation(testDocToUpsert);
@@ -120,8 +124,8 @@ public class TransactionalBatchAsyncContainerTest extends BatchTestBase {
             batch.readItemOperation(this.TestDocPk1ExistingA.getId());
 
             try {
-                container.executeTransactionalBatch(
-                    batch, new TransactionalBatchRequestOptions().setSessionToken(invalidSessionToken)).block();
+                container.executeCosmosBatch(
+                    batch, new CosmosBatchRequestOptions().setSessionToken(invalidSessionToken)).block();
 
                 Assertions.fail("Should throw NOT_FOUND/READ_SESSION_NOT_AVAILABLE exception");
             } catch (CosmosException ex) {

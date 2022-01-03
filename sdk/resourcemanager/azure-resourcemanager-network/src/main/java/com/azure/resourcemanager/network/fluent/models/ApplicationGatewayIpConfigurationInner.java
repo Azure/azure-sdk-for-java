@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -13,10 +12,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** IP configuration of an application gateway. Currently 1 public and 1 private IP configuration is allowed. */
-@JsonFlatten
 @Fluent
-public class ApplicationGatewayIpConfigurationInner extends SubResource {
+public final class ApplicationGatewayIpConfigurationInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayIpConfigurationInner.class);
+
+    /*
+     * Properties of the application gateway IP configuration.
+     */
+    @JsonProperty(value = "properties")
+    private ApplicationGatewayIpConfigurationPropertiesFormat innerProperties;
 
     /*
      * Name of the IP configuration that is unique within an Application
@@ -37,19 +41,14 @@ public class ApplicationGatewayIpConfigurationInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * Reference to the subnet resource. A subnet from where application
-     * gateway gets its private address.
+    /**
+     * Get the innerProperties property: Properties of the application gateway IP configuration.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.subnet")
-    private SubResource subnet;
-
-    /*
-     * The provisioning state of the application gateway IP configuration
-     * resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private ApplicationGatewayIpConfigurationPropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Name of the IP configuration that is unique within an Application Gateway.
@@ -89,6 +88,13 @@ public class ApplicationGatewayIpConfigurationInner extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayIpConfigurationInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the subnet property: Reference to the subnet resource. A subnet from where application gateway gets its
      * private address.
@@ -96,7 +102,7 @@ public class ApplicationGatewayIpConfigurationInner extends SubResource {
      * @return the subnet value.
      */
     public SubResource subnet() {
-        return this.subnet;
+        return this.innerProperties() == null ? null : this.innerProperties().subnet();
     }
 
     /**
@@ -107,7 +113,10 @@ public class ApplicationGatewayIpConfigurationInner extends SubResource {
      * @return the ApplicationGatewayIpConfigurationInner object itself.
      */
     public ApplicationGatewayIpConfigurationInner withSubnet(SubResource subnet) {
-        this.subnet = subnet;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayIpConfigurationPropertiesFormat();
+        }
+        this.innerProperties().withSubnet(subnet);
         return this;
     }
 
@@ -117,14 +126,7 @@ public class ApplicationGatewayIpConfigurationInner extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ApplicationGatewayIpConfigurationInner withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -133,5 +135,8 @@ public class ApplicationGatewayIpConfigurationInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

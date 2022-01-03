@@ -8,7 +8,15 @@ import com.azure.core.util.ServiceVersion;
  * The versions of Azure Service Bus supported by this client library.
  */
 public enum ServiceBusServiceVersion implements ServiceVersion {
-    V2017_04("2017-04");
+    /**
+     * Service version {@code 2017-04}.
+     */
+    V2017_04("2017-04"),
+
+    /**
+     * Service version {@code 2021-05}.
+     */
+    V2021_05("2021-05");
 
     private final String version;
 
@@ -34,6 +42,6 @@ public enum ServiceBusServiceVersion implements ServiceVersion {
      * @return the latest {@link ServiceBusServiceVersion}.
      */
     public static ServiceBusServiceVersion getLatest() {
-        return V2017_04;
+        return V2021_05;
     }
 }

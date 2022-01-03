@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.PaypalLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,205 +17,23 @@ import java.util.Map;
 /** Paypal Service linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Paypal")
-@JsonFlatten
 @Fluent
-public class PaypalLinkedService extends LinkedService {
+public final class PaypalLinkedService extends LinkedService {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PaypalLinkedService.class);
 
     /*
-     * The URL of the PayPal instance. (i.e. api.sandbox.paypal.com)
+     * Paypal Service linked service properties.
      */
-    @JsonProperty(value = "typeProperties.host", required = true)
-    private Object host;
-
-    /*
-     * The client ID associated with your PayPal application.
-     */
-    @JsonProperty(value = "typeProperties.clientId", required = true)
-    private Object clientId;
-
-    /*
-     * The client secret associated with your PayPal application.
-     */
-    @JsonProperty(value = "typeProperties.clientSecret")
-    private SecretBase clientSecret;
-
-    /*
-     * Specifies whether the data source endpoints are encrypted using HTTPS.
-     * The default value is true.
-     */
-    @JsonProperty(value = "typeProperties.useEncryptedEndpoints")
-    private Object useEncryptedEndpoints;
-
-    /*
-     * Specifies whether to require the host name in the server's certificate
-     * to match the host name of the server when connecting over SSL. The
-     * default value is true.
-     */
-    @JsonProperty(value = "typeProperties.useHostVerification")
-    private Object useHostVerification;
-
-    /*
-     * Specifies whether to verify the identity of the server when connecting
-     * over SSL. The default value is true.
-     */
-    @JsonProperty(value = "typeProperties.usePeerVerification")
-    private Object usePeerVerification;
-
-    /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
-    private Object encryptedCredential;
+    @JsonProperty(value = "typeProperties", required = true)
+    private PaypalLinkedServiceTypeProperties innerTypeProperties = new PaypalLinkedServiceTypeProperties();
 
     /**
-     * Get the host property: The URL of the PayPal instance. (i.e. api.sandbox.paypal.com).
+     * Get the innerTypeProperties property: Paypal Service linked service properties.
      *
-     * @return the host value.
+     * @return the innerTypeProperties value.
      */
-    public Object host() {
-        return this.host;
-    }
-
-    /**
-     * Set the host property: The URL of the PayPal instance. (i.e. api.sandbox.paypal.com).
-     *
-     * @param host the host value to set.
-     * @return the PaypalLinkedService object itself.
-     */
-    public PaypalLinkedService withHost(Object host) {
-        this.host = host;
-        return this;
-    }
-
-    /**
-     * Get the clientId property: The client ID associated with your PayPal application.
-     *
-     * @return the clientId value.
-     */
-    public Object clientId() {
-        return this.clientId;
-    }
-
-    /**
-     * Set the clientId property: The client ID associated with your PayPal application.
-     *
-     * @param clientId the clientId value to set.
-     * @return the PaypalLinkedService object itself.
-     */
-    public PaypalLinkedService withClientId(Object clientId) {
-        this.clientId = clientId;
-        return this;
-    }
-
-    /**
-     * Get the clientSecret property: The client secret associated with your PayPal application.
-     *
-     * @return the clientSecret value.
-     */
-    public SecretBase clientSecret() {
-        return this.clientSecret;
-    }
-
-    /**
-     * Set the clientSecret property: The client secret associated with your PayPal application.
-     *
-     * @param clientSecret the clientSecret value to set.
-     * @return the PaypalLinkedService object itself.
-     */
-    public PaypalLinkedService withClientSecret(SecretBase clientSecret) {
-        this.clientSecret = clientSecret;
-        return this;
-    }
-
-    /**
-     * Get the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
-     * The default value is true.
-     *
-     * @return the useEncryptedEndpoints value.
-     */
-    public Object useEncryptedEndpoints() {
-        return this.useEncryptedEndpoints;
-    }
-
-    /**
-     * Set the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
-     * The default value is true.
-     *
-     * @param useEncryptedEndpoints the useEncryptedEndpoints value to set.
-     * @return the PaypalLinkedService object itself.
-     */
-    public PaypalLinkedService withUseEncryptedEndpoints(Object useEncryptedEndpoints) {
-        this.useEncryptedEndpoints = useEncryptedEndpoints;
-        return this;
-    }
-
-    /**
-     * Get the useHostVerification property: Specifies whether to require the host name in the server's certificate to
-     * match the host name of the server when connecting over SSL. The default value is true.
-     *
-     * @return the useHostVerification value.
-     */
-    public Object useHostVerification() {
-        return this.useHostVerification;
-    }
-
-    /**
-     * Set the useHostVerification property: Specifies whether to require the host name in the server's certificate to
-     * match the host name of the server when connecting over SSL. The default value is true.
-     *
-     * @param useHostVerification the useHostVerification value to set.
-     * @return the PaypalLinkedService object itself.
-     */
-    public PaypalLinkedService withUseHostVerification(Object useHostVerification) {
-        this.useHostVerification = useHostVerification;
-        return this;
-    }
-
-    /**
-     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
-     * SSL. The default value is true.
-     *
-     * @return the usePeerVerification value.
-     */
-    public Object usePeerVerification() {
-        return this.usePeerVerification;
-    }
-
-    /**
-     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
-     * SSL. The default value is true.
-     *
-     * @param usePeerVerification the usePeerVerification value to set.
-     * @return the PaypalLinkedService object itself.
-     */
-    public PaypalLinkedService withUsePeerVerification(Object usePeerVerification) {
-        this.usePeerVerification = usePeerVerification;
-        return this;
-    }
-
-    /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @return the encryptedCredential value.
-     */
-    public Object encryptedCredential() {
-        return this.encryptedCredential;
-    }
-
-    /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @param encryptedCredential the encryptedCredential value to set.
-     * @return the PaypalLinkedService object itself.
-     */
-    public PaypalLinkedService withEncryptedCredential(Object encryptedCredential) {
-        this.encryptedCredential = encryptedCredential;
-        return this;
+    private PaypalLinkedServiceTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -247,6 +65,175 @@ public class PaypalLinkedService extends LinkedService {
     }
 
     /**
+     * Get the host property: The URL of the PayPal instance. (i.e. api.sandbox.paypal.com).
+     *
+     * @return the host value.
+     */
+    public Object host() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().host();
+    }
+
+    /**
+     * Set the host property: The URL of the PayPal instance. (i.e. api.sandbox.paypal.com).
+     *
+     * @param host the host value to set.
+     * @return the PaypalLinkedService object itself.
+     */
+    public PaypalLinkedService withHost(Object host) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new PaypalLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withHost(host);
+        return this;
+    }
+
+    /**
+     * Get the clientId property: The client ID associated with your PayPal application.
+     *
+     * @return the clientId value.
+     */
+    public Object clientId() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().clientId();
+    }
+
+    /**
+     * Set the clientId property: The client ID associated with your PayPal application.
+     *
+     * @param clientId the clientId value to set.
+     * @return the PaypalLinkedService object itself.
+     */
+    public PaypalLinkedService withClientId(Object clientId) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new PaypalLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withClientId(clientId);
+        return this;
+    }
+
+    /**
+     * Get the clientSecret property: The client secret associated with your PayPal application.
+     *
+     * @return the clientSecret value.
+     */
+    public SecretBase clientSecret() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().clientSecret();
+    }
+
+    /**
+     * Set the clientSecret property: The client secret associated with your PayPal application.
+     *
+     * @param clientSecret the clientSecret value to set.
+     * @return the PaypalLinkedService object itself.
+     */
+    public PaypalLinkedService withClientSecret(SecretBase clientSecret) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new PaypalLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withClientSecret(clientSecret);
+        return this;
+    }
+
+    /**
+     * Get the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
+     * The default value is true.
+     *
+     * @return the useEncryptedEndpoints value.
+     */
+    public Object useEncryptedEndpoints() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().useEncryptedEndpoints();
+    }
+
+    /**
+     * Set the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
+     * The default value is true.
+     *
+     * @param useEncryptedEndpoints the useEncryptedEndpoints value to set.
+     * @return the PaypalLinkedService object itself.
+     */
+    public PaypalLinkedService withUseEncryptedEndpoints(Object useEncryptedEndpoints) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new PaypalLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withUseEncryptedEndpoints(useEncryptedEndpoints);
+        return this;
+    }
+
+    /**
+     * Get the useHostVerification property: Specifies whether to require the host name in the server's certificate to
+     * match the host name of the server when connecting over SSL. The default value is true.
+     *
+     * @return the useHostVerification value.
+     */
+    public Object useHostVerification() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().useHostVerification();
+    }
+
+    /**
+     * Set the useHostVerification property: Specifies whether to require the host name in the server's certificate to
+     * match the host name of the server when connecting over SSL. The default value is true.
+     *
+     * @param useHostVerification the useHostVerification value to set.
+     * @return the PaypalLinkedService object itself.
+     */
+    public PaypalLinkedService withUseHostVerification(Object useHostVerification) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new PaypalLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withUseHostVerification(useHostVerification);
+        return this;
+    }
+
+    /**
+     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
+     * SSL. The default value is true.
+     *
+     * @return the usePeerVerification value.
+     */
+    public Object usePeerVerification() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().usePeerVerification();
+    }
+
+    /**
+     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
+     * SSL. The default value is true.
+     *
+     * @param usePeerVerification the usePeerVerification value to set.
+     * @return the PaypalLinkedService object itself.
+     */
+    public PaypalLinkedService withUsePeerVerification(Object usePeerVerification) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new PaypalLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withUsePeerVerification(usePeerVerification);
+        return this;
+    }
+
+    /**
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @return the encryptedCredential value.
+     */
+    public Object encryptedCredential() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
+    }
+
+    /**
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @param encryptedCredential the encryptedCredential value to set.
+     * @return the PaypalLinkedService object itself.
+     */
+    public PaypalLinkedService withEncryptedCredential(Object encryptedCredential) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new PaypalLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEncryptedCredential(encryptedCredential);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -254,18 +241,13 @@ public class PaypalLinkedService extends LinkedService {
     @Override
     public void validate() {
         super.validate();
-        if (host() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property host in model PaypalLinkedService"));
-        }
-        if (clientId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property clientId in model PaypalLinkedService"));
-        }
-        if (clientSecret() != null) {
-            clientSecret().validate();
+                    new IllegalArgumentException(
+                        "Missing required property innerTypeProperties in model PaypalLinkedService"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

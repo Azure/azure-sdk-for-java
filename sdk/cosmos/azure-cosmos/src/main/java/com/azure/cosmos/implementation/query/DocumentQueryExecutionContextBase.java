@@ -231,6 +231,10 @@ implements IDocumentQueryExecutionContext<T> {
                 String.valueOf(Utils.getMaxIntegratedCacheStalenessInMillis(cosmosQueryRequestOptions.getDedicatedGatewayRequestOptions())));
         }
 
+        if (cosmosQueryRequestOptions.isIndexMetricsEnabled()) {
+            requestHeaders.put(HttpConstants.HttpHeaders.POPULATE_INDEX_METRICS, String.valueOf(cosmosQueryRequestOptions.isIndexMetricsEnabled()));
+        }
+
         return requestHeaders;
     }
 

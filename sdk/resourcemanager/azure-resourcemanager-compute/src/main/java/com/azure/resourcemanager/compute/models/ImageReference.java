@@ -59,6 +59,13 @@ public final class ImageReference extends SubResource {
     @JsonProperty(value = "exactVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String exactVersion;
 
+    /*
+     * Specified the shared gallery image unique id for vm deployment. This can
+     * be fetched from shared gallery image GET call.
+     */
+    @JsonProperty(value = "sharedGalleryImageId")
+    private String sharedGalleryImageId;
+
     /**
      * Get the publisher property: The image publisher.
      *
@@ -156,6 +163,28 @@ public final class ImageReference extends SubResource {
      */
     public String exactVersion() {
         return this.exactVersion;
+    }
+
+    /**
+     * Get the sharedGalleryImageId property: Specified the shared gallery image unique id for vm deployment. This can
+     * be fetched from shared gallery image GET call.
+     *
+     * @return the sharedGalleryImageId value.
+     */
+    public String sharedGalleryImageId() {
+        return this.sharedGalleryImageId;
+    }
+
+    /**
+     * Set the sharedGalleryImageId property: Specified the shared gallery image unique id for vm deployment. This can
+     * be fetched from shared gallery image GET call.
+     *
+     * @param sharedGalleryImageId the sharedGalleryImageId value to set.
+     * @return the ImageReference object itself.
+     */
+    public ImageReference withSharedGalleryImageId(String sharedGalleryImageId) {
+        this.sharedGalleryImageId = sharedGalleryImageId;
+        return this;
     }
 
     /** {@inheritDoc} */

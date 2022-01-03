@@ -25,15 +25,15 @@ public final class WorkloadGroupImpl implements WorkloadGroup, WorkloadGroup.Def
         return this.innerModel().type();
     }
 
-    public Integer minResourcePercent() {
+    public int minResourcePercent() {
         return this.innerModel().minResourcePercent();
     }
 
-    public Integer maxResourcePercent() {
+    public int maxResourcePercent() {
         return this.innerModel().maxResourcePercent();
     }
 
-    public Double minResourcePercentPerRequest() {
+    public double minResourcePercentPerRequest() {
         return this.innerModel().minResourcePercentPerRequest();
     }
 
@@ -151,17 +151,17 @@ public final class WorkloadGroupImpl implements WorkloadGroup, WorkloadGroup.Def
         return this;
     }
 
-    public WorkloadGroupImpl withMinResourcePercent(Integer minResourcePercent) {
+    public WorkloadGroupImpl withMinResourcePercent(int minResourcePercent) {
         this.innerModel().withMinResourcePercent(minResourcePercent);
         return this;
     }
 
-    public WorkloadGroupImpl withMaxResourcePercent(Integer maxResourcePercent) {
+    public WorkloadGroupImpl withMaxResourcePercent(int maxResourcePercent) {
         this.innerModel().withMaxResourcePercent(maxResourcePercent);
         return this;
     }
 
-    public WorkloadGroupImpl withMinResourcePercentPerRequest(Double minResourcePercentPerRequest) {
+    public WorkloadGroupImpl withMinResourcePercentPerRequest(double minResourcePercentPerRequest) {
         this.innerModel().withMinResourcePercentPerRequest(minResourcePercentPerRequest);
         return this;
     }

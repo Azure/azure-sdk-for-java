@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,37 +12,36 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of available versions for an agent pool. */
-@JsonFlatten
 @Fluent
-public class AgentPoolAvailableVersionsInner {
+public final class AgentPoolAvailableVersionsInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AgentPoolAvailableVersionsInner.class);
 
     /*
-     * Id of the agent pool available versions.
+     * The ID of the agent pool version list.
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
-     * Name of the agent pool available versions.
+     * The name of the agent pool version list.
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
-     * Type of the agent pool  available versions.
+     * Type of the agent pool version list.
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
-     * List of versions available for agent pool.
+     * Properties of agent pool available versions.
      */
-    @JsonProperty(value = "properties.agentPoolVersions")
-    private List<AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem> agentPoolVersions;
+    @JsonProperty(value = "properties", required = true)
+    private AgentPoolAvailableVersionsProperties innerProperties = new AgentPoolAvailableVersionsProperties();
 
     /**
-     * Get the id property: Id of the agent pool available versions.
+     * Get the id property: The ID of the agent pool version list.
      *
      * @return the id value.
      */
@@ -52,7 +50,7 @@ public class AgentPoolAvailableVersionsInner {
     }
 
     /**
-     * Get the name property: Name of the agent pool available versions.
+     * Get the name property: The name of the agent pool version list.
      *
      * @return the name value.
      */
@@ -61,7 +59,7 @@ public class AgentPoolAvailableVersionsInner {
     }
 
     /**
-     * Get the type property: Type of the agent pool available versions.
+     * Get the type property: Type of the agent pool version list.
      *
      * @return the type value.
      */
@@ -70,12 +68,21 @@ public class AgentPoolAvailableVersionsInner {
     }
 
     /**
+     * Get the innerProperties property: Properties of agent pool available versions.
+     *
+     * @return the innerProperties value.
+     */
+    private AgentPoolAvailableVersionsProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the agentPoolVersions property: List of versions available for agent pool.
      *
      * @return the agentPoolVersions value.
      */
     public List<AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem> agentPoolVersions() {
-        return this.agentPoolVersions;
+        return this.innerProperties() == null ? null : this.innerProperties().agentPoolVersions();
     }
 
     /**
@@ -86,7 +93,10 @@ public class AgentPoolAvailableVersionsInner {
      */
     public AgentPoolAvailableVersionsInner withAgentPoolVersions(
         List<AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem> agentPoolVersions) {
-        this.agentPoolVersions = agentPoolVersions;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AgentPoolAvailableVersionsProperties();
+        }
+        this.innerProperties().withAgentPoolVersions(agentPoolVersions);
         return this;
     }
 
@@ -96,8 +106,13 @@ public class AgentPoolAvailableVersionsInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (agentPoolVersions() != null) {
-            agentPoolVersions().forEach(e -> e.validate());
+        if (innerProperties() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model AgentPoolAvailableVersionsInner"));
+        } else {
+            innerProperties().validate();
         }
     }
 }

@@ -361,7 +361,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -411,7 +411,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -435,12 +435,13 @@ public final class PrivateLinkServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serviceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, serviceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -454,7 +455,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String serviceName, Context context) {
         context = this.client.mergeContext(context);
@@ -474,7 +475,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName) {
         return beginDeleteAsync(resourceGroupName, serviceName).getSyncPoller();
     }
@@ -490,7 +491,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceName, Context context) {
         return beginDeleteAsync(resourceGroupName, serviceName, context).getSyncPoller();
@@ -591,7 +592,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -643,7 +644,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -779,7 +780,7 @@ public final class PrivateLinkServicesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -836,7 +837,7 @@ public final class PrivateLinkServicesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -862,7 +863,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private link service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<PrivateLinkServiceInner>, PrivateLinkServiceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serviceName, PrivateLinkServiceInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -874,7 +875,7 @@ public final class PrivateLinkServicesClientImpl
                 this.client.getHttpPipeline(),
                 PrivateLinkServiceInner.class,
                 PrivateLinkServiceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -889,7 +890,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private link service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateLinkServiceInner>, PrivateLinkServiceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serviceName, PrivateLinkServiceInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -916,7 +917,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private link service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateLinkServiceInner>, PrivateLinkServiceInner> beginCreateOrUpdate(
         String resourceGroupName, String serviceName, PrivateLinkServiceInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, serviceName, parameters).getSyncPoller();
@@ -934,7 +935,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private link service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateLinkServiceInner>, PrivateLinkServiceInner> beginCreateOrUpdate(
         String resourceGroupName, String serviceName, PrivateLinkServiceInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, serviceName, parameters, context).getSyncPoller();
@@ -1041,7 +1042,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1095,7 +1096,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1199,7 +1200,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1241,7 +1242,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1349,7 +1350,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1407,7 +1408,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1560,7 +1561,7 @@ public final class PrivateLinkServicesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1627,7 +1628,7 @@ public final class PrivateLinkServicesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1757,7 +1758,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1813,7 +1814,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1839,14 +1840,15 @@ public final class PrivateLinkServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeletePrivateEndpointConnectionAsync(
         String resourceGroupName, String serviceName, String peConnectionName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deletePrivateEndpointConnectionWithResponseAsync(resourceGroupName, serviceName, peConnectionName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1861,7 +1863,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeletePrivateEndpointConnectionAsync(
         String resourceGroupName, String serviceName, String peConnectionName, Context context) {
         context = this.client.mergeContext(context);
@@ -1883,7 +1885,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeletePrivateEndpointConnection(
         String resourceGroupName, String serviceName, String peConnectionName) {
         return beginDeletePrivateEndpointConnectionAsync(resourceGroupName, serviceName, peConnectionName)
@@ -1902,7 +1904,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeletePrivateEndpointConnection(
         String resourceGroupName, String serviceName, String peConnectionName, Context context) {
         return beginDeletePrivateEndpointConnectionAsync(resourceGroupName, serviceName, peConnectionName, context)
@@ -2012,7 +2014,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2071,7 +2073,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2168,7 +2170,7 @@ public final class PrivateLinkServicesClientImpl
      * Checks whether the subscription is visible to private link service.
      *
      * @param location The location of the domain name.
-     * @param privateLinkServiceAlias The alias of the private link service.
+     * @param parameters The request body of CheckPrivateLinkService API call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2176,7 +2178,7 @@ public final class PrivateLinkServicesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> checkPrivateLinkServiceVisibilityWithResponseAsync(
-        String location, String privateLinkServiceAlias) {
+        String location, CheckPrivateLinkServiceVisibilityRequest parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -2192,10 +2194,13 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
-        CheckPrivateLinkServiceVisibilityRequest parameters = new CheckPrivateLinkServiceVisibilityRequest();
-        parameters.withPrivateLinkServiceAlias(privateLinkServiceAlias);
         return FluxUtil
             .withContext(
                 context ->
@@ -2215,7 +2220,7 @@ public final class PrivateLinkServicesClientImpl
      * Checks whether the subscription is visible to private link service.
      *
      * @param location The location of the domain name.
-     * @param privateLinkServiceAlias The alias of the private link service.
+     * @param parameters The request body of CheckPrivateLinkService API call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2224,7 +2229,7 @@ public final class PrivateLinkServicesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> checkPrivateLinkServiceVisibilityWithResponseAsync(
-        String location, String privateLinkServiceAlias, Context context) {
+        String location, CheckPrivateLinkServiceVisibilityRequest parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -2240,10 +2245,13 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
-        CheckPrivateLinkServiceVisibilityRequest parameters = new CheckPrivateLinkServiceVisibilityRequest();
-        parameters.withPrivateLinkServiceAlias(privateLinkServiceAlias);
         context = this.client.mergeContext(context);
         return service
             .checkPrivateLinkServiceVisibility(
@@ -2260,17 +2268,18 @@ public final class PrivateLinkServicesClientImpl
      * Checks whether the subscription is visible to private link service.
      *
      * @param location The location of the domain name.
-     * @param privateLinkServiceAlias The alias of the private link service.
+     * @param parameters The request body of CheckPrivateLinkService API call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the CheckPrivateLinkServiceVisibility API service call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
-        beginCheckPrivateLinkServiceVisibilityAsync(String location, String privateLinkServiceAlias) {
+        beginCheckPrivateLinkServiceVisibilityAsync(
+            String location, CheckPrivateLinkServiceVisibilityRequest parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            checkPrivateLinkServiceVisibilityWithResponseAsync(location, privateLinkServiceAlias);
+            checkPrivateLinkServiceVisibilityWithResponseAsync(location, parameters);
         return this
             .client
             .<PrivateLinkServiceVisibilityInner, PrivateLinkServiceVisibilityInner>getLroResult(
@@ -2278,26 +2287,27 @@ public final class PrivateLinkServicesClientImpl
                 this.client.getHttpPipeline(),
                 PrivateLinkServiceVisibilityInner.class,
                 PrivateLinkServiceVisibilityInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
      * Checks whether the subscription is visible to private link service.
      *
      * @param location The location of the domain name.
-     * @param privateLinkServiceAlias The alias of the private link service.
+     * @param parameters The request body of CheckPrivateLinkService API call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the CheckPrivateLinkServiceVisibility API service call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
-        beginCheckPrivateLinkServiceVisibilityAsync(String location, String privateLinkServiceAlias, Context context) {
+        beginCheckPrivateLinkServiceVisibilityAsync(
+            String location, CheckPrivateLinkServiceVisibilityRequest parameters, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            checkPrivateLinkServiceVisibilityWithResponseAsync(location, privateLinkServiceAlias, context);
+            checkPrivateLinkServiceVisibilityWithResponseAsync(location, parameters, context);
         return this
             .client
             .<PrivateLinkServiceVisibilityInner, PrivateLinkServiceVisibilityInner>getLroResult(
@@ -2312,40 +2322,41 @@ public final class PrivateLinkServicesClientImpl
      * Checks whether the subscription is visible to private link service.
      *
      * @param location The location of the domain name.
-     * @param privateLinkServiceAlias The alias of the private link service.
+     * @param parameters The request body of CheckPrivateLinkService API call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the CheckPrivateLinkServiceVisibility API service call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
-        beginCheckPrivateLinkServiceVisibility(String location, String privateLinkServiceAlias) {
-        return beginCheckPrivateLinkServiceVisibilityAsync(location, privateLinkServiceAlias).getSyncPoller();
+        beginCheckPrivateLinkServiceVisibility(String location, CheckPrivateLinkServiceVisibilityRequest parameters) {
+        return beginCheckPrivateLinkServiceVisibilityAsync(location, parameters).getSyncPoller();
     }
 
     /**
      * Checks whether the subscription is visible to private link service.
      *
      * @param location The location of the domain name.
-     * @param privateLinkServiceAlias The alias of the private link service.
+     * @param parameters The request body of CheckPrivateLinkService API call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the CheckPrivateLinkServiceVisibility API service call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
-        beginCheckPrivateLinkServiceVisibility(String location, String privateLinkServiceAlias, Context context) {
-        return beginCheckPrivateLinkServiceVisibilityAsync(location, privateLinkServiceAlias, context).getSyncPoller();
+        beginCheckPrivateLinkServiceVisibility(
+            String location, CheckPrivateLinkServiceVisibilityRequest parameters, Context context) {
+        return beginCheckPrivateLinkServiceVisibilityAsync(location, parameters, context).getSyncPoller();
     }
 
     /**
      * Checks whether the subscription is visible to private link service.
      *
      * @param location The location of the domain name.
-     * @param privateLinkServiceAlias The alias of the private link service.
+     * @param parameters The request body of CheckPrivateLinkService API call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2353,8 +2364,8 @@ public final class PrivateLinkServicesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateLinkServiceVisibilityInner> checkPrivateLinkServiceVisibilityAsync(
-        String location, String privateLinkServiceAlias) {
-        return beginCheckPrivateLinkServiceVisibilityAsync(location, privateLinkServiceAlias)
+        String location, CheckPrivateLinkServiceVisibilityRequest parameters) {
+        return beginCheckPrivateLinkServiceVisibilityAsync(location, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -2363,24 +2374,7 @@ public final class PrivateLinkServicesClientImpl
      * Checks whether the subscription is visible to private link service.
      *
      * @param location The location of the domain name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckPrivateLinkServiceVisibility API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PrivateLinkServiceVisibilityInner> checkPrivateLinkServiceVisibilityAsync(String location) {
-        final String privateLinkServiceAlias = null;
-        return beginCheckPrivateLinkServiceVisibilityAsync(location, privateLinkServiceAlias)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Checks whether the subscription is visible to private link service.
-     *
-     * @param location The location of the domain name.
-     * @param privateLinkServiceAlias The alias of the private link service.
+     * @param parameters The request body of CheckPrivateLinkService API call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2389,8 +2383,8 @@ public final class PrivateLinkServicesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PrivateLinkServiceVisibilityInner> checkPrivateLinkServiceVisibilityAsync(
-        String location, String privateLinkServiceAlias, Context context) {
-        return beginCheckPrivateLinkServiceVisibilityAsync(location, privateLinkServiceAlias, context)
+        String location, CheckPrivateLinkServiceVisibilityRequest parameters, Context context) {
+        return beginCheckPrivateLinkServiceVisibilityAsync(location, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -2399,7 +2393,7 @@ public final class PrivateLinkServicesClientImpl
      * Checks whether the subscription is visible to private link service.
      *
      * @param location The location of the domain name.
-     * @param privateLinkServiceAlias The alias of the private link service.
+     * @param parameters The request body of CheckPrivateLinkService API call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2407,30 +2401,15 @@ public final class PrivateLinkServicesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibility(
-        String location, String privateLinkServiceAlias) {
-        return checkPrivateLinkServiceVisibilityAsync(location, privateLinkServiceAlias).block();
+        String location, CheckPrivateLinkServiceVisibilityRequest parameters) {
+        return checkPrivateLinkServiceVisibilityAsync(location, parameters).block();
     }
 
     /**
      * Checks whether the subscription is visible to private link service.
      *
      * @param location The location of the domain name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckPrivateLinkServiceVisibility API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibility(String location) {
-        final String privateLinkServiceAlias = null;
-        return checkPrivateLinkServiceVisibilityAsync(location, privateLinkServiceAlias).block();
-    }
-
-    /**
-     * Checks whether the subscription is visible to private link service.
-     *
-     * @param location The location of the domain name.
-     * @param privateLinkServiceAlias The alias of the private link service.
+     * @param parameters The request body of CheckPrivateLinkService API call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2439,8 +2418,8 @@ public final class PrivateLinkServicesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibility(
-        String location, String privateLinkServiceAlias, Context context) {
-        return checkPrivateLinkServiceVisibilityAsync(location, privateLinkServiceAlias, context).block();
+        String location, CheckPrivateLinkServiceVisibilityRequest parameters, Context context) {
+        return checkPrivateLinkServiceVisibilityAsync(location, parameters, context).block();
     }
 
     /**
@@ -2448,7 +2427,7 @@ public final class PrivateLinkServicesClientImpl
      *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
-     * @param privateLinkServiceAlias The alias of the private link service.
+     * @param parameters The request body of CheckPrivateLinkService API call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2456,7 +2435,7 @@ public final class PrivateLinkServicesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> checkPrivateLinkServiceVisibilityByResourceGroupWithResponseAsync(
-        String location, String resourceGroupName, String privateLinkServiceAlias) {
+        String location, String resourceGroupName, CheckPrivateLinkServiceVisibilityRequest parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -2476,10 +2455,13 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
-        CheckPrivateLinkServiceVisibilityRequest parameters = new CheckPrivateLinkServiceVisibilityRequest();
-        parameters.withPrivateLinkServiceAlias(privateLinkServiceAlias);
         return FluxUtil
             .withContext(
                 context ->
@@ -2501,7 +2483,7 @@ public final class PrivateLinkServicesClientImpl
      *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
-     * @param privateLinkServiceAlias The alias of the private link service.
+     * @param parameters The request body of CheckPrivateLinkService API call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2510,7 +2492,10 @@ public final class PrivateLinkServicesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> checkPrivateLinkServiceVisibilityByResourceGroupWithResponseAsync(
-        String location, String resourceGroupName, String privateLinkServiceAlias, Context context) {
+        String location,
+        String resourceGroupName,
+        CheckPrivateLinkServiceVisibilityRequest parameters,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -2530,10 +2515,13 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
-        CheckPrivateLinkServiceVisibilityRequest parameters = new CheckPrivateLinkServiceVisibilityRequest();
-        parameters.withPrivateLinkServiceAlias(privateLinkServiceAlias);
         context = this.client.mergeContext(context);
         return service
             .checkPrivateLinkServiceVisibilityByResourceGroup(
@@ -2552,19 +2540,18 @@ public final class PrivateLinkServicesClientImpl
      *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
-     * @param privateLinkServiceAlias The alias of the private link service.
+     * @param parameters The request body of CheckPrivateLinkService API call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the CheckPrivateLinkServiceVisibility API service call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
         beginCheckPrivateLinkServiceVisibilityByResourceGroupAsync(
-            String location, String resourceGroupName, String privateLinkServiceAlias) {
+            String location, String resourceGroupName, CheckPrivateLinkServiceVisibilityRequest parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            checkPrivateLinkServiceVisibilityByResourceGroupWithResponseAsync(
-                location, resourceGroupName, privateLinkServiceAlias);
+            checkPrivateLinkServiceVisibilityByResourceGroupWithResponseAsync(location, resourceGroupName, parameters);
         return this
             .client
             .<PrivateLinkServiceVisibilityInner, PrivateLinkServiceVisibilityInner>getLroResult(
@@ -2572,7 +2559,7 @@ public final class PrivateLinkServicesClientImpl
                 this.client.getHttpPipeline(),
                 PrivateLinkServiceVisibilityInner.class,
                 PrivateLinkServiceVisibilityInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2580,21 +2567,24 @@ public final class PrivateLinkServicesClientImpl
      *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
-     * @param privateLinkServiceAlias The alias of the private link service.
+     * @param parameters The request body of CheckPrivateLinkService API call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the CheckPrivateLinkServiceVisibility API service call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
         beginCheckPrivateLinkServiceVisibilityByResourceGroupAsync(
-            String location, String resourceGroupName, String privateLinkServiceAlias, Context context) {
+            String location,
+            String resourceGroupName,
+            CheckPrivateLinkServiceVisibilityRequest parameters,
+            Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             checkPrivateLinkServiceVisibilityByResourceGroupWithResponseAsync(
-                location, resourceGroupName, privateLinkServiceAlias, context);
+                location, resourceGroupName, parameters, context);
         return this
             .client
             .<PrivateLinkServiceVisibilityInner, PrivateLinkServiceVisibilityInner>getLroResult(
@@ -2610,18 +2600,17 @@ public final class PrivateLinkServicesClientImpl
      *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
-     * @param privateLinkServiceAlias The alias of the private link service.
+     * @param parameters The request body of CheckPrivateLinkService API call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the CheckPrivateLinkServiceVisibility API service call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
         beginCheckPrivateLinkServiceVisibilityByResourceGroup(
-            String location, String resourceGroupName, String privateLinkServiceAlias) {
-        return beginCheckPrivateLinkServiceVisibilityByResourceGroupAsync(
-                location, resourceGroupName, privateLinkServiceAlias)
+            String location, String resourceGroupName, CheckPrivateLinkServiceVisibilityRequest parameters) {
+        return beginCheckPrivateLinkServiceVisibilityByResourceGroupAsync(location, resourceGroupName, parameters)
             .getSyncPoller();
     }
 
@@ -2630,19 +2619,22 @@ public final class PrivateLinkServicesClientImpl
      *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
-     * @param privateLinkServiceAlias The alias of the private link service.
+     * @param parameters The request body of CheckPrivateLinkService API call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the CheckPrivateLinkServiceVisibility API service call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
         beginCheckPrivateLinkServiceVisibilityByResourceGroup(
-            String location, String resourceGroupName, String privateLinkServiceAlias, Context context) {
+            String location,
+            String resourceGroupName,
+            CheckPrivateLinkServiceVisibilityRequest parameters,
+            Context context) {
         return beginCheckPrivateLinkServiceVisibilityByResourceGroupAsync(
-                location, resourceGroupName, privateLinkServiceAlias, context)
+                location, resourceGroupName, parameters, context)
             .getSyncPoller();
     }
 
@@ -2651,7 +2643,7 @@ public final class PrivateLinkServicesClientImpl
      *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
-     * @param privateLinkServiceAlias The alias of the private link service.
+     * @param parameters The request body of CheckPrivateLinkService API call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2659,9 +2651,8 @@ public final class PrivateLinkServicesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateLinkServiceVisibilityInner> checkPrivateLinkServiceVisibilityByResourceGroupAsync(
-        String location, String resourceGroupName, String privateLinkServiceAlias) {
-        return beginCheckPrivateLinkServiceVisibilityByResourceGroupAsync(
-                location, resourceGroupName, privateLinkServiceAlias)
+        String location, String resourceGroupName, CheckPrivateLinkServiceVisibilityRequest parameters) {
+        return beginCheckPrivateLinkServiceVisibilityByResourceGroupAsync(location, resourceGroupName, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -2671,27 +2662,7 @@ public final class PrivateLinkServicesClientImpl
      *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckPrivateLinkServiceVisibility API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PrivateLinkServiceVisibilityInner> checkPrivateLinkServiceVisibilityByResourceGroupAsync(
-        String location, String resourceGroupName) {
-        final String privateLinkServiceAlias = null;
-        return beginCheckPrivateLinkServiceVisibilityByResourceGroupAsync(
-                location, resourceGroupName, privateLinkServiceAlias)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Checks whether the subscription is visible to private link service in the specified resource group.
-     *
-     * @param location The location of the domain name.
-     * @param resourceGroupName The name of the resource group.
-     * @param privateLinkServiceAlias The alias of the private link service.
+     * @param parameters The request body of CheckPrivateLinkService API call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2700,9 +2671,12 @@ public final class PrivateLinkServicesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PrivateLinkServiceVisibilityInner> checkPrivateLinkServiceVisibilityByResourceGroupAsync(
-        String location, String resourceGroupName, String privateLinkServiceAlias, Context context) {
+        String location,
+        String resourceGroupName,
+        CheckPrivateLinkServiceVisibilityRequest parameters,
+        Context context) {
         return beginCheckPrivateLinkServiceVisibilityByResourceGroupAsync(
-                location, resourceGroupName, privateLinkServiceAlias, context)
+                location, resourceGroupName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -2712,7 +2686,7 @@ public final class PrivateLinkServicesClientImpl
      *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
-     * @param privateLinkServiceAlias The alias of the private link service.
+     * @param parameters The request body of CheckPrivateLinkService API call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2720,10 +2694,8 @@ public final class PrivateLinkServicesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibilityByResourceGroup(
-        String location, String resourceGroupName, String privateLinkServiceAlias) {
-        return checkPrivateLinkServiceVisibilityByResourceGroupAsync(
-                location, resourceGroupName, privateLinkServiceAlias)
-            .block();
+        String location, String resourceGroupName, CheckPrivateLinkServiceVisibilityRequest parameters) {
+        return checkPrivateLinkServiceVisibilityByResourceGroupAsync(location, resourceGroupName, parameters).block();
     }
 
     /**
@@ -2731,26 +2703,7 @@ public final class PrivateLinkServicesClientImpl
      *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckPrivateLinkServiceVisibility API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibilityByResourceGroup(
-        String location, String resourceGroupName) {
-        final String privateLinkServiceAlias = null;
-        return checkPrivateLinkServiceVisibilityByResourceGroupAsync(
-                location, resourceGroupName, privateLinkServiceAlias)
-            .block();
-    }
-
-    /**
-     * Checks whether the subscription is visible to private link service in the specified resource group.
-     *
-     * @param location The location of the domain name.
-     * @param resourceGroupName The name of the resource group.
-     * @param privateLinkServiceAlias The alias of the private link service.
+     * @param parameters The request body of CheckPrivateLinkService API call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2759,9 +2712,11 @@ public final class PrivateLinkServicesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibilityByResourceGroup(
-        String location, String resourceGroupName, String privateLinkServiceAlias, Context context) {
-        return checkPrivateLinkServiceVisibilityByResourceGroupAsync(
-                location, resourceGroupName, privateLinkServiceAlias, context)
+        String location,
+        String resourceGroupName,
+        CheckPrivateLinkServiceVisibilityRequest parameters,
+        Context context) {
+        return checkPrivateLinkServiceVisibilityByResourceGroupAsync(location, resourceGroupName, parameters, context)
             .block();
     }
 
@@ -2793,7 +2748,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2847,7 +2802,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2965,7 +2920,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3026,7 +2981,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

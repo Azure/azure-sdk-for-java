@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.netapp.models.EncryptionType;
 import com.azure.resourcemanager.netapp.models.QosType;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -15,176 +15,38 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Capacity pool resource. */
-@JsonFlatten
 @Fluent
-public class CapacityPoolInner extends Resource {
+public final class CapacityPoolInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CapacityPoolInner.class);
 
     /*
-     * UUID v4 used to identify the Pool
+     * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "properties.poolId", access = JsonProperty.Access.WRITE_ONLY)
-    private String poolId;
+    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    private String etag;
 
     /*
-     * Provisioned size of the pool (in bytes). Allowed values are in 4TiB
-     * chunks (value must be multiply of 4398046511104).
+     * Capacity pool properties
      */
-    @JsonProperty(value = "properties.size", required = true)
-    private long size;
-
-    /*
-     * The service level of the file system
-     */
-    @JsonProperty(value = "properties.serviceLevel", required = true)
-    private ServiceLevel serviceLevel;
-
-    /*
-     * Azure lifecycle management
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * Total throughput of pool in Mibps
-     */
-    @JsonProperty(value = "properties.totalThroughputMibps", access = JsonProperty.Access.WRITE_ONLY)
-    private Float totalThroughputMibps;
-
-    /*
-     * Utilized throughput of pool in Mibps
-     */
-    @JsonProperty(value = "properties.utilizedThroughputMibps", access = JsonProperty.Access.WRITE_ONLY)
-    private Float utilizedThroughputMibps;
-
-    /*
-     * The qos type of the pool
-     */
-    @JsonProperty(value = "properties.qosType")
-    private QosType qosType;
-
-    /*
-     * If enabled (true) the pool can contain cool Access enabled volumes.
-     */
-    @JsonProperty(value = "properties.coolAccess")
-    private Boolean coolAccess;
+    @JsonProperty(value = "properties", required = true)
+    private PoolProperties innerProperties = new PoolProperties();
 
     /**
-     * Get the poolId property: UUID v4 used to identify the Pool.
+     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
      *
-     * @return the poolId value.
+     * @return the etag value.
      */
-    public String poolId() {
-        return this.poolId;
+    public String etag() {
+        return this.etag;
     }
 
     /**
-     * Get the size property: Provisioned size of the pool (in bytes). Allowed values are in 4TiB chunks (value must be
-     * multiply of 4398046511104).
+     * Get the innerProperties property: Capacity pool properties.
      *
-     * @return the size value.
+     * @return the innerProperties value.
      */
-    public long size() {
-        return this.size;
-    }
-
-    /**
-     * Set the size property: Provisioned size of the pool (in bytes). Allowed values are in 4TiB chunks (value must be
-     * multiply of 4398046511104).
-     *
-     * @param size the size value to set.
-     * @return the CapacityPoolInner object itself.
-     */
-    public CapacityPoolInner withSize(long size) {
-        this.size = size;
-        return this;
-    }
-
-    /**
-     * Get the serviceLevel property: The service level of the file system.
-     *
-     * @return the serviceLevel value.
-     */
-    public ServiceLevel serviceLevel() {
-        return this.serviceLevel;
-    }
-
-    /**
-     * Set the serviceLevel property: The service level of the file system.
-     *
-     * @param serviceLevel the serviceLevel value to set.
-     * @return the CapacityPoolInner object itself.
-     */
-    public CapacityPoolInner withServiceLevel(ServiceLevel serviceLevel) {
-        this.serviceLevel = serviceLevel;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: Azure lifecycle management.
-     *
-     * @return the provisioningState value.
-     */
-    public String provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the totalThroughputMibps property: Total throughput of pool in Mibps.
-     *
-     * @return the totalThroughputMibps value.
-     */
-    public Float totalThroughputMibps() {
-        return this.totalThroughputMibps;
-    }
-
-    /**
-     * Get the utilizedThroughputMibps property: Utilized throughput of pool in Mibps.
-     *
-     * @return the utilizedThroughputMibps value.
-     */
-    public Float utilizedThroughputMibps() {
-        return this.utilizedThroughputMibps;
-    }
-
-    /**
-     * Get the qosType property: The qos type of the pool.
-     *
-     * @return the qosType value.
-     */
-    public QosType qosType() {
-        return this.qosType;
-    }
-
-    /**
-     * Set the qosType property: The qos type of the pool.
-     *
-     * @param qosType the qosType value to set.
-     * @return the CapacityPoolInner object itself.
-     */
-    public CapacityPoolInner withQosType(QosType qosType) {
-        this.qosType = qosType;
-        return this;
-    }
-
-    /**
-     * Get the coolAccess property: If enabled (true) the pool can contain cool Access enabled volumes.
-     *
-     * @return the coolAccess value.
-     */
-    public Boolean coolAccess() {
-        return this.coolAccess;
-    }
-
-    /**
-     * Set the coolAccess property: If enabled (true) the pool can contain cool Access enabled volumes.
-     *
-     * @param coolAccess the coolAccess value to set.
-     * @return the CapacityPoolInner object itself.
-     */
-    public CapacityPoolInner withCoolAccess(Boolean coolAccess) {
-        this.coolAccess = coolAccess;
-        return this;
+    private PoolProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -202,15 +64,173 @@ public class CapacityPoolInner extends Resource {
     }
 
     /**
+     * Get the poolId property: poolId UUID v4 used to identify the Pool.
+     *
+     * @return the poolId value.
+     */
+    public String poolId() {
+        return this.innerProperties() == null ? null : this.innerProperties().poolId();
+    }
+
+    /**
+     * Get the size property: size Provisioned size of the pool (in bytes). Allowed values are in 4TiB chunks (value
+     * must be multiply of 4398046511104).
+     *
+     * @return the size value.
+     */
+    public long size() {
+        return this.innerProperties() == null ? 0L : this.innerProperties().size();
+    }
+
+    /**
+     * Set the size property: size Provisioned size of the pool (in bytes). Allowed values are in 4TiB chunks (value
+     * must be multiply of 4398046511104).
+     *
+     * @param size the size value to set.
+     * @return the CapacityPoolInner object itself.
+     */
+    public CapacityPoolInner withSize(long size) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PoolProperties();
+        }
+        this.innerProperties().withSize(size);
+        return this;
+    }
+
+    /**
+     * Get the serviceLevel property: serviceLevel The service level of the file system.
+     *
+     * @return the serviceLevel value.
+     */
+    public ServiceLevel serviceLevel() {
+        return this.innerProperties() == null ? null : this.innerProperties().serviceLevel();
+    }
+
+    /**
+     * Set the serviceLevel property: serviceLevel The service level of the file system.
+     *
+     * @param serviceLevel the serviceLevel value to set.
+     * @return the CapacityPoolInner object itself.
+     */
+    public CapacityPoolInner withServiceLevel(ServiceLevel serviceLevel) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PoolProperties();
+        }
+        this.innerProperties().withServiceLevel(serviceLevel);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: Azure lifecycle management.
+     *
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the totalThroughputMibps property: Total throughput of pool in Mibps.
+     *
+     * @return the totalThroughputMibps value.
+     */
+    public Float totalThroughputMibps() {
+        return this.innerProperties() == null ? null : this.innerProperties().totalThroughputMibps();
+    }
+
+    /**
+     * Get the utilizedThroughputMibps property: Utilized throughput of pool in Mibps.
+     *
+     * @return the utilizedThroughputMibps value.
+     */
+    public Float utilizedThroughputMibps() {
+        return this.innerProperties() == null ? null : this.innerProperties().utilizedThroughputMibps();
+    }
+
+    /**
+     * Get the qosType property: The qos type of the pool.
+     *
+     * @return the qosType value.
+     */
+    public QosType qosType() {
+        return this.innerProperties() == null ? null : this.innerProperties().qosType();
+    }
+
+    /**
+     * Set the qosType property: The qos type of the pool.
+     *
+     * @param qosType the qosType value to set.
+     * @return the CapacityPoolInner object itself.
+     */
+    public CapacityPoolInner withQosType(QosType qosType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PoolProperties();
+        }
+        this.innerProperties().withQosType(qosType);
+        return this;
+    }
+
+    /**
+     * Get the coolAccess property: If enabled (true) the pool can contain cool Access enabled volumes.
+     *
+     * @return the coolAccess value.
+     */
+    public Boolean coolAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().coolAccess();
+    }
+
+    /**
+     * Set the coolAccess property: If enabled (true) the pool can contain cool Access enabled volumes.
+     *
+     * @param coolAccess the coolAccess value to set.
+     * @return the CapacityPoolInner object itself.
+     */
+    public CapacityPoolInner withCoolAccess(Boolean coolAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PoolProperties();
+        }
+        this.innerProperties().withCoolAccess(coolAccess);
+        return this;
+    }
+
+    /**
+     * Get the encryptionType property: encryptionType Encryption type of the capacity pool, set encryption type for
+     * data at rest for this pool and all volumes in it. This value can only be set when creating new pool.
+     *
+     * @return the encryptionType value.
+     */
+    public EncryptionType encryptionType() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryptionType();
+    }
+
+    /**
+     * Set the encryptionType property: encryptionType Encryption type of the capacity pool, set encryption type for
+     * data at rest for this pool and all volumes in it. This value can only be set when creating new pool.
+     *
+     * @param encryptionType the encryptionType value to set.
+     * @return the CapacityPoolInner object itself.
+     */
+    public CapacityPoolInner withEncryptionType(EncryptionType encryptionType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PoolProperties();
+        }
+        this.innerProperties().withEncryptionType(encryptionType);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (serviceLevel() == null) {
+        if (innerProperties() == null) {
             throw logger
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property serviceLevel in model CapacityPoolInner"));
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model CapacityPoolInner"));
+        } else {
+            innerProperties().validate();
         }
     }
 }

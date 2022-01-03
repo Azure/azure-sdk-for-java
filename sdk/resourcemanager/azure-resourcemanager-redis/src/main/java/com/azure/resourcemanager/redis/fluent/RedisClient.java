@@ -13,16 +13,16 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.redis.fluent.models.NotificationListResponseInner;
 import com.azure.resourcemanager.redis.fluent.models.RedisAccessKeysInner;
 import com.azure.resourcemanager.redis.fluent.models.RedisForceRebootResponseInner;
 import com.azure.resourcemanager.redis.fluent.models.RedisResourceInner;
+import com.azure.resourcemanager.redis.fluent.models.UpgradeNotificationInner;
 import com.azure.resourcemanager.redis.models.CheckNameAvailabilityParameters;
 import com.azure.resourcemanager.redis.models.ExportRdbParameters;
 import com.azure.resourcemanager.redis.models.ImportRdbParameters;
 import com.azure.resourcemanager.redis.models.RedisCreateParameters;
-import com.azure.resourcemanager.redis.models.RedisKeyType;
 import com.azure.resourcemanager.redis.models.RedisRebootParameters;
+import com.azure.resourcemanager.redis.models.RedisRegenerateKeyParameters;
 import com.azure.resourcemanager.redis.models.RedisUpdateParameters;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -97,8 +97,8 @@ public interface RedisClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any upgrade notifications for a Redis cache.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<NotificationListResponseInner>> listUpgradeNotificationsWithResponseAsync(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<UpgradeNotificationInner> listUpgradeNotificationsAsync(
         String resourceGroupName, String name, double history);
 
     /**
@@ -112,23 +112,9 @@ public interface RedisClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any upgrade notifications for a Redis cache.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<NotificationListResponseInner> listUpgradeNotificationsAsync(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<UpgradeNotificationInner> listUpgradeNotifications(
         String resourceGroupName, String name, double history);
-
-    /**
-     * Gets any upgrade notifications for a Redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param history how many minutes in past to look for upgrade notifications.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any upgrade notifications for a Redis cache.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    NotificationListResponseInner listUpgradeNotifications(String resourceGroupName, String name, double history);
 
     /**
      * Gets any upgrade notifications for a Redis cache.
@@ -142,8 +128,8 @@ public interface RedisClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any upgrade notifications for a Redis cache.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NotificationListResponseInner> listUpgradeNotificationsWithResponse(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<UpgradeNotificationInner> listUpgradeNotifications(
         String resourceGroupName, String name, double history, Context context);
 
     /**
@@ -580,7 +566,7 @@ public interface RedisClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
-     * @param keyType The Redis access key to regenerate.
+     * @param parameters Specifies which key to regenerate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -588,42 +574,43 @@ public interface RedisClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<RedisAccessKeysInner>> regenerateKeyWithResponseAsync(
-        String resourceGroupName, String name, RedisKeyType keyType);
+        String resourceGroupName, String name, RedisRegenerateKeyParameters parameters);
 
     /**
      * Regenerate Redis cache's access keys. This operation requires write permission to the cache resource.
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
-     * @param keyType The Redis access key to regenerate.
+     * @param parameters Specifies which key to regenerate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return redis cache access keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RedisAccessKeysInner> regenerateKeyAsync(String resourceGroupName, String name, RedisKeyType keyType);
+    Mono<RedisAccessKeysInner> regenerateKeyAsync(
+        String resourceGroupName, String name, RedisRegenerateKeyParameters parameters);
 
     /**
      * Regenerate Redis cache's access keys. This operation requires write permission to the cache resource.
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
-     * @param keyType The Redis access key to regenerate.
+     * @param parameters Specifies which key to regenerate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return redis cache access keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RedisAccessKeysInner regenerateKey(String resourceGroupName, String name, RedisKeyType keyType);
+    RedisAccessKeysInner regenerateKey(String resourceGroupName, String name, RedisRegenerateKeyParameters parameters);
 
     /**
      * Regenerate Redis cache's access keys. This operation requires write permission to the cache resource.
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
-     * @param keyType The Redis access key to regenerate.
+     * @param parameters Specifies which key to regenerate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -632,7 +619,7 @@ public interface RedisClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RedisAccessKeysInner> regenerateKeyWithResponse(
-        String resourceGroupName, String name, RedisKeyType keyType, Context context);
+        String resourceGroupName, String name, RedisRegenerateKeyParameters parameters, Context context);
 
     /**
      * Reboot specified Redis node(s). This operation requires write permission to the cache resource. There can be

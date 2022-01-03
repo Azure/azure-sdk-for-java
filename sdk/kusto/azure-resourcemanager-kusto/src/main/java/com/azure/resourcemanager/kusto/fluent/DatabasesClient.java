@@ -21,7 +21,7 @@ import com.azure.resourcemanager.kusto.models.DatabasePrincipalListRequest;
 /** An instance of this class provides access to all the operations defined in DatabasesClient. */
 public interface DatabasesClient {
     /**
-     * Checks that the database name is valid and is not already in use.
+     * Checks that the databases resource name is valid and is not already in use.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
@@ -36,7 +36,7 @@ public interface DatabasesClient {
         String resourceGroupName, String clusterName, CheckNameRequest resourceName);
 
     /**
-     * Checks that the database name is valid and is not already in use.
+     * Checks that the databases resource name is valid and is not already in use.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.

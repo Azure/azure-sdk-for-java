@@ -12,7 +12,6 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.Backup;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CreateMode;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CreateModeForUpdate;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailability;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.Identity;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MaintenanceWindow;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Network;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.RestartParameter;
@@ -54,10 +53,6 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         } else {
             return Collections.emptyMap();
         }
-    }
-
-    public Identity identity() {
-        return this.innerModel().identity();
     }
 
     public Sku sku() {
@@ -285,11 +280,6 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
             this.updateParameters.withTags(tags);
             return this;
         }
-    }
-
-    public ServerImpl withIdentity(Identity identity) {
-        this.innerModel().withIdentity(identity);
-        return this;
     }
 
     public ServerImpl withSku(Sku sku) {

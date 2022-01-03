@@ -1,5 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.azure.spring.cloud.config.AppConfigurationAutoConfiguration
+com.azure.spring.cloud.config.AppConfigurationAutoConfiguration, com.azure.spring.cloud.config.AppConfigurationHealthAutoConfiguration
 
 org.springframework.cloud.bootstrap.BootstrapConfiguration=\
 com.azure.spring.cloud.config.AppConfigurationBootstrapConfiguration

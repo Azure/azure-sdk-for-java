@@ -16,19 +16,29 @@ public final class ManagedClusterApiServerAccessProfile {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterApiServerAccessProfile.class);
 
     /*
-     * Authorized IP Ranges to kubernetes API server.
+     * The IP ranges authorized to access the Kubernetes API server. IP ranges
+     * are specified in CIDR format, e.g. 137.117.106.88/29. This feature is
+     * not compatible with clusters that use Public IP Per Node, or clusters
+     * that are using a Basic Load Balancer. For more information see [API
+     * server authorized IP
+     * ranges](https://docs.microsoft.com/azure/aks/api-server-authorized-ip-ranges).
      */
     @JsonProperty(value = "authorizedIPRanges")
     private List<String> authorizedIpRanges;
 
     /*
-     * Whether to create the cluster as a private cluster or not.
+     * Whether to create the cluster as a private cluster or not. For more
+     * details, see [Creating a private AKS
+     * cluster](https://docs.microsoft.com/azure/aks/private-clusters).
      */
     @JsonProperty(value = "enablePrivateCluster")
     private Boolean enablePrivateCluster;
 
     /*
-     * Private dns zone mode for private cluster.
+     * The private DNS zone mode for the cluster. The default is System. For
+     * more details see [configure private DNS
+     * zone](https://docs.microsoft.com/azure/aks/private-clusters#configure-private-dns-zone).
+     * Allowed values are 'system' and 'none'.
      */
     @JsonProperty(value = "privateDNSZone")
     private String privateDnsZone;
@@ -39,8 +49,17 @@ public final class ManagedClusterApiServerAccessProfile {
     @JsonProperty(value = "enablePrivateClusterPublicFQDN")
     private Boolean enablePrivateClusterPublicFqdn;
 
+    /*
+     * Whether to disable run command for the cluster or not.
+     */
+    @JsonProperty(value = "disableRunCommand")
+    private Boolean disableRunCommand;
+
     /**
-     * Get the authorizedIpRanges property: Authorized IP Ranges to kubernetes API server.
+     * Get the authorizedIpRanges property: The IP ranges authorized to access the Kubernetes API server. IP ranges are
+     * specified in CIDR format, e.g. 137.117.106.88/29. This feature is not compatible with clusters that use Public IP
+     * Per Node, or clusters that are using a Basic Load Balancer. For more information see [API server authorized IP
+     * ranges](https://docs.microsoft.com/azure/aks/api-server-authorized-ip-ranges).
      *
      * @return the authorizedIpRanges value.
      */
@@ -49,7 +68,10 @@ public final class ManagedClusterApiServerAccessProfile {
     }
 
     /**
-     * Set the authorizedIpRanges property: Authorized IP Ranges to kubernetes API server.
+     * Set the authorizedIpRanges property: The IP ranges authorized to access the Kubernetes API server. IP ranges are
+     * specified in CIDR format, e.g. 137.117.106.88/29. This feature is not compatible with clusters that use Public IP
+     * Per Node, or clusters that are using a Basic Load Balancer. For more information see [API server authorized IP
+     * ranges](https://docs.microsoft.com/azure/aks/api-server-authorized-ip-ranges).
      *
      * @param authorizedIpRanges the authorizedIpRanges value to set.
      * @return the ManagedClusterApiServerAccessProfile object itself.
@@ -60,7 +82,8 @@ public final class ManagedClusterApiServerAccessProfile {
     }
 
     /**
-     * Get the enablePrivateCluster property: Whether to create the cluster as a private cluster or not.
+     * Get the enablePrivateCluster property: Whether to create the cluster as a private cluster or not. For more
+     * details, see [Creating a private AKS cluster](https://docs.microsoft.com/azure/aks/private-clusters).
      *
      * @return the enablePrivateCluster value.
      */
@@ -69,7 +92,8 @@ public final class ManagedClusterApiServerAccessProfile {
     }
 
     /**
-     * Set the enablePrivateCluster property: Whether to create the cluster as a private cluster or not.
+     * Set the enablePrivateCluster property: Whether to create the cluster as a private cluster or not. For more
+     * details, see [Creating a private AKS cluster](https://docs.microsoft.com/azure/aks/private-clusters).
      *
      * @param enablePrivateCluster the enablePrivateCluster value to set.
      * @return the ManagedClusterApiServerAccessProfile object itself.
@@ -80,7 +104,10 @@ public final class ManagedClusterApiServerAccessProfile {
     }
 
     /**
-     * Get the privateDnsZone property: Private dns zone mode for private cluster.
+     * Get the privateDnsZone property: The private DNS zone mode for the cluster. The default is System. For more
+     * details see [configure private DNS
+     * zone](https://docs.microsoft.com/azure/aks/private-clusters#configure-private-dns-zone). Allowed values are
+     * 'system' and 'none'.
      *
      * @return the privateDnsZone value.
      */
@@ -89,7 +116,10 @@ public final class ManagedClusterApiServerAccessProfile {
     }
 
     /**
-     * Set the privateDnsZone property: Private dns zone mode for private cluster.
+     * Set the privateDnsZone property: The private DNS zone mode for the cluster. The default is System. For more
+     * details see [configure private DNS
+     * zone](https://docs.microsoft.com/azure/aks/private-clusters#configure-private-dns-zone). Allowed values are
+     * 'system' and 'none'.
      *
      * @param privateDnsZone the privateDnsZone value to set.
      * @return the ManagedClusterApiServerAccessProfile object itself.
@@ -119,6 +149,26 @@ public final class ManagedClusterApiServerAccessProfile {
     public ManagedClusterApiServerAccessProfile withEnablePrivateClusterPublicFqdn(
         Boolean enablePrivateClusterPublicFqdn) {
         this.enablePrivateClusterPublicFqdn = enablePrivateClusterPublicFqdn;
+        return this;
+    }
+
+    /**
+     * Get the disableRunCommand property: Whether to disable run command for the cluster or not.
+     *
+     * @return the disableRunCommand value.
+     */
+    public Boolean disableRunCommand() {
+        return this.disableRunCommand;
+    }
+
+    /**
+     * Set the disableRunCommand property: Whether to disable run command for the cluster or not.
+     *
+     * @param disableRunCommand the disableRunCommand value to set.
+     * @return the ManagedClusterApiServerAccessProfile object itself.
+     */
+    public ManagedClusterApiServerAccessProfile withDisableRunCommand(Boolean disableRunCommand) {
+        this.disableRunCommand = disableRunCommand;
         return this;
     }
 

@@ -3,16 +3,16 @@
 
 package com.azure.cosmos.implementation
 
-import com.azure.cosmos.CosmosClientBuilder
+import com.azure.cosmos.{CosmosAsyncContainer, CosmosClientBuilder, DirectConnectionConfig}
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientBuilderHelper
 import com.azure.cosmos.implementation.changefeed.implementation.{ChangeFeedState, ChangeFeedStateV1}
-import com.azure.cosmos.implementation.feedranges.{FeedRangeContinuation, FeedRangeEpkImpl, FeedRangeInternal}
 import com.azure.cosmos.implementation.query.CompositeContinuationToken
 import com.azure.cosmos.implementation.routing.Range
-import com.azure.cosmos.models.FeedRange
+import com.azure.cosmos.models.{FeedRange, PartitionKey, PartitionKeyDefinition, SparkModelBridgeInternal}
 import com.azure.cosmos.spark.NormalizedRange
 
 // scalastyle:off underscore.import
+import com.azure.cosmos.implementation.feedranges._
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
@@ -53,7 +53,7 @@ private[cosmos] object SparkBridgeImplementationInternal {
       ChangeFeedState.fromString(s)
     }).toArray
 
-    ChangeFeedState.merge(states).toString()
+    ChangeFeedState.merge(states).toString
   }
 
   def createChangeFeedStateJson
@@ -94,7 +94,7 @@ private[cosmos] object SparkBridgeImplementationInternal {
       .toArray
   }
 
-  private[this] def rangeToNormalizedRange(rangeInput: Range[String]) = {
+  private[cosmos] def rangeToNormalizedRange(rangeInput: Range[String]) = {
     val range = FeedRangeInternal.normalizeRange(rangeInput)
     assert(range != null, "Argument 'range' must not be null.")
     assert(range.isMinInclusive, "Argument 'range' must be minInclusive")
@@ -106,7 +106,7 @@ private[cosmos] object SparkBridgeImplementationInternal {
   def toLsn(lsnToken: String): Long = {
     // the continuation from the backend is encoded as '"<LSN>"' where LSN is a long integer
     // removing the first and last characters - which are the quotes
-    if (lsnToken != null && lsnToken.length > 2) {
+    if (lsnToken != null) {
       if (lsnToken.startsWith("\"")) {
         lsnToken.substring(1, lsnToken.length - 1).toLong
       } else {
@@ -144,5 +144,31 @@ private[cosmos] object SparkBridgeImplementationInternal {
   private[cosmos] def toNormalizedRange(feedRange: FeedRange) = {
     val epk = feedRange.asInstanceOf[FeedRangeEpkImpl]
     rangeToNormalizedRange(epk.getRange)
+  }
+
+  private[cosmos] def partitionKeyValueToNormalizedRange
+  (
+    partitionKeyValue: Object,
+    partitionKeyDefinitionJson: String
+  ): NormalizedRange = {
+
+    val feedRange = FeedRange
+      .forLogicalPartition(new PartitionKey(partitionKeyValue))
+      .asInstanceOf[FeedRangePartitionKeyImpl]
+
+    val pkDefinition = SparkModelBridgeInternal.createPartitionKeyDefinitionFromJson(partitionKeyDefinitionJson)
+    rangeToNormalizedRange(feedRange.getEffectiveRange(pkDefinition))
+  }
+
+  def setIoThreadCountPerCoreFactor
+  (
+    config: DirectConnectionConfig,
+    ioThreadCountPerCoreFactor: Int
+  ): DirectConnectionConfig = {
+
+    ImplementationBridgeHelpers
+      .DirectConnectionConfigHelper
+      .getDirectConnectionConfigAccessor
+      .setIoThreadCountPerCoreFactor(config, ioThreadCountPerCoreFactor)
   }
 }

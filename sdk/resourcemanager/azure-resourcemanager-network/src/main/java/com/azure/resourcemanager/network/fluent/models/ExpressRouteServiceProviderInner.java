@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteServiceProviderBandwidthsOffered;
@@ -16,28 +15,15 @@ import java.util.List;
 import java.util.Map;
 
 /** A ExpressRouteResourceProvider object. */
-@JsonFlatten
 @Fluent
-public class ExpressRouteServiceProviderInner extends Resource {
+public final class ExpressRouteServiceProviderInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteServiceProviderInner.class);
 
     /*
-     * A list of peering locations.
+     * Properties of the express route service provider.
      */
-    @JsonProperty(value = "properties.peeringLocations")
-    private List<String> peeringLocations;
-
-    /*
-     * A list of bandwidths offered.
-     */
-    @JsonProperty(value = "properties.bandwidthsOffered")
-    private List<ExpressRouteServiceProviderBandwidthsOffered> bandwidthsOffered;
-
-    /*
-     * The provisioning state of the express route service provider resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    @JsonProperty(value = "properties")
+    private ExpressRouteServiceProviderPropertiesFormat innerProperties;
 
     /*
      * Resource ID.
@@ -46,53 +32,12 @@ public class ExpressRouteServiceProviderInner extends Resource {
     private String id;
 
     /**
-     * Get the peeringLocations property: A list of peering locations.
+     * Get the innerProperties property: Properties of the express route service provider.
      *
-     * @return the peeringLocations value.
+     * @return the innerProperties value.
      */
-    public List<String> peeringLocations() {
-        return this.peeringLocations;
-    }
-
-    /**
-     * Set the peeringLocations property: A list of peering locations.
-     *
-     * @param peeringLocations the peeringLocations value to set.
-     * @return the ExpressRouteServiceProviderInner object itself.
-     */
-    public ExpressRouteServiceProviderInner withPeeringLocations(List<String> peeringLocations) {
-        this.peeringLocations = peeringLocations;
-        return this;
-    }
-
-    /**
-     * Get the bandwidthsOffered property: A list of bandwidths offered.
-     *
-     * @return the bandwidthsOffered value.
-     */
-    public List<ExpressRouteServiceProviderBandwidthsOffered> bandwidthsOffered() {
-        return this.bandwidthsOffered;
-    }
-
-    /**
-     * Set the bandwidthsOffered property: A list of bandwidths offered.
-     *
-     * @param bandwidthsOffered the bandwidthsOffered value to set.
-     * @return the ExpressRouteServiceProviderInner object itself.
-     */
-    public ExpressRouteServiceProviderInner withBandwidthsOffered(
-        List<ExpressRouteServiceProviderBandwidthsOffered> bandwidthsOffered) {
-        this.bandwidthsOffered = bandwidthsOffered;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the express route service provider resource.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
+    private ExpressRouteServiceProviderPropertiesFormat innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -130,13 +75,69 @@ public class ExpressRouteServiceProviderInner extends Resource {
     }
 
     /**
+     * Get the peeringLocations property: A list of peering locations.
+     *
+     * @return the peeringLocations value.
+     */
+    public List<String> peeringLocations() {
+        return this.innerProperties() == null ? null : this.innerProperties().peeringLocations();
+    }
+
+    /**
+     * Set the peeringLocations property: A list of peering locations.
+     *
+     * @param peeringLocations the peeringLocations value to set.
+     * @return the ExpressRouteServiceProviderInner object itself.
+     */
+    public ExpressRouteServiceProviderInner withPeeringLocations(List<String> peeringLocations) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteServiceProviderPropertiesFormat();
+        }
+        this.innerProperties().withPeeringLocations(peeringLocations);
+        return this;
+    }
+
+    /**
+     * Get the bandwidthsOffered property: A list of bandwidths offered.
+     *
+     * @return the bandwidthsOffered value.
+     */
+    public List<ExpressRouteServiceProviderBandwidthsOffered> bandwidthsOffered() {
+        return this.innerProperties() == null ? null : this.innerProperties().bandwidthsOffered();
+    }
+
+    /**
+     * Set the bandwidthsOffered property: A list of bandwidths offered.
+     *
+     * @param bandwidthsOffered the bandwidthsOffered value to set.
+     * @return the ExpressRouteServiceProviderInner object itself.
+     */
+    public ExpressRouteServiceProviderInner withBandwidthsOffered(
+        List<ExpressRouteServiceProviderBandwidthsOffered> bandwidthsOffered) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteServiceProviderPropertiesFormat();
+        }
+        this.innerProperties().withBandwidthsOffered(bandwidthsOffered);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the express route service provider resource.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (bandwidthsOffered() != null) {
-            bandwidthsOffered().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

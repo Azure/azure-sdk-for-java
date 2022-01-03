@@ -8,8 +8,8 @@ stages:
     displayName: Smoke Tests
     jobs:
       - template: ./smoke-test-dependencies.yml
-  - stage: smoke_tests_samples
-    displayName: Smoke Test Samples
-    dependsOn: []
-    jobs:
-      - template: ./smoke-test-samples.yml
+#  - stage: smoke_tests_samples
+#    displayName: Smoke Test Samples
+#    dependsOn: []
+#    jobs:
+#      - template: ./smoke-test-samples.yml

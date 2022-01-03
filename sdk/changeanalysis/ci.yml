@@ -9,6 +9,9 @@ trigger:
   paths:
     include:
       - sdk/changeanalysis/
+    exclude:
+      - sdk/changeanalysis/pom.xml
+      - sdk/changeanalysis/azure-resourcemanager-changeanalysis/pom.xml
 
 pr:
   branches:
@@ -20,6 +23,9 @@ pr:
   paths:
     include:
       - sdk/changeanalysis/
+    exclude:
+      - sdk/changeanalysis/pom.xml
+      - sdk/changeanalysis/azure-resourcemanager-changeanalysis/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

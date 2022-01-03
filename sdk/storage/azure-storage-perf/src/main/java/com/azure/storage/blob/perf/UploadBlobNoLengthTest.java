@@ -22,9 +22,14 @@ public class UploadBlobNoLengthTest extends BlobTestBase<StoragePerfStressOption
 
     public UploadBlobNoLengthTest(StoragePerfStressOptions options) {
         super(options);
-        inputStream = (RepeatingInputStream) createRandomInputStream(options.getSize());
-        inputStream.mark(Integer.MAX_VALUE);
-        byteBufferFlux = createRandomByteBufferFlux(options.getSize());
+        if (options.isSync()) {
+            inputStream = (RepeatingInputStream) createRandomInputStream(options.getSize());
+            inputStream.mark(Long.MAX_VALUE);
+            byteBufferFlux = null;
+        } else {
+            inputStream = null;
+            byteBufferFlux = createRandomByteBufferFlux(options.getSize());
+        }
     }
 
     @Override

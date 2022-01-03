@@ -77,7 +77,7 @@ public class LROPollerTests {
     @AfterEach
     public void afterTest() throws Exception {
         this.openMocks.close();
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
     }
 
     @Host("http://localhost")

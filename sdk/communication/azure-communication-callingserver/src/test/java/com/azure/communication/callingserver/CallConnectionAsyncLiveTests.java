@@ -34,7 +34,7 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void runCreatePlayCancelHangupScenarioAsync(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient =
             setupAsyncClient(builder, "runCreatePlayCancelHangupScenarioAsync");
 
@@ -86,7 +86,7 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void runCreatePlayCancelHangupScenarioWithResponseAsync(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient =
             setupAsyncClient(builder, "runCreatePlayCancelHangupScenarioWithResponseAsync");
 
@@ -143,7 +143,7 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void runCreateAddRemoveHangupScenarioAsync(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient =
             setupAsyncClient(builder, "runCreateAddRemoveHangupScenarioAsync");
 
@@ -190,7 +190,7 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void runCreateAddRemoveHangupScenarioWithResponseAsync(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient =
             setupAsyncClient(builder, "runCreateAddRemoveHangupScenarioWithResponseAsync");
 
@@ -243,11 +243,27 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
-    public void runCreateJoinHangupScenarioAsync(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
+    public void runCreateJoinHangupScenarioWithConnectionStringAsyncClient(HttpClient httpClient) {
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient =
-            setupAsyncClient(builder, "runCreateJoinHangupScenarioAsync");
+            setupAsyncClient(builder, "runCreateJoinHangupScenarioWithConnectionStringAsyncClient");
+        runCreateJoinHangupScenarioAsync(callingServerAsyncClient);
+    }
 
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
+        disabledReason = "Requires human intervention")
+    public void runCreateJoinHangupScenarioWithTokenCredentialAsyncClient(HttpClient httpClient) {
+        CallingServerClientBuilder builder = getCallingServerClientUsingTokenCredential(httpClient);
+        CallingServerAsyncClient callingServerAsyncClient =
+            setupAsyncClient(builder, "runCreateJoinHangupScenarioWithTokenCredentialAsyncClient");
+        runCreateJoinHangupScenarioAsync(callingServerAsyncClient);
+    }
+
+    private void runCreateJoinHangupScenarioAsync(CallingServerAsyncClient callingServerAsyncClient) {
         try {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
@@ -299,7 +315,7 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void runCreateJoinHangupScenarioWithResponseAsync(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient =
             setupAsyncClient(builder, "runCreateJoinHangupScenarioWithResponseAsync");
 

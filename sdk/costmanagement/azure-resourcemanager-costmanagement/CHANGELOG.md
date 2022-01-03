@@ -1,7 +1,54 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.4 (Unreleased)
 
+
+## 1.0.0-beta.3 (2021-07-29)
+
+- Azure Resource Manager CostManagement client library for Java. This package contains Microsoft Azure SDK for CostManagement Management SDK.  Package tag package-2019-11. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.ExportProperties` was removed
+
+#### `models.View$Update` was modified
+
+* `withTypePropertiesQueryType(models.ReportType)` was removed
+
+#### `models.View` was modified
+
+* `typePropertiesQueryType()` was removed
+
+#### `models.View$Definition` was modified
+
+* `withTypePropertiesQueryType(models.ReportType)` was removed
+
+### Features Added
+
+* `models.CacheItem` was added
+
+* `models.SettingsPropertiesStartOn` was added
+
+#### `models.View$Update` was modified
+
+* `withTypePropertiesType(models.ReportType)` was added
+
+#### `models.View` was modified
+
+* `typePropertiesType()` was added
+
+#### `CostManagementManager$Configurable` was modified
+
+* `withScope(java.lang.String)` was added
+
+#### `models.Setting` was modified
+
+* `startOn()` was added
+* `cache()` was added
+
+#### `models.View$Definition` was modified
+
+* `withTypePropertiesType(models.ReportType)` was added
 
 ## 1.0.0-beta.2 (2021-04-07)
 

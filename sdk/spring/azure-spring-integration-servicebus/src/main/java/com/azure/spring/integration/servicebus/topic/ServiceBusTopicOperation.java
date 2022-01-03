@@ -6,6 +6,7 @@ package com.azure.spring.integration.servicebus.topic;
 import com.azure.spring.integration.core.api.SendOperation;
 import com.azure.spring.integration.core.api.SubscribeByGroupOperation;
 import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
+import com.azure.spring.integration.servicebus.health.InstrumentationManager;
 
 /**
  * Azure service bus topic operation to support sending {@link org.springframework.messaging.Message} asynchronously
@@ -14,6 +15,8 @@ import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
  * @author Warren Zhu
  */
 public interface ServiceBusTopicOperation extends SendOperation, SubscribeByGroupOperation {
+
+    InstrumentationManager getInstrumentationManager();
 
     void setClientConfig(ServiceBusClientConfig clientConfig);
 

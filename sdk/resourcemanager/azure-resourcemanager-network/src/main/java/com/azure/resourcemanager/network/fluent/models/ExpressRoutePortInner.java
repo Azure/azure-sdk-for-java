@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
@@ -17,11 +16,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** ExpressRoutePort resource definition. */
-@JsonFlatten
+/** ExpressRoute Port ExpressRoutePort resource definition. */
 @Fluent
-public class ExpressRoutePortInner extends Resource {
+public final class ExpressRoutePortInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRoutePortInner.class);
+
+    /*
+     * ExpressRoutePort Properties ExpressRoutePort properties.
+     */
+    @JsonProperty(value = "properties")
+    private ExpressRoutePortPropertiesFormat innerProperties;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
@@ -36,79 +40,19 @@ public class ExpressRoutePortInner extends Resource {
     private ManagedServiceIdentity identity;
 
     /*
-     * The name of the peering location that the ExpressRoutePort is mapped to
-     * physically.
-     */
-    @JsonProperty(value = "properties.peeringLocation")
-    private String peeringLocation;
-
-    /*
-     * Bandwidth of procured ports in Gbps.
-     */
-    @JsonProperty(value = "properties.bandwidthInGbps")
-    private Integer bandwidthInGbps;
-
-    /*
-     * Aggregate Gbps of associated circuit bandwidths.
-     */
-    @JsonProperty(value = "properties.provisionedBandwidthInGbps", access = JsonProperty.Access.WRITE_ONLY)
-    private Float provisionedBandwidthInGbps;
-
-    /*
-     * Maximum transmission unit of the physical port pair(s).
-     */
-    @JsonProperty(value = "properties.mtu", access = JsonProperty.Access.WRITE_ONLY)
-    private String mtu;
-
-    /*
-     * Encapsulation method on physical ports.
-     */
-    @JsonProperty(value = "properties.encapsulation")
-    private ExpressRoutePortsEncapsulation encapsulation;
-
-    /*
-     * Ether type of the physical port.
-     */
-    @JsonProperty(value = "properties.etherType", access = JsonProperty.Access.WRITE_ONLY)
-    private String etherType;
-
-    /*
-     * Date of the physical port allocation to be used in Letter of
-     * Authorization.
-     */
-    @JsonProperty(value = "properties.allocationDate", access = JsonProperty.Access.WRITE_ONLY)
-    private String allocationDate;
-
-    /*
-     * The set of physical links of the ExpressRoutePort resource.
-     */
-    @JsonProperty(value = "properties.links")
-    private List<ExpressRouteLinkInner> links;
-
-    /*
-     * Reference the ExpressRoute circuit(s) that are provisioned on this
-     * ExpressRoutePort resource.
-     */
-    @JsonProperty(value = "properties.circuits", access = JsonProperty.Access.WRITE_ONLY)
-    private List<SubResource> circuits;
-
-    /*
-     * The provisioning state of the express route port resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * The resource GUID property of the express route port resource.
-     */
-    @JsonProperty(value = "properties.resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
-    private String resourceGuid;
-
-    /*
      * Resource ID.
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /**
+     * Get the innerProperties property: ExpressRoutePort Properties ExpressRoutePort properties.
+     *
+     * @return the innerProperties value.
+     */
+    private ExpressRoutePortPropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
@@ -137,152 +81,6 @@ public class ExpressRoutePortInner extends Resource {
     public ExpressRoutePortInner withIdentity(ManagedServiceIdentity identity) {
         this.identity = identity;
         return this;
-    }
-
-    /**
-     * Get the peeringLocation property: The name of the peering location that the ExpressRoutePort is mapped to
-     * physically.
-     *
-     * @return the peeringLocation value.
-     */
-    public String peeringLocation() {
-        return this.peeringLocation;
-    }
-
-    /**
-     * Set the peeringLocation property: The name of the peering location that the ExpressRoutePort is mapped to
-     * physically.
-     *
-     * @param peeringLocation the peeringLocation value to set.
-     * @return the ExpressRoutePortInner object itself.
-     */
-    public ExpressRoutePortInner withPeeringLocation(String peeringLocation) {
-        this.peeringLocation = peeringLocation;
-        return this;
-    }
-
-    /**
-     * Get the bandwidthInGbps property: Bandwidth of procured ports in Gbps.
-     *
-     * @return the bandwidthInGbps value.
-     */
-    public Integer bandwidthInGbps() {
-        return this.bandwidthInGbps;
-    }
-
-    /**
-     * Set the bandwidthInGbps property: Bandwidth of procured ports in Gbps.
-     *
-     * @param bandwidthInGbps the bandwidthInGbps value to set.
-     * @return the ExpressRoutePortInner object itself.
-     */
-    public ExpressRoutePortInner withBandwidthInGbps(Integer bandwidthInGbps) {
-        this.bandwidthInGbps = bandwidthInGbps;
-        return this;
-    }
-
-    /**
-     * Get the provisionedBandwidthInGbps property: Aggregate Gbps of associated circuit bandwidths.
-     *
-     * @return the provisionedBandwidthInGbps value.
-     */
-    public Float provisionedBandwidthInGbps() {
-        return this.provisionedBandwidthInGbps;
-    }
-
-    /**
-     * Get the mtu property: Maximum transmission unit of the physical port pair(s).
-     *
-     * @return the mtu value.
-     */
-    public String mtu() {
-        return this.mtu;
-    }
-
-    /**
-     * Get the encapsulation property: Encapsulation method on physical ports.
-     *
-     * @return the encapsulation value.
-     */
-    public ExpressRoutePortsEncapsulation encapsulation() {
-        return this.encapsulation;
-    }
-
-    /**
-     * Set the encapsulation property: Encapsulation method on physical ports.
-     *
-     * @param encapsulation the encapsulation value to set.
-     * @return the ExpressRoutePortInner object itself.
-     */
-    public ExpressRoutePortInner withEncapsulation(ExpressRoutePortsEncapsulation encapsulation) {
-        this.encapsulation = encapsulation;
-        return this;
-    }
-
-    /**
-     * Get the etherType property: Ether type of the physical port.
-     *
-     * @return the etherType value.
-     */
-    public String etherType() {
-        return this.etherType;
-    }
-
-    /**
-     * Get the allocationDate property: Date of the physical port allocation to be used in Letter of Authorization.
-     *
-     * @return the allocationDate value.
-     */
-    public String allocationDate() {
-        return this.allocationDate;
-    }
-
-    /**
-     * Get the links property: The set of physical links of the ExpressRoutePort resource.
-     *
-     * @return the links value.
-     */
-    public List<ExpressRouteLinkInner> links() {
-        return this.links;
-    }
-
-    /**
-     * Set the links property: The set of physical links of the ExpressRoutePort resource.
-     *
-     * @param links the links value to set.
-     * @return the ExpressRoutePortInner object itself.
-     */
-    public ExpressRoutePortInner withLinks(List<ExpressRouteLinkInner> links) {
-        this.links = links;
-        return this;
-    }
-
-    /**
-     * Get the circuits property: Reference the ExpressRoute circuit(s) that are provisioned on this ExpressRoutePort
-     * resource.
-     *
-     * @return the circuits value.
-     */
-    public List<SubResource> circuits() {
-        return this.circuits;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the express route port resource.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the resourceGuid property: The resource GUID property of the express route port resource.
-     *
-     * @return the resourceGuid value.
-     */
-    public String resourceGuid() {
-        return this.resourceGuid;
     }
 
     /**
@@ -320,16 +118,176 @@ public class ExpressRoutePortInner extends Resource {
     }
 
     /**
+     * Get the peeringLocation property: The name of the peering location that the ExpressRoutePort is mapped to
+     * physically.
+     *
+     * @return the peeringLocation value.
+     */
+    public String peeringLocation() {
+        return this.innerProperties() == null ? null : this.innerProperties().peeringLocation();
+    }
+
+    /**
+     * Set the peeringLocation property: The name of the peering location that the ExpressRoutePort is mapped to
+     * physically.
+     *
+     * @param peeringLocation the peeringLocation value to set.
+     * @return the ExpressRoutePortInner object itself.
+     */
+    public ExpressRoutePortInner withPeeringLocation(String peeringLocation) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRoutePortPropertiesFormat();
+        }
+        this.innerProperties().withPeeringLocation(peeringLocation);
+        return this;
+    }
+
+    /**
+     * Get the bandwidthInGbps property: Bandwidth of procured ports in Gbps.
+     *
+     * @return the bandwidthInGbps value.
+     */
+    public Integer bandwidthInGbps() {
+        return this.innerProperties() == null ? null : this.innerProperties().bandwidthInGbps();
+    }
+
+    /**
+     * Set the bandwidthInGbps property: Bandwidth of procured ports in Gbps.
+     *
+     * @param bandwidthInGbps the bandwidthInGbps value to set.
+     * @return the ExpressRoutePortInner object itself.
+     */
+    public ExpressRoutePortInner withBandwidthInGbps(Integer bandwidthInGbps) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRoutePortPropertiesFormat();
+        }
+        this.innerProperties().withBandwidthInGbps(bandwidthInGbps);
+        return this;
+    }
+
+    /**
+     * Get the provisionedBandwidthInGbps property: Aggregate Gbps of associated circuit bandwidths.
+     *
+     * @return the provisionedBandwidthInGbps value.
+     */
+    public Float provisionedBandwidthInGbps() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisionedBandwidthInGbps();
+    }
+
+    /**
+     * Get the mtu property: Maximum transmission unit of the physical port pair(s).
+     *
+     * @return the mtu value.
+     */
+    public String mtu() {
+        return this.innerProperties() == null ? null : this.innerProperties().mtu();
+    }
+
+    /**
+     * Get the encapsulation property: Encapsulation method on physical ports.
+     *
+     * @return the encapsulation value.
+     */
+    public ExpressRoutePortsEncapsulation encapsulation() {
+        return this.innerProperties() == null ? null : this.innerProperties().encapsulation();
+    }
+
+    /**
+     * Set the encapsulation property: Encapsulation method on physical ports.
+     *
+     * @param encapsulation the encapsulation value to set.
+     * @return the ExpressRoutePortInner object itself.
+     */
+    public ExpressRoutePortInner withEncapsulation(ExpressRoutePortsEncapsulation encapsulation) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRoutePortPropertiesFormat();
+        }
+        this.innerProperties().withEncapsulation(encapsulation);
+        return this;
+    }
+
+    /**
+     * Get the etherType property: Ether type of the physical port.
+     *
+     * @return the etherType value.
+     */
+    public String etherType() {
+        return this.innerProperties() == null ? null : this.innerProperties().etherType();
+    }
+
+    /**
+     * Get the allocationDate property: Date of the physical port allocation to be used in Letter of Authorization.
+     *
+     * @return the allocationDate value.
+     */
+    public String allocationDate() {
+        return this.innerProperties() == null ? null : this.innerProperties().allocationDate();
+    }
+
+    /**
+     * Get the links property: ExpressRouteLink Sub-Resources The set of physical links of the ExpressRoutePort
+     * resource.
+     *
+     * @return the links value.
+     */
+    public List<ExpressRouteLinkInner> links() {
+        return this.innerProperties() == null ? null : this.innerProperties().links();
+    }
+
+    /**
+     * Set the links property: ExpressRouteLink Sub-Resources The set of physical links of the ExpressRoutePort
+     * resource.
+     *
+     * @param links the links value to set.
+     * @return the ExpressRoutePortInner object itself.
+     */
+    public ExpressRoutePortInner withLinks(List<ExpressRouteLinkInner> links) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRoutePortPropertiesFormat();
+        }
+        this.innerProperties().withLinks(links);
+        return this;
+    }
+
+    /**
+     * Get the circuits property: Reference the ExpressRoute circuit(s) that are provisioned on this ExpressRoutePort
+     * resource.
+     *
+     * @return the circuits value.
+     */
+    public List<SubResource> circuits() {
+        return this.innerProperties() == null ? null : this.innerProperties().circuits();
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the express route port resource.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the resourceGuid property: The resource GUID property of the express route port resource.
+     *
+     * @return the resourceGuid value.
+     */
+    public String resourceGuid() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceGuid();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (identity() != null) {
             identity().validate();
-        }
-        if (links() != null) {
-            links().forEach(e -> e.validate());
         }
     }
 }

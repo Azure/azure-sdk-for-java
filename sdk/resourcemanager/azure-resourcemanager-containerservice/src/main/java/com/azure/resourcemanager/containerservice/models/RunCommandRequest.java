@@ -9,19 +9,19 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** run command request. */
+/** A run command request. */
 @Fluent
 public final class RunCommandRequest {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RunCommandRequest.class);
 
     /*
-     * command to run.
+     * The command to run.
      */
     @JsonProperty(value = "command", required = true)
     private String command;
 
     /*
-     * base64 encoded zip file, contains files required by the command
+     * A base64 encoded zip file containing the files required by the command.
      */
     @JsonProperty(value = "context")
     private String context;
@@ -33,7 +33,7 @@ public final class RunCommandRequest {
     private String clusterToken;
 
     /**
-     * Get the command property: command to run.
+     * Get the command property: The command to run.
      *
      * @return the command value.
      */
@@ -42,7 +42,7 @@ public final class RunCommandRequest {
     }
 
     /**
-     * Set the command property: command to run.
+     * Set the command property: The command to run.
      *
      * @param command the command value to set.
      * @return the RunCommandRequest object itself.
@@ -53,7 +53,7 @@ public final class RunCommandRequest {
     }
 
     /**
-     * Get the context property: base64 encoded zip file, contains files required by the command.
+     * Get the context property: A base64 encoded zip file containing the files required by the command.
      *
      * @return the context value.
      */
@@ -62,7 +62,7 @@ public final class RunCommandRequest {
     }
 
     /**
-     * Set the context property: base64 encoded zip file, contains files required by the command.
+     * Set the context property: A base64 encoded zip file containing the files required by the command.
      *
      * @param context the context value to set.
      * @return the RunCommandRequest object itself.

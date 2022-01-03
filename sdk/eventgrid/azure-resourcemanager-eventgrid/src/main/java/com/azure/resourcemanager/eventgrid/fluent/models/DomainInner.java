@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
@@ -15,23 +14,27 @@ import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
 import com.azure.resourcemanager.eventgrid.models.InputSchema;
 import com.azure.resourcemanager.eventgrid.models.InputSchemaMapping;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
-import com.azure.resourcemanager.eventgrid.models.ResourceSku;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** EventGrid Domain. */
-@JsonFlatten
 @Fluent
-public class DomainInner extends Resource {
+public final class DomainInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DomainInner.class);
 
     /*
-     * The Sku pricing tier for the Event Grid Domain resource.
+     * Properties of the Event Grid Domain resource.
      */
-    @JsonProperty(value = "sku")
-    private ResourceSku sku;
+    @JsonProperty(value = "properties")
+    private DomainProperties innerProperties;
+
+    /*
+     * The system metadata relating to Domain resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /*
      * Identity information for the Event Grid Domain resource.
@@ -39,142 +42,22 @@ public class DomainInner extends Resource {
     @JsonProperty(value = "identity")
     private IdentityInfo identity;
 
-    /*
-     * The system metadata relating to the Event Grid Domain resource.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
-
-    /*
-     * List of private endpoint connections.
-     */
-    @JsonProperty(value = "properties.privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
-    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
-
-    /*
-     * Provisioning state of the Event Grid Domain Resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private DomainProvisioningState provisioningState;
-
-    /*
-     * Endpoint for the Event Grid Domain Resource which is used for publishing
-     * the events.
-     */
-    @JsonProperty(value = "properties.endpoint", access = JsonProperty.Access.WRITE_ONLY)
-    private String endpoint;
-
-    /*
-     * This determines the format that Event Grid should expect for incoming
-     * events published to the Event Grid Domain Resource.
-     */
-    @JsonProperty(value = "properties.inputSchema")
-    private InputSchema inputSchema;
-
-    /*
-     * Information about the InputSchemaMapping which specified the info about
-     * mapping event payload.
-     */
-    @JsonProperty(value = "properties.inputSchemaMapping")
-    private InputSchemaMapping inputSchemaMapping;
-
-    /*
-     * Metric resource id for the Event Grid Domain Resource.
-     */
-    @JsonProperty(value = "properties.metricResourceId", access = JsonProperty.Access.WRITE_ONLY)
-    private String metricResourceId;
-
-    /*
-     * This determines if traffic is allowed over public network. By default it
-     * is enabled.
-     * You can further restrict to specific IPs by configuring <seealso
-     * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.DomainProperties.InboundIpRules"
-     * />
-     */
-    @JsonProperty(value = "properties.publicNetworkAccess")
-    private PublicNetworkAccess publicNetworkAccess;
-
-    /*
-     * This can be used to restrict traffic from specific IPs instead of all
-     * IPs. Note: These are considered only if PublicNetworkAccess is enabled.
-     */
-    @JsonProperty(value = "properties.inboundIpRules")
-    private List<InboundIpRule> inboundIpRules;
-
-    /*
-     * This boolean is used to enable or disable local auth. Default value is
-     * false. When the property is set to true, only AAD token will be used to
-     * authenticate if user is allowed to publish to the domain.
-     */
-    @JsonProperty(value = "properties.disableLocalAuth")
-    private Boolean disableLocalAuth;
-
-    /*
-     * This Boolean is used to specify the creation mechanism for 'all' the
-     * Event Grid Domain Topics associated with this Event Grid Domain
-     * resource.
-     * In this context, creation of domain topic can be auto-managed (when
-     * true) or self-managed (when false). The default value for this property
-     * is true.
-     * When this property is null or set to true, Event Grid is responsible of
-     * automatically creating the domain topic when the first event
-     * subscription is
-     * created at the scope of the domain topic. If this property is set to
-     * false, then creating the first event subscription will require creating
-     * a domain topic
-     * by the user. The self-management mode can be used if the user wants full
-     * control of when the domain topic is created, while auto-managed mode
-     * provides the
-     * flexibility to perform less operations and manage fewer resources by the
-     * user. Also, note that in auto-managed creation mode, user is allowed to
-     * create the
-     * domain topic on demand if needed.
-     */
-    @JsonProperty(value = "properties.autoCreateTopicWithFirstSubscription")
-    private Boolean autoCreateTopicWithFirstSubscription;
-
-    /*
-     * This Boolean is used to specify the deletion mechanism for 'all' the
-     * Event Grid Domain Topics associated with this Event Grid Domain
-     * resource.
-     * In this context, deletion of domain topic can be auto-managed (when
-     * true) or self-managed (when false). The default value for this property
-     * is true.
-     * When this property is set to true, Event Grid is responsible of
-     * automatically deleting the domain topic when the last event subscription
-     * at the scope
-     * of the domain topic is deleted. If this property is set to false, then
-     * the user needs to manually delete the domain topic when it is no longer
-     * needed
-     * (e.g., when last event subscription is deleted and the resource needs to
-     * be cleaned up). The self-management mode can be used if the user wants
-     * full
-     * control of when the domain topic needs to be deleted, while auto-managed
-     * mode provides the flexibility to perform less operations and manage
-     * fewer
-     * resources by the user.
-     */
-    @JsonProperty(value = "properties.autoDeleteTopicWithLastSubscription")
-    private Boolean autoDeleteTopicWithLastSubscription;
-
     /**
-     * Get the sku property: The Sku pricing tier for the Event Grid Domain resource.
+     * Get the innerProperties property: Properties of the Event Grid Domain resource.
      *
-     * @return the sku value.
+     * @return the innerProperties value.
      */
-    public ResourceSku sku() {
-        return this.sku;
+    private DomainProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Set the sku property: The Sku pricing tier for the Event Grid Domain resource.
+     * Get the systemData property: The system metadata relating to Domain resource.
      *
-     * @param sku the sku value to set.
-     * @return the DomainInner object itself.
+     * @return the systemData value.
      */
-    public DomainInner withSku(ResourceSku sku) {
-        this.sku = sku;
-        return this;
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -197,13 +80,18 @@ public class DomainInner extends Resource {
         return this;
     }
 
-    /**
-     * Get the systemData property: The system metadata relating to the Event Grid Domain resource.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
+    /** {@inheritDoc} */
+    @Override
+    public DomainInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DomainInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
     }
 
     /**
@@ -212,7 +100,7 @@ public class DomainInner extends Resource {
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
-        return this.privateEndpointConnections;
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
     }
 
     /**
@@ -221,37 +109,40 @@ public class DomainInner extends Resource {
      * @return the provisioningState value.
      */
     public DomainProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
-     * Get the endpoint property: Endpoint for the Event Grid Domain Resource which is used for publishing the events.
+     * Get the endpoint property: Endpoint for the domain.
      *
      * @return the endpoint value.
      */
     public String endpoint() {
-        return this.endpoint;
+        return this.innerProperties() == null ? null : this.innerProperties().endpoint();
     }
 
     /**
      * Get the inputSchema property: This determines the format that Event Grid should expect for incoming events
-     * published to the Event Grid Domain Resource.
+     * published to the domain.
      *
      * @return the inputSchema value.
      */
     public InputSchema inputSchema() {
-        return this.inputSchema;
+        return this.innerProperties() == null ? null : this.innerProperties().inputSchema();
     }
 
     /**
      * Set the inputSchema property: This determines the format that Event Grid should expect for incoming events
-     * published to the Event Grid Domain Resource.
+     * published to the domain.
      *
      * @param inputSchema the inputSchema value to set.
      * @return the DomainInner object itself.
      */
     public DomainInner withInputSchema(InputSchema inputSchema) {
-        this.inputSchema = inputSchema;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DomainProperties();
+        }
+        this.innerProperties().withInputSchema(inputSchema);
         return this;
     }
 
@@ -262,7 +153,7 @@ public class DomainInner extends Resource {
      * @return the inputSchemaMapping value.
      */
     public InputSchemaMapping inputSchemaMapping() {
-        return this.inputSchemaMapping;
+        return this.innerProperties() == null ? null : this.innerProperties().inputSchemaMapping();
     }
 
     /**
@@ -273,17 +164,20 @@ public class DomainInner extends Resource {
      * @return the DomainInner object itself.
      */
     public DomainInner withInputSchemaMapping(InputSchemaMapping inputSchemaMapping) {
-        this.inputSchemaMapping = inputSchemaMapping;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DomainProperties();
+        }
+        this.innerProperties().withInputSchemaMapping(inputSchemaMapping);
         return this;
     }
 
     /**
-     * Get the metricResourceId property: Metric resource id for the Event Grid Domain Resource.
+     * Get the metricResourceId property: Metric resource id for the domain.
      *
      * @return the metricResourceId value.
      */
     public String metricResourceId() {
-        return this.metricResourceId;
+        return this.innerProperties() == null ? null : this.innerProperties().metricResourceId();
     }
 
     /**
@@ -294,7 +188,7 @@ public class DomainInner extends Resource {
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
-        return this.publicNetworkAccess;
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
     }
 
     /**
@@ -306,7 +200,10 @@ public class DomainInner extends Resource {
      * @return the DomainInner object itself.
      */
     public DomainInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
-        this.publicNetworkAccess = publicNetworkAccess;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DomainProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 
@@ -317,7 +214,7 @@ public class DomainInner extends Resource {
      * @return the inboundIpRules value.
      */
     public List<InboundIpRule> inboundIpRules() {
-        return this.inboundIpRules;
+        return this.innerProperties() == null ? null : this.innerProperties().inboundIpRules();
     }
 
     /**
@@ -328,7 +225,10 @@ public class DomainInner extends Resource {
      * @return the DomainInner object itself.
      */
     public DomainInner withInboundIpRules(List<InboundIpRule> inboundIpRules) {
-        this.inboundIpRules = inboundIpRules;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DomainProperties();
+        }
+        this.innerProperties().withInboundIpRules(inboundIpRules);
         return this;
     }
 
@@ -340,7 +240,7 @@ public class DomainInner extends Resource {
      * @return the disableLocalAuth value.
      */
     public Boolean disableLocalAuth() {
-        return this.disableLocalAuth;
+        return this.innerProperties() == null ? null : this.innerProperties().disableLocalAuth();
     }
 
     /**
@@ -352,7 +252,10 @@ public class DomainInner extends Resource {
      * @return the DomainInner object itself.
      */
     public DomainInner withDisableLocalAuth(Boolean disableLocalAuth) {
-        this.disableLocalAuth = disableLocalAuth;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DomainProperties();
+        }
+        this.innerProperties().withDisableLocalAuth(disableLocalAuth);
         return this;
     }
 
@@ -370,7 +273,7 @@ public class DomainInner extends Resource {
      * @return the autoCreateTopicWithFirstSubscription value.
      */
     public Boolean autoCreateTopicWithFirstSubscription() {
-        return this.autoCreateTopicWithFirstSubscription;
+        return this.innerProperties() == null ? null : this.innerProperties().autoCreateTopicWithFirstSubscription();
     }
 
     /**
@@ -388,7 +291,10 @@ public class DomainInner extends Resource {
      * @return the DomainInner object itself.
      */
     public DomainInner withAutoCreateTopicWithFirstSubscription(Boolean autoCreateTopicWithFirstSubscription) {
-        this.autoCreateTopicWithFirstSubscription = autoCreateTopicWithFirstSubscription;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DomainProperties();
+        }
+        this.innerProperties().withAutoCreateTopicWithFirstSubscription(autoCreateTopicWithFirstSubscription);
         return this;
     }
 
@@ -406,7 +312,7 @@ public class DomainInner extends Resource {
      * @return the autoDeleteTopicWithLastSubscription value.
      */
     public Boolean autoDeleteTopicWithLastSubscription() {
-        return this.autoDeleteTopicWithLastSubscription;
+        return this.innerProperties() == null ? null : this.innerProperties().autoDeleteTopicWithLastSubscription();
     }
 
     /**
@@ -424,21 +330,10 @@ public class DomainInner extends Resource {
      * @return the DomainInner object itself.
      */
     public DomainInner withAutoDeleteTopicWithLastSubscription(Boolean autoDeleteTopicWithLastSubscription) {
-        this.autoDeleteTopicWithLastSubscription = autoDeleteTopicWithLastSubscription;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public DomainInner withLocation(String location) {
-        super.withLocation(location);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public DomainInner withTags(Map<String, String> tags) {
-        super.withTags(tags);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DomainProperties();
+        }
+        this.innerProperties().withAutoDeleteTopicWithLastSubscription(autoDeleteTopicWithLastSubscription);
         return this;
     }
 
@@ -448,20 +343,11 @@ public class DomainInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (sku() != null) {
-            sku().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
         if (identity() != null) {
             identity().validate();
-        }
-        if (privateEndpointConnections() != null) {
-            privateEndpointConnections().forEach(e -> e.validate());
-        }
-        if (inputSchemaMapping() != null) {
-            inputSchemaMapping().validate();
-        }
-        if (inboundIpRules() != null) {
-            inboundIpRules().forEach(e -> e.validate());
         }
     }
 }

@@ -1,7 +1,87 @@
 # Release History
 
-## 4.1.0-beta.1 (Unreleased)
+## 4.1.0-beta.4 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 4.1.0-beta.3 (2021-11-12)
+
+### Features Added
+
+- Added support for multi-tenant authentication in clients.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.22.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.2`
+
+## 4.0.5 (2021-11-12)
+
+### Features Added
+
+- Added support for multi-tenant authentication in clients.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.22.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.2`
+
+## 4.1.0-beta.2 (2021-10-07)
+
+### Bugs Fixed
+- Fixed an issue that made clients send unnecessary unauthorized requests to obtain a bearer challenge from the service even when already possessing a valid bearer token.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.21.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.1`
+
+## 4.0.4 (2021-10-06)
+
+### Bugs Fixed
+- Fixed an issue that made clients send unnecessary unauthorized requests to obtain a bearer challenge from the service even when already possessing a valid bearer token.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.21.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.1`
+
+## 4.1.0-beta.1 (2021-09-10)
+
+### Features Added
+- Added support for service version `7.3-preview`.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.20.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.0`
+
+## 4.0.3 (2021-09-10)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.20.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.0`
+
+## 4.0.2 (2021-08-12)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.19.0`
+- Upgraded `azure-core-http-netty` dependency to `1.10.2`
 
 ## 4.0.1 (2021-07-08)
 

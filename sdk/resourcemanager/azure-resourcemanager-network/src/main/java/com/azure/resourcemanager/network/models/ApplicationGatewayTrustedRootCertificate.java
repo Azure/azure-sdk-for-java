@@ -5,17 +5,22 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayTrustedRootCertificatePropertiesFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Trusted Root certificates of an application gateway. */
-@JsonFlatten
 @Fluent
-public class ApplicationGatewayTrustedRootCertificate extends SubResource {
+public final class ApplicationGatewayTrustedRootCertificate extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayTrustedRootCertificate.class);
+
+    /*
+     * Properties of the application gateway trusted root certificate.
+     */
+    @JsonProperty(value = "properties")
+    private ApplicationGatewayTrustedRootCertificatePropertiesFormat innerProperties;
 
     /*
      * Name of the trusted root certificate that is unique within an
@@ -36,24 +41,14 @@ public class ApplicationGatewayTrustedRootCertificate extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * Certificate public data.
+    /**
+     * Get the innerProperties property: Properties of the application gateway trusted root certificate.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.data")
-    private String data;
-
-    /*
-     * Secret Id of (base-64 encoded unencrypted pfx) 'Secret' or 'Certificate'
-     * object stored in KeyVault.
-     */
-    @JsonProperty(value = "properties.keyVaultSecretId")
-    private String keyVaultSecretId;
-
-    /*
-     * The provisioning state of the trusted root certificate resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private ApplicationGatewayTrustedRootCertificatePropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Name of the trusted root certificate that is unique within an Application Gateway.
@@ -93,13 +88,20 @@ public class ApplicationGatewayTrustedRootCertificate extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayTrustedRootCertificate withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the data property: Certificate public data.
      *
      * @return the data value.
      */
     public String data() {
-        return this.data;
+        return this.innerProperties() == null ? null : this.innerProperties().data();
     }
 
     /**
@@ -109,7 +111,10 @@ public class ApplicationGatewayTrustedRootCertificate extends SubResource {
      * @return the ApplicationGatewayTrustedRootCertificate object itself.
      */
     public ApplicationGatewayTrustedRootCertificate withData(String data) {
-        this.data = data;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayTrustedRootCertificatePropertiesFormat();
+        }
+        this.innerProperties().withData(data);
         return this;
     }
 
@@ -120,7 +125,7 @@ public class ApplicationGatewayTrustedRootCertificate extends SubResource {
      * @return the keyVaultSecretId value.
      */
     public String keyVaultSecretId() {
-        return this.keyVaultSecretId;
+        return this.innerProperties() == null ? null : this.innerProperties().keyVaultSecretId();
     }
 
     /**
@@ -131,7 +136,10 @@ public class ApplicationGatewayTrustedRootCertificate extends SubResource {
      * @return the ApplicationGatewayTrustedRootCertificate object itself.
      */
     public ApplicationGatewayTrustedRootCertificate withKeyVaultSecretId(String keyVaultSecretId) {
-        this.keyVaultSecretId = keyVaultSecretId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayTrustedRootCertificatePropertiesFormat();
+        }
+        this.innerProperties().withKeyVaultSecretId(keyVaultSecretId);
         return this;
     }
 
@@ -141,14 +149,7 @@ public class ApplicationGatewayTrustedRootCertificate extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ApplicationGatewayTrustedRootCertificate withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -157,5 +158,8 @@ public class ApplicationGatewayTrustedRootCertificate extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

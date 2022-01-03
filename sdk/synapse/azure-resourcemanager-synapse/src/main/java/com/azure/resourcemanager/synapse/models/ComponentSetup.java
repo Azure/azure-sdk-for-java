@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.synapse.fluent.models.LicensedComponentSetupTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -15,22 +15,24 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /** The custom setup of installing 3rd party components. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("ComponentSetup")
-@JsonFlatten
 @Fluent
-public class ComponentSetup extends CustomSetupBase {
+public final class ComponentSetup extends CustomSetupBase {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ComponentSetup.class);
 
     /*
-     * The name of the 3rd party component.
+     * Install 3rd party component type properties.
      */
-    @JsonProperty(value = "typeProperties.componentName", required = true)
-    private String componentName;
+    @JsonProperty(value = "typeProperties", required = true)
+    private LicensedComponentSetupTypeProperties innerTypeProperties = new LicensedComponentSetupTypeProperties();
 
-    /*
-     * The license key to activate the component.
+    /**
+     * Get the innerTypeProperties property: Install 3rd party component type properties.
+     *
+     * @return the innerTypeProperties value.
      */
-    @JsonProperty(value = "typeProperties.licenseKey")
-    private SecretBase licenseKey;
+    private LicensedComponentSetupTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
+    }
 
     /**
      * Get the componentName property: The name of the 3rd party component.
@@ -38,7 +40,7 @@ public class ComponentSetup extends CustomSetupBase {
      * @return the componentName value.
      */
     public String componentName() {
-        return this.componentName;
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().componentName();
     }
 
     /**
@@ -48,7 +50,10 @@ public class ComponentSetup extends CustomSetupBase {
      * @return the ComponentSetup object itself.
      */
     public ComponentSetup withComponentName(String componentName) {
-        this.componentName = componentName;
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new LicensedComponentSetupTypeProperties();
+        }
+        this.innerTypeProperties().withComponentName(componentName);
         return this;
     }
 
@@ -58,7 +63,7 @@ public class ComponentSetup extends CustomSetupBase {
      * @return the licenseKey value.
      */
     public SecretBase licenseKey() {
-        return this.licenseKey;
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().licenseKey();
     }
 
     /**
@@ -68,7 +73,10 @@ public class ComponentSetup extends CustomSetupBase {
      * @return the ComponentSetup object itself.
      */
     public ComponentSetup withLicenseKey(SecretBase licenseKey) {
-        this.licenseKey = licenseKey;
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new LicensedComponentSetupTypeProperties();
+        }
+        this.innerTypeProperties().withLicenseKey(licenseKey);
         return this;
     }
 
@@ -80,13 +88,13 @@ public class ComponentSetup extends CustomSetupBase {
     @Override
     public void validate() {
         super.validate();
-        if (componentName() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property componentName in model ComponentSetup"));
-        }
-        if (licenseKey() != null) {
-            licenseKey().validate();
+                    new IllegalArgumentException(
+                        "Missing required property innerTypeProperties in model ComponentSetup"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

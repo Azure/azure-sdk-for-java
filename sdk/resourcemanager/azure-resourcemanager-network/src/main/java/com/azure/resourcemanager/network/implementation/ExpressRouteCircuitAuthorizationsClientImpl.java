@@ -185,7 +185,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -241,7 +241,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -267,14 +267,15 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String circuitName, String authorizationName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, circuitName, authorizationName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -289,7 +290,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String circuitName, String authorizationName, Context context) {
         context = this.client.mergeContext(context);
@@ -311,7 +312,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String circuitName, String authorizationName) {
         return beginDeleteAsync(resourceGroupName, circuitName, authorizationName).getSyncPoller();
@@ -329,7 +330,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String circuitName, String authorizationName, Context context) {
         return beginDeleteAsync(resourceGroupName, circuitName, authorizationName, context).getSyncPoller();
@@ -441,7 +442,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -497,7 +498,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -621,7 +622,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
         } else {
             authorizationParameters.validate();
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -691,7 +692,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
         } else {
             authorizationParameters.validate();
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -720,7 +721,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return authorization in an ExpressRouteCircuit resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ExpressRouteCircuitAuthorizationInner>, ExpressRouteCircuitAuthorizationInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -736,7 +737,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
                 this.client.getHttpPipeline(),
                 ExpressRouteCircuitAuthorizationInner.class,
                 ExpressRouteCircuitAuthorizationInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -753,7 +754,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return authorization in an ExpressRouteCircuit resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ExpressRouteCircuitAuthorizationInner>, ExpressRouteCircuitAuthorizationInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -788,7 +789,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return authorization in an ExpressRouteCircuit resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpressRouteCircuitAuthorizationInner>, ExpressRouteCircuitAuthorizationInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -813,7 +814,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return authorization in an ExpressRouteCircuit resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpressRouteCircuitAuthorizationInner>, ExpressRouteCircuitAuthorizationInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -956,7 +957,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1015,7 +1016,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

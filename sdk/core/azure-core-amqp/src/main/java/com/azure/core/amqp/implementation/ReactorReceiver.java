@@ -83,17 +83,17 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                             final Integer credits = supplier.get();
 
                             if (credits != null && credits > 0) {
-                                logger.info("connectionId[{}] linkName[{}] adding credits[{}]",
-                                    handler.getConnectionId(), getLinkName(), creditsLeft, credits);
+                                logger.info("connectionId[{}] linkName[{}] credits[{}] Adding credits.",
+                                    handler.getConnectionId(), getLinkName(), credits);
                                 receiver.flow(credits);
                             } else {
-                                logger.verbose("connectionId[{}] linkName[{}] There are no credits to add.",
-                                    handler.getConnectionId(), getLinkName(), creditsLeft, credits);
+                                logger.verbose("connectionId[{}] linkName[{}] credits[{}] There are no credits to add.",
+                                    handler.getConnectionId(), getLinkName(), credits);
                             }
 
                             sink.success(message);
                         });
-                    } catch (IOException e) {
+                    } catch (IOException | RejectedExecutionException e) {
                         sink.error(e);
                     }
                 });
@@ -186,6 +186,8 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                 sink.error(new UncheckedIOException(String.format(
                     "connectionId[%s] linkName[%s] Unable to schedule work to add more credits.",
                     handler.getConnectionId(), getLinkName()), e));
+            } catch (RejectedExecutionException e) {
+                sink.error(e);
             }
         });
     }
@@ -278,10 +280,20 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
         return Mono.fromRunnable(() -> {
             try {
                 dispatcher.invoke(closeReceiver);
-            } catch (IOException | RejectedExecutionException e) {
-                logger.info("connectionId[{}] linkName[{}] Could not schedule disposing of receiver on "
-                        + "ReactorDispatcher. Manually invoking.", handler.getConnectionId(), getLinkName(), e);
+            } catch (IOException e) {
+                logger.warning("connectionId[{}] linkName[{}] IO sink was closed when scheduling work. Manually "
+                        + "invoking and completing close.", handler.getConnectionId(), getLinkName(), e);
+
                 closeReceiver.run();
+                completeClose();
+            } catch (RejectedExecutionException e) {
+                // Not logging error here again because we have to log the exception when we throw it.
+                logger.info("connectionId[{}] linkName[{}] RejectedExecutionException when scheduling on "
+                        + "ReactorDispatcher. Manually invoking and completing close.", handler.getConnectionId(),
+                    getLinkName());
+
+                closeReceiver.run();
+                completeClose();
             }
         }).then(isClosedMono.asMono()).publishOn(Schedulers.boundedElastic());
     }

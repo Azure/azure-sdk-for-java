@@ -32,7 +32,7 @@ class AzureFileSystemTest extends APISpec {
             .toIterable()
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = String.join(",", containerNames)
         if (!sasToken) {
-            config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = env.primaryAccount.credential
+            config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = environment.primaryAccount.credential
         } else {
             config[AzureFileSystem.AZURE_STORAGE_SAS_TOKEN_CREDENTIAL] = new AzureSasCredential(
                 primaryBlobServiceClient.generateAccountSas(
@@ -42,7 +42,7 @@ class AzureFileSystemTest extends APISpec {
         }
 
         when:
-        def fileSystem = new AzureFileSystem(new AzureFileSystemProvider(), env.primaryAccount.blobEndpoint,
+        def fileSystem = new AzureFileSystem(new AzureFileSystemProvider(), environment.primaryAccount.blobEndpoint,
             config)
 
         then:
@@ -69,11 +69,11 @@ class AzureFileSystemTest extends APISpec {
             config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName()
         }
         if (credential) {
-            config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = env.primaryAccount.key
+            config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = environment.primaryAccount.key
         }
 
         when:
-        new AzureFileSystem(new AzureFileSystemProvider(), env.primaryAccount.name, config)
+        new AzureFileSystem(new AzureFileSystemProvider(), environment.primaryAccount.name, config)
 
         then:
         thrown(IllegalArgumentException)
@@ -94,7 +94,7 @@ class AzureFileSystemTest extends APISpec {
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName()
 
         when:
-        new AzureFileSystem(new AzureFileSystemProvider(), env.primaryAccount.blobEndpoint, config)
+        new AzureFileSystem(new AzureFileSystemProvider(), environment.primaryAccount.blobEndpoint, config)
 
         then:
         thrown(IOException)
@@ -105,7 +105,7 @@ class AzureFileSystemTest extends APISpec {
         def provider = new AzureFileSystemProvider()
         def uri = getFileSystemUri()
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName()
-        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = env.primaryAccount.credential
+        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = environment.primaryAccount.credential
         def fileSystem = provider.newFileSystem(uri, config)
 
         when:

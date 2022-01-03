@@ -232,7 +232,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
         } else {
             galleryApplicationVersion.validate();
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -316,7 +316,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
         } else {
             galleryApplicationVersion.validate();
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -350,7 +350,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery Application Version that you want to create or update.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<GalleryApplicationVersionInner>, GalleryApplicationVersionInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -372,7 +372,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
                 this.client.getHttpPipeline(),
                 GalleryApplicationVersionInner.class,
                 GalleryApplicationVersionInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -393,7 +393,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery Application Version that you want to create or update.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<GalleryApplicationVersionInner>, GalleryApplicationVersionInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -438,7 +438,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery Application Version that you want to create or update.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GalleryApplicationVersionInner>, GalleryApplicationVersionInner> beginCreateOrUpdate(
         String resourceGroupName,
         String galleryName,
@@ -472,7 +472,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery Application Version that you want to create or update.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GalleryApplicationVersionInner>, GalleryApplicationVersionInner> beginCreateOrUpdate(
         String resourceGroupName,
         String galleryName,
@@ -691,7 +691,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
         } else {
             galleryApplicationVersion.validate();
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -774,7 +774,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
         } else {
             galleryApplicationVersion.validate();
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -807,7 +807,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery Application Version that you want to create or update.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<GalleryApplicationVersionInner>, GalleryApplicationVersionInner> beginUpdateAsync(
         String resourceGroupName,
         String galleryName,
@@ -828,7 +828,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
                 this.client.getHttpPipeline(),
                 GalleryApplicationVersionInner.class,
                 GalleryApplicationVersionInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -848,7 +848,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery Application Version that you want to create or update.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<GalleryApplicationVersionInner>, GalleryApplicationVersionInner> beginUpdateAsync(
         String resourceGroupName,
         String galleryName,
@@ -891,7 +891,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery Application Version that you want to create or update.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GalleryApplicationVersionInner>, GalleryApplicationVersionInner> beginUpdate(
         String resourceGroupName,
         String galleryName,
@@ -924,7 +924,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery Application Version that you want to create or update.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GalleryApplicationVersionInner>, GalleryApplicationVersionInner> beginUpdate(
         String resourceGroupName,
         String galleryName,
@@ -1129,7 +1129,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
                     new IllegalArgumentException(
                         "Parameter galleryApplicationVersionName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1202,7 +1202,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
                     new IllegalArgumentException(
                         "Parameter galleryApplicationVersionName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1385,7 +1385,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
                     new IllegalArgumentException(
                         "Parameter galleryApplicationVersionName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1455,7 +1455,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
                     new IllegalArgumentException(
                         "Parameter galleryApplicationVersionName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1484,7 +1484,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName,
         String galleryName,
@@ -1495,7 +1495,8 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
                 resourceGroupName, galleryName, galleryApplicationName, galleryApplicationVersionName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1512,7 +1513,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName,
         String galleryName,
@@ -1541,7 +1542,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName,
         String galleryName,
@@ -1565,7 +1566,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName,
         String galleryName,
@@ -1712,7 +1713,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
                 .error(
                     new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1779,7 +1780,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
                 .error(
                     new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

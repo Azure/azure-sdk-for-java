@@ -8,6 +8,8 @@ import com.azure.cosmos.implementation.SessionTokenHelper;
 import com.azure.cosmos.implementation.VectorSessionToken;
 import com.azure.cosmos.implementation.apachecommons.collections.map.UnmodifiableMap;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.models.CosmosBatchOperationResult;
+import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
@@ -24,7 +26,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class BatchTestBase extends TestSuiteBase {
+public abstract class BatchTestBase extends TestSuiteBase {
 
     private Random random = new Random();
     String partitionKey1 = "TBD1";
@@ -181,11 +183,11 @@ public class BatchTestBase extends TestSuiteBase {
         }
     }
 
-    void verifyBatchProcessed(TransactionalBatchResponse batchResponse, int numberOfOperations) {
+    void verifyBatchProcessed(CosmosBatchResponse batchResponse, int numberOfOperations) {
         this.verifyBatchProcessed(batchResponse, numberOfOperations, HttpResponseStatus.OK);
     }
 
-    void verifyBatchProcessed(TransactionalBatchResponse batchResponse, int numberOfOperations, HttpResponseStatus expectedStatusCode) {
+    void verifyBatchProcessed(CosmosBatchResponse batchResponse, int numberOfOperations, HttpResponseStatus expectedStatusCode) {
         assertThat(batchResponse).isNotNull();
         assertThat(batchResponse.getStatusCode())
             .as("Batch server response had StatusCode {0} instead of {1} expected and had ErrorMessage {2}",
@@ -199,7 +201,7 @@ public class BatchTestBase extends TestSuiteBase {
         // Allow a delta since we round both the total charge and the individual operation
         // charges to 2 decimal places.
         assertThat(batchResponse.getRequestCharge())
-            .isCloseTo(batchResponse.getResults().stream().mapToDouble(TransactionalBatchOperationResult::getRequestCharge).sum(),
+            .isCloseTo(batchResponse.getResults().stream().mapToDouble(CosmosBatchOperationResult::getRequestCharge).sum(),
                 Offset.offset(0.1));
     }
 

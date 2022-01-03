@@ -24,7 +24,7 @@ public final class RestartParameter {
      * Failover mode.
      */
     @JsonProperty(value = "failoverMode")
-    private String failoverMode;
+    private FailoverMode failoverMode;
 
     /**
      * Get the restartWithFailover property: Indicates whether to restart the server with failover.
@@ -51,7 +51,7 @@ public final class RestartParameter {
      *
      * @return the failoverMode value.
      */
-    public String failoverMode() {
+    public FailoverMode failoverMode() {
         return this.failoverMode;
     }
 
@@ -61,7 +61,7 @@ public final class RestartParameter {
      * @param failoverMode the failoverMode value to set.
      * @return the RestartParameter object itself.
      */
-    public RestartParameter withFailoverMode(String failoverMode) {
+    public RestartParameter withFailoverMode(FailoverMode failoverMode) {
         this.failoverMode = failoverMode;
         return this;
     }

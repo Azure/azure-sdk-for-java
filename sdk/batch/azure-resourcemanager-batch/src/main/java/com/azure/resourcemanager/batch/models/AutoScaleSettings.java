@@ -22,7 +22,9 @@ public final class AutoScaleSettings {
     private String formula;
 
     /*
-     * If omitted, the default value is 15 minutes (PT15M).
+     * The time interval at which to automatically adjust the pool size
+     * according to the autoscale formula. If omitted, the default value is 15
+     * minutes (PT15M).
      */
     @JsonProperty(value = "evaluationInterval")
     private Duration evaluationInterval;
@@ -48,7 +50,8 @@ public final class AutoScaleSettings {
     }
 
     /**
-     * Get the evaluationInterval property: If omitted, the default value is 15 minutes (PT15M).
+     * Get the evaluationInterval property: The time interval at which to automatically adjust the pool size according
+     * to the autoscale formula. If omitted, the default value is 15 minutes (PT15M).
      *
      * @return the evaluationInterval value.
      */
@@ -57,7 +60,8 @@ public final class AutoScaleSettings {
     }
 
     /**
-     * Set the evaluationInterval property: If omitted, the default value is 15 minutes (PT15M).
+     * Set the evaluationInterval property: The time interval at which to automatically adjust the pool size according
+     * to the autoscale formula. If omitted, the default value is 15 minutes (PT15M).
      *
      * @param evaluationInterval the evaluationInterval value to set.
      * @return the AutoScaleSettings object itself.

@@ -5,250 +5,38 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.fluent.models.CertificatePatchResourceProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
 /** ARM resource for a certificate. */
-@JsonFlatten
 @Fluent
-public class CertificatePatchResource extends ProxyOnlyResource {
+public final class CertificatePatchResource extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CertificatePatchResource.class);
 
     /*
-     * Friendly name of the certificate.
+     * CertificatePatchResource resource specific properties
      */
-    @JsonProperty(value = "properties.friendlyName", access = JsonProperty.Access.WRITE_ONLY)
-    private String friendlyName;
-
-    /*
-     * Subject name of the certificate.
-     */
-    @JsonProperty(value = "properties.subjectName", access = JsonProperty.Access.WRITE_ONLY)
-    private String subjectName;
-
-    /*
-     * Host names the certificate applies to.
-     */
-    @JsonProperty(value = "properties.hostNames")
-    private List<String> hostNames;
-
-    /*
-     * Pfx blob.
-     */
-    @JsonProperty(value = "properties.pfxBlob")
-    private byte[] pfxBlob;
-
-    /*
-     * App name.
-     */
-    @JsonProperty(value = "properties.siteName", access = JsonProperty.Access.WRITE_ONLY)
-    private String siteName;
-
-    /*
-     * Self link.
-     */
-    @JsonProperty(value = "properties.selfLink", access = JsonProperty.Access.WRITE_ONLY)
-    private String selfLink;
-
-    /*
-     * Certificate issuer.
-     */
-    @JsonProperty(value = "properties.issuer", access = JsonProperty.Access.WRITE_ONLY)
-    private String issuer;
-
-    /*
-     * Certificate issue Date.
-     */
-    @JsonProperty(value = "properties.issueDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime issueDate;
-
-    /*
-     * Certificate expiration date.
-     */
-    @JsonProperty(value = "properties.expirationDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime expirationDate;
-
-    /*
-     * Certificate password.
-     */
-    @JsonProperty(value = "properties.password")
-    private String password;
-
-    /*
-     * Certificate thumbprint.
-     */
-    @JsonProperty(value = "properties.thumbprint", access = JsonProperty.Access.WRITE_ONLY)
-    private String thumbprint;
-
-    /*
-     * Is the certificate valid?.
-     */
-    @JsonProperty(value = "properties.valid", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean valid;
-
-    /*
-     * Raw bytes of .cer file
-     */
-    @JsonProperty(value = "properties.cerBlob", access = JsonProperty.Access.WRITE_ONLY)
-    private byte[] cerBlob;
-
-    /*
-     * Public key hash.
-     */
-    @JsonProperty(value = "properties.publicKeyHash", access = JsonProperty.Access.WRITE_ONLY)
-    private String publicKeyHash;
-
-    /*
-     * Specification for the App Service Environment to use for the
-     * certificate.
-     */
-    @JsonProperty(value = "properties.hostingEnvironmentProfile", access = JsonProperty.Access.WRITE_ONLY)
-    private HostingEnvironmentProfile hostingEnvironmentProfile;
-
-    /*
-     * Key Vault Csm resource Id.
-     */
-    @JsonProperty(value = "properties.keyVaultId")
-    private String keyVaultId;
-
-    /*
-     * Key Vault secret name.
-     */
-    @JsonProperty(value = "properties.keyVaultSecretName")
-    private String keyVaultSecretName;
-
-    /*
-     * Status of the Key Vault secret.
-     */
-    @JsonProperty(value = "properties.keyVaultSecretStatus", access = JsonProperty.Access.WRITE_ONLY)
-    private KeyVaultSecretStatus keyVaultSecretStatus;
-
-    /*
-     * Resource ID of the associated App Service plan, formatted as:
-     * "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms"
-         + "/{appServicePlanName}".
-     */
-    @JsonProperty(value = "properties.serverFarmId")
-    private String serverFarmId;
-
-    /*
-     * CNAME of the certificate to be issued via free certificate
-     */
-    @JsonProperty(value = "properties.canonicalName")
-    private String canonicalName;
-
-    /*
-     * Method of domain validation for free cert
-     */
-    @JsonProperty(value = "properties.domainValidationMethod")
-    private String domainValidationMethod;
+    @JsonProperty(value = "properties")
+    private CertificatePatchResourceProperties innerProperties;
 
     /**
-     * Get the friendlyName property: Friendly name of the certificate.
+     * Get the innerProperties property: CertificatePatchResource resource specific properties.
      *
-     * @return the friendlyName value.
+     * @return the innerProperties value.
      */
-    public String friendlyName() {
-        return this.friendlyName;
+    private CertificatePatchResourceProperties innerProperties() {
+        return this.innerProperties;
     }
 
-    /**
-     * Get the subjectName property: Subject name of the certificate.
-     *
-     * @return the subjectName value.
-     */
-    public String subjectName() {
-        return this.subjectName;
-    }
-
-    /**
-     * Get the hostNames property: Host names the certificate applies to.
-     *
-     * @return the hostNames value.
-     */
-    public List<String> hostNames() {
-        return this.hostNames;
-    }
-
-    /**
-     * Set the hostNames property: Host names the certificate applies to.
-     *
-     * @param hostNames the hostNames value to set.
-     * @return the CertificatePatchResource object itself.
-     */
-    public CertificatePatchResource withHostNames(List<String> hostNames) {
-        this.hostNames = hostNames;
+    /** {@inheritDoc} */
+    @Override
+    public CertificatePatchResource withKind(String kind) {
+        super.withKind(kind);
         return this;
-    }
-
-    /**
-     * Get the pfxBlob property: Pfx blob.
-     *
-     * @return the pfxBlob value.
-     */
-    public byte[] pfxBlob() {
-        return CoreUtils.clone(this.pfxBlob);
-    }
-
-    /**
-     * Set the pfxBlob property: Pfx blob.
-     *
-     * @param pfxBlob the pfxBlob value to set.
-     * @return the CertificatePatchResource object itself.
-     */
-    public CertificatePatchResource withPfxBlob(byte[] pfxBlob) {
-        this.pfxBlob = CoreUtils.clone(pfxBlob);
-        return this;
-    }
-
-    /**
-     * Get the siteName property: App name.
-     *
-     * @return the siteName value.
-     */
-    public String siteName() {
-        return this.siteName;
-    }
-
-    /**
-     * Get the selfLink property: Self link.
-     *
-     * @return the selfLink value.
-     */
-    public String selfLink() {
-        return this.selfLink;
-    }
-
-    /**
-     * Get the issuer property: Certificate issuer.
-     *
-     * @return the issuer value.
-     */
-    public String issuer() {
-        return this.issuer;
-    }
-
-    /**
-     * Get the issueDate property: Certificate issue Date.
-     *
-     * @return the issueDate value.
-     */
-    public OffsetDateTime issueDate() {
-        return this.issueDate;
-    }
-
-    /**
-     * Get the expirationDate property: Certificate expiration date.
-     *
-     * @return the expirationDate value.
-     */
-    public OffsetDateTime expirationDate() {
-        return this.expirationDate;
     }
 
     /**
@@ -257,7 +45,7 @@ public class CertificatePatchResource extends ProxyOnlyResource {
      * @return the password value.
      */
     public String password() {
-        return this.password;
+        return this.innerProperties() == null ? null : this.innerProperties().password();
     }
 
     /**
@@ -267,8 +55,120 @@ public class CertificatePatchResource extends ProxyOnlyResource {
      * @return the CertificatePatchResource object itself.
      */
     public CertificatePatchResource withPassword(String password) {
-        this.password = password;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CertificatePatchResourceProperties();
+        }
+        this.innerProperties().withPassword(password);
         return this;
+    }
+
+    /**
+     * Get the friendlyName property: Friendly name of the certificate.
+     *
+     * @return the friendlyName value.
+     */
+    public String friendlyName() {
+        return this.innerProperties() == null ? null : this.innerProperties().friendlyName();
+    }
+
+    /**
+     * Get the subjectName property: Subject name of the certificate.
+     *
+     * @return the subjectName value.
+     */
+    public String subjectName() {
+        return this.innerProperties() == null ? null : this.innerProperties().subjectName();
+    }
+
+    /**
+     * Get the hostNames property: Host names the certificate applies to.
+     *
+     * @return the hostNames value.
+     */
+    public List<String> hostNames() {
+        return this.innerProperties() == null ? null : this.innerProperties().hostNames();
+    }
+
+    /**
+     * Set the hostNames property: Host names the certificate applies to.
+     *
+     * @param hostNames the hostNames value to set.
+     * @return the CertificatePatchResource object itself.
+     */
+    public CertificatePatchResource withHostNames(List<String> hostNames) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CertificatePatchResourceProperties();
+        }
+        this.innerProperties().withHostNames(hostNames);
+        return this;
+    }
+
+    /**
+     * Get the pfxBlob property: Pfx blob.
+     *
+     * @return the pfxBlob value.
+     */
+    public byte[] pfxBlob() {
+        return this.innerProperties() == null ? null : this.innerProperties().pfxBlob();
+    }
+
+    /**
+     * Set the pfxBlob property: Pfx blob.
+     *
+     * @param pfxBlob the pfxBlob value to set.
+     * @return the CertificatePatchResource object itself.
+     */
+    public CertificatePatchResource withPfxBlob(byte[] pfxBlob) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CertificatePatchResourceProperties();
+        }
+        this.innerProperties().withPfxBlob(pfxBlob);
+        return this;
+    }
+
+    /**
+     * Get the siteName property: App name.
+     *
+     * @return the siteName value.
+     */
+    public String siteName() {
+        return this.innerProperties() == null ? null : this.innerProperties().siteName();
+    }
+
+    /**
+     * Get the selfLink property: Self link.
+     *
+     * @return the selfLink value.
+     */
+    public String selfLink() {
+        return this.innerProperties() == null ? null : this.innerProperties().selfLink();
+    }
+
+    /**
+     * Get the issuer property: Certificate issuer.
+     *
+     * @return the issuer value.
+     */
+    public String issuer() {
+        return this.innerProperties() == null ? null : this.innerProperties().issuer();
+    }
+
+    /**
+     * Get the issueDate property: Certificate issue Date.
+     *
+     * @return the issueDate value.
+     */
+    public OffsetDateTime issueDate() {
+        return this.innerProperties() == null ? null : this.innerProperties().issueDate();
+    }
+
+    /**
+     * Get the expirationDate property: Certificate expiration date.
+     *
+     * @return the expirationDate value.
+     */
+    public OffsetDateTime expirationDate() {
+        return this.innerProperties() == null ? null : this.innerProperties().expirationDate();
     }
 
     /**
@@ -277,7 +177,7 @@ public class CertificatePatchResource extends ProxyOnlyResource {
      * @return the thumbprint value.
      */
     public String thumbprint() {
-        return this.thumbprint;
+        return this.innerProperties() == null ? null : this.innerProperties().thumbprint();
     }
 
     /**
@@ -286,7 +186,7 @@ public class CertificatePatchResource extends ProxyOnlyResource {
      * @return the valid value.
      */
     public Boolean valid() {
-        return this.valid;
+        return this.innerProperties() == null ? null : this.innerProperties().valid();
     }
 
     /**
@@ -295,7 +195,7 @@ public class CertificatePatchResource extends ProxyOnlyResource {
      * @return the cerBlob value.
      */
     public byte[] cerBlob() {
-        return CoreUtils.clone(this.cerBlob);
+        return this.innerProperties() == null ? null : this.innerProperties().cerBlob();
     }
 
     /**
@@ -304,7 +204,7 @@ public class CertificatePatchResource extends ProxyOnlyResource {
      * @return the publicKeyHash value.
      */
     public String publicKeyHash() {
-        return this.publicKeyHash;
+        return this.innerProperties() == null ? null : this.innerProperties().publicKeyHash();
     }
 
     /**
@@ -314,7 +214,7 @@ public class CertificatePatchResource extends ProxyOnlyResource {
      * @return the hostingEnvironmentProfile value.
      */
     public HostingEnvironmentProfile hostingEnvironmentProfile() {
-        return this.hostingEnvironmentProfile;
+        return this.innerProperties() == null ? null : this.innerProperties().hostingEnvironmentProfile();
     }
 
     /**
@@ -323,7 +223,7 @@ public class CertificatePatchResource extends ProxyOnlyResource {
      * @return the keyVaultId value.
      */
     public String keyVaultId() {
-        return this.keyVaultId;
+        return this.innerProperties() == null ? null : this.innerProperties().keyVaultId();
     }
 
     /**
@@ -333,7 +233,10 @@ public class CertificatePatchResource extends ProxyOnlyResource {
      * @return the CertificatePatchResource object itself.
      */
     public CertificatePatchResource withKeyVaultId(String keyVaultId) {
-        this.keyVaultId = keyVaultId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CertificatePatchResourceProperties();
+        }
+        this.innerProperties().withKeyVaultId(keyVaultId);
         return this;
     }
 
@@ -343,7 +246,7 @@ public class CertificatePatchResource extends ProxyOnlyResource {
      * @return the keyVaultSecretName value.
      */
     public String keyVaultSecretName() {
-        return this.keyVaultSecretName;
+        return this.innerProperties() == null ? null : this.innerProperties().keyVaultSecretName();
     }
 
     /**
@@ -353,7 +256,10 @@ public class CertificatePatchResource extends ProxyOnlyResource {
      * @return the CertificatePatchResource object itself.
      */
     public CertificatePatchResource withKeyVaultSecretName(String keyVaultSecretName) {
-        this.keyVaultSecretName = keyVaultSecretName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CertificatePatchResourceProperties();
+        }
+        this.innerProperties().withKeyVaultSecretName(keyVaultSecretName);
         return this;
     }
 
@@ -363,7 +269,7 @@ public class CertificatePatchResource extends ProxyOnlyResource {
      * @return the keyVaultSecretStatus value.
      */
     public KeyVaultSecretStatus keyVaultSecretStatus() {
-        return this.keyVaultSecretStatus;
+        return this.innerProperties() == null ? null : this.innerProperties().keyVaultSecretStatus();
     }
 
     /**
@@ -374,7 +280,7 @@ public class CertificatePatchResource extends ProxyOnlyResource {
      * @return the serverFarmId value.
      */
     public String serverFarmId() {
-        return this.serverFarmId;
+        return this.innerProperties() == null ? null : this.innerProperties().serverFarmId();
     }
 
     /**
@@ -386,7 +292,10 @@ public class CertificatePatchResource extends ProxyOnlyResource {
      * @return the CertificatePatchResource object itself.
      */
     public CertificatePatchResource withServerFarmId(String serverFarmId) {
-        this.serverFarmId = serverFarmId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CertificatePatchResourceProperties();
+        }
+        this.innerProperties().withServerFarmId(serverFarmId);
         return this;
     }
 
@@ -396,7 +305,7 @@ public class CertificatePatchResource extends ProxyOnlyResource {
      * @return the canonicalName value.
      */
     public String canonicalName() {
-        return this.canonicalName;
+        return this.innerProperties() == null ? null : this.innerProperties().canonicalName();
     }
 
     /**
@@ -406,7 +315,10 @@ public class CertificatePatchResource extends ProxyOnlyResource {
      * @return the CertificatePatchResource object itself.
      */
     public CertificatePatchResource withCanonicalName(String canonicalName) {
-        this.canonicalName = canonicalName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CertificatePatchResourceProperties();
+        }
+        this.innerProperties().withCanonicalName(canonicalName);
         return this;
     }
 
@@ -416,7 +328,7 @@ public class CertificatePatchResource extends ProxyOnlyResource {
      * @return the domainValidationMethod value.
      */
     public String domainValidationMethod() {
-        return this.domainValidationMethod;
+        return this.innerProperties() == null ? null : this.innerProperties().domainValidationMethod();
     }
 
     /**
@@ -426,14 +338,10 @@ public class CertificatePatchResource extends ProxyOnlyResource {
      * @return the CertificatePatchResource object itself.
      */
     public CertificatePatchResource withDomainValidationMethod(String domainValidationMethod) {
-        this.domainValidationMethod = domainValidationMethod;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public CertificatePatchResource withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CertificatePatchResourceProperties();
+        }
+        this.innerProperties().withDomainValidationMethod(domainValidationMethod);
         return this;
     }
 
@@ -445,8 +353,8 @@ public class CertificatePatchResource extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
-        if (hostingEnvironmentProfile() != null) {
-            hostingEnvironmentProfile().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

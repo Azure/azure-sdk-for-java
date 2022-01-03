@@ -66,6 +66,14 @@ public class ImageReference {
     private String virtualMachineImageId;
 
     /**
+     * The specific version of the platform image or marketplace image used to
+     * create the node. This read-only field differs from 'version' only if the
+     * value specified for 'version' when the pool was created was 'latest'.
+     */
+    @JsonProperty(value = "exactVersion", access = JsonProperty.Access.WRITE_ONLY)
+    private String exactVersion;
+
+    /**
      * Get for example, Canonical or MicrosoftWindowsServer.
      *
      * @return the publisher value
@@ -163,6 +171,15 @@ public class ImageReference {
     public ImageReference withVirtualMachineImageId(String virtualMachineImageId) {
         this.virtualMachineImageId = virtualMachineImageId;
         return this;
+    }
+
+    /**
+     * Get the specific version of the platform image or marketplace image used to create the node. This read-only field differs from 'version' only if the value specified for 'version' when the pool was created was 'latest'.
+     *
+     * @return the exactVersion value
+     */
+    public String exactVersion() {
+        return this.exactVersion;
     }
 
 }

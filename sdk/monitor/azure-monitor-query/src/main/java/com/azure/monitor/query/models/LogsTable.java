@@ -6,6 +6,7 @@ package com.azure.monitor.query.models;
 import com.azure.core.annotation.Immutable;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Represents a table of results for a logs query.
@@ -41,7 +42,7 @@ public final class LogsTable {
      * Returns all the rows in this table.
      * @return all the rows in this table.
      */
-    public List<LogsTableRow> getTableRows() {
+    public List<LogsTableRow> getRows() {
         return tableRows;
     }
 
@@ -49,7 +50,21 @@ public final class LogsTable {
      * Returns all the columns in this table.
      * @return all the columns in this table.
      */
-    public List<LogsTableColumn> getTableColumns() {
+    public List<LogsTableColumn> getColumns() {
         return tableColumns;
+    }
+
+    /**
+     * Returns the table as a list of objects of type {@code T} where each row of the table is
+     * mapped to this object type.
+     * @param type The object type.
+     * @param <T> The type into which each row of the table is converted to.
+     * @return A list of objects corresponding to the list of rows in the table.
+     */
+    <T> List<T> toObject(Class<T> type) {
+        return tableRows
+                .stream()
+                .map(row -> row.toObject(type))
+                .collect(Collectors.toList());
     }
 }

@@ -349,8 +349,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -358,7 +357,10 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> reimageWithResponseAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, Boolean tempDisk) {
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -381,13 +383,10 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
-        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInputInternal = null;
-        if (tempDisk != null) {
-            vmScaleSetVMReimageInputInternal = new VirtualMachineScaleSetVMReimageParameters();
-            vmScaleSetVMReimageInputInternal.withTempDisk(tempDisk);
+        if (vmScaleSetVMReimageInput != null) {
+            vmScaleSetVMReimageInput.validate();
         }
-        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput = vmScaleSetVMReimageInputInternal;
+        final String apiVersion = "2021-07-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -410,8 +409,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -420,7 +418,11 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> reimageWithResponseAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, Boolean tempDisk, Context context) {
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -443,13 +445,10 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
-        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInputInternal = null;
-        if (tempDisk != null) {
-            vmScaleSetVMReimageInputInternal = new VirtualMachineScaleSetVMReimageParameters();
-            vmScaleSetVMReimageInputInternal.withTempDisk(tempDisk);
+        if (vmScaleSetVMReimageInput != null) {
+            vmScaleSetVMReimageInput.validate();
         }
-        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput = vmScaleSetVMReimageInputInternal;
+        final String apiVersion = "2021-07-01";
         context = this.client.mergeContext(context);
         return service
             .reimage(
@@ -469,21 +468,24 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginReimageAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, Boolean tempDisk) {
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            reimageWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, tempDisk);
+            reimageWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, vmScaleSetVMReimageInput);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -492,20 +494,23 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginReimageAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, Boolean tempDisk, Context context) {
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            reimageWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, tempDisk, context);
+            reimageWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, vmScaleSetVMReimageInput, context);
         return this
             .client
             .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
@@ -517,17 +522,20 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReimage(
-        String resourceGroupName, String vmScaleSetName, String instanceId, Boolean tempDisk) {
-        return beginReimageAsync(resourceGroupName, vmScaleSetName, instanceId, tempDisk).getSyncPoller();
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput) {
+        return beginReimageAsync(resourceGroupName, vmScaleSetName, instanceId, vmScaleSetVMReimageInput)
+            .getSyncPoller();
     }
 
     /**
@@ -536,18 +544,22 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReimage(
-        String resourceGroupName, String vmScaleSetName, String instanceId, Boolean tempDisk, Context context) {
-        return beginReimageAsync(resourceGroupName, vmScaleSetName, instanceId, tempDisk, context).getSyncPoller();
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput,
+        Context context) {
+        return beginReimageAsync(resourceGroupName, vmScaleSetName, instanceId, vmScaleSetVMReimageInput, context)
+            .getSyncPoller();
     }
 
     /**
@@ -556,8 +568,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -565,8 +576,11 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> reimageAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, Boolean tempDisk) {
-        return beginReimageAsync(resourceGroupName, vmScaleSetName, instanceId, tempDisk)
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput) {
+        return beginReimageAsync(resourceGroupName, vmScaleSetName, instanceId, vmScaleSetVMReimageInput)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -584,8 +598,8 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> reimageAsync(String resourceGroupName, String vmScaleSetName, String instanceId) {
-        final Boolean tempDisk = null;
-        return beginReimageAsync(resourceGroupName, vmScaleSetName, instanceId, tempDisk)
+        final VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput = null;
+        return beginReimageAsync(resourceGroupName, vmScaleSetName, instanceId, vmScaleSetVMReimageInput)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -596,8 +610,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -606,8 +619,12 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> reimageAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, Boolean tempDisk, Context context) {
-        return beginReimageAsync(resourceGroupName, vmScaleSetName, instanceId, tempDisk, context)
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput,
+        Context context) {
+        return beginReimageAsync(resourceGroupName, vmScaleSetName, instanceId, vmScaleSetVMReimageInput, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -618,15 +635,18 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void reimage(String resourceGroupName, String vmScaleSetName, String instanceId, Boolean tempDisk) {
-        reimageAsync(resourceGroupName, vmScaleSetName, instanceId, tempDisk).block();
+    public void reimage(
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput) {
+        reimageAsync(resourceGroupName, vmScaleSetName, instanceId, vmScaleSetVMReimageInput).block();
     }
 
     /**
@@ -641,8 +661,8 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void reimage(String resourceGroupName, String vmScaleSetName, String instanceId) {
-        final Boolean tempDisk = null;
-        reimageAsync(resourceGroupName, vmScaleSetName, instanceId, tempDisk).block();
+        final VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput = null;
+        reimageAsync(resourceGroupName, vmScaleSetName, instanceId, vmScaleSetVMReimageInput).block();
     }
 
     /**
@@ -651,8 +671,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -660,8 +679,12 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void reimage(
-        String resourceGroupName, String vmScaleSetName, String instanceId, Boolean tempDisk, Context context) {
-        reimageAsync(resourceGroupName, vmScaleSetName, instanceId, tempDisk, context).block();
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput,
+        Context context) {
+        reimageAsync(resourceGroupName, vmScaleSetName, instanceId, vmScaleSetVMReimageInput, context).block();
     }
 
     /**
@@ -701,7 +724,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -755,7 +778,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         context = this.client.mergeContext(context);
         return service
             .reimageAll(
@@ -780,14 +803,15 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginReimageAllAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             reimageAllWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -803,7 +827,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginReimageAllAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId, Context context) {
         context = this.client.mergeContext(context);
@@ -826,7 +850,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReimageAll(
         String resourceGroupName, String vmScaleSetName, String instanceId) {
         return beginReimageAllAsync(resourceGroupName, vmScaleSetName, instanceId).getSyncPoller();
@@ -845,7 +869,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReimageAll(
         String resourceGroupName, String vmScaleSetName, String instanceId, Context context) {
         return beginReimageAllAsync(resourceGroupName, vmScaleSetName, instanceId, context).getSyncPoller();
@@ -961,7 +985,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1015,7 +1039,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         context = this.client.mergeContext(context);
         return service
             .deallocate(
@@ -1040,14 +1064,15 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeallocateAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deallocateWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1063,7 +1088,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeallocateAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId, Context context) {
         context = this.client.mergeContext(context);
@@ -1086,7 +1111,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeallocate(
         String resourceGroupName, String vmScaleSetName, String instanceId) {
         return beginDeallocateAsync(resourceGroupName, vmScaleSetName, instanceId).getSyncPoller();
@@ -1105,7 +1130,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeallocate(
         String resourceGroupName, String vmScaleSetName, String instanceId, Context context) {
         return beginDeallocateAsync(resourceGroupName, vmScaleSetName, instanceId, context).getSyncPoller();
@@ -1226,7 +1251,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1292,7 +1317,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1320,7 +1345,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a virtual machine scale set virtual machine.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualMachineScaleSetVMInner>, VirtualMachineScaleSetVMInner> beginUpdateAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId, VirtualMachineScaleSetVMInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1332,7 +1357,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                 this.client.getHttpPipeline(),
                 VirtualMachineScaleSetVMInner.class,
                 VirtualMachineScaleSetVMInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1348,7 +1373,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a virtual machine scale set virtual machine.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualMachineScaleSetVMInner>, VirtualMachineScaleSetVMInner> beginUpdateAsync(
         String resourceGroupName,
         String vmScaleSetName,
@@ -1380,7 +1405,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a virtual machine scale set virtual machine.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineScaleSetVMInner>, VirtualMachineScaleSetVMInner> beginUpdate(
         String resourceGroupName, String vmScaleSetName, String instanceId, VirtualMachineScaleSetVMInner parameters) {
         return beginUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, parameters).getSyncPoller();
@@ -1399,7 +1424,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a virtual machine scale set virtual machine.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineScaleSetVMInner>, VirtualMachineScaleSetVMInner> beginUpdate(
         String resourceGroupName,
         String vmScaleSetName,
@@ -1533,7 +1558,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1589,7 +1614,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -1616,14 +1641,15 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId, Boolean forceDeletion) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, forceDeletion);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1640,7 +1666,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId, Boolean forceDeletion, Context context) {
         context = this.client.mergeContext(context);
@@ -1664,7 +1690,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String vmScaleSetName, String instanceId, Boolean forceDeletion) {
         return beginDeleteAsync(resourceGroupName, vmScaleSetName, instanceId, forceDeletion).getSyncPoller();
@@ -1684,7 +1710,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String vmScaleSetName, String instanceId, Boolean forceDeletion, Context context) {
         return beginDeleteAsync(resourceGroupName, vmScaleSetName, instanceId, forceDeletion, context).getSyncPoller();
@@ -1842,7 +1868,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1900,7 +1926,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2042,7 +2068,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2097,7 +2123,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2211,7 +2237,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2285,7 +2311,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2468,7 +2494,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -2526,7 +2552,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         context = this.client.mergeContext(context);
         return service
             .powerOff(
@@ -2555,14 +2581,15 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginPowerOffAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId, Boolean skipShutdown) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             powerOffWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, skipShutdown);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2581,7 +2608,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginPowerOffAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId, Boolean skipShutdown, Context context) {
         context = this.client.mergeContext(context);
@@ -2607,7 +2634,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPowerOff(
         String resourceGroupName, String vmScaleSetName, String instanceId, Boolean skipShutdown) {
         return beginPowerOffAsync(resourceGroupName, vmScaleSetName, instanceId, skipShutdown).getSyncPoller();
@@ -2629,7 +2656,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPowerOff(
         String resourceGroupName, String vmScaleSetName, String instanceId, Boolean skipShutdown, Context context) {
         return beginPowerOffAsync(resourceGroupName, vmScaleSetName, instanceId, skipShutdown, context).getSyncPoller();
@@ -2795,7 +2822,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -2848,7 +2875,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         context = this.client.mergeContext(context);
         return service
             .restart(
@@ -2872,13 +2899,14 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginRestartAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId) {
         Mono<Response<Flux<ByteBuffer>>> mono = restartWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2893,7 +2921,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRestartAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId, Context context) {
         context = this.client.mergeContext(context);
@@ -2915,7 +2943,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(
         String resourceGroupName, String vmScaleSetName, String instanceId) {
         return beginRestartAsync(resourceGroupName, vmScaleSetName, instanceId).getSyncPoller();
@@ -2933,7 +2961,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(
         String resourceGroupName, String vmScaleSetName, String instanceId, Context context) {
         return beginRestartAsync(resourceGroupName, vmScaleSetName, instanceId, context).getSyncPoller();
@@ -3044,7 +3072,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -3097,7 +3125,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         context = this.client.mergeContext(context);
         return service
             .start(
@@ -3121,13 +3149,14 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginStartAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId) {
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -3142,7 +3171,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStartAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId, Context context) {
         context = this.client.mergeContext(context);
@@ -3164,7 +3193,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String vmScaleSetName, String instanceId) {
         return beginStartAsync(resourceGroupName, vmScaleSetName, instanceId).getSyncPoller();
@@ -3182,7 +3211,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String vmScaleSetName, String instanceId, Context context) {
         return beginStartAsync(resourceGroupName, vmScaleSetName, instanceId, context).getSyncPoller();
@@ -3292,7 +3321,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -3345,7 +3374,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         context = this.client.mergeContext(context);
         return service
             .redeploy(
@@ -3369,14 +3398,15 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginRedeployAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             redeployWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -3391,7 +3421,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRedeployAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId, Context context) {
         context = this.client.mergeContext(context);
@@ -3413,7 +3443,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRedeploy(
         String resourceGroupName, String vmScaleSetName, String instanceId) {
         return beginRedeployAsync(resourceGroupName, vmScaleSetName, instanceId).getSyncPoller();
@@ -3431,7 +3461,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRedeploy(
         String resourceGroupName, String vmScaleSetName, String instanceId, Context context) {
         return beginRedeployAsync(resourceGroupName, vmScaleSetName, instanceId, context).getSyncPoller();
@@ -3545,7 +3575,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3608,7 +3638,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3763,7 +3793,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -3816,7 +3846,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         context = this.client.mergeContext(context);
         return service
             .performMaintenance(
@@ -3840,14 +3870,15 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginPerformMaintenanceAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             performMaintenanceWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -3862,7 +3893,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginPerformMaintenanceAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId, Context context) {
         context = this.client.mergeContext(context);
@@ -3884,7 +3915,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPerformMaintenance(
         String resourceGroupName, String vmScaleSetName, String instanceId) {
         return beginPerformMaintenanceAsync(resourceGroupName, vmScaleSetName, instanceId).getSyncPoller();
@@ -3902,7 +3933,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPerformMaintenance(
         String resourceGroupName, String vmScaleSetName, String instanceId, Context context) {
         return beginPerformMaintenanceAsync(resourceGroupName, vmScaleSetName, instanceId, context).getSyncPoller();
@@ -4014,7 +4045,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -4067,7 +4098,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         context = this.client.mergeContext(context);
         return service
             .simulateEviction(
@@ -4172,7 +4203,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(
@@ -4238,7 +4269,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
@@ -4266,7 +4297,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommandAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId, RunCommandInput parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -4278,7 +4309,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                 this.client.getHttpPipeline(),
                 RunCommandResultInner.class,
                 RunCommandResultInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -4294,7 +4325,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommandAsync(
         String resourceGroupName,
         String vmScaleSetName,
@@ -4322,7 +4353,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommand(
         String resourceGroupName, String vmScaleSetName, String instanceId, RunCommandInput parameters) {
         return beginRunCommandAsync(resourceGroupName, vmScaleSetName, instanceId, parameters).getSyncPoller();
@@ -4341,7 +4372,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommand(
         String resourceGroupName,
         String vmScaleSetName,

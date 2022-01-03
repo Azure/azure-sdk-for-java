@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.SapHanaTableDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,65 +17,23 @@ import java.util.Map;
 /** SAP HANA Table properties. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SapHanaTable")
-@JsonFlatten
 @Fluent
-public class SapHanaTableDataset extends Dataset {
+public final class SapHanaTableDataset extends Dataset {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SapHanaTableDataset.class);
 
     /*
-     * The schema name of SAP HANA. Type: string (or Expression with resultType
-     * string).
+     * SAP HANA Table properties.
      */
-    @JsonProperty(value = "typeProperties.schema")
-    private Object schemaTypePropertiesSchema;
-
-    /*
-     * The table name of SAP HANA. Type: string (or Expression with resultType
-     * string).
-     */
-    @JsonProperty(value = "typeProperties.table")
-    private Object table;
+    @JsonProperty(value = "typeProperties")
+    private SapHanaTableDatasetTypeProperties innerTypeProperties;
 
     /**
-     * Get the schemaTypePropertiesSchema property: The schema name of SAP HANA. Type: string (or Expression with
-     * resultType string).
+     * Get the innerTypeProperties property: SAP HANA Table properties.
      *
-     * @return the schemaTypePropertiesSchema value.
+     * @return the innerTypeProperties value.
      */
-    public Object schemaTypePropertiesSchema() {
-        return this.schemaTypePropertiesSchema;
-    }
-
-    /**
-     * Set the schemaTypePropertiesSchema property: The schema name of SAP HANA. Type: string (or Expression with
-     * resultType string).
-     *
-     * @param schemaTypePropertiesSchema the schemaTypePropertiesSchema value to set.
-     * @return the SapHanaTableDataset object itself.
-     */
-    public SapHanaTableDataset withSchemaTypePropertiesSchema(Object schemaTypePropertiesSchema) {
-        this.schemaTypePropertiesSchema = schemaTypePropertiesSchema;
-        return this;
-    }
-
-    /**
-     * Get the table property: The table name of SAP HANA. Type: string (or Expression with resultType string).
-     *
-     * @return the table value.
-     */
-    public Object table() {
-        return this.table;
-    }
-
-    /**
-     * Set the table property: The table name of SAP HANA. Type: string (or Expression with resultType string).
-     *
-     * @param table the table value to set.
-     * @return the SapHanaTableDataset object itself.
-     */
-    public SapHanaTableDataset withTable(Object table) {
-        this.table = table;
-        return this;
+    private SapHanaTableDatasetTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -128,6 +86,52 @@ public class SapHanaTableDataset extends Dataset {
     }
 
     /**
+     * Get the schema property: The schema name of SAP HANA. Type: string (or Expression with resultType string).
+     *
+     * @return the schema value.
+     */
+    public Object schemaTypePropertiesSchema() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().schema();
+    }
+
+    /**
+     * Set the schema property: The schema name of SAP HANA. Type: string (or Expression with resultType string).
+     *
+     * @param schema the schema value to set.
+     * @return the SapHanaTableDataset object itself.
+     */
+    public SapHanaTableDataset withSchemaTypePropertiesSchema(Object schema) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SapHanaTableDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withSchema(schema);
+        return this;
+    }
+
+    /**
+     * Get the table property: The table name of SAP HANA. Type: string (or Expression with resultType string).
+     *
+     * @return the table value.
+     */
+    public Object table() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().table();
+    }
+
+    /**
+     * Set the table property: The table name of SAP HANA. Type: string (or Expression with resultType string).
+     *
+     * @param table the table value to set.
+     * @return the SapHanaTableDataset object itself.
+     */
+    public SapHanaTableDataset withTable(Object table) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SapHanaTableDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withTable(table);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -135,5 +139,8 @@ public class SapHanaTableDataset extends Dataset {
     @Override
     public void validate() {
         super.validate();
+        if (innerTypeProperties() != null) {
+            innerTypeProperties().validate();
+        }
     }
 }

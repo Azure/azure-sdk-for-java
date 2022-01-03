@@ -146,7 +146,7 @@ public final class SharedGalleryImageVersionsClientImpl implements SharedGallery
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -214,7 +214,7 @@ public final class SharedGalleryImageVersionsClientImpl implements SharedGallery
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -388,7 +388,7 @@ public final class SharedGalleryImageVersionsClientImpl implements SharedGallery
                 .error(
                     new IllegalArgumentException("Parameter galleryImageVersionName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -458,7 +458,7 @@ public final class SharedGalleryImageVersionsClientImpl implements SharedGallery
                 .error(
                     new IllegalArgumentException("Parameter galleryImageVersionName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

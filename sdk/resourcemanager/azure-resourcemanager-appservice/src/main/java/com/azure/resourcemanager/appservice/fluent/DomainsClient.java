@@ -33,7 +33,7 @@ public interface DomainsClient
     /**
      * Description for Check if a domain is available for registration.
      *
-     * @param name Name of the object.
+     * @param identifier Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -41,12 +41,13 @@ public interface DomainsClient
      * @return domain availability check result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DomainAvailabilityCheckResultInner>> checkAvailabilityWithResponseAsync(String name);
+    Mono<Response<DomainAvailabilityCheckResultInner>> checkAvailabilityWithResponseAsync(
+        NameIdentifierInner identifier);
 
     /**
      * Description for Check if a domain is available for registration.
      *
-     * @param name Name of the object.
+     * @param identifier Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -54,34 +55,25 @@ public interface DomainsClient
      * @return domain availability check result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DomainAvailabilityCheckResultInner> checkAvailabilityAsync(String name);
+    Mono<DomainAvailabilityCheckResultInner> checkAvailabilityAsync(NameIdentifierInner identifier);
 
     /**
      * Description for Check if a domain is available for registration.
      *
+     * @param identifier Name of the domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return domain availability check result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DomainAvailabilityCheckResultInner> checkAvailabilityAsync();
+    DomainAvailabilityCheckResultInner checkAvailability(NameIdentifierInner identifier);
 
     /**
      * Description for Check if a domain is available for registration.
      *
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return domain availability check result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DomainAvailabilityCheckResultInner checkAvailability();
-
-    /**
-     * Description for Check if a domain is available for registration.
-     *
-     * @param name Name of the object.
+     * @param identifier Name of the domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -90,7 +82,8 @@ public interface DomainsClient
      * @return domain availability check result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DomainAvailabilityCheckResultInner> checkAvailabilityWithResponse(String name, Context context);
+    Response<DomainAvailabilityCheckResultInner> checkAvailabilityWithResponse(
+        NameIdentifierInner identifier, Context context);
 
     /**
      * Description for Get all domains in a subscription.

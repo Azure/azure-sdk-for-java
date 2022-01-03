@@ -12,7 +12,7 @@ import java.util.function.Consumer;
  *
  * @author Warren Zhu
  */
-public interface SubscribeByGroupOperation extends Checkpointable {
+public interface SubscribeByGroupOperation extends Checkpointable, Batchable {
 
     /**
      * Register a message consumer to a given destination with a given consumer group.
@@ -38,4 +38,13 @@ public interface SubscribeByGroupOperation extends Checkpointable {
      * if was not registered.
      */
     boolean unsubscribe(String destination, String consumerGroup);
+
+    default BatchConsumerConfig getBatchConsumerConfig() {
+        return null;
+    }
+
+    default void setBatchConsumerConfig(BatchConsumerConfig batchConsumerConfig) {
+        // no-op
+    }
+
 }

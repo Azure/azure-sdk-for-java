@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.aad.webapp;
 
+import com.azure.spring.aad.WebApplicationContextRunnerUtils;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -182,7 +183,7 @@ public class AADAccessTokenGroupRolesExtractionTest {
     @Test
     public void testIllegalGroupIdParam() {
         WebApplicationContextRunnerUtils
-            .getContextRunnerWithRequiredProperties()
+            .webApplicationContextRunner()
             .withPropertyValues(
                 "azure.activedirectory.user-group.allowed-group-ids = all," + GROUP_ID_1
             )

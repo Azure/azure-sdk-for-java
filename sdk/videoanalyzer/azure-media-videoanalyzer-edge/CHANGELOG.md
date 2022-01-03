@@ -1,5 +1,11 @@
 # Release History
 
+## 1.0.0-beta.5 (2021-11-09)
+
+- Added device discovery and device detail request for ONVIF enabled devices.
+- Added Remote Device Adapter configuration for ingesting video in a private network
+- Added retention policy to VideoSink
+
 ## 1.0.0-beta.4 (2021-06-10)
 
 - Update the description of the package, to add more info on the maven page.

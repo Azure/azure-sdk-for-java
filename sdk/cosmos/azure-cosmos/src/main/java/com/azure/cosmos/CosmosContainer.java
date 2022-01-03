@@ -4,14 +4,22 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.throughputControl.config.GlobalThroughputControlGroup;
+import com.azure.cosmos.models.CosmosBatch;
+import com.azure.cosmos.models.CosmosBatchOperationResult;
+import com.azure.cosmos.models.CosmosBatchRequestOptions;
+import com.azure.cosmos.models.CosmosBatchResponse;
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
+import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosItemIdentity;
+import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
+import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
@@ -22,7 +30,6 @@ import com.azure.cosmos.models.ThroughputResponse;
 import com.azure.cosmos.util.Beta;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.CosmosPagedIterable;
-import com.azure.cosmos.util.UtilBridgeInternal;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -275,7 +282,7 @@ public class CosmosContainer {
         }
     }
 
-    private TransactionalBatchResponse blockBatchResponse(Mono<TransactionalBatchResponse> batchResponseMono) {
+    private CosmosBatchResponse blockBatchResponse(Mono<CosmosBatchResponse> batchResponseMono) {
         try {
             return batchResponseMono.block();
         } catch (Exception ex) {
@@ -422,7 +429,6 @@ public class CosmosContainer {
 
     /**
      * Reads all the items of a logical partition returning the results as {@link CosmosPagedIterable}.
-     * <p>
      *
      * @param <T> the type parameter.
      * @param partitionKey the partition key value of the documents that need to be read
@@ -498,7 +504,6 @@ public class CosmosContainer {
      *
      * @return the Cosmos item resource response with the patched item or an exception.
      */
-    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> CosmosItemResponse<T> patchItem(
         String itemId,
         PartitionKey partitionKey,
@@ -520,7 +525,6 @@ public class CosmosContainer {
      *
      * @return the Cosmos item resource response with the patched item or an exception.
      */
-    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> CosmosItemResponse<T> patchItem(
         String itemId,
         PartitionKey partitionKey,
@@ -545,6 +549,20 @@ public class CosmosContainer {
     }
 
     /**
+     * Deletes all items in the Container with the specified partitionKey value.
+     * Starts an asynchronous Cosmos DB background operation which deletes all items in the Container with the specified value.
+     * The asynchronous Cosmos DB background operation runs using a percentage of user RUs.
+     *
+     * @param partitionKey the partition key.
+     * @param options the options.
+     * @return the Cosmos item response
+     */
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosItemResponse<Object> deleteAllItemsByPartitionKey(PartitionKey partitionKey, CosmosItemRequestOptions options) {
+        return this.blockDeleteItemResponse(asyncContainer.deleteAllItemsByPartitionKey(partitionKey, options));
+    }
+
+    /**
      * Deletes an item in the current container.
      *
      * @param <T> the type parameter.
@@ -559,73 +577,71 @@ public class CosmosContainer {
     /**
      * Executes the transactional batch.
      *
-     * @param transactionalBatch Batch having list of operation and partition key which will be executed by this container.
+     * @param cosmosBatch Batch having list of operation and partition key which will be executed by this container.
      *
      * @return A TransactionalBatchResponse which contains details of execution of the transactional batch.
      * <p>
      * If the transactional batch executes successfully, the value returned by {@link
-     * TransactionalBatchResponse#getStatusCode} on the response returned will be set to 200}.
+     * CosmosBatchResponse#getStatusCode} on the response returned will be set to 200}.
      * <p>
      * If an operation within the transactional batch fails during execution, no changes from the batch will be
      * committed and the status of the failing operation is made available by {@link
-     * TransactionalBatchResponse#getStatusCode} or by the exception. To obtain information about the operations
+     * CosmosBatchResponse#getStatusCode} or by the exception. To obtain information about the operations
      * that failed in case of some user error like conflict, not found etc, the response can be enumerated.
-     * This returns {@link TransactionalBatchOperationResult} instances corresponding to each operation in the
+     * This returns {@link CosmosBatchOperationResult} instances corresponding to each operation in the
      * transactional batch in the order they were added to the transactional batch.
      * For a result corresponding to an operation within the transactional batch, use
-     * {@link TransactionalBatchOperationResult#getStatusCode}
+     * {@link CosmosBatchOperationResult#getStatusCode}
      * to access the status of the operation. If the operation was not executed or it was aborted due to the failure of
      * another operation within the transactional batch, the value of this field will be 424;
      * for the operation that caused the batch to abort, the value of this field
      * will indicate the cause of failure.
      * <p>
      * If there are issues such as request timeouts, Gone, session not available, network failure
-     * or if the service somehow returns 5xx then this will throw an exception instead of returning a TransactionalBatchResponse.
+     * or if the service somehow returns 5xx then this will throw an exception instead of returning a CosmosBatchResponse.
      * <p>
-     * Use {@link TransactionalBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
+     * Use {@link CosmosBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
      * transactional batch succeeded.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public TransactionalBatchResponse executeTransactionalBatch(TransactionalBatch transactionalBatch) {
-        return this.blockBatchResponse(asyncContainer.executeTransactionalBatch(transactionalBatch));
+    public CosmosBatchResponse executeCosmosBatch(CosmosBatch cosmosBatch) {
+        return this.blockBatchResponse(asyncContainer.executeCosmosBatch(cosmosBatch));
     }
 
     /**
      * Executes the transactional batch.
      *
-     * @param transactionalBatch Batch having list of operation and partition key which will be executed by this container.
+     * @param cosmosBatch Batch having list of operation and partition key which will be executed by this container.
      * @param requestOptions Options that apply specifically to batch request.
      *
-     * @return A TransactionalBatchResponse which contains details of execution of the transactional batch.
+     * @return A CosmosBatchResponse which contains details of execution of the transactional batch.
      * <p>
      * If the transactional batch executes successfully, the value returned by {@link
-     * TransactionalBatchResponse#getStatusCode} on the response returned will be set to 200}.
+     * CosmosBatchResponse#getStatusCode} on the response returned will be set to 200}.
      * <p>
      * If an operation within the transactional batch fails during execution, no changes from the batch will be
      * committed and the status of the failing operation is made available by {@link
-     * TransactionalBatchResponse#getStatusCode} or by the exception. To obtain information about the operations
+     * CosmosBatchResponse#getStatusCode} or by the exception. To obtain information about the operations
      * that failed in case of some user error like conflict, not found etc, the response can be enumerated.
-     * This returns {@link TransactionalBatchOperationResult} instances corresponding to each operation in the
+     * This returns {@link CosmosBatchOperationResult} instances corresponding to each operation in the
      * transactional batch in the order they were added to the transactional batch.
      * For a result corresponding to an operation within the transactional batch, use
-     * {@link TransactionalBatchOperationResult#getStatusCode}
+     * {@link CosmosBatchOperationResult#getStatusCode}
      * to access the status of the operation. If the operation was not executed or it was aborted due to the failure of
      * another operation within the transactional batch, the value of this field will be 424;
      * for the operation that caused the batch to abort, the value of this field
      * will indicate the cause of failure.
      * <p>
      * If there are issues such as request timeouts, Gone, session not available, network failure
-     * or if the service somehow returns 5xx then this will throw an exception instead of returning a TransactionalBatchResponse.
+     * or if the service somehow returns 5xx then this will throw an exception instead of returning a CosmosBatchResponse.
      * <p>
-     * Use {@link TransactionalBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
+     * Use {@link CosmosBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
      * transactional batch succeeded.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public TransactionalBatchResponse executeTransactionalBatch(
-        TransactionalBatch transactionalBatch,
-        TransactionalBatchRequestOptions requestOptions) {
+    public CosmosBatchResponse executeCosmosBatch(
+        CosmosBatch cosmosBatch,
+        CosmosBatchRequestOptions requestOptions) {
 
-        return this.blockBatchResponse(asyncContainer.executeTransactionalBatch(transactionalBatch, requestOptions));
+        return this.blockBatchResponse(asyncContainer.executeCosmosBatch(cosmosBatch, requestOptions));
     }
 
     /**
@@ -634,25 +650,24 @@ public class CosmosContainer {
      * @param <TContext> The context for the bulk processing.
      * @param operations list of operation which will be executed by this container.
      *
-     * @return A list of {@link CosmosBulkOperationResponse} which contains operation and it's response or exception.
+     * @return An Iterable of {@link CosmosBulkOperationResponse} which contains operation and it's response or exception.
      * <p>
-     *     To create a operation which can be executed here, use {@link BulkOperations}. For eg.
-     *     for a upsert operation use {@link BulkOperations#getUpsertItemOperation(Object, PartitionKey)}
+     *     To create a operation which can be executed here, use {@link com.azure.cosmos.models.CosmosBulkOperations}. For eg.
+     *     for a upsert operation use {@link com.azure.cosmos.models.CosmosBulkOperations#getUpsertItemOperation(Object, PartitionKey)}
      * </p>
      * <p>
      *     We can get the corresponding operation using {@link CosmosBulkOperationResponse#getOperation()} and
      *     it's response using {@link CosmosBulkOperationResponse#getResponse()}. If the operation was executed
-     *     successfully, the value returned by {@link CosmosBulkItemResponse#isSuccessStatusCode()} will be true. To get
-     *     actual status use {@link CosmosBulkItemResponse#getStatusCode()}.
+     *     successfully, the value returned by {@link com.azure.cosmos.models.CosmosBulkItemResponse#isSuccessStatusCode()} will be true. To get
+     *     actual status use {@link com.azure.cosmos.models.CosmosBulkItemResponse#getStatusCode()}.
      * </p>
      * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
      * get the exception.
      */
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public <TContext> List<CosmosBulkOperationResponse<TContext>> processBulkOperations(
+    public <TContext> Iterable<CosmosBulkOperationResponse<TContext>> executeBulkOperations(
         Iterable<CosmosItemOperation> operations) {
 
-        return this.blockBulkResponse(asyncContainer.processBulkOperations(Flux.fromIterable(operations)));
+        return this.blockBulkResponse(asyncContainer.executeBulkOperations(Flux.fromIterable(operations)));
     }
 
     /**
@@ -664,26 +679,25 @@ public class CosmosContainer {
      * @param bulkOptions Options that apply for this Bulk request which specifies options regarding execution like
      *                    concurrency, batching size, interval and context.
      *
-     * @return A list of {@link CosmosBulkOperationResponse} which contains operation and it's response or exception.
+     * @return An Iterable of {@link CosmosBulkOperationResponse} which contains operation and it's response or exception.
      * <p>
-     *     To create a operation which can be executed here, use {@link BulkOperations}. For eg.
-     *     for a upsert operation use {@link BulkOperations#getUpsertItemOperation(Object, PartitionKey)}
+     *     To create a operation which can be executed here, use {@link com.azure.cosmos.models.CosmosBulkOperations}. For eg.
+     *     for a upsert operation use {@link com.azure.cosmos.models.CosmosBulkOperations#getUpsertItemOperation(Object, PartitionKey)}
      * </p>
      * <p>
      *     We can get the corresponding operation using {@link CosmosBulkOperationResponse#getOperation()} and
      *     it's response using {@link CosmosBulkOperationResponse#getResponse()}. If the operation was executed
-     *     successfully, the value returned by {@link CosmosBulkItemResponse#isSuccessStatusCode()} will be true. To get
-     *     actual status use {@link CosmosBulkItemResponse#getStatusCode()}.
+     *     successfully, the value returned by {@link com.azure.cosmos.models.CosmosBulkItemResponse#isSuccessStatusCode()} will be true. To get
+     *     actual status use {@link com.azure.cosmos.models.CosmosBulkItemResponse#getStatusCode()}.
      * </p>
      * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
      * get the exception.
      */
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public <TContext> List<CosmosBulkOperationResponse<TContext>> processBulkOperations(
+    public <TContext> Iterable<CosmosBulkOperationResponse<TContext>> executeBulkOperations(
         Iterable<CosmosItemOperation> operations,
-        BulkProcessingOptions<TContext> bulkOptions) {
+        CosmosBulkExecutionOptions bulkOptions) {
 
-        return this.blockBulkResponse(asyncContainer.processBulkOperations(Flux.fromIterable(operations), bulkOptions));
+        return this.blockBulkResponse(asyncContainer.executeBulkOperations(Flux.fromIterable(operations), bulkOptions));
     }
 
     /**
@@ -701,7 +715,7 @@ public class CosmosContainer {
     // TODO: should make partitionkey public in CosmosAsyncItem and fix the below call
 
     private <T> CosmosPagedIterable<T> getCosmosPagedIterable(CosmosPagedFlux<T> cosmosPagedFlux) {
-        return UtilBridgeInternal.createCosmosPagedIterable(cosmosPagedFlux);
+        return new CosmosPagedIterable<>(cosmosPagedFlux);
     }
 
     /**
@@ -727,7 +741,17 @@ public class CosmosContainer {
     /**
      * Enable the throughput control group with local control mode.
      *
-     * {@codesnippet com.azure.cosmos.throughputControl.localControl}
+     * <!-- src_embed com.azure.cosmos.throughputControl.localControl -->
+     * <pre>
+     * ThroughputControlGroupConfig groupConfig =
+     *     new ThroughputControlGroupConfigBuilder&#40;&#41;
+     *         .setGroupName&#40;&quot;localControlGroup&quot;&#41;
+     *         .setTargetThroughputThreshold&#40;0.1&#41;
+     *         .build&#40;&#41;;
+     *
+     * container.enableLocalThroughputControlGroup&#40;groupConfig&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.throughputControl.localControl -->
      *
      * @param groupConfig A {@link GlobalThroughputControlConfig}.
      */
@@ -740,7 +764,23 @@ public class CosmosContainer {
      * Enable the throughput control group with global control mode.
      * The defined throughput limit will be shared across different clients.
      *
-     * {@codesnippet com.azure.cosmos.throughputControl.globalControl}
+     * <!-- src_embed com.azure.cosmos.throughputControl.globalControl -->
+     * <pre>
+     * ThroughputControlGroupConfig groupConfig =
+     *     new ThroughputControlGroupConfigBuilder&#40;&#41;
+     *         .setGroupName&#40;&quot;localControlGroup&quot;&#41;
+     *         .setTargetThroughputThreshold&#40;0.1&#41;
+     *         .build&#40;&#41;;
+     *
+     * GlobalThroughputControlConfig globalControlConfig =
+     *     this.client.createGlobalThroughputControlConfigBuilder&#40;database.getId&#40;&#41;, container.getId&#40;&#41;&#41;
+     *         .setControlItemRenewInterval&#40;Duration.ofSeconds&#40;5&#41;&#41;
+     *         .setControlItemExpireInterval&#40;Duration.ofSeconds&#40;10&#41;&#41;
+     *         .build&#40;&#41;;
+     *
+     * container.enableGlobalThroughputControlGroup&#40;groupConfig, globalControlConfig&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.throughputControl.globalControl -->
      *
      * @param groupConfig The throughput control group configuration, see {@link GlobalThroughputControlGroup}.
      * @param globalControlConfig The global throughput control configuration, see {@link GlobalThroughputControlConfig}.

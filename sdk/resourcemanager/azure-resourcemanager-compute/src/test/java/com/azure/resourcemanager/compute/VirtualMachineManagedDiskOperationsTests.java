@@ -60,7 +60,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .withNewPrimaryPublicIPAddress(publicIpDnsLabel)
                 .withPopularLinuxImage(linuxImage)
                 .withRootUsername(uname)
-                .withRootPassword(password)
+                .withSsh(sshPublicKey())
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();
@@ -142,7 +142,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .withNewPrimaryPublicIPAddress(publicIpDnsLabel)
                 .withPopularLinuxImage(linuxImage)
                 .withRootUsername(uname)
-                .withRootPassword(password)
+                .withSsh(sshPublicKey())
                 // Start: Add 5 empty managed disks
                 .withNewDataDisk(100) // CreateOption: EMPTY
                 .withNewDataDisk(100, 1, CachingTypes.READ_ONLY) // CreateOption: EMPTY
@@ -302,7 +302,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .withNewPrimaryPublicIPAddress(publicIpDnsLabel)
                 .withPopularLinuxImage(linuxImage)
                 .withRootUsername(uname)
-                .withRootPassword(password)
+                .withSsh(sshPublicKey())
                 // Start: Add bunch of empty managed disks
                 .withNewDataDisk(100) // CreateOption: EMPTY
                 .withNewDataDisk(100, 1, CachingTypes.READ_ONLY) // CreateOption: EMPTY
@@ -359,7 +359,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .withoutPrimaryPublicIPAddress()
                 .withGeneralizedLinuxCustomImage(customImage.id())
                 .withRootUsername(uname)
-                .withRootPassword(password)
+                .withSsh(sshPublicKey())
                 // No explicit data disks, let CRP create it from the image's data disk images
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D4a_v4"))
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
@@ -393,7 +393,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .withoutPrimaryPublicIPAddress()
                 .withGeneralizedLinuxCustomImage(customImage.id())
                 .withRootUsername(uname)
-                .withRootPassword(password);
+                .withSsh(sshPublicKey());
         for (ImageDataDisk dataDiskImage : customImage.dataDiskImages().values()) {
             // Explicitly override the properties of the data disks created from disk image
             //
@@ -477,7 +477,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .withNewPrimaryPublicIPAddress(publicIpDnsLabel)
                 .withPopularLinuxImage(linuxImage)
                 .withRootUsername(uname)
-                .withRootPassword(password)
+                .withSsh(sshPublicKey())
                 // Start: Add bunch of empty managed disks
                 .withNewDataDisk(100) // CreateOption: EMPTY
                 .withNewDataDisk(100, 1, CachingTypes.READ_WRITE) // CreateOption: EMPTY
@@ -524,7 +524,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .withoutPrimaryPublicIPAddress()
                 .withLatestLinuxImage("Canonical", "UbuntuServer", "14.04.2-LTS")
                 .withRootUsername(uname)
-                .withRootPassword(password)
+                .withSsh(sshPublicKey())
                 .withUnmanagedDisks() /* UN-MANAGED OS and DATA DISKS */
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .withNewStorageAccount(storageAccountName)
@@ -586,7 +586,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(linuxImage)
                 .withRootUsername(uname)
-                .withRootPassword(password)
+                .withSsh(sshPublicKey())
                 .withNewDataDisk(100)
                 .withNewDataDisk(100, 1, CachingTypes.READ_ONLY)
                 .withNewDataDisk(100, 2, CachingTypes.READ_WRITE, StorageAccountTypes.STANDARD_LRS)

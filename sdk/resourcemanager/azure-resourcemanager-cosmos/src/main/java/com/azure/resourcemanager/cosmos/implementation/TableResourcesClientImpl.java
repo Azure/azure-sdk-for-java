@@ -672,7 +672,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB Table.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<TableGetResultsInner>, TableGetResultsInner> beginCreateUpdateTableAsync(
         String resourceGroupName,
         String accountName,
@@ -687,7 +687,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
                 this.client.getHttpPipeline(),
                 TableGetResultsInner.class,
                 TableGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -703,7 +703,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB Table.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<TableGetResultsInner>, TableGetResultsInner> beginCreateUpdateTableAsync(
         String resourceGroupName,
         String accountName,
@@ -732,7 +732,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB Table.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TableGetResultsInner>, TableGetResultsInner> beginCreateUpdateTable(
         String resourceGroupName,
         String accountName,
@@ -755,7 +755,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB Table.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TableGetResultsInner>, TableGetResultsInner> beginCreateUpdateTable(
         String resourceGroupName,
         String accountName,
@@ -972,13 +972,14 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteTableAsync(
         String resourceGroupName, String accountName, String tableName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteTableWithResponseAsync(resourceGroupName, accountName, tableName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -993,7 +994,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteTableAsync(
         String resourceGroupName, String accountName, String tableName, Context context) {
         context = this.client.mergeContext(context);
@@ -1015,7 +1016,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteTable(
         String resourceGroupName, String accountName, String tableName) {
         return beginDeleteTableAsync(resourceGroupName, accountName, tableName).getSyncPoller();
@@ -1033,7 +1034,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteTable(
         String resourceGroupName, String accountName, String tableName, Context context) {
         return beginDeleteTableAsync(resourceGroupName, accountName, tableName, context).getSyncPoller();
@@ -1420,7 +1421,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateTableThroughputAsync(
             String resourceGroupName,
@@ -1437,7 +1438,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
                 this.client.getHttpPipeline(),
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1453,7 +1454,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateTableThroughputAsync(
             String resourceGroupName,
@@ -1487,7 +1488,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateTableThroughput(
             String resourceGroupName,
@@ -1511,7 +1512,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateTableThroughput(
             String resourceGroupName,
@@ -1735,7 +1736,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateTableToAutoscaleAsync(String resourceGroupName, String accountName, String tableName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1747,7 +1748,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
                 this.client.getHttpPipeline(),
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1762,7 +1763,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateTableToAutoscaleAsync(
             String resourceGroupName, String accountName, String tableName, Context context) {
@@ -1790,7 +1791,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateTableToAutoscale(String resourceGroupName, String accountName, String tableName) {
         return beginMigrateTableToAutoscaleAsync(resourceGroupName, accountName, tableName).getSyncPoller();
@@ -1808,7 +1809,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateTableToAutoscale(String resourceGroupName, String accountName, String tableName, Context context) {
         return beginMigrateTableToAutoscaleAsync(resourceGroupName, accountName, tableName, context).getSyncPoller();
@@ -2003,7 +2004,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateTableToManualThroughputAsync(String resourceGroupName, String accountName, String tableName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -2015,7 +2016,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
                 this.client.getHttpPipeline(),
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2030,7 +2031,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateTableToManualThroughputAsync(
             String resourceGroupName, String accountName, String tableName, Context context) {
@@ -2058,7 +2059,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateTableToManualThroughput(String resourceGroupName, String accountName, String tableName) {
         return beginMigrateTableToManualThroughputAsync(resourceGroupName, accountName, tableName).getSyncPoller();
@@ -2076,7 +2077,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateTableToManualThroughput(
             String resourceGroupName, String accountName, String tableName, Context context) {

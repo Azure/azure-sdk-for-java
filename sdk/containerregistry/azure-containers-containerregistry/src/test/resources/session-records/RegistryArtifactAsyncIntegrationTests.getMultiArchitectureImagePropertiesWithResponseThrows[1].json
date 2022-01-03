@@ -1,14 +1,14 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-world/_manifests/unknown:digest",
+    "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-world/_manifests/unknown:digest?api-version=2021-07-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "923f376e-aff3-4277-abf0-b9e511bb4cd1"
+      "x-ms-client-request-id" : "e47d08f4-9f76-462f-a98a-b45e21288e36"
     },
     "Response" : {
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "62962b2d-aab4-495c-b87e-eb5dab8d826d",
+      "X-Ms-Correlation-Request-Id" : "917e802d-f12a-4a31-b96f-dc7e43a9372f",
       "content-length" : "19",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
       "Server" : "openresty",
@@ -17,20 +17,20 @@
       "retry-after" : "0",
       "StatusCode" : "404",
       "Body" : "404 page not found\n",
-      "Date" : "Thu, 10 Jun 2021 20:56:08 GMT",
+      "Date" : "Tue, 05 Oct 2021 02:00:00 GMT",
       "Content-Type" : "text/plain; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-world/_manifests/unknown:digest",
+    "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-world/_manifests/unknown:digest?api-version=2021-07-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "5b1733e4-799e-4cc1-bd2a-d80f6b123b41"
+      "x-ms-client-request-id" : "9c528d11-0248-4eb3-97d2-1696ed28e7e2"
     },
     "Response" : {
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "7dcb59bf-85c1-4263-b70c-1c5266c9982f",
+      "X-Ms-Correlation-Request-Id" : "a0926449-09ed-40c9-b04a-9fdd59d0afc8",
       "content-length" : "19",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
       "Server" : "openresty",
@@ -39,20 +39,20 @@
       "retry-after" : "0",
       "StatusCode" : "404",
       "Body" : "404 page not found\n",
-      "Date" : "Thu, 10 Jun 2021 20:56:08 GMT",
+      "Date" : "Tue, 05 Oct 2021 02:00:00 GMT",
       "Content-Type" : "text/plain; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-world/_manifests/unknown:digest",
+    "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-world/_manifests/unknown:digest?api-version=2021-07-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "fcc54c8a-3ee7-4dab-b192-d106b1ff894f"
+      "x-ms-client-request-id" : "20a87e4f-5d85-4393-9491-208de5040964"
     },
     "Response" : {
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "d754983e-61bc-4f42-b36d-8642921ab661",
+      "X-Ms-Correlation-Request-Id" : "c17ff329-ff65-446d-9625-184d66d0bf18",
       "content-length" : "19",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
       "Server" : "openresty",
@@ -61,20 +61,20 @@
       "retry-after" : "0",
       "StatusCode" : "404",
       "Body" : "404 page not found\n",
-      "Date" : "Thu, 10 Jun 2021 20:56:08 GMT",
+      "Date" : "Tue, 05 Oct 2021 02:00:00 GMT",
       "Content-Type" : "text/plain; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-world/_manifests/unknown:digest",
+    "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-world/_manifests/unknown:digest?api-version=2021-07-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "9775f6af-daf4-4181-89ad-3d9aa1f4a632"
+      "x-ms-client-request-id" : "b7266cc4-5020-4ea6-8a85-065ade7580e1"
     },
     "Response" : {
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "2790a9c9-9bf0-45e6-8c2e-ecccb36d26ad",
+      "X-Ms-Correlation-Request-Id" : "547745ba-72bb-4786-9b28-518769cef95c",
       "content-length" : "19",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
       "Server" : "openresty",
@@ -83,7 +83,7 @@
       "retry-after" : "0",
       "StatusCode" : "404",
       "Body" : "404 page not found\n",
-      "Date" : "Thu, 10 Jun 2021 20:56:08 GMT",
+      "Date" : "Tue, 05 Oct 2021 02:00:00 GMT",
       "Content-Type" : "text/plain; charset=utf-8"
     },
     "Exception" : null

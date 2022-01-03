@@ -19,7 +19,7 @@ parameters:
     default: []
   - name: BuildOptions
     type: string
-    default: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true'
+    default: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true'
   - name: TestOptions
     type: string
     default: '$(DefaultTestOptions) -Dparallel-test-playback -DAZURE_TEST_DEBUG=$(IsDebug)'
@@ -34,6 +34,12 @@ parameters:
   - name: UsePlatformContainer
     type: boolean
     default: false
+  - name: SkipAggregateReports
+    type: boolean
+    default: false
+  - name: PreBuildSteps
+    type: object
+    default: []
 
 jobs:
   - job: 'Test'
@@ -64,6 +70,8 @@ jobs:
           SDKType: ${{ parameters.SDKType }}
 
       - template: ../steps/install-reporting-tools.yml
+
+      - ${{ parameters.PreBuildSteps }}
 
       - ${{ parameters.PreTestSteps }}
 
@@ -104,16 +112,16 @@ jobs:
           jdkVersionOption: $(JavaTestVersion)
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
-          goals: $(TestGoals)
+          goals: $(TestGoals) $(AdditionalTestGoals)
         # we want to run this when TestFromSource isn't true
         condition: and(succeeded(), ne(variables['TestFromSource'],'true'))
 
       - task: Maven@3
         displayName: 'Generate aggregate code coverage report'
-        condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.SDKType }}', 'client'))
+        condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.SDKType }}', 'client'), eq('${{ parameters.SkipAggregateReports }}', 'false'))
         inputs:
           mavenPomFile: sdk/${{ parameters.ServiceDirectory }}/pom.xml
-          options: -Pcoverage
+          options: '$(DefaultOptions) -Pcoverage'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaTestVersion)
@@ -158,10 +166,12 @@ jobs:
           # as well as libraries which depend on them and not the other stages in the Maven
           # lifecycle that test or verify targets would execute. The libraries were already
           # compiled and installed in the previous task, this tasks only runs tests.
-          goals: $(TestGoals)
+          goals: $(TestGoals) $(AdditionalTestGoals)
         condition: and(succeeded(), and(eq(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
 
       - template: ../steps/upload-repository-on-failure.yml
+
+      - template: ../steps/retain-heap-dump-hprofs.yml
 
       - task: PublishTestResults@2
         condition: and(always(), or(ne(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
@@ -175,6 +185,6 @@ jobs:
         condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.SDKType }}', 'client'))
         inputs:
           codeCoverageTool: JaCoCo
-          summaryFileLocation: sdk/${{ parameters.ServiceDirectory }}/target/site/jacoco-aggregate/jacoco.xml
-          reportDirectory: sdk/${{ parameters.ServiceDirectory }}/target/site/jacoco-aggregate/
+          summaryFileLocation: sdk/${{ parameters.ServiceDirectory }}/target/site/test-coverage/jacoco.xml
+          reportDirectory: sdk/${{ parameters.ServiceDirectory }}/target/site/test-coverage/
           failIfCoverageEmpty: false

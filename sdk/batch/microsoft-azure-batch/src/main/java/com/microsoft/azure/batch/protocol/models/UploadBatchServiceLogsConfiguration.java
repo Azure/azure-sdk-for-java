@@ -18,10 +18,11 @@ public class UploadBatchServiceLogsConfiguration {
     /**
      * The URL of the container within Azure Blob Storage to which to upload
      * the Batch Service log file(s).
-     * The URL must include a Shared Access Signature (SAS) granting write
-     * permissions to the container. The SAS duration must allow enough time
-     * for the upload to finish. The start time for SAS is optional and
-     * recommended to not be specified.
+     * If a user assigned managed identity is not being used, the URL must
+     * include a Shared Access Signature (SAS) granting write permissions to
+     * the container. The SAS duration must allow enough time for the upload to
+     * finish. The start time for SAS is optional and recommended to not be
+     * specified.
      */
     @JsonProperty(value = "containerUrl", required = true)
     private String containerUrl;
@@ -51,7 +52,15 @@ public class UploadBatchServiceLogsConfiguration {
     private DateTime endTime;
 
     /**
-     * Get the URL must include a Shared Access Signature (SAS) granting write permissions to the container. The SAS duration must allow enough time for the upload to finish. The start time for SAS is optional and recommended to not be specified.
+     * The reference to the user assigned identity to use to access Azure Blob
+     * Storage specified by containerUrl.
+     * The identity must have write access to the Azure Blob Storage container.
+     */
+    @JsonProperty(value = "identityReference")
+    private ComputeNodeIdentityReference identityReference;
+
+    /**
+     * Get if a user assigned managed identity is not being used, the URL must include a Shared Access Signature (SAS) granting write permissions to the container. The SAS duration must allow enough time for the upload to finish. The start time for SAS is optional and recommended to not be specified.
      *
      * @return the containerUrl value
      */
@@ -60,7 +69,7 @@ public class UploadBatchServiceLogsConfiguration {
     }
 
     /**
-     * Set the URL must include a Shared Access Signature (SAS) granting write permissions to the container. The SAS duration must allow enough time for the upload to finish. The start time for SAS is optional and recommended to not be specified.
+     * Set if a user assigned managed identity is not being used, the URL must include a Shared Access Signature (SAS) granting write permissions to the container. The SAS duration must allow enough time for the upload to finish. The start time for SAS is optional and recommended to not be specified.
      *
      * @param containerUrl the containerUrl value to set
      * @return the UploadBatchServiceLogsConfiguration object itself.
@@ -107,6 +116,26 @@ public class UploadBatchServiceLogsConfiguration {
      */
     public UploadBatchServiceLogsConfiguration withEndTime(DateTime endTime) {
         this.endTime = endTime;
+        return this;
+    }
+
+    /**
+     * Get the identity must have write access to the Azure Blob Storage container.
+     *
+     * @return the identityReference value
+     */
+    public ComputeNodeIdentityReference identityReference() {
+        return this.identityReference;
+    }
+
+    /**
+     * Set the identity must have write access to the Azure Blob Storage container.
+     *
+     * @param identityReference the identityReference value to set
+     * @return the UploadBatchServiceLogsConfiguration object itself.
+     */
+    public UploadBatchServiceLogsConfiguration withIdentityReference(ComputeNodeIdentityReference identityReference) {
+        this.identityReference = identityReference;
         return this;
     }
 

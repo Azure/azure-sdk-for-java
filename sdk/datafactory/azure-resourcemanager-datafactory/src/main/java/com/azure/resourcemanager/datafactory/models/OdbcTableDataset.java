@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.OdbcTableDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,36 +17,23 @@ import java.util.Map;
 /** The ODBC table dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("OdbcTable")
-@JsonFlatten
 @Fluent
-public class OdbcTableDataset extends Dataset {
+public final class OdbcTableDataset extends Dataset {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OdbcTableDataset.class);
 
     /*
-     * The ODBC table name. Type: string (or Expression with resultType
-     * string).
+     * ODBC table dataset properties.
      */
-    @JsonProperty(value = "typeProperties.tableName")
-    private Object tableName;
+    @JsonProperty(value = "typeProperties")
+    private OdbcTableDatasetTypeProperties innerTypeProperties;
 
     /**
-     * Get the tableName property: The ODBC table name. Type: string (or Expression with resultType string).
+     * Get the innerTypeProperties property: ODBC table dataset properties.
      *
-     * @return the tableName value.
+     * @return the innerTypeProperties value.
      */
-    public Object tableName() {
-        return this.tableName;
-    }
-
-    /**
-     * Set the tableName property: The ODBC table name. Type: string (or Expression with resultType string).
-     *
-     * @param tableName the tableName value to set.
-     * @return the OdbcTableDataset object itself.
-     */
-    public OdbcTableDataset withTableName(Object tableName) {
-        this.tableName = tableName;
-        return this;
+    private OdbcTableDatasetTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -99,6 +86,29 @@ public class OdbcTableDataset extends Dataset {
     }
 
     /**
+     * Get the tableName property: The ODBC table name. Type: string (or Expression with resultType string).
+     *
+     * @return the tableName value.
+     */
+    public Object tableName() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().tableName();
+    }
+
+    /**
+     * Set the tableName property: The ODBC table name. Type: string (or Expression with resultType string).
+     *
+     * @param tableName the tableName value to set.
+     * @return the OdbcTableDataset object itself.
+     */
+    public OdbcTableDataset withTableName(Object tableName) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new OdbcTableDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withTableName(tableName);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -106,5 +116,8 @@ public class OdbcTableDataset extends Dataset {
     @Override
     public void validate() {
         super.validate();
+        if (innerTypeProperties() != null) {
+            innerTypeProperties().validate();
+        }
     }
 }

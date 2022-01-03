@@ -5,6 +5,7 @@ package com.azure.spring.autoconfigure.aad;
 
 import com.azure.spring.aad.AADOAuth2ClientConfiguration;
 import com.azure.spring.aad.webapi.AADResourceServerConfiguration;
+import com.azure.spring.aad.webapi.AADResourceServerProperties;
 import com.azure.spring.aad.webapp.AADWebApplicationConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -18,7 +19,10 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration
 @ConditionalOnResource(resources = "classpath:aad.enable.config")
-@EnableConfigurationProperties(AADAuthenticationProperties.class)
+@EnableConfigurationProperties({
+    AADAuthenticationProperties.class,
+    AADResourceServerProperties.class
+})
 @Import({
     AADWebApplicationConfiguration.class,
     AADResourceServerConfiguration.class,

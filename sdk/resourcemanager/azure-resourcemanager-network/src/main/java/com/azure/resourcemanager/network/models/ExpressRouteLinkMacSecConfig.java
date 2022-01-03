@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** ExpressRouteLink Mac Security Configuration. */
+/** Definition of ExpressRouteLink Mac Security configuration. ExpressRouteLink Mac Security Configuration. */
 @Fluent
 public final class ExpressRouteLinkMacSecConfig {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteLinkMacSecConfig.class);

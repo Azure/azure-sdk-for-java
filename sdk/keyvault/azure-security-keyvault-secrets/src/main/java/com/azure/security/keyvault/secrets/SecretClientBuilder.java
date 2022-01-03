@@ -42,21 +42,56 @@ import java.util.Map;
  * <p> The minimal configuration options required by {@link SecretClientBuilder secretClientBuilder} to build
  * {@link SecretAsyncClient} are {@link String vaultUrl} and {@link TokenCredential credential}. </p>
  *
- * {@codesnippet com.azure.security.keyvault.secrets.async.secretclient.construct}
+ * <!-- src_embed com.azure.security.keyvault.secrets.async.secretclient.construct -->
+ * <pre>
+ * SecretAsyncClient secretAsyncClient = new SecretClientBuilder&#40;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .vaultUrl&#40;&quot;https:&#47;&#47;myvault.vault.azure.net&#47;&quot;&#41;
+ *     .httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.secrets.async.secretclient.construct -->
  *
  * <p><strong>Samples to construct the sync client</strong></p>
- * {@codesnippet com.azure.security.keyvault.secretclient.sync.construct}
+ * <!-- src_embed com.azure.security.keyvault.secretclient.sync.construct -->
+ * <pre>
+ * SecretClient secretClient = new SecretClientBuilder&#40;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .vaultUrl&#40;&quot;https:&#47;&#47;myvault.vault.azure.net&#47;&quot;&#41;
+ *     .httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.secretclient.sync.construct -->
  *
  * <p>The {@link HttpLogDetailLevel log detail level}, multiple custom {@link HttpLoggingPolicy policies} and custom
  * {@link HttpClient http client} can be optionally configured in the {@link SecretClientBuilder}.</p>
  *
- * {@codesnippet com.azure.security.keyvault.secrets.async.secretclient.withhttpclient.instantiation}
+ * <!-- src_embed com.azure.security.keyvault.secrets.async.secretclient.withhttpclient.instantiation -->
+ * <pre>
+ * SecretAsyncClient secretAsyncClient = new SecretClientBuilder&#40;&#41;
+ *     .httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;
+ *     .vaultUrl&#40;&quot;https:&#47;&#47;myvault.azure.net&#47;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .httpClient&#40;HttpClient.createDefault&#40;&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.secrets.async.secretclient.withhttpclient.instantiation -->
  *
  * <p>Alternatively, custom {@link HttpPipeline http pipeline} with custom {@link HttpPipelinePolicy} policies and
  * {@link String vaultUrl}
  * can be specified. It provides finer control over the construction of {@link SecretAsyncClient client}</p>
  *
- * {@codesnippet com.azure.security.keyvault.secrets.async.secretclient.pipeline.instantiation}
+ * <!-- src_embed com.azure.security.keyvault.secrets.async.secretclient.pipeline.instantiation -->
+ * <pre>
+ * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
+ *     .policies&#40;new KeyVaultCredentialPolicy&#40;credential&#41;, new RetryPolicy&#40;&#41;&#41;
+ *     .build&#40;&#41;;
+ * SecretAsyncClient secretAsyncClient = new SecretClientBuilder&#40;&#41;
+ *     .pipeline&#40;pipeline&#41;
+ *     .vaultUrl&#40;&quot;https:&#47;&#47;myvault.azure.net&#47;&quot;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.secrets.async.secretclient.pipeline.instantiation -->
  *
  * @see SecretClient
  * @see SecretAsyncClient

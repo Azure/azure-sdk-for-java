@@ -28,6 +28,14 @@ public final class ApiVersionSetContractImpl
         return this.innerModel().type();
     }
 
+    public String displayName() {
+        return this.innerModel().displayName();
+    }
+
+    public VersioningScheme versioningScheme() {
+        return this.innerModel().versioningScheme();
+    }
+
     public String description() {
         return this.innerModel().description();
     }
@@ -38,14 +46,6 @@ public final class ApiVersionSetContractImpl
 
     public String versionHeaderName() {
         return this.innerModel().versionHeaderName();
-    }
-
-    public String displayName() {
-        return this.innerModel().displayName();
-    }
-
-    public VersioningScheme versioningScheme() {
-        return this.innerModel().versioningScheme();
     }
 
     public ApiVersionSetContractInner innerModel() {
@@ -162,6 +162,26 @@ public final class ApiVersionSetContractImpl
         return this;
     }
 
+    public ApiVersionSetContractImpl withDisplayName(String displayName) {
+        if (isInCreateMode()) {
+            this.innerModel().withDisplayName(displayName);
+            return this;
+        } else {
+            this.updateParameters.withDisplayName(displayName);
+            return this;
+        }
+    }
+
+    public ApiVersionSetContractImpl withVersioningScheme(VersioningScheme versioningScheme) {
+        if (isInCreateMode()) {
+            this.innerModel().withVersioningScheme(versioningScheme);
+            return this;
+        } else {
+            this.updateParameters.withVersioningScheme(versioningScheme);
+            return this;
+        }
+    }
+
     public ApiVersionSetContractImpl withDescription(String description) {
         if (isInCreateMode()) {
             this.innerModel().withDescription(description);
@@ -188,26 +208,6 @@ public final class ApiVersionSetContractImpl
             return this;
         } else {
             this.updateParameters.withVersionHeaderName(versionHeaderName);
-            return this;
-        }
-    }
-
-    public ApiVersionSetContractImpl withDisplayName(String displayName) {
-        if (isInCreateMode()) {
-            this.innerModel().withDisplayName(displayName);
-            return this;
-        } else {
-            this.updateParameters.withDisplayName(displayName);
-            return this;
-        }
-    }
-
-    public ApiVersionSetContractImpl withVersioningScheme(VersioningScheme versioningScheme) {
-        if (isInCreateMode()) {
-            this.innerModel().withVersioningScheme(versioningScheme);
-            return this;
-        } else {
-            this.updateParameters.withVersioningScheme(versioningScheme);
             return this;
         }
     }

@@ -14,17 +14,21 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 
 /**
  * Auto-configuration class for Storage actuator.
  */
 @Configuration
 @ConditionalOnClass({ BlobServiceClientBuilder.class, ShareServiceClientBuilder.class, HealthIndicator.class })
-@PropertySource("classpath:/azure-spring-actuator.properties")
 @AutoConfigureAfter(StorageAutoConfiguration.class)
 public class StorageHealthConfiguration {
 
+    /**
+     * Declare BlobStorageHealthIndicator bean.
+     *
+     * @param blobServiceClientBuilder the BlobServiceClientBuilder
+     * @return BlobStorageHealthIndicator bean
+     */
     @Bean
     @ConditionalOnEnabledHealthIndicator("azure-storage")
     @ConditionalOnBean(BlobServiceClientBuilder.class)
@@ -32,6 +36,11 @@ public class StorageHealthConfiguration {
         return new BlobStorageHealthIndicator(blobServiceClientBuilder);
     }
 
+    /**
+     * Declare FileStorageHealthIndicator bean.
+     * @param shareServiceClientBuilder the ShareServiceClientBuilder
+     * @return FileStorageHealthIndicator bean
+     */
     @Bean
     @ConditionalOnEnabledHealthIndicator("azure-storage")
     @ConditionalOnBean(ShareServiceClientBuilder.class)

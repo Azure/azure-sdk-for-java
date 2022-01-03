@@ -77,9 +77,9 @@ public final class CertificatesClientImpl
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<CertificateCollection>> list(
             @HostParam("$host") String endpoint,
-            @QueryParam(value = "$filter", encoded = true) String filter,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @QueryParam(value = "$filter", encoded = true) String filter,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -209,9 +209,9 @@ public final class CertificatesClientImpl
                     service
                         .list(
                             this.client.getEndpoint(),
-                            filter,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            filter,
                             accept,
                             context))
             .<PagedResponse<CertificateInner>>map(
@@ -256,9 +256,9 @@ public final class CertificatesClientImpl
         return service
             .list(
                 this.client.getEndpoint(),
-                filter,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                filter,
                 accept,
                 context)
             .map(

@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceId;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.Undefined;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
 import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
@@ -33,6 +34,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -282,30 +284,58 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                 orderByItemToString = "\"" + rawItem.toString().replaceAll("\"",
                         "\\\"") + "\"";
             } else {
-                orderByItemToString = rawItem.toString();
+                if (rawItem != null) {
+                    orderByItemToString = rawItem.toString();
+                } else {
+                    orderByItemToString = "null";
+                }
             }
+            if (rawItem == Undefined.value()) {
+                // Handling undefined needs filter literals
+                // What we really want is to support expression > undefined,
+                // but the engine evaluates to undefined instead of true or false,
+                // so we work around this by using the IS_DEFINED() system function.
 
-            left.append(String.format("%s %s %s",
-                    expression,
-                    (sortOrder == SortOrder.Descending ? "<" : ">"),
-                    orderByItemToString));
+                left.append(sortOrder == SortOrder.Descending ? "false" : "IS_DEFINED(" + expression + ") ");
+                target.append(sortOrder == SortOrder.Descending ? "NOT IS_DEFINED(" + expression + ")" : "true ");
+                right.append(sortOrder == SortOrder.Descending ? "NOT IS_DEFINED(" + expression + ")" : "true ");
 
-            if (inclusive) {
-                target.append(String.format("%s %s %s",
-                        expression,
-                        (sortOrder == SortOrder.Descending ? "<=" : ">="),
-                        orderByItemToString));
             } else {
-                target.append(String.format("%s %s %s",
-                        expression,
-                        (sortOrder == SortOrder.Descending ? "<" : ">"),
-                        orderByItemToString));
+
+                left.append(getFilterString(expression,
+                                            (sortOrder == SortOrder.Descending ? "<" : ">"),
+                                            orderByItemToString));
+
+                if (inclusive) {
+                    target.append(getFilterString(expression,
+                                                  (sortOrder == SortOrder.Descending ? "<=" : ">="),
+                                                  orderByItemToString));
+                } else {
+                    target.append(getFilterString(expression,
+                                                  (sortOrder == SortOrder.Descending ? "<" : ">"),
+                                                  orderByItemToString));
+                }
+
+                right.append(getFilterString(expression,
+                                             (sortOrder == SortOrder.Descending ? "<=" : ">="),
+                                             orderByItemToString));
             }
 
-            right.append(String.format("%s %s %s",
-                    expression,
-                    (sortOrder == SortOrder.Descending ? "<=" : ">="),
-                    orderByItemToString));
+            // Now we need to include all the types that match the sort order.
+            List<String> definedFunctions =
+                IsSystemFunctions.getIsDefinedFunctions(ItemTypeHelper.getOrderByItemType(rawItem),
+                                                        sortOrder == SortOrder.Ascending);
+            StringBuilder isDefinedFuncBuilder = new StringBuilder();
+            for (String idf : definedFunctions) {
+                isDefinedFuncBuilder.append(" OR ");
+                isDefinedFuncBuilder.append(String.format("%s(%s)", idf, expression));
+            }
+
+            String isDefinedFunctions = isDefinedFuncBuilder.toString();
+            left.append(isDefinedFunctions);
+            target.append(isDefinedFunctions);
+            right.append(isDefinedFunctions);
+
         } else {
             // This code path needs to be implemented, but it's error prone and needs
             // testing.
@@ -318,6 +348,80 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
         return new FormattedFilterInfo(left.toString(),
                 target.toString(),
                 right.toString());
+    }
+
+    static class IsSystemFunctions {
+        static final String Defined = "IS_DEFINED";
+        static final String NotDefined = "NOT IS_DEFINED";
+        static final String Null = "IS_NULL";
+        static final String Boolean = "IS_BOOLEAN";
+        static final String Number = "IS_NUMBER";
+        static final String IsString = "IS_STRING";
+        static final String Array = "IS_ARRAY";
+        static final String Object = "IS_OBJECT";
+
+        static final List<String> systemFunctionSortOrder = Arrays.asList(IsSystemFunctions.NotDefined,
+                                                                          IsSystemFunctions.Null,
+                                                                          IsSystemFunctions.Boolean,
+                                                                          IsSystemFunctions.Number,
+                                                                          IsSystemFunctions.IsString,
+                                                                          IsSystemFunctions.Array,
+                                                                          IsSystemFunctions.Object);
+
+        final List<String> extendedTypesSystemFunctionSortOrder = Arrays.asList(IsSystemFunctions.NotDefined,
+                                                                          IsSystemFunctions.Defined);
+
+        private static class SortOrder {
+            public static final int Undefined = 0;
+            public static final int Null = 1;
+            public static final int Boolean = 2;
+            public static final int Number = 3;
+            public static final int String = 4;
+            public static final int Array = 5;
+            public static final int Object = 6;
+        }
+
+        private static class ExtendedTypesSortOrder {
+            public static final int Undefined = 0;
+            public static final int Defined = 1;
+        }
+
+        public static List<String> getIsDefinedFunctions(ItemType itemtype, boolean isAscending) {
+            switch (itemtype) {
+                case NoValue:
+                    return getIsDefinedFunctionsInternal(SortOrder.Undefined, isAscending);
+                case Null:
+                    return getIsDefinedFunctionsInternal(SortOrder.Null, isAscending);
+                case Boolean:
+                    return getIsDefinedFunctionsInternal(SortOrder.Boolean, isAscending);
+                case Number:
+                    return getIsDefinedFunctionsInternal(SortOrder.Number, isAscending);
+                case String:
+                    return getIsDefinedFunctionsInternal(SortOrder.String, isAscending);
+                case ArrayNode:
+                    return getIsDefinedFunctionsInternal(SortOrder.Array, isAscending);
+                case ObjectNode:
+                    return getIsDefinedFunctionsInternal(SortOrder.Object, isAscending);
+            }
+            return null;
+        }
+
+        private static List<String> getIsDefinedFunctionsInternal(int index, boolean isAscending) {
+            return isAscending ? systemFunctionSortOrder.subList(index + 1, systemFunctionSortOrder.size())
+                       : systemFunctionSortOrder.subList(0, index);
+        }
+
+        // For future use
+        List<String> getExtendedTypesIsDefinedFunctions(int index, boolean isAscending) {
+            return isAscending ?
+                       extendedTypesSystemFunctionSortOrder.subList(index + 1,
+                                                                    extendedTypesSystemFunctionSortOrder.size())
+                       : extendedTypesSystemFunctionSortOrder.subList(0, index);
+        }
+    }
+
+    private String getFilterString(String s1, String s2, String s3) {
+        return String.format("%s %s %s", s1, s2, s3);
     }
 
     @Override

@@ -7,15 +7,16 @@ package com.azure.resourcemanager.synapse.implementation;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.BigDataPoolResourceInfoInner;
+import com.azure.resourcemanager.synapse.fluent.models.LibraryInfo;
 import com.azure.resourcemanager.synapse.models.AutoPauseProperties;
 import com.azure.resourcemanager.synapse.models.AutoScaleProperties;
 import com.azure.resourcemanager.synapse.models.BigDataPoolPatchInfo;
 import com.azure.resourcemanager.synapse.models.BigDataPoolResourceInfo;
 import com.azure.resourcemanager.synapse.models.DynamicExecutorAllocation;
-import com.azure.resourcemanager.synapse.models.LibraryInfo;
 import com.azure.resourcemanager.synapse.models.LibraryRequirements;
 import com.azure.resourcemanager.synapse.models.NodeSize;
 import com.azure.resourcemanager.synapse.models.NodeSizeFamily;
+import com.azure.resourcemanager.synapse.models.SparkConfigProperties;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -105,7 +106,7 @@ public final class BigDataPoolResourceInfoImpl
         }
     }
 
-    public LibraryRequirements sparkConfigProperties() {
+    public SparkConfigProperties sparkConfigProperties() {
         return this.innerModel().sparkConfigProperties();
     }
 
@@ -325,7 +326,7 @@ public final class BigDataPoolResourceInfoImpl
         return this;
     }
 
-    public BigDataPoolResourceInfoImpl withSparkConfigProperties(LibraryRequirements sparkConfigProperties) {
+    public BigDataPoolResourceInfoImpl withSparkConfigProperties(SparkConfigProperties sparkConfigProperties) {
         this.innerModel().withSparkConfigProperties(sparkConfigProperties);
         return this;
     }

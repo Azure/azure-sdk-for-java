@@ -249,6 +249,8 @@ public class HttpConstants {
         public static final String USE_POLYGONS_SMALLER_THAN_AHEMISPHERE = "x-ms-documentdb-usepolygonssmallerthanahemisphere";
         public static final String API_TYPE = "x-ms-cosmos-apitype";
         public static final String QUERY_METRICS = "x-ms-documentdb-query-metrics";
+        public static final String POPULATE_INDEX_METRICS = "x-ms-cosmos-populateindexmetrics";
+        public static final String INDEX_UTILIZATION = "x-ms-cosmos-index-utilization";
 
         // Batch operations
         public static final String IS_BATCH_ATOMIC = "x-ms-cosmos-batch-atomic";
@@ -265,6 +267,10 @@ public class HttpConstants {
 
         // Dedicated Gateway Headers
         public static final String DEDICATED_GATEWAY_PER_REQUEST_CACHE_STALENESS = "x-ms-dedicatedgateway-max-age";
+
+        // Client Encryption Headers
+        public static final String IS_CLIENT_ENCRYPTED_HEADER = "x-ms-cosmos-is-client-encrypted";
+        public static final String INTENDED_COLLECTION_RID_HEADER = "x-ms-cosmos-intended-collection-rid";
     }
 
     public static class A_IMHeaderValues {
@@ -328,6 +334,8 @@ public class HttpConstants {
         // 404: LSN in session token is higher
         public static final int READ_SESSION_NOT_AVAILABLE = 1002;
         public static final int OWNER_RESOURCE_NOT_EXISTS = 1003;
+
+        public static final int INCORRECT_CONTAINER_RID_SUB_STATUS = 1024;
 
         // Client generated gateway network error substatus
         public static final int GATEWAY_ENDPOINT_UNAVAILABLE = 10001;

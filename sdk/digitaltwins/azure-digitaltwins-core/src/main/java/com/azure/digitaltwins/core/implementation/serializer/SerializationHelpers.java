@@ -4,12 +4,15 @@
 package com.azure.digitaltwins.core.implementation.serializer;
 
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 
 /**
  * Encodes the continuation token as a json encoded string
  */
 public final class SerializationHelpers {
+    private static final SerializerAdapter SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
+
     /**
      * Encodes the continuation token as a json encoded string that the ADT service expects
      * @param continuationToken The continuation token.
@@ -20,7 +23,7 @@ public final class SerializationHelpers {
      */
     public static String serializeContinuationToken(String continuationToken) {
         try {
-            return new JacksonAdapter().serialize(continuationToken, SerializerEncoding.JSON);
+            return SERIALIZER_ADAPTER.serialize(continuationToken, SerializerEncoding.JSON);
         } catch (Exception e) {
             throw new IllegalArgumentException("Invalid continuation token", e);
         }

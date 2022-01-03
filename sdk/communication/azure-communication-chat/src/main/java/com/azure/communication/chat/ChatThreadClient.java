@@ -27,6 +27,29 @@ import com.azure.core.util.logging.ClientLogger;
 
 /**
  * Sync Client that supports chat thread operations.
+ *
+ * <p><strong>Instantiating a synchronous Chat Thread Client</strong></p>
+ *
+ * <!-- src_embed com.azure.communication.chat.chatthreadclient.instantiation -->
+ * <pre>
+ *
+ * &#47;&#47; Initialize the chat client builder
+ * final ChatClientBuilder builder = new ChatClientBuilder&#40;&#41;
+ *     .endpoint&#40;endpoint&#41;
+ *     .credential&#40;credential&#41;;
+ *
+ * &#47;&#47; Build the chat client
+ * ChatClient chatClient = builder.buildClient&#40;&#41;;
+ *
+ * &#47;&#47; Get the chat thread client for your thread's id
+ * ChatThreadClient chatThreadClient = chatClient.getChatThreadClient&#40;threadId&#41;;
+ *
+ * </pre>
+ * <!-- end com.azure.communication.chat.chatthreadclient.instantiation -->
+ *
+ * <p>View {@link ChatClientBuilder this} for additional ways to construct the client.</p>
+ *
+ * @see ChatClientBuilder
  */
 @ServiceClient(builder = ChatThreadClientBuilder.class, isAsync = false)
 public final class ChatThreadClient {
@@ -214,6 +237,25 @@ public final class ChatThreadClient {
     /**
      * Sends a message to a thread.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Send a chat message based on "options".</p>
+     *
+     * <!-- src_embed com.azure.communication.chat.chatthreadclient.sendmessage#sendchatmessageoptions -->
+     * <pre>
+     *
+     * &#47;&#47; Set the chat message options
+     * SendChatMessageOptions sendChatMessageOptions = new SendChatMessageOptions&#40;&#41;
+     *     .setContent&#40;&quot;Message content&quot;&#41;
+     *     .setSenderDisplayName&#40;&quot;Sender Display Name&quot;&#41;;
+     *
+     * &#47;&#47; Get the request result and the chat message id
+     * SendChatMessageResult sendResult = chatThreadClient.sendMessage&#40;sendChatMessageOptions&#41;;
+     * String messageId = sendResult.getId&#40;&#41;;
+     *
+     * </pre>
+     * <!-- end com.azure.communication.chat.chatthreadclient.sendmessage#sendchatmessageoptions -->
+     *
      * @param options Options for sending the message.
      * @throws ChatErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -378,18 +420,6 @@ public final class ChatThreadClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendTypingNotificationWithResponse(TypingNotificationOptions options, Context context) {
         return this.client.sendTypingNotification(options, context).block();
-    }
-
-    /**
-     * Posts a typing event to a thread, on behalf of a user.
-     *
-     * @param options Options for sending the typing notification.
-     * @throws ChatErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendTypingNotification(TypingNotificationOptions options) {
-        this.client.sendTypingNotification(options).block();
     }
 
     /**

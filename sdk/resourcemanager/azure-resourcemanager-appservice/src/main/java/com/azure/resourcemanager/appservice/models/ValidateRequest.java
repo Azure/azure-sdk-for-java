@@ -5,15 +5,15 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.fluent.models.AppServiceEnvironment;
+import com.azure.resourcemanager.appservice.fluent.models.ValidateProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Resource validation request content. */
-@JsonFlatten
 @Fluent
-public class ValidateRequest {
+public final class ValidateRequest {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ValidateRequest.class);
 
     /*
@@ -35,91 +35,10 @@ public class ValidateRequest {
     private String location;
 
     /*
-     * ARM resource ID of an App Service plan that would host the app.
+     * Properties of the resource to validate.
      */
-    @JsonProperty(value = "properties.serverFarmId")
-    private String serverFarmId;
-
-    /*
-     * Name of the target SKU for the App Service plan.
-     */
-    @JsonProperty(value = "properties.skuName")
-    private String skuName;
-
-    /*
-     * <code>true</code> if App Service plan is for Linux workers; otherwise,
-     * <code>false</code>.
-     */
-    @JsonProperty(value = "properties.needLinuxWorkers")
-    private Boolean needLinuxWorkers;
-
-    /*
-     * <code>true</code> if App Service plan is for Spot instances; otherwise,
-     * <code>false</code>.
-     */
-    @JsonProperty(value = "properties.isSpot")
-    private Boolean isSpot;
-
-    /*
-     * Target capacity of the App Service plan (number of VMs).
-     */
-    @JsonProperty(value = "properties.capacity")
-    private Integer capacity;
-
-    /*
-     * Name of App Service Environment where app or App Service plan should be
-     * created.
-     */
-    @JsonProperty(value = "properties.hostingEnvironment")
-    private String hostingEnvironment;
-
-    /*
-     * <code>true</code> if App Service plan is running as a windows container
-     */
-    @JsonProperty(value = "properties.isXenon")
-    private Boolean isXenon;
-
-    /*
-     * Base URL of the container registry
-     */
-    @JsonProperty(value = "properties.containerRegistryBaseUrl")
-    private String containerRegistryBaseUrl;
-
-    /*
-     * Username for to access the container registry
-     */
-    @JsonProperty(value = "properties.containerRegistryUsername")
-    private String containerRegistryUsername;
-
-    /*
-     * Password for to access the container registry
-     */
-    @JsonProperty(value = "properties.containerRegistryPassword")
-    private String containerRegistryPassword;
-
-    /*
-     * Repository name (image name)
-     */
-    @JsonProperty(value = "properties.containerImageRepository")
-    private String containerImageRepository;
-
-    /*
-     * Image tag
-     */
-    @JsonProperty(value = "properties.containerImageTag")
-    private String containerImageTag;
-
-    /*
-     * Platform (windows or linux)
-     */
-    @JsonProperty(value = "properties.containerImagePlatform")
-    private String containerImagePlatform;
-
-    /*
-     * App Service Environment Properties
-     */
-    @JsonProperty(value = "properties.appServiceEnvironment")
-    private AppServiceEnvironment appServiceEnvironment;
+    @JsonProperty(value = "properties", required = true)
+    private ValidateProperties innerProperties = new ValidateProperties();
 
     /**
      * Get the name property: Resource name to verify.
@@ -182,12 +101,21 @@ public class ValidateRequest {
     }
 
     /**
+     * Get the innerProperties property: Properties of the resource to validate.
+     *
+     * @return the innerProperties value.
+     */
+    private ValidateProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the serverFarmId property: ARM resource ID of an App Service plan that would host the app.
      *
      * @return the serverFarmId value.
      */
     public String serverFarmId() {
-        return this.serverFarmId;
+        return this.innerProperties() == null ? null : this.innerProperties().serverFarmId();
     }
 
     /**
@@ -197,7 +125,10 @@ public class ValidateRequest {
      * @return the ValidateRequest object itself.
      */
     public ValidateRequest withServerFarmId(String serverFarmId) {
-        this.serverFarmId = serverFarmId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ValidateProperties();
+        }
+        this.innerProperties().withServerFarmId(serverFarmId);
         return this;
     }
 
@@ -207,7 +138,7 @@ public class ValidateRequest {
      * @return the skuName value.
      */
     public String skuName() {
-        return this.skuName;
+        return this.innerProperties() == null ? null : this.innerProperties().skuName();
     }
 
     /**
@@ -217,7 +148,10 @@ public class ValidateRequest {
      * @return the ValidateRequest object itself.
      */
     public ValidateRequest withSkuName(String skuName) {
-        this.skuName = skuName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ValidateProperties();
+        }
+        this.innerProperties().withSkuName(skuName);
         return this;
     }
 
@@ -228,7 +162,7 @@ public class ValidateRequest {
      * @return the needLinuxWorkers value.
      */
     public Boolean needLinuxWorkers() {
-        return this.needLinuxWorkers;
+        return this.innerProperties() == null ? null : this.innerProperties().needLinuxWorkers();
     }
 
     /**
@@ -239,7 +173,10 @@ public class ValidateRequest {
      * @return the ValidateRequest object itself.
      */
     public ValidateRequest withNeedLinuxWorkers(Boolean needLinuxWorkers) {
-        this.needLinuxWorkers = needLinuxWorkers;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ValidateProperties();
+        }
+        this.innerProperties().withNeedLinuxWorkers(needLinuxWorkers);
         return this;
     }
 
@@ -250,7 +187,7 @@ public class ValidateRequest {
      * @return the isSpot value.
      */
     public Boolean isSpot() {
-        return this.isSpot;
+        return this.innerProperties() == null ? null : this.innerProperties().isSpot();
     }
 
     /**
@@ -261,7 +198,10 @@ public class ValidateRequest {
      * @return the ValidateRequest object itself.
      */
     public ValidateRequest withIsSpot(Boolean isSpot) {
-        this.isSpot = isSpot;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ValidateProperties();
+        }
+        this.innerProperties().withIsSpot(isSpot);
         return this;
     }
 
@@ -271,7 +211,7 @@ public class ValidateRequest {
      * @return the capacity value.
      */
     public Integer capacity() {
-        return this.capacity;
+        return this.innerProperties() == null ? null : this.innerProperties().capacity();
     }
 
     /**
@@ -281,7 +221,10 @@ public class ValidateRequest {
      * @return the ValidateRequest object itself.
      */
     public ValidateRequest withCapacity(Integer capacity) {
-        this.capacity = capacity;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ValidateProperties();
+        }
+        this.innerProperties().withCapacity(capacity);
         return this;
     }
 
@@ -292,7 +235,7 @@ public class ValidateRequest {
      * @return the hostingEnvironment value.
      */
     public String hostingEnvironment() {
-        return this.hostingEnvironment;
+        return this.innerProperties() == null ? null : this.innerProperties().hostingEnvironment();
     }
 
     /**
@@ -303,7 +246,10 @@ public class ValidateRequest {
      * @return the ValidateRequest object itself.
      */
     public ValidateRequest withHostingEnvironment(String hostingEnvironment) {
-        this.hostingEnvironment = hostingEnvironment;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ValidateProperties();
+        }
+        this.innerProperties().withHostingEnvironment(hostingEnvironment);
         return this;
     }
 
@@ -313,7 +259,7 @@ public class ValidateRequest {
      * @return the isXenon value.
      */
     public Boolean isXenon() {
-        return this.isXenon;
+        return this.innerProperties() == null ? null : this.innerProperties().isXenon();
     }
 
     /**
@@ -323,7 +269,10 @@ public class ValidateRequest {
      * @return the ValidateRequest object itself.
      */
     public ValidateRequest withIsXenon(Boolean isXenon) {
-        this.isXenon = isXenon;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ValidateProperties();
+        }
+        this.innerProperties().withIsXenon(isXenon);
         return this;
     }
 
@@ -333,7 +282,7 @@ public class ValidateRequest {
      * @return the containerRegistryBaseUrl value.
      */
     public String containerRegistryBaseUrl() {
-        return this.containerRegistryBaseUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().containerRegistryBaseUrl();
     }
 
     /**
@@ -343,7 +292,10 @@ public class ValidateRequest {
      * @return the ValidateRequest object itself.
      */
     public ValidateRequest withContainerRegistryBaseUrl(String containerRegistryBaseUrl) {
-        this.containerRegistryBaseUrl = containerRegistryBaseUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ValidateProperties();
+        }
+        this.innerProperties().withContainerRegistryBaseUrl(containerRegistryBaseUrl);
         return this;
     }
 
@@ -353,7 +305,7 @@ public class ValidateRequest {
      * @return the containerRegistryUsername value.
      */
     public String containerRegistryUsername() {
-        return this.containerRegistryUsername;
+        return this.innerProperties() == null ? null : this.innerProperties().containerRegistryUsername();
     }
 
     /**
@@ -363,7 +315,10 @@ public class ValidateRequest {
      * @return the ValidateRequest object itself.
      */
     public ValidateRequest withContainerRegistryUsername(String containerRegistryUsername) {
-        this.containerRegistryUsername = containerRegistryUsername;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ValidateProperties();
+        }
+        this.innerProperties().withContainerRegistryUsername(containerRegistryUsername);
         return this;
     }
 
@@ -373,7 +328,7 @@ public class ValidateRequest {
      * @return the containerRegistryPassword value.
      */
     public String containerRegistryPassword() {
-        return this.containerRegistryPassword;
+        return this.innerProperties() == null ? null : this.innerProperties().containerRegistryPassword();
     }
 
     /**
@@ -383,7 +338,10 @@ public class ValidateRequest {
      * @return the ValidateRequest object itself.
      */
     public ValidateRequest withContainerRegistryPassword(String containerRegistryPassword) {
-        this.containerRegistryPassword = containerRegistryPassword;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ValidateProperties();
+        }
+        this.innerProperties().withContainerRegistryPassword(containerRegistryPassword);
         return this;
     }
 
@@ -393,7 +351,7 @@ public class ValidateRequest {
      * @return the containerImageRepository value.
      */
     public String containerImageRepository() {
-        return this.containerImageRepository;
+        return this.innerProperties() == null ? null : this.innerProperties().containerImageRepository();
     }
 
     /**
@@ -403,7 +361,10 @@ public class ValidateRequest {
      * @return the ValidateRequest object itself.
      */
     public ValidateRequest withContainerImageRepository(String containerImageRepository) {
-        this.containerImageRepository = containerImageRepository;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ValidateProperties();
+        }
+        this.innerProperties().withContainerImageRepository(containerImageRepository);
         return this;
     }
 
@@ -413,7 +374,7 @@ public class ValidateRequest {
      * @return the containerImageTag value.
      */
     public String containerImageTag() {
-        return this.containerImageTag;
+        return this.innerProperties() == null ? null : this.innerProperties().containerImageTag();
     }
 
     /**
@@ -423,7 +384,10 @@ public class ValidateRequest {
      * @return the ValidateRequest object itself.
      */
     public ValidateRequest withContainerImageTag(String containerImageTag) {
-        this.containerImageTag = containerImageTag;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ValidateProperties();
+        }
+        this.innerProperties().withContainerImageTag(containerImageTag);
         return this;
     }
 
@@ -433,7 +397,7 @@ public class ValidateRequest {
      * @return the containerImagePlatform value.
      */
     public String containerImagePlatform() {
-        return this.containerImagePlatform;
+        return this.innerProperties() == null ? null : this.innerProperties().containerImagePlatform();
     }
 
     /**
@@ -443,7 +407,10 @@ public class ValidateRequest {
      * @return the ValidateRequest object itself.
      */
     public ValidateRequest withContainerImagePlatform(String containerImagePlatform) {
-        this.containerImagePlatform = containerImagePlatform;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ValidateProperties();
+        }
+        this.innerProperties().withContainerImagePlatform(containerImagePlatform);
         return this;
     }
 
@@ -453,7 +420,7 @@ public class ValidateRequest {
      * @return the appServiceEnvironment value.
      */
     public AppServiceEnvironment appServiceEnvironment() {
-        return this.appServiceEnvironment;
+        return this.innerProperties() == null ? null : this.innerProperties().appServiceEnvironment();
     }
 
     /**
@@ -463,7 +430,10 @@ public class ValidateRequest {
      * @return the ValidateRequest object itself.
      */
     public ValidateRequest withAppServiceEnvironment(AppServiceEnvironment appServiceEnvironment) {
-        this.appServiceEnvironment = appServiceEnvironment;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ValidateProperties();
+        }
+        this.innerProperties().withAppServiceEnvironment(appServiceEnvironment);
         return this;
     }
 
@@ -488,8 +458,12 @@ public class ValidateRequest {
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property location in model ValidateRequest"));
         }
-        if (appServiceEnvironment() != null) {
-            appServiceEnvironment().validate();
+        if (innerProperties() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property innerProperties in model ValidateRequest"));
+        } else {
+            innerProperties().validate();
         }
     }
 }

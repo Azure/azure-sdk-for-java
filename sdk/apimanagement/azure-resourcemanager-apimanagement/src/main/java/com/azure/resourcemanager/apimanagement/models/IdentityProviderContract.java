@@ -33,6 +33,24 @@ public interface IdentityProviderContract {
     String type();
 
     /**
+     * Gets the clientId property: Client Id of the Application in the external Identity Provider. It is App ID for
+     * Facebook login, Client ID for Google login, App ID for Microsoft.
+     *
+     * @return the clientId value.
+     */
+    String clientId();
+
+    /**
+     * Gets the clientSecret property: Client secret of the Application in external Identity Provider, used to
+     * authenticate login request. For example, it is App Secret for Facebook login, API Key for Google login, Public
+     * Key for Microsoft. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get
+     * the value.
+     *
+     * @return the clientSecret value.
+     */
+    String clientSecret();
+
+    /**
      * Gets the typePropertiesType property: Identity Provider Type identifier.
      *
      * @return the typePropertiesType value.
@@ -90,24 +108,6 @@ public interface IdentityProviderContract {
     String passwordResetPolicyName();
 
     /**
-     * Gets the clientId property: Client Id of the Application in the external Identity Provider. It is App ID for
-     * Facebook login, Client ID for Google login, App ID for Microsoft.
-     *
-     * @return the clientId value.
-     */
-    String clientId();
-
-    /**
-     * Gets the clientSecret property: Client secret of the Application in external Identity Provider, used to
-     * authenticate login request. For example, it is App Secret for Facebook login, API Key for Google login, Public
-     * Key for Microsoft. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get
-     * the value.
-     *
-     * @return the clientSecret value.
-     */
-    String clientSecret();
-
-    /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.IdentityProviderContractInner object.
      *
      * @return the inner object.
@@ -139,7 +139,9 @@ public interface IdentityProviderContract {
          * the resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTypePropertiesType,
+            extends DefinitionStages.WithClientId,
+                DefinitionStages.WithClientSecret,
+                DefinitionStages.WithTypePropertiesType,
                 DefinitionStages.WithSigninTenant,
                 DefinitionStages.WithAllowedTenants,
                 DefinitionStages.WithAuthority,
@@ -147,8 +149,6 @@ public interface IdentityProviderContract {
                 DefinitionStages.WithSigninPolicyName,
                 DefinitionStages.WithProfileEditingPolicyName,
                 DefinitionStages.WithPasswordResetPolicyName,
-                DefinitionStages.WithClientId,
-                DefinitionStages.WithClientSecret,
                 DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
@@ -164,6 +164,34 @@ public interface IdentityProviderContract {
              * @return the created resource.
              */
             IdentityProviderContract create(Context context);
+        }
+        /** The stage of the IdentityProviderContract definition allowing to specify clientId. */
+        interface WithClientId {
+            /**
+             * Specifies the clientId property: Client Id of the Application in the external Identity Provider. It is
+             * App ID for Facebook login, Client ID for Google login, App ID for Microsoft..
+             *
+             * @param clientId Client Id of the Application in the external Identity Provider. It is App ID for Facebook
+             *     login, Client ID for Google login, App ID for Microsoft.
+             * @return the next definition stage.
+             */
+            WithCreate withClientId(String clientId);
+        }
+        /** The stage of the IdentityProviderContract definition allowing to specify clientSecret. */
+        interface WithClientSecret {
+            /**
+             * Specifies the clientSecret property: Client secret of the Application in external Identity Provider, used
+             * to authenticate login request. For example, it is App Secret for Facebook login, API Key for Google
+             * login, Public Key for Microsoft. This property will not be filled on 'GET' operations! Use '/listSecrets'
+             * POST request to get the value..
+             *
+             * @param clientSecret Client secret of the Application in external Identity Provider, used to authenticate
+             *     login request. For example, it is App Secret for Facebook login, API Key for Google login, Public Key
+             *     for Microsoft. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request
+             *     to get the value.
+             * @return the next definition stage.
+             */
+            WithCreate withClientSecret(String clientSecret);
         }
         /** The stage of the IdentityProviderContract definition allowing to specify typePropertiesType. */
         interface WithTypePropertiesType {
@@ -249,34 +277,6 @@ public interface IdentityProviderContract {
              */
             WithCreate withPasswordResetPolicyName(String passwordResetPolicyName);
         }
-        /** The stage of the IdentityProviderContract definition allowing to specify clientId. */
-        interface WithClientId {
-            /**
-             * Specifies the clientId property: Client Id of the Application in the external Identity Provider. It is
-             * App ID for Facebook login, Client ID for Google login, App ID for Microsoft..
-             *
-             * @param clientId Client Id of the Application in the external Identity Provider. It is App ID for Facebook
-             *     login, Client ID for Google login, App ID for Microsoft.
-             * @return the next definition stage.
-             */
-            WithCreate withClientId(String clientId);
-        }
-        /** The stage of the IdentityProviderContract definition allowing to specify clientSecret. */
-        interface WithClientSecret {
-            /**
-             * Specifies the clientSecret property: Client secret of the Application in external Identity Provider, used
-             * to authenticate login request. For example, it is App Secret for Facebook login, API Key for Google
-             * login, Public Key for Microsoft. This property will not be filled on 'GET' operations! Use '/listSecrets'
-             * POST request to get the value..
-             *
-             * @param clientSecret Client secret of the Application in external Identity Provider, used to authenticate
-             *     login request. For example, it is App Secret for Facebook login, API Key for Google login, Public Key
-             *     for Microsoft. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request
-             *     to get the value.
-             * @return the next definition stage.
-             */
-            WithCreate withClientSecret(String clientSecret);
-        }
         /** The stage of the IdentityProviderContract definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -299,7 +299,9 @@ public interface IdentityProviderContract {
 
     /** The template for IdentityProviderContract update. */
     interface Update
-        extends UpdateStages.WithType,
+        extends UpdateStages.WithClientId,
+            UpdateStages.WithClientSecret,
+            UpdateStages.WithType,
             UpdateStages.WithSigninTenant,
             UpdateStages.WithAllowedTenants,
             UpdateStages.WithAuthority,
@@ -307,8 +309,6 @@ public interface IdentityProviderContract {
             UpdateStages.WithSigninPolicyName,
             UpdateStages.WithProfileEditingPolicyName,
             UpdateStages.WithPasswordResetPolicyName,
-            UpdateStages.WithClientId,
-            UpdateStages.WithClientSecret,
             UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
@@ -327,6 +327,32 @@ public interface IdentityProviderContract {
     }
     /** The IdentityProviderContract update stages. */
     interface UpdateStages {
+        /** The stage of the IdentityProviderContract update allowing to specify clientId. */
+        interface WithClientId {
+            /**
+             * Specifies the clientId property: Client Id of the Application in the external Identity Provider. It is
+             * App ID for Facebook login, Client ID for Google login, App ID for Microsoft..
+             *
+             * @param clientId Client Id of the Application in the external Identity Provider. It is App ID for Facebook
+             *     login, Client ID for Google login, App ID for Microsoft.
+             * @return the next definition stage.
+             */
+            Update withClientId(String clientId);
+        }
+        /** The stage of the IdentityProviderContract update allowing to specify clientSecret. */
+        interface WithClientSecret {
+            /**
+             * Specifies the clientSecret property: Client secret of the Application in external Identity Provider, used
+             * to authenticate login request. For example, it is App Secret for Facebook login, API Key for Google
+             * login, Public Key for Microsoft..
+             *
+             * @param clientSecret Client secret of the Application in external Identity Provider, used to authenticate
+             *     login request. For example, it is App Secret for Facebook login, API Key for Google login, Public Key
+             *     for Microsoft.
+             * @return the next definition stage.
+             */
+            Update withClientSecret(String clientSecret);
+        }
         /** The stage of the IdentityProviderContract update allowing to specify type. */
         interface WithType {
             /**
@@ -410,32 +436,6 @@ public interface IdentityProviderContract {
              * @return the next definition stage.
              */
             Update withPasswordResetPolicyName(String passwordResetPolicyName);
-        }
-        /** The stage of the IdentityProviderContract update allowing to specify clientId. */
-        interface WithClientId {
-            /**
-             * Specifies the clientId property: Client Id of the Application in the external Identity Provider. It is
-             * App ID for Facebook login, Client ID for Google login, App ID for Microsoft..
-             *
-             * @param clientId Client Id of the Application in the external Identity Provider. It is App ID for Facebook
-             *     login, Client ID for Google login, App ID for Microsoft.
-             * @return the next definition stage.
-             */
-            Update withClientId(String clientId);
-        }
-        /** The stage of the IdentityProviderContract update allowing to specify clientSecret. */
-        interface WithClientSecret {
-            /**
-             * Specifies the clientSecret property: Client secret of the Application in external Identity Provider, used
-             * to authenticate login request. For example, it is App Secret for Facebook login, API Key for Google
-             * login, Public Key for Microsoft..
-             *
-             * @param clientSecret Client secret of the Application in external Identity Provider, used to authenticate
-             *     login request. For example, it is App Secret for Facebook login, API Key for Google login, Public Key
-             *     for Microsoft.
-             * @return the next definition stage.
-             */
-            Update withClientSecret(String clientSecret);
         }
         /** The stage of the IdentityProviderContract update allowing to specify ifMatch. */
         interface WithIfMatch {

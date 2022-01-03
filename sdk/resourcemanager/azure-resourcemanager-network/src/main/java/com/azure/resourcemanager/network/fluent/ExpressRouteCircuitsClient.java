@@ -18,11 +18,11 @@ import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitStatsI
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitsArpTableListResultInner;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitsRoutesTableListResultInner;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitsRoutesTableSummaryListResultInner;
+import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -54,7 +54,7 @@ public interface ExpressRouteCircuitsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String circuitName);
 
     /**
@@ -67,7 +67,7 @@ public interface ExpressRouteCircuitsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String circuitName);
 
     /**
@@ -81,7 +81,7 @@ public interface ExpressRouteCircuitsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String circuitName, Context context);
 
     /**
@@ -203,7 +203,7 @@ public interface ExpressRouteCircuitsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRouteCircuit resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ExpressRouteCircuitInner>, ExpressRouteCircuitInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters);
 
@@ -218,7 +218,7 @@ public interface ExpressRouteCircuitsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRouteCircuit resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExpressRouteCircuitInner>, ExpressRouteCircuitInner> beginCreateOrUpdate(
         String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters);
 
@@ -234,7 +234,7 @@ public interface ExpressRouteCircuitsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRouteCircuit resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExpressRouteCircuitInner>, ExpressRouteCircuitInner> beginCreateOrUpdate(
         String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters, Context context);
 
@@ -289,7 +289,7 @@ public interface ExpressRouteCircuitsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update express route circuit tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -297,55 +297,42 @@ public interface ExpressRouteCircuitsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ExpressRouteCircuitInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String circuitName, Map<String, String> tags);
+        String resourceGroupName, String circuitName, TagsObject parameters);
 
     /**
      * Updates an express route circuit tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update express route circuit tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRouteCircuit resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ExpressRouteCircuitInner> updateTagsAsync(
-        String resourceGroupName, String circuitName, Map<String, String> tags);
+    Mono<ExpressRouteCircuitInner> updateTagsAsync(String resourceGroupName, String circuitName, TagsObject parameters);
 
     /**
      * Updates an express route circuit tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
+     * @param parameters Parameters supplied to update express route circuit tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRouteCircuit resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ExpressRouteCircuitInner> updateTagsAsync(String resourceGroupName, String circuitName);
+    ExpressRouteCircuitInner updateTags(String resourceGroupName, String circuitName, TagsObject parameters);
 
     /**
      * Updates an express route circuit tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteCircuit resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ExpressRouteCircuitInner updateTags(String resourceGroupName, String circuitName);
-
-    /**
-     * Updates an express route circuit tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update express route circuit tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -354,7 +341,7 @@ public interface ExpressRouteCircuitsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ExpressRouteCircuitInner> updateTagsWithResponse(
-        String resourceGroupName, String circuitName, Map<String, String> tags, Context context);
+        String resourceGroupName, String circuitName, TagsObject parameters, Context context);
 
     /**
      * Gets the currently advertised ARP table associated with the express route circuit in a resource group.
@@ -384,7 +371,7 @@ public interface ExpressRouteCircuitsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the currently advertised ARP table associated with the express route circuit in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner>
         beginListArpTableAsync(String resourceGroupName, String circuitName, String peeringName, String devicePath);
 
@@ -400,7 +387,7 @@ public interface ExpressRouteCircuitsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the currently advertised ARP table associated with the express route circuit in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner>
         beginListArpTable(String resourceGroupName, String circuitName, String peeringName, String devicePath);
 
@@ -417,7 +404,7 @@ public interface ExpressRouteCircuitsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the currently advertised ARP table associated with the express route circuit in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner>
         beginListArpTable(
             String resourceGroupName, String circuitName, String peeringName, String devicePath, Context context);
@@ -499,7 +486,7 @@ public interface ExpressRouteCircuitsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the currently advertised routes table associated with the express route circuit in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<
             PollResult<ExpressRouteCircuitsRoutesTableListResultInner>, ExpressRouteCircuitsRoutesTableListResultInner>
         beginListRoutesTableAsync(String resourceGroupName, String circuitName, String peeringName, String devicePath);
@@ -516,7 +503,7 @@ public interface ExpressRouteCircuitsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the currently advertised routes table associated with the express route circuit in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<
             PollResult<ExpressRouteCircuitsRoutesTableListResultInner>, ExpressRouteCircuitsRoutesTableListResultInner>
         beginListRoutesTable(String resourceGroupName, String circuitName, String peeringName, String devicePath);
@@ -534,7 +521,7 @@ public interface ExpressRouteCircuitsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the currently advertised routes table associated with the express route circuit in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<
             PollResult<ExpressRouteCircuitsRoutesTableListResultInner>, ExpressRouteCircuitsRoutesTableListResultInner>
         beginListRoutesTable(
@@ -619,7 +606,7 @@ public interface ExpressRouteCircuitsClient
      * @return the currently advertised routes table summary associated with the express route circuit in a resource
      *     group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<
             PollResult<ExpressRouteCircuitsRoutesTableSummaryListResultInner>,
             ExpressRouteCircuitsRoutesTableSummaryListResultInner>
@@ -639,7 +626,7 @@ public interface ExpressRouteCircuitsClient
      * @return the currently advertised routes table summary associated with the express route circuit in a resource
      *     group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<
             PollResult<ExpressRouteCircuitsRoutesTableSummaryListResultInner>,
             ExpressRouteCircuitsRoutesTableSummaryListResultInner>
@@ -660,7 +647,7 @@ public interface ExpressRouteCircuitsClient
      * @return the currently advertised routes table summary associated with the express route circuit in a resource
      *     group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<
             PollResult<ExpressRouteCircuitsRoutesTableSummaryListResultInner>,
             ExpressRouteCircuitsRoutesTableSummaryListResultInner>

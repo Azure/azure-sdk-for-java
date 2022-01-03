@@ -28,6 +28,12 @@ public class AADJwtDecoderProviderConfiguration {
         new ParameterizedTypeReference<Map<String, Object>>() {
         };
 
+    /**
+     * Gets the configuration for OIDC issue location.
+     *
+     * @param oidcIssuerLocation the OIDC issuer location
+     * @return the configuraton for OIDC issue location
+     */
     public static Map<String, Object> getConfigurationForOidcIssuerLocation(String oidcIssuerLocation) {
         return getConfiguration(oidcIssuerLocation, oidc(URI.create(oidcIssuerLocation)));
     }

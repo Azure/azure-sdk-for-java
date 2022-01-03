@@ -38,6 +38,7 @@ import com.azure.resourcemanager.datafactory.fluent.IntegrationRuntimesClient;
 import com.azure.resourcemanager.datafactory.fluent.models.IntegrationRuntimeAuthKeysInner;
 import com.azure.resourcemanager.datafactory.fluent.models.IntegrationRuntimeConnectionInfoInner;
 import com.azure.resourcemanager.datafactory.fluent.models.IntegrationRuntimeMonitoringDataInner;
+import com.azure.resourcemanager.datafactory.fluent.models.IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner;
 import com.azure.resourcemanager.datafactory.fluent.models.IntegrationRuntimeResourceInner;
 import com.azure.resourcemanager.datafactory.fluent.models.IntegrationRuntimeStatusResponseInner;
 import com.azure.resourcemanager.datafactory.models.CreateLinkedIntegrationRuntimeRequest;
@@ -175,6 +176,24 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
             Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
+                + "/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}"
+                + "/outboundNetworkDependenciesEndpoints")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner>>
+            listOutboundNetworkDependenciesEndpoints(
+                @HostParam("$host") String endpoint,
+                @PathParam("subscriptionId") String subscriptionId,
+                @PathParam("resourceGroupName") String resourceGroupName,
+                @PathParam("factoryName") String factoryName,
+                @PathParam("integrationRuntimeName") String integrationRuntimeName,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Headers({"Content-Type: application/json"})
         @Post(
@@ -1538,6 +1557,182 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
     }
 
     /**
+     * Gets the list of outbound network dependencies for a given Azure-SSIS integration runtime.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of outbound network dependencies for a given Azure-SSIS integration runtime.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner>>
+        listOutboundNetworkDependenciesEndpointsWithResponseAsync(
+            String resourceGroupName, String factoryName, String integrationRuntimeName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (factoryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+        }
+        if (integrationRuntimeName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listOutboundNetworkDependenciesEndpoints(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            factoryName,
+                            integrationRuntimeName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets the list of outbound network dependencies for a given Azure-SSIS integration runtime.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of outbound network dependencies for a given Azure-SSIS integration runtime.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner>>
+        listOutboundNetworkDependenciesEndpointsWithResponseAsync(
+            String resourceGroupName, String factoryName, String integrationRuntimeName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (factoryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+        }
+        if (integrationRuntimeName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listOutboundNetworkDependenciesEndpoints(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                factoryName,
+                integrationRuntimeName,
+                this.client.getApiVersion(),
+                accept,
+                context);
+    }
+
+    /**
+     * Gets the list of outbound network dependencies for a given Azure-SSIS integration runtime.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of outbound network dependencies for a given Azure-SSIS integration runtime.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner>
+        listOutboundNetworkDependenciesEndpointsAsync(
+            String resourceGroupName, String factoryName, String integrationRuntimeName) {
+        return listOutboundNetworkDependenciesEndpointsWithResponseAsync(
+                resourceGroupName, factoryName, integrationRuntimeName)
+            .flatMap(
+                (Response<IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Gets the list of outbound network dependencies for a given Azure-SSIS integration runtime.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of outbound network dependencies for a given Azure-SSIS integration runtime.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner listOutboundNetworkDependenciesEndpoints(
+        String resourceGroupName, String factoryName, String integrationRuntimeName) {
+        return listOutboundNetworkDependenciesEndpointsAsync(resourceGroupName, factoryName, integrationRuntimeName)
+            .block();
+    }
+
+    /**
+     * Gets the list of outbound network dependencies for a given Azure-SSIS integration runtime.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of outbound network dependencies for a given Azure-SSIS integration runtime.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner>
+        listOutboundNetworkDependenciesEndpointsWithResponse(
+            String resourceGroupName, String factoryName, String integrationRuntimeName, Context context) {
+        return listOutboundNetworkDependenciesEndpointsWithResponseAsync(
+                resourceGroupName, factoryName, integrationRuntimeName, context)
+            .block();
+    }
+
+    /**
      * Gets the on-premises integration runtime connection information for encrypting the on-premises data source
      * credentials.
      *
@@ -2213,7 +2408,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return integration runtime status response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IntegrationRuntimeStatusResponseInner>, IntegrationRuntimeStatusResponseInner>
         beginStartAsync(String resourceGroupName, String factoryName, String integrationRuntimeName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -2225,7 +2420,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
                 this.client.getHttpPipeline(),
                 IntegrationRuntimeStatusResponseInner.class,
                 IntegrationRuntimeStatusResponseInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2240,7 +2435,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return integration runtime status response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IntegrationRuntimeStatusResponseInner>, IntegrationRuntimeStatusResponseInner>
         beginStartAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, Context context) {
         context = this.client.mergeContext(context);
@@ -2267,7 +2462,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return integration runtime status response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IntegrationRuntimeStatusResponseInner>, IntegrationRuntimeStatusResponseInner>
         beginStart(String resourceGroupName, String factoryName, String integrationRuntimeName) {
         return beginStartAsync(resourceGroupName, factoryName, integrationRuntimeName).getSyncPoller();
@@ -2285,7 +2480,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return integration runtime status response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IntegrationRuntimeStatusResponseInner>, IntegrationRuntimeStatusResponseInner>
         beginStart(String resourceGroupName, String factoryName, String integrationRuntimeName, Context context) {
         return beginStartAsync(resourceGroupName, factoryName, integrationRuntimeName, context).getSyncPoller();
@@ -2484,14 +2679,15 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStopAsync(
         String resourceGroupName, String factoryName, String integrationRuntimeName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             stopWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2506,7 +2702,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStopAsync(
         String resourceGroupName, String factoryName, String integrationRuntimeName, Context context) {
         context = this.client.mergeContext(context);
@@ -2528,7 +2724,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String factoryName, String integrationRuntimeName) {
         return beginStopAsync(resourceGroupName, factoryName, integrationRuntimeName).getSyncPoller();
@@ -2546,7 +2742,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String factoryName, String integrationRuntimeName, Context context) {
         return beginStopAsync(resourceGroupName, factoryName, integrationRuntimeName, context).getSyncPoller();

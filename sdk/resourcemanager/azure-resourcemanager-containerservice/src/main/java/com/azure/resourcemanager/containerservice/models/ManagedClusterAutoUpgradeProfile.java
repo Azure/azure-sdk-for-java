@@ -15,13 +15,17 @@ public final class ManagedClusterAutoUpgradeProfile {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterAutoUpgradeProfile.class);
 
     /*
-     * upgrade channel for auto upgrade.
+     * The upgrade channel for auto upgrade. The default is 'none'. For more
+     * information see [setting the AKS cluster auto-upgrade
+     * channel](https://docs.microsoft.com/azure/aks/upgrade-cluster#set-auto-upgrade-channel).
      */
     @JsonProperty(value = "upgradeChannel")
     private UpgradeChannel upgradeChannel;
 
     /**
-     * Get the upgradeChannel property: upgrade channel for auto upgrade.
+     * Get the upgradeChannel property: The upgrade channel for auto upgrade. The default is 'none'. For more
+     * information see [setting the AKS cluster auto-upgrade
+     * channel](https://docs.microsoft.com/azure/aks/upgrade-cluster#set-auto-upgrade-channel).
      *
      * @return the upgradeChannel value.
      */
@@ -30,7 +34,9 @@ public final class ManagedClusterAutoUpgradeProfile {
     }
 
     /**
-     * Set the upgradeChannel property: upgrade channel for auto upgrade.
+     * Set the upgradeChannel property: The upgrade channel for auto upgrade. The default is 'none'. For more
+     * information see [setting the AKS cluster auto-upgrade
+     * channel](https://docs.microsoft.com/azure/aks/upgrade-cluster#set-auto-upgrade-channel).
      *
      * @param upgradeChannel the upgradeChannel value to set.
      * @return the ManagedClusterAutoUpgradeProfile object itself.

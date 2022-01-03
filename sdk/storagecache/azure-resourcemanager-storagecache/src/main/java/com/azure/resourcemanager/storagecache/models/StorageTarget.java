@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.storagecache.fluent.models.StorageTargetInner;
 import java.util.List;
@@ -67,6 +68,13 @@ public interface StorageTarget {
      * @return the provisioningState value.
      */
     ProvisioningStateType provisioningState();
+
+    /**
+     * Gets the state property: Storage target operational state.
+     *
+     * @return the state value.
+     */
+    OperationalStateType state();
 
     /**
      * Gets the nfs3 property: Properties when targetType is nfs3.
@@ -145,7 +153,7 @@ public interface StorageTarget {
         interface WithCreate
             extends DefinitionStages.WithJunctions,
                 DefinitionStages.WithTargetType,
-                DefinitionStages.WithProvisioningState,
+                DefinitionStages.WithState,
                 DefinitionStages.WithNfs3,
                 DefinitionStages.WithClfs,
                 DefinitionStages.WithUnknown,
@@ -186,17 +194,15 @@ public interface StorageTarget {
              */
             WithCreate withTargetType(StorageTargetType targetType);
         }
-        /** The stage of the StorageTarget definition allowing to specify provisioningState. */
-        interface WithProvisioningState {
+        /** The stage of the StorageTarget definition allowing to specify state. */
+        interface WithState {
             /**
-             * Specifies the provisioningState property: ARM provisioning state, see
-             * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property.
+             * Specifies the state property: Storage target operational state..
              *
-             * @param provisioningState ARM provisioning state, see
-             *     https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property.
+             * @param state Storage target operational state.
              * @return the next definition stage.
              */
-            WithCreate withProvisioningState(ProvisioningStateType provisioningState);
+            WithCreate withState(OperationalStateType state);
         }
         /** The stage of the StorageTarget definition allowing to specify nfs3. */
         interface WithNfs3 {
@@ -249,8 +255,7 @@ public interface StorageTarget {
     /** The template for StorageTarget update. */
     interface Update
         extends UpdateStages.WithJunctions,
-            UpdateStages.WithTargetType,
-            UpdateStages.WithProvisioningState,
+            UpdateStages.WithState,
             UpdateStages.WithNfs3,
             UpdateStages.WithClfs,
             UpdateStages.WithUnknown,
@@ -283,27 +288,15 @@ public interface StorageTarget {
              */
             Update withJunctions(List<NamespaceJunction> junctions);
         }
-        /** The stage of the StorageTarget update allowing to specify targetType. */
-        interface WithTargetType {
+        /** The stage of the StorageTarget update allowing to specify state. */
+        interface WithState {
             /**
-             * Specifies the targetType property: Type of the Storage Target..
+             * Specifies the state property: Storage target operational state..
              *
-             * @param targetType Type of the Storage Target.
+             * @param state Storage target operational state.
              * @return the next definition stage.
              */
-            Update withTargetType(StorageTargetType targetType);
-        }
-        /** The stage of the StorageTarget update allowing to specify provisioningState. */
-        interface WithProvisioningState {
-            /**
-             * Specifies the provisioningState property: ARM provisioning state, see
-             * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property.
-             *
-             * @param provisioningState ARM provisioning state, see
-             *     https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property.
-             * @return the next definition stage.
-             */
-            Update withProvisioningState(ProvisioningStateType provisioningState);
+            Update withState(OperationalStateType state);
         }
         /** The stage of the StorageTarget update allowing to specify nfs3. */
         interface WithNfs3 {

@@ -9,6 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +26,7 @@ public final class K8SResourceRequirements {
      * GeneralPurpose, maximum 'cpu' is 24 and maximum 'memory' is '128Gi'.
      */
     @JsonProperty(value = "requests")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> requests;
 
     /*
@@ -34,6 +36,7 @@ public final class K8SResourceRequirements {
      * GeneralPurpose, maximum 'cpu' is 24 and maximum 'memory' is '128Gi'.
      */
     @JsonProperty(value = "limits")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> limits;
 
     /*

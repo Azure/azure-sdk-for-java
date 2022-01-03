@@ -4,12 +4,12 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Azure File Storage write settings. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureFileStorageWriteSettings")
-@Immutable
+@Fluent
 public final class AzureFileStorageWriteSettings extends StoreWriteSettings {}

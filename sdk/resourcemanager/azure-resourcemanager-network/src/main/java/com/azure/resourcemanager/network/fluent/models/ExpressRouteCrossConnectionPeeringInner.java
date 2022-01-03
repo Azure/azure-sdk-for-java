@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeeringConfig;
@@ -17,10 +16,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Peering in an ExpressRoute Cross Connection resource. */
-@JsonFlatten
 @Fluent
-public class ExpressRouteCrossConnectionPeeringInner extends SubResource {
+public final class ExpressRouteCrossConnectionPeeringInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCrossConnectionPeeringInner.class);
+
+    /*
+     * Properties of the express route cross connection peering.
+     */
+    @JsonProperty(value = "properties")
+    private ExpressRouteCrossConnectionPeeringProperties innerProperties;
 
     /*
      * The name of the resource that is unique within a resource group. This
@@ -35,96 +39,14 @@ public class ExpressRouteCrossConnectionPeeringInner extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /*
-     * The peering type.
+    /**
+     * Get the innerProperties property: Properties of the express route cross connection peering.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.peeringType")
-    private ExpressRoutePeeringType peeringType;
-
-    /*
-     * The peering state.
-     */
-    @JsonProperty(value = "properties.state")
-    private ExpressRoutePeeringState state;
-
-    /*
-     * The Azure ASN.
-     */
-    @JsonProperty(value = "properties.azureASN", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer azureAsn;
-
-    /*
-     * The peer ASN.
-     */
-    @JsonProperty(value = "properties.peerASN")
-    private Long peerAsn;
-
-    /*
-     * The primary address prefix.
-     */
-    @JsonProperty(value = "properties.primaryPeerAddressPrefix")
-    private String primaryPeerAddressPrefix;
-
-    /*
-     * The secondary address prefix.
-     */
-    @JsonProperty(value = "properties.secondaryPeerAddressPrefix")
-    private String secondaryPeerAddressPrefix;
-
-    /*
-     * The primary port.
-     */
-    @JsonProperty(value = "properties.primaryAzurePort", access = JsonProperty.Access.WRITE_ONLY)
-    private String primaryAzurePort;
-
-    /*
-     * The secondary port.
-     */
-    @JsonProperty(value = "properties.secondaryAzurePort", access = JsonProperty.Access.WRITE_ONLY)
-    private String secondaryAzurePort;
-
-    /*
-     * The shared key.
-     */
-    @JsonProperty(value = "properties.sharedKey")
-    private String sharedKey;
-
-    /*
-     * The VLAN ID.
-     */
-    @JsonProperty(value = "properties.vlanId")
-    private Integer vlanId;
-
-    /*
-     * The Microsoft peering configuration.
-     */
-    @JsonProperty(value = "properties.microsoftPeeringConfig")
-    private ExpressRouteCircuitPeeringConfig microsoftPeeringConfig;
-
-    /*
-     * The provisioning state of the express route cross connection peering
-     * resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * The GatewayManager Etag.
-     */
-    @JsonProperty(value = "properties.gatewayManagerEtag")
-    private String gatewayManagerEtag;
-
-    /*
-     * Who was the last to modify the peering.
-     */
-    @JsonProperty(value = "properties.lastModifiedBy", access = JsonProperty.Access.WRITE_ONLY)
-    private String lastModifiedBy;
-
-    /*
-     * The IPv6 peering configuration.
-     */
-    @JsonProperty(value = "properties.ipv6PeeringConfig")
-    private Ipv6ExpressRouteCircuitPeeringConfig ipv6PeeringConfig;
+    private ExpressRouteCrossConnectionPeeringProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
@@ -157,13 +79,20 @@ public class ExpressRouteCrossConnectionPeeringInner extends SubResource {
         return this.etag;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ExpressRouteCrossConnectionPeeringInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the peeringType property: The peering type.
      *
      * @return the peeringType value.
      */
     public ExpressRoutePeeringType peeringType() {
-        return this.peeringType;
+        return this.innerProperties() == null ? null : this.innerProperties().peeringType();
     }
 
     /**
@@ -173,7 +102,10 @@ public class ExpressRouteCrossConnectionPeeringInner extends SubResource {
      * @return the ExpressRouteCrossConnectionPeeringInner object itself.
      */
     public ExpressRouteCrossConnectionPeeringInner withPeeringType(ExpressRoutePeeringType peeringType) {
-        this.peeringType = peeringType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteCrossConnectionPeeringProperties();
+        }
+        this.innerProperties().withPeeringType(peeringType);
         return this;
     }
 
@@ -183,7 +115,7 @@ public class ExpressRouteCrossConnectionPeeringInner extends SubResource {
      * @return the state value.
      */
     public ExpressRoutePeeringState state() {
-        return this.state;
+        return this.innerProperties() == null ? null : this.innerProperties().state();
     }
 
     /**
@@ -193,7 +125,10 @@ public class ExpressRouteCrossConnectionPeeringInner extends SubResource {
      * @return the ExpressRouteCrossConnectionPeeringInner object itself.
      */
     public ExpressRouteCrossConnectionPeeringInner withState(ExpressRoutePeeringState state) {
-        this.state = state;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteCrossConnectionPeeringProperties();
+        }
+        this.innerProperties().withState(state);
         return this;
     }
 
@@ -203,7 +138,7 @@ public class ExpressRouteCrossConnectionPeeringInner extends SubResource {
      * @return the azureAsn value.
      */
     public Integer azureAsn() {
-        return this.azureAsn;
+        return this.innerProperties() == null ? null : this.innerProperties().azureAsn();
     }
 
     /**
@@ -212,7 +147,7 @@ public class ExpressRouteCrossConnectionPeeringInner extends SubResource {
      * @return the peerAsn value.
      */
     public Long peerAsn() {
-        return this.peerAsn;
+        return this.innerProperties() == null ? null : this.innerProperties().peerAsn();
     }
 
     /**
@@ -222,7 +157,10 @@ public class ExpressRouteCrossConnectionPeeringInner extends SubResource {
      * @return the ExpressRouteCrossConnectionPeeringInner object itself.
      */
     public ExpressRouteCrossConnectionPeeringInner withPeerAsn(Long peerAsn) {
-        this.peerAsn = peerAsn;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteCrossConnectionPeeringProperties();
+        }
+        this.innerProperties().withPeerAsn(peerAsn);
         return this;
     }
 
@@ -232,7 +170,7 @@ public class ExpressRouteCrossConnectionPeeringInner extends SubResource {
      * @return the primaryPeerAddressPrefix value.
      */
     public String primaryPeerAddressPrefix() {
-        return this.primaryPeerAddressPrefix;
+        return this.innerProperties() == null ? null : this.innerProperties().primaryPeerAddressPrefix();
     }
 
     /**
@@ -242,7 +180,10 @@ public class ExpressRouteCrossConnectionPeeringInner extends SubResource {
      * @return the ExpressRouteCrossConnectionPeeringInner object itself.
      */
     public ExpressRouteCrossConnectionPeeringInner withPrimaryPeerAddressPrefix(String primaryPeerAddressPrefix) {
-        this.primaryPeerAddressPrefix = primaryPeerAddressPrefix;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteCrossConnectionPeeringProperties();
+        }
+        this.innerProperties().withPrimaryPeerAddressPrefix(primaryPeerAddressPrefix);
         return this;
     }
 
@@ -252,7 +193,7 @@ public class ExpressRouteCrossConnectionPeeringInner extends SubResource {
      * @return the secondaryPeerAddressPrefix value.
      */
     public String secondaryPeerAddressPrefix() {
-        return this.secondaryPeerAddressPrefix;
+        return this.innerProperties() == null ? null : this.innerProperties().secondaryPeerAddressPrefix();
     }
 
     /**
@@ -262,7 +203,10 @@ public class ExpressRouteCrossConnectionPeeringInner extends SubResource {
      * @return the ExpressRouteCrossConnectionPeeringInner object itself.
      */
     public ExpressRouteCrossConnectionPeeringInner withSecondaryPeerAddressPrefix(String secondaryPeerAddressPrefix) {
-        this.secondaryPeerAddressPrefix = secondaryPeerAddressPrefix;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteCrossConnectionPeeringProperties();
+        }
+        this.innerProperties().withSecondaryPeerAddressPrefix(secondaryPeerAddressPrefix);
         return this;
     }
 
@@ -272,7 +216,7 @@ public class ExpressRouteCrossConnectionPeeringInner extends SubResource {
      * @return the primaryAzurePort value.
      */
     public String primaryAzurePort() {
-        return this.primaryAzurePort;
+        return this.innerProperties() == null ? null : this.innerProperties().primaryAzurePort();
     }
 
     /**
@@ -281,7 +225,7 @@ public class ExpressRouteCrossConnectionPeeringInner extends SubResource {
      * @return the secondaryAzurePort value.
      */
     public String secondaryAzurePort() {
-        return this.secondaryAzurePort;
+        return this.innerProperties() == null ? null : this.innerProperties().secondaryAzurePort();
     }
 
     /**
@@ -290,7 +234,7 @@ public class ExpressRouteCrossConnectionPeeringInner extends SubResource {
      * @return the sharedKey value.
      */
     public String sharedKey() {
-        return this.sharedKey;
+        return this.innerProperties() == null ? null : this.innerProperties().sharedKey();
     }
 
     /**
@@ -300,7 +244,10 @@ public class ExpressRouteCrossConnectionPeeringInner extends SubResource {
      * @return the ExpressRouteCrossConnectionPeeringInner object itself.
      */
     public ExpressRouteCrossConnectionPeeringInner withSharedKey(String sharedKey) {
-        this.sharedKey = sharedKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteCrossConnectionPeeringProperties();
+        }
+        this.innerProperties().withSharedKey(sharedKey);
         return this;
     }
 
@@ -310,7 +257,7 @@ public class ExpressRouteCrossConnectionPeeringInner extends SubResource {
      * @return the vlanId value.
      */
     public Integer vlanId() {
-        return this.vlanId;
+        return this.innerProperties() == null ? null : this.innerProperties().vlanId();
     }
 
     /**
@@ -320,7 +267,10 @@ public class ExpressRouteCrossConnectionPeeringInner extends SubResource {
      * @return the ExpressRouteCrossConnectionPeeringInner object itself.
      */
     public ExpressRouteCrossConnectionPeeringInner withVlanId(Integer vlanId) {
-        this.vlanId = vlanId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteCrossConnectionPeeringProperties();
+        }
+        this.innerProperties().withVlanId(vlanId);
         return this;
     }
 
@@ -330,7 +280,7 @@ public class ExpressRouteCrossConnectionPeeringInner extends SubResource {
      * @return the microsoftPeeringConfig value.
      */
     public ExpressRouteCircuitPeeringConfig microsoftPeeringConfig() {
-        return this.microsoftPeeringConfig;
+        return this.innerProperties() == null ? null : this.innerProperties().microsoftPeeringConfig();
     }
 
     /**
@@ -341,7 +291,10 @@ public class ExpressRouteCrossConnectionPeeringInner extends SubResource {
      */
     public ExpressRouteCrossConnectionPeeringInner withMicrosoftPeeringConfig(
         ExpressRouteCircuitPeeringConfig microsoftPeeringConfig) {
-        this.microsoftPeeringConfig = microsoftPeeringConfig;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteCrossConnectionPeeringProperties();
+        }
+        this.innerProperties().withMicrosoftPeeringConfig(microsoftPeeringConfig);
         return this;
     }
 
@@ -352,7 +305,7 @@ public class ExpressRouteCrossConnectionPeeringInner extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -361,7 +314,7 @@ public class ExpressRouteCrossConnectionPeeringInner extends SubResource {
      * @return the gatewayManagerEtag value.
      */
     public String gatewayManagerEtag() {
-        return this.gatewayManagerEtag;
+        return this.innerProperties() == null ? null : this.innerProperties().gatewayManagerEtag();
     }
 
     /**
@@ -371,7 +324,10 @@ public class ExpressRouteCrossConnectionPeeringInner extends SubResource {
      * @return the ExpressRouteCrossConnectionPeeringInner object itself.
      */
     public ExpressRouteCrossConnectionPeeringInner withGatewayManagerEtag(String gatewayManagerEtag) {
-        this.gatewayManagerEtag = gatewayManagerEtag;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteCrossConnectionPeeringProperties();
+        }
+        this.innerProperties().withGatewayManagerEtag(gatewayManagerEtag);
         return this;
     }
 
@@ -381,7 +337,7 @@ public class ExpressRouteCrossConnectionPeeringInner extends SubResource {
      * @return the lastModifiedBy value.
      */
     public String lastModifiedBy() {
-        return this.lastModifiedBy;
+        return this.innerProperties() == null ? null : this.innerProperties().lastModifiedBy();
     }
 
     /**
@@ -390,7 +346,7 @@ public class ExpressRouteCrossConnectionPeeringInner extends SubResource {
      * @return the ipv6PeeringConfig value.
      */
     public Ipv6ExpressRouteCircuitPeeringConfig ipv6PeeringConfig() {
-        return this.ipv6PeeringConfig;
+        return this.innerProperties() == null ? null : this.innerProperties().ipv6PeeringConfig();
     }
 
     /**
@@ -401,14 +357,10 @@ public class ExpressRouteCrossConnectionPeeringInner extends SubResource {
      */
     public ExpressRouteCrossConnectionPeeringInner withIpv6PeeringConfig(
         Ipv6ExpressRouteCircuitPeeringConfig ipv6PeeringConfig) {
-        this.ipv6PeeringConfig = ipv6PeeringConfig;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ExpressRouteCrossConnectionPeeringInner withId(String id) {
-        super.withId(id);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteCrossConnectionPeeringProperties();
+        }
+        this.innerProperties().withIpv6PeeringConfig(ipv6PeeringConfig);
         return this;
     }
 
@@ -418,11 +370,8 @@ public class ExpressRouteCrossConnectionPeeringInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (microsoftPeeringConfig() != null) {
-            microsoftPeeringConfig().validate();
-        }
-        if (ipv6PeeringConfig() != null) {
-            ipv6PeeringConfig().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -185,7 +185,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -244,7 +244,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -270,14 +270,15 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -292,7 +293,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, Context context) {
         context = this.client.mergeContext(context);
@@ -314,7 +315,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) {
         return beginDeleteAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName).getSyncPoller();
@@ -332,7 +333,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, Context context) {
         return beginDeleteAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, context)
@@ -450,7 +451,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -509,7 +510,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -640,7 +641,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
         } else {
             virtualNetworkPeeringParameters.validate();
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -718,7 +719,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
         } else {
             virtualNetworkPeeringParameters.validate();
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -750,7 +751,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return peerings in a virtual network resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String virtualNetworkName,
@@ -771,7 +772,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
                 this.client.getHttpPipeline(),
                 VirtualNetworkPeeringInner.class,
                 VirtualNetworkPeeringInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -790,7 +791,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return peerings in a virtual network resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String virtualNetworkName,
@@ -832,7 +833,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return peerings in a virtual network resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner> beginCreateOrUpdate(
         String resourceGroupName,
         String virtualNetworkName,
@@ -864,7 +865,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return peerings in a virtual network resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner> beginCreateOrUpdate(
         String resourceGroupName,
         String virtualNetworkName,
@@ -1106,7 +1107,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1166,7 +1167,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

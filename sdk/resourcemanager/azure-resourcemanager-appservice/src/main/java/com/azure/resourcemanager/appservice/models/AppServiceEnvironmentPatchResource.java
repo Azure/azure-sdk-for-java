@@ -5,112 +5,38 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.fluent.models.AppServiceEnvironment;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** ARM resource for a app service environment. */
-@JsonFlatten
 @Fluent
-public class AppServiceEnvironmentPatchResource extends ProxyOnlyResource {
+public final class AppServiceEnvironmentPatchResource extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AppServiceEnvironmentPatchResource.class);
 
     /*
-     * Provisioning state of the App Service Environment.
+     * Core resource properties
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    @JsonProperty(value = "properties")
+    private AppServiceEnvironment innerProperties;
 
-    /*
-     * Current status of the App Service Environment.
+    /**
+     * Get the innerProperties property: Core resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private HostingEnvironmentStatus status;
+    private AppServiceEnvironment innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Description of the Virtual Network.
-     */
-    @JsonProperty(value = "properties.virtualNetwork")
-    private VirtualNetworkProfile virtualNetwork;
-
-    /*
-     * Specifies which endpoints to serve internally in the Virtual Network for
-     * the App Service Environment.
-     */
-    @JsonProperty(value = "properties.internalLoadBalancingMode")
-    private LoadBalancingMode internalLoadBalancingMode;
-
-    /*
-     * Front-end VM size, e.g. "Medium", "Large".
-     */
-    @JsonProperty(value = "properties.multiSize")
-    private String multiSize;
-
-    /*
-     * Number of front-end instances.
-     */
-    @JsonProperty(value = "properties.multiRoleCount", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer multiRoleCount;
-
-    /*
-     * Number of IP SSL addresses reserved for the App Service Environment.
-     */
-    @JsonProperty(value = "properties.ipsslAddressCount")
-    private Integer ipsslAddressCount;
-
-    /*
-     * DNS suffix of the App Service Environment.
-     */
-    @JsonProperty(value = "properties.dnsSuffix")
-    private String dnsSuffix;
-
-    /*
-     * Maximum number of VMs in the App Service Environment.
-     */
-    @JsonProperty(value = "properties.maximumNumberOfMachines", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer maximumNumberOfMachines;
-
-    /*
-     * Scale factor for front-ends.
-     */
-    @JsonProperty(value = "properties.frontEndScaleFactor")
-    private Integer frontEndScaleFactor;
-
-    /*
-     * <code>true</code> if the App Service Environment is suspended;
-     * otherwise, <code>false</code>. The environment can be suspended, e.g.
-     * when the management endpoint is no longer available
-     * (most likely because NSG blocked the incoming traffic).
-     */
-    @JsonProperty(value = "properties.suspended", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean suspended;
-
-    /*
-     * Custom settings for changing the behavior of the App Service
-     * Environment.
-     */
-    @JsonProperty(value = "properties.clusterSettings")
-    private List<NameValuePair> clusterSettings;
-
-    /*
-     * User added ip ranges to whitelist on ASE db
-     */
-    @JsonProperty(value = "properties.userWhitelistedIpRanges")
-    private List<String> userWhitelistedIpRanges;
-
-    /*
-     * Flag that displays whether an ASE has linux workers or not
-     */
-    @JsonProperty(value = "properties.hasLinuxWorkers", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean hasLinuxWorkers;
-
-    /*
-     * Dedicated Host Count
-     */
-    @JsonProperty(value = "properties.dedicatedHostCount", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer dedicatedHostCount;
+    /** {@inheritDoc} */
+    @Override
+    public AppServiceEnvironmentPatchResource withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the provisioningState property: Provisioning state of the App Service Environment.
@@ -118,7 +44,7 @@ public class AppServiceEnvironmentPatchResource extends ProxyOnlyResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -127,7 +53,7 @@ public class AppServiceEnvironmentPatchResource extends ProxyOnlyResource {
      * @return the status value.
      */
     public HostingEnvironmentStatus status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -136,7 +62,7 @@ public class AppServiceEnvironmentPatchResource extends ProxyOnlyResource {
      * @return the virtualNetwork value.
      */
     public VirtualNetworkProfile virtualNetwork() {
-        return this.virtualNetwork;
+        return this.innerProperties() == null ? null : this.innerProperties().virtualNetwork();
     }
 
     /**
@@ -146,7 +72,10 @@ public class AppServiceEnvironmentPatchResource extends ProxyOnlyResource {
      * @return the AppServiceEnvironmentPatchResource object itself.
      */
     public AppServiceEnvironmentPatchResource withVirtualNetwork(VirtualNetworkProfile virtualNetwork) {
-        this.virtualNetwork = virtualNetwork;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServiceEnvironment();
+        }
+        this.innerProperties().withVirtualNetwork(virtualNetwork);
         return this;
     }
 
@@ -157,7 +86,7 @@ public class AppServiceEnvironmentPatchResource extends ProxyOnlyResource {
      * @return the internalLoadBalancingMode value.
      */
     public LoadBalancingMode internalLoadBalancingMode() {
-        return this.internalLoadBalancingMode;
+        return this.innerProperties() == null ? null : this.innerProperties().internalLoadBalancingMode();
     }
 
     /**
@@ -169,7 +98,10 @@ public class AppServiceEnvironmentPatchResource extends ProxyOnlyResource {
      */
     public AppServiceEnvironmentPatchResource withInternalLoadBalancingMode(
         LoadBalancingMode internalLoadBalancingMode) {
-        this.internalLoadBalancingMode = internalLoadBalancingMode;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServiceEnvironment();
+        }
+        this.innerProperties().withInternalLoadBalancingMode(internalLoadBalancingMode);
         return this;
     }
 
@@ -179,7 +111,7 @@ public class AppServiceEnvironmentPatchResource extends ProxyOnlyResource {
      * @return the multiSize value.
      */
     public String multiSize() {
-        return this.multiSize;
+        return this.innerProperties() == null ? null : this.innerProperties().multiSize();
     }
 
     /**
@@ -189,7 +121,10 @@ public class AppServiceEnvironmentPatchResource extends ProxyOnlyResource {
      * @return the AppServiceEnvironmentPatchResource object itself.
      */
     public AppServiceEnvironmentPatchResource withMultiSize(String multiSize) {
-        this.multiSize = multiSize;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServiceEnvironment();
+        }
+        this.innerProperties().withMultiSize(multiSize);
         return this;
     }
 
@@ -199,7 +134,7 @@ public class AppServiceEnvironmentPatchResource extends ProxyOnlyResource {
      * @return the multiRoleCount value.
      */
     public Integer multiRoleCount() {
-        return this.multiRoleCount;
+        return this.innerProperties() == null ? null : this.innerProperties().multiRoleCount();
     }
 
     /**
@@ -208,7 +143,7 @@ public class AppServiceEnvironmentPatchResource extends ProxyOnlyResource {
      * @return the ipsslAddressCount value.
      */
     public Integer ipsslAddressCount() {
-        return this.ipsslAddressCount;
+        return this.innerProperties() == null ? null : this.innerProperties().ipsslAddressCount();
     }
 
     /**
@@ -218,7 +153,10 @@ public class AppServiceEnvironmentPatchResource extends ProxyOnlyResource {
      * @return the AppServiceEnvironmentPatchResource object itself.
      */
     public AppServiceEnvironmentPatchResource withIpsslAddressCount(Integer ipsslAddressCount) {
-        this.ipsslAddressCount = ipsslAddressCount;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServiceEnvironment();
+        }
+        this.innerProperties().withIpsslAddressCount(ipsslAddressCount);
         return this;
     }
 
@@ -228,7 +166,7 @@ public class AppServiceEnvironmentPatchResource extends ProxyOnlyResource {
      * @return the dnsSuffix value.
      */
     public String dnsSuffix() {
-        return this.dnsSuffix;
+        return this.innerProperties() == null ? null : this.innerProperties().dnsSuffix();
     }
 
     /**
@@ -238,7 +176,10 @@ public class AppServiceEnvironmentPatchResource extends ProxyOnlyResource {
      * @return the AppServiceEnvironmentPatchResource object itself.
      */
     public AppServiceEnvironmentPatchResource withDnsSuffix(String dnsSuffix) {
-        this.dnsSuffix = dnsSuffix;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServiceEnvironment();
+        }
+        this.innerProperties().withDnsSuffix(dnsSuffix);
         return this;
     }
 
@@ -248,7 +189,7 @@ public class AppServiceEnvironmentPatchResource extends ProxyOnlyResource {
      * @return the maximumNumberOfMachines value.
      */
     public Integer maximumNumberOfMachines() {
-        return this.maximumNumberOfMachines;
+        return this.innerProperties() == null ? null : this.innerProperties().maximumNumberOfMachines();
     }
 
     /**
@@ -257,7 +198,7 @@ public class AppServiceEnvironmentPatchResource extends ProxyOnlyResource {
      * @return the frontEndScaleFactor value.
      */
     public Integer frontEndScaleFactor() {
-        return this.frontEndScaleFactor;
+        return this.innerProperties() == null ? null : this.innerProperties().frontEndScaleFactor();
     }
 
     /**
@@ -267,7 +208,10 @@ public class AppServiceEnvironmentPatchResource extends ProxyOnlyResource {
      * @return the AppServiceEnvironmentPatchResource object itself.
      */
     public AppServiceEnvironmentPatchResource withFrontEndScaleFactor(Integer frontEndScaleFactor) {
-        this.frontEndScaleFactor = frontEndScaleFactor;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServiceEnvironment();
+        }
+        this.innerProperties().withFrontEndScaleFactor(frontEndScaleFactor);
         return this;
     }
 
@@ -279,7 +223,7 @@ public class AppServiceEnvironmentPatchResource extends ProxyOnlyResource {
      * @return the suspended value.
      */
     public Boolean suspended() {
-        return this.suspended;
+        return this.innerProperties() == null ? null : this.innerProperties().suspended();
     }
 
     /**
@@ -288,7 +232,7 @@ public class AppServiceEnvironmentPatchResource extends ProxyOnlyResource {
      * @return the clusterSettings value.
      */
     public List<NameValuePair> clusterSettings() {
-        return this.clusterSettings;
+        return this.innerProperties() == null ? null : this.innerProperties().clusterSettings();
     }
 
     /**
@@ -298,7 +242,10 @@ public class AppServiceEnvironmentPatchResource extends ProxyOnlyResource {
      * @return the AppServiceEnvironmentPatchResource object itself.
      */
     public AppServiceEnvironmentPatchResource withClusterSettings(List<NameValuePair> clusterSettings) {
-        this.clusterSettings = clusterSettings;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServiceEnvironment();
+        }
+        this.innerProperties().withClusterSettings(clusterSettings);
         return this;
     }
 
@@ -308,7 +255,7 @@ public class AppServiceEnvironmentPatchResource extends ProxyOnlyResource {
      * @return the userWhitelistedIpRanges value.
      */
     public List<String> userWhitelistedIpRanges() {
-        return this.userWhitelistedIpRanges;
+        return this.innerProperties() == null ? null : this.innerProperties().userWhitelistedIpRanges();
     }
 
     /**
@@ -318,7 +265,10 @@ public class AppServiceEnvironmentPatchResource extends ProxyOnlyResource {
      * @return the AppServiceEnvironmentPatchResource object itself.
      */
     public AppServiceEnvironmentPatchResource withUserWhitelistedIpRanges(List<String> userWhitelistedIpRanges) {
-        this.userWhitelistedIpRanges = userWhitelistedIpRanges;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServiceEnvironment();
+        }
+        this.innerProperties().withUserWhitelistedIpRanges(userWhitelistedIpRanges);
         return this;
     }
 
@@ -328,7 +278,7 @@ public class AppServiceEnvironmentPatchResource extends ProxyOnlyResource {
      * @return the hasLinuxWorkers value.
      */
     public Boolean hasLinuxWorkers() {
-        return this.hasLinuxWorkers;
+        return this.innerProperties() == null ? null : this.innerProperties().hasLinuxWorkers();
     }
 
     /**
@@ -337,13 +287,43 @@ public class AppServiceEnvironmentPatchResource extends ProxyOnlyResource {
      * @return the dedicatedHostCount value.
      */
     public Integer dedicatedHostCount() {
-        return this.dedicatedHostCount;
+        return this.innerProperties() == null ? null : this.innerProperties().dedicatedHostCount();
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public AppServiceEnvironmentPatchResource withKind(String kind) {
-        super.withKind(kind);
+    /**
+     * Set the dedicatedHostCount property: Dedicated Host Count.
+     *
+     * @param dedicatedHostCount the dedicatedHostCount value to set.
+     * @return the AppServiceEnvironmentPatchResource object itself.
+     */
+    public AppServiceEnvironmentPatchResource withDedicatedHostCount(Integer dedicatedHostCount) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServiceEnvironment();
+        }
+        this.innerProperties().withDedicatedHostCount(dedicatedHostCount);
+        return this;
+    }
+
+    /**
+     * Get the zoneRedundant property: Whether or not this App Service Environment is zone-redundant.
+     *
+     * @return the zoneRedundant value.
+     */
+    public Boolean zoneRedundant() {
+        return this.innerProperties() == null ? null : this.innerProperties().zoneRedundant();
+    }
+
+    /**
+     * Set the zoneRedundant property: Whether or not this App Service Environment is zone-redundant.
+     *
+     * @param zoneRedundant the zoneRedundant value to set.
+     * @return the AppServiceEnvironmentPatchResource object itself.
+     */
+    public AppServiceEnvironmentPatchResource withZoneRedundant(Boolean zoneRedundant) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServiceEnvironment();
+        }
+        this.innerProperties().withZoneRedundant(zoneRedundant);
         return this;
     }
 
@@ -355,11 +335,8 @@ public class AppServiceEnvironmentPatchResource extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
-        if (virtualNetwork() != null) {
-            virtualNetwork().validate();
-        }
-        if (clusterSettings() != null) {
-            clusterSettings().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

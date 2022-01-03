@@ -3,6 +3,7 @@
 
 package com.azure.communication.callingserver;
 
+import com.azure.communication.callingserver.models.StartRecordingOptions;
 import com.azure.communication.callingserver.models.AddParticipantResult;
 import com.azure.communication.callingserver.models.CallRecordingProperties;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
@@ -124,6 +125,7 @@ public final class ServerCall {
      * Start recording of the call.
      *
      * @param recordingStateCallbackUri Uri to send state change callbacks.
+     * @param startRecordingOptions StartRecordingOptions custom options.
      * @param context A {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -132,8 +134,9 @@ public final class ServerCall {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StartCallRecordingResult> startRecordingWithResponse(
         String recordingStateCallbackUri,
+        StartRecordingOptions startRecordingOptions,
         final Context context) {
-        return serverCallAsync.startRecordingWithResponse(recordingStateCallbackUri, context).block();
+        return serverCallAsync.startRecordingWithResponse(recordingStateCallbackUri, startRecordingOptions, context).block();
     }
 
     /**

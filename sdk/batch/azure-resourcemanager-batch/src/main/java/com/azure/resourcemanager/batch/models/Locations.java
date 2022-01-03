@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.batch.models;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
@@ -31,6 +32,58 @@ public interface Locations {
      * @return the Batch service quotas for the specified subscription at the given location.
      */
     Response<BatchLocationQuota> getQuotasWithResponse(String locationName, Context context);
+
+    /**
+     * Gets the list of Batch supported Virtual Machine VM sizes available at the given location.
+     *
+     * @param locationName The region for which to retrieve Batch service supported SKUs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of Batch supported Virtual Machine VM sizes available at the given location.
+     */
+    PagedIterable<SupportedSku> listSupportedVirtualMachineSkus(String locationName);
+
+    /**
+     * Gets the list of Batch supported Virtual Machine VM sizes available at the given location.
+     *
+     * @param locationName The region for which to retrieve Batch service supported SKUs.
+     * @param maxresults The maximum number of items to return in the response.
+     * @param filter OData filter expression. Valid properties for filtering are "familyName".
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of Batch supported Virtual Machine VM sizes available at the given location.
+     */
+    PagedIterable<SupportedSku> listSupportedVirtualMachineSkus(
+        String locationName, Integer maxresults, String filter, Context context);
+
+    /**
+     * Gets the list of Batch supported Cloud Service VM sizes available at the given location.
+     *
+     * @param locationName The region for which to retrieve Batch service supported SKUs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of Batch supported Cloud Service VM sizes available at the given location.
+     */
+    PagedIterable<SupportedSku> listSupportedCloudServiceSkus(String locationName);
+
+    /**
+     * Gets the list of Batch supported Cloud Service VM sizes available at the given location.
+     *
+     * @param locationName The region for which to retrieve Batch service supported SKUs.
+     * @param maxresults The maximum number of items to return in the response.
+     * @param filter OData filter expression. Valid properties for filtering are "familyName".
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of Batch supported Cloud Service VM sizes available at the given location.
+     */
+    PagedIterable<SupportedSku> listSupportedCloudServiceSkus(
+        String locationName, Integer maxresults, String filter, Context context);
 
     /**
      * Checks whether the Batch account name is available in the specified region.

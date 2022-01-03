@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.PrivateLinkServiceConnectionState;
@@ -14,11 +13,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Private Endpoint connection on an application gateway. */
-@JsonFlatten
 @Fluent
-public class ApplicationGatewayPrivateEndpointConnectionInner extends SubResource {
+public final class ApplicationGatewayPrivateEndpointConnectionInner extends SubResource {
     @JsonIgnore
     private final ClientLogger logger = new ClientLogger(ApplicationGatewayPrivateEndpointConnectionInner.class);
+
+    /*
+     * Properties of the application gateway private endpoint connection.
+     */
+    @JsonProperty(value = "properties")
+    private ApplicationGatewayPrivateEndpointConnectionPropertiesInner innerProperties;
 
     /*
      * Name of the private endpoint connection on an application gateway.
@@ -38,31 +42,14 @@ public class ApplicationGatewayPrivateEndpointConnectionInner extends SubResourc
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * The resource of private end point.
+    /**
+     * Get the innerProperties property: Properties of the application gateway private endpoint connection.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.privateEndpoint", access = JsonProperty.Access.WRITE_ONLY)
-    private PrivateEndpointInner privateEndpoint;
-
-    /*
-     * A collection of information about the state of the connection between
-     * service consumer and provider.
-     */
-    @JsonProperty(value = "properties.privateLinkServiceConnectionState")
-    private PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
-
-    /*
-     * The provisioning state of the application gateway private endpoint
-     * connection resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * The consumer link id.
-     */
-    @JsonProperty(value = "properties.linkIdentifier", access = JsonProperty.Access.WRITE_ONLY)
-    private String linkIdentifier;
+    private ApplicationGatewayPrivateEndpointConnectionPropertiesInner innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Name of the private endpoint connection on an application gateway.
@@ -102,13 +89,20 @@ public class ApplicationGatewayPrivateEndpointConnectionInner extends SubResourc
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayPrivateEndpointConnectionInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the privateEndpoint property: The resource of private end point.
      *
      * @return the privateEndpoint value.
      */
     public PrivateEndpointInner privateEndpoint() {
-        return this.privateEndpoint;
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpoint();
     }
 
     /**
@@ -118,7 +112,7 @@ public class ApplicationGatewayPrivateEndpointConnectionInner extends SubResourc
      * @return the privateLinkServiceConnectionState value.
      */
     public PrivateLinkServiceConnectionState privateLinkServiceConnectionState() {
-        return this.privateLinkServiceConnectionState;
+        return this.innerProperties() == null ? null : this.innerProperties().privateLinkServiceConnectionState();
     }
 
     /**
@@ -130,7 +124,10 @@ public class ApplicationGatewayPrivateEndpointConnectionInner extends SubResourc
      */
     public ApplicationGatewayPrivateEndpointConnectionInner withPrivateLinkServiceConnectionState(
         PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
-        this.privateLinkServiceConnectionState = privateLinkServiceConnectionState;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayPrivateEndpointConnectionPropertiesInner();
+        }
+        this.innerProperties().withPrivateLinkServiceConnectionState(privateLinkServiceConnectionState);
         return this;
     }
 
@@ -141,7 +138,7 @@ public class ApplicationGatewayPrivateEndpointConnectionInner extends SubResourc
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -150,14 +147,7 @@ public class ApplicationGatewayPrivateEndpointConnectionInner extends SubResourc
      * @return the linkIdentifier value.
      */
     public String linkIdentifier() {
-        return this.linkIdentifier;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ApplicationGatewayPrivateEndpointConnectionInner withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().linkIdentifier();
     }
 
     /**
@@ -166,11 +156,8 @@ public class ApplicationGatewayPrivateEndpointConnectionInner extends SubResourc
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (privateEndpoint() != null) {
-            privateEndpoint().validate();
-        }
-        if (privateLinkServiceConnectionState() != null) {
-            privateLinkServiceConnectionState().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

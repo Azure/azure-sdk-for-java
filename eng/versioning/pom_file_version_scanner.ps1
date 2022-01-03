@@ -401,6 +401,19 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
         return
     }
 
+    # azure-core-jackson-tests verifies compatibility with different 
+    # Jackson versions, it should be excluded from version checks
+    if ($_.FullName -like "*azure-core-jackson-tests*")		
+    {
+        return
+    }
+
+    # Packages under sdk/resourcemanagerhybrid has duplicate artifactId with that under sdk/resourcemanager
+    if ($_.FullName -like "*resourcemanagerhybrid*")
+    {
+        return
+    }
+
     if ($PomFilesIgnoreParent -contains $pomFile)
     {
         $xmlPomFile = New-Object xml

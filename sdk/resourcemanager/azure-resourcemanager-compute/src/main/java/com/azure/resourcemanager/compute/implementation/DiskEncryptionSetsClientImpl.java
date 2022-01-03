@@ -215,7 +215,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
      *     operation.
@@ -253,7 +253,7 @@ public final class DiskEncryptionSetsClientImpl
         } else {
             diskEncryptionSet.validate();
         }
-        final String apiVersion = "2020-12-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -276,7 +276,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
      *     operation.
@@ -318,7 +318,7 @@ public final class DiskEncryptionSetsClientImpl
         } else {
             diskEncryptionSet.validate();
         }
-        final String apiVersion = "2020-12-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -338,7 +338,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
      *     operation.
@@ -347,7 +347,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk encryption set resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetInner diskEncryptionSet) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -359,7 +359,7 @@ public final class DiskEncryptionSetsClientImpl
                 this.client.getHttpPipeline(),
                 DiskEncryptionSetInner.class,
                 DiskEncryptionSetInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -367,7 +367,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
      *     operation.
@@ -377,7 +377,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk encryption set resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String diskEncryptionSetName,
@@ -401,7 +401,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
      *     operation.
@@ -410,7 +410,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk encryption set resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginCreateOrUpdate(
         String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetInner diskEncryptionSet) {
         return beginCreateOrUpdateAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet).getSyncPoller();
@@ -421,7 +421,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
      *     operation.
@@ -431,7 +431,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk encryption set resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginCreateOrUpdate(
         String resourceGroupName,
         String diskEncryptionSetName,
@@ -446,7 +446,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
      *     operation.
@@ -468,7 +468,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
      *     operation.
@@ -494,7 +494,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
      *     operation.
@@ -514,7 +514,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
      *     operation.
@@ -538,7 +538,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
      *     operation.
@@ -576,7 +576,7 @@ public final class DiskEncryptionSetsClientImpl
         } else {
             diskEncryptionSet.validate();
         }
-        final String apiVersion = "2020-12-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -599,7 +599,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
      *     operation.
@@ -641,7 +641,7 @@ public final class DiskEncryptionSetsClientImpl
         } else {
             diskEncryptionSet.validate();
         }
-        final String apiVersion = "2020-12-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -661,7 +661,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
      *     operation.
@@ -670,7 +670,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk encryption set resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginUpdateAsync(
         String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetUpdate diskEncryptionSet) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -682,7 +682,7 @@ public final class DiskEncryptionSetsClientImpl
                 this.client.getHttpPipeline(),
                 DiskEncryptionSetInner.class,
                 DiskEncryptionSetInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -690,7 +690,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
      *     operation.
@@ -700,7 +700,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk encryption set resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginUpdateAsync(
         String resourceGroupName,
         String diskEncryptionSetName,
@@ -724,7 +724,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
      *     operation.
@@ -733,7 +733,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk encryption set resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginUpdate(
         String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetUpdate diskEncryptionSet) {
         return beginUpdateAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet).getSyncPoller();
@@ -744,7 +744,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
      *     operation.
@@ -754,7 +754,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk encryption set resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginUpdate(
         String resourceGroupName,
         String diskEncryptionSetName,
@@ -768,7 +768,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
      *     operation.
@@ -790,7 +790,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
      *     operation.
@@ -816,7 +816,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
      *     operation.
@@ -836,7 +836,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
      *     operation.
@@ -860,7 +860,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -890,7 +890,7 @@ public final class DiskEncryptionSetsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2020-12-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -912,7 +912,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -943,7 +943,7 @@ public final class DiskEncryptionSetsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2020-12-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -962,7 +962,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -988,7 +988,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1005,7 +1005,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1024,7 +1024,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1054,7 +1054,7 @@ public final class DiskEncryptionSetsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2020-12-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1076,7 +1076,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1107,7 +1107,7 @@ public final class DiskEncryptionSetsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2020-12-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1126,19 +1126,20 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String diskEncryptionSetName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, diskEncryptionSetName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1146,7 +1147,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1154,7 +1155,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String diskEncryptionSetName, Context context) {
         context = this.client.mergeContext(context);
@@ -1170,14 +1171,14 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String diskEncryptionSetName) {
         return beginDeleteAsync(resourceGroupName, diskEncryptionSetName).getSyncPoller();
     }
@@ -1187,7 +1188,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1195,7 +1196,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String diskEncryptionSetName, Context context) {
         return beginDeleteAsync(resourceGroupName, diskEncryptionSetName, context).getSyncPoller();
@@ -1206,7 +1207,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1225,7 +1226,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1245,7 +1246,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1261,7 +1262,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1300,7 +1301,7 @@ public final class DiskEncryptionSetsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2020-12-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1354,7 +1355,7 @@ public final class DiskEncryptionSetsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2020-12-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1459,7 +1460,7 @@ public final class DiskEncryptionSetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-12-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1501,7 +1502,7 @@ public final class DiskEncryptionSetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-12-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1575,7 +1576,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1605,7 +1606,7 @@ public final class DiskEncryptionSetsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2020-12-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1636,7 +1637,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1667,7 +1668,7 @@ public final class DiskEncryptionSetsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2020-12-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1695,7 +1696,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1714,7 +1715,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1735,7 +1736,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1752,7 +1753,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

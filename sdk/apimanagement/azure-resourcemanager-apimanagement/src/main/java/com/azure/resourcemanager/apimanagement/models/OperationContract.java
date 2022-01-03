@@ -32,6 +32,29 @@ public interface OperationContract {
     String type();
 
     /**
+     * Gets the displayName property: Operation Name.
+     *
+     * @return the displayName value.
+     */
+    String displayName();
+
+    /**
+     * Gets the method property: A Valid HTTP Operation Method. Typical Http Methods like GET, PUT, POST but not limited
+     * by only them.
+     *
+     * @return the method value.
+     */
+    String method();
+
+    /**
+     * Gets the urlTemplate property: Relative URL template identifying the target resource for this operation. May
+     * include parameters. Example: /customers/{cid}/orders/{oid}/?date={date}.
+     *
+     * @return the urlTemplate value.
+     */
+    String urlTemplate();
+
+    /**
      * Gets the templateParameters property: Collection of URL template parameters.
      *
      * @return the templateParameters value.
@@ -67,29 +90,6 @@ public interface OperationContract {
     String policies();
 
     /**
-     * Gets the displayName property: Operation Name.
-     *
-     * @return the displayName value.
-     */
-    String displayName();
-
-    /**
-     * Gets the method property: A Valid HTTP Operation Method. Typical Http Methods like GET, PUT, POST but not limited
-     * by only them.
-     *
-     * @return the method value.
-     */
-    String method();
-
-    /**
-     * Gets the urlTemplate property: Relative URL template identifying the target resource for this operation. May
-     * include parameters. Example: /customers/{cid}/orders/{oid}/?date={date}.
-     *
-     * @return the urlTemplate value.
-     */
-    String urlTemplate();
-
-    /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.OperationContractInner object.
      *
      * @return the inner object.
@@ -123,14 +123,14 @@ public interface OperationContract {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTemplateParameters,
+            extends DefinitionStages.WithDisplayName,
+                DefinitionStages.WithMethod,
+                DefinitionStages.WithUrlTemplate,
+                DefinitionStages.WithTemplateParameters,
                 DefinitionStages.WithDescription,
                 DefinitionStages.WithRequest,
                 DefinitionStages.WithResponses,
                 DefinitionStages.WithPolicies,
-                DefinitionStages.WithDisplayName,
-                DefinitionStages.WithMethod,
-                DefinitionStages.WithUrlTemplate,
                 DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
@@ -146,6 +146,40 @@ public interface OperationContract {
              * @return the created resource.
              */
             OperationContract create(Context context);
+        }
+        /** The stage of the OperationContract definition allowing to specify displayName. */
+        interface WithDisplayName {
+            /**
+             * Specifies the displayName property: Operation Name..
+             *
+             * @param displayName Operation Name.
+             * @return the next definition stage.
+             */
+            WithCreate withDisplayName(String displayName);
+        }
+        /** The stage of the OperationContract definition allowing to specify method. */
+        interface WithMethod {
+            /**
+             * Specifies the method property: A Valid HTTP Operation Method. Typical Http Methods like GET, PUT, POST
+             * but not limited by only them..
+             *
+             * @param method A Valid HTTP Operation Method. Typical Http Methods like GET, PUT, POST but not limited by
+             *     only them.
+             * @return the next definition stage.
+             */
+            WithCreate withMethod(String method);
+        }
+        /** The stage of the OperationContract definition allowing to specify urlTemplate. */
+        interface WithUrlTemplate {
+            /**
+             * Specifies the urlTemplate property: Relative URL template identifying the target resource for this
+             * operation. May include parameters. Example: /customers/{cid}/orders/{oid}/?date={date}.
+             *
+             * @param urlTemplate Relative URL template identifying the target resource for this operation. May include
+             *     parameters. Example: /customers/{cid}/orders/{oid}/?date={date}.
+             * @return the next definition stage.
+             */
+            WithCreate withUrlTemplate(String urlTemplate);
         }
         /** The stage of the OperationContract definition allowing to specify templateParameters. */
         interface WithTemplateParameters {
@@ -197,40 +231,6 @@ public interface OperationContract {
              */
             WithCreate withPolicies(String policies);
         }
-        /** The stage of the OperationContract definition allowing to specify displayName. */
-        interface WithDisplayName {
-            /**
-             * Specifies the displayName property: Operation Name..
-             *
-             * @param displayName Operation Name.
-             * @return the next definition stage.
-             */
-            WithCreate withDisplayName(String displayName);
-        }
-        /** The stage of the OperationContract definition allowing to specify method. */
-        interface WithMethod {
-            /**
-             * Specifies the method property: A Valid HTTP Operation Method. Typical Http Methods like GET, PUT, POST
-             * but not limited by only them..
-             *
-             * @param method A Valid HTTP Operation Method. Typical Http Methods like GET, PUT, POST but not limited by
-             *     only them.
-             * @return the next definition stage.
-             */
-            WithCreate withMethod(String method);
-        }
-        /** The stage of the OperationContract definition allowing to specify urlTemplate. */
-        interface WithUrlTemplate {
-            /**
-             * Specifies the urlTemplate property: Relative URL template identifying the target resource for this
-             * operation. May include parameters. Example: /customers/{cid}/orders/{oid}/?date={date}.
-             *
-             * @param urlTemplate Relative URL template identifying the target resource for this operation. May include
-             *     parameters. Example: /customers/{cid}/orders/{oid}/?date={date}.
-             * @return the next definition stage.
-             */
-            WithCreate withUrlTemplate(String urlTemplate);
-        }
         /** The stage of the OperationContract definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -253,14 +253,14 @@ public interface OperationContract {
 
     /** The template for OperationContract update. */
     interface Update
-        extends UpdateStages.WithTemplateParameters,
+        extends UpdateStages.WithDisplayName,
+            UpdateStages.WithMethod,
+            UpdateStages.WithUrlTemplate,
+            UpdateStages.WithTemplateParameters,
             UpdateStages.WithDescription,
             UpdateStages.WithRequest,
             UpdateStages.WithResponses,
             UpdateStages.WithPolicies,
-            UpdateStages.WithDisplayName,
-            UpdateStages.WithMethod,
-            UpdateStages.WithUrlTemplate,
             UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
@@ -279,6 +279,40 @@ public interface OperationContract {
     }
     /** The OperationContract update stages. */
     interface UpdateStages {
+        /** The stage of the OperationContract update allowing to specify displayName. */
+        interface WithDisplayName {
+            /**
+             * Specifies the displayName property: Operation Name..
+             *
+             * @param displayName Operation Name.
+             * @return the next definition stage.
+             */
+            Update withDisplayName(String displayName);
+        }
+        /** The stage of the OperationContract update allowing to specify method. */
+        interface WithMethod {
+            /**
+             * Specifies the method property: A Valid HTTP Operation Method. Typical Http Methods like GET, PUT, POST
+             * but not limited by only them..
+             *
+             * @param method A Valid HTTP Operation Method. Typical Http Methods like GET, PUT, POST but not limited by
+             *     only them.
+             * @return the next definition stage.
+             */
+            Update withMethod(String method);
+        }
+        /** The stage of the OperationContract update allowing to specify urlTemplate. */
+        interface WithUrlTemplate {
+            /**
+             * Specifies the urlTemplate property: Relative URL template identifying the target resource for this
+             * operation. May include parameters. Example: /customers/{cid}/orders/{oid}/?date={date}.
+             *
+             * @param urlTemplate Relative URL template identifying the target resource for this operation. May include
+             *     parameters. Example: /customers/{cid}/orders/{oid}/?date={date}.
+             * @return the next definition stage.
+             */
+            Update withUrlTemplate(String urlTemplate);
+        }
         /** The stage of the OperationContract update allowing to specify templateParameters. */
         interface WithTemplateParameters {
             /**
@@ -328,40 +362,6 @@ public interface OperationContract {
              * @return the next definition stage.
              */
             Update withPolicies(String policies);
-        }
-        /** The stage of the OperationContract update allowing to specify displayName. */
-        interface WithDisplayName {
-            /**
-             * Specifies the displayName property: Operation Name..
-             *
-             * @param displayName Operation Name.
-             * @return the next definition stage.
-             */
-            Update withDisplayName(String displayName);
-        }
-        /** The stage of the OperationContract update allowing to specify method. */
-        interface WithMethod {
-            /**
-             * Specifies the method property: A Valid HTTP Operation Method. Typical Http Methods like GET, PUT, POST
-             * but not limited by only them..
-             *
-             * @param method A Valid HTTP Operation Method. Typical Http Methods like GET, PUT, POST but not limited by
-             *     only them.
-             * @return the next definition stage.
-             */
-            Update withMethod(String method);
-        }
-        /** The stage of the OperationContract update allowing to specify urlTemplate. */
-        interface WithUrlTemplate {
-            /**
-             * Specifies the urlTemplate property: Relative URL template identifying the target resource for this
-             * operation. May include parameters. Example: /customers/{cid}/orders/{oid}/?date={date}.
-             *
-             * @param urlTemplate Relative URL template identifying the target resource for this operation. May include
-             *     parameters. Example: /customers/{cid}/orders/{oid}/?date={date}.
-             * @return the next definition stage.
-             */
-            Update withUrlTemplate(String urlTemplate);
         }
         /** The stage of the OperationContract update allowing to specify ifMatch. */
         interface WithIfMatch {

@@ -4,8 +4,7 @@
 
 package com.azure.resourcemanager.synapse.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.ManagementOperationState;
@@ -14,94 +13,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** A Sql pool operation. */
-@JsonFlatten
-@Immutable
-public class SqlPoolOperationInner extends ProxyResource {
+@Fluent
+public final class SqlPoolOperationInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolOperationInner.class);
 
     /*
-     * The name of the Sql pool the operation is being performed on.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.databaseName", access = JsonProperty.Access.WRITE_ONLY)
-    private String databaseName;
+    @JsonProperty(value = "properties")
+    private SqlPoolOperationProperties innerProperties;
 
-    /*
-     * The name of operation.
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.operation", access = JsonProperty.Access.WRITE_ONLY)
-    private String operation;
-
-    /*
-     * The friendly name of operation.
-     */
-    @JsonProperty(value = "properties.operationFriendlyName", access = JsonProperty.Access.WRITE_ONLY)
-    private String operationFriendlyName;
-
-    /*
-     * The percentage of the operation completed.
-     */
-    @JsonProperty(value = "properties.percentComplete", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer percentComplete;
-
-    /*
-     * The name of the server.
-     */
-    @JsonProperty(value = "properties.serverName", access = JsonProperty.Access.WRITE_ONLY)
-    private String serverName;
-
-    /*
-     * The operation start time.
-     */
-    @JsonProperty(value = "properties.startTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime startTime;
-
-    /*
-     * The operation state.
-     */
-    @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
-    private ManagementOperationState state;
-
-    /*
-     * The operation error code.
-     */
-    @JsonProperty(value = "properties.errorCode", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer errorCode;
-
-    /*
-     * The operation error description.
-     */
-    @JsonProperty(value = "properties.errorDescription", access = JsonProperty.Access.WRITE_ONLY)
-    private String errorDescription;
-
-    /*
-     * The operation error severity.
-     */
-    @JsonProperty(value = "properties.errorSeverity", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer errorSeverity;
-
-    /*
-     * Whether or not the error is a user error.
-     */
-    @JsonProperty(value = "properties.isUserError", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean isUserError;
-
-    /*
-     * The estimated completion time of the operation.
-     */
-    @JsonProperty(value = "properties.estimatedCompletionTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime estimatedCompletionTime;
-
-    /*
-     * The operation description.
-     */
-    @JsonProperty(value = "properties.description", access = JsonProperty.Access.WRITE_ONLY)
-    private String description;
-
-    /*
-     * Whether the operation can be cancelled.
-     */
-    @JsonProperty(value = "properties.isCancellable", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean isCancellable;
+    private SqlPoolOperationProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the databaseName property: The name of the Sql pool the operation is being performed on.
@@ -109,7 +38,7 @@ public class SqlPoolOperationInner extends ProxyResource {
      * @return the databaseName value.
      */
     public String databaseName() {
-        return this.databaseName;
+        return this.innerProperties() == null ? null : this.innerProperties().databaseName();
     }
 
     /**
@@ -118,7 +47,7 @@ public class SqlPoolOperationInner extends ProxyResource {
      * @return the operation value.
      */
     public String operation() {
-        return this.operation;
+        return this.innerProperties() == null ? null : this.innerProperties().operation();
     }
 
     /**
@@ -127,7 +56,7 @@ public class SqlPoolOperationInner extends ProxyResource {
      * @return the operationFriendlyName value.
      */
     public String operationFriendlyName() {
-        return this.operationFriendlyName;
+        return this.innerProperties() == null ? null : this.innerProperties().operationFriendlyName();
     }
 
     /**
@@ -136,7 +65,7 @@ public class SqlPoolOperationInner extends ProxyResource {
      * @return the percentComplete value.
      */
     public Integer percentComplete() {
-        return this.percentComplete;
+        return this.innerProperties() == null ? null : this.innerProperties().percentComplete();
     }
 
     /**
@@ -145,7 +74,7 @@ public class SqlPoolOperationInner extends ProxyResource {
      * @return the serverName value.
      */
     public String serverName() {
-        return this.serverName;
+        return this.innerProperties() == null ? null : this.innerProperties().serverName();
     }
 
     /**
@@ -154,7 +83,7 @@ public class SqlPoolOperationInner extends ProxyResource {
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
-        return this.startTime;
+        return this.innerProperties() == null ? null : this.innerProperties().startTime();
     }
 
     /**
@@ -163,7 +92,7 @@ public class SqlPoolOperationInner extends ProxyResource {
      * @return the state value.
      */
     public ManagementOperationState state() {
-        return this.state;
+        return this.innerProperties() == null ? null : this.innerProperties().state();
     }
 
     /**
@@ -172,7 +101,7 @@ public class SqlPoolOperationInner extends ProxyResource {
      * @return the errorCode value.
      */
     public Integer errorCode() {
-        return this.errorCode;
+        return this.innerProperties() == null ? null : this.innerProperties().errorCode();
     }
 
     /**
@@ -181,7 +110,7 @@ public class SqlPoolOperationInner extends ProxyResource {
      * @return the errorDescription value.
      */
     public String errorDescription() {
-        return this.errorDescription;
+        return this.innerProperties() == null ? null : this.innerProperties().errorDescription();
     }
 
     /**
@@ -190,7 +119,7 @@ public class SqlPoolOperationInner extends ProxyResource {
      * @return the errorSeverity value.
      */
     public Integer errorSeverity() {
-        return this.errorSeverity;
+        return this.innerProperties() == null ? null : this.innerProperties().errorSeverity();
     }
 
     /**
@@ -199,7 +128,7 @@ public class SqlPoolOperationInner extends ProxyResource {
      * @return the isUserError value.
      */
     public Boolean isUserError() {
-        return this.isUserError;
+        return this.innerProperties() == null ? null : this.innerProperties().isUserError();
     }
 
     /**
@@ -208,7 +137,7 @@ public class SqlPoolOperationInner extends ProxyResource {
      * @return the estimatedCompletionTime value.
      */
     public OffsetDateTime estimatedCompletionTime() {
-        return this.estimatedCompletionTime;
+        return this.innerProperties() == null ? null : this.innerProperties().estimatedCompletionTime();
     }
 
     /**
@@ -217,7 +146,7 @@ public class SqlPoolOperationInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -226,7 +155,7 @@ public class SqlPoolOperationInner extends ProxyResource {
      * @return the isCancellable value.
      */
     public Boolean isCancellable() {
-        return this.isCancellable;
+        return this.innerProperties() == null ? null : this.innerProperties().isCancellable();
     }
 
     /**
@@ -235,5 +164,8 @@ public class SqlPoolOperationInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

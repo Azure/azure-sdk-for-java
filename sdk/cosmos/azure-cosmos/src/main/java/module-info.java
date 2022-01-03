@@ -16,8 +16,8 @@ module com.azure.cosmos {
     requires io.netty.codec.http;
     requires io.netty.codec.http2;
     requires io.netty.transport.epoll;
+    requires io.netty.transport.classes.epoll;
     requires io.netty.handler.proxy;
-    requires reactor.netty;
     requires reactor.netty.core;
     requires reactor.netty.http;
     requires com.codahale.metrics;
@@ -50,7 +50,7 @@ module com.azure.cosmos {
     opens com.azure.cosmos.implementation.query.metrics to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.query.orderbyquery to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.routing to com.fasterxml.jackson.databind;
-    opens com.azure.cosmos.implementation.clientTelemetry to com.fasterxml.jackson.databind;
+    opens com.azure.cosmos.implementation.clienttelemetry to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.models to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.util to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.throughputControl to com.fasterxml.jackson.databind;

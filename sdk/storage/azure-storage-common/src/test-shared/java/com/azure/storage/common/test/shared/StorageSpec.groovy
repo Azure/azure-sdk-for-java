@@ -6,6 +6,7 @@ package com.azure.storage.common.test.shared
 import com.azure.core.credential.TokenRequestContext
 import com.azure.core.http.HttpClient
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
+import com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
@@ -14,16 +15,25 @@ import com.azure.core.test.TestMode
 import com.azure.core.util.ServiceVersion
 import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.EnvironmentCredentialBuilder
+import com.azure.storage.common.test.shared.policy.NoOpHttpPipelinePolicy
+import okhttp3.ConnectionPool
 import spock.lang.Specification
 
 import java.time.Duration
+import java.util.concurrent.TimeUnit
 import java.util.function.Predicate
 import java.util.function.Supplier
 
 class StorageSpec extends Specification {
     private static final TestEnvironment ENVIRONMENT = TestEnvironment.getInstance()
-    private static final HttpClient HTTP_CLIENT = new NettyAsyncHttpClientBuilder().build()
+    private static final HttpClient NETTY_HTTP_CLIENT = new NettyAsyncHttpClientBuilder().build()
+    private static final HttpClient OK_HTTP_CLIENT = new OkHttpAsyncHttpClientBuilder().connectionPool(new ConnectionPool(50, 5, TimeUnit.MINUTES)).build()
     private static final ClientLogger LOGGER = new ClientLogger(StorageSpec.class)
+
+    static {
+        // Dump threads if run goes over 30 minutes and there's a possible deadlock.
+        ThreadDumper.initialize()
+    }
 
     private InterceptorManager interceptorManager
     private StorageResourceNamer namer
@@ -39,7 +49,7 @@ class StorageSpec extends Specification {
         interceptorManager.close()
     }
 
-    protected static TestEnvironment getEnv() {
+    protected static TestEnvironment getEnvironment() {
         return ENVIRONMENT
     }
 
@@ -78,20 +88,27 @@ class StorageSpec extends Specification {
         if (ENVIRONMENT.testMode == TestMode.RECORD) {
             return interceptorManager.getRecordPolicy()
         } else {
-            return { context, next -> return next.process() }
+            return NoOpHttpPipelinePolicy.INSTANCE
         }
     }
 
     protected HttpClient getHttpClient() {
         if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
-            HTTP_CLIENT
+            switch (ENVIRONMENT.httpClientType) {
+                case TestHttpClientType.NETTY:
+                    return NETTY_HTTP_CLIENT
+                case TestHttpClientType.OK_HTTP:
+                    return OK_HTTP_CLIENT
+                default:
+                    throw new IllegalArgumentException("Unknown http client type: " + ENVIRONMENT.httpClientType)
+            }
         } else {
             return interceptorManager.getPlaybackClient()
         }
     }
 
     private static String getAuthToken() {
-        if (env.testMode == TestMode.PLAYBACK) {
+        if (environment.testMode == TestMode.PLAYBACK) {
             // we just need some string to satisfy SDK for playback mode. Recording framework handles this fine.
             return "recordingBearerToken"
         }

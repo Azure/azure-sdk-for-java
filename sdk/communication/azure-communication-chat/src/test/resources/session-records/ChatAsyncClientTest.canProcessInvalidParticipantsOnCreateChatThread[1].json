@@ -3,8 +3,8 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.communication.azure.com/chat/threads?api-version=2021-04-05-preview6",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-chat/1.1.0-beta.1 (1.8.0_262; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "e4aeeaba-b0e0-494f-b5c1-8f2cee7e6ac5",
+      "User-Agent" : "azsdk-java-azure-communication-chat/1.1.0 (1.8.0_262; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4e6c0cec-588d-472f-bb76-a10d2e3970e8",
       "Content-Type" : "application/json"
     },
     "Response" : {

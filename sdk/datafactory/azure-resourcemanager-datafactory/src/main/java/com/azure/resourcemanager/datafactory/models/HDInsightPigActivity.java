@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.HDInsightPigActivityTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,168 +17,23 @@ import java.util.Map;
 /** HDInsight Pig activity type. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("HDInsightPig")
-@JsonFlatten
 @Fluent
-public class HDInsightPigActivity extends ExecutionActivity {
+public final class HDInsightPigActivity extends ExecutionActivity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(HDInsightPigActivity.class);
 
     /*
-     * Storage linked service references.
+     * HDInsight Pig activity properties.
      */
-    @JsonProperty(value = "typeProperties.storageLinkedServices")
-    private List<LinkedServiceReference> storageLinkedServices;
-
-    /*
-     * User specified arguments to HDInsightActivity. Type: array (or
-     * Expression with resultType array).
-     */
-    @JsonProperty(value = "typeProperties.arguments")
-    private Object arguments;
-
-    /*
-     * Debug info option.
-     */
-    @JsonProperty(value = "typeProperties.getDebugInfo")
-    private HDInsightActivityDebugInfoOption getDebugInfo;
-
-    /*
-     * Script path. Type: string (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.scriptPath")
-    private Object scriptPath;
-
-    /*
-     * Script linked service reference.
-     */
-    @JsonProperty(value = "typeProperties.scriptLinkedService")
-    private LinkedServiceReference scriptLinkedService;
-
-    /*
-     * Allows user to specify defines for Pig job request.
-     */
-    @JsonProperty(value = "typeProperties.defines")
-    private Map<String, Object> defines;
+    @JsonProperty(value = "typeProperties", required = true)
+    private HDInsightPigActivityTypeProperties innerTypeProperties = new HDInsightPigActivityTypeProperties();
 
     /**
-     * Get the storageLinkedServices property: Storage linked service references.
+     * Get the innerTypeProperties property: HDInsight Pig activity properties.
      *
-     * @return the storageLinkedServices value.
+     * @return the innerTypeProperties value.
      */
-    public List<LinkedServiceReference> storageLinkedServices() {
-        return this.storageLinkedServices;
-    }
-
-    /**
-     * Set the storageLinkedServices property: Storage linked service references.
-     *
-     * @param storageLinkedServices the storageLinkedServices value to set.
-     * @return the HDInsightPigActivity object itself.
-     */
-    public HDInsightPigActivity withStorageLinkedServices(List<LinkedServiceReference> storageLinkedServices) {
-        this.storageLinkedServices = storageLinkedServices;
-        return this;
-    }
-
-    /**
-     * Get the arguments property: User specified arguments to HDInsightActivity. Type: array (or Expression with
-     * resultType array).
-     *
-     * @return the arguments value.
-     */
-    public Object arguments() {
-        return this.arguments;
-    }
-
-    /**
-     * Set the arguments property: User specified arguments to HDInsightActivity. Type: array (or Expression with
-     * resultType array).
-     *
-     * @param arguments the arguments value to set.
-     * @return the HDInsightPigActivity object itself.
-     */
-    public HDInsightPigActivity withArguments(Object arguments) {
-        this.arguments = arguments;
-        return this;
-    }
-
-    /**
-     * Get the getDebugInfo property: Debug info option.
-     *
-     * @return the getDebugInfo value.
-     */
-    public HDInsightActivityDebugInfoOption getDebugInfo() {
-        return this.getDebugInfo;
-    }
-
-    /**
-     * Set the getDebugInfo property: Debug info option.
-     *
-     * @param getDebugInfo the getDebugInfo value to set.
-     * @return the HDInsightPigActivity object itself.
-     */
-    public HDInsightPigActivity withGetDebugInfo(HDInsightActivityDebugInfoOption getDebugInfo) {
-        this.getDebugInfo = getDebugInfo;
-        return this;
-    }
-
-    /**
-     * Get the scriptPath property: Script path. Type: string (or Expression with resultType string).
-     *
-     * @return the scriptPath value.
-     */
-    public Object scriptPath() {
-        return this.scriptPath;
-    }
-
-    /**
-     * Set the scriptPath property: Script path. Type: string (or Expression with resultType string).
-     *
-     * @param scriptPath the scriptPath value to set.
-     * @return the HDInsightPigActivity object itself.
-     */
-    public HDInsightPigActivity withScriptPath(Object scriptPath) {
-        this.scriptPath = scriptPath;
-        return this;
-    }
-
-    /**
-     * Get the scriptLinkedService property: Script linked service reference.
-     *
-     * @return the scriptLinkedService value.
-     */
-    public LinkedServiceReference scriptLinkedService() {
-        return this.scriptLinkedService;
-    }
-
-    /**
-     * Set the scriptLinkedService property: Script linked service reference.
-     *
-     * @param scriptLinkedService the scriptLinkedService value to set.
-     * @return the HDInsightPigActivity object itself.
-     */
-    public HDInsightPigActivity withScriptLinkedService(LinkedServiceReference scriptLinkedService) {
-        this.scriptLinkedService = scriptLinkedService;
-        return this;
-    }
-
-    /**
-     * Get the defines property: Allows user to specify defines for Pig job request.
-     *
-     * @return the defines value.
-     */
-    public Map<String, Object> defines() {
-        return this.defines;
-    }
-
-    /**
-     * Set the defines property: Allows user to specify defines for Pig job request.
-     *
-     * @param defines the defines value to set.
-     * @return the HDInsightPigActivity object itself.
-     */
-    public HDInsightPigActivity withDefines(Map<String, Object> defines) {
-        this.defines = defines;
-        return this;
+    private HDInsightPigActivityTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -224,6 +79,146 @@ public class HDInsightPigActivity extends ExecutionActivity {
     }
 
     /**
+     * Get the storageLinkedServices property: Storage linked service references.
+     *
+     * @return the storageLinkedServices value.
+     */
+    public List<LinkedServiceReference> storageLinkedServices() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().storageLinkedServices();
+    }
+
+    /**
+     * Set the storageLinkedServices property: Storage linked service references.
+     *
+     * @param storageLinkedServices the storageLinkedServices value to set.
+     * @return the HDInsightPigActivity object itself.
+     */
+    public HDInsightPigActivity withStorageLinkedServices(List<LinkedServiceReference> storageLinkedServices) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new HDInsightPigActivityTypeProperties();
+        }
+        this.innerTypeProperties().withStorageLinkedServices(storageLinkedServices);
+        return this;
+    }
+
+    /**
+     * Get the arguments property: User specified arguments to HDInsightActivity. Type: array (or Expression with
+     * resultType array).
+     *
+     * @return the arguments value.
+     */
+    public Object arguments() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().arguments();
+    }
+
+    /**
+     * Set the arguments property: User specified arguments to HDInsightActivity. Type: array (or Expression with
+     * resultType array).
+     *
+     * @param arguments the arguments value to set.
+     * @return the HDInsightPigActivity object itself.
+     */
+    public HDInsightPigActivity withArguments(Object arguments) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new HDInsightPigActivityTypeProperties();
+        }
+        this.innerTypeProperties().withArguments(arguments);
+        return this;
+    }
+
+    /**
+     * Get the getDebugInfo property: Debug info option.
+     *
+     * @return the getDebugInfo value.
+     */
+    public HDInsightActivityDebugInfoOption getDebugInfo() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().getDebugInfo();
+    }
+
+    /**
+     * Set the getDebugInfo property: Debug info option.
+     *
+     * @param getDebugInfo the getDebugInfo value to set.
+     * @return the HDInsightPigActivity object itself.
+     */
+    public HDInsightPigActivity withGetDebugInfo(HDInsightActivityDebugInfoOption getDebugInfo) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new HDInsightPigActivityTypeProperties();
+        }
+        this.innerTypeProperties().withGetDebugInfo(getDebugInfo);
+        return this;
+    }
+
+    /**
+     * Get the scriptPath property: Script path. Type: string (or Expression with resultType string).
+     *
+     * @return the scriptPath value.
+     */
+    public Object scriptPath() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().scriptPath();
+    }
+
+    /**
+     * Set the scriptPath property: Script path. Type: string (or Expression with resultType string).
+     *
+     * @param scriptPath the scriptPath value to set.
+     * @return the HDInsightPigActivity object itself.
+     */
+    public HDInsightPigActivity withScriptPath(Object scriptPath) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new HDInsightPigActivityTypeProperties();
+        }
+        this.innerTypeProperties().withScriptPath(scriptPath);
+        return this;
+    }
+
+    /**
+     * Get the scriptLinkedService property: Script linked service reference.
+     *
+     * @return the scriptLinkedService value.
+     */
+    public LinkedServiceReference scriptLinkedService() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().scriptLinkedService();
+    }
+
+    /**
+     * Set the scriptLinkedService property: Script linked service reference.
+     *
+     * @param scriptLinkedService the scriptLinkedService value to set.
+     * @return the HDInsightPigActivity object itself.
+     */
+    public HDInsightPigActivity withScriptLinkedService(LinkedServiceReference scriptLinkedService) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new HDInsightPigActivityTypeProperties();
+        }
+        this.innerTypeProperties().withScriptLinkedService(scriptLinkedService);
+        return this;
+    }
+
+    /**
+     * Get the defines property: Allows user to specify defines for Pig job request.
+     *
+     * @return the defines value.
+     */
+    public Map<String, Object> defines() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().defines();
+    }
+
+    /**
+     * Set the defines property: Allows user to specify defines for Pig job request.
+     *
+     * @param defines the defines value to set.
+     * @return the HDInsightPigActivity object itself.
+     */
+    public HDInsightPigActivity withDefines(Map<String, Object> defines) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new HDInsightPigActivityTypeProperties();
+        }
+        this.innerTypeProperties().withDefines(defines);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -231,11 +226,13 @@ public class HDInsightPigActivity extends ExecutionActivity {
     @Override
     public void validate() {
         super.validate();
-        if (storageLinkedServices() != null) {
-            storageLinkedServices().forEach(e -> e.validate());
-        }
-        if (scriptLinkedService() != null) {
-            scriptLinkedService().validate();
+        if (innerTypeProperties() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerTypeProperties in model HDInsightPigActivity"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

@@ -5,16 +5,20 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure Web Category Resource. */
-@JsonFlatten
 @Fluent
-public class AzureWebCategoryInner {
+public final class AzureWebCategoryInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureWebCategoryInner.class);
+
+    /*
+     * Properties of the Azure Web Category.
+     */
+    @JsonProperty(value = "properties")
+    private AzureWebCategoryPropertiesFormat innerProperties;
 
     /*
      * Resource ID.
@@ -40,11 +44,14 @@ public class AzureWebCategoryInner {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /*
-     * The name of the group that the category belongs to.
+    /**
+     * Get the innerProperties property: Properties of the Azure Web Category.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.group", access = JsonProperty.Access.WRITE_ONLY)
-    private String group;
+    private AzureWebCategoryPropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the id property: Resource ID.
@@ -99,7 +106,7 @@ public class AzureWebCategoryInner {
      * @return the group value.
      */
     public String group() {
-        return this.group;
+        return this.innerProperties() == null ? null : this.innerProperties().group();
     }
 
     /**
@@ -108,5 +115,8 @@ public class AzureWebCategoryInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

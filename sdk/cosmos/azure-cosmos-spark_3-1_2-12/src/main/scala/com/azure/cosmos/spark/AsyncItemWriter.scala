@@ -19,4 +19,10 @@ trait AsyncItemWriter {
     * Throws if any of the work resulted in failure
     */
   def flushAndClose()
+
+  /**
+   * Don't wait for any remaining work but signal to the writer the ungraceful close
+   * Should not throw any exceptions
+   */
+  def abort()
 }

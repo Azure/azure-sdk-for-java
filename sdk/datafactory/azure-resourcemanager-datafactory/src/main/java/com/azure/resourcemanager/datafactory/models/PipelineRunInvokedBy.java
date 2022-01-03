@@ -32,6 +32,18 @@ public final class PipelineRunInvokedBy {
     @JsonProperty(value = "invokedByType", access = JsonProperty.Access.WRITE_ONLY)
     private String invokedByType;
 
+    /*
+     * The name of the pipeline that triggered the run, if any.
+     */
+    @JsonProperty(value = "pipelineName", access = JsonProperty.Access.WRITE_ONLY)
+    private String pipelineName;
+
+    /*
+     * The run id of the pipeline that triggered the run, if any.
+     */
+    @JsonProperty(value = "pipelineRunId", access = JsonProperty.Access.WRITE_ONLY)
+    private String pipelineRunId;
+
     /**
      * Get the name property: Name of the entity that started the pipeline run.
      *
@@ -57,6 +69,24 @@ public final class PipelineRunInvokedBy {
      */
     public String invokedByType() {
         return this.invokedByType;
+    }
+
+    /**
+     * Get the pipelineName property: The name of the pipeline that triggered the run, if any.
+     *
+     * @return the pipelineName value.
+     */
+    public String pipelineName() {
+        return this.pipelineName;
+    }
+
+    /**
+     * Get the pipelineRunId property: The run id of the pipeline that triggered the run, if any.
+     *
+     * @return the pipelineRunId value.
+     */
+    public String pipelineRunId() {
+        return this.pipelineRunId;
     }
 
     /**

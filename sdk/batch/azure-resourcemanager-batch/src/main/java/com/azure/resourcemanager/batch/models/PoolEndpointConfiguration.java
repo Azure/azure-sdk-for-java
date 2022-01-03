@@ -16,16 +16,19 @@ public final class PoolEndpointConfiguration {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PoolEndpointConfiguration.class);
 
     /*
-     * The maximum number of inbound NAT pools per Batch pool is 5. If the
-     * maximum number of inbound NAT pools is exceeded the request fails with
-     * HTTP status code 400. This cannot be specified if the
-     * IPAddressProvisioningType is NoPublicIPAddresses.
+     * A list of inbound NAT pools that can be used to address specific ports
+     * on an individual compute node externally. The maximum number of inbound
+     * NAT pools per Batch pool is 5. If the maximum number of inbound NAT
+     * pools is exceeded the request fails with HTTP status code 400. This
+     * cannot be specified if the IPAddressProvisioningType is
+     * NoPublicIPAddresses.
      */
     @JsonProperty(value = "inboundNatPools", required = true)
     private List<InboundNatPool> inboundNatPools;
 
     /**
-     * Get the inboundNatPools property: The maximum number of inbound NAT pools per Batch pool is 5. If the maximum
+     * Get the inboundNatPools property: A list of inbound NAT pools that can be used to address specific ports on an
+     * individual compute node externally. The maximum number of inbound NAT pools per Batch pool is 5. If the maximum
      * number of inbound NAT pools is exceeded the request fails with HTTP status code 400. This cannot be specified if
      * the IPAddressProvisioningType is NoPublicIPAddresses.
      *
@@ -36,7 +39,8 @@ public final class PoolEndpointConfiguration {
     }
 
     /**
-     * Set the inboundNatPools property: The maximum number of inbound NAT pools per Batch pool is 5. If the maximum
+     * Set the inboundNatPools property: A list of inbound NAT pools that can be used to address specific ports on an
+     * individual compute node externally. The maximum number of inbound NAT pools per Batch pool is 5. If the maximum
      * number of inbound NAT pools is exceeded the request fails with HTTP status code 400. This cannot be specified if
      * the IPAddressProvisioningType is NoPublicIPAddresses.
      *

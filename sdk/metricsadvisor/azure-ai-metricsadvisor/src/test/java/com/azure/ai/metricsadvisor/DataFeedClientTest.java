@@ -155,6 +155,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
         final AtomicReference<String> dataFeedId = new AtomicReference<>();
         try {
             // Arrange
+            final int[] pageCount = {0};
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
             creatDataFeedRunner(expectedDataFeed -> {
                 // Act & Assert
@@ -164,13 +165,21 @@ public class DataFeedClientTest extends DataFeedTestBase {
                 dataFeedId.set(createdDataFeed.getId());
 
                 // Act & Assert
-                client.listDataFeeds(new ListDataFeedOptions()
-                        .setListDataFeedFilter(new ListDataFeedFilter()
+                for (PagedResponse<DataFeed> dataFeedPagedResponse : client.listDataFeeds(new ListDataFeedOptions()
+                            .setListDataFeedFilter(new ListDataFeedFilter()
                             .setCreator(createdDataFeed.getCreator())),
                     Context.NONE)
-                    .forEach(dataFeed -> assertEquals(createdDataFeed.getCreator(), dataFeed.getCreator()));
-
+                    .iterableByPage()) {
+                    List<DataFeed> dataFeedList = dataFeedPagedResponse.getValue();
+                    dataFeedList.forEach(dataFeed -> assertEquals(createdDataFeed.getCreator(), dataFeed.getCreator()));
+                    pageCount[0]++;
+                    if (pageCount[0] > 4) {
+                        // Stop after 4 pages since there can be large number of feeds.
+                        break;
+                    }
+                }
             }, POSTGRE_SQL_DB);
+
         } finally {
             if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
                 client.deleteDataFeed(dataFeedId.get());
@@ -227,10 +236,18 @@ public class DataFeedClientTest extends DataFeedTestBase {
         client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
 
         // Act & Assert
-        client.listDataFeeds(
-            new ListDataFeedOptions().setListDataFeedFilter(new ListDataFeedFilter()
-                .setDataFeedStatus(ACTIVE)), Context.NONE)
-            .stream().iterator().forEachRemaining(dataFeed -> assertEquals(ACTIVE, dataFeed.getStatus()));
+        int pageCount = 0;
+        for (PagedResponse<DataFeed> dataFeedPagedResponse : client.listDataFeeds(
+            new ListDataFeedOptions().setListDataFeedFilter(new ListDataFeedFilter().setDataFeedStatus(ACTIVE)),
+                Context.NONE)
+            .iterableByPage()) {
+            dataFeedPagedResponse.getValue().forEach((dataFeed -> assertEquals(ACTIVE, dataFeed.getStatus())));
+            pageCount++;
+            if (pageCount > 4) {
+                // Stop after 4 pages since there can be large number of feeds.
+                break;
+            }
+        }
     }
 
     /**
@@ -244,42 +261,18 @@ public class DataFeedClientTest extends DataFeedTestBase {
         client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
 
         // Act & Assert
-        client.listDataFeeds(
-            new ListDataFeedOptions().setListDataFeedFilter(new ListDataFeedFilter()
-                .setDataFeedGranularityType(DAILY)), Context.NONE)
-            .stream().iterator()
-            .forEachRemaining(dataFeed -> assertEquals(DAILY, dataFeed.getGranularity().getGranularityType()));
-    }
+        int[] pageCount = new int[] {0};
 
-    /**
-     * Verifies the result of the list data feed method to filter results using
-     * {@link ListDataFeedFilter#setName(String)}.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    void testListDataFeedFilterByName(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        final AtomicReference<String> dataFeedId = new AtomicReference<>();
-        String filterName = "test_filter_by_name";
-        try {
-            // Arrange
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
-            creatDataFeedRunner(inputDataFeed -> {
-                final DataFeed createdDataFeed = client.createDataFeed(inputDataFeed.setName(filterName));
-
-                assertNotNull(createdDataFeed);
-                dataFeedId.set(createdDataFeed.getId());
-
-                // Act & Assert
-                client.listDataFeeds(
-                    new ListDataFeedOptions()
-                        .setListDataFeedFilter(new ListDataFeedFilter()
-                            .setName(filterName)), Context.NONE)
-                    .stream().iterator().forEachRemaining(dataFeed ->
-                    assertEquals(filterName, createdDataFeed.getName()));
-            }, SQL_SERVER_DB);
-        } finally {
-            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
-                client.deleteDataFeed(dataFeedId.get());
+        for (PagedResponse<DataFeed> dataFeedPagedResponse : client.listDataFeeds(
+                new ListDataFeedOptions().setListDataFeedFilter(new ListDataFeedFilter()
+                    .setDataFeedGranularityType(DAILY)), Context.NONE)
+            .iterableByPage()) {
+            dataFeedPagedResponse.getValue()
+                .forEach(dataFeed -> assertEquals(DAILY, dataFeed.getGranularity().getGranularityType()));
+            pageCount[0]++;
+            if (pageCount[0] > 4) {
+                // Stop after 4 pages since there can be large number of feeds.
+                break;
             }
         }
     }
@@ -737,37 +730,6 @@ public class DataFeedClientTest extends DataFeedTestBase {
             final MetricsAdvisorError errorCode = exception.getValue();
             assertEquals(errorCode.getMessage(), "datafeedId is invalid.");
         }, SQL_SERVER_DB);
-    }
-
-    // Update data feed
-
-    /**
-     * Verifies previously created data feed can be updated successfully.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    public void updateDataFeedHappyPath(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        final AtomicReference<String> dataFeedId = new AtomicReference<>();
-        try {
-            String updatedName = "test_updated_dataFeed_name";
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
-            // Arrange
-            creatDataFeedRunner(expectedDataFeed -> {
-                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed);
-
-                assertNotNull(createdDataFeed);
-                dataFeedId.set(createdDataFeed.getId());
-
-                // Act & Assert
-                final DataFeed updatedDataFeed = client.updateDataFeed(createdDataFeed.setName(updatedName));
-                assertEquals(updatedName, updatedDataFeed.getName());
-                validateDataFeedResult(expectedDataFeed, updatedDataFeed, SQL_SERVER_DB);
-            }, SQL_SERVER_DB);
-        } finally {
-            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
-                client.deleteDataFeed(dataFeedId.get());
-            }
-        }
     }
 
     /**

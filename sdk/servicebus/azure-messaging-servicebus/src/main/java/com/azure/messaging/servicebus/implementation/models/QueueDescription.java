@@ -96,6 +96,14 @@ public final class QueueDescription {
     private Integer maxDeliveryCount;
 
     /*
+     * The maximum message size for a message.
+     */
+    @JacksonXmlProperty(
+        localName = "MaxMessageSizeInKilobytes",
+        namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
+    private Long maxMessageSizeInKilobytes;
+
+    /*
      * Value that indicates whether server-side batched operations are enabled.
      */
     @JacksonXmlProperty(
@@ -814,6 +822,26 @@ public final class QueueDescription {
      */
     public QueueDescription setForwardDeadLetteredMessagesTo(String forwardDeadLetteredMessagesTo) {
         this.forwardDeadLetteredMessagesTo = forwardDeadLetteredMessagesTo;
+        return this;
+    }
+
+    /**
+     * Get the maxMessageSizeInKilobytes property: The maximum size of a message in kilobytes.
+     *
+     * @return the maxMessageSizeInKilobytes value.
+     */
+    public Long getMaxMessageSizeInKilobytes() {
+        return this.maxMessageSizeInKilobytes;
+    }
+
+    /**
+     * Set the maxMessageSizeInKilobytes property: The maximum size of a message in kilobytes.
+     *
+     * @param maxMessageSizeInKilobytes the maxMessageSizeInKilobytes value to set.
+     * @return the QueueDescription object itself.
+     */
+    public QueueDescription setMaxMessageSizeInKilobytes(Long maxMessageSizeInKilobytes) {
+        this.maxMessageSizeInKilobytes = maxMessageSizeInKilobytes;
         return this;
     }
 }

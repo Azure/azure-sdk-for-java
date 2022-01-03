@@ -115,10 +115,12 @@ public class BarrierRequestHelper {
                 break;
 
             default:
-                String unknownAuthToken = "Unknown authorization token kind for read request";
+                String unknownAuthToken =
+                    "Unknown authorization token kind '" + originalRequestTokenType + "' for read request";
                 assert false : unknownAuthToken;
                 logger.error(unknownAuthToken);
-                throw Exceptions.propagate(new InternalServerErrorException(RMResources.InternalServerError));
+                throw Exceptions.propagate(
+                    new InternalServerErrorException(unknownAuthToken + " - " + RMResources.InternalServerError));
         }
 
         if (!hasAadToken) {

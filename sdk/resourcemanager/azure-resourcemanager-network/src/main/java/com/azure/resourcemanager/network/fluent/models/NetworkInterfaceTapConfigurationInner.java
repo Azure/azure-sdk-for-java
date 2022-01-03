@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -13,10 +12,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Tap configuration in a Network Interface. */
-@JsonFlatten
 @Fluent
-public class NetworkInterfaceTapConfigurationInner extends SubResource {
+public final class NetworkInterfaceTapConfigurationInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkInterfaceTapConfigurationInner.class);
+
+    /*
+     * Properties of the Virtual Network Tap configuration.
+     */
+    @JsonProperty(value = "properties")
+    private NetworkInterfaceTapConfigurationPropertiesFormatInner innerProperties;
 
     /*
      * The name of the resource that is unique within a resource group. This
@@ -37,18 +41,14 @@ public class NetworkInterfaceTapConfigurationInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * The reference to the Virtual Network Tap resource.
+    /**
+     * Get the innerProperties property: Properties of the Virtual Network Tap configuration.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.virtualNetworkTap")
-    private VirtualNetworkTapInner virtualNetworkTap;
-
-    /*
-     * The provisioning state of the network interface tap configuration
-     * resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private NetworkInterfaceTapConfigurationPropertiesFormatInner innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
@@ -90,13 +90,20 @@ public class NetworkInterfaceTapConfigurationInner extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public NetworkInterfaceTapConfigurationInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the virtualNetworkTap property: The reference to the Virtual Network Tap resource.
      *
      * @return the virtualNetworkTap value.
      */
     public VirtualNetworkTapInner virtualNetworkTap() {
-        return this.virtualNetworkTap;
+        return this.innerProperties() == null ? null : this.innerProperties().virtualNetworkTap();
     }
 
     /**
@@ -106,7 +113,10 @@ public class NetworkInterfaceTapConfigurationInner extends SubResource {
      * @return the NetworkInterfaceTapConfigurationInner object itself.
      */
     public NetworkInterfaceTapConfigurationInner withVirtualNetworkTap(VirtualNetworkTapInner virtualNetworkTap) {
-        this.virtualNetworkTap = virtualNetworkTap;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkInterfaceTapConfigurationPropertiesFormatInner();
+        }
+        this.innerProperties().withVirtualNetworkTap(virtualNetworkTap);
         return this;
     }
 
@@ -116,14 +126,7 @@ public class NetworkInterfaceTapConfigurationInner extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public NetworkInterfaceTapConfigurationInner withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -132,8 +135,8 @@ public class NetworkInterfaceTapConfigurationInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (virtualNetworkTap() != null) {
-            virtualNetworkTap().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

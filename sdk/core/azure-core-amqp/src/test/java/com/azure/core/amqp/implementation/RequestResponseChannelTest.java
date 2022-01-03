@@ -4,6 +4,7 @@
 package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpConnection;
+import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.exception.AmqpErrorContext;
@@ -22,9 +23,7 @@ import org.apache.qpid.proton.engine.Record;
 import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.message.Message;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -53,13 +52,14 @@ import static org.mockito.Mockito.when;
  * Request response tests.
  */
 class RequestResponseChannelTest {
+    private static final Duration VERIFY_TIMEOUT = Duration.ofSeconds(10);
     private static final String CONNECTION_ID = "some-id";
     private static final String NAMESPACE = "test fqdn";
     private static final String LINK_NAME = "test-link-name";
     private static final String ENTITY_PATH = "test-entity-path";
-    private static final Duration TIMEOUT = Duration.ofSeconds(23);
+    private static final Duration TRY_TIMEOUT = Duration.ofSeconds(23);
 
-    private final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(TIMEOUT);
+    private final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(TRY_TIMEOUT);
     private final TestPublisher<Delivery> deliveryProcessor = TestPublisher.createCold();
     private final TestPublisher<EndpointState> receiveEndpoints = TestPublisher.createCold();
     private final TestPublisher<EndpointState> sendEndpoints = TestPublisher.createCold();
@@ -90,16 +90,6 @@ class RequestResponseChannelTest {
     private Delivery delivery;
 
     private AutoCloseable mocksCloseable;
-
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(10));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
 
     @BeforeEach
     void beforeEach() throws IOException {
@@ -136,7 +126,7 @@ class RequestResponseChannelTest {
 
     @AfterEach
     void afterEach() throws Exception {
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
 
         if (mocksCloseable != null) {
             mocksCloseable.close();
@@ -168,7 +158,8 @@ class RequestResponseChannelTest {
                 sendEndpoints.complete();
                 receiveEndpoints.complete();
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
 
         // Assert
         assertEquals(expected, errorContext);
@@ -197,7 +188,8 @@ class RequestResponseChannelTest {
                 sendEndpoints.complete();
                 receiveEndpoints.complete();
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
 
         // Assert
         verify(sender).close();
@@ -242,7 +234,6 @@ class RequestResponseChannelTest {
         assertTrue(channel.isDisposed());
     }
 
-
     /**
      * Verifies error when sending with null
      */
@@ -259,7 +250,7 @@ class RequestResponseChannelTest {
         // Act & Assert
         StepVerifier.create(channel.sendWithAck(null))
             .expectError(NullPointerException.class)
-            .verify();
+            .verify(VERIFY_TIMEOUT);
     }
 
     /**
@@ -277,7 +268,7 @@ class RequestResponseChannelTest {
         // Act & Assert
         StepVerifier.create(channel.sendWithAck(message))
             .expectError(IllegalArgumentException.class)
-            .verify();
+            .verify(VERIFY_TIMEOUT);
     }
 
     /**
@@ -298,7 +289,7 @@ class RequestResponseChannelTest {
         // Act & Assert
         StepVerifier.create(channel.sendWithAck(message))
             .expectError(IllegalArgumentException.class)
-            .verify();
+            .verify(VERIFY_TIMEOUT);
     }
 
     /**
@@ -346,7 +337,8 @@ class RequestResponseChannelTest {
         StepVerifier.create(channel.sendWithAck(message, transactionalState))
             .then(() -> deliveryProcessor.next(delivery))
             .assertNext(received -> assertEquals(messageId, received.getCorrelationId()))
-            .verifyComplete();
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
 
         // Assert
         verify(message).setMessageId(argThat(e -> e instanceof UnsignedLong && messageId.equals(e)));
@@ -402,7 +394,8 @@ class RequestResponseChannelTest {
         StepVerifier.create(channel.sendWithAck(message))
             .then(() -> deliveryProcessor.next(delivery))
             .assertNext(received -> assertEquals(messageId, received.getCorrelationId()))
-            .verifyComplete();
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
 
         // Assert
         verify(message).setMessageId(argThat(e -> e instanceof UnsignedLong && messageId.equals(e)));
@@ -431,7 +424,8 @@ class RequestResponseChannelTest {
         // Act
         StepVerifier.create(channel.sendWithAck(message))
             .then(() -> sendEndpoints.error(error))
-            .verifyError(AmqpException.class);
+            .expectError(AmqpException.class)
+            .verify(VERIFY_TIMEOUT);
 
         // Assert
         assertTrue(channel.isDisposed());
@@ -474,5 +468,78 @@ class RequestResponseChannelTest {
         receiveEndpoints.assertNoSubscribers();
         sendEndpoints.assertNoSubscribers();
         shutdownSignals.assertNoSubscribers();
+    }
+
+    /**
+     * Verifies that closing times out and does not wait indefinitely.
+     */
+    @Test
+    public void closeAsyncTimeout() {
+        // Arrange
+        final AmqpRetryOptions retry = new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(1)).setMaxRetries(0);
+        final RequestResponseChannel channel = new RequestResponseChannel(amqpConnection, CONNECTION_ID, NAMESPACE,
+            LINK_NAME, ENTITY_PATH, session, retry, handlerProvider, reactorProvider, serializer,
+            SenderSettleMode.SETTLED, ReceiverSettleMode.SECOND);
+
+        // Act & Assert
+        StepVerifier.create(channel.closeAsync())
+            .thenAwait(retry.getTryTimeout())
+            .expectComplete()
+            .verify(Duration.ofSeconds(30));
+
+        // Calling closeAsync() returns the same completed status.
+        StepVerifier.create(channel.closeAsync())
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
+
+        // The last state would be uninitialised because we did not emit any state.
+        StepVerifier.create(channel.getEndpointStates())
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
+
+        assertTrue(channel.isDisposed());
+    }
+
+    /**
+     * Verifies that closing does not wait indefinitely.
+     */
+    @Test
+    public void closeAsync() {
+        // Arrange
+        final AmqpRetryOptions retry = new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(1)).setMaxRetries(0);
+        final RequestResponseChannel channel = new RequestResponseChannel(amqpConnection, CONNECTION_ID, NAMESPACE,
+            LINK_NAME, ENTITY_PATH, session, retry, handlerProvider, reactorProvider, serializer,
+            SenderSettleMode.SETTLED, ReceiverSettleMode.SECOND);
+
+        sendEndpoints.next(EndpointState.ACTIVE);
+        receiveEndpoints.next(EndpointState.ACTIVE);
+
+        doAnswer(invocationOnMock -> {
+            sendEndpoints.complete();
+            return null;
+        }).when(sender).close();
+
+        doAnswer(invocationOnMock -> {
+            receiveEndpoints.complete();
+            return null;
+        }).when(receiver).close();
+
+        // Act & Assert
+        StepVerifier.create(channel.closeAsync())
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
+
+        // Calling closeAsync() returns the same completed status.
+        StepVerifier.create(channel.closeAsync())
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
+
+        // The last endpoint we saw was active.
+        StepVerifier.create(channel.getEndpointStates())
+            .expectNext(AmqpEndpointState.ACTIVE)
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
+
+        assertTrue(channel.isDisposed());
     }
 }

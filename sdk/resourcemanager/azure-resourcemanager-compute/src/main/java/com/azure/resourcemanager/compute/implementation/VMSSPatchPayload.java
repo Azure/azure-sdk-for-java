@@ -24,7 +24,7 @@ class VMSSPatchPayload {
         //
         updateParameter.withIdentity(scaleSet.innerModel().identity());
         updateParameter.withOverprovision(scaleSet.innerModel().overprovision());
-        updateParameter.withPlan(scaleSet.innerModel().plan());
+        //updateParameter.withPlan(scaleSet.innerModel().plan());   // update cannot change plan
         updateParameter.withSinglePlacementGroup(scaleSet.innerModel().singlePlacementGroup());
         updateParameter.withSku(scaleSet.innerModel().sku());
         updateParameter.withTags(scaleSet.innerModel().tags());
@@ -91,7 +91,7 @@ class VMSSPatchPayload {
                 // -- --
                 VirtualMachineScaleSetUpdateNetworkProfile networkProfile =
                     new VirtualMachineScaleSetUpdateNetworkProfile();
-
+                networkProfile.withNetworkApiVersion(scaleSet.innerModel().virtualMachineProfile().networkProfile().networkApiVersion());
                 if (scaleSet.innerModel().virtualMachineProfile().networkProfile().networkInterfaceConfigurations()
                     != null) {
                     networkProfile

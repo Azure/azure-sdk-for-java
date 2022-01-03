@@ -6,10 +6,9 @@ package com.azure.data.appconfiguration.models;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonDeserializer.readFeatureFlagConfigurationSettingValue;
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonSerializer.writeFeatureFlagConfigurationSetting;
@@ -77,13 +76,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
         this.description = updatedSetting.getDescription();
         this.isEnabled = updatedSetting.isEnabled();
         this.displayName = updatedSetting.getDisplayName();
-        if (updatedSetting.getClientFilters() != null) {
-            this.clientFilters = StreamSupport.stream(updatedSetting.getClientFilters().spliterator(), false)
-                                     .collect(Collectors.toList());
-        } else {
-            this.clientFilters = null;
-        }
-
+        this.clientFilters = new ArrayList<>(updatedSetting.getClientFilters());
         return this;
     }
 
@@ -239,6 +232,9 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      * @return the feature flag filters of this configuration setting.
      */
     public List<FeatureFlagFilter> getClientFilters() {
+        if (clientFilters == null) {
+            clientFilters = new ArrayList<>();
+        }
         return clientFilters;
     }
 
@@ -264,6 +260,9 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      * @return The updated {@link FeatureFlagConfigurationSetting} object.
      */
     public FeatureFlagConfigurationSetting addClientFilter(FeatureFlagFilter clientFilter) {
+        if (clientFilters == null) {
+            clientFilters = new ArrayList<>();
+        }
         clientFilters.add(clientFilter);
         updateSettingValue();
         return this;

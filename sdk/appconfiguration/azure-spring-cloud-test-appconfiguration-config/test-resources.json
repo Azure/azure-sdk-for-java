@@ -13,6 +13,10 @@
         },
         "testApplicationOid": {
             "type": "String"
+        },
+        "azConfigEndpointSuffix": {
+            "defaultValue": ".azconfig.io",
+            "type": "string"
         }
     },
     "variables": {
@@ -38,7 +42,6 @@
             "type": "Microsoft.AppConfiguration/configurationStores/keyValues",
             "apiVersion": "2020-07-01-preview",
             "name": "[concat(variables('configStoreName'), '/', variables('keyValueName'))]",
-            
             "dependsOn": [
                 "[variables('configStoreName')]"
             ],
@@ -64,7 +67,7 @@
         },
         "STORE_NAME": {
             "type": "string",
-            "value": "[concat('https://', variables('configStoreName'), '.azconfig.io')]"
+            "value": "[concat('https://', variables('configStoreName'), parameters('azConfigEndpointSuffix'))]"
         }
     }
 }

@@ -5,106 +5,29 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Contract details. */
-@JsonFlatten
 @Fluent
-public class TagDescriptionContractInner extends ProxyResource {
+public final class TagDescriptionContractInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TagDescriptionContractInner.class);
 
     /*
-     * Description of the Tag.
+     * TagDescription entity contract properties.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * Absolute URL of external resources describing the tag.
-     */
-    @JsonProperty(value = "properties.externalDocsUrl")
-    private String externalDocsUrl;
-
-    /*
-     * Description of the external resources describing the tag.
-     */
-    @JsonProperty(value = "properties.externalDocsDescription")
-    private String externalDocsDescription;
-
-    /*
-     * Identifier of the tag in the form of /tags/{tagId}
-     */
-    @JsonProperty(value = "properties.tagId")
-    private String tagId;
-
-    /*
-     * Tag name.
-     */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
+    @JsonProperty(value = "properties")
+    private TagDescriptionContractProperties innerProperties;
 
     /**
-     * Get the description property: Description of the Tag.
+     * Get the innerProperties property: TagDescription entity contract properties.
      *
-     * @return the description value.
+     * @return the innerProperties value.
      */
-    public String description() {
-        return this.description;
-    }
-
-    /**
-     * Set the description property: Description of the Tag.
-     *
-     * @param description the description value to set.
-     * @return the TagDescriptionContractInner object itself.
-     */
-    public TagDescriptionContractInner withDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    /**
-     * Get the externalDocsUrl property: Absolute URL of external resources describing the tag.
-     *
-     * @return the externalDocsUrl value.
-     */
-    public String externalDocsUrl() {
-        return this.externalDocsUrl;
-    }
-
-    /**
-     * Set the externalDocsUrl property: Absolute URL of external resources describing the tag.
-     *
-     * @param externalDocsUrl the externalDocsUrl value to set.
-     * @return the TagDescriptionContractInner object itself.
-     */
-    public TagDescriptionContractInner withExternalDocsUrl(String externalDocsUrl) {
-        this.externalDocsUrl = externalDocsUrl;
-        return this;
-    }
-
-    /**
-     * Get the externalDocsDescription property: Description of the external resources describing the tag.
-     *
-     * @return the externalDocsDescription value.
-     */
-    public String externalDocsDescription() {
-        return this.externalDocsDescription;
-    }
-
-    /**
-     * Set the externalDocsDescription property: Description of the external resources describing the tag.
-     *
-     * @param externalDocsDescription the externalDocsDescription value to set.
-     * @return the TagDescriptionContractInner object itself.
-     */
-    public TagDescriptionContractInner withExternalDocsDescription(String externalDocsDescription) {
-        this.externalDocsDescription = externalDocsDescription;
-        return this;
+    private TagDescriptionContractProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -113,7 +36,7 @@ public class TagDescriptionContractInner extends ProxyResource {
      * @return the tagId value.
      */
     public String tagId() {
-        return this.tagId;
+        return this.innerProperties() == null ? null : this.innerProperties().tagId();
     }
 
     /**
@@ -123,7 +46,10 @@ public class TagDescriptionContractInner extends ProxyResource {
      * @return the TagDescriptionContractInner object itself.
      */
     public TagDescriptionContractInner withTagId(String tagId) {
-        this.tagId = tagId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TagDescriptionContractProperties();
+        }
+        this.innerProperties().withTagId(tagId);
         return this;
     }
 
@@ -133,7 +59,7 @@ public class TagDescriptionContractInner extends ProxyResource {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -143,7 +69,79 @@ public class TagDescriptionContractInner extends ProxyResource {
      * @return the TagDescriptionContractInner object itself.
      */
     public TagDescriptionContractInner withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TagDescriptionContractProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
+        return this;
+    }
+
+    /**
+     * Get the description property: Description of the Tag.
+     *
+     * @return the description value.
+     */
+    public String description() {
+        return this.innerProperties() == null ? null : this.innerProperties().description();
+    }
+
+    /**
+     * Set the description property: Description of the Tag.
+     *
+     * @param description the description value to set.
+     * @return the TagDescriptionContractInner object itself.
+     */
+    public TagDescriptionContractInner withDescription(String description) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TagDescriptionContractProperties();
+        }
+        this.innerProperties().withDescription(description);
+        return this;
+    }
+
+    /**
+     * Get the externalDocsUrl property: Absolute URL of external resources describing the tag.
+     *
+     * @return the externalDocsUrl value.
+     */
+    public String externalDocsUrl() {
+        return this.innerProperties() == null ? null : this.innerProperties().externalDocsUrl();
+    }
+
+    /**
+     * Set the externalDocsUrl property: Absolute URL of external resources describing the tag.
+     *
+     * @param externalDocsUrl the externalDocsUrl value to set.
+     * @return the TagDescriptionContractInner object itself.
+     */
+    public TagDescriptionContractInner withExternalDocsUrl(String externalDocsUrl) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TagDescriptionContractProperties();
+        }
+        this.innerProperties().withExternalDocsUrl(externalDocsUrl);
+        return this;
+    }
+
+    /**
+     * Get the externalDocsDescription property: Description of the external resources describing the tag.
+     *
+     * @return the externalDocsDescription value.
+     */
+    public String externalDocsDescription() {
+        return this.innerProperties() == null ? null : this.innerProperties().externalDocsDescription();
+    }
+
+    /**
+     * Set the externalDocsDescription property: Description of the external resources describing the tag.
+     *
+     * @param externalDocsDescription the externalDocsDescription value to set.
+     * @return the TagDescriptionContractInner object itself.
+     */
+    public TagDescriptionContractInner withExternalDocsDescription(String externalDocsDescription) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TagDescriptionContractProperties();
+        }
+        this.innerProperties().withExternalDocsDescription(externalDocsDescription);
         return this;
     }
 
@@ -153,5 +151,8 @@ public class TagDescriptionContractInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.JsonSerializable;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.Strings;
 
 import java.time.Instant;
 import java.util.Collection;
@@ -32,6 +33,7 @@ public final class QueryInfo extends JsonSerializable {
     private Integer limit;
     private DistinctQueryType distinctQueryType;
     private QueryPlanDiagnosticsContext queryPlanDiagnosticsContext;
+    private DCountInfo dCountInfo;
 
     public QueryInfo() {
     }
@@ -164,6 +166,23 @@ public final class QueryInfo extends JsonSerializable {
 
     public List<String> getGroupByAliases() {
         return super.getList("groupByAliases", String.class);
+    }
+
+    public boolean hasDCount() {
+        return this.getDCountInfo() != null;
+    }
+
+    public DCountInfo getDCountInfo() {
+        return this.dCountInfo != null ?
+                   this.dCountInfo : (this.dCountInfo = super.getObject("dCountInfo", DCountInfo.class));
+    }
+
+    public String getDCountAlias() {
+        return this.dCountInfo.getDCountAlias();
+    }
+
+    public boolean isValueAggregate() {
+        return Strings.isNullOrEmpty(this.getDCountAlias());
     }
 
     public QueryPlanDiagnosticsContext getQueryPlanDiagnosticsContext() {

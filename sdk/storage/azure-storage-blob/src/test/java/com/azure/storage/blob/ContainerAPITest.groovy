@@ -926,8 +926,10 @@ class ContainerAPITest extends APISpec {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
     def "list blobs flat options deleted with versions"() {
         setup:
+        def versionedCC = versionedBlobServiceClient.getBlobContainerClient(getContainerName())
+        versionedCC.create()
         def blobName = generateBlobName()
-        def blob = cc.getBlobClient(blobName).getAppendBlobClient()
+        def blob = versionedCC.getBlobClient(blobName).getAppendBlobClient()
         blob.create()
         def metadata = new HashMap<String, String>()
         metadata.put("foo", "bar")
@@ -937,13 +939,16 @@ class ContainerAPITest extends APISpec {
             .setDetails(new BlobListDetails().setRetrieveDeletedBlobsWithVersions(true))
 
         when:
-        def blobs = cc.listBlobs(options, null).iterator()
+        def blobs = versionedCC.listBlobs(options, null).iterator()
 
         then:
         def b = blobs.next()
         !blobs.hasNext()
         b.getName() == blobName
         b.hasVersionsOnly()
+
+        cleanup:
+        versionedCC.delete()
     }
 
     def "List blobs prefix with comma"() {
@@ -1062,6 +1067,19 @@ class ContainerAPITest extends APISpec {
         RehydratePriority.HIGH     || _
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_02_12")
+    def "List blobs flat invalid xml"() {
+        setup:
+        def blobName = "dir1/dir2/file\uFFFE.blob";
+        cc.getBlobClient(blobName).getAppendBlobClient().create()
+
+        when:
+        def blobItem = cc.listBlobs().iterator().next()
+
+        then:
+        blobItem.getName() == blobName
+    }
+
     def "List blobs flat error"() {
         setup:
         cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
@@ -1115,6 +1133,7 @@ class ContainerAPITest extends APISpec {
     This test requires two accounts that are configured in a very specific way. It is not feasible to setup that
     relationship programmatically, so we have recorded a successful interaction and only test recordings.
     */
+
     @PlaybackOnly
     def "List blobs flat ORS"() {
         setup:
@@ -1331,8 +1350,10 @@ class ContainerAPITest extends APISpec {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
     def "list blobs hier options deleted with versions"() {
         setup:
+        def versionedCC = versionedBlobServiceClient.getBlobContainerClient(getContainerName())
+        versionedCC.create()
         def blobName = generateBlobName()
-        def blob = cc.getBlobClient(blobName).getAppendBlobClient()
+        def blob = versionedCC.getBlobClient(blobName).getAppendBlobClient()
         blob.create()
         def metadata = new HashMap<String, String>()
         metadata.put("foo", "bar")
@@ -1342,13 +1363,16 @@ class ContainerAPITest extends APISpec {
             .setDetails(new BlobListDetails().setRetrieveDeletedBlobsWithVersions(true))
 
         when:
-        def blobs = cc.listBlobsByHierarchy("", options, null).iterator()
+        def blobs = versionedCC.listBlobsByHierarchy("", options, null).iterator()
 
         then:
         def b = blobs.next()
         !blobs.hasNext()
         b.getName() == blobName
         b.hasVersionsOnly()
+
+        cleanup:
+        versionedCC.delete()
     }
 
     @Unroll
@@ -1426,6 +1450,7 @@ class ContainerAPITest extends APISpec {
     This test requires two accounts that are configured in a very specific way. It is not feasible to setup that
     relationship programmatically, so we have recorded a successful interaction and only test recordings.
     */
+
     @PlaybackOnly
     def "List blobs hier ORS"() {
         setup:
@@ -1536,6 +1561,30 @@ class ContainerAPITest extends APISpec {
         blob.getProperties().isSealed()
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_02_12")
+    def "List blobs hier invalid xml"() {
+        setup:
+        def blobName = 'dir1/dir2/file\uFFFE.blob';
+        cc.getBlobClient(blobName).getAppendBlobClient().create()
+
+        when:
+        def blobItem
+        if (!delimiter) {
+            blobItem = cc.listBlobsByHierarchy("", null, null).iterator().next()
+        } else {
+            blobItem = cc.listBlobsByHierarchy(".b", null, null).iterator().next()
+        }
+
+        then:
+        blobItem.getName() == (delimiter ? "dir1/dir2/file\uFFFE.b" : blobName)
+        blobItem.isPrefix() == (delimiter ? true : null)
+
+        where:
+        delimiter | _
+        false     | _
+        true      | _
+    }
+
     def "List blobs hier error"() {
         setup:
         cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
@@ -1573,7 +1622,7 @@ class ContainerAPITest extends APISpec {
 
         where:
         name                  | _
-        "中文"                | _
+        "中文"                  | _
         "az[]"                | _
         "hello world"         | _
         "hello/world"         | _
@@ -1658,8 +1707,8 @@ class ContainerAPITest extends APISpec {
         }
 
         AppendBlobClient bc = instrument(new BlobClientBuilder()
-            .credential(env.primaryAccount.credential)
-            .endpoint(env.primaryAccount.blobEndpoint)
+            .credential(environment.primaryAccount.credential)
+            .endpoint(environment.primaryAccount.blobEndpoint)
             .blobName("rootblob"))
             .buildClient().getAppendBlobClient()
 
@@ -1684,8 +1733,8 @@ class ContainerAPITest extends APISpec {
 
         when:
         cc = instrument(new BlobContainerClientBuilder()
-            .credential(env.primaryAccount.credential)
-            .endpoint(env.primaryAccount.blobEndpoint)
+            .credential(environment.primaryAccount.credential)
+            .endpoint(environment.primaryAccount.blobEndpoint)
             .containerName(null))
             .buildClient()
 
@@ -1788,7 +1837,7 @@ class ContainerAPITest extends APISpec {
     def "Per call policy"() {
         setup:
         def cc = getContainerClientBuilder(cc.getBlobContainerUrl())
-            .credential(env.primaryAccount.credential)
+            .credential(environment.primaryAccount.credential)
             .addPolicy(getPerCallVersionPolicy())
             .buildClient()
 

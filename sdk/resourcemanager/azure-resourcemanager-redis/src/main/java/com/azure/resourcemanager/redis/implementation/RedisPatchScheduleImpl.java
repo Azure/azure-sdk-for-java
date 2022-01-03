@@ -44,7 +44,7 @@ class RedisPatchScheduleImpl
                 this.parent().resourceGroupName(),
                 this.parent().name(),
                 DefaultName.DEFAULT,
-                this.innerModel().scheduleEntries())
+                new RedisPatchScheduleInner().withScheduleEntries(this.innerModel().scheduleEntries()))
             .map(
                 patchScheduleInner -> {
                     self.setInner(patchScheduleInner);

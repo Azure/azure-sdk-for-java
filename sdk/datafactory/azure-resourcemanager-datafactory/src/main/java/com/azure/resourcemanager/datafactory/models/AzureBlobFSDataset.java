@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.AzureBlobFSDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,119 +17,23 @@ import java.util.Map;
 /** The Azure Data Lake Storage Gen2 storage. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureBlobFSFile")
-@JsonFlatten
 @Fluent
-public class AzureBlobFSDataset extends Dataset {
+public final class AzureBlobFSDataset extends Dataset {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureBlobFSDataset.class);
 
     /*
-     * The path of the Azure Data Lake Storage Gen2 storage. Type: string (or
-     * Expression with resultType string).
+     * Azure Data Lake Storage Gen2 dataset properties.
      */
-    @JsonProperty(value = "typeProperties.folderPath")
-    private Object folderPath;
-
-    /*
-     * The name of the Azure Data Lake Storage Gen2. Type: string (or
-     * Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.fileName")
-    private Object fileName;
-
-    /*
-     * The format of the Azure Data Lake Storage Gen2 storage.
-     */
-    @JsonProperty(value = "typeProperties.format")
-    private DatasetStorageFormat format;
-
-    /*
-     * The data compression method used for the blob storage.
-     */
-    @JsonProperty(value = "typeProperties.compression")
-    private DatasetCompression compression;
+    @JsonProperty(value = "typeProperties")
+    private AzureBlobFSDatasetTypeProperties innerTypeProperties;
 
     /**
-     * Get the folderPath property: The path of the Azure Data Lake Storage Gen2 storage. Type: string (or Expression
-     * with resultType string).
+     * Get the innerTypeProperties property: Azure Data Lake Storage Gen2 dataset properties.
      *
-     * @return the folderPath value.
+     * @return the innerTypeProperties value.
      */
-    public Object folderPath() {
-        return this.folderPath;
-    }
-
-    /**
-     * Set the folderPath property: The path of the Azure Data Lake Storage Gen2 storage. Type: string (or Expression
-     * with resultType string).
-     *
-     * @param folderPath the folderPath value to set.
-     * @return the AzureBlobFSDataset object itself.
-     */
-    public AzureBlobFSDataset withFolderPath(Object folderPath) {
-        this.folderPath = folderPath;
-        return this;
-    }
-
-    /**
-     * Get the fileName property: The name of the Azure Data Lake Storage Gen2. Type: string (or Expression with
-     * resultType string).
-     *
-     * @return the fileName value.
-     */
-    public Object fileName() {
-        return this.fileName;
-    }
-
-    /**
-     * Set the fileName property: The name of the Azure Data Lake Storage Gen2. Type: string (or Expression with
-     * resultType string).
-     *
-     * @param fileName the fileName value to set.
-     * @return the AzureBlobFSDataset object itself.
-     */
-    public AzureBlobFSDataset withFileName(Object fileName) {
-        this.fileName = fileName;
-        return this;
-    }
-
-    /**
-     * Get the format property: The format of the Azure Data Lake Storage Gen2 storage.
-     *
-     * @return the format value.
-     */
-    public DatasetStorageFormat format() {
-        return this.format;
-    }
-
-    /**
-     * Set the format property: The format of the Azure Data Lake Storage Gen2 storage.
-     *
-     * @param format the format value to set.
-     * @return the AzureBlobFSDataset object itself.
-     */
-    public AzureBlobFSDataset withFormat(DatasetStorageFormat format) {
-        this.format = format;
-        return this;
-    }
-
-    /**
-     * Get the compression property: The data compression method used for the blob storage.
-     *
-     * @return the compression value.
-     */
-    public DatasetCompression compression() {
-        return this.compression;
-    }
-
-    /**
-     * Set the compression property: The data compression method used for the blob storage.
-     *
-     * @param compression the compression value to set.
-     * @return the AzureBlobFSDataset object itself.
-     */
-    public AzureBlobFSDataset withCompression(DatasetCompression compression) {
-        this.compression = compression;
-        return this;
+    private AzureBlobFSDatasetTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -182,6 +86,102 @@ public class AzureBlobFSDataset extends Dataset {
     }
 
     /**
+     * Get the folderPath property: The path of the Azure Data Lake Storage Gen2 storage. Type: string (or Expression
+     * with resultType string).
+     *
+     * @return the folderPath value.
+     */
+    public Object folderPath() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().folderPath();
+    }
+
+    /**
+     * Set the folderPath property: The path of the Azure Data Lake Storage Gen2 storage. Type: string (or Expression
+     * with resultType string).
+     *
+     * @param folderPath the folderPath value to set.
+     * @return the AzureBlobFSDataset object itself.
+     */
+    public AzureBlobFSDataset withFolderPath(Object folderPath) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureBlobFSDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withFolderPath(folderPath);
+        return this;
+    }
+
+    /**
+     * Get the fileName property: The name of the Azure Data Lake Storage Gen2. Type: string (or Expression with
+     * resultType string).
+     *
+     * @return the fileName value.
+     */
+    public Object fileName() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().fileName();
+    }
+
+    /**
+     * Set the fileName property: The name of the Azure Data Lake Storage Gen2. Type: string (or Expression with
+     * resultType string).
+     *
+     * @param fileName the fileName value to set.
+     * @return the AzureBlobFSDataset object itself.
+     */
+    public AzureBlobFSDataset withFileName(Object fileName) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureBlobFSDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withFileName(fileName);
+        return this;
+    }
+
+    /**
+     * Get the format property: The format of the Azure Data Lake Storage Gen2 storage.
+     *
+     * @return the format value.
+     */
+    public DatasetStorageFormat format() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().format();
+    }
+
+    /**
+     * Set the format property: The format of the Azure Data Lake Storage Gen2 storage.
+     *
+     * @param format the format value to set.
+     * @return the AzureBlobFSDataset object itself.
+     */
+    public AzureBlobFSDataset withFormat(DatasetStorageFormat format) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureBlobFSDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withFormat(format);
+        return this;
+    }
+
+    /**
+     * Get the compression property: The data compression method used for the blob storage.
+     *
+     * @return the compression value.
+     */
+    public DatasetCompression compression() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().compression();
+    }
+
+    /**
+     * Set the compression property: The data compression method used for the blob storage.
+     *
+     * @param compression the compression value to set.
+     * @return the AzureBlobFSDataset object itself.
+     */
+    public AzureBlobFSDataset withCompression(DatasetCompression compression) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureBlobFSDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withCompression(compression);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -189,11 +189,8 @@ public class AzureBlobFSDataset extends Dataset {
     @Override
     public void validate() {
         super.validate();
-        if (format() != null) {
-            format().validate();
-        }
-        if (compression() != null) {
-            compression().validate();
+        if (innerTypeProperties() != null) {
+            innerTypeProperties().validate();
         }
     }
 }

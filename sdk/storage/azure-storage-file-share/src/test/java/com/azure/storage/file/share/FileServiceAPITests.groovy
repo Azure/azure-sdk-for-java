@@ -4,6 +4,13 @@
 package com.azure.storage.file.share
 
 import com.azure.core.util.Context
+import com.azure.storage.blob.BlobContainerClient
+import com.azure.storage.blob.BlobServiceVersion
+import com.azure.storage.blob.models.BlobAnalyticsLogging
+import com.azure.storage.blob.models.BlobContainerListDetails
+import com.azure.storage.blob.models.BlobRetentionPolicy
+import com.azure.storage.blob.models.BlobServiceProperties
+import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
@@ -23,7 +30,6 @@ import com.azure.storage.file.share.models.SmbMultichannel
 import com.azure.storage.file.share.options.ShareCreateOptions
 import com.azure.storage.file.share.options.ShareSetPropertiesOptions
 import spock.lang.IgnoreIf
-import spock.lang.Requires
 import spock.lang.ResourceLock
 import spock.lang.Unroll
 
@@ -55,7 +61,7 @@ class FileServiceAPITests extends APISpec {
 
     def "Get file service URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net", accountName)
         when:
         def fileServiceURL = primaryFileServiceClient.getFileServiceUrl()
@@ -245,6 +251,7 @@ class FileServiceAPITests extends APISpec {
         item.getProperties().getAccessTierTransitionState() == "pending-from-hot"
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_02_12")
     def "List shares with premium share"() {
         setup:
         def premiumShareName = generateShareName()
@@ -263,6 +270,7 @@ class FileServiceAPITests extends APISpec {
                 shareItem.getProperties().getProvisionedEgressMBps()
                 shareItem.getProperties().getProvisionedIngressMBps()
                 shareItem.getProperties().getProvisionedIops()
+                shareItem.getProperties().getProvisionedBandwidthMiBps()
             }
         }
     }
@@ -396,10 +404,10 @@ class FileServiceAPITests extends APISpec {
         thrown(ShareStorageException.class)
     }
 
-    @IgnoreIf( { getEnv().serviceVersion != null } )
+    @IgnoreIf( { getEnvironment().serviceVersion != null } )
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
-        def serviceClient = getServiceClient(env.primaryAccount.credential, primaryFileServiceClient.getFileServiceUrl(), getPerCallVersionPolicy())
+        def serviceClient = getServiceClient(environment.primaryAccount.credential, primaryFileServiceClient.getFileServiceUrl(), getPerCallVersionPolicy())
 
         when:
         def response = serviceClient.getPropertiesWithResponse(null, null)

@@ -5,18 +5,23 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.fluent.models.ServiceAssociationLinkPropertiesFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** ServiceAssociationLink resource. */
-@JsonFlatten
 @Fluent
-public class ServiceAssociationLink extends SubResource {
+public final class ServiceAssociationLink extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceAssociationLink.class);
+
+    /*
+     * Resource navigation link properties format.
+     */
+    @JsonProperty(value = "properties")
+    private ServiceAssociationLinkPropertiesFormat innerProperties;
 
     /*
      * Name of the resource that is unique within a resource group. This name
@@ -37,35 +42,14 @@ public class ServiceAssociationLink extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * Resource type of the linked resource.
+    /**
+     * Get the innerProperties property: Resource navigation link properties format.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.linkedResourceType")
-    private String linkedResourceType;
-
-    /*
-     * Link to the external resource.
-     */
-    @JsonProperty(value = "properties.link")
-    private String link;
-
-    /*
-     * The provisioning state of the service association link resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * If true, the resource can be deleted.
-     */
-    @JsonProperty(value = "properties.allowDelete")
-    private Boolean allowDelete;
-
-    /*
-     * A list of locations.
-     */
-    @JsonProperty(value = "properties.locations")
-    private List<String> locations;
+    private ServiceAssociationLinkPropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Name of the resource that is unique within a resource group. This name can be used to
@@ -107,13 +91,20 @@ public class ServiceAssociationLink extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ServiceAssociationLink withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the linkedResourceType property: Resource type of the linked resource.
      *
      * @return the linkedResourceType value.
      */
     public String linkedResourceType() {
-        return this.linkedResourceType;
+        return this.innerProperties() == null ? null : this.innerProperties().linkedResourceType();
     }
 
     /**
@@ -123,7 +114,10 @@ public class ServiceAssociationLink extends SubResource {
      * @return the ServiceAssociationLink object itself.
      */
     public ServiceAssociationLink withLinkedResourceType(String linkedResourceType) {
-        this.linkedResourceType = linkedResourceType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServiceAssociationLinkPropertiesFormat();
+        }
+        this.innerProperties().withLinkedResourceType(linkedResourceType);
         return this;
     }
 
@@ -133,7 +127,7 @@ public class ServiceAssociationLink extends SubResource {
      * @return the link value.
      */
     public String link() {
-        return this.link;
+        return this.innerProperties() == null ? null : this.innerProperties().link();
     }
 
     /**
@@ -143,7 +137,10 @@ public class ServiceAssociationLink extends SubResource {
      * @return the ServiceAssociationLink object itself.
      */
     public ServiceAssociationLink withLink(String link) {
-        this.link = link;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServiceAssociationLinkPropertiesFormat();
+        }
+        this.innerProperties().withLink(link);
         return this;
     }
 
@@ -153,7 +150,7 @@ public class ServiceAssociationLink extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -162,7 +159,7 @@ public class ServiceAssociationLink extends SubResource {
      * @return the allowDelete value.
      */
     public Boolean allowDelete() {
-        return this.allowDelete;
+        return this.innerProperties() == null ? null : this.innerProperties().allowDelete();
     }
 
     /**
@@ -172,7 +169,10 @@ public class ServiceAssociationLink extends SubResource {
      * @return the ServiceAssociationLink object itself.
      */
     public ServiceAssociationLink withAllowDelete(Boolean allowDelete) {
-        this.allowDelete = allowDelete;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServiceAssociationLinkPropertiesFormat();
+        }
+        this.innerProperties().withAllowDelete(allowDelete);
         return this;
     }
 
@@ -182,7 +182,7 @@ public class ServiceAssociationLink extends SubResource {
      * @return the locations value.
      */
     public List<String> locations() {
-        return this.locations;
+        return this.innerProperties() == null ? null : this.innerProperties().locations();
     }
 
     /**
@@ -192,14 +192,10 @@ public class ServiceAssociationLink extends SubResource {
      * @return the ServiceAssociationLink object itself.
      */
     public ServiceAssociationLink withLocations(List<String> locations) {
-        this.locations = locations;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ServiceAssociationLink withId(String id) {
-        super.withId(id);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServiceAssociationLinkPropertiesFormat();
+        }
+        this.innerProperties().withLocations(locations);
         return this;
     }
 
@@ -209,5 +205,8 @@ public class ServiceAssociationLink extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -44,7 +44,7 @@ public interface GallerySharingProfilesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery sharing profile update.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<SharingUpdateInner>, SharingUpdateInner> beginUpdateAsync(
         String resourceGroupName, String galleryName, SharingUpdateInner sharingUpdate);
 
@@ -59,7 +59,7 @@ public interface GallerySharingProfilesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery sharing profile update.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SharingUpdateInner>, SharingUpdateInner> beginUpdate(
         String resourceGroupName, String galleryName, SharingUpdateInner sharingUpdate);
 
@@ -75,7 +75,7 @@ public interface GallerySharingProfilesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery sharing profile update.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SharingUpdateInner>, SharingUpdateInner> beginUpdate(
         String resourceGroupName, String galleryName, SharingUpdateInner sharingUpdate, Context context);
 

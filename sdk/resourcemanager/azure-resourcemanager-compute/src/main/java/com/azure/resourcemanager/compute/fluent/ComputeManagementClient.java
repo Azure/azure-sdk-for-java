@@ -158,6 +158,20 @@ public interface ComputeManagementClient {
     RestorePointsClient getRestorePoints();
 
     /**
+     * Gets the CapacityReservationGroupsClient object to access its operations.
+     *
+     * @return the CapacityReservationGroupsClient object.
+     */
+    CapacityReservationGroupsClient getCapacityReservationGroups();
+
+    /**
+     * Gets the CapacityReservationsClient object to access its operations.
+     *
+     * @return the CapacityReservationsClient object.
+     */
+    CapacityReservationsClient getCapacityReservations();
+
+    /**
      * Gets the VirtualMachineScaleSetExtensionsClient object to access its operations.
      *
      * @return the VirtualMachineScaleSetExtensionsClient object.
@@ -310,6 +324,27 @@ public interface ComputeManagementClient {
      * @return the SharedGalleryImageVersionsClient object.
      */
     SharedGalleryImageVersionsClient getSharedGalleryImageVersions();
+
+    /**
+     * Gets the CommunityGalleriesClient object to access its operations.
+     *
+     * @return the CommunityGalleriesClient object.
+     */
+    CommunityGalleriesClient getCommunityGalleries();
+
+    /**
+     * Gets the CommunityGalleryImagesClient object to access its operations.
+     *
+     * @return the CommunityGalleryImagesClient object.
+     */
+    CommunityGalleryImagesClient getCommunityGalleryImages();
+
+    /**
+     * Gets the CommunityGalleryImageVersionsClient object to access its operations.
+     *
+     * @return the CommunityGalleryImageVersionsClient object.
+     */
+    CommunityGalleryImageVersionsClient getCommunityGalleryImageVersions();
 
     /**
      * Gets the CloudServiceRoleInstancesClient object to access its operations.

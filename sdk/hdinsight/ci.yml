@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/hdinsight/
+      - sdk/hdinsight/ci.yml
+      - sdk/hdinsight/azure-resourcemanager-hdinsight/
+    exclude:
+      - sdk/hdinsight/pom.xml
+      - sdk/hdinsight/azure-resourcemanager-hdinsight/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/hdinsight/
+      - sdk/hdinsight/ci.yml
+      - sdk/hdinsight/azure-resourcemanager-hdinsight/
+    exclude:
+      - sdk/hdinsight/pom.xml
+      - sdk/hdinsight/azure-resourcemanager-hdinsight/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

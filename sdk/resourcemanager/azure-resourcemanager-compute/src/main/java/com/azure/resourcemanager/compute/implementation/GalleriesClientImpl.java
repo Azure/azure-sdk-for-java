@@ -223,7 +223,7 @@ public final class GalleriesClientImpl
         } else {
             gallery.validate();
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -281,7 +281,7 @@ public final class GalleriesClientImpl
         } else {
             gallery.validate();
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -308,7 +308,7 @@ public final class GalleriesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the Shared Image Gallery that you want to create or update.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<GalleryInner>, GalleryInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String galleryName, GalleryInner gallery) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -316,7 +316,7 @@ public final class GalleriesClientImpl
         return this
             .client
             .<GalleryInner, GalleryInner>getLroResult(
-                mono, this.client.getHttpPipeline(), GalleryInner.class, GalleryInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), GalleryInner.class, GalleryInner.class, this.client.getContext());
     }
 
     /**
@@ -332,7 +332,7 @@ public final class GalleriesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the Shared Image Gallery that you want to create or update.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<GalleryInner>, GalleryInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String galleryName, GalleryInner gallery, Context context) {
         context = this.client.mergeContext(context);
@@ -356,7 +356,7 @@ public final class GalleriesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the Shared Image Gallery that you want to create or update.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GalleryInner>, GalleryInner> beginCreateOrUpdate(
         String resourceGroupName, String galleryName, GalleryInner gallery) {
         return beginCreateOrUpdateAsync(resourceGroupName, galleryName, gallery).getSyncPoller();
@@ -375,7 +375,7 @@ public final class GalleriesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the Shared Image Gallery that you want to create or update.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GalleryInner>, GalleryInner> beginCreateOrUpdate(
         String resourceGroupName, String galleryName, GalleryInner gallery, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, galleryName, gallery, context).getSyncPoller();
@@ -496,7 +496,7 @@ public final class GalleriesClientImpl
         } else {
             gallery.validate();
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -554,7 +554,7 @@ public final class GalleriesClientImpl
         } else {
             gallery.validate();
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -581,14 +581,14 @@ public final class GalleriesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the Shared Image Gallery that you want to create or update.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<GalleryInner>, GalleryInner> beginUpdateAsync(
         String resourceGroupName, String galleryName, GalleryUpdate gallery) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, galleryName, gallery);
         return this
             .client
             .<GalleryInner, GalleryInner>getLroResult(
-                mono, this.client.getHttpPipeline(), GalleryInner.class, GalleryInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), GalleryInner.class, GalleryInner.class, this.client.getContext());
     }
 
     /**
@@ -604,7 +604,7 @@ public final class GalleriesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the Shared Image Gallery that you want to create or update.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<GalleryInner>, GalleryInner> beginUpdateAsync(
         String resourceGroupName, String galleryName, GalleryUpdate gallery, Context context) {
         context = this.client.mergeContext(context);
@@ -628,7 +628,7 @@ public final class GalleriesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the Shared Image Gallery that you want to create or update.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GalleryInner>, GalleryInner> beginUpdate(
         String resourceGroupName, String galleryName, GalleryUpdate gallery) {
         return beginUpdateAsync(resourceGroupName, galleryName, gallery).getSyncPoller();
@@ -647,7 +647,7 @@ public final class GalleriesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the Shared Image Gallery that you want to create or update.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GalleryInner>, GalleryInner> beginUpdate(
         String resourceGroupName, String galleryName, GalleryUpdate gallery, Context context) {
         return beginUpdateAsync(resourceGroupName, galleryName, gallery, context).getSyncPoller();
@@ -761,7 +761,7 @@ public final class GalleriesClientImpl
         if (galleryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -813,7 +813,7 @@ public final class GalleriesClientImpl
         if (galleryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -942,7 +942,7 @@ public final class GalleriesClientImpl
         if (galleryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -992,7 +992,7 @@ public final class GalleriesClientImpl
         if (galleryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1016,12 +1016,13 @@ public final class GalleriesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String galleryName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, galleryName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1035,7 +1036,7 @@ public final class GalleriesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String galleryName, Context context) {
         context = this.client.mergeContext(context);
@@ -1055,7 +1056,7 @@ public final class GalleriesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String galleryName) {
         return beginDeleteAsync(resourceGroupName, galleryName).getSyncPoller();
     }
@@ -1071,7 +1072,7 @@ public final class GalleriesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String galleryName, Context context) {
         return beginDeleteAsync(resourceGroupName, galleryName, context).getSyncPoller();
@@ -1166,7 +1167,7 @@ public final class GalleriesClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1220,7 +1221,7 @@ public final class GalleriesClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1325,7 +1326,7 @@ public final class GalleriesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1367,7 +1368,7 @@ public final class GalleriesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

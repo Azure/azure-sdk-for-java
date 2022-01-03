@@ -2,6 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca;
 
+import com.azure.security.keyvault.jca.implementation.certificates.AzureCertificates;
+import com.azure.security.keyvault.jca.implementation.certificates.ClasspathCertificates;
+import com.azure.security.keyvault.jca.implementation.certificates.JreCertificates;
+import com.azure.security.keyvault.jca.implementation.certificates.KeyVaultCertificates;
+import com.azure.security.keyvault.jca.implementation.certificates.SpecificPathCertificates;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.Key;
@@ -11,6 +17,7 @@ import java.security.KeyStoreSpi;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableEntryException;
 import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -18,9 +25,11 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 import static java.util.logging.Level.FINE;
 import static java.util.logging.Level.WARNING;
@@ -115,10 +124,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         String clientId = System.getProperty("azure.keyvault.client-id");
         String clientSecret = System.getProperty("azure.keyvault.client-secret");
         String managedIdentity = System.getProperty("azure.keyvault.managed-identity");
-        long refreshInterval = Optional.of("azure.keyvault.jca.certificates-refresh-interval")
-                                       .map(System::getProperty)
-                                       .map(Long::valueOf)
-                                       .orElse(0L);
+        long refreshInterval = getRefreshInterval();
         refreshCertificatesWhenHaveUnTrustCertificate =
             Optional.of("azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate")
                     .map(System::getProperty)
@@ -132,6 +138,37 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         classpathCertificates = new ClasspathCertificates();
         allCertificates = Arrays.asList(
             jreCertificates, wellKnowCertificates, customCertificates, keyVaultCertificates, classpathCertificates);
+    }
+
+    Long getRefreshInterval() {
+        return Stream.of("azure.keyvault.jca.certificates-refresh-interval-in-ms", "azure.keyvault.jca.certificates-refresh-interval")
+                     .map(System::getProperty)
+                     .filter(Objects::nonNull)
+                     .map(Long::valueOf)
+                     .findFirst()
+                     .orElse(0L);
+    }
+
+    /**
+     * get key vault key store by system property
+     *
+     * @return KeyVault key store
+     * @throws CertificateException if any of the certificates in the
+     *          keystore could not be loaded
+     * @throws NoSuchAlgorithmException when algorithm is unavailable.
+     * @throws KeyStoreException when no Provider supports a KeyStoreSpi implementation for the specified type
+     * @throws IOException when an I/O error occurs.
+     */
+    public static KeyStore getKeyVaultKeyStoreBySystemProperty() throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
+        KeyStore keyStore = KeyStore.getInstance(KeyVaultJcaProvider.PROVIDER_NAME);
+        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+            System.getProperty("azure.keyvault.uri"),
+            System.getProperty("azure.keyvault.tenant-id"),
+            System.getProperty("azure.keyvault.client-id"),
+            System.getProperty("azure.keyvault.client-secret"),
+            System.getProperty("azure.keyvault.managed-identity"));
+        keyStore.load(parameter);
+        return keyStore;
     }
 
     @Override

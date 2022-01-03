@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/storageimportexport/
+      - sdk/storageimportexport/ci.yml
+      - sdk/storageimportexport/azure-resourcemanager-storageimportexport/
+    exclude:
+      - sdk/storageimportexport/pom.xml
+      - sdk/storageimportexport/azure-resourcemanager-storageimportexport/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/storageimportexport/
+      - sdk/storageimportexport/ci.yml
+      - sdk/storageimportexport/azure-resourcemanager-storageimportexport/
+    exclude:
+      - sdk/storageimportexport/pom.xml
+      - sdk/storageimportexport/azure-resourcemanager-storageimportexport/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

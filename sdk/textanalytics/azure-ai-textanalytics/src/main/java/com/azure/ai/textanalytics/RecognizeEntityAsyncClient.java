@@ -10,15 +10,12 @@ import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.StringIndexType;
-import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
 import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
-import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.models.WarningCode;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -41,6 +38,7 @@ import static com.azure.ai.textanalytics.implementation.Utility.toBatchStatistic
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsError;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsException;
+import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsWarning;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextDocumentStatistics;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -161,13 +159,7 @@ class RecognizeEntityAsyncClient {
                         return categorizedEntity;
                     }).collect(Collectors.toList())),
                     new IterableStream<>(documentEntities.getWarnings().stream()
-                        .map(warning -> {
-                            final WarningCodeValue warningCodeValue = warning.getCode();
-                            return new TextAnalyticsWarning(
-                                WarningCode.fromString(warningCodeValue == null ? null : warningCodeValue.toString()),
-                                warning.getMessage());
-                        }).collect(Collectors.toList())))
-            )));
+                        .map(warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList()))))));
         // Document errors
         for (DocumentError documentError : entitiesResult.getErrors()) {
             recognizeEntitiesResults.add(new RecognizeEntitiesResult(documentError.getId(), null,

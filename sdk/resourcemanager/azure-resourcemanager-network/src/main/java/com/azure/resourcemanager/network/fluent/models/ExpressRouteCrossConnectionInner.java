@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitReference;
@@ -17,10 +16,15 @@ import java.util.List;
 import java.util.Map;
 
 /** ExpressRouteCrossConnection resource. */
-@JsonFlatten
 @Fluent
-public class ExpressRouteCrossConnectionInner extends Resource {
+public final class ExpressRouteCrossConnectionInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCrossConnectionInner.class);
+
+    /*
+     * Properties of the express route cross connection.
+     */
+    @JsonProperty(value = "properties")
+    private ExpressRouteCrossConnectionProperties innerProperties;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
@@ -29,71 +33,19 @@ public class ExpressRouteCrossConnectionInner extends Resource {
     private String etag;
 
     /*
-     * The name of the primary port.
-     */
-    @JsonProperty(value = "properties.primaryAzurePort", access = JsonProperty.Access.WRITE_ONLY)
-    private String primaryAzurePort;
-
-    /*
-     * The name of the secondary port.
-     */
-    @JsonProperty(value = "properties.secondaryAzurePort", access = JsonProperty.Access.WRITE_ONLY)
-    private String secondaryAzurePort;
-
-    /*
-     * The identifier of the circuit traffic.
-     */
-    @JsonProperty(value = "properties.sTag", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer stag;
-
-    /*
-     * The peering location of the ExpressRoute circuit.
-     */
-    @JsonProperty(value = "properties.peeringLocation", access = JsonProperty.Access.WRITE_ONLY)
-    private String peeringLocation;
-
-    /*
-     * The circuit bandwidth In Mbps.
-     */
-    @JsonProperty(value = "properties.bandwidthInMbps", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer bandwidthInMbps;
-
-    /*
-     * The ExpressRouteCircuit.
-     */
-    @JsonProperty(value = "properties.expressRouteCircuit")
-    private ExpressRouteCircuitReference expressRouteCircuit;
-
-    /*
-     * The provisioning state of the circuit in the connectivity provider
-     * system.
-     */
-    @JsonProperty(value = "properties.serviceProviderProvisioningState")
-    private ServiceProviderProvisioningState serviceProviderProvisioningState;
-
-    /*
-     * Additional read only notes set by the connectivity provider.
-     */
-    @JsonProperty(value = "properties.serviceProviderNotes")
-    private String serviceProviderNotes;
-
-    /*
-     * The provisioning state of the express route cross connection resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * The list of peerings.
-     */
-    @JsonProperty(value = "properties.peerings")
-    private List<ExpressRouteCrossConnectionPeeringInner> peerings;
-
-    /*
      * Resource ID.
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /**
+     * Get the innerProperties property: Properties of the express route cross connection.
+     *
+     * @return the innerProperties value.
+     */
+    private ExpressRouteCrossConnectionProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
@@ -102,143 +54,6 @@ public class ExpressRouteCrossConnectionInner extends Resource {
      */
     public String etag() {
         return this.etag;
-    }
-
-    /**
-     * Get the primaryAzurePort property: The name of the primary port.
-     *
-     * @return the primaryAzurePort value.
-     */
-    public String primaryAzurePort() {
-        return this.primaryAzurePort;
-    }
-
-    /**
-     * Get the secondaryAzurePort property: The name of the secondary port.
-     *
-     * @return the secondaryAzurePort value.
-     */
-    public String secondaryAzurePort() {
-        return this.secondaryAzurePort;
-    }
-
-    /**
-     * Get the stag property: The identifier of the circuit traffic.
-     *
-     * @return the stag value.
-     */
-    public Integer stag() {
-        return this.stag;
-    }
-
-    /**
-     * Get the peeringLocation property: The peering location of the ExpressRoute circuit.
-     *
-     * @return the peeringLocation value.
-     */
-    public String peeringLocation() {
-        return this.peeringLocation;
-    }
-
-    /**
-     * Get the bandwidthInMbps property: The circuit bandwidth In Mbps.
-     *
-     * @return the bandwidthInMbps value.
-     */
-    public Integer bandwidthInMbps() {
-        return this.bandwidthInMbps;
-    }
-
-    /**
-     * Get the expressRouteCircuit property: The ExpressRouteCircuit.
-     *
-     * @return the expressRouteCircuit value.
-     */
-    public ExpressRouteCircuitReference expressRouteCircuit() {
-        return this.expressRouteCircuit;
-    }
-
-    /**
-     * Set the expressRouteCircuit property: The ExpressRouteCircuit.
-     *
-     * @param expressRouteCircuit the expressRouteCircuit value to set.
-     * @return the ExpressRouteCrossConnectionInner object itself.
-     */
-    public ExpressRouteCrossConnectionInner withExpressRouteCircuit(ExpressRouteCircuitReference expressRouteCircuit) {
-        this.expressRouteCircuit = expressRouteCircuit;
-        return this;
-    }
-
-    /**
-     * Get the serviceProviderProvisioningState property: The provisioning state of the circuit in the connectivity
-     * provider system.
-     *
-     * @return the serviceProviderProvisioningState value.
-     */
-    public ServiceProviderProvisioningState serviceProviderProvisioningState() {
-        return this.serviceProviderProvisioningState;
-    }
-
-    /**
-     * Set the serviceProviderProvisioningState property: The provisioning state of the circuit in the connectivity
-     * provider system.
-     *
-     * @param serviceProviderProvisioningState the serviceProviderProvisioningState value to set.
-     * @return the ExpressRouteCrossConnectionInner object itself.
-     */
-    public ExpressRouteCrossConnectionInner withServiceProviderProvisioningState(
-        ServiceProviderProvisioningState serviceProviderProvisioningState) {
-        this.serviceProviderProvisioningState = serviceProviderProvisioningState;
-        return this;
-    }
-
-    /**
-     * Get the serviceProviderNotes property: Additional read only notes set by the connectivity provider.
-     *
-     * @return the serviceProviderNotes value.
-     */
-    public String serviceProviderNotes() {
-        return this.serviceProviderNotes;
-    }
-
-    /**
-     * Set the serviceProviderNotes property: Additional read only notes set by the connectivity provider.
-     *
-     * @param serviceProviderNotes the serviceProviderNotes value to set.
-     * @return the ExpressRouteCrossConnectionInner object itself.
-     */
-    public ExpressRouteCrossConnectionInner withServiceProviderNotes(String serviceProviderNotes) {
-        this.serviceProviderNotes = serviceProviderNotes;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the express route cross connection resource.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the peerings property: The list of peerings.
-     *
-     * @return the peerings value.
-     */
-    public List<ExpressRouteCrossConnectionPeeringInner> peerings() {
-        return this.peerings;
-    }
-
-    /**
-     * Set the peerings property: The list of peerings.
-     *
-     * @param peerings the peerings value to set.
-     * @return the ExpressRouteCrossConnectionInner object itself.
-     */
-    public ExpressRouteCrossConnectionInner withPeerings(List<ExpressRouteCrossConnectionPeeringInner> peerings) {
-        this.peerings = peerings;
-        return this;
     }
 
     /**
@@ -276,16 +91,162 @@ public class ExpressRouteCrossConnectionInner extends Resource {
     }
 
     /**
+     * Get the primaryAzurePort property: The name of the primary port.
+     *
+     * @return the primaryAzurePort value.
+     */
+    public String primaryAzurePort() {
+        return this.innerProperties() == null ? null : this.innerProperties().primaryAzurePort();
+    }
+
+    /**
+     * Get the secondaryAzurePort property: The name of the secondary port.
+     *
+     * @return the secondaryAzurePort value.
+     */
+    public String secondaryAzurePort() {
+        return this.innerProperties() == null ? null : this.innerProperties().secondaryAzurePort();
+    }
+
+    /**
+     * Get the stag property: The identifier of the circuit traffic.
+     *
+     * @return the stag value.
+     */
+    public Integer stag() {
+        return this.innerProperties() == null ? null : this.innerProperties().stag();
+    }
+
+    /**
+     * Get the peeringLocation property: The peering location of the ExpressRoute circuit.
+     *
+     * @return the peeringLocation value.
+     */
+    public String peeringLocation() {
+        return this.innerProperties() == null ? null : this.innerProperties().peeringLocation();
+    }
+
+    /**
+     * Get the bandwidthInMbps property: The circuit bandwidth In Mbps.
+     *
+     * @return the bandwidthInMbps value.
+     */
+    public Integer bandwidthInMbps() {
+        return this.innerProperties() == null ? null : this.innerProperties().bandwidthInMbps();
+    }
+
+    /**
+     * Get the expressRouteCircuit property: The ExpressRouteCircuit.
+     *
+     * @return the expressRouteCircuit value.
+     */
+    public ExpressRouteCircuitReference expressRouteCircuit() {
+        return this.innerProperties() == null ? null : this.innerProperties().expressRouteCircuit();
+    }
+
+    /**
+     * Set the expressRouteCircuit property: The ExpressRouteCircuit.
+     *
+     * @param expressRouteCircuit the expressRouteCircuit value to set.
+     * @return the ExpressRouteCrossConnectionInner object itself.
+     */
+    public ExpressRouteCrossConnectionInner withExpressRouteCircuit(ExpressRouteCircuitReference expressRouteCircuit) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteCrossConnectionProperties();
+        }
+        this.innerProperties().withExpressRouteCircuit(expressRouteCircuit);
+        return this;
+    }
+
+    /**
+     * Get the serviceProviderProvisioningState property: The provisioning state of the circuit in the connectivity
+     * provider system.
+     *
+     * @return the serviceProviderProvisioningState value.
+     */
+    public ServiceProviderProvisioningState serviceProviderProvisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().serviceProviderProvisioningState();
+    }
+
+    /**
+     * Set the serviceProviderProvisioningState property: The provisioning state of the circuit in the connectivity
+     * provider system.
+     *
+     * @param serviceProviderProvisioningState the serviceProviderProvisioningState value to set.
+     * @return the ExpressRouteCrossConnectionInner object itself.
+     */
+    public ExpressRouteCrossConnectionInner withServiceProviderProvisioningState(
+        ServiceProviderProvisioningState serviceProviderProvisioningState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteCrossConnectionProperties();
+        }
+        this.innerProperties().withServiceProviderProvisioningState(serviceProviderProvisioningState);
+        return this;
+    }
+
+    /**
+     * Get the serviceProviderNotes property: Additional read only notes set by the connectivity provider.
+     *
+     * @return the serviceProviderNotes value.
+     */
+    public String serviceProviderNotes() {
+        return this.innerProperties() == null ? null : this.innerProperties().serviceProviderNotes();
+    }
+
+    /**
+     * Set the serviceProviderNotes property: Additional read only notes set by the connectivity provider.
+     *
+     * @param serviceProviderNotes the serviceProviderNotes value to set.
+     * @return the ExpressRouteCrossConnectionInner object itself.
+     */
+    public ExpressRouteCrossConnectionInner withServiceProviderNotes(String serviceProviderNotes) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteCrossConnectionProperties();
+        }
+        this.innerProperties().withServiceProviderNotes(serviceProviderNotes);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the express route cross connection resource.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the peerings property: The list of peerings.
+     *
+     * @return the peerings value.
+     */
+    public List<ExpressRouteCrossConnectionPeeringInner> peerings() {
+        return this.innerProperties() == null ? null : this.innerProperties().peerings();
+    }
+
+    /**
+     * Set the peerings property: The list of peerings.
+     *
+     * @param peerings the peerings value to set.
+     * @return the ExpressRouteCrossConnectionInner object itself.
+     */
+    public ExpressRouteCrossConnectionInner withPeerings(List<ExpressRouteCrossConnectionPeeringInner> peerings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteCrossConnectionProperties();
+        }
+        this.innerProperties().withPeerings(peerings);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (expressRouteCircuit() != null) {
-            expressRouteCircuit().validate();
-        }
-        if (peerings() != null) {
-            peerings().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

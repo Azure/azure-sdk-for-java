@@ -28,6 +28,7 @@ class KeyRequestAttributes {
         }
 
         this.enabled = keyProperties.isEnabled();
+        this.exportable = keyProperties.isExportable();
     }
 
     /**
@@ -47,6 +48,7 @@ class KeyRequestAttributes {
         }
 
         this.enabled = keyOptions.isEnabled();
+        this.exportable = keyOptions.isExportable();
     }
 
     /**
@@ -78,6 +80,27 @@ class KeyRequestAttributes {
      */
     @JsonProperty(value = "updated", access = JsonProperty.Access.WRITE_ONLY)
     private Long updated;
+
+    /**
+     * The number of days a key is retained before being deleted for a soft delete-enabled Key Vault.
+     */
+    @JsonProperty(value = "recoverableDays", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer recoverableDays;
+
+    /**
+     * Reflects the deletion recovery level currently in effect for keys in the current vault. If it contains
+     * 'Purgeable', the key can be permanently deleted by a privileged user; otherwise, only the system can purge the
+     * key, at the end of the retention interval. Possible values include: 'Purgeable', 'Recoverable+Purgeable',
+     * 'Recoverable', 'Recoverable+ProtectedSubscription'.
+     */
+    @JsonProperty(value = "recoveryLevel", access = JsonProperty.Access.WRITE_ONLY)
+    private String recoveryLevel;
+
+    /*
+     * Indicates if the private key can be exported.
+     */
+    @JsonProperty(value = "exportable")
+    private Boolean exportable;
 
     /**
      * Get the enabled value.
@@ -185,5 +208,71 @@ class KeyRequestAttributes {
         }
 
         return OffsetDateTime.ofInstant(Instant.ofEpochMilli(this.updated * 1000L), ZoneOffset.UTC);
+    }
+
+    /**
+     * Get a flag that indicates if the private key can be exported.
+     *
+     * @return A flag that indicates if the private key can be exported.
+     */
+    public Boolean isExportable() {
+        return this.exportable;
+    }
+
+    /**
+     * Set a flag that indicates if the private key can be exported.
+     *
+     * @param exportable A flag that indicates if the private key can be exported.
+     *
+     * @return The updated {@link KeyRequestAttributes} object.
+     */
+    public KeyRequestAttributes setExportable(Boolean exportable) {
+        this.exportable = exportable;
+
+        return this;
+    }
+
+    /**
+     * Get the number of days a key is retained before being deleted for a soft delete-enabled Key Vault.
+     *
+     * @return The recoverable days.
+     */
+    public Integer getRecoverableDays() {
+        return recoverableDays;
+    }
+
+    /**
+     * Sets the number of days a key is retained before being deleted for a soft delete-enabled Key Vault.
+     *
+     * @param recoverableDays The recoverable days.
+     *
+     * @return The updated {@link KeyRequestAttributes} object.
+     */
+    public KeyRequestAttributes setRecoverableDays(Integer recoverableDays) {
+        this.recoverableDays = recoverableDays;
+
+        return this;
+    }
+
+    /**
+     * Get the key recovery level.
+     *
+     * @return The key recovery level.
+     */
+    public String getRecoveryLevel() {
+        return this.recoveryLevel;
+    }
+
+    /**
+     * Get the key recovery level.
+     *
+     * @param recoveryLevel The key recovery level.
+     *
+     * @return The updated {@link KeyRequestAttributes} object.
+     */
+    public KeyRequestAttributes setRecoveryLevel(String recoveryLevel) {
+        this.recoveryLevel = recoveryLevel;
+
+        return this;
     }
 }

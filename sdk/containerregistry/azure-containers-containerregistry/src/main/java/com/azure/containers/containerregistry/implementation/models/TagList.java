@@ -12,8 +12,8 @@ import java.util.List;
 @Fluent
 public final class TagList {
     /*
-     * Registry login server name.  This is likely to be similar to
-     * {registry-name}.azurecr.io
+     * Registry login server name. This is likely to be similar to
+     * {registry-name}.azurecr.io.
      */
     @JsonProperty(value = "registry", required = true)
     private String registryLoginServer;

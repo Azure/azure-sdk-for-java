@@ -31,7 +31,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.redis.fluent.FirewallRulesClient;
 import com.azure.resourcemanager.redis.fluent.models.RedisFirewallRuleInner;
-import com.azure.resourcemanager.redis.models.RedisFirewallRuleCreateParameters;
 import com.azure.resourcemanager.redis.models.RedisFirewallRuleListResult;
 import reactor.core.publisher.Mono;
 
@@ -91,7 +90,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             @PathParam("ruleName") String ruleName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") RedisFirewallRuleCreateParameters parameters,
+            @BodyParam("application/json") RedisFirewallRuleInner parameters,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -330,7 +329,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RedisFirewallRuleInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String cacheName, String ruleName, RedisFirewallRuleCreateParameters parameters) {
+        String resourceGroupName, String cacheName, String ruleName, RedisFirewallRuleInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -395,7 +394,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
         String resourceGroupName,
         String cacheName,
         String ruleName,
-        RedisFirewallRuleCreateParameters parameters,
+        RedisFirewallRuleInner parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -454,7 +453,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RedisFirewallRuleInner> createOrUpdateAsync(
-        String resourceGroupName, String cacheName, String ruleName, RedisFirewallRuleCreateParameters parameters) {
+        String resourceGroupName, String cacheName, String ruleName, RedisFirewallRuleInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, cacheName, ruleName, parameters)
             .flatMap(
                 (Response<RedisFirewallRuleInner> res) -> {
@@ -481,7 +480,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RedisFirewallRuleInner createOrUpdate(
-        String resourceGroupName, String cacheName, String ruleName, RedisFirewallRuleCreateParameters parameters) {
+        String resourceGroupName, String cacheName, String ruleName, RedisFirewallRuleInner parameters) {
         return createOrUpdateAsync(resourceGroupName, cacheName, ruleName, parameters).block();
     }
 
@@ -504,7 +503,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
         String resourceGroupName,
         String cacheName,
         String ruleName,
-        RedisFirewallRuleCreateParameters parameters,
+        RedisFirewallRuleInner parameters,
         Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, cacheName, ruleName, parameters, context).block();
     }

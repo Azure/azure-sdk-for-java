@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storagecache.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storagecache.models.ErrorResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,9 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The status of operation. */
-@JsonFlatten
 @Fluent
-public class AscOperationInner {
+public final class AscOperationInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AscOperationInner.class);
 
     /*
@@ -55,10 +53,10 @@ public class AscOperationInner {
     private ErrorResponse error;
 
     /*
-     * Additional operation-specific output.
+     * Additional operation-specific properties
      */
-    @JsonProperty(value = "properties.output")
-    private Map<String, Object> output;
+    @JsonProperty(value = "properties")
+    private AscOperationProperties innerProperties;
 
     /**
      * Get the id property: The operation Id.
@@ -181,12 +179,21 @@ public class AscOperationInner {
     }
 
     /**
+     * Get the innerProperties property: Additional operation-specific properties.
+     *
+     * @return the innerProperties value.
+     */
+    private AscOperationProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the output property: Additional operation-specific output.
      *
      * @return the output value.
      */
     public Map<String, Object> output() {
-        return this.output;
+        return this.innerProperties() == null ? null : this.innerProperties().output();
     }
 
     /**
@@ -196,7 +203,10 @@ public class AscOperationInner {
      * @return the AscOperationInner object itself.
      */
     public AscOperationInner withOutput(Map<String, Object> output) {
-        this.output = output;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AscOperationProperties();
+        }
+        this.innerProperties().withOutput(output);
         return this;
     }
 
@@ -208,6 +218,9 @@ public class AscOperationInner {
     public void validate() {
         if (error() != null) {
             error().validate();
+        }
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

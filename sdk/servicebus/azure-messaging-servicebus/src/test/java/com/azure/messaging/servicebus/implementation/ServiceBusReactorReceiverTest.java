@@ -75,6 +75,7 @@ class ServiceBusReactorReceiverTest {
     private AmqpConnection connection;
 
     private ServiceBusReactorReceiver reactorReceiver;
+    private AutoCloseable openMocks;
 
     @BeforeAll
     static void beforeAll() {
@@ -90,7 +91,7 @@ class ServiceBusReactorReceiverTest {
     void setup(TestInfo testInfo) throws IOException {
         logger.info("[{}] Setting up.", testInfo.getDisplayName());
 
-        MockitoAnnotations.initMocks(this);
+        openMocks = MockitoAnnotations.openMocks(this);
 
         when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
 
@@ -117,10 +118,11 @@ class ServiceBusReactorReceiverTest {
     }
 
     @AfterEach
-    void teardown(TestInfo testInfo) {
+    void teardown(TestInfo testInfo) throws Exception {
         logger.info("[{}] Tearing down.", testInfo.getDisplayName());
 
-        Mockito.framework().clearInlineMocks();
+        openMocks.close();
+        Mockito.framework().clearInlineMock(this);
     }
 
     /**

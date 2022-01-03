@@ -7,10 +7,12 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.SubResource;
 import com.azure.core.management.provider.IdentifierProvider;
 import com.azure.core.management.serializer.SerializerFactory;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.compute.ComputeManager;
+import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.AvailabilitySet;
 import com.azure.resourcemanager.compute.models.AvailabilitySetSkuTypes;
 import com.azure.resourcemanager.compute.models.BillingProfile;
@@ -268,6 +270,23 @@ class VirtualMachineImpl
             .serviceClient()
             .getVirtualMachines()
             .deallocateAsync(this.resourceGroupName(), this.name())
+            // Refresh after deallocate to ensure the inner is updatable (due to a change in behavior in Managed Disks)
+            .map(aVoid -> this.refreshAsync())
+            .then();
+    }
+
+    @Override
+    public void deallocate(boolean hibernate) {
+        this.deallocateAsync(hibernate).block();
+    }
+
+    @Override
+    public Mono<Void> deallocateAsync(boolean hibernate) {
+        return this
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .deallocateAsync(this.resourceGroupName(), this.name(), hibernate)
             // Refresh after deallocate to ensure the inner is updatable (due to a change in behavior in Managed Disks)
             .map(aVoid -> this.refreshAsync())
             .then();
@@ -1420,6 +1439,24 @@ class VirtualMachineImpl
         return this;
     }
 
+    @Override
+    public VirtualMachineImpl enableHibernation() {
+        if (this.innerModel().additionalCapabilities() == null) {
+            this.innerModel().withAdditionalCapabilities(new AdditionalCapabilities());
+        }
+        this.innerModel().additionalCapabilities().withHibernationEnabled(true);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl disableHibernation() {
+        if (this.innerModel().additionalCapabilities() == null) {
+            this.innerModel().withAdditionalCapabilities(new AdditionalCapabilities());
+        }
+        this.innerModel().additionalCapabilities().withHibernationEnabled(false);
+        return this;
+    }
+
     // GETTERS
     @Override
     public boolean isManagedDiskEnabled() {
@@ -1479,7 +1516,7 @@ class VirtualMachineImpl
 
     @Override
     public String osUnmanagedDiskVhdUri() {
-        if (isManagedDiskEnabled()) {
+        if (isManagedDiskEnabled() || this.storageProfile().osDisk().vhd() == null) {
             return null;
         }
         return innerModel().storageProfile().osDisk().vhd().uri();
@@ -1538,7 +1575,12 @@ class VirtualMachineImpl
 
     @Override
     public NetworkInterface getPrimaryNetworkInterface() {
-        return this.networkManager.networkInterfaces().getById(primaryNetworkInterfaceId());
+        return this.getPrimaryNetworkInterfaceAsync().block();
+    }
+
+    @Override
+    public Mono<NetworkInterface> getPrimaryNetworkInterfaceAsync() {
+        return this.networkManager.networkInterfaces().getByIdAsync(primaryNetworkInterfaceId());
     }
 
     @Override
@@ -1737,6 +1779,12 @@ class VirtualMachineImpl
     }
 
     @Override
+    public boolean isHibernationEnabled() {
+        return this.innerModel().additionalCapabilities() != null
+            && ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().additionalCapabilities().hibernationEnabled());
+    }
+
+    @Override
     public VirtualMachinePriorityTypes priority() {
         return this.innerModel().priority();
     }
@@ -1849,7 +1897,8 @@ class VirtualMachineImpl
                     // same as createResourceAsync
                     prepareCreateResourceAsync().block();
                 },
-                this::reset);
+                this::reset,
+                Context.NONE);
     }
 
     @Override
@@ -2389,19 +2438,22 @@ class VirtualMachineImpl
     }
 
     private void copyInnerToUpdateParameter(VirtualMachineUpdateInner updateParameter) {
-        updateParameter.withPlan(this.innerModel().plan());
+        //updateParameter.withPlan(this.innerModel().plan());   // update cannot change plan
         updateParameter.withHardwareProfile(this.innerModel().hardwareProfile());
         updateParameter.withStorageProfile(this.innerModel().storageProfile());
         updateParameter.withOsProfile(this.innerModel().osProfile());
         updateParameter.withNetworkProfile(this.innerModel().networkProfile());
         updateParameter.withDiagnosticsProfile(this.innerModel().diagnosticsProfile());
         updateParameter.withBillingProfile(this.innerModel().billingProfile());
+        updateParameter.withSecurityProfile(this.innerModel().securityProfile());
+        updateParameter.withAdditionalCapabilities(this.innerModel().additionalCapabilities());
         updateParameter.withAvailabilitySet(this.innerModel().availabilitySet());
         updateParameter.withLicenseType(this.innerModel().licenseType());
         updateParameter.withZones(this.innerModel().zones());
         updateParameter.withTags(this.innerModel().tags());
         updateParameter.withProximityPlacementGroup(this.innerModel().proximityPlacementGroup());
         updateParameter.withPriority(this.innerModel().priority());
+        updateParameter.withEvictionPolicy(this.innerModel().evictionPolicy());
     }
 
     RoleAssignmentHelper.IdProvider idProvider() {

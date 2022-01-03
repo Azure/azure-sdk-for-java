@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.ProvisioningState;
@@ -13,29 +12,24 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** IP firewall rule. */
-@JsonFlatten
 @Fluent
-public class IpFirewallRuleInfoInner extends ProxyResource {
+public final class IpFirewallRuleInfoInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(IpFirewallRuleInfoInner.class);
 
     /*
-     * The end IP address of the firewall rule. Must be IPv4 format. Must be
-     * greater than or equal to startIpAddress
+     * IP firewall rule properties
      */
-    @JsonProperty(value = "properties.endIpAddress")
-    private String endIpAddress;
+    @JsonProperty(value = "properties")
+    private IpFirewallRuleProperties innerProperties;
 
-    /*
-     * Resource provisioning state
+    /**
+     * Get the innerProperties property: IP firewall rule properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * The start IP address of the firewall rule. Must be IPv4 format
-     */
-    @JsonProperty(value = "properties.startIpAddress")
-    private String startIpAddress;
+    private IpFirewallRuleProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the endIpAddress property: The end IP address of the firewall rule. Must be IPv4 format. Must be greater than
@@ -44,7 +38,7 @@ public class IpFirewallRuleInfoInner extends ProxyResource {
      * @return the endIpAddress value.
      */
     public String endIpAddress() {
-        return this.endIpAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().endIpAddress();
     }
 
     /**
@@ -55,7 +49,10 @@ public class IpFirewallRuleInfoInner extends ProxyResource {
      * @return the IpFirewallRuleInfoInner object itself.
      */
     public IpFirewallRuleInfoInner withEndIpAddress(String endIpAddress) {
-        this.endIpAddress = endIpAddress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IpFirewallRuleProperties();
+        }
+        this.innerProperties().withEndIpAddress(endIpAddress);
         return this;
     }
 
@@ -65,7 +62,7 @@ public class IpFirewallRuleInfoInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -74,7 +71,7 @@ public class IpFirewallRuleInfoInner extends ProxyResource {
      * @return the startIpAddress value.
      */
     public String startIpAddress() {
-        return this.startIpAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().startIpAddress();
     }
 
     /**
@@ -84,7 +81,10 @@ public class IpFirewallRuleInfoInner extends ProxyResource {
      * @return the IpFirewallRuleInfoInner object itself.
      */
     public IpFirewallRuleInfoInner withStartIpAddress(String startIpAddress) {
-        this.startIpAddress = startIpAddress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IpFirewallRuleProperties();
+        }
+        this.innerProperties().withStartIpAddress(startIpAddress);
         return this;
     }
 
@@ -94,5 +94,8 @@ public class IpFirewallRuleInfoInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

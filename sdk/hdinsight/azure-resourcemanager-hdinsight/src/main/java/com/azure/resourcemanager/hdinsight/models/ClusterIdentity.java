@@ -7,6 +7,7 @@ package com.azure.resourcemanager.hdinsight.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -43,7 +44,8 @@ public class ClusterIdentity {
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
      */
     @JsonProperty(value = "userAssignedIdentities")
-    private Map<String, ClusterIdentityUserAssignedIdentities> userAssignedIdentities;
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, UserAssignedIdentity> userAssignedIdentities;
 
     /**
      * Get the principalId property: The principal id of cluster identity. This property will only be provided for a
@@ -94,7 +96,7 @@ public class ClusterIdentity {
      *
      * @return the userAssignedIdentities value.
      */
-    public Map<String, ClusterIdentityUserAssignedIdentities> userAssignedIdentities() {
+    public Map<String, UserAssignedIdentity> userAssignedIdentities() {
         return this.userAssignedIdentities;
     }
 
@@ -106,8 +108,7 @@ public class ClusterIdentity {
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the ClusterIdentity object itself.
      */
-    public ClusterIdentity withUserAssignedIdentities(
-        Map<String, ClusterIdentityUserAssignedIdentities> userAssignedIdentities) {
+    public ClusterIdentity withUserAssignedIdentities(Map<String, UserAssignedIdentity> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
     }

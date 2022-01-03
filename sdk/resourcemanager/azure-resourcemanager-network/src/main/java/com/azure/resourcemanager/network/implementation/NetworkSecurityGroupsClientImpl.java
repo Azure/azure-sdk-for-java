@@ -41,7 +41,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -221,7 +220,7 @@ public final class NetworkSecurityGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -273,7 +272,7 @@ public final class NetworkSecurityGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -297,13 +296,14 @@ public final class NetworkSecurityGroupsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String networkSecurityGroupName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, networkSecurityGroupName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -317,7 +317,7 @@ public final class NetworkSecurityGroupsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String networkSecurityGroupName, Context context) {
         context = this.client.mergeContext(context);
@@ -338,7 +338,7 @@ public final class NetworkSecurityGroupsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkSecurityGroupName) {
         return beginDeleteAsync(resourceGroupName, networkSecurityGroupName).getSyncPoller();
     }
@@ -354,7 +354,7 @@ public final class NetworkSecurityGroupsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String networkSecurityGroupName, Context context) {
         return beginDeleteAsync(resourceGroupName, networkSecurityGroupName, context).getSyncPoller();
@@ -459,7 +459,7 @@ public final class NetworkSecurityGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -513,7 +513,7 @@ public final class NetworkSecurityGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -653,7 +653,7 @@ public final class NetworkSecurityGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -715,7 +715,7 @@ public final class NetworkSecurityGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -741,7 +741,7 @@ public final class NetworkSecurityGroupsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return networkSecurityGroup resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<NetworkSecurityGroupInner>, NetworkSecurityGroupInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String networkSecurityGroupName, NetworkSecurityGroupInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -753,7 +753,7 @@ public final class NetworkSecurityGroupsClientImpl
                 this.client.getHttpPipeline(),
                 NetworkSecurityGroupInner.class,
                 NetworkSecurityGroupInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -768,7 +768,7 @@ public final class NetworkSecurityGroupsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return networkSecurityGroup resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NetworkSecurityGroupInner>, NetworkSecurityGroupInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String networkSecurityGroupName,
@@ -798,7 +798,7 @@ public final class NetworkSecurityGroupsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return networkSecurityGroup resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkSecurityGroupInner>, NetworkSecurityGroupInner> beginCreateOrUpdate(
         String resourceGroupName, String networkSecurityGroupName, NetworkSecurityGroupInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, networkSecurityGroupName, parameters).getSyncPoller();
@@ -816,7 +816,7 @@ public final class NetworkSecurityGroupsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return networkSecurityGroup resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkSecurityGroupInner>, NetworkSecurityGroupInner> beginCreateOrUpdate(
         String resourceGroupName,
         String networkSecurityGroupName,
@@ -911,7 +911,7 @@ public final class NetworkSecurityGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update network security group tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -919,7 +919,7 @@ public final class NetworkSecurityGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NetworkSecurityGroupInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String networkSecurityGroupName, Map<String, String> tags) {
+        String resourceGroupName, String networkSecurityGroupName, TagsObject parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -941,10 +941,13 @@ public final class NetworkSecurityGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
         return FluxUtil
             .withContext(
                 context ->
@@ -966,7 +969,7 @@ public final class NetworkSecurityGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update network security group tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -975,7 +978,7 @@ public final class NetworkSecurityGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NetworkSecurityGroupInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String networkSecurityGroupName, Map<String, String> tags, Context context) {
+        String resourceGroupName, String networkSecurityGroupName, TagsObject parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -997,10 +1000,13 @@ public final class NetworkSecurityGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
         context = this.client.mergeContext(context);
         return service
             .updateTags(
@@ -1019,7 +1025,7 @@ public final class NetworkSecurityGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update network security group tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1027,8 +1033,8 @@ public final class NetworkSecurityGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkSecurityGroupInner> updateTagsAsync(
-        String resourceGroupName, String networkSecurityGroupName, Map<String, String> tags) {
-        return updateTagsWithResponseAsync(resourceGroupName, networkSecurityGroupName, tags)
+        String resourceGroupName, String networkSecurityGroupName, TagsObject parameters) {
+        return updateTagsWithResponseAsync(resourceGroupName, networkSecurityGroupName, parameters)
             .flatMap(
                 (Response<NetworkSecurityGroupInner> res) -> {
                     if (res.getValue() != null) {
@@ -1044,23 +1050,16 @@ public final class NetworkSecurityGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
+     * @param parameters Parameters supplied to update network security group tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return networkSecurityGroup resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NetworkSecurityGroupInner> updateTagsAsync(String resourceGroupName, String networkSecurityGroupName) {
-        final Map<String, String> tags = null;
-        return updateTagsWithResponseAsync(resourceGroupName, networkSecurityGroupName, tags)
-            .flatMap(
-                (Response<NetworkSecurityGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public NetworkSecurityGroupInner updateTags(
+        String resourceGroupName, String networkSecurityGroupName, TagsObject parameters) {
+        return updateTagsAsync(resourceGroupName, networkSecurityGroupName, parameters).block();
     }
 
     /**
@@ -1068,23 +1067,7 @@ public final class NetworkSecurityGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return networkSecurityGroup resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkSecurityGroupInner updateTags(String resourceGroupName, String networkSecurityGroupName) {
-        final Map<String, String> tags = null;
-        return updateTagsAsync(resourceGroupName, networkSecurityGroupName, tags).block();
-    }
-
-    /**
-     * Updates a network security group tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update network security group tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1093,8 +1076,8 @@ public final class NetworkSecurityGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkSecurityGroupInner> updateTagsWithResponse(
-        String resourceGroupName, String networkSecurityGroupName, Map<String, String> tags, Context context) {
-        return updateTagsWithResponseAsync(resourceGroupName, networkSecurityGroupName, tags, context).block();
+        String resourceGroupName, String networkSecurityGroupName, TagsObject parameters, Context context) {
+        return updateTagsWithResponseAsync(resourceGroupName, networkSecurityGroupName, parameters, context).block();
     }
 
     /**
@@ -1118,7 +1101,7 @@ public final class NetworkSecurityGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1160,7 +1143,7 @@ public final class NetworkSecurityGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1257,7 +1240,7 @@ public final class NetworkSecurityGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1311,7 +1294,7 @@ public final class NetworkSecurityGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

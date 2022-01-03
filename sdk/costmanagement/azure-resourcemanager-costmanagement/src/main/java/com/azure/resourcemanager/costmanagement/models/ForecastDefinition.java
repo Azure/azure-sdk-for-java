@@ -36,7 +36,7 @@ public final class ForecastDefinition {
     /*
      * Has definition for data in this forecast.
      */
-    @JsonProperty(value = "dataset")
+    @JsonProperty(value = "dataset", required = true)
     private QueryDataset dataset;
 
     /*
@@ -192,7 +192,11 @@ public final class ForecastDefinition {
         if (timePeriod() != null) {
             timePeriod().validate();
         }
-        if (dataset() != null) {
+        if (dataset() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property dataset in model ForecastDefinition"));
+        } else {
             dataset().validate();
         }
     }

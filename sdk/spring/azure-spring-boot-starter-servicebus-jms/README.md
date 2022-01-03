@@ -25,33 +25,37 @@ This starter uses Azure Service Bus messaging features (queues and publish/subsc
 The Advanced Message Queuing Protocol (AMQP) 1.0 is an efficient, reliable, wire-level messaging protocol that you can use to build robust, cross-platform messaging applications.
 
 Support for AMQP 1.0 in Azure Service Bus means that you can use the queuing and publish/subscribe brokered messaging features from a range of platforms using an efficient binary protocol. Furthermore, you can build applications comprised of components built using a mix of languages, frameworks, and operating systems.
+
+### Support for JmsListener
+azure-spring-boot-starter-servicebus-jms autoconfigures two Spring beans of `JmsListenerContainerFactory` for Azure Service Bus Queue and Topic, with the bean name as `jmsListenerContainerFactory` and `topicJmsListenerContainerFactory`. 
+
 ## Examples
 
 ### Configure the app for your service bus
 In this section, you see how to configure your app to use either a Service Bus queue or topic.
 
-#### Use a Service Bus queue
+#### configuration options
 
-Append the following code to the end of the *application.properties* file. Replace the sample values with the appropriate values for your service bus:
+Name | Description | Type |Required
+|:---|:---|:---|:---
+spring.jms.servicebus.connection-string | Connection string of your Service Bus namespace from the Azure portal.|String | Yes
+spring.jms.servicebus.topic-client-id | JMS client ID, which is your Service Bus Subscription name in the Azure portal.|String | Yes if using Service Bus Topic.
+spring.jms.servicebus.idle-timeout | Idle timeout in milliseconds. The recommended value for this tutorial is 1800000.| int | Yes
+spring.jms.servicebus.pricing-tier | Pricing tier of your Service Bus namespace. Supported values are *premium*, *standard*, and *basic*. Premium uses Java Message Service (JMS) 2.0, while standard and basic use JMS 1.0 to interact with Azure Service Bus.|String | Yes
+spring.jms.servicebus.listener.reply-pub-sub-domain| Whether the reply destination type is topic. Only works for the bean of topicJmsListenerContainerFactory.| Boolean |
+spring.jms.servicebus.listener.reply-qos-settings.*|Configure the QosSettings to use when sending a reply. Can be set to null to indicate that the broker's defaults should be used. |
+spring.jms.servicebus.listener.subscription-durable|Whether to make the subscription durable. Only works for the bean of topicJmsListenerContainerFactory. The default value is true.|Boolean|
+spring.jms.servicebus.listener.subscription-durable|Whether to make the subscription shared. Only works for the bean of topicJmsListenerContainerFactory.|Boolean|
+spring.jms.servicebus.listener.phase|Specify the phase in which this container should be started and stopped. Default=0|int|
+spring.jms.servicebus.prefetch-policy.all|Specify the default value for all prefetchPolicy fields. Default=0|int|
+spring.jms.servicebus.durable-topic-prefetch|Specify durable topic prefetch value. Default=0|int|
+spring.jms.servicebus.queue-browser-prefetch|Specify the queueBrowserPrefetch value. Default=0|int|
+spring.jms.servicebus.queue-prefetch|Specify the queuePrefetch value. Default=0|int|
+spring.jms.servicebus.topic-prefetch|Specify the topicPrefetch value. Default=0|int|
 
-```yaml
-spring.jms.servicebus.connection-string=<ServiceBusNamespaceConnectionString>
-spring.jms.servicebus.idle-timeout=<IdleTimeout>
-# Supported values for pricing-tier are premium, standard and basic. Premium uses Java Message Service (JMS) 2.0, while standard and basic use JMS 1.0 to interact with Azure Service Bus.
-spring.jms.servicebus.pricing-tier=<ServiceBusPricingTier>
-```
 
-#### Use Service Bus topic
-
-Append the following code to the end of the *application.properties* file. Replace the sample values with the appropriate values for your service bus:
-
-```yaml
-spring.jms.servicebus.connection-string=<ServiceBusNamespaceConnectionString>
-spring.jms.servicebus.topic-client-id=<ServiceBusTopicClientId>
-spring.jms.servicebus.idle-timeout=<IdleTimeout>
-# Supported values for pricing-tier are premium and standard.
-spring.jms.servicebus.pricing-tier=<ServiceBusPricingTier>
-```
+Note: `JmsListenerContainerFactory` beans also support all [Spring native application properties of JmsListener][Spring_jms_configuration].    
+For more infomation about prefetch, please refer to this [doc](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-prefetch?tabs=java).
 
 ### Implement basic Service Bus functionality
 
@@ -225,22 +229,17 @@ To solve this issue, you need to add the dependency below into your classpath:
    <version>2.3.0</version>
 </dependency>
 ```
-### Enable client logging
-Azure SDKs for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
 
-### Enable Spring logging
-Spring allow all the supported logging systems to set logger levels set in the Spring Environment (for example, in application.properties) by using `logging.level.<logger-name>=<level>` where level is one of TRACE, DEBUG, INFO, WARN, ERROR, FATAL, or OFF. The root logger can be configured by using logging.level.root.
+### Logging setting
+Please refer to [spring logging document] to get more information about logging.
 
-The following example shows potential logging settings in `application.properties`:
-
-```
+#### Logging setting examples
+- Example: Setting logging level of hibernate
+```properties
 logging.level.root=WARN
 logging.level.org.springframework.web=DEBUG
 logging.level.org.hibernate=ERROR
 ```
-
-For more information about setting logging in spring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging).
- 
 
 ## Next steps
 The following section provides sample projects illustrating how to use the starter in different cases.
@@ -257,10 +256,11 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 <!-- LINKS -->
 [docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-service-bus
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springboot.html#azure-spring-boot
-[package]: https://mvnrepository.com/artifact/com.microsoft.azure/azure-servicebus-jms-spring-boot-starter
-[sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
+[package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-boot-starter-servicebus-jms
+[sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/servicebus/azure-spring-boot-starter-servicebus-jms
+[spring logging document]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
 [servicebus-message-payloads]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads
 [spring_jms_guide]: https://spring.io/guides/gs/messaging-jms/
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [Add azure-spring-boot-bom]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-boot-bom
+[Spring_jms_configuration]: https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#application-properties.integration.spring.jms.listener.acknowledge-mode

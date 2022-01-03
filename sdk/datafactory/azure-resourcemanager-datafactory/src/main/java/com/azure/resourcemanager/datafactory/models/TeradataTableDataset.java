@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.TeradataTableDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,63 +17,23 @@ import java.util.Map;
 /** The Teradata database dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("TeradataTable")
-@JsonFlatten
 @Fluent
-public class TeradataTableDataset extends Dataset {
+public final class TeradataTableDataset extends Dataset {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TeradataTableDataset.class);
 
     /*
-     * The database name of Teradata. Type: string (or Expression with
-     * resultType string).
+     * Teradata dataset properties.
      */
-    @JsonProperty(value = "typeProperties.database")
-    private Object database;
-
-    /*
-     * The table name of Teradata. Type: string (or Expression with resultType
-     * string).
-     */
-    @JsonProperty(value = "typeProperties.table")
-    private Object table;
+    @JsonProperty(value = "typeProperties")
+    private TeradataTableDatasetTypeProperties innerTypeProperties;
 
     /**
-     * Get the database property: The database name of Teradata. Type: string (or Expression with resultType string).
+     * Get the innerTypeProperties property: Teradata dataset properties.
      *
-     * @return the database value.
+     * @return the innerTypeProperties value.
      */
-    public Object database() {
-        return this.database;
-    }
-
-    /**
-     * Set the database property: The database name of Teradata. Type: string (or Expression with resultType string).
-     *
-     * @param database the database value to set.
-     * @return the TeradataTableDataset object itself.
-     */
-    public TeradataTableDataset withDatabase(Object database) {
-        this.database = database;
-        return this;
-    }
-
-    /**
-     * Get the table property: The table name of Teradata. Type: string (or Expression with resultType string).
-     *
-     * @return the table value.
-     */
-    public Object table() {
-        return this.table;
-    }
-
-    /**
-     * Set the table property: The table name of Teradata. Type: string (or Expression with resultType string).
-     *
-     * @param table the table value to set.
-     * @return the TeradataTableDataset object itself.
-     */
-    public TeradataTableDataset withTable(Object table) {
-        this.table = table;
-        return this;
+    private TeradataTableDatasetTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -126,6 +86,52 @@ public class TeradataTableDataset extends Dataset {
     }
 
     /**
+     * Get the database property: The database name of Teradata. Type: string (or Expression with resultType string).
+     *
+     * @return the database value.
+     */
+    public Object database() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().database();
+    }
+
+    /**
+     * Set the database property: The database name of Teradata. Type: string (or Expression with resultType string).
+     *
+     * @param database the database value to set.
+     * @return the TeradataTableDataset object itself.
+     */
+    public TeradataTableDataset withDatabase(Object database) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new TeradataTableDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withDatabase(database);
+        return this;
+    }
+
+    /**
+     * Get the table property: The table name of Teradata. Type: string (or Expression with resultType string).
+     *
+     * @return the table value.
+     */
+    public Object table() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().table();
+    }
+
+    /**
+     * Set the table property: The table name of Teradata. Type: string (or Expression with resultType string).
+     *
+     * @param table the table value to set.
+     * @return the TeradataTableDataset object itself.
+     */
+    public TeradataTableDataset withTable(Object table) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new TeradataTableDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withTable(table);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -133,5 +139,8 @@ public class TeradataTableDataset extends Dataset {
     @Override
     public void validate() {
         super.validate();
+        if (innerTypeProperties() != null) {
+            innerTypeProperties().validate();
+        }
     }
 }

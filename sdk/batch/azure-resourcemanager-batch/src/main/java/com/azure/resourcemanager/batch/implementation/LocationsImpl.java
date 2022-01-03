@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.batch.implementation;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -11,10 +12,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.batch.fluent.LocationsClient;
 import com.azure.resourcemanager.batch.fluent.models.BatchLocationQuotaInner;
 import com.azure.resourcemanager.batch.fluent.models.CheckNameAvailabilityResultInner;
+import com.azure.resourcemanager.batch.fluent.models.SupportedSkuInner;
 import com.azure.resourcemanager.batch.models.BatchLocationQuota;
 import com.azure.resourcemanager.batch.models.CheckNameAvailabilityParameters;
 import com.azure.resourcemanager.batch.models.CheckNameAvailabilityResult;
 import com.azure.resourcemanager.batch.models.Locations;
+import com.azure.resourcemanager.batch.models.SupportedSku;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LocationsImpl implements Locations {
@@ -49,6 +52,30 @@ public final class LocationsImpl implements Locations {
         } else {
             return null;
         }
+    }
+
+    public PagedIterable<SupportedSku> listSupportedVirtualMachineSkus(String locationName) {
+        PagedIterable<SupportedSkuInner> inner = this.serviceClient().listSupportedVirtualMachineSkus(locationName);
+        return Utils.mapPage(inner, inner1 -> new SupportedSkuImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<SupportedSku> listSupportedVirtualMachineSkus(
+        String locationName, Integer maxresults, String filter, Context context) {
+        PagedIterable<SupportedSkuInner> inner =
+            this.serviceClient().listSupportedVirtualMachineSkus(locationName, maxresults, filter, context);
+        return Utils.mapPage(inner, inner1 -> new SupportedSkuImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<SupportedSku> listSupportedCloudServiceSkus(String locationName) {
+        PagedIterable<SupportedSkuInner> inner = this.serviceClient().listSupportedCloudServiceSkus(locationName);
+        return Utils.mapPage(inner, inner1 -> new SupportedSkuImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<SupportedSku> listSupportedCloudServiceSkus(
+        String locationName, Integer maxresults, String filter, Context context) {
+        PagedIterable<SupportedSkuInner> inner =
+            this.serviceClient().listSupportedCloudServiceSkus(locationName, maxresults, filter, context);
+        return Utils.mapPage(inner, inner1 -> new SupportedSkuImpl(inner1, this.manager()));
     }
 
     public CheckNameAvailabilityResult checkNameAvailability(

@@ -34,6 +34,97 @@ variable and setting the appropriate properties used by auto-configuration code.
 
 For details, please see sample code in the [azure-spring-boot-sample-cloud-foundry](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/cloudfoundry/azure-cloud-foundry-service-sample) 
 
+## Health indicator
+
+You can use health information to check the status of your running application. It is often used by
+monitoring software to alert someone when a production system goes down. The information exposed by
+the health endpoint depends on the management.endpoint.health.show-details and
+management.endpoint.health.show-components properties which can be configured with one of the
+following values:
+
+|  key   | Name  |
+|  ----  | ----  |
+| never | Details are never shown. |
+| when-authorized | Details are only shown to authorized users. Authorized roles can be configured using management.endpoint.health.roles. |
+| always |Details are shown to all users. |
+
+The default value is never. A user is considered to be authorized when they are in one or more of
+the endpoint’s roles. If the endpoint has no configured roles (the default) all authenticated users
+are considered to be authorized. The roles can be configured using the
+management.endpoint.health.roles property.
+
+**NOTE:** If you have secured your application and wish to use `always`, your security configuration
+must permit access to the health endpoint for both authenticated and unauthenticated users.
+
+### Auto-configured HealthIndicators
+
+The following HealthIndicators are auto-configured by Azure Spring Boot when appropriate. You can
+also enable/disable selected indicators by configuring management.health.key.enabled, with the key
+listed in the table below.
+
+| key | Name | Description |
+| ---- | ---- | ---- |
+| azure-cosmos  | CosmosHealthIndicator | Checks that a cosmos database is up. |
+| azure-key-vault | KeyVaultHealthIndicator | Checks that a key vault is up. |
+| azure-storage | BlobStorageHealthIndicator | Checks that a storage blob is up. |
+| azure-storage | FileStorageHealthIndicator | Checks that a storage file is up. |
+
+### Add the dependent
+
+```yaml
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+    </dependencies>
+```
+
+### Enabling the Actuator
+
+When you do the following configuration in `application.yml` , you can access the endpoint to get
+the health of the component.
+
+```yaml
+management:
+  health:
+    azure-cosmos:
+      enabled: true
+    azure-key-vault:
+      enabled: true
+    azure-storage:
+      enabled: true
+  endpoint:
+    health:
+      show-details: always
+```
+
+Access the Health Endpoint：
+
+```json
+{
+  "status": "UP",
+  "components": {
+    "blobStorage": {
+      "status": "UP",
+      "details": {
+        "URL": "https://xxxx.blob.core.windows.net"
+      }
+    },
+    "cosmos": {
+      "status": "UP",
+      "details": {
+        "database": "xxx"
+      }
+    },
+    "keyVault": {
+      "status": "UP"
+    }
+  }
+}
+```
+
+
 ## Examples
 The following section provides sample projects illustrating how to use the Azure Spring Boot starters.
 ### More sample code
@@ -48,22 +139,16 @@ The following section provides sample projects illustrating how to use the Azure
 - [JMS Service Bus Topic](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/servicebus/azure-spring-boot-sample-servicebus-jms-topic)
 
 ## Troubleshooting
-### Enable client logging
-Azure SDKs for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
+### Logging setting
+Please refer to [spring logging document] to get more information about logging.
 
-### Enable Spring logging
-Spring allow all the supported logging systems to set logger levels set in the Spring Environment (for example, in application.properties) by using `logging.level.<logger-name>=<level>` where level is one of TRACE, DEBUG, INFO, WARN, ERROR, FATAL, or OFF. The root logger can be configured by using logging.level.root.
-
-The following example shows potential logging settings in `application.properties`:
-
+#### Logging setting examples
+- Example: Setting logging level of hibernate
 ```properties
 logging.level.root=WARN
 logging.level.org.springframework.web=DEBUG
 logging.level.org.hibernate=ERROR
 ```
-
-For more information about setting logging in spring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging).
- 
 
 ## Next steps
 The following section provides sample projects illustrating how to use the Azure Spring Boot starters.
@@ -93,9 +178,9 @@ You can participate community driven [![Gitter](https://badges.gitter.im/Microso
 [src]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot/src
 [docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/spring-boot-starters-for-azure
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springboot.html#azure-spring-boot
-[package]: https://mvnrepository.com/artifact/com.microsoft.azure/azure-spring-boot
+[package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-boot
 [sample]: https://github.com/Azure-Samples/azure-spring-boot-samples
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
+[spring logging document]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [Add azure-spring-boot-bom]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-boot-bom
 [Storage]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-starter-storage

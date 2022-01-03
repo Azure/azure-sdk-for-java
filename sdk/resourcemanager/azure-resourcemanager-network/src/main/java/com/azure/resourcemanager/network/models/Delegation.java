@@ -5,18 +5,23 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.fluent.models.ServiceDelegationPropertiesFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Details the service to which the subnet is delegated. */
-@JsonFlatten
 @Fluent
-public class Delegation extends SubResource {
+public final class Delegation extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Delegation.class);
+
+    /*
+     * Properties of the subnet.
+     */
+    @JsonProperty(value = "properties")
+    private ServiceDelegationPropertiesFormat innerProperties;
 
     /*
      * The name of the resource that is unique within a subnet. This name can
@@ -37,24 +42,14 @@ public class Delegation extends SubResource {
     @JsonProperty(value = "type")
     private String type;
 
-    /*
-     * The name of the service to whom the subnet should be delegated (e.g.
-     * Microsoft.Sql/servers).
+    /**
+     * Get the innerProperties property: Properties of the subnet.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.serviceName")
-    private String serviceName;
-
-    /*
-     * The actions permitted to the service upon delegation.
-     */
-    @JsonProperty(value = "properties.actions", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> actions;
-
-    /*
-     * The provisioning state of the service delegation resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private ServiceDelegationPropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: The name of the resource that is unique within a subnet. This name can be used to access
@@ -107,6 +102,13 @@ public class Delegation extends SubResource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public Delegation withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the serviceName property: The name of the service to whom the subnet should be delegated (e.g.
      * Microsoft.Sql/servers).
@@ -114,7 +116,7 @@ public class Delegation extends SubResource {
      * @return the serviceName value.
      */
     public String serviceName() {
-        return this.serviceName;
+        return this.innerProperties() == null ? null : this.innerProperties().serviceName();
     }
 
     /**
@@ -125,7 +127,10 @@ public class Delegation extends SubResource {
      * @return the Delegation object itself.
      */
     public Delegation withServiceName(String serviceName) {
-        this.serviceName = serviceName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServiceDelegationPropertiesFormat();
+        }
+        this.innerProperties().withServiceName(serviceName);
         return this;
     }
 
@@ -135,7 +140,7 @@ public class Delegation extends SubResource {
      * @return the actions value.
      */
     public List<String> actions() {
-        return this.actions;
+        return this.innerProperties() == null ? null : this.innerProperties().actions();
     }
 
     /**
@@ -144,14 +149,7 @@ public class Delegation extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Delegation withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -160,5 +158,8 @@ public class Delegation extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

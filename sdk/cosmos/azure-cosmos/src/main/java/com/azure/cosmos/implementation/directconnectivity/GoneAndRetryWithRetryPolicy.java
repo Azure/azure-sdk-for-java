@@ -23,6 +23,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -36,6 +37,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
 
     private volatile RetryWithException lastRetryWithException;
     private RetryContext retryContext;
+    private static final ThreadLocalRandom random = ThreadLocalRandom.current();
 
     public GoneAndRetryWithRetryPolicy(RxDocumentServiceRequest request, Integer waitTimeInSeconds) {
         this.retryContext = BridgeInternal.getRetryContext(request.requestContext.cosmosDiagnostics);
@@ -54,11 +56,11 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
 
         return this.retryWithRetryPolicy.shouldRetry(exception)
                                         .flatMap((retryWithResult) -> {
-
-            if (retryWithResult.shouldRetry) {
+            if (!retryWithResult.nonRelatedException) {
                 return Mono.just(retryWithResult);
             }
 
+            // only pass request to gone retry policy if retryWithRetryPolicy can not handle the exception.
             return this.goneRetryPolicy.shouldRetry(exception)
                 .flatMap((goneRetryResult) -> {
                     if (!goneRetryResult.shouldRetry) {
@@ -109,7 +111,6 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
 
         private boolean isNonRetryableException(Exception exception) {
             if (exception instanceof GoneException ||
-                exception instanceof RetryWithException ||
                 exception instanceof PartitionIsMigratingException ||
                 exception instanceof PartitionKeyRangeIsSplittingException) {
 
@@ -171,7 +172,6 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
             Duration timeout;
             boolean forceRefreshAddressCache;
             if (isNonRetryableException(exception)) {
-
                 logger.debug("Operation will NOT be retried. Current attempt {}, Exception: ", this.attemptCount,
                     exception);
                 return Mono.just(ShouldRetryResult.noRetryOnNonRelatedException());
@@ -291,9 +291,10 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
 
     class RetryWithRetryPolicy implements IRetryPolicy {
         private final static int DEFAULT_WAIT_TIME_IN_SECONDS = 30;
-        private final static int MAXIMUM_BACKOFF_TIME_IN_MS = 15000;
+        private final static int MAXIMUM_BACKOFF_TIME_IN_MS = 1000;
         private final static int INITIAL_BACKOFF_TIME_MS = 10;
         private final static int BACK_OFF_MULTIPLIER = 2;
+        private final static int RANDOM_SALT_IN_MS = 5;
 
         private volatile int attemptCount = 1;
         private volatile int currentBackoffMilliseconds = RetryWithRetryPolicy.INITIAL_BACKOFF_TIME_MS;
@@ -334,7 +335,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
 
             backoffTime = Duration.ofMillis(
                 Math.min(
-                    Math.min(this.currentBackoffMilliseconds, remainingMilliseconds),
+                    Math.min(this.currentBackoffMilliseconds + random.nextInt(RANDOM_SALT_IN_MS), remainingMilliseconds),
                     RetryWithRetryPolicy.MAXIMUM_BACKOFF_TIME_IN_MS));
             this.currentBackoffMilliseconds *= RetryWithRetryPolicy.BACK_OFF_MULTIPLIER;
             logger.debug("BackoffTime: {} ms.", backoffTime.toMillis());

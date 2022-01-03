@@ -34,6 +34,13 @@ public final class SqlScript {
     private SqlScriptContent content;
 
     /*
+     * The folder that this SQL script is in. If not specified, this SQL script
+     * will appear at the root level.
+     */
+    @JsonProperty(value = "folder")
+    private SqlScriptFolder folder;
+
+    /*
      * SQL script.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
@@ -95,6 +102,28 @@ public final class SqlScript {
      */
     public SqlScript setContent(SqlScriptContent content) {
         this.content = content;
+        return this;
+    }
+
+    /**
+     * Get the folder property: The folder that this SQL script is in. If not specified, this SQL script will appear at
+     * the root level.
+     *
+     * @return the folder value.
+     */
+    public SqlScriptFolder getFolder() {
+        return this.folder;
+    }
+
+    /**
+     * Set the folder property: The folder that this SQL script is in. If not specified, this SQL script will appear at
+     * the root level.
+     *
+     * @param folder the folder value to set.
+     * @return the SqlScript object itself.
+     */
+    public SqlScript setFolder(SqlScriptFolder folder) {
+        this.folder = folder;
         return this;
     }
 

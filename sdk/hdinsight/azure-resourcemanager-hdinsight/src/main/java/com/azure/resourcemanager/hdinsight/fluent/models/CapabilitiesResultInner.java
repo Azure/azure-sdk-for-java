@@ -9,9 +9,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hdinsight.models.QuotaCapability;
 import com.azure.resourcemanager.hdinsight.models.RegionsCapability;
 import com.azure.resourcemanager.hdinsight.models.VersionsCapability;
-import com.azure.resourcemanager.hdinsight.models.VmSizeCompatibilityFilter;
-import com.azure.resourcemanager.hdinsight.models.VmSizesCapability;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -25,25 +24,15 @@ public final class CapabilitiesResultInner {
      * The version capability.
      */
     @JsonProperty(value = "versions")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, VersionsCapability> versions;
 
     /*
      * The virtual machine size compatibility features.
      */
     @JsonProperty(value = "regions")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, RegionsCapability> regions;
-
-    /*
-     * The virtual machine sizes.
-     */
-    @JsonProperty(value = "vmsizes")
-    private Map<String, VmSizesCapability> vmsizes;
-
-    /*
-     * The virtual machine size compatibility filters.
-     */
-    @JsonProperty(value = "vmsize_filters")
-    private List<VmSizeCompatibilityFilter> vmsizeFilters;
 
     /*
      * The capability features.
@@ -94,46 +83,6 @@ public final class CapabilitiesResultInner {
      */
     public CapabilitiesResultInner withRegions(Map<String, RegionsCapability> regions) {
         this.regions = regions;
-        return this;
-    }
-
-    /**
-     * Get the vmsizes property: The virtual machine sizes.
-     *
-     * @return the vmsizes value.
-     */
-    public Map<String, VmSizesCapability> vmsizes() {
-        return this.vmsizes;
-    }
-
-    /**
-     * Set the vmsizes property: The virtual machine sizes.
-     *
-     * @param vmsizes the vmsizes value to set.
-     * @return the CapabilitiesResultInner object itself.
-     */
-    public CapabilitiesResultInner withVmsizes(Map<String, VmSizesCapability> vmsizes) {
-        this.vmsizes = vmsizes;
-        return this;
-    }
-
-    /**
-     * Get the vmsizeFilters property: The virtual machine size compatibility filters.
-     *
-     * @return the vmsizeFilters value.
-     */
-    public List<VmSizeCompatibilityFilter> vmsizeFilters() {
-        return this.vmsizeFilters;
-    }
-
-    /**
-     * Set the vmsizeFilters property: The virtual machine size compatibility filters.
-     *
-     * @param vmsizeFilters the vmsizeFilters value to set.
-     * @return the CapabilitiesResultInner object itself.
-     */
-    public CapabilitiesResultInner withVmsizeFilters(List<VmSizeCompatibilityFilter> vmsizeFilters) {
-        this.vmsizeFilters = vmsizeFilters;
         return this;
     }
 
@@ -191,19 +140,6 @@ public final class CapabilitiesResultInner {
                             e.validate();
                         }
                     });
-        }
-        if (vmsizes() != null) {
-            vmsizes()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
-        }
-        if (vmsizeFilters() != null) {
-            vmsizeFilters().forEach(e -> e.validate());
         }
         if (quota() != null) {
             quota().validate();

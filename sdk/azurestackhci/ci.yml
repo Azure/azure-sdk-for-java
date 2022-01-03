@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/azurestackhci/
+      - sdk/azurestackhci/ci.yml
+      - sdk/azurestackhci/azure-resourcemanager-azurestackhci/
+    exclude:
+      - sdk/azurestackhci/pom.xml
+      - sdk/azurestackhci/azure-resourcemanager-azurestackhci/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/azurestackhci/
+      - sdk/azurestackhci/ci.yml
+      - sdk/azurestackhci/azure-resourcemanager-azurestackhci/
+    exclude:
+      - sdk/azurestackhci/pom.xml
+      - sdk/azurestackhci/azure-resourcemanager-azurestackhci/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

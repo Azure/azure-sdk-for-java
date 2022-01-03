@@ -14,11 +14,11 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.ServiceEndpointPolicyInner;
+import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -51,7 +51,7 @@ public interface ServiceEndpointPoliciesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serviceEndpointPolicyName);
 
     /**
@@ -64,7 +64,7 @@ public interface ServiceEndpointPoliciesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceEndpointPolicyName);
 
     /**
@@ -78,7 +78,7 @@ public interface ServiceEndpointPoliciesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceEndpointPolicyName, Context context);
 
@@ -219,7 +219,7 @@ public interface ServiceEndpointPoliciesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return service End point policy resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ServiceEndpointPolicyInner>, ServiceEndpointPolicyInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serviceEndpointPolicyName, ServiceEndpointPolicyInner parameters);
 
@@ -234,7 +234,7 @@ public interface ServiceEndpointPoliciesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return service End point policy resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServiceEndpointPolicyInner>, ServiceEndpointPolicyInner> beginCreateOrUpdate(
         String resourceGroupName, String serviceEndpointPolicyName, ServiceEndpointPolicyInner parameters);
 
@@ -250,7 +250,7 @@ public interface ServiceEndpointPoliciesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return service End point policy resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServiceEndpointPolicyInner>, ServiceEndpointPolicyInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serviceEndpointPolicyName,
@@ -311,7 +311,7 @@ public interface ServiceEndpointPoliciesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update service endpoint policy tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -319,14 +319,14 @@ public interface ServiceEndpointPoliciesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ServiceEndpointPolicyInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String serviceEndpointPolicyName, Map<String, String> tags);
+        String resourceGroupName, String serviceEndpointPolicyName, TagsObject parameters);
 
     /**
      * Updates tags of a service endpoint policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update service endpoint policy tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -334,40 +334,29 @@ public interface ServiceEndpointPoliciesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ServiceEndpointPolicyInner> updateTagsAsync(
-        String resourceGroupName, String serviceEndpointPolicyName, Map<String, String> tags);
+        String resourceGroupName, String serviceEndpointPolicyName, TagsObject parameters);
 
     /**
      * Updates tags of a service endpoint policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
+     * @param parameters Parameters supplied to update service endpoint policy tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return service End point policy resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ServiceEndpointPolicyInner> updateTagsAsync(String resourceGroupName, String serviceEndpointPolicyName);
+    ServiceEndpointPolicyInner updateTags(
+        String resourceGroupName, String serviceEndpointPolicyName, TagsObject parameters);
 
     /**
      * Updates tags of a service endpoint policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service End point policy resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ServiceEndpointPolicyInner updateTags(String resourceGroupName, String serviceEndpointPolicyName);
-
-    /**
-     * Updates tags of a service endpoint policy.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceEndpointPolicyName The name of the service endpoint policy.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update service endpoint policy tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -376,7 +365,7 @@ public interface ServiceEndpointPoliciesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ServiceEndpointPolicyInner> updateTagsWithResponse(
-        String resourceGroupName, String serviceEndpointPolicyName, Map<String, String> tags, Context context);
+        String resourceGroupName, String serviceEndpointPolicyName, TagsObject parameters, Context context);
 
     /**
      * Gets all the service endpoint policies in a subscription.

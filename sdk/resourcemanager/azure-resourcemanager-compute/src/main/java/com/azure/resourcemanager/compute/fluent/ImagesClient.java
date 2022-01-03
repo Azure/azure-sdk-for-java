@@ -51,7 +51,7 @@ public interface ImagesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the source user image virtual hard disk.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ImageInner>, ImageInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String imageName, ImageInner parameters);
 
@@ -66,7 +66,7 @@ public interface ImagesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the source user image virtual hard disk.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ImageInner>, ImageInner> beginCreateOrUpdate(
         String resourceGroupName, String imageName, ImageInner parameters);
 
@@ -82,7 +82,7 @@ public interface ImagesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the source user image virtual hard disk.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ImageInner>, ImageInner> beginCreateOrUpdate(
         String resourceGroupName, String imageName, ImageInner parameters, Context context);
 
@@ -155,7 +155,7 @@ public interface ImagesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the source user image virtual hard disk.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ImageInner>, ImageInner> beginUpdateAsync(
         String resourceGroupName, String imageName, ImageUpdate parameters);
 
@@ -170,7 +170,7 @@ public interface ImagesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the source user image virtual hard disk.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ImageInner>, ImageInner> beginUpdate(
         String resourceGroupName, String imageName, ImageUpdate parameters);
 
@@ -186,7 +186,7 @@ public interface ImagesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the source user image virtual hard disk.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ImageInner>, ImageInner> beginUpdate(
         String resourceGroupName, String imageName, ImageUpdate parameters, Context context);
 
@@ -256,7 +256,7 @@ public interface ImagesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String imageName);
 
     /**
@@ -269,7 +269,7 @@ public interface ImagesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String imageName);
 
     /**
@@ -283,7 +283,7 @@ public interface ImagesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String imageName, Context context);
 
     /**

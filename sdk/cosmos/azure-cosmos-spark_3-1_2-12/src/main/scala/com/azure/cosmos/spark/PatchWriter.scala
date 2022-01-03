@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.models.PartitionKey
-import com.azure.cosmos.{CosmosAsyncContainer, CosmosPatchOperations, TransactionalBatch}
+import com.azure.cosmos.models.{CosmosBatch, CosmosPatchOperations, PartitionKey}
+import com.azure.cosmos.CosmosAsyncContainer
 import com.fasterxml.jackson.databind.node.{JsonNodeType, ObjectNode}
 
 // TODO: this is unused at this point, parked code till patch is ready on the service sidePatchWriter
@@ -43,10 +43,10 @@ private case class PatchWriter(cosmosContainer: CosmosAsyncContainer) {
   def upsert(partitionKeyValue: PartitionKey, objectNode: ObjectNode) : Unit = {
     val patchOperations = objectNodeToPatch(objectNode)
 
-    val batch = TransactionalBatch.createTransactionalBatch(partitionKeyValue)
+    val batch = CosmosBatch.createCosmosBatch(partitionKeyValue)
     batch.patchItemOperation(objectNode.get("id").asText(), patchOperations)
 
-    val result = cosmosContainer.executeTransactionalBatch(batch).block()
+    val result = cosmosContainer.executeCosmosBatch(batch).block()
     result.getStatusCode
   }
 }

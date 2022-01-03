@@ -198,6 +198,12 @@ public class ComputeNode {
     private NodeAgentInformation nodeAgentInfo;
 
     /**
+     * Info about the current state of the virtual machine.
+     */
+    @JsonProperty(value = "virtualMachineInfo")
+    private VirtualMachineInfo virtualMachineInfo;
+
+    /**
      * Get every Compute Node that is added to a Pool is assigned a unique ID. Whenever a Compute Node is removed from a Pool, all of its local files are deleted, and the ID is reclaimed and could be reused for new Compute Nodes.
      *
      * @return the id value
@@ -634,6 +640,26 @@ public class ComputeNode {
      */
     public ComputeNode withNodeAgentInfo(NodeAgentInformation nodeAgentInfo) {
         this.nodeAgentInfo = nodeAgentInfo;
+        return this;
+    }
+
+    /**
+     * Get the virtualMachineInfo value.
+     *
+     * @return the virtualMachineInfo value
+     */
+    public VirtualMachineInfo virtualMachineInfo() {
+        return this.virtualMachineInfo;
+    }
+
+    /**
+     * Set the virtualMachineInfo value.
+     *
+     * @param virtualMachineInfo the virtualMachineInfo value to set
+     * @return the ComputeNode object itself.
+     */
+    public ComputeNode withVirtualMachineInfo(VirtualMachineInfo virtualMachineInfo) {
+        this.virtualMachineInfo = virtualMachineInfo;
         return this;
     }
 

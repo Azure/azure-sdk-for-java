@@ -4,7 +4,6 @@
 package com.azure.spring.integration.storage.queue;
 
 import com.azure.spring.integration.storage.queue.inbound.StorageQueueMessageSource;
-import com.google.common.collect.ImmutableMap;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +14,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
 import reactor.core.publisher.Mono;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -27,12 +29,18 @@ public class StorageQueueMessageSourceTest {
 
     @Mock
     private StorageQueueOperation mockOperation;
-    private Message<?> message =
-        new GenericMessage<>("testPayload", ImmutableMap.of("key1", "value1", "key2", "value2"));
+    private Message<?> message;
 
     private String destination = "test-destination";
     private StorageQueueMessageSource messageSource;
     private AutoCloseable closeable;
+
+    public StorageQueueMessageSourceTest() {
+        Map<String, Object> values = new HashMap<>(2);
+        values.put("key1", "value1");
+        values.put("key2", "value2");
+        message = new GenericMessage<>("testPayload", values);
+    }
 
     @BeforeAll
     public void init() {

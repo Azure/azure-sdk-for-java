@@ -173,11 +173,33 @@ public interface Workspace {
     String adlaResourceId();
 
     /**
-     * Gets the publicNetworkAccess property: Enable or Disable pubic network access to workspace.
+     * Gets the publicNetworkAccess property: Enable or Disable public network access to workspace.
      *
      * @return the publicNetworkAccess value.
      */
     WorkspacePublicNetworkAccess publicNetworkAccess();
+
+    /**
+     * Gets the cspWorkspaceAdminProperties property: Initial workspace AAD admin properties for a CSP subscription.
+     *
+     * @return the cspWorkspaceAdminProperties value.
+     */
+    CspWorkspaceAdminProperties cspWorkspaceAdminProperties();
+
+    /**
+     * Gets the settings property: Workspace settings.
+     *
+     * @return the settings value.
+     */
+    Map<String, Object> settings();
+
+    /**
+     * Gets the azureADOnlyAuthentication property: Enable or Disable AzureADOnlyAuthentication on All Workspace
+     * subresource.
+     *
+     * @return the azureADOnlyAuthentication value.
+     */
+    Boolean azureADOnlyAuthentication();
 
     /**
      * Gets the region of the resource.
@@ -259,7 +281,9 @@ public interface Workspace {
                 DefinitionStages.WithManagedVirtualNetworkSettings,
                 DefinitionStages.WithWorkspaceRepositoryConfiguration,
                 DefinitionStages.WithPurviewConfiguration,
-                DefinitionStages.WithPublicNetworkAccess {
+                DefinitionStages.WithPublicNetworkAccess,
+                DefinitionStages.WithCspWorkspaceAdminProperties,
+                DefinitionStages.WithAzureADOnlyAuthentication {
             /**
              * Executes the create request.
              *
@@ -427,12 +451,35 @@ public interface Workspace {
         /** The stage of the Workspace definition allowing to specify publicNetworkAccess. */
         interface WithPublicNetworkAccess {
             /**
-             * Specifies the publicNetworkAccess property: Enable or Disable pubic network access to workspace.
+             * Specifies the publicNetworkAccess property: Enable or Disable public network access to workspace.
              *
-             * @param publicNetworkAccess Enable or Disable pubic network access to workspace.
+             * @param publicNetworkAccess Enable or Disable public network access to workspace.
              * @return the next definition stage.
              */
             WithCreate withPublicNetworkAccess(WorkspacePublicNetworkAccess publicNetworkAccess);
+        }
+        /** The stage of the Workspace definition allowing to specify cspWorkspaceAdminProperties. */
+        interface WithCspWorkspaceAdminProperties {
+            /**
+             * Specifies the cspWorkspaceAdminProperties property: Initial workspace AAD admin properties for a CSP
+             * subscription.
+             *
+             * @param cspWorkspaceAdminProperties Initial workspace AAD admin properties for a CSP subscription.
+             * @return the next definition stage.
+             */
+            WithCreate withCspWorkspaceAdminProperties(CspWorkspaceAdminProperties cspWorkspaceAdminProperties);
+        }
+        /** The stage of the Workspace definition allowing to specify azureADOnlyAuthentication. */
+        interface WithAzureADOnlyAuthentication {
+            /**
+             * Specifies the azureADOnlyAuthentication property: Enable or Disable AzureADOnlyAuthentication on All
+             * Workspace subresource.
+             *
+             * @param azureADOnlyAuthentication Enable or Disable AzureADOnlyAuthentication on All Workspace
+             *     subresource.
+             * @return the next definition stage.
+             */
+            WithCreate withAzureADOnlyAuthentication(Boolean azureADOnlyAuthentication);
         }
     }
     /**
@@ -543,9 +590,9 @@ public interface Workspace {
         /** The stage of the Workspace update allowing to specify publicNetworkAccess. */
         interface WithPublicNetworkAccess {
             /**
-             * Specifies the publicNetworkAccess property: Enable or Disable pubic network access to workspace.
+             * Specifies the publicNetworkAccess property: Enable or Disable public network access to workspace.
              *
-             * @param publicNetworkAccess Enable or Disable pubic network access to workspace.
+             * @param publicNetworkAccess Enable or Disable public network access to workspace.
              * @return the next definition stage.
              */
             Update withPublicNetworkAccess(WorkspacePublicNetworkAccess publicNetworkAccess);

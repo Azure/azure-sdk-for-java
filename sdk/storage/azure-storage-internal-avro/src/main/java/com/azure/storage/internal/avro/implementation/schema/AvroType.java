@@ -34,6 +34,7 @@ import static com.azure.storage.internal.avro.implementation.AvroConstants.Types
  * @see AvroType#getType(JsonNode)
  */
 public class AvroType {
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private final String type;
 
@@ -248,7 +249,7 @@ public class AvroType {
     public static AvroType getType(String jsonString) {
         JsonNode schemaJson;
         try {
-            schemaJson = new ObjectMapper().readTree(jsonString);
+            schemaJson = MAPPER.readTree(jsonString);
         } catch (JsonProcessingException e) {
             throw new IllegalStateException(e.getMessage());
         }

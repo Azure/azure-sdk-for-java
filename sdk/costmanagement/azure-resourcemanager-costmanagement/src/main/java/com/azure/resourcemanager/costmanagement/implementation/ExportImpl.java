@@ -30,6 +30,14 @@ public final class ExportImpl implements Export, Export.Definition, Export.Updat
         return this.innerModel().type();
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
+    public ExportSchedule schedule() {
+        return this.innerModel().schedule();
+    }
+
     public FormatType format() {
         return this.innerModel().format();
     }
@@ -40,14 +48,6 @@ public final class ExportImpl implements Export, Export.Definition, Export.Updat
 
     public ExportDefinition definition() {
         return this.innerModel().definition();
-    }
-
-    public ExportSchedule schedule() {
-        return this.innerModel().schedule();
-    }
-
-    public String etag() {
-        return this.innerModel().etag();
     }
 
     public ExportInner innerModel() {
@@ -150,6 +150,16 @@ public final class ExportImpl implements Export, Export.Definition, Export.Updat
         return serviceManager.exports().executeWithResponse(scope, exportName, context);
     }
 
+    public ExportImpl withEtag(String etag) {
+        this.innerModel().withEtag(etag);
+        return this;
+    }
+
+    public ExportImpl withSchedule(ExportSchedule schedule) {
+        this.innerModel().withSchedule(schedule);
+        return this;
+    }
+
     public ExportImpl withFormat(FormatType format) {
         this.innerModel().withFormat(format);
         return this;
@@ -162,16 +172,6 @@ public final class ExportImpl implements Export, Export.Definition, Export.Updat
 
     public ExportImpl withDefinition(ExportDefinition definition) {
         this.innerModel().withDefinition(definition);
-        return this;
-    }
-
-    public ExportImpl withSchedule(ExportSchedule schedule) {
-        this.innerModel().withSchedule(schedule);
-        return this;
-    }
-
-    public ExportImpl withEtag(String etag) {
-        this.innerModel().withEtag(etag);
         return this;
     }
 }

@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/timeseriesinsights/
+      - sdk/timeseriesinsights/ci.yml
+      - sdk/timeseriesinsights/azure-resourcemanager-timeseriesinsights/
+    exclude:
+      - sdk/timeseriesinsights/pom.xml
+      - sdk/timeseriesinsights/azure-resourcemanager-timeseriesinsights/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/timeseriesinsights/
+      - sdk/timeseriesinsights/ci.yml
+      - sdk/timeseriesinsights/azure-resourcemanager-timeseriesinsights/
+    exclude:
+      - sdk/timeseriesinsights/pom.xml
+      - sdk/timeseriesinsights/azure-resourcemanager-timeseriesinsights/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

@@ -189,6 +189,80 @@ class PartitionMetadataSpec extends UnitSpec {
     cloned.startLsn shouldEqual newStartLsn
   }
 
+  it should "calculate weighted gap when gap is < 1" in {
+    val clientConfig = CosmosClientConfiguration(
+      UUID.randomUUID().toString,
+      UUID.randomUUID().toString,
+      UUID.randomUUID().toString,
+      useGatewayMode = false,
+      useEventualConsistency = true,
+      Option.empty)
+
+    val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
+    val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
+    val docSizeInKB = rnd.nextInt()
+    val latestLsn = 2150
+    val startLsn = 2057
+    val docCount = 200174
+    val nowEpochMs = Instant.now.toEpochMilli
+    val createdAt = new AtomicLong(nowEpochMs)
+    val lastRetrievedAt = new AtomicLong(nowEpochMs)
+
+    val metadata = PartitionMetadata(
+      Map[String, String](),
+      clientConfig,
+      None,
+      containerConfig,
+      normalizedRange,
+      docCount,
+      docSizeInKB,
+      latestLsn,
+      startLsn,
+      None,
+      createdAt,
+      lastRetrievedAt)
+
+    val gap = metadata.getWeightedLsnGap
+    gap shouldBe 1
+  }
+
+  it should "calculate weighted gap when gap is > 1" in {
+    val clientConfig = CosmosClientConfiguration(
+      UUID.randomUUID().toString,
+      UUID.randomUUID().toString,
+      UUID.randomUUID().toString,
+      useGatewayMode = false,
+      useEventualConsistency = true,
+      Option.empty)
+
+    val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
+    val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
+    val docSizeInKB = rnd.nextInt()
+    val latestLsn = 2150
+    val startLsn = 2057
+    val docCount = 3000
+    val nowEpochMs = Instant.now.toEpochMilli
+    val createdAt = new AtomicLong(nowEpochMs)
+    val lastRetrievedAt = new AtomicLong(nowEpochMs)
+
+    val metadata = PartitionMetadata(
+      Map[String, String](),
+      clientConfig,
+      None,
+      containerConfig,
+      normalizedRange,
+      docCount,
+      docSizeInKB,
+      latestLsn,
+      startLsn,
+      None,
+      createdAt,
+      lastRetrievedAt)
+
+    val gap = metadata.getWeightedLsnGap
+    gap shouldBe 66
+  }
+
   //scalastyle:off null
   it should "throw due to missing clientConfig" in {
     assertThrows[IllegalArgumentException](

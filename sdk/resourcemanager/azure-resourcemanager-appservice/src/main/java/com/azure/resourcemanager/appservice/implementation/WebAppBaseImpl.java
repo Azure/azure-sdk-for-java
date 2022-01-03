@@ -980,6 +980,15 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
         if (siteConfig == null) {
             return Mono.just((Indexable) this);
         }
+        if (siteConfig.azureStorageAccounts() != null) {
+            // Remove azureStorageAccounts if any lack accessKey property. Service will reject if lack accessKey.
+            if (siteConfig.azureStorageAccounts().values().stream()
+                .filter(Objects::nonNull)
+                .anyMatch(v -> v.accessKey() == null)) {
+
+                siteConfig.withAzureStorageAccounts(null);
+            }
+        }
         return createOrUpdateSiteConfig(siteConfig)
             .flatMap(
                 returnedSiteConfig -> {
