@@ -277,7 +277,6 @@ def main():
     parser.add_argument('--project-list', '--pl', type=str)
     parser.add_argument('--set-pipeline-variable', type=str)
     args = parser.parse_args()
-    args.project_list = "com.azure:azure-core,com.azure:azure-core-amqp,com.azure:azure-core-amqp-experimental,com.azure:azure-core-experimental,com.azure:azure-core-http-jdk-httpclient,com.azure:azure-core-http-netty,com.azure:azure-core-http-okhttp,com.azure:azure-core-management,com.azure:azure-core-serializer-avro-apache,com.azure:azure-core-serializer-json-gson,com.azure:azure-core-serializer-json-jackson,com.azure:azure-core-test,com.azure:azure-core-tracing-opentelemetry,com.azure:perf-test-core"
     if args.project_list == None:
         raise ValueError('Missing project list.')
     start_time = time.time()
