@@ -169,6 +169,9 @@
     <graalvm.enable>false</graalvm.enable>
 
     <!-- The following properties configure the revapi-maven-plugin. -->
+    <!-- This property configures whether the revapi-maven-plugin should run. -->
+    <revapi.skip>false</revapi.skip>
+
     <!-- This property configures whether the revapi-maven-plugin should fail on errors. -->
     <revapi.failBuildOnProblemsFound>true</revapi.failBuildOnProblemsFound>
   </properties>
@@ -750,6 +753,7 @@
           <artifactId>revapi-maven-plugin</artifactId>
           <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
           <configuration>
+            <skip>${revapi.skip}</skip>
             <convertAnalysisConfigurationFiles>true</convertAnalysisConfigurationFiles>
             <analysisConfigurationFiles>
               <configurationFile>
