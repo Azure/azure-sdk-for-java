@@ -20,7 +20,7 @@ jobs:
                 - '!sdk/**/test-recordings'
                 - '!sdk/**/session-records'
 
-      - template: /eng/pipelines/steps/install-reporting-tools.yml
+      - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
       - task: UsePythonVersion@0
         displayName: 'Use Python 3.6'
