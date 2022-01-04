@@ -6,7 +6,7 @@
 
 #### Dependency Updates
 
-- Updated `api-version` of authentication to `2020-08-01`
+- Updated `api-version` of authentication to `2020-08-01-preview`
 
 ## 2.10.0 (2021-11-22)
 
