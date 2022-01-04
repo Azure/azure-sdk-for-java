@@ -38,7 +38,6 @@ client-side-validations: true
 context-client-method-parameter: true
 required-fields-as-ctor-args: true
 v3: true
-low-level-client: true
 
 #add-credentials: false
 #credential-types: tokencredential

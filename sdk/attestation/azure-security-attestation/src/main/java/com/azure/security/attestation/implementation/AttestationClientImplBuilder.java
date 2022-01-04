@@ -4,10 +4,14 @@
 
 package com.azure.security.attestation.implementation;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
+import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -15,24 +19,28 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /** A builder for creating a new instance of the AttestationClient type. */
 @ServiceClientBuilder(serviceClients = {AttestationClientImpl.class})
 public final class AttestationClientImplBuilder {
-    private static final String SDK_NAME = "name";
+    @Generated private static final String SDK_NAME = "name";
 
-    private static final String SDK_VERSION = "version";
+    @Generated private static final String SDK_VERSION = "version";
 
-    private final Map<String, String> properties = new HashMap<>();
+    @Generated private final Map<String, String> properties = new HashMap<>();
 
     /** Create an instance of the AttestationClientImplBuilder. */
+    @Generated
     public AttestationClientImplBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
@@ -41,7 +49,7 @@ public final class AttestationClientImplBuilder {
      * The attestation instance base URI, for example
      * https://mytenant.attest.azure.net.
      */
-    private String instanceUrl;
+    @Generated private String instanceUrl;
 
     /**
      * Sets The attestation instance base URI, for example https://mytenant.attest.azure.net.
@@ -49,6 +57,7 @@ public final class AttestationClientImplBuilder {
      * @param instanceUrl the instanceUrl value.
      * @return the AttestationClientImplBuilder.
      */
+    @Generated
     public AttestationClientImplBuilder instanceUrl(String instanceUrl) {
         this.instanceUrl = instanceUrl;
         return this;
@@ -57,7 +66,7 @@ public final class AttestationClientImplBuilder {
     /*
      * Api Version
      */
-    private String apiVersion;
+    @Generated private String apiVersion;
 
     /**
      * Sets Api Version.
@@ -65,6 +74,7 @@ public final class AttestationClientImplBuilder {
      * @param apiVersion the apiVersion value.
      * @return the AttestationClientImplBuilder.
      */
+    @Generated
     public AttestationClientImplBuilder apiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
         return this;
@@ -73,7 +83,7 @@ public final class AttestationClientImplBuilder {
     /*
      * The HTTP pipeline to send requests through
      */
-    private HttpPipeline pipeline;
+    @Generated private HttpPipeline pipeline;
 
     /**
      * Sets The HTTP pipeline to send requests through.
@@ -81,6 +91,7 @@ public final class AttestationClientImplBuilder {
      * @param pipeline the pipeline value.
      * @return the AttestationClientImplBuilder.
      */
+    @Generated
     public AttestationClientImplBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
@@ -89,7 +100,7 @@ public final class AttestationClientImplBuilder {
     /*
      * The serializer to serialize an object into a string
      */
-    private SerializerAdapter serializerAdapter;
+    @Generated private SerializerAdapter serializerAdapter;
 
     /**
      * Sets The serializer to serialize an object into a string.
@@ -97,6 +108,7 @@ public final class AttestationClientImplBuilder {
      * @param serializerAdapter the serializerAdapter value.
      * @return the AttestationClientImplBuilder.
      */
+    @Generated
     public AttestationClientImplBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
         this.serializerAdapter = serializerAdapter;
         return this;
@@ -105,7 +117,7 @@ public final class AttestationClientImplBuilder {
     /*
      * The HTTP client used to send the request.
      */
-    private HttpClient httpClient;
+    @Generated private HttpClient httpClient;
 
     /**
      * Sets The HTTP client used to send the request.
@@ -113,6 +125,7 @@ public final class AttestationClientImplBuilder {
      * @param httpClient the httpClient value.
      * @return the AttestationClientImplBuilder.
      */
+    @Generated
     public AttestationClientImplBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
@@ -122,7 +135,7 @@ public final class AttestationClientImplBuilder {
      * The configuration store that is used during construction of the service
      * client.
      */
-    private Configuration configuration;
+    @Generated private Configuration configuration;
 
     /**
      * Sets The configuration store that is used during construction of the service client.
@@ -130,6 +143,7 @@ public final class AttestationClientImplBuilder {
      * @param configuration the configuration value.
      * @return the AttestationClientImplBuilder.
      */
+    @Generated
     public AttestationClientImplBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
@@ -138,7 +152,7 @@ public final class AttestationClientImplBuilder {
     /*
      * The logging configuration for HTTP requests and responses.
      */
-    private HttpLogOptions httpLogOptions;
+    @Generated private HttpLogOptions httpLogOptions;
 
     /**
      * Sets The logging configuration for HTTP requests and responses.
@@ -146,6 +160,7 @@ public final class AttestationClientImplBuilder {
      * @param httpLogOptions the httpLogOptions value.
      * @return the AttestationClientImplBuilder.
      */
+    @Generated
     public AttestationClientImplBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
         return this;
@@ -155,7 +170,7 @@ public final class AttestationClientImplBuilder {
      * The retry policy that will attempt to retry failed requests, if
      * applicable.
      */
-    private RetryPolicy retryPolicy;
+    @Generated private RetryPolicy retryPolicy;
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
@@ -163,6 +178,7 @@ public final class AttestationClientImplBuilder {
      * @param retryPolicy the retryPolicy value.
      * @return the AttestationClientImplBuilder.
      */
+    @Generated
     public AttestationClientImplBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
@@ -171,7 +187,25 @@ public final class AttestationClientImplBuilder {
     /*
      * The list of Http pipeline policies to add.
      */
-    private final List<HttpPipelinePolicy> pipelinePolicies;
+    @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
+
+    /*
+     * The client options such as application ID and custom headers to set on a
+     * request.
+     */
+    @Generated private ClientOptions clientOptions;
+
+    /**
+     * Sets The client options such as application ID and custom headers to set on a request.
+     *
+     * @param clientOptions the clientOptions value.
+     * @return the AttestationClientImplBuilder.
+     */
+    @Generated
+    public AttestationClientImplBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
+        return this;
+    }
 
     /**
      * Adds a custom Http pipeline policy.
@@ -179,6 +213,7 @@ public final class AttestationClientImplBuilder {
      * @param customPolicy The custom Http pipeline policy to add.
      * @return the AttestationClientImplBuilder.
      */
+    @Generated
     public AttestationClientImplBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         pipelinePolicies.add(customPolicy);
         return this;
@@ -189,6 +224,7 @@ public final class AttestationClientImplBuilder {
      *
      * @return an instance of AttestationClientImpl.
      */
+    @Generated
     public AttestationClientImpl buildClient() {
         if (apiVersion == null) {
             this.apiVersion = "2020-10-01";
@@ -203,27 +239,44 @@ public final class AttestationClientImplBuilder {
         return client;
     }
 
+    @Generated
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration =
                 (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         if (httpLogOptions == null) {
             httpLogOptions = new HttpLogOptions();
         }
+        if (clientOptions == null) {
+            clientOptions = new ClientOptions();
+        }
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-        policies.add(
-                new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, buildConfiguration));
+        String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
+        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
+        HttpHeaders headers = new HttpHeaders();
+        clientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
+        if (headers.getSize() > 0) {
+            policies.add(new AddHeadersPolicy(headers));
+        }
+        policies.addAll(
+                this.pipelinePolicies.stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                        .collect(Collectors.toList()));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
         policies.add(new CookiePolicy());
-        policies.addAll(this.pipelinePolicies);
+        policies.addAll(
+                this.pipelinePolicies.stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                        .collect(Collectors.toList()));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
         HttpPipeline httpPipeline =
                 new HttpPipelineBuilder()
                         .policies(policies.toArray(new HttpPipelinePolicy[0]))
                         .httpClient(httpClient)
+                        .clientOptions(clientOptions)
                         .build();
         return httpPipeline;
     }
