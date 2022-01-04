@@ -52,7 +52,7 @@
     <codesnippet.skip>false</codesnippet.skip>
     <javadocDoclet></javadocDoclet>
     <javadocDocletOptions></javadocDocletOptions>
-    <checkstyle.excludes>**\/(generated-test-sources|generatedtestsources)\/**\/*.java</checkstyle.excludes>
+    <checkstyle.excludes>**/generatedtestsources/**/*.java</checkstyle.excludes>
   </properties>
 
   <developers>

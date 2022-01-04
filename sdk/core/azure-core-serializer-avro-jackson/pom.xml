@@ -49,7 +49,7 @@
       --add-exports com.azure.core.serializer.avro.jackson/com.azure.core.serializer.avro.jackson.generatedtestsources=com.fasterxml.jackson.databind
       --add-opens com.azure.core.serializer.avro.jackson/com.azure.core.serializer.avro.jackson=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <checkstyle.excludes>**\/(generated-test-sources|generatedtestsources)\/**\/*.java</checkstyle.excludes>
+    <checkstyle.excludes>**/generatedtestsources/**/*.java</checkstyle.excludes>
   </properties>
 
   <developers>

@@ -58,7 +58,7 @@ Licensed under the MIT License.
     <javadocDocletOptions></javadocDocletOptions>
 
     <!-- Prevents Checkstyle validating implementation files. -->
-    <checkstyle.excludes>**\/implementation\/**\/*.java</checkstyle.excludes>
+    <checkstyle.excludes>**/implementation/**/*.java</checkstyle.excludes>
 
     <!-- Prevents Checkstyle validating test source files. -->
     <checkstyle.includeTestSourceDirectory>false</checkstyle.includeTestSourceDirectory>
