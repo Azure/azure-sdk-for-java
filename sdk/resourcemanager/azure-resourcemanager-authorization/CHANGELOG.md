@@ -2,15 +2,9 @@
 
 ## 2.11.0-beta.1 (Unreleased)
 
-### Features Added
+#### Dependency Updates
 
-### Breaking Changes
-
-- Removed `JsonFlatten` annotation in `RoleAssignmentCreateParameters`
-
-### Bugs Fixed
-
-### Other Changes
+- Updated core dependency from resources
 
 ## 2.10.0 (2021-11-22)
 
