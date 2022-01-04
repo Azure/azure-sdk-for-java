@@ -299,7 +299,6 @@ def main():
     parser.add_argument('--set-pipeline-variable', type=str)
     parser.add_argument('--set-skip-linting-projects', type=str)
     args = parser.parse_args()
-    args.project_list = 'com.azure:azure-core'
     if args.project_list == None:
         raise ValueError('Missing project list.')
     start_time = time.time()
