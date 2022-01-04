@@ -1,9 +1,9 @@
-resources:
-  repositories:
-    - repository: azure-sdk-build-tools
-      type: git
-      name: internal/azure-sdk-build-tools
-      ref: refs/tags/azure-sdk-build-tools_20211019.1
+#resources:
+#  repositories:
+#    - repository: azure-sdk-build-tools
+#      type: git
+#      name: internal/azure-sdk-build-tools
+#      ref: refs/tags/azure-sdk-build-tools_20211019.1
 
 parameters:
   - name: Artifacts
@@ -64,33 +64,33 @@ stages:
   - stage: Build
     jobs:
       - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
-        parameters:
-          ServiceDirectory: ${{ parameters.ServiceDirectory }}
-          ${{ if eq(parameters.ServiceDirectory, 'template') }}:
-            TestPipeline: true
-          SDKType: ${{ parameters.SDKType }}
-          Artifacts: ${{ parameters.Artifacts }}
-          AdditionalModules: ${{ parameters.AdditionalModules }}
-          SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
-          MatrixConfigs:
-            - ${{ each config in parameters.MatrixConfigs }}:
-                - ${{ config }}
-            - ${{ each config in parameters.AdditionalMatrixConfigs }}:
-                - ${{ config }}
-          MatrixFilters:
-            - ${{ each filter in parameters.MatrixFilters }}:
-                - ${{ filter }}
-            # Skip TestFromSource jobs for SDKType data
-            - ${{ if eq(parameters.SDKType, 'data') }}:
-                - TestFromSource=^(?!true).*
-          MatrixReplace:
-            - ${{ each replacement in parameters.MatrixReplace }}:
-                - ${{ replacement }}
-            - ${{ if eq(parameters.SDKType, 'data') }}:
-                - TestGoals=.*/verify
-                - TestOptions=.*/-am
-            - AZURE_TEST.*=.*/
-          PreBuildSteps: ${{ parameters.PreBuildSteps }}
+#        parameters:
+#          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+#          ${{ if eq(parameters.ServiceDirectory, 'template') }}:
+#            TestPipeline: true
+#          SDKType: ${{ parameters.SDKType }}
+#          Artifacts: ${{ parameters.Artifacts }}
+#          AdditionalModules: ${{ parameters.AdditionalModules }}
+#          SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
+#          MatrixConfigs:
+#            - ${{ each config in parameters.MatrixConfigs }}:
+#                - ${{ config }}
+#            - ${{ each config in parameters.AdditionalMatrixConfigs }}:
+#                - ${{ config }}
+#          MatrixFilters:
+#            - ${{ each filter in parameters.MatrixFilters }}:
+#                - ${{ filter }}
+#            # Skip TestFromSource jobs for SDKType data
+#            - ${{ if eq(parameters.SDKType, 'data') }}:
+#                - TestFromSource=^(?!true).*
+#          MatrixReplace:
+#            - ${{ each replacement in parameters.MatrixReplace }}:
+#                - ${{ replacement }}
+#            - ${{ if eq(parameters.SDKType, 'data') }}:
+#                - TestGoals=.*/verify
+#                - TestOptions=.*/-am
+#            - AZURE_TEST.*=.*/
+#          PreBuildSteps: ${{ parameters.PreBuildSteps }}
 
   - stage: TestNewSpringBootVersion
     jobs:
@@ -282,15 +282,15 @@ stages:
             displayName: '${{parameters.LastSpringBootVersion}}_dependencyTree_output'
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
-  - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
-      - template: archetype-java-release.yml
-        parameters:
-          DependsOn:
-            - Build
-          ServiceDirectory: ${{ parameters.ServiceDirectory }}
-          SDKType: ${{ parameters.SDKType }}
-          Artifacts: ${{ parameters.Artifacts }}
-          ${{ if eq(parameters.ServiceDirectory, 'template') }}:
-            TestPipeline: true
-          ArtifactName: packages
-          TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
+#  - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
+#      - template: archetype-java-release.yml
+#        parameters:
+#          DependsOn:
+#            - Build
+#          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+#          SDKType: ${{ parameters.SDKType }}
+#          Artifacts: ${{ parameters.Artifacts }}
+#          ${{ if eq(parameters.ServiceDirectory, 'template') }}:
+#            TestPipeline: true
+#          ArtifactName: packages
+#          TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
