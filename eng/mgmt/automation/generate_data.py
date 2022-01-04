@@ -45,7 +45,7 @@ def sdk_automation(config: dict) -> List[dict]:
             credential_scopes = 'https://{0}.azure.com/.default'.format(service)
 
             succeeded = generate(sdk_root, input_file,
-                                 service, module, credential_types, credential_scopes,
+                                 service, module, credential_types, credential_scopes, '',
                                  AUTOREST_CORE_VERSION, AUTOREST_JAVA, '')
 
             generated_folder = 'sdk/{0}/{1}'.format(service, module)
