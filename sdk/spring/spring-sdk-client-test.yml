@@ -117,6 +117,7 @@ jobs:
           AdditionalModules: ${{ parameters.AdditionalModules }}
           JobType: 'maven_dependency'
           SDKType: ${{parameters.SDKType}}
+          ServiceDirectory: ${{parameters.ServiceDirectory}}
       - task: PythonScript@0
         displayName: 'Generate directories variable for sparse checkout'
         inputs:
