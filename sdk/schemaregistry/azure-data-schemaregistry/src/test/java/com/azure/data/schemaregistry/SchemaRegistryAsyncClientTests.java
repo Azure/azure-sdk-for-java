@@ -318,8 +318,31 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
             .credential(tokenCredential)
             .httpClient(interceptorManager.getPlaybackClient())
             .buildAsyncClient();
-
         final String schemaId = "f45b841fcb88401e961ca45477906be9";
+
+        // Act & Assert
+        StepVerifier.create(client.getSchema(schemaId))
+            .assertNext(schema -> {
+                assertNotNull(schema.getProperties());
+                assertEquals(schemaId, schema.getProperties().getId());
+                assertEquals(SchemaFormat.AVRO, schema.getProperties().getFormat());
+            })
+            .verifyComplete();
+    }
+
+    /**
+     * Verifies that the new serializer works with 1.0.0 schema registry client.
+     * https://search.maven.org/artifact/com.azure/azure-data-schemaregistry/1.0.0/
+     */
+    @Test
+    public void getSchemaBackCompatibility() {
+        // Arrange
+        final SchemaRegistryAsyncClient client = new SchemaRegistryClientBuilder()
+            .fullyQualifiedNamespace(endpoint)
+            .credential(tokenCredential)
+            .httpClient(interceptorManager.getPlaybackClient())
+            .buildAsyncClient();
+        final String schemaId = "e5691f79e3964309ac712ec52abcccca";
 
         // Act & Assert
         StepVerifier.create(client.getSchema(schemaId))
