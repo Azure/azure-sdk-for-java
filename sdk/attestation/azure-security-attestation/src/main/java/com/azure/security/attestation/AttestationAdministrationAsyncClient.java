@@ -986,8 +986,8 @@ public final class AttestationAdministrationAsyncClient {
         if (this.cachedSigners.get() != null) {
             return Mono.just(this.cachedSigners.get());
         } else {
-            return this.signingCertificatesImpl.getAsync()
-                .map(AttestationSignerImpl::attestationSignersFromJwks)
+            return withContext(context -> this.signingCertificatesImpl.getWithResponseAsync(context)
+                .map(response -> AttestationSignerImpl.attestationSignersFromJwks(response.getValue())))
                 .map(signers -> {
                     this.cachedSigners.compareAndSet(null, signers);
                     return this.cachedSigners.get();

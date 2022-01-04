@@ -285,32 +285,6 @@ public final class AttestationClient {
     }
 
     /**
-     * Attest an OpenEnclave report.
-     *
-     * <p>This method is a convenience method which attests evidence from an OpenEnclave enclave
-     * with no {@code RuntimeData} or {@code InitTimeData}.</p>
-     * <p>The {@code report} is generated via the <a href='https://openenclave.github.io/openenclave/api/enclave_8h_aefcb89c91a9078d595e255bd7901ac71.html'>{@code }oe_get_report}</a>.</p>
-     * It returns an {@link AttestationResult} containing the claims emitted by the attestation service.
-     * <!-- src_embed com.azure.security.attestation.AttestationClient.attestOpenEnclaveWithResponseWithReport -->
-     * <pre>
-     * Response&lt;AttestationResult&gt; responseWithReport = client.attestOpenEnclaveWithResponse&#40;openEnclaveReport, Context.NONE&#41;;
-     * </pre>
-     * <!-- end com.azure.security.attestation.AttestationClient.attestOpenEnclaveWithResponseWithReport -->
-     *
-     * @param report OpenEnclave generated report.
-     * @param context Context for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of an attestation operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AttestationResult> attestOpenEnclaveWithResponse(
-        BinaryData report, Context context) {
-        return asyncClient.attestOpenEnclaveWithResponse(new AttestationOptions(report), context).block();
-    }
-
-    /**
      * Attest an OpenEnclave report, specifying RunTimeData and InitTimeData.
      *
      * The {@link AttestationOptions} parameter allows the caller to specify the OpenEnclave {@code report} which
@@ -397,32 +371,6 @@ public final class AttestationClient {
     public AttestationResult attestSgxEnclave(BinaryData quote) {
         return asyncClient.attestSgxEnclave(quote).block();
     }
-
-    /**
-     * Attest an SGX Enclave Quote.
-     *
-     * <p>This method is a convenience method which attests evidence from an OpenEnclave enclave
-     * with no {@code RuntimeData} or {@code InitTimeData}.</p>
-     * <p>The {@code report} is generated via the <a href='https://openenclave.github.io/openenclave/api/enclave_8h_aefcb89c91a9078d595e255bd7901ac71.html'>{@code }oe_get_report}</a>.</p>
-     * It returns an {@link AttestationResult} containing the claims emitted by the attestation service.
-     * <!-- src_embed com.azure.security.attestation.AttestationClient.attestSgxEnclaveWithResponseWithReport -->
-     * <pre>
-     * Response&lt;AttestationResult&gt; responseWithReport = client.attestSgxEnclaveWithResponse&#40;sgxQuote, Context.NONE&#41;;
-     * </pre>
-     * <!-- end com.azure.security.attestation.AttestationClient.attestSgxEnclaveWithResponseWithReport -->
-     *
-     * @param quote Intel SGX Quote to validate.
-     * @param context Context for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of an attestation operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AttestationResult> attestSgxEnclaveWithResponse(BinaryData quote, Context context) {
-        return asyncClient.attestSgxEnclaveWithResponse(new AttestationOptions(quote), context).block();
-    }
-
 
     /**
      * Attest an SGX enclave quote, specifying RunTimeData and InitTimeData.
