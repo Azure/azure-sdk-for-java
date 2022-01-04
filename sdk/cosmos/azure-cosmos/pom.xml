@@ -56,6 +56,12 @@ Licensed under the MIT License.
     <codesnippet.skip>false</codesnippet.skip>
     <javadocDoclet></javadocDoclet>
     <javadocDocletOptions></javadocDocletOptions>
+
+    <!-- Prevents Checkstyle validating implementation files. -->
+    <checkstyle.excludes>**/implementation/**/*.java</checkstyle.excludes>
+
+    <!-- Prevents Checkstyle validating test source files. -->
+    <checkstyle.includeTestSourceDirectory>false</checkstyle.includeTestSourceDirectory>
   </properties>
 
   <dependencies>
