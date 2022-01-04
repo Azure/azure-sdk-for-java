@@ -28,7 +28,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.security.attestation.implementation.AttestationClientImplBuilder;
 import com.azure.security.attestation.implementation.AttestationClientImpl;
 import com.azure.security.attestation.models.AttestationTokenValidationOptions;
 
