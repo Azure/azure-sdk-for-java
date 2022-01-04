@@ -153,6 +153,12 @@
     <checkstyle.failOnViolation>true</checkstyle.failOnViolation>
     <checkstyle.failsOnError>true</checkstyle.failsOnError>
 
+    <!-- This property configures a regex of source files to exclude from Checkstyle. -->
+    <checkstyle.excludes></checkstyle.excludes>
+
+    <!-- This property configures whether test source files are included in Checkstyle. Default is true. -->
+    <checkstyle.includeTestSourceDirectory>true</checkstyle.includeTestSourceDirectory>
+
     <!-- The following properties configure the spotbugs-maven-plugin. -->
     <!-- This property configures whether the spotbugs-maven-plugin should be used. -->
     <spotbugs.skip>false</spotbugs.skip>
@@ -550,10 +556,11 @@
             <configLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
             <suppressionsLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
             <headerLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
+            <excludes>${checkstyle.excludes}</excludes>
             <propertyExpansion>samedir=</propertyExpansion>
             <encoding>UTF-8</encoding>
             <consoleOutput>true</consoleOutput>
-            <includeTestSourceDirectory>true</includeTestSourceDirectory>
+            <includeTestSourceDirectory>${checkstyle.includeTestSourceDirectory}</includeTestSourceDirectory>
             <linkXRef>true</linkXRef>
             <failsOnError>${checkstyle.failsOnError}</failsOnError>
             <failOnViolation>${checkstyle.failOnViolation}</failOnViolation>
