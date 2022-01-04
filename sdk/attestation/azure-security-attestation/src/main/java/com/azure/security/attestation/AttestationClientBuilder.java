@@ -26,6 +26,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.security.attestation.implementation.AttestationClientImplBuilder;
 import com.azure.security.attestation.implementation.AttestationClientImpl;
@@ -338,7 +339,7 @@ public final class AttestationClientBuilder {
      */
     private AttestationClientImpl buildInnerClient() {
 
-        AttestationClientImplBuilder clientImplBuilder = new AttestationClientImplBuilder();
+//        AttestationClientImplBuilder clientImplBuilder = new AttestationClientImplBuilder();
         // Global Env configuration store
         Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration()
@@ -350,14 +351,13 @@ public final class AttestationClientBuilder {
             : AttestationServiceVersion.getLatest();
 
         // endpoint cannot be null, which is required in request authentication
+        String endpoint = this.endpoint;
         Objects.requireNonNull(endpoint, "'Endpoint' is required and can not be null.");
 
         // If the customer provided a pipeline, use it, otherwise configure the pipeline based on the options
         // which were provided.
-        if (this.pipeline != null) {
-            clientImplBuilder.pipeline(this.pipeline);
-        } else {
-
+        HttpPipeline pipeline = this.pipeline;
+        if (pipeline == null) {
             // Closest to API goes first, closest to wire goes last.
             final List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(
@@ -390,18 +390,17 @@ public final class AttestationClientBuilder {
             policies.add(new HttpLoggingPolicy(httpLogOptions));
 
             // customized pipeline
-            HttpPipeline pipeline = new HttpPipelineBuilder()
+            pipeline = new HttpPipelineBuilder()
                 .policies(policies.toArray(new HttpPipelinePolicy[0]))
                 .httpClient(httpClient)
                 .build();
-            clientImplBuilder.pipeline((pipeline));
         }
 
-        return clientImplBuilder
-            .configuration(this.configuration)
-            .apiVersion(version.getVersion())
-            .instanceUrl(this.endpoint)
-            .serializerAdapter(this.serializerAdapter)
-            .buildClient();
+        SerializerAdapter serializerAdapter = this.serializerAdapter;
+        if (serializerAdapter == null) {
+            serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
+        }
+
+        return new AttestationClientImpl(pipeline, serializerAdapter, endpoint, version.getVersion());
     }
 }

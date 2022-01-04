@@ -38,6 +38,7 @@ client-side-validations: true
 context-client-method-parameter: true
 required-fields-as-ctor-args: true
 v3: true
+disable-client-builder: true
 
 #add-credentials: false
 #credential-types: tokencredential
