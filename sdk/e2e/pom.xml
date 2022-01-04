@@ -19,6 +19,12 @@
     <relativePath>../parents/azure-client-sdk-parent</relativePath>
   </parent>
 
+  <properties>
+    <relative.path.to.eng.folder>../..</relative.path.to.eng.folder>
+    <checkstyle.skip>true</checkstyle.skip>
+    <spotbugs.skip>true</spotbugs.skip>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>

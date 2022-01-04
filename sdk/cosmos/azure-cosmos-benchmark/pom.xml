@@ -35,6 +35,8 @@ Licensed under the MIT License.
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.min.linecoverage>0.01</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.01</jacoco.min.branchcoverage>
+    <checkstyle.skip>true</checkstyle.skip>
+    <spotbugs.skip>true</spotbugs.skip>
     <jacoco.skip>true</jacoco.skip>
     <codesnippet.skip>false</codesnippet.skip>
     <javadocDoclet></javadocDoclet>
