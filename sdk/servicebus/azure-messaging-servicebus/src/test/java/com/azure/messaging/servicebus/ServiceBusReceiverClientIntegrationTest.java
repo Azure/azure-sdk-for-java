@@ -208,6 +208,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
                 t.join(TIMEOUT.toMillis());
             } catch (InterruptedException e) {
                 fail("Error in receiving messages: " + e.getMessage());
+                t.stop();
             }
         });
         assertTrue(totalReceivedMessages.get() >= totalReceiver);
