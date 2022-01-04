@@ -25,6 +25,7 @@ import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
 
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -55,9 +56,7 @@ class AmqpChannelProcessorTest {
     @BeforeEach
     void setup() {
         mocksCloseable = MockitoAnnotations.openMocks(this);
-
-        channelProcessor = new AmqpChannelProcessor<>("namespace-test", "test-path", "connection-test",
-            TestObject::getStates, retryPolicy);
+        channelProcessor = new AmqpChannelProcessor<>("namespace-test", TestObject::getStates, retryPolicy, new HashMap<>());
     }
 
     @AfterEach

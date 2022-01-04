@@ -125,9 +125,10 @@ public class ThrowFromClientLoggerCheck extends AbstractCheck {
         }
     }
 
-    /**
-      * 
-    **/
+    /*
+     * Checks if the expression includes call to log(), which verifies logging builder call 
+     * e.g. logger.atError().log(ex)
+     */
     private static boolean findLogMethodIdentifier(DetailAST root) {
         for (DetailAST ast = root.getFirstChild(); ast != null; ast = ast.getNextSibling()) {
             if (ast.getType() == TokenTypes.METHOD_CALL) {

@@ -27,8 +27,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 import java.util.function.Function;
 
-import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
-import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.INTERVAL_KEY;
 
 public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>, CoreSubscriber<T>, Disposable {
@@ -71,16 +69,11 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
         this.errorContext = new AmqpErrorContext(fullyQualifiedNamespace);
     }
 
-
-    public AmqpChannelProcessor(String fullyQualifiedNamespace, String entityPath, String connectionId,
-                                Function<T, Flux<AmqpEndpointState>> endpointStatesFunction, AmqpRetryPolicy retryPolicy) {
+    public AmqpChannelProcessor(String fullyQualifiedNamespace, Function<T, Flux<AmqpEndpointState>> endpointStatesFunction, AmqpRetryPolicy retryPolicy, Map<String, Object> loggingContext) {
         this.endpointStatesFunction = Objects.requireNonNull(endpointStatesFunction,
             "'endpointStates' cannot be null.");
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
-
-        Map<String, Object> loggingContext = createContextWithConnectionId(connectionId);
-        loggingContext.put(ENTITY_PATH_KEY, Objects.requireNonNull(entityPath, "'entityPath' cannot be null."));
-        this.logger = new ClientLogger(AmqpChannelProcessor.class, loggingContext);
+        this.logger = new ClientLogger(AmqpChannelProcessor.class, Objects.requireNonNull(loggingContext, "'loggingContext' cannot be null."));
 
         this.errorContext = new AmqpErrorContext(fullyQualifiedNamespace);
     }

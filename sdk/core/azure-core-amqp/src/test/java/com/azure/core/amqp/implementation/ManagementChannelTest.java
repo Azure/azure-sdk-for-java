@@ -95,7 +95,7 @@ public class ManagementChannelTest {
 
         final AmqpChannelProcessor<RequestResponseChannel> requestResponseMono =
             Mono.defer(() -> Mono.just(requestResponseChannel)).subscribeWith(new AmqpChannelProcessor<>(
-                "foo", "bar", "baz", RequestResponseChannel::getEndpointStates, retryPolicy));
+                "foo", RequestResponseChannel::getEndpointStates, retryPolicy, new HashMap<>()));
 
         when(tokenManager.authorize()).thenReturn(Mono.just(1000L));
         when(tokenManager.getAuthorizationResults()).thenReturn(tokenProviderResults.flux());
