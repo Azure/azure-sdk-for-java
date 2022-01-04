@@ -19,7 +19,7 @@ import java.net.HttpURLConnection;
 public final class AzureMonitorRedirectPolicy implements HttpPipelinePolicy {
 
     private static final int PERMANENT_REDIRECT_STATUS_CODE = 308;
-    private static final int TEMPORARY_REDIRECT_STATUS_CODE = 308;
+    private static final int TEMPORARY_REDIRECT_STATUS_CODE = 307;
     // Based on Stamp specific redirects design doc
     private static final int MAX_REDIRECT_RETRIES = 10;
     private final ClientLogger logger = new ClientLogger(AzureMonitorRedirectPolicy.class);
