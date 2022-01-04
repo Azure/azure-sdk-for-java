@@ -26,8 +26,9 @@ from typing import Dict, Iterable, List, Set
 import xml.etree.ElementTree as ET
 
 class Project:
-    def __init__(self, identifier: str, module_path: str, parent_pom: str):
+    def __init__(self, identifier: str, directory_path: str, module_path: str, parent_pom: str):
         self.identifier = identifier
+        self.directory_path = directory_path
         self.module_path = module_path
         self.parent_pom = parent_pom
         self.dependencies: List[str] = []
@@ -41,7 +42,7 @@ class Project:
         if dependent not in self.dependents:
             self.dependents.append(dependent)
 
-default_project = Project(None, None, None)
+default_project = Project(None, None, None, None)
 
 # azure-client-sdk-parent, azure-perf-test-parent, spring-boot-starter-parent, and azure-spring-boot-test-parent are
 # valid parent POMs for Track 2 libraries.
@@ -108,8 +109,7 @@ def create_from_source_pom(project_list: str, set_pipeline_variable: str, set_sk
     add_source_projects(source_projects, dependent_modules, projects)
     add_source_projects(source_projects, dependency_modules, projects)
     
-    modules = sorted([p.module_path for p in source_projects])
-    modules = list(set(modules))
+    modules = list(set(sorted([p.module_path for p in source_projects])))
     with open(file=client_from_source_pom_path, mode='w') as fromSourcePom:
         fromSourcePom.write(pom_file_start)
 
@@ -119,7 +119,8 @@ def create_from_source_pom(project_list: str, set_pipeline_variable: str, set_sk
         fromSourcePom.write(pom_file_end)
 
     if set_pipeline_variable:
-        print('##vso[task.setvariable variable={};]{}'.format(set_pipeline_variable, json.dumps(modules)))
+        checkout_paths = list(set(sorted([p.directory_path for p in source_projects])))
+        print('##vso[task.setvariable variable={};]{}'.format(set_pipeline_variable, json.dumps(checkout_paths)))
 
     # Sets the DevOps variable that is used to skip certain projects during linting validation.
     if set_skip_linting_projects:
@@ -185,18 +186,19 @@ def create_project_for_pom(pom_path: str, project_list_identifiers: list, artifa
     tree_root = tree.getroot()
 
     project_identifier = create_artifact_identifier(tree_root)
-    module_path = os.path.dirname(pom_path).replace(root_path, '').replace('\\', '/')
+    directory_path = pom_path.replace(root_path, '').replace('\\', '/')
+    module_path = directory_path.split(os.sep)[0]
     parent_pom = get_parent_pom(tree_root)
 
     # If this is one of the parent POMs, retain it as a project.
     if project_identifier in parent_pom_identifiers:
-        return Project(project_identifier, module_path, parent_pom)
+        return Project(project_identifier, directory_path, module_path, parent_pom)
 
     # If the project isn't a track 2 POM skip it and not one of the project list identifiers.
     if not project_identifier in project_list_identifiers and not parent_pom in valid_parents:
         return
 
-    project = Project(project_identifier, module_path, parent_pom)
+    project = Project(project_identifier, directory_path, module_path, parent_pom)
 
     dependencies = {child:parent for parent in tree_root.iter() for child in parent if child.tag == maven_xml_namespace + 'dependency'}
 
@@ -297,6 +299,7 @@ def main():
     parser.add_argument('--set-pipeline-variable', type=str)
     parser.add_argument('--set-skip-linting-projects', type=str)
     args = parser.parse_args()
+    args.project_list = 'com.azure:azure-core'
     if args.project_list == None:
         raise ValueError('Missing project list.')
     start_time = time.time()
