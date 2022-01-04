@@ -186,8 +186,8 @@ def create_project_for_pom(pom_path: str, project_list_identifiers: list, artifa
     tree_root = tree.getroot()
 
     project_identifier = create_artifact_identifier(tree_root)
-    directory_path = pom_path.replace(root_path, '').replace('\\', '/')
-    module_path = directory_path.split(os.sep)[0]
+    module_path = pom_path.replace(root_path, '').replace('\\', '/')
+    directory_path = module_path.split('/')[0]
     parent_pom = get_parent_pom(tree_root)
 
     # If this is one of the parent POMs, retain it as a project.
