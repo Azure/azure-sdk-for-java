@@ -109,6 +109,7 @@ def create_from_source_pom(project_list: str, set_pipeline_variable: str, set_sk
     add_source_projects(source_projects, dependency_modules, projects)
     
     modules = sorted([p.module_path for p in source_projects])
+    modules = list(set(modules))
     with open(file=client_from_source_pom_path, mode='w') as fromSourcePom:
         fromSourcePom.write(pom_file_start)
 
@@ -127,7 +128,7 @@ def create_from_source_pom(project_list: str, set_pipeline_variable: str, set_sk
             if not project_uses_client_parent(projects.get(maven_identifier), projects):
                 skip_linting_projects.append('!' + maven_identifier)
 
-        print('##vso[task.setvariable variable={};]{}'.format(set_skip_linting_projects, ','.join(skip_linting_projects)))
+        print('##vso[task.setvariable variable={};]{}'.format(set_skip_linting_projects, ','.join(list(set(skip_linting_projects)))))
 
 
 # Function that loads and parses client_versions.txt into a artifact identifier - source version mapping.
