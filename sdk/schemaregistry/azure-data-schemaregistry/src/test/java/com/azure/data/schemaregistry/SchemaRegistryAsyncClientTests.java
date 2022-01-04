@@ -50,12 +50,11 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
 
     private String schemaGroup;
     private SchemaRegistryClientBuilder builder;
+    private TokenCredential tokenCredential;
+    private String endpoint;
 
     @Override
     protected void beforeTest() {
-        final String endpoint;
-        TokenCredential tokenCredential;
-
         if (interceptorManager.isPlaybackMode()) {
             tokenCredential = mock(TokenCredential.class);
             schemaGroup = PLAYBACK_TEST_GROUP;
@@ -307,12 +306,20 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
             .verify();
     }
 
-
+    /**
+     * This is run in playback mode because the GUID is unique for each schema. This is a schema that was previously
+     * registered in Azure Portal.
+     */
     @Test
     public void getSchemaByIdFromPortal() {
         // Arrange
-        final SchemaRegistryAsyncClient client = builder.buildAsyncClient();
-        final String schemaId = "6304f95e39ac42ab94259e0db9bd5e76";
+        final SchemaRegistryAsyncClient client = new SchemaRegistryClientBuilder()
+            .fullyQualifiedNamespace(endpoint)
+            .credential(tokenCredential)
+            .httpClient(interceptorManager.getPlaybackClient())
+            .buildAsyncClient();
+
+        final String schemaId = "f45b841fcb88401e961ca45477906be9";
 
         // Act & Assert
         StepVerifier.create(client.getSchema(schemaId))
@@ -322,8 +329,6 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
                 assertEquals(SchemaFormat.AVRO, schema.getProperties().getFormat());
             })
             .verifyComplete();
-
-        ;
     }
 
     static void assertSchemaRegistrySchema(SchemaRegistrySchema actual, String expectedSchemaId, SchemaFormat format,
