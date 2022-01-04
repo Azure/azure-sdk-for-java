@@ -19,12 +19,10 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Undefined;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
-import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
-import com.azure.cosmos.implementation.query.orderbyquery.OrderByRowResult;
-import com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer;
+import com.azure.cosmos.implementation.query.orderbyquery.*;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
@@ -279,47 +277,26 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
             SortOrder sortOrder = sortOrders[0];
             QueryItem orderByItem = orderByItems[0];
             Object rawItem = orderByItem.getItem();
-            String orderByItemToString;
-            if (rawItem instanceof String) {
-                orderByItemToString = "\"" + rawItem.toString().replaceAll("\"",
-                        "\\\"") + "\"";
+
+            this.appendToBuilders(left, target, right, "(");
+
+            String orderByItemToString = this.getOrderByItemString(rawItem);
+
+             // Handling undefined needs filter literals
+             // What we really want is to support expression > undefined,
+             // but the engine evaluates to undefined instead of true or false,
+             // so we work around this by using the IS_DEFINED() system function
+             // ComparisonWithUndefinedFilters is used to handle the logic mentioned above
+            ComparisonFilters filters =
+                rawItem == Undefined.value() ? new ComparisonWithUndefinedFilters(expression) : new ComparisonWithDefinedFilters(expression, orderByItemToString);
+
+            left.append(sortOrder == SortOrder.Descending ? filters.lessThan() : filters.greaterThan());
+            if (inclusive) {
+                target.append(sortOrder == SortOrder.Descending ? filters.lessThanOrEqualTo() : filters.greaterThanOrEqualTo());
             } else {
-                if (rawItem != null) {
-                    orderByItemToString = rawItem.toString();
-                } else {
-                    orderByItemToString = "null";
-                }
+                target.append(sortOrder == SortOrder.Descending ? filters.lessThan() : filters.greaterThan());
             }
-            if (rawItem == Undefined.value()) {
-                // Handling undefined needs filter literals
-                // What we really want is to support expression > undefined,
-                // but the engine evaluates to undefined instead of true or false,
-                // so we work around this by using the IS_DEFINED() system function.
-
-                left.append(sortOrder == SortOrder.Descending ? "false" : "IS_DEFINED(" + expression + ") ");
-                target.append(sortOrder == SortOrder.Descending ? "NOT IS_DEFINED(" + expression + ")" : "true ");
-                right.append(sortOrder == SortOrder.Descending ? "NOT IS_DEFINED(" + expression + ")" : "true ");
-
-            } else {
-
-                left.append(getFilterString(expression,
-                                            (sortOrder == SortOrder.Descending ? "<" : ">"),
-                                            orderByItemToString));
-
-                if (inclusive) {
-                    target.append(getFilterString(expression,
-                                                  (sortOrder == SortOrder.Descending ? "<=" : ">="),
-                                                  orderByItemToString));
-                } else {
-                    target.append(getFilterString(expression,
-                                                  (sortOrder == SortOrder.Descending ? "<" : ">"),
-                                                  orderByItemToString));
-                }
-
-                right.append(getFilterString(expression,
-                                             (sortOrder == SortOrder.Descending ? "<=" : ">="),
-                                             orderByItemToString));
-            }
+            right.append(sortOrder == SortOrder.Descending ? filters.lessThanOrEqualTo() : filters.greaterThanOrEqualTo());
 
             // Now we need to include all the types that match the sort order.
             List<String> definedFunctions =
@@ -336,18 +313,146 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
             target.append(isDefinedFunctions);
             right.append(isDefinedFunctions);
 
+            this.appendToBuilders(left, target, right, ")");
+
         } else {
-            // This code path needs to be implemented, but it's error prone and needs
-            // testing.
-            // You can port the implementation from the .net SDK and it should work if
-            // ported right.
-            throw new NotImplementedException(
-                    "Resuming a multi order by query from a continuation token is not supported yet.");
+            // For a multi order by query
+            // Suppose the query is SELECT* FROM c ORDER BY c.string ASC, c.number ASC
+            // And we left off on partition N with the value("A", 1)
+            // Then
+            //      All the partitions to the left will have finished reading("A", 1)
+            //      Partition N is still reading("A", 1)
+            //      All the partitions to the right have let to read a "(A", 1)
+            // The filters are harder to derive since there are multiple columns
+            // But the problem reduces to "How do you know one document comes after another in a multi order by query"
+            // The answer is to just look at it one column at a time.
+            // For this particular scenario:
+            //      If a first column is greater ex. ("B", blah), then the document comes later in the sort order
+            //      Therefore we want all documents where the first column is greater than "A" which means > "A"
+            //      Or if the first column is a tie, then you look at the second column ex. ("A", blah).
+            //      Therefore we also want all documents where the first column was a tie but the second column is greater which means = "A" AND > 1
+            //      Therefore the filters should be
+            //      (> "A") OR (= "A" AND > 1), (> "A") OR (= "A" AND >= 1), (> "A") OR (= "A" AND >= 1)
+            //      Notice that if we repeated the same logic we for single order by we would have gotten
+            //      > "A" AND > 1, >= "A" AND >= 1, >= "A" AND >= 1
+            //      which is wrong since we missed some documents
+            //      Repeat the same logic for ASC, DESC
+            //          (> "A") OR (= "A" AND < 1), (> "A") OR (= "A" AND <= 1), (> "A") OR (= "A" AND <= 1)
+            //      Again for DESC, ASC
+            //          (< "A") OR (= "A" AND > 1), (< "A") OR (= "A" AND >= 1), (< "A") OR (= "A" AND >= 1)
+            //      And again for DESC DESC
+            //          (< "A") OR (= "A" AND < 1), (< "A") OR (= "A" AND <= 1), (< "A") OR (= "A" AND <= 1)
+            //      The general we look at all prefixes of the order by columns to look for tie breakers.
+            //      Except for the full prefix whose last column follows the rules for single item order by
+            //      And then you just OR all the possibilities together
+
+            for (int prefixLength = 1; prefixLength <= numOrderByItems; prefixLength++) {
+                boolean lastPrefix = prefixLength == numOrderByItems;
+
+                this.appendToBuilders(left, target, right, "(");
+
+                for (int index = 0; index < prefixLength; index++) {
+                    String expression = expressions[index];
+                    SortOrder sortOrder = sortOrders[index];
+                    QueryItem orderbyItem = orderByItems[index];
+                    Object orderbyRawItem = orderbyItem.getItem();
+
+                    boolean lastItem = index == prefixLength - 1;
+
+                    this.appendToBuilders(left, target, right, "(");
+                    String orderByItemToString = getOrderByItemString(orderbyRawItem);
+                    ComparisonFilters filters =
+                        orderbyRawItem == Undefined.value() ? new ComparisonWithUndefinedFilters((expression)) : new ComparisonWithDefinedFilters(expression, orderByItemToString);
+
+                    if (lastItem) {
+                        if (lastPrefix) {
+                            left.append(sortOrder == SortOrder.Descending ? filters.lessThan() : filters.greaterThan());
+
+                            if (inclusive) {
+                                target.append(sortOrder == SortOrder.Descending ? filters.lessThanOrEqualTo() : filters.greaterThanOrEqualTo());
+                            } else {
+                                target.append(sortOrder == SortOrder.Descending ? filters.lessThan() : filters.greaterThan());
+                            }
+
+                            right.append(sortOrder == SortOrder.Descending ? filters.lessThanOrEqualTo() : filters.greaterThanOrEqualTo());
+                        } else {
+                            left.append(sortOrder == SortOrder.Descending ? filters.lessThan() : filters.greaterThan());
+                            target.append(sortOrder == SortOrder.Descending ? filters.lessThan() : filters.greaterThan());
+                            right.append(sortOrder == SortOrder.Descending ? filters.lessThan() : filters.greaterThan());
+                        }
+
+                    } else {
+                        left.append(filters.equalTo());
+                        target.append(filters.equalTo());
+                        right.append(filters.equalTo());
+                    }
+
+                    if (lastItem) {
+                        // Now we need to include all the types that match the sort order.
+                        List<String> definedFunctions =
+                            IsSystemFunctions.getIsDefinedFunctions(ItemTypeHelper.getOrderByItemType(orderbyRawItem),
+                                sortOrder == SortOrder.Ascending);
+                        StringBuilder isDefinedFuncBuilder = new StringBuilder();
+                        for (String idf : definedFunctions) {
+                            isDefinedFuncBuilder.append(" OR ");
+                            isDefinedFuncBuilder.append(String.format("%s(%s)", idf, expression));
+                        }
+
+                        String isDefinedFunctions = isDefinedFuncBuilder.toString();
+                        left.append(isDefinedFunctions);
+                        target.append(isDefinedFunctions);
+                        right.append(isDefinedFunctions);
+                    }
+
+                    this.appendToBuilders(left, target, right, ")");
+                    if (!lastItem) {
+                        this.appendToBuilders(left, target, right, " AND ");
+                    }
+                }
+
+                this.appendToBuilders(left, target, right, ")");
+                if (!lastPrefix) {
+                    this.appendToBuilders(left, target, right, " OR ");
+                }
+            }
         }
 
         return new FormattedFilterInfo(left.toString(),
                 target.toString(),
                 right.toString());
+    }
+
+    private String getOrderByItemString(Object orderbyRawItem) {
+        String orderByItemToString;
+        if (orderbyRawItem instanceof String) {
+            orderByItemToString = "\"" + orderbyRawItem.toString().replaceAll("\"",
+                "\\\"") + "\"";
+        } else {
+            if (orderbyRawItem != null) {
+                orderByItemToString = orderbyRawItem.toString();
+            } else {
+                orderByItemToString = "null";
+            }
+        }
+
+        return orderByItemToString;
+    }
+
+    private void appendToBuilders(StringBuilder leftBuilder, StringBuilder targetBuilder, StringBuilder rightBuilder, String appendText) {
+        this.appendToBuilders(leftBuilder, targetBuilder, rightBuilder, appendText, appendText, appendText);
+    }
+
+    private void appendToBuilders(
+        StringBuilder leftBuilder,
+        StringBuilder targetBuilder,
+        StringBuilder rightBuilder,
+        String leftAppendText,
+        String targetAppendText,
+        String rightAppendText) {
+
+        leftBuilder.append(leftAppendText);
+        targetBuilder.append(targetAppendText);
+        rightBuilder.append(rightAppendText);
     }
 
     static class IsSystemFunctions {
