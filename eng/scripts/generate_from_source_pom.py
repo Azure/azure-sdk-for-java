@@ -79,7 +79,7 @@ pom_file_end = '''  </modules>
 maven_xml_namespace = '{http://maven.apache.org/POM/4.0.0}'
 
 # Function that creates the aggregate POM.
-def create_from_source_pom(project_list: str, set_pipeline_variable: str):
+def create_from_source_pom(project_list: str, set_pipeline_variable: str, set_skip_linting_projects: str):
     project_list_identifiers = project_list.split(',')
 
     # Get the artifact identifiers from client_versions.txt to act as our source of truth.
@@ -101,14 +101,14 @@ def create_from_source_pom(project_list: str, set_pipeline_variable: str):
     for project_identifier in dependent_modules:
         dependency_modules = resolve_project_dependencies(project_identifier, dependency_modules, projects)
 
-    modules: Set[str] = set()
+    source_projects: Set[Project] = set()
 
-    # Finally map the project identifiers to relative module paths.
-    add_module_paths(modules, project_list_identifiers, projects)
-    add_module_paths(modules, dependent_modules, projects)
-    add_module_paths(modules, dependency_modules, projects)
-
-    modules = sorted(modules)
+    # Finally map the project identifiers to projects.
+    add_source_projects(source_projects, project_list_identifiers, projects)
+    add_source_projects(source_projects, dependent_modules, projects)
+    add_source_projects(source_projects, dependency_modules, projects)
+    
+    modules = sorted([p.module_path for p in source_projects])
     with open(file=client_from_source_pom_path, mode='w') as fromSourcePom:
         fromSourcePom.write(pom_file_start)
 
@@ -119,6 +119,16 @@ def create_from_source_pom(project_list: str, set_pipeline_variable: str):
 
     if set_pipeline_variable:
         print('##vso[task.setvariable variable={};]{}'.format(set_pipeline_variable, json.dumps(modules)))
+
+    # Sets the DevOps variable that is used to skip certain projects during linting validation.
+    if set_skip_linting_projects:
+        skip_linting_projects = []
+        for maven_identifier in sorted([p.identifier for p in source_projects]):
+            if not project_uses_client_parent(projects.get(maven_identifier), projects):
+                skip_linting_projects.append('!' + maven_identifier)
+
+        print('##vso[task.setvariable variable={};]{}'.format(set_skip_linting_projects, ','.join(skip_linting_projects)))
+
 
 # Function that loads and parses client_versions.txt into a artifact identifier - source version mapping.
 def load_client_artifact_identifiers() -> Dict[str, str]:
@@ -262,26 +272,34 @@ def get_dependency_version(element: ET.Element):
 def element_find(element: ET.Element, path: str):
     return element.find(maven_xml_namespace + path)
 
-def add_module_paths(module_paths: Set[str], project_identifiers: Iterable[str], projects: Dict[str, Project]):
+def add_source_projects(source_projects: Set[Project], project_identifiers: Iterable[str], projects: Dict[str, Project]):
     for project_identifier in project_identifiers:
         project = projects[project_identifier]
-        module_paths.add(project.module_path)
+        source_projects.add(project)
 
         while project.parent_pom is not None:
             project = projects.get(project.parent_pom, default_project)
             if project.module_path is not None:
-                module_paths.add(project.module_path)
+                source_projects.add(project)
+
+def project_uses_client_parent(project: Project, projects: Dict[str, Project]) -> bool:
+    while project.parent_pom is not None:
+        if project.parent_pom == 'com.azure:azure-client-sdk-parent':
+            return True
+        project = projects.get(project.parent_pom, default_project)
+    
+    return False
 
 def main():
     parser = argparse.ArgumentParser(description='Generated an aggregate POM for a From Source run.')
     parser.add_argument('--project-list', '--pl', type=str)
     parser.add_argument('--set-pipeline-variable', type=str)
+    parser.add_argument('--set-skip-linting-projects', type=str)
     args = parser.parse_args()
-    args.project_list = "com.azure:azure-core,com.azure:azure-core-amqp,com.azure:azure-core-amqp-experimental,com.azure:azure-core-experimental,com.azure:azure-core-http-jdk-httpclient,com.azure:azure-core-http-netty,com.azure:azure-core-http-okhttp,com.azure:azure-core-management,com.azure:azure-core-serializer-avro-apache,com.azure:azure-core-serializer-json-gson,com.azure:azure-core-serializer-json-jackson,com.azure:azure-core-test,com.azure:azure-core-tracing-opentelemetry,com.azure:perf-test-core"
     if args.project_list == None:
         raise ValueError('Missing project list.')
     start_time = time.time()
-    create_from_source_pom(args.project_list, args.set_pipeline_variable)
+    create_from_source_pom(args.project_list, args.set_pipeline_variable, args.set_skip_linting_projects)
     elapsed_time = time.time() - start_time
 
     print('Effective From Source POM File')

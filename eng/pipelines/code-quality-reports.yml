@@ -56,7 +56,7 @@ jobs:
         displayName: 'Generate directories variable for sparse checkout'
         inputs:
           scriptPath: 'eng/scripts/generate_from_source_pom.py'
-          arguments: '--set-pipeline-variable CheckoutDirectories --project-list $(ProjectList)'
+          arguments: '--set-pipeline-variable CheckoutDirectories --set-skip-linting-projects SkipLintingProject --project-list $(ProjectList)'
           workingDirectory: '$(System.DefaultWorkingDirectory)'
 
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
@@ -84,7 +84,7 @@ jobs:
           # Skip failing on Checkstyle and Spotbugs errors.
           # This is being done as the error reporting will be captured, so if any error reports exist the build can be
           # failed later allowing all libraries to be validated.
-          options: '$(DefaultOptions) -T 1C -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -pl "!com.azure:azure-sdk-from-source,!com.azure.spring:azure-spring-boot-test-parent,!com.azure.spring:azure-spring-cloud-test-parent"'
+          options: '$(DefaultOptions) -T 1C -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -pl "!com.azure:azure-sdk-from-source,$(SkipLintingProjects)"'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaBuildVersion)
