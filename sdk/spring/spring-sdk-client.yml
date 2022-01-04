@@ -63,7 +63,7 @@ parameters:
 stages:
   - stage: Build
     jobs:
-      - template: /eng/pipelines/templates/jobs/ci.yml
+      - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
         parameters:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           ${{ if eq(parameters.ServiceDirectory, 'template') }}:

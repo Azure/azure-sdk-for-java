@@ -56,6 +56,7 @@ trigger:
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus-core/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus/pom.xml
       - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
+      - sdk/spring/spring-cloud-azure-test-eventhubs-binder/pom.xml
 
 pr:
   branches:
@@ -113,6 +114,7 @@ pr:
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus-core/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus/pom.xml
       - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
+      - sdk/spring/spring-cloud-azure-test-eventhubs-binder/pom.xml
 
 extends:
   template: ../../sdk/spring/spring-sdk-client.yml
