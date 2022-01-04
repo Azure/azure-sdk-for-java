@@ -4,7 +4,7 @@
 
 #### Dependency Updates
 
-- Updated core dependency from resources
+- Updated `api-version` to `2020-08-01`
 
 ## 2.10.0 (2021-11-22)
 
