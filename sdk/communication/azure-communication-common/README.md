@@ -97,7 +97,9 @@ previous token approaches expiry. Using this method, your requests are less like
 
 ```java
 String token = System.getenv("COMMUNICATION_SERVICES_USER_TOKEN");
-CommunicationTokenRefreshOptions tokenRefreshOptions = new CommunicationTokenRefreshOptions(fetchTokenFromMyServerForUser, true, token);
+CommunicationTokenRefreshOptions tokenRefreshOptions = new CommunicationTokenRefreshOptions(fetchTokenFromMyServerForUser)
+    .setRefreshProactively(true)
+    .setInitialToken(token);
 CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(tokenRefreshOptions);     
 ```
 
@@ -109,7 +111,10 @@ The default value is 4.5 minutes to avoid MSAL compatibility issues.
 ```java
 String token = System.getenv("COMMUNICATION_SERVICES_USER_TOKEN");
 Duration refreshIntervalBeforeTokenExpiry = Duration.ofMinutes(5);
-CommunicationTokenRefreshOptions tokenRefreshOptions = new CommunicationTokenRefreshOptions(fetchTokenFromMyServerForUser, true, token, refreshIntervalBeforeTokenExpiry);
+CommunicationTokenRefreshOptions tokenRefreshOptions = new CommunicationTokenRefreshOptions(fetchTokenFromMyServerForUser)
+    .setRefreshProactively(true)
+    .setInitialToken(token)
+    .setRefreshIntervalBeforeTokenExpiry(refreshIntervalBeforeTokenExpiry);
 CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(tokenRefreshOptions);              
 ```
 

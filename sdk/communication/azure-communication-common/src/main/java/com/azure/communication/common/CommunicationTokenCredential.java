@@ -40,7 +40,8 @@ public final class CommunicationTokenCredential implements AutoCloseable {
      */
     public CommunicationTokenCredential(String token) {
         Objects.requireNonNull(token, "'token' cannot be null.");
-        CommunicationTokenRefreshOptions tokenRefreshOptions = new CommunicationTokenRefreshOptions(null, false, token);
+        CommunicationTokenRefreshOptions tokenRefreshOptions = new CommunicationTokenRefreshOptions(null)
+            .setInitialToken(token);
         refreshIntervalBeforeTokenExpiry = tokenRefreshOptions.getRefreshIntervalBeforeTokenExpiry();
         setToken(token);
     }
