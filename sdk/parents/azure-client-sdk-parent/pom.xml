@@ -775,10 +775,10 @@
             <analysisConfiguration>
               <revapi.reporter.json id="file-report">
                 <minSeverity>NON_BREAKING</minSeverity>
-                <!--<minCriticality>documented</minCriticality>--> <!-- This is a configuration available in revapi-reporter-json 0.2.0+, enable it when upgraded -->
+                <minCriticality>documented</minCriticality>
                 <indent>true</indent>
                 <output>${project.build.directory}/revapi.json</output>
-                <!--<keepEmptyFile>false</keepEmptyFile>--> <!-- This is a configuration available in revapi-reporter-json 0.2.0+, enable it when upgraded -->
+                <keepEmptyFile>false</keepEmptyFile>
               </revapi.reporter.json>
             </analysisConfiguration>
           </configuration>
@@ -796,7 +796,7 @@
             <dependency>
               <groupId>org.revapi</groupId>
               <artifactId>revapi-reporter-json</artifactId>
-              <version>0.1.1</version> <!-- {x-version-update;org.revapi:revapi-reporter-json;external_dependency} -->
+              <version>0.4.5</version> <!-- {x-version-update;org.revapi:revapi-reporter-json;external_dependency} -->
             </dependency>
           </dependencies>
         </plugin>

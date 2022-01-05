@@ -62,7 +62,7 @@
           },
           {
             "matcher": "java-package",
-            "match": "/io\\.netty(\\..*)?/"
+            "match": "/io\\.(micrometer|netty)(\\..*)?/"
           },
           {
             "matcher": "java-package",
@@ -79,10 +79,6 @@
           {
             "matcher": "java-package",
             "match": "/javax\\.(jms|servlet)(\\..*)?/"
-          },
-          {
-            "matcher": "java-package",
-            "match": "/io\\.micrometer(\\..*)?/"
           },
           {
             "matcher": "java-package",
