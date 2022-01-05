@@ -12,7 +12,7 @@ import com.azure.containers.containerregistry.implementation.models.ManifestWrit
 import com.azure.containers.containerregistry.implementation.models.TagAttributesBase;
 import com.azure.containers.containerregistry.implementation.models.TagWriteableProperties;
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
-import com.azure.containers.containerregistry.models.ArtifactTagOrderBy;
+import com.azure.containers.containerregistry.models.ArtifactTagOrder;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -34,8 +34,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static com.azure.containers.containerregistry.Utils.CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * This class provides a helper type that contains all the operations for artifacts in a given repository.
@@ -188,7 +190,7 @@ public final class RegistryArtifactAsync {
     Mono<Response<Void>> deleteWithResponse(Context context) {
         try {
             return this.getDigestMono()
-                .flatMap(res -> this.serviceClient.deleteManifestWithResponseAsync(repositoryName, res, context))
+                .flatMap(res -> this.serviceClient.deleteManifestWithResponseAsync(repositoryName, res, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE)))
                 .flatMap(Utils::deleteResponseToSuccess)
                 .onErrorMap(Utils::mapException);
         } catch (RuntimeException ex) {
@@ -252,7 +254,7 @@ public final class RegistryArtifactAsync {
             if (tag.isEmpty()) {
                 return monoError(logger, new IllegalArgumentException("'tag' cannot be empty."));
             }
-            return this.serviceClient.deleteTagWithResponseAsync(repositoryName, tag, context)
+            return this.serviceClient.deleteTagWithResponseAsync(repositoryName, tag, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
                 .flatMap(Utils::deleteResponseToSuccess)
                 .onErrorMap(Utils::mapException);
         } catch (RuntimeException ex) {
@@ -319,7 +321,7 @@ public final class RegistryArtifactAsync {
     Mono<Response<ArtifactManifestProperties>> getManifestPropertiesWithResponse(Context context) {
         try {
             return this.getDigestMono()
-                .flatMap(res -> this.serviceClient.getManifestPropertiesWithResponseAsync(repositoryName, res))
+                .flatMap(res -> this.serviceClient.getManifestPropertiesWithResponseAsync(repositoryName, res, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE)))
                 .onErrorMap(Utils::mapException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -394,7 +396,7 @@ public final class RegistryArtifactAsync {
                 return monoError(logger, new IllegalArgumentException("'tag' cannot be empty."));
             }
 
-            return this.serviceClient.getTagPropertiesWithResponseAsync(repositoryName, tag, context)
+            return this.serviceClient.getTagPropertiesWithResponseAsync(repositoryName, tag, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
                 .onErrorMap(Utils::mapException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -434,25 +436,23 @@ public final class RegistryArtifactAsync {
      * Fetches all the tags associated with the given {@link #getRepositoryName() repository}.
      *
      * <p> If you would like to specify the order in which the tags are returned please
-     * use the overload that takes in the options parameter {@link #listTagProperties(ArtifactTagOrderBy)}  listTagProperties}
+     * use the overload that takes in the options parameter {@link #listTagProperties(ArtifactTagOrder)}  listTagProperties}
      * No assumptions on the order can be made if no options are provided to the service.
      * </p>
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Retrieve all the tags associated with the given repository from the most recently updated to the last.</p>
+     * <p>Retrieve all the tags associated with the given repository.</p>
      *
-     * <!-- src_embed com.azure.containers.containerregistry.RegistryArtifactAsync.listTagPropertiesWithOptions -->
+     * <!-- src_embed com.azure.containers.containerregistry.RegistryArtifactAsync.listTagProperties -->
      * <pre>
-     * client.listTagProperties&#40;ArtifactTagOrderBy.LAST_UPDATED_ON_DESCENDING&#41;
-     *     .byPage&#40;10&#41;
+     * client.listTagProperties&#40;&#41;.byPage&#40;10&#41;
      *     .subscribe&#40;tagPropertiesPagedResponse -&gt; &#123;
-     *         tagPropertiesPagedResponse.getValue&#40;&#41;
-     *             .stream&#40;&#41;
-     *             .forEach&#40;tagProperties -&gt; System.out.println&#40;tagProperties.getDigest&#40;&#41;&#41;&#41;;
+     *         tagPropertiesPagedResponse.getValue&#40;&#41;.stream&#40;&#41;.forEach&#40;
+     *             tagProperties -&gt; System.out.println&#40;tagProperties.getDigest&#40;&#41;&#41;&#41;;
      *     &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.containers.containerregistry.RegistryArtifactAsync.listTagPropertiesWithOptions -->
+     * <!-- end com.azure.containers.containerregistry.RegistryArtifactAsync.listTagProperties -->
      *
      * @return {@link PagedFlux} of the artifacts for the given repository in the order specified by the options.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
@@ -460,7 +460,7 @@ public final class RegistryArtifactAsync {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ArtifactTagProperties> listTagProperties() {
-        return listTagProperties(ArtifactTagOrderBy.NONE);
+        return listTagProperties(ArtifactTagOrder.NONE);
     }
 
     /**
@@ -477,7 +477,7 @@ public final class RegistryArtifactAsync {
      *
      * <!-- src_embed com.azure.containers.containerregistry.RegistryArtifactAsync.listTagPropertiesWithOptions -->
      * <pre>
-     * client.listTagProperties&#40;ArtifactTagOrderBy.LAST_UPDATED_ON_DESCENDING&#41;
+     * client.listTagProperties&#40;ArtifactTagOrder.LAST_UPDATED_ON_DESCENDING&#41;
      *     .byPage&#40;10&#41;
      *     .subscribe&#40;tagPropertiesPagedResponse -&gt; &#123;
      *         tagPropertiesPagedResponse.getValue&#40;&#41;
@@ -493,28 +493,28 @@ public final class RegistryArtifactAsync {
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ArtifactTagProperties> listTagProperties(ArtifactTagOrderBy orderBy) {
+    public PagedFlux<ArtifactTagProperties> listTagProperties(ArtifactTagOrder orderBy) {
         return new PagedFlux<>(
             (pageSize) -> withContext(context -> listTagPropertiesSinglePageAsync(pageSize, orderBy, context)),
             (token, pageSize) -> withContext(context -> listTagPropertiesNextSinglePageAsync(token, context)));
     }
 
-    PagedFlux<ArtifactTagProperties> listTagProperties(ArtifactTagOrderBy orderBy, Context context) {
+    PagedFlux<ArtifactTagProperties> listTagProperties(ArtifactTagOrder orderBy, Context context) {
         return new PagedFlux<>(
             (pageSize) -> listTagPropertiesSinglePageAsync(pageSize, orderBy, context),
             (token, pageSize) -> listTagPropertiesNextSinglePageAsync(token, context));
     }
 
-    Mono<PagedResponse<ArtifactTagProperties>> listTagPropertiesSinglePageAsync(Integer pageSize, ArtifactTagOrderBy orderBy, Context context) {
+    Mono<PagedResponse<ArtifactTagProperties>> listTagPropertiesSinglePageAsync(Integer pageSize, ArtifactTagOrder orderBy, Context context) {
         try {
             if (pageSize != null && pageSize < 0) {
                 return monoError(logger, new IllegalArgumentException("'pageSize' cannot be negative."));
             }
 
-            final String orderByString = orderBy.equals(ArtifactTagOrderBy.NONE) ? null : orderBy.toString();
+            final String orderByString = orderBy.equals(ArtifactTagOrder.NONE) ? null : orderBy.toString();
 
             return this.getDigestMono()
-                .flatMap(res -> this.serviceClient.getTagsSinglePageAsync(repositoryName, null, pageSize, orderByString, res, context))
+                .flatMap(res -> this.serviceClient.getTagsSinglePageAsync(repositoryName, null, pageSize, orderByString, res, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE)))
                 .map(res -> Utils.getPagedResponseWithContinuationToken(res, this::getTagProperties))
                 .onErrorMap(Utils::mapException);
         } catch (RuntimeException e) {
@@ -543,7 +543,7 @@ public final class RegistryArtifactAsync {
 
     Mono<PagedResponse<ArtifactTagProperties>> listTagPropertiesNextSinglePageAsync(String nextLink, Context context) {
         try {
-            return this.serviceClient.getTagsNextSinglePageAsync(nextLink, context)
+            return this.serviceClient.getTagsNextSinglePageAsync(nextLink, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
                 .map(res -> Utils.getPagedResponseWithContinuationToken(res, this::getTagProperties));
         } catch (RuntimeException e) {
             return monoError(logger, e);
@@ -603,7 +603,7 @@ public final class RegistryArtifactAsync {
                 .setReadEnabled(tagProperties.isReadEnabled())
                 .setWriteEnabled(tagProperties.isWriteEnabled());
 
-            return this.serviceClient.updateTagAttributesWithResponseAsync(repositoryName, tag, writeableProperties, context)
+            return this.serviceClient.updateTagAttributesWithResponseAsync(repositoryName, tag, writeableProperties, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
                 .onErrorMap(Utils::mapException);
         } catch (RuntimeException e) {
             return monoError(logger, e);
@@ -681,7 +681,7 @@ public final class RegistryArtifactAsync {
                 .setReadEnabled(manifestProperties.isReadEnabled());
 
             return getDigestMono()
-                .flatMap(res -> this.serviceClient.updateManifestPropertiesWithResponseAsync(repositoryName, res, writeableProperties, context))
+                .flatMap(res -> this.serviceClient.updateManifestPropertiesWithResponseAsync(repositoryName, res, writeableProperties, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE)))
                 .onErrorMap(Utils::mapException);
         } catch (RuntimeException e) {
             return monoError(logger, e);

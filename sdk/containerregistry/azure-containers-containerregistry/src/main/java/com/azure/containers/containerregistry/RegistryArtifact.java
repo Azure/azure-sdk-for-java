@@ -6,7 +6,7 @@ package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
-import com.azure.containers.containerregistry.models.ArtifactTagOrderBy;
+import com.azure.containers.containerregistry.models.ArtifactTagOrder;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.ClientAuthenticationException;
@@ -285,25 +285,22 @@ public final class RegistryArtifact {
      * Fetches all the tags associated with the given {@link #getRepositoryName() repository}.
      *
      * <p> If you would like to specify the order in which the tags are returned please
-     * use the overload that takes in the options parameter {@link #listTagProperties(ArtifactTagOrderBy, Context)}  listTagProperties}
+     * use the overload that takes in the options parameter {@link #listTagProperties(ArtifactTagOrder, Context)}  listTagProperties}
      * No assumptions on the order can be made if no options are provided to the service.
      * </p>
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Retrieve all the tags associated with the given repository from the most recently updated to the last.</p>
+     * <p>Retrieve all the tags associated with the given repository.</p>
      *
-     * <!-- src_embed com.azure.containers.containerregistry.RegistryArtifact.listTagPropertiesWithOptions -->
+     * <!-- src_embed com.azure.containers.containerregistry.RegistryArtifact.listTagProperties -->
      * <pre>
-     * client.listTagProperties&#40;ArtifactTagOrderBy.LAST_UPDATED_ON_DESCENDING, Context.NONE&#41;
-     *     .iterableByPage&#40;10&#41;
-     *     .forEach&#40;pagedResponse -&gt; &#123;
-     *         pagedResponse.getValue&#40;&#41;
-     *             .stream&#40;&#41;
-     *             .forEach&#40;tagProperties -&gt; System.out.println&#40;tagProperties.getDigest&#40;&#41;&#41;&#41;;
-     *     &#125;&#41;;
+     * client.listTagProperties&#40;&#41;.iterableByPage&#40;10&#41;.forEach&#40;pagedResponse -&gt; &#123;
+     *     pagedResponse.getValue&#40;&#41;.stream&#40;&#41;.forEach&#40;
+     *         tagProperties -&gt; System.out.println&#40;tagProperties.getDigest&#40;&#41;&#41;&#41;;
+     * &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.containers.containerregistry.RegistryArtifact.listTagPropertiesWithOptions -->
+     * <!-- end com.azure.containers.containerregistry.RegistryArtifact.listTagProperties -->
      *
      * @return {@link PagedIterable} of the artifacts for the given repository in the order specified by the options.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
@@ -311,7 +308,7 @@ public final class RegistryArtifact {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ArtifactTagProperties> listTagProperties() {
-        return listTagProperties(ArtifactTagOrderBy.NONE, Context.NONE);
+        return listTagProperties(ArtifactTagOrder.NONE, Context.NONE);
     }
 
     /**
@@ -328,7 +325,7 @@ public final class RegistryArtifact {
      *
      * <!-- src_embed com.azure.containers.containerregistry.RegistryArtifact.listTagPropertiesWithOptionsNoContext -->
      * <pre>
-     * client.listTagProperties&#40;ArtifactTagOrderBy.LAST_UPDATED_ON_DESCENDING&#41;
+     * client.listTagProperties&#40;ArtifactTagOrder.LAST_UPDATED_ON_DESCENDING&#41;
      *     .iterableByPage&#40;10&#41;
      *     .forEach&#40;pagedResponse -&gt; &#123;
      *         pagedResponse.getValue&#40;&#41;
@@ -344,7 +341,7 @@ public final class RegistryArtifact {
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ArtifactTagProperties> listTagProperties(ArtifactTagOrderBy orderBy) {
+    public PagedIterable<ArtifactTagProperties> listTagProperties(ArtifactTagOrder orderBy) {
         return this.listTagProperties(orderBy, Context.NONE);
     }
 
@@ -362,7 +359,7 @@ public final class RegistryArtifact {
      *
      * <!-- src_embed com.azure.containers.containerregistry.RegistryArtifact.listTagPropertiesWithOptions -->
      * <pre>
-     * client.listTagProperties&#40;ArtifactTagOrderBy.LAST_UPDATED_ON_DESCENDING, Context.NONE&#41;
+     * client.listTagProperties&#40;ArtifactTagOrder.LAST_UPDATED_ON_DESCENDING, Context.NONE&#41;
      *     .iterableByPage&#40;10&#41;
      *     .forEach&#40;pagedResponse -&gt; &#123;
      *         pagedResponse.getValue&#40;&#41;
@@ -379,7 +376,7 @@ public final class RegistryArtifact {
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ArtifactTagProperties> listTagProperties(ArtifactTagOrderBy orderBy, Context context) {
+    public PagedIterable<ArtifactTagProperties> listTagProperties(ArtifactTagOrder orderBy, Context context) {
         return new PagedIterable<ArtifactTagProperties>(asyncClient.listTagProperties(orderBy, context));
     }
 
